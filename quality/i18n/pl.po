@@ -6,7 +6,6 @@
 # Paweł Wodyński <pw@myodoo.pl>, 2018
 # Grażyna Grzelak <grazyna.grzelak@openglobe.pl>, 2019
 # Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
-# Martin Trigaux, 2019
 # zbik2607 <darek@krokus.com.pl>, 2019
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
@@ -17,14 +16,16 @@
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
 # Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -138,6 +139,20 @@ msgstr "Sprawdź"
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_count
 msgid "Check Count"
 msgstr ""
+
+#. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:8
+#, python-format
+msgid "Clear"
+msgstr "Wyczyść"
+
+#. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:28
+#, python-format
+msgid "Close"
+msgstr "Zamknij"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__color
@@ -757,6 +772,13 @@ msgid "Tags"
 msgstr "Znaczniki"
 
 #. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:17
+#, python-format
+msgid "Take a Picture"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__team_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__team_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__team_id
@@ -855,6 +877,13 @@ msgid "Unread Messages Counter"
 msgstr "Licznik nieprzeczytanych wiadomości"
 
 #. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:10
+#, python-format
+msgid "Uploading..."
+msgstr "Wgrywanie..."
+
+#. module: quality
 #: model:ir.model.fields,help:quality.field_quality_tag__color
 msgid "Used in the kanban view"
 msgstr ""
@@ -873,6 +902,13 @@ msgstr "Dostawca"
 #: selection:quality.alert,priority:0
 msgid "Very High"
 msgstr "Bardzo wysoki"
+
+#. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:32
+#, python-format
+msgid "Viewer"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__website_message_ids

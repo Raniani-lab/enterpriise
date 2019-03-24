@@ -162,7 +162,7 @@ msgstr "Numele companiei"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Setări de configurare"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner

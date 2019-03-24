@@ -3,17 +3,18 @@
 # * account_batch_payment
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
-# Vasilis Dimopoulos <iap3tos@outlook.com>, 2018
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# Vasilis Dimopoulos <iap3tos@outlook.com>, 2019
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2019-01-16 08:32+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,15 +39,9 @@ msgid "All payments in the batch must belong to the same company."
 msgstr ""
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:86
+#: code:addons/account_batch_payment/models/account_batch_payment.py:84
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr ""
-
-#. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:81
-#, python-format
-msgid "All payments in the batch must share the same type."
 msgstr ""
 
 #. module: account_batch_payment
@@ -138,7 +133,7 @@ msgid "Code"
 msgstr "Κωδικός"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:57
+#: code:addons/account_batch_payment/models/account_journal.py:61
 #: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
 #, python-format
 msgid "Create Batch Payment"
@@ -258,7 +253,7 @@ msgid "Inbound"
 msgstr "Εισερχόμενο"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:31
+#: code:addons/account_batch_payment/models/account_journal.py:37
 #, python-format
 msgid "Inbound Batch Payments Sequence"
 msgstr ""
@@ -320,7 +315,7 @@ msgid "Outbound"
 msgstr "Εξερχόμενη Κλήση"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:17
+#: code:addons/account_batch_payment/models/account_journal.py:20
 #, python-format
 msgid "Outbound Batch Payments Sequence"
 msgstr ""
@@ -395,14 +390,14 @@ msgid "State"
 msgstr "Νομός/Πολιτεία"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:88
+#: code:addons/account_batch_payment/models/account_batch_payment.py:86
 #, python-format
 msgid ""
 "The batch must have the same payment method as the payments it contains."
 msgstr ""
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:83
+#: code:addons/account_batch_payment/models/account_batch_payment.py:81
 #, python-format
 msgid "The batch must have the same type as the payments it contains."
 msgstr ""
@@ -450,6 +445,14 @@ msgstr ""
 msgid ""
 "Whether or not this batch payment should display the 'Generate File' button "
 "instead of 'Print' in form view."
+msgstr ""
+
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_payment.py:38
+#, python-format
+msgid ""
+"You cannot make a batch payment with internal transfers. Internal transfers "
+"ids: %s"
 msgstr ""
 
 #. module: account_batch_payment

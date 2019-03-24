@@ -17,7 +17,7 @@
 # Xavier Belmere <Info@cartmeleon.com>, 2017
 # Olivier Lenoir <olivier.lenoir@free.fr>, 2017
 # Xavier Symons <xsy@openerp.com>, 2017
-# fr rev <e2ffr02@hotmail.com>, 2017
+# bb76cd9ac0cb7e20167a14728edb858b, 2017
 # e2f <projects@e2f.com>, 2019
 # Martin Trigaux, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
@@ -25,9 +25,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-12-13 15:21+0000\n"
 "Last-Translator: Elias Alouane <e.alouane@ahktunis.org>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -242,6 +242,11 @@ msgid "Activity"
 msgstr "Activité"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_domain
+msgid "Activity Filter"
+msgstr ""
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_type
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__activity_type
 msgid "Activity Type"
@@ -249,10 +254,10 @@ msgstr "Type d'activité"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__domain
-msgid "Activity will only be performed if record satisfies this domain"
+msgid ""
+"Activity will only be performed if record satisfies this domain, obtained "
+"from the combination of the activity filter and its inherited filter"
 msgstr ""
-"L'activité ne sera exécutée que si l'enregistrement satisfait aux critères "
-"de ce filtre"
 
 #. module: marketing_automation
 #: model:mail.mass_mailing,name:marketing_automation.mass_mailing_after_7_days
@@ -264,6 +269,11 @@ msgstr "Après 7 jours"
 #: model:marketing.activity,name:marketing_automation.marketing_activity_2
 #: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
 msgid "After 7 days (if not yet customers)"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
+msgid "Applied Filter"
 msgstr ""
 
 #. module: marketing_automation
@@ -438,14 +448,14 @@ msgstr "Supprimer"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:166
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:181
 #, python-format
 msgid "Delete Activity"
 msgstr "Supprimer l'activité"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:168
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:183
 #, python-format
 msgid "Delete All"
 msgstr "Tout supprimer"
@@ -457,7 +467,7 @@ msgstr "Gérer les suivis enfants"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:173
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:188
 #, python-format
 msgid "Discard"
 msgstr "Annuler"
@@ -480,6 +490,11 @@ msgstr "Référence du document"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Domain"
 msgstr "Domaine"
+
+#. module: marketing_automation
+#: model:ir.model.fields,help:marketing_automation.field_marketing_activity__activity_domain
+msgid "Domain that applies to this activity and its child activities"
+msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -524,13 +539,13 @@ msgid "Error message"
 msgstr "Message d'erreur"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:355
+#: code:addons/marketing_automation/models/marketing_campaign.py:372
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr "Erreur ! Impossible de créer une hiérarchie d'activité récursive."
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:361
+#: code:addons/marketing_automation/models/marketing_campaign.py:378
 #, python-format
 msgid ""
 "Error! You can't define a child activity with a trigger of type \"beginning "
@@ -545,13 +560,13 @@ msgid "Exception"
 msgstr "Exception"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:576
+#: code:addons/marketing_automation/models/marketing_campaign.py:593
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr "Exception dans le publipostage : %s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:546
+#: code:addons/marketing_automation/models/marketing_campaign.py:563
 #, python-format
 msgid "Exception in server action: %s"
 msgstr "Exception dans l'action du serveur : %s"
@@ -568,7 +583,6 @@ msgid "Execute Activities"
 msgstr "Exécuter les activités"
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__domain
 msgid "Filter"
 msgstr "Filtre"
@@ -746,7 +760,7 @@ msgid "Marketing Automation Mailings"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:572
+#: code:addons/marketing_automation/models/marketing_campaign.py:589
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
 msgstr ""
@@ -754,7 +768,7 @@ msgstr ""
 "publipostage %s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:542
+#: code:addons/marketing_automation/models/marketing_campaign.py:559
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
 msgstr ""
@@ -976,7 +990,7 @@ msgstr "Effectuer"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:189
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:204
 #, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr "Veuillez sauver la campagne pour ajouter une sous activité"
@@ -1027,8 +1041,8 @@ msgid "Record model"
 msgstr "Modèle de l'enregistrement"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:344
-#: code:addons/marketing_automation/models/marketing_campaign.py:448
+#: code:addons/marketing_automation/models/marketing_campaign.py:361
+#: code:addons/marketing_automation/models/marketing_campaign.py:465
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
 #: selection:marketing.trace,state:0
 #, python-format
@@ -1036,7 +1050,7 @@ msgid "Rejected"
 msgstr "Rejeté"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:521
+#: code:addons/marketing_automation/models/marketing_campaign.py:538
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
 msgstr "Rejeté par le filtre d'activité ou l'enregistrement supprimé/archivé"
@@ -1198,8 +1212,8 @@ msgid "Subject"
 msgstr "Sujet"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:343
-#: code:addons/marketing_automation/models/marketing_campaign.py:447
+#: code:addons/marketing_automation/models/marketing_campaign.py:360
+#: code:addons/marketing_automation/models/marketing_campaign.py:464
 #, python-format
 msgid "Success"
 msgstr "Succès"
@@ -1243,7 +1257,7 @@ msgstr "Tests"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:177
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:192
 #, python-format
 msgid ""
 "This Activity has a dependant child activity. 'DELETE ALL' will delete all "
@@ -1253,7 +1267,7 @@ msgstr ""
 "DELETE ALL » supprimera toutes les activités enfant."
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:568
+#: code:addons/marketing_automation/models/marketing_campaign.py:585
 #, python-format
 msgid ""
 "To use this feature you should be an administrator or belong to the "

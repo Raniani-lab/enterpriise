@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
 "Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
@@ -73,21 +73,21 @@ msgid "Product template"
 msgstr ""
 
 #. module: documents_project
-#: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
-#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
-msgid "Project Folder"
-msgstr ""
-
-#. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_tags
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_tags
 msgid "Project Tags"
 msgstr ""
 
 #. module: documents_project
+#: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
+#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
+msgid "Project Workspace"
+msgstr ""
+
+#. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
 msgid ""
-"Select the new folder to be used for project's documents for the projects and tasks\n"
+"Select the new workspace to be used for project's documents for the projects and tasks\n"
 "                                of your company."
 msgstr ""
 
@@ -108,10 +108,15 @@ msgstr "Даалгавар"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
+msgid "Vendor Credit Note"
+msgstr "Нийлүүлэгчийн буцаалт"
+
+#. module: documents_project
+#: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
 msgstr ""
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder
-msgid "project default folder"
+msgid "project default workspace"
 msgstr ""

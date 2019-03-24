@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: krnkris, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
@@ -69,6 +69,11 @@ msgid "Certification Process"
 msgstr "Osztályozási folyamat"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
+msgid "Commercial Invoice Type"
+msgstr ""
+
+#. module: delivery_fedex
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
@@ -106,7 +111,7 @@ msgid "Easypost"
 msgstr ""
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:233
+#: code:addons/delivery_fedex/models/delivery_fedex.py:220
 #, python-format
 msgid ""
 "Error:\n"
@@ -176,21 +181,11 @@ msgid "Fedex Configuration"
 msgstr "Fedex beállítás"
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
-msgid "Fedex Document Stock Type"
-msgstr ""
-
-#. module: delivery_fedex
 #: model:delivery.carrier,name:delivery_fedex.delivery_carrier_fedex_inter
 #: model:product.product,name:delivery_fedex.product_product_delivery_fedex_inter
 #: model:product.template,name:delivery_fedex.product_product_delivery_fedex_inter_product_template
 msgid "Fedex International"
 msgstr "Fedex Nemzetközi"
-
-#. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
-msgid "Fedex Label Stock Type"
-msgstr ""
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_service_type
@@ -230,6 +225,11 @@ msgid "Fixed Price"
 msgstr "Rögzített ár"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
+msgid "Generate return label"
+msgstr ""
+
+#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Go to"
 msgstr "Menjen ide"
@@ -255,6 +255,11 @@ msgid "LB"
 msgstr "LB"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
+msgid "Label Type"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_meter_number
 msgid "Meter Number"
 msgstr "Méter szám"
@@ -265,7 +270,7 @@ msgid "No carrier integration"
 msgstr "Nincs szállítmányozó integrálva"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:440
+#: code:addons/delivery_fedex/models/delivery_fedex.py:441
 #, python-format
 msgid "No packages for this picking"
 msgstr ""
@@ -414,19 +419,19 @@ msgid "Screenshot"
 msgstr ""
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:463
+#: code:addons/delivery_fedex/models/delivery_fedex.py:533
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "N° %s sz. szállítmányt érvénytelenítettük"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:424
+#: code:addons/delivery_fedex/models/delivery_fedex.py:426
 #, python-format
 msgid "Shipment created into Fedex <br/> <b>Tracking Number : </b>%s"
 msgstr "Szállítmány létrehozva az Fedex-ben <br/> <b>Követési szám : </b>%s"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:370
+#: code:addons/delivery_fedex/models/delivery_fedex.py:369
 #, python-format
 msgid ""
 "Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
@@ -457,6 +462,11 @@ msgid "The last step is the"
 msgstr "Az utolsó lépés a"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
+msgid "The return label is automatically generated at the delivery"
+msgstr ""
+
+#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ""
 "These certifications usually require that you contact the FedEx support team"
@@ -485,7 +495,7 @@ msgid "Unit(s)"
 msgstr "Egység(ek)"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:239
+#: code:addons/delivery_fedex/models/delivery_fedex.py:226
 #, python-format
 msgid ""
 "Warning:\n"

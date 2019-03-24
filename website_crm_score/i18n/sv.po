@@ -4,20 +4,21 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Anders Wallenquist <anders.wallenquist@vertel.se>, 2018
 # Martin Wilderoth <martin.wilderoth@linserv.se>, 2018
 # Robert Frykelius <robert.frykelius@linserv.se>, 2018
 # Kristoffer Grundström <hamnisdude@gmail.com>, 2019
 # Christelle Wehbe <libanon_cristelle@hotmail.com>, 2019
 # Kim Asplund <kim.asplund@gmail.com>, 2019
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2019
+# Chrille Hedberg <hedberg.chrille@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Kim Asplund <kim.asplund@gmail.com>, 2019\n"
+"Last-Translator: Chrille Hedberg <hedberg.chrille@gmail.com>, 2019\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -198,6 +199,11 @@ msgid "Followers (Partners)"
 msgstr "Följare (kontakter)"
 
 #. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Group By"
+msgstr "Gruppera efter"
+
+#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
 msgid "HTTP Routing"
 msgstr ""
@@ -334,6 +340,7 @@ msgid "Main Attachment"
 msgstr ""
 
 #. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 msgid "Maximum Leads / 30 days"
 msgstr ""
@@ -443,11 +450,6 @@ msgid "Running"
 msgstr "Pågående"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
-msgid "SaleTeam"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__user_id
 msgid "Saleman"
 msgstr ""
@@ -465,9 +467,20 @@ msgid "Sales Men"
 msgstr ""
 
 #. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Sales Person"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
 msgid "Sales Records"
 msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Sales Team"
+msgstr "Säljlag"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id

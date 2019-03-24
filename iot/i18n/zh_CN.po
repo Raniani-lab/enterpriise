@@ -4,22 +4,21 @@
 # 
 # Translators:
 # e2f <projects@e2f.com>, 2019
-# Martin Trigaux, 2019
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # niulin lnc. <admin@niulin.net>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # ChinaMaker <liuct@chinamaker.net>, 2019
-# KWOKYUK CHEUNG <cheungkwokyuk@gmail.com>, 2019
 # snow wang <147156565@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,11 +54,6 @@ msgstr ""
 " 5. 将令牌粘贴到令牌字段中并按照物联网盒子首页提示步骤进行操作<br/>"
 
 #. module: iot
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__action
-msgid "Action"
-msgstr "动作"
-
-#. module: iot
 #: model:ir.model,name:iot.model_add_iot_box
 msgid "Add IoT Box wizard"
 msgstr "添加物联网盒子向导"
@@ -75,9 +69,29 @@ msgid "Camera"
 msgstr "摄像头"
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Cancel"
-msgstr "取消日期"
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:368
+#, python-format
+msgid "Click here to open your IoT Homepage"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:245
+#: code:addons/iot/static/src/js/iot.js:369
+#, python-format
+msgid "Click on Advanced/Show Details/Details/More information"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:246
+#: code:addons/iot/static/src/js/iot.js:370
+#, python-format
+msgid ""
+"Click on Proceed to .../Add Exception/Visit this website/Go on to the "
+"webpage"
+msgstr ""
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -85,14 +99,25 @@ msgid "Click on the"
 msgstr "点击"
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Close MO"
-msgstr "关闭 MO"
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:244
+#, python-format
+msgid "Click on the link above to open your IoT Homepage"
+msgstr ""
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Close WO"
-msgstr "关闭 WO"
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:383
+#, python-format
+msgid "Close"
+msgstr "关闭"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:372
+#, python-format
+msgid "Close this window and try again"
+msgstr ""
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
@@ -107,14 +132,30 @@ msgstr "连接"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:291
+#: code:addons/iot/static/src/js/iot.js:297
 #, python-format
 msgid "Connection failed"
 msgstr "连接失败"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:94
+#: code:addons/iot/static/src/js/iot.js:242
+#, python-format
+msgid ""
+"Connection refused, please accept the certificate and restart the scan:"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:353
+#: code:addons/iot/static/src/js/iot.js:379
+#, python-format
+msgid "Connection to device failed"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:41
 #, python-format
 msgid "Connection with the IoT Box failed!"
 msgstr "与物联网箱的连接失败了！"
@@ -123,7 +164,6 @@ msgstr "与物联网箱的连接失败了！"
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_uid
 #: model:ir.model.fields,field_description:iot.field_iot_box__create_uid
 #: model:ir.model.fields,field_description:iot.field_iot_device__create_uid
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__create_uid
 msgid "Created by"
 msgstr "创建者"
 
@@ -131,7 +171,6 @@ msgstr "创建者"
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_date
 #: model:ir.model.fields,field_description:iot.field_iot_box__create_date
 #: model:ir.model.fields,field_description:iot.field_iot_device__create_date
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__create_date
 msgid "Created on"
 msgstr "创建时间"
 
@@ -142,7 +181,6 @@ msgstr "检测并添加网络中的物联网盒子"
 
 #. module: iot
 #: selection:iot.device,type:0
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__device_id
 msgid "Device"
 msgstr "设备"
 
@@ -163,19 +201,22 @@ msgstr "设备"
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__display_name
 #: model:ir.model.fields,field_description:iot.field_iot_box__display_name
 #: model:ir.model.fields,field_description:iot.field_iot_device__display_name
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__display_name
 msgid "Display Name"
 msgstr "显示名称"
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Fail"
-msgstr "失败"
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:371
+#, python-format
+msgid "Firefox only : Click on Confirm Security Exception"
+msgstr ""
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Finish"
-msgstr "结束"
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:247
+#, python-format
+msgid "Firefox only: Click on Confirm Security Exception"
+msgstr ""
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -191,7 +232,6 @@ msgstr "分组"
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
 #: model:ir.model.fields,field_description:iot.field_iot_box__id
 #: model:ir.model.fields,field_description:iot.field_iot_device__id
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__id
 msgid "ID"
 msgstr "ID"
 
@@ -199,11 +239,6 @@ msgstr "ID"
 #: model:ir.model,name:iot.model_iot_device
 msgid "IOT Device"
 msgstr "IOT 设备"
-
-#. module: iot
-#: model:ir.model,name:iot.model_iot_trigger
-msgid "IOT Trigger"
-msgstr "物联网触发器"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
@@ -250,15 +285,9 @@ msgid "IoT Device"
 msgstr "IoT 设备"
 
 #. module: iot
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__key
-msgid "Key"
-msgstr "键"
-
-#. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
 #: model:ir.model.fields,field_description:iot.field_iot_box____last_update
 #: model:ir.model.fields,field_description:iot.field_iot_device____last_update
-#: model:ir.model.fields,field_description:iot.field_iot_trigger____last_update
 msgid "Last Modified on"
 msgstr "最后更改日"
 
@@ -266,7 +295,6 @@ msgstr "最后更改日"
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_uid
 #: model:ir.model.fields,field_description:iot.field_iot_box__write_uid
 #: model:ir.model.fields,field_description:iot.field_iot_device__write_uid
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__write_uid
 msgid "Last Updated by"
 msgstr "最后更新者"
 
@@ -274,7 +302,6 @@ msgstr "最后更新者"
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_date
 #: model:ir.model.fields,field_description:iot.field_iot_box__write_date
 #: model:ir.model.fields,field_description:iot.field_iot_device__write_date
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__write_date
 msgid "Last Updated on"
 msgstr "更新时间"
 
@@ -290,11 +317,6 @@ msgid "Network"
 msgstr "网络"
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Next"
-msgstr "下一页"
-
-#. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "No IoT Box found !"
 msgstr "没有找到物联网盒子"
@@ -305,39 +327,28 @@ msgid "OK"
 msgstr "OK"
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Pack"
-msgstr "包裹"
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:282
+#, python-format
+msgid "Pairing with IoT..."
+msgstr ""
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Pass"
-msgstr "通过"
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:375
+#, python-format
+msgid ""
+"Please accept the certificate of your IoT Box (procedure depends on your "
+"browser) :"
+msgstr ""
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Pause"
-msgstr "暂停"
-
-#. module: iot
-#: selection:iot.trigger,action:0
-msgid "Previous"
-msgstr "上一页"
-
-#. module: iot
-#: selection:iot.trigger,action:0
-msgid "Print Delivery Slip"
-msgstr "打印送货单"
-
-#. module: iot
-#: selection:iot.trigger,action:0
-msgid "Print Labels"
-msgstr "标签打印"
-
-#. module: iot
-#: selection:iot.trigger,action:0
-msgid "Print Operation"
-msgstr "打印操作"
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:351
+#: code:addons/iot/static/src/js/iot.js:359
+#, python-format
+msgid "Please check if the device is still connected."
+msgstr ""
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -353,11 +364,6 @@ msgstr "打印机报告"
 #: model:ir.model,name:iot.model_publisher_warranty_contract
 msgid "Publisher Warranty Contract For IoT Box"
 msgstr ""
-
-#. module: iot
-#: selection:iot.trigger,action:0
-msgid "Record Production"
-msgstr "记录生产"
 
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report
@@ -376,7 +382,14 @@ msgstr "报告"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:120
+#: code:addons/iot/static/src/js/iot.js:248
+#, python-format
+msgid "Restart SCAN"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:69
 #, python-format
 msgid "SCAN"
 msgstr "扫描"
@@ -387,43 +400,23 @@ msgid "Scanning range(s)"
 msgstr "扫描范围"
 
 #. module: iot
-#: selection:iot.trigger,action:0
-msgid "Scrap"
-msgstr "报废"
-
-#. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
 msgid "Screen URL"
 msgstr "屏蔽 URL"
 
 #. module: iot
-#: model:ir.model.fields,field_description:iot.field_iot_trigger__sequence
-msgid "Sequence"
-msgstr "序号"
-
-#. module: iot
-#: selection:iot.trigger,action:0
-msgid "Skip"
-msgstr "跳过"
-
-#. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:89
+#: code:addons/iot/static/src/js/iot.js:37
 #, python-format
 msgid "Successfully sent to printer!"
 msgstr "成功发送到打印机！"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:325 selection:iot.trigger,action:0
+#: code:addons/iot/static/src/js/iot.js:361
 #, python-format
-msgid "Take Measure"
-msgstr "采取措施"
-
-#. module: iot
-#: selection:iot.trigger,action:0
-msgid "Take Picture"
-msgstr "拍照"
+msgid "The device is not responding"
+msgstr ""
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
@@ -459,11 +452,6 @@ msgstr "USB"
 #: model:ir.model.fields,help:iot.field_iot_box__screen_url
 msgid "Url of the page that will be displayed by hdmi port of the box."
 msgstr "物联网盒子的HDMI输出端设备将显示Url."
-
-#. module: iot
-#: selection:iot.trigger,action:0
-msgid "Validate"
-msgstr "验证"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_ir_actions_report__device_id

@@ -4,17 +4,17 @@
 # 
 # Translators:
 # Kovács Tibor <kovika@gmail.com>, 2017
-# krnkris, 2018
 # Martin Trigaux, 2019
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # gezza <geza.nagy@oregional.hu>, 2019
+# krnkris, 2019
 # Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2017-02-15 11:45+0000\n"
 "Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
@@ -519,7 +519,7 @@ msgid "Assign the ticket to someone."
 msgstr "Rendelje hozzá a kérést valakihez."
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:423
+#: code:addons/helpdesk/models/helpdesk_ticket.py:429
 #, python-format
 msgid "Assign to me"
 msgstr "Hozzám rendelés"
@@ -1297,6 +1297,8 @@ msgstr "Kanban státusz"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Keep empty for everyone to see this team"
 msgstr ""
+"Hagyja üresen, ha azt szeretné, hogy mindenki számára látható legyen ez a "
+"csapat"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed_value
@@ -1711,6 +1713,11 @@ msgstr "Véletlenszerűen"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_ids
 msgid "Rating"
 msgstr "Értékelés"
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg
+msgid "Rating Average"
+msgstr "Értékelés átlaga"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_feedback
@@ -2381,6 +2388,8 @@ msgid ""
 "Tickets in this stage are considered as done. This is used notably when "
 "computing SLAs and KPIs on tickets."
 msgstr ""
+"Az ezen szakaszban lévő kérések késznek tekinthetőek. Ez különösen az SLA-k "
+"és a KPI-k kérések alapján való kiszámításánál kerül felhasználásra."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban

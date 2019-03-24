@@ -3,14 +3,26 @@
 # * account_deferred_revenue
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Philipp Hug <philipp@hug.cx>, 2017
+# Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
+# Ralf Hilgenstock <rh@dialoge.info>, 2017
+# Tina Rittmüller <tr@ife.de>, 2017
+# Anja Funk <anja.funk@afimage.de>, 2017
+# Rudolf Schnapka <rs@techno-flex.de>, 2017
+# Renzo Meister, 2017
+# Wolfgang Taferner, 2017
+# Ermin Trevisan <trevi@twanda.com>, 2017
+# Gab_Odoo <gab@odoo.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -122,6 +134,11 @@ msgid "Draft"
 msgstr "Entwurf"
 
 #. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "Entries"
+msgstr "Buchungen"
+
+#. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Extended Filters..."
 msgstr "Erweiterte Filter..."
@@ -154,11 +171,6 @@ msgstr "Gruppieren nach ..."
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Invoice"
 msgstr "Rechnung"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Items"
-msgstr "Artikel"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form

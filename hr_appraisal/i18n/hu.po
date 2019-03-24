@@ -4,18 +4,18 @@
 # 
 # Translators:
 # gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # Martin Trigaux, 2019
 # krnkris, 2019
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
-# Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2019\n"
+"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,17 +24,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
-msgid ") Answers"
-msgstr ") Válaszok"
+#: model:mail.template,subject:hr_appraisal.mail_template_user_input_appraisal
+msgid ""
+"${object.appraisal_id.employee_id.name} Appraisal: ${object.survey_id.title}"
+msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
-msgid ") Sent Appraisal"
-msgstr ") Értékelés küldés"
+#: code:addons/hr_appraisal/models/hr_appraisal.py:175
+#, python-format
+msgid "%s appraisal: %s"
+msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:127
+#: code:addons/hr_appraisal/models/hr_appraisal.py:128
 #, python-format
 msgid ""
 "<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Meeting</a> for <a "
@@ -42,26 +44,44 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
-#: model:mail.template,body_html:hr_appraisal.send_appraisal_template
+#: model:mail.template,body_html:hr_appraisal.mail_template_user_input_appraisal
 msgid ""
 "<div style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"        Hello ${ctx.get('employee').name}<br/><br/>\n"
-"        % if ctx.get('employee').id == object.employee_id.id:\n"
-"            Please fill out the following survey related to your appraisal.\n"
+"        Dear ${object.partner_id.name or 'participant'}<br/><br/>\n"
+"        % if object.appraisal_id.employee_id.name:\n"
+"            Please fill out the following survey related to ${object.appraisal_id.employee_id.name}'s appraisal.\n"
 "        % else:\n"
-"            Please fill out the following survey related to ${object.employee_id.name}'s appraisal.\n"
+"            Please fill out the following appraisal survey.\n"
 "        % endif\n"
 "        <div style=\"margin: 16px 0px 16px 0px;\">\n"
-"            <a href=\"__URL__\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"            <a href=\"${('%s?answer_token=%s' % (object.survey_id.public_url, object.token)) | safe}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
 "                Start Survey\n"
 "            </a>\n"
 "        </div>\n"
-"        Please answer the appraisal for ${format_date(object.date_close)}.<br/>\n"
+"        % if object.deadline\n"
+"            Please answer the appraisal for ${format_date(object.deadline)}.<br/><br/>\n"
+"        % endif\n"
 "        Thank you for your participation.\n"
 "    </p>\n"
-"</div>\n"
-"            "
+"</div>"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
+msgid ""
+"<span class=\"o_stat_text\">\n"
+"                        Appraisal\n"
+"                    </span>"
 msgstr ""
 
 #. module: hr_appraisal
@@ -137,13 +157,20 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_2_3
+#: model:survey.question,title:hr_appraisal.appraisal_2_3
 msgid "Additional Comments"
 msgstr "Kiegészítő Megjegyzések"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_7
+#: model:survey.question,title:hr_appraisal.opinion_2_7
 msgid "Additional comments"
 msgstr "Kiegészítő megjegyzések"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+msgid "An appraisal will be automatically created."
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_11
@@ -152,19 +179,26 @@ msgstr "Elemző és  összefoglaló tudat"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_completed_ids
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Answers"
 msgstr "Válaszok"
 
 #. module: hr_appraisal
+#: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree2
+#: model:ir.model.fields,field_description:hr_appraisal.field_survey_invite__appraisal_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_survey_user_input__appraisal_id
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_root
 #: model:ir.ui.menu,name:hr_appraisal.menu_open_view_hr_appraisal_tree
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.survey_user_input_view_search
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
+#: selection:survey.survey,category:0
 msgid "Appraisal"
 msgstr "Értékelés"
 
@@ -178,11 +212,13 @@ msgstr "Értékelés elemzés"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_ids
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_collaborators_ids
 msgid "Appraisal Collaborators"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_ids
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_colleagues_ids
 msgid "Appraisal Colleagues"
 msgstr ""
 
@@ -198,43 +234,41 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Appraisal Form..."
 msgstr "Értékelési űrlap..."
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_frequency_unit
-msgid "Appraisal Frequency"
-msgstr "Értékelési gyakoriság"
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_manager_ids
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_manager_ids
 msgid "Appraisal Manager"
 msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:118
+#: code:addons/hr_appraisal/models/hr_appraisal.py:119
 #, python-format
 msgid "Appraisal Meeting For %s"
 msgstr "Értékelési találkozó erre %s"
 
 #. module: hr_appraisal
-#: model:survey.page,title:hr_appraisal.opinion_1
+#: model:survey.question,question:hr_appraisal.opinion_1
+#: model:survey.question,title:hr_appraisal.opinion_1
 msgid "Appraisal Process"
 msgstr "Értékelési folyamatok"
 
 #. module: hr_appraisal
-#: model:mail.template,subject:hr_appraisal.send_appraisal_template
-msgid "Appraisal Regarding"
-msgstr "Értékeléssel kapcsolatos"
+#: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_request
+msgid "Appraisal Request by Employee"
+msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_frequency
-msgid "Appraisal Repeat Every"
-msgstr "Értékelés ismétlés minden"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+msgid "Appraisal Scheduling"
+msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:239
+#: code:addons/hr_appraisal/models/hr_appraisal.py:265
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
@@ -247,17 +281,23 @@ msgid "Appraisal Statistics"
 msgstr "Értékelés statisztikák"
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_template_id
+msgid "Appraisal Survey Invite Email"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
 msgid "Appraisal by Manager"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_1_3
+#: model:survey.question,title:hr_appraisal.appraisal_1_3
 msgid "Appraisal for Period"
 msgstr "Értékelés időszakra"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:186
+#: code:addons/hr_appraisal/models/hr_appraisal.py:196
 #, python-format
 msgid "Appraisal form(s) have been sent"
 msgstr ""
@@ -292,6 +332,7 @@ msgstr "Elvégzendő értékelések"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_1_5
+#: model:survey.question,title:hr_appraisal.appraisal_1_5
 msgid "Appraiser"
 msgstr "Értékelés"
 
@@ -301,17 +342,17 @@ msgid "Archived"
 msgstr "Archivált"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid "At the conclusion of the appraisal time period"
 msgstr "Értékelési idő periódus befejezésénél"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid "At the outset of the appraisal time period"
 msgstr "Értékelési idő periódus túllépésénél"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid "At the supervisor's appraisal date"
 msgstr "Értékesítést felügyelő dátumánál"
 
@@ -321,16 +362,34 @@ msgid "Attachment Count"
 msgstr "Mellékletek száma"
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_self
+msgid "By Employee"
+msgstr "Alkalmazottak szerint"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Cancel"
 msgstr "Mégse"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:239
+#: code:addons/hr_appraisal/models/hr_appraisal.py:265
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #, python-format
 msgid "Cancelled"
 msgstr "Visszavont"
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_survey_survey__category
+msgid "Category"
+msgstr "Kategória"
+
+#. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_survey_survey__category
+msgid ""
+"Category is used to know in which context the survey is used. Various apps "
+"may define their own categories when they use survey like jobs recruitment "
+"or employee appraisal surveys."
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_appraisal
@@ -345,6 +404,8 @@ msgstr "Segítségnyújtók értékelése"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_collaborators
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_collaborators
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
 msgid "Collaborators"
 msgstr "Segítségnyújtók"
 
@@ -356,6 +417,8 @@ msgstr "Kollégák értékelése"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_colleagues
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_colleagues
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Colleagues"
 msgstr "Kollégák"
@@ -401,12 +464,18 @@ msgstr ""
 "stb.)"
 
 #. module: hr_appraisal
+#: model:ir.model,name:hr_appraisal.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfigurációs beállítások"
+
+#. module: hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_configuration
 msgid "Configuration"
 msgstr "Beállítások"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_4
+#: model:survey.question,title:hr_appraisal.opinion_2_4
 msgid "Continuous Improvement"
 msgstr "Folyamatos fejlesztés"
 
@@ -441,7 +510,7 @@ msgid "Creativity and forward looking aptitude"
 msgstr "Kreativitás és előrelátó képesség"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid ""
 "Critical or key elements of performance and professional development needs "
 "(if any), should also be noted at this time"
@@ -457,11 +526,13 @@ msgstr "Ügyfél állásfoglalás"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #: model:survey.question,question:hr_appraisal.opinion_1_2
+#: model:survey.question,title:hr_appraisal.opinion_1_2
 msgid "Date"
 msgstr "Dátum"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_1_4
+#: model:survey.question,title:hr_appraisal.appraisal_1_4
 msgid "Date of review"
 msgstr "Áttekintés dátuma"
 
@@ -503,8 +574,8 @@ msgid "Department"
 msgstr "Osztály, részleg"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_3
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_3
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid "Did not meet standards and expectations"
 msgstr "Szabványoknak és elvárásoknak nem megfelelő"
 
@@ -515,7 +586,7 @@ msgid "Display Name"
 msgstr "Megjelenített név"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:239
+#: code:addons/hr_appraisal/models/hr_appraisal.py:265
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -535,13 +606,9 @@ msgstr "Szerkesztés"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_3
+#: model:survey.question,title:hr_appraisal.opinion_2_3
 msgid "Effectiveness"
 msgstr "Hatékonyság"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__mail_template_id
-msgid "Email Template for Appraisal"
-msgstr "E-mail sablonok értékelésekhez"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_employee
@@ -549,6 +616,7 @@ msgstr "E-mail sablonok értékelésekhez"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__employee_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_self
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Employee"
@@ -561,18 +629,21 @@ msgid "Employee Appraisal"
 msgstr "Alkalmazott értékelése"
 
 #. module: hr_appraisal
-#: model:survey.page,title:hr_appraisal.appraisal_1
+#: model:survey.question,question:hr_appraisal.appraisal_1
+#: model:survey.question,title:hr_appraisal.appraisal_1
 #: model:survey.survey,title:hr_appraisal.appraisal_form
 msgid "Employee Appraisal Form"
 msgstr "Munkavállalók értékelő űrlapja"
 
 #. module: hr_appraisal
-#: model:survey.page,title:hr_appraisal.appraisal_5
+#: model:survey.question,question:hr_appraisal.appraisal_5
+#: model:survey.question,title:hr_appraisal.appraisal_5
 msgid "Employee Comments"
 msgstr "Munkavállalók megjegyzései"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_employee
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_employee
 msgid "Employee Name"
 msgstr "Alkalmazott neve"
 
@@ -582,12 +653,14 @@ msgid "Employee Opinion Form"
 msgstr "Munkavállalók javaslati űrlapja"
 
 #. module: hr_appraisal
-#: model:survey.page,title:hr_appraisal.appraisal_3
+#: model:survey.question,question:hr_appraisal.appraisal_3
+#: model:survey.question,title:hr_appraisal.appraisal_3
 msgid "Employee Performance in Key Areas"
 msgstr "Munkavállalók teljesítménye a kulcsfontosságú területeken"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_survey_id
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_colleagues_survey_id
 msgid "Employee's Appraisal"
 msgstr "Alkalmazottak értékelése"
 
@@ -598,6 +671,7 @@ msgstr "Alkalmazott neve"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_1
+#: model:survey.question,title:hr_appraisal.opinion_2_1
 msgid "Engagement"
 msgstr "Elkötelezettség"
 
@@ -607,7 +681,8 @@ msgid "Enthusiasm & implication toward projects/assignments"
 msgstr "Lelkesedés & részvétel projekteken/megbízásokon"
 
 #. module: hr_appraisal
-#: model:survey.page,title:hr_appraisal.opinion_2
+#: model:survey.question,question:hr_appraisal.opinion_2
+#: model:survey.question,title:hr_appraisal.opinion_2
 msgid "Evaluation"
 msgstr "Értékelés"
 
@@ -617,8 +692,8 @@ msgid "Event"
 msgstr "Esemény"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_3
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_3
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid "Exceeds standards and expectations"
 msgstr "Túlmutat a szabványokon és elvárásokon"
 
@@ -628,7 +703,7 @@ msgid "Extended Filters..."
 msgstr "Kiterjesztett szűrők..."
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:182
+#: code:addons/hr_appraisal/models/hr_appraisal.py:192
 #, python-format
 msgid ""
 "Fill form <a href=\"%s\">%s</a> for <a href=\"#\" data-oe-model=\"%s\" data-"
@@ -671,6 +746,11 @@ msgid "Future Activities"
 msgstr "Jövőbeli tevékenységek"
 
 #. module: hr_appraisal
+#: selection:survey.survey,category:0
+msgid "Generic Survey"
+msgstr ""
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Group By"
 msgstr "Csoportosítás"
@@ -686,7 +766,7 @@ msgid "HR Department"
 msgstr "Emberi erőforrás Osztály, részleg"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid ""
 "His direct reports will be invited through Odoo to express a feedback on "
 "their supervisor's leadership and to give their opinion about their own "
@@ -783,7 +863,7 @@ msgid "ID"
 msgstr "Azonosító ID"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_4
+#: model_terms:survey.question,description:hr_appraisal.appraisal_4
 msgid ""
 "Identify professional, performance, or project objectives you recommend for employee’s continued career development\n"
 "over the coming year."
@@ -809,22 +889,29 @@ msgstr ""
 "Ha be van jelölve, akkor néhány üzenetnél kézbesítési hiba lépett fel."
 
 #. module: hr_appraisal
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1
 #: model:survey.question,comments_message:hr_appraisal.appraisal_1_1
 #: model:survey.question,comments_message:hr_appraisal.appraisal_1_2
 #: model:survey.question,comments_message:hr_appraisal.appraisal_1_3
 #: model:survey.question,comments_message:hr_appraisal.appraisal_1_4
 #: model:survey.question,comments_message:hr_appraisal.appraisal_1_5
+#: model:survey.question,comments_message:hr_appraisal.appraisal_2
 #: model:survey.question,comments_message:hr_appraisal.appraisal_2_1
 #: model:survey.question,comments_message:hr_appraisal.appraisal_2_2
 #: model:survey.question,comments_message:hr_appraisal.appraisal_2_3
+#: model:survey.question,comments_message:hr_appraisal.appraisal_3
 #: model:survey.question,comments_message:hr_appraisal.appraisal_3_1
 #: model:survey.question,comments_message:hr_appraisal.appraisal_3_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_4
 #: model:survey.question,comments_message:hr_appraisal.appraisal_4_1
 #: model:survey.question,comments_message:hr_appraisal.appraisal_4_2
 #: model:survey.question,comments_message:hr_appraisal.appraisal_4_3
+#: model:survey.question,comments_message:hr_appraisal.appraisal_5
 #: model:survey.question,comments_message:hr_appraisal.appraisal_5_1
+#: model:survey.question,comments_message:hr_appraisal.opinion_1
 #: model:survey.question,comments_message:hr_appraisal.opinion_1_1
 #: model:survey.question,comments_message:hr_appraisal.opinion_1_2
+#: model:survey.question,comments_message:hr_appraisal.opinion_2
 #: model:survey.question,comments_message:hr_appraisal.opinion_2_1
 #: model:survey.question,comments_message:hr_appraisal.opinion_2_2
 #: model:survey.question,comments_message:hr_appraisal.opinion_2_3
@@ -865,12 +952,17 @@ msgid "Interview"
 msgstr "Interjú"
 
 #. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+msgid "Invitations"
+msgstr "Meghívók"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_is_follower
 msgid "Is Follower"
 msgstr "Ő egy követő"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid ""
 "It is the joint responsibility of the employee and the supervisor (appraiser) to establish a feasible work plan for the\n"
 "coming year, including major employee responsibilities and corresponding benchmarks against which results will be\n"
@@ -882,7 +974,7 @@ msgstr ""
 "idevonatkozó méréseket, melyik eredmények lesznek összevetve az értékelésen."
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid ""
 "It is the primary responsibility of the supervisor to gather the necessary input from the appropriate sources of feedback\n"
 "(internal and/or external customers, peers). In case of collaboration with Odoo SA Belgium, the supervisor must\n"
@@ -917,6 +1009,7 @@ msgstr "Késő tevékenységek"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_2
+#: model:survey.question,title:hr_appraisal.opinion_2_2
 msgid "Leadership"
 msgstr "Irányítás"
 
@@ -950,6 +1043,7 @@ msgstr "Fő melléklet"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_ids
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
 msgid "Manager"
@@ -958,17 +1052,24 @@ msgstr "Igazgató"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_survey_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_manager_survey_id
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_manager_survey_id
 msgid "Manager's Appraisal"
 msgstr "Igazgató értékelés"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_manager
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_manager
 msgid "Managers"
 msgstr "Igazgatók"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_3
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_max_period
+msgid "Maximum number of months between appraisals"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:survey.question,description:hr_appraisal.appraisal_3
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid "Meet standards and expectations"
 msgstr "Szabványoknak és elvárásoknak megfelelő"
 
@@ -988,14 +1089,20 @@ msgid "Messages"
 msgstr "Üzenetek"
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_min_period
+msgid "Minimum number of months between appraisals"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_6
+#: model:survey.question,title:hr_appraisal.opinion_2_6
 msgid "Miscellaneous"
 msgstr "Egyéb"
 
 #. module: hr_appraisal
-#: selection:hr.employee,appraisal_frequency_unit:0
-msgid "Month"
-msgstr "Hónap"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+msgid "Months"
+msgstr "Hónapok"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
@@ -1027,11 +1134,13 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
 #: model:survey.question,question:hr_appraisal.appraisal_1_1
+#: model:survey.question,title:hr_appraisal.appraisal_1_1
 msgid "Name"
 msgstr "Név"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_1_1
+#: model:survey.question,title:hr_appraisal.opinion_1_1
 msgid "Name of your direct supervisor"
 msgstr "A közvetlen felügyelő mentora neve"
 
@@ -1052,6 +1161,7 @@ msgstr "Következő tevékenységtípus"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_date
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_date
 msgid "Next Appraisal Date"
 msgstr "Következő értékelés dátuma"
 
@@ -1092,6 +1202,7 @@ msgstr "Olvasatlan üzenetek száma"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_2_1
+#: model:survey.question,title:hr_appraisal.appraisal_2_1
 msgid "Objectives"
 msgstr "Célkitűzések"
 
@@ -1102,6 +1213,7 @@ msgstr "Hivatalnok"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_5
+#: model:survey.question,title:hr_appraisal.opinion_2_5
 msgid "Openness"
 msgstr "Nyitottsághoz"
 
@@ -1115,7 +1227,7 @@ msgstr ""
 "tevékenységeken és folyamatokon belül"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid "Overall Purpose Of Employee Appraisal"
 msgstr "Alkalmazott értékelés általános célja"
 
@@ -1134,22 +1246,13 @@ msgid "Overdue"
 msgstr "lejárt"
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__periodic_appraisal
-msgid "Periodic Appraisal"
-msgstr "Időszakos értékelés"
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__periodic_appraisal_created
 msgid "Periodic Appraisal has been created"
 msgstr "Időszakos értékelés létrehozva"
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-msgid "Periodicity"
-msgstr "Időszakos"
-
-#. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_4_2
+#: model:survey.question,title:hr_appraisal.appraisal_4_2
 msgid "Personal Performance Objectives"
 msgstr "Személyi teljesítmény céljai"
 
@@ -1164,22 +1267,32 @@ msgid "Planned"
 msgstr "Tervezett"
 
 #. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:176
+#, python-format
+msgid "Please fill out appraisal survey."
+msgstr ""
+
+#. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_1_2
+#: model:survey.question,title:hr_appraisal.appraisal_1_2
 msgid "Position Title"
 msgstr "Állás megnevezése"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_4_1
+#: model:survey.question,title:hr_appraisal.appraisal_4_1
 msgid "Professional Development Objectives"
 msgstr "Személyi fejlődés céljai"
 
 #. module: hr_appraisal
-#: model:survey.page,title:hr_appraisal.appraisal_4
+#: model:survey.question,question:hr_appraisal.appraisal_4
+#: model:survey.question,title:hr_appraisal.appraisal_4
 msgid "Professional Development and Performance Plan"
 msgstr "Személyi fejlődés és teljesítmény terv"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_4_3
+#: model:survey.question,title:hr_appraisal.appraisal_4_3
 msgid "Project Objectives"
 msgstr "Projekt céljai"
 
@@ -1194,14 +1307,14 @@ msgid "Related Partner"
 msgstr "Kapcsolódó partner"
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-msgid "Repeat Every"
-msgstr "Ismétlés minden"
-
-#. module: hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_report
 msgid "Reporting"
 msgstr "Riport készítés"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
+msgid "Request Appraisal"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
@@ -1210,6 +1323,7 @@ msgstr "Felelős felhasználó"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_2_2
+#: model:survey.question,title:hr_appraisal.appraisal_2_2
 msgid "Results"
 msgstr "Eredmények"
 
@@ -1234,6 +1348,7 @@ msgstr "Értékelés keresése"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Select Appraisal Reviewer..."
 msgstr "Interjú értékelő kiválasztása..."
@@ -1241,18 +1356,40 @@ msgstr "Interjú értékelő kiválasztása..."
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_survey_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_self_survey_id
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_self_survey_id
 msgid "Self Appraisal"
 msgstr "Önértékelés"
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 msgid "Send Appraisal Form To"
 msgstr "Értékelési űrlap kiküldése ide"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
+msgid "Send Appraisal to"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+msgid "Send Appraisals Form To"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_sent_ids
 msgid "Sent Forms"
 msgstr "Elküldött űrlapok"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+msgid "Set the minimum number of months between appraisal."
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_config_settings_action
+#: model:ir.ui.menu,name:hr_appraisal.hr_appraisal_menu_configuration
+msgid "Settings"
+msgstr "Beállítások"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
@@ -1262,14 +1399,14 @@ msgstr ""
 "előtti"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_3
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_3
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid "Significantly below standards and expectations"
 msgstr "Jelentősen a szabványok és elvárások alatt"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_3
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_3
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid ""
 "Significantly exceeds standards and expectations required of the position"
 msgstr ""
@@ -1303,13 +1440,25 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_3_1
+#: model:survey.question,title:hr_appraisal.appraisal_3_1
 msgid "Subject"
 msgstr "Tárgy"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_3_2
+#: model:survey.question,title:hr_appraisal.appraisal_3_2
 msgid "Supervisors only"
 msgstr "Kizárólag felügyelő, mentor"
+
+#. module: hr_appraisal
+#: model:ir.model,name:hr_appraisal.model_survey_survey
+msgid "Survey"
+msgstr "Felmérés"
+
+#. module: hr_appraisal
+#: model:ir.model,name:hr_appraisal.model_survey_invite
+msgid "Survey Invitation Wizard"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_survey_user_input
@@ -1338,22 +1487,29 @@ msgid "Technical skills regarding to the job requirements"
 msgstr "Munkaköri követelményekhez műszaki érzék"
 
 #. module: hr_appraisal
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_1
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_2
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_3
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_4
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_5
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_1
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_2
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_3
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3_1
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_1
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_2
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_3
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_5
 #: model:survey.question,validation_error_msg:hr_appraisal.appraisal_5_1
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_1
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_1_1
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_1_2
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_1
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_2
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_3
@@ -1361,11 +1517,11 @@ msgstr "Munkaköri követelményekhez műszaki érzék"
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_5
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_6
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_7
-msgid "The answer you entered has an invalid format."
-msgstr "A beírt válasza nem megfelelő formátumú."
+msgid "The answer you entered is not valid."
+msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid ""
 "The appraiser should rate the employee's major work accomplishments and "
 "performance according to the metric provided below"
@@ -1374,7 +1530,7 @@ msgstr ""
 "teljesítményét az alább közzétett mérce alapján"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.question,description:hr_appraisal.appraisal_3
 msgid ""
 "The appraiser should rate the employee’s major work accomplishments and performance according to the metric provided\n"
 "below:"
@@ -1383,13 +1539,14 @@ msgstr ""
 "teljesítményét az alább közzétett mérce alapján"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_employee.py:76
+#: code:addons/hr_appraisal/models/hr_employee.py:73
 #, python-format
 msgid "The date of the next appraisal cannot be in the past"
 msgstr "A következő kiértékelés dátuma nem lehet a múltban"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee__appraisal_date
+#: model:ir.model.fields,help:hr_appraisal.field_res_users__appraisal_date
 msgid ""
 "The date of the next appraisal is computed by the appraisal plan's dates "
 "(first appraisal + periodicity)."
@@ -1398,7 +1555,7 @@ msgstr ""
 "értékelés + időszak)."
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid ""
 "The employee may choose to offer comments or explanation regarding the "
 "completed review."
@@ -1407,7 +1564,7 @@ msgstr ""
 "áttekintés kiegészítéséhez."
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid ""
 "The employee will be responsible for completing a draft of the Appraisal Form as a tool for self-appraisal and a starting\n"
 "point for the supervisor’s evaluation. The employee can add examples of achievements for each criterion.\n"
@@ -1417,7 +1574,7 @@ msgstr ""
 "Miután az űrlapot kitöltötték, az alkalmazott elküldi a felügyelőjéhez."
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.opinion_1
+#: model_terms:survey.question,description:hr_appraisal.opinion_1
 msgid ""
 "The employees will send back their anonymous answers to Odoo. The data will "
 "be handled by the HR manager and a brief summary of the data will be sent to"
@@ -1429,14 +1586,14 @@ msgstr ""
 "felügyelőjének."
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid ""
 "The supervisor send the form to the HR department in India and in Belgium"
 msgstr ""
 "A felügyelő  elküldi az űrlapot az Indai és a Belga Erőforrás osztályokra"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid ""
 "The supervisor synthesizes and integrates all input into the completed appraisal. The motivation of the evaluation\n"
 "is explained in the ad hoc fields."
@@ -1470,22 +1627,29 @@ msgid "This employee will do a self-appraisal"
 msgstr "Ez az alkalmazott ön-értékelést fog végezni"
 
 #. module: hr_appraisal
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_1
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_2
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_3
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_4
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_5
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_1
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_2
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_3
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3_1
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_1
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_2
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_3
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_5
 #: model:survey.question,constr_error_msg:hr_appraisal.appraisal_5_1
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_1
 #: model:survey.question,constr_error_msg:hr_appraisal.opinion_1_1
 #: model:survey.question,constr_error_msg:hr_appraisal.opinion_1_2
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2
 #: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_1
 #: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_2
 #: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_3
@@ -1502,7 +1666,7 @@ msgid "Time management: projects/tasks are completed on time"
 msgstr "Idő vezérlés: projektek/feladatok időre futtathatók"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:239
+#: code:addons/hr_appraisal/models/hr_appraisal.py:265
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
@@ -1510,7 +1674,7 @@ msgid "To Start"
 msgstr "Indításhoz"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid ""
 "To assist employees in their professional growth, through the identification of strengths and opportunities for\n"
 "development"
@@ -1519,7 +1683,7 @@ msgstr ""
 "meghatározásához és a fejlődési lehetőségekhez"
 
 #. module: hr_appraisal
-#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+#: model_terms:survey.question,description:hr_appraisal.appraisal_1
 msgid "To initiate a clear and open communication of performance expectations"
 msgstr "Elsődleges a tiszta és nyílt kommunikáció az elvárt teljesítményekhez"
 
@@ -1545,12 +1709,18 @@ msgstr "Olvasatlan üzenetek számlálója"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_5_1
+#: model:survey.question,title:hr_appraisal.appraisal_5_1
 msgid ""
 "Use the following space to make any comments regarding the above performance"
 " evaluation."
 msgstr ""
 "A következő helyet használja a fenti teljesítmény értékelés bármilyen "
 "megjegyzés írásához"
+
+#. module: hr_appraisal
+#: model:ir.model,name:hr_appraisal.model_res_users
+msgid "Users"
+msgstr "Felhasználók"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
@@ -1572,17 +1742,13 @@ msgstr ""
 "termékek hasznára válik"
 
 #. module: hr_appraisal
-#: model:survey.page,title:hr_appraisal.appraisal_2
+#: model:survey.question,question:hr_appraisal.appraisal_2
+#: model:survey.question,title:hr_appraisal.appraisal_2
 msgid "Work Plan"
 msgstr "Munka terv"
 
 #. module: hr_appraisal
-#: selection:hr.employee,appraisal_frequency_unit:0
-msgid "Year"
-msgstr "Év"
-
-#. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:232
+#: code:addons/hr_appraisal/models/hr_appraisal.py:258
 #, python-format
 msgid "You cannot delete appraisal which is in %s state"
 msgstr ""
@@ -1599,7 +1765,17 @@ msgstr ""
 "            válassza ki a küldési szakaszt és lássa meg az eredményeket."
 
 #. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:220
+#, python-format
+msgid ""
+"Your last appraisal was on %s. You will be able to request a new appraisal "
+"on %s. If you think it's too late, feel free to have a chat with your "
+"manager."
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_survey_id
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_collaborators_survey_id
 msgid "collaborate's Appraisal"
 msgstr "Segítségnyújtók értékelése"
 

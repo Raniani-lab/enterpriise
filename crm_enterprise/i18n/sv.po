@@ -13,9 +13,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:37+0000\n"
 "Last-Translator: Chrille Hedberg <hedberg.chrille@gmail.com>, 2019\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
@@ -33,6 +33,11 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Average Deal Size"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.model,name:crm_enterprise.model_crm_activity_report
+msgid "CRM Activity Analysis"
 msgstr ""
 
 #. module: crm_enterprise
@@ -124,6 +129,7 @@ msgid "Group By"
 msgstr "Gruppera efter"
 
 #. module: crm_enterprise
+#: model:ir.model.fields,field_description:crm_enterprise.field_crm_activity_report__won_status
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won_status
 msgid "Is Won"
 msgstr ""
@@ -146,7 +152,8 @@ msgid "Leads Analysis"
 msgstr "Kundämnesanalys"
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_activity_report_view_search
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost"
 msgstr "Förlorade"
@@ -183,7 +190,7 @@ msgid "Opportunities Analysis"
 msgstr "Affärsmöjlighetsanalys"
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
 msgid "Pending"
 msgstr "Vilande"
 
@@ -239,7 +246,7 @@ msgid "Win/Loss Ratio"
 msgstr ""
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Won"
 msgstr "Vunnit"

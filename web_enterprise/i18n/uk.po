@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:219
+#: code:addons/web_enterprise/static/src/xml/base.xml:220
 #, python-format
 msgid "(Enterprise Edition)"
 msgstr "(Корпоративна редакція)"
@@ -45,31 +45,15 @@ msgstr "Дія"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:252
-#: code:addons/web_enterprise/static/src/xml/base.xml:255
-#: code:addons/web_enterprise/static/src/xml/base.xml:261
-#: code:addons/web_enterprise/static/src/xml/base.xml:264
-#: code:addons/web_enterprise/static/src/xml/base.xml:270
-#: code:addons/web_enterprise/static/src/xml/base.xml:273
-#: code:addons/web_enterprise/static/src/xml/base.xml:279
-#: code:addons/web_enterprise/static/src/xml/base.xml:282
-#: code:addons/web_enterprise/static/src/xml/base.xml:288
-#: code:addons/web_enterprise/static/src/xml/base.xml:291
-#: code:addons/web_enterprise/static/src/xml/base.xml:297
-#: code:addons/web_enterprise/static/src/xml/base.xml:300
-#: code:addons/web_enterprise/static/src/xml/base.xml:306
-#: code:addons/web_enterprise/static/src/xml/base.xml:309
-#: code:addons/web_enterprise/static/src/xml/base.xml:315
-#: code:addons/web_enterprise/static/src/xml/base.xml:318
-#: code:addons/web_enterprise/static/src/xml/base.xml:324
-#: code:addons/web_enterprise/static/src/xml/base.xml:327
+#: code:addons/web_enterprise/static/src/xml/base.xml:236
+#: code:addons/web_enterprise/static/src/xml/base.xml:239
 #, python-format
 msgid "Alt"
 msgstr "Alt"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:129
+#: code:addons/web_enterprise/static/src/xml/base.xml:130
 #, python-format
 msgid "Applications"
 msgstr "Додатки"
@@ -97,65 +81,22 @@ msgstr "Меню компанії"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:255
-#: code:addons/web_enterprise/static/src/xml/base.xml:264
-#: code:addons/web_enterprise/static/src/xml/base.xml:273
-#: code:addons/web_enterprise/static/src/xml/base.xml:282
-#: code:addons/web_enterprise/static/src/xml/base.xml:291
-#: code:addons/web_enterprise/static/src/xml/base.xml:300
-#: code:addons/web_enterprise/static/src/xml/base.xml:309
-#: code:addons/web_enterprise/static/src/xml/base.xml:318
-#: code:addons/web_enterprise/static/src/xml/base.xml:327
+#: code:addons/web_enterprise/static/src/xml/base.xml:239
 #, python-format
 msgid "Control"
 msgstr "Контроль"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:277
-#, python-format
-msgid "Create a new record"
-msgstr "Створити новий запис"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:225
+#: code:addons/web_enterprise/static/src/xml/base.xml:226
 #, python-format
 msgid "Database expiration:"
 msgstr "Термін дії бази даних:"
 
 #. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:243
-#, python-format
-msgid "Description"
-msgstr "Опис"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:268
-#, python-format
-msgid "Discard a record modification"
-msgstr "Відхилити модифікацію запису"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:259
-#, python-format
-msgid "Edit a record"
-msgstr "Редагувати запис"
-
-#. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
 msgid "HTTP Routing"
 msgstr "Маршрутизація HTTP"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/js/widgets/user_menu.js:57
-#, python-format
-msgid "Keyboard Shortcuts"
-msgstr "Гарячі клавіші"
 
 #. module: web_enterprise
 #. openerp-web
@@ -173,13 +114,6 @@ msgstr "Логотип"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:245
-#, python-format
-msgid "Mac"
-msgstr "Mac"
-
-#. module: web_enterprise
-#. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:31
 #, python-format
 msgid "Menu"
@@ -194,7 +128,7 @@ msgstr "Немає результату"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:218
+#: code:addons/web_enterprise/static/src/xml/base.xml:219
 #, python-format
 msgid "Odoo"
 msgstr "Odoo"
@@ -205,34 +139,6 @@ msgstr "Odoo"
 #, python-format
 msgid "Odoo Help"
 msgstr "Допомога Odoo"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:313
-#, python-format
-msgid "Open the next record"
-msgstr "Відкрийте наступний запис"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:304
-#, python-format
-msgid "Open the previous record"
-msgstr "Відкрийте попередній запис"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:295
-#, python-format
-msgid "Open to kanban view"
-msgstr "Відкрийте перегляд канбану"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:286
-#, python-format
-msgid "Open to list view"
-msgstr "Відкрийте перегляд списку"
 
 #. module: web_enterprise
 #. openerp-web
@@ -272,13 +178,6 @@ msgstr "Поновити підписку"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:250
-#, python-format
-msgid "Save a record"
-msgstr "Зберегти запис"
-
-#. module: web_enterprise
-#. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:6
 #, python-format
 msgid "Search"
@@ -290,13 +189,6 @@ msgstr "Пошук"
 #, python-format
 msgid "Search..."
 msgstr "Пошук..."
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:232
-#, python-format
-msgid "Shortcuts"
-msgstr "Ярлики"
 
 #. module: web_enterprise
 #. openerp-web
@@ -347,14 +239,14 @@ msgstr "Термін дії демо-версії цієї бази даних �
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:322
+#: code:addons/web_enterprise/static/src/xml/base.xml:234
 #, python-format
 msgid "Toggle home menu"
 msgstr "Переключити домашнє меню"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:130
+#: code:addons/web_enterprise/static/src/xml/base.xml:131
 #, python-format
 msgid "Toggle menu"
 msgstr "Переключити меню"
@@ -365,13 +257,6 @@ msgstr "Переключити меню"
 #, python-format
 msgid "Upgrade your subscription"
 msgstr "Оновіть вашу підписку"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:244
-#, python-format
-msgid "Windows/Linux"
-msgstr "Windows/Linux"
 
 #. module: web_enterprise
 #. openerp-web

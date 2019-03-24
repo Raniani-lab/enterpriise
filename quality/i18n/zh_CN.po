@@ -7,24 +7,24 @@
 # waveyeung <waveyeung@qq.com>, 2017
 # 苏州远鼎 <tiexinliu@126.com>, 2017
 # liulixia <liu.lixia@elico-corp.com>, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
+# bf2549c5415a9287249cba2b8a5823c7, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
 # JZH-Odoo <jzh@odoo.com>, 2018
-# Martin Trigaux, 2019
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # bower Guo <124358678@qq.com>, 2019
 # roye w <159820@qq.com>, 2019
 # 敬洪 甘 <349220879@qq.com>, 2019
 # snow wang <147156565@qq.com>, 2019
+# Martin Trigaux, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
 "Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -138,6 +138,20 @@ msgstr "检查"
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_count
 msgid "Check Count"
 msgstr "检查数量"
+
+#. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:8
+#, python-format
+msgid "Clear"
+msgstr "清除"
+
+#. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:28
+#, python-format
+msgid "Close"
+msgstr "关闭"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__color
@@ -750,6 +764,13 @@ msgid "Tags"
 msgstr "标签"
 
 #. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:17
+#, python-format
+msgid "Take a Picture"
+msgstr "拍照"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__team_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__team_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__team_id
@@ -841,6 +862,13 @@ msgid "Unread Messages Counter"
 msgstr "未读消息计数器"
 
 #. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:10
+#, python-format
+msgid "Uploading..."
+msgstr "正在上传..."
+
+#. module: quality
 #: model:ir.model.fields,help:quality.field_quality_tag__color
 msgid "Used in the kanban view"
 msgstr "用在看板视图"
@@ -859,6 +887,13 @@ msgstr "供应商"
 #: selection:quality.alert,priority:0
 msgid "Very High"
 msgstr "非常高"
+
+#. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/xml/widget_template.xml:32
+#, python-format
+msgid "Viewer"
+msgstr "观众"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__website_message_ids

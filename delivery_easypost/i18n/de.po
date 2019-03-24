@@ -3,15 +3,32 @@
 # * delivery_easypost
 # 
 # Translators:
-# Martin Trigaux, 2018
+# e2f <projects@e2f.com>, 2018
+# aNj <anj2j@yahoo.de>, 2018
+# AppleMentalist <felix.schnatbaum@gmail.com>, 2018
+# DE T2 <e2f48d4s5vd1s2@outlook.com>, 2018
+# Thorsten Vocks <thorsten.vocks@openbig.org>, 2018
+# Ermin Trevisan <trevi@twanda.com>, 2018
+# Renzo Meister, 2018
+# Henry Mineehen <info@mineehen.de>, 2018
+# Tina Rittmüller <tr@ife.de>, 2018
+# Fabian Liesch <fabian.liesch@gmail.com>, 2018
+# darenkster <inactive+darenkster@transifex.com>, 2018
+# Katharina Moritz <kmo@e2f.com>, 2018
+# Niki Waibel, 2018
+# Thomas Neu <t.neu@runbox.com>, 2018
+# ba566f9f7abd166f8f1f032649ec3e69, 2018
+# brokemeister <work@maltejansen.de>, 2018
 # Johannes Croe <jcr@odoo.com>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2018-08-02 11:35+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +51,13 @@ msgid ""
 "<b>Once your account is created, go to your Dashboard and click on the arrow next to your username to configure your carrier accounts. </b>\n"
 "                <b>You can add new carrier accounts on the right side of the same page.</b>\n"
 "                <br/>"
+msgstr ""
+
+#. module: delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_product_packaging_delivery_form_inherit_easypost
+msgid ""
+"<span attrs=\"{'invisible': [('package_carrier_type', '!=', "
+"'easypost')]}\">Inches</span>"
 msgstr ""
 
 #. module: delivery_easypost
@@ -193,7 +217,7 @@ msgid "Easypost Website"
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:33
+#: code:addons/delivery_easypost/models/easypost_request.py:35
 #, python-format
 msgid "Easypost returned an error: "
 msgstr ""
@@ -236,7 +260,7 @@ msgid "If not set, the less expensive available service level will be chosen."
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:310
+#: code:addons/delivery_easypost/models/easypost_request.py:311
 #, python-format
 msgid ""
 "It seems Easypost do not provide shipments for this order.                We"
@@ -287,8 +311,8 @@ msgid "PNG"
 msgstr "PNG"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:78
-#: code:addons/delivery_easypost/models/easypost_request.py:85
+#: code:addons/delivery_easypost/models/easypost_request.py:80
+#: code:addons/delivery_easypost/models/easypost_request.py:87
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Bitte wählen Sie mindestens ein Eintrag zum Versenden"
@@ -299,7 +323,7 @@ msgid "Product Packaging"
 msgstr "Produktverpackung"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:215
+#: code:addons/delivery_easypost/models/easypost_request.py:216
 #, python-format
 msgid "Product packaging used in pack %s is not configured for easypost."
 msgstr ""
@@ -315,7 +339,7 @@ msgid "Provider"
 msgstr "Anbieter"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:73
+#: code:addons/delivery_easypost/models/easypost_request.py:75
 #, python-format
 msgid "Sale Order/Stock Picking is missing."
 msgstr ""
@@ -352,7 +376,7 @@ msgid "Test API Key"
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:70
+#: code:addons/delivery_easypost/models/easypost_request.py:72
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
@@ -360,7 +384,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:67
+#: code:addons/delivery_easypost/models/easypost_request.py:69
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
@@ -368,7 +392,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:62
+#: code:addons/delivery_easypost/models/easypost_request.py:64
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
@@ -376,7 +400,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:64
+#: code:addons/delivery_easypost/models/easypost_request.py:66
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
@@ -384,8 +408,8 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:80
-#: code:addons/delivery_easypost/models/easypost_request.py:87
+#: code:addons/delivery_easypost/models/easypost_request.py:82
+#: code:addons/delivery_easypost/models/easypost_request.py:89
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -395,7 +419,7 @@ msgstr ""
 " Gewichtsangabe hat."
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:321
+#: code:addons/delivery_easypost/models/easypost_request.py:322
 #, python-format
 msgid ""
 "There is no rate available for the selected service level for one of your "
@@ -425,7 +449,7 @@ msgid "You can't cancel Easypost shipping."
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:52
+#: code:addons/delivery_easypost/models/easypost_request.py:54
 #, python-format
 msgid ""
 "You have no carrier linked to your Easypost Account.                Please "

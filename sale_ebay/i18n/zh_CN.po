@@ -7,21 +7,19 @@
 # 钟小华 <mackz@sina.com>, 2016
 # v2exerer <9010446@qq.com>, 2016
 # Joray <13637815@qq.com>, 2016
+# waveyeung <waveyeung@qq.com>, 2017
 # Martin Trigaux, 2017
 # Jeff Yu - Elico Corp <jeff.yu@elico-corp.com>, 2017
 # fausthuang, 2017
-# waveyeung <waveyeung@qq.com>, 2018
-# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
-# 老窦 北京 <2662059195@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
 "Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -47,7 +45,7 @@ msgstr ""
 "      "
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:383
+#: code:addons/sale_ebay/models/product.py:395
 #, python-format
 msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
@@ -55,7 +53,7 @@ msgid ""
 msgstr "如果你设置数量为0,缺货选项应该被启用，清单时间应该被设为货物直到取消"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:386
+#: code:addons/sale_ebay/models/product.py:398
 #, python-format
 msgid ""
 " You need to have at least 2 variations selected for a multi-variations listing.\n"
@@ -115,7 +113,7 @@ msgid "<span class=\"o_form_label\">eBay Options</span>"
 msgstr "<span class=\"o_form_label\">eBay 选项</span>"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:259
+#: code:addons/sale_ebay/models/product.py:271
 #, python-format
 msgid ""
 "All the quantities must be greater than 0 or you need to enable the Out Of "
@@ -188,7 +186,7 @@ msgid "Config Settings"
 msgstr "配置设置"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:352
+#: code:addons/sale_ebay/models/product.py:364
 #, python-format
 msgid "Configure The eBay Integrator Now"
 msgstr "现在配置eBay集成"
@@ -317,7 +315,7 @@ msgid "End Item's Listing"
 msgstr "终止物品的上市"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:245
+#: code:addons/sale_ebay/models/product.py:257
 #, python-format
 msgid ""
 "Error Encountered.\n"
@@ -327,7 +325,7 @@ msgstr ""
 " eBay 上的产品没有设置变体."
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:389
+#: code:addons/sale_ebay/models/product.py:401
 #, python-format
 msgid ""
 "Error Encountered.\n"
@@ -376,7 +374,7 @@ msgid "Import eBay config data and sync transactions"
 msgstr "导入易趣网配置数据和同步事务"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:381
+#: code:addons/sale_ebay/models/product.py:393
 #, python-format
 msgid ""
 "Impossible to revise a listing into a multi-variations listing.\n"
@@ -495,13 +493,13 @@ msgid "Official eBay Category"
 msgstr "eBay官方分类"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:351
+#: code:addons/sale_ebay/models/product.py:363
 #, python-format
 msgid "One parameter is missing."
 msgstr "缺少一个参数"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:377
+#: code:addons/sale_ebay/models/product.py:389
 #, python-format
 msgid "Or the condition is not compatible with the category."
 msgstr "或者条件和类别不匹配"
@@ -516,11 +514,6 @@ msgstr "缺货"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_payment_policy_id
 msgid "Payment Policy"
 msgstr "付款政策"
-
-#. module: sale_ebay
-#: selection:crm.team,team_type:0
-msgid "Point of Sale"
-msgstr "POS"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -612,19 +605,9 @@ msgid "Revise Item"
 msgstr "修订物品"
 
 #. module: sale_ebay
-#: selection:crm.team,team_type:0
-msgid "Sales"
-msgstr "销售"
-
-#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Channel"
 msgstr "销售渠道"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_crm_team
-msgid "Sales Channels"
-msgstr "销售渠道列表"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -708,19 +691,14 @@ msgid "Sync now"
 msgstr "现在同步"
 
 #. module: sale_ebay
-#: model:ir.model.fields,field_description:sale_ebay.field_crm_team__team_type
-msgid "Team Type"
-msgstr "团队类型"
-
-#. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:719
+#: code:addons/sale_ebay/models/product.py:746
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
 msgstr "购买者选择了如下送货方式 :\n"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:715
-#: code:addons/sale_ebay/models/product.py:716
+#: code:addons/sale_ebay/models/product.py:742
+#: code:addons/sale_ebay/models/product.py:743
 #, python-format
 msgid "The Buyer Posted :\n"
 msgstr "买方发布 :\n"
@@ -738,12 +716,6 @@ msgstr "子标题限制55个字符.对于此功能eBAY 要收费"
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_title
 msgid "The title is restricted to 80 characters"
 msgstr "标题支持80个字符"
-
-#. module: sale_ebay
-#: model:ir.model.fields,help:sale_ebay.field_crm_team__team_type
-msgid ""
-"The type of this channel, it will define the resources this channel uses."
-msgstr "此渠道的类型，它将定义此渠道使用的资源。"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_category_2_id
@@ -797,18 +769,11 @@ msgid "Variants"
 msgstr "变体"
 
 #. module: sale_ebay
-#: selection:crm.team,team_type:0
-msgid "Website"
-msgstr "网站"
-
-#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
 msgid "Zip"
 msgstr "邮政编码"
 
 #. module: sale_ebay
-#: model:crm.team,name:sale_ebay.ebay_sales_team
-#: selection:crm.team,team_type:0
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay"
@@ -906,8 +871,8 @@ msgstr ""
 "'%s'"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:483
-#: code:addons/sale_ebay/models/product.py:556
+#: code:addons/sale_ebay/models/product.py:495
+#: code:addons/sale_ebay/models/product.py:568
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the products. \n"
@@ -917,7 +882,7 @@ msgstr ""
 "'%s'"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:379
+#: code:addons/sale_ebay/models/product.py:391
 #, python-format
 msgid "eBay is unreachable. Please try again later."
 msgstr "eBay 无法访问. 请再试."

@@ -13,9 +13,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:32+0000\n"
 "Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -42,7 +42,7 @@ msgid "All payments in the batch must belong to the same company."
 msgstr "批次中的所有付款必须属于同一公司。"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:86
+#: code:addons/account_batch_payment/models/account_batch_payment.py:84
 #, python-format
 msgid "All payments in the batch must share the same payment method."
 msgstr "批次中的所有付款必须共享相同的支付方法。"
@@ -139,7 +139,7 @@ msgid "Code"
 msgstr "代码"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:57
+#: code:addons/account_batch_payment/models/account_journal.py:61
 #: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
 #, python-format
 msgid "Create Batch Payment"
@@ -259,7 +259,7 @@ msgid "Inbound"
 msgstr "入"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:31
+#: code:addons/account_batch_payment/models/account_journal.py:37
 #, python-format
 msgid "Inbound Batch Payments Sequence"
 msgstr "入站批量付款顺序"
@@ -321,7 +321,7 @@ msgid "Outbound"
 msgstr "转出"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:17
+#: code:addons/account_batch_payment/models/account_journal.py:20
 #, python-format
 msgid "Outbound Batch Payments Sequence"
 msgstr "批量付款顺序"
@@ -396,14 +396,14 @@ msgid "State"
 msgstr "省/ 州"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:88
+#: code:addons/account_batch_payment/models/account_batch_payment.py:86
 #, python-format
 msgid ""
 "The batch must have the same payment method as the payments it contains."
 msgstr "批次必须与包含的付款具有相同的付款方式。"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:83
+#: code:addons/account_batch_payment/models/account_batch_payment.py:81
 #, python-format
 msgid "The batch must have the same type as the payments it contains."
 msgstr "批次必须与包含的付款具有相同的付款方式。"
@@ -452,6 +452,14 @@ msgid ""
 "Whether or not this batch payment should display the 'Generate File' button "
 "instead of 'Print' in form view."
 msgstr "此批量付款是否应在表单视图中显示“生成文件”按钮而不是“打印”。"
+
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_payment.py:38
+#, python-format
+msgid ""
+"You cannot make a batch payment with internal transfers. Internal transfers "
+"ids: %s"
+msgstr ""
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form

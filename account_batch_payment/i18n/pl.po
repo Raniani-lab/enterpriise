@@ -3,25 +3,25 @@
 # * account_batch_payment
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Jakobus Buntownikus <buntownix@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
-# Paweł Michoń <michon.pawel@wp.pl>, 2018
-# Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
-# Maksym <ms@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Jakobus Buntownikus <buntownix@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Paweł Michoń <michon.pawel@wp.pl>, 2019
+# Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
+# Maksym <ms@myodoo.pl>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Maksym <ms@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2019-01-16 08:32+0000\n"
+"Last-Translator: Maksym <ms@myodoo.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,15 +46,9 @@ msgid "All payments in the batch must belong to the same company."
 msgstr ""
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:86
+#: code:addons/account_batch_payment/models/account_batch_payment.py:84
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr ""
-
-#. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:81
-#, python-format
-msgid "All payments in the batch must share the same type."
 msgstr ""
 
 #. module: account_batch_payment
@@ -146,7 +140,7 @@ msgid "Code"
 msgstr "Kod"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:57
+#: code:addons/account_batch_payment/models/account_journal.py:61
 #: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
 #, python-format
 msgid "Create Batch Payment"
@@ -266,7 +260,7 @@ msgid "Inbound"
 msgstr "Przychodzące"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:31
+#: code:addons/account_batch_payment/models/account_journal.py:37
 #, python-format
 msgid "Inbound Batch Payments Sequence"
 msgstr ""
@@ -328,7 +322,7 @@ msgid "Outbound"
 msgstr "Wychodzące"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:17
+#: code:addons/account_batch_payment/models/account_journal.py:20
 #, python-format
 msgid "Outbound Batch Payments Sequence"
 msgstr ""
@@ -403,14 +397,14 @@ msgid "State"
 msgstr "Stan"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:88
+#: code:addons/account_batch_payment/models/account_batch_payment.py:86
 #, python-format
 msgid ""
 "The batch must have the same payment method as the payments it contains."
 msgstr ""
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:83
+#: code:addons/account_batch_payment/models/account_batch_payment.py:81
 #, python-format
 msgid "The batch must have the same type as the payments it contains."
 msgstr ""
@@ -458,6 +452,14 @@ msgstr ""
 msgid ""
 "Whether or not this batch payment should display the 'Generate File' button "
 "instead of 'Print' in form view."
+msgstr ""
+
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_payment.py:38
+#, python-format
+msgid ""
+"You cannot make a batch payment with internal transfers. Internal transfers "
+"ids: %s"
 msgstr ""
 
 #. module: account_batch_payment

@@ -6,16 +6,16 @@
 # Martin Trigaux, 2019
 # Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2019
 # RGB Consulting <odoo@rgbconsulting.com>, 2019
-# Quim - eccit <quim@eccit.com>, 2019
 # Manel Fernandez <manelfera@outlook.com>, 2019
+# Quim - eccit <quim@eccit.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:37+0000\n"
-"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2019\n"
+"Last-Translator: Quim - eccit <quim@eccit.com>, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,6 +32,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Average Deal Size"
 msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.model,name:crm_enterprise.model_crm_activity_report
+msgid "CRM Activity Analysis"
+msgstr "Anàlisis d'activitat CRM"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -122,6 +127,7 @@ msgid "Group By"
 msgstr "Agrupar per"
 
 #. module: crm_enterprise
+#: model:ir.model.fields,field_description:crm_enterprise.field_crm_activity_report__won_status
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won_status
 msgid "Is Won"
 msgstr ""
@@ -144,7 +150,8 @@ msgid "Leads Analysis"
 msgstr "Anàlisi d'iniciatives"
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_activity_report_view_search
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost"
 msgstr "Perdut"
@@ -181,7 +188,7 @@ msgid "Opportunities Analysis"
 msgstr "Anàlisi d'oportunitats"
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
 msgid "Pending"
 msgstr "Pendent"
 
@@ -237,7 +244,7 @@ msgid "Win/Loss Ratio"
 msgstr ""
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Won"
 msgstr "Guanyat"

@@ -16,15 +16,14 @@
 # Tony Galmiche <tony.galmiche@infosaone.com>, 2018
 # Eloïse Stilmant <est@odoo.com>, 2018
 # Martin Trigaux, 2019
-# Melanie Bernard <mbe@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Melanie Bernard <mbe@odoo.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +52,7 @@ msgid "Check this box if your account is validated by USPS"
 msgstr "Cocher cette case si votre compte est validé par USPS"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:64
+#: code:addons/delivery_usps/models/usps_request.py:52
 #, python-format
 msgid "Company phone number is invalid. Please insert a US phone number."
 msgstr ""
@@ -264,7 +263,7 @@ msgstr ""
 "Veuillez vérifier sur le site internet d'USPS si votre colis est machinable."
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:83
+#: code:addons/delivery_usps/models/usps_request.py:71
 #, python-format
 msgid ""
 "Please choose another service (maximum weight of this service is 4 pounds)"
@@ -273,25 +272,25 @@ msgstr ""
 "[4 lb])"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:69
+#: code:addons/delivery_usps/models/usps_request.py:57
 #, python-format
 msgid "Please enter a valid ZIP code in recipient address"
 msgstr "Entrez un code postal correct pour l'adresse de destination."
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:62
+#: code:addons/delivery_usps/models/usps_request.py:50
 #, python-format
 msgid "Please enter a valid ZIP code in your Company address"
 msgstr "Entrez un code postal correct dans l'adresse de votre société"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:76
+#: code:addons/delivery_usps/models/usps_request.py:64
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Veuillez fournir au moins un élément concernant l'expédition"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:60
+#: code:addons/delivery_usps/models/usps_request.py:48
 #, python-format
 msgid ""
 "Please set country U.S.A in your company address, Service is only available "
@@ -316,7 +315,7 @@ msgid "Provider"
 msgstr "Fournisseur"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:372
+#: code:addons/delivery_usps/models/usps_request.py:332
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
 msgstr ""
@@ -467,7 +466,7 @@ msgid "USPS Domestic Flat Rate Envelope"
 msgstr "USPS Domestic Flat Rate Envelope"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:73
+#: code:addons/delivery_usps/models/usps_request.py:61
 #, python-format
 msgid ""
 "USPS Domestic is used only to ship inside of the U.S.A. Please change the "
@@ -489,7 +488,7 @@ msgid "USPS International Flat Rate Box"
 msgstr "Boîte à taux constant USPS International"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:71
+#: code:addons/delivery_usps/models/usps_request.py:59
 #, python-format
 msgid ""
 "USPS International is used only to ship outside of the U.S.A. Please change "
@@ -532,7 +531,7 @@ msgid "Usps Size Container"
 msgstr "Dimension du conteneur USPS"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:374
+#: code:addons/delivery_usps/models/usps_request.py:334
 #, python-format
 msgid "Your company or recipient ZIP code is incorrect."
 msgstr "Le code postal de votre société ou du destinataire est incorrect."
@@ -541,8 +540,3 @@ msgstr "Le code postal de votre société ou du destinataire est incorrect."
 #: selection:delivery.carrier,delivery_type:0
 msgid "bpost"
 msgstr "bpost"
-
-#. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
-msgid "true"
-msgstr "vrai"

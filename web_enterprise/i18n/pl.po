@@ -9,14 +9,13 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
 # Tomasz Leppich <t.leppich@gmail.com>, 2019
 # Mariusz, 2019
-# Zdzisław Krajewski <zdzichucb@gmail.com>, 2019
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Piotr Szlązak <szlazakpiotr@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
@@ -28,7 +27,7 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:219
+#: code:addons/web_enterprise/static/src/xml/base.xml:220
 #, python-format
 msgid "(Enterprise Edition)"
 msgstr "(Edycja przedsiębiorstwa)"
@@ -49,31 +48,15 @@ msgstr "Akcja"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:252
-#: code:addons/web_enterprise/static/src/xml/base.xml:255
-#: code:addons/web_enterprise/static/src/xml/base.xml:261
-#: code:addons/web_enterprise/static/src/xml/base.xml:264
-#: code:addons/web_enterprise/static/src/xml/base.xml:270
-#: code:addons/web_enterprise/static/src/xml/base.xml:273
-#: code:addons/web_enterprise/static/src/xml/base.xml:279
-#: code:addons/web_enterprise/static/src/xml/base.xml:282
-#: code:addons/web_enterprise/static/src/xml/base.xml:288
-#: code:addons/web_enterprise/static/src/xml/base.xml:291
-#: code:addons/web_enterprise/static/src/xml/base.xml:297
-#: code:addons/web_enterprise/static/src/xml/base.xml:300
-#: code:addons/web_enterprise/static/src/xml/base.xml:306
-#: code:addons/web_enterprise/static/src/xml/base.xml:309
-#: code:addons/web_enterprise/static/src/xml/base.xml:315
-#: code:addons/web_enterprise/static/src/xml/base.xml:318
-#: code:addons/web_enterprise/static/src/xml/base.xml:324
-#: code:addons/web_enterprise/static/src/xml/base.xml:327
+#: code:addons/web_enterprise/static/src/xml/base.xml:236
+#: code:addons/web_enterprise/static/src/xml/base.xml:239
 #, python-format
 msgid "Alt"
 msgstr "Alt"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:129
+#: code:addons/web_enterprise/static/src/xml/base.xml:130
 #, python-format
 msgid "Applications"
 msgstr "Aplikacje"
@@ -101,65 +84,22 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:255
-#: code:addons/web_enterprise/static/src/xml/base.xml:264
-#: code:addons/web_enterprise/static/src/xml/base.xml:273
-#: code:addons/web_enterprise/static/src/xml/base.xml:282
-#: code:addons/web_enterprise/static/src/xml/base.xml:291
-#: code:addons/web_enterprise/static/src/xml/base.xml:300
-#: code:addons/web_enterprise/static/src/xml/base.xml:309
-#: code:addons/web_enterprise/static/src/xml/base.xml:318
-#: code:addons/web_enterprise/static/src/xml/base.xml:327
+#: code:addons/web_enterprise/static/src/xml/base.xml:239
 #, python-format
 msgid "Control"
 msgstr "Kontrola"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:277
-#, python-format
-msgid "Create a new record"
-msgstr "Utwórz nowy rekord"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:225
+#: code:addons/web_enterprise/static/src/xml/base.xml:226
 #, python-format
 msgid "Database expiration:"
 msgstr "Data wygaśnięcia bazy danych:"
 
 #. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:243
-#, python-format
-msgid "Description"
-msgstr "Opis"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:268
-#, python-format
-msgid "Discard a record modification"
-msgstr "Odrzuć zmiany"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:259
-#, python-format
-msgid "Edit a record"
-msgstr "Edytuj rekord"
-
-#. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
 msgid "HTTP Routing"
 msgstr ""
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/js/widgets/user_menu.js:57
-#, python-format
-msgid "Keyboard Shortcuts"
-msgstr "Skróty klawiszowe "
 
 #. module: web_enterprise
 #. openerp-web
@@ -177,13 +117,6 @@ msgstr "Logo"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:245
-#, python-format
-msgid "Mac"
-msgstr "Mac"
-
-#. module: web_enterprise
-#. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:31
 #, python-format
 msgid "Menu"
@@ -198,7 +131,7 @@ msgstr "Brak wyników"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:218
+#: code:addons/web_enterprise/static/src/xml/base.xml:219
 #, python-format
 msgid "Odoo"
 msgstr "Odoo"
@@ -209,34 +142,6 @@ msgstr "Odoo"
 #, python-format
 msgid "Odoo Help"
 msgstr "Pomoc Odoo"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:313
-#, python-format
-msgid "Open the next record"
-msgstr "Otwórz następny rekord"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:304
-#, python-format
-msgid "Open the previous record"
-msgstr "Otwórz poprzedni rekord"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:295
-#, python-format
-msgid "Open to kanban view"
-msgstr "Otwórz w widoku Kanban"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:286
-#, python-format
-msgid "Open to list view"
-msgstr "Otwórz w widoku listy"
 
 #. module: web_enterprise
 #. openerp-web
@@ -276,13 +181,6 @@ msgstr "odnów swoją subskrybcję"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:250
-#, python-format
-msgid "Save a record"
-msgstr "Zapisz rekord"
-
-#. module: web_enterprise
-#. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:6
 #, python-format
 msgid "Search"
@@ -294,13 +192,6 @@ msgstr "Szukaj"
 #, python-format
 msgid "Search..."
 msgstr "Szukaj..."
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:232
-#, python-format
-msgid "Shortcuts"
-msgstr "Skróty"
 
 #. module: web_enterprise
 #. openerp-web
@@ -354,14 +245,14 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:322
+#: code:addons/web_enterprise/static/src/xml/base.xml:234
 #, python-format
 msgid "Toggle home menu"
 msgstr "Przełącz menu główne"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:130
+#: code:addons/web_enterprise/static/src/xml/base.xml:131
 #, python-format
 msgid "Toggle menu"
 msgstr ""
@@ -372,13 +263,6 @@ msgstr ""
 #, python-format
 msgid "Upgrade your subscription"
 msgstr "Ulepsz swoją subskrybcję"
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:244
-#, python-format
-msgid "Windows/Linux"
-msgstr "Windows/Linux"
 
 #. module: web_enterprise
 #. openerp-web

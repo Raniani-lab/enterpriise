@@ -7,20 +7,19 @@
 # Manu1400 <ehaguet@teclib.com>, 2017
 # Daniel & Delphine <dd2013@leschoupinous.net>, 2017
 # Quentin THEURET <odoo@kerpeo.com>, 2017
-# fr trans <e2ftrans1@yahoo.com>, 2017
+# 6534c450c77b2549e41c52e2051f5839, 2017
 # Fabri Yohann <psn@fabri.pw>, 2017
 # Xavier Symons <xsy@openerp.com>, 2017
-# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
 # Micky Jault <micky037@hotmail.fr>, 2017
 # fr trans <e2ffr05@hotmail.com>, 2017
 # Fabien Pinckaers <fp@openerp.com>, 2017
-# e2f_fr_t5 <e2f_fr_t5@outlook.com>, 2017
-# fr trans <e2ffr01@hotmail.com>, 2017
+# 71728729ee5e25c3ecd8d7420ddb9ca7, 2017
+# 44fd1b7fd1ad5b321e37d151521961ad, 2017
 # Xavier Belmere <Info@cartmeleon.com>, 2017
 # Nathan Noël <nathan070@me.com>, 2017
 # Cécile Collart <cco@odoo.com>, 2018
 # Richard Mathot <rim@odoo.com>, 2018
-# fr rev <e2ffr02@hotmail.com>, 2018
+# bb76cd9ac0cb7e20167a14728edb858b, 2018
 # Olivier Lenoir <olivier.lenoir@free.fr>, 2018
 # Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2018
 # Florian Hatat, 2018
@@ -1164,7 +1163,7 @@ msgstr "Marié"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Master"
-msgstr "Maître"
+msgstr "Master"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template

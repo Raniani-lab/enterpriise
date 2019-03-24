@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -56,7 +56,7 @@ msgstr "Групи рахуків"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
 msgid "Account Predictive Bills"
-msgstr "Прогнозування рахунків постачальників"
+msgstr "Прогнозування рахунків"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.account_tag_menu
@@ -142,12 +142,12 @@ msgstr "Звітні періоди"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_last_day
 msgid "Fiscalyear Last Day"
-msgstr "Останній день фінансового року"
+msgstr "Останній день звітного періоду"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_last_month
 msgid "Fiscalyear Last Month"
-msgstr "Останній місяць минулого року"
+msgstr "Останній місяць звітного періоду"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -155,12 +155,14 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/res_config_settings.py:49
+#: code:addons/account_accountant/models/res_config_settings.py:36
 #, python-format
 msgid ""
 "Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
 "%s"
 msgstr ""
+"Неправильна дата звітного періоду: день виходить за рамки місяця. Місяць: "
+"%s; День: %s"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id
@@ -198,13 +200,12 @@ msgstr "Останнє оновлення"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
-msgid "Last day of your fiscal year, for automatic opening entries"
-msgstr ""
-"Останній день вашого звітного періоду для автоматичного відкриття записів"
+msgid "Last day of your fiscal year"
+msgstr "Останній день вашого звітного періоду"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:130
+#: code:addons/account_accountant/static/src/js/tour.js:110
 #, python-format
 msgid "Let's start with a new customer invoice."
 msgstr "Почнемо з нового рахунку-фактури для покупця."
@@ -229,7 +230,7 @@ msgstr "Дати блокування"
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
-msgstr "Заблокуйте ваш фінансовий період"
+msgstr "Заблокуйте ваш звітний період"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -239,7 +240,7 @@ msgid ""
 "this date. Use it for fiscal year locking for example."
 msgstr ""
 "Жоден користувач, включаючи радників, не може редагувати рахунки включно до "
-"цієї дати. Можете використовувати цю дату для фіксації річного балансу."
+"цієї дати. Можете використовувати цю дату для фіксації звітного періоду."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__period_lock_date
@@ -250,7 +251,7 @@ msgid ""
 msgstr ""
 "Тільки користувачі, що мають роль радника можуть редагувати рахунки включно "
 "до цієї дати. Можете використовувати цю дату для фіксації проміжного балансу"
-" в межах фінального річного балансу."
+" в межах фінального звітного періоду."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -260,8 +261,8 @@ msgid ""
 "example."
 msgstr ""
 "Лише користувачі з роллю \"Консультант\" можуть редагувати облікові записи з"
-" урахуванням цієї дати. Використовуйте його для фінансовго періоду всередині"
-" відкритого фінансового року, наприклад."
+" урахуванням цієї дати. Використовуйте його для періоду блокування всередині"
+" відкритого звітного періоду, наприклад."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -275,13 +276,13 @@ msgstr "Категорії товару"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:125
+#: code:addons/account_accountant/static/src/js/tour.js:105
 #, python-format
 msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
 "clicking here."
 msgstr ""
-"Готові відкрити для себе новий улюблений <b> додаток для обліку</b>? "
+"Готові відкрити для себе новий улюблений <b>додаток бухобліку</b>? "
 "Розпочніть, натиснувши тут."
 
 #. module: account_accountant
@@ -310,7 +311,7 @@ msgstr "Рахунок переміщення"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:135
+#: code:addons/account_accountant/static/src/js/tour.js:115
 #, python-format
 msgid ""
 "Use the path to quickly click back to <b>previous screens</b>, without "
@@ -321,12 +322,11 @@ msgstr ""
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:139
+#: code:addons/account_accountant/static/src/js/tour.js:119
 #, python-format
 msgid ""
 "Your reports are available in real time. <i>No need to close a fiscal year "
 "to get a Profit &amp; Loss statement or view the Balance Sheet.</i>"
 msgstr ""
 "Ваші звіти доступні в режимі реального часу. <i>Не потрібно закривати "
-"фінансовий рік, щоб отримати прибуток та; Заява про збитки або перегляд "
-"балансу.</i>"
+"звітний період, щоб отримати виписку доходів та витрат або звіт балансу.</i>"

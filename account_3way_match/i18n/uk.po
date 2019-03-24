@@ -54,7 +54,7 @@ msgstr "Виняток"
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__force_release_to_pay
 msgid "Force status"
-msgstr "Статус сили"
+msgstr "Силовий статус"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_invoice__force_release_to_pay
@@ -94,7 +94,7 @@ msgstr "Випуск на оплату"
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay
 msgid "Should be paid"
-msgstr "До оплати"
+msgstr "Потрібно сплатити"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay_manual
@@ -112,9 +112,9 @@ msgid ""
 msgstr ""
 "Це поле може мати наступні значення:\n"
 "   * Так: ви повинні сплатити рахунок, ви отримали продукцію\n"
-"   * Ні, ви не повинні платити рахунок, ви не отримали продукцію\n"
-"   * Виняток, існує різниця між отриманими та кількостями виставлених рахунків\n"
-"Цей статус визначається автоматично, але ви можете примусити його позначити пункт \"Статус сили\"."
+"   * Ні, ви не повинні оплачувати рахунок, ви не отримали продукцію\n"
+"   * Виняток, існує різниця між отриманими кількостями та виставленими у рахунках\n"
+"Цей статус визначається автоматично, але ви можете примусити його позначити пункт \"Силовий статус\"."
 
 #. module: account_3way_match
 #: selection:account.invoice,release_to_pay:0

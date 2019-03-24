@@ -3,7 +3,6 @@
 # * crm_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # zpq001 <zpq001@live.com>, 2019
@@ -11,14 +10,15 @@
 # diaojiaolou <124412206@qq.com>, 2019
 # neter ji <jifuyi@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:37+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,6 +35,11 @@ msgstr "% 商机"
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Average Deal Size"
 msgstr "平均交易规模"
+
+#. module: crm_enterprise
+#: model:ir.model,name:crm_enterprise.model_crm_activity_report
+msgid "CRM Activity Analysis"
+msgstr "CRM活动分析"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -125,6 +130,7 @@ msgid "Group By"
 msgstr "分组"
 
 #. module: crm_enterprise
+#: model:ir.model.fields,field_description:crm_enterprise.field_crm_activity_report__won_status
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won_status
 msgid "Is Won"
 msgstr "赢得"
@@ -147,7 +153,8 @@ msgid "Leads Analysis"
 msgstr "线索分析"
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_activity_report_view_search
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost"
 msgstr "丢失"
@@ -184,7 +191,7 @@ msgid "Opportunities Analysis"
 msgstr "商机分析"
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
 msgid "Pending"
 msgstr "待定"
 
@@ -240,7 +247,7 @@ msgid "Win/Loss Ratio"
 msgstr ""
 
 #. module: crm_enterprise
-#: selection:crm.lead,won_status:0
+#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Won"
 msgstr "赢得"

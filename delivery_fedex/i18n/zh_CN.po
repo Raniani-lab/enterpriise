@@ -14,9 +14,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -74,6 +74,11 @@ msgid "Certification Process"
 msgstr "认证过程"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
+msgid "Commercial Invoice Type"
+msgstr ""
+
+#. module: delivery_fedex
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
@@ -111,7 +116,7 @@ msgid "Easypost"
 msgstr "Easypost"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:233
+#: code:addons/delivery_fedex/models/delivery_fedex.py:220
 #, python-format
 msgid ""
 "Error:\n"
@@ -183,21 +188,11 @@ msgid "Fedex Configuration"
 msgstr "Fedex 配置"
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
-msgid "Fedex Document Stock Type"
-msgstr ""
-
-#. module: delivery_fedex
 #: model:delivery.carrier,name:delivery_fedex.delivery_carrier_fedex_inter
 #: model:product.product,name:delivery_fedex.product_product_delivery_fedex_inter
 #: model:product.template,name:delivery_fedex.product_product_delivery_fedex_inter_product_template
 msgid "Fedex International"
 msgstr "Fedex 国际"
-
-#. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
-msgid "Fedex Label Stock Type"
-msgstr "Fedex 标签库存类型"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_service_type
@@ -237,6 +232,11 @@ msgid "Fixed Price"
 msgstr "固定价格"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
+msgid "Generate return label"
+msgstr ""
+
+#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Go to"
 msgstr "去"
@@ -262,6 +262,11 @@ msgid "LB"
 msgstr "磅"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
+msgid "Label Type"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_meter_number
 msgid "Meter Number"
 msgstr "表号"
@@ -272,7 +277,7 @@ msgid "No carrier integration"
 msgstr "无承运商集成"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:440
+#: code:addons/delivery_fedex/models/delivery_fedex.py:441
 #, python-format
 msgid "No packages for this picking"
 msgstr "这个分拣没有包裹"
@@ -421,19 +426,19 @@ msgid "Screenshot"
 msgstr "截屏"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:463
+#: code:addons/delivery_fedex/models/delivery_fedex.py:533
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "装运N° %s已经被取消"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:424
+#: code:addons/delivery_fedex/models/delivery_fedex.py:426
 #, python-format
 msgid "Shipment created into Fedex <br/> <b>Tracking Number : </b>%s"
 msgstr "装运创建成Fedex <br/> <b>跟踪号码 : </b>%s"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:370
+#: code:addons/delivery_fedex/models/delivery_fedex.py:369
 #, python-format
 msgid ""
 "Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
@@ -472,6 +477,11 @@ msgid "The last step is the"
 msgstr "最后一步是"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
+msgid "The return label is automatically generated at the delivery"
+msgstr ""
+
+#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ""
 "These certifications usually require that you contact the FedEx support team"
@@ -498,7 +508,7 @@ msgid "Unit(s)"
 msgstr "件"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:239
+#: code:addons/delivery_fedex/models/delivery_fedex.py:226
 #, python-format
 msgid ""
 "Warning:\n"

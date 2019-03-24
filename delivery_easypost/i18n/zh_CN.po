@@ -10,7 +10,7 @@
 # Eddie Lim <bhweelim@yahoo.com>, 2018
 # Rangy Chen <rangychen@163.com>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
+# bf2549c5415a9287249cba2b8a5823c7, 2018
 # Tison He <hedisen@sina.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
 # 演奏王 <wangwhai@qq.com>, 2018
@@ -21,9 +21,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2018-08-02 11:35+0000\n"
 "Last-Translator: diaojiaolou <124412206@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -52,6 +52,13 @@ msgstr ""
 "<b>创建帐户后，转到仪表板上，单击用户名旁边的箭头，以配置您的承运人帐户. </b>\n"
 "                <b>您可以在同一页面的右侧添加新的运营商帐户.</b>\n"
 "                <br/>"
+
+#. module: delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_product_packaging_delivery_form_inherit_easypost
+msgid ""
+"<span attrs=\"{'invisible': [('package_carrier_type', '!=', "
+"'easypost')]}\">Inches</span>"
+msgstr ""
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -210,7 +217,7 @@ msgid "Easypost Website"
 msgstr "Easypost 网站"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:33
+#: code:addons/delivery_easypost/models/easypost_request.py:35
 #, python-format
 msgid "Easypost returned an error: "
 msgstr "Easypost 返回一个错误: "
@@ -253,7 +260,7 @@ msgid "If not set, the less expensive available service level will be chosen."
 msgstr "如未设置，那么将选择less扩展服务级别。"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:310
+#: code:addons/delivery_easypost/models/easypost_request.py:311
 #, python-format
 msgid ""
 "It seems Easypost do not provide shipments for this order.                We"
@@ -304,8 +311,8 @@ msgid "PNG"
 msgstr "PNG"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:78
-#: code:addons/delivery_easypost/models/easypost_request.py:85
+#: code:addons/delivery_easypost/models/easypost_request.py:80
+#: code:addons/delivery_easypost/models/easypost_request.py:87
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "请至少提供一个项目去发货。"
@@ -316,7 +323,7 @@ msgid "Product Packaging"
 msgstr "产品包装"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:215
+#: code:addons/delivery_easypost/models/easypost_request.py:216
 #, python-format
 msgid "Product packaging used in pack %s is not configured for easypost."
 msgstr "‎产品‎‎打包用‎‎包装‎ %s ‎未为 easypost 配置。‎"
@@ -332,7 +339,7 @@ msgid "Provider"
 msgstr "服务商"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:73
+#: code:addons/delivery_easypost/models/easypost_request.py:75
 #, python-format
 msgid "Sale Order/Stock Picking is missing."
 msgstr "销售订单/库存调拨已丢失."
@@ -369,7 +376,7 @@ msgid "Test API Key"
 msgstr "测试 API 密钥"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:70
+#: code:addons/delivery_easypost/models/easypost_request.py:72
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
@@ -379,7 +386,7 @@ msgstr ""
 "‎ ‎‎默认‎‎产品‎‎包装‎"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:67
+#: code:addons/delivery_easypost/models/easypost_request.py:69
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
@@ -389,7 +396,7 @@ msgstr ""
 "‎ ‎‎交货‎‎承运人‎‎类型‎)"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:62
+#: code:addons/delivery_easypost/models/easypost_request.py:64
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
@@ -399,7 +406,7 @@ msgstr ""
 "‎ ‎‎生产‎‎API 密钥)‎"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:64
+#: code:addons/delivery_easypost/models/easypost_request.py:66
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
@@ -409,8 +416,8 @@ msgstr ""
 "‎测试 API 密钥)"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:80
-#: code:addons/delivery_easypost/models/easypost_request.py:87
+#: code:addons/delivery_easypost/models/easypost_request.py:82
+#: code:addons/delivery_easypost/models/easypost_request.py:89
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -418,7 +425,7 @@ msgid ""
 msgstr "因为产品重量缺失所以估计价格不能被计算。"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:321
+#: code:addons/delivery_easypost/models/easypost_request.py:322
 #, python-format
 msgid ""
 "There is no rate available for the selected service level for one of your "
@@ -448,7 +455,7 @@ msgid "You can't cancel Easypost shipping."
 msgstr "您不能取消 Easypost 运输."
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:52
+#: code:addons/delivery_easypost/models/easypost_request.py:54
 #, python-format
 msgid ""
 "You have no carrier linked to your Easypost Account.                Please "

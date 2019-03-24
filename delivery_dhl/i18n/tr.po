@@ -13,9 +13,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
@@ -213,7 +213,7 @@ msgid "DHL Product"
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:375
+#: code:addons/delivery_dhl/models/dhl_request.py:378
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
 msgstr "DHL Site ID eksik, lütfen teslimat yöntemi ayarlarınızı değiştirin."
@@ -238,7 +238,7 @@ msgid "DHL USA -> International"
 msgstr "DHL ABD -> Uluslararası"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:379
+#: code:addons/delivery_dhl/models/dhl_request.py:382
 #, python-format
 msgid ""
 "DHL account number is missing, please modify your delivery method settings."
@@ -246,7 +246,7 @@ msgstr ""
 "DHLhesap numarası eksik, lütfen teslimat yöntemi ayarlarınızı değiştirin."
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:377
+#: code:addons/delivery_dhl/models/dhl_request.py:380
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
 msgstr "DHL şifresi eksik, lütfen teslimat yöntemi ayarlarınızı değiştirin."
@@ -401,7 +401,7 @@ msgid "Package Weight Unit"
 msgstr "Paket Ağırlık Birimi"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:397
+#: code:addons/delivery_dhl/models/dhl_request.py:400
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "En az bir adet kargolanacak ürün sağlayın."
@@ -453,7 +453,7 @@ msgid "T - Express 12:00"
 msgstr "T - Expres 12:00"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:385
+#: code:addons/delivery_dhl/models/dhl_request.py:388
 #, python-format
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
@@ -461,7 +461,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:393
+#: code:addons/delivery_dhl/models/dhl_request.py:396
 #, python-format
 msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
@@ -469,7 +469,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:399
+#: code:addons/delivery_dhl/models/dhl_request.py:402
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -541,11 +541,3 @@ msgstr "ZPL2"
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
 msgstr "bpost"
-
-#. module: delivery_dhl
-#: model:product.product,weight_uom_name:delivery_dhl.product_product_delivery_dhl_intl
-#: model:product.product,weight_uom_name:delivery_dhl.product_product_delivery_dhl_usa
-#: model:product.template,weight_uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
-#: model:product.template,weight_uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
-msgid "kg"
-msgstr "kg"

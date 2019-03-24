@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
 "Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -263,13 +263,13 @@ msgstr ""
 "            "
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:69
+#: code:addons/sale_coupon/models/sale_coupon.py:68
 #, python-format
 msgid "A Coupon is already applied for the same reward"
 msgstr "Er is al een kortingsbon toegepast voor dezelfde beloning"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:63
+#: code:addons/sale_coupon/models/sale_coupon.py:62
 #: code:addons/sale_coupon/models/sale_coupon_program.py:155
 #, python-format
 msgid "A minimum of %s %s should be purchased to get the reward"
@@ -376,7 +376,7 @@ msgid "Apply on First"
 msgstr "Toepassen op eerste"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:81
+#: code:addons/sale_coupon/models/sale_coupon.py:80
 #: code:addons/sale_coupon/models/sale_coupon_program.py:176
 #, python-format
 msgid "At least one of the required conditions is not met to get the reward!"
@@ -463,7 +463,7 @@ msgid "Company"
 msgstr "Bedrijf"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:101
+#: code:addons/sale_coupon/models/sale_coupon.py:100
 #, python-format
 msgid "Compose Email"
 msgstr "E-mail opstellen"
@@ -649,8 +649,8 @@ msgstr "Kortingspercentage moet tussen 1-100 zijn"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_order.py:132
-#: code:addons/sale_coupon/models/sale_order.py:151
-#: code:addons/sale_coupon/models/sale_order.py:184
+#: code:addons/sale_coupon/models/sale_order.py:152
+#: code:addons/sale_coupon/models/sale_order.py:185
 #, python-format
 msgid "Discount: "
 msgstr "Korting:"
@@ -767,7 +767,7 @@ msgid "Generation Type"
 msgstr "Type generatie"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:71
+#: code:addons/sale_coupon/models/sale_coupon.py:70
 #, python-format
 msgid "Global discounts are not cumulable."
 msgstr "Globale kortingen zijn niet cumuleerbaar."
@@ -790,7 +790,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:67
+#: code:addons/sale_coupon/models/sale_coupon.py:66
 #, python-format
 msgid "Invalid partner."
 msgstr "Foutieve partner."
@@ -962,13 +962,13 @@ msgid "On Specific Product"
 msgstr "Op specifiek product"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:179
+#: code:addons/sale_coupon/models/sale_order.py:180
 #, python-format
 msgid "On product with following tax: "
 msgstr "Op product met volgende belasting:"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:181
+#: code:addons/sale_coupon/models/sale_order.py:182
 #, python-format
 msgid "On product with following taxes: "
 msgstr "Op product met volgende belastingen:"
@@ -1184,11 +1184,6 @@ msgid "Rule Minimum Amount Tax Inclusion"
 msgstr "Minimale hoeveelheid inclusief BTW bedrag regel"
 
 #. module: sale_coupon
-#: model:ir.model,name:sale_coupon.model_sale_order
-msgid "Sale Order"
-msgstr "Verkooporder"
-
-#. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Sales"
 msgstr "Verkopen"
@@ -1230,6 +1225,7 @@ msgstr "Verkoop kortingsbon regel"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_order_action
+#: model:ir.model,name:sale_coupon.model_sale_order
 msgid "Sales Order"
 msgstr "Verkooporder"
 
@@ -1307,14 +1303,14 @@ msgid "The coupon code must be unique!"
 msgstr "De kortingscode moet uniek zijn!"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:65
+#: code:addons/sale_coupon/models/sale_coupon.py:64
 #, python-format
 msgid "The coupon program for %s is in draft or closed state"
 msgstr ""
 "Het kortingsprogramma voor %s bevind zich in de fase concept of gesloten"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:75
+#: code:addons/sale_coupon/models/sale_coupon.py:74
 #: code:addons/sale_coupon/models/sale_coupon_program.py:171
 #, python-format
 msgid "The customer doesn't have access to this reward."
@@ -1351,7 +1347,7 @@ msgid "The promotional offer is already applied on this order"
 msgstr "De promotie is al toegepast op dit order"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:73
+#: code:addons/sale_coupon/models/sale_coupon.py:72
 #: code:addons/sale_coupon/models/sale_coupon_program.py:169
 #, python-format
 msgid ""
@@ -1378,7 +1374,7 @@ msgid "The start date must be before the end date"
 msgstr "De startdatum moet voor de einddatum liggen"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:60
+#: code:addons/sale_coupon/models/sale_coupon.py:59
 #, python-format
 msgid "This coupon %s exists but the origin sales order is not validated yet."
 msgstr ""
@@ -1386,7 +1382,7 @@ msgstr ""
 "gevalideerd."
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:58
+#: code:addons/sale_coupon/models/sale_coupon.py:57
 #, python-format
 msgid "This coupon %s has been used or is expired."
 msgstr "Deze kortingscode %s is al gebruikt of is vervallen."
@@ -1453,7 +1449,7 @@ msgid "You can not delete a program in active state"
 msgstr "U kan geen programma verwijderen dat zich in de fase actief bevind"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:78
+#: code:addons/sale_coupon/models/sale_coupon.py:77
 #, python-format
 msgid ""
 "You don't have the required product quantities on your sales order. All the "
@@ -1490,15 +1486,7 @@ msgid "Your reward coupon from ${object.program_id.company_id.name} "
 msgstr "Uw beloningskortingsbon van ${object.program_id.company_id.name} "
 
 #. module: sale_coupon
-#: model:product.product,weight_uom_name:sale_coupon.product_product_10_percent_discount
-#: model:product.product,weight_uom_name:sale_coupon.product_product_free_large_cabinet
-#: model:product.template,weight_uom_name:sale_coupon.product_product_10_percent_discount_product_template
-#: model:product.template,weight_uom_name:sale_coupon.product_product_free_large_cabinet_product_template
-msgid "kg"
-msgstr "kg"
-
-#. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:202
+#: code:addons/sale_coupon/models/sale_order.py:203
 #, python-format
 msgid "limited to "
 msgstr "beperkt tot"

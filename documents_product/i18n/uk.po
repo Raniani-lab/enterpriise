@@ -3,16 +3,16 @@
 # * documents_product
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,16 +85,16 @@ msgid "Plans"
 msgstr "Плани"
 
 #. module: documents_product
-#: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
-msgid "Product Folder"
-msgstr "Папка товару"
-
-#. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
 msgstr "Теги товару"
+
+#. module: documents_product
+#: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
+msgid "Product Workspace"
+msgstr ""
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
@@ -108,15 +108,15 @@ msgstr "Товари"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid ""
-"Select the folder to be used for product's documents for the products of\n"
-"                                    your company."
-msgstr ""
+msgid "Select the tags to be applied to product's new documents"
+msgstr "Виберіть теги, які будуть застосовані до нових документів товару"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid "Select the tags to be applied to product's new documents"
-msgstr "Виберіть теги, які будуть застосовані до нових документів товару"
+msgid ""
+"Select the workspace to be used for product's documents for the products of\n"
+"                                    your company."
+msgstr ""
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
@@ -135,10 +135,15 @@ msgstr "Завдання"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
+msgid "Vendor Credit Note"
+msgstr "Кредитна заява продавця"
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
 msgstr "Рахунок постачальника"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
-msgid "product default folder"
-msgstr "типова папка для товару"
+msgid "product default workspace"
+msgstr ""

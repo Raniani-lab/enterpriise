@@ -12,20 +12,20 @@
 # Tina Rittmüller <tr@ife.de>, 2017
 # Christian Oechsner <carinachristian@gmail.com>, 2017
 # Renzo Meister, 2017
-# DE R1 <e2fes1@hotmail.com>, 2017
-# e2f_de_t6 <e2f_de_t6@outlook.com>, 2017
+# 4e7311735ad180fde514b5b19202d965, 2017
+# b4d8887ced18b222d41dc1101b082e15, 2017
 # DE T2 <e2f48d4s5vd1s2@outlook.com>, 2017
-# Martin Trigaux, 2018
 # e2f <projects@e2f.com>, 2018
 # Johannes Croe <jcr@odoo.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -583,6 +583,7 @@ msgstr "Zeiterfassungsposition"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "Timesheet Responsible"
 msgstr "Verantwortlich für Stundenzettel"
 
@@ -659,10 +660,16 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,help:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
 msgstr ""
 "Für die Validierung von Stundenzetteln verantwortlicher Benutzer. Sollte "
 "Stundenzettel-Manager sein."
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_res_users
+msgid "Users"
+msgstr "Benutzer"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__validate

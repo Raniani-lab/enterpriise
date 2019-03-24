@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Raquel Iciarte <ric@odoo.com>, 2017
-# e2f_EPV Translator <e2f_EPV@outlook.com>, 2017
+# 966ff43e6966712895a590e7320ca288, 2017
 # Alejandro Die Sanchis <marketing@domatix.com>, 2017
 # Ivan Nieto <ivan.n.s@tuta.io>, 2017
 # Antonio Trueba, 2017
@@ -22,16 +22,16 @@
 # e2f <projects@e2f.com>, 2018
 # Luis M. Ontalba <luis.martinez@tecnativa.com>, 2018
 # Cristóbal Martí Oliver <info@moblesmarti.com>, 2018
-# Martin Trigaux, 2019
 # Lina Maria Avendaño Carvajal <lina8823@gmail.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
-"Last-Translator: Lina Maria Avendaño Carvajal <lina8823@gmail.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -86,6 +86,14 @@ msgstr ""
 msgid ""
 "<span class=\"o_stat_text\">AVG:</span>\n"
 "                        <span class=\"o_stat_text\">STD:</span>"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.product_product_form_view_quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.product_template_form_view_quality_control
+msgid ""
+"<span class=\"o_stat_text\">Pass:</span>\n"
+"                        <span class=\"o_stat_text\">Fail:</span>"
 msgstr ""
 
 #. module: quality_control
@@ -394,7 +402,7 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:283
+#: code:addons/quality_control/models/quality.py:297
 #, python-format
 msgid "New"
 msgstr "Nuevo"
@@ -482,7 +490,7 @@ msgid "Periodically"
 msgstr "Periódicamente"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:163
+#: code:addons/quality_control/models/quality.py:164
 #, python-format
 msgid "Picture Uploaded"
 msgstr "Imagen subida"
@@ -493,9 +501,15 @@ msgid "Preventive Actions"
 msgstr "Medidas preventivas"
 
 #. module: quality_control
+#: model:ir.model,name:quality_control.model_product_product
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Product"
 msgstr "Producto"
+
+#. module: quality_control
+#: model:ir.model,name:quality_control.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
@@ -508,8 +522,8 @@ msgid "Quality"
 msgstr "Calidad"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:208
-#: code:addons/quality_control/models/quality.py:220
+#: code:addons/quality_control/models/quality.py:200
+#: code:addons/quality_control/models/quality.py:212
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -559,7 +573,7 @@ msgid "Quality Alerts"
 msgstr "Alertas de Calidad"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:251
+#: code:addons/quality_control/models/quality.py:265
 #: model:ir.model,name:quality_control.model_quality_check
 #, python-format
 msgid "Quality Check"
@@ -577,14 +591,14 @@ msgid "Quality Check Fail"
 msgstr "Fracaso de comprobación de calidad"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:171
+#: code:addons/quality_control/models/quality.py:249
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 #, python-format
 msgid "Quality Check Failed"
 msgstr "Comprobación de calidad fracasada"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:186
+#: code:addons/quality_control/models/quality.py:178
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_main
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_picking
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_report
@@ -615,13 +629,37 @@ msgid "Quality Control Point"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_product_product__quality_control_point_qty
+#: model:ir.model.fields,field_description:quality_control.field_product_template__quality_control_point_qty
+msgid "Quality Control Point Qty"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_point_action
 msgid "Quality Control Points"
 msgstr "Puntos del control de calidad"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_product_product__quality_fail_qty
+#: model:ir.model.fields,field_description:quality_control.field_product_template__quality_fail_qty
+msgid "Quality Fail Qty"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_team_action
 msgid "Quality Overview"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_product_product__quality_pass_qty
+#: model:ir.model.fields,field_description:quality_control.field_product_template__quality_pass_qty
+msgid "Quality Pass Qty"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.product_product_form_view_quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.product_template_form_view_quality_control
+msgid "Quality Points"
 msgstr ""
 
 #. module: quality_control
@@ -770,7 +808,7 @@ msgid "Week(s)"
 msgstr "Semana(s)"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:140
+#: code:addons/quality_control/models/quality.py:141
 #, python-format
 msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
 msgstr "Ha medido %.2f%s, y debería comprender entre %.2f y %.2f %s."

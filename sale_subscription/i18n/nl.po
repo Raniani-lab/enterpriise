@@ -10,17 +10,17 @@
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Cas Vissers <c.vissers@brahoo.nl>, 2019
 # dpms <pieter.van.de.wygaert@telenet.be>, 2019
-# Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -183,10 +183,10 @@ msgid ""
 "                <table style=\"width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;\">\n"
 "                    <tbody>\n"
 "                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
-"                            <p>Dear %{object.partner_id.name}\n"
+"                            <p>Dear ${object.partner_id.name}\n"
 "                                % if object.partner_id.parent_id:\n"
 "                                    (${object.partner_id.parent_id.name})\n"
-"                                % endif.\n"
+"                                % endif\n"
 "                            </p>\n"
 "                            <p>\n"
 "                                Here is, in attachment, your\n"
@@ -214,50 +214,6 @@ msgid ""
 "            </div>\n"
 "        "
 msgstr ""
-"<?xml version=\"1.0\"?>\n"
-"<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
-"                <table style=\"width:600px;margin:5px auto;\">\n"
-"                    <tbody>\n"
-"                        <tr><td>\n"
-"                            <a href=\"/\"><img src=\"/web/binary/company_logo\" style=\"vertical-align:baseline;max-width:100px;\"/></a>\n"
-"                        </td><td style=\"text-align:right;vertical-align:middle;\">\n"
-"                                Abonnement factuur\n"
-"                        </td></tr>\n"
-"                    </tbody>\n"
-"                </table>\n"
-"                <table style=\"width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;\">\n"
-"                    <tbody>\n"
-"                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
-"                            <p>Beste %{object.partner_id.name}\n"
-"                                % if object.partner_id.parent_id:\n"
-"                                    (${object.partner_id.parent_id.name})\n"
-"                                % endif.\n"
-"                            </p>\n"
-"                            <p>\n"
-"                                Hier is, in bijlage, uw\n"
-"                                % if object.number:\n"
-"                                    factuur <strong>${object.number}</strong>\n"
-"                                % else:\n"
-"                                    Factuur\n"
-"                                %endif\n"
-"                                % if object.origin:\n"
-"                                    (met referentie: ${object.origin} )\n"
-"                                % endif\n"
-"                                voor het bedrag van <strong>${format_amount(object.amount_total, object.currency_id)}</strong>\n"
-"                                van ${object.company_id.name}.\n"
-"                                % if object.state=='paid':\n"
-"                                    Deze factuur is al betaald.\n"
-"                                % else:\n"
-"                                    Gelieve de betaling zo spoedig mogelijk te verrichten.\n"
-"                                % endif\n"
-"                            </p>\n"
-"                            <p>Aarzel niet om contact met ons op te nemen als u vragen heeft.</p>\n"
-"                        </td></tr>\n"
-"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.user_id.signature or '')| safe}</td></tr>\n"
-"                    </tbody>\n"
-"                </table>\n"
-"            </div>\n"
-"        "
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_rating
@@ -2083,7 +2039,7 @@ msgid "Invoices"
 msgstr "Facturen"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_order.py:162
+#: code:addons/sale_subscription/models/sale_order.py:169
 #, python-format
 msgid "Invoicing period: %s - %s"
 msgstr "Factuur periode: %s - %s"
@@ -2301,11 +2257,6 @@ msgstr "Berichten"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_id
 msgid "Model"
 msgstr "Model"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
-msgid "Model Description"
-msgstr "Modelomschrijving"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_name
@@ -2560,13 +2511,13 @@ msgid "Planned"
 msgstr "Gepland"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:444
+#: code:addons/sale_subscription/models/sale_subscription.py:461
 #, python-format
 msgid "Please define Date of Next Invoice of \"%s\"."
 msgstr "Definieer een datum van volgende factuur voor \"%s\"."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:440
+#: code:addons/sale_subscription/models/sale_subscription.py:457
 #, python-format
 msgid "Please define a sale journal for the company \"%s\"."
 msgstr "U dient een verkoop dagboek aan te maken voor bedrijf ¨%s¨"
@@ -2644,6 +2595,11 @@ msgstr "Hoeveelheid dat wordt gefactureerd."
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_ids
 msgid "Rating"
 msgstr "Beoordeling"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_avg
+msgid "Rating Average"
+msgstr "Gemiddelde beoordeling"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__rating_template_id
@@ -2854,7 +2810,7 @@ msgid "Sales Order Line"
 msgstr "Verkooporderregel"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:149
+#: code:addons/sale_subscription/models/sale_subscription.py:150
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 #, python-format
 msgid "Sales Orders"
@@ -3275,6 +3231,11 @@ msgid "Take action on less satisfied clients"
 msgstr "Onderneem actie tegen minder tevreden klanten"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
+msgid "Target Model"
+msgstr "Doelmodel"
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_tax
 msgid "Taxes"
 msgstr "BTW"
@@ -3359,7 +3320,7 @@ msgstr ""
 "verlengd. "
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:978
+#: code:addons/sale_subscription/models/sale_subscription.py:995
 #, python-format
 msgid "The recurring interval must be positive"
 msgstr "De herhalingsinterval moet positief zijn"
@@ -3383,7 +3344,7 @@ msgstr ""
 "activiteiten."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:462
+#: code:addons/sale_subscription/models/sale_subscription.py:479
 #, python-format
 msgid "This invoice covers the following period: %s - %s"
 msgstr "Deze factuur omvat de volgende periode: %s - %s"
@@ -3731,14 +3692,12 @@ msgstr "U heeft nog geen abonnementen."
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_action_subscription
 msgid ""
-"You must define a product for everything you purchase,\n"
-"            whether it's a physical product, a consumable or services."
+"You must define a product for everything you sell or purchase,\n"
+"            whether it's a storable product, a consumable or a service."
 msgstr ""
-"U moet een product definiëren voor alles dat u koopt,\n"
-"of het nu een fysiek product, verbruiksartikel of een dienst is."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:429
+#: code:addons/sale_subscription/models/sale_subscription.py:446
 #, python-format
 msgid "You must first select a Customer for Subscription %s!"
 msgstr "U moet eerst een klant selecteren voor abonnement %s!"

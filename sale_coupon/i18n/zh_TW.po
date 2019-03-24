@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -260,13 +260,13 @@ msgstr ""
 "            "
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:69
+#: code:addons/sale_coupon/models/sale_coupon.py:68
 #, python-format
 msgid "A Coupon is already applied for the same reward"
 msgstr "優惠券已經申請相同的回報"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:63
+#: code:addons/sale_coupon/models/sale_coupon.py:62
 #: code:addons/sale_coupon/models/sale_coupon_program.py:155
 #, python-format
 msgid "A minimum of %s %s should be purchased to get the reward"
@@ -374,7 +374,7 @@ msgid "Apply on First"
 msgstr "適用於第一"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:81
+#: code:addons/sale_coupon/models/sale_coupon.py:80
 #: code:addons/sale_coupon/models/sale_coupon_program.py:176
 #, python-format
 msgid "At least one of the required conditions is not met to get the reward!"
@@ -460,7 +460,7 @@ msgid "Company"
 msgstr "公司"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:101
+#: code:addons/sale_coupon/models/sale_coupon.py:100
 #, python-format
 msgid "Compose Email"
 msgstr "撰寫電子信件"
@@ -645,8 +645,8 @@ msgstr "貼現率應該是1-100之間"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_order.py:132
-#: code:addons/sale_coupon/models/sale_order.py:151
-#: code:addons/sale_coupon/models/sale_order.py:184
+#: code:addons/sale_coupon/models/sale_order.py:152
+#: code:addons/sale_coupon/models/sale_order.py:185
 #, python-format
 msgid "Discount: "
 msgstr "折扣: "
@@ -761,7 +761,7 @@ msgid "Generation Type"
 msgstr "生成類型"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:71
+#: code:addons/sale_coupon/models/sale_coupon.py:70
 #, python-format
 msgid "Global discounts are not cumulable."
 msgstr "全球折扣不累計的。"
@@ -784,7 +784,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:67
+#: code:addons/sale_coupon/models/sale_coupon.py:66
 #, python-format
 msgid "Invalid partner."
 msgstr "無效的合作夥伴。"
@@ -958,13 +958,13 @@ msgid "On Specific Product"
 msgstr "在具體產品"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:179
+#: code:addons/sale_coupon/models/sale_order.py:180
 #, python-format
 msgid "On product with following tax: "
 msgstr "產品上含稅: "
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:181
+#: code:addons/sale_coupon/models/sale_order.py:182
 #, python-format
 msgid "On product with following taxes: "
 msgstr "產品上含有以下稅: "
@@ -1176,11 +1176,6 @@ msgid "Rule Minimum Amount Tax Inclusion"
 msgstr "最低含稅規則"
 
 #. module: sale_coupon
-#: model:ir.model,name:sale_coupon.model_sale_order
-msgid "Sale Order"
-msgstr "銷售訂單"
-
-#. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Sales"
 msgstr "銷售"
@@ -1222,6 +1217,7 @@ msgstr "優惠券銷售規則"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_order_action
+#: model:ir.model,name:sale_coupon.model_sale_order
 msgid "Sales Order"
 msgstr "銷售訂單"
 
@@ -1299,13 +1295,13 @@ msgid "The coupon code must be unique!"
 msgstr "優惠券代碼必須是唯一的！"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:65
+#: code:addons/sale_coupon/models/sale_coupon.py:64
 #, python-format
 msgid "The coupon program for %s is in draft or closed state"
 msgstr "優惠券計劃草案或是關閉狀態"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:75
+#: code:addons/sale_coupon/models/sale_coupon.py:74
 #: code:addons/sale_coupon/models/sale_coupon_program.py:171
 #, python-format
 msgid "The customer doesn't have access to this reward."
@@ -1342,7 +1338,7 @@ msgid "The promotional offer is already applied on this order"
 msgstr "促銷提供已經應用此訂單上"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:73
+#: code:addons/sale_coupon/models/sale_coupon.py:72
 #: code:addons/sale_coupon/models/sale_coupon_program.py:169
 #, python-format
 msgid ""
@@ -1367,13 +1363,13 @@ msgid "The start date must be before the end date"
 msgstr "開始日期必須在結束日期之前。"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:60
+#: code:addons/sale_coupon/models/sale_coupon.py:59
 #, python-format
 msgid "This coupon %s exists but the origin sales order is not validated yet."
 msgstr " 此優惠券存%s在但源來的銷售訂單不驗證。"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:58
+#: code:addons/sale_coupon/models/sale_coupon.py:57
 #, python-format
 msgid "This coupon %s has been used or is expired."
 msgstr "此優惠券%s已使用或已過期。"
@@ -1440,7 +1436,7 @@ msgid "You can not delete a program in active state"
 msgstr "不能刪除處於活動狀態的程序。"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:78
+#: code:addons/sale_coupon/models/sale_coupon.py:77
 #, python-format
 msgid ""
 "You don't have the required product quantities on your sales order. All the "
@@ -1470,15 +1466,7 @@ msgid "Your reward coupon from ${object.program_id.company_id.name} "
 msgstr "您的優惠券來自 ${object.program_id.company_id.name} "
 
 #. module: sale_coupon
-#: model:product.product,weight_uom_name:sale_coupon.product_product_10_percent_discount
-#: model:product.product,weight_uom_name:sale_coupon.product_product_free_large_cabinet
-#: model:product.template,weight_uom_name:sale_coupon.product_product_10_percent_discount_product_template
-#: model:product.template,weight_uom_name:sale_coupon.product_product_free_large_cabinet_product_template
-msgid "kg"
-msgstr "公斤"
-
-#. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:202
+#: code:addons/sale_coupon/models/sale_order.py:203
 #, python-format
 msgid "limited to "
 msgstr "僅限於"

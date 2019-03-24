@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2018-06-25 08:41+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #. module: web_dashboard
 #. openerp-web
-#: code:addons/web_dashboard/static/src/js/dashboard_controller.js:60
+#: code:addons/web_dashboard/static/src/js/dashboard_controller.js:61
 #, python-format
 msgid "%s Analysis"
 msgstr ""
@@ -169,6 +169,7 @@ msgid "Pivot"
 msgstr "透視表"
 
 #. module: web_dashboard
+#: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
 msgstr "QWeb"

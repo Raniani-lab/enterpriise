@@ -3,18 +3,19 @@
 # * snailmail_account_reports_followup
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Levent Karakaş <levent@mektup.at>, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
+# Martin Trigaux, 2019
+# Ramiz Deniz Öner <deniz@denizoner.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:41+0000\n"
-"Last-Translator: Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019\n"
+"Last-Translator: Ramiz Deniz Öner <deniz@denizoner.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,13 +24,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: snailmail_account_reports_followup
+#: code:addons/snailmail_account_reports_followup/wizard/followup_send.py:75
+#, python-format
+msgid ""
+"%s of the selected partner(s) had an invalid address. The corresponding "
+"followups were not sent"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid ""
-"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\""
-"                         The letter will be sent using the IAP service from "
-"Odoo.&#10;Make sure you have enough credits on your account or proceed to a "
-"recharge.&#10;In case of multiple sending, the price is estimated based on 1"
-" page per document.                         \"/>"
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\"                         The letter will be sent using the IAP service from Odoo.&#10;Make sure you have enough credits on your account or proceed to a recharge.                         \"/>\n"
+"                        <br/>"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
@@ -37,6 +43,22 @@ msgstr ""
 msgid ""
 "<span attrs=\"{'invisible': [('letters_qty', '&gt;', 1)]}\"> Sending this "
 "document will cost </span>"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+msgid ""
+"<span class=\"text-danger\" attrs=\"{'invisible': [('letters_qty', '&gt;', 1)]}\">\n"
+"                                The recipient's address is incomplete.\n"
+"                            </span>"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+msgid ""
+"<span class=\"text-danger\">\n"
+"                                    Some customer addresses are not complete.\n"
+"                                </span>"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
@@ -53,11 +75,6 @@ msgstr "Oluşturan"
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__create_date
 msgid "Created on"
 msgstr "Oluşturulma"
-
-#. module: snailmail_account_reports_followup
-#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__currency_id
-msgid "Currency"
-msgstr "Para Birimi"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__display_name
@@ -85,6 +102,19 @@ msgid "ID"
 msgstr "ID"
 
 #. module: snailmail_account_reports_followup
+#: code:addons/snailmail_account_reports_followup/wizard/followup_send.py:74
+#: code:addons/snailmail_account_reports_followup/wizard/followup_send.py:81
+#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__invalid_partner_ids
+#, python-format
+msgid "Invalid Addresses"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
+#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__invalid_addresses
+msgid "Invalid Addresses Count"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send____last_update
 msgid "Last Modified on"
 msgstr "Son Güncelleme"
@@ -100,17 +130,21 @@ msgid "Last Updated on"
 msgstr "Son Güncelleme"
 
 #. module: snailmail_account_reports_followup
-#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__letter_ids
-msgid "Letter"
-msgstr "Mektub"
-
-#. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__letters_qty
-msgid "Letters Qty"
+msgid "Number of letters"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
+#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__partner_ids
+msgid "Recipients"
+msgstr "Alıcılar"
+
+#. module: snailmail_account_reports_followup
 #: model:ir.actions.act_window,name:snailmail_account_reports_followup.followup_send
+msgid "Send By Post"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Send Follow-Ups"
 msgstr ""
@@ -142,6 +176,11 @@ msgstr ""
 #: model:ir.model.fields,help:snailmail_account_reports_followup.field_account_followup_followup_line__send_letter
 msgid "When processing, it will send a letter by Post"
 msgstr ""
+
+#. module: snailmail_account_reports_followup
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+msgid "customers"
+msgstr "müşteriler"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form

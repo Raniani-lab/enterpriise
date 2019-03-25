@@ -67,6 +67,13 @@
         <field name="domain_force">['|', ('country_id', '=', False), ('country_id', '=', user.company_id.country_id.id)]</field>
     </record>
 
+    <record id="ir_rule_hr_payslip_input_type_multi_company" model="ir.rule">
+        <field name="name">HR Payslip Input Type: Multi Company</field>
+        <field name="model_id" ref="model_hr_payslip_input_type"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('country_id', '=', False), ('country_id', '=', user.company_id.country_id.id)]</field>
+    </record>
+
     <record id="ir_rule_hr_payslip_multi_company" model="ir.rule">
         <field name="name">HR Payslip: Multi Company</field>
         <field name="model_id" ref="model_hr_payslip"/>

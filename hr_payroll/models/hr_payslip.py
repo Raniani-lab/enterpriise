@@ -171,9 +171,8 @@ class HrPayslip(models.Model):
                     is_paid = work_entry_type in paid_work_entry_types
                     counted_days += days if is_paid else 0
                     line = {
-                        'name': work_entry_type.name,
                         'sequence': work_entry_type.sequence,
-                        'code': work_entry_type.code,
+                        'work_entry_type_id': work_entry_type,
                         'number_of_days': days,
                         'number_of_hours': hours,
                         'amount': days / total_paid_days * paid_amount if is_paid and total_paid_days else 0,
@@ -185,9 +184,8 @@ class HrPayslip(models.Model):
                 hours = days * contract.resource_calendar_id.hours_per_day
                 is_paid = normal_work_entry_type in paid_work_entry_types
                 normal_attendance_line = {
-                    'name': normal_work_entry_type.name,
                     'sequence': normal_work_entry_type.sequence,
-                    'code': normal_work_entry_type.code,
+                    'work_entry_type_id': normal_work_entry_type,
                     'number_of_days': days,
                     'number_of_hours': hours,
                     'amount': days / total_paid_days * paid_amount if total_paid_days else 0,
@@ -375,10 +373,11 @@ class HrPayslipWorkedDays(models.Model):
     _description = 'Payslip Worked Days'
     _order = 'payslip_id, sequence'
 
-    name = fields.Char(string='Description', required=True)
+    name = fields.Char(related='work_entry_type_id.name', string='Description', readonly=True)
     payslip_id = fields.Many2one('hr.payslip', string='Pay Slip', required=True, ondelete='cascade', index=True)
     sequence = fields.Integer(required=True, index=True, default=10)
-    code = fields.Char(required=True, help="The code that can be used in the salary rules")
+    code = fields.Char(string='Code', related='work_entry_type_id.code')
+    work_entry_type_id = fields.Many2one('hr.work.entry.type', string='Type', required=True, help="The code that can be used in the salary rules")
     number_of_days = fields.Float(string='Number of Days')
     number_of_hours = fields.Float(string='Number of Hours')
     amount = fields.Monetary(string='Amount', digits=dp.get_precision('Payroll'))
@@ -392,15 +391,30 @@ class HrPayslipInput(models.Model):
     _description = 'Payslip Input'
     _order = 'payslip_id, sequence'
 
-    name = fields.Char(string='Description', required=True)
+    name = fields.Char(related='input_type_id.name', string="Name", readonly=True)
     payslip_id = fields.Many2one('hr.payslip', string='Pay Slip', required=True, ondelete='cascade', index=True)
     sequence = fields.Integer(required=True, index=True, default=10)
-    code = fields.Char(required=True, help="The code that can be used in the salary rules")
+    input_type_id = fields.Many2one('hr.payslip.input.type', string='Description', required=True)
+    code = fields.Char(related='input_type_id.code', required=True, help="The code that can be used in the salary rules")
     amount = fields.Float(help="It is used in computation. For e.g. A rule for sales having "
                                "1% commission of basic salary for per product can defined in expression "
                                "like result = inputs.SALEURO.amount * contract.wage*0.01.")
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
         help="The contract for which applied this input")
+    struct_id = fields.Many2one('hr.payroll.structure', string='Structure', related='payslip_id.struct_id')
+
+    @api.onchange('struct_id')
+    def _onchange_struct_id(self):
+        return {'domain': {'input_type_id': ['|', ('id', 'in', self.payslip_id.struct_id.input_line_type_ids.ids), ('struct_ids', '=', False)]}}
+
+class HrPayslipInputType(models.Model):
+    _name = 'hr.payslip.input.type'
+    _description = 'Payslip Input Type'
+
+    name = fields.Char(string='Description', required=True)
+    code = fields.Char(required=True, help="The code that can be used in the salary rules")
+    struct_ids = fields.Many2many('hr.payroll.structure', string='Avaibility in Structure', help='This input will be only available in those structure. If empty, it will be available in all payslip.')
+    country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env['res.company']._company_default_get().country_id)
 
 
 class HrPayslipRun(models.Model):

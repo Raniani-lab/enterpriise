@@ -367,8 +367,8 @@ class TestWorkEntry(TestPayslipBase):
         payslip_wizard = self.env['hr.payslip.employees'].create({'employee_ids': [(4, self.richard_emp.id)]})
         payslip_wizard.with_context({'default_date_start': Date.to_string(start), 'default_date_end': Date.to_string(end)}).compute_sheet()
         payslip = self.env['hr.payslip'].search([('employee_id', '=', self.richard_emp.id)])
-        work_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == 'WORK100')  # From default calendar.attendance
-        leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == self.work_entry_type_leave.code)
+        work_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.env.ref('hr_payroll.work_entry_type_attendance'))  # From default calendar.attendance
+        leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.work_entry_type_leave)
 
         self.assertTrue(work_line, "It should have a work line in the payslip")
         self.assertTrue(leave_line, "It should have a leave line in the payslip")
@@ -394,8 +394,8 @@ class TestWorkEntry(TestPayslipBase):
             'default_date_end': Date.to_string(end + relativedelta(days=1))
             }).compute_sheet()
         payslip = self.env['hr.payslip'].search([('employee_id', '=', self.richard_emp.id)])
-        work_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == 'WORK100')  # From default calendar.attendance
-        leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == self.work_entry_type.code)
+        work_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.env.ref('hr_payroll.work_entry_type_attendance')) # From default calendar.attendance
+        leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.work_entry_type)
 
         self.assertTrue(work_line, "It should have a work line in the payslip")
         self.assertTrue(leave_line, "It should have an extra work line in the payslip")

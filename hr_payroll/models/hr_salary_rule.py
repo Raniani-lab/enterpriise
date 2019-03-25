@@ -64,6 +64,8 @@ class HrPayrollStructure(models.Model):
     unpaid_work_entry_type_ids = fields.Many2many('hr.work.entry.type')
     use_worked_day_lines = fields.Boolean(default=True, help="Worked days won't be computed/displayed in payslips.")
 
+    input_line_type_ids = fields.Many2many('hr.payslip.input.type', string='Other Input Line')
+
 
 class HrPayrollStructureType(models.Model):
     _name = 'hr.payroll.structure.type'

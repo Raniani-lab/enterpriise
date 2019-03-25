@@ -89,7 +89,11 @@
                         <tbody>
                             <tr t-foreach="o.worked_days_line_ids" t-as="worked_days">
                                 <td><span t-field="worked_days.code"/></td>
-                                <td><span t-field="worked_days.name"/></td>
+                                <td>
+                                    <span t-field="worked_days.work_entry_type_id.name"/>
+                                    <t t-if="worked_days.work_entry_type_id.name or worked_days.name"><br/>
+                                    <span t-field="worked_days.name"/></t>
+                                </td>
                                 <td><span t-field="worked_days.number_of_hours"/></td>
                                 <td><span t-field="worked_days.number_of_days"/></td>
                                 <td></td>

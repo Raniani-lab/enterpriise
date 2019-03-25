@@ -96,26 +96,23 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         termination_payslip_n.struct_id = struct_n_id.id
         termination_payslip_n.worked_days_line_ids = ''
         self.env['hr.payslip.input'].create({
-            'name' : 'Gross reference remuneration N',
             'payslip_id': termination_payslip_n.id,
             'sequence': 2,
-            'code': 'GROSS_REF',
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_gross_ref').id,
             'amount': self.net_n + self.fictitious_remuneration_n,
             'contract_id': termination_payslip_n.contract_id.id
         })
         self.env['hr.payslip.input'].create({
-            'name' : 'Right to time off',
             'payslip_id': termination_payslip_n.id,
             'sequence': 3,
-            'code': 'ALLOCATION',
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_allocation').id,
             'amount': 0,
             'contract_id': termination_payslip_n.contract_id.id
         })
         self.env['hr.payslip.input'].create({
-            'name' : 'Time off already taken',
             'payslip_id': termination_payslip_n.id,
             'sequence': 4,
-            'code': 'TIME_OFF_TAKEN',
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_time_off_taken').id,
             'amount': 0,
             'contract_id': termination_payslip_n.contract_id.id
         })
@@ -132,26 +129,23 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         termination_payslip_n1.struct_id = struct_n1_id.id
         termination_payslip_n1.worked_days_line_ids = ''
         self.env['hr.payslip.input'].create({
-            'name' : 'Gross reference remuneration N-1',
             'payslip_id': termination_payslip_n1.id,
             'sequence': 1,
-            'code': 'GROSS_REF',
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_gross_ref').id,
             'amount': self.net_n1 + self.fictitious_remuneration_n1,
             'contract_id': termination_payslip_n1.contract_id.id
         })
         self.env['hr.payslip.input'].create({
-            'name' : 'Right to time off',
             'payslip_id': termination_payslip_n1.id,
             'sequence': 3,
-            'code': 'ALLOCATION',
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_allocation').id,
             'amount': self.time_off_allocated,
             'contract_id': termination_payslip_n1.contract_id.id
         })
         self.env['hr.payslip.input'].create({
-            'name' : 'Time off already taken',
             'payslip_id': termination_payslip_n1.id,
             'sequence': 4,
-            'code': 'TIME_OFF_TAKEN',
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_time_off_taken').id,
             'amount': self.time_off_taken,
             'contract_id': termination_payslip_n1.contract_id.id
         })

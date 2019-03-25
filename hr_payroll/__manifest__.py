@@ -21,6 +21,7 @@
         'views/hr_contract_views.xml',
         'views/hr_salary_rule_views.xml',
         'views/hr_payslip_views.xml',
+        'views/hr_payslip_input_views.xml',
         'views/hr_employee_views.xml',
         'data/hr_payroll_sequence.xml',
         'views/hr_payroll_report.xml',

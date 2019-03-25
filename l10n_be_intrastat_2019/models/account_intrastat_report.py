@@ -8,8 +8,8 @@ class IntrastatReport(models.AbstractModel):
     _inherit = 'account.intrastat.report'
 
     @api.model
-    def _build_query(self, date_from, date_to, journal_ids, invoice_types=None, vat_included=False):
-        query, params = super(IntrastatReport, self)._build_query(date_from, date_to, journal_ids, invoice_types=invoice_types, vat_included=vat_included)
+    def _build_query(self, date_from, date_to, journal_ids, invoice_types=None, with_vat=False):
+        query, params = super(IntrastatReport, self)._build_query(date_from, date_to, journal_ids, invoice_types=invoice_types, with_vat=with_vat)
         # If you don't know the country of origin of the goods, as an exception you may replace the country code by "QU".
         query['select'] += ', CASE WHEN inv_line.intrastat_product_origin_country_id IS NULL THEN \'QU\' ELSE product_country.code END AS intrastat_product_origin_country'
         query['from'] += ' LEFT JOIN res_country product_country ON product_country.id = inv_line.intrastat_product_origin_country_id'

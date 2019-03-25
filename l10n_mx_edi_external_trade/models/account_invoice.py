@@ -142,10 +142,6 @@ class AccountInvoiceLine(models.Model):
                 res.quantity * res.price_unit / res.l10n_mx_edi_qty_umt
                 if res.l10n_mx_edi_qty_umt else
                 res.l10n_mx_edi_price_unit_umt, 2)
-            res.l10n_mx_edi_qty_umt = round(
-                res.quantity * res.price_unit/res.l10n_mx_edi_price_unit_umt
-                if res.l10n_mx_edi_price_unit_umt else
-                res.l10n_mx_edi_qty_umt, 3)
 
     @api.onchange('quantity', 'product_id', 'l10n_mx_edi_umt_aduana_id')
     @api.multi

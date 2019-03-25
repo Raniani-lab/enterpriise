@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class MrpProduction(models.Model):
@@ -14,3 +14,4 @@ class MrpProduction(models.Model):
         for order in self:
             if not order.workorder_ids.mapped('check_ids'):
                 order.workorder_ids._create_checks()
+        return res

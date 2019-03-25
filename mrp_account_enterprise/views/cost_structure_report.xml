@@ -28,7 +28,7 @@
                         <thead>
                             <tr>
                                 <th><span>Code</span></th>
-                                <th><span>Raw Materials</span></th>
+                                <th><span>Components</span></th>
                                 <th class="text-right"><span>Quantity</span></th>
                                 <th class="text-right"><span>Unit Cost</span></th>
                                 <th class="text-right"><span>Total Cost</span></th>
@@ -54,7 +54,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="text-right">
-                                    <strong>Total Cost of Raw Materials</strong>
+                                    <strong>Total Cost of Components</strong>
                                 </td>
                                 <td class="text-right">
                                     <strong t-esc="line['total_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>

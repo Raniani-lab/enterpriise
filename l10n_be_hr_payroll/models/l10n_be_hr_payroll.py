@@ -26,8 +26,6 @@ class HrContract(models.Model):
     monthly_yearly_costs = fields.Monetary(compute='_compute_monthly_yearly_costs', string='Monthly Equivalent Cost', readonly=True,
         help="Total monthly cost of the employee for the employer.")
     ucm_insurance = fields.Monetary(compute='_compute_ucm_insurance', string="Social Secretary Costs")
-    social_security_contributions = fields.Monetary(compute='_compute_social_security_contributions', string="Social Security Contributions")
-    yearly_cost_before_charges = fields.Monetary(compute='_compute_yearly_cost_before_charges', string="Yearly Costs Before Charges")
     meal_voucher_paid_by_employer = fields.Monetary(compute='_compute_meal_voucher_paid_by_employer', string="Meal Voucher Paid by Employer")
     company_car_total_depreciated_cost = fields.Monetary()
     public_transport_reimbursed_amount = fields.Monetary(string='Reimbursed amount',
@@ -85,6 +83,18 @@ class HrContract(models.Model):
             else:
                 contract.wage_with_holidays = contract.wage
 
+    def _get_advantages_costs(self):
+        self.ensure_one()
+        return (
+            12.0 * self.representation_fees +
+            12.0 * self.fuel_card +
+            12.0 * self.internet +
+            12.0 * (self.mobile + self.mobile_plus) +
+            12.0 * self.transport_employer_cost +
+            self.warrants_cost +
+            220.0 * self.meal_voucher_paid_by_employer
+        )
+
     def _inverse_wage_with_holidays(self):
         for contract in self:
             if contract.holidays:
@@ -113,20 +123,6 @@ class HrContract(models.Model):
             contract.warrants_cost = contract.commission_on_target * 1.326 / 1.05 * 12.0
             contract.warrant_value_employee = contract.commission_on_target * 1.326 * (1.00 - 0.535) * 12.0
 
-    @api.depends('wage', 'fuel_card', 'representation_fees', 'transport_employer_cost',
-        'internet', 'mobile', 'mobile_plus')
-    def _compute_yearly_cost_before_charges(self):
-        for contract in self:
-            contract.yearly_cost_before_charges = 12.0 * (
-                contract.wage * (1.0 + 1.0 / 12.0) +
-                contract.fuel_card +
-                contract.representation_fees +
-                contract.internet +
-                contract.mobile +
-                contract.mobile_plus +
-                contract.transport_employer_cost
-            )
-
     @api.depends(
         'wage', 'fuel_card', 'representation_fees', 'transport_employer_cost',
         'internet', 'mobile', 'mobile_plus', 'warrants_cost',
@@ -143,12 +139,6 @@ class HrContract(models.Model):
     def _compute_meal_voucher_paid_by_employer(self):
         for contract in self:
             contract.meal_voucher_paid_by_employer = contract.meal_voucher_amount * (1 - 0.1463)
-
-    @api.depends('wage')
-    def _compute_social_security_contributions(self):
-        for contract in self:
-            total_wage = contract.wage * 13.0
-            contract.social_security_contributions = (total_wage) * 0.3507
 
     @api.depends('wage')
     def _compute_ucm_insurance(self):

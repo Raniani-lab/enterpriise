@@ -871,6 +871,9 @@
                                         </div>
                                     </div>
 
+                                    <!-- Hospital Insurance -->
+                                    <div class="row" name="hospital_relatives"/>
+
                                     <!-- Personal Documents -->
                                     <div class="row">
                                         <div class="col-md-12">

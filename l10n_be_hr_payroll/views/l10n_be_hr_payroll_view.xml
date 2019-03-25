@@ -45,8 +45,6 @@
             </xpath>
             <xpath expr="//group[@name='salary_and_advantages']" position="after">
                 <group string="Employee Costs" groups="hr.group_hr_manager">
-                    <field name="yearly_cost_before_charges" invisible="1"/>
-                    <field name="social_security_contributions" invisible="1"/>
                     <field name="warrants_cost" invisible="1"/>
                     <field name="warrant_value_employee" invisible="1"/>
                     <field name="ucm_insurance" invisible="1"/>

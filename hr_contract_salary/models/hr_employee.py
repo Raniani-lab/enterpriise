@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class HrEmployee(models.Model):
@@ -42,7 +42,6 @@ class HrEmployee(models.Model):
         for field in ['image', 'id_card', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice']:
             if personal_info.get(field, False):
                 result[field] = personal_info.get(field)
-
         return result
 
     def update_personal_info(self, personal_info, no_name_write=False):

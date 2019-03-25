@@ -85,7 +85,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         return Promise.all([def1, def2]);
     },
 
-    get_personal_info: function() {
+    get_personal_documents: function() {
         var document_names = ['id_card', 'image', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice'];
         var document_srcs = {};
         var promises_list = _.map(document_names, function(document_name) {
@@ -109,51 +109,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         });
 
         return Promise.all(promises_list).then(function() {
-            var personal_info = {
-                'name': $("input[name='name']").val(),
-                'gender': _.find($("input[name='gender']"), function(gender) {
-                    return gender.checked;
-                }).value,
-                'disabled': $("input[name='disabled']")[0].checked,
-                'marital': $("select[name='marital']").val(),
-                'spouse_fiscal_status': $("select[name='spouse_fiscal_status']").val(),
-                'spouse_net_revenue': parseFloat($("input[name='spouse_net_revenue']").val()) || 0.0,
-                'spouse_other_net_revenue': parseFloat($("input[name='spouse_other_net_revenue']").val()) || 0.0,
-                'disabled_spouse_bool': $("input[name='disabled_spouse_bool']")[0].checked,
-                'children': parseInt($("input[name='children']").val()) || 0,
-                'disabled_children_bool': $("input[name='disabled_children_bool']")[0].checked,
-                'disabled_children_number': parseInt($("input[name='disabled_children_number']").val()) || 0,
-                'other_dependent_people': $("input[name='other_dependent_people']")[0].checked,
-                'other_senior_dependent': parseInt($("input[name='other_senior_dependent']").val()) || 0,
-                'other_disabled_senior_dependent': parseInt($("input[name='other_disabled_senior_dependent']").val()) || 0,
-                'other_juniors_dependent': parseInt($("input[name='other_juniors_dependent']").val()) || 0,
-                'other_disabled_juniors_dependent': parseInt($("input[name='other_disabled_juniors_dependent']").val()) || 0,
-                'birthdate': $("input[name='birthdate']").val(),
-                'street': $("input[name='street']").val(),
-                'street2': $("input[name='street2']").val(),
-                'city': $("input[name='city']").val(),
-                'zip': $("input[name='zip']").val(),
-                'state': $("input[name='state']").val(),
-                'country': parseInt($("select[name='country']").val()),
-                'email': $("input[name='email']").val(),
-                'phone': $("input[name='phone']").val(),
-                'identification_id': $("input[name='identification_id']").val(),
-                'country_id': parseInt($("select[name='country_id']").val()),
-                'certificate': _.find($("input[name='certificate']"), function(certificate) {
-                    return certificate.checked;
-                }).value,
-                'study_field': $("input[name='study_field']").val(),
-                'study_school': $("input[name='study_school']").val(),
-                'bank_account': $("input[name='bank_account']").val(),
-                'emergency_contact': $("input[name='emergency_contact']").val(),
-                'emergency_phone': $("input[name='emergency_phone']").val(),
-                'country_of_birth': parseInt($("select[name='country_of_birth']").val()),
-                'place_of_birth': $("input[name='place_of_birth']").val(),
-                'spouse_complete_name': $("input[name='spouse_complete_name']").val(),
-                'spouse_birthdate': $("input[name='spouse_birthdate']").val(),
-                'km_home_work': parseInt($("input[name='km_home_work']").val()),
-                'spouse_professional_situation': $("select[name='spouse_professional_situation']").val(),
-                'job_title': $("input[name='job_title']").val(),
+            var personal_documents = {
                 'id_card': document_srcs.id_card,
                 'image': document_srcs.image,
                 'driving_license': document_srcs.driving_license,
@@ -161,12 +117,60 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 'sim_card': document_srcs.sim_card,
                 'internet_invoice': document_srcs.internet_invoice,
             };
-            return personal_info;
+            return personal_documents;
         });
     },
 
+    get_personal_info: function() {
+        return {
+            'name': $("input[name='name']").val(),
+            'gender': _.find($("input[name='gender']"), function(gender) {
+                return gender.checked;
+            }).value,
+            'disabled': $("input[name='disabled']")[0].checked,
+            'marital': $("select[name='marital']").val(),
+            'spouse_fiscal_status': $("select[name='spouse_fiscal_status']").val(),
+            'spouse_net_revenue': parseFloat($("input[name='spouse_net_revenue']").val()) || 0.0,
+            'spouse_other_net_revenue': parseFloat($("input[name='spouse_other_net_revenue']").val()) || 0.0,
+            'disabled_spouse_bool': $("input[name='disabled_spouse_bool']")[0].checked,
+            'children': parseInt($("input[name='children']").val()) || 0,
+            'disabled_children_bool': $("input[name='disabled_children_bool']")[0].checked,
+            'disabled_children_number': parseInt($("input[name='disabled_children_number']").val()) || 0,
+            'other_dependent_people': $("input[name='other_dependent_people']")[0].checked,
+            'other_senior_dependent': parseInt($("input[name='other_senior_dependent']").val()) || 0,
+            'other_disabled_senior_dependent': parseInt($("input[name='other_disabled_senior_dependent']").val()) || 0,
+            'other_juniors_dependent': parseInt($("input[name='other_juniors_dependent']").val()) || 0,
+            'other_disabled_juniors_dependent': parseInt($("input[name='other_disabled_juniors_dependent']").val()) || 0,
+            'birthdate': $("input[name='birthdate']").val(),
+            'street': $("input[name='street']").val(),
+            'street2': $("input[name='street2']").val(),
+            'city': $("input[name='city']").val(),
+            'zip': $("input[name='zip']").val(),
+            'state': $("input[name='state']").val(),
+            'country': parseInt($("select[name='country']").val()),
+            'email': $("input[name='email']").val(),
+            'phone': $("input[name='phone']").val(),
+            'identification_id': $("input[name='identification_id']").val(),
+            'country_id': parseInt($("select[name='country_id']").val()),
+            'certificate': _.find($("input[name='certificate']"), function(certificate) {
+                return certificate.checked;
+            }).value,
+            'study_field': $("input[name='study_field']").val(),
+            'study_school': $("input[name='study_school']").val(),
+            'bank_account': $("input[name='bank_account']").val(),
+            'emergency_contact': $("input[name='emergency_contact']").val(),
+            'emergency_phone': $("input[name='emergency_phone']").val(),
+            'country_of_birth': parseInt($("select[name='country_of_birth']").val()),
+            'place_of_birth': $("input[name='place_of_birth']").val(),
+            'spouse_complete_name': $("input[name='spouse_complete_name']").val(),
+            'spouse_birthdate': $("input[name='spouse_birthdate']").val(),
+            'km_home_work': parseInt($("input[name='km_home_work']").val()),
+            'spouse_professional_situation': $("select[name='spouse_professional_situation']").val(),
+            'job_title': $("input[name='job_title']").val(),
+        };
+    },
+
     get_advantages: function() {
-        var self = this;
         var has_commission = $("input[name='commission_on_target']").length;
         var has_meal_voucher = $("input[name='meal_voucher_amount']").length;
         var car_value = $("select[name='select_car']").val();
@@ -180,50 +184,46 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 new_car = false;
             }
         }
-        return Promise.resolve(self.get_personal_info()).then(function(personal_info) {
-            return {
-                'wage': $("input[name='wage']")[0].value,
-                'internet': $("input[name='internet']")[0].value,
-                'has_mobile': $("input[name='mobile']")[0].checked,
-                'international_communication': $("input[name='mobile-ic']")[0].checked,
-                'fuel_card': parseFloat($("input[name='fuel_card_input']")[0].value) || 0.0,
-                'transport_mode_car': $("input[name='transport_mode_car']")[0].checked,
-                'transport_mode_public': $("input[name='transport_mode_public']")[0].checked,
-                'transport_mode_others': $("input[name='transport_mode_others']")[0].checked,
-                'car_employee_deduction': parseFloat($("input[name='car_employee_deduction']")[0].value) || 0.0,
-                'holidays': parseFloat($("input[name='holidays_slider']")[0].value) || 0.0,
-                'commission_on_target': has_commission ? parseFloat($("input[name='commission_on_target']")[0].value) || 0.0 : 0.0,
-                'eco_checks': parseFloat($("input[name='eco_checks']")[0].value),
-                'representation_fees': parseFloat($("input[name='representation_fees']")[0].value) || 0.0,
-                'car_id': car_id,
-                'new_car': new_car,
-                'public_transport_employee_amount': parseFloat($("input[name='public_transport_employee_amount']")[0].value) || 0.0,
-                'others_reimbursed_amount': parseFloat($("input[name='others_reimbursed_amount']")[0].value) || 0.0,
-                'personal_info': personal_info,
-                'meal_voucher_amount': has_meal_voucher ? parseFloat($("input[name='meal_voucher_amount']")[0].value) || 0.0 : 0.0,
-                'final_yearly_costs': parseFloat($("input[name='fixed_yearly_costs']")[0].value),
-                'ip': $("input[name='ip']")[0].checked,
-                'ip_wage_rate': $("input[name='ip_wage_rate']").val(),
-                'contract_type': $("input[name='contract_type']").val(),
-                'waiting_list': $("input[name='waiting_list']")[0].checked,
-                'waiting_list_model': parseInt($("select[name='select_waiting_list_model']").val()),
-            };
-        });
+        return {
+            'wage': $("input[name='wage']")[0].value,
+            'internet': $("input[name='internet']")[0].value,
+            'has_mobile': $("input[name='mobile']")[0].checked,
+            'international_communication': $("input[name='mobile-ic']")[0].checked,
+            'fuel_card': parseFloat($("input[name='fuel_card_input']")[0].value) || 0.0,
+            'transport_mode_car': $("input[name='transport_mode_car']")[0].checked,
+            'transport_mode_public': $("input[name='transport_mode_public']")[0].checked,
+            'transport_mode_others': $("input[name='transport_mode_others']")[0].checked,
+            'car_employee_deduction': parseFloat($("input[name='car_employee_deduction']")[0].value) || 0.0,
+            'holidays': parseFloat($("input[name='holidays_slider']")[0].value) || 0.0,
+            'commission_on_target': has_commission ? parseFloat($("input[name='commission_on_target']")[0].value) || 0.0 : 0.0,
+            'eco_checks': parseFloat($("input[name='eco_checks']")[0].value),
+            'representation_fees': parseFloat($("input[name='representation_fees']")[0].value) || 0.0,
+            'car_id': car_id,
+            'new_car': new_car,
+            'public_transport_employee_amount': parseFloat($("input[name='public_transport_employee_amount']")[0].value) || 0.0,
+            'others_reimbursed_amount': parseFloat($("input[name='others_reimbursed_amount']")[0].value) || 0.0,
+            'personal_info': this.get_personal_info(),
+            'meal_voucher_amount': has_meal_voucher ? parseFloat($("input[name='meal_voucher_amount']")[0].value) || 0.0 : 0.0,
+            'final_yearly_costs': parseFloat($("input[name='fixed_yearly_costs']")[0].value),
+            'ip': $("input[name='ip']")[0].checked,
+            'ip_wage_rate': $("input[name='ip_wage_rate']").val(),
+            'contract_type': $("input[name='contract_type']").val(),
+            'waiting_list': $("input[name='waiting_list']")[0].checked,
+            'waiting_list_model': parseInt($("select[name='select_waiting_list_model']").val()),
+        };
     },
 
     update_gross_to_net_computation: function () {
         var self = this;
-        return this.get_advantages().then(function(advantages) {
-            return self._rpc({
-                route: '/salary_package/compute_net/',
-                params: {
-                    'contract_id': parseInt($("input[name='contract']")[0].id),
-                    'token': $("input[name='token']").val(),
-                    'advantages': advantages,
-                },
-            }).then(function(data) {
-                self.update_gross_to_net_modal(data);
-            });
+        return self._rpc({
+            route: '/salary_package/compute_net/',
+            params: {
+                'contract_id': parseInt($("input[name='contract']")[0].id),
+                'token': $("input[name='token']").val(),
+                'advantages': self.get_advantages(),
+            },
+        }).then(function(data) {
+            self.update_gross_to_net_modal(data);
         });
     },
 
@@ -310,15 +310,13 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     update_gross: function() {
         var self = this;
         return this.dp.add(
-            this.get_advantages().then(function(advantages) {
-                return self._rpc({
-                    route: '/salary_package/update_gross/',
-                    params: {
-                        'contract_id': parseInt($("input[name='contract']")[0].id),
-                        'token': $("input[name='token']").val(),
-                        'advantages': advantages,
-                    },
-                });
+            self._rpc({
+                route: '/salary_package/update_gross/',
+                params: {
+                    'contract_id': parseInt($("input[name='contract']")[0].id),
+                    'token': $("input[name='token']").val(),
+                    'advantages': self.get_advantages(),
+                },
             }).then(function(data) {
                 $("input[name='wage']").val(data['new_gross']);
                 return self.dp.add(self.compute_net());
@@ -389,16 +387,14 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         has_mobile ? sim_card_div.removeClass('d-none') : sim_card_div.addClass('d-none');
         var label = $("label[name='international_communication']");
         $("input[name='mobile']")[0].checked ? label.removeClass('invisible') : label.addClass('invisible');
-        this.get_advantages().then(function(advantages) {
-            self._rpc({
-                route: '/salary_package/onchange_mobile/',
-                params: {
-                    'has_mobile': $("input[name='mobile']")[0].checked,
-                    'international_communication': $("input[name='mobile-ic']")[0].checked,
-                },
-            }).then(function(amount) {
-                $("input[name='mobile_amount']").val(amount);
-            });
+        this._rpc({
+            route: '/salary_package/onchange_mobile/',
+            params: {
+                'has_mobile': $("input[name='mobile']")[0].checked,
+                'international_communication': $("input[name='mobile-ic']")[0].checked,
+            },
+        }).then(function(amount) {
+            $("input[name='mobile_amount']").val(amount);
         });
     },
 
@@ -441,16 +437,13 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     onchange_public_transport: function(event) {
-        var self = this;
-        this.get_advantages().then(function(advantages) {
-            self._rpc({
-                route: '/salary_package/onchange_public_transport/',
-                params: {
-                    'public_transport_employee_amount': parseFloat($("input[name='public_transport_employee_amount']")[0].value) || 0.0,
-                },
-            }).then(function(amount) {
-                $("input[name='public_transport_reimbursed_amount']").val(amount);
-            });
+        this._rpc({
+            route: '/salary_package/onchange_public_transport/',
+            params: {
+                'public_transport_employee_amount': parseFloat($("input[name='public_transport_employee_amount']")[0].value) || 0.0,
+            },
+        }).then(function(data) {
+            $("input[name='public_transport_reimbursed_amount']").val(amount);
         });
     },
 
@@ -573,7 +566,11 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     get_form_info: function() {
-        return this.get_advantages().then(function(advantages) {
+        var self = this;
+        return Promise.resolve(self.get_personal_documents()).then(function(personal_documents) {
+            var advantages = self.get_advantages();
+            _.extend(advantages.personal_info, personal_documents);
+
             return {
                 'contract_id': parseInt($("input[name='contract']")[0].id),
                 'token': $("input[name='token']").val(),
@@ -588,22 +585,20 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     send_offer_to_responsible: function(event) {
         var self = this;
         if (this.check_form_validity()) {
-            this.get_advantages().then(function(advantages) {
-                self._rpc({
-                    route: '/salary_package/send_email/',
-                    params: {
-                        'contract_id': parseInt($("input[name='contract']")[0].id),
-                        'token': $("input[name='token']").val(),
-                        'advantages': advantages,
-                        'applicant_id': parseInt($("input[name='applicant_id']").val()) || false,
-                        'original_link': $("input[name='original_link']").val(),
-                        'contract_type': $("input[name='contract_type']").val(),
-                        'job_title': $("input[name='job_title']").val(),
-                    },
-                }).then(function (data) {
-                    document.location.pathname = '/salary_package/thank_you/' + data;
-                });
-            })
+            self._rpc({
+                route: '/salary_package/send_email/',
+                params: {
+                    'contract_id': parseInt($("input[name='contract']")[0].id),
+                    'token': $("input[name='token']").val(),
+                    'advantages': self.get_advantages(),
+                    'applicant_id': parseInt($("input[name='applicant_id']").val()) || false,
+                    'original_link': $("input[name='original_link']").val(),
+                    'contract_type': $("input[name='contract_type']").val(),
+                    'job_title': $("input[name='job_title']").val(),
+                },
+            }).then(function (data) {
+                document.location.pathname = '/salary_package/thank_you/' + data;
+            });
         }
     },
 

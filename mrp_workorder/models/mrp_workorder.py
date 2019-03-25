@@ -78,6 +78,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     move.product_id.uom_id,
                     round=False
                 ) - sum(completed_lines.mapped('qty_done'))
+                wo.qty_done = min(wo.qty_done, wo.component_remaining_qty)
                 wo.component_uom_id = lines[0].product_uom_id
 
     def action_back(self):
@@ -205,7 +206,6 @@ class MrpProductionWorkcenterLine(models.Model):
                     'qty_done': float_round(self.qty_done, precision_rounding=move.product_uom.rounding),
                     'workorder_id': self.id,
                 })
-                self.workorder_line_ids += self.move_line_id
             else:
                 self.move_line_id = lines_without_lots[0]
             # If tracked by lot, put the remaining quantity in (only) one move line
@@ -220,16 +220,29 @@ class MrpProductionWorkcenterLine(models.Model):
         """ In case of non tracked component without 'register component' step,
         we need to fill the qty_done at this step"""
         lines = super(MrpProductionWorkcenterLine, self)._generate_lines_values(move, qty_to_consume)
-        step = self.env['quality.point'].search([
+        steps = self._get_quality_points(lines)
+        for line in lines:
+            if line['product_id'] in steps.mapped('component_id.id') or move.has_tracking != 'none':
+                line['qty_done'] = 0
+        return lines
+
+    def _update_workorder_lines(self):
+        res = super(MrpProductionWorkcenterLine, self)._update_workorder_lines()
+        if res['to_update']:
+            steps = self._get_quality_points(res['to_update'].values())
+            for line, values in res['to_update'].items():
+                if line['product_id'] in steps.mapped('component_id.id') or line.move_id.has_tracking != 'none':
+                    values['qty_done'] = 0
+        return res
+
+    def _get_quality_points(self, iterator):
+        steps = self.env['quality.point'].search([
             ('test_type', '=', 'register_consumed_materials'),
-            ('component_id', 'in', [line['product_id'] for line in lines]),
+            ('component_id', 'in', [values.get('product_id', False) for values in iterator]),
             ('product_id', '=', self.product_id.id),
             ('operation_id', 'in', self.production_id.routing_id.operation_ids.ids)
         ])
-        for line in lines:
-            if step:
-                line['qty_done'] = 0
-        return lines
+        return steps
 
     def _next(self):
         """ This function:
@@ -355,9 +368,13 @@ class MrpProductionWorkcenterLine(models.Model):
             })
             # Update the default quantities in component registration steps
             if old_allow_producing_quantity_change and not self.allow_producing_quantity_change:
-                for check in self.check_ids.filtered(lambda c: c.test_type == 'register_consumed_materials' and c.point_id and c.point_id.component_id.tracking != 'serial' and c.quality_state == 'none'):
-                    moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.point_id.component_id)
-                    check.qty_done = float_round(check.qty_done * self.qty_producing, precision_rounding=moves[0].product_uom.rounding)
+                for check in self.check_ids.filtered(lambda c: c.test_type == 'register_consumed_materials' and c.component_id.tracking != 'serial' and c.quality_state == 'none'):
+                    moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.component_id)
+                    check.qty_done = moves[0].product_uom._compute_quantity(
+                        self.qty_producing * sum(moves.mapped('unit_factor')),
+                        moves[0].product_id.uom_id,
+                        round=False
+                    )
 
     def action_menu(self):
         return {

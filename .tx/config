@@ -107,6 +107,11 @@ file_filter = analytic_enterprise/i18n/<lang>.po
 source_file = analytic_enterprise/i18n/analytic_enterprise.pot
 source_lang = en
 
+[odoo-master.approvals]
+file_filter = approvals/i18n/<lang>.po
+source_file = approvals/i18n/approvals.pot
+source_lang = en
+
 [odoo-master.base_automation_hr_contract]
 file_filter = base_automation_hr_contract/i18n/<lang>.po
 source_file = base_automation_hr_contract/i18n/base_automation_hr_contract.pot
@@ -237,6 +242,11 @@ file_filter = im_livechat_enterprise/i18n/<lang>.po
 source_file = im_livechat_enterprise/i18n/im_livechat_enterprise.pot
 source_lang = en
 
+[odoo-master.industry_fsm]
+file_filter = industry_fsm/i18n/<lang>.po
+source_file = industry_fsm/i18n/industry_fsm.pot
+source_lang = en
+
 [odoo-master.inter_company_rules]
 file_filter = inter_company_rules/i18n/<lang>.po
 source_file = inter_company_rules/i18n/inter_company_rules.pot
@@ -292,11 +302,6 @@ file_filter = mrp_workorder/i18n/<lang>.po
 source_file = mrp_workorder/i18n/mrp_workorder.pot
 source_lang = en
 
-[odoo-master.mrp_zebra]
-file_filter = mrp_zebra/i18n/<lang>.po
-source_file = mrp_zebra/i18n/mrp_zebra.pot
-source_lang = en
-
 [odoo-master.ocn_client]
 file_filter = ocn_client/i18n/<lang>.po
 source_file = ocn_client/i18n/ocn_client.pot
@@ -315,6 +320,11 @@ source_lang = en
 [odoo-master.pos_loyalty]
 file_filter = pos_loyalty/i18n/<lang>.po
 source_file = pos_loyalty/i18n/pos_loyalty.pot
+source_lang = en
+
+[odoo-master.project_enterprise]
+file_filter = project_enterprise/i18n/<lang>.po
+source_file = project_enterprise/i18n/project_enterprise.pot
 source_lang = en
 
 [odoo-master.project_forecast]
@@ -357,14 +367,14 @@ file_filter = quality_mrp/i18n/<lang>.po
 source_file = quality_mrp/i18n/quality_mrp.pot
 source_lang = en
 
-[odoo-master.quality_mrp_iot]
-file_filter = quality_mrp_iot/i18n/<lang>.po
-source_file = quality_mrp_iot/i18n/quality_mrp_iot.pot
-source_lang = en
-
 [odoo-master.quality_mrp_workorder]
 file_filter = quality_mrp_workorder/i18n/<lang>.po
 source_file = quality_mrp_workorder/i18n/quality_mrp_workorder.pot
+source_lang = en
+
+[odoo-master.quality_mrp_workorder_iot]
+file_filter = quality_mrp_workorder_iot/i18n/<lang>.po
+source_file = quality_mrp_workorder_iot/i18n/quality_mrp_workorder_iot.pot
 source_lang = en
 
 [odoo-master.sale_account_taxcloud]
@@ -390,6 +400,11 @@ source_lang = en
 [odoo-master.sale_enterprise]
 file_filter = sale_enterprise/i18n/<lang>.po
 source_file = sale_enterprise/i18n/sale_enterprise.pot
+source_lang = en
+
+[odoo-master.sale_project_timesheet_enterprise]
+file_filter = sale_project_timesheet_enterprise/i18n/<lang>.po
+source_file = sale_project_timesheet_enterprise/i18n/sale_project_timesheet_enterprise.pot
 source_lang = en
 
 [odoo-master.sale_subscription]
@@ -445,11 +460,6 @@ source_lang = en
 [odoo-master.timesheet_grid]
 file_filter = timesheet_grid/i18n/<lang>.po
 source_file = timesheet_grid/i18n/timesheet_grid.pot
-source_lang = en
-
-[odoo-master.timesheet_grid_sale]
-file_filter = timesheet_grid_sale/i18n/<lang>.po
-source_file = timesheet_grid_sale/i18n/timesheet_grid_sale.pot
 source_lang = en
 
 [odoo-master.voip]
@@ -545,11 +555,6 @@ source_lang = en
 [odoo-master.website_helpdesk_slides]
 file_filter = website_helpdesk_slides/i18n/<lang>.po
 source_file = website_helpdesk_slides/i18n/website_helpdesk_slides.pot
-source_lang = en
-
-[odoo-master.website_sale_account_taxcloud]
-file_filter = website_sale_account_taxcloud/i18n/<lang>.po
-source_file = website_sale_account_taxcloud/i18n/website_sale_account_taxcloud.pot
 source_lang = en
 
 [odoo-master.website_sale_coupon]

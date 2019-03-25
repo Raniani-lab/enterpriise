@@ -27,7 +27,7 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_batch_payment
 msgid "Batch Payment"
-msgstr ""
+msgstr "Багц төлбөр"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_company
@@ -134,7 +134,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__partner_bank_account_id
 #: model:ir.model.fields,field_description:account_sepa.field_account_register_payments__partner_bank_account_id
 msgid "Recipient Bank Account"
-msgstr ""
+msgstr "Хүлээн авах банкны данс"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_register_payments

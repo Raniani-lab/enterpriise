@@ -1,0 +1,126 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * quality_mrp_workorder_iot
+# 
+# Translators:
+# Martin Trigaux, 2019
+# Christian Oechsner <carinachristian@gmail.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2019-03-20 14:44+0000\n"
+"Last-Translator: Christian Oechsner <carinachristian@gmail.com>, 2019\n"
+"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: quality_mrp_workorder_iot
+#: model:ir.model.fields,field_description:quality_mrp_workorder_iot.field_iot_trigger__action
+msgid "Action"
+msgstr "Aktion"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Close MO"
+msgstr ""
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Close WO"
+msgstr ""
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Fail"
+msgstr "Fehlgeschlagen"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Finish"
+msgstr "Ende"
+
+#. module: quality_mrp_workorder_iot
+#: model:ir.model,name:quality_mrp_workorder_iot.model_iot_trigger
+msgid "IOT Trigger"
+msgstr ""
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Next"
+msgstr "Weiter"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pack"
+msgstr "Paket"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pass"
+msgstr "Bestanden"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pause"
+msgstr "Pause"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Previous"
+msgstr "Vorherige"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Delivery Slip"
+msgstr ""
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Labels"
+msgstr ""
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Operation"
+msgstr ""
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Record Production"
+msgstr "Produktion aufzeichnen"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Scrap"
+msgstr "Ausschuss melden"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Skip"
+msgstr "Überspringen"
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Take Measure"
+msgstr ""
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Take Picture"
+msgstr ""
+
+#. module: quality_mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Validate"
+msgstr "Bestätigen"

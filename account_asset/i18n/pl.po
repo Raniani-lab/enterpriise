@@ -8,7 +8,6 @@
 # Tomasz Leppich <t.leppich@gmail.com>, 2019
 # Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
-# Martin Trigaux, 2019
 # zbik2607 <darek@krokus.com.pl>, 2019
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
@@ -18,14 +17,15 @@
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
 # Paweł Michoń <michon.pawel@wp.pl>, 2019
 # Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
-"Last-Translator: Andrzej Donczew <a.donczew@hadron.eu.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -204,6 +204,7 @@ msgstr "Data początkowa środka trwałego"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__name
+#: model:ir.model.fields,field_description:account_asset.field_product_product__asset_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__asset_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Asset Type"
@@ -493,6 +494,7 @@ msgid "Deferred Revenue Account"
 msgstr "Konto odroczonych przychodów"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_product_product__deferred_revenue_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__deferred_revenue_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Type"
@@ -641,6 +643,11 @@ msgstr "Data końcowa"
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_end
 msgid "Ending date"
 msgstr "Data zakończenia"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+msgid "Entries"
+msgstr "Zapisy"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
@@ -792,11 +799,6 @@ msgstr "Jest obserwatorem"
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__salvage_value
 msgid "It is the amount you plan to have that you cannot depreciate."
 msgstr "To jest wartość, którą planujesz zostawić i nie chcesz amortyzować."
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
-msgid "Items"
-msgstr "Pozycje"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__journal_id

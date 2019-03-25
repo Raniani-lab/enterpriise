@@ -7,7 +7,6 @@
 # Shark McGnark <peculiarcheese@gmail.com>, 2016
 # Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2016
 # Florian Hatat, 2016
-# Lucas Deliege <lud@odoo.com>, 2016
 # Lionel Sausin <ls@numerigraphe.com>, 2016
 # Clo <clo@odoo.com>, 2016
 # Lucas Deliege <lud@openerp.com>, 2017
@@ -19,21 +18,22 @@
 # Nancy Bolognesi <nb@microcom.ca>, 2018
 # Micky Jault <micky037@hotmail.fr>, 2018
 # Xavier Belmere <Info@cartmeleon.com>, 2018
-# fr trans <e2ftrans1@yahoo.com>, 2018
-# Martin Trigaux, 2019
+# 6534c450c77b2549e41c52e2051f5839, 2018
 # Fabien Bourgeois <fabien@yaltik.com>, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Laura Piraux <lap@odoo.com>, 2019
 # Nathan Grognet <ngr@odoo.com>, 2019
 # William Olhasque <william.olhasque@scopea.fr>, 2019
+# Martin Trigaux, 2019
+# Lucas Deliege <lud@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: William Olhasque <william.olhasque@scopea.fr>, 2019\n"
+"Last-Translator: Lucas Deliege <lud@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -215,6 +215,11 @@ msgid "Followers (Partners)"
 msgstr "Abonnés (Partenaires)"
 
 #. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Group By"
+msgstr "Regrouper par"
+
+#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
 msgid "HTTP Routing"
 msgstr "Routage HTTP"
@@ -352,6 +357,7 @@ msgid "Main Attachment"
 msgstr "Pièce jointe principale"
 
 #. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 msgid "Maximum Leads / 30 days"
 msgstr "Nbr. Maximum de pistes / 30 jours"
@@ -461,11 +467,6 @@ msgid "Running"
 msgstr "En cours"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
-msgid "SaleTeam"
-msgstr "Equipe commerciale"
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__user_id
 msgid "Saleman"
 msgstr "Commercial"
@@ -483,9 +484,20 @@ msgid "Sales Men"
 msgstr "Commerciaux"
 
 #. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Sales Person"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
 msgid "Sales Records"
 msgstr "Records de ventes"
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Sales Team"
+msgstr "Équipe commerciale"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id

@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -73,6 +73,11 @@ msgid "Certification Process"
 msgstr "Процес сертифікації"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
+msgid "Commercial Invoice Type"
+msgstr ""
+
+#. module: delivery_fedex
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
@@ -110,7 +115,7 @@ msgid "Easypost"
 msgstr "Easypost"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:233
+#: code:addons/delivery_fedex/models/delivery_fedex.py:220
 #, python-format
 msgid ""
 "Error:\n"
@@ -182,21 +187,11 @@ msgid "Fedex Configuration"
 msgstr "Налаштування Fedex"
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
-msgid "Fedex Document Stock Type"
-msgstr ""
-
-#. module: delivery_fedex
 #: model:delivery.carrier,name:delivery_fedex.delivery_carrier_fedex_inter
 #: model:product.product,name:delivery_fedex.product_product_delivery_fedex_inter
 #: model:product.template,name:delivery_fedex.product_product_delivery_fedex_inter_product_template
 msgid "Fedex International"
 msgstr "Міжнародний Fedex"
-
-#. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
-msgid "Fedex Label Stock Type"
-msgstr "Тип логотипу складу Fedex "
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_service_type
@@ -236,6 +231,11 @@ msgid "Fixed Price"
 msgstr "Фіксована ціна"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
+msgid "Generate return label"
+msgstr ""
+
+#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Go to"
 msgstr "Перейти до"
@@ -261,6 +261,11 @@ msgid "LB"
 msgstr "LB"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
+msgid "Label Type"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_meter_number
 msgid "Meter Number"
 msgstr "Номер лічильника"
@@ -271,7 +276,7 @@ msgid "No carrier integration"
 msgstr "Немає інтеграції перевізників"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:440
+#: code:addons/delivery_fedex/models/delivery_fedex.py:441
 #, python-format
 msgid "No packages for this picking"
 msgstr "Немає пакунків для цього комплектування"
@@ -420,20 +425,20 @@ msgid "Screenshot"
 msgstr "Скріншот"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:463
+#: code:addons/delivery_fedex/models/delivery_fedex.py:533
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Відвантаження № %s було закрито"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:424
+#: code:addons/delivery_fedex/models/delivery_fedex.py:426
 #, python-format
 msgid "Shipment created into Fedex <br/> <b>Tracking Number : </b>%s"
 msgstr ""
 "Відвантаження створено у Fedex <br/> <b>Номер відслідковування: </b>%s"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:370
+#: code:addons/delivery_fedex/models/delivery_fedex.py:369
 #, python-format
 msgid ""
 "Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
@@ -474,6 +479,11 @@ msgid "The last step is the"
 msgstr "Останній крок - це"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
+msgid "The return label is automatically generated at the delivery"
+msgstr ""
+
+#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ""
 "These certifications usually require that you contact the FedEx support team"
@@ -502,7 +512,7 @@ msgid "Unit(s)"
 msgstr "Штука(и)"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:239
+#: code:addons/delivery_fedex/models/delivery_fedex.py:226
 #, python-format
 msgid ""
 "Warning:\n"

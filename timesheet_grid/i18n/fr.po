@@ -14,22 +14,22 @@
 # Bertrand LATOUR <divoir@gmail.com>, 2017
 # Melanie Bernard <mbe@odoo.com>, 2017
 # Frédéric LIETART <stuff@tifred.fr>, 2017
-# fr rev <e2ffr02@hotmail.com>, 2017
-# fr trans <e2ftrans1@yahoo.com>, 2017
-# e2f_fr_t5 <e2f_fr_t5@outlook.com>, 2017
-# Martin Trigaux, 2018
+# bb76cd9ac0cb7e20167a14728edb858b, 2017
+# 6534c450c77b2549e41c52e2051f5839, 2017
+# 71728729ee5e25c3ecd8d7420ddb9ca7, 2017
 # e2f <projects@e2f.com>, 2018
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Nathan Grognet <ngr@odoo.com>, 2019
 # Marie Willemyns <mwi@odoo.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -676,6 +676,7 @@ msgstr "Ligne de feuille de temps"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "Timesheet Responsible"
 msgstr "Responsable de la feuille de temps"
 
@@ -754,10 +755,16 @@ msgstr "Fréquence de rappel utilisateur"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,help:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
 msgstr ""
 "Utilisateur responsable de la validation des feuilles de temps. Doit être le"
 " responsable des feuilles de temps."
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_res_users
+msgid "Users"
+msgstr "Utilisateurs"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__validate

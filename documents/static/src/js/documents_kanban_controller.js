@@ -621,12 +621,17 @@ var DocumentsKanbanController = KanbanController.extend({
      *
      * @private
      * @param {OdooEvent} ev
+     * @param {string[]} ev.data.dataPointsIDs
+     * @param {Object} ev.data.changes
+     * @param {function} [ev.data.callback]
      */
     _onSaveMulti: function (ev) {
         ev.stopPropagation();
+        var callback = ev.data.callback || function () {};
         this.model
             .saveMulti(ev.data.dataPointIDs, ev.data.changes, this.handle)
-            .then(this.update.bind(this, {}, {}));
+            .then(this.update.bind(this, {}, {}))
+            .then(callback).guardedCatch(callback);
     },
     /**
      * React to records selection changes to update the DocumentInspector with

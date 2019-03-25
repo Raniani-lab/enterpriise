@@ -1042,7 +1042,7 @@ class AccountReport(models.AbstractModel):
                 'context': self.env.context,
                 'report_manager_id': report_manager.id,
                 'footnotes': [{'id': f.id, 'line': f.line, 'text': f.text} for f in report_manager.footnotes_ids],
-                'buttons': self._get_reports_buttons(),
+                'buttons': self._get_reports_buttons_in_sequence(),
                 'main_html': self.get_html(options),
                 'searchview_html': self.env['ir.ui.view'].render_template(self._get_templates().get('search_template', 'account_report.search_template'), values=searchview_dict),
                 }

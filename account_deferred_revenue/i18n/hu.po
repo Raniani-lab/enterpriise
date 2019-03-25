@@ -3,16 +3,16 @@
 # * account_deferred_revenue
 # 
 # Translators:
-# Martin Trigaux, 2016
 # krnkris, 2017
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: krnkris, 2017\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -124,6 +124,11 @@ msgid "Draft"
 msgstr "Tervezet"
 
 #. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "Entries"
+msgstr "Tételek"
+
+#. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Extended Filters..."
 msgstr "Kiterjesztett szűrők..."
@@ -156,11 +161,6 @@ msgstr "Csoportosítás..."
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Invoice"
 msgstr "Számla"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Items"
-msgstr "Tételek"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form

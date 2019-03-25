@@ -3,17 +3,31 @@
 # * website_calendar
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Johannes Croe <jcr@odoo.com>, 2018
-# DE R1 <e2fes1@hotmail.com>, 2018
-# DE T2 <e2f48d4s5vd1s2@outlook.com>, 2018
+# Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
+# AppleMentalist <felix.schnatbaum@gmail.com>, 2017
+# Niki Waibel, 2017
+# Markus Menner <markus.menner@axxelia.com>, 2017
+# Andi, 2017
+# Gab_Odoo <gab@odoo.com>, 2017
+# Henry Mineehen <info@mineehen.de>, 2017
+# darenkster <inactive+darenkster@transifex.com>, 2017
+# Anja Funk <anja.funk@afimage.de>, 2017
+# Tina Rittmüller <tr@ife.de>, 2017
+# Ralf Hilgenstock <rh@dialoge.info>, 2018
+# Wolfgang Taferner, 2018
+# Ermin Trevisan <trevi@twanda.com>, 2018
+# 4e7311735ad180fde514b5b19202d965, 2019
+# DE T2 <e2f48d4s5vd1s2@outlook.com>, 2019
+# Martin Trigaux, 2019
+# Johannes Croe <jcr@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:15+0000\n"
-"PO-Revision-Date: 2018-10-08 07:15+0000\n"
-"Last-Translator: DE T2 <e2f48d4s5vd1s2@outlook.com>, 2018\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,11 +77,6 @@ msgstr ", ganztägig"
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "-- select a country --"
 msgstr "-- Land wählen --"
-
-#. module: website_calendar
-#: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
-msgid "1 Hour SMS text"
-msgstr "1 Stunde SMS text"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -251,7 +260,6 @@ msgid "Appointment<span class=\"chevron\"/>"
 msgstr "Termin<span class=\"chevron\"/>"
 
 #. module: website_calendar
-#: model:ir.module.category,name:website_calendar.module_category_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_graph
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_pivot
@@ -292,6 +300,11 @@ msgstr "Verfügbare Mitarbeiter"
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
 msgid "Calendar"
 msgstr "Kalender"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__can_publish
+msgid "Can publish"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
@@ -667,6 +680,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.calendar_appointment_type_action
 #: model:ir.actions.act_window,name:website_calendar.calendar_event_action_reporting
+#: model:ir.module.category,name:website_calendar.module_category_calendar
 #: model:ir.ui.menu,name:website_calendar.appointment_type_menu
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report_all
 #: model:ir.ui.menu,name:website_calendar.website_appointment_type_menu
@@ -742,6 +756,11 @@ msgstr "Länder beschränken"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_seo_optimized
 msgid "SEO optimized"
+msgstr ""
+
+#. module: website_calendar
+#: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
+msgid "SMS Text Message - 1 Hour(s)"
 msgstr ""
 
 #. module: website_calendar

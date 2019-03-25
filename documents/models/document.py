@@ -236,9 +236,10 @@ class Document(models.Model):
                 document = self.env['documents.document'].create({
                     'name': attachment.name,
                     'attachment_id': attachment.id,
+                    'folder_id': share.folder_id.id,
+                    'owner_id': share.owner_id.id if share.owner_id else share.create_uid.id,
                     'partner_id': share.partner_id.id if share.partner_id else False,
                     'tag_ids': [(6, 0, share.tag_ids.ids if share.tag_ids else [])],
-                    'folder_id': share.folder_id.id if share.folder_id else False,
                 })
                 attachment.write({
                     'res_model': 'documents.document',
@@ -342,7 +343,7 @@ class Document(models.Model):
                     'res_id': res_id
                 })
                 record.attachment_id = attachment.id
-                self._process_activities(attachment.id)
+                record._process_activities(attachment.id)
 
         return super(Document, self).write(vals)
 
@@ -365,9 +366,10 @@ class Document(models.Model):
     def search_panel_select_range(self, field_name):
         if field_name == 'folder_id':
             fields = ['display_name', 'description', 'parent_folder_id']
+            DocumentFolder = self.env['documents.folder'].with_context(hierarchical_naming=False)
             return {
                 'parent_field': 'parent_folder_id',
-                'values': self.env['documents.folder'].search_read([], fields),
+                'values': DocumentFolder.search_read([], fields),
             }
         return super(Document, self).search_panel_select_range(field_name)
 

@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
 "Last-Translator: Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
@@ -45,7 +45,7 @@ msgstr "Dodaj do ekranu głównego"
 
 #. module: web_mobile
 #. openerp-web
-#: code:addons/web_mobile/static/src/xml/contact_sync.xml:10
+#: code:addons/web_mobile/static/src/xml/contact_sync.xml:9
 #, python-format
 msgid "Mobile"
 msgstr "Tel. komórkowy"
@@ -69,6 +69,13 @@ msgstr ""
 #: code:addons/web_mobile/static/src/xml/settings_dashboard.xml:9
 #, python-format
 msgid "On Google Play"
+msgstr ""
+
+#. module: web_mobile
+#. openerp-web
+#: code:addons/web_mobile/static/src/xml/barcode_fields.xml:13
+#, python-format
+msgid "Scan barcode"
 msgstr ""
 
 #. module: web_mobile

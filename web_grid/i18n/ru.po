@@ -16,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
 "Last-Translator: Vasiliy Korobatov <korobatov@gmail.com>, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
@@ -41,7 +41,7 @@ msgstr "Мероприятие"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:148
+#: code:addons/web_grid/static/src/js/grid_controller.js:147
 #: code:addons/web_grid/static/src/xml/grid_view.xml:5
 #, python-format
 msgid "Add a Line"
@@ -136,6 +136,7 @@ msgid "Previous"
 msgstr "Предыдущий"
 
 #. module: web_grid
+#: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
 msgstr "QWeb"
@@ -170,14 +171,14 @@ msgstr "Сегодня"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:395
+#: code:addons/web_grid/static/src/js/grid_renderer.js:396
 #, python-format
 msgid "Total"
 msgstr "Всего"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:393
+#: code:addons/web_grid/static/src/js/grid_renderer.js:394
 #, python-format
 msgid "Total (%s)"
 msgstr ""
@@ -190,7 +191,7 @@ msgstr "Дерево"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:204
+#: code:addons/web_grid/static/src/js/grid_controller.js:203
 #, python-format
 msgid "Undefined"
 msgstr "Не определено"
@@ -198,8 +199,8 @@ msgstr "Не определено"
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:160
-#: code:addons/web_grid/static/src/js/grid_renderer.js:323
-#: code:addons/web_grid/static/src/js/grid_renderer.js:358
+#: code:addons/web_grid/static/src/js/grid_renderer.js:324
+#: code:addons/web_grid/static/src/js/grid_renderer.js:359
 #, python-format
 msgid "Unknown"
 msgstr "Неизвестный"

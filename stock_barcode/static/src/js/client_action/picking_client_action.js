@@ -324,6 +324,10 @@ var PickingClientAction = ClientAction.extend({
      */
     _putInPack: function () {
         var self = this;
+        if (this.currentState.group_tracking_lot === false) {
+            this.do_warn(_t("Delivery Packages needs to be enabled in Inventory Settings to use packages"));
+            return;
+        }
         this.mutex.exec(function () {
             return self._save().then(function () {
                 return self._rpc({

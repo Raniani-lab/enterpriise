@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Cozmin Candea <office@terrabit.ro>, 2018
-# Dorin Hongu <dhongu@gmail.com>, 2018
 # Martin Trigaux, 2019
+# Dorin Hongu <dhongu@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +27,7 @@ msgid "% Time"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:200
+#: code:addons/project_forecast/models/project_forecast.py:202
 #, python-format
 msgid "%s Task(s): %s"
 msgstr ""
@@ -59,7 +59,6 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Allow Forecast"
 msgstr "permite estimare"
 
@@ -121,7 +120,7 @@ msgstr "Companie"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Setări de configurare"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
@@ -191,7 +190,7 @@ msgid "Forecast"
 msgstr "Estimare"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:274
+#: code:addons/project_forecast/models/project_forecast.py:276
 #, python-format
 msgid "Forecast (in %s)"
 msgstr ""
@@ -237,7 +236,7 @@ msgid "Forecast end date should be greater or equal to its start date"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:198
+#: code:addons/project_forecast/models/project_forecast.py:200
 #, python-format
 msgid ""
 "Forecast should not overlap existing forecasts. To solve this, check the "
@@ -255,7 +254,7 @@ msgid "Forecast: view by project"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:164
+#: code:addons/project_forecast/models/project_forecast.py:166
 #, python-format
 msgid "Forecasted time must be positive"
 msgstr "Timpul estimat trebuie sa fie o valoare pozitivă"
@@ -266,7 +265,7 @@ msgid "Future"
 msgstr "Viitor"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:296
+#: code:addons/project_forecast/models/project_forecast.py:298
 #, python-format
 msgid ""
 "Grid adjustment for project forecasts only supports the 'start_date' columns"
@@ -444,7 +443,7 @@ msgid ""
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:170
+#: code:addons/project_forecast/models/project_forecast.py:172
 #, python-format
 msgid "Your task is not in the selected project."
 msgstr "Această sarcină nu este alocată proiectului selectat"
@@ -455,7 +454,7 @@ msgid "day(s)"
 msgstr "zile"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:109
+#: code:addons/project_forecast/models/project_forecast.py:108
 #, python-format
 msgid "undefined"
 msgstr "nedefinit(ă)"

@@ -21,9 +21,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2017-02-15 11:45+0000\n"
 "Last-Translator: Mateus Delai <mde@odoo.com>, 2019\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
@@ -434,7 +434,7 @@ msgid "Assign the ticket to someone."
 msgstr "Atribua o ticket a alguém."
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:423
+#: code:addons/helpdesk/models/helpdesk_ticket.py:429
 #, python-format
 msgid "Assign to me"
 msgstr "Atribua para Mim"
@@ -1609,6 +1609,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_ids
 msgid "Rating"
 msgstr "Classificação"
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg
+msgid "Rating Average"
+msgstr ""
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_feedback

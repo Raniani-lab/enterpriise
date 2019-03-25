@@ -13,7 +13,7 @@
 # e2f <projects@e2f.com>, 2018
 # waveyeung <waveyeung@qq.com>, 2018
 # liulixia <liu.lixia@elico-corp.com>, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
+# bf2549c5415a9287249cba2b8a5823c7, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # JZH-Odoo <jzh@odoo.com>, 2018
 # zpq001 <zpq001@live.com>, 2019
@@ -27,20 +27,20 @@
 # neter ji <jifuyi@qq.com>, 2019
 # snow wang <147156565@qq.com>, 2019
 # rejen he <251442037@qq.com>, 2019
-# Martin Trigaux, 2019
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # keecome <7017511@qq.com>, 2019
 # roye w <159820@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -201,10 +201,10 @@ msgid ""
 "                <table style=\"width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;\">\n"
 "                    <tbody>\n"
 "                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
-"                            <p>Dear %{object.partner_id.name}\n"
+"                            <p>Dear ${object.partner_id.name}\n"
 "                                % if object.partner_id.parent_id:\n"
 "                                    (${object.partner_id.parent_id.name})\n"
-"                                % endif.\n"
+"                                % endif\n"
 "                            </p>\n"
 "                            <p>\n"
 "                                Here is, in attachment, your\n"
@@ -232,74 +232,6 @@ msgid ""
 "            </div>\n"
 "        "
 msgstr ""
-"<?xml version=\"1.0\"?>\n"
-"<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
-"% set access_token = object.rating_get_access_token()\n"
-"    <table style=\"width:600px;margin:5px auto;\">\n"
-"        <tbody>\n"
-"            <tr><td>\n"
-"                <a href=\"/\"><img src=\"/web/binary/company_logo\" style=\"vertical-align:baseline;max-width:100px;\"/></a>\n"
-"            </td><td style=\"text-align:right;vertical-align:middle;\">\n"
-"                    满意度调查\n"
-"            </td></tr>\n"
-"        </tbody>\n"
-"    </table>\n"
-"    <table style=\"width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;\">\n"
-"        <tbody>\n"
-"            <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
-"                <p>您好！</p>\n"
-"                <p>你对我们的服务评分，工单\"<strong>${object.name}</strong>\"\n"
-"                   分配给<strong>${object.rating_get_rated_partner_id().name}</strong>.</p>\n"
-"                <p>感谢你的参与，我们将不断改进。</p>\n"
-"            </td></tr>\n"
-"            <tr><td style=\"padding:10px 20px\">\n"
-"                <table summary=\"o_mail_notification\" style=\"width:100%;border-top:1px solid #e1e1e1;\">\n"
-"                    <tr>\n"
-"                        <td style=\"text-align:center;\">\n"
-"                            <h2 style=\"font-weight:300;font-size:18px;\">\n"
-"                                请告诉我们你对我们的服务的满意度：\n"
-"                            </h2>\n"
-"                            <div style=\"text-color: #888888\">(点击其中的一个表情)</div>\n"
-"                        </td>\n"
-"                    </tr>\n"
-"                    <tr>\n"
-"                        <td style=\"padding:10px 10px;\">\n"
-"                            <table style=\"width:100%;text-align:center;\">\n"
-"                                <tr>\n"
-"                                    <td>\n"
-"                                        <a href=\"/rating/${access_token}/10\">\n"
-"                                            <img alt=\"满意\" src=\"/rating/static/src/img/rating_10.png\" title=\"满意\"/>\n"
-"                                        </a>\n"
-"                                    </td>\n"
-"                                    <td>\n"
-"                                        <a href=\"/rating/${access_token}/5\">\n"
-"                                            <img alt=\"不满意\" src=\"/rating/static/src/img/rating_5.png\" title=\"不满意\"/>\n"
-"                                        </a>\n"
-"                                    </td>\n"
-"                                    <td>\n"
-"                                        <a href=\"/rating/${access_token}/1\">\n"
-"                                            <img alt=\"高满意度\" src=\"/rating/static/src/img/rating_1.png\" title=\"高满意度\"/>\n"
-"                                        </a>\n"
-"                                    </td>\n"
-"                                </tr>\n"
-"                            </table>\n"
-"                        </td>\n"
-"                    </tr>\n"
-"                </table>\n"
-"            </td></tr>\n"
-"            <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.user_id.signature or '') | safe}</td></tr>\n"
-"        </tbody>\n"
-"    </table>\n"
-"    <table style=\"width:600px;margin:auto;text-align:center;font-size:12px;\">\n"
-"        <tbody>\n"
-"            <tr><td style=\"padding-top:10px;color:#afafaf;\">\n"
-"                <p>该客户调查已发送，因为你的工单已经变成<b>${object.stage_id.name}阶段</b></p>\n"
-"                <p>自动发送邮件，通过<a href=\"https://www.odoo.com/page/helpdesk\" style=\"color:#875A7B;text-decoration:none;\">服务台</a> for <a href=\"${object.team_id.company_id.website}\" style=\"color:#875A7B;text-decoration:none;\">${object.team_id.company_id.name}</a></p>\n"
-"            </td></tr>\n"
-"        </tbody>\n"
-"    </table>\n"
-"</div>\n"
-"        "
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_rating
@@ -2073,7 +2005,7 @@ msgid "Invoices"
 msgstr "发票"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_order.py:162
+#: code:addons/sale_subscription/models/sale_order.py:169
 #, python-format
 msgid "Invoicing period: %s - %s"
 msgstr "发票时间：%s-%s"
@@ -2290,11 +2222,6 @@ msgstr "消息"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_id
 msgid "Model"
 msgstr "模型"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
-msgid "Model Description"
-msgstr "模型说明"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_name
@@ -2544,13 +2471,13 @@ msgid "Planned"
 msgstr "已安排"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:444
+#: code:addons/sale_subscription/models/sale_subscription.py:461
 #, python-format
 msgid "Please define Date of Next Invoice of \"%s\"."
 msgstr "请注明下一次发票日期“%s”"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:440
+#: code:addons/sale_subscription/models/sale_subscription.py:457
 #, python-format
 msgid "Please define a sale journal for the company \"%s\"."
 msgstr "请给公司\"%s\"定义一个销售日记账"
@@ -2626,6 +2553,11 @@ msgstr "发票金额。"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_ids
 msgid "Rating"
 msgstr "点评"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_avg
+msgid "Rating Average"
+msgstr "平均评级"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__rating_template_id
@@ -2836,7 +2768,7 @@ msgid "Sales Order Line"
 msgstr "销售订单行"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:149
+#: code:addons/sale_subscription/models/sale_subscription.py:150
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 #, python-format
 msgid "Sales Orders"
@@ -3250,6 +3182,11 @@ msgid "Take action on less satisfied clients"
 msgstr "投诉"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
+msgid "Target Model"
+msgstr "目标模型"
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_tax
 msgid "Taxes"
 msgstr "税"
@@ -3330,7 +3267,7 @@ msgid ""
 msgstr "将在此日期上创建下一张发票，那么期间将会延长。"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:978
+#: code:addons/sale_subscription/models/sale_subscription.py:995
 #, python-format
 msgid "The recurring interval must be positive"
 msgstr "循环间隔必须为正"
@@ -3352,7 +3289,7 @@ msgid ""
 msgstr "这个工具条允许你基于安排的事件来过滤商机。"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:462
+#: code:addons/sale_subscription/models/sale_subscription.py:479
 #, python-format
 msgid "This invoice covers the following period: %s - %s"
 msgstr "这张发票覆盖了以下区间： %s - %s"
@@ -3674,14 +3611,12 @@ msgstr "你还没有任何订阅"
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_action_subscription
 msgid ""
-"You must define a product for everything you purchase,\n"
-"            whether it's a physical product, a consumable or services."
+"You must define a product for everything you sell or purchase,\n"
+"            whether it's a storable product, a consumable or a service."
 msgstr ""
-" 你必须为你所购买的任何商品定义一个产品。\n"
-"         无论是实物产品、消费品还是服务。"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:429
+#: code:addons/sale_subscription/models/sale_subscription.py:446
 #, python-format
 msgid "You must first select a Customer for Subscription %s!"
 msgstr "你必须首先选择一个订阅的客户 %s!"

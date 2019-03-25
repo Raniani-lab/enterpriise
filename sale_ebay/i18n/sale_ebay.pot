@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2019-03-20 14:08+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,13 +25,13 @@ msgid "\n"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:383
+#: code:addons/sale_ebay/models/product.py:395
 #, python-format
 msgid " If you want to set quantity to 0, the Out Of Stock option should be enabled and the listing duration should set to Good 'Til Canceled"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:386
+#: code:addons/sale_ebay/models/product.py:398
 #, python-format
 msgid " You need to have at least 2 variations selected for a multi-variations listing.\n"
 " Or if you try to delete a variation, you cannot do it by unselecting it. Setting the quantity to 0 is the safest method to make a variation unavailable."
@@ -88,7 +88,7 @@ msgid "<span class=\"o_form_label\">eBay Options</span>"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:259
+#: code:addons/sale_ebay/models/product.py:271
 #, python-format
 msgid "All the quantities must be greater than 0 or you need to enable the Out Of Stock option."
 msgstr ""
@@ -159,7 +159,7 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:352
+#: code:addons/sale_ebay/models/product.py:364
 #, python-format
 msgid "Configure The eBay Integrator Now"
 msgstr ""
@@ -288,14 +288,14 @@ msgid "End Item's Listing"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:245
+#: code:addons/sale_ebay/models/product.py:257
 #, python-format
 msgid "Error Encountered.\n"
 " No Variant Set To Be Listed On eBay."
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:389
+#: code:addons/sale_ebay/models/product.py:401
 #, python-format
 msgid "Error Encountered.\n"
 "'%s'"
@@ -341,7 +341,7 @@ msgid "Import eBay config data and sync transactions"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:381
+#: code:addons/sale_ebay/models/product.py:393
 #, python-format
 msgid "Impossible to revise a listing into a multi-variations listing.\n"
 " Create a new listing."
@@ -457,13 +457,13 @@ msgid "Official eBay Category"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:351
+#: code:addons/sale_ebay/models/product.py:363
 #, python-format
 msgid "One parameter is missing."
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:377
+#: code:addons/sale_ebay/models/product.py:389
 #, python-format
 msgid "Or the condition is not compatible with the category."
 msgstr ""
@@ -477,11 +477,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_payment_policy_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_payment_policy_id
 msgid "Payment Policy"
-msgstr ""
-
-#. module: sale_ebay
-#: selection:crm.team,team_type:0
-msgid "Point of Sale"
 msgstr ""
 
 #. module: sale_ebay
@@ -574,18 +569,8 @@ msgid "Revise Item"
 msgstr ""
 
 #. module: sale_ebay
-#: selection:crm.team,team_type:0
-msgid "Sales"
-msgstr ""
-
-#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Channel"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_crm_team
-msgid "Sales Channels"
 msgstr ""
 
 #. module: sale_ebay
@@ -670,20 +655,15 @@ msgid "Sync now"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.model.fields,field_description:sale_ebay.field_crm_team__team_type
-msgid "Team Type"
-msgstr ""
-
-#. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:719
+#: code:addons/sale_ebay/models/product.py:746
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
 ""
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:715
-#: code:addons/sale_ebay/models/product.py:716
+#: code:addons/sale_ebay/models/product.py:742
+#: code:addons/sale_ebay/models/product.py:743
 #, python-format
 msgid "The Buyer Posted :\n"
 ""
@@ -699,11 +679,6 @@ msgstr ""
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_title
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_title
 msgid "The title is restricted to 80 characters"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model.fields,help:sale_ebay.field_crm_team__team_type
-msgid "The type of this channel, it will define the resources this channel uses."
 msgstr ""
 
 #. module: sale_ebay
@@ -756,18 +731,11 @@ msgid "Variants"
 msgstr ""
 
 #. module: sale_ebay
-#: selection:crm.team,team_type:0
-msgid "Website"
-msgstr ""
-
-#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
 msgid "Zip"
 msgstr ""
 
 #. module: sale_ebay
-#: model:crm.team,name:sale_ebay.ebay_sales_team
-#: selection:crm.team,team_type:0
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay"
@@ -862,15 +830,15 @@ msgid "eBay error: Impossible to synchronize the categories. \n"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:483
-#: code:addons/sale_ebay/models/product.py:556
+#: code:addons/sale_ebay/models/product.py:495
+#: code:addons/sale_ebay/models/product.py:568
 #, python-format
 msgid "eBay error: Impossible to synchronize the products. \n"
 "'%s'"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:379
+#: code:addons/sale_ebay/models/product.py:391
 #, python-format
 msgid "eBay is unreachable. Please try again later."
 msgstr ""

@@ -12,9 +12,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-03-20 14:07+0000\n"
 "PO-Revision-Date: 2018-06-25 08:40+0000\n"
 "Last-Translator: Karolina Tonković <karolina.tonkovic@storm.hr>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
@@ -47,7 +47,7 @@ msgid "Employee"
 msgstr "Zaposlenik"
 
 #. module: project_timesheet_forecast
-#: selection:project.timesheet.forecast.report.analysis,type:0
+#: selection:project.timesheet.forecast.report.analysis,line_type:0
 msgid "Forecast"
 msgstr "Predviđanje"
 
@@ -108,7 +108,7 @@ msgid ""
 msgstr ""
 
 #. module: project_timesheet_forecast
-#: selection:project.timesheet.forecast.report.analysis,type:0
+#: selection:project.timesheet.forecast.report.analysis,line_type:0
 msgid "Timesheet"
 msgstr "Evidencija rada"
 
@@ -136,6 +136,6 @@ msgid "Timesheet vs Forecast"
 msgstr ""
 
 #. module: project_timesheet_forecast
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__type
+#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__line_type
 msgid "Type"
 msgstr "Vrsta"

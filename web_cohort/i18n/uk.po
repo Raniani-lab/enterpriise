@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2018-08-02 11:37+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -22,6 +22,12 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#. module: web_cohort
+#: code:addons/web_cohort/controllers/main.py:36
+#, python-format
+msgid "%s - By %s"
+msgstr "%s - Від %s"
 
 #. module: web_cohort
 #. openerp-web
@@ -44,7 +50,7 @@ msgstr "Дія"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/controllers/main.py:59
+#: code:addons/web_cohort/controllers/main.py:61
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:112
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:184
 #, python-format
@@ -87,8 +93,8 @@ msgstr "Перегляд когорти не визначив атрибут \"d
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_controller.js:96
-#: code:addons/web_cohort/static/src/js/cohort_view.js:63
+#: code:addons/web_cohort/static/src/js/cohort_controller.js:98
+#: code:addons/web_cohort/static/src/js/cohort_view.js:56
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:17
 #, python-format
 msgid "Count"
@@ -192,6 +198,7 @@ msgid "Pivot"
 msgstr "Зведена таблиця"
 
 #. module: web_cohort
+#: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
 msgstr "QWeb"
@@ -209,7 +216,7 @@ msgstr "Дерево"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:74
+#: code:addons/web_cohort/static/src/js/cohort_view.js:63
 #, python-format
 msgid "Untitled"
 msgstr "Без назви"

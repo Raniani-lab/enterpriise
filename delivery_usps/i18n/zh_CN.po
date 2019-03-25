@@ -4,21 +4,21 @@
 # 
 # Translators:
 # 肖彤 吴 <944086436@qq.com>, 2017
+# liAnGjiA <liangjia@qq.com>, 2018
 # e2f <projects@e2f.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # Gary Wei <Gary.wei@elico-corp.com>, 2018
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
 # Martin Trigaux, 2019
-# liAnGjiA <liangjia@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,7 +47,7 @@ msgid "Check this box if your account is validated by USPS"
 msgstr "如果你的账户已被USPS确认，勾选此复选框。"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:64
+#: code:addons/delivery_usps/models/usps_request.py:52
 #, python-format
 msgid "Company phone number is invalid. Please insert a US phone number."
 msgstr "公司电话号码是无效的。请输入一个美国电话号码。"
@@ -255,32 +255,32 @@ msgid ""
 msgstr "请使用USPS网站进行检查确保你的包装是可加工的。"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:83
+#: code:addons/delivery_usps/models/usps_request.py:71
 #, python-format
 msgid ""
 "Please choose another service (maximum weight of this service is 4 pounds)"
 msgstr "请选择其他服务（此服务的最大重量是 4 磅）"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:69
+#: code:addons/delivery_usps/models/usps_request.py:57
 #, python-format
 msgid "Please enter a valid ZIP code in recipient address"
 msgstr "请为收货地址添加邮编"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:62
+#: code:addons/delivery_usps/models/usps_request.py:50
 #, python-format
 msgid "Please enter a valid ZIP code in your Company address"
 msgstr "请在你公司地址处输入一个有效的ZIP密码"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:76
+#: code:addons/delivery_usps/models/usps_request.py:64
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "请至少提供一个项目去发货"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:60
+#: code:addons/delivery_usps/models/usps_request.py:48
 #, python-format
 msgid ""
 "Please set country U.S.A in your company address, Service is only available "
@@ -303,7 +303,7 @@ msgid "Provider"
 msgstr "服务商"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:372
+#: code:addons/delivery_usps/models/usps_request.py:332
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
 msgstr "收件人地址无法找到。请检查地址是否存在。"
@@ -447,7 +447,7 @@ msgid "USPS Domestic Flat Rate Envelope"
 msgstr "USPS 国内统一费用信封"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:73
+#: code:addons/delivery_usps/models/usps_request.py:61
 #, python-format
 msgid ""
 "USPS Domestic is used only to ship inside of the U.S.A. Please change the "
@@ -467,7 +467,7 @@ msgid "USPS International Flat Rate Box"
 msgstr "USPS国际统一费用纸盒"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:71
+#: code:addons/delivery_usps/models/usps_request.py:59
 #, python-format
 msgid ""
 "USPS International is used only to ship outside of the U.S.A. Please change "
@@ -508,7 +508,7 @@ msgid "Usps Size Container"
 msgstr "USPS 尺寸容器"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:374
+#: code:addons/delivery_usps/models/usps_request.py:334
 #, python-format
 msgid "Your company or recipient ZIP code is incorrect."
 msgstr "贵公司邮编填写错误"
@@ -517,8 +517,3 @@ msgstr "贵公司邮编填写错误"
 #: selection:delivery.carrier,delivery_type:0
 msgid "bpost"
 msgstr "bpost"
-
-#. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
-msgid "true"
-msgstr "真"

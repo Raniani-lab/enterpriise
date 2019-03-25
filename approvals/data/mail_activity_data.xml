@@ -6,7 +6,6 @@
             <field name="icon">fa-check-circle</field>
             <field name="sequence">4</field>
             <field name="res_model_id" ref="approvals.model_approval_request"/>
-            <field name="is_master_data">True</field>
         </record>
     </data>
 </odoo>

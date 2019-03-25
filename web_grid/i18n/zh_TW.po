@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -35,7 +35,7 @@ msgstr "活動"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:148
+#: code:addons/web_grid/static/src/js/grid_controller.js:147
 #: code:addons/web_grid/static/src/xml/grid_view.xml:5
 #, python-format
 msgid "Add a Line"
@@ -130,6 +130,7 @@ msgid "Previous"
 msgstr "前一個"
 
 #. module: web_grid
+#: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
 msgstr "QWeb"
@@ -163,14 +164,14 @@ msgstr "今日"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:395
+#: code:addons/web_grid/static/src/js/grid_renderer.js:396
 #, python-format
 msgid "Total"
 msgstr "合計"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:393
+#: code:addons/web_grid/static/src/js/grid_renderer.js:394
 #, python-format
 msgid "Total (%s)"
 msgstr ""
@@ -183,7 +184,7 @@ msgstr "樹形"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:204
+#: code:addons/web_grid/static/src/js/grid_controller.js:203
 #, python-format
 msgid "Undefined"
 msgstr "未定義的"
@@ -191,8 +192,8 @@ msgstr "未定義的"
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:160
-#: code:addons/web_grid/static/src/js/grid_renderer.js:323
-#: code:addons/web_grid/static/src/js/grid_renderer.js:358
+#: code:addons/web_grid/static/src/js/grid_renderer.js:324
+#: code:addons/web_grid/static/src/js/grid_renderer.js:359
 #, python-format
 msgid "Unknown"
 msgstr "未知"

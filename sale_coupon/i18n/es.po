@@ -3,15 +3,34 @@
 # * sale_coupon
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Miquel Torner <miq@odoo.com>, 2018
+# oihane <oihanecruce@gmail.com>, 2017
+# Leonardo Chianea <noamixcontenidos@gmail.com>, 2017
+# Pedro M. Baeza <pedro.baeza@gmail.com>, 2017
+# Ivan Nieto <ivan.n.s@tuta.io>, 2017
+# RGB Consulting <odoo@rgbconsulting.com>, 2017
+# Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2017
+# Mateo Tibaquirá Palacios <nestormateo@gmail.com>, 2017
+# Jesus Zapata <jesus@vauxoo.com>, 2017
+# Carles Antoli <carlesantoli@hotmail.com>, 2017
+# Antonio Trueba, 2017
+# Ana Juaristi <ajuaristio@gmail.com>, 2017
+# Miguel Orueta <mo@landoo.es>, 2017
+# Luis M. Triana <luis.triana@jarsa.com.mx>, 2017
+# Christopher Ormaza <chris.ormaza@gmail.com>, 2017
+# José Vicente <txusev@gmail.com>, 2017
+# Luis M. Ontalba <luis.martinez@tecnativa.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Nicolás Broggi <rnbroggi@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Miquel Torner <miq@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Miquel Torner <miq@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2017-02-15 11:46+0000\n"
+"Last-Translator: Miquel Torner <miq@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -183,13 +202,13 @@ msgid ""
 msgstr ""
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:69
+#: code:addons/sale_coupon/models/sale_coupon.py:68
 #, python-format
 msgid "A Coupon is already applied for the same reward"
 msgstr "Ya se ha aplicado un cupón para la misma recompensa"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:63
+#: code:addons/sale_coupon/models/sale_coupon.py:62
 #: code:addons/sale_coupon/models/sale_coupon_program.py:155
 #, python-format
 msgid "A minimum of %s %s should be purchased to get the reward"
@@ -299,7 +318,7 @@ msgid "Apply on First"
 msgstr "Aplicar en el primero"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:81
+#: code:addons/sale_coupon/models/sale_coupon.py:80
 #: code:addons/sale_coupon/models/sale_coupon_program.py:176
 #, python-format
 msgid "At least one of the required conditions is not met to get the reward!"
@@ -384,7 +403,7 @@ msgid "Company"
 msgstr "Compañía"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:101
+#: code:addons/sale_coupon/models/sale_coupon.py:100
 #, python-format
 msgid "Compose Email"
 msgstr "Componer correo electrónico"
@@ -572,8 +591,8 @@ msgstr "El porcentaje del descuento debe comprender entre 1 y 100"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_order.py:132
-#: code:addons/sale_coupon/models/sale_order.py:151
-#: code:addons/sale_coupon/models/sale_order.py:184
+#: code:addons/sale_coupon/models/sale_order.py:152
+#: code:addons/sale_coupon/models/sale_order.py:185
 #, python-format
 msgid "Discount: "
 msgstr ""
@@ -688,7 +707,7 @@ msgid "Generation Type"
 msgstr "Tipo de generación"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:71
+#: code:addons/sale_coupon/models/sale_coupon.py:70
 #, python-format
 msgid "Global discounts are not cumulable."
 msgstr "Los descuentos globales no son acumulables."
@@ -711,7 +730,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:67
+#: code:addons/sale_coupon/models/sale_coupon.py:66
 #, python-format
 msgid "Invalid partner."
 msgstr "Socio inválido."
@@ -883,13 +902,13 @@ msgid "On Specific Product"
 msgstr "En producto específico"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:179
+#: code:addons/sale_coupon/models/sale_order.py:180
 #, python-format
 msgid "On product with following tax: "
 msgstr ""
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:181
+#: code:addons/sale_coupon/models/sale_order.py:182
 #, python-format
 msgid "On product with following taxes: "
 msgstr ""
@@ -1105,11 +1124,6 @@ msgid "Rule Minimum Amount Tax Inclusion"
 msgstr "Inclusión tributaria de la cantidad mínima exigida"
 
 #. module: sale_coupon
-#: model:ir.model,name:sale_coupon.model_sale_order
-msgid "Sale Order"
-msgstr "Pedido de venta"
-
-#. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Sales"
 msgstr "Ventas"
@@ -1151,6 +1165,7 @@ msgstr "Regla de cupón de ventas"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_order_action
+#: model:ir.model,name:sale_coupon.model_sale_order
 msgid "Sales Order"
 msgstr "Pedido de venta"
 
@@ -1228,13 +1243,13 @@ msgid "The coupon code must be unique!"
 msgstr "¡El código de descuento debe ser exclusivo!"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:65
+#: code:addons/sale_coupon/models/sale_coupon.py:64
 #, python-format
 msgid "The coupon program for %s is in draft or closed state"
 msgstr "El programa de cupones de %s está en proyecto o en estado cerrado"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:75
+#: code:addons/sale_coupon/models/sale_coupon.py:74
 #: code:addons/sale_coupon/models/sale_coupon_program.py:171
 #, python-format
 msgid "The customer doesn't have access to this reward."
@@ -1271,7 +1286,7 @@ msgid "The promotional offer is already applied on this order"
 msgstr "La oferta promocional ya se halla aplicada a este pedido"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:73
+#: code:addons/sale_coupon/models/sale_coupon.py:72
 #: code:addons/sale_coupon/models/sale_coupon_program.py:169
 #, python-format
 msgid ""
@@ -1298,7 +1313,7 @@ msgid "The start date must be before the end date"
 msgstr "La fecha de inicio debe ser anterior a la fecha de finalización"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:60
+#: code:addons/sale_coupon/models/sale_coupon.py:59
 #, python-format
 msgid "This coupon %s exists but the origin sales order is not validated yet."
 msgstr ""
@@ -1306,7 +1321,7 @@ msgstr ""
 "validada."
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:58
+#: code:addons/sale_coupon/models/sale_coupon.py:57
 #, python-format
 msgid "This coupon %s has been used or is expired."
 msgstr "El cupón %s ya ha sido usado o ha caducado."
@@ -1373,7 +1388,7 @@ msgid "You can not delete a program in active state"
 msgstr "No puede eliminar un programa en estado activo"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon.py:78
+#: code:addons/sale_coupon/models/sale_coupon.py:77
 #, python-format
 msgid ""
 "You don't have the required product quantities on your sales order. All the "
@@ -1407,15 +1422,7 @@ msgid "Your reward coupon from ${object.program_id.company_id.name} "
 msgstr ""
 
 #. module: sale_coupon
-#: model:product.product,weight_uom_name:sale_coupon.product_product_10_percent_discount
-#: model:product.product,weight_uom_name:sale_coupon.product_product_free_large_cabinet
-#: model:product.template,weight_uom_name:sale_coupon.product_product_10_percent_discount_product_template
-#: model:product.template,weight_uom_name:sale_coupon.product_product_free_large_cabinet_product_template
-msgid "kg"
-msgstr "kg"
-
-#. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_order.py:202
+#: code:addons/sale_coupon/models/sale_order.py:203
 #, python-format
 msgid "limited to "
 msgstr ""

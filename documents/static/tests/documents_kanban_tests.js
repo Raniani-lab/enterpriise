@@ -890,6 +890,41 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
+    QUnit.skip('document inspector: open preview while modifying document', async function (assert) {
+        assert.expect(2);
+        var def = new Promise(function () {});
+
+        var kanban = await createView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="name"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+            mockRPC: function (route, args) {
+                if (args.method === 'write') {
+                    return def;
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp)'));
+        kanban.$('input[name=name]').val("foo").trigger('input');
+
+        await testUtils.dom.click(kanban.$('.o_document_preview img'));
+        assert.containsNone(kanban, '.o_viewer_content',
+            "should not have a document preview");
+
+        def.resolve();
+        await testUtils.nextTick();
+        assert.containsOnce(kanban, '.o_viewer_content',
+                "should have a document preview");
+        await testUtils.dom.click(kanban.$('.o_close_btn'));
+        kanban.destroy();
+    });
+
     QUnit.test('document inspector: can delete records', async function (assert) {
         assert.expect(5);
 

@@ -31,6 +31,8 @@ msgid ""
 "\"End Date\" of the budget line should be included in the Period of the "
 "budget"
 msgstr ""
+"Төсвийн мөр дээрх \"Дуусах огноо\" нь төсвийн үндсэн мөчлөгт багтаж байх "
+"ёстой"
 
 #. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:274
@@ -39,11 +41,13 @@ msgid ""
 "\"Start Date\" of the budget line should be included in the Period of the "
 "budget"
 msgstr ""
+"Төсвийн мөр дээрх \"Эхлэх огноо\" нь төсвийн үндсэн мөчлөгт багтаж байх "
+"ёстой"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_kanban
 msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Мөчлөг\" title=\"Мөчлөг\"/>"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
@@ -74,12 +78,12 @@ msgstr "Ажилбарын Төлөв"
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
 msgid "Amount really earned/spent."
-msgstr ""
+msgstr "Бодитоор цуглуулсан/зарцуулсан дүн."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__theoritical_amount
 msgid "Amount you are supposed to have earned/spent at this date."
-msgstr ""
+msgstr "Энэ огноонд цуглуулсан/зарцуулсан байх ёстой дүн."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__planned_amount
@@ -87,6 +91,8 @@ msgid ""
 "Amount you plan to earn/spend. Record a positive amount if it is a revenue "
 "and a negative amount if it is a cost."
 msgstr ""
+"Таны цуглуулахаар/зарцуулахаар төлөвлөсөн дүн. Орлого төсөвлөж байвал нэмэх "
+"тэмдэгтэй утга, зардал төсөвлөж байвал хасах тэмдэгтэй утга оруулна."
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_analytic_account
@@ -97,7 +103,7 @@ msgstr "Шинжилгээний данс"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_group_id
 msgid "Analytic Group"
-msgstr ""
+msgstr "Шинжилгээний бүлэг"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -150,7 +156,7 @@ msgstr "Төсвийн нэр"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__crossovered_budget_state
 msgid "Budget State"
-msgstr ""
+msgstr "Төсвийн төлөв"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_budget_post
@@ -179,7 +185,7 @@ msgstr "Төсөв"
 #: model:ir.actions.act_window,name:account_budget.act_crossovered_budget_lines_view
 #: model:ir.ui.menu,name:account_budget.menu_act_crossovered_budget_lines_view
 msgid "Budgets Analysis"
-msgstr ""
+msgstr "Төсвийн шинжилгээ"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -209,6 +215,8 @@ msgid ""
 "Comparison between practical and theoretical amount. This measure tells you "
 "if you are below or over budget."
 msgstr ""
+"Онолын дүн болон бодитоор хэрэгжсэн дүн хоорондын харьцуулалт. Энэ "
+"хэмжигдэхүүн нь таны төсөв хэтэрч байгаа үгүй эсэхийг илтгэнэ."
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -272,7 +280,7 @@ msgstr "Дуусах Огноо"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Entries..."
-msgstr ""
+msgstr "Гүйлгээнүүд..."
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_follower_ids
@@ -326,7 +334,7 @@ msgstr "Үүнийг сонговол алдаа үүсэх үед зурвас�
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__is_above_budget
 msgid "Is Above Budget"
-msgstr ""
+msgstr "Төсвөөс хэтэрсэн эсэх"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_is_follower
@@ -398,7 +406,7 @@ msgstr "Дараагийн ажилбарын төрөл"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Not Cancelled"
-msgstr ""
+msgstr "Цуцлагдаагүй"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction_counter
@@ -455,7 +463,7 @@ msgstr "Төлөвлөсөн дүн"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Planned amount"
-msgstr ""
+msgstr "Төлөвлөсөн дүн"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__practical_amount
@@ -468,7 +476,7 @@ msgstr "Бодит дүн"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Practical amount"
-msgstr ""
+msgstr "Хэрэгжсэн дүн"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -518,7 +526,7 @@ msgstr ""
 #: code:addons/account_budget/models/account_budget.py:29
 #, python-format
 msgid "The budget must have at least one account."
-msgstr ""
+msgstr "Төсөвт дор хаяж нэг данс тохируулагдсан байх ёстой."
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__theoritical_amount
@@ -535,7 +543,7 @@ msgstr "Онолын дүн"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Theoritical amount"
-msgstr ""
+msgstr "Онолын дүн"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
@@ -571,6 +579,8 @@ msgstr "Уншаагүй зурвасын тоолуур"
 #: model_terms:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
 msgid "Use budgets to compare actual with expected revenues and costs"
 msgstr ""
+"Төсвийн бүртгэл хийж төлөвлөсөн зардал болон урьдчилсан орлогыг гүйцэтгэлтэй"
+" нь харьцуулах"
 
 #. module: account_budget
 #: selection:crossovered.budget,state:0
@@ -594,3 +604,5 @@ msgid ""
 "You have to enter at least a budgetary position or analytic account on a "
 "budget line."
 msgstr ""
+"Та төсвийн мөр дээр заавал ямар нэг төсвийн чиглэл эсвэл шинжилгээний данс "
+"сонгох ёстой."

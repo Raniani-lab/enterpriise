@@ -6,13 +6,13 @@
 # Sergio Flores <vitavitae1@gmail.com>, 2017
 # Mateo Tibaquirá Palacios <nestormateo@gmail.com>, 2017
 # José Vicente <txusev@gmail.com>, 2017
-# e2f_es_ t6 <e2f_es_t6@outlook.com>, 2017
+# b9b2db555321dc69d8faed263d46c5b6, 2017
 # Lina Maria Avendaño Carvajal <lina8823@gmail.com>, 2017
 # Alejandro Die Sanchis <marketing@domatix.com>, 2017
 # Antonio Trueba, 2017
 # José Matias Zuazo <jose.zuazo@tpsistemas.com.ar>, 2017
 # Alejandro Santana <alejandrosantana@anubia.es>, 2017
-# e2f_es_ t7 <e2f_es_t7@outlook.com>, 2017
+# 36700cd705c35e1852bdffcd0b296648, 2017
 # ES T2 <e2f48ds4f2ds1@outlook.com>, 2017
 # Julián Andrés Osorio López <mcjulian1107@gmail.com>, 2017
 # Pedro M. Baeza <pedro.baeza@gmail.com>, 2018
@@ -24,16 +24,16 @@
 # Nicolás Broggi <rnbroggi@gmail.com>, 2018
 # Miquel Torner <miq@odoo.com>, 2018
 # Martin Trigaux, 2019
-# e2f_EPV Translator <e2f_EPV@outlook.com>, 2019
-# e2f_es_ t8 <e2f_es_t8@outlook.com>, 2019
+# 966ff43e6966712895a590e7320ca288, 2019
+# 715cd7e95e9ee8a7f9785bf3e53bc76f, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:15+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
 "Last-Translator: Gabriel Umana <gabriel.umana@delfixcr.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -85,11 +85,6 @@ msgstr ", todo el día"
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "-- select a country --"
 msgstr "-- elija un país --"
-
-#. module: website_calendar
-#: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
-msgid "1 Hour SMS text"
-msgstr "1 hora de texto SMS"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -272,7 +267,6 @@ msgid "Appointment<span class=\"chevron\"/>"
 msgstr "Cita<span class=\"chevron\"/>"
 
 #. module: website_calendar
-#: model:ir.module.category,name:website_calendar.module_category_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_graph
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_pivot
@@ -313,6 +307,11 @@ msgstr "Empleados disponibles"
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
 msgid "Calendar"
 msgstr "Calendario"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__can_publish
+msgid "Can publish"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
@@ -686,6 +685,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.calendar_appointment_type_action
 #: model:ir.actions.act_window,name:website_calendar.calendar_event_action_reporting
+#: model:ir.module.category,name:website_calendar.module_category_calendar
 #: model:ir.ui.menu,name:website_calendar.appointment_type_menu
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report_all
 #: model:ir.ui.menu,name:website_calendar.website_appointment_type_menu
@@ -759,6 +759,11 @@ msgstr "Restringir países"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_seo_optimized
 msgid "SEO optimized"
+msgstr ""
+
+#. module: website_calendar
+#: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
+msgid "SMS Text Message - 1 Hour(s)"
 msgstr ""
 
 #. module: website_calendar

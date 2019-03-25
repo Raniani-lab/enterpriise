@@ -6,18 +6,18 @@
 # nasaaskii <nasaaskii@gmail.com>, 2018
 # Ganbold BATKHUYAG <gbatkhuyag@gmail.com>, 2018
 # Onii Onii <onii0223@yahoo.com>, 2018
-# Martin Trigaux, 2019
 # Otgonbayar.A <gobi.mn@gmail.com>, 2019
 # Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2019
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:301
+#: code:addons/voip/static/src/js/user_agent.js:314
 #, python-format
 msgid " Please check your configuration."
 msgstr ""
@@ -115,6 +115,12 @@ msgid "Call Name"
 msgstr ""
 
 #. module: voip
+#: code:addons/voip/models/voip_queue_mixin.py:37
+#, python-format
+msgid "Call activity type is not of category \"phonecall\""
+msgstr ""
+
+#. module: voip
 #: code:addons/voip/models/voip_phonecall.py:196
 #, python-format
 msgid "Call from "
@@ -129,7 +135,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:644
+#: code:addons/voip/static/src/js/dialing_panel.js:678
 #, python-format
 msgid "Calling "
 msgstr "Залгаж байна"
@@ -161,7 +167,9 @@ msgstr "Цуцлагдсан"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_mail_activity_type__category
-msgid "Categories may trigger specific behavior like opening calendar view"
+msgid ""
+"Categories may trigger specific behavior like opening calendar view or "
+"automatically mark as done when a document is uploaded"
 msgstr ""
 
 #. module: voip
@@ -171,7 +179,7 @@ msgstr "Ангилал"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:473
+#: code:addons/voip/static/src/js/dialing_panel.js:498
 #, python-format
 msgid "Click to unblock"
 msgstr "Нээхийн тулд товш"
@@ -187,6 +195,13 @@ msgstr "Хаах"
 #: model:ir.model,name:voip.model_res_config_settings
 msgid "Config Settings"
 msgstr "Тохируулга"
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:295
+#, python-format
+msgid "Connecting..."
+msgstr ""
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_partner
@@ -225,7 +240,7 @@ msgstr "Захиалагч"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:455
+#: code:addons/voip/static/src/js/dialing_panel.js:478
 #, python-format
 msgid "Customer unavailable"
 msgstr "Харилцагч холбогдох боломжгүй"
@@ -364,13 +379,14 @@ msgstr "Орлого"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:471
+#: code:addons/voip/static/src/js/user_agent.js:485
 #, python-format
 msgid "Incoming call from "
 msgstr "-с орох дуудлага"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__has_call_in_queue
+#: model:ir.model.fields,field_description:voip.field_res_users__has_call_in_queue
 #: model:ir.model.fields,field_description:voip.field_voip_queue_mixin__has_call_in_queue
 msgid "Is in the Call Queue"
 msgstr "Дуудлага хүлээлгэнд байна"
@@ -461,6 +477,7 @@ msgstr "Гар утас"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_mobile
+#: model:ir.model.fields,field_description:voip.field_res_users__sanitized_mobile
 msgid "Mobile number sanitized"
 msgstr ""
 
@@ -504,16 +521,11 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:207
-#: code:addons/voip/static/src/js/user_agent.js:212
+#: code:addons/voip/static/src/js/user_agent.js:219
+#: code:addons/voip/static/src/js/user_agent.js:224
 #, python-format
 msgid "One or more parameter is missing. Please check your configuration."
 msgstr "Нэг болон түүнээс дээш тохиргоо буруу байна. Тохиргоогоо шалгана уу."
-
-#. module: voip
-#: selection:mail.activity.type,category:0
-msgid "Other"
-msgstr "Бусад"
 
 #. module: voip
 #: selection:voip.phonecall,phonecall_type:0
@@ -544,14 +556,15 @@ msgid "Phone"
 msgstr "Утас"
 
 #. module: voip
-#: code:addons/voip/models/voip_queue_mixin.py:46
+#: code:addons/voip/models/voip_queue_mixin.py:50
 #, python-format
 msgid ""
-"Phone call cannot be created. It is any phone number linked to record %s ?"
+"Phone call cannot be created. Is it any phone number linked to record %s?"
 msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
+#: model:ir.model.fields,field_description:voip.field_res_users__sanitized_phone
 msgid "Phone number sanitized"
 msgstr ""
 
@@ -577,14 +590,14 @@ msgstr "Утасны дуудлага"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:168
+#: code:addons/voip/static/src/js/dialing_panel.js:177
 #, python-format
 msgid "Please check if a phone number is given for the current phonecall"
 msgstr "Энэ дуудлагад утасны дугаар оруулсан эсэхийг шалгана уу"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:327
+#: code:addons/voip/static/src/js/user_agent.js:341
 #, python-format
 msgid "Please check your configuration.</br> (Reason receives :"
 msgstr "Тохиргоогоо шалгана уу.</br>(Алдааны шалтгаан:"
@@ -692,8 +705,13 @@ msgid "Specific Date"
 msgstr "Онцгойлсон өдөр"
 
 #. module: voip
+#: selection:mail.activity.type,category:0
+msgid "Standard"
+msgstr "Стандарт"
+
+#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:644
+#: code:addons/voip/static/src/js/dialing_panel.js:678
 #, python-format
 msgid "Start Calling"
 msgstr "Дуудлага эхлүүлэх"
@@ -726,14 +744,14 @@ msgstr "Таны WebSocket - н URL "
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:456
+#: code:addons/voip/static/src/js/dialing_panel.js:479
 #, python-format
 msgid "The customer is temporary unavailable. Please try later."
 msgstr "Захиалагч түр хугацаагаар боломжгүй байна. Дараа дахин оролдоно уу."
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:542
+#: code:addons/voip/static/src/js/user_agent.js:570
 #, python-format
 msgid ""
 "The number is incorrect, the user credentials could be wrong or the "
@@ -743,14 +761,14 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:167
+#: code:addons/voip/static/src/js/dialing_panel.js:176
 #, python-format
 msgid "The phonecall has no number"
 msgstr "Энэ дуудлагыг хийхэд дугаараа цуглуул"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:233
+#: code:addons/voip/static/src/js/user_agent.js:244
 #, python-format
 msgid ""
 "The server configuration could be wrong. Please check your configuration."
@@ -766,7 +784,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:300
+#: code:addons/voip/static/src/js/user_agent.js:313
 #, python-format
 msgid "The websocket uri could be wrong."
 msgstr ""
@@ -817,6 +835,11 @@ msgstr ""
 #, python-format
 msgid "Unknown"
 msgstr "Үл мэдэгдэх"
+
+#. module: voip
+#: selection:mail.activity.type,category:0
+msgid "Upload Document"
+msgstr ""
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users
@@ -880,16 +903,16 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:178
-#: code:addons/voip/static/src/js/dialing_panel.js:272
-#: code:addons/voip/static/src/js/dialing_panel.js:293
+#: code:addons/voip/static/src/js/dialing_panel.js:187
+#: code:addons/voip/static/src/js/dialing_panel.js:289
+#: code:addons/voip/static/src/js/dialing_panel.js:310
 #, python-format
 msgid "You are already in a call"
 msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:285
+#: code:addons/voip/static/src/js/user_agent.js:298
 #, python-format
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
@@ -914,7 +937,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:326
+#: code:addons/voip/static/src/js/user_agent.js:340
 #, python-format
 msgid "the connection cannot be made. "
 msgstr "холболт хийгдэх боломжгүй."

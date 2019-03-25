@@ -142,6 +142,7 @@
             </script>
             <t t-call="web_studio.compiled_assets_studio"/>
 
+            <script type="text/javascript" src="/web_studio/static/tests/action_editor_action_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/app_creator_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/edit_menu_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/mock_server.js"></script>

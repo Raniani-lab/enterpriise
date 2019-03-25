@@ -140,12 +140,11 @@ var ActionEditorAction = AbstractAction.extend({
                             });
                         },
                     };
-                    if (view_type === 'gantt' || view_type === 'calendar') {
+                    if (_.contains(['gantt', 'calendar', 'cohort'], view_type)) {
                         params.view_type = view_type;
-                        new NewViewDialog(self, params).open();
-                    } else if (view_type === 'cohort') {
-                        params.view_type = view_type;
-                        params.mandatory_stop_date = true;
+                        if (_.contains(['gantt', 'cohort'], view_type)) {
+                            params.mandatory_stop_date = true;
+                        }
                         new NewViewDialog(self, params).open();
                     } else {
                         var message = result;

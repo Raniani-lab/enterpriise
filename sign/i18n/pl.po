@@ -10,21 +10,21 @@
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2019
 # Tomasz Leppich <t.leppich@gmail.com>, 2019
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
 # Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
 # Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
 # Paweł Wodyński <pw@myodoo.pl>, 2019
 # Wiktor Kaźmierczak <wik92tor@wp.pl>, 2019
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:41+0000\n"
-"Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
+"Last-Translator: Piotr Szlązak <szlazakpiotr@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +34,7 @@ msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_partner__signature_count
+#: model:ir.model.fields,field_description:sign.field_res_users__signature_count
 msgid "# Signatures"
 msgstr ""
 
@@ -44,7 +45,7 @@ msgid "%s : Signature request"
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/controllers/main.py:231
+#: code:addons/sign/controllers/main.py:218
 #, python-format
 msgid "%s couldn't sign the document due to an insufficient credit error."
 msgstr ""
@@ -57,7 +58,7 @@ msgid "%s has been signed"
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/controllers/main.py:255
+#: code:addons/sign/controllers/main.py:242
 #, python-format
 msgid "%s validated the signature by SMS with the phone number %s."
 msgstr ""
@@ -129,7 +130,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:95
+#: code:addons/sign/static/src/xml/sign_common.xml:58
 #, python-format
 msgid ""
 "A SMS will be sent to the following phone number. Please update it if it's "
@@ -160,35 +161,35 @@ msgstr "Stan czynności"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:253
+#: code:addons/sign/static/src/js/sign_backend.js:254
 #, python-format
 msgid "Add Initials"
 msgstr "Dodaj inicjały"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:262
+#: code:addons/sign/static/src/js/sign_backend.js:263
 #, python-format
 msgid "Add on all pages"
 msgstr "Dodaj na wszystkie strony"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:258
+#: code:addons/sign/static/src/js/sign_backend.js:259
 #, python-format
 msgid "Add once"
 msgstr "Dodaj jeden"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:623
+#: code:addons/sign/static/src/js/sign_common.js:639
 #, python-format
 msgid "Adopt Your Signature"
 msgstr "Zaadoptuj swój podpis"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:629
+#: code:addons/sign/static/src/js/sign_common.js:645
 #, python-format
 msgid "Adopt and Sign"
 msgstr "Zaadoptuj i podpisz"
@@ -216,13 +217,6 @@ msgid "Attachment Count"
 msgstr "Ilość Załączników"
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:48
-#, python-format
-msgid "Auto"
-msgstr "Automatycznie"
-
-#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
 msgid "Automatic Partner Field"
 msgstr "Automatyczne pole partnera"
@@ -234,7 +228,7 @@ msgstr "Awatar"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:54
+#: code:addons/sign/static/src/xml/sign_common.xml:38
 #, python-format
 msgid ""
 "By clicking Adopt and Sign, I agree that the chosen signature/initials will "
@@ -249,8 +243,8 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:632
-#: code:addons/sign/static/src/js/sign_common.js:908
+#: code:addons/sign/static/src/js/sign_common.js:648
+#: code:addons/sign/static/src/js/sign_common.js:872
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
@@ -276,14 +270,7 @@ msgstr "Wybierz szablon"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:46
-#, python-format
-msgid "Clear Signature"
-msgstr "Czytelny podpis"
-
-#. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:792
+#: code:addons/sign/static/src/js/sign_common.js:756
 #, python-format
 msgid "Click to start"
 msgstr "Kliknij aby zacząć"
@@ -342,7 +329,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:373
+#: code:addons/sign/static/src/js/sign_common.js:368
 #, python-format
 msgid "Create: \""
 msgstr "Utwórz: \""
@@ -388,7 +375,7 @@ msgstr "Klient"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:186
+#: code:addons/sign/static/src/js/sign_backend.js:187
 #, python-format
 msgid "Customize Field"
 msgstr "Dostosuj plik"
@@ -473,9 +460,9 @@ msgstr "Strona dokumentu"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:123
-#: code:addons/sign/static/src/xml/sign_common.xml:129
-#: code:addons/sign/static/src/xml/sign_common.xml:134
+#: code:addons/sign/static/src/xml/sign_common.xml:86
+#: code:addons/sign/static/src/xml/sign_common.xml:92
+#: code:addons/sign/static/src/xml/sign_common.xml:97
 #, python-format
 msgid "Document Sign"
 msgstr "Podpis dokumentu"
@@ -487,7 +474,7 @@ msgstr "Szablon dokumentu"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:923
+#: code:addons/sign/static/src/js/sign_backend.js:924
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Download Document"
@@ -513,13 +500,6 @@ msgid "Drag & Drop a field in the PDF"
 msgstr "Przeciągnij i upuść pole w PDF"
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:47
-#, python-format
-msgid "Draw"
-msgstr "Podpisz"
-
-#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Dropdown menu"
@@ -534,7 +514,7 @@ msgstr "Duplikuj"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:873
+#: code:addons/sign/static/src/js/sign_backend.js:874
 #, python-format
 msgid "Duplicated Template"
 msgstr "Duplikuj Szablon"
@@ -574,12 +554,12 @@ msgstr "Pracownik"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:938
-#: code:addons/sign/static/src/js/sign_common.js:965
-#: code:addons/sign/static/src/js/sign_common.js:1022
-#: code:addons/sign/static/src/js/sign_common.js:1402
-#: code:addons/sign/static/src/js/sign_common.js:1428
-#: code:addons/sign/static/src/js/sign_common.js:1472
+#: code:addons/sign/static/src/js/sign_common.js:902
+#: code:addons/sign/static/src/js/sign_common.js:929
+#: code:addons/sign/static/src/js/sign_common.js:986
+#: code:addons/sign/static/src/js/sign_common.js:1362
+#: code:addons/sign/static/src/js/sign_common.js:1388
+#: code:addons/sign/static/src/js/sign_common.js:1434
 #, python-format
 msgid "Error"
 msgstr "Błąd"
@@ -628,8 +608,8 @@ msgstr "Nazwa pliku"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:885
-#: code:addons/sign/static/src/js/sign_common.js:986
+#: code:addons/sign/static/src/js/sign_common.js:849
+#: code:addons/sign/static/src/js/sign_common.js:950
 #, python-format
 msgid "Final Validation"
 msgstr "Ostateczne zatwierdzenie"
@@ -655,13 +635,6 @@ msgid "From:"
 msgstr "Od:"
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:38
-#, python-format
-msgid "Full Name"
-msgstr "Pełna nazwa"
-
-#. module: sign
 #: selection:sign.request,state:0
 msgid "Fully Signed"
 msgstr "W pełni podpisane"
@@ -673,7 +646,7 @@ msgstr "Przyszłe czynności"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1037
+#: code:addons/sign/static/src/js/sign_common.js:1001
 #, python-format
 msgid "Generate PDF"
 msgstr ""
@@ -834,13 +807,6 @@ msgid "Link to Share"
 msgstr "Lind do wysłania"
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:49
-#, python-format
-msgid "Load"
-msgstr "Załaduj"
-
-#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Logo"
 msgstr "Logo"
@@ -852,7 +818,7 @@ msgstr "Długość geograficzna"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:124
+#: code:addons/sign/static/src/xml/sign_common.xml:87
 #, python-format
 msgid "Made with Odoo Sign"
 msgstr ""
@@ -970,7 +936,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:129
+#: code:addons/sign/static/src/js/sign_backend.js:130
 #, python-format
 msgid "New Template"
 msgstr "Nowy szablon"
@@ -992,14 +958,14 @@ msgstr "Typ następnej czynności"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1122
+#: code:addons/sign/static/src/js/sign_common.js:1086
 #, python-format
 msgid "Next signatory (%s)"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1119
+#: code:addons/sign/static/src/js/sign_common.js:1083
 #, python-format
 msgid "Next signatory is %s"
 msgstr ""
@@ -1052,7 +1018,7 @@ msgstr "Urzędnik"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:1063
+#: code:addons/sign/static/src/js/sign_backend.js:1064
 #, python-format
 msgid "Ok"
 msgstr "Ok"
@@ -1108,7 +1074,7 @@ msgstr "Przeterminowane"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1033
+#: code:addons/sign/static/src/js/sign_common.js:997
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
 #, python-format
 msgid "PDF is encrypted"
@@ -1127,7 +1093,7 @@ msgstr "Pole partnera używane do automatycznego uzupełniania pól tego typu"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1021
+#: code:addons/sign/static/src/js/sign_common.js:985
 #, python-format
 msgid "Password is incorrect."
 msgstr ""
@@ -1139,7 +1105,7 @@ msgstr "Telefon"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:97
+#: code:addons/sign/static/src/xml/sign_common.xml:60
 #, python-format
 msgid "Phone number..."
 msgstr ""
@@ -1161,7 +1127,7 @@ msgstr "Proszę sprawdzić i podpisać ten dokument"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:102
+#: code:addons/sign/static/src/xml/sign_common.xml:65
 #, python-format
 msgid "Please enter the code received through SMS to complete your signature"
 msgstr ""
@@ -1175,6 +1141,13 @@ msgstr "Pozycja X"
 #: model:ir.model.fields,field_description:sign.field_sign_item__posY
 msgid "Position Y"
 msgstr "Pozycja Y"
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_widgets_tour.js:32
+#, python-format
+msgid "Preferences"
+msgstr "Preferencje"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -1229,7 +1202,7 @@ msgstr "Wymagane"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:1035
+#: code:addons/sign/static/src/js/sign_backend.js:1036
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #, python-format
 msgid "Resend"
@@ -1237,14 +1210,14 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:1034
+#: code:addons/sign/static/src/js/sign_backend.js:1035
 #, python-format
 msgid "Resend the invitation"
 msgstr "Ponownie wyślij zaproszenie"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:998
+#: code:addons/sign/static/src/js/sign_backend.js:999
 #, python-format
 msgid "Resent !"
 msgstr "Wyślij ponownie !"
@@ -1297,7 +1270,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:104
+#: code:addons/sign/static/src/xml/sign_common.xml:67
 #, python-format
 msgid "SMS Code"
 msgstr ""
@@ -1321,27 +1294,20 @@ msgid "Security Token"
 msgstr "Token uprawnień"
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:45
-#, python-format
-msgid "Select Signature Style"
-msgstr "Wybierz styl podpisu"
-
-#. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_selection
 msgid "Select an option"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:403
+#: code:addons/sign/static/src/js/sign_common.js:398
 #, python-format
 msgid "Select available options"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:453
+#: code:addons/sign/static/src/js/sign_common.js:448
 #, python-format
 msgid "Select the responsible"
 msgstr "Wybierz odpowiedzialnego"
@@ -1359,7 +1325,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:632
+#: code:addons/sign/static/src/js/sign_backend.js:633
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
@@ -1370,7 +1336,7 @@ msgstr "Wyślij"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:98
+#: code:addons/sign/static/src/xml/sign_common.xml:61
 #, python-format
 msgid "Send SMS"
 msgstr "Wyślij SMS"
@@ -1415,7 +1381,7 @@ msgstr "Wysłane prośby o podpis"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:650
+#: code:addons/sign/static/src/js/sign_backend.js:651
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 #, python-format
@@ -1434,10 +1400,10 @@ msgstr "Pokaż wszystkie rekordy, które mają następną akcję przed dzisiaj"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:1016
-#: code:addons/sign/static/src/js/sign_common.js:1148
-#: code:addons/sign/wizard/sign_send_request.py:82
-#: code:addons/sign/wizard/sign_send_request.py:101
+#: code:addons/sign/static/src/js/sign_backend.js:1017
+#: code:addons/sign/static/src/js/sign_common.js:1112
+#: code:addons/sign/wizard/sign_send_request.py:85
+#: code:addons/sign/wizard/sign_send_request.py:104
 #: code:addons/sign/wizard/sign_template_share.py:33
 #: model:ir.ui.menu,name:sign.menu_document
 #, python-format
@@ -1446,7 +1412,7 @@ msgstr "ePodpis"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:634
+#: code:addons/sign/static/src/js/sign_backend.js:635
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -1456,7 +1422,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:1011
+#: code:addons/sign/static/src/js/sign_backend.js:1012
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Sign Document"
@@ -1595,7 +1561,7 @@ msgid "Signature configuration"
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/wizard/sign_send_request.py:68
+#: code:addons/sign/wizard/sign_send_request.py:71
 #, python-format
 msgid "Signature(s)"
 msgstr ""
@@ -1642,23 +1608,23 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1385
+#: code:addons/sign/static/src/js/sign_common.js:1345
 #, python-format
 msgid "Some fields have still to be completed !"
 msgstr "Niektóre z pól muszą być wypełnione!"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:862
+#: code:addons/sign/static/src/js/sign_backend.js:863
 #, python-format
 msgid "Somebody is already filling a document which uses this template"
 msgstr "Ktoś już wypełnia dokument wykorzystujący ten szablon"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:964
-#: code:addons/sign/static/src/js/sign_common.js:1401
-#: code:addons/sign/static/src/js/sign_common.js:1471
+#: code:addons/sign/static/src/js/sign_common.js:928
+#: code:addons/sign/static/src/js/sign_common.js:1361
+#: code:addons/sign/static/src/js/sign_common.js:1433
 #, python-format
 msgid "Sorry, an error occured, please try to fill the document again."
 msgstr "Przepraszamy, wystąpił błąd, prosimy o ponowne wypełnienie dokumentu"
@@ -1681,13 +1647,6 @@ msgstr ""
 "Opóźnione: Data \"do\" minęła\n"
 "Dziś: Aktywnośc przewidziana na dziś\n"
 "Zaplanowane: Przyszłe aktywności."
-
-#. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:57
-#, python-format
-msgid "Styles"
-msgstr "Style"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
@@ -1736,8 +1695,8 @@ msgstr "Tekst"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1067
-#: code:addons/sign/static/src/js/sign_common.js:1118
+#: code:addons/sign/static/src/js/sign_common.js:1031
+#: code:addons/sign/static/src/js/sign_common.js:1082
 #, python-format
 msgid "Thank You !"
 msgstr "Dziękujemy !"
@@ -1760,6 +1719,12 @@ msgid ""
 msgstr ""
 "Dostęp do podpisu, do którego próbujesz dotrzeć, nie istnieje. Być może prośba o podpis została usunięta lub zmodyfikowana.<br/>\n"
 "                     Jeśli nadal istnieje prośba podpisu dla tego dokumentu, sprawdź swoją skrzynkę odbiorczą, aby uzyskać dostęp!"
+
+#. module: sign
+#: code:addons/sign/models/sign_template.py:81
+#, python-format
+msgid "This file cannot be read. Is it a valid PDF?"
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -1805,8 +1770,8 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:937
-#: code:addons/sign/static/src/js/sign_common.js:1427
+#: code:addons/sign/static/src/js/sign_common.js:901
+#: code:addons/sign/static/src/js/sign_common.js:1387
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
 msgstr ""
@@ -1848,14 +1813,14 @@ msgstr "Zatwierdź"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:891
+#: code:addons/sign/static/src/js/sign_common.js:855
 #, python-format
 msgid "Validate & Send"
 msgstr "Zatwierdź i Wyślij"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1291
+#: code:addons/sign/static/src/js/sign_common.js:1258
 #, python-format
 msgid "Validate & the next signatory is %s"
 msgstr ""
@@ -1872,21 +1837,21 @@ msgstr "Wartość"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:990
+#: code:addons/sign/static/src/js/sign_common.js:954
 #, python-format
 msgid "Verify"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:130
+#: code:addons/sign/static/src/xml/sign_common.xml:93
 #, python-format
 msgid "View External Document"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:135
+#: code:addons/sign/static/src/xml/sign_common.xml:98
 #, python-format
 msgid "View Signed document"
 msgstr ""
@@ -1908,21 +1873,21 @@ msgstr "Czeka na ukończenie"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1385
+#: code:addons/sign/static/src/js/sign_common.js:1345
 #, python-format
 msgid "Warning"
 msgstr "Ostrzeżenie"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:119
+#: code:addons/sign/static/src/xml/sign_common.xml:82
 #, python-format
 msgid "We will let you know by email once everyone has signed."
 msgstr "Powiadomimy Cię e-mailem, gdy wszyscy się podpiszą."
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:144
+#: code:addons/sign/static/src/xml/sign_common.xml:107
 #, python-format
 msgid "We will send you this document by email once everyone has signed."
 msgstr ""
@@ -1948,20 +1913,20 @@ msgid "Write email or search contact..."
 msgstr "Napisz email lub wyszukaj kontakt..."
 
 #. module: sign
-#: code:addons/sign/controllers/main.py:152
+#: code:addons/sign/controllers/main.py:151
 #, python-format
 msgid "Wrong password"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:119
+#: code:addons/sign/static/src/xml/sign_common.xml:82
 #, python-format
 msgid "You can close the window and come back later."
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_template.py:68
+#: code:addons/sign/models/sign_template.py:71
 #, python-format
 msgid ""
 "You can't delete a template for which signature requests exist but you can "
@@ -1980,7 +1945,7 @@ msgid ""
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_template.py:77
+#: code:addons/sign/models/sign_template.py:83
 #, python-format
 msgid ""
 "Your PDF file shouldn't be encrypted with a password in order to be used as "
@@ -1995,15 +1960,15 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:86
-#: code:addons/sign/static/src/xml/sign_common.xml:88
+#: code:addons/sign/static/src/xml/sign_common.xml:49
+#: code:addons/sign/static/src/xml/sign_common.xml:51
 #, python-format
 msgid "Your email"
 msgstr "Twój email"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:111
+#: code:addons/sign/static/src/xml/sign_common.xml:74
 #, python-format
 msgid ""
 "Your file is encrypted, PDF's password is required to generate final "
@@ -2012,16 +1977,16 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:80
-#: code:addons/sign/static/src/xml/sign_common.xml:82
+#: code:addons/sign/static/src/xml/sign_common.xml:43
+#: code:addons/sign/static/src/xml/sign_common.xml:45
 #, python-format
 msgid "Your name"
 msgstr "Twoja nazwa"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1068
-#: code:addons/sign/static/src/js/sign_common.js:1119
+#: code:addons/sign/static/src/js/sign_common.js:1032
+#: code:addons/sign/static/src/js/sign_common.js:1083
 #, python-format
 msgid "Your signature has been saved."
 msgstr "Twój podpis został zapisany."

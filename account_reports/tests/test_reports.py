@@ -182,7 +182,7 @@ class TestAccountReports(common.TransactionCase):
         lines = self.env['account.followup.report']._get_lines(options)
 
         # Title line + actual business line
-        self.assertEqual(len(lines), 3)
+        self.assertEqual(len(lines), 2)
         self.assertEqual(lines[1]['class'], 'total')
         self.assertEqual(len(lines[1]['columns']), 7)
 
@@ -198,7 +198,7 @@ class TestAccountReports(common.TransactionCase):
         lines = self.env['account.followup.report']._get_lines(options)
 
         # Title line + actual business line
-        self.assertEqual(len(lines), 3)
+        self.assertEqual(len(lines), 2)
         self.assertEqual(lines[1]['class'], 'total')
         self.assertEqual(len(lines[1]['columns']), 7)
 

@@ -26,6 +26,7 @@ ActionManager.include({
                 args: [action.id, action.context.active_ids, {'device_id': action.device_id}]
             }).then(function (result) {
                 var iot_device = new DeviceProxy({ iot_ip: result[0], identifier: result[1] });
+                iot_device.add_listener(self._onValueChange.bind(self));
                 iot_device.action({'document': result[2]})
                     .then(function(data) {
                         self._onIoTActionResult.call(self, data);
@@ -49,6 +50,10 @@ ActionManager.include({
         // Display the generic warning message when the connection to the IoT box failed.
         this.call('iot_longpolling', '_doWarnFail', ip);
     },
+
+    _onValueChange: function (data) {
+        this.do_notify("Printer " + data.status);
+    }
 });
 
 var IotScanButton = Widget.extend({

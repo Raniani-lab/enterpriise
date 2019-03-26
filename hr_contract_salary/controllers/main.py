@@ -208,6 +208,8 @@ class website_hr_contract_salary(http.Controller):
             'contract_type': contract_type,
             'job_title': job_title,
             'freeze': freeze,
+            'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
+            'default_mobile_plus': request.env['ir.default'].sudo().get('hr.contract', 'mobile_plus'),
             'original_link': get_current_url(request.httprequest.environ)})
 
         values.update(self._get_documents_src(contract.employee_id))

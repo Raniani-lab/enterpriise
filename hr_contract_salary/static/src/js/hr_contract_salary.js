@@ -184,8 +184,8 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             return {
                 'wage': $("input[name='wage']")[0].value,
                 'internet': $("input[name='internet']")[0].value,
-                'has_mobile': $("input[name='mobile']")[0].checked,
-                'international_communication': $("input[name='mobile-ic']")[0].checked,
+                'has_mobile': $("input[name='mobile']")[1].checked || $("input[name='mobile']")[2].checked,
+                'international_communication': $("input[name='mobile']")[2].checked,
                 'fuel_card': parseFloat($("input[name='fuel_card_input']")[0].value) || 0.0,
                 'transport_mode_car': $("input[name='transport_mode_car']")[0].checked,
                 'transport_mode_public': $("input[name='transport_mode_public']")[0].checked,
@@ -380,7 +380,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     // TODO Restring to useful arguments
     onchange_mobile: function(event) {
         var self = this;
-        var has_mobile = $("input[name='mobile']")[0].checked;
+        var has_mobile = $("input[name='mobile']")[1].checked || $("input[name='mobile']")[2].checked;
         var tooltip = $("span#mobile_tooltip");
         var mobile_invoice_div = $("div[name='mobile_invoice']");
         var sim_card_div = $("div[name='sim_card']");
@@ -390,6 +390,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         var label = $("label[name='international_communication']");
         $("input[name='mobile']")[0].checked ? label.removeClass('invisible') : label.addClass('invisible');
         this.get_advantages().then(function(advantages) {
+            console.log(advantages)
             self._rpc({
                 route: '/salary_package/onchange_mobile/',
                 params: {

@@ -12,12 +12,11 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "change input[name='mobility']": "onchange_mobility",
         "change input[name='transport_mode_car']": "onchange_mobility",
         "change input[name='transport_mode_public']": "onchange_mobility",
-        "change input[name='transport_mode_others']": "onchange_mobility",
+        "change input[name='transport_mode_private_car']": "onchange_mobility",
         "change input[name='representation_fees_radio']": "onchange_representation_fees",
         "change input[name='fuel_card_slider']": "onchange_fuel_card",
         "input input[name='holidays_slider']": "onchange_holidays",
         "change input[name='mobile']": "onchange_mobile",
-        "change input[name='mobile-ic']": "onchange_mobile",
         "change input[name='internet']": "onchange_internet",
         "change select[name='select_car']": "onchange_car_id",
         "change input[name='public_transport_employee_amount']": "onchange_public_transport",
@@ -30,7 +29,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "click a[name='recompute']": "recompute",
         "click button[name='toggle_personal_information']": "toggle_personal_information",
         "change input[name='ip']": "onchange_ip",
-        "change input[name='others_employee_amount']": "onchange_others",
+        "change input.km_home_work": "onchange_km_home_work",
         "click #send_email": "send_offer_to_responsible",
         "change select[name='spouse_professional_situation']": "onchange_spouse_professional_situation",
         "change input[name='waiting_list']": "onchange_waiting_list",
@@ -189,7 +188,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 'fuel_card': parseFloat($("input[name='fuel_card_input']")[0].value) || 0.0,
                 'transport_mode_car': $("input[name='transport_mode_car']")[0].checked,
                 'transport_mode_public': $("input[name='transport_mode_public']")[0].checked,
-                'transport_mode_others': $("input[name='transport_mode_others']")[0].checked,
+                'transport_mode_private_car': $("input[name='transport_mode_private_car']")[0].checked,
                 'car_employee_deduction': parseFloat($("input[name='car_employee_deduction']")[0].value) || 0.0,
                 'holidays': parseFloat($("input[name='holidays_slider']")[0].value) || 0.0,
                 'commission_on_target': has_commission ? parseFloat($("input[name='commission_on_target']")[0].value) || 0.0 : 0.0,
@@ -198,7 +197,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 'car_id': car_id,
                 'new_car': new_car,
                 'public_transport_employee_amount': parseFloat($("input[name='public_transport_employee_amount']")[0].value) || 0.0,
-                'others_reimbursed_amount': parseFloat($("input[name='others_reimbursed_amount']")[0].value) || 0.0,
                 'personal_info': personal_info,
                 'meal_voucher_amount': has_meal_voucher ? parseFloat($("input[name='meal_voucher_amount']")[0].value) || 0.0 : 0.0,
                 'final_yearly_costs': parseFloat($("input[name='fixed_yearly_costs']")[0].value),
@@ -259,12 +257,14 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         var withholding_tax_reduction_div = $("div[name='withholding_tax_reduction']");
         var miscellaneous_onss_div = $("div[name='m_onss_div']");
         var representation_fees_div = $("div[name='representation_fees_div']");
+        var private_car_amount_div = $("div[name='private_car_amount_div']");
         data['ATN.MOB.2'] ? mobile_atn_div.removeClass('d-none') : mobile_atn_div.addClass('d-none');
         data['ATN.INT.2'] ? internet_atn_div.removeClass('d-none') : internet_atn_div.addClass('d-none');
         data['ATN.CAR.2'] ? company_car_atn_div.removeClass('d-none') : company_car_atn_div.addClass('d-none');
         data['EMP.BONUS'] ? employment_bonus_div.removeClass('d-none') : employment_bonus_div.addClass('d-none');
         data['M.ONSS'] ? miscellaneous_onss_div.removeClass('d-none') : miscellaneous_onss_div.addClass('d-none');
         data['REP.FEES'] ? representation_fees_div.removeClass('d-none') : representation_fees_div.addClass('d-none');
+        data['CAR.PRIV'] ? private_car_amount_div.removeClass('d-none') : private_car_amount_div.addClass('d-none');
         $("div[name='compute_loading']").addClass('d-none');
         $("div[name='net']").removeClass('d-none').hide().slideDown( "slow" );
         $("input[name='NET']").removeClass('o_outdated');
@@ -350,8 +350,8 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         if ($("input[name='transport_mode_public']")[0].checked){
             $(".mobility-options#public_transport").removeClass('d-none');
         }
-        if ($("input[name='transport_mode_others']")[0].checked){
-            $(".mobility-options#others").removeClass('d-none');
+        if ($("input[name='transport_mode_private_car']")[0].checked){
+            $(".mobility-options#private_car").removeClass('d-none');
         }
     },
 
@@ -390,12 +390,11 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         var label = $("label[name='international_communication']");
         $("input[name='mobile']")[0].checked ? label.removeClass('invisible') : label.addClass('invisible');
         this.get_advantages().then(function(advantages) {
-            console.log(advantages)
             self._rpc({
                 route: '/salary_package/onchange_mobile/',
                 params: {
-                    'has_mobile': $("input[name='mobile']")[0].checked,
-                    'international_communication': $("input[name='mobile-ic']")[0].checked,
+                    'has_mobile': $("input[name='mobile']")[2].checked || $("input[name='mobile']")[1].checked,
+                    'international_communication': $("input[name='mobile']")[2].checked,
                 },
             }).then(function(amount) {
                 $("input[name='mobile_amount']").val(amount);
@@ -501,8 +500,20 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         has_ip ? tooltip.removeClass("d-none") : tooltip.addClass("d-none");
     },
 
-    onchange_others: function() {
-        $("input[name='others_reimbursed_amount']").val($("input[name='others_employee_amount']").val());
+    onchange_km_home_work: function(event) {
+        var distance = event.currentTarget.value;
+        _.each($("input.km_home_work"), function(input) {
+            debugger;
+            $(input).val(distance); // set the same distance on both inputs
+        });
+        this._rpc({
+            route: '/salary_package/onchange_km_home_work/',
+            params: {
+                distance: parseInt(distance),
+            }
+        }).then(function (amount) {
+            $("input[name='private_car_reimbursed_amount']").val(amount);
+        });
     },
 
     onchange_spouse_professional_situation: function() {

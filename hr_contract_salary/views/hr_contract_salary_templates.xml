@@ -143,20 +143,20 @@
                                             <!-- Other transport -->
                                             <div class="col-md-7 offset-md-3 mt8">
                                                 <label class="hr_cs_control hr_cs_control_checkbox">
-                                                    Other Transport Mode
-                                                    <input type="checkbox" name="transport_mode_others" t-att-checked="contract.transport_mode_others" class="advantage_input"/>
+                                                    Private car
+                                                    <input type="checkbox" name="transport_mode_private_car" t-att-checked="contract.transport_mode_private_car" class="advantage_input"/>
                                                     <div class="hr_cs_control_indicator"/>
                                                 </label>
                                             </div>
 
-                                            <div class="mobility-options row" id="others">
+                                            <div class="mobility-options row" id="private_car">
                                                 <div class="col-md-7 offset-md-3">
-                                                    <input class="form-control form-control-primary mt16 mb8 advantage_input" type="number" t-att-value="contract.others_reimbursed_amount or '0'" name="others_employee_amount"/>
-                                                    <span class="form-text mt8">Enter the monthly amount that should be reimbursed by your employer on transportation (other than public) to go to work.</span>
+                                                    <input class="form-control form-control-primary mt16 mb8 advantage_input km_home_work" type="number" t-att-value="contract.km_home_work or '0'" name="private_car_km_home_work"/>
+                                                    <span class="form-text mt8">Enter the number of kilometers between your home and your work place. The approximative amount reimbursed by the employer is calculated accordingly.</span>
                                                 </div>
                                                 <div class="col-md-2 mt24">
                                                     <div class="input-group">
-                                                        <input class="form-control" type="text" t-att-value="contract.others_reimbursed_amount or '0'" name="others_reimbursed_amount" disabled="disabled"/>
+                                                        <input class="form-control" type="text" t-att-value="contract.private_car_reimbursed_amount or '0'" name="private_car_reimbursed_amount" disabled="disabled"/>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">€</div>
                                                         </div>
@@ -791,7 +791,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="col-form-label" for="km_home_work">Km Home to Work</label>
-                                                <input type="number" name="km_home_work" class="form-control" t-att-value="contract.employee_id.km_home_work" required="required"/>
+                                                <input type="number" name="km_home_work" class="form-control advantage_input km_home_work" t-att-value="contract.employee_id.km_home_work" required="required"/>
                                             </div>
                                         </div>
                                     </div>
@@ -1385,6 +1385,21 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group" name="private_car_amount_div">
+                                        <div class="row">
+                                            <label class="col-md-9 col-form-label" for="private_car_amount"><i class="fa fa-1x fa-plus fa-fw"/> Private Car Transport</label>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" t-att-value="contract.private_car_reimbursed_amount" disabled="disabled" name="private_car_reimbursed_amount"/>
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">€</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="form-group" name="ip_div">
                                         <div class="row">

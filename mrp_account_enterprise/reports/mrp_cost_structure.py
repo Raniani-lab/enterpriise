@@ -67,7 +67,7 @@ class MrpCostStructure(models.AbstractModel):
                 for m in mos:
                     mo_qty += sum(m.move_finished_ids.filtered(lambda mo: mo.state != 'cancel' and mo.product_id == product).mapped('product_qty'))
             for m in mos:
-                sub_product_moves = m.move_finished_ids.filtered(lambda mo: mo.state != 'cancel' and mo.product_id != product)
+                byproduct_moves = m.move_finished_ids.filtered(lambda mo: mo.state != 'cancel' and mo.product_id != product)
             res.append({
                 'product': product,
                 'mo_qty': mo_qty,
@@ -78,7 +78,7 @@ class MrpCostStructure(models.AbstractModel):
                 'total_cost': total_cost,
                 'scraps': scraps,
                 'mocount': len(mos),
-                'sub_product_moves': sub_product_moves
+                'byproduct_moves': byproduct_moves
             })
         return res
 

@@ -56,7 +56,7 @@ class QualityPoint(models.Model):
                 component_ids |= {l[0].product_id.id for l in lines_done}
         if self.test_type == 'register_byproducts':
             for bom in bom_ids:
-                component_ids |= {byproduct.product_id.id for byproduct in bom.sub_products}
+                component_ids |= {byproduct.product_id.id for byproduct in bom.byproduct_ids}
         routing_ids = bom_ids.mapped('routing_id.id')
         if self.picking_type_id.code == 'mrp_operation':
             return {

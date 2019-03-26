@@ -17,7 +17,7 @@ class HrContract(models.Model):
     transport_mode_others = fields.Boolean('Uses another transport mode')
     car_atn = fields.Monetary(string='ATN Company Car')
     public_transport_employee_amount = fields.Monetary('Paid by the employee (Monthly)')
-    warrant_value_employee = fields.Monetary(compute='_compute_warrants_cost', string="Warrant value for the employee")
+    warrant_value_employee = fields.Monetary(compute='_compute_commission_cost', string="Warrant monthly value for the employee")
 
     # Employer costs fields
     final_yearly_costs = fields.Monetary(compute='_compute_final_yearly_costs',
@@ -36,7 +36,8 @@ class HrContract(models.Model):
         compute='_compute_public_transport_reimbursed_amount', readonly=False, store=True)
     others_reimbursed_amount = fields.Monetary(string='Other Reimbursed amount')
     transport_employer_cost = fields.Monetary(compute='_compute_transport_employer_cost', string="Employer cost from employee transports")
-    warrants_cost = fields.Monetary(compute='_compute_warrants_cost')
+    warrants_cost = fields.Monetary(compute='_compute_commission_cost', string="Warrant monthly cost for the employer")
+    yearly_commission_cost = fields.Monetary(compute='_compute_commission_cost')
 
     # Advantages
     commission_on_target = fields.Monetary(string="Commission on Target",
@@ -110,10 +111,11 @@ class HrContract(models.Model):
             contract.transport_employer_cost = transport_employer_cost
 
     @api.depends('commission_on_target')
-    def _compute_warrants_cost(self):
+    def _compute_commission_cost(self):
         for contract in self:
-            contract.warrants_cost = contract.commission_on_target * 1.326 / 1.05 * 12.0
-            contract.warrant_value_employee = contract.commission_on_target * 1.326 * (1.00 - 0.535) * 12.0
+            contract.warrants_cost = contract.commission_on_target * 1.326 / 1.05
+            contract.yearly_commission_cost = contract.warrants_cost * 3.0 + contract.commission_on_target * 9.0 * (1 + EMPLOYER_ONSS)
+            contract.warrant_value_employee = contract.commission_on_target * 1.326 * (1.00 - 0.535)
 
     @api.depends('wage', 'fuel_card', 'representation_fees', 'transport_employer_cost',
         'internet', 'mobile', 'mobile_plus')
@@ -131,7 +133,7 @@ class HrContract(models.Model):
 
     @api.depends(
         'wage', 'fuel_card', 'representation_fees', 'transport_employer_cost',
-        'internet', 'mobile', 'mobile_plus', 'warrants_cost',
+        'internet', 'mobile', 'mobile_plus', 'yearly_commission_cost',
         'meal_voucher_paid_by_employer')
     def _compute_final_yearly_costs(self):
         for contract in self:
@@ -193,7 +195,7 @@ class HrContract(models.Model):
             12.0 * self.internet +
             12.0 * (self.mobile + self.mobile_plus) +
             12.0 * self.transport_employer_cost +
-            self.warrants_cost +
+            self.yearly_commission_cost +
             220.0 * self.meal_voucher_paid_by_employer
         )
 

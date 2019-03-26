@@ -48,6 +48,7 @@
                     <field name="yearly_cost_before_charges" invisible="1"/>
                     <field name="social_security_contributions" invisible="1"/>
                     <field name="warrants_cost" invisible="1"/>
+                    <field name="yearly_commission_cost" invisible="1"/>
                     <field name="warrant_value_employee" invisible="1"/>
                     <field name="ucm_insurance" invisible="1"/>
                     <field name="meal_voucher_paid_by_employer" invisible="1"/>

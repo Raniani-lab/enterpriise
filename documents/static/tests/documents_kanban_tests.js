@@ -848,7 +848,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var def = $.Deferred();
 
-        var kanban = createView({
+        var kanban = createDocumentsKanbanView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,

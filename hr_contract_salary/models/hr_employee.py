@@ -8,10 +8,10 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     id_card = fields.Binary(string="ID Card Copy", groups="hr_contract.group_hr_contract_manager")
-    driving_license = fields.Binary(string="Driving License", group="hr_contract.group_hr_contract_manager")
-    mobile_invoice = fields.Binary(string="Mobile Subscription Invoice", group="hr_contract.group_hr_contract_manager")
+    driving_license = fields.Binary(string="Driving License", groups="hr_contract.group_hr_contract_manager")
+    mobile_invoice = fields.Binary(string="Mobile Subscription Invoice", groups="hr_contract.group_hr_contract_manager")
     sim_card = fields.Binary(string="SIM Card Copy", groups="hr_contract.group_hr_contract_manager")
-    internet_invoice = fields.Binary(string="Internet Subscription Invoice", group="hr_contract.group_hr_contract_manager")
+    internet_invoice = fields.Binary(string="Internet Subscription Invoice", groups="hr_contract.group_hr_contract_manager")
 
     def get_partner_values(self, personal_info):
         return {

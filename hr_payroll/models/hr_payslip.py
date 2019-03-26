@@ -156,24 +156,44 @@ class HrPayslip(models.Model):
         self.ensure_one()
         contract = self.contract_id
         if contract.resource_calendar_id:
-            day_from = datetime.combine(max(self.date_from, contract.date_start), time.min)
-            day_to = datetime.combine(min(self.date_to, contract.date_end or date.max), time.max)
 
-            calendar = contract.resource_calendar_id
+            unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
+            paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
+            normal_work_entry_type = self.env.ref('hr_payroll.work_entry_type_attendance', raise_if_not_found=False) or self.env['hr.work.entry.type']
+            paid_amount = self._get_paid_amount()
+            total_paid_days = contract._get_work_data(paid_work_entry_types, self.date_from, self.date_to)['days']
+            counted_days = 0
+            for work_entry_type in (paid_work_entry_types | unpaid_work_entry_types) - normal_work_entry_type:
+                work_data = contract._get_work_data(work_entry_type, self.date_from, self.date_to)
+                hours = work_data['hours']
+                days = work_data['days']
 
-            work_entry_types = self.env['hr.work.entry.type'].search([('code', '!=', False)])
-            for work_entry_type in work_entry_types:
-                hours = contract.employee_id._get_work_entry_days_data(work_entry_type, day_from, day_to, calendar=calendar)['hours']
                 if hours:
+                    is_paid = work_entry_type in paid_work_entry_types
+                    counted_days += days if is_paid else 0
                     line = {
                         'name': work_entry_type.name,
                         'sequence': work_entry_type.sequence,
                         'code': work_entry_type.code,
-                        'number_of_days': hours / calendar.hours_per_day, # n_days returned by work_entry_days_data doesn't make sense for extra work
+                        'number_of_days': days,
                         'number_of_hours': hours,
+                        'amount': days / total_paid_days * paid_amount if is_paid and total_paid_days else 0,
                     }
                     res.append(line)
-
+            # Any remaining day is a normal attendance
+            if normal_work_entry_type:
+                days = total_paid_days - counted_days
+                hours = days * contract.resource_calendar_id.hours_per_day
+                is_paid = normal_work_entry_type in paid_work_entry_types
+                normal_attendance_line = {
+                    'name': normal_work_entry_type.name,
+                    'sequence': normal_work_entry_type.sequence,
+                    'code': normal_work_entry_type.code,
+                    'number_of_days': days,
+                    'number_of_hours': hours,
+                    'amount': days / total_paid_days * paid_amount if total_paid_days else 0,
+                }
+                res.append(normal_attendance_line)
         return res
 
     def _get_base_local_dict(self):
@@ -366,6 +386,7 @@ class HrPayslipWorkedDays(models.Model):
     code = fields.Char(required=True, help="The code that can be used in the salary rules")
     number_of_days = fields.Float(string='Number of Days')
     number_of_hours = fields.Float(string='Number of Hours')
+    amount = fields.Float(string='Amount', digits=dp.get_precision('Payroll'))
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
         help="The contract for which applied this worked days")
 

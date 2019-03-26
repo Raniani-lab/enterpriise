@@ -2,6 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields
+from dateutil.relativedelta import relativedelta, MO, SU
+from dateutil import rrule
+from collections import defaultdict
+from datetime import date
 from odoo.tools import float_round
 
 
@@ -31,9 +35,62 @@ class Payslip(models.Model):
         })
         return res
 
+    def _get_paid_amount_13th_month(self, struct_cp_200):
+        contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == struct_cp_200.type_id)
+        if not contracts:
+            return 0.0
+
+        year = self.date_to.year
+
+        # 1. Number of months
+        invalid_days_by_months = defaultdict(dict)
+        for day in rrule.rrule(rrule.DAILY, dtstart=date(year, 1, 1), until=date(year, 12, 31)):
+            invalid_days_by_months[day.month][day.date()] = True
+
+        for contract in contracts:
+
+            work_days = {int(d) for d in contract.resource_calendar_id._get_global_attendances().mapped('dayofweek')}
+
+            previous_week_start = max(contract.date_start + relativedelta(weeks=-1, weekday=MO(-1)), date(year, 1, 1))
+            next_week_end = min(contract.date_end + relativedelta(weeks=+1, weekday=SU(+1)) if contract.date_end else date.max, date(year, 12, 31))
+            days_to_check = rrule.rrule(rrule.DAILY, dtstart=previous_week_start, until=next_week_end)
+            for day in days_to_check:
+                day = day.date()
+                out_of_schedule = True
+                if contract.date_start <= day <= (contract.date_end or date.max):
+                    out_of_schedule = False
+                elif day.weekday() not in work_days:
+                    out_of_schedule = False
+                invalid_days_by_months[day.month][day] &= out_of_schedule
+
+        complete_months = [
+            month
+            for month, days in invalid_days_by_months.items()
+            if not any(days.values())
+        ]
+        n_months = len(complete_months)
+        if n_months < 6:
+            return 0
+
+        # 2. Deduct absences
+        unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
+        paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
+        paid_hours = contracts._get_work_data(paid_work_entry_types, date(year, 1, 1), date(year, 12, 31))['hours']
+        unpaid_hours = contracts._get_work_data(unpaid_work_entry_types, date(year, 1, 1), date(year, 12, 31))['hours']
+
+        presence_prorata = paid_hours / (paid_hours + unpaid_hours)
+        basic = self.contract_id.wage_with_holidays
+        return basic * n_months / 12 * presence_prorata
+
     def _get_paid_amount(self):
         amount = super(Payslip, self)._get_paid_amount()
+
         if self.struct_id.country_id == self.env.ref('base.be'):
+            struct_13th_month = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
+            struct_cp_200 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')
+
+            if self.struct_id == struct_13th_month:
+                return self._get_paid_amount_13th_month(struct_cp_200)
             return self.contract_id.wage_with_holidays - self.unpaid_amount
         return amount
 

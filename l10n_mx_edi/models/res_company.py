@@ -65,7 +65,6 @@ class ResCompany(models.Model):
         for company in self:
             company.partner_id.l10n_mx_edi_locality = company.l10n_mx_edi_locality
 
-    @api.multi
     def _compute_l10n_mx_edi_colony_code(self):
         for company in self:
             address_data = company.partner_id.sudo().address_get(
@@ -75,7 +74,6 @@ class ResCompany(models.Model):
                 company.l10n_mx_edi_colony_code = (
                     partner.l10n_mx_edi_colony_code)
 
-    @api.multi
     def _inverse_l10n_mx_edi_colony_code(self):
         for company in self:
             company.partner_id.l10n_mx_edi_colony_code = (

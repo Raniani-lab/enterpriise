@@ -8,7 +8,6 @@ from functools import partial
 from lxml import etree
 
 from odoo import models
-from odoo.tools.pycompat import imap
 
 def _generic_get(*nodes, xpath, namespaces, placeholder=None):
     if placeholder is not None:
@@ -61,7 +60,7 @@ def _set_amount_currency_and_currency_id(node, path, entry_vals, currency, curr_
     instruc_amount = node.xpath('%s/text()' % path, namespaces=namespaces)
     instruc_curr = node.xpath('%s/@Ccy' % path, namespaces=namespaces)
     if instruc_amount and instruc_curr and instruc_curr[0] != currency and currency in curr_cache:
-        entry_vals['amount_currency'] = abs(sum(imap(float, instruc_amount)))
+        entry_vals['amount_currency'] = abs(sum(map(float, instruc_amount)))
         entry_vals['currency_id'] = curr_cache[currency]
 
 def _get_transaction_name(node, namespaces):

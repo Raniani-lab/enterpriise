@@ -841,7 +841,7 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.skip('document inspector: open preview while modifying document', function (assert) {
+    QUnit.test('document inspector: open preview while modifying document', function (assert) {
         assert.expect(2);
 
         var done = assert.async();
@@ -869,10 +869,11 @@ QUnit.module('DocumentsKanbanView', {
 
         testUtils.dom.click(kanban.$('.o_document_preview img'));
         assert.containsNone(kanban, '.o_viewer_content',
-            "should not have a document preview");
+            "document preview should have been canceled");
 
         def.resolve();
         concurrency.delay(0).then(function () {
+            testUtils.dom.click(kanban.$('.o_document_preview img'));
             assert.containsOnce(kanban, '.o_viewer_content',
                 "should have a document preview");
             testUtils.dom.click(kanban.$('.o_close_btn'));

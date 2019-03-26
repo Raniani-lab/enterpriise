@@ -16,5 +16,18 @@
     </button>
 </div>
 
+<!--
+    @param {documents.DocumentsKanbanController} widget
+    @param {string} csrf_token
+-->
+<div t-name="documents.HiddenInputFile" class="o_hidden o_documents_hidden_input_file_container">
+    <t t-call="HiddenInputFile">
+        <t t-set="fileupload_id" t-value="widget.fileUploadID"/>
+        <t t-set="csrf_token" t-value="csrf_token"/>
+        <input type="hidden" name="model" t-att-value="'documents.document'"/>
+        <input type="hidden" name="id" t-att-value="0"/>
+    </t>
+</div>
+
 </templates>
 

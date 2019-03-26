@@ -229,9 +229,9 @@ class MrpProductionWorkcenterLine(models.Model):
     def _update_workorder_lines(self):
         res = super(MrpProductionWorkcenterLine, self)._update_workorder_lines()
         if res['to_update']:
-            steps = self._get_quality_points(res['to_update'].values())
+            steps = self._get_quality_points([{'product_id': record.product_id.id} for record in res['to_update'].keys()])
             for line, values in res['to_update'].items():
-                if line['product_id'] in steps.mapped('component_id.id') or line.move_id.has_tracking != 'none':
+                if line.product_id in steps.mapped('component_id') or line.move_id.has_tracking != 'none':
                     values['qty_done'] = 0
         return res
 
@@ -422,7 +422,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == point.component_id and m.workorder_id == wo)
                     qty_done = 1.0
                     if point.component_id and moves and point.component_id.tracking != 'serial':
-                        qty_done = float_round(sum(moves.mapped('unit_factor')), precision_rounding=moves[0].product_uom.rounding)
+                        qty_done = float_round(sum(moves.mapped('unit_factor')) * wo.qty_producing, precision_rounding=moves[0].product_uom.rounding)
                     # Do not generate qc for control point of type register_consumed_materials if the component is not consummed in this wo.
                     if not point.component_id or moves:
                         self.env['quality.check'].create({'workorder_id': wo.id,

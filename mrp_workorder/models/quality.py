@@ -97,6 +97,19 @@ class QualityCheck(models.Model):
     # We use a float because it is actually filled in by the produced quantity at the step creation.
     finished_product_sequence = fields.Float('Finished Product Sequence Number')
 
+    @api.model_create_multi
+    def create(self, values):
+        points = self.env['quality.point'].search([
+            ('id', 'in', [value.get('point_id') for value in values]),
+            ('component_id', '!=', False)
+        ])
+        for value in values:
+            if not value.get('component_id') and value.get('point_id'):
+                point = points.filtered(lambda p: p.id == value.get('point_id'))
+                if point:
+                    value['component_id'] = point.component_id.id
+        return super(QualityCheck, self).create(values)
+
     def _compute_title(self):
         for check in self:
             if check.point_id:

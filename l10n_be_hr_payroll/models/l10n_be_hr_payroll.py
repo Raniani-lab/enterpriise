@@ -5,6 +5,8 @@ from odoo import api, fields, models, _
 
 from odoo.exceptions import ValidationError
 
+EMPLOYER_ONSS = 0.2714
+
 
 # YTI TODO: Split me into 2 files
 class HrContract(models.Model):
@@ -88,7 +90,7 @@ class HrContract(models.Model):
     def _inverse_wage_with_holidays(self):
         for contract in self:
             if contract.holidays:
-                yearly_cost = contract._get_advantages_costs() + (13.92 + 13.0 * 0.3507) * contract.wage_with_holidays
+                yearly_cost = contract._get_advantages_costs() + (13.92 + 13.0 * EMPLOYER_ONSS) * contract.wage_with_holidays
                 contract.final_yearly_costs = yearly_cost / (1.0 - contract.holidays / 231.0)
                 contract.wage = contract._get_gross_from_employer_costs(contract.final_yearly_costs)
             else:
@@ -148,7 +150,7 @@ class HrContract(models.Model):
     def _compute_social_security_contributions(self):
         for contract in self:
             total_wage = contract.wage * 13.0
-            contract.social_security_contributions = (total_wage) * 0.3507
+            contract.social_security_contributions = (total_wage) * EMPLOYER_ONSS
 
     @api.depends('wage')
     def _compute_ucm_insurance(self):
@@ -205,7 +207,7 @@ class HrContract(models.Model):
     def _get_gross_from_employer_costs(self, yearly_cost):
         self.ensure_one()
         remaining_for_gross = yearly_cost - self._get_advantages_costs()
-        return remaining_for_gross / (13.92 + 13.0 * 0.3507)
+        return remaining_for_gross / (13.92 + 13.0 * EMPLOYER_ONSS)
 
 
 class HrEmployee(models.Model):

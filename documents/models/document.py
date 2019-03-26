@@ -15,7 +15,7 @@ class Document(models.Model):
     _order = 'id desc'
 
     # Attachment
-    attachment_id = fields.Many2one('ir.attachment', auto_join=True)
+    attachment_id = fields.Many2one('ir.attachment', auto_join=True, copy=False)
     attachment_name = fields.Char('Attachment Name', related='attachment_id.name', readonly=False)
     attachment_type = fields.Selection(string='Attachment Type', related='attachment_id.type', readonly=False)
     datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False)

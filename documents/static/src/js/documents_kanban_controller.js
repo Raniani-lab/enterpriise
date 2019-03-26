@@ -363,7 +363,7 @@ var DocumentsKanbanController = KanbanController.extend({
      * @private
      */
     _onDocumentViewerAttachmentChanged: function () {
-        this.update();
+        this.update({});
     },
     /**
      * @private

@@ -37,7 +37,7 @@
                                           t-esc-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-esc="line.total"
+                                    <span t-esc="line.total" class="text-nowrap"
                                           t-esc-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                 </td>
                             </tr>

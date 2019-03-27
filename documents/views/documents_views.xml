@@ -222,7 +222,7 @@
                         <field name="tag_ids" invisible="1"/>
                     </group>
                 <footer>
-                    <button name="write" type="object" string="Add" class="btn btn-primary"/>
+                    <button special="save" string="Add" class="btn btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
                 </sheet>
@@ -470,7 +470,7 @@
                     </group>
                     <field name="document_ids" invisible="1" readonly="1"/>
                     <footer>
-                        <button name="write" type="object" string="Done" class="btn btn-primary"/>
+                        <button special="save" string="Done" class="btn btn-primary"/>
                     </footer>
                 </sheet>
             </form>

@@ -16,10 +16,6 @@
             .o_inner_group {
                 margin-bottom: 0 !important;
 
-                div.o_field_widget:not(.o_invisible_modifier) {
-                    padding-bottom: 12px;
-                }
-
                 div[name="carrier_selection"] {
                     > div:not(.alert) {
                         display: inline-flex;
@@ -73,10 +69,6 @@
             width: 100% !important;
         }
 
-    }
-
-    .o_invisible_modifier {
-        display: none !important;
     }
 
     // adapt for mobile the form view modal

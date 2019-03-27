@@ -11,6 +11,7 @@ O-BTN.pass
 O-BTN.fail
 O-BTN.finish
 O-BTN.record
+O-BTN.continue
 BARCODES
 
 cat > barcodesHeaders_TMP_FILE.ps << HEADER
@@ -25,6 +26,7 @@ cat > barcodesHeaders_TMP_FILE.ps << HEADER
 (FAIL) 336 456 showTitle
 (FINISH STEPS) 79 347 showTitle
 (RECORD PRODUCTION) 336 347 showTitle
+(CONTINUE CONSUMPTION) 79 238 showTitle
 HEADER
 
 cat barcodesHeaders_TMP_FILE.ps barcodes_TMP_FILE.ps | ps2pdf - - > barcodes_actions_Manufacturing.pdf

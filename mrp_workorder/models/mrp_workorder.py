@@ -42,6 +42,12 @@ class MrpProductionWorkcenterLine(models.Model):
     user_id = fields.Many2one(related='current_quality_check_id.user_id', readonly=False)
     worksheet_page = fields.Integer('Worksheet page')
     picture = fields.Binary(related='current_quality_check_id.picture', readonly=False)
+    component_qty_to_do = fields.Float(compute='_compute_component_qty_to_do')
+
+    @api.depends('qty_done', 'component_remaining_qty')
+    def _compute_component_qty_to_do(self):
+        for wo in self:
+            wo.component_qty_to_do = wo.qty_done - wo.component_remaining_qty
 
     @api.depends('qty_producing', 'qty_remaining')
     def _compute_is_last_lot(self):
@@ -141,7 +147,7 @@ class MrpProductionWorkcenterLine(models.Model):
         if parent_id.parent_id:
             parent_id = parent_id.parent_id
         subsequent_substeps = self.env['quality.check'].search([('parent_id', '=', parent_id.id), ('id', '>', self.current_quality_check_id.id)])
-        if self.component_remaining_qty > 0 and not subsequent_substeps:
+        if not subsequent_substeps:
             # Creating quality checks
             quality_check_data = {
                 'workorder_id': self.id,
@@ -163,7 +169,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 })
             self.env['quality.check'].create(quality_check_data)
 
-    def _update_active_move_line(self):
+    def _update_active_move_line(self, continue_production=False):
         """ This function is only used when the check is regiter a
         component. It will update the active move lines in order to set
         the lot and the quantity used. Tge active move lines created
@@ -208,9 +214,9 @@ class MrpProductionWorkcenterLine(models.Model):
             else:
                 self.move_line_id = lines_without_lots[0]
             # If tracked by lot, put the remaining quantity in (only) one move line
-            if move.product_id.tracking == 'lot' and not self.current_quality_check_id.component_is_byproduct:
+            if move.product_id.tracking == 'lot' and not self.current_quality_check_id.component_is_byproduct and continue_production:
                 if self.component_remaining_qty > 0:
-                    self.move_line_id.copy(default={'qty_done': self.component_remaining_qty})
+                    self.move_line_id.copy(default={'qty_done': self.component_remaining_qty, 'qty_to_consume': 0})
 
         # Write the lot and qty to the move line
         self.move_line_id.write({'lot_id': self.lot_id.id, 'qty_done': float_round(self.qty_done, precision_rounding=move.product_uom.rounding)})
@@ -243,7 +249,7 @@ class MrpProductionWorkcenterLine(models.Model):
         ])
         return steps
 
-    def _next(self):
+    def _next(self, continue_production=False):
         """ This function:
         - first: fullfill related move line with right lot and validated quantity.
         - second: Generate new quality check for remaining quantity and link them to the original check.
@@ -254,14 +260,18 @@ class MrpProductionWorkcenterLine(models.Model):
             raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))
         elif self.test_type == 'register_consumed_materials':
             # Form validation
-            if self.component_tracking != 'none' and not self.lot_id:
+            # in case we use continue production instead of validate button.
+            # We would like to consume 0 and leave lot_id blank to close the consumption
+            if self.component_tracking != 'none' and not self.lot_id and self.qty_done != 0:
                 raise UserError(_('Please enter a Lot/SN.'))
-            if self.component_tracking == 'none' and self.qty_done <= 0:
+            if self.qty_done < 0:
                 raise UserError(_('Please enter a positive quantity.'))
-
-            self._update_active_move_line()
-
-            self._create_subsequent_checks()
+            self._update_active_move_line(continue_production=continue_production)
+            if continue_production:
+                self._create_subsequent_checks()
+            elif self.component_remaining_qty < 0 and self.consumption == 'strict':
+                # '< 0' as it's not possible to click on validate if qty_done < component_remaining_qty
+                raise UserError(_('You should consume the quantity of %s defined in the BoM. If you want to consume more or less components, change the consumption setting on the BoM.') % self.component_id[0].name)
 
         if self.test_type == 'picture' and not self.picture:
             raise UserError(_('Please upload a picture.'))
@@ -526,6 +536,10 @@ class MrpProductionWorkcenterLine(models.Model):
     def action_next(self):
         self.ensure_one()
         return self._next()
+
+    def action_continue(self):
+        self.ensure_one()
+        self._next(continue_production=True)
 
     def action_open_manufacturing_order(self):
         action = self.do_finish()

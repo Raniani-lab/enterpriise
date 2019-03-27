@@ -73,6 +73,8 @@
                 <field name="workcenter_id" invisible="1"/>
                 <field name="working_state" invisible="1"/>
                 <field name="worksheet_page" invisible="1"/>
+                <field name="consumption" invisible="1"/>
+                <field name="component_qty_to_do" invisible="1"/>
                 <div class="workorder_bar">
                     <div class="workorder_bar_left o_workorder_bar_content">
                         <field name="id" class="o_workorder_icon_btn" widget="back_arrow" readonly="1"/>
@@ -109,8 +111,43 @@
                     </div>
                     <div class="o_workorder_bar_content o_workorder_bar_content_right">
                         <div attrs="{'invisible': [('working_state', '=', 'blocked')]}">
-                            <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', ('is_user_working', '=', False),'|', ('is_last_step', '=', True), '&amp;', '|', ('quality_state', '=', 'none'), ('test_type', '!=', 'passfail'), ('test_type', '!=', 'text')]}" barcode_trigger="next" string="Next"/>
-                            <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'picture'])]}" barcode_trigger="next" string="Validate"/>
+                            <button
+                                name="action_next"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': ['|', ('is_user_working', '=', False),'|', ('is_last_step', '=', True), '&amp;', '|', ('quality_state', '=', 'none'), ('test_type', '!=', 'passfail'), ('test_type', '!=', 'text')]}"
+                                barcode_trigger="next"
+                                string="Next"/>
+                            <button
+                                name="action_next"
+                                type="object"
+                                class="btn-secondary"
+                                attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'picture']), ('consumption', '=', 'strict'), '&amp;', ('consumption', '=', 'flexible'), ('component_qty_to_do', '&gt;=', 0)]}"
+                                barcode_trigger="next"
+                                string="VALIDATE"
+                            />
+                            <button
+                                name="action_next"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': ['|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'picture']), ('component_qty_to_do', '&lt;', 0)]}"
+                                barcode_trigger="next"
+                                string="VALIDATE"
+                            />
+                            <button name="action_continue"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': ['|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', '!=', 'register_consumed_materials'), ('component_qty_to_do', '&gt;=', 0)]}"
+                                barcode_trigger="continue"
+                                string="CONTINUE CONSUMPTION"
+                            />
+                            <button name="action_continue"
+                                type="object"
+                                class="btn-secondary"
+                                attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', '!=', 'register_consumed_materials'), ('consumption', '=', 'strict'), '&amp;', ('consumption', '=', 'flexible'), ('component_qty_to_do', '&lt;', 0)]}"
+                                barcode_trigger="continue"
+                                string="CONTINUE CONSUMPTION"
+                            />
                             <button name="action_print" type="object" class="btn-primary" attrs="{'invisible': [('test_type', '!=', 'print_label')]}" barcode_trigger="print" string="Print Labels"/>
                             <button name="record_production" type="object" string="Record production" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', True)]}" barcode_trigger="record" class="btn-primary"/>
                             <button name="do_finish" type="object" string="Mark as Done" icon="fa-check" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False)]}" class="btn-primary" barcode_trigger="cloWO"/>
@@ -129,7 +166,6 @@
                         <span attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), ('lot_id', '=', False)]}">
                             <field name="lot_id"/> -
                         </span>
-                        <field name="qty_producing" readonly="1" force_save="1"/>
                         <label for="product_uom_id" string=" "/>
                         <field name="product_uom_id" options="{'no_open': True}" class="oe_inline"/>
                     </h3>

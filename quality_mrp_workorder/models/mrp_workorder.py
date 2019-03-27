@@ -27,10 +27,10 @@ class MrpProductionWorkcenterLine(models.Model):
         self.current_quality_check_id.do_measure()
         return self._next()
 
-    def _next(self):
+    def _next(self, continue_production=False):
         self.ensure_one()
         old_check_id = self.current_quality_check_id
-        result = super(MrpProductionWorkcenterLine, self)._next()
+        result = super(MrpProductionWorkcenterLine, self)._next(continue_production=continue_production)
         if old_check_id.quality_state == 'fail':
             return old_check_id.show_failure_message()
         return result

@@ -304,7 +304,9 @@
                         </t>
                     </div>
                 </div>
-                <svg class="pt_stats_svg"></svg>
+                <div class="o_canvas_container">
+                    <canvas class="pt_stats_canvas"/>
+                </div>
                  <table class="table table-sm bordered table-striped">
                     <t t-foreach="widget.projects_stats" t-as="project">
                         <tr>

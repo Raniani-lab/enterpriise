@@ -12,6 +12,7 @@ Contains advanced features for sale management
     'depends': ['sale', 'web_dashboard'],
     'data': [
         'report/sale_report_views.xml',
+        'views/sale_enterprise_templates.xml',
     ],
     'demo': [
     ],

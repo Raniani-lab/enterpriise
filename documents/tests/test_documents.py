@@ -94,6 +94,31 @@ class TestCaseDocuments(TransactionCase):
             'activity_note': 'activity test note',
         })
 
+    def test_documents_create_from_attachment(self):
+        """
+        Tests a documents.document create method when created from an already existing ir.attachment.
+        """
+        attachment = self.env['ir.attachment'].create({
+            'name': 'attachment name',
+            'datas': GIF,
+            'datas_fname': 'attachmentGif.gif',
+            'res_model': 'documents.document',
+            'res_id': 0,
+        })
+        document_a = self.env['documents.document'].create({
+            'folder_id': self.folder_b.id,
+            'name': 'new name',
+            'attachment_id': attachment.id,
+        })
+        self.assertEqual(document_a.attachment_id.id, attachment.id,
+                         'the attachment should be the attachment given in the create values')
+        self.assertEqual(document_a.name, 'new name',
+                         'the name should be taken from the ir attachment')
+        self.assertEqual(document_a.res_model, 'documents.document',
+                         'the res_model should be set as document by default')
+        self.assertEqual(document_a.res_id, document_a.id,
+                         'the res_id should be set as its own id by default to allow access right inheritance')
+
     def test_documents_create_write(self):
         """
         Tests a documents.document create and write method,

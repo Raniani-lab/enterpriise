@@ -670,8 +670,9 @@ QUnit.module('DocumentsKanbanView', {
             mockRPC: function (route, args) {
                 if (args.method === 'create') {
                     assert.deepEqual(args.args[0], [{
-                        datas: 'dGVzdA==',
-                        datas_fname: 'file.txt',
+                        // as upload has been done ($.ajax() call cannot be mocked),
+                        // attachment_id is unknown.
+                        attachment_id: args.args[0][0].attachment_id,
                         folder_id: false,
                         name: 'file.txt',
                         tag_ids: [[6, 0, []]]
@@ -890,11 +891,11 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.skip('document inspector: open preview while modifying document', async function (assert) {
+    QUnit.test('document inspector: open preview while modifying document', async function (assert) {
         assert.expect(2);
-        var def = new Promise(function () {});
+        var def = testUtils.makeTestPromise();
 
-        var kanban = await createView({
+        var kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
@@ -914,10 +915,13 @@ QUnit.module('DocumentsKanbanView', {
         kanban.$('input[name=name]').val("foo").trigger('input');
 
         await testUtils.dom.click(kanban.$('.o_document_preview img'));
+        await testUtils.nextTick();
         assert.containsNone(kanban, '.o_viewer_content',
-            "should not have a document preview");
+            "document preview should have been canceled");
 
         def.resolve();
+        await testUtils.nextTick();
+        await testUtils.dom.click(kanban.$('.o_document_preview img'));
         await testUtils.nextTick();
         assert.containsOnce(kanban, '.o_viewer_content',
                 "should have a document preview");

@@ -78,7 +78,6 @@ class MrpProductionWorkcenterLine(models.Model):
                     move.product_id.uom_id,
                     round=False
                 ) - sum(completed_lines.mapped('qty_done'))
-                wo.qty_done = min(wo.qty_done, wo.component_remaining_qty)
                 wo.component_uom_id = lines[0].product_uom_id
 
     def action_back(self):
@@ -229,9 +228,9 @@ class MrpProductionWorkcenterLine(models.Model):
     def _update_workorder_lines(self):
         res = super(MrpProductionWorkcenterLine, self)._update_workorder_lines()
         if res['to_update']:
-            steps = self._get_quality_points(res['to_update'].values())
+            steps = self._get_quality_points([{'product_id': record.product_id.id} for record in res['to_update'].keys()])
             for line, values in res['to_update'].items():
-                if line['product_id'] in steps.mapped('component_id.id') or line.move_id.has_tracking != 'none':
+                if line.product_id in steps.mapped('component_id') or line.move_id.has_tracking != 'none':
                     values['qty_done'] = 0
         return res
 
@@ -360,7 +359,7 @@ class MrpProductionWorkcenterLine(models.Model):
             change_worksheet_page = position != len(ordered_check_ids) - 1 and next_check.point_id.worksheet == 'scroll'
             old_allow_producing_quantity_change = self.allow_producing_quantity_change
             self.write({
-                'allow_producing_quantity_change': True if params.get('position') == 0 else False,
+                'allow_producing_quantity_change': True if params.get('position') == 0 and all(c.quality_state == 'none' for c in self.check_ids) else False,
                 'current_quality_check_id': check_id,
                 'is_first_step': position == 0,
                 'is_last_step': check_id == False,
@@ -368,7 +367,7 @@ class MrpProductionWorkcenterLine(models.Model):
             })
             # Update the default quantities in component registration steps
             if old_allow_producing_quantity_change and not self.allow_producing_quantity_change:
-                for check in self.check_ids.filtered(lambda c: c.test_type == 'register_consumed_materials' and c.component_id.tracking != 'serial' and c.quality_state == 'none'):
+                for check in self.check_ids.filtered(lambda c: c.component_id and c.component_id.tracking != 'serial' and c.quality_state == 'none') - next_check:
                     moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.component_id)
                     check.qty_done = moves[0].product_uom._compute_quantity(
                         self.qty_producing * sum(moves.mapped('unit_factor')),
@@ -422,7 +421,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == point.component_id and m.workorder_id == wo)
                     qty_done = 1.0
                     if point.component_id and moves and point.component_id.tracking != 'serial':
-                        qty_done = float_round(sum(moves.mapped('unit_factor')), precision_rounding=moves[0].product_uom.rounding)
+                        qty_done = float_round(sum(moves.mapped('unit_factor')) * wo.qty_producing, precision_rounding=moves[0].product_uom.rounding)
                     # Do not generate qc for control point of type register_consumed_materials if the component is not consummed in this wo.
                     if not point.component_id or moves:
                         self.env['quality.check'].create({'workorder_id': wo.id,

@@ -80,9 +80,8 @@ var DocumentsInspector = Widget.extend({
             return rule.data;
         });
 
-        // we have to lock some actions (like opening the record preview) when
+        // we have to block some actions (like opening the record preview) when
         // there are pending 'multiSave' requests
-        this.savingDef = null;
         this.pendingSavingRequests = 0;
     },
     /**
@@ -307,16 +306,12 @@ var DocumentsInspector = Widget.extend({
      */
     _saveMulti: function (changes) {
         var self = this;
-        this.savingDef = this.savingDef || new Promise(function () {});
         this.pendingSavingRequests++;
         this.trigger_up('save_multi', {
             changes: changes,
             dataPointIDs: _.pluck(this.records, 'id'),
             callback: function () {
                 self.pendingSavingRequests--;
-                if (self.pendingSavingRequests === 0) {
-                    Promise.resolve(self.savingDef);
-                }
             },
         });
     },
@@ -463,15 +458,14 @@ var DocumentsInspector = Widget.extend({
     _onOpenPreview: function (ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        var self = this;
+        if (this.pendingSavingRequests > 0)
+            return;
         var activeID = $(ev.currentTarget).data('id');
         if (activeID) {
-            Promise.all([this.savingDef]).then(function () {
-                var records = _.pluck(self.records, 'data');
-                self.trigger_up('kanban_image_clicked', {
-                    recordID: activeID,
-                    recordList: records
-                });
+            var records = _.pluck(this.records, 'data');
+            this.trigger_up('kanban_image_clicked', {
+                recordID: activeID,
+                recordList: records
             });
         }
     },

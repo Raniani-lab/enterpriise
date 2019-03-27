@@ -3,7 +3,6 @@ $gantt-pill-height: 30px;
 $gantt-pill-padding: 3px;
 $gantt-highlight-today: #FFF9C4;
 $gantt-highlight-hover-row: #FFFDE7;
-$gantt-decoration-colors: ('secondary', 'success', 'info', 'warning', 'danger');
 
 // The progress feature is going to set background-size on the element to limit
 // the size of the decoration effects. Since decorations effects are done with
@@ -18,9 +17,7 @@ $gantt-decoration-colors: ('secondary', 'success', 'info', 'warning', 'danger');
 // by background-size for the progress feature, so we need to generate the
 // decorations for each color if we want to be able to combine them.
 @mixin gantt-gradient-decorations($color) {
-    &.decoration-info {
-        background-image: repeating-linear-gradient(-45deg, $color 0px 10px, darken($color, 5%) 10px 20px);
-    }
+    background-image: repeating-linear-gradient(-45deg, $color 0px 10px, darken($color, 5%) 10px 20px);
 }
 
 // Small triangle in top left corner
@@ -182,6 +179,7 @@ $gantt-decoration-colors: ('secondary', 'success', 'info', 'warning', 'danger');
                         @for $index from 2 through length($o-colors) {
                             &.o_gantt_color_#{$index - 1} {
                                 $gantt-color: nth($o-colors, $index);
+                                background-color: $gantt-color;
                                 &.o_gantt_progress {
                                     @include resizable-background-color($gantt-color);
                                     @include gantt-gradient-decorations($gantt-color);

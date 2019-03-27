@@ -311,7 +311,7 @@ class HrWorkEntryType(models.Model):
 
     name = fields.Char(required=True)
     code = fields.Char(required=True)
-    color = fields.Integer(default=1) # Will be used with the new calendar/kanban view
+    color = fields.Integer(default=0)
     sequence = fields.Integer(default=25)
     active = fields.Boolean(
         'Active', default=True,

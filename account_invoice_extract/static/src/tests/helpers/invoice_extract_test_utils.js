@@ -56,22 +56,22 @@ function createBoxesData() {
             user_selected: true,
         })
     ];
-    // 'total' boxes: not selected, ocr chosen
-    var totalBoxes = [
+    // 'invoice_id' boxes: not selected, ocr chosen
+    var InvoiceIdBoxes = [
         createBoxData({
-            fieldName: 'total',
+            fieldName: 'invoice_id',
             id: 4,
             selected_status: 0,
             user_selected: false,
         }),
         createBoxData({
-            fieldName: 'total',
+            fieldName: 'invoice_id',
             id: 5,
             selected_status: 1,
             user_selected: false,
         }),
     ];
-    var boxes = vatBoxes.concat(totalBoxes);
+    var boxes = vatBoxes.concat(InvoiceIdBoxes);
     return boxes;
 }
 

@@ -57,7 +57,7 @@ QUnit.module('BoxLayer', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box[data-id=4]').length,
             1, "should have box with ID 4");
         assert.strictEqual($('.o_invoice_extract_box[data-id=4]').data('field-name'),
-            'total', "should have correct field name for box with ID 4");
+            'invoice_id', "should have correct field name for box with ID 4");
         assert.isNotVisible($('.o_invoice_extract_box[data-id=4]'),
             "should hide box with ID 4 by default");
         assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'ocr_chosen',
@@ -68,7 +68,7 @@ QUnit.module('BoxLayer', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box[data-id=5]').length,
             1, "should have box with ID 5");
         assert.strictEqual($('.o_invoice_extract_box[data-id=5]').data('field-name'),
-            'total', "should have correct field name for box with ID 5");
+            'invoice_id', "should have correct field name for box with ID 5");
         assert.isNotVisible($('.o_invoice_extract_box[data-id=5]'),
             "should hide box with ID 5 by default");
         assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'ocr_chosen',
@@ -94,9 +94,9 @@ QUnit.module('BoxLayer', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box[data-id=3]').data('field-name'),
             'VAT_Number', "should have correct field name for box with ID 3");
         assert.strictEqual($('.o_invoice_extract_box[data-id=4]').data('field-name'),
-            'total', "should have correct field name for box with ID 4");
+            'invoice_id', "should have correct field name for box with ID 4");
         assert.strictEqual($('.o_invoice_extract_box[data-id=5]').data('field-name'),
-            'total', "should have correct field name for box with ID 5");
+            'invoice_id', "should have correct field name for box with ID 5");
 
         assert.isNotVisible($('.o_invoice_extract_box[data-id=1]'),
             "should hide box with ID 1 by default");
@@ -122,18 +122,18 @@ QUnit.module('BoxLayer', {}, function () {
         assert.isNotVisible($('.o_invoice_extract_box[data-id=5]'),
             "should hide box with ID 5 with field name 'VAT_Number'");
 
-        boxLayer.displayBoxes({ fieldName: 'total' });
+        boxLayer.displayBoxes({ fieldName: 'invoice_id' });
 
         assert.isNotVisible($('.o_invoice_extract_box[data-id=1]'),
-            "should hide box with ID 1 with field name 'total'");
+            "should hide box with ID 1 with field name 'invoice_id'");
         assert.isNotVisible($('.o_invoice_extract_box[data-id=2]'),
-            "should hide box with ID 2 with field name 'total'");
+            "should hide box with ID 2 with field name 'invoice_id'");
         assert.isNotVisible($('.o_invoice_extract_box[data-id=3]'),
-            "should hide box with ID 3 with field name 'total'");
+            "should hide box with ID 3 with field name 'invoice_id'");
         assert.isVisible($('.o_invoice_extract_box[data-id=4]'),
-            "should show box with ID 4 with field name 'total'");
+            "should show box with ID 4 with field name 'invoice_id'");
         assert.isVisible($('.o_invoice_extract_box[data-id=5]'),
-            "should show box with ID 5 with field name 'total'");
+            "should show box with ID 5 with field name 'invoice_id'");
 
         parent.destroy();
     });
@@ -222,7 +222,7 @@ QUnit.module('BoxLayer', {}, function () {
                 user_selected: false,
             }),
             invoiceExtractTestUtils.createBoxData({
-                fieldName: 'total',
+                fieldName: 'invoice_id',
                 id: 7,
                 page: 1,
                 selected_status: 0,

@@ -22,6 +22,7 @@ QUnit.module('FormView', {
                     date_due: { string: 'Due Date', type: 'date' },
                     date_invoice: { string: 'Invoice Date', type: 'date' },
                     display_name: { string: 'Name', type: 'string' },
+                    invoice_id: { string: 'InvoiceId', type: 'string' },
                     message_attachment_count: { string: 'Attachment count', type: 'integer' },
                     message_ids: {
                         string: 'messages',
@@ -37,6 +38,7 @@ QUnit.module('FormView', {
                     date_due: '1984-12-20',
                     date_invoice: '1984-12-15',
                     display_name: 'MyInvoice',
+                    invoice_id: 'INV_15/26/34',
                     id: 2,
                     message_attachment_count: 1,
                     message_ids: [1]
@@ -136,8 +138,8 @@ QUnit.module('FormView', {
             "should display attachment preview");
         assert.strictEqual($attachmentPreview.find('.o_invoice_extract_buttons').length, 1,
             "should display the field extract buttons on attachment preview");
-        assert.strictEqual($('.o_invoice_extract_button').length, 7,
-            "should display 7 invoice extract buttons");
+        assert.strictEqual($('.o_invoice_extract_button').length, 6,
+            "should display 6 invoice extract buttons");
         assert.strictEqual($('.o_invoice_extract_button.active').length, 1,
             "should have one field extract button that is active");
         assert.strictEqual($('.o_invoice_extract_button.active').data('field-name'),
@@ -159,11 +161,11 @@ QUnit.module('FormView', {
             'VAT_Number',
             "box with ID 3 should be related to field 'VAT_Number'");
         assert.strictEqual(form.$('.o_invoice_extract_box[data-id=4]').data('field-name'),
-            'total',
-            "box with ID 4 should be related to field 'total'");
+            'invoice_id',
+            "box with ID 4 should be related to field 'invoice_id'");
         assert.strictEqual(form.$('.o_invoice_extract_box[data-id=5]').data('field-name'),
-            'total',
-            "box with ID 5 should be related to field 'total'");
+            'invoice_id',
+            "box with ID 5 should be related to field 'invoice_id'");
 
         // check visibility of boxes
         // the box is appended in the o_attachment_preview, which is displayed
@@ -259,7 +261,7 @@ QUnit.module('FormView', {
             "should still display an attachment preview in edit mode");
         assert.strictEqual($attachmentPreview.find('.o_invoice_extract_buttons').length, 1,
             "should now display field extract buttons on attachment preview in edit mode");
-        assert.strictEqual($('.o_invoice_extract_button').length, 7,
+        assert.strictEqual($('.o_invoice_extract_button').length, 6,
             "should now display invoice extract buttons in edit mode");
         assert.strictEqual($('.boxLayer').length, 1,
             "should now display box layer in edit mode");
@@ -336,8 +338,8 @@ QUnit.module('FormView', {
         assert.ok(form.$('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
             "box with ID 5 should be invisible");
 
-        assert.containsOnce($('body'), '.o_invoice_extract_button[data-field-name="total"]');
-        $('.o_invoice_extract_button[data-field-name="total"]').click();
+        assert.containsOnce($('body'), '.o_invoice_extract_button[data-field-name="invoice_id"]');
+        $('.o_invoice_extract_button[data-field-name="invoice_id"]').click();
 
         assert.ok(form.$('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
             "box with ID 1 should become invisible");

@@ -13,7 +13,7 @@ Analytic Accounting in MRP
 * Cost structure report
 """,
     'website': 'https://www.odoo.com/page/manufacturing',
-    'depends': ['mrp', 'stock_account'],
+    'depends': ['mrp_account'],
     'data': [
         'views/mrp_account_view.xml',
         'views/cost_structure_report.xml',

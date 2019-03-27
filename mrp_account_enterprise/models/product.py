@@ -9,11 +9,11 @@ class ProductTemplate(models.Model):
 
     def action_cost_structure(self):
         products = self.mapped('product_variant_id')
-        return self.env.ref('mrp_account.action_cost_struct_product_template').report_action(products, config=False)
+        return self.env.ref('mrp_account_enterprise.action_cost_struct_product_template').report_action(products, config=False)
 
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     def action_cost_structure(self):
-        return self.env.ref('mrp_account.action_cost_struct_product_template').report_action(self, config=False)
+        return self.env.ref('mrp_account_enterprise.action_cost_struct_product_template').report_action(self, config=False)

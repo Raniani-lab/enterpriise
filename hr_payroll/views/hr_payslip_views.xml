@@ -73,7 +73,6 @@
                 <group col="8" colspan="4" expand="0" string="Group By">
                     <filter string="Salary Rule Category" name="category_id" context="{'group_by':'category_id'}"/>
                     <filter string="Contribution Register" name="partner_id" context="{'group_by':'partner_id'}"/>
-                    <filter string="Amount Type" name="amount_select" context="{'group_by':'amount_select'}"/>
                     <filter string="Employees" name="employee_id" context="{'group_by':'employee_id'}"/>
                 </group>
             </search>
@@ -97,7 +96,6 @@
                 <group col="8" colspan="4" expand="0" string="Group By">
                     <filter string="Salary Rule Category" name="category_id" context="{'group_by':'category_id'}"/>
                     <filter string="Contribution Register" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
-                    <filter string="Amount Type" name="amount_select" context="{'group_by':'amount_select'}"/>
                     <filter string="Employees" name="employee_id" context="{'group_by':'employee_id'}"/>
                     <filter string="Date" name="group_by_date_from" context="{'group_by': 'date_from'}"/>
                 </group>

@@ -278,13 +278,18 @@ class HrPayslip(models.Model):
             self.contract_id = contracts[0]
             self.struct_id = contracts[0].structure_type_id.default_struct_id
 
+        self.worked_days_line_ids = self._get_new_worked_days_lines()
 
-        #computation of the salary worked days
-        worked_days_line_ids = self.get_worked_day_lines()
-        worked_days_lines = self.worked_days_line_ids.browse([])
-        for r in worked_days_line_ids:
-            worked_days_lines += worked_days_lines.new(r)
-        self.worked_days_line_ids = worked_days_lines
+    def _get_new_worked_days_lines(self):
+        if self.struct_id.use_worked_day_lines:
+            # computation of the salary worked days
+            worked_days_line_values = self.get_worked_day_lines()
+            worked_days_lines = self.worked_days_line_ids.browse([])
+            for r in worked_days_line_values:
+                worked_days_lines |= worked_days_lines.new(r)
+            return worked_days_lines
+        else:
+            return [(5, False, False)]
 
     @api.onchange('struct_id')
     def _onchange_struct_id(self):
@@ -292,14 +297,12 @@ class HrPayslip(models.Model):
         locale = self.env.context.get('lang') or 'en_US'
         payslip_name = self.struct_id.payslip_name or _('Salary Slip')
         self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name, tools.ustr(babel.dates.format_date(date=ttyme, format='MMMM-y', locale=locale)))
+        self.worked_days_line_ids = self._get_new_worked_days_lines()
 
     def get_salary_line_total(self, code):
         self.ensure_one()
         line = self.line_ids.filtered(lambda line: line.code == code)
-        if line:
-            return line[0].total
-        else:
-            return 0.0
+        return line[0].total if line else 0.0
 
     @api.multi
     def action_print_payslip(self):

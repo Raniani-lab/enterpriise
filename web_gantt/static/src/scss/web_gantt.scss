@@ -81,6 +81,7 @@ $gantt-highlight-hover-row: #FFFDE7;
 
                 &.o_gantt_today {
                     background-color: $gantt-highlight-today;
+                    box-shadow: inset 1px 1px $gantt-border-color;
                 }
 
                 &.o_gantt_unavailable {

@@ -36,7 +36,7 @@
                     <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-danger mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['error_status'])]}">
-                    An error occured during digitalization. Try resending the bill.
+                    <field name="extract_error_message"/>
                 </div>
             </xpath>
             <xpath expr="//field[@name='message_ids']" position='replace'>

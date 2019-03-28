@@ -20,6 +20,16 @@ ERROR_DOCUMENT_NOT_FOUND = 4
 ERROR_NO_DOCUMENT_NAME = 5
 ERROR_UNSUPPORTED_IMAGE_FORMAT = 6
 ERROR_FILE_NAMES_NOT_MATCHING = 7
+ERROR_NO_CONNECTION = 8
+
+ERROR_MESSAGES = {
+    ERROR_INTERNAL: _("An error occurred"),
+    ERROR_DOCUMENT_NOT_FOUND: _("The document could not be found"),
+    ERROR_NO_DOCUMENT_NAME: _("No document name provided"),
+    ERROR_UNSUPPORTED_IMAGE_FORMAT: _("Unsupported image format"),
+    ERROR_FILE_NAMES_NOT_MATCHING: _("You must send the same quantity of documents and file names"),
+    ERROR_NO_CONNECTION: _("Server not available. Please retry later")
+}
 
 
 class AccountInvoiceExtractionWords(models.Model):
@@ -45,6 +55,12 @@ class AccountInvoice(models.Model):
 
     _name = "account.invoice"
     _inherit = ['account.invoice']
+
+    @api.depends('extract_status_code')
+    def _compute_error_message(self):
+        for record in self:
+            if record.extract_status_code != SUCCESS and record.extract_status_code != NOT_READY:
+                self.extract_error_message = ERROR_MESSAGES[self.extract_status_code]
 
     def _compute_can_show_send_resend(self, record):
         can_show = True
@@ -80,6 +96,8 @@ class AccountInvoice(models.Model):
                             ('waiting_validation', 'Waiting validation'),
                             ('done', 'Completed flow')],
                             'Extract state', default='no_extract_requested', required=True)
+    extract_status_code = fields.Integer("Status code")
+    extract_error_message = fields.Text("Error message", compute=_compute_error_message)
     extract_remoteid = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id")
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id")
 
@@ -119,6 +137,7 @@ class AccountInvoice(models.Model):
                         }
                         try:
                             result = jsonrpc(endpoint, params=params)
+                            record.extract_status_code = result['status_code']
                             if result['status_code'] == SUCCESS:
                                 record.extract_state = 'waiting_extraction'
                                 record.extract_remoteid = result['document_id']
@@ -128,6 +147,7 @@ class AccountInvoice(models.Model):
                                 record.extract_state = 'error_status'
                         except AccessError:
                             record.extract_state = 'error_status'
+                            self.extract_status_code = ERROR_NO_CONNECTION
         for record in self:
             record._compute_show_resend_button()
         return res
@@ -156,6 +176,7 @@ class AccountInvoice(models.Model):
             }
             try:
                 result = jsonrpc(endpoint, params=params)
+                self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
                     self.extract_state = 'waiting_extraction'
                     self.extract_remoteid = result['document_id']
@@ -167,6 +188,7 @@ class AccountInvoice(models.Model):
 
             except AccessError:
                 self.extract_state = 'error_status'
+                self.extract_status_code = ERROR_NO_CONNECTION
 
     @api.multi
     def get_validation(self, field):
@@ -255,7 +277,7 @@ class AccountInvoice(models.Model):
                     'partner': record.get_validation('supplier'),
                     'VAT_Number': record.get_validation('VAT_Number'),
                     'currency': record.get_validation('currency'),
-                    'merged_lines': not (self.env['ir.config_parameter'].get_param('account_invoice_extract.no_merging_lines_by_taxes') != 'False'),
+                    'merged_lines': self.env.user.company_id.extract_single_line_per_tax,
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
                 params = {
@@ -450,7 +472,7 @@ class AccountInvoice(models.Model):
         self.ensure_one()
         invoice_lines_to_create = []
         taxes_found = {}
-        if not self.env['ir.config_parameter'].get_param('account_invoice_extract.no_merging_lines_by_taxes'):
+        if self.env.user.company_id.extract_single_line_per_tax:
             aggregated_lines = {}
             for il in invoice_lines:
                 description = il['description']['selected_value']['content'] if 'description' in il else None
@@ -556,6 +578,7 @@ class AccountInvoice(models.Model):
                 'document_id': record.extract_remoteid
             }
             result = jsonrpc(endpoint, params=params)
+            record.extract_status_code = result['status_code']
             if result['status_code'] == SUCCESS:
                 record.extract_state = "waiting_validation"
                 ocr_results = result['results'][0]

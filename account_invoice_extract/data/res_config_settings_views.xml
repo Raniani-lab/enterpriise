@@ -20,6 +20,19 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('module_account_invoice_extract', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <field name="extract_single_line_per_tax"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="extract_single_line_per_tax"/>
+                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."/>
+                        <div class="text-muted">
+                            Enable to get only one invoice line per tax
+                        </div>
+                    </div>
+                </div>
             </div>
         </field>
     </record>

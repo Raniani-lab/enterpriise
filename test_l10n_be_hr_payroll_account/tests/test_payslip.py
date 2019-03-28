@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date, datetime, time
-from odoo.tests import common 
+from odoo.tests import common
 
 
 class TestPayslipBase(common.TransactionCase):

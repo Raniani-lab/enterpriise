@@ -90,3 +90,5 @@ class HrEmployee(models.Model):
 
         new_work_entries = self.env['hr.work.entry']._safe_duplicate_create(vals_list, date_start, date_stop)
         new_work_entries._compute_conflicts_leaves_to_approve()
+
+        return new_work_entries

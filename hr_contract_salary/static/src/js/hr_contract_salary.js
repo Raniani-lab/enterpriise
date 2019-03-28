@@ -35,6 +35,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "change input[name='waiting_list']": "onchange_waiting_list",
         "change input.bg-danger": "check_form_validity",
         "change input.document": "onchange_document",
+        "change input.half_name": "onchange_half_name",
     },
 
     init: function(parent, options) {
@@ -284,6 +285,12 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("a[name='recompute']").removeClass('d-none');
         $("input[name='NET']").addClass('o_outdated');
         this.update_gross();
+    },
+
+    onchange_half_name: function() {
+        var first_name = $("input[name='first_name']").val();
+        var last_name = $("input[name='last_name']").val();
+        $("input[name='name']").val(first_name + ' ' + last_name);
     },
 
     onchange_document: function(input) {

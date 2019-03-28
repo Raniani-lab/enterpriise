@@ -5,7 +5,6 @@ from odoo.addons.mrp.tests import common
 from odoo.tests import Form
 from odoo.exceptions import UserError
 
-from unittest import skip
 
 class TestWorkOrder(common.TestMrpCommon):
     @classmethod
@@ -99,7 +98,6 @@ class TestWorkOrder(common.TestMrpCommon):
         # plan the work orders
         mo.button_plan()
 
-    @skip('waiting forward port')
     def test_flexible_consumption_1(self):
         """ Production with a strict consumption
         Check that consuming a tracked product more than planned triggers an error"""
@@ -126,7 +124,6 @@ class TestWorkOrder(common.TestMrpCommon):
             wo = wo_form.save()
             wo._next()
 
-    @skip('waiting forward port')
     def test_flexible_consumption_1b(self):
         """ Production with a strict consumption
         Check that consuming a non tracked product more than planned triggers an error"""
@@ -176,7 +173,6 @@ class TestWorkOrder(common.TestMrpCommon):
             wo = wo_form.save()
             wo._next()
 
-    @skip('waiting forward port')
     def test_flexible_consumption_1c(self):
         """ Production with a strict consumption
         Check that consuming the right amount of component doens't trigger any error"""
@@ -246,7 +242,6 @@ class TestWorkOrder(common.TestMrpCommon):
         mo.button_mark_done()
         self.assertEqual(mo.state, 'done', 'Final state of the MO should be "done"')
 
-    @skip('waiting forward port')
     def test_flexible_consumption_2(self):
         """ Production with a flexible consumption
         Check that consuming different quantities than planned doensn't trigger

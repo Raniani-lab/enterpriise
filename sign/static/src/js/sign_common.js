@@ -1206,7 +1206,7 @@ odoo.define('sign.document_signing', function(require) {
 
                 self.$('#viewerContainer').on('scroll', function(e) {
                     if(!self.signatureItemNav.isScrolling && self.signatureItemNav.started) {
-                        self.signatureItemNav.setTip('next');
+                        self.signatureItemNav.setTip(_t('next'));
                     }
                 });
 
@@ -1273,7 +1273,7 @@ odoo.define('sign.document_signing', function(require) {
 
                 $signatureItem.on('input', function(e) {
                     self.checkSignItemsCompletion(self.role);
-                    self.signatureItemNav.setTip('next');
+                    self.signatureItemNav.setTip(_t('next'));
                 });
             } else {
                 $signatureItem.val(value);

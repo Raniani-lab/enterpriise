@@ -35,7 +35,7 @@
         <field name="parent_id" ref="financial_report_line_chtax_200"/>
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
-    </record>    
+    </record>
     <record id="financial_report_line_chtax_311a" model="account.financial.html.report.line">
         <field name="name">311a Chiffre d'affaires imposable a 2.5% (TR)</field>
         <field name="code">CHTAX_311a</field>
@@ -217,7 +217,7 @@
         <field name="code">CHTAX_399</field>
         <field name="sequence" eval="2"/>
         <field name="level" eval="1"/>
-        <field name="formulas">balance = CHTAX_302b.balance + CHTAX_311b.balance + CHTAX_342b.balance + CHTAX_381b.balance</field>
+        <field name="formulas">balance = CHTAX_302b.balance + CHTAX_311b.balance + CHTAX_342b.balance + CHTAX_381b.balance + CHTAX_382b.balance</field>
         <field name="financial_report_id" ref="financial_report_l10n_ch"/>
         <field name="special_date_changer">strict_range</field>
     </record>

@@ -104,7 +104,7 @@ class sale_subscription(http.Controller):
             ('token_implemented', '=', True)]))
         acc_pm = account.payment_token_id
         part_pms = account.partner_id.payment_token_ids
-        display_close = account.template_id.sudo().user_closable and not account.in_progress
+        display_close = account.template_id.sudo().user_closable and account.in_progress
         is_follower = request.env.user.partner_id.id in [follower.partner_id.id for follower in account.message_follower_ids]
         active_plan = account.template_id.sudo()
         periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}

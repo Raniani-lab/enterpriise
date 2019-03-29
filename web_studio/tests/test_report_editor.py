@@ -115,3 +115,10 @@ class TestReportEditor(TransactionCase):
         copy2.ensure_one()
         copy2_html = copy2.render_template(copy2.report_name).decode('utf-8')
         self.assertEqual(''.join(copy2_html.split()), 'foo')
+
+    def test_copy_custom_model_rendering(self):
+        report = self.env['ir.actions.report'].search([('report_name', '=', 'base.report_irmodulereference')])
+        report.copy_report_and_template()
+        copy = self.env['ir.actions.report'].search([('report_name', '=', 'base.report_irmodulereference_copy_1')])
+        report_model = copy._get_rendering_context_model()
+        self.assertIsNotNone(report_model)

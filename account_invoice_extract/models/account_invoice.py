@@ -269,7 +269,7 @@ class AccountInvoice(models.Model):
                 except AccessError:
                     pass
         #we don't need word data anymore, we can delete them
-        self.extract_word_ids.unlink()
+        self.mapped('extract_word_ids').unlink()
         return res
 
     @api.multi

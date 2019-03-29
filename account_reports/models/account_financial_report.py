@@ -889,7 +889,7 @@ class AccountFinancialReportLine(models.Model):
         if self.domain:
             date_from, date_to, strict_range = \
                 self._compute_date_range()
-            res = self.with_context(strict_range=strict_range, date_from=date_from, date_to=date_to)._compute_line(currency_table, financial_report, group_by=self.groupby, domain=self._get_aml_domain())
+            res = self.with_context(strict_range=strict_range, date_from=date_from, date_to=date_to, active_test=False)._compute_line(currency_table, financial_report, group_by=self.groupby, domain=self._get_aml_domain())
         return res
 
     @api.one

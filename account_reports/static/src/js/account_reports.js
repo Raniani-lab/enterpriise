@@ -250,16 +250,11 @@ var accountReportsWidget = AbstractAction.extend({
                 // Only the direct text node, not text situated in other child nodes
                 .contents().get(0).nodeValue
                 .trim();
-            var queryFound;
 
-            if (query.match(/^[a-zA-Z]/)) {
-                // The python does this too
-                queryFound = lineText.split(' ').some(function (str) {
-                    return str.toLowerCase().startsWith(query);
-                });
-            } else {
-                queryFound = lineText.startsWith(query);
-            }
+            // The python does this too
+            var queryFound = lineText.split(' ').some(function (str) {
+                return str.toLowerCase().startsWith(query);
+            });
 
             $accountReportLineFoldable.toggleClass('o_account_reports_filtered_lines', !queryFound);
             $childs.toggleClass('o_account_reports_filtered_lines', !queryFound);

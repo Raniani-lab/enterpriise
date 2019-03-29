@@ -201,7 +201,7 @@ class RevenueKPIsDashboard(http.Controller):
             date = start_date + timedelta(days=i)
             value = self.compute_stat(stat_type, date, date, filters)
 
-            # '0' and '1' are the keys for nvd3 to render the graph
+            # format of results could be changed (we no longer use nvd3)
             results.append({
                 '0': str(date).split(' ')[0],
                 '1': value,

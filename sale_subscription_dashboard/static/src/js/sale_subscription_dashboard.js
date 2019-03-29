@@ -2,18 +2,33 @@ odoo.define('sale_subscription_dashboard.dashboard', function (require) {
 'use strict';
 
 var AbstractAction = require('web.AbstractAction');
-var ajax = require('web.ajax');
 var core = require('web.core');
 var datepicker = require('web.datepicker');
 var Dialog = require('web.Dialog');
 var field_utils = require('web.field_utils');
 var session = require('web.session');
+var time = require('web.time');
 var utils = require('web.utils');
 var web_client = require('web.web_client');
 var Widget = require('web.Widget');
 
 var _t = core._t;
 var QWeb = core.qweb;
+
+var DATE_FORMAT = time.getLangDateFormat();
+var FORMAT_OPTIONS = {
+    // allow to decide if utils.human_number should be used
+    humanReadable: function (value) {
+        return Math.abs(value) >= 1000;
+    },
+    // with the choices below, 1236 is represented by 1.24k
+    minDigits: 1,
+    decimals: 2,
+    // avoid comma separators for thousands in numbers when human_number is used
+    formatterCallback: function (str) {
+        return str;
+    },
+};
 
 /*
 
@@ -30,13 +45,8 @@ because of the calculation and is then rendered separately.
 
 // Abstract widget with common methods
 var sale_subscription_dashboard_abstract = AbstractAction.extend({
-    cssLibs: [
-        '/web/static/lib/nvd3/nv.d3.css'
-    ],
     jsLibs: [
-        '/web/static/lib/nvd3/d3.v3.js',
-        '/web/static/lib/nvd3/nv.d3.js',
-        '/web/static/src/js/libs/nvd3.js'
+        '/web/static/lib/Chart/Chart.js',
     ],
     hasControlPanel: true,
 
@@ -436,7 +446,7 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                     end_date: this.end_date.format('YYYY-MM-DD'),
                     filters: this.filters,
                 },
-            })
+            });
         rpcProm.then(function(result) {
                 self.value = result;
         });
@@ -444,7 +454,6 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
     },
 
     render_dashboard: function() {
-
         var self = this;
         Promise.resolve(
             this.fetch_computed_stat()
@@ -603,66 +612,84 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
         if (!result.new_mrr) {
             return;  // no data, no graph, no crash
         }
-        var data_chart = [
+
+        var labels = result.new_mrr.map(function (point) {
+            return moment(point[0], "YYYY-MM-DD", 'en');
+        });
+        var datasets = [
             {
-                values: result.new_mrr,
-                key: _t('New MRR'),
-                color: '#26b548',
+                label: _t('New MRR'),
+                data: result.new_mrr.map(getValue),
+                borderColor: '#26b548',
+                fill: false,
             },
             {
-                values: result.churned_mrr,
-                key: _t('Churned MRR'),
-                color: '#df2e28',
+                label: _t('Churned MRR'),
+                data: result.churned_mrr.map(getValue),
+                borderColor: '#df2e28',
+                fill: false,
             },
             {
-                values: result.expansion_mrr,
-                key: _t('Expansion MRR'),
-                color: '#fed049',
+                label: _t('Expansion MRR'),
+                data: result.expansion_mrr.map(getValue),
+                borderColor: '#fed049',
+                fill: false,
             },
             {
-                values: result.down_mrr,
-                key: _t('Down MRR'),
-                color: '#ffa500',
+                label: _t('Down MRR'),
+                data: result.down_mrr.map(getValue),
+                borderColor: '#ffa500',
+                fill: false,
             },
             {
-                values: result.net_new_mrr,
-                key: _t('Net New MRR'),
-                color: '#2693d5',
+                label: _t('Net New MRR'),
+                data: result.net_new_mrr.map(getValue),
+                borderColor: '#2693d5',
+                fill: false,
             }
         ];
 
-        nv.addGraph(function() {
-            var chart = nv.models.lineChart()
-                .interpolate("monotone")
-                .x(function(d) { return getDate(d); })
-                .y(function(d) { return getValue(d); })
-                .margin({left: 100})
-                .useInteractiveGuideline(true)
-                .duration(350)
-                .showLegend(true)
-                .showYAxis(true)
-                .showXAxis(true);
+        var $div_to_display = $(div_to_display).css({position: 'relative', height: '20em'});
+        $div_to_display.empty();
+        var $canvas = $('<canvas/>');
+        $div_to_display.append($canvas);
 
-            var tick_values = getPrunedTickValues(data_chart[0].values, 10);
-
-            chart.xAxis
-                .tickFormat(function(d) { return d3.time.format("%m/%d/%y")(new Date(d)); })
-                .tickValues(_.map(tick_values, function(d) {return getDate(d); }))
-                .rotateLabels(-30);
-
-            chart.yAxis
-                .axisLabel('MRR')
-                .tickFormat(function(d) { return field_utils.format.float(d);});
-
-            var svg = d3.select(div_to_display)
-                .append("svg")
-                .attr("height", '20em');
-            svg
-                .datum(data_chart)
-                .call(chart);
-            nv.utils.windowResize(chart.update);
-            return chart;
-
+        var ctx = $canvas.get(0).getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets,
+            },
+            options: {
+                layout: {
+                    padding: {bottom: 30},
+                },
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'MRR',
+                        },
+                        type: 'linear',
+                        ticks: {
+                            callback: formatValue,
+                        },
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback:  function (value) {
+                                return moment(value).format(DATE_FORMAT);
+                            }
+                        },
+                    }],
+                },
+            }
         });
     },
 });
@@ -785,49 +812,59 @@ var sale_subscription_dashboard_forecast = sale_subscription_dashboard_abstract.
     },
 
     load_chart_forecast: function(div_to_display, values) {
-        this.$(div_to_display).empty();
+        var labels = values.map(function (point) {
+            return point[0];
+        });
+        var datasets = [{
+            data: values.map(getValue),
+            backgroundColor: 'rgba(38,147,213,0.2)',
+            borderColor: 'rgba(38,147,213,0.2)',
+            borderWidth: 3,
+            pointBorderWidth: 1,
+            cubicInterpolationMode: 'monotone',
+            fill: 'origin',
+        }];
 
-        var data_chart = [
-        {
-            values: values,
-            color: '#2693d5',
-            area: true
-        },
-        ];
-        nv.addGraph(function() {
-            var chart = nv.models.lineChart()
-                .interpolate("monotone")
-                .x(function(d) { return getDate(d); })
-                .y(function(d) { return getValue(d); })
-                .forceY([0]);
-            chart
-                .margin({left: 100})
-                .useInteractiveGuideline(true)
-                .duration(350)
-                .showLegend(false)
-                .showYAxis(true)
-                .showXAxis(true);
+        var $div_to_display = this.$(div_to_display).css({position: 'relative', height: '20em'});
+        $div_to_display.empty();
+        var $canvas = $('<canvas/>');
+        $div_to_display.append($canvas);
 
-            var tick_values = getPrunedTickValues(data_chart[0].values, 10);
-
-            chart.xAxis
-                .tickFormat(function(d) { return d3.time.format("%m/%d/%y")(new Date(d)); })
-                .tickValues(_.map(tick_values, function(d) { return getDate(d); }))
-                .rotateLabels(-30);
-
-            chart.yAxis
-                .tickFormat(function(d) { return field_utils.format.float(d);});
-
-            var svg = d3.select(div_to_display)
-                .append("svg");
-
-            svg.attr("height", '20em');
-
-            svg
-                .datum(data_chart)
-                .call(chart);
-            nv.utils.windowResize(chart.update);
-            return chart;
+        var ctx = $canvas.get(0).getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets,
+            },
+            options: {
+                layout: {
+                    padding: {bottom: 30},
+                },
+                legend: {
+                    display: false,
+                },
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    yAxes: [{
+                        type: 'linear',
+                        ticks: {
+                            callback: formatValue,
+                        },
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback:  function (value) {
+                                return moment(value).format(DATE_FORMAT);
+                            }
+                        },
+                    }],
+                },
+            }
         });
     },
 
@@ -1088,56 +1125,40 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         });
 
         function load_chart_mrr_salesman(div_to_display, result) {
-            var data_chart = [{
-                key: _t("MRR Growth"),
-                values: [
-                    {
-                        "label" : _t("New MRR"),
-                        "value" : result.new
-                    } ,
-                    {
-                        "label" : _t("Churned MRR"),
-                        "value" : result.churn
-                    } ,
-                    {
-                        "label" : _t("Expansion MRR"),
-                        "value" : result.up
-                    } ,
-                    {
-                        "label" : _t("Down MRR"),
-                        "value" : result.down
-                    } ,
-                    {
-                        "label" : _t("Net New MRR"),
-                        "value" : result.net_new
-                    } ,
-                    {
-                        "label" : _t("NRR"),
-                        "value" : result.nrr
-                    } ,
-                ]
+
+            var labels = [_t("New MRR"), _t("Churned MRR"), _t("Expansion MRR"),
+                            _t("Down MRR"),  _t("Net New MRR"), _t("NRR")];
+            var datasets = [{
+                label: _t("MRR Growth"),
+                data: [result.new, result.churn, result.up,
+                        result.down, result.net_new, result.nrr],
+                backgroundColor: ["#1f77b4","#ff7f0e","#aec7e8","#ffbb78","#2ca02c","#98df8a"],
             }];
 
-            nv.addGraph(function() {
-                var chart = nv.models.discreteBarChart()
-                    .x(function(d) { return d.label; })
-                    .y(function(d) { return d.value; })
-                    .staggerLabels(true)
-                    .showValues(true)
-                    .duration(350);
+            var $div_to_display = $(div_to_display).css({position: 'relative', height: '16em'});
+            $div_to_display.empty();
+            var $canvas = $('<canvas/>');
+            $div_to_display.append($canvas);
 
-                chart.tooltip.enabled(false);
-
-                var svg = d3.select(div_to_display)
-                    .append("svg")
-                    .attr("height", '20em');
-                svg
-                    .datum(data_chart)
-                    .call(chart);
-
-                nv.utils.windowResize(chart.update);
-
-                return chart;
+            var ctx = $canvas.get(0).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: datasets,
+                },
+                options: {
+                    layout: {
+                        padding: {bottom: 15},
+                    },
+                    legend: {
+                        display: false,
+                    },
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        enabled: false,
+                    },
+                }
             });
         }
     },
@@ -1178,21 +1199,12 @@ function addLoader(selector) {
     selector.html("<div class='o_loader'>" + loader + "</div>");
 }
 
-function getMinY(l) {
-    var min = Math.min.apply(Math,l.map(function(o){return o[1];}));
-    var max = Math.max.apply(Math,l.map(function(o){return o[1];}));
-    return Math.max(0, min - (max-min)/2);
+function formatValue (value) {
+    var formatter = field_utils.format.float;
+    return formatter(value, undefined, FORMAT_OPTIONS);
 }
-function getDate(d) { return new Date(d[0]); }
-function getValue(d) { return d[1]; }
-function getPrunedTickValues(ticks, nb_desired_ticks) {
-    var nb_values = ticks.length;
-    var keep_one_of = Math.max(1, Math.floor(nb_values / nb_desired_ticks));
 
-    return _.filter(ticks, function(d, i) {
-        return i % keep_one_of === 0;
-    });
-}
+function getValue(d) { return d[1]; }
 
 function compute_forecast_values(starting_value, projection_time, growth_type, churn, linear_growth, expon_growth) {
     var values = [];
@@ -1281,60 +1293,73 @@ function load_chart(div_to_display, key_name, result, show_legend, show_demo) {
           },
         ];
     }
-    var data_chart = [
-    {
-        values: result,
-        key: key_name,
-        color: '#2693d5',
-        area: true
-    },
-    ];
-    nv.addGraph(function() {
-        var chart = nv.models.lineChart()
-            .interpolate("monotone")
-            .forceY([getMinY(result)])
-            .x(function(d) { return getDate(d); })
-            .y(function(d) { return getValue(d); });
-        if (show_legend){
-            chart
-            .margin({left: 100})
-            .useInteractiveGuideline(true)
-            .duration(350)
-            .showLegend(true)
-            .showYAxis(true)
-            .showXAxis(true);
+
+    var labels = result.map(function (point) {
+        return point[0];
+    });
+
+    var datasets = [{
+        label: key_name,
+        data: result.map(function (point) {
+            return point[1];
+        }),
+        backgroundColor: "rgba(38,147,213,0.2)",
+        borderColor: "rgba(38,147,213,0.8)",
+        borderWidth: 3,
+        pointBorderWidth: 1,
+        cubicInterpolationMode: 'monotone',
+        fill: 'origin',
+    }];
+
+    var $div_to_display = $(div_to_display).css({position: 'relative'});
+    if (show_legend) {
+        $div_to_display.css({height: '20em'});
+    }
+    $div_to_display.empty();
+    var $canvas = $('<canvas/>');
+    $div_to_display.append($canvas);
+
+    var ctx = $canvas.get(0).getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets,
+        },
+        options: {
+            layout: {
+                padding: {bottom: 30},
+            },
+            legend: {
+                display: show_legend,
+            },
+            maintainAspectRatio: false,
+            tooltips: {
+                enabled: show_legend,
+                intersect: false,
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: show_legend,
+                        labelString: show_legend ? key_name : '',
+                    },
+                    display: show_legend,
+                    type: 'linear',
+                    ticks: {
+                        callback: field_utils.format.float,
+                    },
+                }],
+                xAxes: [{
+                    display: show_legend,
+                    ticks: {
+                        callback:  function (value) {
+                            return moment(value).format(DATE_FORMAT);
+                        }
+                    },
+                }],
+            },
         }
-        else {
-            chart
-            .margin({left: 0, top: 0, bottom: 0, right: 0})
-            .useInteractiveGuideline(false)
-            .duration(350)
-            .showLegend(false)
-            .showYAxis(false)
-            .showXAxis(false)
-            .interactive(false);
-        }
-
-        var tick_values = getPrunedTickValues(data_chart[0].values, 10);
-        chart.xAxis
-            .tickFormat(function(d) { return d3.time.format(core._t.database.parameters.date_format)(new Date(d)); })
-            .tickValues(_.map(tick_values, function(d) { return getDate(d); }))
-            .rotateLabels(-30);
-
-        chart.yAxis
-            .axisLabel(key_name)
-            .tickFormat(function(d) { return field_utils.format.float(d);});
-
-        var svg = d3.select(div_to_display).append("svg");
-        if (show_legend){
-            svg.attr("height", '20em');
-        }
-        svg
-        .datum(data_chart)
-        .call(chart);
-
-        nv.utils.windowResize(chart.update);
-        return chart;
     });
 }
 

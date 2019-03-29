@@ -1,13 +1,13 @@
 odoo.define('web_mobile.tests', function (require) {
 "use strict";
 
-var FormView = require('web.FormView');
-var KanbanView = require('web.KanbanView');
-var testUtils = require('web.test_utils');
+const FormView = require('web.FormView');
+const KanbanView = require('web.KanbanView');
+const testUtils = require('web.test_utils');
 
-var mobile = require('web_mobile.rpc');
+const mobile = require('web_mobile.rpc');
 
-var createView = testUtils.createView;
+const createView = testUtils.createView;
 
 QUnit.module('web_mobile', {
     beforeEach: function () {
@@ -63,9 +63,9 @@ QUnit.module('web_mobile', {
     QUnit.test("contact sync in a non-mobile environment", async function (assert) {
         assert.expect(2);
 
-        var rpcCount = 0;
+        let rpcCount = 0;
 
-        var form = await createView({
+        const form = await createView({
             View: FormView,
             arch: '<form>' +
                     '<sheet>' +
@@ -84,7 +84,7 @@ QUnit.module('web_mobile', {
             res_id: 11,
         });
 
-        var $button = form.$('button.oe_stat_button[widget="contact_sync"]');
+        const $button = form.$('button.oe_stat_button[widget="contact_sync"]');
 
         assert.strictEqual($button.length, 0, "the tag should not be visible in a non-mobile environment");
         assert.strictEqual(rpcCount, 1, "no extra rpc should be done by the widget (only the one from the view)");
@@ -96,17 +96,17 @@ QUnit.module('web_mobile', {
         assert.expect(5);
 
 
-        var __addContact = mobile.methods.addContact;
-        var addContactRecord;
+        const __addContact = mobile.methods.addContact;
+        let addContactRecord;
         // override addContact to simulate a mobile environment
         mobile.methods.addContact = function (r) {
             addContactRecord = r;
         };
 
-        var rpcDone;
-        var rpcCount = 0;
+        let rpcDone;
+        let rpcCount = 0;
 
-        var form = await createView({
+        const form = await createView({
             View: FormView,
             arch:
                 '<form>' +
@@ -129,7 +129,7 @@ QUnit.module('web_mobile', {
             res_id: 11,
         });
 
-        var $button = form.$('button.oe_stat_button[widget="contact_sync"]');
+        const $button = form.$('button.oe_stat_button[widget="contact_sync"]');
 
         assert.strictEqual($button.length, 1, "the tag should be visible in a mobile environment");
         assert.strictEqual(rpcCount, 1, "no extra rpc should be done by the widget (only the one from the view)");
@@ -139,25 +139,25 @@ QUnit.module('web_mobile', {
         assert.strictEqual(rpcCount, 2, "an extra rpc should be done on click");
         assert.ok(rpcDone, "a read rpc should have been done");
         assert.deepEqual(addContactRecord, {
-            "city": "city",
-            "country_id": "country_id",
-            "email": "email",
-            "function": "function",
-            "id": 11,
-            "image": "image",
-            "mobile": "mobile",
-            "name": "coucou3",
-            "parent_id":  [
+            city: "city",
+            country_id: "country_id",
+            email: "email",
+            function: "function",
+            id: 11,
+            image: "image",
+            mobile: "mobile",
+            name: "coucou3",
+            parent_id: [
                 1,
                 "coucou1",
             ],
-            "phone": "phone",
-            "state_id": "state_id",
-            "street": "street",
-            "street2": "street2",
-            "title": "title",
-            "website": "website",
-            "zip": "zip"
+            phone: "phone",
+            state_id: "state_id",
+            street: "street",
+            street2: "street2",
+            title: "title",
+            website: "website",
+            zip: "zip"
         }, "all data should be correctly passed");
 
         mobile.methods.addContact = __addContact;
@@ -168,11 +168,11 @@ QUnit.module('web_mobile', {
     QUnit.test("many2one in a mobile environment [REQUIRE FOCUS]", async function (assert) {
         assert.expect(4);
 
-        var mobileDialogCall = 0;
+        let mobileDialogCall = 0;
 
         // override addContact to simulate a mobile environment
-        var __addContact = mobile.methods.addContact;
-        var __many2oneDialog = mobile.methods.many2oneDialog;
+        const __addContact = mobile.methods.addContact;
+        const __many2oneDialog = mobile.methods.many2oneDialog;
 
         mobile.methods.addContact = true;
         mobile.methods.many2oneDialog = function () {
@@ -180,7 +180,7 @@ QUnit.module('web_mobile', {
             return Promise.resolve({data: {}});
         };
 
-        var form = await createView({
+        const form = await createView({
             View: FormView,
             arch:
                 '<form>' +
@@ -194,7 +194,7 @@ QUnit.module('web_mobile', {
             viewOptions: {mode: 'edit'},
         });
 
-        var $input = form.$('.o_field_widget[name="parent_id"] input');
+        const $input = form.$('.o_field_widget[name="parent_id"] input');
 
         assert.notStrictEqual($input[0], document.activeElement,
             "autofocus should be disabled");
@@ -218,25 +218,25 @@ QUnit.module('web_mobile', {
     QUnit.test("many2many_tags in a mobile environment", async function (assert) {
         assert.expect(6);
 
-        var mobileDialogCall = 0;
-        var rpcReadCount = 0;
+        let mobileDialogCall = 0;
+        let rpcReadCount = 0;
 
         // override many2oneDialog to simulate a mobile environment
-        var __many2oneDialog = mobile.methods.many2oneDialog;
+        const __many2oneDialog = mobile.methods.many2oneDialog;
 
         mobile.methods.many2oneDialog = function (args) {
             mobileDialogCall++;
             if (mobileDialogCall === 1) {
                 // mock a search on 'coucou3'
-                return Promise.resolve({'data': {'action': 'search', 'term': 'coucou3'}});
+                return Promise.resolve({data: {action: 'search', term: 'coucou3'}});
             } else if (mobileDialogCall === 2) {
                 // then mock selection of first record found
                 assert.strictEqual(args.records.length, 2, "there should be 1 record and create action");
-                return Promise.resolve({'data': {'action': 'select', 'value': {'id': args.records[0].id}}});
+                return Promise.resolve({data: {action: 'select', value: {id: args.records[0].id}}});
             }
         };
 
-        var form = await createView({
+        const form = await createView({
             View: FormView,
             arch:
                 '<form>' +
@@ -261,7 +261,7 @@ QUnit.module('web_mobile', {
             },
         });
 
-        var $input = form.$('input');
+        const $input = form.$('input');
 
         assert.strictEqual(mobileDialogCall, 0, "the many2many_tags should be disabled in a mobile environment");
 
@@ -278,7 +278,7 @@ QUnit.module('web_mobile', {
     QUnit.test('autofocus quick create form', async function (assert) {
         assert.expect(2);
 
-        var kanban = await createView({
+        const kanban = await createView({
             View: KanbanView,
             model: 'partner',
             data: this.data,
@@ -303,18 +303,19 @@ QUnit.module('web_mobile', {
     QUnit.test("control panel appears at top on scroll event", async function (assert) {
         assert.expect(11);
 
-        var Q_UNIT_FIXTURE_SELECTOR = '#qunit-fixture';
-        var MOBILE_STICK_CLASS = 'o_mobile_sticky';
-        var MAX_HEIGHT = 400;
-        var MIDLE_HEIGHT = 200;
-        var DELTA_TEST = 20;
+        const Q_UNIT_FIXTURE_SELECTOR = '#qunit-fixture';
+        const MOBILE_STICK_CLASS = 'o_mobile_sticky';
+        const MAX_HEIGHT = 400;
+        const MIDLE_HEIGHT = 200;
+        const DELTA_TEST = 20;
+        const scrollEvent = new UIEvent('scroll');
 
         function scrollAtHeight(height) {
             window.scrollTo(0, height);
             document.dispatchEvent(scrollEvent);
         }
 
-        var form = await createView({
+        const form = await createView({
             View: FormView,
             arch:
                 '<form>' +
@@ -327,9 +328,8 @@ QUnit.module('web_mobile', {
             res_id: 11,
         });
 
-        var controlPanelElement = document.querySelector('.o_cp_controller');
-        var controlPanelHeight = controlPanelElement.clientHeight;
-        var scrollEvent = new UIEvent('scroll');
+        const controlPanelElement = document.querySelector('.o_cp_controller');
+        const controlPanelHeight = controlPanelElement.clientHeight;
 
         // Force viewport to have a scrollbar
         document.querySelector(Q_UNIT_FIXTURE_SELECTOR).style.position = 'initial';
@@ -341,7 +341,7 @@ QUnit.module('web_mobile', {
 
         scrollAtHeight(MAX_HEIGHT);
 
-        var valueExpected = -controlPanelHeight;
+        const valueExpected = -controlPanelHeight;
         assert.strictEqual(controlPanelElement.style.top, valueExpected + 'px',
             'Top must be ' + valueExpected + 'px (after scroll to MAX_HEIGHT)');
         assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
@@ -349,7 +349,7 @@ QUnit.module('web_mobile', {
 
         scrollAtHeight(MAX_HEIGHT - DELTA_TEST);
 
-        var valueExpectedWithDelta = -(controlPanelHeight - DELTA_TEST);
+        const valueExpectedWithDelta = -(controlPanelHeight - DELTA_TEST);
         assert.strictEqual(controlPanelElement.style.top, valueExpectedWithDelta + 'px',
             'Top must be ' + valueExpectedWithDelta + 'px (after scroll to MAX_HEIGHT - DELTA_TEST)');
         assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),

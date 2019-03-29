@@ -23,12 +23,22 @@
         <record model="ir.ui.view" id="lead_score_form">
             <field name="name">crm.lead.form.inherit</field>
             <field name="model">crm.lead</field>
-            <field name="inherit_id" ref="crm.crm_case_form_view_leads" />
+            <field name="inherit_id" ref="crm.crm_lead_view_form" />
             <field name="arch" type="xml">
-                <field name="priority" position="after">
+                <xpath expr="//group[@name='lead_priority']/field[@name='priority']" position="after">
                     <field name="score" />
-                </field>
+                </xpath>
                 <xpath expr="//page[@name='extra']/group" position="inside">
+                    <group string="Scoring" invisible="1">
+                        <field name="score_ids"
+                            widget="many2many_tags" options="{'color_field': 'color'}"
+                            domain="[('object_id.model','=','crm.lead')]"
+                            context="{'object_name': 'crm.lead'}"
+                            readonly="1"
+                        />
+                    </group>
+                </xpath>
+                <xpath expr="//group[@name='Misc']" position="after">
                     <group string="Scoring" invisible="1">
                         <field name="score_ids"
                             widget="many2many_tags" options="{'color_field': 'color'}"
@@ -49,24 +59,6 @@
                 <field name="company_id" position="after">
                     <field name="score" optional="hide"/>
                 </field>
-            </field>
-        </record>
-
-        <record model="ir.ui.view" id="score_opp_form_view">
-            <field name="name">crm.lead.form.opp.score.inherit</field>
-            <field name="model">crm.lead</field>
-            <field name="inherit_id" ref="crm.crm_case_form_view_oppor" />
-            <field name="arch" type="xml">
-                <xpath expr="//group[@name='Misc']" position="after">
-                    <group string="Scoring" invisible="1">
-                        <field name="score_ids"
-                            widget="many2many_tags" options="{'color_field': 'color'}"
-                            domain="[('object_id.model','=','crm.lead')]"
-                            context="{'object_name': 'crm.lead'}"
-                            readonly="1"
-                        />
-                    </group>
-                </xpath>
             </field>
         </record>
 

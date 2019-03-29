@@ -12,7 +12,7 @@
 
     <template id="documents.public_page_layout" name="Documents public pages main layout">
         <t t-call="web.layout">
-            <t t-set="head_website">
+            <t t-set="head">
                 <script type="text/javascript">
                     odoo.session_info = {
                         is_admin: <t t-esc="json.dumps(request.env.user._is_admin())"/>,
@@ -33,9 +33,10 @@
                         overflow: auto;
                     }
                 </style>
+
+                <t t-raw="head"/>
             </t>
 
-            <t t-set="head" t-value="head_website + (head or '')"/>
             <t t-set="body_classname" t-value="'o_docs_share_page o_home_menu_background'"/>
 
             <div id="wrap" t-att-class="'h-100 flex-column flex-nowrap d-flex position-relative container ' + shareType or ''">

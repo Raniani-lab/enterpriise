@@ -4,7 +4,7 @@
 {
     'name': 'Belgium - Payroll',
     'category': 'Payroll Localization',
-    'depends': ['hr_payroll'],
+    'depends': ['hr_payroll', 'hr_contract_reports'],
     'description': """
 Belgian Payroll Rules.
 ======================
@@ -43,6 +43,7 @@ Belgian Payroll Rules.
         'views/res_config_settings_views.xml',
         'wizard/l10n_be_individual_account_wizard_views.xml',
         'report/hr_individual_account_templates.xml',
+        'report/hr_contract_employee_report_views.xml',
     ],
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'

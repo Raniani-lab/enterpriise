@@ -12,11 +12,20 @@ class ReportBomStructure(models.AbstractModel):
         res['ecos'] = self.env['mrp.eco'].search_count([('product_tmpl_id', '=', res['product'].product_tmpl_id.id), ('state', '!=', 'done')]) or ''
         return res
 
-    def _get_bom_lines(self, bom, bom_quantity, product, line_id, level):
-        components, total = super(ReportBomStructure, self)._get_bom_lines(bom, bom_quantity, product, line_id, level)
+    def _add_version_and_ecos(self, components):
         for line in components:
             prod_id = self.env['product.product'].browse(line['prod_id'])
             child_bom = self.env['mrp.bom'].browse(line['child_bom'])
             line['version'] = child_bom and child_bom.version or ''
             line['ecos'] = self.env['mrp.eco'].search_count([('product_tmpl_id', '=', prod_id.product_tmpl_id.id), ('state', '!=', 'done')]) or ''
+        return True
+
+    def _get_bom_lines(self, bom, bom_quantity, product, line_id, level):
+        components, total = super(ReportBomStructure, self)._get_bom_lines(bom, bom_quantity, product, line_id, level)
+        self._add_version_and_ecos(components)
         return components, total
+
+    def _get_pdf_line(self, bom_id, product_id=False, qty=1, child_bom_ids=[], unfolded=False):
+        data = super(ReportBomStructure, self)._get_pdf_line(bom_id, product_id, qty, child_bom_ids, unfolded)
+        self._add_version_and_ecos(data['lines'])
+        return data

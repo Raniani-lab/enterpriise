@@ -39,4 +39,15 @@
             <td class="o_mrp_ecos"/>
         </xpath>
     </template>
+
+    <template id="report_mrp_bom_pdf_line_inherit_mrp_plm" inherit_id="mrp.report_mrp_bom_pdf_line">
+        <xpath expr="//td[@name='td_mrp_code']" position="after">
+            <td class="o_mrp_bom_ver">
+                <span><t t-if="l.get('version')" t-esc="l['version']"/></span>
+            </td>
+            <td class="o_mrp_ecos">
+                <span><t t-if="l.get('ecos')" t-esc="l['ecos']"/></span>
+            </td>
+        </xpath>
+    </template>
 </odoo>

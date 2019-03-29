@@ -342,7 +342,7 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
         this.unresolved_defs_vals = [];
         var self = this;
         _.each(this.defs, function(v, k){
-            if (v && v.state() !== "resolved"){
+            if (v && v.state !== "resolved"){
                 self.unresolved_defs_vals.push(k);
             }
         });

@@ -29,27 +29,27 @@ msgstr ""
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "\" bank accounts have been retrieved."
-msgstr ""
+msgstr "\" банкны данс нээлгэсэн."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> It would seems that the process to"
-msgstr ""
+msgstr "<strong>Ooops</strong> Үүнийг боловсруулахад асуудал тулгарах нь"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> We could not"
-msgstr ""
+msgstr "<strong>Ooops</strong> Бид таны дансыг"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully refreshed."
-msgstr ""
+msgstr "<strong>Амжилттай!</strong> Таны данс бүртгэл бүрэн шинэчлэгдлээ."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully updated."
-msgstr ""
+msgstr "<strong>Амжилттай!</strong> Таны данс бүртгэл бүрэн шинэчлэгдлээ."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -57,11 +57,12 @@ msgid ""
 "<strong>Well done!</strong> Your banking institution is now connected to "
 "Odoo."
 msgstr ""
+"<strong>Сайн байна!</strong> Таны харилцагч банк Odoo-д бүрэн холбогдлоо."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "A total of \""
-msgstr ""
+msgstr "Нийт \""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_number
@@ -72,30 +73,30 @@ msgstr "Дансны дугаар"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__account_online_journal_ids
 msgid "Account Online Journal"
-msgstr ""
+msgstr "Онлайн дансны журнал"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_provider_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_online_provider_id
 msgid "Account Online Provider"
-msgstr ""
+msgstr "Онлайн дансны байгууллага"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__account_online_wizard_id
 msgid "Account Online Wizard"
-msgstr ""
+msgstr "Онлайн дансны дэлгэц"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__name
 msgid "Account name"
-msgstr ""
+msgstr "Дансны нэр"
 
 #. module: account_online_sync
 #: model:ir.actions.server,name:account_online_sync.online_sync_cron_ir_actions_server
 #: model:ir.cron,cron_name:account_online_sync.online_sync_cron
 #: model:ir.cron,name:account_online_sync.online_sync_cron
 msgid "Account: Journal online sync"
-msgstr ""
+msgstr "Санхүү: Журналын бүртгэл онлайнаар ижилсүүлэх"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__action
@@ -110,24 +111,24 @@ msgstr "Үйлдэл Шаардлагатай"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__action_required
 msgid "Action Required"
-msgstr ""
+msgstr "Үйлдэл шаардлагатай"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:360
 #, python-format
 msgid "Add a Bank Account"
-msgstr ""
+msgstr "Банкны данс нэмэх"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Additional information"
-msgstr ""
+msgstr "Нэмэлт мэдээлэл"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:62
 #, python-format
 msgid "An error occurred during online synchronization"
-msgstr ""
+msgstr "Онлайн гүйлгээ ижилсүүлэлтийн явцад алдаа үүслээ"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_attachment_count
@@ -138,7 +139,7 @@ msgstr "Хавсралтын тоо"
 #: code:addons/account_online_sync/models/online_sync.py:317
 #, python-format
 msgid "Automated Bank Synchronization"
-msgstr ""
+msgstr "Автомат банк ижилсүүлэлт"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__balance
@@ -174,7 +175,7 @@ msgstr "Цуцлагдсан"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__status_code
 msgid "Code to identify problem"
-msgstr ""
+msgstr "Асуудлын таних код"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_res_company
@@ -227,7 +228,7 @@ msgstr "Үүсгэсэн"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__bank_statement_creation
 msgid "Creation of Bank Statements"
-msgstr ""
+msgstr "Банкны хуулга бүртгэл"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_journal__bank_statement_creation
@@ -236,6 +237,9 @@ msgid ""
 "                                               will be created when fetching new transactions\n"
 "                                               from your bank account."
 msgstr ""
+"Банкны харилцах дансыг ижилсүүлэлт хийн\n"
+"                                              гүйлгээ хүлээн авч бүртгэх үед\n"
+"                                              банкны хуулга ямар огноогоор үүсэхийг тодорхойлно."
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__display_name
@@ -248,7 +252,7 @@ msgstr "Дэлгэцийн Нэр"
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Do not link"
-msgstr ""
+msgstr "Холбохгүй"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -263,7 +267,7 @@ msgstr "Амжилтгүй"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__sync_date
 msgid "Fetch transaction from"
-msgstr ""
+msgstr "Гүйлгээ татах эх сурвалж"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_follower_ids
@@ -283,7 +287,7 @@ msgstr "Дагагчид (Харилцагчид)"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__hide_table
 msgid "Hide Table"
-msgstr ""
+msgstr "Хүснэгтийг нуух"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__id
@@ -299,11 +303,13 @@ msgid ""
 "ID of the banking institution in third party server used for debugging "
 "purpose"
 msgstr ""
+"Гуравдагч систем буюу банкны байгууллагын систем дээрх гүйлгээний ID. Зөрүү "
+"үүсэх үед энэ ID-р тулгах боломжтой"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__provider_account_identifier
 msgid "ID used to identify provider account in third party server"
-msgstr ""
+msgstr "Онлайн дансыг гуравдагч системээс хайж олоход ашиглах ID"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread
@@ -325,12 +331,12 @@ msgstr "Үүнийг сонговол алдаа үүсэх үед зурвас�
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__name
 msgid "Institution"
-msgstr ""
+msgstr "Байгууллага"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr ""
+msgstr "Онлайн дансны журнал бүртгэлийн интерфэйс"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_is_follower
@@ -354,7 +360,7 @@ msgstr "Журналын нэр"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__journal_statements_creation
 msgid "Journal Statements Creation"
-msgstr ""
+msgstr "Журналын хуулга бүртгэл үүсгэлт"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal____last_update
@@ -367,7 +373,7 @@ msgstr "Сүүлийн засвар хийсэн огноо"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__last_refresh
 msgid "Last Refresh"
-msgstr ""
+msgstr "Сүүлийн ижилсүүлэлт"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__write_uid
@@ -388,22 +394,22 @@ msgstr "Сүүлийн засвар хийсэн огноо"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__last_sync
 msgid "Last synchronization"
-msgstr ""
+msgstr "Сүүлд ижилсүүлэлт хийсэн"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_link_wizard
 msgid "Link synchronized account to a journal"
-msgstr ""
+msgstr "Журналд ижилсүүлэхээр холбосон данс"
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Link to existing journal"
-msgstr ""
+msgstr "Бэлэн журналаас холбох"
 
 #. module: account_online_sync
 #: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
 msgid "List of bank(s) providing online synchronization"
-msgstr ""
+msgstr "Онлайн ижилсүүлэлт хийх боломжит банкны жагсаалт"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
@@ -413,7 +419,7 @@ msgstr "Үндсэн хавсралт"
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Manual Refresh"
-msgstr ""
+msgstr "Гараар шинэчлэх"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message
@@ -439,13 +445,13 @@ msgstr "Метод"
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Next sync:"
-msgstr ""
+msgstr "Дараагийн ижилсүүлэлт:"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__next_synchronization
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__next_refresh
 msgid "Next synchronization"
-msgstr ""
+msgstr "Дараагийн ижилсүүлэлт"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/company.py:21
@@ -454,17 +460,19 @@ msgid ""
 "No bank journal could be found! Please install a chart of accounts first, in"
 " order to create one."
 msgstr ""
+"Банкны журнал олдохгүй байна! Журнал үүсгэхийн тулд эхлээд дансны мод "
+"суулгана уу."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:109
 #, python-format
 msgid "No new transactions have been loaded in the system."
-msgstr ""
+msgstr "Системд ямар нэг шинэ гүйлгээ бүртгэгдсэнгүй."
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__number_added
 msgid "Number Added"
-msgstr ""
+msgstr "Нэмэгдсэн тоо"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction_counter
@@ -495,32 +503,32 @@ msgstr "Уншаагүй зурвасын тоо"
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_journal_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__online_account_id
 msgid "Online Account"
-msgstr ""
+msgstr "Онлайн данс"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_identifier
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__online_identifier
 msgid "Online Identifier"
-msgstr ""
+msgstr "Онлайн таних дугаар"
 
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_online_provider_account
 msgid "Online Institution Accounts"
-msgstr ""
+msgstr "Онлайн байгууллагын данс"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_bank_account
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_bank_account
 msgid "Online Partner Bank Account"
-msgstr ""
+msgstr "Харилцагчийн онлайн банкны данс"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_vendor_name
 msgid "Online Partner Vendor Name"
-msgstr ""
+msgstr "Онлайн харилцагчийн нэр"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:375
@@ -530,24 +538,24 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 #, python-format
 msgid "Online Synchronization"
-msgstr ""
+msgstr "Онлайн ижилсүүлэлт"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:461
 #, python-format
 msgid "Opening statement: first synchronization"
-msgstr ""
+msgstr "Нээлтийн хуулга: эхний ижилсүүлэлт"
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr ""
+msgstr "Plaid"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:82
 #, python-format
 msgid "Please enter at least a character for the search"
-msgstr ""
+msgstr "Хайлт хийхэд ядаж нэг тэмдэгт оруулна уу"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:285
@@ -556,11 +564,12 @@ msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
 "to do"
 msgstr ""
+"Журналд өөрийн дансуудаа холбох эсвэл \"холбохгүй\" гэх үйлдлийг сонгоно уу."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Problem during synchronization"
-msgstr ""
+msgstr "Ижилсүүлэх явцад асуудал үүссэн"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__provider_name
@@ -570,17 +579,17 @@ msgstr "Нийлүүлэгч"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_account_identifier
 msgid "Provider Account Identifier"
-msgstr ""
+msgstr "Үйлчилгээ үзүүлэгч дансны таних дугаар"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_identifier
 msgid "Provider Identifier"
-msgstr ""
+msgstr "Үйлчилгээ үзүүлэгчийн таних дугаар"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Үйлчилгээ үзүүлэгчийн төрөл"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_provider
@@ -592,7 +601,7 @@ msgstr "Онлайн нягтлан бодох бүртгэлийн синхро
 #: code:addons/account_online_sync/models/online_sync.py:90
 #, python-format
 msgid "Server not reachable, please try again later"
-msgstr ""
+msgstr "Серверт хандалт хийх боломжгүй байна, дараа дахин оролдоно уу"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__status
@@ -602,7 +611,7 @@ msgstr "Төлөв"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__status_code
 msgid "Status Code"
-msgstr ""
+msgstr "Төлвийн код"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,status:0
@@ -612,34 +621,35 @@ msgstr "Амжилттай"
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_account_online_wizard_form
 msgid "Synchronization result"
-msgstr ""
+msgstr "Ижилсүүлэлтийн үр дүн"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__synchronization_status
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__status
 msgid "Synchronization status"
-msgstr ""
+msgstr "Ижилсүүлэлтийн төлөв"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Synchronize now"
-msgstr ""
+msgstr "Одоо ижилсүүлэх"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__account_ids
 msgid "Synchronized accounts"
-msgstr ""
+msgstr "Ижилсүүлсэн данс"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message
 msgid "Techhnical message from third party provider that can help debugging"
 msgstr ""
+"Үйлчилгээ үзүүлэгч гуравдагч талаас debug хийх зорилготой техникийн зурвас"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_wizard__hide_table
 msgid "Technical field to hide table in view"
-msgstr ""
+msgstr "Дэлгэцэнд хүснэгтийг нуух эсэхийг илэрхийлэх техникийн талбар"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
@@ -648,6 +658,8 @@ msgstr ""
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 msgstr ""
+"plaid/yodlee системээс харилцагч харгалзуулахад зориулж мэдээлэл хадгалах "
+"техникийн талбар"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
@@ -657,30 +669,32 @@ msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 " (used when a purchase is made)"
 msgstr ""
+"plaid/yodlee системээс харилцагч харгалзуулахад зориулж мэдээлэл хадгалах "
+"техникийн талбар (худалдан авалт хийгдсэн үед ашиглагдана)"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
-msgstr ""
+msgstr "Банкны журналд холбогдсон данс"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:63
 #, python-format
 msgid "The following error happened during the synchronization: %s"
-msgstr ""
+msgstr "Ижилсүүлэлт хийх явцад дараах алдаа тулгарлаа: %s"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:105
 #, python-format
 msgid "The following transactions have been loaded in the system."
-msgstr ""
+msgstr "Дараах гүйлгээнүүд системд бүртгэгдлээ."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:74
 #: code:addons/account_online_sync/models/online_sync.py:88
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
-msgstr ""
+msgstr "Timeout: сервер 60 секунд хариу өгсөнгүй"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__transactions
@@ -690,19 +704,19 @@ msgstr "Гүйлгээ"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__action_required
 msgid "True if user needs to take action by updating account"
-msgstr ""
+msgstr "Данс ижилсүүлэлт хийхэд хэрэглэгчээс хариу үйлдэл шаардагдсан эсэх"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:201
 #, python-format
 msgid "Unimplemented"
-msgstr ""
+msgstr "Нэвтрүүлээгүй"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:117
 #, python-format
 msgid "Unknown reason"
-msgstr ""
+msgstr "Үл мэдэх шалтгаан"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_unread
@@ -717,18 +731,18 @@ msgstr "Уншаагүй зурвасын тоолуур"
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Update Credentials"
-msgstr ""
+msgstr "Итгэмжлэлийг шинэчлэх"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_journal__synchronization_status
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__status
 msgid "Update status of provider account"
-msgstr ""
+msgstr "Үйлчилгээ үзүүлэгчийн дансны төлвийг шинэчлэх"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "View problem"
-msgstr ""
+msgstr "Асуудлыг харах"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__website_message_ids
@@ -743,7 +757,7 @@ msgstr "Вебсайтын харилцааны түүх"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_wizard
 msgid "Wizard to link synchronized accounts to journal"
-msgstr ""
+msgstr "Ижилсүүлэх дансыг журналд холбох дэлгэц"
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
@@ -756,45 +770,47 @@ msgid ""
 "You can associate those bank accounts to a journal in order to automatically"
 " retrieve the latest statements from your bank."
 msgstr ""
+"Танаас ямар нэг хамааралгүйгээр эдгээр банкны дансууд автоматаар банктай "
+"ижилсиж хамгийн шинэ гүйлгээнүүд автоматаар бүртгэгдэнэ."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:287
 #, python-format
 msgid "You can not link two accounts to the same journal"
-msgstr ""
+msgstr "Та нэг журналд нэгээс олон өөр данс холбох боломжгүй"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
 msgid "add"
-msgstr ""
+msgstr "нэмэх"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__balance
 #: model:ir.model.fields,help:account_online_sync.field_account_online_link_wizard__balance
 msgid "balance of the account sent by the third party provider"
-msgstr ""
+msgstr "Гуравдагч үйлчилгээ үзүүлэгчээс илгээгдсэн дансны үлдэгдэл"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
 msgid "edit"
-msgstr ""
+msgstr "засах"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__online_identifier
 msgid "id use to identify account in provider system"
-msgstr ""
+msgstr "үйлчилгээ үзүүлэгчийн систем дээрх дансны таних ID"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__provider_name
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__name
 msgid "name of the banking institution"
-msgstr ""
+msgstr "Банкны байгууллагын нэр"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:507
 #, python-format
 msgid "online sync"
-msgstr ""
+msgstr "онлайн ижилсүүлэлт"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
@@ -805,7 +821,7 @@ msgstr "шинэчлэх"
 #: code:addons/account_online_sync/models/online_sync.py:107
 #, python-format
 msgid "transactions loaded"
-msgstr ""
+msgstr "гүйлгээ түгжигдсэн"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -813,6 +829,8 @@ msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
+"таны данс дараах шалтгааны улмаас\n"
+"                    үл боловсруулагдлаа:"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -821,3 +839,5 @@ msgid ""
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"
 "                    or in the online synchronization menu."
 msgstr ""
+"данс данс бүрэн шинэчлэгдсэнгүй.\n"
+"                    Та хянам самбар дээрх шинэчлэх товч дээр дарах эсвэл онлайн ижилсүүлэлт цэсээр орж дансаа гараар шинэчлэх боломжтой."

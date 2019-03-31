@@ -27,38 +27,38 @@ msgstr ""
 msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "                Types:"
-msgstr ""
+msgstr "Төрөл:"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "<span class=\"fa fa-filter\"/> Options:"
-msgstr ""
+msgstr "Сонголт:"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:16
 #, python-format
 msgid "Arrival"
-msgstr ""
+msgstr "Ирж буй төлбөр"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
 msgid "Arrival country"
-msgstr ""
+msgstr "Төлбөр ирж буй улс"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By country"
-msgstr ""
+msgstr "Улсаар"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By type"
-msgstr ""
+msgstr "Төрлөөр"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Commodity"
-msgstr ""
+msgstr "Бараа таваар"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:33
@@ -67,7 +67,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_id
 #, python-format
 msgid "Commodity Code"
-msgstr ""
+msgstr "Бараа таваарын код"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_company
@@ -77,7 +77,7 @@ msgstr "Компаниуд"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__company_country_id
 msgid "Company country"
-msgstr ""
+msgstr "Компаны улс"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_config_settings
@@ -105,24 +105,24 @@ msgstr "Огноо"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_transport_mode_id
 msgid "Default Transport Mode"
-msgstr ""
+msgstr "Байнгын тээврийн горим"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__incoterm_id
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__incoterm_id
 msgid "Default incoterm for Intrastat"
-msgstr ""
+msgstr "Intrastat-ын байнгын тээврийн нөхцөл"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:17
 #, python-format
 msgid "Dispatch"
-msgstr ""
+msgstr "Илгээж буй төлбөр"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_supplier_form_inherit_account_intrastat
 msgid "Dispatch country"
-msgstr ""
+msgstr "Илгээж буй төлбөрийн улс"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__display_name
@@ -137,7 +137,7 @@ msgstr "Дэлгэцийн Нэр"
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_sales
 #, python-format
 msgid "EC Sales List"
-msgstr ""
+msgstr "EC борлуулалтын жагсаалт"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -147,7 +147,7 @@ msgstr "Сунгагдсан"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended Mode"
-msgstr ""
+msgstr "Өргөтгөсөн горим"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__id
@@ -159,7 +159,7 @@ msgstr "ID"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:39
 #, python-format
 msgid "Incoterm Code"
-msgstr ""
+msgstr "Худалдааны нөхцөлийн код"
 
 #. module: account_intrastat
 #: model:ir.model.fields,help:account_intrastat.field_res_company__incoterm_id
@@ -190,7 +190,7 @@ msgstr "Intrastat Код"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_country_id
 msgid "Intrastat Country"
-msgstr ""
+msgstr "Intrastat улс"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:234
@@ -199,12 +199,12 @@ msgstr ""
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_intrastat
 #, python-format
 msgid "Intrastat Report"
-msgstr ""
+msgstr "Intrastat тайлан"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_transport_mode_id
 msgid "Intrastat Transport Mode"
-msgstr ""
+msgstr "Intrastat тээврийн горим"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
@@ -215,6 +215,7 @@ msgstr "Дотоод статистик код"
 #: model:ir.model.fields,help:account_intrastat.field_account_invoice__intrastat_country_id
 msgid "Intrastat country, arrival for sales, dispatch for purchases"
 msgstr ""
+"Intrastat улс, хүлээн авах нь борлуулагч тал, илгээх нь худалдан авагч тал"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_country__intrastat
@@ -224,7 +225,7 @@ msgstr "Intrastat гишүүн"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_region_id
 msgid "Intrastat region"
-msgstr ""
+msgstr "Intrastat муж"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_invoice
@@ -261,13 +262,13 @@ msgstr "Тоо"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Region"
-msgstr ""
+msgstr "Муж"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:32
 #, python-format
 msgid "Region Code"
-msgstr ""
+msgstr "Мужын код"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -278,7 +279,7 @@ msgstr "Стандарт"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:29
 #, python-format
 msgid "System"
-msgstr ""
+msgstr "Систем"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:224
@@ -296,23 +297,23 @@ msgstr "Гүйлгээ"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:31
 #, python-format
 msgid "Transaction Code"
-msgstr ""
+msgstr "Гүйлгээний код"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transport"
-msgstr ""
+msgstr "Шилжүүлгэ"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:38
 #, python-format
 msgid "Transport Code"
-msgstr ""
+msgstr "Шилжүүлгийн код"
 
 #. module: account_intrastat
 #: sql_constraint:account.intrastat.code:0
 msgid "Triplet code/type/country_id must be unique."
-msgstr ""
+msgstr "Triplet code/type/country_id үл давхардах ёстой."
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:34

@@ -179,6 +179,7 @@ var ExistingFieldComponent = AbstractComponent.extend({
             type: this.type,
             store: this.store ? "true":"false",
         });
+        this.$el.attr("title", this.label);
         return this._super.apply(this, arguments);
     },
 });

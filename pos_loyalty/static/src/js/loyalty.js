@@ -233,6 +233,8 @@ models.Order = models.Order.extend({
             var reward = this.pos.loyalty.rewards[i];
             if (reward.minimum_points > this.get_spendable_points()) {
                 continue;
+            } else if(reward.reward_type === 'discount' && reward.point_cost > this.get_spendable_points()) {
+                continue;
             } else if(reward.reward_type === 'gift' && reward.point_cost > this.get_spendable_points()) {
                 continue;
             } else if(reward.reward_type === 'resale' && this.get_spendable_points() <= 0) {

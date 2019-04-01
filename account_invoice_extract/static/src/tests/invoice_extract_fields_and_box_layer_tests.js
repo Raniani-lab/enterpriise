@@ -143,7 +143,7 @@ QUnit.module('Fields & BoxLayer integration', {
 
         assert.strictEqual(fields.getActiveField().getName(), 'VAT_Number',
             "by default, VAT should be the default active field");
-        assert.strictEqual($('.o_invoice_extract_button').length, 7,
+        assert.strictEqual($('.o_invoice_extract_button').length, 6,
             "should render all 7 fields buttons");
 
         // box 1
@@ -186,7 +186,7 @@ QUnit.module('Fields & BoxLayer integration', {
         assert.strictEqual($('.o_invoice_extract_box[data-id=4]').length, 1,
             "should have box with ID 4");
         assert.strictEqual($('.o_invoice_extract_box[data-id=4]').data('field-name'),
-            'total',
+            'invoice_id',
             "should have correct field name for box with ID 4");
         assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'ocr_chosen',
             "should not set box with ID 4 as OCR chosen");
@@ -198,7 +198,7 @@ QUnit.module('Fields & BoxLayer integration', {
         assert.strictEqual($('.o_invoice_extract_box[data-id=5]').length, 1,
             "should have box with ID 5");
         assert.strictEqual($('.o_invoice_extract_box[data-id=5]').data('field-name'),
-            'total',
+            'invoice_id',
             "should have correct field name for box with ID 5");
         assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'ocr_chosen',
             "should set box with ID 5 as OCR chosen");
@@ -208,12 +208,12 @@ QUnit.module('Fields & BoxLayer integration', {
             "should hide box with ID 5 by default");
 
         var vatField = fields.getField({ name: 'VAT_Number' });
-        var totalField = fields.getField({ name: 'total' });
+        var InvoiceIdField = fields.getField({ name: 'invoice_id' });
 
         assert.strictEqual(vatField.getSelectedBox().getID(), 3,
             "should have correctly registered the selected box for 'VAT_Number'");
-        assert.strictEqual(totalField.getSelectedBox().getID(), 5,
-            "should have correctly registered the selected box for 'total'");
+        assert.strictEqual(InvoiceIdField.getSelectedBox().getID(), 5,
+            "should have correctly registered the selected box for 'invoice_id'");
 
         parent.destroy();
     });
@@ -239,7 +239,7 @@ QUnit.module('Fields & BoxLayer integration', {
         assert.isNotVisible($('.o_invoice_extract_box[data-id=5]'),
             "should hide box with ID 5 by default");
 
-        await testUtils.dom.click($('.o_invoice_extract_button[data-field-name="total"]'));
+        await testUtils.dom.click($('.o_invoice_extract_button[data-field-name="invoice_id"]'));
 
         assert.isNotVisible($('.o_invoice_extract_box[data-id=1]'),
             "box with ID 1 should become hidden");
@@ -289,7 +289,7 @@ QUnit.module('Fields & BoxLayer integration', {
         assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'selected',
             "box with ID 5 should stay selected");
 
-        await testUtils.dom.click($('.o_invoice_extract_button[data-field-name="total"]'));
+        await testUtils.dom.click($('.o_invoice_extract_button[data-field-name="invoice_id"]'));
         await testUtils.dom.click($('.o_invoice_extract_box[data-id=4]'));
 
         assert.hasClass($('.o_invoice_extract_box[data-id=1]'),'selected',

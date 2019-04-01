@@ -35,7 +35,7 @@ class ResPartner(models.Model):
             return []
 
         today = fields.Date.context_today(self)
-        domain = self.get_followup_lines_domain(today, overdue_only=value == 'with_overdue_invoices')
+        domain = self.get_followup_lines_domain(today, overdue_only=value == 'with_overdue_invoices', only_unblocked=True)
 
         query = self.env['account.move.line']._where_calc(domain)
         tables, where_clause, where_params = query.get_sql()

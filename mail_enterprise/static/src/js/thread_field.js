@@ -20,9 +20,7 @@ ThreadField.include({
         var self = this;
         return this._super.apply(this, arguments).then(function () {
             if (self._threadWidget.attachments.length) {
-                self.trigger_up('preview_attachment', {
-                    attachments: self._threadWidget.attachments,
-                });
+                self.trigger_up('preview_attachment');
             }
         });
     },

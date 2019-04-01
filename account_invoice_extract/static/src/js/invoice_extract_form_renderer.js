@@ -101,6 +101,10 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
     _makeInvoiceExtract: function ($page) {
         var self = this;
         if (this._$invoiceExtractButtons.length > 0) {
+            this._invoiceExtractFields.resetFieldsSelections();
+            this._renderExistingInvoiceExtractBoxLayers({
+                $page: $page,
+            });
             return;
         }
         this._$invoiceExtractButtons = $('<div class="o_invoice_extract_buttons"/>');
@@ -189,6 +193,45 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         }
 
         return Promise.all(proms);
+    },
+    /**
+     * Render the box layers using fetched box data and the attachment page
+     * preview. Boxes data are used in order to make and render boxes, whereas
+     * the page is used in order to correctly size the box layers. Also, the
+     * setup of the box layers slightly differs with images and pdf, because
+     * the latter uses an iframe.
+     *
+     * Because the iframe is created with the pdf viewer, and there is no odoo
+     * bundle related to it, we cannot simply extend the bundle with SCSS
+     * styles. As a work-around, the style of the boxes and box layers must be
+     * defined in CSS, so that we can dynamically add this file in the header
+     * of the iframe (for the case of PDF viewer).
+     *
+     * @private
+     * @param {Object} params
+     * @param {$.Element} params.$page the attachment page preview container
+     */
+    _renderExistingInvoiceExtractBoxLayers: function (params) {
+        var $page = params.$page;
+        //in case of img
+        if ($page.hasClass('img-fluid')) {
+            if (this._invoiceExtractBoxLayers.length > 0) {
+                this._invoiceExtractBoxLayers[0].insertAfter($page);
+            }
+        }
+        //in case of pdf
+        if ($page.is('iframe')) {
+            var $document = $page.contents();
+            // dynamically add css on the pdf viewer
+            $document.find('head').append('<link rel="stylesheet" type="text/css" href="/account_invoice_extract/static/src/css/account_invoice_extract_box_layer.css"></link>');
+            if (this._invoiceExtractBoxLayers.length > 0) {
+                var $textLayers = $document.find('.textLayer');
+                for (var index = 0; index < $textLayers.length; index++) {
+                    var $textLayer = $textLayers.eq(index);
+                    this._invoiceExtractBoxLayers[index].insertAfter($textLayer)
+                }
+            }
+        }
     },
     /**
      * @private

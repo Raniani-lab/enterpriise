@@ -23,7 +23,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
 msgid "Account Batch download wizard"
-msgstr "Майстер завантаження пакету рахунку"
+msgstr "Помічник завантаження рахунку пакетом"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
@@ -34,13 +34,13 @@ msgstr "Віджет узгодження рахунку"
 #: code:addons/account_batch_payment/models/account_batch_payment.py:75
 #, python-format
 msgid "All payments in the batch must belong to the same company."
-msgstr "Усі платежі в партії повинні належати одній компанії."
+msgstr "Усі платежі пакетом повинні належати одній компанії."
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:84
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr "Усі платежі в партії повинні мати один і той же спосіб оплати."
+msgstr "Усі платежі пакетом повинні мати один і той же спосіб оплати."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount
@@ -257,7 +257,7 @@ msgstr "Вхідний"
 #: code:addons/account_batch_payment/models/account_journal.py:37
 #, python-format
 msgid "Inbound Batch Payments Sequence"
-msgstr "Послідовність вхідних пакетних платежів"
+msgstr "Послідовність вхідних групових платежів"
 
 #. module: account_batch_payment
 #. openerp-web
@@ -463,6 +463,8 @@ msgid ""
 "You cannot make a batch payment with internal transfers. Internal transfers "
 "ids: %s"
 msgstr ""
+"Ви не можете виконати оплату пакетом з внутрішніми переказами. Id внутрішніх"
+" переказів: %s"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form

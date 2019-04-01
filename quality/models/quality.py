@@ -30,7 +30,7 @@ class QualityPoint(models.Model):
 
     name = fields.Char(
         'Reference', copy=False, default=lambda self: _('New'),
-        readonly=True, required=True)
+        required=True)
     sequence = fields.Integer('Sequence')
     title = fields.Char('Title')
     team_id = fields.Many2one(

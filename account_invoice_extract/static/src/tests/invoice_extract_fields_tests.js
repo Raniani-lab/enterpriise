@@ -9,15 +9,15 @@ QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('Fields', {}, function () {
 
     QUnit.test('render buttons', async function (assert) {
-        assert.expect(8);
+        assert.expect(7);
         var parent = testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
         await fields.renderButtons({ $container: $('#qunit-fixture') });
 
         var $buttons = $('.o_invoice_extract_button');
-        assert.strictEqual($buttons.length, 7,
-            "should display 7 field buttons");
+        assert.strictEqual($buttons.length, 6,
+            "should display 6 field buttons");
         // check each button label
         assert.strictEqual($buttons.eq(0).text().trim(),
             'VAT',
@@ -29,23 +29,20 @@ QUnit.module('Fields', {}, function () {
             'Currency',
             "3rd button should have correct text");
         assert.strictEqual($buttons.eq(3).text().trim(),
-            'Total',
+            'Date',
             "4th button should have correct text");
         assert.strictEqual($buttons.eq(4).text().trim(),
-            'Date',
+            'Due Date',
             "5th button should have correct text");
         assert.strictEqual($buttons.eq(5).text().trim(),
-            'Due Date',
-            "6th button should have correct text");
-        assert.strictEqual($buttons.eq(6).text().trim(),
             'Vendor Reference',
-            "7th button should have correct text");
+            "6th button should have correct text");
 
         parent.destroy();
     });
 
     QUnit.test('get button', async function (assert) {
-        assert.expect(7);
+        assert.expect(6);
         var parent = testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
@@ -58,7 +55,6 @@ QUnit.module('Fields', {}, function () {
         assert.doesNotHaveClass($buttons.eq(3), 'active', "4th button should be inactive by default");
         assert.doesNotHaveClass($buttons.eq(4), 'active', "5th button should be inactive by default");
         assert.doesNotHaveClass($buttons.eq(5), 'active', "6th button should be inactive by default");
-        assert.doesNotHaveClass($buttons.eq(6), 'active', "7th button should be inactive by default");
 
         parent.destroy();
     });
@@ -118,33 +114,33 @@ QUnit.module('Fields', {}, function () {
         await fields.renderButtons({ $container: $('#qunit-fixture') });
 
         var vatField = fields.getField({ name: 'VAT_Number' });
-        var totalField = fields.getField({ name: 'total' });
+        var invoiceIdField = fields.getField({ name: 'invoice_id' });
         var $vatButton = $('.o_invoice_extract_button[data-field-name="VAT_Number"]');
-        var $totalButton = $('.o_invoice_extract_button[data-field-name="total"]');
+        var $InvoiceIdButton = $('.o_invoice_extract_button[data-field-name="invoice_id"]');
         // check fields
         assert.ok(vatField.isActive(),
             "VAT field should be active by default");
-        assert.notOk(totalField.isActive(),
-            "Total field should be inactive by default");
+        assert.notOk(invoiceIdField.isActive(),
+            "InvoiceId field should be inactive by default");
         // check buttons
         assert.hasClass($vatButton,'active',
             "field button 'VAT' should be active by default");
-        assert.doesNotHaveClass($totalButton, 'active',
-            "field button 'total' should be inactive by default");
+        assert.doesNotHaveClass($InvoiceIdButton, 'active',
+            "field button 'invoice_id' should be inactive by default");
 
-        testUtils.dom.click($totalButton);
-        assert.verifySteps(['new active field: total']);
+        testUtils.dom.click($InvoiceIdButton);
+        assert.verifySteps(['new active field: invoice_id']);
 
         // check fields
         assert.notOk(vatField.isActive(),
             "VAT field should become inactive");
-        assert.ok(totalField.isActive(),
-            "Total field should become active");
+        assert.ok(invoiceIdField.isActive(),
+            "InvoiceId field should become active");
         // check buttons
         assert.doesNotHaveClass($vatButton, 'active',
             "field button 'VAT' should become inactive");
-        assert.hasClass($totalButton,'active',
-            "field button 'total' should become active");
+        assert.hasClass($InvoiceIdButton,'active',
+            "field button 'invoice_id' should become active");
 
         parent.destroy();
     });
@@ -163,24 +159,24 @@ QUnit.module('Fields', {}, function () {
         await fields.renderButtons({ $container: $('#qunit-fixture') });
 
         var $vatButton = $('.o_invoice_extract_button[data-field-name="VAT_Number"]');
-        var $totalButton = $('.o_invoice_extract_button[data-field-name="total"]');
+        var $invoiceIdButton = $('.o_invoice_extract_button[data-field-name="invoice_id"]');
 
         assert.hasClass($vatButton,'active',
             "field button 'VAT' should be active by default");
-        assert.doesNotHaveClass($totalButton, 'active',
-            "field button 'total' should be inactive by default");
+        assert.doesNotHaveClass($invoiceIdButton, 'active',
+            "field button 'invoice_id' should be inactive by default");
 
-        testUtils.dom.click($totalButton);
+        testUtils.dom.click($invoiceIdButton);
         assert.doesNotHaveClass($vatButton, 'active',
             "field button 'VAT' should become inactive");
-        assert.hasClass($totalButton,'active',
-            "field button 'total' should become active");
+        assert.hasClass($invoiceIdButton,'active',
+            "field button 'invoice_id' should become active");
 
         fields.resetActive();
         assert.hasClass($vatButton,'active',
             "field button 'VAT' should become active after resetting active field");
-        assert.doesNotHaveClass($totalButton, 'active',
-            "field button 'total' should become inactive after resetting active field");
+        assert.doesNotHaveClass($invoiceIdButton, 'active',
+            "field button 'invoice_id' should become inactive after resetting active field");
 
         parent.destroy();
     });

@@ -575,6 +575,14 @@
 // XXS form view specific rules
 .o_form_view.o_xxs_form_view {
     .o_group {
+        // Target XXS form view on mobile devices in portrait mode
+        @include media-breakpoint-down(sm) {
+            &.o_inner_group > tbody > tr > td {
+                .o_field_widget {
+                    margin-bottom: $o-form-spacing-unit * 4;
+                }
+            }
+        }
         .o_td_label .o_form_label {
             font-weight: normal;
         }

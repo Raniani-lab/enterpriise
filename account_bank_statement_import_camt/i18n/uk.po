@@ -3,8 +3,8 @@
 # * account_bank_statement_import_camt
 # 
 # Translators:
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 # Bohdan Lisnenko, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Bohdan Lisnenko, 2018\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +23,7 @@ msgstr ""
 #. module: account_bank_statement_import_camt
 #: model:ir.model,name:account_bank_statement_import_camt.model_account_bank_statement_import
 msgid "Import Bank Statement"
-msgstr "Імпортувати виписку"
+msgstr "Імпортувати банківську виписку"
 
 #. module: account_bank_statement_import_camt
 #: model:ir.model,name:account_bank_statement_import_camt.model_account_journal
@@ -33,4 +33,4 @@ msgstr "Журнал"
 #. module: account_bank_statement_import_camt
 #: model_terms:ir.ui.view,arch_db:account_bank_statement_import_camt.account_bank_statement_import_camt
 msgid "SEPA recommanded Cash Management format (CAMT.053)"
-msgstr "SEPA рекомендував формат Cash Management (CAMT.053)"
+msgstr "SEPA рекомендував формат Управління готівкою (CAMT.053)"

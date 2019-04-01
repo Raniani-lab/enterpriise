@@ -41,7 +41,7 @@ msgstr "Відокремлені значення (.CSV)"
 #: model:ir.model,name:account_bank_statement_import_csv.model_account_bank_statement_import
 #, python-format
 msgid "Import Bank Statement"
-msgstr "Імпортувати виписку"
+msgstr "Імпортувати банківську виписку"
 
 #. module: account_bank_statement_import_csv
 #: model:ir.model,name:account_bank_statement_import_csv.model_account_journal

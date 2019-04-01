@@ -89,6 +89,15 @@ QUnit.module('MailAttachmentOnSide', {
                 },
             },
             mockRPC: function (route, args) {
+                if (args.method === 'search_read') {
+                    if (count === 0) {
+                        return Promise.resolve([messages[0].attachment_ids[0]]);
+                    }
+                    else {
+                        return Promise.resolve([messages[0].attachment_ids[0],
+                                                messages[1].attachment_ids[0]]);
+                    }
+                }
                 if (args.method === 'message_format') {
                     var requestedMessages = _.filter(messages, function (message) {
                         return _.contains(args.args[0], message.id);
@@ -155,6 +164,9 @@ QUnit.module('MailAttachmentOnSide', {
         assert.containsNone(form, '.arrow',
             "Don't display arrow if there is no previous/next attachment");
 
+        // normally, send_message should trigger a reload_attachment_box...
+        // since all of this is fake, we force it here.
+        form.renderer.chatter._areAttachmentsLoaded = false;
         // send a message with attached PDF file
         await testUtils.dom.click(form.$('.o_chatter_button_new_message'));
         form.$('.oe_chatter .o_composer_text_field:first()').val("Attached the pdf file");

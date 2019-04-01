@@ -84,19 +84,6 @@ var InvoiceExtractField = Class.extend(Mixins.EventDispatcherMixin, {
             case 'due_date':
                 changes = { date_due: field_utils.parse.date(fieldChangedInfo.split(' ')[0]) };
                 break;
-            case 'total':
-                if (fieldChangedInfo.line_id !== -1) {
-                    changes = {
-                        invoice_line_ids: {
-                            id: state.data.invoice_line_ids.data[0].id,
-                            operation: 'UPDATE',
-                            data: {
-                                price_unit: parseFloat(fieldChangedInfo.total),
-                            },
-                        }
-                    };
-                }
-                break;
             case 'invoice_id':
                 changes = { reference: fieldChangedInfo };
                 break;
@@ -152,6 +139,13 @@ var InvoiceExtractField = Class.extend(Mixins.EventDispatcherMixin, {
                 this._button.setInactive();
             }
         }
+    },
+    /**
+     * Reset the boxes selected by user and ocr
+     */
+    resetSelection: function () {
+        this._ocrChosenBox = undefined;
+        this._selectedBox = undefined;
     },
     /**
      * Set the provided invoice extract 'box' as chosen by the OCR.

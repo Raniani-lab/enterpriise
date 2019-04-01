@@ -199,7 +199,7 @@ class SignItemType(models.Model):
     ], required=True, string='Type', default='text', oldname='type')
 
     tip = fields.Char(required=True, default="fill in", translate=True)
-    placeholder = fields.Char()
+    placeholder = fields.Char(translate=True)
 
     default_width = fields.Float(string="Default Width", digits=(4, 3), required=True, default=0.150)
     default_height = fields.Float(string="Default Height", digits=(4, 3), required=True, default=0.015)

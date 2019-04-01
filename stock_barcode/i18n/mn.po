@@ -201,7 +201,7 @@ msgstr "Хаанаас"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:63
 #, python-format
 msgid "From:"
-msgstr ""
+msgstr "Эхлэх:"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id

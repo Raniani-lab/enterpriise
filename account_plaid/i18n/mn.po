@@ -3,14 +3,17 @@
 # * account_plaid
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Onii Onii <onii0223@yahoo.com>, 2018
+# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +24,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Additional information on error"
-msgstr ""
+msgstr "Алдааны нэмэлт мэдээлэл"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:55
@@ -32,33 +35,33 @@ msgstr "%s - г дуудах %s төлвийн код авна уу. Конте�
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr ""
+msgstr "Онлайн дансны журнал бүртгэлийн интерфэйс"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:136
 #, python-format
 msgid "Only an Accountant is allowed to perform this operation."
-msgstr ""
+msgstr "Энэ үйлдлийг ажиллуулахад зөвхөн нягтлан зөвшөөрөгдсөн"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr ""
+msgstr "Plaid"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Plaid Error Type"
-msgstr ""
+msgstr "Plaid Алдааны төрөл"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_item_id
 msgid "Plaid Item"
-msgstr ""
+msgstr "Plaid мөр"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Үйлчилгээ үзүүлэгчийн төрөл"
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_provider
@@ -75,12 +78,17 @@ msgid ""
 "error type: %s,\n"
 "request id: %s}"
 msgstr ""
+"Plaid үйлчилгээнд алдаа тулгарлаа!\n"
+"[зурвас: %s,\n"
+"алдааны код: %s,\n"
+"алдааны төрөл: %s,\n"
+"хүсэлтийн id: %s]"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:74
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
-msgstr ""
+msgstr "Timeout: сервер 60 секунд хариу өгсөнгүй"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -90,4 +98,4 @@ msgstr "Yodlee"
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id
 msgid "item id in plaid database"
-msgstr ""
+msgstr "plaid өгөгдлийн сан дахь гүйлгээний id"

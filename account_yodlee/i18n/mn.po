@@ -7,6 +7,7 @@
 # Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
 # Ganbold BATKHUYAG <gbatkhuyag@gmail.com>, 2018
 # Onii Onii <onii0223@yahoo.com>, 2018
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Onii Onii <onii0223@yahoo.com>, 2018\n"
+"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -121,7 +122,7 @@ msgstr "Компаниуд"
 #: code:addons/account_yodlee/models/yodlee.py:199
 #, python-format
 msgid "Could not make sense of parameters: %s"
-msgstr ""
+msgstr "Дараах оролтын өгөгдөлийг ойлгохгүй байна: %s"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:339
@@ -151,7 +152,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:228
 #, python-format
 msgid "Error %s, message: %s"
-msgstr ""
+msgstr "Алдаа%s, мэдэгдэл: %s"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:102
@@ -172,7 +173,7 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr ""
+msgstr "Онлайн дансны журнал бүртгэлийн интерфэйс"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:346
@@ -358,12 +359,12 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:206
 #, python-format
 msgid "Online institution"
-msgstr ""
+msgstr "Онлайн байгууллага"
 
 #. module: account_yodlee
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr ""
+msgstr "Plaid"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:48
@@ -393,6 +394,8 @@ msgid ""
 "Problem Updating Account (517): We are sorry, there was a technical problem "
 "updating your account. Please try again."
 msgstr ""
+"Данс шинэчлэхэд асуудал гарсан (517): Хүлцэл өчье, таны дансыг шинэчлэхэд "
+"техникийн асуудал тулгарлаа. Дахин оролдоно уу."
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:366
@@ -538,7 +541,7 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Үйлчилгээ үзүүлэгчийн төрөл"
 
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_provider
@@ -646,7 +649,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:137
 #, python-format
 msgid "Server not reachable, please try again later"
-msgstr ""
+msgstr "Серверт хандалт хийх боломжгүй байна, дараа дахин оролдоно уу"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:333
@@ -698,7 +701,7 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.actions.client,name:account_yodlee.yodlee_widget
 msgid "Synchronization process completed"
-msgstr ""
+msgstr "Ижилсүүлэх явц дууслаа"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:60
@@ -727,12 +730,12 @@ msgstr "Yodlee"
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_journal__yodlee_account_status
 msgid "Yodlee Account Status"
-msgstr ""
+msgstr "Yodlee дансны төлөв"
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_journal__yodlee_status_code
 msgid "Yodlee Status Code"
-msgstr ""
+msgstr "Yodlee төлвийн код"
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_user_access_token
@@ -758,4 +761,4 @@ msgstr "access_token"
 #: code:addons/account_yodlee/models/yodlee.py:297
 #, python-format
 msgid "message: %s"
-msgstr ""
+msgstr "зурвас: %s"

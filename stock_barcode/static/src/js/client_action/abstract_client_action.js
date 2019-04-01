@@ -1049,6 +1049,10 @@ var ClientAction = AbstractAction.extend({
                 });
                 if (line) {
                     var product = self.productsByBarcode[line.product_barcode];
+                    // Product was added by lot or package
+                    if (!product) {
+                        return false;
+                    }
                     product.barcode = line.product_barcode;
                     return product;
                 }

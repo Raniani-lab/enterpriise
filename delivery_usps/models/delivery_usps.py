@@ -125,7 +125,7 @@ class ProviderUSPS(models.Model):
             if check_result:
                 raise UserError(check_result)
 
-            booking = srm.usps_request(picking, self.usps_delivery_nature, self.usps_service)
+            booking = srm.usps_request(picking, self.usps_delivery_nature, self.usps_service, is_return=False)
 
             if booking.get('error_message'):
                 raise UserError(booking['error_message'])
@@ -152,7 +152,26 @@ class ProviderUSPS(models.Model):
             shipping_data = {'exact_price': price,
                              'tracking_number': carrier_tracking_ref}
             res = res + [shipping_data]
+            if self.return_label_on_delivery:
+                self.get_return_label(picking)
         return res
+
+    def usps_get_return_label(self, picking, tracking_number=None, origin_date=None):
+        res = []
+        srm = USPSRequest(self.prod_environment, self.log_xml)
+        check_result = srm.check_required_value(picking.partner_id, self.usps_delivery_nature, picking.picking_type_id.warehouse_id.partner_id, picking=picking)
+        if check_result:
+            raise UserError(check_result)
+
+        booking = srm.usps_request(picking, self.usps_delivery_nature, self.usps_service, is_return=True)
+
+        if booking.get('error_message'):
+            raise UserError(booking['error_message'])
+
+        carrier_tracking_ref = booking['tracking_number']
+        logmessage = (_("Shipment created into USPS <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref))
+        picking.message_post(body=logmessage, attachments=[('%s-%s-%s.%s' % (self.get_return_label_prefix(), carrier_tracking_ref, 1, self.usps_label_file_type), booking['label'])])
+
 
     def usps_get_tracking_link(self, picking):
         return 'https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=%s' % picking.carrier_tracking_ref

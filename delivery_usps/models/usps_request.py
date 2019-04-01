@@ -168,7 +168,7 @@ class USPSRequest():
             'CountryOfOrigin': line.warehouse_id.partner_id.country_id.name or ''
         }
 
-    def _usps_shipping_data(self, picking):
+    def _usps_shipping_data(self, picking, is_return=False):
         carrier = picking.carrier_id
         itemdetail = []
 
@@ -189,17 +189,17 @@ class USPSRequest():
             weight = carrier._usps_convert_weight(line.product_id.weight * line.product_uom_qty)
             itemdetail.append(self._item_data(line, weight, price))
 
-        gross_weight = carrier._usps_convert_weight(picking.shipping_weight)
-        weight_in_ounces = picking.shipping_weight * 35.274
+        if not is_return:
+            gross_weight = carrier._usps_convert_weight(picking.shipping_weight)
+            weight_in_ounces = picking.shipping_weight * 35.274
+        else:
+            gross_weight = carrier._usps_convert_weight(picking.weight)
+            weight_in_ounces = picking.weight * 35.274
         shipping_detail = {
             'api': api,
             'ID': carrier.sudo().usps_username,
             'revision': '2' if carrier.usps_delivery_nature == 'international' else '',
             'ImageParameters': '',
-            'picking_warehouse_partner': picking.picking_type_id.warehouse_id.partner_id,
-            'picking_warehouse_partner_phone': self._convert_phone_number(picking.picking_type_id.warehouse_id.partner_id.phone),
-            'picking_partner': picking.partner_id,
-            'picking_partner_phone': self._convert_phone_number(picking.partner_id.phone or picking.partner_id.mobile or ''),
             'picking_carrier': picking.carrier_id,
             'ToPOBoxFlag': 'N',
             'ToPOBoxFlagDom': 'false',
@@ -227,13 +227,29 @@ class USPSRequest():
             'AltReturnCountry': carrier.usps_redirect_partner_id.country_id.name,
             'Machinable': str(carrier.usps_machinable),
             'Container': carrier.usps_container,
+            'IsReturn': is_return,
             # We pass the function so that the template can use it too
             'func_split_zip': split_zip,
         }
+        if not is_return:
+            shipping_detail.update({
+                'picking_warehouse_partner': picking.picking_type_id.warehouse_id.partner_id,
+                'picking_warehouse_partner_phone': self._convert_phone_number(picking.picking_type_id.warehouse_id.partner_id.phone),
+                'picking_partner': picking.partner_id,
+                'picking_partner_phone': self._convert_phone_number(picking.partner_id.phone or picking.partner_id.mobile or ''),
+            })
+        else:
+            shipping_detail.update({
+                'picking_warehouse_partner': picking.partner_id,
+                'picking_warehouse_partner_phone': self._convert_phone_number(picking.partner_id.phone or picking.partner_id.mobile or ''),
+                'picking_partner': picking.picking_type_id.warehouse_id.partner_id,
+                'picking_partner_phone': self._convert_phone_number(picking.picking_type_id.warehouse_id.partner_id.phone),
+            })
+
         return shipping_detail
 
-    def usps_request(self, picking, delivery_nature, service):
-        ship_detail = self._usps_shipping_data(picking)
+    def usps_request(self, picking, delivery_nature, service, is_return=False):
+        ship_detail = self._usps_shipping_data(picking, is_return)
         request_text = picking.env['ir.qweb'].render('delivery_usps.usps_shipping_common', ship_detail)
         api = self._api_url(delivery_nature, service)
         dict_response = {'tracking_number': 0.0, 'price': 0.0, 'currency': "USD"}

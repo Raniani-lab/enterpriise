@@ -80,45 +80,45 @@ QUnit.test('basic rendering', async function (assert) {
     assert.strictEqual(form.$('thead th').text(), "", "toggler column should have no title");
 
     // check the classnames
-    assert.hasClass(form.$('.o_deprec_lines_toggler_cell:nth(0) button'),'o_is_posted',
+    assert.hasClass(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(0) button'), 'o_is_posted',
         "first line toggler should have classname 'o_is_posted'");
-    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(0) button'), 'o_unposted',
+    assert.doesNotHaveClass(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(0) button'), 'o_unposted',
         "first line toggler should not have classname 'o_unposted'");
 
-    assert.hasClass(form.$('.o_deprec_lines_toggler_cell:nth(1) button'),'o_is_posted',
+    assert.hasClass(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(1) button'), 'o_is_posted',
         "second line toggler should have classname 'o_is_posted'");
-    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(1) button'), 'o_unposted',
+    assert.doesNotHaveClass(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(1) button'), 'o_unposted',
         "second line toggler should not have classname 'o_unposted'");
 
-    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(2) button'), 'o_is_posted',
+    assert.doesNotHaveClass(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(2) button'), 'o_is_posted',
         "third line toggler should not have classname 'o_is_posted'");
-    assert.hasClass(form.$('.o_deprec_lines_toggler_cell:nth(2) button'),'o_unposted',
+    assert.hasClass(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(2) button'), 'o_unposted',
         "third line toggler should have classname 'o_unposted'");
 
-    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(3) button'), 'o_is_posted',
+    assert.doesNotHaveClass(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(3) button'), 'o_is_posted',
         "fourth line toggler should not have classname 'o_is_posted'");
-    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(3) button'), 'o_unposted',
+    assert.doesNotHaveClass(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(3) button'), 'o_unposted',
         "fourth line toggler should not have classname 'o_unposted'");
 
     // check the titles
-    assert.hasAttrValue(form.$('.o_deprec_lines_toggler_cell:nth(0) button'), 'title',
+    assert.hasAttrValue(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(0) button'), 'title',
         'Posted', "first line toggler should have correct title");
-    assert.hasAttrValue(form.$('.o_deprec_lines_toggler_cell:nth(1) button'), 'title',
+    assert.hasAttrValue(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(1) button'), 'title',
         'Posted', "second line toggler should have correct title");
-    assert.hasAttrValue(form.$('.o_deprec_lines_toggler_cell:nth(2) button'), 'title',
+    assert.hasAttrValue(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(2) button'), 'title',
         'Accounting entries waiting for manual verification',
         "third line toggler should have correct title");
-    assert.hasAttrValue(form.$('.o_deprec_lines_toggler_cell:nth(3) button'), 'title',
+    assert.hasAttrValue(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(3) button'), 'title',
         'Unposted', "fourth line toggler should have correct title");
 
     // check disabled property
-    assert.ok(form.$('.o_deprec_lines_toggler_cell:nth(0) button').attr('disabled'),
+    assert.ok(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(0) button').attr('disabled'),
         "first line toggle should be disabled");
-    assert.ok(form.$('.o_deprec_lines_toggler_cell:nth(1) button').attr('disabled'),
+    assert.ok(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(1) button').attr('disabled'),
         "second line toggle should be disabled");
-    assert.ok(form.$('.o_deprec_lines_toggler_cell:nth(2) button').attr('disabled'),
+    assert.ok(form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(2) button').attr('disabled'),
         "third line toggle should be disabled");
-    assert.ok(!form.$('.o_deprec_lines_toggler_cell:nth(3) button').attr('disabled'),
+    assert.ok(!form.$('.o_data_row .o_deprec_lines_toggler_cell:nth(3) button').attr('disabled'),
         "fourth line toggle should not be disabled");
 
     // check the visibility: the widget should always be visible, regardless its value

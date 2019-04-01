@@ -13,7 +13,7 @@
                             <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
                         </button>
                     </div>
-                    <h2><field name="name"/></h2>
+                    <h2><field name="name" readonly="1"/></h2>
                     <group>
                         <group>
                             <field name="title"/>

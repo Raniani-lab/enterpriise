@@ -27,7 +27,6 @@ var InvoiceExtractFields = Class.extend(Mixins.EventDispatcherMixin, {
             new InvoiceExtractField(this, { text: 'VAT', fieldName: 'VAT_Number' }),
             new InvoiceExtractField(this, { text: 'Vendor', fieldName: 'supplier' }),
             new InvoiceExtractField(this, { text: 'Currency', fieldName: 'currency' }),
-            new InvoiceExtractField(this, { text: 'Total', fieldName: 'total' }),
             new InvoiceExtractField(this, { text: 'Date', fieldName: 'date' }),
             new InvoiceExtractField(this, { text: 'Due Date', fieldName: 'due_date' }),
             new InvoiceExtractField(this, { text: 'Vendor Reference', fieldName: 'invoice_id' }),
@@ -87,6 +86,14 @@ var InvoiceExtractFields = Class.extend(Mixins.EventDispatcherMixin, {
         var oldActiveField = this.getActiveField();
         oldActiveField.setInactive();
         this._fields[0].setActive();
+    },
+    /**
+     * Reset the active state of fields, so that the 1st field is active.
+     */
+    resetFieldsSelections: function () {
+        _.each(this._fields, function (field) {
+            field.resetSelection();
+        });
     },
 
     //--------------------------------------------------------------------------

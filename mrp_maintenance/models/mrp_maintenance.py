@@ -33,7 +33,7 @@ class MaintenanceEquipment(models.Model):
             equipment.mttr = len(maintenance_requests) and (mttr_days / len(maintenance_requests)) or 0
             maintenance = maintenance_requests.sorted(lambda x: x.request_date)
             if len(maintenance) >= 1:
-                equipment.mtbf = (maintenance[-1].request_date - self.effective_date).days / len(maintenance)
+                equipment.mtbf = (maintenance[-1].request_date - equipment.effective_date).days / len(maintenance)
             equipment.latest_failure_date = maintenance and maintenance[-1].request_date or False
             if equipment.mtbf:
                 equipment.estimated_next_failure = equipment.latest_failure_date + relativedelta(days=equipment.mtbf)

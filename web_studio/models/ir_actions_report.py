@@ -30,3 +30,19 @@ class IrActionsReport(models.Model):
             'report_name': '%s_copy_%s' % (new.report_name, copy_no),
             'report_file': new_view.key,  # TODO: are we sure about this?
         })
+
+    @api.model
+    def _get_rendering_context_model(self):
+        # If the report is a copy of another report, and this report is using a custom model to render its html,
+        # we must use the custom model of the original report.
+        report_model_name = 'report.%s' % self.report_name
+        report_model = self.env.get(report_model_name)
+
+        if report_model is None:
+            parts = report_model_name.split('_copy_')
+            if not all(part.isdecimal() for part in parts[1:]):
+                return report_model
+            report_model_name = parts[0]
+            report_model = self.env.get(report_model_name)
+
+        return report_model

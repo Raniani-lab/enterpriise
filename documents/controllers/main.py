@@ -121,8 +121,8 @@ class ShareRoute(http.Controller):
     # Download & upload routes #####################################################################
 
     @http.route(['/documents/content/<int:id>'], type='http', auth='user')
-    def documents_content(self, id, share_token=None, share_id=None):
-        return self._get_file_response(id, share_id=share_id, share_token=share_token)
+    def documents_content(self, id):
+        return self._get_file_response(id)
 
     @http.route(['/documents/image/<int:id>',
                  '/documents/image/<int:id>/<int:width>x<int:height>',

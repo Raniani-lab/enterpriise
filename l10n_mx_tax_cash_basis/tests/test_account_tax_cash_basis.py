@@ -1115,7 +1115,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
 
         ((invoice_id | refund)
          .mapped('move_id.line_ids')
-         .filtered(lambda l: l.user_type_id.type == 'receivable')
+         .filtered(lambda l: l.account_id.user_type_id.type == 'receivable')
          .reconcile())
 
         base_amls = self.account_move_line_model.search(

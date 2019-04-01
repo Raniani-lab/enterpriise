@@ -727,7 +727,7 @@ class AccountFinancialReportLine(models.Model):
               SELECT """ + select_clause_1 + """
                FROM """ + tables + """
                WHERE (\"account_move_line\".journal_id IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
-                 OR \"account_move_line\".move_id NOT IN (SELECT DISTINCT move_id FROM account_move_line WHERE user_type_id IN %s))
+                 OR \"account_move_line\".move_id NOT IN (SELECT DISTINCT aml.move_id FROM account_move_line aml LEFT JOIN account_account account ON aml.account_id = account.id WHERE account.user_type_id IN %s))
                  AND """ + where_clause + """
               UNION ALL
               (
@@ -739,13 +739,14 @@ class AccountFinancialReportLine(models.Model):
                         END as matched_percentage
                    FROM account_partial_reconcile part
                    LEFT JOIN account_move_line aml ON aml.id = part.debit_move_id
+                   LEFT JOIN account_account account ON aml.account_id = account.id
                    LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
                                 FROM account_move_line
                                 GROUP BY move_id, account_id) sub_aml
                             ON (aml.account_id = sub_aml.account_id AND sub_aml.move_id=aml.move_id)
                    LEFT JOIN account_move am ON aml.move_id = am.id, """ + tables + """
                    WHERE part.credit_move_id = "account_move_line".id
-                    AND "account_move_line".user_type_id IN %s
+                    AND account.user_type_id IN %s
                     AND """ + where_clause + """
                  UNION ALL
                  SELECT aml.move_id, \"account_move_line\".date,
@@ -755,20 +756,21 @@ class AccountFinancialReportLine(models.Model):
                         END as matched_percentage
                    FROM account_partial_reconcile part
                    LEFT JOIN account_move_line aml ON aml.id = part.credit_move_id
+                   LEFT JOIN account_account account ON aml.account_id = account.id
                    LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
                                 FROM account_move_line
                                 GROUP BY move_id, account_id) sub_aml
                             ON (aml.account_id = sub_aml.account_id AND sub_aml.move_id=aml.move_id)
                    LEFT JOIN account_move am ON aml.move_id = am.id, """ + tables + """
                    WHERE part.debit_move_id = "account_move_line".id
-                    AND "account_move_line".user_type_id IN %s
+                    AND account.user_type_id IN %s
                     AND """ + where_clause + """
                )
                SELECT """ + select_clause_2 + """
                 FROM account_move_line aml
                 RIGHT JOIN payment_table ref ON aml.move_id = ref.move_id
                 WHERE journal_id NOT IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
-                  AND aml.move_id IN (SELECT DISTINCT move_id FROM account_move_line WHERE user_type_id IN %s)
+                  AND aml.move_id IN (SELECT DISTINCT move_id FROM account_move_line aml LEFT JOIN account_account account ON aml.account_id = account.id WHERE account.user_type_id IN %s)
               )
             ) """
             params = [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)]

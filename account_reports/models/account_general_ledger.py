@@ -56,10 +56,11 @@ class report_account_general_ledger(models.AbstractModel):
             #we use query_get() to filter out unrelevant journal items to have a shadowed table as small as possible
             tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=domain)
             sql = """WITH account_move_line AS (
-              SELECT \"account_move_line\".id, \"account_move_line\".date, \"account_move_line\".name, \"account_move_line\".debit_cash_basis, \"account_move_line\".credit_cash_basis, \"account_move_line\".move_id, \"account_move_line\".account_id, \"account_move_line\".journal_id, \"account_move_line\".balance_cash_basis, \"account_move_line\".amount_residual, \"account_move_line\".partner_id, \"account_move_line\".reconciled, \"account_move_line\".company_id, \"account_move_line\".company_currency_id, \"account_move_line\".amount_currency, \"account_move_line\".balance, \"account_move_line\".user_type_id, \"account_move_line\".analytic_account_id
+              SELECT \"account_move_line\".id, \"account_move_line\".date, \"account_move_line\".name, \"account_move_line\".debit_cash_basis, \"account_move_line\".credit_cash_basis, \"account_move_line\".move_id, \"account_move_line\".account_id, \"account_move_line\".journal_id, \"account_move_line\".balance_cash_basis, \"account_move_line\".amount_residual, \"account_move_line\".partner_id, \"account_move_line\".reconciled, \"account_move_line\".company_id, \"account_move_line\".company_currency_id, \"account_move_line\".amount_currency, \"account_move_line\".balance, account.user_type_id, \"account_move_line\".analytic_account_id
                FROM """ + tables + """
+               LEFT JOIN account_account account ON account.id = "account_move_line".account_id
                WHERE (\"account_move_line\".journal_id IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
-                 OR \"account_move_line\".move_id NOT IN (SELECT DISTINCT move_id FROM account_move_line WHERE user_type_id IN %s))
+                 OR \"account_move_line\".move_id NOT IN (SELECT DISTINCT aml.move_id FROM account_move_line aml LEFT JOIN account_account account ON aml.account_id = account.id WHERE user_type_id IN %s))
                  AND """ + where_clause + """
               UNION ALL
               (
@@ -71,13 +72,14 @@ class report_account_general_ledger(models.AbstractModel):
                         END as matched_percentage
                    FROM account_partial_reconcile part
                    LEFT JOIN account_move_line aml ON aml.id = part.debit_move_id
+                   LEFT JOIN account_account account ON aml.account_id = account.id
                    LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
                                 FROM account_move_line
                                 GROUP BY move_id, account_id) sub_aml
                             ON (aml.account_id = sub_aml.account_id AND sub_aml.move_id=aml.move_id)
                    LEFT JOIN account_move am ON aml.move_id = am.id,""" + tables + """
                    WHERE part.credit_move_id = "account_move_line".id
-                    AND "account_move_line".user_type_id IN %s
+                    AND account.user_type_id IN %s
                     AND """ + where_clause + """
                  UNION ALL
                  SELECT aml.move_id, \"account_move_line\".date,
@@ -87,13 +89,14 @@ class report_account_general_ledger(models.AbstractModel):
                         END as matched_percentage
                    FROM account_partial_reconcile part
                    LEFT JOIN account_move_line aml ON aml.id = part.credit_move_id
+                   LEFT JOIN account_account account ON aml.account_id = account.id
                    LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
                                 FROM account_move_line
                                 GROUP BY move_id, account_id) sub_aml
                             ON (aml.account_id = sub_aml.account_id AND sub_aml.move_id=aml.move_id)
                    LEFT JOIN account_move am ON aml.move_id = am.id,""" + tables + """
                    WHERE part.debit_move_id = "account_move_line".id
-                    AND "account_move_line".user_type_id IN %s
+                    AND account.user_type_id IN %s
                     AND """ + where_clause + """
                )
                SELECT aml.id, ref.date, aml.name,
@@ -101,11 +104,12 @@ class report_account_general_ledger(models.AbstractModel):
                  CASE WHEN aml.credit > 0 THEN ref.matched_percentage * aml.credit ELSE 0 END AS credit_cash_basis,
                  aml.move_id, aml.account_id, aml.journal_id,
                  ref.matched_percentage * aml.balance AS balance_cash_basis,
-                 aml.amount_residual, aml.partner_id, aml.reconciled, aml.company_id, aml.company_currency_id, aml.amount_currency, aml.balance, aml.user_type_id, aml.analytic_account_id
+                 aml.amount_residual, aml.partner_id, aml.reconciled, aml.company_id, aml.company_currency_id, aml.amount_currency, aml.balance, account.user_type_id, aml.analytic_account_id
                 FROM account_move_line aml
                 RIGHT JOIN payment_table ref ON aml.move_id = ref.move_id
+                LEFT JOIN account_account account ON account.id = aml.account_id
                 WHERE journal_id NOT IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
-                  AND aml.move_id IN (SELECT DISTINCT move_id FROM account_move_line WHERE user_type_id IN %s)
+                  AND aml.move_id IN (SELECT DISTINCT aml.move_id FROM account_move_line aml LEFT JOIN account_account account ON account.id = aml.account_id WHERE account.user_type_id IN %s)
               )
             ) """
             params = [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)]
@@ -126,7 +130,7 @@ class report_account_general_ledger(models.AbstractModel):
         select += " FROM %s WHERE %s"
         user_types = self.env['account.account.type'].search([('type', 'in', ('receivable', 'payable'))])
         with_sql, with_params = self._get_with_statement(user_types)
-        aml_domain = [('user_type_id.include_initial_balance', '=', False)]
+        aml_domain = [('account_id.user_type_id.include_initial_balance', '=', False)]
         if company:
             aml_domain += [('company_id', '=', company.id)]
         tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=aml_domain)

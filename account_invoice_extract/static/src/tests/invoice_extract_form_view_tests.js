@@ -122,6 +122,8 @@ QUnit.module('FormView', {
             mockRPC: function (route, args) {
                 if (args.method === 'get_boxes') {
                     return $.when(invoiceExtractTestUtils.createBoxesData());
+                } else if (args.method === 'search_read') {
+                    return $.when([this.data['mail.message'].records[0].attachment_ids[0]]);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -235,6 +237,8 @@ QUnit.module('FormView', {
             mockRPC: function (route, args) {
                 if (args.method === 'get_boxes') {
                     return $.when(invoiceExtractTestUtils.createBoxesData());
+                } else if (args.method === 'search_read') {
+                    return $.when([this.data['mail.message'].records[0].attachment_ids[0]]);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -310,6 +314,8 @@ QUnit.module('FormView', {
             mockRPC: function (route, args) {
                 if (args.method === 'get_boxes') {
                     return $.when(invoiceExtractTestUtils.createBoxesData());
+                } else if (args.method === 'search_read') {
+                    return $.when([this.data['mail.message'].records[0].attachment_ids[0]]);
                 }
                 return this._super.apply(this, arguments);
             },

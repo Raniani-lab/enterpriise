@@ -426,9 +426,10 @@
     // One2Many List views
     .o_field_widget .o_list_view {
         &.table-striped {
-            // If striped, remove padding
-            > tbody > tr > td {
-                border-top: none;
+            > tbody {
+                > tr:not(.o_data_row) > td {
+                    border-top: none;
+                }
             }
             // Show "border" if tfoot has content only
             > tfoot > tr {

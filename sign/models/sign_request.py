@@ -547,7 +547,7 @@ class SignRequest(models.Model):
     @api.model
     def activity_update(self, sign_users):
         for user in sign_users:
-            self.activity_schedule(activity_type_id=self.env.ref('mail.mail_activity_data_todo').id, user_id=user.id)
+            self.activity_schedule('mail.mail_activity_data_todo', user_id=user.id)
 
 
 class SignRequestItem(models.Model):

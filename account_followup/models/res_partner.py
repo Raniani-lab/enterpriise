@@ -244,14 +244,11 @@ class ResPartner(models.Model):
                 self.send_followup_email()
             if followup_line.manual_action:
                 # log a next activity for today
-                activity_data = {
-                    'res_id': self.id,
-                    'res_model_id': self.env['ir.model']._get(self._name).id,
-                    'activity_type_id': followup_line.manual_action_type_id.id or self.env.ref('mail.mail_activity_data_todo').id,
-                    'summary': followup_line.manual_action_note,
-                    'user_id': followup_line.manual_action_responsible_id.id or self.env.user.id,
-                }
-                self.env['mail.activity'].create(activity_data)
+                self.activity_schedule(
+                    activity_type_id=followup_line.manual_action_type_id and followup_line.manual_action_type_id.id or self._default_activity_type().id,
+                    summary=followup_line.manual_action_note,
+                    user_id=(followup_line.manual_action_responsible_id and followup_line.manual_action_responsible_id.id) or self.env.user.id
+                )
             next_date = followup_line._get_next_date()
             self.update_next_action(options={'next_action_date': datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT), 'action': 'done'})
             if followup_line.print_letter:

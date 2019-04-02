@@ -563,14 +563,11 @@ class MrpProductionWorkcenterLine(models.Model):
             self.production_id.button_mark_done()
         except (UserError, ValidationError) as e:
             # log next activity on MO with error message
-            self.env['mail.activity'].create({
-                'res_id': self.production_id.id,
-                'res_model_id': self.env['ir.model']._get(self.production_id._name).id,
-                'activity_type_id': self.env.ref('mail.mail_activity_data_warning').id,
-                'summary': ('The %s could not be closed') % (self.production_id.name),
-                'note': e.name,
-                'user_id': self.env.user.id,
-            })
+            self.production_id.activity_schedule(
+                'mail.mail_activity_data_warning',
+                note=e.name,
+                summary=('The %s could not be closed') % (self.production_id.name),
+                user_id=self.env.user.id)
             return {
                 'type': 'ir.actions.act_window',
                 'res_model': 'mrp.production',

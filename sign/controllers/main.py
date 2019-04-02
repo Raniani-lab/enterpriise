@@ -252,13 +252,11 @@ class Sign(http.Controller):
                 request_item._send_sms()
             except InsufficientCreditError:
                 _logger.warning('Unable to send SMS: no more credits')
-                http.request.env['mail.activity'].sudo().create({
-                    'activity_type_id': http.request.env.ref('mail.mail_activity_data_todo').id,
-                    'note': _("%s couldn't sign the document due to an insufficient credit error." % (request_item.partner_id.display_name)),
-                    'user_id': request_item.sign_request_id.create_uid.id,
-                    'res_id': request_item.sign_request_id.id,
-                    'res_model_id': http.request.env['ir.model'].sudo().search([('model', '=', request_item.sign_request_id._name)], limit=1).id,
-                })
+                request_item.sign_request_id.activity_schedule(
+                    'mail.mail_activity_data_todo',
+                    note=_("%s couldn't sign the document due to an insufficient credit error." % (request_item.partner_id.display_name)),
+                    user_id=request_item.sign_request_id.create_uid.id
+                )
                 return False
         return True
 

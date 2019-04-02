@@ -35,7 +35,7 @@ class AnalyticLine(models.Model):
         for line in self:
             if line.is_timesheet:
                 # get most recent validation date on any of the line user's employees
-                validated_to = line.employee_id.timesheet_validated
+                validated_to = line.sudo().employee_id.timesheet_validated
                 line.validated = line.date <= validated_to if validated_to else False
             else:
                 line.validated = True

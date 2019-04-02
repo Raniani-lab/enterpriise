@@ -2,7 +2,6 @@ odoo.define('web.WebClient', function (require) {
 "use strict";
 
 var AbstractWebClient = require('web.AbstractWebClient');
-var ActionManager = require('web.ActionManager');
 var config = require('web.config');
 var core = require('web.core');
 var data_manager = require('web.data_manager');
@@ -19,6 +18,10 @@ return AbstractWebClient.extend({
         show_home_menu: '_onShowHomeMenu',
         hide_home_menu: '_onHideHomeMenu',
     }),
+    init: function () {
+        this._super.apply(this, arguments);
+        this.home_menu_displayed = false;
+    },
     start: function () {
         core.bus.on('change_menu_section', this, function (menu_id) {
             this.do_push_state(_.extend($.bbq.getState(), {

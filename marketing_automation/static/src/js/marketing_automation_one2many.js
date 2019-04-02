@@ -17,10 +17,16 @@ var HierarchyKanban = FieldOne2Many.extend({
         'add_child_act': '_onAddChild',
     }),
 
+    /**
+     * @override
+     */
+    on_attach_callback: function () {
+        this.renderer.on_attach_callback();
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-
 
     /**
      * @private
@@ -114,6 +120,7 @@ var HierarchyKanban = FieldOne2Many.extend({
 });
 
 var HierarchyKanbanRenderer = KanbanRenderer.extend({
+
     /**
      * Renders kanban records with its children.
      *
@@ -121,18 +128,24 @@ var HierarchyKanbanRenderer = KanbanRenderer.extend({
      * @override
      */
     _renderUngrouped: function (fragment, records) {
+        this.defs.push(this._renderUngroupedAux(fragment, records));
+    },
+    _renderUngroupedAux: function (fragment, records) {
         var self = this;
+        var recordsDefs = [];
         _.each(records || this.state.data, function (record) {
             var kanbanRecord = new HierarchyKanbanRecord(self, record, self.recordOptions);
             self.widgets.push(kanbanRecord);
-            kanbanRecord.appendTo(fragment).then(function() {
+            var def = kanbanRecord.appendTo(fragment).then(function() {
                 if (record.children.length) {
                     var newFragment = kanbanRecord.$('.o_hierarchy_children');
-                    self._renderUngrouped(newFragment, record.children);
+                    return self._renderUngroupedAux(newFragment, record.children);
                 }
             });
+            recordsDefs.push(def);
         });
-    }
+        return Promise.all(recordsDefs);
+    },
 });
 
 var HierarchyKanbanRecord = KanbanRecord.extend({

@@ -357,8 +357,8 @@ class MarketingActivity(models.Model):
             date_range.reverse()
             default_values = [{'x': date_item.strftime('%d %b'), 'y': 0} for date_item in date_range]
             self.statistics_graph_data = json.dumps([
-                {'values': default_values, 'key': _('Success'), 'area': True, 'color': '#21B799'},
-                {'values': default_values, 'key': _('Rejected'), 'arzea': True, 'color': '#d9534f'}])
+                {'points': default_values, 'label': _('Success'), 'color': '#21B799'},
+                {'points': default_values, 'label': _('Rejected'), 'color': '#d9534f'}])
         else:
             activity_data = {activity.id: {} for activity in self}
             for act_id, graph_data in self._get_graph_statistics().items():
@@ -461,8 +461,8 @@ class MarketingActivity(models.Model):
                     'y': stat_map.get((activity.id, i, 'rejected'), 0)
                 })
             graph_data[activity.id] = [
-                {'values': success, 'key': _('Success'), 'area': True, 'color': '#21B799'},
-                {'values': rejected, 'key': _('Rejected'), 'area': True, 'color': '#d9534f'}
+                {'points': success, 'label': _('Success'), 'color': '#21B799'},
+                {'points': rejected, 'label': _('Rejected'), 'color': '#d9534f'}
             ]
         return graph_data
 

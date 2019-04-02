@@ -29,11 +29,9 @@
 
         .o_graph_renderer {
             display: flex;
-
-             > .o_graph_svg_container {
+            > .o_graph_canvas_container {
                 flex: 1 1 auto;
                 height: 250px;
-
                 > label {
                     position: absolute;
                     @extend %o-dashboard-label-design;
@@ -106,9 +104,10 @@
             color: $headings-color;
         }
 
-        .o_pie_chart {
-            width: 100%;
-        }
+        //.o_pie_chart {
+        //    width: 100%;
+        //}
+
 
         .o_aggregate.o_clickable {
             .o_value, .o_variation {
@@ -149,7 +148,7 @@
                     display: flex;
                     justify-content: space-between;
 
-                    .o_graph_svg_container {
+                    .o_graph_canvas_container {
                         min-width: 200px;
 
                         @include media-breakpoint-up(sm) {
@@ -169,7 +168,7 @@
 
                 // Layout for groups containing 1 pie-chart only
                 &.o_nbr_pie_charts_1 {
-                    .o_graph_svg_container:first-child  {
+                    .o_graph_canvas_container:first-child  {
                         border-left: $border-separate-width solid $border-color;
                         padding-left: $padding;
                     }
@@ -177,19 +176,12 @@
                     @include media-breakpoint-down(sm) {
                         flex: 0 0 100%;
 
-                        .o_graph_svg_container {
+                        .o_graph_canvas_container {
                             &, &:first-child {
                                 border-left: 0;
                                 padding-left: 0;
                                 border-top: $border-width solid $border-color;
                                 padding-top: $padding;
-                            }
-                        }
-
-                        // Comparison active, 2 pie-chart in tot.
-                        &.o_active_comparison {
-                            .o_graph_renderer {
-                                flex-flow: row wrap;
                             }
                         }
                     }
@@ -205,13 +197,6 @@
                         margin-top: ($spacer * 2);
                         flex: 0 0 100%;
                     }
-
-                    // Comparison active, 4 pie-chart tot.
-                    &.o_active_comparison  {
-                        margin-top: ($spacer * 3);
-                        flex: 1 0 100%;
-                    }
-
                     .o_widget {
                         flex: 1 1 50%;
                         border-left: $border-separate-width solid $border-color;

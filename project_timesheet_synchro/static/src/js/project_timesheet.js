@@ -50,13 +50,8 @@ odoo.define('project_timeshee.ui', function (require ) {
     var ProjectTimesheet = Widget.extend(ServiceProviderMixin, {
         template: "app",
         xmlDependencies: ['/project_timesheet_synchro/static/src/xml/project_timesheet.xml'],
-        cssLibs: [
-            rootPath + '/web/static/lib/nvd3/nv.d3.css'
-        ],
         jsLibs: [
-            rootPath + '/web/static/lib/nvd3/d3.v3.js',
-            rootPath + '/web/static/lib/nvd3/nv.d3.js',
-            rootPath + '/web/static/src/js/libs/nvd3.js'
+            rootPath + '/web/static/lib/Chart/Chart.js'
         ],
         custom_events: {
             get_session: function (event) {
@@ -1606,20 +1601,32 @@ odoo.define('project_timeshee.ui', function (require ) {
             this.projects_stats = [];
             this.start_of_week = moment(new Date()).startOf('week');
 
-            nv.addGraph(function() {
-              self.chart = nv.models.discreteBarChart()
-                  .showYAxis(false)
-                  .x(function(d) { return d.label ;})    //Specify the data accessors.
-                  .y(function(d) { return d.value ;})
-                  .showValues(true)
-                  .margin({right:15,left:15})
-                  .valueFormat(function(d) {return self.unit_amount_to_hours_minutes(d);})
-                  .color(["#875A7B"])
-                  ;
-                self.chart.tooltip.enabled(false);
-                nv.utils.windowResize(self.chart.update);
-              return self.chart;
-            });
+            self.chart = null;
+            self.chartConfig = {
+                type: 'bar',
+                options: {
+                    layout: {
+                        padding: {left: 15, right: 15}
+                    },
+                    legend: {
+                        display: false,
+                    },
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            display: true,
+                            type: 'linear',
+                            ticks: {
+                                beginAtZero: true,
+                                callback: this.unit_amount_to_hours_minutes.bind(this),
+                            },
+                        }],
+                    },
+                    tooltips: {
+                        enabled: false,
+                    }
+                }
+            };
 
             _.extend(self.events,
                 {
@@ -1636,7 +1643,7 @@ odoo.define('project_timeshee.ui', function (require ) {
             }
             this.get_project_stats();
             this._super.apply(this, arguments);
-            this.draw_stats();
+            this.drawStats();
         },
         set_week: function(date) {
             var self = this;
@@ -1650,38 +1657,48 @@ odoo.define('project_timeshee.ui', function (require ) {
                 self.week.unshift(time_module.date_to_str(moment(self.start_of_week).add(i, 'days').toDate()));
             }
         },
-        draw_stats: function() {
+        drawStats: function() {
             var self = this;
-            self.week_total = 0;
+            self.weekTotal = 0;
             //
             // Args : Week : An array containing date objects. Ideally 7.
-            // Returns :  an array of objects, each object containing a label and value,
-            // the label being the day of week and the date, eg Mon 08,
-            // and the value being the number of hours worked that day.
-            //
-            // It also sets the value of week_total used in the widget.
-            function prepare_graph_data(week) {
-                var stats_data = [{
-                    key: "Working time per week",
-                    values: [],
-                }];
+            // Returns :  an object with keys 'labels' and 'datasets'.
+            // Side effect: sets the value of weekTotal used in the widget.
+
+            function prepareData(week) {
+                var labels = [];
+                var dataset = {
+                    label: "Working time per week",
+                    data: [],
+                    backgroundColor: "#875A7B",
+                };
                 for (var i = 0; i < week.length ; i++) {
-                    var time_worked = 0;
-                    var day_name = moment(time_module.str_to_date(week[i])).format("ddd");
-                    var activities_per_day = _.where(self.getParent().data.account_analytic_lines, {date : week[i]});
-                    _.each(activities_per_day, function(activity) {
-                        time_worked += parseFloat(activity.unit_amount);
+                    var timeWorked = 0;
+                    var dayName = moment(time_module.str_to_date(week[i])).format("ddd");
+                    var activitiesPerDay = _.where(self.getParent().data.account_analytic_lines, {date : week[i]});
+                    _.each(activitiesPerDay, function(activity) {
+                        timeWorked += parseFloat(activity.unit_amount);
                     });
-                    stats_data[0].values.unshift({
-                        'label' : day_name,
-                        'value' : time_worked
-                    });
-                    self.week_total += time_worked;
+                    dataset.data.unshift(timeWorked);
+                    labels.unshift(dayName);
+                    self.weekTotal += timeWorked;
                 }
-                return stats_data;
+                return {
+                    labels: labels,
+                    datasets: [dataset],
+                };
             }
-            d3.select('.pt_stats_svg').datum(prepare_graph_data(self.week)).call(self.chart);
-            self.$('.pt_total_time').text(self.unit_amount_to_hours_minutes(self.week_total));
+
+            if (this.chart) {
+                this.chart.destroy();
+            }
+
+            this.$('div .o_canvas_container').css({position: 'relative'});
+            var ctx = this.$('canvas').get(0).getContext('2d');
+            this.chartConfig.data = prepareData(this.week);
+            this.chart = new Chart(ctx, this.chartConfig);
+
+            self.$('.pt_total_time').text(self.unit_amount_to_hours_minutes(self.weekTotal));
         },
         get_project_stats: function() {
             var self = this;

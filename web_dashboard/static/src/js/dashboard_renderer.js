@@ -306,9 +306,6 @@ var DashboardRenderer = FormRenderer.extend({
                     0
                 );
             $group.addClass('o_nbr_pie_charts_' + nbr_pie_charts);
-            if (this.state.compare) {
-                $group.addClass('o_active_comparison');
-            }
         }
         return $group;
     },

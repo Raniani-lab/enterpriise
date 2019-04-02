@@ -300,9 +300,9 @@ class SignRequest(models.Model):
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
-                {'email_from': formataddr((self.create_uid.name, self.create_uid.email)),
+                {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
-                 'email_to': formataddr((follower.name, follower.email)),
+                 'email_to': follower.email_formatted,
                  'subject': subject or _('%s : Signature request') % self.reference}
             )
             self.message_subscribe(partner_ids=follower.ids)
@@ -353,9 +353,9 @@ class SignRequest(models.Model):
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
-                {'email_from': formataddr((self.create_uid.name, self.create_uid.email)),
+                {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
-                 'email_to': formataddr((signer.partner_id.name, signer.signer_email)),
+                 'email_to': signer.partner_id.email_formatted,
                  'subject': _('%s has been signed') % self.reference,
                  'attachment_ids': [(4, attachment.id), (4, attachment_log.id)]},
                 force_send=True
@@ -378,9 +378,9 @@ class SignRequest(models.Model):
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
-                {'email_from': formataddr((self.create_uid.name, self.create_uid.email)),
+                {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
-                 'email_to': formataddr((follower.name, follower.email)),
+                 'email_to': follower.email_formatted,
                  'subject': _('%s has been signed') % self.reference}
             )
 
@@ -512,7 +512,7 @@ class SignRequest(models.Model):
         body_html = notif_layout.render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
         body_html = self.env['mail.thread']._replace_local_links(body_html)
 
-        mail = self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
+        mail = self.env['mail.mail'].sudo().create(dict(body_html=body_html, state='outgoing', **mail_values))
         if force_send:
             mail.send()
         return mail
@@ -623,9 +623,9 @@ class SignRequestItem(models.Model):
                 body, 'mail.mail_notification_light',
                 {'record_name': signer.sign_request_id.reference},
                 {'model_description': 'signature', 'company': signer.create_uid.company_id},
-                {'email_from': formataddr((signer.create_uid.name, signer.create_uid.email)),
+                {'email_from': signer.create_uid.email_formatted,
                  'author_id': signer.create_uid.partner_id.id,
-                 'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
+                 'email_to': signer.partner_id.email_formatted,
                  'subject': subject},
                 force_send=True
             )

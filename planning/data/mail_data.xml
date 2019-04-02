@@ -4,7 +4,7 @@
 
         <record id="email_template_slot_single" model="mail.template">
             <field name="name">Planning: new single shift</field>
-            <field name="email_from">${(object.company_id.email or '')}</field>
+            <field name="email_from">${object.company_id.email_formatted | safe}</field>
             <field name="subject">Planning: new shift</field>
             <field name="email_to">${object.employee_id.work_email}</field>
             <field name="model_id" ref="model_planning_slot"/>
@@ -70,7 +70,7 @@
 
         <record id="email_template_planning_planning" model="mail.template">
             <field name="name">Planning: new schedule (multiple shifts)</field>
-            <field name="email_from">${(object.company_id.email or '')}</field>
+            <field name="email_from">${object.company_id.email_formatted | safe}</field>
             <field name="subject">Your planning from ${format_date(ctx.get('start_datetime'))} to ${format_date(ctx.get('end_datetime'))}</field>
             <field name="email_to"></field><!-- Set in the code  -->
             <field name="model_id" ref="model_planning_planning"/>

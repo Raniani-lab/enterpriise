@@ -3,9 +3,8 @@
 
 import logging
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError
-from odoo.tools import formataddr
 
 _logger = logging.getLogger(__name__)
 
@@ -20,7 +19,7 @@ class RequestAppraisal(models.TransientModel):
             raise UserError(_("Unable to post message, please configure the sender's email address."))
         result = super(RequestAppraisal, self).default_get(fields)
         result.update({
-            'email_from': formataddr((self.env.user.name, self.env.user.email)),
+            'email_from': self.env.user.email_formatted,
             'author_id': self.env.user.partner_id.id,
         })
         if self.env.context.get('active_model') in ('hr.employee', 'hr.employee.public'):
@@ -63,7 +62,7 @@ class RequestAppraisal(models.TransientModel):
 
         for employee in employees - employees_with_user:
             if employee.work_email:
-                name_email = formataddr((employee.name, employee.work_email))
+                name_email = tools.formataddr((employee.name, employee.work_email))
                 partner_id = self.env['res.partner'].sudo().find_or_create(name_email)
                 partners |= self.env['res.partner'].browse(partner_id)
         return partners

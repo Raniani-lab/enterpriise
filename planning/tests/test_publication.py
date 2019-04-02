@@ -34,7 +34,7 @@ class TestPlanningPublishing(TestCommonPlanning):
             'allocated_hours': 10
         })
 
-        Mails = self.env['mail.mail']
+        Mails = self.env['mail.mail'].sudo()
         before_mails = Mails.search([])
 
         self.shift.action_send()
@@ -48,7 +48,7 @@ class TestPlanningPublishing(TestCommonPlanning):
 
         self.assertFalse(self.employee_dirk_no_mail.work_email)  # if no work_email
 
-        Mails = self.env['mail.mail']
+        Mails = self.env['mail.mail'].sudo()
         before_mails = Mails.search([])
 
         self.shift.action_send()

@@ -42,14 +42,11 @@ class HrReferralSendMail(models.TransientModel):
         if not self.env.user.has_group('hr_referral.group_hr_recruitment_referral_user'):
             raise AccessError(_("Do not have access"))
 
-        email = self.env.user.work_email or self.env.user.email
-        if not email:
-            raise ValidationError(_("You must configure a mail address for your user."))
-
-        self.env['mail.mail'].create({
+        self.env['mail.mail'].sudo().create({
             'body_html': self.body_html,
             'state': 'outgoing',
-            'email_from': formataddr((self.env.user.name, email)),
+            'author_id': self.env.user.partner_id.id,
+            'email_from': self.env.user.email_formatted,
             'email_to': self.email_to,
             'subject': self.subject
         }).send()

@@ -485,11 +485,11 @@ class Planning(models.Model):
         })
         slot_template = template.with_context(view_context)
 
-        mails_to_send = self.env['mail.mail']
+        mails_to_send = self.env['mail.mail'].sudo()
         for slot in self:
             if slot.employee_id and slot.employee_id.work_email:
                 mail_id = slot_template.with_context(view_context).send_mail(slot.id, notif_layout='mail.mail_notification_light')
-                current_mail = self.env['mail.mail'].browse(mail_id)
+                current_mail = self.env['mail.mail'].sudo().browse(mail_id)
                 mails_to_send |= current_mail
 
         if mails_to_send:

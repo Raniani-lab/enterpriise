@@ -155,11 +155,12 @@ class HrAppraisal(models.Model):
             raise ValidationError(_("You must configure your mail address."))
 
         mail_values = {
-            'email_from': formataddr((self.env.user.name, email)),
+            'author_id': self.env.user.partner_id.id,
+            'email_from': self.env.user.email_formatted,
             'email_to': formataddr((recipient.name, recipient.work_email)),
-            'subject': subject
+            'subject': subject,
             }
-        self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
+        self.env['mail.mail'].sudo().create(dict(body_html=body_html, state='outgoing', **mail_values))
 
     def send_appraisal(self):
         for appraisal in self:

@@ -12,7 +12,7 @@ class IntrastatReport(models.AbstractModel):
 
     def _get_reports_buttons(self):
         res = super(IntrastatReport, self)._get_reports_buttons()
-        if self.env.user.company_id.country_id == self.env.ref('base.be'):
+        if self.env.company_id.country_id == self.env.ref('base.be'):
             res += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return res
 
@@ -31,7 +31,7 @@ class IntrastatReport(models.AbstractModel):
             raise UserError(_('Wrong date range selected. The intrastat declaration export has to be done monthly.'))
         date = date_1.strftime('%Y-%m')
 
-        company = self.env.user.company_id
+        company = self.env.company_id
         if not company.company_registry:
             raise UserError(_('Missing company registry information on the company'))
 

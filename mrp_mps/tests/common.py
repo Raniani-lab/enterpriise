@@ -48,7 +48,7 @@ class TestMpsCommon(common.TransactionCase):
         # Create Mps report data.
         # -----------------------
         self.Mps = self.env['mrp.mps.report'].create({
-            'company_id': self.env.user.company_id.id,
+            'company_id': self.env.company_id.id,
             'product_id': self.computerdesk.id,
             'period': 'month'
         })

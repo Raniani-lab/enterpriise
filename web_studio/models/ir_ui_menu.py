@@ -13,7 +13,7 @@ class IrUiMenu(models.Model):
     def load_menus(self, debug):
         menu_root = super(IrUiMenu, self).load_menus(debug)
 
-        if self.env.user.company_id.background_image:
+        if self.env.company_id.background_image:
             menu_root['background_image'] = True
 
         return menu_root

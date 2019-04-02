@@ -74,7 +74,7 @@ class ReportPartnerLedger(models.AbstractModel):
         if not account_types:
             account_types = [a.get('id') for a in options.get('account_type')]
         # Create the currency table.
-        user_company = self.env.user.company_id
+        user_company = self.env.company_id
         companies = self.env['res.company'].search([])
         rates_table_entries = []
         for company in companies:
@@ -148,7 +148,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 partners[partner]['lines'] = self.env['account.move.line'].search(domain, order='date,id')
 
         # Add partners with an initial balance != 0 but without any AML in the selected period.
-        prec = self.env.user.company_id.currency_id.rounding
+        prec = self.env.company_id.currency_id.rounding
         missing_partner_ids = set(initial_bal_results.keys()) - set(results.keys())
         for partner_id in missing_partner_ids:
             if not float_is_zero(initial_bal_results[partner_id]['balance'], precision_rounding=prec):
@@ -166,7 +166,7 @@ class ReportPartnerLedger(models.AbstractModel):
         offset = int(options.get('lines_offset', 0))
         lines = []
         context = self.env.context
-        company_id = context.get('company_id') or self.env.user.company_id
+        company_id = context.get('company_id') or self.env.company_id
         if line_id:
             line_id = int(line_id.split('_')[1]) or None
         elif options.get('partner_ids') and len(options.get('partner_ids')) == 1:
@@ -207,7 +207,7 @@ class ReportPartnerLedger(models.AbstractModel):
                     'unfolded': 'partner_' + str(partner.id) in options.get('unfolded_lines') or unfold_all,
                     'colspan': 6,
                 })
-            user_company = self.env.user.company_id
+            user_company = self.env.company_id
             used_currency = user_company.currency_id
             if 'partner_' + str(partner.id) in options.get('unfolded_lines') or unfold_all:
                 if offset == 0:

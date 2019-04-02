@@ -37,27 +37,27 @@
         <field name="name">Quality alert company rule</field>
         <field name="model_id" ref="model_quality_alert"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
     </record>
 
    	<record model="ir.rule" id="quality_check_comp_rule">
         <field name="name">Quality check company rule</field>
         <field name="model_id" ref="model_quality_check"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
     </record>
 
    	<record model="ir.rule" id="control_point_comp_rule">
         <field name="name">Control point company rule</field>
         <field name="model_id" ref="model_quality_point"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
     </record>
 
     <record model="ir.rule" id="quality_team_comp_rule">
         <field name="name">Quality Team multi-company</field>
         <field name="model_id" ref="model_quality_alert_team"/>
-        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
     </record>
 
 </odoo>

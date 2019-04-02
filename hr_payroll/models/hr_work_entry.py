@@ -34,7 +34,7 @@ class HrWorkEnrty(models.Model):
     display_warning = fields.Boolean(string="Error")
     leave_id = fields.Many2one('hr.leave', string='Time Off')
     company_id = fields.Many2one('res.company', string='Company', readonly=True, required=True,
-        default=lambda self: self.env['res.company']._company_default_get())
+        default=lambda self: self.env.company_id)
 
     _sql_constraints = [
         ('_unique', 'unique (date_start, date_stop, employee_id, work_entry_type_id, active)', "Work entry already exists for this attendance"),

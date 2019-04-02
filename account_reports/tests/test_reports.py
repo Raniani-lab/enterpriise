@@ -15,7 +15,7 @@ class TestAccountReports(common.TransactionCase):
 
     def setUp(self):
         super().setUp()
-        self.company = self.env.user.company_id
+        self.company = self.env.company_id
         self.partner_timmy_thomas = self.env['res.partner'].create({
             'name': 'Timmy Thomas',
         })
@@ -94,7 +94,7 @@ class TestAccountReports(common.TransactionCase):
             options = report._get_options(None)
 
             today = fields.Date.to_date('2018-12-31')
-            fiscal_date_to = self.env.user.company_id.compute_fiscalyear_dates(today)['date_to']
+            fiscal_date_to = self.env.company_id.compute_fiscalyear_dates(today)['date_to']
 
             target_day = calendar.monthrange(fiscal_date_to.year, fiscal_date_to.month - 1)[1]
 

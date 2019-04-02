@@ -91,7 +91,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
         self.env.cr.execute(query, params)
 
         for record in self.env.cr.dictfetchall():
-            currency_id = self.env.user.company_id.currency_id
+            currency_id = self.env.company_id.currency_id
             columns = [record['vat'].replace(' ', '').upper(), record['turnover'], record['vat_amount']]
             if not context.get('no_format', False):
                 columns[1] = formatLang(self.env, columns[1] or 0.0, currency_obj=currency_id)
@@ -122,7 +122,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
 
     def get_xml(self, options):
         # Precheck
-        company = self.env.user.company_id
+        company = self.env.company_id
         company_vat = company.partner_id.vat
         if not company_vat:
             raise UserError(_('No VAT number associated with your company.'))

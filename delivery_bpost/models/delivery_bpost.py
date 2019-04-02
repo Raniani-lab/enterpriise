@@ -68,7 +68,7 @@ class ProviderBpost(models.Model):
                 raise UserError(check_value)
             shipping = bpost.send_shipping(picking, self, self.return_label_on_delivery)
             order = picking.sale_id
-            company = order.company_id or picking.company_id or self.env.user.company_id
+            company = order.company_id or picking.company_id or self.env.company_id
             order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
             if order_currency.name == "EUR":
                 carrier_price = shipping['price']
@@ -114,7 +114,7 @@ class ProviderBpost(models.Model):
             raise UserError(check_value)
         shipping = bpost.send_shipping(pickings, self, False, is_return_label=True)
         order = pickings.sale_id
-        company = order.company_id or pickings.company_id or self.env.user.company_id
+        company = order.company_id or pickings.company_id or self.env.company_id
         order_currency = pickings.sale_id.currency_id or pickings.company_id.currency_id
         if order_currency.name == "EUR":
             carrier_price = shipping['price']

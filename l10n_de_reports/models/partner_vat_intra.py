@@ -57,7 +57,7 @@ class ReportL10nDePartnerVatIntra(models.AbstractModel):
                     code = 2
                 columns = [row['partner_country'], row['vat'].replace(' ', '').upper(), amt, code]
                 if not context.get('no_format', False):
-                    currency_id = self.env.user.company_id.currency_id
+                    currency_id = self.env.company_id.currency_id
                     columns[2] = formatLang(self.env, columns[2], currency_obj=currency_id)
 
                 lines.append({

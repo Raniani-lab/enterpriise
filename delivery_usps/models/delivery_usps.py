@@ -131,7 +131,7 @@ class ProviderUSPS(models.Model):
                 raise UserError(booking['error_message'])
 
             order = picking.sale_id
-            company = order.company_id or picking.company_id or self.env.user.company_id
+            company = order.company_id or picking.company_id or self.env.company_id
             currency_order = picking.sale_id.currency_id
             if not currency_order:
                 currency_order = picking.company_id.currency_id

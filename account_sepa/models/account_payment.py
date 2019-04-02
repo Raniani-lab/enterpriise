@@ -16,7 +16,7 @@ class AccountPayment(models.Model):
         for record in self:
             record.display_qr_code = (record.partner_type == 'supplier' and
                                       record.payment_method_code == 'manual' and
-                                      self.env.user.company_id.country_id in self.env.ref('base.europe').country_ids and
+                                      self.env.company_id.country_id in self.env.ref('base.europe').country_ids and
                                       bool(record.partner_bank_account_id))
 
     @api.multi

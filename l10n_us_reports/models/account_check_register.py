@@ -16,7 +16,7 @@ class ReportCheckRegister(models.AbstractModel):
     def _get_filter_journals(self):
         #filter only the bank/cash/miscellaneous journals
         return self.env['account.journal'].search([
-            ('company_id', 'in', self.env.user.company_ids.ids or [self.env.user.company_id.id]),
+            ('company_id', 'in', self.env.company_ids.ids or [self.env.company_id.id]),
             ('type', 'in', ['bank', 'cash', 'general'])], order="company_id, name")
 
     @api.model

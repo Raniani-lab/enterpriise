@@ -20,8 +20,8 @@
       <field name="model_id" ref="project_forecast.model_project_forecast"/>
       <field name="domain_force">[
       '&amp;',
-          '|', '|', ('task_id', '=', False), ('task_id.company_id','=',False),('task_id.company_id', 'child_of', [user.company_id.id]),
-          '|', ('project_id.company_id','=', False),('project_id.company_id', 'child_of', [user.company_id.id])
+          '|', '|', ('task_id', '=', False), ('task_id.company_id','=',False),('task_id.company_id', 'in', company_ids),
+          '|', ('project_id.company_id','=', False),('project_id.company_id', 'in', company_ids)
       ]</field>
     </record>
 

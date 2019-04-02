@@ -93,7 +93,7 @@ class AccountPayment(models.Model):
         None if there is none.
         """
         return self.env['sdd.mandate']._get_usable_mandate(
-            self.company_id.id or self.env.user.company_id.id,
+            self.company_id.id or self.env.company_id.id,
             self.partner_id.commercial_partner_id.id,
             self.payment_date)
 

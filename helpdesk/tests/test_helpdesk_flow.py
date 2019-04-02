@@ -182,7 +182,7 @@ class TestHelpdeskFlow(HelpdeskTransactionCase):
         self.assertEqual(self.env['helpdesk.ticket'].search_count([('user_id', '=', self.helpdesk_manager.id), ('close_date', '=', False)]), 3)
 
     def test_create_from_email_multicompany(self):
-        company0 = self.env.user.company_id
+        company0 = self.env.company_id
         company1 = self.env['res.company'].create({'name': 'new_company0'})
         Partner = self.env['res.partner']
 

@@ -61,7 +61,7 @@ class DeliverCarrier(models.Model):
             price = float(rate['rate'])
         else:
             quote_currency = self.env['res.currency'].search([('name', '=', rate['currency'])], limit=1)
-            price = quote_currency._convert(float(rate['rate']), order.currency_id, self.env['res.users']._get_company(), fields.Date.today())
+            price = quote_currency._convert(float(rate['rate']), order.currency_id, self.env.company_id, fields.Date.today())
 
         return {
             'success': True,
@@ -89,7 +89,7 @@ class DeliverCarrier(models.Model):
                 price = rate['rate']
             else:
                 quote_currency = self.env['res.currency'].search([('name', '=', rate['currency'])], limit=1)
-                price = quote_currency._convert(float(rate['rate']), picking.company_id.currency_id, self.env['res.users']._get_company(), fields.Date.today())
+                price = quote_currency._convert(float(rate['rate']), picking.company_id.currency_id, self.env.company_id, fields.Date.today())
 
             # return tracking information
             carrier_tracking_link = ""
@@ -126,7 +126,7 @@ class DeliverCarrier(models.Model):
             price = rate['rate']
         else:
             quote_currency = self.env['res.currency'].search([('name', '=', rate['currency'])], limit=1)
-            price = quote_currency._convert(float(rate['rate']), pickings.company_id.currency_id, self.env['res.users']._get_company(), fields.Date.today())
+            price = quote_currency._convert(float(rate['rate']), pickings.company_id.currency_id, self.env.company_id, fields.Date.today())
 
         # return tracking information
         carrier_tracking_link = ""
@@ -174,7 +174,7 @@ class DeliverCarrier(models.Model):
     def _onchange_delivery_type(self):
         if self.delivery_type == 'easypost':
             if not self.easypost_test_api_key or not self.easypost_production_api_key:
-                carrier = self.env['delivery.carrier'].search([('delivery_type', '=', 'easypost'), ('company_id', '=', self.env.user.company_id.id)], limit=1)
+                carrier = self.env['delivery.carrier'].search([('delivery_type', '=', 'easypost'), ('company_id', '=', self.env.company_id.id)], limit=1)
                 if carrier.easypost_test_api_key and not self.easypost_test_api_key:
                     self.easypost_test_api_key = carrier.easypost_test_api_key
                 if carrier.easypost_production_api_key and not self.easypost_production_api_key:

@@ -157,6 +157,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
             accounts = journal.default_debit_account_id
 
         # Fetch data
+        print(self, self.env.context, options, journal)
         report_data = self._get_bank_rec_report_data(options, journal)
 
         # Compute totals
@@ -171,7 +172,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
 
         lines.append(self._add_title_line(
             options, report_currency, _("Virtual GL Balance"),
-            amount=None if self.env.user.company_id.totals_below_sections else computed_stmt_balance, level=0)
+            amount=None if self.env.company_id.totals_below_sections else computed_stmt_balance, level=0)
         )
 
         gl_title = _("Current balance of account %s")
@@ -214,7 +215,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
                         'caret_options': 'account.payment',
                     })
 
-        if self.env.user.company_id.totals_below_sections:
+        if self.env.company_id.totals_below_sections:
             lines.append(self._add_total_line(report_currency, computed_stmt_balance))
 
         lines.append(self._add_title_line(

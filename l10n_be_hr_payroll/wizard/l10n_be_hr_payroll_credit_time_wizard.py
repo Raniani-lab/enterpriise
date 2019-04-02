@@ -20,7 +20,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
 
     resource_calendar_id = fields.Many2one(
         'resource.calendar', 'New Working Schedule', required=True,
-        default=lambda self: self.env['res.company']._company_default_get().resource_calendar_id.id)
+        default=lambda self: self.env.company_id.resource_calendar_id.id)
     wage = fields.Monetary('New Wage', digits=(16, 2), required=True, help="Employee's monthly gross wage in credit time.")
     currency_id = fields.Many2one(string="Currency", related='contract_id.company_id.currency_id', readonly=True)
 

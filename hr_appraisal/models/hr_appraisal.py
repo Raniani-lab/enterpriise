@@ -23,7 +23,7 @@ class HrAppraisal(models.Model):
 
     active = fields.Boolean(default=True)
     action_plan = fields.Text(string="Action Plan", help="If the evaluation does not meet the expectations, you can propose an action plan")
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.user.company_id)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company_id)
     color = fields.Integer(string='Color Index', help='This color will be used in the kanban view.')
     employee_id = fields.Many2one('hr.employee', required=True, string='Employee', index=True)
     department_id = fields.Many2one('hr.department', related='employee_id.department_id', string='Department', store=True, readonly=True)

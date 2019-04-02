@@ -52,7 +52,7 @@ class CL8ColumnsReport(models.AbstractModel):
             ORDER BY aa.code
         """
         parameters = {
-            'company_id': self.env.user.company_id.id,
+            'company_id': self.env.company_id.id,
             'date_from': self._context['date_from'],
             'date_to': self._context['date_to']
         }

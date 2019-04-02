@@ -29,7 +29,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         # /!\ FIXME: @luistorresm or @hbto
         self.delete_journal_data()
 
-        self.env.user.company_id.write({'currency_id': self.mxn.id})
+        self.env.company_id.write({'currency_id': self.mxn.id})
         self.create_rates()
 
         self.tax_cash_basis_journal_id = self.company.tax_cash_basis_journal_id
@@ -41,7 +41,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         self.journal_model = self.env['account.journal']
         self.refund_model = self.env['account.invoice.refund']
         self.payment_model = self.env['account.payment']
-        self.precision = self.env.user.company_id.currency_id.decimal_places
+        self.precision = self.env.company_id.currency_id.decimal_places
         self.payment_method_manual_out = self.env.ref(
             'account.account_payment_method_manual_out')
         self.payment_method_manual_in = self.env.ref(
@@ -182,7 +182,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         prior to begin and not waste time with further debug."""
 
         self.assertEquals(
-            self.env.user.company_id.country_id,
+            self.env.company_id.country_id,
             self.env.ref('base.mx'), "The company's country is not Mexico")
 
         xrate = self.mxn._convert(1, self.usd, self.company, self.two_days_ago)

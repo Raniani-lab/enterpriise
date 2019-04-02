@@ -27,7 +27,7 @@ class AccountInvoiceLine(models.Model):
         params = {
             'lang': psql_lang,
             'description': parsed_description,
-            'company_id': self.company_id.id or self.env.user.company_id.id,
+            'company_id': self.company_id.id or self.env.company_id.id,
             'limit_parameter': int(limit_parameter),
         }
         try:

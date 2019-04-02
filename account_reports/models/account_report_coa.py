@@ -54,7 +54,7 @@ class report_account_coa(models.AbstractModel):
     def _post_process(self, grouped_accounts, initial_balances, options, comparison_table):
         lines = []
         context = self.env.context
-        company_id = context.get('company_id') or self.env.user.company_id
+        company_id = context.get('company_id') or self.env.company_id
         title_index = ''
         sorted_accounts = sorted(grouped_accounts, key=lambda a: a.code)
         zero_value = ''

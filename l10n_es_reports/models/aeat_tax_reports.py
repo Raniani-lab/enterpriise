@@ -226,7 +226,7 @@ class AEATAccountFinancialReport(models.Model):
         if selected_company_ids:
             current_company = self.env['res.company'].browse(selected_company_ids)
         else:
-            current_company = self.env['res.company']._company_default_get()
+            current_company = self.env.company_id
 
         period, year = self._get_mod_period_and_year(options)
 
@@ -276,7 +276,7 @@ class AEATAccountFinancialReport(models.Model):
         :param sign_pos: same as sign_neg, but if number is positive
         :param in_currency: True iff number is expressed in company currency (and thus needs to be converted in €)
         """
-        company = self.env['res.company']._company_default_get()
+        company = self.env.company_id
 
         if in_currency:
             # If number is an amount expressed in company currency, we ensure that it

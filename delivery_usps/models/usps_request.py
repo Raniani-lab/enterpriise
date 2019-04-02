@@ -177,7 +177,7 @@ class USPSRequest():
         for line in picking.move_lines:
             USD = carrier.env['res.currency'].search([('name', '=', 'USD')], limit=1)
             order = picking.sale_id
-            company = order.company_id or picking.company_id or self.env.user.company_id
+            company = order.company_id or picking.company_id or self.env.company_id
             shipper_currency = picking.sale_id.currency_id or picking.company_id.currency_id
             if shipper_currency.name == USD.name:
                 price = line.product_id.lst_price * int(line.product_uom_qty)

@@ -15,7 +15,7 @@ class IntrastatReport(models.AbstractModel):
 
     def _get_filter_journals(self):
         #only show sale/purchase journals
-        return self.env['account.journal'].search([('company_id', '=', self.env.user.company_id.id), ('type', '=', 'sale')], order="company_id, name")
+        return self.env['account.journal'].search([('company_id', '=', self.env.company_id.id), ('type', '=', 'sale')], order="company_id, name")
 
     def _get_columns_name(self, options):
         return [
@@ -53,7 +53,7 @@ class IntrastatReport(models.AbstractModel):
                 AND inv.journal_id IN %s
         """
         # Date range
-        params = [self.env.user.company_id.id, options['date']['date_from'], options['date']['date_to']]
+        params = [self.env.company_id.id, options['date']['date_from'], options['date']['date_to']]
 
         # Filter on selected journals
         journal_ids = self.env['account.journal'].search([('type', 'in', ('sale', 'purchase'))]).ids
@@ -84,7 +84,7 @@ class IntrastatReport(models.AbstractModel):
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
 
-        company_currency = self.env.user.company_id.currency_id
+        company_currency = self.env.company_id.currency_id
         currency_cache = dict((r.id, r) for r in self.env['res.currency'].search([('active', '=', True)]))
         partners_values = {}
         total_value = 0
@@ -98,7 +98,7 @@ class IntrastatReport(models.AbstractModel):
                 currency = currency_cache[vals['currency_id']] = self.env['res.currency'].browse(vals['currency_id'])
 
             if currency != company_currency:
-                vals['value'] = currency._convert(vals['value'], company_currency, self.env.user.company_id, vals['date'])
+                vals['value'] = currency._convert(vals['value'], company_currency, self.env.company_id, vals['date'])
 
             if vals['partner_name'] not in partners_values:
                 partners_values[vals['partner_name']] = vals

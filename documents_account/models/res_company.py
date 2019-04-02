@@ -17,7 +17,7 @@ class DocumentsFolderSetting(models.Model):
     _name = 'documents.account.folder.setting'
     _description = 'Journal and Folder settings'
 
-    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.user.company_id,
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company_id,
                                  ondelete='cascade')
     journal_id = fields.Many2one('account.journal', required=True)
     folder_id = fields.Many2one('documents.folder', required=True)

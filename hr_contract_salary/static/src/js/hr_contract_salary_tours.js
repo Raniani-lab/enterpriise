@@ -16,49 +16,19 @@ Tour.register('hr_contract_salary_tour', {
             },
         },
         {
-            content: "Settings",
-            trigger: 'a[data-menu-xmlid="base.menu_administration"]',
+            content: "Log into Belgian Company",
+            trigger: '.o_menu_systray .o_switch_company_menu > a',
             run: 'click',
         },
         {
-            content: "Users",
-            trigger: 'div.o_web_settings_dashboard_invitations i.o_web_settings_dashboard_access_rights',
-            run: 'click',
-        },
-        {
-            content: "Mitchel",
-            trigger: 'table.o_list_view td.o_data_cell:contains(Admin)',
-            run: 'click',
-        },
-        {
-            content: "Edit Mitchell",
-            trigger: 'div.o_cp_buttons .o_form_button_edit',
-            run: 'click',
-        },
-        {
-            content: "Change company",
-            trigger: '.o_field_widget.o_field_many2one[name=company_id]',
-            run: function (actions) {
-                actions.text("Belgian", this.$anchor.find("input"));
-            },
-        },
-        {
-            trigger: ".ui-autocomplete > li > a:contains(Belgian)",
-            auto: true,
-        },
-        {
-            content: "Save Mitchell",
-            trigger: 'div.o_cp_buttons .o_form_button_save',
-            run: 'click',
-        },
-        {
-            content: "Go to app switcher",
-            trigger: 'nav.o_main_navbar a.o_menu_toggle',
+            content: "Log into Belgian Company",
+            trigger: ".o_menu_systray .o_switch_company_menu .dropdown-item span:contains('Belgian')",
             run: 'click',
         },
         {
             content: "Recruitment",
             trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
+            extra_trigger: ".o_menu_systray .o_switch_company_menu > a > span:contains('Belgian')",
             run: 'click',
         },
         {
@@ -409,42 +379,6 @@ Tour.register('hr_contract_salary_tour', {
             run: function () {
                 window.location.href = window.location.origin + '/web';
             },
-        },
-        {
-            content: "Settings",
-            trigger: 'a[data-menu-xmlid="base.menu_administration"]',
-            run: 'click',
-        },
-        {
-            content: "Users",
-            trigger: 'div.o_web_settings_dashboard_invitations i.o_web_settings_dashboard_access_rights',
-            run: 'click',
-        },
-        {
-            content: "Mitchel",
-            trigger: 'table.o_list_view td.o_data_cell:contains(Admin)',
-            run: 'click',
-        },
-        {
-            content: "Edit Mitchell",
-            trigger: 'div.o_cp_buttons .o_form_button_edit',
-            run: 'click',
-        },
-        {
-            content: "Change company",
-            trigger: '.o_field_widget.o_field_many2one[name=company_id]',
-            run: function (actions) {
-                actions.text("My Company", this.$anchor.find("input"));
-            },
-        },
-        {
-            trigger: ".ui-autocomplete > li > a:contains(My Company)",
-            auto: true,
-        },
-        {
-            content: "Save Mitchell",
-            trigger: 'div.o_cp_buttons .o_form_button_save',
-            run: 'click',
         },
     ]
 );

@@ -73,7 +73,7 @@ class MrpCostStructure(models.AbstractModel):
                 'mo_qty': mo_qty,
                 'mo_uom': uom,
                 'operations': operations,
-                'currency': self.env.user.company_id.currency_id,
+                'currency': self.env.company_id.currency_id,
                 'raw_material_moves': raw_material_moves,
                 'total_cost': total_cost,
                 'scraps': scraps,

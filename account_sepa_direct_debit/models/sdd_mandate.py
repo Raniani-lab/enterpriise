@@ -36,7 +36,7 @@ class SDDMandate(models.Model):
     name = fields.Char(string='Identifier', required=True, readonly=True, states={'draft':[('readonly',False)]}, help="The unique identifier of this mandate.", default=lambda self: datetime.now().strftime('%f%S%M%H%d%m%Y'), copy=False)
     debtor_id_code = fields.Char(string='Debtor Identifier', readonly=True, states={'draft':[('readonly',False)]}, help="Free reference identifying the debtor in your company.")
     partner_id = fields.Many2one(comodel_name='res.partner', string='Debtor', required=True, readonly=True, states={'draft':[('readonly',False)]}, help="Customer whose payments are to be managed by this mandate.")
-    company_id = fields.Many2one(comodel_name='res.company', default=lambda self: self.env['res.company']._company_default_get(), help="Company for whose invoices the mandate can be used.")
+    company_id = fields.Many2one(comodel_name='res.company', default=lambda self: self.env.company_id, help="Company for whose invoices the mandate can be used.")
     partner_bank_id = fields.Many2one(string='Debtor Account', readonly=True, states={'draft':[('readonly',False)]}, comodel_name='res.partner.bank', help="Account of the customer to collect payments from.")
     paid_invoice_ids = fields.One2many(string='Invoices Paid', comodel_name='account.invoice', readonly=True, inverse_name='sdd_paying_mandate_id', help="Invoices paid using this mandate.")
     start_date = fields.Date(string="Start Date", required=True, readonly=True, states={'draft':[('readonly',False)]}, help="Date from which the mandate can be used (inclusive).")
@@ -154,7 +154,7 @@ class SDDMandate(models.Model):
 
     @api.model
     def cron_update_mandates_states(self):
-        current_company = self.env['res.company']._company_default_get()
+        current_company = self.env.company_id
         today = fields.Date.today()
         for mandate in self.search([('company_id', '=', current_company.id), ('state', '=', 'active'), ('end_date', '!=', False)]):
             if mandate.end_date < today:

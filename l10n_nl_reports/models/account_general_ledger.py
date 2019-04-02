@@ -62,7 +62,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         def change_date_time(record):
             return record.write_date.strftime('%Y-%m-%dT%H:%M:%S')
 
-        company_id = self.env.user.company_id
+        company_id = self.env.company_id
 
         msgs = []
 

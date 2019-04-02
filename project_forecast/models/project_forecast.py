@@ -27,7 +27,7 @@ class ProjectForecast(models.Model):
         return employee_ids and employee_ids[0] or False
 
     def _default_start_date(self):
-        forecast_span = self.env.user.company_id.forecast_span
+        forecast_span = self.env.company_id.forecast_span
         start_date = date.today()
         # grid context: default start date should be the one of the first grid column
         if self._context.get('grid_anchor'):
@@ -40,7 +40,7 @@ class ProjectForecast(models.Model):
         return fields.Date.to_string(start_date)
 
     def _default_end_date(self):
-        forecast_span = self.env.user.company_id.forecast_span
+        forecast_span = self.env.company_id.forecast_span
 
         start_date = self._default_start_date()
         if 'default_start_date' in self._context:
@@ -227,7 +227,7 @@ class ProjectForecast(models.Model):
         """ Set the widget `float_time` on `resource_time` field on view, depending on company configuration (so it can not be a groups on inherited view) """
         result = super(ProjectForecast, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
 
-        if view_type in ['tree', 'form', 'grid'] and self.env.user.company_id.forecast_uom == 'hour':
+        if view_type in ['tree', 'form', 'grid'] and self.env.company_id.forecast_uom == 'hour':
             doc = etree.XML(result['arch'])
             for node in doc.xpath("//field[@name='resource_time']"):
                 node.set('widget', 'float_time')
@@ -261,7 +261,7 @@ class ProjectForecast(models.Model):
         if self.env.user.employee_ids:
             context['default_employee_id'] = self.env.user.employee_ids[0].id
         # hide range button for grid view
-        company = self.company_id or self.env.user.company_id
+        company = self.company_id or self.env.company_id
         if company.forecast_span == 'day':
             context['forecast_hide_range_month'] = True
             context['forecast_hide_range_year'] = True

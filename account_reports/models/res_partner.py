@@ -62,7 +62,7 @@ class ResPartner(models.Model):
             followup_status = "no_action_needed"
             today = fields.Date.today()
             for aml in record.unreconciled_aml_ids:
-                if aml.company_id == self.env.user.company_id:
+                if aml.company_id == self.env.company_id:
                     amount = aml.amount_residual
                     total_due += amount
                     is_overdue = today > aml.date_maturity if aml.date_maturity else today > aml.date
@@ -124,7 +124,7 @@ class ResPartner(models.Model):
         """
         self.ensure_one()
         lang_code = self.lang or self.env.user.lang or 'en_US'
-        date_auto = format_date(self.env, fields.datetime.now() + timedelta(days=self.env.user.company_id.days_between_two_followups), lang_code=lang_code)
+        date_auto = format_date(self.env, fields.datetime.now() + timedelta(days=self.env.company_id.days_between_two_followups), lang_code=lang_code)
         if self.payment_next_action_date:
             return {
                 'type': 'manual',

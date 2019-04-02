@@ -12,7 +12,7 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
     ask_restitution = fields.Boolean()
     ask_payment = fields.Boolean()
     client_nihil = fields.Boolean()
-    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id, required=True)
+    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company_id.currency_id, required=True)
     grid91 = fields.Monetary(string='Grid 91', currency_field='currency_id',
         help='La grille 91 ne concerne que les assujettis tenus au dépôt de déclarations mensuelles. Cette grille ne peut être complétée que pour la déclaration relative aux opérations du mois de décembre.')
     calling_export_wizard_id = fields.Many2one(string="Calling Export Wizard", comodel_name="account_reports.export.wizard", help="Optional field containing the report export wizard calling this wizard, if there is one.")
@@ -66,7 +66,7 @@ class AccountFinancialReportXMLExport(models.AbstractModel):
         # Check
         if self.id != self.env['ir.model.data'].xmlid_to_res_id('l10n_be_reports.account_financial_report_l10n_be_tva0'):
             return super(AccountFinancialReportXMLExport, self).get_xml(options)
-        company = self.env.user.company_id
+        company = self.env.company_id
         vat_no = company.partner_id.vat
         if not vat_no:
             raise UserError(_('No VAT number associated with your company.'))
@@ -147,7 +147,7 @@ class AccountFinancialReportXMLExport(models.AbstractModel):
         data_of_file += '\n\t\t</ns2:Period>\n'
         data_of_file += '\t\t<ns2:Data>\t'
         cases_list = []
-        currency_id = self.env.user.company_id.currency_id
+        currency_id = self.env.company_id.currency_id
 
         if options.get('grid91') and not currency_id.is_zero(options['grid91']):
             cases_list.append(('91', options['grid91']))

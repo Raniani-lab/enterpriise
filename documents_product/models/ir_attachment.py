@@ -14,7 +14,7 @@ class IrAttachment(models.Model):
 
         if vals.get('res_model') in {'product.product', 'product.template'} and vals.get('res_id'):
             product = self.env[vals['res_model']].browse(vals['res_id'])
-            company = product.company_id or self.env.user.company_id
+            company = product.company_id or self.env.company_id
             if company.exists() and company.documents_product_settings and company.product_folder:
                 for record in self:
                     document_dict = {

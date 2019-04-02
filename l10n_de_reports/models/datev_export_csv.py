@@ -38,7 +38,7 @@ class AccountMoveL10NDe(models.Model):
                 move.l10n_de_datev_main_account_id = move.journal_id.default_debit_account_id
                 continue
             # If the move is an automatic exchange rate entry, take the gain/loss account set on the exchange journal
-            elif move.journal_id.type == 'general' and move.journal_id == self.env.user.company_id.currency_exchange_journal_id:
+            elif move.journal_id.type == 'general' and move.journal_id == self.env.company_id.currency_exchange_journal_id:
                 accounts = [
                     move.journal_id.default_debit_account_id,
                     move.journal_id.default_credit_account_id,
@@ -121,8 +121,8 @@ class DatevExportCSV(models.AbstractModel):
         return open(full_path, 'rb')
 
     def _get_datev_client_number(self):
-        consultant_number = self.env.user.company_id.l10n_de_datev_consultant_number
-        client_number = self.env.user.company_id.l10n_de_datev_client_number
+        consultant_number = self.env.company_id.l10n_de_datev_consultant_number
+        client_number = self.env.company_id.l10n_de_datev_client_number
         if not consultant_number:
             consultant_number = 99999
         if not client_number:
@@ -132,7 +132,7 @@ class DatevExportCSV(models.AbstractModel):
     def _get_partner_list(self, options):
         date_from = fields.Date.from_string(options.get('date').get('date_from'))
         date_to = fields.Date.from_string(options.get('date').get('date_to'))
-        fy = self.env.user.company_id.compute_fiscalyear_dates(date_to)
+        fy = self.env.company_id.compute_fiscalyear_dates(date_to)
 
         date_from = datetime.strftime(date_from, '%Y%m%d')
         date_to = datetime.strftime(date_to, '%Y%m%d')
@@ -208,7 +208,7 @@ class DatevExportCSV(models.AbstractModel):
         # last 2 element of preheader should be filled by "consultant number" and "client number"
         date_from = fields.Date.from_string(options.get('date').get('date_from'))
         date_to = fields.Date.from_string(options.get('date').get('date_to'))
-        fy = self.env.user.company_id.compute_fiscalyear_dates(date_to)
+        fy = self.env.company_id.compute_fiscalyear_dates(date_to)
 
         date_from = datetime.strftime(date_from, '%Y%m%d')
         date_to = datetime.strftime(date_to, '%Y%m%d')

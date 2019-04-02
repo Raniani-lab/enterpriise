@@ -83,11 +83,18 @@ class website_hr_contract_salary(http.Controller):
         if not contract_sudo.employee_id or contract_sudo.employee_id.user_id == request.env.user:
             return contract_sudo
         try:
-            contract = request.env['hr.contract'].browse(contract_id)
+            contract = request.env['hr.contract'].with_context(allowed_company_ids=request.env.user.company_ids.ids).browse(contract_id)
             contract.check_access_rights('read')
             contract.check_access_rule('read')
-        except AccessError:
+            return contract_sudo
+        except:
             return request.env['hr.contract']
+
+    def _check_access_rights(self, contract_id, token):
+        if token:
+            contract = self._check_token_validity(token)
+        else:
+            contract = self._check_employee_access_right(contract_id)
         return contract
 
     @http.route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True)
@@ -222,7 +229,6 @@ class website_hr_contract_salary(http.Controller):
             'original_link': get_current_url(request.httprequest.environ)})
 
         values.update(self._get_documents_src(contract.employee_id))
-
         response = request.render("hr_contract_salary.salary_package", values)
         response.flatten()
         request.env.cr.execute('ROLLBACK TO SAVEPOINT salary')
@@ -376,10 +382,7 @@ class website_hr_contract_salary(http.Controller):
 
         result = {}
 
-        if token:
-            contract = self._check_token_validity(token)
-        else:
-            contract = self._check_employee_access_right(contract_id)
+        contract = self._check_access_rights(contract_id, token)
 
         new_contract = self.create_new_contract(contract, advantages)
         new_gross = new_contract._get_gross_from_employer_costs(advantages['final_yearly_costs'])
@@ -393,10 +396,7 @@ class website_hr_contract_salary(http.Controller):
     @http.route(['/salary_package/compute_net/'], type='json', auth='public')
     def compute_net(self, contract_id=None, token=None, advantages=None, **kw):
 
-        if token:
-            contract = self._check_token_validity(token)
-        else:
-            contract = self._check_employee_access_right(contract_id)
+        contract = self._check_access_rights(contract_id, token)
 
         new_contract = self.create_new_contract(contract, advantages)
         #  Update gross to keep a fixed employer cost
@@ -513,10 +513,7 @@ class website_hr_contract_salary(http.Controller):
 
     @http.route(['/salary_package/send_email/'], type='json', auth='public')
     def send_email(self, contract_id=None, token=None, advantages=None, **kw):
-        if token:
-            contract = self._check_token_validity(token)
-        else:
-            contract = self._check_employee_access_right(contract_id)
+        contract = self._check_access_rights(contract_id, token)
 
         car_name = model_name = False
         if advantages['transport_mode_car']:
@@ -568,10 +565,7 @@ class website_hr_contract_salary(http.Controller):
 
     @http.route(['/salary_package/submit/'], type='json', auth='public')
     def submit(self, contract_id=None, token=None, advantages=None, **kw):
-        if token:
-            contract = self._check_token_validity(token)
-        else:
-            contract = self._check_employee_access_right(contract_id)
+        contract = self._check_access_rights(contract_id, token)
 
         self.send_email(contract_id=contract_id, token=token, advantages=advantages, **kw)
 

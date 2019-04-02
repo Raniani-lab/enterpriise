@@ -1180,7 +1180,7 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         """ Simulate scanning a product and its weight
         thanks to the barcode nomenclature """
         clean_access_rights(self.env)
-        self.env.user.company_id.nomenclature_id = self.env.ref('barcodes.default_barcode_nomenclature')
+        self.env.company_id.nomenclature_id = self.env.ref('barcodes.default_barcode_nomenclature')
 
         product_weight = self.env['product.product'].create({
             'name': 'product_weight',

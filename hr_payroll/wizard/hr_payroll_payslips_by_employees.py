@@ -10,7 +10,7 @@ class HrPayslipEmployees(models.TransientModel):
     _description = 'Generate payslips for all selected employees'
 
     def _get_available_contracts_domain(self):
-        return [('contract_ids.state', 'in', ('open', 'pending', 'close')), ('company_id', '=', self.env.user.company_id.id)]
+        return [('contract_ids.state', 'in', ('open', 'pending', 'close')), ('company_id', '=', self.env.company_id.id)]
 
     def _get_employees(self):
         return self.env['hr.employee'].search(self._get_available_contracts_domain())

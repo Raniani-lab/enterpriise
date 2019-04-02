@@ -195,7 +195,7 @@ class MxReportAccountTrial(models.AbstractModel):
 
     def _get_lines_fourth_level(self, accounts, grouped_accounts, initial_balances, options, comparison_table):
         lines = []
-        company_id = self.env.context.get('company_id') or self.env.user.company_id
+        company_id = self.env.context.get('company_id') or self.env.company_id
         is_zero = company_id.currency_id.is_zero
         for account in accounts:
             # skip accounts with all periods = 0 (debit and credit) and no initial balance
@@ -241,7 +241,7 @@ class MxReportAccountTrial(models.AbstractModel):
 
     def _l10n_mx_edi_add_digital_stamp(self, path_xslt, cfdi):
         """Add digital stamp certificate attributes in XML report"""
-        company_id = self.env.user.company_id
+        company_id = self.env.company_id
         certificate_ids = company_id.l10n_mx_edi_certificate_ids
         certificate_id = certificate_ids.sudo().get_valid_certificate()
         if not certificate_id:
@@ -257,7 +257,7 @@ class MxReportAccountTrial(models.AbstractModel):
                               xml_declaration=True, encoding='UTF-8')
 
     def get_bce_dict(self, options):
-        company = self.env.user.company_id
+        company = self.env.company_id
         xml_data = self._get_lines(options)
         accounts = []
         account_lines = [l for l in xml_data
@@ -326,7 +326,7 @@ class MxReportAccountTrial(models.AbstractModel):
         date_report = fields.Date.from_string(context['date_from']) if context.get(
                 'date_from') else fields.Date.today()
         return '%s%s%sBN' % (
-            self.env.user.company_id.vat or '',
+            self.env.company_id.vat or '',
             date_report.year,
             str(date_report.month).zfill(2))
 

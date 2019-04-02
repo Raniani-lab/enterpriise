@@ -43,7 +43,7 @@ class Mod111And115And303CommonBOEWizard(models.TransientModel):
     _name = 'l10n_es_reports.aeat.boe.mod111and115and303.export.wizard'
 
     def _get_current_company(self):
-        return self.env['res.company']._company_default_get()
+        return self.env.company_id
 
     company_id = fields.Many2one(string="Current Company", comodel_name='res.company', default=_get_current_company)
     company_partner_id = fields.Many2one(string="Company Partner", comodel_name='res.partner', related='company_id.partner_id', readonly=False)
@@ -130,7 +130,7 @@ class Mod347BOEManuaPartnerData(models.TransientModel):
     parent_wizard_id = fields.Many2one(comodel_name='l10n_es_reports.aeat.boe.mod347.export.wizard')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Partner', required=True)
     perceived_amount = fields.Monetary(string='Perceived Amount', required=True)
-    currency_id = fields.Many2one(comodel_name='res.currency', string='Currency', default=lambda self: self.env['res.company']._company_default_get().currency_id) #required by the monetary field
+    currency_id = fields.Many2one(comodel_name='res.currency', string='Currency', default=lambda self: self.env.company_id.currency_id) #required by the monetary field
     operation_key = fields.Selection(selection=[('A', 'Adquisiciones de bienes y servicios'),('B', 'Entregas de bienes y prestaciones de servicios')], required=True, string='Operation Key')
     operation_class = fields.Selection(selection=[('local_negocio', 'Arrendamiento Local Negocio'), ('seguros', 'Operaciones de Seguros'), ('otras', 'Otras operaciones')], required=True, string='Operation Class')
 

@@ -23,7 +23,7 @@ class AccountBatchPayment(models.Model):
 
     def validate_batch(self):
         if self.payment_method_code == 'sdd':
-            company = self.env['res.company']._company_default_get()
+            company = self.env.company_id
 
             if not company.sdd_creditor_identifier:
                 raise UserError(_("Your company must have a creditor identifier in order to issue SEPA Direct Debit payments requests. It can be defined in accounting module's settings."))
@@ -39,7 +39,7 @@ class AccountBatchPayment(models.Model):
             # Constrains on models ensure all the payments can generate SDD data before
             # calling this method, so we make no further check of their content here
 
-            company = self.env['res.company']._company_default_get()
+            company = self.env.company_id
 
             return {
                 'filename': 'PAIN008' + datetime.now().strftime('%Y%m%d%H%M%S') + '.xml',

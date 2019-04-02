@@ -100,7 +100,8 @@ return AbstractWebClient.extend({
             // show the home menu if not)
             // If it is not empty, we trigger a dummy hashchange event so that `self.on_hashchange`
             // will take care of toggling the home menu and loading the action.
-            if (_.isEmpty($.bbq.getState(true))) {
+            var state = $.bbq.getState(true);
+            if (_.keys(state).length === 1 && _.keys(state)[0] === "cids") {
                 return self._rpc({
                         model: 'res.users',
                         method: 'read',
@@ -292,6 +293,8 @@ return AbstractWebClient.extend({
                     self._ignore_hashchange = true;
                     $.bbq.pushState('#home', 2); // merge_mode 2 to replace the current state
                 }
+                $.bbq.pushState({'cids': self.url.cids}, 0);
+
                 self.menu.toggle_mode(true, self.action_manager.getCurrentAction() !== null);
             });
         } else {

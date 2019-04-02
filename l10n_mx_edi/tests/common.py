@@ -29,7 +29,7 @@ class InvoiceTransactionCase(AccountingTestCase):
         self.partner_agrolait.type = 'invoice'
         self.partner_agrolait.parent_id.street_name = 'Street Parent'
         self.product = self.env.ref("product.product_product_3")
-        self.company = self.env.user.company_id
+        self.company = self.env.company_id
         self.account_settings = self.env['res.config.settings']
         self.tax_tag_iva = self.env['account.account.tag'].create({
             'name': 'IVA',

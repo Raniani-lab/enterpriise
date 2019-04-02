@@ -11,7 +11,7 @@
         </function>
 
         <function model="res.users" name="write">
-            <value eval="1"/>
+            <value eval="[1, 2]"/>
             <value eval="{'company_id': ref('l10n_be_hr_payroll.res_company_be')}"/>
         </function>
 
@@ -476,7 +476,7 @@
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_13th_month')]]"/>
 
     <function model="res.users" name="write">
-        <value eval="1"/>
+        <value eval="[1, 2]"/>
         <value eval="{'company_id': ref('base.main_company')}"/>
     </function>
     

@@ -154,7 +154,7 @@ class ProviderUPS(models.Model):
                 'description': picking.origin,
                 'total_qty': sum(sml.qty_done for sml in picking.move_line_ids),
                 'ilt_monetary_value': '%d' % invoice_line_total,
-                'itl_currency_code': self.env.user.company_id.currency_id.name,
+                'itl_currency_code': self.env.company_id.currency_id.name,
                 'phone': picking.partner_id.mobile or picking.partner_id.phone or picking.sale_id.partner_id.mobile or picking.sale_id.partner_id.phone,
             }
             if picking.sale_id and picking.sale_id.carrier_id != picking.carrier_id:
@@ -186,7 +186,7 @@ class ProviderUPS(models.Model):
                 raise UserError(result['error_message'])
 
             order = picking.sale_id
-            company = order.company_id or picking.company_id or self.env.user.company_id
+            company = order.company_id or picking.company_id or self.env.company_id
             currency_order = picking.sale_id.currency_id
             if not currency_order:
                 currency_order = picking.company_id.currency_id
@@ -247,7 +247,7 @@ class ProviderUPS(models.Model):
             'description': picking.origin,
             'total_qty': sum(sml.qty_done for sml in picking.move_line_ids),
             'ilt_monetary_value': '%d' % invoice_line_total,
-            'itl_currency_code': self.env.user.company_id.currency_id.name,
+            'itl_currency_code': self.env.company_id.currency_id.name,
             'phone': picking.partner_id.mobile or picking.partner_id.phone or picking.sale_id.partner_id.mobile or picking.sale_id.partner_id.phone,
         }
         if picking.sale_id and picking.sale_id.carrier_id != picking.carrier_id:
@@ -280,7 +280,7 @@ class ProviderUPS(models.Model):
             raise UserError(result['error_message'])
 
         order = picking.sale_id
-        company = order.company_id or picking.company_id or self.env.user.company_id
+        company = order.company_id or picking.company_id or self.env.company_id
         currency_order = picking.sale_id.currency_id
         if not currency_order:
             currency_order = picking.company_id.currency_id

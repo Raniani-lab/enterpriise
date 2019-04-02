@@ -81,8 +81,8 @@ class StockInventory(models.Model):
             inventory['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             inventory['group_uom'] = self.env.user.has_group('uom.group_uom')
             inventory['actionReportInventory'] = self.env.ref('stock.action_report_inventory').id
-            if self.env.user.company_id.nomenclature_id:
-                inventory['nomenclature_id'] = [self.env.user.company_id.nomenclature_id.id]
+            if self.env.company_id.nomenclature_id:
+                inventory['nomenclature_id'] = [self.env.company_id.nomenclature_id.id]
         return inventories
 
     @api.model

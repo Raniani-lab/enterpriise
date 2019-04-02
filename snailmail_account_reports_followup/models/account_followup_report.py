@@ -26,7 +26,7 @@ class AccountFollowupReport(models.AbstractModel):
                     'report_template': self.env.ref('account_reports.action_report_followup').id,
                     # we will only process partners that are linked to the user current company
                     # TO BE CHECKED
-                    'company_id': self.env.user.company_id.id,
+                    'company_id': self.env.company_id.id,
                 })
                 letter._snailmail_print()
         return super(AccountFollowupReport, self)._execute_followup_partner(partner)

@@ -21,7 +21,7 @@ class IntrastatReport(models.AbstractModel):
 
     def _get_filter_journals(self):
         #only show sale/purchase journals
-        return self.env['account.journal'].search([('company_id', 'in', self.env.user.company_ids.ids or [self.env.user.company_id.id]), ('type', 'in', ('sale', 'purchase'))], order="company_id, name")
+        return self.env['account.journal'].search([('company_id', 'in', self.env.company_ids.ids or [self.env.company_id.id]), ('type', 'in', ('sale', 'purchase'))], order="company_id, name")
 
     def _get_columns_name(self, options):
         columns = [
@@ -164,7 +164,7 @@ class IntrastatReport(models.AbstractModel):
                 '''
         order = 'inv.date_invoice DESC'
         params = {
-            'company_id': self.env.user.company_id.id,
+            'company_id': self.env.company_id.id,
             'date_from': date_from,
             'date_to': date_to,
             'journal_ids': tuple(journal_ids),
@@ -208,9 +208,9 @@ class IntrastatReport(models.AbstractModel):
             if cache_key not in cache:
                 cache[cache_key] = self.env['res.currency'].browse(vals[index]['invoice_currency_id'])
 
-            company_currency_id = self.env.user.company_id.currency_id
+            company_currency_id = self.env.company_id.currency_id
             if cache[cache_key] != company_currency_id:
-                vals[index]['value'] = cache[cache_key]._convert(vals[index]['value'], company_currency_id, self.env.user.company_id, vals[index]['invoice_date'])
+                vals[index]['value'] = cache[cache_key]._convert(vals[index]['value'], company_currency_id, self.env.company_id, vals[index]['invoice_date'])
         return vals
 
     @api.model

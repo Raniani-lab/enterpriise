@@ -108,6 +108,7 @@
                             <field name="identifier" readonly="True"/>
                             <field name="type"/>
                             <field name="connection"/>
+                            <field name="connected"/>
                             <div class='font-weight-bold'>Value</div>
                             <widget name="iot_device_value_display"/>
                         </group>
@@ -129,6 +130,7 @@
                 <field name="name"/>
                 <field name="type"/>
                 <field name="connection"/>
+                <field name="connected"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click p-0">
@@ -141,8 +143,16 @@
                                     <div class="text-truncate font-weight-bold" t-att-title="record.name.raw_value"><field name="name"/></div>
                                     <div class="text-truncate"><field name="identifier"/></div>
                                     <span class="text-muted font-italic text-truncate"><field name="iot_id"/></span>
+                                    <div>
+                                        <t t-if="record.connected.raw_value">
+                                            <span class="badge badge-success">Connected</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge badge-secondary">Disconnected</span>
+                                        </t>
+                                    </div>
                                     <t t-set="connections" t-value="{'network': 'wifi', 'direct': 'usb', 'bluetooth': 'bluetooth-b'}"/>
-                                    <span class="float-right" t-att-title="record.connection.raw_value"><i t-attf-class="fa fa-#{connections[record.connection.raw_value]}"></i></span>
+                                    <span class="float-right fa-stack" t-att-title="record.connection.raw_value"><i t-attf-class="fa fa-#{connections[record.connection.raw_value]}"></i></span>
                                 </div>
                             </div>
                         </div>

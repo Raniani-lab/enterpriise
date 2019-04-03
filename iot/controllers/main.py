@@ -43,6 +43,12 @@ class IoTController(http.Controller):
 
     @http.route('/iot/setup', type='json', auth='public')
     def update_box(self, **kwargs):
+        """
+        This function receives a dict from the iot box with information from it 
+        as well as devices connected and supported by this box.
+        This function create the box and the devices and set the status (connected / disconnected)
+         of devices linked with this box
+        """
         if kwargs:
             # Box > V19
             iot_box = kwargs['iot_box']
@@ -66,16 +72,20 @@ class IoTController(http.Controller):
 
         # Update or create devices
         if box:
+            previously_connected_iot_devices = request.env['iot.device'].sudo().search([
+                ('iot_id', '=', box.id),
+                ('connected', '=', True)
+            ])
+            connected_iot_devices = request.env['iot.device'].sudo()
             for device_identifier in devices:
                 data_device = devices[device_identifier]
                 if data_device['connection'] == 'network':
                     device = request.env['iot.device'].sudo().search([('identifier', '=', device_identifier)])
                 else:
                     device = request.env['iot.device'].sudo().search([('iot_id', '=', box.id), ('identifier', '=', device_identifier)])
-
-                if device:
-                    device.name = data_device['name']
-                else:
+                
+                # If an `iot.device` record isn't found for this `device`, create a new one.
+                if not device:
                     device = request.env['iot.device'].sudo().create({
                         'iot_id': box.id,
                         'name': data_device['name'],
@@ -83,3 +93,7 @@ class IoTController(http.Controller):
                         'type': data_device['type'],
                         'connection': data_device['connection'],
                     })
+                connected_iot_devices |= device
+            # Mark the received devices as connected, disconnect the others.
+            connected_iot_devices.write({'connected': True})
+            (previously_connected_iot_devices - connected_iot_devices).write({'connected': False})

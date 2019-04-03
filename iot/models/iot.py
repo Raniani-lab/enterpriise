@@ -48,6 +48,7 @@ class IotDevice(models.Model):
         help="Type of connection.")
     report_ids = fields.One2many('ir.actions.report', 'device_id', string='Reports')
     iot_ip = fields.Char(related="iot_id.ip")
+    connected = fields.Boolean(string='Status', help='If device is connected to the IoT Box', readonly=True)
 
     def name_get(self):
         return [(i.id, "[" + i.iot_id.name +"] " + i.name) for i in self]

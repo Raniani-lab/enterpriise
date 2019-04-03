@@ -138,7 +138,8 @@
                 <div name="button_box" position="inside">
                     <button class="oe_stat_button" type="action"
                         name="%(crm_score_views_action_graph)d" icon="fa-tags"
-                        context="{'search_default_team_id': active_id, 'search_default_unassigned': 1 }">
+                        context="{'search_default_team_id': active_id, 'search_default_unassigned': 1 }"
+                        attrs="{'invisible': [('use_leads', '=', False)]}">
                         <field name="unassigned_leads_count" widget="statinfo"/>
                     </button>
                     <button class="oe_stat_button" type="action"

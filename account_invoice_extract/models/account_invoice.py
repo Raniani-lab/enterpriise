@@ -433,15 +433,13 @@ class AccountInvoice(models.Model):
     @api.multi
     def _set_supplier(self, supplier_ocr, vat_number_ocr):
         self.ensure_one()
-        partner_id = self.find_partner_id_with_name(supplier_ocr)
-        if partner_id != 0:
-            self.partner_id = partner_id
-            self._onchange_partner_id()
-        else:
-            partner_vat = self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1)
-            if partner_vat.exists():
-                self.partner_id = partner_vat
-                self._onchange_partner_id()
+        if not self.partner_id:
+            partner_id =  self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1).id
+            if not partner_id:
+                partner_id = self.find_partner_id_with_name(supplier_ocr)
+                if partner_id:
+                    self.write({'partner_bank_id': False, 'partner_id': partner_id})
+                    self._onchange_partner_id()
 
     @api.multi
     def _set_invoice_lines(self, invoice_lines, subtotal_ocr):

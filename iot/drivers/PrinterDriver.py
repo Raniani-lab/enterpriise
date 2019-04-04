@@ -19,7 +19,6 @@ class PrinterDriver(Driver):
         self._device_type = 'printer'
         self._device_connection = self.dev['device-class'].lower()
         self._device_name = self.dev['device-make-and-model']
-        self._device_identifier = self.dev['identifier']
 
     @classmethod
     def supported(cls, device):
@@ -45,6 +44,10 @@ class PrinterDriver(Driver):
                 device['device-make-and-model'] = printers[device['identifier']]['printer-info']
             return True
         return False
+
+    @property
+    def device_identifier(self):
+        return self.dev['identifier']
 
     def action(self, data):
         try:

@@ -15,7 +15,6 @@ class CameraDriver(Driver):
         self._device_type = 'camera'
         self._device_connection = 'direct'
         self._device_name = self.dev.card.decode('utf-8')
-        self._device_identifier = self.dev.bus_info.decode('utf-8')
 
     @classmethod
     def supported(cls, device):

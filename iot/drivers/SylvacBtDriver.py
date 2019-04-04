@@ -19,7 +19,6 @@ class SylvacBtDriver(Driver):
         self.gatt_device.connect()
         self._device_type = 'device'
         self._device_connection = 'bluetooth'
-        self._device_identifier = "bt_%s" % (self.dev.mac_address,)
         self._device_name = self.dev.alias()
 
     @classmethod

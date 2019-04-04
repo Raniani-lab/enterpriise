@@ -664,7 +664,6 @@ class IngenicoDriver(Driver):
         self._device_type = 'payment'
         self._device_connection = 'network'
         self._device_name = 'Ingenico payment terminal'
-        self._device_identifier = device.dev.getpeername()[0]
 
     @classmethod
     def supported(cls, device): 
@@ -683,6 +682,10 @@ class IngenicoDriver(Driver):
         except Exception:
             _logger.error(format_exc())
             return False
+
+    @property
+    def device_identifier(self):
+        return self.dev.getpeername()[0]
 
     def disconnect(self):
         del socket_devices[self.device_identifier]

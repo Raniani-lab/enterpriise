@@ -19,7 +19,6 @@ class KeyboardUSBDriver(Driver):
         self._device_type = 'device'
         self._device_connection = 'direct'
         self._device_name = self._set_name()
-        self._device_identifier = "usb_%04x:%04x_%03d_%03d_" % (self.dev.idVendor, self.dev.idProduct, self.dev.bus, self.dev.address)
 
     @classmethod
     def supported(cls, device):

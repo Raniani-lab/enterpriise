@@ -244,7 +244,7 @@ class AccountInvoice(models.Model):
                     'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/validate'
                 values = {
                     'total': record.get_validation('total'),
-                    'sub_total': record.get_validation('sub_total'),
+                    'subtotal': record.get_validation('subtotal'),
                     'global_taxes': record.get_validation('global_taxes'),
                     'global_taxes_amount': record.get_validation('global_taxes_amount'),
                     'date': record.get_validation('date'),

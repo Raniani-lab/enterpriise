@@ -38,7 +38,8 @@ class AccountInvoice(models.Model):
         payment_journal = mandate.payment_journal_id
 
         #This code is only executed if the mandate may be used (thanks to the previous UserError)
-        payment = self.env['account.payment'].create({'invoice_ids': [(4, self.id, None)],
+        payment = self.env['account.payment'].with_context(active_id=self.id, active_ids=self.ids).create({
+                                                      'invoice_ids': [(4, self.id, None)],
                                                       'journal_id': payment_journal.id,
                                                       'payment_method_id': payment_method.id,
                                                       'amount': self.residual,

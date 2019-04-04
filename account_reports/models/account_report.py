@@ -839,7 +839,7 @@ class AccountReport(models.AbstractModel):
             return self._get_dates_period(options, *date_utils.get_quarter(date_to), period_type='quarter')
         if period_type == 'year':
             return self._get_dates_period(options, *date_utils.get_fiscal_year(date_to), period_type='year')
-        date_from = date_to - datetime.timedelta(days=(date_to - date_from).days)
+        date_from = date_to - datetime.timedelta(days=(period_vals['date_to'] - date_from).days)
         return self._get_dates_period(options, date_from, date_to)
 
     def _get_dates_previous_year(self, options, period_vals):
@@ -1190,28 +1190,29 @@ class AccountReport(models.AbstractModel):
                 style = default_style
                 col1_style = default_col1_style
 
-            if 'date' in lines[y].get('class', ''):
+            #write the first column, with a specific style to manage the indentation
+            cell_name = lines[y]['name']
+            if 'date' in lines[y].get('class', '') and cell_name is not None:
                 #write the dates with a specific format to avoid them being casted as floats in the XLSX
-                if isinstance(lines[y]['name'], (datetime.date, datetime.datetime)):
-                    sheet.write_datetime(y + y_offset, 0, lines[y]['name'], date_default_col1_style)
-                else:
-                    sheet.write(y + y_offset, 0, lines[y]['name'], date_default_col1_style)
+                if not isinstance(cell_name, (float, datetime.date, datetime.datetime)):
+                    # Convert non-xlsx compatible dates
+                    cell_name = fields.Date.to_date(cell_name)
+                sheet.write_datetime(y + y_offset, 0, cell_name, date_default_col1_style)
             else:
-                #write the first column, with a specific style to manage the indentation
-                sheet.write(y + y_offset, 0, lines[y]['name'], col1_style)
+                sheet.write(y + y_offset, 0, cell_name, col1_style)
 
             #write all the remaining cells
             for x in range(1, len(lines[y]['columns']) + 1):
-                this_cell_style = style
-                if 'date' in lines[y]['columns'][x - 1].get('class', ''):
+                cell = lines[y]['columns'][x - 1]
+                if 'date' in cell.get('class', '') and cell.get('name'):
                     #write the dates with a specific format to avoid them being casted as floats in the XLSX
-                    this_cell_style = date_default_style
-                    if isinstance(lines[y]['columns'][x - 1].get('name', ''), (datetime.date, datetime.datetime)):
-                        sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, lines[y]['columns'][x - 1].get('name', ''), this_cell_style)
-                    else:
-                        sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, lines[y]['columns'][x - 1].get('name', ''), this_cell_style)
+                    cell_name = cell['name']
+                    if not isinstance(cell_name, (float, datetime.date, datetime.datetime)):
+                        # Convert non-xlsx compatible dates
+                        cell_name = fields.Date.to_date(cell_name)
+                    sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_name, date_default_style)
                 else:
-                    sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, lines[y]['columns'][x - 1].get('name', ''), this_cell_style)
+                    sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell.get('name', ''), style)
 
         workbook.close()
         output.seek(0)

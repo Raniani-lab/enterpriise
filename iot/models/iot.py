@@ -91,12 +91,10 @@ class IrActionReport(models.Model):
             device = self.mapped('device_id')[0]
         else:
             device = self.env['iot.device'].browse(data['device_id'])
-        composite_url = device.iot_id.ip_url + "/hw_drivers/driveraction/" + device.identifier
         datas = self.render(res_ids, data=data)
-        type = datas[1]
         data_bytes = datas[0]
         data_base64 = base64.b64encode(data_bytes)
-        return composite_url, type, data_base64
+        return device.iot_id.ip, device.identifier, data_base64
 
 class PublisherWarrantyContract(models.AbstractModel):
     _inherit = "publisher_warranty.contract"

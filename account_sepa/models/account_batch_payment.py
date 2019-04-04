@@ -85,7 +85,7 @@ class AccountBatchPayment(models.Model):
             error_list.append(_('Your bank account is not labelled in EUR'))
         for payment in self.payment_ids:
             bank_account = payment.partner_bank_account_id
-            if payment.currency_id.name != 'EUR':
+            if payment.currency_id.name != 'EUR' and self.journal_id.company_id.currency_id.name == 'EUR':
                 error_list.append(_('The transaction %s is instructed in another currency than EUR') % payment.name)
             if not bank_account.bank_bic:
                 error_list.append(_('The creditor bank account %s used in payment %s is not identified by a BIC') % (payment.partner_bank_account_id.acc_number, payment.name))

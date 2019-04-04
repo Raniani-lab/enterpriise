@@ -12,16 +12,13 @@
                 <label for="device_name" attrs="{'invisible': ['|', ('test_type', 'not in', ['measure', 'picture', 'printer']), ('identifier', '=', False)]}"/>
                 <field name="device_name" readonly="1"
                        attrs="{'invisible': ['|', ('test_type', 'not in', ['measure', 'picture', 'printer']), ('identifier', '=', False)]}"/>
-            </xpath>
-            <xpath expr="//button[@name='do_measure']" position="before">
-                <widget name="iot_take_measure_button"
-                        options="{'ip_field': 'ip', 'identifier_field': 'identifier', 'measure_field': 'measure'}"
-                        attrs="{'invisible': ['|', ('test_type', '!=', 'measure'), ('identifier', '=', False)]}"/>
-            </xpath>
-            <xpath expr="//field[@name='measure']" position="before">
                 <field name="ip" invisible="1"/>
                 <field name="identifier" invisible="1"/>
                 <field name="boxes" invisible="1"/>
+                <div class="o_row mb8" attrs="{'invisible': [('test_type', '!=', 'measure')]}">
+                    <Label for="measure"/>
+                    <field name="measure" widget="iot_realtime_value"/>
+                </div>
             </xpath>
             <field name="picture" position="attributes">
                 <attribute name="widget">iot_picture</attribute>

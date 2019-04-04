@@ -75,12 +75,13 @@ class TestWorkOrder(common.TestMrpCommon):
             'sequence': 2})
 
         # Update quantities
+        cls.location_1 = cls.env.ref('stock.stock_location_stock')
         Quant = cls.env['stock.quant']
         Quant._update_available_quantity(cls.elon_musk, cls.location_1, 1.0, lot_id=cls.elon1)
         Quant._update_available_quantity(cls.elon_musk, cls.location_1, 1.0, lot_id=cls.elon2)
         Quant._update_available_quantity(cls.elon_musk, cls.location_1, 1.0, lot_id=cls.elon3)
-        Quant._update_available_quantity(cls.metal_cylinder, cls.location_1, 2.0, lot_id=cls.mc1)
-        Quant._update_available_quantity(cls.trapped_child, cls.location_1, 12.0)
+        Quant._update_available_quantity(cls.metal_cylinder, cls.location_1, 6.0, lot_id=cls.mc1)
+        Quant._update_available_quantity(cls.trapped_child, cls.location_1, 36.0)
 
     def test_workorder_1(self):
         # get the computer sc234 demo data
@@ -529,3 +530,292 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(move_cylinder.state, 'done', 'Move should be done')
         self.assertEqual(move_cylinder.quantity_done, 3, 'Consumed quantity should be 4')
         self.assertEqual(move_cylinder.move_line_ids.mapped('lot_id'), self.mc1 | self.mc2, 'Wrong serial numbers used')
+
+    def test_workorder_2(self):
+        # Test multiple final lots management
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        mrp_order_form.product_qty = 3
+        production = mrp_order_form.save()
+
+        production.action_confirm()
+        production.button_plan()
+        self.assertEqual(len(production.workorder_ids), 3, "wrong number of workorders")
+        self.assertEqual(production.workorder_ids[0].state, 'ready', "workorder state should be 'ready'")
+        self.assertEqual(production.workorder_ids[1].state, 'pending', "workorder state should be 'pending'")
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.final_lot_id.id, False, "final lot should be empty")
+        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
+        wo_form.final_lot_id = self.sp1
+        wo_form.lot_id = self.mc1
+        wo_form.qty_done = 2
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.final_lot_id = self.sp2
+        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
+        wo_form.lot_id = self.mc1
+        wo_form.qty_done = 2
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.final_lot_id = self.sp3
+        wo_form.lot_id = self.mc1
+        wo_form.qty_done = 2
+        wo = wo_form.save()
+        wo._next()
+        wo.do_finish()
+
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.final_lot_id, self.sp1, "final lot should be prefilled")
+        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
+        wo_form.lot_id = self.elon1
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.final_lot_id, self.sp2, "final lot should be prefilled")
+        wo_form.lot_id = self.elon2
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.final_lot_id, self.sp3, "final lot should be prefilled")
+        wo_form.lot_id = self.elon3
+        wo = wo_form.save()
+        wo._next()
+        wo.do_finish()
+
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.final_lot_id, self.sp1, "final lot should be prefilled")
+        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
+        wo = wo_form.save()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.final_lot_id, self.sp2, "final lot should be prefilled")
+        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
+        wo = wo_form.save()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.final_lot_id, self.sp3, "final lot should be prefilled")
+        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
+        wo = wo_form.save()
+        wo.do_finish()
+        production.button_mark_done()
+
+        move_elon = production.move_raw_ids.filtered(lambda move: move.product_id == self.elon_musk)
+        self.assertEqual(move_elon.state, 'done', 'Move should be done')
+        self.assertEqual(move_elon.quantity_done, 3, 'Consumed quantity should be 2')
+        self.assertEqual(len(move_elon.move_line_ids), 3, 'their should be 2 move lines')
+        self.assertEqual(move_elon.move_line_ids.mapped('lot_id'), self.elon1 | self.elon2 | self.elon3, 'Wrong serial numbers used')
+        self.assertEqual(move_elon.move_line_ids.mapped('lot_produced_id'), self.sp1 | self.sp2 | self.sp3, 'Wrong produced serial numbers')
+        move_cylinder = production.move_raw_ids.filtered(lambda move: move.product_id == self.metal_cylinder)
+        self.assertEqual(move_cylinder.state, 'done', 'Move should be done')
+        self.assertEqual(move_cylinder.quantity_done, 6, 'Consumed quantity should be 4')
+        self.assertEqual(move_cylinder.move_line_ids.mapped('lot_produced_id'), self.sp1 | self.sp2 | self.sp3, 'Wrong produced serial numbers')
+        move_child = production.move_raw_ids.filtered(lambda move: move.product_id == self.trapped_child)
+        self.assertEqual(move_child.state, 'done', 'Move should be done')
+        self.assertEqual(move_child.quantity_done, 36, 'Consumed quantity should be 24')
+        self.assertEqual(len(move_child.move_line_ids), 3, 'Their should be 3 move line as production was made in 3 steps')
+        self.assertEqual(move_child.move_line_ids.mapped('lot_produced_id'), self.sp1 | self.sp2 | self.sp3, 'Wrong produced serial numbers')
+
+    def test_workorder_3(self):
+        # Test multiple final lots management
+        mrp_order_form = Form(self.env['mrp.production'])
+        self.submarine_pod.tracking = 'none'
+        mrp_order_form.product_id = self.submarine_pod
+        mrp_order_form.product_qty = 2
+        production = mrp_order_form.save()
+
+        production.action_confirm()
+        production.button_plan()
+        self.assertEqual(len(production.workorder_ids), 3, "wrong number of workorders")
+        self.assertEqual(production.workorder_ids[0].state, 'ready', "workorder state should be 'ready'")
+        self.assertEqual(production.workorder_ids[1].state, 'pending', "workorder state should be 'pending'")
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_producing, 2, "Wrong quantity to produce")
+        wo_form.lot_id = self.mc1
+        wo_form.qty_producing = 1
+        wo_form.qty_done = 2
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity remaining")
+        wo.lot_id = self.mc1
+        wo_form.qty_done = 2
+        wo = wo_form.save()
+        wo._next()
+        wo.do_finish()
+
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_producing, 2, "Wrong quantity to produce (serial tracked)")
+        wo_form.lot_id = self.elon1
+        wo_form.qty_producing = 1
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity remaining")
+        wo_form.lot_id = self.elon2
+        wo = wo_form.save()
+        wo._next()
+        wo.do_finish()
+
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_producing, 2, "Wrong quantity to produce (serial tracked)")
+        wo_form.qty_producing = 1
+        wo = wo_form.save()
+        wo.record_production()
+        self.assertEqual(wo.qty_producing, 1, "Wrong quantity remaining")
+        wo.do_finish()
+        production.button_mark_done()
+
+        move_elon = production.move_raw_ids.filtered(lambda move: move.product_id == self.elon_musk)
+        self.assertEqual(move_elon.state, 'done', 'Move should be done')
+        self.assertEqual(move_elon.quantity_done, 2, 'Consumed quantity should be 2')
+        self.assertEqual(len(move_elon.move_line_ids), 2, 'their should be 2 move lines')
+        self.assertEqual(move_elon.move_line_ids.mapped('lot_id'), self.elon1 | self.elon2, 'Wrong serial numbers used')
+        move_cylinder = production.move_raw_ids.filtered(lambda move: move.product_id == self.metal_cylinder)
+        self.assertEqual(move_cylinder.state, 'done', 'Move should be done')
+        self.assertEqual(move_cylinder.quantity_done, 4, 'Consumed quantity should be 4')
+        move_child = production.move_raw_ids.filtered(lambda move: move.product_id == self.trapped_child)
+        self.assertEqual(move_child.state, 'done', 'Move should be done')
+        self.assertEqual(move_child.quantity_done, 24, 'Consumed quantity should be 24')
+        self.assertEqual(len(move_child.move_line_ids), 1, 'Their should be 1 move line as neither this component is tracked nor the final product')
+
+    def test_workorder_4(self):
+        """Produce 1 unit in a workorder with lot1, 2 units of this lot1 in the
+        second workorder. Come back to the WO 1 and try to produce something else
+        than lot1. It should raise an error """
+
+        self.bom_submarine.bom_line_ids.write({'operation_id': False})
+        # Use 'Secondary assembly routing (3 operations)'
+        self.bom_submarine.routing_id = self.env.ref('mrp.mrp_routing_1')
+        self.submarine_pod.tracking = 'lot'
+        lot1 = self.env['stock.production.lot'].create({
+            'product_id': self.submarine_pod.id,
+            'name': 'lot1'})
+        lot2 = self.env['stock.production.lot'].create({
+            'product_id': self.submarine_pod.id,
+            'name': 'lot2'})
+
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        mrp_order_form.product_qty = 2
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.button_plan()
+        self.assertEqual(len(production.workorder_ids), 3, "wrong number of workorders")
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.qty_producing = 1
+        wo_form.final_lot_id = lot1
+        wo = wo_form.save()
+        wo.record_production()
+
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_remaining, 2, "it left 1 quantity to produce")
+        self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
+        self.assertEqual(wo_form.final_lot_id, lot1, "Final lot should be the one entered in previous wo")
+        wo_form.final_lot_id = lot1
+        wo_form.qty_producing = 2
+        wo = wo_form.save()
+        wo.record_production()
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_remaining, 1, "it left 1 quantity to produce")
+        self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
+        with self.assertRaises(UserError):
+            wo_form.final_lot_id = lot2
+            wo_form.qty_producing = 1
+            wo = wo_form.save()
+            wo.record_production()
+
+    def test_workorder_5(self):
+        """Test production of 2 lots in one workorder then check than the workorder
+        line are well split in the second"""
+
+        self.bom_submarine.bom_line_ids.write({'operation_id': False})
+        # Use 'Secondary assembly routing (3 operations)'
+        self.bom_submarine.routing_id = self.env.ref('mrp.mrp_routing_1')
+        self.submarine_pod.tracking = 'lot'
+        lot1 = self.env['stock.production.lot'].create({
+            'product_id': self.submarine_pod.id,
+            'name': 'lot1'})
+        lot2 = self.env['stock.production.lot'].create({
+            'product_id': self.submarine_pod.id,
+            'name': 'lot2'})
+
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        mrp_order_form.product_qty = 2
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.button_plan()
+        self.assertEqual(len(production.workorder_ids), 3, "wrong number of workorders")
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.qty_producing = 1
+        wo_form.final_lot_id = lot1
+        wo = wo_form.save()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.final_lot_id = lot2
+        wo = wo_form.save()
+        wo.record_production()
+
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_remaining, 2, "it left 1 quantity to produce")
+        self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
+        self.assertEqual(wo_form.final_lot_id, lot1, "Final lot should be the one entered in previous wo")
+        wo = wo_form.save()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_remaining, 1, "it left 1 quantity to produce")
+        self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
+        self.assertEqual(wo_form.final_lot_id, lot2, "Final lot should be the one entered in previous wo")
+        wo = wo_form.save()
+        wo.record_production()
+
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_remaining, 2, "it left 1 quantity to produce")
+        self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
+        self.assertEqual(wo_form.final_lot_id, lot1, "Final lot should be the one entered in previous wo")
+        self.assertEqual(wo_form.component_id, self.elon_musk, "Should be a register component check")
+        self.assertEqual(wo_form.qty_done, 1, "Component is serial tracked")
+        self.assertEqual(wo_form.component_remaining_qty, 1, "Qty_producing is 1")
+        wo_form.lot_id = self.elon1
+        wo = wo_form.save()
+        wo._next()
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.component_id, self.metal_cylinder, "Should be a register component check")
+        self.assertEqual(wo_form.qty_done, 4, "2 components to produce")
+        self.assertEqual(wo_form.component_remaining_qty, 2, "Qty_producing is 1")
+        wo_form.lot_id = self.mc1
+        wo_form.qty_done = 2
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.qty_remaining, 1, "it left 1 quantity to produce")
+        self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
+        self.assertEqual(wo_form.final_lot_id, lot2, "Final lot should be the one entered in previous wo")
+        self.assertEqual(wo_form.component_id, self.elon_musk, "Should be a register component check")
+        self.assertEqual(wo_form.qty_done, 1, "Component is serial tracked")
+        self.assertEqual(wo_form.component_remaining_qty, 1, "Qty_producing is 1")
+        wo_form.lot_id = self.elon2
+        wo = wo_form.save()
+        wo._next()
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        self.assertEqual(wo_form.component_id, self.metal_cylinder, "Should be a register component check")
+        self.assertEqual(wo_form.qty_done, 2, "Component is serial tracked")
+        self.assertEqual(wo_form.component_remaining_qty, 2, "Qty_producing is 1")
+        wo_form.lot_id = self.mc1
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()

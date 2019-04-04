@@ -265,7 +265,9 @@ class MrpProductionWorkcenterLine(models.Model):
         - third: Pass to the next check or return a failure message.
         """
         self.ensure_one()
-        if self.qty_producing <= 0 or self.qty_producing > self.qty_remaining:
+        rounding = self.component_uom_id.rounding
+        if float_compare(self.qty_producing, 0, precision_rounding=rounding) <= 0\
+                or float_compare(self.qty_producing, self.qty_remaining, precision_rounding=rounding) > 0:
             raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))
         elif self.test_type == 'register_consumed_materials':
             # Form validation
@@ -296,7 +298,9 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def action_skip(self):
         self.ensure_one()
-        if self.qty_producing <= 0 or self.qty_producing > self.qty_remaining:
+        rounding = self.product_uom_id.rounding
+        if float_compare(self.qty_producing, 0, precision_rounding=rounding) <= 0 or\
+                float_compare(self.qty_producing, self.qty_remaining, precision_rounding=rounding) > 0:
             raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))
         if self.skip_completed_checks:
             self._change_quality_check(increment=1, children=1, checks=self.skipped_check_ids)
@@ -534,7 +538,8 @@ class MrpProductionWorkcenterLine(models.Model):
                     'final_lot_id': self.final_lot_id.id
                 })
         res = super(MrpProductionWorkcenterLine, self).record_production()
-        if self.qty_producing > 0:
+        rounding = self.product_uom_id.rounding
+        if float_compare(self.qty_producing, 0, precision_rounding=rounding) > 0:
             self._create_checks()
         return res
 

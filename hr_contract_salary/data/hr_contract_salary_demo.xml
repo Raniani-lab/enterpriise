@@ -65,10 +65,9 @@
     </record>
 
     <record id="ir_attachment_cdi_developer_contract" model="ir.attachment">
-        <field name="name">CDI - Experienced Developer</field>
         <field name="type">binary</field>
         <field name="datas" type="base64" file="hr_contract_salary/static/src/demo/employee_contract.pdf"/>
-        <field name="datas_fname">employee_contract.pdf</field>
+        <field name="name">employee_contract.pdf</field>
     </record>
 
     <record id="sign_template_cdi_developer" model="sign.template">

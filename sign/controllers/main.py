@@ -102,8 +102,8 @@ class Sign(http.Controller):
             return http.redirect_with_hash("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})
 
         filename = sign_request.reference
-        if filename != sign_request.template_id.attachment_id.datas_fname:
-            filename += sign_request.template_id.attachment_id.datas_fname[sign_request.template_id.attachment_id.datas_fname.rfind('.'):]
+        if filename != sign_request.template_id.attachment_id.name:
+            filename += sign_request.template_id.attachment_id.name[sign_request.template_id.attachment_id.name.rfind('.'):]
 
         return http.request.make_response(
             base64.b64decode(document),

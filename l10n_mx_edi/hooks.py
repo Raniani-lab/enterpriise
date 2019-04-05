@@ -83,7 +83,6 @@ def _load_xsd_files(cr, registry, url):
         return join(filestore, attachment.store_fname)
     attachment = env['ir.attachment'].create({
         'name': xsd_fname,
-        'datas_fname': fname,
         'datas': base64.encodestring(xsd_string),
     })
     # Forcing the triggering of the store_fname

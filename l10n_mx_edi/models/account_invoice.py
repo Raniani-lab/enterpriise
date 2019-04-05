@@ -970,7 +970,6 @@ class AccountInvoice(models.Model):
                 'res_id': inv.id,
                 'res_model': inv._name,
                 'datas': base64.encodestring(cfdi),
-                'datas_fname': filename,
                 'description': 'Mexican invoice',
                 })
             inv.message_post(

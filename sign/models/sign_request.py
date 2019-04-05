@@ -296,8 +296,7 @@ class SignRequest(models.Model):
             }, engine='ir.qweb', minimal_qcontext=True)
 
             attachment = self.env['ir.attachment'].create({
-                'name': self.reference,
-                'datas_fname': "%s.pdf" % self.reference,
+                'name': "%s.pdf" % self.reference,
                 'datas': self.completed_document,
                 'type': 'binary',
                 'res_model': self._name,

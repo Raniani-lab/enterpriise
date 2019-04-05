@@ -28,14 +28,12 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
         })
         self.attachment_txt_two = self.env['ir.attachment'].create({
             'datas': TEXT,
-            'name': 'Test two txt',
-            'datas_fname': 'fileTextTwo.txt',
+            'name': 'fileTextTwo.txt',
             'mimetype': 'text/plain',
         })
         self.attachment_gif_two = self.env['ir.attachment'].create({
             'datas': GIF,
-            'name': 'Test gif two',
-            'datas_fname': 'fileTwoGif.gif',
+            'name': 'fileTwoGif.gif',
             'mimetype': 'image/gif',
         })
 
@@ -64,8 +62,7 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
 
         document_gif = self.env['documents.document'].create({
             'datas': GIF,
-            'name': 'Test doc gif',
-            'datas_fname': 'file.gif',
+            'name': 'file.gif',
             'mimetype': 'image/gif',
             'folder_id': self.folder_test.id,
         })

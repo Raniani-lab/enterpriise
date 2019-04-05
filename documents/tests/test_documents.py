@@ -53,15 +53,13 @@ class TestCaseDocuments(TransactionCase):
         })
         self.document_gif = self.env['documents.document'].create({
             'datas': GIF,
-            'name': 'Test mimetype gif',
-            'datas_fname': 'file.gif',
+            'name': 'file.gif',
             'mimetype': 'image/gif',
             'folder_id': self.folder_b.id,
         })
         self.document_txt = self.env['documents.document'].create({
             'datas': TEXT,
-            'name': 'Test mimetype txt',
-            'datas_fname': 'file.txt',
+            'name': 'file.txt',
             'mimetype': 'text/plain',
             'folder_id': self.folder_b.id,
         })
@@ -99,9 +97,8 @@ class TestCaseDocuments(TransactionCase):
         Tests a documents.document create method when created from an already existing ir.attachment.
         """
         attachment = self.env['ir.attachment'].create({
-            'name': 'attachment name',
             'datas': GIF,
-            'datas_fname': 'attachmentGif.gif',
+            'name': 'attachmentGif.gif',
             'res_model': 'documents.document',
             'res_id': 0,
         })
@@ -215,8 +212,7 @@ class TestCaseDocuments(TransactionCase):
                         "failed at documents_workflow_rule unavailable rule")
         self.document_txt_criteria_c = self.env['documents.document'].create({
             'datas': TEXT,
-            'name': 'Test criteria c',
-            'datas_fname': 'file.txt',
+            'name': 'file.txt',
             'mimetype': 'text/plain',
             'folder_id': self.folder_a.id,
             'tag_ids': [(6, 0, [self.tag_b.id])]

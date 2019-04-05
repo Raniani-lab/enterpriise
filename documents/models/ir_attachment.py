@@ -21,8 +21,7 @@ class IrAttachment(models.Model):
             stream = io.BytesIO()
             output.write(stream)
             return self.with_context(no_document=True).copy({
-                'name': self.name+'-'+name_ext,
-                'datas_fname': os.path.splitext(self.datas_fname or self.name)[0]+'-'+name_ext+".pdf",
+                'name': os.path.splitext(self.name)[0]+'-'+name_ext+".pdf",
                 'datas': base64.b64encode(stream.getvalue()),
             })
         except Exception:

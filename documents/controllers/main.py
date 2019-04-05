@@ -104,7 +104,7 @@ class ShareRoute(http.Controller):
                 for document in documents:
                     if document.type != 'binary':
                         continue
-                    filename = document.datas_fname
+                    filename = document.name
                     doc_zip.writestr(filename, base64.b64decode(document['datas']),
                                      compress_type=zipfile.ZIP_DEFLATED)
         except zipfile.BadZipfile:
@@ -295,7 +295,6 @@ class ShareRoute(http.Controller):
                 write_vals = {
                     'mimetype': mimetype,
                     'name': file.filename,
-                    'datas_fname': file.filename,
                     'type': 'binary',
                     'datas': base64.b64encode(data),
                 }
@@ -312,7 +311,6 @@ class ShareRoute(http.Controller):
                     document_dict = {
                         'mimetype': mimetype,
                         'name': file.filename,
-                        'datas_fname': file.filename,
                         'datas': base64.b64encode(data),
                         'tag_ids': [(6, 0, share.tag_ids.ids)],
                         'partner_id': share.partner_id.id,

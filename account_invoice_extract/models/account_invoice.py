@@ -129,7 +129,7 @@ class AccountInvoice(models.Model):
                             'version': CLIENT_OCR_VERSION,
                             'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                             'documents': [x.datas.decode('utf-8') for x in attachments],
-                            'file_names': [x.datas_fname for x in attachments],
+                            'file_names': [x.name for x in attachments],
                             'user_infos': user_infos,
 
                         }
@@ -168,7 +168,7 @@ class AccountInvoice(models.Model):
                 'version': CLIENT_OCR_VERSION,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                 'documents': [x.datas.decode('utf-8') for x in attachments],
-                'file_names': [x.datas_fname for x in attachments],
+                'file_names': [x.name for x in attachments],
                 'user_infos': user_infos,
             }
             try:

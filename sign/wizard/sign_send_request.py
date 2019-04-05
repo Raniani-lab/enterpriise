@@ -35,11 +35,11 @@ class SignSendRequest(models.TransientModel):
     message = fields.Html("Message")
     filename = fields.Char("Filename", required=True)
 
-    @api.depends('template_id.attachment_id.datas_fname')
+    @api.depends('template_id.attachment_id.name')
     def _compute_extension(self):
         for wizard in self.filtered(lambda w: w.template_id):
-            if wizard.template_id.attachment_id.datas_fname:
-                wizard.extension = '.' + wizard.template_id.attachment_id.datas_fname.split('.')[-1]
+            if wizard.template_id.attachment_id.name:
+                wizard.extension = '.' + wizard.template_id.attachment_id.name.split('.')[-1]
             else:
                 wizard.extension = ''
 

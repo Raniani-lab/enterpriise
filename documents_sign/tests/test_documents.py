@@ -23,8 +23,7 @@ class TestCaseDocumentsBridgeSign(TransactionCase):
         })
         self.document_txt = self.env['documents.document'].create({
             'datas': TEXT,
-            'name': 'Test mimetype txt',
-            'datas_fname': 'file.txt',
+            'name': 'file.txt',
             'mimetype': 'text/plain',
             'folder_id': self.folder_a_a.id,
         })

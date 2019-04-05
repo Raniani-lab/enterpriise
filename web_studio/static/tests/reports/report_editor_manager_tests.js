@@ -98,7 +98,6 @@ QUnit.module('ReportEditorManager', {
             'ir.attachment': {
                 fields: {
                     name: {string: "Name", type: "char"},
-                    datas_fname: {string: "fname", type: "char"},
                     mimetype: {string: "mimetype", type: "char"},
                     checksum: {string: "checksum", type: "char"},
                     url: {string: "url", type: "char"},
@@ -111,7 +110,6 @@ QUnit.module('ReportEditorManager', {
                 records: [{
                     access_token: "token",
                     checksum: "checksum",
-                    datas_fname: "joes_garage.png",
                     id: 3480,
                     mimetype: "image/png",
                     name: "joes_garage.jpeg",

@@ -19,7 +19,6 @@ class Document(models.Model):
     attachment_name = fields.Char('Attachment Name', related='attachment_id.name', readonly=False)
     attachment_type = fields.Selection(string='Attachment Type', related='attachment_id.type', readonly=False)
     datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False)
-    datas_fname = fields.Char('File Name', related='attachment_id.datas_fname', readonly=False)
     file_size = fields.Integer(related='attachment_id.file_size', store=True)
     checksum = fields.Char(related='attachment_id.checksum')
     mimetype = fields.Char(related='attachment_id.mimetype', default='application/octet-stream')
@@ -65,19 +64,16 @@ class Document(models.Model):
         ('attachment_unique', 'unique (attachment_id)', "This attachment is already a document"),
     ]
 
-    @api.depends('attachment_id.name', 'attachment_id.datas_fname')
+    @api.depends('attachment_id.name')
     def _compute_name(self):
         for record in self:
             if record.attachment_name:
                 record.name = record.attachment_name
-            elif record.datas_fname:
-                record.name = record.datas_fname
 
     @api.multi
     def _inverse_name(self):
         for record in self:
             if record.attachment_id:
-                record.datas_fname = record.name
                 record.attachment_name = record.name
 
     @api.depends('attachment_id', 'attachment_id.res_model', 'attachment_id.res_id')
@@ -340,7 +336,7 @@ class Document(models.Model):
                 res_model = vals.get('res_model', record.res_model or 'documents.document')
                 res_id = vals.get('res_id') if vals.get('res_model') else record.res_id if record.res_model else record.id
                 attachment = self.env['ir.attachment'].create({
-                    'name': vals.get('datas_fname', record.name),
+                    'name': vals.get('name', record.name),
                     'res_model': res_model,
                     'res_id': res_id
                 })

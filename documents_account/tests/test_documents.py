@@ -21,15 +21,13 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         })
         self.document_txt = self.env['documents.document'].create({
             'datas': TEXT,
-            'name': 'Test mimetype txt',
-            'datas_fname': 'file.txt',
+            'name': 'file.txt',
             'mimetype': 'text/plain',
             'folder_id': self.folder_a_a.id,
         })
         self.document_gif = self.env['documents.document'].create({
             'datas': GIF,
-            'name': 'Test mimetype gif',
-            'datas_fname': 'file.gif',
+            'name': 'file.gif',
             'mimetype': 'image/gif',
             'folder_id': self.folder_a.id,
         })
@@ -97,8 +95,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
 
         attachment_txt_test = self.env['ir.attachment'].create({
             'datas': TEXT,
-            'name': 'Test test txt',
-            'datas_fname': 'fileText_test.txt',
+            'name': 'fileText_test.txt',
             'mimetype': 'text/plain',
             'res_model': 'account.invoice',
             'res_id': invoice_test.id
@@ -106,8 +103,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
 
         attachment_txt_alternative_test = self.env['ir.attachment'].create({
             'datas': TEXT,
-            'name': 'Test alternative txt',
-            'datas_fname': 'fileText_test_alternative.txt',
+            'name': 'fileText_test_alternative.txt',
             'mimetype': 'text/plain',
             'res_model': 'account.invoice',
             'res_id': invoice_test.id

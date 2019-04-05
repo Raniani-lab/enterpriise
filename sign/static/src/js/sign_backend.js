@@ -700,7 +700,7 @@ odoo.define('sign.template', function(require) {
                     var defIrAttachments = self._rpc({
                             model: 'ir.attachment',
                             method: 'read',
-                            args: [[template.attachment_id[0]], ['mimetype', 'name', 'datas_fname']],
+                            args: [[template.attachment_id[0]], ['mimetype', 'name']],
                             kwargs: {context: session.user_context},
                         })
                         .then(function(attachment) {

@@ -185,8 +185,7 @@
 
     <!-- Two documents as data -->
     <record id="attachment_sign_1" model="ir.attachment">
-        <field name="name">Employment Contract</field>
-        <field name="datas_fname">Employment Contract.pdf</field>
+        <field name="name">Employment Contract.pdf</field>
         <field name="datas" type="base64" file="sign/static/demo/employment.pdf"/>
         <field name="mimetype">application/pdf;base64</field>
     </record>
@@ -198,8 +197,7 @@
     </record>
 
     <record id="attachment_sign_3" model="ir.attachment">
-        <field name="name">Odoo CLA</field>
-        <field name="datas_fname">Odoo_Individual_Contributor_License_Agreement.pdf</field>
+        <field name="name">Odoo_Individual_Contributor_License_Agreement.pdf</field>
         <field name="datas" type="base64" file="sign/static/demo/cla.pdf"/>
         <field name="mimetype">application/pdf;base64</field>
     </record>

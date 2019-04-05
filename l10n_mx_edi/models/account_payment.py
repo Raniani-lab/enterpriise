@@ -339,7 +339,6 @@ class AccountPayment(models.Model):
                 'res_id': rec.id,
                 'res_model': rec._name,
                 'datas': base64.encodestring(cfdi),
-                'datas_fname': filename,
                 'description': _('Mexican CFDI to payment'),
                 })
             rec.message_post(

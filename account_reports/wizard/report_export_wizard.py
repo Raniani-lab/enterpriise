@@ -74,8 +74,7 @@ class ReportExportWizard(models.TransientModel):
     def get_attachment_vals(self, file_name, file_content, mimetype, log_options_dict):
         self.ensure_one()
         return {
-            'name': self.doc_name,
-            'datas_fname': file_name,
+            'name': file_name,
             'company_id': self.env.company.id,
             'datas': file_content,
             'mimetype': mimetype,

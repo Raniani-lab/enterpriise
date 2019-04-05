@@ -20,8 +20,7 @@ class TestCaseDocumentsBridgeProject(TransactionCase):
         })
         self.attachment_txt = self.env['documents.document'].create({
             'datas': TEXT,
-            'name': 'Test mimetype txt',
-            'datas_fname': 'file.txt',
+            'name': 'file.txt',
             'mimetype': 'text/plain',
             'folder_id': self.folder_a_a.id,
         })
@@ -66,14 +65,12 @@ class TestCaseDocumentsBridgeProject(TransactionCase):
         })
         attachment_txt_test = self.env['ir.attachment'].create({
             'datas': TEXT,
-            'name': 'Test test txt',
-            'datas_fname': 'fileText_test.txt',
+            'name': 'fileText_test.txt',
             'mimetype': 'text/plain',
         })
         attachment_gif_test = self.env['ir.attachment'].create({
             'datas': GIF,
-            'name': 'Test test txt',
-            'datas_fname': 'fileText_test.txt',
+            'name': 'fileText_test.txt',
             'mimetype': 'text/plain',
         })
 

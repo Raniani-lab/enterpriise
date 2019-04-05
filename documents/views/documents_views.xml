@@ -41,7 +41,7 @@
                 <filter string="PDF" name="pdf" domain="[('mimetype', 'ilike', 'pdf')]"/>
                 <filter string="Image" name="img" domain="[('mimetype', 'ilike', 'image')]"/>
                 <filter string="Video" name="video" domain="[('mimetype', 'ilike', 'video')]"/>
-                <filter string="Doc" name="doc" domain="[('datas_fname', 'ilike', '.doc')]"/>
+                <filter string="Doc" name="doc" domain="[('name', 'ilike', '.doc')]"/>
                 <separator/>
                 <filter string="Archived" name="Inactive" domain="[('active', '=', False)]"/>
                 <filter string="Model" name="by_model" domain="[]" context="{'group_by': 'res_model'}"/>
@@ -79,7 +79,6 @@
                 <field name="owner_id"/>
                 <field name="lock_uid"/>
                 <field name="type"/>
-                <field name="datas_fname"/>
                 <field name="create_uid"/>
                 <field name="url"/>
                 <field name="type"/>
@@ -175,8 +174,7 @@
                             <field name="name" required="True"/>
                             <field name="folder_id"/>
                             <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}"/>
-                            <field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right"/>
+                            <field name="datas" filename="name" attrs="{'invisible':[('type','=','url')]}"/>
                             <field name="owner_id"/>
                             <field name="partner_id"/>
                             <field name="company_id" groups="base.group_multi_company"/>

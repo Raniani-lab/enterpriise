@@ -22,7 +22,7 @@ class WorkflowActionRuleSign(models.Model):
             template_ids = []
             for document in documents:
                 create_values = {
-                    'name': document.datas_fname.rsplit('.', 1)[0],
+                    'name': document.name.rsplit('.', 1)[0],
                     'attachment_id': document.attachment_id.id,
                 }
                 if self.folder_id:

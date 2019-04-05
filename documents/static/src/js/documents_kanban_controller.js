@@ -640,7 +640,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 self._rpc({
                     model: 'documents.document',
                     method: 'write',
-                    args: [[ev.data.id], {datas: data, mimetype: mimetype, datas_fname: f.name, name: f.name}],
+                    args: [[ev.data.id], {datas: data, mimetype: mimetype, name: f.name}],
                 }).then(function () {
                     return self.reload();
                 }).then(always).guardedCatch(always);

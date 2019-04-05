@@ -35,11 +35,11 @@ class SignTemplate(models.Model):
     redirect_url = fields.Char(string="Optional Link",
         help="Optional link for redirection after signature instead of https://www.odoo.com/page/sign")
 
-    @api.depends('attachment_id.datas_fname')
+    @api.depends('attachment_id.name')
     def _compute_extension(self):
         for template in self:
-            if template.attachment_id.datas_fname:
-                template.extension = '.' + template.attachment_id.datas_fname.split('.')[-1]
+            if template.attachment_id.name:
+                template.extension = '.' + template.attachment_id.name.split('.')[-1]
             else:
                 template.extension = ''
 
@@ -82,7 +82,7 @@ class SignTemplate(models.Model):
             raise UserError(_("This file cannot be read. Is it a valid PDF?"))
         if file_pdf.isEncrypted:
             raise UserError(_("Your PDF file shouldn't be encrypted with a password in order to be used as a signature template"))
-        attachment = self.env['ir.attachment'].create({'name': name[:name.rfind('.')], 'datas_fname': name, 'datas': datas, 'mimetype': mimetype})
+        attachment = self.env['ir.attachment'].create({'name': name, 'datas': datas, 'mimetype': mimetype})
         template = self.create({'attachment_id': attachment.id, 'favorited_ids': [(4, self.env.user.id)], 'active': active})
         return {'template': template.id, 'attachment': attachment.id}
 

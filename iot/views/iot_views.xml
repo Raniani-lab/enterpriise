@@ -236,6 +236,7 @@
         <xpath expr="script[last()]" position="after">
             <link rel="stylesheet" href="/iot/static/src/css/iot.css"/>
             <script type="text/javascript" src="/iot/static/src/js/iot_tour.js"></script>
+            <script type="text/javascript" src="/iot/static/src/js/iot_scan.js"></script>
             <script type="text/javascript" src="/iot/static/src/js/iot.js"></script>
             <script type="text/javascript" src="/iot/static/src/js/iot_wizard.js"></script>
         </xpath>

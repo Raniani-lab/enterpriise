@@ -220,6 +220,15 @@ var ClientAction = AbstractAction.extend({
     },
 
     /**
+     * Return an unique location, even if the model have a x2m field.
+     *
+     * @returns {Object}
+     */
+    _getLocationId: function () {
+        return this.currentState.location_id || this.currentState.location_ids[0];
+    },
+
+    /**
      * Return an array of objects representing the lines displayed in `this.linesWidget`.
      * To implement by specialized client action.
      * actions.
@@ -356,13 +365,13 @@ var ClientAction = AbstractAction.extend({
         if (this._getLines(this.currentState).length) {
             // from https://stackoverflow.com/a/25551041
             var groups = _.groupBy(this._getLines(this.currentState), function (line) {
-                return _.map(self._getPageFields(), function (field) {
+                return _.map(self._getPageFields({line: true}), function (field) {
                     return utils.into(line, field[1]);
                 }).join('#');
             });
             pages = _.map(groups, function (group) {
                 var page = {};
-                _.map(self._getPageFields(), function (field) {
+                _.map(self._getPageFields({line: true}), function (field) {
                     page[field[0]] = utils.into(group[0], field[1]);
                 });
                 page.lines = group;
@@ -788,7 +797,7 @@ var ClientAction = AbstractAction.extend({
         */
         var sourceLocation = this.locationsByBarcode[barcode];
         if (sourceLocation  && ! (this.mode === 'receipt' || this.mode === 'no_multi_locations')) {
-            if (! isChildOf(this.currentState.location_id, sourceLocation)) {
+            if (! isChildOf(this._getLocationId(), sourceLocation)) {
                 errorMessage = _t('This location is not a child of the main location.');
                 return Promise.reject(errorMessage);
             } else {

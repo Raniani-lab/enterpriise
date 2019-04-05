@@ -23,7 +23,6 @@ class TestMpsReport(TestMpsCommon):
         # ------------------------------------------------------------------
         inventory = self.env['stock.inventory'].create({
             'name': 'Inventory For Mps',
-            'filter': 'partial',
             'line_ids': [(0, 0, {
                 'product_id': self.computerdesk.id,
                 'product_uom_id': self.computerdesk.uom_id.id,

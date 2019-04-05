@@ -39,11 +39,10 @@ class StockInventory(models.Model):
 
     def get_barcode_view_state(self):
         """ Return the initial state of the barcode view as a dict.
-        blablabla.
         """
         inventories = self.read([
             'line_ids',
-            'location_id',
+            'location_ids',
             'name',
             'state',
             'company_id',
@@ -70,11 +69,11 @@ class StockInventory(models.Model):
                     'display_name',
                     'parent_path'
                 ])[0]
-            inventory['location_id'] = self.env['stock.location'].browse(inventory.pop('location_id')[0]).read([
+            inventory['location_ids'] = self.env['stock.location'].browse(inventory.pop('location_ids')).read([
                 'id',
                 'display_name',
                 'parent_path',
-            ])[0]
+            ])
             inventory['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
             inventory['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
             inventory['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
@@ -88,12 +87,21 @@ class StockInventory(models.Model):
     @api.model
     def open_new_inventory(self):
         use_form_handler = self.env['ir.config_parameter'].sudo().get_param('stock_barcode.use_form_handler')
+
+        company_user = self.env.user.company_id
+        warehouse = self.env['stock.warehouse'].search([('company_id', '=', company_user.id)], limit=1)
+        if warehouse:
+            default_location_id = warehouse.lot_stock_id
+        else:
+            raise UserError(_('You must define a warehouse for the company: %s.') % (company_user.name,))
+
         if use_form_handler:
             action = self.env.ref('stock_barcode.stock_inventory_action_new_inventory').read()[0]
             if self.env.ref('stock.warehouse0', raise_if_not_found=False):
                 new_inv = self.env['stock.inventory'].create({
-                    'filter': 'partial',
+                    'start_empty': True,
                     'name': fields.Date.context_today(self),
+                    'location_ids': [(4, default_location_id.id, None)],
                 })
                 new_inv.action_start()
                 action['res_id'] = new_inv.id
@@ -101,8 +109,9 @@ class StockInventory(models.Model):
             action = self.env.ref('stock_barcode.stock_barcode_inventory_client_action').read()[0]
             if self.env.ref('stock.warehouse0', raise_if_not_found=False):
                 new_inv = self.env['stock.inventory'].create({
-                    'filter': 'partial',
+                    'start_empty': True,
                     'name': fields.Date.context_today(self),
+                    'location_ids': [(4, default_location_id.id, None)],
                 })
                 new_inv.action_start()
                 action['res_id'] = new_inv.id

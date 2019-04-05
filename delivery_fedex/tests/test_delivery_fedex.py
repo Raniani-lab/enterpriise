@@ -219,9 +219,8 @@ class TestDeliveryFedex(TransactionCase):
 
         inventory = self.env['stock.inventory'].create({
             'name': '[A1232] iPad Mini',
-            'filter': 'product',
-            'location_id': self.stock_location.id,
-            'product_id': self.iPadMini.id,
+            'location_ids': [(4, self.stock_location.id)],
+            'product_ids': [(4, self.iPadMini.id)],
         })
 
         StockPicking = self.env['stock.picking']

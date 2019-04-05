@@ -9,24 +9,26 @@
             <form position="inside">
                 <field name="_barcode_scanned" widget="inventory_barcode_handler"/>
             </form>
-            <xpath expr="//field[@name='line_ids']/tree" position="inside">
-                <field name="product_barcode" invisible="1"/>
-            </xpath>
-            <xpath expr="//field[@name='line_ids']/kanban" position="inside">
-                <field name="product_barcode" invisible="1"/>
-            </xpath>
-            <xpath expr="//field[@name='line_ids']//field[@name='product_qty']" position="attributes">
-                <attribute name="options">{'barcode_events': True}</attribute>
-                <attribute name="widget">field_float_scannable</attribute>
-            </xpath>
             <xpath expr="//button[@name='action_start']" position="attributes">
                 <attribute name="barcode_trigger">validate</attribute>
             </xpath>
             <xpath expr="//button[@name='action_validate']" position="attributes"> 
                 <attribute name="barcode_trigger">validate</attribute>
             </xpath>
-            <xpath expr="//field[@name='package_id']" position="after">
-                <field name="scan_location_id" options="{'no_create': True}" readonly="1" attrs='{"invisible": [("state", "=", "draft")]}'/>
+        </field>
+    </record>
+
+    <record id="stock_inventory_line_view_tree2_inherit_stock_barcode" model="ir.ui.view">
+        <field name="name">stock.inventory.line.tree2.inherit</field>
+        <field name="model">stock.inventory.line</field>
+        <field name="inherit_id" ref="stock.stock_inventory_line_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_tracking']" position="before">
+                <field name="product_barcode" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='product_qty']" position="attributes">
+                <attribute name="options">{'barcode_events': True}</attribute>
+                <attribute name="widget">field_float_scannable</attribute>
             </xpath>
         </field>
     </record>
@@ -55,13 +57,11 @@
         <field name="arch" type="xml">
             <form string="Inventory Details">
                 <group>
-                    <field name="category_id" attrs="{'invisible': [('category_id', '=', False)]}"/>
-                    <field name="product_id" attrs="{'invisible': [('product_id', '=', False)]}"/>
-                    <field name="location_id" options="{'no_create': True}" attrs="{'invisible': [('location_id', '=', False)]}" />
-                    <field name="lot_id" attrs="{'invisible': [('lot_id', '=', False)]}" />
+                    <field name="product_ids" attrs="{'invisible': [('product_ids', '=', False)]}"/>
+                    <field name="location_ids" options="{'no_create': True}"
+                           attrs="{'invisible': [('location_ids', '=', False)]}" />
                     <field name="date" attrs="{'invisible': [('date', '=', False)]}" />
                     <field name="state" attrs="{'invisible': [('state', '=', False)]}" />
-                    <field name="partner_id" attrs="{'invisible': [('partner_id', '=', False)]}" />
                     <field name="move_ids" context="{'default_inventory_id': id}" string="Inventory Adjustments">
                         <tree>
                             <field name="product_id"/>

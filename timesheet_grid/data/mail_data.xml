@@ -119,6 +119,7 @@
 </td></tr>
 </table>
             </field>
+            <field name="lang">${object.user_id.lang}</field>
             <field name="user_signature" eval="False"/>
         </record>
 
@@ -210,6 +211,7 @@
 </td></tr>
 </table>
             </field>
+            <field name="lang">${object.user_id.lang}</field>
             <field name="user_signature" eval="False"/>
         </record>
 

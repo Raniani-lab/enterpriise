@@ -159,4 +159,4 @@ class Company(models.Model):
             template_ctx.update(additionnal_values)
 
         for employee in employees.filtered('user_id'):
-            template.with_context(lang=employee.user_id.lang, **template_ctx).send_mail(employee.id)
+            template.with_context(**template_ctx).send_mail(employee.id)

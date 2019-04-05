@@ -52,16 +52,6 @@ QUnit.module('ViewEditorManager', {
                         string: "Stop Date",
                         type: 'datetime',
                     },
-                    date: {
-                        string:"Date",
-                        type: "date",
-                        store: true,
-                    },
-                    datetime: {
-                        string:"DateTime",
-                        type: "datetime",
-                        store: true,
-                    },
                 },
             },
             product: {
@@ -1945,60 +1935,6 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.module('Others');
-
-    QUnit.test('Gantt attributes change RNG validation', function(assert) {
-        assert.expect(6);
-
-        var editViewCount = 0;
-        var fieldsView;
-        var vem = studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: 'coucou',
-            arch: '<gantt date_start="date" date_stop="datetime"></gantt>',
-            mockRPC: function (route, args) {
-                var newArch;
-                if (route === '/web_studio/edit_view') {
-                    if (editViewCount === 0) {
-                        assert.deepEqual(args.operations[0].new_attrs, {date_delay: 'id', date_stop: ''},
-                            "The right view attributes should have been sent to the server");
-
-                        newArch = '<gantt date_start="date" date_stop="" date_delay="id"></gantt>';
-                    } else if (editViewCount === 1) {
-                        assert.deepEqual(args.operations[1].new_attrs, {date_delay: '', date_stop: 'date'},
-                            "The right view attributes should have been sent to the server");
-
-                        newArch = '<gantt date_start="date" date_stop="date" date_delay=""></gantt>';
-                    }
-                    editViewCount++;
-                    fieldsView.arch = newArch;
-                    return $.when({
-                        fields: fieldsView.fields,
-                        fields_views: {
-                            gantt: fieldsView,
-                        }
-                    });
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-        fieldsView = $.extend(true, {}, vem.fields_view);
-
-        assert.strictEqual(vem.$('select[name="date_stop"]').val(), 'datetime',
-            'Initial selection is date_stop matches field datetime');
-        assert.strictEqual(vem.$('select[name="date_delay"]').val(), '',
-            'Initial selection is date_delay empty');
-
-        vem.$('select[name="date_delay"]').val('id').trigger('change');
-
-        assert.strictEqual(vem.$('select[name="date_stop"]').val(), '',
-            'Modified selection is date_stop empty');
-        assert.strictEqual(vem.$('select[name="date_delay"]').val(), 'id',
-            'Modified selection is date_delay matches id');
-
-        vem.$('select[name="date_stop"]').val('date').trigger('change');
-
-        vem.destroy();
-    });
 
     QUnit.test('error during tree rendering: undo', function(assert) {
         assert.expect(4);

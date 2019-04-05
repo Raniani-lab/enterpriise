@@ -657,19 +657,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @param {Object} new_attrs
      */
     _editViewAttributes: function (type, new_attrs) {
-        if (this.view_type === "gantt") {
-            // Shouldn't be forward ported to >= saas-12.2
-            // These two attributes are mutually exclusive in RNG spec
-            var allAttrs = _.extend({}, this.view.arch.attrs, new_attrs);
-            if (allAttrs.date_delay && allAttrs.date_stop) {
-                if (new_attrs.date_delay) {
-                    new_attrs.date_stop = "";
-                }
-                if (new_attrs.date_stop) {
-                    new_attrs.date_delay = "";
-                }
-            }
-        }
         this._do({
             type: type,
             target: {

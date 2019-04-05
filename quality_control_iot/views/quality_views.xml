@@ -9,11 +9,8 @@
                 <field name="ip" invisible="1"/>
                 <field name="identifier" invisible="1"/>
             </field>
-            <field name="measure" position="replace">
-              <div class="o_row mb8" attrs="{'invisible': [('test_type', '!=', 'measure')]}">
-                <Label for="measure"/>
-                <field name="measure" widget="iot_realtime_value"/>
-              </div>
+            <field name="measure" position="attributes">
+              <attribute name="widget">iot_realtime_value</attribute>
             </field>
             <field name="picture" position="replace">
                 <div class="quality_picture">

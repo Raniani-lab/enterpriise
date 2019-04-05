@@ -366,22 +366,11 @@ tour.register('web_studio_new_report_tour', {
     url: "/web",
     test: true,
 }, [{
-    // click on the created app
-    trigger: '.o_app[data-menu-xmlid*="studio"]:first',
-}, {
-    // create a new record (mandatory to display the report)
-    trigger: '.o_control_panel .o_list_button_add',
-}, {
-    // fill required fields
-    trigger: '.o_form_view .o_required_modifier',
-    run: 'text ' + utils.randomString(6),
-}, {
-    trigger: '.o_control_panel .o_form_button_save',
-}, {
-    // wait for the record to be saved
-    extra_trigger: '.o_form_view.o_form_readonly',
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
+}, {
+    // click on the created app
+    trigger: '.o_app[data-menu-xmlid*="studio"]:first',
 }, {
     // edit reports
     trigger: '.o_web_studio_menu a[data-name="reports"]',

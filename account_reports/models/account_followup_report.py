@@ -260,7 +260,8 @@ class AccountFollowupReport(models.AbstractModel):
                 'mail_message_id': msg_id.id,
                 'subject': _('%s Payment Reminder') % (self.env.user.company_id.name) + ' - ' + partner.name,
                 'body_html': append_content_to_html(body_html, self.env.user.signature or '', plaintext=False),
-                'email_from': self.env.user.email or '',
+                'author_id': self.env.user.partner_id.id,
+                'email_from': self.env.user.email_formatted,
                 'email_to': email,
                 'body': msg,
             })

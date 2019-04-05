@@ -547,6 +547,7 @@ class website_hr_contract_salary(http.Controller):
                 'subject': '[%s] New salary package request' % (advantages['personal_info']['name']),
                 'body_html': body,
                 'email_from': advantages['personal_info']['email'] or '',
+                'author_id': False,
                 'email_to': contract.hr_responsible_id.email,
             })
 

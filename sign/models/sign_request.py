@@ -267,6 +267,7 @@ class SignRequest(models.Model):
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
                 {'email_from': formataddr((self.create_uid.name, self.create_uid.email)),
+                 'author_id': self.create_uid.partner_id.id,
                  'email_to': formataddr((follower.name, follower.email)),
                  'subject': subject or _('%s : Signature request') % self.reference}
             )
@@ -308,6 +309,7 @@ class SignRequest(models.Model):
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
                 {'email_from': formataddr((self.create_uid.name, self.create_uid.email)),
+                 'author_id': self.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
                  'subject': _('%s has been signed') % self.reference,
                  'attachment_ids': [(4, attachment.id)]}
@@ -329,6 +331,7 @@ class SignRequest(models.Model):
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
                 {'email_from': formataddr((self.create_uid.name, self.create_uid.email)),
+                 'author_id': self.create_uid.partner_id.id,
                  'email_to': formataddr((follower.name, follower.email)),
                  'subject': _('%s has been signed') % self.reference}
             )
@@ -561,6 +564,7 @@ class SignRequestItem(models.Model):
                 {'record_name': signer.sign_request_id.reference},
                 {'model_description': 'signature', 'company': signer.create_uid.company_id},
                 {'email_from': formataddr((signer.create_uid.name, signer.create_uid.email)),
+                 'author_id': signer.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
                  'subject': subject}
             )

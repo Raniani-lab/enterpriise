@@ -511,9 +511,9 @@ class AccountInvoice(models.Model):
                 for (taxe, taxe_type) in zip(taxes, taxes_type_ocr):
                     if (taxe, taxe_type) in taxes_found:
                         if 'invoice_line_tax_ids' not in vals:
-                            vals['invoice_line_tax_ids'] = [(4, taxes_found[taxe])]
+                            vals['invoice_line_tax_ids'] = [(4, taxes_found[(taxe, taxe_type)])]
                         else:
-                            vals['invoice_line_tax_ids'].append((4, taxes_found[taxe]))
+                            vals['invoice_line_tax_ids'].append((4, taxes_found[(taxe, taxe_type)]))
                     else:
                         taxes_record = self.env['account.tax'].search([('amount', '=', taxe), ('amount_type', '=', taxe_type), ('type_tax_use', '=', 'purchase')], limit=1)
                         if taxes_record:

@@ -290,8 +290,10 @@ return AbstractWebClient.extend({
 
                 // Save and clear the url
                 self.url = $.bbq.getState();
-                self._ignore_hashchange = true;
-                $.bbq.pushState('#home', 2); // merge_mode 2 to replace the current state
+                if (location.hash) {
+                    self._ignore_hashchange = true;
+                    $.bbq.pushState('#home', 2); // merge_mode 2 to replace the current state
+                }
                 self.menu.toggle_mode(true, self.action_manager.getCurrentAction() !== null);
             });
         } else {

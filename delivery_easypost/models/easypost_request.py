@@ -177,7 +177,7 @@ class EasypostRequest():
             for package in picking.package_ids:
                 # compute move line weight in package
                 move_lines = picking.move_line_ids.filtered(lambda ml: ml.result_package_id == package)
-                weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.qty_done, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines])
+                weight = package.shipping_weight
                 weight = carrier._easypost_convert_weight(weight)
                 # Prepare an easypost parcel with same info than package.
                 shipment.update(self._prepare_parcel(shipment_id, package.packaging_id, weight=weight, label_format=carrier.easypost_label_file_type))

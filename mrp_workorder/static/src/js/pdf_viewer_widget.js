@@ -107,6 +107,7 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
                 $form.height('100%');
             } else {
                 $form.css('height', this.formFixedHeight);
+                $form.css('width', '100%');
             }
         }
     },
@@ -165,7 +166,7 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
     _moveAndInitIFrame: function (){
         var $el = this.$el;
         var $iFrame = $el.find('iframe');
-        var $controller = $el.closest('.content.o_workorder_tablet');
+        var $container = $el.closest('.o_content');
 
         // Save the PDFViewerApp on the DOM element since this widget will be destroyed on any action
         $iFrame.on('load', function () {
@@ -174,8 +175,10 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
             }
         });
 
-        // Appended to the controller, since the controller DOM is not destroyed
-        $el.appendTo($controller);
+        // Appended to the container and adjust CSS rules
+        $el.appendTo($container);
+        $container.css('display', 'flex');
+        $container.css('flex-direction', 'column');
 
         // Add unique ID to get it back after the next destroy/start cycle
         // Wrap it in "div.workorder_pdf" to keep the CSS style

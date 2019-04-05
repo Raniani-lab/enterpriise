@@ -9,9 +9,12 @@
                 <field name="ip" invisible="1"/>
                 <field name="identifier" invisible="1"/>
             </field>
-            <xpath expr="//button[@name='do_measure']" position="before">
-                <widget name="iot_take_measure_button" options="{'ip_field': 'ip', 'identifier_field': 'identifier', 'measure_field': 'measure'}" attrs="{'invisible': ['|', ('test_type', '!=', 'measure'), ('identifier', '=', False)]}"/>
-            </xpath>
+            <field name="measure" position="replace">
+              <div class="o_row mb8" attrs="{'invisible': [('test_type', '!=', 'measure')]}">
+                <Label for="measure"/>
+                <field name="measure" widget="iot_realtime_value"/>
+              </div>
+            </field>
             <field name="picture" position="replace">
                 <div class="quality_picture">
                     <field name="picture" widget="iot_picture" options="{'ip_field': 'ip', 'identifier': 'identifier'}" attrs="{'required': [('test_type', '=', 'picture')]}"/>

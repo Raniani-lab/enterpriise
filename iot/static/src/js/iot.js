@@ -1,14 +1,17 @@
 odoo.define('iot.widgets', function (require) {
-"use strict";
+'use strict';
 
 var core = require('web.core');
 var Widget = require('web.Widget');
+var field_registry = require('web.field_registry');
 var widget_registry = require('web.widget_registry');
 var Dialog = require('web.Dialog');
+var ActionManager = require('web.ActionManager');
+var basic_fields = require('web.basic_fields');
+var BusService = require('bus.BusService');
 
 var _t = core._t;
 
-var ActionManager = require('web.ActionManager');
 ActionManager.include({
     _executeReportAction: function (action, options) {
         if (action.device_id) {
@@ -20,37 +23,41 @@ ActionManager.include({
                 method: 'iot_render',
                 args: [action.id, action.context.active_ids, {'device_id': action.device_id}]
             }).then(function (result) {
-                var data = {
-                    action: 'print',
-                    type: result[1],
-                    data: result[2]
-                };
-                return $.ajax({ //code from hw_screen pos
-                    type: 'POST',
-                    url: result[0],
-                    dataType: 'json',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Content-Type', 'application/json');
-                    },
-                    data: JSON.stringify(data),
-                    success: function (data) {
-                        self.do_notify(_t('Successfully sent to printer!'));
-                        return options.on_close();
-                    },
-                    error: function (data) {
-                        self.do_warn(_t('Connection with the IoT Box failed!'));
-                    },
-
-                });
+                self.call(
+                    'iot_longpolling',
+                    'action',
+                    result[0],
+                    result[1],
+                    {'document': result[2]},
+                    self._onActionSuccess.bind(self),
+                    self._onActionFail.bind(self)
+                );
             });
         }
         else {
             return this._super.apply(this, arguments);
         }
-    }
+    },
+
+    _onActionSuccess: function (data){
+        if (data.result) {
+            this.do_notify(_t('Successfully sent to printer!'));
+        } else {
+            this.do_warn(_t('Connection to Printer failed'), _t('Please check if the printer is still connected.'));
+        }
+    },
+
+    _onActionFail: function (data){
+        var $content = $('<p/>').text(_t('Please check if the IoT Box is still connected.'));
+        var dialog = new Dialog(this, {
+            title: _t('Connection to IoT Box failed'),
+            $content: $content,
+        });
+        dialog.open();
+    },
 });
 
-var IotDetectButton = Widget.extend({
+var IotScanButton = Widget.extend({
     tagName: 'button',
     className: 'o_iot_detect_button btn btn-primary',
     events: {
@@ -59,9 +66,9 @@ var IotDetectButton = Widget.extend({
     init: function (parent, record) {
         this._super.apply(this, arguments);
         this.token = record.data.token;
-        this.parallelRPC = 8;
         this.parseURL = new URL(window.location.href);
-        this.controlImage = 'iot.jpg';
+        this.controlImage = '/iot.jpg';
+        this.box_connect = '/hw_drivers/box/connect?token=' + btoa(this.token);
     },
 
     start: function () {
@@ -72,8 +79,8 @@ var IotDetectButton = Widget.extend({
     _getUserIP: function (onNewIP) {
         //  onNewIp - your listener function for new IPs
         //compatibility for firefox and chrome
-        var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
-        var pc = new myPeerConnection({
+        var MyPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+        var pc = new MyPeerConnection({
             iceServers: []
         });
         var noop = function () {};
@@ -90,7 +97,7 @@ var IotDetectButton = Widget.extend({
         }
 
         //create a bogus data channel
-        pc.createDataChannel("");
+        pc.createDataChannel('');
 
         // create offer and set local description
         pc.createOffer().then(function (sdp) {
@@ -109,11 +116,10 @@ var IotDetectButton = Widget.extend({
         };
     },
 
-    _createThread: function (urls, range) {
+    _scanRange: function (urls, range) { 
         var self = this;
         var img = new Image();
         var url = urls.shift();
-
         if (url){
             $.ajax({
                 url: url + '/hw_proxy/hello',
@@ -122,23 +128,22 @@ var IotDetectButton = Widget.extend({
             }).done(function () {
                 self._addIOT(url);
                 self._connectToIOT(url);
-                if (range) self._updateRangeProgress(range);
             }).fail(function (jqXHR, textStatus) {
-                /*
-                * If the request to /hw_proxy/hello returns an error while we contacted it in https,
-                * it could mean the server certificate is not yet accepted by the client.
-                * To know if it is really the case, we try to fetch an image on the http port of the server.
-                * If it loads successfully, we call _addIOTWithCertificateError that will display an explicit error to the customer.
-                */
-                if (textStatus==='error' && self.parseURL.protocol === 'https:'){
-                    var imgSrc = url + '/' + self.controlImage
+                // * If the request to /hw_proxy/hello returns an error while we contacted it in https,
+                // * it could mean the server certificate is not yet accepted by the client.
+                // * To know if it is really the case, we try to fetch an image on the http port of the server.
+                // * If it loads successfully, we put informations of connection in parameter of image.
+                if (textStatus === 'error' && self.parseURL.protocol === 'https:') {
+                    var imgSrc = url + self.controlImage;
                     img.src = imgSrc.replace('https://', 'http://');
-                    img.onload = function() {
-                        self._addIOTWithCertificateError(url);
+                    img.onload = function(XHR) {
+                        self._addIOT(url);
+                        self._connectToIOT(url);
                     };
                 }
-                self._createThread(urls, range);
-                if (range) self._updateRangeProgress(range);
+            }).always(function () {
+                self._scanRange(urls, range);
+                self._updateRangeProgress(range);
             });
         }
     },
@@ -164,7 +169,7 @@ var IotDetectButton = Widget.extend({
 
         for (var i = 0; i < ipPerRange; i++) {
             var port = '';
-            if(this.parseURL.protocol == 'http:'){
+            if (this.parseURL.protocol === 'http:') {
                 port = ':8069';
             }
             this.ranges[range].urls.push(this.parseURL.protocol + '//' + (range + i) + port);
@@ -172,9 +177,8 @@ var IotDetectButton = Widget.extend({
     },
 
     _processIRRange: function (range){
-        var len = Math.min(this.parallelRPC, range.urls.length);
-        for (var i = 0; i < len; i++) {
-            this._createThread(range.urls, range);
+        for (var i = 0; i < 6; i++) {
+            this._scanRange(range.urls, range);
         }
     },
 
@@ -192,12 +196,8 @@ var IotDetectButton = Widget.extend({
         this._getUserIP(function (ip) {
             self._initProgress();
 
-            // Query localhost
-            var local_url = self.parseURL.protocol + '//localhost:' + self.parseURL.port;
-            self._createThread([local_url]);
-
             if (ip) {
-                range = ip.replace(ip.split('.')[3], '');
+                range = ip.substring(0, ip.lastIndexOf('.') + 1);
                 self._addIPRange(range);
             }
             else {
@@ -237,22 +237,8 @@ var IotDetectButton = Widget.extend({
         this.$progressFound.append($iot);
     },
 
-    _addIOTWithCertificateError: function (url){
-        this._addIOT(url);
-        var content = '<p>' + _t("Connection refused, please accept the certificate and restart the scan:")
-                + '<ol class="pl-3 small">'
-                    + '<li>' + _t('Click on the link above to open your IoT Homepage') + '</li>'
-                    + '<li>' + _t('Click on Advanced/Show Details/Details/More information') + '</li>'
-                    + '<li>' + _t('Click on Proceed to .../Add Exception/Visit this website/Go on to the webpage') + '</li>'
-                    + '<li>' + _t('Firefox only: Click on Confirm Security Exception') + '</li>'
-                    + '<li>' + _t('Restart SCAN') + '</li>'
-                + '</ol>'
-            + '</p>';
-        this._updateIOT(url, 'error', content);
-    },
-
     _updateIOT: function (url, status, message){
-        if (this.iots[url]){
+        if (this.iots[url]) {
             var $iot = this.iots[url];
             var $icon = $iot.find('.iot-scan-status-icon');
             var $msg = $iot.find('.iot-scan-status-msg');
@@ -268,34 +254,25 @@ var IotDetectButton = Widget.extend({
                 default:
                     icon += "fa-exclamation-triangle text-danger";
             }
-
             $icon.removeClass().addClass(icon);
             $msg.empty().append(message);
         }
     },
 
     _connectToIOT: function (url){
+        var img = new Image();
         var self = this;
-        var full_url = url + '/hw_drivers/box/connect';
-        var json_data = {token: self.token};
-
-        this._updateIOT(url, 'loading', _t('Pairing with IoT...'));
-
-        $.ajax({
-            headers: {'Content-Type': 'application/json'},
-            url: full_url,
-            dataType: 'json',
-            data: JSON.stringify(json_data),
-            type: 'POST',
-        }).done(function (response) {
-            if (response.result === 'IoTBox connected'){
-                self._updateIOT(url, 'success', response.result);
+        img.src = url.replace('https://', 'http://') + self.box_connect;
+        img.onload = function(jqXHR) {
+            if (img.height === 10){
+                self._updateIOT(url, 'success', _t('IoTBox connected'));
             } else {
-                self._updateIOT(url, 'error', response.result);
+                self._updateIOT(url, 'error', _t('This IoTBox has already connected'));
             }
-        }).fail(function (){
+        };
+        img.onerror = function(jqXHR) {
             self._updateIOT(url, 'error', _t('Connection failed'));
-        });
+        };
     },
 
     _onButtonClick: function (e) {
@@ -304,84 +281,230 @@ var IotDetectButton = Widget.extend({
     },
 });
 
-widget_registry.add('iot_detect_button', IotDetectButton);
+widget_registry.add('iot_detect_button', IotScanButton);
 
+var IoTLongpolling = BusService.extend({
+    // constants
+    POLL_TIMEOUT: 60000,
+    POLL_ROUTE: '/hw_drivers/event',
+    ACTION_TIMEOUT: 6000,
+    ACTION_ROUTE: '/hw_drivers/action',
 
-var IoTCoreMixin = {
-    parseURL: new URL(window.location.href),
-    _url: function (iot_ip){
-        var port = '';
-        if(this.parseURL.protocol == 'http:'){
-            port = ':8069';
-        }
-        return this.parseURL.protocol + "//" + this.record.data.ip + port;
+    RPC_DELAY: 1500,
+    MAX_RPC_DELAY: 1500 * 10,
+    
+    _retries: 0,
+
+    /**
+     * @override
+     */
+    init: function () {
+        this._super.apply(this, arguments);
+        this._session_id = this._createUUID();
+        this._listeners = {};
+        this._delayedStartPolling(this.RPC_DELAY);
     },
 
-    _callIotDevice: function (url, data, iot_ip){
-        if (data) {
-            return $.ajax({
-                type: 'POST',
-                url: url,
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    /**
+     * Add a device_id to listeners[iot_ip] and restart polling
+     *
+     * @param {String} iot_ip
+     * @param {Array} devices list of devices
+     * @param {Callback} callback
+     */
+    addListener: function (iot_ip, devices, callback) {
+        if (!this._listeners[iot_ip]) {
+            this._listeners[iot_ip] = {
+            devices: {},
+            session_id: this._session_id,
+            rpc: false,
+            };
+        }
+        for (var device in devices) {
+            this._listeners[iot_ip].devices[devices[device]] = {
+                device_id: devices[device],
+                callback: callback,
+            };
+        }
+        this.stopPolling(iot_ip);
+        this.startPolling(iot_ip);
+    },
+    /**
+     * Execute a action on device_id
+     * Action depend of driver that support the device
+     *
+     * @param {String} iot_ip
+     * @param {String} device_id
+     * @param {Object} data contains the information needed to perform an action on this device_id
+     * @param {Callback} callback_success
+     * @param {Callback} callback_fail
+     */
+    action: function (iot_ip, device_id, data, callback_success, callback_fail) {
+        this.parseURL = new URL(window.location.href);
+        var self = this;
+        var data = {
+            params: {
+                session_id: self._session_id,
+                device_id: device_id,
                 data: JSON.stringify(data),
-            }).fail(this._onFail.bind(this, iot_ip));
+            }
+        };
+        var options = {
+            timeout: this.ACTION_TIMEOUT,
+        };
+        return this._rpcIoT(iot_ip, this.ACTION_ROUTE, data, options
+            ).fail(callback_fail).then(callback_success);
+    },
+
+    /**
+     * Start a long polling, i.e. it continually opens a long poll
+     * connection as long as it is not stopped (@see `stopPolling`)
+     */
+    startPolling: function (iot_ip) {
+        if (iot_ip) {
+            if (!this._listeners[iot_ip].rpc) {
+                this._poll(iot_ip);
+            }
         } else {
-            return $.get(url).fail(this._onFail.bind(this, iot_ip));
+            var self = this;
+            _.each(this._listeners, function (listener, ip) {
+                self.startPolling(ip);
+            });
+        }
+    },
+    /**
+     * Stops any started long polling
+     *
+     * Aborts a pending longpoll so that we immediately remove ourselves
+     * from listening on notifications on this channel.
+     */
+    stopPolling: function (iot_ip) {
+        if (this._listeners[iot_ip].rpc) {
+            this._listeners[iot_ip].rpc.abort();
+            this._listeners[iot_ip].rpc = false;
         }
     },
 
-    _onFail: function (iot_ip, jqXHR, textStatus){
-        switch (textStatus){
-            case "error":
-                if (this.parseURL.protocol === 'https:'){
-                    this._doWarnCertificate(iot_ip);
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+    _delayedStartPolling: function (delay){
+        var self = this;
+        setTimeout(function (){
+            self.startPolling();
+        }, delay);
+    },
+
+    _createUUID: function () {
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+        return s.join("");
+    },
+    /**
+     * Execute a RPC to the box
+     * Used to do polling or an action
+     *
+     * @param {String} iot_ip
+     * @param {String} route
+     * @param {Object} data information needed to perform an action or the listener for the polling
+     * @param {Object} options.timeout
+     */
+    _rpcIoT: function (iot_ip, route, data, options) {
+        this.parseURL = new URL(window.location.href);
+        var port = this.parseURL.protocol === 'http:' ? ':8069' : '';
+        var url = this.parseURL.protocol + '//' + iot_ip + port;
+        var queryOptions = _.extend({
+            url: url + route,
+            dataType: 'json',
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(data),
+            method: 'POST',
+        }, options);
+        var request = $.ajax(queryOptions);
+        if (this._listeners[iot_ip]) {
+            this._listeners[iot_ip].rpc = request;
+            return this._listeners[iot_ip].rpc;
+        } else {
+            return request;
+        }
+    },
+    /**
+     * Make a request to an IoT Box
+     *
+     * @param {String} iot_ip
+     */
+    _poll: function (iot_ip) {
+        var self = this;
+        var listener = this._listeners[iot_ip];
+        var data = {
+            params: {
+                listener: listener,
+            }
+        };
+        var options = {
+            timeout: this.POLL_TIMEOUT,
+        };
+
+        // The backend has a maximum cycle time of 50 seconds so give +10 seconds
+        this._rpcIoT(iot_ip, this.POLL_ROUTE, data, options)
+            .then(function (result) {
+                if (result.result) {
+                    if (self._session_id === result.result.session_id) {
+                        self._onSuccess(iot_ip, result.result);
+                    }
                 } else {
-                    this._doWarnError();
+                    self._onError();
                 }
-                break;
-            case "timeout":
-                this._doWarnTimeout();
-                break;
-            default:
-                this._doWarnError();
-        }
+                self._listeners[iot_ip].rpc = false;
+            }).fail(function (jqXHR, textStatus) {
+                if (textStatus === 'error' && self.parseURL.protocol === 'https:') {
+                    self._doWarnCertificate(iot_ip);
+                } else {
+                    self._onError();
+                }
+            });
     },
-    _doWarnError: function (){
-        var $content = $('<p/>').text(_t('Please check if the device is still connected.'));
-        var dialog = new Dialog(this, {
-            title: _t('Connection to device failed'),
-            $content: $content,
-        });
-        dialog.open();
-    },
-    _doWarnTimeout: function (){
-        var $content = $('<p/>').text(_t('Please check if the device is still connected.'));
-        var dialog = new Dialog(this, {
-            title: _t('The device is not responding'),
-            $content: $content,
-        });
-        dialog.open();
-    },
-    _doWarnCertificate: function (iot_ip){
-        var $ol = $('<ol/>')
-            .append(_.str.sprintf('<li><a href="%s" target="_blank"><i class="fa fa-external-link"/> ' + _t('Click here to open your IoT Homepage') + '</a></li>', iot_ip))
-            .append('<li>' + _t('Click on Advanced/Show Details/Details/More information') + '</li>')
-            .append('<li>' + _t('Click on Proceed to .../Add Exception/Visit this website/Go on to the webpage') + '</li>')
-            .append('<li>' + _t('Firefox only : Click on Confirm Security Exception') + '</li>')
-            .append('<li>' + _t('Close this window and try again') + '</li>');
 
+    _onSuccess: function (iot_ip, result){
+        var self = this;
+        var devices = this._listeners[iot_ip].devices;
+        if (devices[result.device_id]) {
+            devices[result.device_id].callback(result);
+        }
+        self._poll(iot_ip);
+        self._retries = 0;
+    },
+
+    _onError: function (){
+        this._retries++;
+        this._delayedStartPolling(Math.min(this.RPC_DELAY * this._retries, this.MAX_RPC_DELAY));
+    },
+
+    _doWarnCertificate: function (url){
         var $content = $('<div/>')
-            .append('<p>' + _t("Please accept the certificate of your IoT Box (procedure depends on your browser) :") + '</p>')
-            .append($ol);
+            .append($('<p/>').html(_.str.sprintf('<a href="https://%s" target="_blank"><i class="fa fa-external-link"/>' + _t('Click here to open your IoT Homepage') + '</a>', url)))
+            .append($('<li/>').text(_t('Please accept the certificate of your IoT Box (procedure depends on your browser) :')))
+            .append($('<li/>').text(_t('Click on Advanced/Show Details/Details/More information')))
+            .append($('<li/>').text(_t('Click on Proceed to .../Add Exception/Visit this website/Go on to the webpage')))
+            .append($('<li/>').text(_t('Firefox only : Click on Confirm Security Exception')))
+            .append($('<li/>').text(_t('Close this window and try again')));
 
         var dialog = new Dialog(this, {
             title: _t('Connection to device failed'),
             $content: $content,
             buttons: [
                 {
-                    text: _t("Close"),
-                    classes: "btn-secondary o_form_button_cancel",
+                    text: _t('Close'),
+                    classes: 'btn-secondary o_form_button_cancel',
                     close: true,
                 }
             ],
@@ -389,11 +512,124 @@ var IoTCoreMixin = {
 
         dialog.open();
     },
+});
+
+core.serviceRegistry.add('iot_longpolling', IoTLongpolling);
+
+var IotValueFieldMixin = {
+
+    willStart: function() {
+        return $.when(this._super(), this._getDeviceInfo());
+    },
+
+    /**
+     * @override
+     */
+    start: function() {
+        this._super.apply(this, arguments);
+        var self = this;
+        if (self.ip && self.identifier) {
+            var devices = [ self.identifier ];
+            self.call('iot_longpolling', 'addListener', self.ip, devices, self._onValueChange.bind(self));
+        }
+    },
+
+    /**
+     * @private
+     */
+    _getDeviceInfo: function() {
+        this.ip = this.record.data.ip;
+        this.identifier = this.record.data.identifier;
+        return Promise.resolve();
+    },
+
+    /**
+     * @private
+     */
+    _onValueChange: function (data){
+        var self = this;
+        this._setValue(data.value)
+            .done(function() {
+                if (!self.isDestroyed()) {
+                    self._render();
+                }
+            });
+    },
 };
+
+var IotRealTimeValue = basic_fields.InputField.extend(IotValueFieldMixin, {
+
+    /**
+     * @private
+     */
+    _getDeviceInfo: function() {
+        this.test_type = this.record.data.test_type;
+        if (this.test_type === 'measure') {
+            this.ip = this.record.data.ip;
+            this.identifier = this.record.data.identifier;
+        }
+        return Promise.resolve();
+    },
+
+    /**
+     * @private
+     */
+    _onValueChange: function (data){
+        var self = this;
+        this._setValue(data.value.toString())
+            .done(function() {
+                if (!self.isDestroyed()) {
+                    self._render();
+                }
+            });
+    },
+
+});
+
+var IotDeviceValueDisplay = Widget.extend(IotValueFieldMixin, {
+
+    init: function (parent, params) {
+        this._super.apply(this, arguments);
+        this.identifier = params.data.identifier;
+        this.iot_id = params.data.iot_id.data.id;
+    },
+    /**
+     * @override
+     * @private
+     */
+    _getDeviceInfo: function() {
+        var self = this;
+        var iot_id = this.iot_id;
+        return this._rpc({
+            model: 'iot.box',
+            method: 'search_read',
+            fields: ['id', 'ip'],
+            domain: [['id', '=', iot_id]]
+        }).then(function (iot_box) {
+            self.ip = iot_box[0].ip;
+        });
+    },
+
+    /**
+     * @override
+     * @private
+     */
+    _onValueChange: function (data){
+        if (this.$el) {
+            this.$el.text(data.value);
+        }
+    },
+
+});
+
+
+field_registry.add('iot_realtime_value', IotRealTimeValue);
+widget_registry.add('iot_device_value_display', IotDeviceValueDisplay);
 
 return {
-    IoTCoreMixin: IoTCoreMixin,
-    IotDetectButton: IotDetectButton,
+    IotValueFieldMixin: IotValueFieldMixin,
+    IotRealTimeValue: IotRealTimeValue,
+    IotDeviceValueDisplay: IotDeviceValueDisplay,
+    IoTLongpolling: IoTLongpolling,
 };
-
 });

@@ -56,12 +56,13 @@ def _get_counter_party(*nodes, namespaces):
     ind = _get_credit_debit_indicator(*nodes, namespaces=namespaces)
     return 'Dbtr' if ind == 'CRDT' else 'Cdtr'
 
-def _set_amount_currency_and_currency_id(node, path, entry_vals, currency, curr_cache, namespaces):
+def _set_amount_currency_and_currency_id(node, path, entry_vals, currency, curr_cache, has_multi_currency, namespaces):
     instruc_amount = node.xpath('%s/text()' % path, namespaces=namespaces)
     instruc_curr = node.xpath('%s/@Ccy' % path, namespaces=namespaces)
-    if instruc_amount and instruc_curr and instruc_curr[0] != currency and currency in curr_cache:
+    if (has_multi_currency and instruc_amount and instruc_curr and
+            instruc_curr[0] != currency and currency in curr_cache):
         entry_vals['amount_currency'] = abs(sum(map(float, instruc_amount)))
-        entry_vals['currency_id'] = curr_cache[currency]
+        entry_vals['currency_id'] = curr_cache[instruc_curr[0]]
 
 def _get_transaction_name(node, namespaces):
     xpaths = ('.//ns:RmtInf/ns:Ustrd/text()',
@@ -121,6 +122,7 @@ class AccountBankStatementImport(models.TransientModel):
         statement_list = []
         unique_import_set = set([])
         currency = account_no = False
+        has_multi_currency = self.env.user.user_has_groups('base.group_multi_currency')
         for statement in root[0].findall('ns:Stmt', ns):
             statement_vals = {}
             statement_vals['name'] = statement.xpath('ns:Id/text()', namespaces=ns)[0]
@@ -166,6 +168,7 @@ class AccountBankStatementImport(models.TransientModel):
                         entry_vals=entry_vals,
                         currency=currency,
                         curr_cache=curr_cache,
+                        has_multi_currency=has_multi_currency,
                         namespaces=ns)
 
                     unique_import_set.add(entry_vals['unique_import_id'])
@@ -198,6 +201,7 @@ class AccountBankStatementImport(models.TransientModel):
                         entry_vals=entry_vals,
                         currency=currency,
                         curr_cache=curr_cache,
+                        has_multi_currency=has_multi_currency,
                         namespaces=ns)
 
                     unique_import_set.add(entry_vals['unique_import_id'])

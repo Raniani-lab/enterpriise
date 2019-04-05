@@ -229,10 +229,9 @@ class SaleSubscription(models.Model):
     @api.depends('recurring_invoice_line_ids', 'recurring_total')
     def _amount_all(self):
         for account in self:
-            account_sudo = account.sudo()
             val = val1 = 0.0
-            cur = account_sudo.pricelist_id.currency_id
-            for line in account_sudo.recurring_invoice_line_ids:
+            cur = account.pricelist_id.sudo().currency_id
+            for line in account.recurring_invoice_line_ids:
                 val1 += line.price_subtotal
                 val += line._amount_line_tax()
             account.recurring_amount_tax = cur.round(val)
@@ -846,11 +845,10 @@ class SaleSubscriptionLine(models.Model):
     @api.depends('price_unit', 'quantity', 'discount', 'analytic_account_id.pricelist_id')
     def _compute_price_subtotal(self):
         for line in self:
-            line_sudo = line.sudo()
-            price = line.env['account.tax']._fix_tax_included_price(line.price_unit, line_sudo.product_id.taxes_id, [])
+            price = line.env['account.tax']._fix_tax_included_price(line.price_unit, line.product_id.sudo().taxes_id, [])
             line.price_subtotal = line.quantity * price * (100.0 - line.discount) / 100.0
             if line.analytic_account_id.pricelist_id:
-                line.price_subtotal = line_sudo.analytic_account_id.pricelist_id.currency_id.round(line.price_subtotal)
+                line.price_subtotal = line.analytic_account_id.pricelist_id.sudo().currency_id.round(line.price_subtotal)
 
     @api.onchange('product_id')
     def onchange_product_id(self):

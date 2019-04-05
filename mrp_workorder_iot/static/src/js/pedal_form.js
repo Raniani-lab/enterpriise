@@ -79,131 +79,65 @@ var PedalController = FormController.extend({
     start: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
+            self.renderer.showPedalStatusButton(false);
             var state = self.model.get(self.handle);
-            self.triggers = $.parseJSON(state.data.boxes); //or JSON.parse?
-            var data = self.triggers;
-            // Check Tab id
-            self.tabID = sessionStorage.tabID ? sessionStorage.tabID : sessionStorage.tabID = Math.random().toString();
-
-            // Call IoT Boxes
-            var promises = [];
-            console.log(data);
-            var protocol = new URL(window.location.href).protocol;
-            var port = protocol === 'http' ? ':8069' : '';
-            _.each(self.triggers, function (trigger, triggerName) {
-                trigger.url = protocol + '//' + triggerName + port;
-            });
-            for (var key in data) {
-                var url = data[key].url + '/hw_drivers/owner/check';
+            self.triggers = JSON.parse(state.data.boxes);
+            var boxes = self.triggers;
+            for (var box in boxes) {
                 var devices = [];
-                for (var device in data[key]) {
-                    devices.push(data[key][device][0]);
+                for (var device in boxes[box]) {
+                    devices.push(boxes[box][device][0]);
                 }
-                devices = _.uniq(devices);
-                var json_data = {'devices': devices, 'tab': self.tabID};
-                console.log(json_data);
-                promises.push($.ajax({type: 'POST',
-                    url: url,
-                    dataType: 'json',
-                    beforeSend: function(xhr){xhr.setRequestHeader('Content-Type', 'application/json');},
-                    data: JSON.stringify(json_data),
-                    }));
+                self.call('iot_longpolling', 'addListener', box, devices, self._onValueChange.bind(self));
             }
-            if (promises.length) {
-                $.when.apply($, promises).then(function () {
-                    self.can_check = true;
-                    for (var arg in arguments) { //TODO: need to see difference between one or two returns
-                        if (arguments[arg].result === 'no') {
-                            self.can_check = false;
-                            break;
-                        }
-                    }
-                    if (self.can_check) {
-                        self.take_ownerships();
-                    }
-                    else {
-                        self.renderer.showPedalStatusButton(false);
-                    }
-                });
-            }
+            self.takeOwnerships();
         });
     },
 
-    destroy: function() {
-        //Stop pinging
-        var self = this;
-        clearInterval(self.mytimer);
+    /**
+     * When the foot switch change state this function check if this session_id are the owner of the foot switch
+     * and perform the right action by comparing the value received with the letter associated with an action
+     *
+     * @param {Object} data.owner
+     * @param {Object} data.session_id
+     * @param {Object} data.device_id
+     * @param {Object} data.value
+     */
+    _onValueChange: function (data){
+        var boxes = this.triggers;
+        if (data.owner && data.owner !== data.session_id) {
+            this.renderer.showPedalStatusButton(false);
+        } else {
+            for (var box in boxes) {
+                for (var device in boxes[box]) {
+                    if ( data.device_id === boxes[box][device][0] && data.value.toUpperCase() === boxes[box][device][1].toUpperCase()){
+                        this.$("button[barcode_trigger='" + boxes[box][device][2] + "']:visible").click();
+                    }
+                }
+            }
+        }
     },
-
 
     /*
     * This function tells the IoT Box that this browser tab will take control
     * over the devices of this workcenter.  When done, a timer is started to
     * check if a pedal was pressed every half second, which will handle further actions.
     */
-    take_ownerships: function() {
-        var self = this;
+    takeOwnerships: function() {
         this.renderer.showPedalStatusButton(true);
-        var data = this.triggers;
-        for (var key in data) {
-            var url = data[key].url + '/hw_drivers/owner/take';
-            var devices = [];
-            for (var device in data[key]) {
-                devices.push(data[key][device][0]);
+        var boxes = this.triggers;
+        for (var box in boxes) {
+            for (var device in boxes[box]) {
+                this.call(
+                    'iot_longpolling',
+                    'action',
+                    box,
+                    boxes[box][device][0],
+                    '',
+                    '',
+                    ''
+                );
             }
-            devices = _.uniq(devices);
-            var json_data = {'devices': devices, 'tab': self.tabID};
-            console.log(json_data);
-            $.ajax({type: 'POST',
-                    url: url,
-                    dataType: 'json',
-                    beforeSend: function(xhr) {xhr.setRequestHeader('Content-Type', 'application/json');},
-                    data: JSON.stringify(json_data),
-            }).then(function(result) {
-                self.mytimer = setInterval(self.ping.bind(self), 500);
-            });
-        }
-    },
-
-    /**
-    * This function is called every x time to check if a pedal was pressed.
-    * If so, it will check all the triggers connected to this workcenter
-    * in order to see if we need to execute a click on a button, similar
-    * to the barcode_trigger for the barcodes.
-    **/
-    ping: function() {
-        var self = this;
-        var data = this.triggers;
-        for (var box in data) {
-            var url = data[box].url + '/hw_drivers/owner/ping';
-            var devices = [];
-            for (var device in data[box]) {
-                devices.push(data[box][device][0]);
-            }
-            devices = _.uniq(devices);
-            var json_data = {'tab': sessionStorage.tabID, 'devices': devices};
-            $.ajax({type: 'POST',
-                    url: url,
-                    dataType: 'json',
-                    beforeSend: function(xhr) {xhr.setRequestHeader('Content-Type', 'application/json');},
-                    data: JSON.stringify(json_data),
-            }).then(function (result) {
-                for (var key in result['result']) {
-                    // Filter all devices connected to this workcenter to see which one corresponds
-                    for (var dev in data[box]) {
-                        var dev_list = data[box][dev];
-                        if (dev_list[0] === key) {
-                            if (result['result'][key] === 'STOP') {
-                                self.renderer.showPedalStatusButton(false);
-                                clearInterval(self.mytimer);
-                            }
-                            if (!dev_list[1] || result['result'][key].toUpperCase() === dev_list[1].toUpperCase()) {
-                                $("button[barcode_trigger='" + dev_list[2] + "']:visible").click();
-                            }
-                        }
-                    }
-                }
-            });
         }
     },
 
@@ -217,7 +151,7 @@ var PedalController = FormController.extend({
      */
     _onTakeOwnership: function (ev) {
         ev.stopPropagation();
-        this.take_ownerships();
+        this.takeOwnerships();
     },
 });
 
@@ -229,4 +163,10 @@ var PedalForm = FormView.extend({
 });
 
 view_registry.add('pedal_form', PedalForm);
+
+return {
+    PedalRenderer: PedalRenderer,
+    PedalController: PedalController,
+    PedalForm: PedalForm,
+};
 });

@@ -299,6 +299,24 @@ WebClient.include({
     },
     /**
      * @private
+     * @returns {Promise}
+     */
+    _redrawMenuWidgets: function () {
+        var self = this;
+        var oldHomeMenu = this.home_menu;
+        var oldMenu = this.menu;
+        return this.instanciate_menu_widgets().then(function () {
+            if (oldHomeMenu) {
+                oldHomeMenu.destroy();
+            }
+            if (oldMenu) {
+                oldMenu.destroy();
+            }
+            self.menu.$el.prependTo(self.$el);
+        });
+    },
+    /**
+     * @private
      */
     _toggleStudioMode: function () {
         bus.trigger('studio_toggled', this.studioMode);
@@ -358,7 +376,7 @@ WebClient.include({
      */
     _onNewAppCreated: function (ev) {
         var self = this;
-        this.instanciate_menu_widgets().then(function () {
+        this._redrawMenuWidgets().then(function () {
             self.on_app_clicked({
                 data: {
                     menu_id: ev.data.menu_id,
@@ -380,7 +398,7 @@ WebClient.include({
         var self = this;
 
         var current_primary_menu = this.menu.current_primary_menu;
-        this.instanciate_menu_widgets().then(function () {
+        this._redrawMenuWidgets().then(function () {
             // reload previous state
             self.menu.toggle_mode(self.home_menu_displayed);
             self.menu.change_menu_section(current_primary_menu); // entering the current menu

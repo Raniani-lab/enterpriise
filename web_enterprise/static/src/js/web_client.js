@@ -120,6 +120,8 @@ return AbstractWebClient.extend({
             } else {
                 return self.on_hashchange();
             }
+        }).then(function () {
+            self.menu.$el.prependTo(self.$el);
         });
     },
 
@@ -129,20 +131,11 @@ return AbstractWebClient.extend({
         return this.load_menus().then(function(menu_data) {
             self.menu_data = menu_data;
 
-            // Here, we instanciate every menu widgets and we immediately append them into dummy
-            // document fragments, so that their `start` method are executed before inserting them
-            // into the DOM.
-            if (self.home_menu) {
-                self.home_menu.destroy();
-            }
-            if (self.menu) {
-                self.menu.destroy();
-            }
             self.home_menu = new HomeMenu(self, menu_data);
             self.menu = new Menu(self, menu_data);
 
             defs.push(self.home_menu.appendTo(document.createDocumentFragment()));
-            defs.push(self.menu.prependTo(self.$el));
+            defs.push(self.menu.appendTo(document.createDocumentFragment()));
             return Promise.all(defs);
         });
     },

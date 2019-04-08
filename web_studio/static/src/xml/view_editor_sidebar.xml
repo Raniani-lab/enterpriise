@@ -59,14 +59,7 @@
                 </div>
             </div>
             <t t-if="_.contains(['list', 'form'], widget.view_type)">
-                <div class="o_web_studio_sidebar_separator"/>
-                <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="show_invisible" class="custom-control-input"
-                            t-att-checked="widget.state.show_invisible ? 'checked' : undefined"/>
-                        <label for="show_invisible" class="custom-control-label">Show invisible elements</label>
-                    </div>
-                </div>
+                <t t-call="web_studio.ShowInvisibleElements"/>
             </t>
             <t t-if="widget.view_type === 'list'">
                 <div class="o_web_studio_sidebar_select">
@@ -94,6 +87,7 @@
                         <label for="enable_stage" class="custom-control-label">Enable Stages</label>
                     </div>
                 </div>
+                <t t-call="web_studio.ShowInvisibleElements"/>
                 <div class="o_web_studio_sidebar_select">
                     <label for="default_group_by">Default Group by</label>
                     <select id="default_group_by" name="default_group_by">
@@ -729,4 +723,15 @@
     <t t-call="web_studio.Sidebar.Remove"/>
 </t>
 
+<!-- ShowInvisibleElements -->
+<t t-name="web_studio.ShowInvisibleElements">
+    <div class="o_web_studio_sidebar_separator"/>
+    <div class="o_web_studio_sidebar_checkbox">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" id="show_invisible" class="custom-control-input"
+                t-att-checked="widget.state.show_invisible ? 'checked' : undefined"/>
+            <label for="show_invisible" class="custom-control-label">Show invisible elements</label>
+        </div>
+    </div>
+</t>
 </templates>

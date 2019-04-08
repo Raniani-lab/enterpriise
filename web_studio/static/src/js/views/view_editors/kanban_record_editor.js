@@ -323,6 +323,11 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         var $hook = this._renderHook(node);
         $hook.insertAfter($field);
 
+        var invisibleModifier = this.fieldsInfo[field_name].modifiers.invisible;
+        if (invisibleModifier && this._computeDomain(invisibleModifier)) {
+            $field.addClass('o_web_studio_show_invisible');
+        }
+
         return $field;
     },
     /**
@@ -365,6 +370,11 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
             // insert a hook to add new fields
             var $hook = self._renderHook(node);
             $hook.insertAfter(widget.$el);
+
+            var invisibleModifier = self.fieldsInfo[field_name].modifiers.invisible;
+            if (invisibleModifier && self._computeDomain(invisibleModifier)) {
+                widget.$el.addClass('o_web_studio_show_invisible');
+            }
         });
 
         return widget;
@@ -387,6 +397,19 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
             }
         });
         return $hook;
+    },
+    /**
+     * @override
+     */
+    _setState: function () {
+        this._super.apply(this, arguments);
+
+        if (this.options.showInvisible) {
+            this.qweb_context.kanban_compute_domain = function () {
+                // always consider a domain falsy to see invisible elements
+                return false;
+            };
+        }
     },
 });
 

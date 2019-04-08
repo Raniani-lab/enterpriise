@@ -1356,6 +1356,41 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('kanban editor show invisible elements', async function(assert) {
+        assert.expect(4);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch : "<kanban>" +
+                    "<templates>" +
+                        "<t t-name='kanban-box'>" +
+                            "<div class='o_kanban_record'>" +
+                                '<field name="display_name" invisible="1"/>' +
+                                '<field name="char_field" modifiers=\'{"invisible": true}\'/>' +
+                                '<field name="priority" modifiers=\'{"invisible": [["id", "!=", 1]]}\'/>' +
+                            "</div>" +
+                        "</t>" +
+                    "</templates>" +
+                "</kanban>",
+        });
+
+        assert.containsNone(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
+            "there should be no visible node");
+        assert.hasAttrValue(vem.$('input#show_invisible'), 'checked', undefined,
+            "show invisible checkbox is not checked");
+
+        // click on 'show invisible elements
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
+
+        assert.containsN(vem, '.o_web_studio_kanban_view_editor [data-node-id]', 3,
+            "the 3 invisible fields should be visible now");
+        assert.containsN(vem, '.o_web_studio_kanban_view_editor .o_web_studio_show_invisible[data-node-id]', 3,
+            "the 3 fields should have the correct class for background");
+
+        vem.destroy();
+    });
+
     QUnit.test('kanban editor add priority', async function (assert) {
         assert.expect(3);
         var arch = "<kanban>" +

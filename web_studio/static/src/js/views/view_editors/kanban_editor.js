@@ -11,15 +11,18 @@ return KanbanRenderer.extend(EditorMixin, {
     className: KanbanRenderer.prototype.className + ' o_web_studio_kanban_view_editor',
     /**
      * @constructor
+     * @param {Object} params
+     * @param {boolean} params.show_invisible
      */
-    init: function () {
+    init: function (parent, state, params) {
         this._super.apply(this, arguments);
+
+        this.recordOptions.showInvisible = params.show_invisible;
 
         // We only want to display one record to ease the edition.
         // If grouped, render the record from only one of the groups that
         // contains records like if it was ungrouped (fallback on the first
         // group if all groups are empty).
-        var state = this.state;
         this.isGrouped = !!this.state.groupedBy.length;
         if (this.isGrouped) {
             state = _.find(this.state.data, function (group) {

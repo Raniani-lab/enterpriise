@@ -5,8 +5,8 @@
         <field name="name">Subscription: Payment failure</field>
         <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
         <field name="subject">Termination of subscription ${object.code}</field>
-        <field name="email_from">${(object.user_id.email or object.company_id.email or 'noreply@localhost')|safe}</field>
-        <field name="email_to">${ctx['email_to'] or ''}</field>
+        <field name="email_from">${(object.user_id.email_formatted or object.company_id.email or user.email_formatted) | safe}</field>
+        <field name="email_to">${object.partner_id.email_formatted | safe}</field>
         <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -103,8 +103,8 @@
         <field name="name">Subscription: Payment reminder</field>
         <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
         <field name="subject">Payment reminder for subscription ${object.code}</field>
-        <field name="email_from">${(object.user_id.email or object.company_id.email or 'noreply@localhost')|safe}</field>
-        <field name="email_to">${ctx['email_to'] or ''}</field>
+        <field name="email_from">${(object.user_id.email_formatted or object.company_id.email or user.email_formatted) | safe}</field>
+        <field name="email_to">${object.partner_id.email_formatted | safe}</field>
         <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -203,8 +203,8 @@
         <field name="name">Subscription: Payment success</field>
         <field name="model_id" ref="account.model_account_invoice"/>
         <field name="subject">Invoice for subscription ${ctx.get('code')}</field>
-        <field name="email_from">${(object.user_id.email or object.company_id.email or 'noreply@localhost')|safe}</field>
-        <field name="email_to">${ctx['email_to'] or ''}</field>
+        <field name="email_from">${(object.user_id.email_formatted or object.company_id.email or user.email_formatted) | safe}</field>
+        <field name="email_to">${object.partner_id.email_formatted | safe}</field>
         <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -301,9 +301,9 @@
     <!-- Mail sent to request a rating for a subscription -->
     <record id="mail_template_subscription_rating" model="mail.template">
         <field name="name">Sale Subscription: Rating Request</field>
-        <field name="email_from">${object.rating_get_rated_partner_id().email or '' | safe}</field>
-        <field name="subject">${object.company_id.name}: Service Rating Request</field>
         <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
+        <field name="subject">${object.company_id.name}: Service Rating Request</field>
+        <field name="email_from">${(object.rating_get_rated_partner_id().email_formatted or user.email_formatted) | safe}</field>
         <field name="partner_to" >${object.rating_get_partner_id().id}</field>
         <field name="auto_delete" eval="True"/>
         <field name="body_html" type="xml">
@@ -379,9 +379,9 @@
     <!-- Mail sent to request a rating for a subscription -->
     <record id="mail_template_subscription_alert" model="mail.template">
         <field name="name">Sale Subscription: Default Email Alert</field>
-        <field name="email_from">${object.user_id.email_formatted | safe}</field>
-        <field name="subject">${object.company_id.name}: Please check the subscription ${object.name}</field>
         <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
+        <field name="subject">${object.company_id.name}: Please check the subscription ${object.name}</field>
+        <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) | safe}</field>
         <field name="partner_to" >${object.partner_id.id}</field>
         <field name="auto_delete" eval="True"/>
         <field name="body_html" type="xml">
@@ -408,13 +408,14 @@
                 </table>
             </div>
         </field>
+        <field name="lang">${object.partner_id.lang}</field>
     </record>
 
     <!--Email template -->
     <record id="mail_template_subscription_invoice" model="mail.template">
         <field name="name">Subscription Invoice: Send by email</field>
         <field name="model_id" ref="account.model_account_invoice"/>
-        <field name="email_from">${object.user_id.email_formatted |safe}</field>
+        <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) |safe}</field>
         <field name="partner_to">${object.partner_id.id}</field>
         <field name="subject">${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})</field>
         <field name="report_template" ref="account.account_invoices"/>

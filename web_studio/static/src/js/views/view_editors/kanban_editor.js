@@ -80,6 +80,15 @@ return KanbanRenderer.extend(EditorMixin, {
             this.recordEditor.setLocalState(state);
         }
     },
+    /**
+     * @override
+     */
+    unselectedElements: function () {
+        EditorMixin.unselectedElements.apply(this, arguments);
+        if (this.recordEditor) {
+            this.recordEditor.selected_node_id = false;
+        }
+    },
 
     //--------------------------------------------------------------------------
     // Private

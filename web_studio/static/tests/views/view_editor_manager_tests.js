@@ -1313,6 +1313,49 @@ QUnit.module('ViewEditorManager', {
         });
     });
 
+    QUnit.test('changing tab should reset selected_node_id', async function(assert) {
+        assert.expect(5);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch : "<kanban>" +
+                    "<templates>" +
+                        "<t t-name='kanban-box'>" +
+                            "<div class='o_kanban_record'>" +
+                                "<field name='display_name' invisible='1'/>" +
+                                "<field name='priority'/>" +
+                            "</div>" +
+                        "</t>" +
+                    "</templates>" +
+                "</kanban>",
+        });
+
+        // switch tab to 'view' click on 'show invisible elements'
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
+        assert.containsNone(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'), 'o_web_studio_clicked',
+            "the field should not have the clicked style");
+
+        // select field 'display_name'
+        await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor [data-node-id="1"]'));
+        assert.hasClass(vem.$('.o_web_studio_widget_empty[data-node-id="1"]'), 'o_web_studio_clicked',
+            "the field should have the clicked style");
+
+        assert.strictEqual(vem.editor.recordEditor.selected_node_id, 1, "selected_node_id should be 1");
+
+        // changing tab (should reset selected_node_id)
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        assert.strictEqual(vem.editor.recordEditor.selected_node_id, false, "selected_node_id should be false");
+
+        // unchecked 'show invisible'
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
+        assert.containsNone(vem.$('.o_web_studio_widget_empty [data-node-id]'),'o_web_studio_clicked',
+            "the field should not have the clicked style");
+
+        vem.destroy();
+    });
+
     QUnit.test('kanban editor add priority', async function (assert) {
         assert.expect(3);
         var arch = "<kanban>" +

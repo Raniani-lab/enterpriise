@@ -137,7 +137,12 @@ class BpostRequest():
 
     def send_shipping(self, picking, carrier, with_return_label, is_return_label=False):
         # Get price of label
-        shipping_weight_in_kg = carrier._bpost_convert_weight(picking.shipping_weight)
+        if is_return_label:
+            shipping_weight_in_kg = 0.0
+            for move in picking.move_lines:
+                shipping_weight_in_kg += move.product_qty * move.product_id.weight
+        else:
+            shipping_weight_in_kg = carrier._bpost_convert_weight(picking.shipping_weight)
         price = self._get_rate(carrier, shipping_weight_in_kg, picking.partner_id.country_id)
 
         # Announce shipment to bpost

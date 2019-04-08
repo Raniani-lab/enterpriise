@@ -26,7 +26,7 @@ class MrpProductionWorkcenterLine(models.Model):
     allow_producing_quantity_change = fields.Boolean('Allow Changes to Producing Quantity', default=True)
     component_id = fields.Many2one('product.product', compute='_compute_component_id', readonly=True)
     component_tracking = fields.Selection(related='component_id.tracking', string="Is Component Tracked", readonly=False)
-    component_remaining_qty = fields.Float('Remaining Quantity for Component', compute='_compute_component_id', readonly=True,digits=dp.get_precision('Product Unit of Measure'))
+    component_remaining_qty = fields.Float('Remaining Quantity for Component', compute='_compute_component_id', digits=dp.get_precision('Product Unit of Measure'))
     component_uom_id = fields.Many2one('uom.uom', compute='_compute_component_id', string="Component UoM")
     control_date = fields.Datetime(related='current_quality_check_id.control_date', readonly=False)
     is_first_step = fields.Boolean('Is First Step')
@@ -60,7 +60,17 @@ class MrpProductionWorkcenterLine(models.Model):
         for wo in self:
             wo.finished_product_check_ids = wo.check_ids.filtered(lambda c: c.finished_product_sequence == wo.qty_produced)
 
-    @api.depends('current_quality_check_id', 'qty_producing')
+    @api.depends('state', 'quality_state', 'current_quality_check_id', 'qty_producing', 'component_tracking',
+        'current_quality_check_id.point_id.test_type',
+        'current_quality_check_id.point_id.component_id',
+        'current_quality_check_id.component_is_byproduct',
+        'production_id.move_finished_ids.state',
+        'production_id.move_finished_ids.product_id',
+        'move_raw_ids.state',
+        'move_raw_ids.product_id',
+        'workorder_line_ids.move_id',
+        'workorder_line_ids.lot_id',
+        'workorder_line_ids.qty_done')
     def _compute_component_id(self):
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
             if wo.current_quality_check_id.point_id:
@@ -192,7 +202,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
         lines_without_lots = self.workorder_line_ids.filtered(lambda l: l.move_id in moves and not l.lot_id)
         # Compute the theoretical quantity for the current production
-        self.component_remaining_qty -= float_round(self.qty_done, precision_rounding=move.product_uom.rounding)
+        component_remaining_qty = self.component_remaining_qty - float_round(self.qty_done, precision_rounding=move.product_uom.rounding)
         # Assign move line to quality check if necessary
         candidates = self.workorder_line_ids.filtered(
             lambda line: line.product_id == self.component_id and
@@ -215,8 +225,8 @@ class MrpProductionWorkcenterLine(models.Model):
                 self.move_line_id = lines_without_lots[0]
             # If tracked by lot, put the remaining quantity in (only) one move line
             if move.product_id.tracking == 'lot' and not self.current_quality_check_id.component_is_byproduct and continue_production:
-                if self.component_remaining_qty > 0:
-                    self.move_line_id.copy(default={'qty_done': self.component_remaining_qty, 'qty_to_consume': 0})
+                if component_remaining_qty > 0:
+                    self.move_line_id.copy(default={'qty_done': component_remaining_qty, 'qty_to_consume': 0})
 
         # Write the lot and qty to the move line
         self.move_line_id.write({'lot_id': self.lot_id.id, 'qty_done': float_round(self.qty_done, precision_rounding=move.product_uom.rounding)})

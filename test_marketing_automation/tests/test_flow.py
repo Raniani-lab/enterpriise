@@ -2,7 +2,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
+from unittest.mock import patch
 
+from odoo.addons.base.models.ir_mail_server import IrMailServer
 from odoo.fields import Datetime
 from odoo.tools import mute_logger
 
@@ -92,7 +94,8 @@ for record in records:
         self.assertEqual(act_1.trace_ids, self.env['marketing.trace'])
 
         # First traces are processed, emails are sent
-        campaign.execute_activities()
+        with patch.object(IrMailServer, 'connect'):
+            campaign.execute_activities()
         self.assertEqual(set(act_0.trace_ids.mapped('state')), set(['processed']))
 
         # Child traces should have been generated for all traces of parent activity as filter is taken into account at processing, not generation

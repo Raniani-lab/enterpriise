@@ -379,7 +379,7 @@ class MarketingActivity(models.Model):
         self.env.cr.execute("""
             SELECT
                 trace.activity_id,
-                COUNT(CASE WHEN stat.state = 'sent' THEN 1 ELSE null END) AS total_sent,
+                COUNT(CASE WHEN stat.sent IS NOT NULL THEN 1 ELSE null END) AS total_sent,
                 COUNT(CASE WHEN stat.clicked IS NOT NULL THEN 1 ELSE null END) AS total_click,
                 COUNT(CASE WHEN stat.replied IS NOT NULL THEN 1 ELSE null END) AS total_reply,
                 COUNT(CASE WHEN stat.opened IS NOT NULL THEN 1 ELSE null END) AS total_open,
@@ -388,7 +388,7 @@ class MarketingActivity(models.Model):
                 COUNT(CASE WHEN trace.state = 'rejected' THEN 1 ELSE null END) AS rejected
             FROM
                 marketing_trace AS trace
-            JOIN
+            LEFT JOIN
                 mail_mail_statistics AS stat
                 ON (stat.marketing_trace_id = trace.id)
             JOIN
@@ -430,7 +430,6 @@ class MarketingActivity(models.Model):
 
         for stat in self.env.cr.dictfetchall():
             stat_map[(stat['activity_id'], stat['dt'], stat['state'])] = stat['total']
-
         graph_data = {}
         for activity in self:
             success = []

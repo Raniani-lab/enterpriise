@@ -361,7 +361,7 @@
                         // If immediatly followed by an .oe_clear element, the note-editor it's the 'only'
                         // tab's element. Reset margins to push the bar at the bottom.
                         + .oe_clear:last-child {
-                            margin-bottom: -$o-horizontal-padding - $o-sheet-vpadding - ($o-root-font-size * ($font-size-base/1rem) * $line-height-base); // FIXME
+                            margin-bottom: -$o-horizontal-padding - $o-sheet-vpadding - $o-form-spacing-unit;
                         }
                     }
 

@@ -221,7 +221,9 @@ var ActionEditorAction = AbstractAction.extend({
         }
         return $.when.apply($, defs).then(function () {
             // add studio in loadViews context to retrieve groups server-side
-            var context = _.extend({}, self.action.context, {studio: true});
+            // We load views in the base language to make sure we read/write on the source term field
+            // of ir.ui.view
+            var context = _.extend({}, self.action.context, {studio: true, lang: false});
             var loadViewDef = self.loadViews(self.action.res_model, context, views, options);
             return loadViewDef.then(function (fields_views) {
                 if (!self.action.controlPanelFieldsView) {
@@ -274,7 +276,9 @@ var ActionEditorAction = AbstractAction.extend({
                 model: model,
                 view_type: view_type,
                 view_id: view_id,
-                context: session.user_context,
+                // We load views in the base language to make sure we read/write on the source term field
+                // of ir.ui.view
+                context: _.extend({}, session.user_context, {lang: false}),
             },
         }).then(function (studioView) {
             self.studioView = studioView;

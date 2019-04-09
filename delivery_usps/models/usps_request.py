@@ -190,7 +190,7 @@ class USPSRequest():
             itemdetail.append(self._item_data(line, weight, price))
 
         gross_weight = carrier._usps_convert_weight(picking.shipping_weight)
-        weight_in_ounces = picking.shipping_weight * 35.274
+        weight_in_ounces = 16 * gross_weight['pound'] + gross_weight['ounce']
         shipping_detail = {
             'api': api,
             'ID': carrier.sudo().usps_username,

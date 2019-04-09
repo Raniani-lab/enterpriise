@@ -58,13 +58,11 @@
         <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[1]" position="before">
             <th t-if="o.l10n_mx_edi_cfdi_uuid and xml.get('Version')">
                 <span>Product code</span>
-                <t t-set="colspan" t-value="colspan+1"/>
             </th>
         </xpath>
         <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[4]" position="after">
             <th class="text-right" t-if="o.l10n_mx_edi_cfdi_uuid and xml.get('Version')">
                 <span>Unit code</span>
-                <t t-set="colspan" t-value="colspan+1"/>
             </th>
         </xpath>
         <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[1]" position="before">

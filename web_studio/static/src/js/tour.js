@@ -371,6 +371,7 @@ tour.register('web_studio_new_report_tour', {
 }, {
     // click on the created app
     trigger: '.o_app[data-menu-xmlid*="studio"]:first',
+    extra_trigger: 'body.o_in_studio',
 }, {
     // edit reports
     trigger: '.o_web_studio_menu a[data-name="reports"]',

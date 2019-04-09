@@ -551,7 +551,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 field_name: field_name,
                 subview_type: subviewType,
                 subview_xpath: subviewXpath,
-                context: session.user_context,
+                // We write views in the base language to make sure we do it on the source term field
+                // of ir.ui.view
+                context: _.extend({}, session.user_context, {lang: false}),
             },
         });
         return def
@@ -633,7 +635,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 view_id: view_id,
                 studio_view_arch: studio_view_arch,
                 operations: operations,
-                context: session.user_context,
+                // We write views in the base language to make sure we do it on the source term field
+                // of ir.ui.view
+                context: _.extend({}, session.user_context, {lang: false}),
             },
         });
     },
@@ -647,7 +651,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
             params: {
                 view_id: view_id,
                 view_arch: view_arch,
-                context: session.user_context,
+                // We write views in the base language to make sure we do it on the source term field
+                // of ir.ui.view
+                context: _.extend({}, session.user_context, {lang: false}),
             },
         });
     },

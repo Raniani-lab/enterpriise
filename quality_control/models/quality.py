@@ -159,11 +159,11 @@ class QualityCheck(models.Model):
     def _compute_result(self):
         super(QualityCheck, self)._compute_result()
 
-    def _get_check_result(self, test_type):
-        if test_type == 'picture' and self.picture:
+    def _get_check_result(self):
+        if self.test_type == 'picture' and self.picture:
             return _('Picture Uploaded')
         else:
-            return super(QualityCheck, self)._get_check_result(test_type)
+            return super(QualityCheck, self)._get_check_result()
 
     def do_measure(self):
         self.ensure_one()

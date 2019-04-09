@@ -24,7 +24,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
     # QC-related fields
     allow_producing_quantity_change = fields.Boolean('Allow Changes to Producing Quantity', default=True)
-    component_id = fields.Many2one('product.product', compute='_compute_component_id', readonly=True)
+    component_id = fields.Many2one('product.product', related='current_quality_check_id.component_id')
     component_tracking = fields.Selection(related='component_id.tracking', string="Is Component Tracked", readonly=False)
     component_remaining_qty = fields.Float('Remaining Quantity for Component', compute='_compute_component_id', readonly=True,digits=dp.get_precision('Product Unit of Measure'))
     component_uom_id = fields.Many2one('uom.uom', compute='_compute_component_id', string="Component UoM")
@@ -39,7 +39,8 @@ class MrpProductionWorkcenterLine(models.Model):
     skip_completed_checks = fields.Boolean('Skip Completed Checks', readonly=True)
     quality_state = fields.Selection(related='current_quality_check_id.quality_state', string="Quality State", readonly=False)
     qty_done = fields.Float(related='current_quality_check_id.qty_done', readonly=False)
-    test_type = fields.Char('Test Type', compute='_compute_component_id', readonly=True)
+    test_type_id = fields.Many2one('quality.point.test_type', 'Test Type', related='current_quality_check_id.test_type_id')
+    test_type = fields.Char(related='test_type_id.technical_name')
     user_id = fields.Many2one(related='current_quality_check_id.user_id', readonly=False)
     worksheet_page = fields.Integer('Worksheet page')
     picture = fields.Binary(related='current_quality_check_id.picture', readonly=False)
@@ -71,14 +72,6 @@ class MrpProductionWorkcenterLine(models.Model):
     @api.depends('current_quality_check_id', 'qty_producing')
     def _compute_component_id(self):
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
-            if wo.current_quality_check_id.point_id:
-                wo.component_id = wo.current_quality_check_id.point_id.component_id
-                wo.test_type = wo.current_quality_check_id.point_id.test_type
-            elif wo.current_quality_check_id.component_id:
-                wo.component_id = wo.current_quality_check_id.component_id
-                wo.test_type = 'register_consumed_materials'
-            else:
-                wo.test_type = ''
             if wo.test_type == 'register_consumed_materials' and wo.quality_state == 'none':
                 if wo.current_quality_check_id.component_is_byproduct:
                     moves = wo.production_id.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
@@ -86,7 +79,6 @@ class MrpProductionWorkcenterLine(models.Model):
                     moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
                 move = moves[0]
                 lines = wo.workorder_line_ids.filtered(lambda l: l.move_id in moves)
-                # As we just set `wo.component_id`, using the related `wo.component_tracking` doesn't work.
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
                 wo.component_remaining_qty = move.product_uom._compute_quantity(
                     wo.qty_producing * sum(moves.mapped('unit_factor')),
@@ -184,7 +176,6 @@ class MrpProductionWorkcenterLine(models.Model):
                 'workorder_id': self.id,
                 'product_id': self.product_id.id,
                 'parent_id': parent_id.id,
-                'component_is_byproduct': parent_id.component_is_byproduct,
                 'finished_product_sequence': self.qty_produced,
                 'qty_done': self.component_remaining_qty if self.component_tracking != 'serial' else 1.0,
             }
@@ -196,6 +187,7 @@ class MrpProductionWorkcenterLine(models.Model):
             else:
                 quality_check_data.update({
                     'component_id': self.current_quality_check_id.component_id.id,
+                    'test_type_id': self.current_quality_check_id.test_type_id.id,
                     'team_id': self.current_quality_check_id.team_id.id,
                 })
             quality_check_data.update(self._defaults_from_workorder_lines(self.component_id))

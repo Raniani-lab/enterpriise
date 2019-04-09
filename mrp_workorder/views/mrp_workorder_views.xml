@@ -42,9 +42,20 @@
         <field name="arch" type="xml">
             <form string="Production Workcenter" delete="0" create="0" class="o_workorder_tablet">
                 <field name="allow_producing_quantity_change" invisible="1"/>
-                <field name="workorder_line_ids" invisible="1">
+                <field name="raw_workorder_line_ids" invisible="1">
                     <!-- to save those values updated in _onchange_qty_producing -->
-                    <tree>
+                    <tree editable="bottom">
+                        <field name="qty_done"/>
+                        <field name="qty_reserved"/>
+                        <field name="qty_to_consume"/>
+                        <field name="product_id"/>
+                        <field name="product_uom_id"/>
+                        <field name="move_id"/>
+                    </tree>
+                </field>
+                <field name="finished_workorder_line_ids" invisible="1">
+                    <!-- to save those values updated in _onchange_qty_producing -->
+                    <tree editable="bottom">
                         <field name="qty_done"/>
                         <field name="qty_reserved"/>
                         <field name="qty_to_consume"/>
@@ -63,6 +74,7 @@
                 <field name="is_user_working" invisible="1"/>
                 <field name="is_produced" invisible="1"/>
                 <field name="move_raw_ids" invisible="1"/>
+                <field name="move_finished_ids" invisible="1"/>
                 <field name="next_work_order_id" invisible="1"/>
                 <field name="quality_state" invisible="1"/>
                 <field name="qty_produced" invisible="1"/>
@@ -123,7 +135,7 @@
                                 name="action_next"
                                 type="object"
                                 class="btn-secondary"
-                                attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'picture']), ('consumption', '=', 'strict'), '&amp;', ('consumption', '=', 'flexible'), ('component_qty_to_do', '&gt;=', 0)]}"
+                                attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'register_byproducts', 'picture']), ('consumption', '=', 'strict'), '&amp;', ('consumption', '=', 'flexible'), ('component_qty_to_do', '&gt;=', 0)]}"
                                 barcode_trigger="next"
                                 string="VALIDATE"
                             />
@@ -131,21 +143,21 @@
                                 name="action_next"
                                 type="object"
                                 class="btn-primary"
-                                attrs="{'invisible': ['|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'picture']), ('component_qty_to_do', '&lt;', 0)]}"
+                                attrs="{'invisible': ['|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'register_byproducts', 'picture']), ('component_qty_to_do', '&lt;', 0)]}"
                                 barcode_trigger="next"
                                 string="VALIDATE"
                             />
                             <button name="action_continue"
                                 type="object"
                                 class="btn-primary"
-                                attrs="{'invisible': ['|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', '!=', 'register_consumed_materials'), ('component_qty_to_do', '&gt;=', 0)]}"
+                                attrs="{'invisible': ['|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'register_byproducts']), ('component_qty_to_do', '&gt;=', 0)]}"
                                 barcode_trigger="continue"
                                 string="CONTINUE CONSUMPTION"
                             />
                             <button name="action_continue"
                                 type="object"
                                 class="btn-secondary"
-                                attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', '!=', 'register_consumed_materials'), ('consumption', '=', 'strict'), '&amp;', ('consumption', '=', 'flexible'), ('component_qty_to_do', '&lt;', 0)]}"
+                                attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'register_byproducts']), ('consumption', '=', 'strict'), '&amp;', ('consumption', '=', 'flexible'), ('component_qty_to_do', '&lt;', 0)]}"
                                 barcode_trigger="continue"
                                 string="CONTINUE CONSUMPTION"
                             />
@@ -181,15 +193,16 @@
                             <field name="quality_state_for_summary" string="Status"/>
                         </tree>
                     </field>
-                    <div class="o_workorder_bar_content o_workorder_form" attrs="{'invisible': ['|', ('test_type', '!=', 'register_consumed_materials'), ('is_last_step', '=', True)]}">
+                    <div class="o_workorder_bar_content o_workorder_form" attrs="{'invisible': ['|', ('test_type', 'not in', ('register_byproducts', 'register_consumed_materials')), ('is_last_step', '=', True)]}">
                         <div class="o_workorder_field">
-                            <div class="o_form_label">Component</div>
+                            <div attrs="{'invisible': [('test_type', '=', 'register_byproducts')]}" class="o_form_label">Component</div>
+                            <div attrs="{'invisible': [('test_type', '=', 'register_consumed_materials')]}" class="o_form_label">By-product</div>
                             <field name="component_id" readonly="1"/>
                         </div>
                         <div class="o_workorder_field text-center">
                             <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'serial')]}">Serial Number</div>
                             <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'lot')]}">Lot Number</div>
-                            <field name="lot_id" context="{'default_product_id': component_id, 'active_mo_id': production_id}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id)]"/>
+                            <field name="lot_id" context="{'default_product_id': component_id, 'active_mo_id': test_type == 'register_consumed_materials' and production_id or False}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id)]"/>
                         </div>
                         <div class="o_workorder_field text-right">
                             <label for="qty_done" string="Quantity"/>

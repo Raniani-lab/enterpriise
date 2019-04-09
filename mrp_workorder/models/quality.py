@@ -15,7 +15,7 @@ class TestType(models.Model):
         if value:
             return []
         else:
-            return [('technical_name', 'not in', ['register_consumed_materials', 'print_label'])]
+            return [('technical_name', 'not in', ['register_byproducts', 'register_consumed_materials', 'print_label'])]
 
 
 class MrpRouting(models.Model):
@@ -44,15 +44,19 @@ class QualityPoint(models.Model):
         default="noupdate")
     worksheet_page = fields.Integer('Worksheet Page')
     # Used with type register_consumed_materials the product raw to encode.
-    component_id = fields.Many2one('product.product', 'Component')
+    component_id = fields.Many2one('product.product', 'Product To Register')
 
-    @api.onchange('product_id', 'product_tmpl_id', 'picking_type_id')
+    @api.onchange('product_id', 'product_tmpl_id', 'picking_type_id', 'test_type_id')
     def _onchange_product(self):
         bom_ids = self.env['mrp.bom'].search([('product_tmpl_id', '=', self.product_tmpl_id.id)])
         component_ids = set([])
-        for bom in bom_ids:
-            boms_done, lines_done = bom.explode(self.product_id, 1.0)
-            component_ids |= {l[0].product_id.id for l in lines_done}
+        if self.test_type == 'register_consumed_materials':
+            for bom in bom_ids:
+                boms_done, lines_done = bom.explode(self.product_id, 1.0)
+                component_ids |= {l[0].product_id.id for l in lines_done}
+        if self.test_type == 'register_byproducts':
+            for bom in bom_ids:
+                component_ids |= {byproduct.product_id.id for byproduct in bom.sub_products}
         routing_ids = bom_ids.mapped('routing_id.id')
         if self.picking_type_id.code == 'mrp_operation':
             return {
@@ -86,7 +90,6 @@ class QualityCheck(models.Model):
     move_line_id = fields.Many2one('mrp.workorder.line', 'Workorder Line')
     qty_done = fields.Float('Done', default=1.0, digits=dp.get_precision('Product Unit of Measure'))
     final_lot_id = fields.Many2one('stock.production.lot', 'Finished Product Lot')
-    component_is_byproduct = fields.Boolean('Register a by product', default=False)
 
     # Computed fields
     title = fields.Char('Title', compute='_compute_title')
@@ -115,25 +118,22 @@ class QualityCheck(models.Model):
             if check.point_id:
                 check.title = check.point_id.title
             else:
-                check.title = '{} "{}"'.format(_('Register component(s)'), check.component_id.name)
+                check.title = '{} "{}"'.format(check.test_type_id.display_name, check.component_id.name)
 
     @api.depends('point_id', 'quality_state', 'component_id', 'component_uom_id', 'lot_id', 'qty_done')
     def _compute_result(self):
         for check in self:
             state = check.quality_state
             check.quality_state_for_summary = _('Done') if state != 'none' else _('To Do')
-            if check.point_id:
-                check.component_id = check.point_id.component_id
-            test_type = check.point_id.test_type if check.point_id else 'register_consumed_materials'
             if check.quality_state == 'none':
                 check.result = ''
             else:
-                check.result = check._get_check_result(test_type)
+                check.result = check._get_check_result()
 
-    def _get_check_result(self, test_type):
-        if test_type == 'register_consumed_materials' and self.lot_id:
+    def _get_check_result(self):
+        if self.test_type in ('register_consumed_materials', 'register_byproducts') and self.lot_id:
             return '{} - {}, {} {}'.format(self.component_id.name, self.lot_id.name, self.qty_done, self.component_uom_id.name)
-        elif test_type == 'register_consumed_materials' and self.qty_done > 0:
+        elif self.test_type in ('register_consumed_materials', 'register_byproducts') and self.qty_done > 0:
             return '{}, {} {}'.format(self.component_id.name, self.qty_done, self.component_uom_id.name)
         else:
             return ''

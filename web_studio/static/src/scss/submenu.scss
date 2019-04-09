@@ -82,12 +82,9 @@
     .o_web_studio_snackbar {
         float: right;
         display: inline-block;
-        font-size: 0.9em;
         line-height: $o-web-studio-menu-height;
-        opacity: 0.5;
         padding-right: 40px;
 
-        background-color: $o-web-studio-bg-medium;
         color: $o-web-studio-text-inactive;
     }
 

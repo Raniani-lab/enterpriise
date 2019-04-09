@@ -305,7 +305,7 @@ var SubMenu = Widget.extend({
         }
         this.$('.o_web_studio_snackbar')
             .empty()
-            .append($('<span>', {
+            .append($('<strong>', {
                 text: message,
             }));
         if (autoRemove) {

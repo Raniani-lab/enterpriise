@@ -48,6 +48,7 @@
 
         > h3 {
             color: white;
+            margin: 10px 0 15px 0;
         }
 
         > hr {
@@ -97,6 +98,7 @@
             .o_web_studio_attrs {
                 font-size: 11px;
                 float: right;
+                @include o-web-studio-sidebar-btn-link;
             }
 
             > button {
@@ -246,6 +248,9 @@
         }
         .o_field_selector_chain_part {
             background: none;
+        }
+        .o_web_studio_edit_selection_values {
+            @include o-web-studio-sidebar-btn-link;
         }
     }
 }

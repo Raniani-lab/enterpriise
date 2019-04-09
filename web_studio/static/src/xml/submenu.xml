@@ -73,7 +73,7 @@
 
     <div class="o_web_studio_redo"><button class="btn"><i class="fa fa-repeat"/><span>Redo</span></button></div>
     <div class="o_web_studio_undo"><button class="btn"><i class="fa fa-undo"/><span>Undo</span></button></div>
-    <div class="o_web_studio_snackbar"/>
+    <div class="o_web_studio_snackbar mr-2"/>
 
 </div>
 

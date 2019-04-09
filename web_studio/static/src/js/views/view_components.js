@@ -93,12 +93,12 @@ var TextFieldComponent = AbstractNewFieldComponent.extend({
 });
 var IntegerFieldComponent = AbstractNewFieldComponent.extend({
     type: 'integer',
-    label: _lt('Integer number'),
+    label: _lt('Integer'),
     className: 'o_web_studio_field_integer',
 });
 var DecimalFieldComponent = AbstractNewFieldComponent.extend({
     type: 'float',
-    label: _lt('Decimal Number'),
+    label: _lt('Decimal'),
     className: 'o_web_studio_field_float',
 });
 var HtmlFieldComponent = AbstractNewFieldComponent.extend({

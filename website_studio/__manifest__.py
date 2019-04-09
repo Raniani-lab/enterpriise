@@ -15,7 +15,7 @@ model. Furthermore, you can create a new website form or edit an existing one.
     'version': '1.0',
     'depends': [
         'web_studio',
-        'website_form_editor',
+        'website_form',
     ],
     'data': [
         'views/assets.xml',

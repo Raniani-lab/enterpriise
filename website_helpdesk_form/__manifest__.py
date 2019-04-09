@@ -7,7 +7,7 @@
     'sequence': 58,
     'summary': 'Qualify helpdesk queries with a website form',
     'depends': [
-        'website_form_editor',
+        'website_form',
         'website_helpdesk',
     ],
     'description': """

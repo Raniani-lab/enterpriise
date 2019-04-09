@@ -3051,9 +3051,78 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('add a selection field', async function (assert) {
+    QUnit.test('add a selection field in non debug', async function (assert) {
+        assert.expect(8);
+
+        // inline selection edition is only available in non debug mode
+        var initialDebugMode = config.debug;
+        config.debug = false;
+        var fieldsView;
+        var arch = "<tree><field name='display_name'/></tree>";
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].node.field_description.selection,
+                        "[[\"Value 1\",\"Miramar\"]]",
+                        "the selection value should be set correctly");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            list: fieldsView,
+                        },
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        await testUtils.dom.dragAndDrop(
+            vem.$('.o_web_studio_new_fields .o_web_studio_field_selection'),
+            vem.$('.o_web_studio_hook:first'));
+        assert.containsOnce($, '.modal .o_web_studio_field_dialog_form',
+            "a modal should be opened");
+        assert.containsNone($, '.modal .o_web_studio_selection_editor',
+            "there should be no selection editor");
+
+        // add a new value (with ENTER)
+        await testUtils.fields.editAndTrigger($('.modal .o_web_studio_selection_new_value input'),
+            'Value 1', [$.Event('keyup', { which: $.ui.keyCode.ENTER })]);
+        assert.containsOnce($, '.modal .o_web_studio_selection_editor > li',
+            "there should be 1 selection value");
+        assert.containsOnce($, '.modal .o_web_studio_selection_editor > li span:contains(Value 1)',
+            "the value should be correctly set");
+
+        // edit the first value
+        await testUtils.dom.click($('.modal .o_web_studio_selection_editor li:first .o_web_studio_edit_selection_value'));
+        assert.containsOnce($, '.modal',
+            "new modal to edit selection value should not open in non debug mode");
+        assert.strictEqual($('.modal .o_web_studio_selection_editor li:first').find('.o_web_studio_selection_input').val(), "Value 1",
+            "the value should be set in the input in li");
+
+        await testUtils.fields.editAndTrigger($('.modal .o_web_studio_selection_editor li:first .o_web_studio_selection_input'),
+            'Miramar', ['blur']);
+        assert.containsOnce($, '.modal .o_web_studio_selection_editor > li:first span:contains(Miramar)',
+            "the value should have been updated");
+
+         // Click 'Confirm' button for the new field dialog
+        await testUtils.dom.click($('.modal button:contains("Confirm")'));
+
+        config.debug = initialDebugMode;
+        vem.destroy();
+    });
+
+    QUnit.test('add a selection field in debug', async function (assert) {
         assert.expect(16);
 
+        // Dialog to edit selection values is only available in debug mode
+        var initialDebugMode = config.debug;
+        config.debug = true;
         var fieldsView;
         var arch = "<tree><field name='display_name'/></tree>";
         var vem = await studioTestUtils.createViewEditorManager({
@@ -3130,6 +3199,8 @@ QUnit.module('ViewEditorManager', {
         $('.modal .o_web_studio_selection_new_value input')
             .val('Sulochan');
         await testUtils.dom.click($('.modal button:contains(Confirm)'));
+
+        config.debug = initialDebugMode;
         vem.destroy();
     });
 

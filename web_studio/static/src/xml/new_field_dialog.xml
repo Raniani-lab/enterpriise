@@ -18,14 +18,15 @@
 </div>
 
 <t t-name="web_studio.SelectionValues">
-    <p class="text-muted">Specify all possible values.</p>
+    <h5>Specify all possible values</h5>
     <ul class="o_web_studio_selection_editor list-unstyled mb0" t-if="widget.selection.length">
         <li t-foreach="widget.selection" t-as="selectionValue" t-att-data-value="selectionValue[0]">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text fa fa-bars" role="img" aria-label="Value of list" title="Value of list"/>
                 </div>
-                <span class="form-control">
+                <input class="d-none form-control o_web_studio_selection_input"/>
+                <span class="form-control o_web_studio_selection_label">
                     <t t-esc="selectionValue[1]"/>
                 </span>
                 <span class="input-group-append">
@@ -58,7 +59,7 @@
             <input class="form-control" id="o_selection_label" required="required" t-att-value="element[1]"/>
         </div>
     </div>
-    <div class="form-group" t-if="debug">
+    <div class="form-group">
         <label class="col-form-label col-md-3" for="o_selection_value">Value</label>
         <div class="col-md-9">
             <input class="form-control" id="o_selection_value" required="required" t-att-value="element[0]"/>

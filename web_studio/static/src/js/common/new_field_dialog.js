@@ -22,6 +22,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         'click .o_web_studio_remove_selection_value': '_onRemoveSelectionValue',
         'click .o_web_studio_add_selection_value': '_onAddSelectionValue',
         'click .o_web_studio_clear_selection_value': '_onClearSelectionValue',
+        'blur .o_web_studio_selection_editor .o_web_studio_selection_input': '_onSelectionInputBlur',
     },
     /**
      * @constructor
@@ -92,7 +93,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         if (this.type === 'selection') {
             // Focus on the input responsible for adding new selection value
             this.opened().then(function () {
-                self.$('.o_web_studio_selection_input').focus();
+                self.$('.o_web_studio_selection_new_value > input').focus();
             });
         } else if (this.type === 'one2many') {
             defs.push(this.model.makeRecord('ir.model.fields', [{
@@ -179,38 +180,42 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             this.selection.push([string, string]);
         }
         this.renderElement();
-        this.$('input').focus();
+        this.$('.o_web_studio_selection_new_value > input').focus();
     },
     /**
      * @private
-     * @param {Event} e
+     * @param {Event} ev
      */
-    _onEditSelectionValue: function (e) {
+    _onEditSelectionValue: function (ev) {
         var self = this;
-        var val = this.$(e.currentTarget).closest('li')[0].dataset.value;
-        var element = _.find(this.selection, function(el) {return el[0] === val; });
-        new Dialog(this, {
-            title: _t('Edit Value'),
-            size: 'small',
-            $content: $(qweb.render('web_studio.SelectionValues.edit', {
-                debug: config.debug,
-                element: element,
-            })),
-            buttons: [
-                {text: _t('Confirm'), classes: 'btn-primary', close: true, click: function () {
-                    // the value edition is only available in debug mode
-                    var newValue = config.debug && this.$('input#o_selection_value').val() || val;
-                    var newString = this.$('input#o_selection_label').val();
-                    var index = self.selection.indexOf(element);
-                    if (index >= 0) {
-                        self.selection.splice(index, 1);
-                        self.selection.splice(index, 0, [newValue, newString]);
+        var $btn = $(ev.currentTarget);
+
+        if (config.debug) {
+            var val = $btn.closest('li')[0].dataset.value;  // use dataset to always get a string
+            var index = _.findIndex(this.selection, function (el) {return el[0] === val;});
+            new Dialog(this, {
+                title: _t('Edit Value'),
+                size: 'small',
+                $content: $(qweb.render('web_studio.SelectionValues.edit', {
+                    element: self.selection[index],
+                })),
+                buttons: [
+                    {text: _t('Confirm'), classes: 'btn-primary', close: true, click: function () {
+                        var newValue = this.$('input#o_selection_value').val() || val;
+                        var newString = this.$('input#o_selection_label').val();
+                        self.selection[index] = [newValue, newString];
                         self.renderElement();
-                    }
-                }},
-                {text: _t('Close'), close: true},
-            ],
-        }).open();
+                    }},
+                    {text: _t('Close'), close: true},
+                ],
+            }).open();
+        } else {
+            $btn.toggleClass('fa-check fa-pencil-square-o');
+            var $input = $btn.closest('li').find('.o_web_studio_selection_input.d-none');
+            var $span = $input.siblings('.o_web_studio_selection_label');
+            // Toggle span and input, and set the initial value for input
+            $input.val($span.toggleClass('d-none').text().trim()).toggleClass('d-none').focus();
+        }
     },
     /**
      * @private
@@ -260,7 +265,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             values.relation_id = this.many2one_model.value.res_id;
             values.field_description = this.many2one_model.m2o_value;
         } else if (this.type === 'selection') {
-            var newSelection = this.$('.o_web_studio_selection_input').val();
+            var newSelection = this.$('.o_web_studio_selection_new_value > input').val();
             if (newSelection) {
                 this.selection.push([newSelection, newSelection]);
             }
@@ -295,6 +300,17 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             }
         }
         this.trigger('field_default_values_saved', values);
+    },
+    /**
+     * @private
+     * @param {Event} ev
+     */
+    _onSelectionInputBlur: function (ev) {
+        var $input = $(ev.currentTarget);
+        var val = $input.closest('li').data('value');
+        var index = _.findIndex(this.selection, function (el) { return el[0] === val; });
+        this.selection[index][1] = $input.val();
+        this.renderElement();
     },
 });
 

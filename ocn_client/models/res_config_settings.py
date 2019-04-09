@@ -48,8 +48,10 @@ class ResConfigSettings(models.TransientModel):
             'user_name': self.env.user.partner_id.name,
             'user_login': self.env.user.login,
             'device_name': device_name,
-            'device_key': device_key
+            'device_key': device_key,
         }
         result = jsonrpc(self._get_endpoint() + '/iap/ocn/register_device', params=values)
         if result:
             self.env.user.partner_id.ocn_token = result
+            return result
+        return False

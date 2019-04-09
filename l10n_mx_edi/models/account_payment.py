@@ -16,6 +16,8 @@ from odoo.exceptions import UserError
 
 from . import account_invoice
 
+from odoo.addons.l10n_mx_edi.tools.run_after_commit import run_after_commit
+
 CFDI_TEMPLATE = 'l10n_mx_edi.payment10'
 CFDI_XSLT_CADENA = 'l10n_mx_edi/data/3.3/cadenaoriginal.xslt'
 CFDI_XSLT_CADENA_TFD = 'l10n_mx_edi/data/xslt/3.3/cadenaoriginal_TFD_1_1.xslt'
@@ -555,6 +557,7 @@ class AccountPayment(models.Model):
         self.message_post(
             body=body_msg + account_invoice.create_list_html(post_msg))
 
+    @run_after_commit
     @api.multi
     def _l10n_mx_edi_call_service(self, service_type):
         """Call the right method according to the pac_name, it's info returned

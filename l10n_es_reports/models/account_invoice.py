@@ -48,6 +48,7 @@ class AccountInvoice(models.Model):
         spanish_coa_list = [self.env.ref('l10n_es.account_chart_template_pymes'), self.env.ref('l10n_es.account_chart_template_assoc'), self.env.ref('l10n_es.account_chart_template_full')]
         for record in self:
             if record.company_id.chart_template_id in spanish_coa_list and \
+            record.partner_id.country_id == self.env.ref('base.es', False) and \
             (not record.l10n_es_reports_mod347_invoice_type or (record.l10n_es_reports_mod349_available and not record.l10n_es_reports_mod349_invoice_type)):
                 raise UserError(_("Please select a Spanish invoice type for this invoice."))
         return rslt

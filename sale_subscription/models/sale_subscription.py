@@ -696,7 +696,7 @@ class SaleSubscription(models.Model):
                                     cr.commit()
                                 if tx.state in ['done', 'authorized']:
                                     subscription.send_success_mail(tx, new_invoice)
-                                    msg_body = 'Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, new_invoice.id)
+                                    msg_body = _('Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>.') % (tx.id, tx.reference, tx.amount, new_invoice.id)
                                     subscription.message_post(body=msg_body)
                                     if subscription.template_id.payment_mode == 'validate_send_payment':
                                         subscription.validate_and_send_invoice(new_invoice)
@@ -727,21 +727,21 @@ class SaleSubscription(models.Model):
                                     'date_close': date_close
                                 })
                                 if close_subscription:
-                                    _, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_close')
+                                    model, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_close')
                                     template = template_res.browse(template_id)
                                     template.with_context(email_context).send_mail(subscription.id)
                                     _logger.debug("Sending Subscription Closure Mail to %s for subscription %s and closing subscription", subscription.partner_id.email, subscription.id)
-                                    msg_body = 'Automatic payment failed after multiple attempts. Subscription closed automatically.'
+                                    msg_body = _('Automatic payment failed after multiple attempts. Subscription closed automatically.')
                                     subscription.message_post(body=msg_body)
                                     subscription.set_close()
                                 else:
-                                    _, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_reminder')
-                                    msg_body = 'Automatic payment failed. Subscription set to "To Renew".'
+                                    model, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_reminder')
+                                    msg_body = _('Automatic payment failed. Subscription set to "To Renew".')
                                     if (datetime.date.today() - subscription.recurring_next_date).days in [0, 3, 7, 14]:
                                         template = template_res.browse(template_id)
                                         template.with_context(email_context).send_mail(subscription.id)
                                         _logger.debug("Sending Payment Failure Mail to %s for subscription %s and setting subscription to pending", subscription.partner_id.email, subscription.id)
-                                        msg_body += ' E-mail sent to customer.'
+                                        msg_body += _(' E-mail sent to customer.')
                                     subscription.message_post(body=msg_body)
                                     subscription.set_to_renew()
                             if auto_commit:

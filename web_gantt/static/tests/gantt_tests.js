@@ -247,6 +247,40 @@ QUnit.module('Views', {
         });
     });
 
+    QUnit.test('create a task maintains the domain', function (assert) {
+        assert.expect(2);
+        var done = assert.async();
+
+        createAsyncView({
+            View: GanttView,
+            model: 'task',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" progress="progress"></gantt>',
+            archs: {
+                'task,false,form':
+                    '<form string="Task">' +
+                        '<field name="name"/>' +
+                    '</form>',
+            },
+            domain: [['user_id', '=', 61]],  // I am an important line
+            viewOptions: {
+                initialDate: initialDate,
+                action: {name: "Forecasts"}
+            },
+        }).then(function (gantt) {
+            assert.strictEqual(gantt.$(".gantt_row").length, 2,
+                "the list view is filtered");
+            gantt.$('.gantt_task_cell').first().click();
+            $('.modal .modal-body input:first').val('new task').trigger('input');
+            $('.modal .modal-footer button.btn-primary').click();  // save
+            assert.strictEqual(gantt.$(".gantt_row").length, 2,
+                "the list view is still filtered after the save");
+
+            gantt.destroy();
+            done();
+        });
+    });
+
     QUnit.test('gantt view readonly', function (assert) {
         assert.expect(1);
         var done = assert.async();

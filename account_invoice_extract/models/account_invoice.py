@@ -58,14 +58,14 @@ class AccountInvoice(models.Model):
             can_show = False
         return can_show
 
-    @api.depends('state', 'extract_state', 'message_ids')
+    @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_resend_button(self):
         for record in self:
             record.extract_can_show_resend_button = self._compute_can_show_send_resend(record)
             if record.extract_state not in ['error_status', 'not_enough_credit', 'module_not_up_to_date']:
                 record.extract_can_show_resend_button = False
 
-    @api.depends('state', 'extract_state', 'message_ids')
+    @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_send_button(self):
         for record in self:
             record.extract_can_show_send_button = self._compute_can_show_send_resend(record)
@@ -79,9 +79,9 @@ class AccountInvoice(models.Model):
                             ('extract_not_ready', 'waiting extraction, but it is not ready'),
                             ('waiting_validation', 'Waiting validation'),
                             ('done', 'Completed flow')],
-                            'Extract state', default='no_extract_requested', required=True)
-    extract_remoteid = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id")
-    extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id")
+                            'Extract state', default='no_extract_requested', required=True, copy=False)
+    extract_remoteid = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False)
+    extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
@@ -128,8 +128,6 @@ class AccountInvoice(models.Model):
                                 record.extract_state = 'error_status'
                         except AccessError:
                             record.extract_state = 'error_status'
-        for record in self:
-            record._compute_show_resend_button()
         return res
 
     def retry_ocr(self):

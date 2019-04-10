@@ -35,7 +35,7 @@ class TestPayrollPerformance(TestPayslipBase):
     @warmup
     def test_performance_work_entry_generation(self):
         """ Work entry generation """
-        with self.assertQueryCount(__system__=31, admin=34):
+        with self.assertQueryCount(__system__=32, admin=35):
             self.employees.generate_work_entries(date(2018, 1, 1), date(2018, 1, 2))
         self.reset_work_entries()
 
@@ -83,7 +83,7 @@ class TestPayrollPerformance(TestPayslipBase):
     def test_performance_leave_write(self):
         leave = self.create_leave(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 18, 0))
 
-        with self.assertQueryCount(__system__=25, admin=47):
+        with self.assertQueryCount(__system__=25, admin=49):
             leave.date_to = datetime(2018, 1, 1, 19, 0)
         leave.action_refuse()
 

@@ -29,6 +29,15 @@ class TestPayslipBase(TransactionCase):
             'department_id': self.ref('hr.dep_rd')
         })
 
+        # I create a new employee "Jules"
+        self.jules_emp = self.env['hr.employee'].create({
+            'name': 'Jules',
+            'gender': 'male',
+            'birthday': '1984-05-01',
+            'country_id': self.ref('base.be'),
+            'department_id': self.ref('hr.dep_rd')
+        })
+
         self.structure_type = self.env['hr.payroll.structure.type'].create({
             'name': 'Test - Developer',
         })
@@ -134,7 +143,25 @@ class TestPayslipContractBase(TestPayslipBase):
             ]
         })
         self.calendar_35h._onchange_hours_per_day() # update hours/day
+
+        self.calendar_2_weeks = self.env['resource.calendar'].create({
+            'name': 'Week 1: 30 Hours - Week 2: 16 Hours',
+            'two_weeks_calendar': True,
+            'attendance_ids': [
+                (0, 0, {'name': 'Monday', 'sequence': '1', 'week_type': '0', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 16}),
+                (0, 0, {'name': 'Monday', 'sequence': '26', 'week_type': '1', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 16}),
+                (0, 0, {'name': 'Tuesday', 'sequence': '2', 'week_type': '0', 'dayofweek': '1', 'hour_from': 9, 'hour_to': 17}),
+                (0, 0, {'name': 'Wednesday', 'sequence': '27', 'week_type': '1', 'dayofweek': '2', 'hour_from': 7, 'hour_to': 15}),
+                (0, 0, {'name': 'Thursday', 'sequence': '28', 'week_type': '1', 'dayofweek': '3', 'hour_from': 8, 'hour_to': 16}),
+                (0, 0, {'name': 'Friday', 'sequence': '29', 'week_type': '1', 'dayofweek': '4', 'hour_from': 10, 'hour_to': 18}),
+                (0, 0, {'name': 'Even week', 'dayofweek': '0', 'sequence': '0', 'hour_from': 0, 'day_period': 'morning', 'week_type': '0', 'hour_to': 0, 'display_type': 'line_section'}),
+                (0, 0, {'name': 'Odd week', 'dayofweek': '0', 'sequence': '25', 'hour_from': 0, 'day_period': 'morning', 'week_type': '1', 'hour_to': 0, 'display_type': 'line_section'}),
+            ]
+        })
+        self.calendar_2_weeks._onchange_hours_per_day() # update hours/day
+
         self.richard_emp.resource_calendar_id = self.calendar_richard
+        self.jules_emp.resource_calendar_id = self.calendar_2_weeks
 
         self.calendar_16h = self.env['resource.calendar'].create({
             'name': '16h calendar',
@@ -189,4 +216,15 @@ class TestPayslipContractBase(TestPayslipBase):
             'state': 'open',
             'date_generated_from': datetime.strptime('2015-11-15', '%Y-%m-%d'),
             'date_generated_to': datetime.strptime('2015-11-15', '%Y-%m-%d'),
+        })
+
+        # Contract for Jules
+        self.contract_jules = self.env['hr.contract'].create({
+            'date_start': datetime.strptime('2015-01-01', '%Y-%m-%d'),
+            'name': 'Contract for Jules',
+            'resource_calendar_id': self.calendar_2_weeks.id,
+            'wage': 5000.0,
+            'employee_id': self.jules_emp.id,
+            'structure_type_id': self.developer_pay_structure.type_id.id,
+            'state': 'open',
         })

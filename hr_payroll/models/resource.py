@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo.osv.expression import AND
 from odoo.tools import float_compare
 from datetime import datetime

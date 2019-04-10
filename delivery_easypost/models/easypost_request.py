@@ -183,7 +183,7 @@ class EasypostRequest():
                 if picking.is_return_picking:
                     weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.product_qty, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines])
                 else:
-                    weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.qty_done, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines])
+                    weight = package.shipping_weight
                 weight = carrier._easypost_convert_weight(weight)
                 # Prepare an easypost parcel with same info than package.
                 shipment.update(self._prepare_parcel(shipment_id, package.packaging_id, weight=weight, label_format=carrier.easypost_label_file_type))

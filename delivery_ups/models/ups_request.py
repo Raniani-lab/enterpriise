@@ -198,7 +198,7 @@ class UPSRequest():
         if order:
             if not order.order_line:
                 return _("Please provide at least one item to ship.")
-            for line in order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital']):
+            for line in order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital', False]):
                 return _("The estimated price cannot be computed because the weight of your product is missing.")
         if picking:
             for move in picking.move_lines.filtered(lambda move: not move.product_id.weight):

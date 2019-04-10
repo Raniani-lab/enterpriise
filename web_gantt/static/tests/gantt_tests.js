@@ -1039,6 +1039,33 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('create a task maintains the domain', async function (assert) {
+        assert.expect(2);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop"></gantt>',
+            archs: {
+                'tasks,false,form': '<form><field name="name"/></form>',
+            },
+            domain: [['user_id', '=', 2]],  // I am an important line
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.containsN(gantt, '.o_gantt_pill', 3, "the list view is filtered");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell:first .o_gantt_cell_add'), "mouseup");
+        await testUtils.fields.editInput($('.modal .modal-body input[name=name]'), 'new task');
+        await testUtils.modal.clickButton('Save & Close');
+        assert.containsN(gantt, '.o_gantt_pill', 3,
+            "the list view is still filtered after the save");
+
+        gantt.destroy();
+    });
+
     QUnit.test('pill is updated after failed resized', async function (assert) {
         assert.expect(3);
 

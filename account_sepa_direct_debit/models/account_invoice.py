@@ -17,7 +17,9 @@ class AccountInvoice(models.Model):
         """
         res = super(AccountInvoice, self).action_move_create()
 
-        for record in self.filtered(lambda x: x.type in ['in_refund', 'out_invoice'] and x.residual != 0):
+        # Automatic payment only for customer's invoice
+        # i.e. credit notes from vendors shouldn't have their payment automated
+        for record in self.filtered(lambda x: x.type in ['out_invoice'] and x.residual != 0):
             usable_mandate = record._get_usable_mandate()
             if usable_mandate:
                 record.sdd_paying_mandate_id = usable_mandate
@@ -30,24 +32,31 @@ class AccountInvoice(models.Model):
         changes the state of the invoice and generates the corresponding payment
         object, setting its state to 'posted'.
         """
+        if self.type in ['out_refund', 'in_invoice']:
+            raise UserError(_("You cannot do direct debit on a customer to pay a refund to him, or on a supplier to pay an invoice from him."))
+
         date_upper_bound = mandate.end_date or self.date_invoice
         if not(mandate.start_date <= self.date_invoice <= date_upper_bound):
             raise UserError(_("You cannot pay an invoice with a mandate that does not cover the moment when it was issued."))
 
         payment_method = self.env.ref('account_sepa_direct_debit.payment_method_sdd')
         payment_journal = mandate.payment_journal_id
+        PaymentObj = self.env['account.payment'].with_context(active_id=self.id, active_ids=self.ids)
 
         #This code is only executed if the mandate may be used (thanks to the previous UserError)
-        payment = self.env['account.payment'].create({'invoice_ids': [(4, self.id, None)],
-                                                      'journal_id': payment_journal.id,
-                                                      'payment_method_id': payment_method.id,
-                                                      'amount': self.residual,
-                                                      'currency_id': self.currency_id.id,
-                                                      'payment_type': 'inbound',
-                                                      'communication': self.reference or self.number,
-                                                      'partner_type': 'customer',
-                                                      'partner_id': mandate.partner_id.commercial_partner_id.id,
-                                                      'payment_date': self.date_due or self.date_invoice})
+        payment = PaymentObj.create({
+            'invoice_ids': [(4, self.id, None)],
+            'journal_id': payment_journal.id,
+            'payment_method_id': payment_method.id,
+            'amount': self.residual,
+            'currency_id': self.currency_id.id,
+            'payment_type': 'inbound',
+            'communication': self.reference or self.number,
+            'partner_type': 'customer' if self.type == 'out_invoice' else 'supplier',
+            'partner_id': mandate.partner_id.commercial_partner_id.id,
+            'payment_date': self.date_due or self.date_invoice
+        })
+
         payment.post()
         return payment
 

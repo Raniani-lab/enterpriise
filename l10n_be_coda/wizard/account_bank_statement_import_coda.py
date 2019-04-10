@@ -65,7 +65,7 @@ class AccountBankStatementImport(models.TransientModel):
                 statement['balance_start'] = float(rmspaces(line[43:58])) / 1000
                 if line[42] == '1':  # 1 = Debit, the starting balance is negative
                     statement['balance_start'] = - statement['balance_start']
-                statement['balance_start_date'] = time.strftime(tools.DEFAULT_SERVER_DATE_FORMAT, time.strptime(rmspaces(line[58:64]), '%d%m%y'))
+                statement['balance_start_date'] = time.strftime(tools.DEFAULT_SERVER_DATE_FORMAT, time.strptime(rmspaces(line[58:64]), '%d%m%y')) if rmspaces(line[58:64]) != '000000' else statement['date']
                 statement['accountHolder'] = rmspaces(line[64:90])
                 statement['paperSeqNumber'] = rmspaces(line[2:5])
                 statement['codaSeqNumber'] = rmspaces(line[125:128])

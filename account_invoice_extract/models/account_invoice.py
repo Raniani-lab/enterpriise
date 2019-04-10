@@ -538,8 +538,10 @@ class AccountInvoice(models.Model):
     @api.multi
     def _set_currency(self, currency_ocr):
         self.ensure_one()
-        self.currency_id = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr), 
+        currency = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr), 
             ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+        if currency:
+            self.currency_id = currency
 
     @api.multi
     def check_status(self):

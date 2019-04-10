@@ -226,5 +226,41 @@ if contract.mobile and contract.internet:
                 ('code', '=', 'NET')]"/>
             <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW + categories.DED', 'sequence': '201'}"/>
         </function>
+
+        <record id="cp200_employees_double_holiday_salary_attachment_salary" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_net"/>
+            <field name="name">Attachment of Salary</field>
+            <field name="code">ATTACH_SALARY</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">174</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.ATTACH_SALARY</field>
+            <field name="amount_python_compute">result = -inputs.ATTACH_SALARY.amount</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        </record>
+
+        <record id="cp200_employees_double_holiday_salary_asignment_salary" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_net"/>
+            <field name="name">Assignment of Salary</field>
+            <field name="code">ASSIG_SALARY</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">174</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.ASSIG_SALARY</field>
+            <field name="amount_python_compute">result = -inputs.ASSIG_SALARY.amount</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        </record>
+
+        <record id="cp200_employees_double_holiday_salary_child_support" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_net"/>
+            <field name="name">Child Support</field>
+            <field name="code">CHILD_SUPPORT</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">174</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.CHILD_SUPPORT</field>
+            <field name="amount_python_compute">result = -inputs.CHILD_SUPPORT.amount</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        </record>
     </data>
 </odoo>

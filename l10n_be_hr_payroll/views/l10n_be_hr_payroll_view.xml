@@ -117,6 +117,19 @@
                     </div>
                 </group>
             </xpath>
+            <page name="information" position="after">
+                <page string="Attachment of Salary">
+                    <field name="attachment_salary_ids">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="garnished_type"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="amount"/>
+                        </tree>
+                    </field>
+                </page>
+            </page>
         </field>
     </record>
 

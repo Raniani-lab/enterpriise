@@ -13,6 +13,44 @@ class Payslip(models.Model):
     _inherit = 'hr.payslip'
 
     meal_voucher_count = fields.Integer(string='Meal Vouchers', compute='_compute_meal_voucher_count')
+    has_attachment_salary = fields.Boolean(compute='_compute_has_attachment_salary', store=True)
+
+    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
+    def _onchange_employee(self):
+        res = super()._onchange_employee()
+        attachment_types = {
+            'attachment_salary': self.env.ref('l10n_be_hr_payroll.cp200_other_input_attachment_salary').id,
+            'assignment_salary': self.env.ref('l10n_be_hr_payroll.cp200_other_input_assignment_salary').id,
+            'child_support': self.env.ref('l10n_be_hr_payroll.cp200_other_input_child_support').id,
+        }
+        if not self.contract_id:
+            lines_to_remove = self.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_types.values())
+            self.update({'input_line_ids': [(3, line.id, False) for line in lines_to_remove]})
+        if self.has_attachment_salary:
+            lines_to_keep = self.input_line_ids.filtered(lambda x: x.input_type_id.id not in attachment_types.values())
+            input_line_vals = [(5, 0, 0)] + [(4, line.id, False) for line in lines_to_keep]
+
+            valid_attachments = self.contract_id.attachment_salary_ids.filtered(
+                lambda a: a.date_from <= self.date_to and a.date_to >= self.date_from)
+
+            for garnished_type in list(set(valid_attachments.mapped('garnished_type'))):
+                amount = sum(valid_attachments.filtered(lambda a: a.garnished_type == garnished_type).mapped('amount'))
+                input_type_id = attachment_types[garnished_type]
+                input_line_vals.append((0, 0, {
+                    'amount': amount,
+                    'input_type_id': input_type_id,
+                }))
+            self.update({'input_line_ids': input_line_vals})
+        return res
+
+    @api.depends(
+        'contract_id.attachment_salary_ids.date_from', 'contract_id.attachment_salary_ids.date_from',
+        'date_from', 'date_to')
+    def _compute_has_attachment_salary(self):
+        for payslip in self:
+            payslip.has_attachment_salary = any(
+                a.date_from <= payslip.date_to and
+                a.date_to >= payslip.date_from for a in payslip.contract_id.attachment_salary_ids)
 
     @api.multi
     def _get_atn_remuneration(self):

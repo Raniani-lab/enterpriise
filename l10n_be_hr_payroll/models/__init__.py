@@ -9,3 +9,4 @@ from . import hr_payslip
 from . import hr_dmfa
 from . import res_company
 from . import hr_work_entry
+from . import l10n_be_attachment_salary

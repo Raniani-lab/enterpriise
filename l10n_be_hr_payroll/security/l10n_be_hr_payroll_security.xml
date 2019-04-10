@@ -13,5 +13,13 @@
         <field name="global" eval="True"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
+    <record id="ir_rule_attachment_salary_report_multi_company" model="ir.rule">
+        <field name="name">Attachment of Salary: Multi Company</field>
+        <field name="model_id" ref="model_l10n_be_attachment_salary_report"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
 </data>
 </odoo>
+
+

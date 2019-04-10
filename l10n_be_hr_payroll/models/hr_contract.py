@@ -75,6 +75,7 @@ class HrContract(models.Model):
         string="Fiscal Voluntarism", default=False, tracking=True,
         help="Voluntarily increase withholding tax rate.")
     fiscal_voluntary_rate = fields.Float(string="Fiscal Voluntary Rate", help="Should be between 0 and 100 %")
+    attachment_salary_ids = fields.One2many('l10n_be.attachment.salary', 'contract_id')
 
     _sql_constraints = [
         ('check_percentage_ip_rate', 'CHECK(ip_wage_rate >= 0 AND ip_wage_rate <= 100)', 'The IP rate on wage should be between 0 and 100.'),

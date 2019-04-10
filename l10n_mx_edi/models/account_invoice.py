@@ -22,6 +22,8 @@ from odoo.tools import float_round
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_repr
 
+from odoo.addons.l10n_mx_edi.tools.run_after_commit import run_after_commit
+
 CFDI_TEMPLATE_33 = 'l10n_mx_edi.cfdiv33'
 CFDI_XSLT_CADENA = 'l10n_mx_edi/data/%s/cadenaoriginal.xslt'
 CFDI_XSLT_CADENA_TFD = 'l10n_mx_edi/data/xslt/3.3/cadenaoriginal_TFD_1_1.xslt'
@@ -473,6 +475,7 @@ class AccountInvoice(models.Model):
             'l10n_mx_edi_cfdi_version', '3.3')
         return version
 
+    @run_after_commit
     @api.multi
     def _l10n_mx_edi_call_service(self, service_type):
         '''Call the right method according to the pac_name, it's info returned by the '_l10n_mx_edi_%s_info' % pac_name'

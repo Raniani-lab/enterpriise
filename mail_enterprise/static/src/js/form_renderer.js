@@ -145,10 +145,18 @@ FormRenderer.include({
         if (options.order === 'desc') {
             attachments.reverse();
         }
-        if (attachments.length) {
+        if (attachments.length || this.attachmentViewer) {
             if (this.attachmentViewer) {
                 if (this.attachmentViewer.attachments.length !== attachments.length) {
-                    this.attachmentViewer.updateContents(attachments, options.order);
+                    if (!attachments.length) {
+                        this.attachmentViewer.destroy();
+                        this.attachmentViewer = undefined;
+                        this.attachmentPreviewResID = undefined;
+                        this._interchangeChatter(false);
+                    }
+                    else {
+                        this.attachmentViewer.updateContents(attachments, options.order);
+                    }
                 }
             } else {
                 this.attachmentPreviewResID = this.state.res_id;

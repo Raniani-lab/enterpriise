@@ -91,6 +91,13 @@ var Menu = Widget.extend({
         this.$menu_toggle.toggleClass('d-none', this.home_menu_displayed && !this.backbutton_displayed);
         this.$menu_brand_placeholder.toggleClass('d-none', this.home_menu_displayed);
         this.$section_placeholder.toggleClass('d-none', this.home_menu_displayed);
+
+        if (!home_menu) {
+            // we force here a recomputation of the layout to make sure that the
+            // menus are properly rearranged (if there are too many for the size
+            // of the screen)
+            core.bus.trigger('resize');
+        }
     },
     change_menu_section: function (primary_menu_id) {
         if (!this.$menu_sections[primary_menu_id]) {

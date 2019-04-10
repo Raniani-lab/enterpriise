@@ -14,7 +14,7 @@ from odoo.tools.misc import xlsxwriter
 from odoo import models, fields, api, _
 from odoo.tools import config, date_utils
 from odoo.osv import expression
-from babel.dates import get_quarter_names
+from babel.dates import get_quarter_names, parse_date
 from odoo.tools.misc import formatLang, format_date, get_user_companies
 from odoo.addons.web.controllers.main import clean_action
 from odoo.tools.safe_eval import safe_eval
@@ -1402,7 +1402,7 @@ class AccountReport(models.AbstractModel):
                 #write the dates with a specific format to avoid them being casted as floats in the XLSX
                 if not isinstance(cell_name, (float, datetime.date, datetime.datetime)):
                     # Convert non-xlsx compatible dates
-                    cell_name = fields.Date.to_date(cell_name)
+                    cell_name = parse_date(cell_name, locale=self._context.get('lang', 'en_US'))
                 sheet.write_datetime(y + y_offset, 0, cell_name, date_default_col1_style)
             else:
                 sheet.write(y + y_offset, 0, cell_name, col1_style)
@@ -1415,7 +1415,7 @@ class AccountReport(models.AbstractModel):
                     cell_name = cell['name']
                     if not isinstance(cell_name, (float, datetime.date, datetime.datetime)):
                         # Convert non-xlsx compatible dates
-                        cell_name = fields.Date.to_date(cell_name)
+                        cell_name = parse_date(cell_name, locale=self._context.get('lang', 'en_US'))
                     sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_name, date_default_style)
                 else:
                     sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell.get('name', ''), style)

@@ -90,6 +90,13 @@ QUnit.module('DocumentsKanbanView', {
                         res_model_name: false, res_name: false, tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
                 ],
             },
+            "ir.attachment": {
+                fields: {
+                    res_id: {string: "Resource id", type: 'integer'},
+                    res_model: {string: "Model (technical)", type: 'char'},
+                },
+                records: [],
+            },
             user: {
                 fields: {
                     display_name: {string: "Name", type: 'char'},

@@ -27,7 +27,6 @@ class HelpdeskTeam(models.Model):
         if not self.use_website_helpdesk_forum:
             self.forum_id = False
 
-    @api.model_cr_context
     def _init_column(self, column_name):
         """ Initialize the value of the given column for existing rows.
             Overridden here because we need the forum_id to be set during the installationg of this module

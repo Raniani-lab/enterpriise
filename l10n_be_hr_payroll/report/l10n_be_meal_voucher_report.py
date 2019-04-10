@@ -12,7 +12,6 @@ class l10nBeMealVoucherReport(models.Model):
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
     day = fields.Date(readonly=True)
 
-    @api.model_cr
     def init(self):
         tools.drop_view_if_exists(self._cr, self._table)
 

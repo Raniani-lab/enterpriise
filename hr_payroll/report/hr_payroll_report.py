@@ -41,7 +41,6 @@ class HrPayrollReport(models.Model):
         ('2', 'Paid Time Off'),
         ('3', 'Unpaid Time Off')], string='Work, (un)paid Time Off', readonly=True)
 
-    @api.model_cr
     def init(self):
         query = """
             SELECT

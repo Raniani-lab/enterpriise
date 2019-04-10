@@ -20,7 +20,6 @@ class TimesheetForecastReport(models.Model):
     number_hours = fields.Float('Number of hours', readonly=True)
     line_type = fields.Selection([('forecast', 'Forecast'), ('timesheet', 'Timesheet')], string='Type', readonly=True, oldname='type')
 
-    @api.model_cr
     def init(self):
         tools.drop_view_if_exists(self.env.cr, self._table)
         self.env.cr.execute("""

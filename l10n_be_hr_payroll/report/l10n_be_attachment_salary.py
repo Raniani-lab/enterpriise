@@ -18,7 +18,6 @@ class l10nBeAttachementSalaryReport(models.Model):
     assignment_amount = fields.Float(string="Assigment of Salary", readonly=True)
     child_support_amount = fields.Float(string="Child Support", readonly=True)
 
-    @api.model_cr
     def init(self):
         tools.drop_view_if_exists(self._cr, self._table)
         self._cr.execute("""

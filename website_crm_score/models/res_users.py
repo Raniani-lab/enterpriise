@@ -7,7 +7,6 @@ class Users(models.Model):
     _name = 'res.users'
     _inherit = ['res.users']
 
-    @api.model_cr
     def init(self):
         # Migration script to automatically create `team.user` records
         # according to the teams and salesmen configuration in the regular crm.

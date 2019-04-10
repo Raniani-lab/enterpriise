@@ -153,7 +153,6 @@ class RentalReport(models.AbstractModel):
 
         return '%s (SELECT %s FROM %s WHERE sol.product_id IS NOT NULL AND sol.is_rental GROUP BY %s)' % (with_, select_, from_, groupby_)
 
-    @api.model_cr
     def init(self):
         # self._table = sale_rental_report
         tools.drop_view_if_exists(self.env.cr, self._table)

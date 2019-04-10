@@ -29,7 +29,6 @@ class EventRegistration(models.Model):
         ('barcode_event_uniq', 'unique(barcode, event_id)', "Barcode should be unique per event")
     ]
 
-    @api.model_cr_context
     def _init_column(self, column_name):
         """ to avoid generating a single default barcide when installing the module,
             we need to set the default row by row for this column """

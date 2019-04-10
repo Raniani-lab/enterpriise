@@ -25,7 +25,6 @@ class HrAppraisalReport(models.Model):
 
     _order = 'create_date desc'
 
-    @api.model_cr
     def init(self):
         tools.drop_view_if_exists(self.env.cr, 'hr_appraisal_report')
         self.env.cr.execute("""

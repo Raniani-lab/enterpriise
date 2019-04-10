@@ -314,7 +314,6 @@ class SaleSubscription(models.Model):
             ('subscription_id', 'in', self.ids)]).unlink()
         return super(SaleSubscription, self).unlink()
 
-    @api.model_cr_context
     def _init_column(self, column_name):
         # to avoid generating a single default uuid when installing the module,
         # we need to set the default row by row for this column

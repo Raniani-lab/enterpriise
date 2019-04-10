@@ -717,8 +717,8 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="nationality">Nationality</label>
-                                                <select name="nationality" class="form-control" data-placeholder="Select a country" required="required">
+                                                <label class="col-form-label" for="country_id">Nationality</label>
+                                                <select name="country_id" class="form-control" data-placeholder="Select a country" required="required">
                                                     <option/>
                                                     <t t-foreach="countries" t-as="country">
                                                       <option t-att-value="country.id" t-att-selected="contract.employee_id.country_id.name == country.name"><t t-esc="country.name"/></option>
@@ -728,8 +728,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="national_number">National Identification Number</label>
-                                                <input type="text" name="national_number" placeholder="00.00.00-000.00" class="form-control" required="required" t-att-value="contract.employee_id.identification_id"/>
+                                                <label class="col-form-label" for="identification_id">National Identification Number</label>
+                                                <input type="text" name="identification_id" placeholder="00.00.00-000.00" class="form-control" required="required" t-att-value="contract.employee_id.identification_id"/>
                                             </div>
                                         </div>
                                     </div>
@@ -811,14 +811,14 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="certificate_name">Field of Study</label>
-                                                <input type="text" name="certificate_name" class="form-control" placeholder="Computer Science" t-att-value="contract.employee_id.study_field" required="required"/>
+                                                <label class="col-form-label" for="study_field">Field of Study</label>
+                                                <input type="text" name="study_field" class="form-control" placeholder="Computer Science" t-att-value="contract.employee_id.study_field" required="required"/>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="certificate_school">School</label>
-                                                <input type="text" name="certificate_school" class="form-control" t-att-value="contract.employee_id.study_school" required="required"/>
+                                                <label class="col-form-label" for="study_school">School</label>
+                                                <input type="text" name="study_school" class="form-control" t-att-value="contract.employee_id.study_school" required="required"/>
                                             </div>
                                         </div>
                                     </div>
@@ -853,20 +853,20 @@
                                     </div>
 
                                     <!-- Emergency -->
-                                    <div class="row">
+                                    <div class="row" name="emergency">
                                         <div class="col-md-12">
                                             <h2>In case of emergency</h2>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="emergency_person">Person to call</label>
-                                                <input type="text" name="emergency_person" class="form-control" placeholder="Batman" t-att-value="contract.employee_id.emergency_contact" required="required"/>
+                                                <label class="col-form-label" for="emergency_contact">Person to call</label>
+                                                <input type="text" name="emergency_contact" class="form-control" placeholder="Batman" t-att-value="contract.employee_id.emergency_contact" required="required"/>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="emergency_phone_number">Phone number</label>
-                                                <input type="text" name="emergency_phone_number" class="form-control" placeholder="+32 2 290 34 90" t-att-value="contract.employee_id.emergency_phone" required="required"/>
+                                                <label class="col-form-label" for="emergency_phone">Phone number</label>
+                                                <input type="text" name="emergency_phone" class="form-control" placeholder="+32 2 290 34 90" t-att-value="contract.employee_id.emergency_phone" required="required"/>
                                             </div>
                                         </div>
                                     </div>
@@ -944,20 +944,20 @@
 
                                     <!-- Children -->
                                     <div class="form-group">
-                                        <label class="col-form-label" for="children_count">Number of Dependent Children</label>
-                                        <input type="number" name="children_count" placeholder="0" class="form-control advantage_input" t-att-value="contract.employee_id.children"/>
+                                        <label class="col-form-label" for="children">Number of Dependent Children</label>
+                                        <input type="number" name="children" placeholder="0" class="form-control advantage_input" t-att-value="contract.employee_id.children"/>
                                     </div>
                                     <div class="form-group">
                                         <label class="hr_cs_control hr_cs_control_checkbox mt4">Disabled Children
-                                            <input type="checkbox" name="disabled_children" class="advantage_input" t-att-checked="contract.employee_id.disabled_children_bool"/>
+                                            <input type="checkbox" name="disabled_children_bool" class="advantage_input" t-att-checked="contract.employee_id.disabled_children_bool"/>
                                             <div class="hr_cs_control_indicator hr_cs_control_indicator_white"/>
                                         </label>
                                     </div>
                                     <div name="disabled_children_info" class="card">
                                         <div class="card-body">
                                             <div class="form-group mb0">
-                                                <label class="col-form-label" for="disabled_children_count">Number of Disabled Children</label>
-                                                <input type="number" name="disabled_children_count" placeholder="0" class="form-control advantage_input" t-att-value="contract.employee_id.disabled_children_number"/>
+                                                <label class="col-form-label" for="disabled_children_number">Number of Disabled Children</label>
+                                                <input type="number" name="disabled_children_number" placeholder="0" class="form-control advantage_input" t-att-value="contract.employee_id.disabled_children_number"/>
                                             </div>
                                         </div>
                                     </div>

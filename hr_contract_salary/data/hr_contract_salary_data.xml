@@ -77,7 +77,7 @@
             </ul>
 
             <h3>Monthly Benefit in Kind</h3>
-            <ul>
+            <ul name="monthly_benefit">
                 <t t-if="advantages['transport_mode_car']">
                     <li>Has Company Car: Yes</li>
                 </t>
@@ -132,7 +132,7 @@
             <h3>Citizenship and Other Information</h3>
             <ul>
                 <li>Nationality: <t t-esc="nationality_name"/></li>
-                <li>Identification No: <t t-esc="advantages['personal_info']['national_number']"/></li>
+                <li>Identification No: <t t-esc="advantages['personal_info']['identification_id']"/></li>
                 <li>Place of Birth: <t t-esc="advantages['personal_info']['place_of_birth']"/></li>
                 <li>Country of Birth: <t t-esc="country_of_birth_name"/></li>
                 <li>Bank Account Number: <t t-esc="advantages['personal_info']['bank_account']"/></li>
@@ -171,9 +171,9 @@
                         <li>Spouse Professional Situation: With Income greater than 450</li>
                     </t>
                 </t>
-                <li>Number of Children: <t t-esc="advantages['personal_info']['children_count']"/></li>
-                <t t-if="advantages['personal_info']['disabled_children']">
-                    <li>Number of Children: <t t-esc="advantages['personal_info']['disabled_children_count']"/></li>
+                <li>Number of Children: <t t-esc="advantages['personal_info']['children']"/></li>
+                <t t-if="advantages['personal_info']['disabled_children_bool']">
+                    <li>Number of Children: <t t-esc="advantages['personal_info']['disabled_children_number']"/></li>
                 </t>
                 <t t-if="advantages['personal_info']['other_dependent_people']">
                     <li># seniors (&gt;=65): <t t-esc="advantages['personal_info']['other_senior_dependent']"/></li>
@@ -196,8 +196,8 @@
                 <li>Phone: <t t-esc="advantages['personal_info']['phone']"/></li>
                 <li>Email: <t t-esc="advantages['personal_info']['email']"/></li>
                 <li>Km Home-Work: <t t-esc="advantages['personal_info']['km_home_work']"/></li>
-                <li>Emergency Contact: <t t-esc="advantages['personal_info']['emergency_person']"/></li>
-                <li>Emergency Phone: <t t-esc="advantages['personal_info']['emergency_phone_number']"/></li>
+                <li>Emergency Contact: <t t-esc="advantages['personal_info']['emergency_contact']"/></li>
+                <li>Emergency Phone: <t t-esc="advantages['personal_info']['emergency_phone']"/></li>
             </ul>
 
             <h3>Birth</h3>
@@ -208,8 +208,8 @@
             <h3>Education</h3>
             <ul>
                 <li>Certificate Level: <t t-esc="advantages['personal_info']['certificate']"/></li>
-                <li>Field of Study: <t t-esc="advantages['personal_info']['certificate_name']"/></li>
-                <li>School: <t t-esc="advantages['personal_info']['certificate_school']"/></li>
+                <li>Field of Study: <t t-esc="advantages['personal_info']['study_field']"/></li>
+                <li>School: <t t-esc="advantages['personal_info']['study_school']"/></li>
             </ul>
 
         </div>

@@ -23,8 +23,6 @@
         'views/res_config_settings_views.xml',
         'data/hr_contract_salary_data.xml',
     ],
-    'qweb': [
-    ],
     'demo': [
         'data/hr_contract_salary_demo.xml',
     ],

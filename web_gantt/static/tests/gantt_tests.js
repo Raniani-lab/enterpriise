@@ -1058,6 +1058,7 @@ QUnit.module('Views', {
 
         assert.containsN(gantt, '.o_gantt_pill', 3, "the list view is filtered");
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell:first .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
         await testUtils.fields.editInput($('.modal .modal-body input[name=name]'), 'new task');
         await testUtils.modal.clickButton('Save & Close');
         assert.containsN(gantt, '.o_gantt_pill', 3,

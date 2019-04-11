@@ -130,7 +130,7 @@ class EasypostRequest():
         # Max weight for carrier default package
         max_weight = carrier._easypost_convert_weight(carrier.easypost_default_packaging_id.max_weight)
         # Order weight
-        total_weight = carrier._easypost_convert_weight(sum([(line.product_id.weight * line.product_uom_qty) for line in order.order_line if not line.display_type]))
+        total_weight = carrier._easypost_convert_weight(order._get_estimated_weight())
 
         # Create shipments
         shipments = {}

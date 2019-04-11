@@ -73,10 +73,9 @@ class ProviderUPS(models.Model):
         max_weight = self.ups_default_packaging_id.max_weight
         packages = []
         total_qty = 0
-        total_weight = 0
+        total_weight = order._get_estimated_weight()
         for line in order.order_line.filtered(lambda line: not line.is_delivery and not line.display_type):
             total_qty += line.product_uom_qty
-            total_weight += line.product_id.weight * line.product_qty
 
         if max_weight and total_weight > max_weight:
             total_package = int(total_weight / max_weight)
@@ -238,7 +237,7 @@ class ProviderUPS(models.Model):
         packages = []
         package_names = []
         if picking.is_return_picking:
-            weight = sum([m.product_id.weight * m.product_qty for m in picking.move_lines])
+            weight = picking._get_estimated_weight()
             packages.append(Package(self, weight))
         else:
             if picking.package_ids:

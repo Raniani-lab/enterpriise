@@ -119,9 +119,7 @@ class ProviderFedex(models.Model):
         price = 0.0
         is_india = order.partner_shipping_id.country_id.code == 'IN' and order.company_id.partner_id.country_id.code == 'IN'
 
-        # Estimate weight of the sales order; will be definitely recomputed on the picking field "weight"
-        est_weight_value = sum([(line.product_id.weight * line.product_uom_qty) for line in order.order_line if not line.display_type]) or 0.0
-        weight_value = self._fedex_convert_weight(est_weight_value, self.fedex_weight_unit)
+        weight_value = self._fedex_convert_weight(order._get_estimated_weight(), self.fedex_weight_unit)
 
         # Some users may want to ship very lightweight items; in order to give them a rating, we round the
         # converted weight of the shipping to the smallest value accepted by FedEx: 0.01 kg or lb.
@@ -478,8 +476,10 @@ class ProviderFedex(models.Model):
         srm.shipping_charges_payment(superself.fedex_account_number)
 
         srm.shipment_label('COMMON2D', self.fedex_label_file_type, self.fedex_label_stock_type, 'TOP_EDGE_OF_TEXT_FIRST', 'SHIPPING_LABEL_FIRST')
-        estimated_weight = sum([move.product_qty * move.product_id.weight for move in picking.move_lines])
-        net_weight = self._fedex_convert_weight(picking.shipping_weight, self.fedex_weight_unit) or self._fedex_convert_weight(picking.weight, self.fedex_weight_unit)
+        if picking.is_return_picking:
+            net_weight = self._fedex_convert_weight(picking._get_estimated_weight(), self.fedex_weight_unit)
+        else:
+            net_weight = self._fedex_convert_weight(picking.shipping_weight, self.fedex_weight_unit)
         packaging = packaging = picking.package_ids[:1].packaging_id or picking.carrier_id.fedex_default_packaging_id
         order = picking.sale_id
         po_number = order.display_name or False

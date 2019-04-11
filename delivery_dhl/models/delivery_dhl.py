@@ -128,8 +128,7 @@ class Providerdhl(models.Model):
         if picking:
             rating_request['BkgDetails'] = srm._set_dct_bkg_details_from_picking(picking)
         else:
-            total_weight = sum([line.product_qty * line.product_id.weight for line in order.order_line if not line.display_type])
-            rating_request['BkgDetails'] = srm._set_dct_bkg_details(total_weight, self, order.company_id.partner_id)
+            rating_request['BkgDetails'] = srm._set_dct_bkg_details(order._get_estimated_weight(), self, order.company_id.partner_id)
         rating_request['To'] = srm._set_dct_to(destination_partner_id)
         if self.dhl_dutiable:
             rating_request['Dutiable'] = srm._set_dct_dutiable(total_value, currency_id.name)

@@ -87,8 +87,7 @@ class BpostRequest():
         return (street, street_number)
 
     def rate(self, order, carrier):
-        weight = sum([(line.product_id.weight * line.product_qty) for line in order.order_line if not line.display_type]) or 0.0
-        weight_in_kg = carrier._bpost_convert_weight(weight)
+        weight_in_kg = carrier._bpost_convert_weight(order._get_estimated_weight())
         return self._get_rate(carrier, weight_in_kg, order.partner_shipping_id.country_id)
 
     def _get_rate(self, carrier, weight, country):

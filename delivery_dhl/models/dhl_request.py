@@ -226,8 +226,7 @@ class DHLProvider():
             pieces.append(piece)
         shipment_details.Pieces = self.factory.Pieces(pieces)
         if picking.is_return_picking:
-            total_weight = sum([line.product_id.weight * line.product_uom_qty for line in picking.move_lines])
-            shipment_details.Weight = picking.carrier_id._dhl_convert_weight(total_weight, picking.carrier_id.dhl_package_weight_unit)
+            shipment_details.Weight = picking.carrier_id._dhl_convert_weight(picking._get_estimated_weight(), picking.carrier_id.dhl_package_weight_unit)
         else:
             shipment_details.Weight = picking.carrier_id._dhl_convert_weight(picking.shipping_weight, picking.carrier_id.dhl_package_weight_unit)
         shipment_details.WeightUnit = picking.carrier_id.dhl_package_weight_unit

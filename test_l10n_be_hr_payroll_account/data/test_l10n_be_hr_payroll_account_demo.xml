@@ -42,6 +42,7 @@
             <field name="struct_id" ref="hr_payroll.structure_002"/>
             <field name="number">SLIP601</field>
             <field name="payslip_run_id" ref="hr_payslip_batch"/>
+            <field name="company_id" ref="base.main_company"/>
         </record>
         <record id="hr_line_admin1" model="hr.payslip.worked_days">
             <field name="name">Normal working days</field>
@@ -70,6 +71,7 @@
             <field name="struct_id" ref="hr_payroll.structure_002"/>
             <field name="number">SLIP602</field>
             <field name="payslip_run_id" ref="hr_payslip_batch"/>
+            <field name="company_id" ref="base.main_company"/>
         </record>
         <record id="hr_line_demo1" model="hr.payslip.worked_days">
             <field name="name">Normal working days</field>
@@ -115,6 +117,7 @@
             <field name="struct_id" ref="hr_payroll.structure_002"/>
             <field name="number">SLIP501</field>
             <field name="payslip_run_id" ref="hr_payslip_batch_may"/>
+            <field name="company_id" ref="base.main_company"/>
         </record>
         <record id="hr_line_admin1_may" model="hr.payslip.worked_days">
             <field name="name">Normal working days</field>
@@ -135,6 +138,7 @@
             <field name="struct_id" ref="hr_payroll.structure_002"/>
             <field name="number">SLIP502</field>
             <field name="payslip_run_id" ref="hr_payslip_batch_may"/>
+            <field name="company_id" ref="base.main_company"/>
         </record>
         <record id="hr_line_demo1_may" model="hr.payslip.worked_days">
             <field name="name">Normal working days</field>

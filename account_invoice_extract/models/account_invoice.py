@@ -557,7 +557,7 @@ class AccountInvoice(models.Model):
             if result['status_code'] == SUCCESS:
                 record.extract_state = "waiting_validation"
                 ocr_results = result['results'][0]
-                self.extract_word_ids.unlink()
+                record.extract_word_ids.unlink()
 
                 supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
                 date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
@@ -572,7 +572,7 @@ class AccountInvoice(models.Model):
                 invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
                 if invoice_lines:
-                    self._set_invoice_lines(invoice_lines, subtotal_ocr)
+                    record._set_invoice_lines(invoice_lines, subtotal_ocr)
                 elif total_ocr:
                     vals_invoice_line = {
                         'name': "/",
@@ -588,14 +588,14 @@ class AccountInvoice(models.Model):
                             else:
                                 vals_invoice_line['invoice_line_tax_ids'].append((4, taxes_record.id))
                             vals_invoice_line['price_unit'] = subtotal_ocr
-                    self.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(vals_invoice_line)
+                    record.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(vals_invoice_line)
 
-                self._set_supplier(supplier_ocr, vat_number_ocr)
-                self.date_invoice = date_ocr
-                self.date_due = due_date_ocr
-                self.reference = invoice_id_ocr
+                record._set_supplier(supplier_ocr, vat_number_ocr)
+                record.date_invoice = date_ocr
+                record.date_due = due_date_ocr
+                record.reference = invoice_id_ocr
                 if self.user_has_groups('base.group_multi_currency'):
-                    self._set_currency(currency_ocr)
+                    record._set_currency(currency_ocr)
 
                 fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
                 for field in fields_with_boxes:
@@ -614,7 +614,7 @@ class AccountInvoice(models.Model):
                                 "word_box_height": word['coords'][3],
                                 "word_box_angle": word['coords'][4],
                             }))
-                        self.write({'extract_word_ids': data})
+                        record.write({'extract_word_ids': data})
             elif result['status_code'] == NOT_READY:
                 record.extract_state = 'extract_not_ready'
             else:

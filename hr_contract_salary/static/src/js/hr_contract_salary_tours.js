@@ -254,7 +254,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "National Identification Number",
-            trigger: 'input[name="national_number"]',
+            trigger: 'input[name="identification_id"]',
             run: 'text 11.11.11-111.11',
         },
         {
@@ -294,12 +294,12 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "School",
-            trigger: 'input[name="certificate_school"]',
+            trigger: 'input[name="study_school"]',
             run: 'text UCL',
         },
         {
             content: "School Level",
-            trigger: 'input[name="certificate_name"]',
+            trigger: 'input[name="study_field"]',
             run: 'text Civil Engineering, Applied Mathematics',
         },
         {
@@ -309,20 +309,20 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Bank Account",
-            trigger: 'input[name="emergency_person"]',
+            trigger: 'input[name="emergency_contact"]',
             run: 'text Batman',
         },
         {
             content: "Bank Account",
-            trigger: 'input[name="emergency_phone_number"]',
+            trigger: 'input[name="emergency_phone"]',
             run: 'text +32 2 290 34 90',
         },
         {
             content: "Nationality",
-            trigger: 'label[for=nationality]',
+            trigger: 'label[for=country_id]',
             run: function () {
-                $('select[name=nationality] option:contains(Belgium)').prop('selected', true);
-                $('select[name=nationality]').trigger('change');
+                $('select[name=country_id] option:contains(Belgium)').prop('selected', true);
+                $('select[name=country_id]').trigger('change');
             },
         },
         {

@@ -551,25 +551,6 @@ class MrpProductionWorkcenterLine(models.Model):
             self._create_checks()
         return res
 
-    def _init_nextworkorder_states(self):
-        self._start_nextworkorder()
-
-    @api.multi
-    def _start_nextworkorder(self):
-        recursion_records = self.env['mrp.workorder']
-        for wo in self:
-            produced = wo.qty_producing + wo.qty_produced
-            rounding = wo.product_id.uom_id.rounding
-            if wo.next_work_order_id.state == 'pending' and (
-                    (wo.operation_id.batch == 'no' and
-                     float_compare(wo.qty_production, produced, precision_rounding=rounding) <= 0) or
-                    (wo.operation_id.batch == 'yes' and
-                     float_compare(wo.operation_id.batch_size, produced, precision_rounding=rounding) <= 0)):
-                wo.next_work_order_id.state = 'ready'
-                recursion_records = recursion_records | wo.next_work_order_id
-        if recursion_records:
-            recursion_records._start_nextworkorder()
-
     # --------------------------
     # Buttons from quality.check
     # --------------------------

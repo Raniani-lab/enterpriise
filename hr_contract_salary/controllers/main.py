@@ -454,12 +454,11 @@ class website_hr_contract_salary(http.Controller):
         return result
 
     @http.route(['/salary_package/onchange_mobile/'], type='json', auth='public')
-    def onchange_mobile(self, contract_id, advantages, **kw):
-        amount = request.env['hr.contract'].sudo()._get_mobile_amount(advantages['has_mobile'], advantages['international_communication'])
-        return {'mobile': amount}
+    def onchange_mobile(self, has_mobile, international_communication):
+        return request.env['hr.contract'].sudo()._get_mobile_amount(has_mobile, international_communication)
 
     @http.route(['/salary_package/onchange_car/'], type='json', auth='public')
-    def onchange_car(self, car_option, vehicle_id, **kw):
+    def onchange_car(self, car_option, vehicle_id):
         if car_option == "new":
             vehicle = request.env['fleet.vehicle.model'].sudo().browse(vehicle_id)
             co2 = vehicle.default_co2
@@ -475,9 +474,8 @@ class website_hr_contract_salary(http.Controller):
         return {'co2': co2, 'fuel_type': fuel_type, 'door_number': door_number, 'odometer': odometer, 'immatriculation': immatriculation}
 
     @http.route(['/salary_package/onchange_public_transport/'], type='json', auth='public')
-    def onchange_public_transport(self, contract_id, advantages, **kw):
-        amount = request.env['hr.contract'].sudo()._get_public_transport_reimbursed_amount(advantages['public_transport_employee_amount'])
-        return {'amount': round(amount, 2)}
+    def onchange_public_transport(self, public_transport_employee_amount):
+        return round(request.env['hr.contract'].sudo()._get_public_transport_reimbursed_amount(public_transport_employee_amount), 2)
 
     @http.route(['/salary_package/send_email/'], type='json', auth='public')
     def send_email(self, contract_id=None, token=None, advantages=None, **kw):
@@ -493,8 +491,8 @@ class website_hr_contract_salary(http.Controller):
             else:
                 model_name = request.env['fleet.vehicle.model'].sudo().browse(advantages['car_id']).name
 
-        if advantages['personal_info']['nationality']:
-            nationality_name = request.env['res.country'].sudo().browse(advantages['personal_info']['nationality']).name
+        if advantages['personal_info']['country_id']:
+            nationality_name = request.env['res.country'].sudo().browse(advantages['personal_info']['country_id']).name
         else:
             nationality_name = ''
 

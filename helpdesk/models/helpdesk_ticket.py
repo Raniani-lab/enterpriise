@@ -359,8 +359,8 @@ class HelpdeskTicket(models.Model):
     def message_new(self, msg, custom_values=None):
         values = dict(custom_values or {}, partner_email=msg.get('from'), partner_id=msg.get('author_id'))
         ticket = super(HelpdeskTicket, self).message_new(msg, custom_values=values)
-        partner_ids = [x for x in ticket._find_partner_from_emails(self._ticket_email_split(msg)) if x]
-        customer_ids = ticket._find_partner_from_emails(tools.email_split(values['partner_email']))
+        partner_ids = [x.id for x in self.env['mail.thread']._mail_find_partner_from_emails(self._ticket_email_split(msg), records=ticket) if x]
+        customer_ids = [p.id for p in self.env['mail.thread']._mail_find_partner_from_emails(tools.email_split(values['partner_email']), records=ticket) if p]
         partner_ids += customer_ids
         if customer_ids and not values.get('partner_id'):
             ticket.partner_id = customer_ids[0]
@@ -370,7 +370,7 @@ class HelpdeskTicket(models.Model):
 
     @api.multi
     def message_update(self, msg, update_vals=None):
-        partner_ids = [x for x in self._find_partner_from_emails(self._ticket_email_split(msg)) if x]
+        partner_ids = [x.id for x in self.env['mail.thread']._mail_find_partner_from_emails(self._ticket_email_split(msg), records=self) if x]
         if partner_ids:
             self.message_subscribe(partner_ids)
         return super(HelpdeskTicket, self).message_update(msg, update_vals=update_vals)

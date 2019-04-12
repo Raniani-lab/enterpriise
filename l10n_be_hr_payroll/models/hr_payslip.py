@@ -35,8 +35,11 @@ class Payslip(models.Model):
         })
         return res
 
-    def _get_paid_amount_13th_month(self, struct_cp_200):
-        contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == struct_cp_200.type_id)
+    def _get_paid_amount_13th_month(self):
+        # Counts the number of fully worked month
+        # If any day in the month is not covered by the contract dates coverage
+        # the entire month is not taken into account for the proratization
+        contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == self.struct_id.type_id)
         if not contracts:
             return 0.0
 
@@ -48,7 +51,6 @@ class Payslip(models.Model):
             invalid_days_by_months[day.month][day.date()] = True
 
         for contract in contracts:
-
             work_days = {int(d) for d in contract.resource_calendar_id._get_global_attendances().mapped('dayofweek')}
 
             previous_week_start = max(contract.date_start + relativedelta(weeks=-1, weekday=MO(-1)), date(year, 1, 1))
@@ -83,16 +85,14 @@ class Payslip(models.Model):
         return basic * n_months / 12 * presence_prorata
 
     def _get_paid_amount(self):
-        amount = super(Payslip, self)._get_paid_amount()
-
+        self.ensure_one()
         if self.struct_id.country_id == self.env.ref('base.be'):
             struct_13th_month = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
-            struct_cp_200 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')
 
             if self.struct_id == struct_13th_month:
-                return self._get_paid_amount_13th_month(struct_cp_200)
-            return self.contract_id.wage_with_holidays - self.unpaid_amount
-        return amount
+                return self._get_paid_amount_13th_month()
+            return self.contract_id.wage_with_holidays - self._get_unpaid_amount()
+        return super()._get_paid_amount()
 
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):

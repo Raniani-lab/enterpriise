@@ -46,9 +46,10 @@ class HrContract(models.Model):
         ])
 
     def _get_average_wage_per_day(self):
+        # there are always 13 weeks in 3 months
         self.ensure_one()
         work_days_per_week = len(set(self.resource_calendar_id._get_global_attendances().mapped('dayofweek')))
-        return self.wage * 3 / 13 / work_days_per_week if work_days_per_week else 0.0  # there are always 13 weeks in 3 months
+        return self.wage * 3 / 13 / work_days_per_week if work_days_per_week else 0.0 
 
     @api.multi
     def _get_work_data(self, work_entry_types, date_from, date_to):
@@ -56,7 +57,9 @@ class HrContract(models.Model):
         Returns the amount (expressed in days and hours) of work
         for a contract between two dates. Only work for the provided
         types are counted.
-        If called on multiplie contracts, sum work amounts of each contract.
+        If called on multiple contracts, sum work amounts of each contract.
+        :param date_from: The start date 
+        :param date_to: The end date 
         :returns: a dict {'days': n, 'hours': h}
         """
         work_counter = Counter(days=0, hours=0)

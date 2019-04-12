@@ -30,11 +30,11 @@ class TestPayslipComputation(TestPayslipContractBase):
         self.assertEqual(data['hours'], 59, 'It should count 59 attendance hours')  # 24h first contract + 35h second contract
 
     def test_unpaid_amount(self):
-        self.assertEqual(self.richard_payslip.unpaid_amount, 0, "It should be paid the full wage")
+        self.assertAlmostEqual(self.richard_payslip._get_unpaid_amount(), 0, places=2, msg="It should be paid the full wage")
 
         self.create_calendar_leave(date(2016, 1, 11), date(2016, 1, 12), self.work_entry_type_unpaid)
         self.richard_payslip.onchange_employee()
-        self.assertEqual(self.richard_payslip.unpaid_amount, 230.77, "It should be paid 230.77 less")
+        self.assertAlmostEqual(self.richard_payslip._get_unpaid_amount(),  230.77, places=2, msg="It should be paid 230.77 less")
 
     def test_worked_days_amount(self):
 
@@ -58,13 +58,13 @@ class TestPayslipComputation(TestPayslipContractBase):
         self.assertEqual(sum(work_days.mapped('amount')), self.contract_cdi.wage, "The sum of all paid line should equal the wage")
 
         leave_line = work_days.filtered(lambda l: l.code == self.work_entry_type_leave.code)
-        self.assertEqual(leave_line.amount, 222.93)
+        self.assertAlmostEqual(leave_line.amount, 222.93, places=2)
 
         extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type.code)
-        self.assertEqual(extra_attendance_line.amount, 1433.12)
+        self.assertAlmostEqual(extra_attendance_line.amount, 1433.12, places=2)
 
         attendance_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
-        self.assertEqual(attendance_line.amount, 3343.95)
+        self.assertAlmostEqual(attendance_line.amount, 3343.95, places=2)
 
     def test_worked_days_amount_with_unpaid(self):
 
@@ -74,13 +74,13 @@ class TestPayslipComputation(TestPayslipContractBase):
         self.richard_payslip.onchange_employee()
         work_days = self.richard_payslip.worked_days_line_ids
 
-        self.assertAlmostEqual(sum(work_days.mapped('amount')), self.contract_cdi.wage - self.richard_payslip.unpaid_amount)
+        self.assertAlmostEqual(sum(work_days.mapped('amount')), self.contract_cdi.wage - self.richard_payslip._get_unpaid_amount())
 
         leave_line = work_days.filtered(lambda l: l.code == self.work_entry_type_leave.code)
-        self.assertEqual(leave_line.amount, 238.46)
+        self.assertAlmostEqual(leave_line.amount, 238.46, places=2)
 
         extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
-        self.assertEqual(extra_attendance_line.amount, 0.0)
+        self.assertAlmostEqual(extra_attendance_line.amount, 0.0, places=2)
 
         attendance_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
-        self.assertEqual(attendance_line.amount, 4530.77)
+        self.assertAlmostEqual(attendance_line.amount, 4530.77, places=2)

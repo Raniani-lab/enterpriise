@@ -42,23 +42,11 @@ class AccountPayment(models.Model):
         })
         return res
 
-
-class AccountRegisterPayments(models.TransientModel):
-    _inherit = 'account.register.payments'
-
-    l10n_mx_edi_partner_bank_id = fields.Many2one(
-        'res.partner.bank', 'Partner Bank', help='If the payment was made '
-        'with a financial institution define the bank account used in this '
-        'payment.')
-
-    @api.onchange('partner_id')
-    def _l10n_mx_onchange_partner_bank_id(self):
-        self.l10n_mx_edi_partner_bank_id = False
-        if len(self.partner_id.commercial_partner_id.bank_ids) == 1:
-            self.l10n_mx_edi_partner_bank_id = self.partner_id.commercial_partner_id.bank_ids  # noqa
+class AccountPaymentRegister(models.TransientModel):
+    _inherit = 'account.payment.register'
 
     @api.multi
-    def _prepare_payment_vals(self, invoices):
-        res = super(AccountRegisterPayments, self)._prepare_payment_vals(invoices)
+    def _prepare_payment_vals(self, invoice):
+        res = super(AccountPaymentRegister, self)._prepare_payment_vals(invoice)
         res['l10n_mx_edi_partner_bank_id'] = self.l10n_mx_edi_partner_bank_id.id  # noqa
         return res

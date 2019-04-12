@@ -159,9 +159,11 @@ class TestDeliveryEasypost(TransactionCase):
         picking_fedex.move_lines[0].write({'quantity_done': 2})
         self.wiz_put_in_pack(picking_fedex)
         picking_fedex.move_lines[0].move_line_ids.result_package_id.packaging_id = self.fedex_default_packaging.id
+        picking_fedex.move_lines[0].move_line_ids.result_package_id.shipping_weight = 10.0
         picking_fedex.move_lines[1].write({'quantity_done': 3})
         self.wiz_put_in_pack(picking_fedex)
         picking_fedex.move_lines[1].move_line_ids.result_package_id.packaging_id = self.fedex_default_packaging.id
+        picking_fedex.move_lines[1].move_line_ids.result_package_id.shipping_weight = 10.0
         self.assertGreater(picking_fedex.weight, 0.0, "Picking weight should be positive.(ep-fedex)")
         picking_fedex.action_done()
         self.assertGreater(picking_fedex.carrier_price, 0.0, "Easypost carrying price is probably incorrect(fedex)")

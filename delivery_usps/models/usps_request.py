@@ -191,7 +191,7 @@ class USPSRequest():
 
         if not is_return:
             gross_weight = carrier._usps_convert_weight(picking.shipping_weight)
-            weight_in_ounces = picking.shipping_weight * 35.274
+            weight_in_ounces = 16 * gross_weight['pound'] + gross_weight['ounce']
         else:
             gross_weight = carrier._usps_convert_weight(picking.weight)
             weight_in_ounces = picking.weight * 35.274

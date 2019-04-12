@@ -94,7 +94,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr ""
+msgstr "Помічник експорту для бухгалтерських звітів"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
@@ -115,7 +115,7 @@ msgstr ""
 #: code:addons/documents_account/wizard/report_export_wizard.py:31
 #, python-format
 msgid "Generated Documents"
-msgstr ""
+msgstr "Згенеровані документи"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__has_business_option

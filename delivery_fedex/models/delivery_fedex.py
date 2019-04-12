@@ -77,7 +77,12 @@ class ProviderFedex(models.Model):
                                            ('FEDEX_3_DAY_FREIGHT', 'FEDEX_3_DAY_FREIGHT'),
                                            ('FIRST_OVERNIGHT', 'FIRST_OVERNIGHT'),
                                            ('PRIORITY_OVERNIGHT', 'PRIORITY_OVERNIGHT'),
-                                           ('STANDARD_OVERNIGHT', 'STANDARD_OVERNIGHT')],
+                                           ('STANDARD_OVERNIGHT', 'STANDARD_OVERNIGHT'),
+                                           ('FEDEX_NEXT_DAY_EARLY_MORNING', 'FEDEX_NEXT_DAY_EARLY_MORNING'),
+                                           ('FEDEX_NEXT_DAY_MID_MORNING', 'FEDEX_NEXT_DAY_MID_MORNING'),
+                                           ('FEDEX_NEXT_DAY_AFTERNOON', 'FEDEX_NEXT_DAY_AFTERNOON'),
+                                           ('FEDEX_NEXT_DAY_END_OF_DAY', 'FEDEX_NEXT_DAY_END_OF_DAY'),
+                                           ],
                                           default='INTERNATIONAL_PRIORITY')
     fedex_weight_unit = fields.Selection([('LB', 'LB'),
                                           ('KG', 'KG')],
@@ -464,6 +469,7 @@ class ProviderFedex(models.Model):
         srm.shipping_charges_payment(superself.fedex_account_number)
 
         srm.shipment_label('COMMON2D', self.fedex_label_file_type, self.fedex_label_stock_type, 'TOP_EDGE_OF_TEXT_FIRST', 'SHIPPING_LABEL_FIRST')
+        estimated_weight = sum([move.product_qty * move.product_id.weight for move in picking.move_lines])
         net_weight = self._fedex_convert_weight(picking.shipping_weight, self.fedex_weight_unit) or self._fedex_convert_weight(picking.weight, self.fedex_weight_unit)
         packaging = packaging = picking.package_ids[:1].packaging_id or picking.carrier_id.fedex_default_packaging_id
         order = picking.sale_id

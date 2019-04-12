@@ -83,7 +83,7 @@ class ProjectForecast(models.Model):
     # resource
     resource_hours = fields.Float(string="Planned hours", default=0)
     resource_time = fields.Float("Allocated Time", compute='_compute_resource_time', inverse='_inverse_resource_time', compute_sudo=True, store=True, help="Expressed in the Unit of Measure of the project company")
-    forecast_uom = fields.Selection(related='company_id.forecast_uom', readonly=False)
+    forecast_uom = fields.Selection(related='company_id.forecast_uom', readonly=True)
 
     _sql_constraints = [
         ('check_start_date_lower_end_date', 'CHECK(end_date >= start_date)', 'Forecast end date should be greater or equal to its start date'),

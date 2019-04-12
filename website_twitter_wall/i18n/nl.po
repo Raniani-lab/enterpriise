@@ -72,7 +72,7 @@ msgstr "Actief"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__can_publish
 msgid "Can publish"
-msgstr ""
+msgstr "Kan publiceren"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__create_uid

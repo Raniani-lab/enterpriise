@@ -158,7 +158,7 @@
                     border-bottom: 1px solid red;
                 }
             }
-            &:not(.o_readonly_modifier) {
+            &:not(.o_readonly_modifier):not(:last-child) {
                 border-right: 1px solid $table-border-color;
             }
         }

@@ -9,7 +9,7 @@ class IotDevice(models.Model):
 
     @api.depends('type')
     def _compute_qcp_test_type(self):
-        types = {'device': 'measure', 'camera': 'picture', 'printer': 'printer'}
+        types = {'device': 'measure', 'camera': 'picture', 'printer': 'print_label'}
         self.qcp_test_type = types.get(self.type, '')
 
 

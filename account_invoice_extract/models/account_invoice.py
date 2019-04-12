@@ -49,7 +49,7 @@ class AccountInvoiceExtractionWords(models.Model):
     word_box_width = fields.Float()
     word_box_height = fields.Float()
     word_box_angle = fields.Float()
-    
+
 
 class AccountInvoice(models.Model):
 
@@ -68,20 +68,18 @@ class AccountInvoice(models.Model):
             can_show = False
         if record.state not in 'draft':
             can_show = False
-        if record.type in ["out_invoice", "out_refund"]:
-            can_show = False
         if record.message_main_attachment_id is None or len(record.message_main_attachment_id) == 0:
             can_show = False
         return can_show
 
-    @api.depends('state', 'extract_state', 'message_ids')
+    @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_resend_button(self):
         for record in self:
             record.extract_can_show_resend_button = self._compute_can_show_send_resend(record)
             if record.extract_state not in ['error_status', 'not_enough_credit', 'module_not_up_to_date']:
                 record.extract_can_show_resend_button = False
 
-    @api.depends('state', 'extract_state', 'message_ids')
+    @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_send_button(self):
         for record in self:
             record.extract_can_show_send_button = self._compute_can_show_send_resend(record)
@@ -95,11 +93,11 @@ class AccountInvoice(models.Model):
                             ('extract_not_ready', 'waiting extraction, but it is not ready'),
                             ('waiting_validation', 'Waiting validation'),
                             ('done', 'Completed flow')],
-                            'Extract state', default='no_extract_requested', required=True)
-    extract_status_code = fields.Integer("Status code")
+                            'Extract state', default='no_extract_requested', required=True, copy=False)
+    extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
-    extract_remoteid = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id")
-    extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id")
+    extract_remoteid = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False)
+    extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
@@ -113,8 +111,6 @@ class AccountInvoice(models.Model):
         if self.env.user.company_id.extract_show_ocr_option_selection == 'auto_send':
             account_token = self.env['iap.account'].get('invoice_ocr')
             for record in self:
-                if record.type in ["out_invoice", "out_refund"]:
-                    return res
                 if record.extract_state == "no_extract_requested":
                     attachments = res.attachment_ids
                     if attachments:
@@ -133,7 +129,7 @@ class AccountInvoice(models.Model):
                             'documents': [x.datas.decode('utf-8') for x in attachments],
                             'file_names': [x.datas_fname for x in attachments],
                             'user_infos': user_infos,
-                            
+
                         }
                         try:
                             result = jsonrpc(endpoint, params=params)
@@ -148,8 +144,6 @@ class AccountInvoice(models.Model):
                         except AccessError:
                             record.extract_state = 'error_status'
                             self.extract_status_code = ERROR_NO_CONNECTION
-        for record in self:
-            record._compute_show_resend_button()
         return res
 
     def retry_ocr(self):
@@ -170,7 +164,7 @@ class AccountInvoice(models.Model):
                 'account_token': account_token.account_token,
                 'version': CLIENT_OCR_VERSION,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
-                'documents': [x.datas.decode('utf-8') for x in attachments], 
+                'documents': [x.datas.decode('utf-8') for x in attachments],
                 'file_names': [x.datas_fname for x in attachments],
                 'user_infos': user_infos,
             }
@@ -194,8 +188,8 @@ class AccountInvoice(models.Model):
     def get_validation(self, field):
         """
         return the text or box corresponding to the choice of the user.
-        If the user selected a box on the document, we return this box, 
-        but if he entered the text of the field manually, we return only the text, as we 
+        If the user selected a box on the document, we return this box,
+        but if he entered the text of the field manually, we return only the text, as we
         don't know which box is the right one (if it exists)
         """
         selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("user_selected", "=", True)])
@@ -203,7 +197,7 @@ class AccountInvoice(models.Model):
             selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("selected_status", "!=", 0)])
         return_box = {}
         if selected.exists():
-            return_box["box"] = [selected.word_text, selected.word_page, selected.word_box_midX, 
+            return_box["box"] = [selected.word_text, selected.word_page, selected.word_box_midX,
                 selected.word_box_midY, selected.word_box_width, selected.word_box_height, selected.word_box_angle]
         #now we have the user or ocr selection, check if there was manual changes
 
@@ -251,7 +245,7 @@ class AccountInvoice(models.Model):
                 text_to_send['lines'].append(line)
         else:
             return None
-        
+
         return_box.update(text_to_send)
         return return_box
 
@@ -261,8 +255,6 @@ class AccountInvoice(models.Model):
         the ocr algorithm"""
         res = super(AccountInvoice, self).invoice_validate()
         for record in self:
-            if record.type in ["out_invoice", "out_refund"]:
-                return
             if record.extract_state == 'waiting_validation':
                 endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/validate'
@@ -281,7 +273,7 @@ class AccountInvoice(models.Model):
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
                 params = {
-                    'document_id': record.extract_remoteid, 
+                    'document_id': record.extract_remoteid,
                     'version': CLIENT_OCR_VERSION,
                     'values': values
                 }
@@ -425,7 +417,7 @@ class AccountInvoice(models.Model):
             return self.find_partner_id_with_name(word.word_text)
         return word.word_text
 
-    def _get_partner_fields(self): 
+    def _get_partner_fields(self):
         return ['name', 'vat', 'street', 'city', 'zip']
 
     @api.multi
@@ -513,7 +505,7 @@ class AccountInvoice(models.Model):
                     tax_ids.append((4, tax))
                 if tax_ids:
                     vals['invoice_line_tax_ids'] = tax_ids
-                
+
                 invoice_lines_to_create.append(vals)
         else:
             for il in invoice_lines:
@@ -533,9 +525,9 @@ class AccountInvoice(models.Model):
                 for (taxe, taxe_type) in zip(taxes, taxes_type_ocr):
                     if (taxe, taxe_type) in taxes_found:
                         if 'invoice_line_tax_ids' not in vals:
-                            vals['invoice_line_tax_ids'] = [(4, taxes_found[taxe])]
+                            vals['invoice_line_tax_ids'] = [(4, taxes_found[(taxe, taxe_type)])]
                         else:
-                            vals['invoice_line_tax_ids'].append((4, taxes_found[taxe]))
+                            vals['invoice_line_tax_ids'].append((4, taxes_found[(taxe, taxe_type)]))
                     else:
                         taxes_record = self.env['account.tax'].search([('amount', '=', taxe), ('amount_type', '=', taxe_type), ('type_tax_use', '=', 'purchase')], limit=1)
                         if taxes_record:
@@ -544,7 +536,7 @@ class AccountInvoice(models.Model):
                                 vals['invoice_line_tax_ids'] = [(4, taxes_record.id)]
                             else:
                                 vals['invoice_line_tax_ids'].append((4, taxes_record.id))
-                
+
                 invoice_lines_to_create.append(vals)
 
         invoice_lines = self.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(invoice_lines_to_create)
@@ -562,7 +554,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def _set_currency(self, currency_ocr):
         self.ensure_one()
-        self.currency_id = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr), 
+        self.currency_id = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr),
             ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
 
     @api.multi

@@ -18,8 +18,8 @@
             model="mrp.production"
             string="Cost Analysis"
             report_type="qweb-html"
-            name="mrp_account.mrp_cost_structure"
-            file="mrp_account.mrp_cost_structure"
+            name="mrp_account_enterprise.mrp_cost_structure"
+            file="mrp_account_enterprise.mrp_cost_structure"
             print_report_name="'Cost Analysis - %s ' % object.name"
         />
 
@@ -29,7 +29,7 @@
             <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
             <field name="arch" type="xml">
                 <div name="button_box" position="inside">
-                    <button name="%(mrp_account.action_cost_struct_mrp_production)d" type="action"
+                    <button name="%(mrp_account_enterprise.action_cost_struct_mrp_production)d" type="action"
                         class="oe_stat_button" icon="fa-circle-o" string="Cost Analysis" attrs="{'invisible': [('state', '!=', 'done')]}">
                     </button>
                 </div>
@@ -41,8 +41,8 @@
             model="product.product"
             string="Cost Structure Analysis"
             report_type="qweb-html"
-            name="mrp_account.product_template_cost_structure"
-            file="mrp_account.product_template_cost_structure"
+            name="mrp_account_enterprise.product_template_cost_structure"
+            file="mrp_account_enterprise.product_template_cost_structure"
             print_report_name="'Cost Structure Analysis - %s' % object.name"
         />
 

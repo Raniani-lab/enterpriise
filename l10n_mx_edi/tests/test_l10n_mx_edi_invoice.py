@@ -9,6 +9,7 @@ from lxml import etree, objectify
 
 from odoo.exceptions import ValidationError
 from odoo.tools import misc
+from odoo.tests.common import Form
 
 from . import common
 
@@ -267,21 +268,19 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # -----------------------
         invoice = self.create_invoice()
         invoice.action_invoice_open()
-        ctx = {'active_model': 'account.invoice', 'active_ids': [invoice.id]}
         bank_journal = self.env['account.journal'].search([
             ('type', '=', 'bank')], limit=1)
-        register_payments = self.env['account.register.payments'].with_context(
-            ctx).create({
-                'payment_date': invoice.date,
-                'l10n_mx_edi_payment_method_id': self.env.ref(
-                    'l10n_mx_edi.payment_method_efectivo').id,
-                'payment_method_id': self.env.ref(
-                    "account.account_payment_method_manual_in").id,
-                'journal_id': bank_journal.id,
-                'communication': invoice.number,
-                'amount': invoice.amount_total, })
-        payment = register_payments.create_payments()
-        payment = self.env['account.payment'].search(payment.get('domain', []))
+        payment_register = Form(self.env['account.payment'].with_context(active_model='account.invoice', active_ids=invoice.ids))
+        payment_register.payment_date = invoice.date
+        payment_register.l10n_mx_edi_payment_method_id = self.env.ref(
+                'l10n_mx_edi.payment_method_efectivo')
+        payment_register.payment_method_id = self.env.ref(
+                "account.account_payment_method_manual_in")
+        payment_register.journal_id = bank_journal
+        payment_register.communication = invoice.number
+        payment_register.amount = invoice.amount_total
+        payment = payment_register.save()
+        payment.post()
         self.assertEqual(payment.l10n_mx_edi_pac_status, "signed",
                          payment.message_ids.mapped('body'))
         default_template = self.env.ref(
@@ -310,16 +309,15 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice.action_invoice_open()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
-        ctx = {'active_model': 'account.invoice', 'active_ids': [invoice.id]}
-        register_payments = self.env['account.register.payments'].with_context(ctx).create({
-            'payment_date': today - timedelta(days=5),
-            'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
-            'payment_method_id': self.payment_method_manual_out.id,
-            'journal_id': journal.id,
-            'communication': invoice.number,
-            'amount': invoice.amount_total,
-        })
-        register_payments.create_payments()
+        payment_register = Form(self.env['account.payment'].with_context(active_model='account.invoice', active_ids=invoice.ids))
+        payment_register.payment_date = today.date() - timedelta(days=5)
+        payment_register.l10n_mx_edi_payment_method_id = self.payment_method_cash
+        payment_register.payment_method_id = self.payment_method_manual_out
+        payment_register.journal_id = journal
+        payment_register.communication = invoice.number
+        payment_register.amount = invoice.amount_total
+        payment_register.save().post()
+
         payment = invoice.payment_ids
         self.assertEqual(
             payment.l10n_mx_edi_pac_status, 'signed',

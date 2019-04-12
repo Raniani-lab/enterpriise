@@ -5,18 +5,20 @@ from odoo import api, models, _
 from odoo.exceptions import ValidationError
 
 
-class AccountAbstractPayment(models.AbstractModel):
-    _inherit = "account.abstract.payment"
+class AccountPayment(models.Model):
+    _inherit = "account.payment"
 
     @api.model
     def _get_method_codes_using_bank_account(self):
-        res = super(AccountAbstractPayment, self)._get_method_codes_using_bank_account()
+        res = super(AccountPayment, self)._get_method_codes_using_bank_account()
         res.append('aba_ct')
         return res
 
-
-class AccountPayment(models.Model):
-    _inherit = "account.payment"
+    @api.model
+    def _get_method_codes_needing_bank_account(self):
+        res = super(AccountPayment, self)._get_method_codes_needing_bank_account()
+        res.append('aba_ct')
+        return res
 
     @api.constrains('payment_method_id', 'journal_id', 'currency_id')
     def _check_bank_account(self):

@@ -24,9 +24,7 @@ var AttachmentViewer = Widget.extend({
     init: function (parent, attachments) {
         this._super.apply(this, arguments);
         this.attachments = attachments;
-        this.activeAttachment = _.find(attachments, function (attachment) {
-            return attachment.is_main;
-        }) || this.attachments[0];
+        this._setActive();
     },
     /**
      * Render attachment.
@@ -50,9 +48,7 @@ var AttachmentViewer = Widget.extend({
      */
     updateContents: function (attachments, order) {
         this.attachments = attachments;
-        this.activeAttachment = _.find(attachments, function (attachment) {
-            return attachment.is_main;
-        }) || this.attachments[0];
+        this._setActive();
         this._renderAttachment();
     },
 
@@ -68,6 +64,23 @@ var AttachmentViewer = Widget.extend({
     _renderAttachment: function () {
         this.$el.empty();
         this.$el.append(QWeb.render('mail_enterprise.AttachmentPreview', {widget: this}));
+    },
+
+    /**
+     * @private
+     */
+    _setActive: function () {
+        this.activeAttachment = _.find(this.attachments, function (attachment) {
+            return attachment.is_main;
+        });
+        if (!this.activeAttachment && this.attachments.length) {
+            this.activeAttachment = this.attachments[0];
+            this._rpc({
+                model: 'ir.attachment',
+                method: 'register_as_main_attachment',
+                args: [[this.activeAttachment.id]],
+            });
+        }
     },
 
     //--------------------------------------------------------------------------

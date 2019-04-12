@@ -59,6 +59,7 @@
                 <field name="is_first_step" invisible="1"/>
                 <field name="is_last_lot" invisible="1"/>
                 <field name="is_last_step" invisible="1"/>
+                <field name="is_last_unfinished_wo" invisible="1"/>
                 <field name="is_user_working" invisible="1"/>
                 <field name="is_produced" invisible="1"/>
                 <field name="move_raw_ids" invisible="1"/>
@@ -68,7 +69,7 @@
                 <field name="state" invisible="1"/>
                 <field name="skipped_check_ids" invisible="1"/>
                 <field name="test_type" invisible="1"/>
-                <field name="final_lot_domain" invisible="1"/>
+                <field name="allowed_lots_domain" invisible="1"/>
                 <field name="product_tracking" invisible="1"/>
                 <field name="workcenter_id" invisible="1"/>
                 <field name="working_state" invisible="1"/>
@@ -90,7 +91,7 @@
                         <div attrs="{'invisible': [('product_tracking', '=', 'none')]}">
                             <label for="final_lot_id" string="Lot Number:" attrs="{'invisible': [('product_tracking', '!=', 'lot')]}"/>
                             <label for="final_lot_id" string="Serial Number:" attrs="{'invisible': [('product_tracking', '!=', 'serial')]}"/>
-                            <field name="final_lot_id" context="{'default_product_id': product_id}" domain="[('id', 'in', final_lot_domain)]"/>
+                            <field name="final_lot_id" context="{'default_product_id': product_id}" domain="[('id', 'in', allowed_lots_domain)]"/>
                             <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus-square-o" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('final_lot_id', '!=', False)]}"/>
                         </div>
                     </div>
@@ -151,7 +152,7 @@
                             <button name="action_print" type="object" class="btn-primary" attrs="{'invisible': [('test_type', '!=', 'print_label')]}" barcode_trigger="print" string="Print Labels"/>
                             <button name="record_production" type="object" string="Record production" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', True)]}" barcode_trigger="record" class="btn-primary"/>
                             <button name="do_finish" type="object" string="Mark as Done" icon="fa-check" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False)]}" class="btn-primary" barcode_trigger="cloWO"/>
-                            <button name="action_open_manufacturing_order" type="object" string="Mark as Done and Close MO" icon="fa-check" attrs="{'invisible': ['|', '|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False), ('next_work_order_id', '!=', False)]}" class="btn-primary" barcode_trigger="cloMO"/>
+                            <button name="action_open_manufacturing_order" type="object" string="Mark as Done and Close MO" icon="fa-check" attrs="{'invisible': ['|', '|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False), ('is_last_unfinished_wo', '=', False)]}" class="btn-primary" barcode_trigger="cloMO"/>
                             <button name="action_first_skipped_step" type="object" string="Finish steps" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('state', '!=', 'progress'), ('skipped_check_ids', '=', [])]}" class="btn-primary" barcode_trigger="finish"/>
                         </div>
                     </div>
@@ -164,7 +165,7 @@
                     <h3 attrs="{'invisible': ['|', '|', ('current_quality_check_id', '!=', False), ('check_ids', '=', []), ('qty_producing', '=', 0)]}">
                         <field name="product_id" options="{'no_open': True}"/> -
                         <span attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), ('lot_id', '=', False)]}">
-                            <field name="lot_id"/> -
+                            <field name="lot_id" context="{'active_mo_id': production_id}"/> -
                         </span>
                         <label for="product_uom_id" string=" "/>
                         <field name="product_uom_id" options="{'no_open': True}" class="oe_inline"/>
@@ -188,7 +189,7 @@
                         <div class="o_workorder_field text-center">
                             <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'serial')]}">Serial Number</div>
                             <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'lot')]}">Lot Number</div>
-                            <field name="lot_id" context="{'default_product_id': component_id}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id)]"/>
+                            <field name="lot_id" context="{'default_product_id': component_id, 'active_mo_id': production_id}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id)]"/>
                         </div>
                         <div class="o_workorder_field text-right">
                             <label for="qty_done" string="Quantity"/>

@@ -102,7 +102,7 @@ msgstr "Дія"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction
 msgid "Action Needed"
-msgstr "Дія необхідна"
+msgstr "Необхідна дія"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__action_required
@@ -317,7 +317,7 @@ msgstr "Якщо позначено, то повідомленя потребу�
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Якщо відмічено, то нові повідомлення будуть потребувати вашої уваги."
+msgstr "Якщо позначено, то нові повідомлення будуть потребувати вашої уваги."
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error
@@ -332,7 +332,7 @@ msgstr "Установа"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr "Інтерфейс для онлайн журналу рахунку"
+msgstr "Інтерфейс для онлайн-журналу рахунку"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_is_follower
@@ -499,13 +499,13 @@ msgstr "Кількість непрочитаних повідомлень"
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_journal_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__online_account_id
 msgid "Online Account"
-msgstr "Онлайн рахунок"
+msgstr "Онлайн-рахунок"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_identifier
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__online_identifier
 msgid "Online Identifier"
-msgstr "Онлайн ідентифікатор"
+msgstr "Онлайн-ідентифікатор"
 
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_online_provider_account
@@ -524,7 +524,7 @@ msgstr "Банківський рахунок партнера онлайн"
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_vendor_name
 msgid "Online Partner Vendor Name"
-msgstr "Ім'я онлайн партнера постачальника"
+msgstr "Ім'я онлайн-партнера постачальника"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:375
@@ -534,7 +534,7 @@ msgstr "Ім'я онлайн партнера постачальника"
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 #, python-format
 msgid "Online Synchronization"
-msgstr "Онлайн синхронізація"
+msgstr "Онлайн-синхронізація"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:461
@@ -591,7 +591,7 @@ msgstr "Тип постачальника"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr "Провайдер для синхронізації онлайн рахунку"
+msgstr "Провайдер для синхронізації онлайн-рахунку"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:76
@@ -692,7 +692,7 @@ msgstr "У системі завантажено наступні операці
 #: code:addons/account_online_sync/models/online_sync.py:88
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
-msgstr "Таймаут: сервер не відповідав протягом 60-х років"
+msgstr "Час вийшов: сервер не відповідав протягом 60 секунд"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__transactions
@@ -746,7 +746,7 @@ msgstr "Переглянути проблему"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__website_message_ids
 msgid "Website Messages"
-msgstr "Повідомлення з вебсайту"
+msgstr "Повідомлення з веб-сайту"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__website_message_ids
@@ -811,7 +811,7 @@ msgstr "назва банківської організації"
 #: code:addons/account_online_sync/models/online_sync.py:507
 #, python-format
 msgid "online sync"
-msgstr "онлайн синхронізація"
+msgstr "онлайн-синхронізація"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0

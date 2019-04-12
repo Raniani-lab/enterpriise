@@ -24,7 +24,7 @@ class AccountPayment(models.Model):
         result = super(AccountPayment, self).write(vals)
         # Mark a batch payment as reconciled if all its payments are reconciled
         for rec in self:
-            if vals.get('state') and rec.batch_payment_id:
+            if rec.batch_payment_id:
                 if all(payment.state == 'reconciled' for payment in rec.batch_payment_id.payment_ids):
                     rec.batch_payment_id.state = 'reconciled'
         return result

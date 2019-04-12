@@ -7870,7 +7870,16 @@ module.exports = function (SIP, environment) {
   UA.prototype.onTransportReceiveMsg = function (message) {
     var transaction;
     message = SIP.Parser.parseMessage(message, this);
-
+    /* --------------
+     * START ODOO FIX
+     */ 
+    if (!message) {
+      this.logger.warn("UA failed to parse incoming SIP message - discarding.");
+      return;
+    }
+    /* --------------
+     * END ODOO FIX
+     */ 
     if (this.status === SIP.UA.C.STATUS_USER_CLOSED && message instanceof SIP.IncomingRequest) {
       this.logger.warn('UA received message when status = USER_CLOSED - aborting');
       return;

@@ -5,8 +5,8 @@
 # Translators:
 # Bohdan Lisnenko, 2018
 # Анатолій Пономаренко <aponomarenko020@gmail.com>, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +30,7 @@ msgstr "Активи"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Assets in running state"
-msgstr "Активи у активному стані"
+msgstr "Активи в активному стані"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
@@ -109,7 +109,7 @@ msgstr "Типи доходів майбутніх періодів"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
-msgstr "Назва відстроченого доходу"
+msgstr "Назва доходу майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_account_revenue_form
@@ -141,7 +141,7 @@ msgid ""
 "From this report, you can have an overview of your deferred revenue. The\n"
 "            search bar can also be used to personalize your revenue recognition reporting."
 msgstr ""
-"З цього звіту ви можете отримати огляд відстрочених доходів.\n"
+"З цього звіту ви можете отримати огляд доходів майбутніх періодів.\n"
 "            Панель пошуку також може використовуватися для персоналізації звіту про визнання доходу."
 
 #. module: account_deferred_revenue
@@ -192,7 +192,7 @@ msgstr "Партнер"
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_recognition_depreciation_confirmation_wizard
 msgid "Post Installment Lines"
-msgstr "Поштові строки платежів"
+msgstr "Опублікувати рядки платежів"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search

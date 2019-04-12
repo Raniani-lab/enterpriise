@@ -107,6 +107,8 @@
                             <field name="identifier" readonly="True"/>
                             <field name="type"/>
                             <field name="connection"/>
+                            <div class='font-weight-bold'>Value</div>
+                            <widget name="iot_device_value_display"/>
                         </group>
                     </group>
                     <notebook>

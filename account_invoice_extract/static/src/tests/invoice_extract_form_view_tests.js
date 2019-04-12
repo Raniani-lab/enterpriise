@@ -123,6 +123,8 @@ QUnit.module('FormView', {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 } else if (args.method === 'search_read') {
                     return Promise.resolve([this.data['mail.message'].records[0].attachment_ids[0]]);
+                } else if (args.method === 'register_as_main_attachment') {
+                    return Promise.resolve(true);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -237,6 +239,8 @@ QUnit.module('FormView', {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 } else if (args.method === 'search_read') {
                     return Promise.resolve([this.data['mail.message'].records[0].attachment_ids[0]]);
+                } else if (args.method === 'register_as_main_attachment') {
+                    return Promise.resolve(true);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -313,6 +317,8 @@ QUnit.module('FormView', {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 } else if (args.method === 'search_read') {
                     return Promise.resolve([this.data['mail.message'].records[0].attachment_ids[0]]);
+                } else if (args.method === 'register_as_main_attachment') {
+                    return Promise.resolve(true);
                 }
                 return this._super.apply(this, arguments);
             },

@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Анатолій Пономаренко <aponomarenko020@gmail.com>, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
@@ -27,6 +26,8 @@ msgid ""
 "0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for "
 "'ocr selected with user selection (user may have selected the same box)"
 msgstr ""
+"0 для \"не вибрано\", 1 для \"ocr вибрано без вибору користувача\" і 2 для "
+"\"ocr вибрано з вибором користувача (користувач може вибрати той самий блок)"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
@@ -46,6 +47,7 @@ msgstr "Виникла помилка"
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "An error occured during digitalization. Try resending the bill."
 msgstr ""
+"Під час оцифрування сталася помилка. Спробуйте повторно надіслати рахунок."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
@@ -80,7 +82,7 @@ msgstr "Налаштування"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__create_uid
 msgid "Created by"
-msgstr "Створено"
+msgstr "Створив"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__create_date
@@ -146,7 +148,7 @@ msgstr "Рахунок вилучає вибраний статус."
 #. module: account_invoice_extract
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice id"
-msgstr "Ідентифікатор рахунка-фактури"
+msgstr "Іd рахунка-фактури"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words____last_update
@@ -186,17 +188,17 @@ msgstr "Обробляйте рахунки тільки за запитом"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_show_ocr_option_selection
 msgid "Processing Option"
-msgstr ""
+msgstr "Варіант обробки"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Resend For Digitalization"
-msgstr ""
+msgstr "Повторно надіслати для цифрового перегляду"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Send For Digitalization"
-msgstr ""
+msgstr "Надіслати для цифрового перегляду"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_show_ocr_option_selection
@@ -218,6 +220,7 @@ msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 60 seconds."
 msgstr ""
+"Файл надіслано та обробляється. Зазвичай це займає від 5 до 60 секунд."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr

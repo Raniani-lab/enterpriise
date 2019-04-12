@@ -40,7 +40,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         self.account_move_line_model = self.env['account.move.line']
         self.journal_model = self.env['account.journal']
         self.refund_model = self.env['account.invoice.refund']
-        self.register_payments_model = self.env['account.register.payments']
+        self.payment_model = self.env['account.payment']
         self.precision = self.env.user.company_id.currency_id.decimal_places
         self.payment_method_manual_out = self.env.ref(
             'account.account_payment_method_manual_out')
@@ -108,9 +108,8 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         if invoice.type == 'in_invoice':
             payment_method_id = self.payment_method_manual_in.id
 
-        ctx = {'active_model': 'account.invoice', 'active_ids': [invoice.id]}
-        register_payments = self.register_payments_model.with_context(
-            ctx).create({
+        default_dict = self.payment_model.with_context(active_model='account.invoice', active_ids=invoice.id).default_get(self.payment_model.fields_get_keys())
+        payments = self.payment_model.new({**default_dict, **{
                 'payment_date': date,
                 'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
                 'payment_method_id': payment_method_id,
@@ -118,9 +117,9 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
                 'currency_id': currency_id.id,
                 'communication': invoice.number,
                 'amount': amount,
-            })
+        }})
 
-        return register_payments.create_payments()
+        return payments.create_payments()
 
     def create_account(self, code, name, user_type_id=False):
         """This account is created to use like cash basis account and only

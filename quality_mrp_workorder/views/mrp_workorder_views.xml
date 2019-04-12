@@ -14,13 +14,6 @@
                 <button name="do_pass" type="object" class="btn-success" attrs="{'invisible': [('test_type', '!=', 'passfail')]}" barcode_trigger="pass" string="Pass"/>
                 <button name="do_measure" type="object" class="btn-primary" string="Validate" attrs="{'invisible': [('test_type', '!=', 'measure')]}" barcode_trigger="next"/>
             </xpath>
-            <xpath expr="//field[@name='note']" position="after">
-                <div attrs="{'invisible': [('test_type', '!=', 'measure')]}" class="o_row mb8">
-                    <label for="measure" string="Measure:" />
-                    <field name="measure" attrs="{'required': [('test_type', '=', 'measure')]}" class="oe_inline"/>
-                    <field name="norm_unit" readonly="1" />
-                </div>
-            </xpath>
         </field>
     </record>
 

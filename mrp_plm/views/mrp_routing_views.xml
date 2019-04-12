@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="mrp.mrp_routing_form_view"/>
         <field name="model">mrp.routing</field>
         <field name="arch" type="xml">
-            <field name="location_id" position="after">
+            <field name="company_id" position="before">
                 <field name="version"/>
             </field>
             <button name="toggle_active" position="before">

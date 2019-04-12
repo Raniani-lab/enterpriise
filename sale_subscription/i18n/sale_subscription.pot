@@ -16,6 +16,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:744
+#, python-format
+msgid " E-mail sent to customer."
+msgstr ""
+
+#. module: sale_subscription
 #: model:sale.subscription.template,description:sale_subscription.cleaning_monthly
 #: model:sale.subscription.template,description:sale_subscription.cleaning_yearly
 msgid "\n"
@@ -765,6 +771,24 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__auto_close_limit
 msgid "Automatic closing limit"
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:734
+#, python-format
+msgid "Automatic payment failed after multiple attempts. Subscription closed automatically."
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:739
+#, python-format
+msgid "Automatic payment failed. Subscription set to \"To Renew\"."
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:699
+#, python-format
+msgid "Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>."
 msgstr ""
 
 #. module: sale_subscription

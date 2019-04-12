@@ -335,3 +335,28 @@ class MxReportAccountTrial(models.AbstractModel):
         new_params.pop('financial_group_line_id', False)
         return super(MxReportAccountTrial, self).open_journal_items(
             options, new_params)
+
+    def view_all_journal_items(self, options, params):
+        if not params.get('id') or 'hierarchy' in params.get('id'):
+            return super(MxReportAccountTrial, self).view_all_journal_items(
+                options, params)
+        ctx = self._set_context(options)
+        lines = self.with_context(**ctx)._get_lines(options)
+        new_params = params.copy()
+        new_params.pop('id', False)
+        accounts = self._get_accounts_journal_items([params.get('id')], lines)
+        ctx = {'search_default_account': 1}
+        res = super(MxReportAccountTrial, self.with_context(
+            **ctx)).view_all_journal_items(options, new_params)
+        res.get('domain', []).append(('account_id', 'in', accounts))
+        return res
+
+    def _get_accounts_journal_items(self, params, lines):
+        levels = [
+            l.get('level') for l in lines if l.get('parent_id') in params]
+        if levels and levels[0] == 4:
+            return [
+                l.get('id') for l in lines if l.get('parent_id') in params]
+        params = [
+            l.get('id') for l in lines if l.get('parent_id') in params]
+        return self._get_accounts_journal_items(params, lines)

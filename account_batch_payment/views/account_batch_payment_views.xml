@@ -63,6 +63,7 @@ if records:
                                     <field name="communication"/>
                                     <field name="amount" sum="Total"/>
                                     <field name="currency_id" invisible="1"/>
+                                    <field name="state" invisible="1"/>
                                 </tree>
                                 <form string="Register Payment"><group>
                                     <group>

@@ -127,7 +127,7 @@ msgstr "Хэрэглэгчийн оролт буруу байна"
 #. module: event_barcode
 #: model:ir.model.fields,field_description:event_barcode.field_res_config_settings__barcode_nomenclature_id
 msgid "Nomenclature"
-msgstr ""
+msgstr "Задлах дүрэм"
 
 #. module: event_barcode
 #. openerp-web

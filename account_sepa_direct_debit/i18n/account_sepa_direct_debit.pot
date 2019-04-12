@@ -779,6 +779,12 @@ msgid "Validate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
+#: code:addons/account_sepa_direct_debit/models/account_invoice.py:36
+#, python-format
+msgid "You cannot do direct debit on a customer to pay a refund to him, or on a supplier to pay an invoice from him."
+msgstr ""
+
+#. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:32
 #, python-format
 msgid "You cannot generate a SEPA Direct Debit file with a required collection date in the past."

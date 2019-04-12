@@ -23,7 +23,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "change input[name='public_transport_employee_amount']": "onchange_public_transport",
         "change select[name='marital']": "onchange_marital",
         "change select[name='spouse_fiscal_status']": "onchange_spouse_fiscal_status",
-        "change input[name='disabled_children']": "onchange_disabled_children",
+        "change input[name='disabled_children_bool']": "onchange_disabled_children",
         "change input[name='other_dependent_people']": "onchange_other_dependent_people",
         "click #hr_cs_submit": "submit_salary_package",
         "click button[name='compute_button']": "compute_net",
@@ -120,9 +120,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 'spouse_net_revenue': parseFloat($("input[name='spouse_net_revenue']").val()) || 0.0,
                 'spouse_other_net_revenue': parseFloat($("input[name='spouse_other_net_revenue']").val()) || 0.0,
                 'disabled_spouse_bool': $("input[name='disabled_spouse_bool']")[0].checked,
-                'children_count': parseInt($("input[name='children_count']").val()) || 0,
-                'disabled_children': $("input[name='disabled_children']")[0].checked,
-                'disabled_children_count': parseInt($("input[name='disabled_children_count']").val()) || 0,
+                'children': parseInt($("input[name='children']").val()) || 0,
+                'disabled_children_bool': $("input[name='disabled_children_bool']")[0].checked,
+                'disabled_children_number': parseInt($("input[name='disabled_children_number']").val()) || 0,
                 'other_dependent_people': $("input[name='other_dependent_people']")[0].checked,
                 'other_senior_dependent': parseInt($("input[name='other_senior_dependent']").val()) || 0,
                 'other_disabled_senior_dependent': parseInt($("input[name='other_disabled_senior_dependent']").val()) || 0,
@@ -137,16 +137,16 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 'country': parseInt($("select[name='country']").val()),
                 'email': $("input[name='email']").val(),
                 'phone': $("input[name='phone']").val(),
-                'national_number': $("input[name='national_number']").val(),
-                'nationality': parseInt($("select[name='nationality']").val()),
+                'identification_id': $("input[name='identification_id']").val(),
+                'country_id': parseInt($("select[name='country_id']").val()),
                 'certificate': _.find($("input[name='certificate']"), function(certificate) {
                     return certificate.checked;
                 }).value,
-                'certificate_name': $("input[name='certificate_name']").val(),
-                'certificate_school': $("input[name='certificate_school']").val(),
+                'study_field': $("input[name='study_field']").val(),
+                'study_school': $("input[name='study_school']").val(),
                 'bank_account': $("input[name='bank_account']").val(),
-                'emergency_person': $("input[name='emergency_person']").val(),
-                'emergency_phone_number': $("input[name='emergency_phone_number']").val(),
+                'emergency_contact': $("input[name='emergency_contact']").val(),
+                'emergency_phone': $("input[name='emergency_phone']").val(),
                 'country_of_birth': parseInt($("select[name='country_of_birth']").val()),
                 'place_of_birth': $("input[name='place_of_birth']").val(),
                 'spouse_complete_name': $("input[name='spouse_complete_name']").val(),
@@ -353,9 +353,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         if ($("input[name='transport_mode_others']")[0].checked){
             $(".mobility-options#others").removeClass('d-none');
         }
-
-        if (!$("input[name='transport_mode_car']")[0].checked) {
-        }
     },
 
     onchange_waiting_list: function() {
@@ -396,11 +393,11 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             self._rpc({
                 route: '/salary_package/onchange_mobile/',
                 params: {
-                    'contract_id': parseInt($("input[name='contract']")[0].id),
-                    'advantages': advantages,
+                    'has_mobile': $("input[name='mobile']")[0].checked,
+                    'international_communication': $("input[name='mobile-ic']")[0].checked,
                 },
-            }).then(function(data) {
-                $("input[name='mobile_amount']").val(data['mobile']);
+            }).then(function(amount) {
+                $("input[name='mobile_amount']").val(amount);
             });
         });
     },
@@ -449,11 +446,10 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             self._rpc({
                 route: '/salary_package/onchange_public_transport/',
                 params: {
-                    'contract_id': parseInt($("input[name='contract']")[0].id),
-                    'advantages': advantages,
+                    'public_transport_employee_amount': parseFloat($("input[name='public_transport_employee_amount']")[0].value) || 0.0,
                 },
-            }).then(function(data) {
-                $("input[name='public_transport_reimbursed_amount']").val(data['amount']);
+            }).then(function(amount) {
+                $("input[name='public_transport_reimbursed_amount']").val(amount);
             });
         });
     },
@@ -487,7 +483,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     onchange_disabled_children: function(event) {
-        var disabled_children = $("input[name='disabled_children']")[0].checked;
+        var disabled_children = $("input[name='disabled_children_bool']")[0].checked;
         var disabled_children_div = $("div[name='disabled_children_info']");
         disabled_children ? disabled_children_div.removeClass('d-none') : disabled_children_div.addClass('d-none');
     },

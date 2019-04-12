@@ -17,6 +17,8 @@ from odoo.exceptions import UserError
 
 from . import account_invoice
 
+from odoo.addons.l10n_mx_edi.tools.run_after_commit import run_after_commit
+
 CFDI_TEMPLATE = 'l10n_mx_edi.payment10'
 CFDI_XSLT_CADENA = 'l10n_mx_edi/data/3.3/cadenaoriginal.xslt'
 CFDI_XSLT_CADENA_TFD = 'l10n_mx_edi/data/xslt/3.3/cadenaoriginal_TFD_1_1.xslt'
@@ -556,6 +558,7 @@ class AccountPayment(models.Model):
         self.message_post(
             body=body_msg + account_invoice.create_list_html(post_msg))
 
+    @run_after_commit
     @api.multi
     def _l10n_mx_edi_call_service(self, service_type):
         """Call the right method according to the pac_name, it's info returned
@@ -825,18 +828,11 @@ class AccountPayment(models.Model):
         return super(AccountPayment, self).action_draft()
 
 
-class AccountRegisterPayments(models.TransientModel):
-    _inherit = 'account.register.payments'
+class AccountPaymentRegister(models.TransientModel):
+    _inherit = 'account.payment.register'
 
-    l10n_mx_edi_payment_method_id = fields.Many2one(
-        'l10n_mx_edi.payment.method',
-        string='Payment Way',
-        help='Indicates the way the payment was/will be received, where the '
-        'options could be: Cash, Nominal Check, Credit Card, etc.')
-
-    def _prepare_payment_vals(self, invoices):
-        res = super(AccountRegisterPayments, self)._prepare_payment_vals(
-            invoices)
+    def _prepare_payment_vals(self, invoice):
+        res = super(AccountPaymentRegister, self)._prepare_payment_vals(invoice)
         res.update({
             'l10n_mx_edi_payment_method_id': self.l10n_mx_edi_payment_method_id.id,
         })

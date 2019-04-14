@@ -5,9 +5,9 @@
 # Translators:
 # Mario Gielissen <mario@openworx.nl>, 2017
 # Eric Geens <ericgeens@yahoo.com>, 2017
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,7 +77,7 @@ msgstr "Op Google Play"
 #: code:addons/web_mobile/static/src/xml/barcode_fields.xml:13
 #, python-format
 msgid "Scan barcode"
-msgstr ""
+msgstr "Scan barcode"
 
 #. module: web_mobile
 #. openerp-web

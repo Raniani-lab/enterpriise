@@ -29,7 +29,7 @@ msgstr "Annuleren"
 #. module: sale_project_timesheet_enterprise
 #: model:ir.model,name:sale_project_timesheet_enterprise.model_project_task_create_sale_order
 msgid "Create SO from task"
-msgstr ""
+msgstr "Maak verkooporder vanuit taak"
 
 #. module: sale_project_timesheet_enterprise
 #: code:addons/sale_project_timesheet_enterprise/models/project_task.py:13
@@ -116,7 +116,7 @@ msgstr "Taak"
 #. module: sale_project_timesheet_enterprise
 #: model:ir.model.fields,help:sale_project_timesheet_enterprise.field_project_task_create_sale_order__task_id
 msgid "Task for which we are creating a sales order"
-msgstr ""
+msgstr "Taak waarvoor we een verkooporder aanmaken"
 
 #. module: sale_project_timesheet_enterprise
 #: code:addons/sale_project_timesheet_enterprise/wizard/project_task_create_sale_order.py:62
@@ -130,13 +130,13 @@ msgstr ""
 #: code:addons/sale_project_timesheet_enterprise/wizard/project_task_create_sale_order.py:24
 #, python-format
 msgid "The task is already billable."
-msgstr ""
+msgstr "De taak is al facturabel."
 
 #. module: sale_project_timesheet_enterprise
 #: code:addons/sale_project_timesheet_enterprise/wizard/project_task_create_sale_order.py:58
 #, python-format
 msgid "The task is already linked to a sales order item."
-msgstr ""
+msgstr "De taak is al gekoppeld aan een verkooporder item."
 
 #. module: sale_project_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_project_timesheet_enterprise.field_project_task_create_sale_order__price_unit
@@ -152,4 +152,4 @@ msgstr "Eenheidsprijs van het verkooporder item."
 #: code:addons/sale_project_timesheet_enterprise/wizard/project_task_create_sale_order.py:18
 #, python-format
 msgid "You can only apply this action from a task."
-msgstr ""
+msgstr "U kan deze actie alleen toepassen vanuit een taak."

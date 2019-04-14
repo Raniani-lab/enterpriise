@@ -30,12 +30,12 @@ msgstr "Скасувати"
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_convert2ticket_view_form
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_view_form
 msgid "Convert to Ticket"
-msgstr ""
+msgstr "Конвертувати у заявку"
 
 #. module: crm_helpdesk
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_convert2ticket_view_form
 msgid "Create Ticket"
-msgstr ""
+msgstr "Створити заявку"
 
 #. module: crm_helpdesk
 #: selection:crm.lead.convert2ticket,action:0
@@ -45,7 +45,7 @@ msgstr "Створити нового клієнта"
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__create_uid
 msgid "Created by"
-msgstr "Створено"
+msgstr "Створив"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__create_date
@@ -95,7 +95,7 @@ msgstr "Лід"
 #. module: crm_helpdesk
 #: model:ir.model,name:crm_helpdesk.model_crm_lead_convert2ticket
 msgid "Lead convert to Ticket"
-msgstr ""
+msgstr "Конвертувати лід у заявку"
 
 #. module: crm_helpdesk
 #: selection:crm.lead.convert2ticket,action:0

@@ -23,13 +23,13 @@ msgstr ""
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_view_kanban_inherit
 msgid "<span class=\"o_label\">Planning</span>"
-msgstr ""
+msgstr "<span class=\"o_label\">Planning</span>"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_project__allow_planning
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__allow_planning
 msgid "Allow Planning"
-msgstr ""
+msgstr "Sta planning toe"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning

@@ -1731,7 +1731,7 @@ msgstr ""
 #: code:addons/sign/models/sign_template.py:81
 #, python-format
 msgid "This file cannot be read. Is it a valid PDF?"
-msgstr ""
+msgstr "Dit bestand kan niet gelezen worden. Is het een geldige PDF?"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form

@@ -202,7 +202,7 @@ msgstr "Configuratie instellingen"
 #: code:addons/voip/static/src/js/user_agent.js:295
 #, python-format
 msgid "Connecting..."
-msgstr ""
+msgstr "Verbinden..."
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_partner

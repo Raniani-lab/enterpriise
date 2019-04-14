@@ -2109,7 +2109,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Send an email"
-msgstr ""
+msgstr "Trimite un Email"
 
 #. module: account_reports
 #. openerp-web

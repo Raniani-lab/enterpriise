@@ -7,9 +7,9 @@
 # Cas Vissers <casvissers@brahoo.nl>, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -150,7 +150,7 @@ msgstr "<span class=\"o_stat_text\">Actie(s)</span>"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_document_res_partner_view
 msgid "<span class=\"o_stat_text\">Document(s)</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Document(en)</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -167,7 +167,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b> Request</b></span>"
-msgstr ""
+msgstr "<span><b> Aanvraag</b></span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
@@ -392,7 +392,7 @@ msgstr "Aantal bijlagen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__description
 msgid "Attachment Description"
-msgstr ""
+msgstr "Omschrijving bijlage"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__attachment_name
@@ -440,6 +440,8 @@ msgstr "Brochures"
 #: model:ir.model.fields,help:documents.field_mail_activity_type__folder_id
 msgid "By defining a folder, the upload activities will generate a document"
 msgstr ""
+"Door een folder te definiëren zullen de geüploade activiteiten een document "
+"genereren"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
@@ -588,7 +590,7 @@ msgstr "Dagen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__default_user_id
 msgid "Default User"
-msgstr ""
+msgstr "Standaard gebruiker"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
@@ -598,7 +600,7 @@ msgstr "Standaardwaarden"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Default Workspaces"
-msgstr ""
+msgstr "Standaard werkplaatsen"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -1199,7 +1201,7 @@ msgstr "Naar inbox verplaatsen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Workspace"
-msgstr ""
+msgstr "Verplaats naar werkplaats"
 
 #. module: documents
 #. openerp-web
@@ -1381,7 +1383,7 @@ msgstr "Bovenliggende record Thread ID"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
 msgid "Parent Workspace"
-msgstr ""
+msgstr "Bovenliggende werkplaats"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
@@ -1461,7 +1463,7 @@ msgstr "Verzoek"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__request_activity_id
 msgid "Request Activity"
-msgstr ""
+msgstr "Aanvraag activiteit"
 
 #. module: documents
 #. openerp-web
@@ -1603,7 +1605,7 @@ msgstr "Links delen"
 #: code:addons/documents/models/share.py:133
 #, python-format
 msgid "Share domain"
-msgstr ""
+msgstr "Deel domein"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
@@ -1614,21 +1616,21 @@ msgstr "Links delen"
 #: code:addons/documents/models/share.py:133
 #, python-format
 msgid "Share selected records"
-msgstr ""
+msgstr "Deel geselecteerde records"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
 msgid "Share this domain"
-msgstr ""
+msgstr "Deel dit domein"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:151
 #, python-format
 msgid "Share this selection"
-msgstr ""
+msgstr "Deel deze selectie"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__type
@@ -1705,7 +1707,7 @@ msgstr "Opgeslagen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
 msgid "Sub workspaces"
-msgstr ""
+msgstr "Onderliggende werkplaatsen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_summary
@@ -1743,6 +1745,8 @@ msgstr "Label bestaat al voor dit facet"
 msgid ""
 "Tag categories from parent workspaces will be shared to their sub workspaces"
 msgstr ""
+"Label categorieën van bovenliggende werkplaatsen worden gedeeld met de "
+"onderliggende werkplaatsen"
 
 #. module: documents
 #. openerp-web
@@ -1808,7 +1812,7 @@ msgstr "Deze toegangstoken bestaat reeds"
 #. module: documents
 #: sql_constraint:documents.document:0
 msgid "This attachment is already a document"
-msgstr ""
+msgstr "Deze bijlage is al een document"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__group_ids
@@ -1851,7 +1855,7 @@ msgstr "Deze link is vervallen"
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This workspace will only be available for the selected company"
-msgstr ""
+msgstr "Deze werkplaats is alleen beschikbaar voor het geselecteerde bedrijf"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail
@@ -2085,12 +2089,12 @@ msgstr "Workflow regels"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
 #: model:ir.ui.menu,name:documents.folder_menu
 msgid "Workspace"
-msgstr ""
+msgstr "Werkplaats"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action
 msgid "Workspaces"
-msgstr ""
+msgstr "Werkplaatsen"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view

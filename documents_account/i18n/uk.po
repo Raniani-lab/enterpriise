@@ -26,7 +26,7 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
-"Набір дій та умов, які будуть доступні всім вкладенням, що відповідають "
+"Набір дій та умов, які будуть доступні всім прикріпленням, що відповідають "
 "умовам"
 
 #. module: documents_account
@@ -44,7 +44,7 @@ msgstr "Теги рахунків"
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Accounting Workspace"
-msgstr ""
+msgstr "Робочій простір бухобліку"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reconcile_model__activity_type_id
@@ -74,12 +74,12 @@ msgstr "Створити"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule
 msgid "Create Vendor Bill"
-msgstr ""
+msgstr "Створити рахунок постачальника"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Vendor Refund"
-msgstr ""
+msgstr "Створити відшкодування постачальника"
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
@@ -89,7 +89,7 @@ msgstr "Сторно"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
 msgid "Documents Account Settings"
-msgstr ""
+msgstr "Налаштування обліку документів"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard
@@ -109,7 +109,7 @@ msgstr "Папка"
 #. module: documents_account
 #: model:ir.model.fields,help:documents_account.field_account_reports_export_wizard__folder_id
 msgid "Folder where to save the generated file"
-msgstr ""
+msgstr "Папка для зберігання створеного файлу"
 
 #. module: documents_account
 #: code:addons/documents_account/wizard/report_export_wizard.py:31
@@ -153,17 +153,17 @@ msgstr "Шаблон товару"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_move_line__reconciliation_invoice_id
 msgid "Reconciliation Invoice"
-msgstr ""
+msgstr "Узгодження рахунку"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_invoice__reconciliation_move_line_id
 msgid "Reconciliation Journal Entry Line"
-msgstr ""
+msgstr "Узгодження рядка запису журналу"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_md
 msgid "Reconciliation request"
-msgstr ""
+msgstr "Запит на узгодження"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
@@ -176,6 +176,8 @@ msgid ""
 "Select the workspace to be used for accounting's documents for the invoices\n"
 "                                    of your company."
 msgstr ""
+"Виберіть робочу область, яка буде використовуватися для облікових документів\n"
+" для рахунків компанії."
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
@@ -200,7 +202,7 @@ msgstr "Податкова виписка"
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor Credit Note"
-msgstr "Кредитна заява продавця"
+msgstr "Сторно продавця"
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0

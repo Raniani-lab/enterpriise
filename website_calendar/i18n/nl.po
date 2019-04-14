@@ -745,7 +745,7 @@ msgstr "SEO geoptimaliseerd"
 #. module: website_calendar
 #: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
 msgid "SMS Text Message - 1 Hour(s)"
-msgstr ""
+msgstr "SMS bericht - 1 uur"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar

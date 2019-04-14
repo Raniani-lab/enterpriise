@@ -43,8 +43,8 @@ msgid ""
 msgstr ""
 "<span class=\"alert alert-info\" attrs=\"{'invisible': ['|', '|', "
 "('sdd_mandate_usable', '!=', True), ('payment_type', '!=', 'inbound'), "
-"('state', '!=', 'draft')]}\" role=\"status\">Метод збору прямого дебету "
-"доступний</span>"
+"('state', '!=', 'draft')]}\" role=\"status\">Доступний метод збору прямого "
+"дебету</span>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
@@ -321,7 +321,7 @@ msgstr "Прямі дебетові платежі для збору"
 #. module: account_sepa_direct_debit
 #: model:ir.actions.act_window,name:account_sepa_direct_debit.action_sdd_payments_to_collect
 msgid "Direct debit payments to collect"
-msgstr "Прямі дебетові платежі для збирання"
+msgstr "Прямі дебетові платежі для збору"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__display_name
@@ -433,8 +433,8 @@ msgstr "Журнал для платежів за прямим дебетом"
 msgid ""
 "Journal to use to receive SEPA Direct Debit payments from this mandate."
 msgstr ""
-"Журнал, який використовуватиметься для отримання платежів SEPA Direct Debit "
-"за цим мандатом."
+"Журнал, який використовуватиметься для отримання платежів прямого дебету "
+"SEPA за цим мандатом."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate____last_update
@@ -763,7 +763,7 @@ msgstr ""
 #: code:addons/account_sepa_direct_debit/models/res_company.py:26
 #, python-format
 msgid "The creditor identifier exceeds the maximum length of 35 characters."
-msgstr "Ідентифікатор кредитора перевищує максимальну довжину 35 символів."
+msgstr "Ідентифікатор кредитора перевищує максимальну довжину у 35 символів."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:84
@@ -845,7 +845,7 @@ msgid ""
 "This invoice cannot be paid via SEPA Direct Debit, as there is no valid "
 "mandate available for its customer at its creation date."
 msgstr ""
-"Цей рахунок-фактуру неможливо виплатити через SEPA Direct Debit, оскільки "
+"Цей рахунок-фактуру неможливо виплатити через прямий дебет SEPA, оскільки "
 "для його клієнта не існує дійсного мандату на його дату створення."
 
 #. module: account_sepa_direct_debit
@@ -864,8 +864,8 @@ msgid ""
 "will automatically go from 'active' to 'closed' after its first use in "
 "payment if this option is set.\n"
 msgstr ""
-"Правда, якщо і тільки якщо цей мандат може бути використаний лише для однієї"
-" транзакції. Якщо цей параметр встановлений, він автоматично переходить з "
+"Правильно, тільки якщо цей мандат може бути використаний лише для однієї "
+"транзакції. Якщо цей параметр встановлений, він автоматично переходить з "
 "\"активного\" в \"закритий\" після його першого використання в оплаті.\n"
 
 #. module: account_sepa_direct_debit
@@ -886,7 +886,7 @@ msgid ""
 "payment method than SEPA Direct Debit."
 msgstr ""
 "Спроба генерувати XML-файл прямого дебетування для платежів, отриманих з "
-"іншого способу оплати, ніж SEPA Direct Debit."
+"іншого способу оплати, ніж прямий дебет SEPA."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:201
@@ -903,8 +903,8 @@ msgid ""
 " %s for partner '%s'. Please create one before encoding a SEPA Direct Debit "
 "payment."
 msgstr ""
-"Не вдається опублікувати платіжt '%s' через відсутність доступного мандату "
-"на дату %s для партнера '%s'. Будь ласка, створіть його перед кодуванням "
+"Не вдається опублікувати платіж '%s' через відсутність доступного мандату на"
+" дату %s для партнера '%s'. Будь ласка, створіть його перед кодуванням "
 "платежу прямого дебету SEPA."
 
 #. module: account_sepa_direct_debit

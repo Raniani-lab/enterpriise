@@ -200,7 +200,7 @@ tour.register('web_studio_tests_tour', {
     in_modal: false,
 }, {
     trigger: 'button:contains(Confirm):not(".disabled")',
-},{
+}, {
     trigger: 'button:contains(Confirm):not(".disabled")',
 }, {
     // check that the Studio menu is still there
@@ -365,6 +365,10 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
 }, {
     extra_trigger: '.o_web_studio_views',
+    // edit the search view
+    trigger: '.o_web_studio_view_category .o_web_studio_view_type[data-type="search"] .o_web_studio_thumbnail',
+}, {
+    extra_trigger: '.o_web_studio_search_view_editor',
     trigger: '.o_menu_toggle.fa-th',
 }, {
     trigger: '.o_web_studio_home_studio_menu .dropdown-toggle',

@@ -396,11 +396,10 @@ var ActionEditorAction = AbstractAction.extend({
         // search is not in action.view
         var searchview_id = this.action.search_view_id && this.action.search_view_id[0];
         this.views.push([searchview_id || false, 'search']);
-
-        var view = _.find(views, function (v) {
+        var view = _.find(this.views, function (v) {
             return v[1] === viewType;
         });
-        this.view = view || views[0];  // see action manager
+        this.view = view || this.views[0];  // see action manager
         this.viewId = this.view[0];
         this.viewType = this.view[1];
     },

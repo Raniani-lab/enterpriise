@@ -66,6 +66,9 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
                     if (route.indexOf('/web/static/lib/pdfjs/web/viewer.html') !== -1) {
                         throw new Error('the pdf should not be loaded on small screens');
                     }
+                    if (args.method === 'register_as_main_attachment') {
+                        return Promise.resolve(true);
+                    }
                     var method = args.method || route;
                     assert.step(method + '/' + args.model);
                     if (args.model === 'ir.attachment' && args.method === 'read') {
@@ -112,6 +115,9 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
                 mockRPC: function (route, args) {
                     if (route.indexOf('/web/static/lib/pdfjs/web/viewer.html') !== -1) {
                         return Promise.resolve();
+                    }
+                    if (args.method === 'register_as_main_attachment') {
+                        return Promise.resolve(true);
                     }
                     var method = args.method || route;
                     assert.step(method + '/' + args.model);

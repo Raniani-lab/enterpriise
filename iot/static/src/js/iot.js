@@ -121,16 +121,20 @@ var IotScanButton = Widget.extend({
         var img = new Image();
         var url = urls.shift();
         if (url){
-            $.ajax({
-                url: url + '/hw_proxy/hello',
-                method: 'GET',
-                timeout: 400,
-            }).then(function () {
-                self._addIOT(url);
-                self._connectToIOT(url);
-                self._scanRange(urls, range);
-                self._updateRangeProgress(range);
-            }).guardedCatch(function (jqXHR, textStatus) {
+            var promise = new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: url + '/hw_proxy/hello',
+                    method: 'GET',
+                    timeout: 400,
+                }).then(function () {
+                    self._addIOT(url);
+                    self._connectToIOT(url);
+                    self._scanRange(urls, range);
+                    self._updateRangeProgress(range);
+                    resolve();
+                }).fail(reject);
+            });
+            promise.guardedCatch(function (jqXHR, textStatus) {
                 // * If the request to /hw_proxy/hello returns an error while we contacted it in https,
                 // * it could mean the server certificate is not yet accepted by the client.
                 // * To know if it is really the case, we try to fetch an image on the http port of the server.

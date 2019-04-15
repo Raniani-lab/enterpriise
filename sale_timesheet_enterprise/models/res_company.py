@@ -7,4 +7,4 @@ from odoo import fields, models
 class Company(models.Model):
     _inherit = 'res.company'
 
-    use_timesheet_timer = fields.Boolean('Use Start and Stop', default=False)
+    use_timesheet_timer = fields.Boolean('Start and Stop', default=False)

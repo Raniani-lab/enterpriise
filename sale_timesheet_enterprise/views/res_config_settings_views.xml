@@ -14,7 +14,11 @@
                         <div class="text-muted">
                             Record time spent and invoice it based on:
                         </div>
-                        <field name="invoiced_timesheet" class="o_light_label" widget="radio"/>
+                        <div class="content-group">
+                            <div class="mt16">
+                                <field name="invoiced_timesheet" class="o_light_label" widget="radio"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </xpath>
@@ -26,16 +30,16 @@
                     <div class="o_setting_right_pane">
                         <label for="use_timesheet_timer"/>
                         <div class="text-muted">
-                            Use Start and Stop
+                            Measure time spent on tasks
                         </div>
                     </div>
-                    <div class="o_setting_right_pane" attrs="{'invisible': [('use_timesheet_timer', '=', False)]}">
-                        <h3 class="mt-4">Round timesheets</h3>
+                    <div class="o_setting_right_pane pt-4" attrs="{'invisible': [('use_timesheet_timer', '=', False)]}">
+                        <strong>Round timesheets</strong>
                         <div class="o_row w-30">
-                            <span class="o_light_label"><label for="timesheet_min_duration"/><field name="timesheet_min_duration"/> minutes</span>
+                            <span class="o_light_label"><label for="timesheet_min_duration"/><field name="timesheet_min_duration" class="col-lg-2"/> minutes</span>
                         </div>
                         <div class="o_row">
-                            <span class="o_light_label"><label for="timesheet_rounding"/><field name="timesheet_rounding"/> minutes</span>
+                            <span class="o_light_label"><label for="timesheet_rounding"/><field name="timesheet_rounding" class="col-lg-2"/> minutes</span>
                         </div>
                     </div>
 

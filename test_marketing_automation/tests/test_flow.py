@@ -135,6 +135,8 @@ for record in records:
 
     @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
     def test_unique_field_many2one(self):
+        self.test_rec3.write({'partner_id': self.test_partner2.id})
+
         Campaign = self.env['marketing.campaign'].sudo(self.user_market)
         Activity = self.env['marketing.activity'].sudo(self.user_market)
         MassMail = self.env['mail.mass_mailing'].sudo(self.user_market)

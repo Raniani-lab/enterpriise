@@ -45,6 +45,7 @@ class MarketingCampaign(models.Model):
     # activities
     marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=True)
     mass_mailing_count = fields.Integer('# Mailings', compute='_compute_mass_mailing_count')
+    link_tracker_click_count = fields.Integer('# Clicks', compute='_compute_link_tracker_click_count')
     last_sync_date = fields.Datetime(string='Last activities synchronization')
     require_sync = fields.Boolean(string="Sync of participants is required", compute='_compute_require_sync')
     # participants
@@ -65,6 +66,18 @@ class MarketingCampaign(models.Model):
         # TDE NOTE: this could be optimized but is currently displayed only in a form view, no need to optimize now
         for campaign in self:
             campaign.mass_mailing_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id'))
+
+    @api.depends('marketing_activity_ids.mass_mailing_id')
+    def _compute_link_tracker_click_count(self):
+        click_data = self.env['link.tracker.click'].sudo().read_group(
+            [('mass_mailing_id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids)],
+            ['mass_mailing_id', 'ip'],
+            ['mass_mailing_id']
+        )
+        mapped_data = {data['mass_mailing_id'][0]: data['mass_mailing_id_count'] for data in click_data}
+        for campaign in self:
+            campaign.link_tracker_click_count = sum(mapped_data.get(mailing_id, 0)
+                                                    for mailing_id in campaign.mapped('marketing_activity_ids.mass_mailing_id').ids)
 
     @api.depends('participant_ids.state')
     def _compute_participants(self):
@@ -182,6 +195,13 @@ class MarketingCampaign(models.Model):
             '&',
             ('use_in_marketing_automation', '=', True),
             ('id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids)
+        ]
+        return action
+
+    def action_view_tracker_statistics(self):
+        action = self.env.ref('marketing_automation.link_tracker_action_marketing_campaign').read()[0]
+        action['domain'] = [
+            ('mass_mailing_id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids)
         ]
         return action
 
@@ -592,10 +612,35 @@ class MarketingActivity(models.Model):
                 'state_msg': _('Exception in mass mailing: %s') % str(e),
             })
         else:
-            traces.write({
-                'state': 'processed',
-                'schedule_date': Datetime.now(),
-            })
+            failed_stats = self.env['mail.mail.statistics'].sudo().search([
+                ('marketing_trace_id', 'in', traces.ids),
+                '|', ('exception', '!=', False), ('ignored', '!=', False)])
+            ignored_doc_ids = [stat.res_id for stat in failed_stats if stat.exception]
+            error_doc_ids = [stat.res_id for stat in failed_stats if stat.ignored]
+
+            processed_traces = traces
+            ignored_traces = traces.filtered(lambda trace: trace.res_id in ignored_doc_ids)
+            error_traces = traces.filtered(lambda trace: trace.res_id in error_doc_ids)
+
+            if ignored_traces:
+                ignored_traces.write({
+                    'state': 'canceled',
+                    'schedule_date': Datetime.now(),
+                    'state_msg': _('Email ignored')
+                })
+                processed_traces = processed_traces - ignored_traces
+            if error_traces:
+                error_traces.write({
+                    'state': 'error',
+                    'schedule_date': Datetime.now(),
+                    'state_msg': _('Email failed')
+                })
+                processed_traces = processed_traces - error_traces
+            if processed_traces:
+                processed_traces.write({
+                    'state': 'processed',
+                    'schedule_date': Datetime.now(),
+                })
         return True
 
     def _generate_children_traces(self, traces):
@@ -625,6 +670,9 @@ class MarketingActivity(models.Model):
 
     def action_view_clicked(self):
         return self._action_view_documents_filtered('clicked')
+
+    def action_view_bounced(self):
+        return self._action_view_documents_filtered('bounced')
 
     def _action_view_documents_filtered(self, view_filter):
         if not self.mass_mailing_id:

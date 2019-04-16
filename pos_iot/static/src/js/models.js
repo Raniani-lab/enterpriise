@@ -18,6 +18,7 @@ models.load_models([{
             'payment': self.config.iface_payment_terminal,
             'scale': self.config.iface_electronic_scale,
             'scanner': self.config.iface_scan_via_proxy,
+            'display': self.config.iface_customer_facing_display,
         };
         var iot_device_proxies = {};
         _.each(iot_devices, function(iot_device) {

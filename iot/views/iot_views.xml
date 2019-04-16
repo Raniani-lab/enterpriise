@@ -157,7 +157,7 @@
                         <div class="oe_kanban_global_click p-0">
                             <div class="row no-gutters">
                                 <div class="col-3 p-2 text-center align-self-center">
-                                    <t t-set="types" t-value="{'camera': 'video-camera', 'printer': 'print', 'device': 'wrench', 'payment': 'credit-card', 'scale': 'balance-scale', 'keyboard': 'keyboard-o', 'scanner': 'barcode'}"/>
+                                    <t t-set="types" t-value="{'camera': 'video-camera', 'printer': 'print', 'device': 'wrench', 'payment': 'credit-card', 'scale': 'balance-scale', 'keyboard': 'keyboard-o', 'scanner': 'barcode', 'display': 'desktop'}"/>
                                     <i t-attf-class="fa fa-#{types[record.type.raw_value]} fa-3x"></i>
                                 </div>
                                 <div class="col-9 p-2 border-left">
@@ -171,7 +171,7 @@
                                             <span class="badge badge-secondary">Disconnected</span>
                                         </t>
                                     </div>
-                                    <t t-set="connections" t-value="{'network': 'wifi', 'direct': 'usb', 'bluetooth': 'bluetooth-b', 'serial': 'usb'}"/>
+                                    <t t-set="connections" t-value="{'network': 'wifi', 'direct': 'usb', 'bluetooth': 'bluetooth-b', 'serial': 'usb', 'hdmi': 'usb'}"/>
                                     <span class="float-right fa-stack" t-att-title="record.connection.raw_value"><i t-attf-class="fa fa-#{connections[record.connection.raw_value]}"></i></span>
                                 </div>
                             </div>

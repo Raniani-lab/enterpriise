@@ -243,6 +243,10 @@
         <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
     </record>
 
+    <record id="hr_employee_laurie_poiret" model="hr.employee">
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+    </record>
+
     <record id="base.partner_demo" model="res.partner">
         <field name="phone">+0032 81 00 10</field>
     </record>

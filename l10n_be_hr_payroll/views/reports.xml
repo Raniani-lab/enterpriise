@@ -49,6 +49,17 @@
             file="l10n_be_hr_payroll.report_individual_account"
             print_report_name="(object._get_report_base_filename())"
         />
+
+        <report
+            id="action_report_employee_281_10"
+            model="hr.employee"
+            string="281.10 PDF"
+            report_type="qweb-pdf"
+            name="l10n_be_hr_payroll.report_281_10"
+            file="l10n_be_hr_payroll.report_281_10"
+            menu="False"
+        />
+
         <record id="action_report_individual_account" model="ir.actions.report">
             <field name="paperformat_id" ref="l10n_be_hr_payroll.paperformat_individual_account"/>
             <field name="binding_model_id" eval="False"/>

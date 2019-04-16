@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields
+from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta, MO, SU
 from dateutil import rrule
 from collections import defaultdict
@@ -13,6 +13,11 @@ class Payslip(models.Model):
     _inherit = 'hr.payslip'
 
     meal_voucher_count = fields.Integer(string='Meal Vouchers', compute='_compute_meal_voucher_count')
+
+    @api.multi
+    def _get_atn_remuneration(self):
+        lines = self.line_ids.filtered(lambda line: 'ATN' in line.code and line.total > 0)
+        return sum(line.total for line in lines)
 
     def _compute_meal_voucher_count(self):
         vouchers = self.env['l10n_be.meal.voucher.report'].search([

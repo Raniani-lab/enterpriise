@@ -139,6 +139,7 @@ class TestExamples(common.SavepointCase):
         payslip = {
             'date_from': datetime.date(2019, 2, 1),
             'date_to': datetime.date(2019, 2, 28),
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
         }
         contract = self.env.ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')
         # Set the start date to January 2019 to take into account on payslip

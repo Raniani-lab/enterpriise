@@ -10,7 +10,6 @@ from odoo.exceptions import ValidationError
 EMPLOYER_ONSS = 0.2714
 
 
-# YTI TODO: Split me into 2 files
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
@@ -243,69 +242,3 @@ class HrContract(models.Model):
                 user_id=contract.hr_responsible_id.id)
 
         return super(HrContract, self).update_state()
-
-
-class HrEmployee(models.Model):
-    _inherit = 'hr.employee'
-
-    spouse_fiscal_status = fields.Selection([
-        ('without income', 'Without Income'),
-        ('with income', 'With Income')
-    ], string='Tax status for spouse', groups="hr.group_hr_user")
-    disabled = fields.Boolean(string="Disabled", help="If the employee is declared disabled by law", groups="hr.group_hr_user")
-    disabled_spouse_bool = fields.Boolean(string='Disabled Spouse', help='if recipient spouse is declared disabled by law', groups="hr.group_hr_user")
-    disabled_children_bool = fields.Boolean(string='Disabled Children', help='if recipient children is/are declared disabled by law', groups="hr.group_hr_user")
-    resident_bool = fields.Boolean(string='Nonresident', help='if recipient lives in a foreign country', groups="hr.group_hr_user")
-    disabled_children_number = fields.Integer('Number of disabled children', groups="hr.group_hr_user")
-    dependent_children = fields.Integer(compute='_compute_dependent_children', string='Considered number of dependent children', groups="hr.group_hr_user")
-    other_dependent_people = fields.Boolean(string="Other Dependent People", help="If other people are dependent on the employee", groups="hr.group_hr_user")
-    other_senior_dependent = fields.Integer('# seniors (>=65)', help="Number of seniors dependent on the employee, including the disabled ones", groups="hr.group_hr_user")
-    other_disabled_senior_dependent = fields.Integer('# disabled seniors (>=65)', groups="hr.group_hr_user")
-    other_juniors_dependent = fields.Integer('# people (<65)', help="Number of juniors dependent on the employee, including the disabled ones", groups="hr.group_hr_user")
-    other_disabled_juniors_dependent = fields.Integer('# disabled people (<65)', groups="hr.group_hr_user")
-    dependent_seniors = fields.Integer(compute='_compute_dependent_people', string="Considered number of dependent seniors", groups="hr.group_hr_user")
-    dependent_juniors = fields.Integer(compute='_compute_dependent_people', string="Considered number of dependent juniors", groups="hr.group_hr_user")
-    spouse_net_revenue = fields.Float(string="Spouse Net Revenue", help="Own professional income, other than pensions, annuities or similar income", groups="hr.group_hr_user")
-    spouse_other_net_revenue = fields.Float(string="Spouse Other Net Revenue",
-        help='Own professional income which is exclusively composed of pensions, annuities or similar income', groups="hr.group_hr_user")
-
-    start_notice_period = fields.Date("Start notice period", groups="hr.group_hr_user", copy=False, tracking=True)
-    end_notice_period = fields.Date("End notice period", groups="hr.group_hr_user", copy=False, tracking=True)
-    first_contract_in_company = fields.Date("First contract in company", groups="hr.group_hr_user", copy=False)
-
-    @api.constrains('spouse_fiscal_status', 'spouse_net_revenue', 'spouse_other_net_revenue')
-    def _check_spouse_revenue(self):
-        for employee in self:
-            if employee.spouse_fiscal_status == 'with income' and not employee.spouse_net_revenue and not employee.spouse_other_net_revenue:
-                raise ValidationError(_("The revenue for the spouse can't be equal to zero is the fiscal status is 'With Income'."))
-
-    @api.onchange('spouse_fiscal_status')
-    def _onchange_spouse_fiscal_status(self):
-        self.spouse_net_revenue = 0.0
-        self.spouse_other_net_revenue = 0.0
-
-    @api.onchange('disabled_children_bool')
-    def _onchange_disabled_children_bool(self):
-        self.disabled_children_number = 0
-
-    @api.onchange('other_dependent_people')
-    def _onchange_other_dependent_people(self):
-        self.other_senior_dependent = 0.0
-        self.other_disabled_senior_dependent = 0.0
-        self.other_juniors_dependent = 0.0
-        self.other_disabled_juniors_dependent = 0.0
-
-    @api.depends('disabled_children_bool', 'disabled_children_number', 'children')
-    def _compute_dependent_children(self):
-        for employee in self:
-            if employee.disabled_children_bool:
-                employee.dependent_children = employee.children + employee.disabled_children_number
-            else:
-                employee.dependent_children = employee.children
-
-    @api.depends('other_dependent_people', 'other_senior_dependent',
-        'other_disabled_senior_dependent', 'other_juniors_dependent', 'other_disabled_juniors_dependent')
-    def _compute_dependent_people(self):
-        for employee in self:
-            employee.dependent_seniors = employee.other_senior_dependent + employee.other_disabled_senior_dependent
-            employee.dependent_juniors = employee.other_juniors_dependent + employee.other_disabled_juniors_dependent

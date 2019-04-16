@@ -43,8 +43,10 @@ Belgian Payroll Rules.
         'data/cp200/employee_termination_holidays_N_data.xml',
         'views/res_config_settings_views.xml',
         'wizard/l10n_be_individual_account_wizard_views.xml',
+        'wizard/hr_payroll_281_10_wizard_views.xml',
         'report/hr_individual_account_templates.xml',
         'report/hr_contract_employee_report_views.xml',
+        'report/hr_281_10_templates.xml',
     ],
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'

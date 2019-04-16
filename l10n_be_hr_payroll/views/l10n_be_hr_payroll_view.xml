@@ -157,6 +157,13 @@
                     <field name="start_notice_period" groups="base.group_no_one"/>
                     <field name="end_notice_period" groups="base.group_no_one"/>
                 </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="language_code" required="True"/>
+                    <field name="nif_country_code" required="True"/>
+                </xpath>
+                <xpath expr="//field[@name='km_home_work']" position="after">
+                    <field name="has_bicycle" required="True"/>
+                </xpath>
             </field>
         </record>
 

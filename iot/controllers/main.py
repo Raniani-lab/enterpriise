@@ -6,6 +6,7 @@ import json
 import os
 import zipfile
 import io
+import json
 
 class IoTController(http.Controller):
 
@@ -41,11 +42,13 @@ class IoTController(http.Controller):
     # Return home screen
     @http.route('/iot/box/<string:identifier>/screen_url', type='http', auth='public')
     def get_url(self, identifier):
+        urls = {}
         iotbox = request.env['iot.box'].sudo().search([('identifier', '=', identifier)], limit=1)
-        if iotbox.screen_url:
-            return iotbox.screen_url
-        else:
-            return 'http://localhost:8069/point_of_sale/display'
+        if iotbox:
+            iot_devices = iotbox.device_ids.filtered(lambda device: device.type == 'display')
+            for device in iot_devices:
+                urls[device.identifier] = device.screen_url
+        return json.dumps(urls)
 
     @http.route('/iot/setup', type='json', auth='public')
     def update_box(self, **kwargs):

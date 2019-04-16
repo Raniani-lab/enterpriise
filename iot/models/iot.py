@@ -64,6 +64,7 @@ class IotDevice(models.Model):
     iot_ip = fields.Char(related="iot_id.ip")
     connected = fields.Boolean(string='Status', help='If device is connected to the IoT Box', readonly=True)
     keyboard_layout = fields.Many2one('iot.keyboard.layout', string='Keyboard Layout')
+    screen_url = fields.Char('Screen URL', help="URL of the page that will be displayed by the device, leave empty to use the customer facing display of the POS.")
 
     def name_get(self):
         return [(i.id, "[" + i.iot_id.name +"] " + i.name) for i in self]

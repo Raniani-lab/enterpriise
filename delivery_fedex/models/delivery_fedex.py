@@ -442,7 +442,7 @@ class ProviderFedex(models.Model):
                 raise UserError(_('No packages for this picking'))
             commercial_invoice = srm.get_document()
             if commercial_invoice:
-                fedex_documents = [('DocumentFedex.%s' % (self.fedex_label_file_type), commercial_invoice)]
+                fedex_documents = [('DocumentFedex.pdf', commercial_invoice)]
                 picking.message_post(body='Fedex Documents', attachments=fedex_documents)
         return res
 

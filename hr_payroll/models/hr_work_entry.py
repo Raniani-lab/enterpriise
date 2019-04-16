@@ -310,7 +310,7 @@ class HrWorkEntryType(models.Model):
     _description = 'hr.work.entry.type'
 
     name = fields.Char(required=True)
-    code = fields.Char()
+    code = fields.Char(required=True)
     color = fields.Integer(default=1) # Will be used with the new calendar/kanban view
     sequence = fields.Integer(default=25)
     active = fields.Boolean(
@@ -318,6 +318,10 @@ class HrWorkEntryType(models.Model):
         help="If the active field is set to false, it will allow you to hide the work entry type without removing it.")
     is_leave = fields.Boolean(default=False, string="Leave")
     leave_type_ids = fields.One2many('hr.leave.type', 'work_entry_type_id', string='Leave Type')
+
+    _sql_constraints = [
+        ('unique_work_entry_code', 'UNIQUE(code)', 'The same code cannot be associated to multiple work entry types.')
+    ]
 
 
 class Contacts(models.Model):

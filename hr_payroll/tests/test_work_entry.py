@@ -29,11 +29,6 @@ class TestWorkEntry(TestPayslipBase):
         })
         self.richard_emp.resource_calendar_id = self.resource_calendar_id
         self.richard_emp.contract_id = contract
-        self.work_entry_type = self.env['hr.work.entry.type'].create({
-            'name': 'Extra attendance',
-            'is_leave': False,
-            'code': 'WORK200'
-        })
 
     def test_no_duplicate(self):
         self.richard_emp.generate_work_entry(self.start, self.end)
@@ -373,7 +368,7 @@ class TestWorkEntry(TestPayslipBase):
         payslip_wizard.with_context({'default_date_start': Date.to_string(start), 'default_date_end': Date.to_string(end)}).compute_sheet()
         payslip = self.env['hr.payslip'].search([('employee_id', '=', self.richard_emp.id)])
         work_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == 'WORK100')  # From default calendar.attendance
-        leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == 'LEAVE100')
+        leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == self.work_entry_type_leave.code)
 
         self.assertTrue(work_line, "It should have a work line in the payslip")
         self.assertTrue(leave_line, "It should have a leave line in the payslip")
@@ -399,10 +394,32 @@ class TestWorkEntry(TestPayslipBase):
             'default_date_end': Date.to_string(end + relativedelta(days=1))
             }).compute_sheet()
         payslip = self.env['hr.payslip'].search([('employee_id', '=', self.richard_emp.id)])
-        work_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == 'WORK100') # From default calendar.attendance
-        leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == 'WORK200')
+        work_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == 'WORK100')  # From default calendar.attendance
+        leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.code == self.work_entry_type.code)
 
         self.assertTrue(work_line, "It should have a work line in the payslip")
         self.assertTrue(leave_line, "It should have an extra work line in the payslip")
-        self.assertEqual(work_line.number_of_hours, 8.0, "It should have 8 hours of work") # Monday
-        self.assertEqual(leave_line.number_of_hours, 7.0, "It should have 5 hours of extra work") # Sunday
+        self.assertEqual(work_line.number_of_hours, 8.0, "It should have 8 hours of work")  # Monday
+        self.assertEqual(leave_line.number_of_hours, 7.0, "It should have 5 hours of extra work")  # Sunday
+
+    def test_multiple_work_entry_types_data(self):
+        self.env['resource.calendar.leaves'].create({
+            'name': 'leave name',
+            'date_from': self.start + relativedelta(days=1),
+            'date_to': self.start + relativedelta(days=1, hours=15),
+            'resource_id': self.richard_emp.resource_id.id,
+            'calendar_id': self.richard_emp.resource_calendar_id.id,
+            'work_entry_type_id': self.work_entry_type_leave.id,
+            'time_type': 'leave',
+        })
+        self.env['resource.calendar.attendance'].create({
+            'name': 'unpaid name',
+            'dayofweek': '4',
+            'hour_from': 8.0,
+            'hour_to': 17.0,
+            'resource_id': self.richard_emp.resource_id.id,
+            'calendar_id': self.richard_emp.resource_calendar_id.id,
+            'work_entry_type_id': self.work_entry_type.id,
+        })
+        data = self.richard_emp._get_work_entry_days_data(self.work_entry_type_leave | self.work_entry_type, self.start, self.end)
+        self.assertEqual(data['hours'], 44.0, "It shoudl be the sum of both work entry types")

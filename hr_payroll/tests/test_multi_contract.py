@@ -26,6 +26,7 @@ class TestPayslipMultiContract(TestPayslipContractBase):
             'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
             'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
             'contract_id': self.contract_cdd.id,
+            'struct_id': self.developer_pay_structure.id,
         })
         payslip.onchange_employee()
         self.assertEqual(payslip.worked_days_line_ids.number_of_hours, 80, "It should be 80 hours of work this month for this contract")
@@ -38,6 +39,7 @@ class TestPayslipMultiContract(TestPayslipContractBase):
             'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
             'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
             'contract_id': self.contract_cdi.id,
+            'struct_id': self.developer_pay_structure.id,
         })
         payslip.onchange_employee()
         self.assertEqual(payslip.worked_days_line_ids.number_of_hours, 77, "It should be 77 hours of work this month for this contract")
@@ -45,25 +47,18 @@ class TestPayslipMultiContract(TestPayslipContractBase):
 
     def test_multi_contract_holiday(self):
         # Leave during second contract
-        leave = self.env['resource.calendar.leaves'].create({
-            'name': 'leave name',
-            'date_from': datetime.strptime('2015-11-17 07:00:00', '%Y-%m-%d %H:%M:%S'),
-            'date_to': datetime.strptime('2015-11-20 18:00:00', '%Y-%m-%d %H:%M:%S'),
-            'resource_id': self.richard_emp.resource_id.id,
-            'calendar_id': self.calendar_35h.id,
-            'work_entry_type_id': self.work_entry_type_leave.id,
-            'time_type': 'leave',
-        })
+        leave = self.create_calendar_leave(datetime(2015, 11, 17, 7, 0), datetime(2015, 11, 20, 18, 0), self.work_entry_type_leave, calendar=self.calendar_35h)
         payslip = self.env['hr.payslip'].create({
             'name': 'November 2015',
             'employee_id': self.richard_emp.id,
             'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
             'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
             'contract_id': self.contract_cdi.id,
+            'struct_id': self.developer_pay_structure.id,
         })
         payslip.onchange_employee()
         work = payslip.worked_days_line_ids.filtered(lambda line: line.code == 'WORK100')
-        leave = payslip.worked_days_line_ids.filtered(lambda line: line.code == 'LEAVE100')
+        leave = payslip.worked_days_line_ids.filtered(lambda line: line.code == self.work_entry_type_leave.code)
         self.assertEqual(work.number_of_hours, 49, "It should be 49 hours of work this month for this contract")
         self.assertEqual(leave.number_of_hours, 28, "It should be 28 hours of leave this month for this contract")
         self.assertEqual(work.number_of_days, 7, "It should be 7 days of work this month for this contract")

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- YTI TODO set 1 -->
-    <data noupdate="0">
+    <data>
 
         <!-- Salary Structure -->
         <record id="hr_payroll_structure_cp200_double_holiday" model="hr.payroll.structure">
@@ -9,16 +8,11 @@
             <field name="country_id" ref="base.be"/>
             <field name="report_id" ref="l10n_be_hr_payroll.action_report_double_holiday_13th_month"/>
             <field name="payslip_name">Double Holidays Slip</field>
+            <field name="use_worked_day_lines">False</field>
             <field name="type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
         </record>
 
         <!-- Salary Rules -->
-        <function model="hr.salary.rule" name="write">
-            <value model="hr.salary.rule" search="[
-                ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
-                ('code', '=', 'BASIC')]"/>
-            <value eval="{'amount_python_compute': 'result = contract.wage_with_holidays'}"/>
-        </function>
 
         <!-- 92% of monthly gross salary -->
         <record id="cp200_employees_double_holiday_pay_basic" model="hr.salary.rule">

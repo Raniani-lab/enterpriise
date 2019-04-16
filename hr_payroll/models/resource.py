@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.osv.expression import AND
+from odoo.osv.expression import AND, OR
 from odoo.tools import float_compare
 from datetime import datetime
 
@@ -79,7 +79,7 @@ class ResourceCalendarLeave(models.Model):
 class ResourceMixin(models.AbstractModel):
     _inherit = "resource.mixin"
 
-    def _get_work_entry_days_data(self, work_entry_type, from_datetime, to_datetime, calendar=None):
+    def _get_work_entry_days_data(self, work_entry_types, from_datetime, to_datetime, calendar=None):
         """
             By default the resource calendar is used, but it can be
             changed using the `calendar` argument.
@@ -89,20 +89,21 @@ class ResourceMixin(models.AbstractModel):
         """
         resource = self.resource_id
         calendar = calendar or self.resource_calendar_id
-        work_entry_type_ids = work_entry_type.ids
-        if work_entry_type == self.env.ref('hr_payroll.work_entry_type_attendance'): # special case for global attendances
-            work_entry_type_ids += [False]# no work_entry type = normal/global attendance
-        domain = [('work_entry_type_id', 'in', work_entry_type_ids)]
+        type_leave = work_entry_types.filtered(lambda t: t.is_leave)
+        type_attendance = work_entry_types - type_leave
+
+        leave_domain = [('work_entry_type_id', 'in', type_leave.ids)]
+
+        attendance_domain = [('work_entry_type_id', 'in', type_attendance.ids)]
+        if self.env.ref('hr_payroll.work_entry_type_attendance', raise_if_not_found=False) in type_attendance:  # special case for global attendances
+            attendance_domain = OR([attendance_domain, [('work_entry_type_id', '=', False)]]) # no work entry type = normal/global attendance
 
         # naive datetimes are made explicit in UTC
         from_datetime = timezone_datetime(from_datetime)
         to_datetime = timezone_datetime(to_datetime)
 
         day_total = self._get_day_total(from_datetime, to_datetime, calendar, resource)
-        # actual hours per day
-        if work_entry_type.is_leave:
-            intervals = calendar._attendance_intervals(from_datetime, to_datetime, resource) & calendar._leave_intervals(from_datetime, to_datetime, resource, domain) # use domain to only retrieve leaves of this type
-        else:
-            intervals = calendar._attendance_intervals(from_datetime, to_datetime, resource, domain) - calendar._leave_intervals(from_datetime, to_datetime, resource)
+        leave_intervals = calendar._attendance_intervals(from_datetime, to_datetime, resource) & calendar._leave_intervals(from_datetime, to_datetime, resource, leave_domain)  # use domain to only retrieve leaves of this type
+        attendance_intervals = calendar._attendance_intervals(from_datetime, to_datetime, resource, attendance_domain) - calendar._leave_intervals(from_datetime, to_datetime, resource)
 
-        return self._get_days_data(intervals, day_total)
+        return self._get_days_data(leave_intervals | attendance_intervals, day_total)

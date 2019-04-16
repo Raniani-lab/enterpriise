@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- YTI TODO: Set noupdate 1 -->
-    <data noupdate="0">
+    <data>
 
         <!-- Salary Structure -->
         <record id="hr_payroll_structure_cp200_employee_salary" model="hr.payroll.structure">
@@ -9,16 +8,17 @@
             <field name="country_id" ref="base.be"/>
             <field name="type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
             <field name="regular_pay" eval="True"/>
+            <field name="unpaid_work_entry_type_ids" eval="[
+                (4, ref('hr_payroll.work_entry_type_unpaid_leave')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_unpredictable')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_long_sick')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_part_sick')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_maternity')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_breast_feeding')),
+            ]"/>
         </record>
 
         <!-- Salary Rules -->
-        <function model="hr.salary.rule" name="write">
-            <value model="hr.salary.rule" search="[
-                ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')),
-                ('code', '=', 'BASIC')]"/>
-            <value eval="{'amount_python_compute': 'result = contract.wage_with_holidays'}"/>
-        </function>
-
         <record id="cp200_employees_salary_atn_internet" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_impos"/>
             <field name="name">ATN Internet</field>

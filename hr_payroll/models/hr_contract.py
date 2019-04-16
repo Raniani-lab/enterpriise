@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-from datetime import date
+from datetime import date, datetime, time
+from collections import Counter
 
 
 class HrContract(models.Model):
@@ -43,3 +44,34 @@ class HrContract(models.Model):
             ('date_from', '<=', max([end or date.max for end in self.mapped('date_end')])),
             ('date_to', '>=', min(self.mapped('date_start'))),
         ])
+
+    def _get_average_wage_per_day(self):
+        # there are always 13 weeks in 3 months
+        self.ensure_one()
+        work_days_per_week = len(set(self.resource_calendar_id._get_global_attendances().mapped('dayofweek')))
+        return self.wage * 3 / 13 / work_days_per_week if work_days_per_week else 0.0 
+
+    @api.multi
+    def _get_work_data(self, work_entry_types, date_from, date_to):
+        """
+        Returns the amount (expressed in days and hours) of work
+        for a contract between two dates. Only work for the provided
+        types are counted.
+        If called on multiple contracts, sum work amounts of each contract.
+        :param date_from: The start date 
+        :param date_to: The end date 
+        :returns: a dict {'days': n, 'hours': h}
+        """
+        work_counter = Counter(days=0, hours=0)
+
+        for contract in self:
+            start = datetime.combine(max(date_from, contract.date_start), time.min)
+            end = datetime.combine(min(date_to, contract.date_end or date.max), time.max)
+            calendar = contract.resource_calendar_id
+
+            contract_data = contract.employee_id._get_work_entry_days_data(work_entry_types, start, end, calendar=calendar)
+            hours = contract_data.get('hours', 0)
+            days = hours / calendar.hours_per_day if calendar.hours_per_day else 0  # n_days returned by work_entry_days_data doesn't make sense for extra work
+
+            work_counter.update(Counter(days=days, hours=hours))
+        return dict(work_counter)

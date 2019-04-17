@@ -1769,7 +1769,7 @@ QUnit.module('ReportEditorManager', {
         $('body').one('shown.bs.tab a[data-toggle="tab"]', function () {
             var $modal = $('.modal-dialog.o_select_media_dialog');
             testUtilsDom.click($modal.find('.o_image'));
-            testUtilsDom.click($modal.find('button:contains(Save)'));
+            testUtilsDom.click($modal.find('footer button:contains(Add)'));
 
             done();
             rem.destroy();

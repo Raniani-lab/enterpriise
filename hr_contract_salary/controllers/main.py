@@ -208,6 +208,8 @@ class website_hr_contract_salary(http.Controller):
             'contract_type': contract_type,
             'job_title': job_title,
             'freeze': freeze,
+            'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
+            'default_mobile_plus': request.env['ir.default'].sudo().get('hr.contract', 'mobile_plus'),
             'original_link': get_current_url(request.httprequest.environ)})
 
         values.update(self._get_documents_src(contract.employee_id))
@@ -280,9 +282,8 @@ class website_hr_contract_salary(http.Controller):
             'resource_calendar_id': contract.resource_calendar_id.id,
             'transport_mode_car': advantages['transport_mode_car'],
             'transport_mode_public': advantages['transport_mode_public'],
-            'transport_mode_others': advantages['transport_mode_others'],
+            'transport_mode_private_car': advantages['transport_mode_private_car'],
             'public_transport_employee_amount': advantages['public_transport_employee_amount'],
-            'others_reimbursed_amount': advantages['others_reimbursed_amount'],
             'eco_checks': advantages['eco_checks'],
             'fuel_card': advantages['fuel_card'],
             'holidays': advantages['holidays'],
@@ -324,9 +325,6 @@ class website_hr_contract_salary(http.Controller):
 
         if not advantages['transport_mode_public']:
             new_contract.public_transport_reimbursed_amount = 0.0
-
-        if not advantages['transport_mode_others']:
-            new_contract.others_reimbursed_amount = 0.0
 
         new_contract.wage_with_holidays = advantages['wage']
         new_contract.final_yearly_costs = advantages['final_yearly_costs']
@@ -429,6 +427,7 @@ class website_hr_contract_salary(http.Controller):
             'M.ONSS': round(payslip.get_salary_line_total('M.ONSS'), 2),
             'MEAL_V_EMP': round(payslip.get_salary_line_total('MEAL_V_EMP'), 2),
             'ATN.CAR.2': round(payslip.get_salary_line_total('ATN.CAR.2'), 2),
+            'CAR.PRIV': round(payslip.get_salary_line_total('CAR.PRIV'), 2),
             'ATN.INT.2': round(payslip.get_salary_line_total('ATN.INT.2'), 2),
             'ATN.MOB.2': round(payslip.get_salary_line_total('ATN.MOB.2'), 2),
             'NET': round(payslip.get_salary_line_total('NET'), 2),
@@ -442,14 +441,16 @@ class website_hr_contract_salary(http.Controller):
                 payslip.get_salary_line_total('NET') -
                 payslip.get_salary_line_total('IP') -
                 payslip.get_salary_line_total('IP.DED') -
-                payslip.get_salary_line_total('REP.FEES'), 2)
+                payslip.get_salary_line_total('REP.FEES') -
+                payslip.get_salary_line_total('CAR.PRIV'), 2
+            )
         })
 
         transport_advantage = 0.0
         if new_contract.transport_mode_public:
             transport_advantage += new_contract.public_transport_reimbursed_amount
-        elif new_contract.transport_mode_others:
-            transport_advantage += new_contract.others_reimbursed_amount
+        elif new_contract.transport_mode_private_car:
+            transport_advantage += new_contract.private_car_reimbursed_amount
         elif new_contract.transport_mode_car:
             transport_advantage += new_contract.company_car_total_depreciated_cost
 
@@ -495,6 +496,10 @@ class website_hr_contract_salary(http.Controller):
     def onchange_public_transport(self, public_transport_employee_amount):
         return round(request.env['hr.contract'].sudo()._get_public_transport_reimbursed_amount(public_transport_employee_amount), 2)
 
+    @http.route(['/salary_package/onchange_km_home_work/'], type='json', auth='public')
+    def onchange_home_company_distance(self, distance):
+        return round(request.env['hr.contract']._get_private_car_reimbursed_amount(distance), 2)
+
     @http.route(['/salary_package/send_email/'], type='json', auth='public')
     def send_email(self, contract_id=None, token=None, advantages=None, **kw):
         if token:
@@ -518,7 +523,6 @@ class website_hr_contract_salary(http.Controller):
             country_of_birth_name = request.env['res.country'].sudo().browse(advantages['personal_info']['country_of_birth']).name
         else:
             country_of_birth_name = ''
-
         values = {
             'contract': contract,
             'advantages': advantages,

@@ -90,14 +90,11 @@
                 <t t-if="advantages['transport_mode_public']">
                     <li>Has Public Transportation: Yes</li>
                 </t>
-                <t t-if="advantages['transport_mode_public'] == 'public_transport'">
+                <t t-if="advantages['transport_mode_public']">
                     <li>Paid by the employee (Monthly): <t t-esc="advantages['public_transport_employee_amount']"/> €/month</li>
                 </t>
-                <t t-if="advantages['transport_mode_others']">
-                    <li>Has Another Transport Mode: Yes</li>
-                </t>
-                <t t-if="advantages['transport_mode_others'] == 'others'">
-                    <li>Reimbursed amount: <t t-esc="advantages['others_reimbursed_amount']"/> €/month</li>
+                <t t-if="advantages['transport_mode_private_car']">
+                    <li>Has Private Car: Yes</li>
                 </t>
                 <t t-if="advantages['internet']">
                     <li>Internet: <t t-esc="advantages['internet']"/> €/month</li>

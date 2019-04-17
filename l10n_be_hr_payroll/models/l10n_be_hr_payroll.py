@@ -5,17 +5,20 @@ from odoo import api, fields, models, _
 
 from odoo.exceptions import ValidationError
 
+EMPLOYER_ONSS = 0.2714
+
 
 # YTI TODO: Split me into 2 files
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
     transport_mode_car = fields.Boolean('Uses company car')
+    transport_mode_private_car = fields.Boolean('Uses private car')
     transport_mode_public = fields.Boolean('Uses public transportation')
     transport_mode_others = fields.Boolean('Uses another transport mode')
     car_atn = fields.Monetary(string='ATN Company Car')
     public_transport_employee_amount = fields.Monetary('Paid by the employee (Monthly)')
-    warrant_value_employee = fields.Monetary(compute='_compute_warrants_cost', string="Warrant value for the employee")
+    warrant_value_employee = fields.Monetary(compute='_compute_commission_cost', string="Warrant monthly value for the employee")
 
     # Employer costs fields
     final_yearly_costs = fields.Monetary(compute='_compute_final_yearly_costs',
@@ -30,11 +33,14 @@ class HrContract(models.Model):
     yearly_cost_before_charges = fields.Monetary(compute='_compute_yearly_cost_before_charges', string="Yearly Costs Before Charges")
     meal_voucher_paid_by_employer = fields.Monetary(compute='_compute_meal_voucher_paid_by_employer', string="Meal Voucher Paid by Employer")
     company_car_total_depreciated_cost = fields.Monetary()
+    private_car_reimbursed_amount = fields.Monetary(compute='_compute_private_car_reimbursed_amount')
+    km_home_work = fields.Integer(related="employee_id.km_home_work", related_sudo=True, readonly=False)
     public_transport_reimbursed_amount = fields.Monetary(string='Reimbursed amount',
         compute='_compute_public_transport_reimbursed_amount', readonly=False, store=True)
     others_reimbursed_amount = fields.Monetary(string='Other Reimbursed amount')
     transport_employer_cost = fields.Monetary(compute='_compute_transport_employer_cost', string="Employer cost from employee transports")
-    warrants_cost = fields.Monetary(compute='_compute_warrants_cost')
+    warrants_cost = fields.Monetary(compute='_compute_commission_cost', string="Warrant monthly cost for the employer")
+    yearly_commission_cost = fields.Monetary(compute='_compute_commission_cost')
 
     # Advantages
     commission_on_target = fields.Monetary(string="Commission on Target",
@@ -88,14 +94,14 @@ class HrContract(models.Model):
     def _inverse_wage_with_holidays(self):
         for contract in self:
             if contract.holidays:
-                yearly_cost = contract._get_advantages_costs() + (13.92 + 13.0 * 0.3507) * contract.wage_with_holidays
+                yearly_cost = contract._get_advantages_costs() + (13.92 + 13.0 * EMPLOYER_ONSS) * contract.wage_with_holidays
                 contract.final_yearly_costs = yearly_cost / (1.0 - contract.holidays / 231.0)
                 contract.wage = contract._get_gross_from_employer_costs(contract.final_yearly_costs)
             else:
                 contract.wage = contract.wage_with_holidays
 
-    @api.depends('transport_mode_car', 'transport_mode_public', 'transport_mode_others',
-        'company_car_total_depreciated_cost', 'public_transport_reimbursed_amount', 'others_reimbursed_amount')
+    @api.depends('transport_mode_car', 'transport_mode_public', 'transport_mode_private_car', 'transport_mode_others',
+        'company_car_total_depreciated_cost', 'public_transport_reimbursed_amount', 'others_reimbursed_amount', 'km_home_work')
     def _compute_transport_employer_cost(self):
         for contract in self:
             transport_employer_cost = 0.0
@@ -105,13 +111,16 @@ class HrContract(models.Model):
                 transport_employer_cost += contract.public_transport_reimbursed_amount
             if contract.transport_mode_others:
                 transport_employer_cost += contract.others_reimbursed_amount
+            if contract.transport_mode_private_car:
+                transport_employer_cost += self._get_private_car_reimbursed_amount(contract.km_home_work)
             contract.transport_employer_cost = transport_employer_cost
 
     @api.depends('commission_on_target')
-    def _compute_warrants_cost(self):
+    def _compute_commission_cost(self):
         for contract in self:
-            contract.warrants_cost = contract.commission_on_target * 1.326 / 1.05 * 12.0
-            contract.warrant_value_employee = contract.commission_on_target * 1.326 * (1.00 - 0.535) * 12.0
+            contract.warrants_cost = contract.commission_on_target * 1.326 / 1.05
+            contract.yearly_commission_cost = contract.warrants_cost * 3.0 + contract.commission_on_target * 9.0 * (1 + EMPLOYER_ONSS)
+            contract.warrant_value_employee = contract.commission_on_target * 1.326 * (1.00 - 0.535)
 
     @api.depends('wage', 'fuel_card', 'representation_fees', 'transport_employer_cost',
         'internet', 'mobile', 'mobile_plus')
@@ -129,7 +138,7 @@ class HrContract(models.Model):
 
     @api.depends(
         'wage', 'fuel_card', 'representation_fees', 'transport_employer_cost',
-        'internet', 'mobile', 'mobile_plus', 'warrants_cost',
+        'internet', 'mobile', 'mobile_plus', 'yearly_commission_cost',
         'meal_voucher_paid_by_employer')
     def _compute_final_yearly_costs(self):
         for contract in self:
@@ -148,7 +157,7 @@ class HrContract(models.Model):
     def _compute_social_security_contributions(self):
         for contract in self:
             total_wage = contract.wage * 13.0
-            contract.social_security_contributions = (total_wage) * 0.3507
+            contract.social_security_contributions = (total_wage) * EMPLOYER_ONSS
 
     @api.depends('wage')
     def _compute_ucm_insurance(self):
@@ -167,6 +176,15 @@ class HrContract(models.Model):
     def _compute_monthly_yearly_costs(self):
         for contract in self:
             contract.monthly_yearly_costs = contract.final_yearly_costs / 12.0
+
+    @api.depends('km_home_work', 'transport_mode_private_car')
+    def _compute_private_car_reimbursed_amount(self):
+        for contract in self:
+            if contract.transport_mode_private_car:
+                amount = self._get_private_car_reimbursed_amount(contract.km_home_work)
+            else:
+                amount = 0.0
+            contract.private_car_reimbursed_amount = amount
 
     @api.onchange('transport_mode_car', 'transport_mode_public', 'transport_mode_others')
     def _onchange_transport_mode(self):
@@ -191,7 +209,7 @@ class HrContract(models.Model):
             12.0 * self.internet +
             12.0 * (self.mobile + self.mobile_plus) +
             12.0 * self.transport_employer_cost +
-            self.warrants_cost +
+            self.yearly_commission_cost +
             220.0 * self.meal_voucher_paid_by_employer
         )
 
@@ -205,7 +223,32 @@ class HrContract(models.Model):
     def _get_gross_from_employer_costs(self, yearly_cost):
         self.ensure_one()
         remaining_for_gross = yearly_cost - self._get_advantages_costs()
-        return remaining_for_gross / (13.92 + 13.0 * 0.3507)
+        return remaining_for_gross / (13.92 + 13.0 * EMPLOYER_ONSS)
+
+    @api.model
+    def _get_private_car_reimbursed_amount(self, distance):
+        # monthly train subscription amount => half is reimbursed
+        amounts_train = [
+            (3, 0.0), (4, 39.5), (5, 42.5), (6, 45.0),
+            (7, 48.0), (8, 51.0), (9, 53.0), (10, 56.0),
+            (11, 59.0), (12, 62.0), (13, 64.0), (14, 67.0),
+            (15, 70.0), (16, 72.0), (17, 75.0), (18, 78.0),
+            (19, 81.0), (20, 83.0), (21, 86.0), (22, 89.0),
+            (23, 91.0), (24, 94.0), (25, 97.0), (26, 100.0),
+            (27, 102.0), (28, 105.0), (29, 108.0), (30, 110.0),
+            (33, 115.0), (36, 122.0), (39, 128.0), (42, 135.0),
+            (42, 135.0), (45, 142.0), (48, 148.0), (51, 155.0),
+            (54, 160.0), (57, 164.0), (60, 169.0), (65, 176.0),
+            (70, 183.0), (75, 191.0), (80, 199.0), (85, 207.0),
+            (90, 215.0), (95, 223.0), (100, 231.0), (105, 239.0),
+            (110, 247.0), (115, 255.0), (120, 263.0), (125, 271.0),
+            (130, 279.0), (135, 286.0), (140, 294.0), (145, 302.0),
+        ]
+
+        for distance_boundary, amount in amounts_train:
+            if distance <= distance_boundary:
+                return amount / 2
+        return 313.0 / 2
 
 
 class HrEmployee(models.Model):

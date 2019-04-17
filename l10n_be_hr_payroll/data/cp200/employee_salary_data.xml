@@ -211,6 +211,18 @@ if contract.mobile:
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
+        <record id="cp200_employees_salary_private_car" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_div_net"/>
+            <field name="name">Private car</field>
+            <field name="code">CAR.PRIV</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">170</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.transport_mode_private_car</field>
+            <field name="amount_python_compute">result = contract.private_car_reimbursed_amount</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
         <record id="cp200_employees_salary_representation_fees" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_net"/>
             <field name="name">Representation Fees</field>

@@ -49,7 +49,7 @@ class Task(models.Model):
                       ('user_id', '=', task.user_id.id),
                       ('planned_date_begin', '<', task.planned_date_end),
                       ('planned_date_end', '>', task.planned_date_begin)]
-            current_id = self._origin.id if self.env.in_onchange else task.id
+            current_id = task._origin.id
             if current_id:
                 domain.append(('id', '!=', current_id))
             overlap = self.env['project.task'].search_count(domain)

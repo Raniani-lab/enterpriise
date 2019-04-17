@@ -16,7 +16,7 @@ class TestExamples(common.SavepointCase):
         cls.Payslip = cls.env['hr.payslip']
         cls.journal_id = cls.env['account.journal'].search([], limit=1).id
 
-    def case_test(self, line_values, employee_values, payslip_values=None, contract_values=None):
+    def case_test(self, line_values, employee_values, payslip_values=None, contract_values=None, holiday_values=[]):
         """
             Line_values is a dict with key = line.code and value = line.value
             Employee_values is either a dict to pass to create or an xmlid
@@ -35,6 +35,15 @@ class TestExamples(common.SavepointCase):
                                    employee_id=employee.id)
             contract_id = self.env['hr.contract'].create(contract_values)
             contract_id.write({'state': 'open'})
+
+        # Setup the holidays, use the above employee and contract
+        for holiday in holiday_values:
+            if isinstance(holiday, dict):
+                holiday_value = dict(holiday,
+                                    employee_id=employee.id,
+                                    contract_id=contract_id.id)
+                work_entry = self.env['hr.work.entry'].create(holiday_value)
+                work_entry.action_validate()
 
         # Generate the poubelles
         if 'date_from' in payslip_values and 'date_to' in payslip_values:
@@ -109,3 +118,55 @@ class TestExamples(common.SavepointCase):
             'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
         }
         self.case_test(values, employee, payslip_values=payslip, contract_values=contract)
+
+    # 4 hours unpaid, 2 days leave, no atn and no car
+    def test_without_car_without_atn(self):
+        values = OrderedDict([
+            ('BASIC', 3655.33),
+            ('ATN.INT', 0.00),
+            ('ATN.MOB', 0.0),
+            ('SALARY', 3655.33),
+            ('ONSS', -477.75),
+            ('ATN.CAR', 0),
+            ('GROSSIP', 0),
+            ('IP.PART', 0),
+            ('GROSS', 3177.57),
+            ('P.P', -873.33),
+            ('ATN.CAR.2', 0),
+            ('ATN.INT.2', 0),
+            ('ATN.MOB.2', 0),
+            ('M.ONSS', -34.72),
+            ('MEAL_V_EMP', -21.8),
+            ('REP.FEES', 150.00),
+            ('IP', 0),
+            ('IP.DED', 0),
+            ('NET', 2397.73),
+        ])
+        employee = {
+            'name': 'Roger',
+        }
+        contract = {
+            'name': 'Contract For Roger',
+            'date_start': datetime.date(2018, 1, 1),
+            'wage': 3746.33,
+            'meal_voucher_amount': 7.45,
+            'representation_fees': 150,
+            'internet': 0,
+            'mobile': 0,
+            'ip_wage_rate': 0,
+            'ip': False,
+            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+        }
+        payslip = {
+            'date_from': datetime.date.today().replace(year=2018, month=11, day=1),
+            'date_to': datetime.date.today().replace(year=2018, month=11, day=30),
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
+        }
+        unpaid_work_entry_type = self.env.ref('hr_payroll.work_entry_type_unpaid_leave')
+        holiday = [{
+            'name': 'Unpaid work entry',
+            'work_entry_type_id': unpaid_work_entry_type.id,
+            'date_start': datetime.datetime(2018, 11, 6, 7, 0),
+            'date_stop': datetime.datetime(2018, 11, 6, 12, 0),
+        }]
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holiday_values=holiday)

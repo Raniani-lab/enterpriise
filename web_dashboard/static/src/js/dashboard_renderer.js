@@ -170,10 +170,12 @@ var DashboardRenderer = FormRenderer.extend({
             // use a formatter to render the value if there exists one for the
             // specified widget attribute, or there is no widget attribute
             var fieldValue = self.state.data[statisticName];
+            fieldValue = _.contains(['date', 'datetime'], statistic.type) ? (fieldValue === 0 ? NaN : moment(fieldValue)) : fieldValue;
             var formatType = node.attrs.widget || statistic.type;
             formatter = fieldUtils.format[formatType];
             if (this.state.compare) {
                 var comparisonValue = this.state.comparisonData[statisticName];
+                comparisonValue = _.contains(['date', 'datetime'], statistic.type) ? (fieldValue === 0 ? NaN : moment(comparisonValue)) : comparisonValue;
                 variation = this.state.variationData[statisticName];
                 renderComparison($el, fieldValue, comparisonValue, variation, formatter, statistic, this.formatOptions);
                 $('.o_comparison', $el).append(valueLabel);

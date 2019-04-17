@@ -243,27 +243,27 @@ var GanttRow = Widget.extend({
             return intervals;
         }, []);
 
-        this.pills = _.reduce(intervals, function (pills, slotStart) {
-            var slotStop = slotStart.clone().add(cellTime, timeToken);
-            var pillsInThisSlot = _.filter(self.pills, function (pill) {
-                return pill.startDate < slotStop && pill.stopDate > slotStart;
+        this.pills = _.reduce(intervals, function (pills, intervalStart) {
+            var intervalStop = intervalStart.clone().add(cellTime, timeToken);
+            var pillsInThisInterval = _.filter(self.pills, function (pill) {
+                return pill.startDate < intervalStop && pill.stopDate > intervalStart;
             });
-            if (pillsInThisSlot.length) {
+            if (pillsInThisInterval.length) {
                 var previousPill = pills[pills.length - 1];
                 var isContinuous = previousPill &&
-                    _.intersection(previousPill.aggregatedPills, pillsInThisSlot).length;
+                    _.intersection(previousPill.aggregatedPills, pillsInThisInterval).length;
 
-                if (isContinuous && previousPill.count === pillsInThisSlot.length) {
+                if (isContinuous && previousPill.count === pillsInThisInterval.length) {
                     // Enlarge previous pill so that it spans the current slot
-                    previousPill.stopDate = slotStop;
-                    previousPill.aggregatedPills = previousPill.aggregatedPills.concat(pillsInThisSlot);
+                    previousPill.stopDate = intervalStop;
+                    previousPill.aggregatedPills = previousPill.aggregatedPills.concat(pillsInThisInterval);
                 } else {
                     var newPill = {
                         id: 0,
-                        count: pillsInThisSlot.length,
-                        aggregatedPills: pillsInThisSlot,
-                        startDate: moment.max(_.min(pillsInThisSlot, 'startDate').startDate, slotStart),
-                        stopDate: moment.min(_.max(pillsInThisSlot, 'stopDate').stopDate, slotStop),
+                        count: pillsInThisInterval.length,
+                        aggregatedPills: pillsInThisInterval,
+                        startDate: moment.max(_.min(pillsInThisInterval, 'startDate').startDate, intervalStart),
+                        stopDate: moment.min(_.max(pillsInThisInterval, 'stopDate').stopDate, intervalStop),
                     };
                     if (isContinuous) {
                         // Pills are continuous but different count: display them together
@@ -273,7 +273,7 @@ var GanttRow = Widget.extend({
 
                     // Enrich the aggregates with consolidation data
                     if (self.consolidate && self.consolidationParams.field) {
-                        newPill.consolidationValue = pillsInThisSlot.reduce(
+                        newPill.consolidationValue = pillsInThisInterval.reduce(
                             function (sum, pill) {
                                 if (!pill[self.consolidationParams.excludeField]) {
                                     return sum + pill[self.consolidationParams.field];
@@ -456,30 +456,32 @@ var GanttRow = Widget.extend({
      */
     _insertIntoSlot: function () {
         var self = this;
-        var slotCompareFormats = {
-            day: 'HH',
-            week: 'e',
-            month: 'DD',
-            year: 'MM',
-        };
-        // Hours (HH) and day of the week (e) are indexed starting at 0, but
-        // day (DD) and month (MM) are indexed starting at 1. We offset that.
-        var delta = _.contains(['month', 'year'], this.state.scale) ? 1 : 0;
-        var slotFormat = slotCompareFormats[this.state.scale];
+        var intervalToken = this.SCALES[self.state.scale].interval;
         this.slots = _.map(this.viewInfo.slots, function (date, key) {
             return {
                 isToday: date.isSame(new Date(), 'day') && self.state.scale !== 'day',
                 unavailable: self.state.unavailability && self.state.unavailability[key],
-                date: date,
+                hasButtons: !self.isGroup && !self.isTotal,
+                start: date,
+                stop: date.clone().add(1, intervalToken),
                 pills: [],
             };
         });
-        this.pills.forEach(function (pill) {
-            var index = parseInt(pill.startDate.format(slotFormat), 10);
-            self.slots[index - delta].pills.push(pill);
-        });
-        this.slots.forEach(function (slot) {
-            slot.hasButtons = !self.isGroup && !self.isTotal;
+        var slotsToFill = this.slots;
+        this.pills.forEach(function (currentPill) {
+            var skippedSlots = [];
+            slotsToFill.some(function (currentSlot) {
+                var fitsInThisSlot = currentPill.startDate < currentSlot.stop;
+                if (fitsInThisSlot) {
+                    currentSlot.pills.push(currentPill);
+                } else {
+                    skippedSlots.push(currentSlot);
+                }
+                return fitsInThisSlot;
+            });
+            // Pills are sorted by start date, so any slot that was skipped
+            // for this pill will not be suitable for any of the next pills
+            slotsToFill = _.difference(slotsToFill, skippedSlots);
         });
     },
     /**

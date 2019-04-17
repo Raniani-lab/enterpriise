@@ -20,6 +20,11 @@ class ReportPartnerLedger(models.AbstractModel):
     filter_unreconciled = False
     filter_partner = True
 
+    # TODO: remove when https://github.com/odoo/odoo/pull/31211 is merged and _lt is used above
+    def _build_options(self, previous_options=None):
+        self.filter_account_type = [{'id': 'receivable', 'name': _('Receivable'), 'selected': False}, {'id': 'payable', 'name': _('Payable'), 'selected': False}]
+        return super(ReportPartnerLedger, self)._build_options(previous_options=previous_options)
+
     def _get_templates(self):
         templates = super(ReportPartnerLedger, self)._get_templates()
         templates['line_template'] = 'account_reports.line_template_partner_ledger_report'

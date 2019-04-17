@@ -5,6 +5,7 @@ var ace = require('web_editor.ace');
 var config = require('web.config');
 var NotificationService = require('web.NotificationService');
 var testUtils = require('web.test_utils');
+var testUtilsDom = require('web.test_utils_dom');
 var studioTestUtils = require('web_studio.testUtils');
 var session = require('web.session');
 
@@ -83,6 +84,7 @@ QUnit.module('ReportEditorManager', {
                     child: {string: "Child", type: 'many2one', relation: 'model.test.child', searchable: true},
                     child_bis: {string: "Child Bis", type: 'many2one', relation: 'model.test.child', searchable: true},
                     children: {string: "Children", type: 'many2many', relation: 'model.test.child', searchable: true},
+                    attachment_ids: {string: "Attachments", type: 'one2many', relation: 'ir.attachment', searchable: true},
                 },
                 records: [],
             },
@@ -91,6 +93,31 @@ QUnit.module('ReportEditorManager', {
                     name: { string: "Name", type: "char"},
                 },
                 records: [],
+            },
+            'ir.attachment': {
+                fields: {
+                    name: {string: "Name", type: "char"},
+                    datas_fname: {string: "fname", type: "char"},
+                    mimetype: {string: "mimetype", type: "char"},
+                    checksum: {string: "checksum", type: "char"},
+                    url: {string: "url", type: "char"},
+                    type: {string: "type", type: "char"},
+                    res_id: {string: "resID", type: "integer"},
+                    res_model: {string: "model", type: "char"},
+                    access_token: {string: "access_token", type: "char"},
+                },
+                records: [{
+                    access_token: "token",
+                    checksum: "checksum",
+                    datas_fname: "joes_garage.png",
+                    id: 3480,
+                    mimetype: "image/png",
+                    name: "joes_garage.jpeg",
+                    res_id: 0,
+                    res_model: "ir.ui.view",
+                    type: "binary",
+                    url: "/some/relative/path/joes_garage.png",
+                }],
             },
         };
         this.templates = [{
@@ -807,7 +834,7 @@ QUnit.module('ReportEditorManager', {
     });
 
     QUnit.test('drag & drop field block', function (assert) {
-        assert.expect(1);
+        assert.expect(6);
         var done = assert.async();
 
         this.templates.push({
@@ -821,7 +848,7 @@ QUnit.module('ReportEditorManager', {
         });
 
         var templateData = {
-            dataOeContext: '{"o": "model.test"}'
+            dataOeContext: '{"o": "model.test", "docs": "model.test"}'
         };
 
         var rem = studioTestUtils.createReportEditorManager({
@@ -864,7 +891,23 @@ QUnit.module('ReportEditorManager', {
             testUtils.dom.dragAndDrop($field, $target, {position: 'inside'});
 
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
+            assert.strictEqual($('.o_web_studio_field_modal .o_field_selector_item').text().trim(), "o (Model Test)",
+                'Only "o" should be selectable, not "docs"');
+
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
+
+            var allAvailableFields = $('.o_web_studio_field_modal .o_field_selector_item').text().trim();
+
+            assert.ok(allAvailableFields.includes('Name'),
+                'Char field is present');
+            assert.ok(allAvailableFields.includes('Child'),
+                'many2one fields are present');
+
+            assert.notOk(allAvailableFields.includes('Children'),
+                'many2many fields should not be present');
+            assert.notOk(allAvailableFields.includes('Attachments'),
+                'one2many fields should not be present');
+
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]').trigger('click');
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]').trigger('click');
             $('.o_web_studio_field_modal .btn-primary').trigger('click');
@@ -1660,6 +1703,86 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
+    QUnit.test('drag & drop block "Image"', function (assert) {
+        assert.expect(2);
+        var done = assert.async();
+        var self = this;
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch: '<kikou><t t-name="template1"/></kikou>',
+        });
+
+        var editReportViewCalls = 0;
+        var rem = studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {},
+            reportHTML: studioTestUtils.getReportHTML(this.templates),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+            reportMainViewID: 42,
+            mockRPC: function (route, args) {
+                // Bypass mockSearchRead domain evauation
+                if (route === '/web/dataset/call_kw/ir.attachment/search_read') {
+                    return $.when([self.data['ir.attachment'].records[0]]);
+                }
+                if (route === '/web_studio/edit_report_view') {
+                    if (editReportViewCalls === 0) {
+                        assert.strictEqual(
+                            args.operations[0].inheritance[0].content,
+                            '<img class="img-fluid" src="/some/relative/path/joes_garage.png?access_token=token"/>',
+                            'The image should be added to the view with a relative path as src'
+                        );
+                    }
+                    editReportViewCalls++;
+                    return $.Deferred().reject();
+                }
+                if (route === '/some/relative/path/joes_garage.png') {
+                    // The web_editor Image selector widget waits for images to load
+                    // to make them visible and selectable
+                    // It does that by assigning the Deferred.resolve function
+                    // to the image's onload attribute
+                    // Since the test framework redirects images src fetching
+                    // We need to execute the onload ourselves to make images visible and selectable
+                    // and to be able to fully go on with the feature testing
+                    $('.modal-dialog.o_select_media_dialog .o_image img')[0].onload();
+                    return $.when('The white zone is for loading and unloading only');
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // Wait for the image modal to be fully loaded in two steps:
+        // First, the Bootstrap modal itself
+        $('body').one('shown.bs.modal', function () {
+            assert.containsOnce($('body'), '.modal-dialog.o_select_media_dialog',
+                'The bootstrap modal for media selection is open');
+        });
+        // Second, when the modal element is there, bootstrap focuses on the "image" tab
+        // then only could we use the widget and select an image safely
+        $('body').one('shown.bs.tab a[data-toggle="tab"]', function () {
+            var $modal = $('.modal-dialog.o_select_media_dialog');
+            testUtilsDom.click($modal.find('.o_image'));
+            testUtilsDom.click($modal.find('button:contains(Save)'));
+
+            done();
+            rem.destroy();
+        });
+
+        // Process to use the report editor
+        rem.editorIframeDef.then(function () {
+            var $page = rem.$('iframe').contents().find('.page');
+            var $imageBlock = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Image)');
+            testUtils.dragAndDrop($imageBlock, $page, {position: 'inside'});
+        });
+    });
+
     QUnit.test('edit text', function (assert) {
         var done = assert.async();
         assert.expect(2);
@@ -2002,6 +2125,42 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
+    QUnit.test('reattach studio editor, no error', function (assert) {
+        var done = assert.async();
+        assert.expect(1);
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        var rem = studioTestUtils.createReportEditorManager({
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {
+                report_name: 'awesome_report',
+            },
+            reportHTML: studioTestUtils.getReportHTML(this.templates),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+        });
+
+        rem.editorIframeDef.then(function () {
+            // detach then reattach $iframe to simulate iframe content loss
+            $('<div />').replaceAll(rem.view.$iframe).replaceWith(rem.view.$iframe);
+            rem.updateEditor();
+            assert.ok(true, "Updating report editor did not cause an error");
+            rem.destroy();
+            done();
+        });
+    });
 });
 
 });

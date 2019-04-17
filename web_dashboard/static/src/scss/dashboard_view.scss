@@ -228,6 +228,12 @@
         > .btn-group[role=toolbar] {
             margin-left: 8px;
         }
+
+        .o_dropdown {
+            margin-left: 8px;
+            display: flex;
+            align-items: center;
+        }
     }
 
     .o_subview {

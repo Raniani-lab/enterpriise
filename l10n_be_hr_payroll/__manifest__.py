@@ -29,6 +29,7 @@ Belgian Payroll Rules.
         'wizard/hr_payroll_employee_departure_notice_views.xml',
         'wizard/hr_payroll_employee_departure_holiday_attest_views.xml',
         'wizard/l10n_be_hr_payroll_credit_time_wizard_views.xml',
+        'wizard/hr_payroll_allocating_paid_time_off_views.xml',
         'views/l10n_be_hr_payroll_view.xml',
         'views/hr_work_entry_views.xml',
         'views/report_termination_fees.xml',

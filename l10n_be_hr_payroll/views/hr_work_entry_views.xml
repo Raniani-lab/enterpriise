@@ -9,6 +9,9 @@
             <xpath expr="//field[@name='is_leave']" position="before">
                 <field name="meal_voucher"/>
             </xpath>
+            <xpath expr="//field[@name='is_leave']" position="after">
+                <field name="leave_right"/>
+            </xpath>
         </field>
     </record>
 </odoo>

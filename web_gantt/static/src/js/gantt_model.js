@@ -105,7 +105,6 @@ var GanttModel = AbstractModel.extend({
      * @returns {Promise<any>}
      */
     load: function (params) {
-        var self = this;
         this.modelName = params.modelName;
         this.fields = params.fields;
         this.domain = params.domain;
@@ -162,7 +161,7 @@ var GanttModel = AbstractModel.extend({
                 this.ganttData.groupedBy = this.defaultGroupBy;
             }
         }
-        return this._fetchData();
+        return this._fetchData()
     },
     /**
      * Reschedule a task to the given schedule.

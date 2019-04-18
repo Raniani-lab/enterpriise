@@ -1389,6 +1389,144 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('gantt_unavailability reloads when the view\'s scale changes', async function(assert){
+        assert.expect(11);
+
+        var unavailabilityCallCount = 0;
+        var unavailabilityScaleArg = 'none';
+        var reloadCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                var result;
+                if (route === '/web/dataset/search_read') {
+                    reloadCount++;
+                    result = this._super.apply(this, arguments);
+                }
+                else if (args.method === 'gantt_unavailability') {
+                    unavailabilityCallCount++;
+                    unavailabilityScaleArg = args.args[2];
+                    result = args.args[4];
+                }
+                return Promise.resolve(result);
+            },
+        });
+
+        assert.strictEqual(reloadCount, 1, 'view should have loaded')
+        assert.strictEqual(unavailabilityCallCount, 1, 'view should have loaded unavailability');
+
+        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=week]'));
+        assert.strictEqual(reloadCount, 2, 'view should have reloaded when switching scale to week')
+        assert.strictEqual(unavailabilityCallCount, 2, 'view should have reloaded when switching scale to week');
+        assert.strictEqual(unavailabilityScaleArg, 'week', 'unavailability should have been called with the week scale');
+
+        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=month]'));
+        assert.strictEqual(reloadCount, 3, 'view should have reloaded when switching scale to month')
+        assert.strictEqual(unavailabilityCallCount, 3, 'view should have reloaded when switching scale to month');
+        assert.strictEqual(unavailabilityScaleArg, 'month', 'unavailability should have been called with the month scale');
+
+        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=year]'));
+        assert.strictEqual(reloadCount, 4, 'view should have reloaded when switching scale to year')
+        assert.strictEqual(unavailabilityCallCount, 4, 'view should have reloaded when switching scale to year');
+        assert.strictEqual(unavailabilityScaleArg, 'year', 'unavailability should have been called with the year scale');
+
+        gantt.destroy();
+
+    });
+
+    QUnit.test('gantt_unavailability reload when period changes', async function(assert){
+        assert.expect(6);
+
+        var unavailabilityCallCount = 0;
+        var reloadCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                var result;
+                if (route === '/web/dataset/search_read') {
+                    reloadCount++;
+                    result = this._super.apply(this, arguments);
+                }
+                else if (args.method === 'gantt_unavailability') {
+                    unavailabilityCallCount++;
+                    result = args.args[4];
+                }
+                return Promise.resolve(result);
+            },
+        });
+
+        assert.strictEqual(reloadCount, 1, 'view should have loaded')
+        assert.strictEqual(unavailabilityCallCount, 1, 'view should have loaded unavailability');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        assert.strictEqual(reloadCount, 2, 'view should have reloaded when clicking next')
+        assert.strictEqual(unavailabilityCallCount, 2, 'view should have reloaded unavailability when clicking next');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        assert.strictEqual(reloadCount, 3, 'view should have reloaded when clicking prev')
+        assert.strictEqual(unavailabilityCallCount, 3, 'view should have reloaded unavailability when clicking prev');
+
+        gantt.destroy();
+
+    });
+
+    QUnit.test('gantt_unavailability should not reload when period changes if display_unavailability is not set', async function(assert){
+        assert.expect(6);
+
+        var unavailabilityCallCount = 0;
+        var reloadCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                var result;
+                if (route === '/web/dataset/search_read') {
+                    reloadCount++;
+                    result = this._super.apply(this, arguments);
+                }
+                else if (args.method === 'gantt_unavailability') {
+                    unavailabilityCallCount++;
+                    result = {};
+                }
+                return Promise.resolve(result);
+            },
+        });
+
+        assert.strictEqual(reloadCount, 1, 'view should have loaded')
+        assert.strictEqual(unavailabilityCallCount, 0, 'view should not have loaded unavailability');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        assert.strictEqual(reloadCount, 2, 'view should have reloaded when clicking next')
+        assert.strictEqual(unavailabilityCallCount, 0, 'view should not have reloaded unavailability when clicking next');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        assert.strictEqual(reloadCount, 3, 'view should have reloaded when clicking prev')
+        assert.strictEqual(unavailabilityCallCount, 0, 'view should not have reloaded unavailability when clicking prev');
+
+        gantt.destroy();
+
+    });
+
     // ATTRIBUTES TESTS
 
     QUnit.test('create attribute', async function (assert) {
@@ -1778,7 +1916,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('display_unavailability attribute', async function (assert) {
-        assert.expect(15);
+        assert.expect(14);
 
         var gantt = await createView({
             View: GanttView,

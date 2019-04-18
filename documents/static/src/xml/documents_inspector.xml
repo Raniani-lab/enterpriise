@@ -164,4 +164,20 @@
     </div>
 </t>
 
+<!-- Mobile templates -->
+<t t-name="documents.DocumentsInspectorMobile">
+    <details t-attf-class="#{widget.records.length ? '' : 'd-none'} o_documents_mobile_inspector">
+        <summary class="o_documents_toggle_inspector btn btn-primary d-flex align-items-center">
+            <i class="o_documents_close_inspector fa fa-fw fa-arrow-left"/>
+            <span class="m-auto">
+                <t t-esc="widget.records.length"/>
+                <t t-if="widget.records.length > 1">documents</t>
+                <t t-if="widget.records.length === 1">document</t>
+                selected
+            </span>
+        </summary>
+        <t t-call="documents.DocumentsInspector"/>
+    </details>
+</t>
+
 </templates>

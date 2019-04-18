@@ -688,7 +688,7 @@ QUnit.module('Views', {
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
         await testUtils.nextTick();
         // check that the dialog is opened with prefilled fields
-        var $modal = $('.modal-lg');
+        var $modal = $('.modal');
         assert.strictEqual($modal.length, 1, 'There should be one modal opened');
         assert.strictEqual($modal.find('.modal-title').text(), "Create");
         await testUtils.fields.editInput($modal.find('input[name=name]'), 'Task 8');
@@ -764,6 +764,207 @@ QUnit.module('Views', {
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell:first'), "mousemove");
         await testUtils.nextTick();
         assert.containsNone(gantt, '.o_gantt_dragging', "the pill should not be dragging");
+
+        gantt.destroy();
+    });
+
+    QUnit.test('open a dialog to create a task, does not have a delete button', async function(assert){
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+        });
+
+        // open dialog to create a task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
+
+        var $modal = $('.modal');
+        assert.containsNone($modal, '.o_btn_remove', 'There should be no delete button on create dialog');
+
+        gantt.destroy();
+
+    });
+
+    QUnit.test('open a dialog to edit a task, has a delete buttton', async function(assert){
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+        });
+
+        // open dialog to create a task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
+        // create the task
+        await testUtils.modal.clickButton('Save & Close');
+        // open dialog to view the task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.nextTick();
+
+        var $modal = $('.modal');
+
+        assert.strictEqual($modal.find('.o_btn_remove').length, 1, 'There should be a delete button on edit dialog');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('clicking on delete button in edit dialog triggers a confirmation dialog, clicking discard does not call unlink on the model', async function(assert){
+        assert.expect(4);
+
+        var unlinkCallCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+            mockRPC: function (route, args) {
+                if (args.method === 'unlink') {
+                    unlinkCallCount++;
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        // open dialog to create a task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
+        // create the task
+        await testUtils.modal.clickButton('Save & Close');
+        // open dialog to view the task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.nextTick();
+
+        var $modal = $('.modal');
+
+        // trigger the delete button
+        await testUtils.modal.clickButton('Remove');
+        await testUtils.nextTick();
+
+        var $dialog = $('.modal-dialog');
+
+        // there sould be one more dialog
+        assert.strictEqual($dialog.length, 2, 'Should have opened a new dialog');
+        assert.strictEqual(unlinkCallCount, 0, 'should not call unlink on the model if dialog is cancelled');
+
+        // trigger cancel
+        await testUtils.modal.clickButton('Cancel');
+        await testUtils.nextTick();
+
+        $dialog = $('.modal-dialog');
+        assert.strictEqual($dialog.length, 0, 'Should have closed all dialog');
+        assert.strictEqual(unlinkCallCount, 0, 'Unlink should not have been called');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('clicking on delete button in edit dialog triggers a confirmation dialog, clicking ok call unlink on the model', async function(assert){
+        assert.expect(4);
+
+        var unlinkCallCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+            mockRPC: function (route, args) {
+                if (args.method === 'unlink') {
+                    unlinkCallCount++;
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        // open dialog to create a task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
+        // create the task
+        await testUtils.modal.clickButton('Save & Close');
+        // open dialog to view the task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.nextTick();
+
+        // trigger the delete button
+        await testUtils.modal.clickButton('Remove');
+        await testUtils.nextTick();
+
+        var $dialog = $('.modal-dialog');
+
+        // there sould be one more dialog
+        assert.strictEqual($dialog.length, 2, 'Should have opened a new dialog');
+        assert.strictEqual(unlinkCallCount, 0, 'should not call unlink on the model if dialog is cancelled');
+
+        // trigger ok
+        await testUtils.modal.clickButton('Ok');
+        await testUtils.nextTick();
+
+        $dialog = $('.modal-dialog');
+        assert.strictEqual($dialog.length, 0, 'Should have closed all dialog');
+        assert.strictEqual(unlinkCallCount, 1, 'Unlink should have been called');
 
         gantt.destroy();
     });

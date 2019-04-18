@@ -4,6 +4,7 @@ odoo.define('web_gantt.GanttController', function (require) {
 var AbstractController = require('web.AbstractController');
 var core = require('web.core');
 var dialogs = require('web.view_dialogs');
+var confirmDialog = require('web.Dialog').confirm;
 
 var QWeb = core.qweb;
 var _t = core._t;
@@ -129,9 +130,42 @@ var GanttController = AbstractController.extend({
             views: this.dialogViews,
             res_id: resID,
             readonly: !this.is_action_enabled('edit'),
+            deletable: this.is_action_enabled('edit') && resID,
             context: _.extend({}, this.context, context),
             on_saved: this.reload.bind(this, {}),
+            on_remove: this._onDialogRemove.bind(this, resID),
         }).open();
+    },
+    /**
+     * Handler called when clicking the
+     * delete button in the edit/view dialog.
+     * Reload the view and close the dialog
+     *
+     * @returns {function}
+     */
+    _onDialogRemove: function (resID){
+        var controller = this;
+
+        var confirm = new Promise(function (resolve) {
+            confirmDialog(this, _t('Are you sure to delete this record?'), {
+                confirm_callback: function() { resolve(true); },
+                cancel_callback: function() { resolve(false); },
+            });
+        });
+
+        return confirm.then(function(confirmed) {
+            if((!confirmed)){
+                return Promise.resolve();
+            }// else
+            return controller._rpc({
+                model: controller.modelName,
+                method: 'unlink',
+                args: [[resID,],],
+            })
+            .then(function(){
+                return controller.reload();
+            })
+        });
     },
     /**
      * Opens dialog to plan records.

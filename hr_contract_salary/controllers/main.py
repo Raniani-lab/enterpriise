@@ -415,6 +415,7 @@ class website_hr_contract_salary(http.Controller):
             'NET': round(payslip.get_salary_line_total('NET'), 2),
             'holidays_compensation': round(new_contract.holidays_compensation, 2),
             'wage_with_holidays': round(new_contract.wage_with_holidays, 2),
+            'wage': round(new_contract.wage, 2),
             'company_car_total_depreciated_cost': round(new_contract.company_car_total_depreciated_cost, 2),
             'thirteen_month': round(new_contract.thirteen_month, 2),
             'double_holidays': round(new_contract.double_holidays, 2),

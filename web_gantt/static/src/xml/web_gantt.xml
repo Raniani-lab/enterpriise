@@ -74,7 +74,7 @@
                     <!-- plan and add buttons -->
                     <div t-if="slot.hasButtons" class="o_gantt_cell_buttons">
                         <i t-if="widget.options.canCreate" title="Create" class="o_gantt_cell_add fa fa-plus"/>
-                        <i t-if="widget.options.canEdit" title="Plan existing" class="o_gantt_cell_plan fa fa-search-plus"/>
+                        <i t-if="widget.options.canPlan" title="Plan existing" class="o_gantt_cell_plan fa fa-search-plus"/>
                     </div>
 
                     <!-- pills -->

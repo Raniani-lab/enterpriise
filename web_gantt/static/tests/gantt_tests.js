@@ -825,6 +825,116 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('plan button is not present if edit === false and plan is not specified', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="false" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.strictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is not present if edit === false and plan is true', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="false" plan="true" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.strictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is not present if edit === true and plan === false', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="true" plan="false" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.strictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is present if edit === true and plan is not set', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="true" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.notStrictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is present if edit === true and plan is true', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="true" plan="true" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.notStrictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
     QUnit.test('open a dialog to plan a task', async function (assert) {
         assert.expect(5);
 

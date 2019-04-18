@@ -115,6 +115,9 @@ var GanttView = AbstractView.extend({
             initialDate.add(offset, scale);
         }
 
+        // plan option
+        var canPlan = this.arch.attrs.plan ? !!JSON.parse(this.arch.attrs.plan) : true;
+
         this.controllerParams.context = params.context || {};
         this.controllerParams.dialogViews = dialogViews;
         this.controllerParams.SCALES = this.SCALES;
@@ -137,6 +140,7 @@ var GanttView = AbstractView.extend({
 
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;
         this.rendererParams.canEdit = this.controllerParams.activeActions.edit;
+        this.rendererParams.canPlan = canPlan && this.rendererParams.canEdit;
         this.rendererParams.fieldsInfo = viewInfo.fields;
         this.rendererParams.SCALES = this.SCALES;
         this.rendererParams.cellPrecisions = cellPrecisions;

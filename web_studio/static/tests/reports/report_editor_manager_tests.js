@@ -1992,7 +1992,7 @@ QUnit.module('ReportEditorManager', {
             // trigger a modification that will fail
             await testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));
 
-            assert.verifySteps(['warning'], "should have undone the operation");
+            assert.verifySteps(['danger'], "should have undone the operation");
 
             rem.destroy();
             done();

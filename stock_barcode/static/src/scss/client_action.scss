@@ -168,8 +168,8 @@
 
         &.o_js_has_highlight .o_barcode_line.o_highlight {
             &.o_highlight_red {
-                background-color: rgba($o-notification-error-bg-color, 0.25);
-                border-color: $o-notification-error-bg-color;
+                background-color: rgba(theme-color('danger'), 0.25);
+                border-color: theme-color('danger');
             }
             &.o_highlight_green {
                 background-color: rgba($success, 0.25);

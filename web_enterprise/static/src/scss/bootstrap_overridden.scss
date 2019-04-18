@@ -137,6 +137,15 @@ $nav-tabs-link-active-border-color: transparent !default;
 
 $card-bg: $gray-100 !default;
 
+// Toasts
+
+$toast-max-width: 300px !default;
+$toast-padding-x: 1.5rem !default;
+$toast-padding-y: 0.5rem !default;
+$toast-font-size: $font-size-base !default;
+$toast-background-color: rgba($white, .7) !default;
+$toast-header-background-color: $toast-background-color !default;
+
 // Modals
 
 // Padding applied to the modal body

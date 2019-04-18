@@ -14,6 +14,11 @@ DEFAULT_MONTH_RANGE = 3
 class ProjectOverview(models.Model):
     _inherit = 'project.project'
 
+    def _plan_prepare_values(self):
+        values = super()._plan_prepare_values()
+        values.update({'with_forecasts': any(self.mapped('allow_forecast'))})
+        return values
+
     def _table_get_line_values(self):
         result = super(ProjectOverview, self)._table_get_line_values()
 
@@ -42,7 +47,7 @@ class ProjectOverview(models.Model):
             fc_months = sorted([fields.Date.to_string(initial_date + relativedelta(months=i, day=1)) for i in range(0, DEFAULT_MONTH_RANGE)])  # M3, M4, M5
 
             new_header = header[0:-2]
-            for header_name in [_to_short_month_name(date) for date in fc_months] + [_('After'), _('Forecasted')]:
+            for header_name in [_to_short_month_name(date) for date in fc_months] + [_('After'), _('Total')]:
                 new_header.append({
                     'label': header_name,
                     'tooltip': '',

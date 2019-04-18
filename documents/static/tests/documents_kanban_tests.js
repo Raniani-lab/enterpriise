@@ -5,13 +5,10 @@ var DocumentsKanbanView = require('documents.DocumentsKanbanView');
 
 var mailTestUtils = require('mail.testUtils');
 
-var AbstractStorageService = require('web.AbstractStorageService');
 var concurrency = require('web.concurrency');
-var RamStorage = require('web.RamStorage');
 var relationalFields = require('web.relational_fields');
 var testUtils = require('web.test_utils');
-
-var createView = testUtils.createView;
+var {createDocumentsKanbanView} = require('documents.test_utils');
 
 function autocompleteLength() {
     var $el = $('.ui-autocomplete');
@@ -27,27 +24,6 @@ function searchValue(el, value) {
         throw new Error(`Found ${matches.length} elements instead of 1`);
     }
     matches.val(value).trigger('keydown');
-}
-
-function createDocumentsKanbanView(params) {
-    var archPieces = params.arch.split('</templates>');
-    params.arch = archPieces[0] + '</templates>' +
-                        '<searchpanel>' +
-                            '<field name="folder_id" string="Workspace"/>' +
-                            '<field name="tag_ids" select="multi" groupby="facet_id"/>' +
-                            '<field name="res_model" select="multi" string="Attached To"/>' +
-                        '</searchpanel>' +
-                    archPieces[1];
-    if (!params.services || !params.services.local_storage) {
-        // the searchPanel uses the localStorage to store/retrieve default
-        // active category value
-        params.services = params.services || {};
-        var RamStorageService = AbstractStorageService.extend({
-            storage: new RamStorage(),
-        });
-        params.services.local_storage = RamStorageService;
-    }
-    return createView(params);
 }
 
 QUnit.module('Views');

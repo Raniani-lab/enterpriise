@@ -13,12 +13,6 @@ var view_registry = require('web.view_registry');
 
 var _lt = core._lt;
 
-if (config.device.isMobile) {
-    // use the classical KanbanView in mobile
-    view_registry.add('documents_kanban', KanbanView);
-    return;
-}
-
 var DocumentsKanbanView = KanbanView.extend({
     config: _.extend({}, KanbanView.prototype.config, {
         Controller: DocumentsKanbanController,

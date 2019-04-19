@@ -11,6 +11,8 @@ var PickingClientAction = ClientAction.extend({
     custom_events: _.extend({}, ClientAction.prototype.custom_events, {
         'picking_print_delivery_slip': '_onPrintDeliverySlip',
         'picking_print_picking': '_onPrintPicking',
+        'picking_print_barcodes_zpl': '_onPrintBarcodesZpl',
+        'picking_print_barcodes_pdf': '_onPrintBarcodesPdf',
         'picking_scrap': '_onScrap',
         'validate': '_onValidate',
         'cancel': '_onCancel',
@@ -435,6 +437,36 @@ var PickingClientAction = ClientAction.extend({
         });
     },
 
+    _printBarcodesZpl: function () {
+        var self = this;
+        this.mutex.exec(function () {
+            return self._save().then(function () {
+                return self.do_action(self.currentState.actionReportBarcodesZplId, {
+                    'additional_context': {
+                        'active_id': self.actionParams.pickingId,
+                        'active_ids': [self.actionParams.pickingId],
+                        'active_model': 'stock.picking',
+                    }
+                });
+            });
+        });
+    },
+
+    _printBarcodesPdf: function () {
+        var self = this;
+        this.mutex.exec(function () {
+            return self._save().then(function () {
+                return self.do_action(self.currentState.actionReportBarcodesPdfId, {
+                    'additional_context': {
+                        'active_id': self.actionParams.pickingId,
+                        'active_ids': [self.actionParams.pickingId],
+                        'active_model': 'stock.picking',
+                    }
+                });
+            });
+        });
+    },
+
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
@@ -486,6 +518,30 @@ var PickingClientAction = ClientAction.extend({
     _onPrintDeliverySlip: function (ev) {
         ev.stopPropagation();
         this._printDeliverySlip();
+    },
+
+    /**
+     * Handles the `print_barcodes_zpl` OdooEvent. It makes an RPC call
+     * to the method 'do_print_barcodes_zpl'.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onPrintBarcodesZpl: function (ev) {
+        ev.stopPropagation();
+        this._printBarcodesZpl();
+    },
+
+    /**
+     * Handles the `print_barcodes_pdf` OdooEvent. It makes an RPC call
+     * to the method 'do_print_barcodes_zpl'.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onPrintBarcodesPdf: function (ev) {
+        ev.stopPropagation();
+        this._printBarcodesPdf();
     },
 
     /**

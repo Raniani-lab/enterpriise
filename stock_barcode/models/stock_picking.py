@@ -81,6 +81,8 @@ class StockPicking(models.Model):
             picking['use_existing_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_existing_lots
             picking['show_entire_packs'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).show_entire_packs
             picking['actionReportDeliverySlipId'] = self.env.ref('stock.action_report_delivery').id
+            picking['actionReportBarcodesZplId'] = self.env.ref('stock.action_label_transfer_template_zpl').id
+            picking['actionReportBarcodesPdfId'] = self.env.ref('stock.action_label_transfer_template_pdf').id
             if self.env.company.nomenclature_id:
                 picking['nomenclature_id'] = [self.env.company.nomenclature_id.id]
         return pickings

@@ -27,7 +27,7 @@ QUnit.module('DocumentsKanbanViewMobile', {
     },
 }, function () {
     QUnit.test('basic rendering on mobile', async function (assert) {
-        assert.expect(2);
+        assert.expect(4);
 
         const kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -50,6 +50,12 @@ QUnit.module('DocumentsKanbanViewMobile', {
             "should have a documents kanban view");
         assert.containsOnce(kanban, '.o_documents_inspector',
             "should have a documents inspector");
+
+        const $controlPanelButtons = $('.o_control_panel .o_cp_buttons');
+        assert.containsOnce($controlPanelButtons, '> .dropdown',
+            "should group ControlPanel's buttons into a dropdown");
+        assert.containsNone($controlPanelButtons, '> .btn',
+            "there should be no button left in the ControlPanel's left part");
 
         kanban.destroy();
     });

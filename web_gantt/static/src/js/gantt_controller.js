@@ -47,6 +47,7 @@ var GanttController = AbstractController.extend({
         this.SCALES = params.SCALES;
         this.allowedScales = params.allowedScales;
         this.collapseFirstLevel = params.collapseFirstLevel;
+        this.createAction = params.createAction;
     },
 
     //--------------------------------------------------------------------------
@@ -163,6 +164,23 @@ var GanttController = AbstractController.extend({
         }).open();
     },
     /**
+     * upon clicking on the create button, determines if a dialog with a formview should be opened
+     * or if a wizard should be openned, then opens it
+     *
+     * @param {object} context
+     */
+    _onCreate: function(context){
+        if(this.createAction){
+            var fullContext = _.extend({}, this._context, context);
+            this.do_action(this.createAction, {
+                additional_context: fullContext,
+                on_close: this.reload.bind(this, {})
+            });
+        } else {
+            this._openDialog(undefined, context);
+        }
+    },
+    /**
      * Reschedule records and reload.
      *
      * Use a DropPrevious to prevent unnecessary reload and rendering.
@@ -222,7 +240,7 @@ var GanttController = AbstractController.extend({
         for (var k in context) {
             context[_.str.sprintf('default_%s', k)] = context[k];
         }
-        this._openDialog(undefined, context);
+        this._onCreate(context);
     },
     /**
      * @private
@@ -237,7 +255,7 @@ var GanttController = AbstractController.extend({
         for (var k in context) {
             context[_.str.sprintf('default_%s', k)] = context[k];
         }
-        this._openDialog(undefined, context);
+        this._onCreate(context);
     },
     /**
      * @private

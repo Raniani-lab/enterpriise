@@ -120,6 +120,7 @@ var GanttView = AbstractView.extend({
         this.controllerParams.SCALES = this.SCALES;
         this.controllerParams.allowedScales = allowedScales;
         this.controllerParams.collapseFirstLevel = collapseFirstLevel;
+        this.controllerParams.createAction = arch.attrs.on_create || null;
 
         this.loadParams.initialDate = initialDate;
         this.loadParams.collapseFirstLevel = collapseFirstLevel;

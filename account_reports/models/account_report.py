@@ -924,10 +924,7 @@ class AccountReport(models.AbstractModel):
         ctx = self._set_context(options)
         ctx['strict_range'] = True
         self = self.with_context(ctx)
-        attachments = self._get_vat_report_attachments(options)
-        move = self.env['account.generic.tax.report']._post_tax_entries(options)
-        # Add pdf report as attachment to moves and post the moves
-        move.message_post(body=move.ref, subject=_('Automatic vat closing'), attachments=attachments)
+        move = self.env['account.generic.tax.report']._generate_tax_closing_entry(options)
         action = self.env.ref('account.action_move_journal_line').read()[0]
         action = clean_action(action)
         action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]

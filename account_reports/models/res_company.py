@@ -16,19 +16,20 @@ class ResCompany(models.Model):
     totals_below_sections = fields.Boolean(
         string='Add totals below sections',
         help='When ticked, totals and subtotals appear below the sections of the report.')
-    tax_periodicity = fields.Selection([
+    account_tax_periodicity = fields.Selection([
         ('trimester', 'trimester'),
         ('monthly', 'monthly')], string="Delay units", help="Periodicity", default='monthly')
-    tax_periodicity_next_deadline = fields.Date(string='Start from', default=lambda self: fields.Date.context_today(self))
-    original_tax_periodicity_next_deadline = fields.Date(string='Start from original', default=lambda self: fields.Date.context_today(self), help='technical helper to prevent rewriting activity date when saving settings')
-    tax_periodicity_journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'general')], default=_get_default_misc_journal)
+    account_tax_periodicity_reminder_day = fields.Integer(string='Start from', default=7)
+    account_tax_original_periodicity_reminder_day = fields.Integer(string='Start from original', help='technical helper to prevent rewriting activity date when saving settings')
+    account_tax_periodicity_journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'general')], default=_get_default_misc_journal)
+    account_tax_next_activity_type = fields.Many2one('mail.activity.type')
 
     @api.multi
     def write(self, values):
         # in case the user want to change the journal or the periodicity without changing the date, we should change the next_activity
-        # therefore we set the original_tax_periodicity_next_deadline to false so that it will be recomputed
+        # therefore we set the account_tax_original_periodicity_reminder_day to false so that it will be recomputed
         for company in self:
-            if (values.get('tax_periodicity', company.tax_periodicity) != company.tax_periodicity \
-            or values.get('tax_periodicity_journal_id', company.tax_periodicity_journal_id.id) != company.tax_periodicity_journal_id.id):
-                values['original_tax_periodicity_next_deadline'] = False
+            if (values.get('account_tax_periodicity', company.account_tax_periodicity) != company.account_tax_periodicity \
+            or values.get('account_tax_periodicity_journal_id', company.account_tax_periodicity_journal_id.id) != company.account_tax_periodicity_journal_id.id):
+                values['account_tax_original_periodicity_reminder_day'] = False
         return super(ResCompany, self).write(values)

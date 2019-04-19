@@ -3,7 +3,7 @@ from odoo.tests import tagged
 from odoo.tests.common import Form, SavepointCase
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, date_utils
 from odoo.tools.misc import formatLang
-
+from unittest.mock import patch
 import datetime
 import copy
 import logging
@@ -2286,81 +2286,92 @@ class TestAccountReports(SavepointCase):
         ctx = report._set_context(options)
         ctx['strict_range'] = True
         report = report.with_context(ctx)
-        move = report._post_tax_entries(options)
+        move = report._generate_tax_closing_entry(options)
         return move
 
     def test_automatic_vat_closing_report_payable(self):
+        def _get_attachment(*args, **kwargs):
+            return []
         report = self.env['account.generic.tax.report']
-        # Try closing VAT in two different period with one invoice in each period.
-        # Create an invoice in january and one in february
-        january_inv_date = datetime.datetime.strptime('2018-01-10', DEFAULT_SERVER_DATE_FORMAT).date()
-        february_inv_date = datetime.datetime.strptime('2018-02-12', DEFAULT_SERVER_DATE_FORMAT).date()
+        # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
+        # to return an empty attachment.
+        with patch.object(type(report), '_get_vat_report_attachments', autospec=True, side_effect=_get_attachment):
+            # Try closing VAT in two different period with one invoice in each period.
+            # Create an invoice in january and one in february
+            january_inv_date = datetime.datetime.strptime('2018-01-10', DEFAULT_SERVER_DATE_FORMAT).date()
+            february_inv_date = datetime.datetime.strptime('2018-02-12', DEFAULT_SERVER_DATE_FORMAT).date()
 
-        # December
-        self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', january_inv_date)
-        self._create_invoice(self.env, 100.0, self.partner_a, 'out_invoice', february_inv_date)
+            # December
+            self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', january_inv_date)
+            self._create_invoice(self.env, 100.0, self.partner_a, 'out_invoice', february_inv_date)
 
-        # Try closing vat entries for january
-        options = self._init_options(report, self.january_date, self.january_end_date)
-        move = self._close_vat_entries(report, options)
-        # assert element on move
-        self.assertEquals(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
-        debit_line = move.line_ids.filtered(lambda a: a.debit > 0)
-        credit_line = move.line_ids.filtered(lambda a: a.credit > 0)
-        self.assertEquals(debit_line.debit, 150)
-        self.assertEquals(credit_line.credit, 150)
-        self.assertEquals(credit_line.name, 'Payable tax amount')
-        self.assertEquals(credit_line.account_id.id, self.tax_pay_account.id)
+            # Try closing vat entries for january
+            options = self._init_options(report, self.january_date, self.january_end_date)
+            move = self._close_vat_entries(report, options)
+            # assert element on move
+            self.assertEquals(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
+            debit_line = move.line_ids.filtered(lambda a: a.debit > 0)
+            credit_line = move.line_ids.filtered(lambda a: a.credit > 0)
+            self.assertEquals(debit_line.debit, 150)
+            self.assertEquals(credit_line.credit, 150)
+            self.assertEquals(credit_line.name, 'Payable tax amount')
+            self.assertEquals(credit_line.account_id.id, self.tax_pay_account.id)
+            move.post()
 
-        # Try closing vat entries for february
-        options = self._init_options(report, self.february_date, self.february_end_date)
-        move = self._close_vat_entries(report, options)
-        # assert element on move
-        self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
-        debit_line = move.line_ids.filtered(lambda a: a.debit == 15)
-        debit_line_balanced = move.line_ids.filtered(lambda a: a.name == 'Balance tax current account (payable)')
-        credit_line_total = move.line_ids.filtered(lambda a: a.credit > 0)
-        self.assertEquals(debit_line.debit, 15)
-        self.assertEquals(debit_line_balanced.debit, 150)
-        self.assertEquals(debit_line_balanced.account_id.id, self.tax_pay_account.id)
-        self.assertEquals(credit_line_total.credit, 165)
-        self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)
+            # Try closing vat entries for february
+            options = self._init_options(report, self.february_date, self.february_end_date)
+            move = self._close_vat_entries(report, options)
+            # assert element on move
+            self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
+            debit_line = move.line_ids.filtered(lambda a: a.debit == 15)
+            debit_line_balanced = move.line_ids.filtered(lambda a: a.name == 'Balance tax current account (payable)')
+            credit_line_total = move.line_ids.filtered(lambda a: a.credit > 0)
+            self.assertEquals(debit_line.debit, 15)
+            self.assertEquals(debit_line_balanced.debit, 150)
+            self.assertEquals(debit_line_balanced.account_id.id, self.tax_pay_account.id)
+            self.assertEquals(credit_line_total.credit, 165)
+            self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)
 
     def test_automatic_vat_closing_report_receivable(self):
+        def _get_attachment(*args, **kwargs):
+            return []
         report = self.env['account.generic.tax.report']
-        # Try closing VAT in two different period with one invoice in each period.
-        # Create an invoice in january and one in february
-        january_inv_date = datetime.datetime.strptime('2018-01-10', DEFAULT_SERVER_DATE_FORMAT).date()
-        february_inv_date = datetime.datetime.strptime('2018-02-12', DEFAULT_SERVER_DATE_FORMAT).date()
+        # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
+        # to return an empty attachment.
+        with patch.object(type(report), '_get_vat_report_attachments', autospec=True, side_effect=_get_attachment):
+            # Try closing VAT in two different period with one invoice in each period.
+            # Create an invoice in january and one in february
+            january_inv_date = datetime.datetime.strptime('2018-01-10', DEFAULT_SERVER_DATE_FORMAT).date()
+            february_inv_date = datetime.datetime.strptime('2018-02-12', DEFAULT_SERVER_DATE_FORMAT).date()
 
-        # December
-        self._create_invoice(self.env, 100.0, self.partner_a, 'in_invoice', january_inv_date)
-        self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', february_inv_date)
+            # December
+            self._create_invoice(self.env, 100.0, self.partner_a, 'in_invoice', january_inv_date)
+            self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', february_inv_date)
 
-        # Try closing vat entries for january
-        options = self._init_options(report, self.january_date, self.january_end_date)
-        move = self._close_vat_entries(report, options)
-        # assert element on move
-        self.assertEquals(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
-        debit_line = move.line_ids.filtered(lambda a: a.debit > 0)
-        credit_line = move.line_ids.filtered(lambda a: a.credit > 0)
-        self.assertEquals(debit_line.debit, 15)
-        self.assertEquals(debit_line.name, 'Receivable tax amount')
-        self.assertEquals(debit_line.account_id.id, self.tax_rec_account.id)
-        self.assertEquals(credit_line.credit, 15)
-
-        # Try closing vat entries for february
-        options = self._init_options(report, self.february_date, self.february_end_date)
-        move = self._close_vat_entries(report, options)
-        # assert element on move
-        self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
-        debit_line = move.line_ids.filtered(lambda a: a.debit == 150)
-        credit_line_balanced = move.line_ids.filtered(lambda a: a.name == 'Balance tax current account (receivable)')
-        credit_line_total = move.line_ids.filtered(lambda a: a.name == 'Payable tax amount')
-        self.assertEquals(debit_line.debit, 150)
-        # Should balance the 15 previous usd on tax receivable
-        self.assertEquals(credit_line_balanced.credit, 15)
-        self.assertEquals(credit_line_balanced.account_id.id, self.tax_rec_account.id)
-        # We still need to pay 135 to the VAT
-        self.assertEquals(credit_line_total.credit, 135)
-        self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)
+            # Try closing vat entries for january
+            options = self._init_options(report, self.january_date, self.january_end_date)
+            move = self._close_vat_entries(report, options)
+            # assert element on move
+            self.assertEquals(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
+            debit_line = move.line_ids.filtered(lambda a: a.debit > 0)
+            credit_line = move.line_ids.filtered(lambda a: a.credit > 0)
+            self.assertEquals(debit_line.debit, 15)
+            self.assertEquals(debit_line.name, 'Receivable tax amount')
+            self.assertEquals(debit_line.account_id.id, self.tax_rec_account.id)
+            self.assertEquals(credit_line.credit, 15)
+            move.post()
+            # Try closing vat entries for february
+            options = self._init_options(report, self.february_date, self.february_end_date)
+            move = self._close_vat_entries(report, options)
+            # assert element on move
+            self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
+            debit_line = move.line_ids.filtered(lambda a: a.debit == 150)
+            credit_line_balanced = move.line_ids.filtered(lambda a: a.name == 'Balance tax current account (receivable)')
+            credit_line_total = move.line_ids.filtered(lambda a: a.name == 'Payable tax amount')
+            self.assertEquals(debit_line.debit, 150)
+            # Should balance the 15 previous usd on tax receivable
+            self.assertEquals(credit_line_balanced.credit, 15)
+            self.assertEquals(credit_line_balanced.account_id.id, self.tax_rec_account.id)
+            # We still need to pay 135 to the VAT
+            self.assertEquals(credit_line_total.credit, 135)
+            self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)

@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div id="accounting_reports" position="inside">
-                <div class="col-lg-6 o_setting_box" id="tax_periodicity">
+                <div class="col-lg-6 o_setting_box" id="account_tax_periodicity">
                     <div class="o_setting_left_pane"/>
                     <div class="o_setting_right_pane">
                         <span class="o_form_label">Tax Return Periodicity</span>
@@ -35,16 +35,18 @@
                         </div>
                         <div class="content-group">
                             <div class="row mt16">
-                                <label string="Periodicity" for="tax_periodicity" class="col-lg-3 o_light_label"/>
-                                <field name="tax_periodicity"/>
+                                <label string="Periodicity" for="account_tax_periodicity" class="col-lg-3 o_light_label"/>
+                                <field name="account_tax_periodicity"/>
                             </div>
                             <div class="row">
-                                <label string="1st Period" for="tax_periodicity_next_deadline" class="col-lg-3 o_light_label"/>
-                                <field name="tax_periodicity_next_deadline"/>
+                                <label string="Reminder" for="account_tax_periodicity_reminder_day" class="col-lg-3 o_light_label"/>
+                                <div class="content-group mt16">
+                                    <field name="account_tax_periodicity_reminder_day" class="text-center oe_inline" /> days after period
+                                </div>
                             </div>
                             <div class="row">
-                                <label string="Journal" for="tax_periodicity_journal_id" class="col-lg-3 o_light_label"/>
-                                <field name="tax_periodicity_journal_id"/>
+                                <label string="Journal" for="account_tax_periodicity_journal_id" class="col-lg-3 o_light_label"/>
+                                <field name="account_tax_periodicity_journal_id"/>
                             </div>
                             <div>
                                 <button name="%(account.action_tax_group)d" icon="fa-arrow-right" type="action" string="Configure your tax accounts" class="btn-link"/>

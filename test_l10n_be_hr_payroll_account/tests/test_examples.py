@@ -94,12 +94,12 @@ class TestExamples(common.SavepointCase):
             ('NET', 1874.23),
         ])
         payslip = {
-            'date_from': datetime.date.today().replace(year=2018, month=2, day=1),
-            'date_to': datetime.date.today().replace(year=2018, month=2, day=28),
+            'date_from': datetime.date(2019, 2, 1),
+            'date_to': datetime.date(2019, 2, 28),
         }
         contract = self.env.ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')
-        # Set the start date to January 2018 to take into account on payslip
-        contract.date_start = contract.date_start.replace(year=2018, month=1, day=1)
+        # Set the start date to January 2019 to take into account on payslip
+        contract.date_start = datetime.date(2019, 1, 1)
         self.case_test(values, 'hr_contract_salary.hr_employee_laurie_poiret', payslip_values=payslip)
 
     def test_example(self):

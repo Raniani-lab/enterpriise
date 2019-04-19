@@ -46,14 +46,14 @@ class TestPayslip(common.TransactionCase):
 
     def test_payslip(self):
         contract = self.env.ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')
-        # Set the start date to January 2018 to take into account on payslip
-        contract.date_start = contract.date_start.replace(year=2018, month=1, day=1)
+        # Set the start date to January 2019 to take into account on payslip
+        contract.date_start = date(2019, 1, 1)
 
-        # Create a payslip for Laurie Poiret from the 1rst to the 28th of February 2018
+        # Create a payslip for Laurie Poiret from the 1rst to the 28th of February 2019
         Payslip = self.env['hr.payslip']
         payslip = Payslip.new(Payslip.default_get(Payslip.fields_get()))
-        payslip.date_from = date.today().replace(year=2018, month=2, day=1)
-        payslip.date_to = date.today().replace(year=2018, month=2, day=28)
+        payslip.date_from = date(2019, 2, 1)
+        payslip.date_to = date(2019, 2, 28)
         payslip.employee_id = self.env.ref('hr_contract_salary.hr_employee_laurie_poiret').id
         payslip.onchange_employee()
         payslip._onchange_struct_id()

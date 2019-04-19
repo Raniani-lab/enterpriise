@@ -11,8 +11,8 @@ from odoo.fields import Datetime, Date
 class FleetVehicle(models.Model):
     _inherit = 'fleet.vehicle'
 
-    co2_fee = fields.Float(compute='_compute_co2_fee', string="CO2 Fee", store=True)
-    total_depreciated_cost = fields.Float(compute='_compute_total_depreciated_cost', store=True,
+    co2_fee = fields.Float(compute='_compute_co2_fee', string="CO2 Fee")
+    total_depreciated_cost = fields.Float(compute='_compute_total_depreciated_cost',
         string="Total Cost (Depreciated)", tracking=True,
         help="This includes all the depreciated costs and the CO2 fee")
     total_cost = fields.Float(compute='_compute_total_cost', string="Total Cost", help="This include all the costs and the CO2 fee")
@@ -46,11 +46,14 @@ class FleetVehicle(models.Model):
                     car.total_cost += contract.cost_generated / 12.0
 
     def _get_co2_fee(self, co2, fuel_type):
-        fuel_coefficient = {'diesel': 600, 'gasoline': 768, 'lpg': 990, 'electric': 0, 'hybrid': 600}
-        co2_fee = 26.47
+        fuel_coefficient = self.env['hr.rule.parameter']._get_parameter_from_code('fuel_coefficient')
+        co2_fee_min = self.env['hr.rule.parameter']._get_parameter_from_code('co2_fee_min')
+        co2_fee = co2_fee_min
         if fuel_type and fuel_type not in ['electric', 'hybrid']:
-            co2_fee = (((co2 * 9.0) - fuel_coefficient.get(fuel_type)) * 144.97 / 114.08) / 12.0
-        return max(co2_fee , 26.47)
+            health_indice = self.env['hr.rule.parameter']._get_parameter_from_code('health_indice')
+            health_indice_reference = self.env['hr.rule.parameter']._get_parameter_from_code('health_indice_reference')
+            co2_fee = ((co2 * 9.0) - fuel_coefficient.get(fuel_type)) * health_indice / health_indice_reference / 12.0
+        return max(co2_fee, co2_fee_min)
 
     @api.depends('co2', 'fuel_type')
     def _compute_co2_fee(self):
@@ -60,7 +63,7 @@ class FleetVehicle(models.Model):
     @api.depends('fuel_type', 'car_value', 'acquisition_date', 'co2')
     def _compute_car_atn(self):
         for car in self:
-            car.atn = car._get_car_atn(car.acquisition_date, car.car_value, car.fuel_type, car.co2)
+            car.atn = car._get_car_atn()
 
     @api.depends('model_id', 'license_plate', 'log_contracts', 'acquisition_date',
                  'co2_fee', 'log_contracts', 'log_contracts.state', 'log_contracts.recurring_cost_amount_depreciated')
@@ -68,7 +71,7 @@ class FleetVehicle(models.Model):
         super(FleetVehicle, self)._compute_vehicle_name()
         for vehicle in self:
             acquisition_date = vehicle._get_acquisition_date()
-            vehicle.name += u" \u2022 " + str(round(vehicle.total_depreciated_cost, 2)) + u" \u2022 " + acquisition_date
+            vehicle.name += u" \u2022 " + acquisition_date
 
     @api.model
     def create(self, vals):
@@ -89,13 +92,17 @@ class FleetVehicle(models.Model):
             locale=self._context.get('lang') or 'en_US'
         )
 
-    def _get_car_atn(self, acquisition_date, car_value, fuel_type, co2):
+    def _get_car_atn(self, date=None):
+        return self._get_car_atn_from_values(self.acquisition_date, self.car_value, self.fuel_type, self.co2, date)
+
+    @api.model
+    def _get_car_atn_from_values(self, acquisition_date, car_value, fuel_type, co2, date=None):
         # Compute the correction coefficient from the age of the car
-        now = Date.today()
+        date = date or Date.today()
         if acquisition_date:
-            number_of_month = ((now.year - acquisition_date.year) * 12.0 + now.month -
+            number_of_month = ((date.year - acquisition_date.year) * 12.0 + date.month -
                                acquisition_date.month +
-                               int(bool(now.day - acquisition_date.day + 1)))
+                               int(bool(date.day - acquisition_date.day + 1)))
             if number_of_month <= 12:
                 age_coefficient = 1.00
             elif number_of_month <= 24:
@@ -115,15 +122,15 @@ class FleetVehicle(models.Model):
                 atn = 0.0
             else:
                 if fuel_type in ['diesel', 'hybrid']:
-                    reference = 86.0
+                    reference = self.env['hr.rule.parameter']._get_parameter_from_code('co2_reference_diesel', date)
                 else:
-                    reference = 88.0
+                    reference = self.env['hr.rule.parameter']._get_parameter_from_code('co2_reference_petrol_lpg', date)
 
                 if co2 <= reference:
                     atn = car_value * max(0.04, (0.055 - 0.001 * (reference - co2))) * magic_coeff
                 else:
                     atn = car_value * min(0.18, (0.055 + 0.001 * (co2 - reference))) * magic_coeff
-            return max(1310, atn) / 12.0
+            return max(self.env['hr.rule.parameter']._get_parameter_from_code('min_car_atn', date), atn) / 12.0
 
     @api.onchange('model_id')
     def _onchange_model_id(self):
@@ -155,7 +162,7 @@ class FleetVehicleModel(models.Model):
     def _compute_atn(self):
         now = Datetime.now()
         for model in self:
-            model.default_atn = self.env['fleet.vehicle']._get_car_atn(now, model.default_car_value, model.default_fuel_type, model.default_co2)
+            model.default_atn = self.env['fleet.vehicle']._get_car_atn_from_values(now, model.default_car_value, model.default_fuel_type, model.default_co2)
 
     @api.depends('co2_fee', 'default_recurring_cost_amount_depreciated')
     def _compute_default_total_depreciated_cost(self):

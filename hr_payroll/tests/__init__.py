@@ -6,4 +6,5 @@ from . import test_work_entry
 from . import test_multi_contract
 from . import test_calendar_sync
 from . import test_leave
+from . import test_rule_parameter
 from . import test_payslip_computation

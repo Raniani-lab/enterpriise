@@ -321,6 +321,9 @@ class HrWorkEntryType(models.Model):
     is_unforeseen = fields.Boolean(default=False, string="Unforeseen Absence")
     leave_type_ids = fields.One2many('hr.leave.type', 'work_entry_type_id', string='Time Off Type')
 
+    round_days = fields.Selection([('NO', 'No Rounding'), ('HALF', 'Half Day'), ('FULL', 'Day')], string="Rounding", required=True, default='NO')
+    round_days_type = fields.Selection([('HALF-UP', 'Closest'), ('UP', 'Up'), ('DOWN', 'Down')], string="Round Type", required=True, default='DOWN')
+
     _sql_constraints = [
         ('unique_work_entry_code', 'UNIQUE(code)', 'The same code cannot be associated to multiple work entry types.'),
         ('is_unforeseen_is_leave', 'check (is_unforeseen = FALSE OR (is_leave = TRUE and is_unforeseen = TRUE))', 'A unforeseen absence must be a leave.')

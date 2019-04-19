@@ -237,6 +237,7 @@
                                 <field name="name"/>
                                 <field name="number_of_days" sum="Total Working Days"/>
                                 <field name="number_of_hours"/>
+                                <field name="amount"/>
                                 <field name="contract_id" invisible="True"/>
                                 <field name="sequence" invisible="True"/>
                             </tree>

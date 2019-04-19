@@ -53,6 +53,8 @@ class TestPayslipBase(TransactionCase):
             'name': 'Unpaid Leave',
             'is_leave': True,
             'code': 'LEAVETEST300',
+            'round_days': 'HALF',
+            'round_days_type': 'DOWN',
         })
         self.leave_type_unpaid = self.env['hr.leave.type'].create({
             'name': 'Unpaid Leaves',
@@ -133,6 +135,34 @@ class TestPayslipContractBase(TestPayslipBase):
         })
         self.calendar_35h._onchange_hours_per_day() # update hours/day
         self.richard_emp.resource_calendar_id = self.calendar_richard
+
+        self.calendar_16h = self.env['resource.calendar'].create({
+            'name': '16h calendar',
+            'attendance_ids': [
+                (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 11.5, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Tuesday Morning', 'dayofweek': '1', 'hour_from': 8, 'hour_to': 11.5, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Wednesday Morning', 'dayofweek': '2', 'hour_from': 8, 'hour_to': 11.5, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Thursday Morning', 'dayofweek': '3', 'hour_from': 9, 'hour_to': 12.5, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Thursday Evening', 'dayofweek': '3', 'hour_from': 13.5, 'hour_to': 15.5, 'day_period': 'afternoon'}),
+            ]
+        })
+        self.calendar_16h._onchange_hours_per_day() # update hours/day
+
+        self.calendar_38h_friday_light = self.env['resource.calendar'].create({
+            'name': '38 calendar Friday light',
+            'attendance_ids': [
+                (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Monday Evening', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 17.5, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Tuesday Morning', 'dayofweek': '1', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Tuesday Evening', 'dayofweek': '1', 'hour_from': 13, 'hour_to': 17.5, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Wednesday Morning', 'dayofweek': '2', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Wednesday Evening', 'dayofweek': '2', 'hour_from': 13, 'hour_to': 17.5, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Thursday Morning', 'dayofweek': '3', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Thursday Evening', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 17.5, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+            ]
+        })
+        self.calendar_38h_friday_light._onchange_hours_per_day() # update hours/day
 
         # This contract ends at the 15th of the month
         self.contract_cdd = self.env['hr.contract'].create({ # Fixed term contract

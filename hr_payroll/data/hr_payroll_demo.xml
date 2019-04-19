@@ -32,6 +32,7 @@
             <field name="name">Regular Pay</field>
             <field name="type_id" ref="structure_type_employee"/>
             <field name="regular_pay" eval="True"/>
+            <field name="unpaid_work_entry_type_ids" eval="[(4, ref('hr_payroll.work_entry_type_unpaid_leave'))]"/>
         </record>
 
         <!-- Salary Rules for Regular Pay-->
@@ -212,6 +213,8 @@
             <field name="code">LEAVE200</field>
             <field name="is_leave">True</field>
             <field name="color">4</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">DOWN</field>
         </record>
 
         <!-- add work_entry type to leave type -->

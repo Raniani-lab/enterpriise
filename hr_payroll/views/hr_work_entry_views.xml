@@ -199,6 +199,12 @@
                             <field name="leave_type_ids" widget="many2many_tags" attrs="{'invisible': [('is_leave', '=', False)]}"/>
                         </group>
                     </group>
+                    <group string="Display in Payslip">
+                        <group>
+                            <field name="round_days"/>
+                            <field name="round_days_type" attrs="{'invisible': [('round_days', '=', 'NO')]}"/>
+                        </group>
+                    </group>
                 </sheet>
             </form>
         </field>

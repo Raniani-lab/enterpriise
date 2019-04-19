@@ -145,6 +145,13 @@ class HrPayslip(models.Model):
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
         return True
 
+    def _round_days(self, work_entry_type, days):
+        if work_entry_type.round_days != 'NO':
+            precision_rounding = 0.5 if work_entry_type.round_days == "HALF" else 1
+            day_rounded = float_round(days, precision_rounding=precision_rounding, rounding_method=work_entry_type.round_days_type)
+            return day_rounded
+        return days
+
     def _get_worked_day_lines(self):
         """
         :returns: a list of dict containing the worked days values that should be applied for the given payslip
@@ -159,15 +166,22 @@ class HrPayslip(models.Model):
 
             work_hours = contract._get_work_hours(self.date_from, self.date_to)
             total_hours = sum(work_hours.values()) or 1
-            for work_entry_type_id, hours in work_hours.items():
+            work_hours_ordered = sorted(work_hours.items(), key=lambda x: x[1])
+            biggest_work = work_hours_ordered[-1][0] if work_hours_ordered else 0
+            add_days_rounding = 0
+            for work_entry_type_id, hours in work_hours_ordered:
+                work_entry_type = self.env['hr.work.entry.type'].browse(work_entry_type_id)
                 is_paid = work_entry_type_id not in unpaid_work_entry_types
                 calendar = contract.resource_calendar_id
                 days = round(hours / calendar.hours_per_day, 5) if calendar.hours_per_day else 0
-                seq = self.env['hr.work.entry.type'].browse(work_entry_type_id).sequence
+                if work_entry_type_id == biggest_work:
+                    days += add_days_rounding
+                day_rounded = self._round_days(work_entry_type, days)
+                add_days_rounding += (days - day_rounded)
                 attendance_line = {
-                    'sequence': seq,
+                    'sequence': work_entry_type.sequence,
                     'work_entry_type_id': work_entry_type_id,
-                    'number_of_days': days,
+                    'number_of_days': day_rounded,
                     'number_of_hours': hours,
                     'amount': hours * paid_amount / total_hours if is_paid else 0,
                 }

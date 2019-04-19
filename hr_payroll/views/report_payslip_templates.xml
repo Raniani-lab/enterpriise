@@ -83,7 +83,6 @@
                                 <th>Number of Days</th>
                                 <th>Quantity/rate</th>
                                 <th>Amount</th>
-                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -97,8 +96,6 @@
                                 <td></td>
                                 <td><span t-esc="worked_days.amount" digits="[42, 2]"
                                           t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
-                                <td><span t-esc="worked_days.amount" digits="[42, 2]"
-                                          t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                             </tr>
                             <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
                                 <td><span t-field="line.code"/></td>
@@ -106,8 +103,6 @@
                                 <td></td>
                                 <td></td>
                                 <td><span t-field="line.quantity"/></td>
-                                <td><span t-esc="line.amount"
-                                          t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                                 <td><span t-esc="line.total"
                                           t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                             </tr>

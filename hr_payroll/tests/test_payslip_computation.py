@@ -1,7 +1,8 @@
 # # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, date
+from dateutil.rrule import rrule, DAILY
+from datetime import datetime, date, timedelta
 
 from odoo.addons.hr_payroll.tests.common import TestPayslipContractBase
 
@@ -20,6 +21,15 @@ class TestPayslipComputation(TestPayslipContractBase):
             'date_to': date(2016, 1, 31)
         })
         self.richard_emp.resource_calendar_id = self.contract_cdi.resource_calendar_id
+
+        self.richard_payslip_quarter = self.env['hr.payslip'].create({
+            'name': 'Payslip of Richard Quarter',
+            'employee_id': self.richard_emp.id,
+            'contract_id': self.contract_cdi.id,
+            'struct_id': self.developer_pay_structure.id,
+            'date_from': date(2016, 1, 1),
+            'date_to': date(2016, 3, 31)
+        })
 
     def test_work_data(self):
         leave = self.env['hr.leave'].create({
@@ -114,3 +124,96 @@ class TestPayslipComputation(TestPayslipContractBase):
 
         attendance_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
         self.assertAlmostEqual(attendance_line.amount, 4523.80, delta=0.01, msg="His attendance must be paid 4523.80")
+
+    def test_worked_days_with_unpaid(self):
+        self.contract_cdi.resource_calendar_id = self.env.ref('resource.resource_calendar_std_38h')
+        self.richard_emp.resource_calendar_id = self.env.ref('resource.resource_calendar_std_38h')
+
+        leaves = self.env['hr.leave']
+
+        # Create 2 hours upaid leave every day during 2 weeks
+        for day in rrule(freq=DAILY, byweekday=[0, 1, 2, 3, 4], count=10, dtstart=datetime(2016, 2, 8)):
+            start = day + timedelta(hours=13.6)
+            end = day + timedelta(hours=15.6)
+            leaves |= self.env['hr.leave'].create({
+                'name': 'Unpaid Leave',
+                'employee_id': self.richard_emp.id,
+                'holiday_status_id': self.leave_type_unpaid.id,
+                'date_from': start,
+                'date_to': end,
+            })
+        leaves.action_approve()
+
+        work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 3, 31))
+        work_entries.action_validate()
+
+        self.richard_payslip_quarter._onchange_employee()
+        work_days = self.richard_payslip_quarter.worked_days_line_ids
+
+        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
+        self.assertAlmostEqual(leave_line.number_of_days, 62.5, places=2)
+
+        extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
+        self.assertAlmostEqual(extra_attendance_line.number_of_days, 2.5, places=2)
+
+    def test_worked_days_16h_with_unpaid(self):
+        self.contract_cdi.resource_calendar_id = self.calendar_16h
+        self.richard_emp.resource_calendar_id = self.calendar_16h
+
+        leaves = self.env['hr.leave']
+
+        # Create 2 hours upaid leave every Thursday Evening during 5 weeks
+        for day in rrule(freq=DAILY, byweekday=3, count=5, dtstart=datetime(2016, 2, 4)):
+            start = day + timedelta(hours=12.5)
+            end = day + timedelta(hours=14.5)
+            leaves |= self.env['hr.leave'].create({
+                'name': 'Unpaid Leave',
+                'employee_id': self.richard_emp.id,
+                'holiday_status_id': self.leave_type_unpaid.id,
+                'date_from': start,
+                'date_to': end,
+            })
+        leaves.action_approve()
+
+        work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 3, 31))
+        work_entries.action_validate()
+
+        self.richard_payslip_quarter._onchange_employee()
+        work_days = self.richard_payslip_quarter.worked_days_line_ids
+
+        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
+        self.assertAlmostEqual(leave_line.number_of_days, 49.5, places=2)
+
+        extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
+        self.assertAlmostEqual(extra_attendance_line.number_of_days, 2.5, places=2)
+
+    def test_worked_days_38h_friday_with_unpaid(self):
+        self.contract_cdi.resource_calendar_id = self.calendar_38h_friday_light
+        self.richard_emp.resource_calendar_id = self.calendar_38h_friday_light
+
+        leaves = self.env['hr.leave']
+
+        # Create 4 hours (all work day) upaid leave every Friday during 5 weeks
+        for day in rrule(freq=DAILY, byweekday=4, count=5, dtstart=datetime(2016, 2, 4)):
+            start = day + timedelta(hours=7)
+            end = day + timedelta(hours=11)
+            leaves |= self.env['hr.leave'].create({
+                'name': 'Unpaid Leave',
+                'employee_id': self.richard_emp.id,
+                'holiday_status_id': self.leave_type_unpaid.id,
+                'date_from': start,
+                'date_to': end,
+            })
+        leaves.action_approve()
+
+        work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 3, 31))
+        work_entries.action_validate()
+
+        self.richard_payslip_quarter._onchange_employee()
+        work_days = self.richard_payslip_quarter.worked_days_line_ids
+
+        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
+        self.assertAlmostEqual(leave_line.number_of_days, 62.5, places=2)
+
+        extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
+        self.assertAlmostEqual(extra_attendance_line.number_of_days, 2.5, places=2)

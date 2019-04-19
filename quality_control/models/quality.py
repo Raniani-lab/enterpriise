@@ -305,9 +305,9 @@ class QualityAlert(models.Model):
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    quality_control_point_qty = fields.Integer(compute='_compute_quality_check_qty')
-    quality_pass_qty = fields.Integer(compute='_compute_quality_check_qty')
-    quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty')
+    quality_control_point_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
+    quality_pass_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
+    quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
 
     def _compute_quality_check_qty(self):
         for product_tmpl in self:

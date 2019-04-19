@@ -25,6 +25,10 @@ var DocumentsKanbanController = KanbanController.extend({
         'drop .o_documents_kanban_view': '_onDrop',
         'dragover .o_documents_kanban_view': '_onHoverDrop',
         'dragleave .o_documents_kanban_view': '_onHoverLeave',
+        'click .o_documents_kanban_share': '_onShareDomain',
+        'click .o_documents_kanban_upload': '_onUpload',
+        'click .o_documents_kanban_url': '_onUploadFromUrl',
+        'click .o_documents_kanban_request': '_onRequestFile',
     }),
     custom_events: _.extend({}, KanbanController.prototype.custom_events, {
         archive_records: '_onArchiveRecords',
@@ -78,10 +82,6 @@ var DocumentsKanbanController = KanbanController.extend({
     renderButtons: function ($node) {
         this.$buttons = $(qweb.render('DocumentsKanbanView.buttons'));
         this.$buttons.appendTo($node);
-        this.$buttons.on('click', '.o_documents_kanban_share', this._onShareDomain.bind(this));
-        this.$buttons.on('click', '.o_documents_kanban_upload', this._onUpload.bind(this));
-        this.$buttons.on('click', '.o_documents_kanban_url', this._onUploadFromUrl.bind(this));
-        this.$buttons.on('click', '.o_documents_kanban_request', this._onRequestFile.bind(this));
         this._updateButtons();
     },
     /**

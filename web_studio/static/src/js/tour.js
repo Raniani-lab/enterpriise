@@ -343,10 +343,6 @@ tour.register('web_studio_tests_tour', {
     // add a kanban
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="kanban"] .o_web_studio_thumbnail',
 }, {
-    // enable stages
-    trigger: '.o_web_studio_sidebar input[name=enable_stage]',
-}, {
-    extra_trigger: '.o_kanban_grouped',
     // add a dropdown
     trigger: '.o_dropdown_kanban.o_web_studio_add_dropdown',
 }, {

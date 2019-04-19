@@ -1237,24 +1237,6 @@ class WebStudioController(http.Controller):
         """ Set the default value associated to the given field. """
         request.env['ir.default'].set(model_name, field_name, value, company_id=True)
 
-    @http.route('/web_studio/create_stages_model', type='json', auth='user')
-    def create_stages_model(self, model_name):
-        """ Create a new model if it does not exist
-        """
-        stages_model = model_name + '_stage'
-        if not model_name.startswith('x_'):
-            stages_model = 'x_' + stages_model
-        model_id = request.env['ir.model'].search([
-            ('model', '=', stages_model),
-        ])
-        if not model_id:
-            model = request.env['ir.model'].search([('model', '=', model_name)])
-            model_id = request.env['ir.model'].create({
-                'model': stages_model,
-                'name': model.name + ' ' + _('stages'),
-            })
-        return model_id.id
-
     @http.route('/web_studio/create_inline_view', type='json', auth='user')
     def create_inline_view(self, model, view_id, field_name, subview_type, subview_xpath):
         view = request.env['ir.ui.view'].browse(view_id)

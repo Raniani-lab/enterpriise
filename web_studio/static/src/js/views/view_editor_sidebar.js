@@ -794,21 +794,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     _onViewChanged: function (ev) {
         var $input = $(ev.currentTarget);
         var attribute = $input.attr('name');
-        if (attribute === 'enable_stage') {
-            if ($input.is(':checked')) {
-                this.trigger_up('view_change', {
-                    structure: 'enable_stage',
-                });
-            } else {
-                this.trigger_up('view_change', {
-                    type: 'attributes',
-                    structure: 'view_attribute',
-                    new_attrs: {
-                        default_group_by: '',
-                    },
-                });
-            }
-        } else if (this.view_type === 'gantt' && _.str.include(attribute, 'precision_')) {
+        if (this.view_type === 'gantt' && _.str.include(attribute, 'precision_')) {
             // precision attribute in gantt is complicated to write so we split it
             var newPrecision = this.state.attrs.ganttPrecision;
             newPrecision[attribute.split('precision_')[1]] = $input.val();

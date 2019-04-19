@@ -80,13 +80,6 @@
                         <label for="quick_create" class="custom-control-label">Quick Create</label>
                     </div>
                 </div>
-                <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="enable_stage" name="enable_stage" class="custom-control-input" data-leave-empty='checked'
-                            t-att-checked="widget.state.attrs.default_group_by ? 'checked' : undefined"/>
-                        <label for="enable_stage" class="custom-control-label">Enable Stages</label>
-                    </div>
-                </div>
                 <t t-call="web_studio.ShowInvisibleElements"/>
                 <div class="o_web_studio_sidebar_select">
                     <label for="default_group_by">Default Group by</label>

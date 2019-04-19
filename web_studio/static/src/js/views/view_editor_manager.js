@@ -709,54 +709,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
         });
     },
     /**
-     * Enable kanban stages.
-     * What it actually does:
-     *  - create a new model Stage
-     *  - create a new Many2one field in the current model related to it
-     *  - set the `default_group_by` attribute on the view
-     *
-     *  @private
-     */
-    _enableStages: function () {
-        var self = this;
-        data_manager.invalidate();
-        var modelName = this.x2mModel ? this.x2mModel : this.model_name;
-        this._rpc({
-            route: '/web_studio/create_stages_model',
-            params: {
-                context: session.user_context,
-                model_name: modelName,
-            },
-        }).then(function (relationID) {
-            var fieldName = 'x_stage_id';
-            if (self.fields && self.fields.stage_id) {
-                fieldName = 'stage_id';
-            }
-            self._do({
-                type: 'add',
-                target: {
-                    tag: 'templates',
-                },
-                position: 'before',
-                node: {
-                    tag: 'field',
-                    attrs: {},
-                    field_description: {
-                        name: fieldName,
-                        field_description: _t('Stage'),
-                        model_name: modelName,
-                        type: 'many2one',
-                        relation_id: relationID,
-                    },
-                },
-            });
-
-            self._editViewAttributes('attributes', {
-                default_group_by: fieldName,
-            });
-        });
-    },
-    /**
      * @private
      * @param {String} model_name
      * @param {String} field_name
@@ -1507,9 +1459,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 break;
             case 'separator':
                 this._addSeparator(type, node, xpath_info, position);
-                break;
-            case 'enable_stage':
-                this._enableStages();
                 break;
         }
     },

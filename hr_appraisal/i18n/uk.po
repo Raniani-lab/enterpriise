@@ -30,12 +30,13 @@ msgstr ""
 msgid ""
 "${object.appraisal_id.employee_id.name} Appraisal: ${object.survey_id.title}"
 msgstr ""
+"${object.appraisal_id.employee_id.name} Оцінка: ${object.survey_id.title}"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:175
 #, python-format
 msgid "%s appraisal: %s"
-msgstr ""
+msgstr "%s оцінка: %s"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:128
@@ -70,6 +71,25 @@ msgid ""
 "    </p>\n"
 "</div>"
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Шановний(а) ${object.partner_id.name or 'participant'}<br/><br/>\n"
+"        % if object.appraisal_id.employee_id.name:\n"
+"            Будь ласка, заповніть наступне опитування, пов'язане з ${object.appraisal_id.employee_id.name}'s оцінкою.\n"
+"        % else:\n"
+"            Будь ласка, заповніть наступне опитування.\n"
+"        % endif\n"
+"        <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"            <a href=\"${('%s?answer_token=%s' % (object.survey_id.public_url, object.token)) | safe}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                Розпочати опитування\n"
+"            </a>\n"
+"        </div>\n"
+"        % if object.deadline\n"
+"            Будь ласка, дайте відповідь на оцінку ${format_date(object.deadline)}.<br/><br/>\n"
+"        % endif\n"
+"        Дякуємо за вашу участь.\n"
+"    </p>\n"
+"</div>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
@@ -90,6 +110,9 @@ msgid ""
 "                        Appraisal\n"
 "                    </span>"
 msgstr ""
+"<span class=\"o_stat_text\">\n"
+"                       Оцінка\n"
+"                    </span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -176,7 +199,7 @@ msgstr "Додаткові коментарі"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
 msgid "An appraisal will be automatically created."
-msgstr ""
+msgstr "Оцінювання буде автоматично створене."
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_11
@@ -266,12 +289,12 @@ msgstr "Процес оцінювання"
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_request
 msgid "Appraisal Request by Employee"
-msgstr ""
+msgstr "Запит співробітника на оцінку"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
 msgid "Appraisal Scheduling"
-msgstr ""
+msgstr "Планування оцінювання"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:265
@@ -289,7 +312,7 @@ msgstr "Статистика оцінювання"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_template_id
 msgid "Appraisal Survey Invite Email"
-msgstr ""
+msgstr "Запросити взяти участь в опитуванні через Email"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
@@ -396,6 +419,10 @@ msgid ""
 "may define their own categories when they use survey like jobs recruitment "
 "or employee appraisal surveys."
 msgstr ""
+"Категорія використовується, щоби знати, в якому контексті використовується "
+"опитування. Різні програми можуть визначати свої власні категорії, коли вони"
+" використовують опитування, наприклад, підбір персоналу або опитування "
+"працівників."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_appraisal
@@ -751,7 +778,7 @@ msgstr "Майбутня діяльність"
 #. module: hr_appraisal
 #: selection:survey.survey,category:0
 msgid "Generic Survey"
-msgstr ""
+msgstr "Загальне опитування"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -1059,7 +1086,7 @@ msgstr "Керівники"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_max_period
 msgid "Maximum number of months between appraisals"
-msgstr ""
+msgstr "Максимальна кількість місяців між оцінюванням"
 
 #. module: hr_appraisal
 #: model_terms:survey.question,description:hr_appraisal.appraisal_3
@@ -1085,7 +1112,7 @@ msgstr "Повідомлення"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_min_period
 msgid "Minimum number of months between appraisals"
-msgstr ""
+msgstr "Мінімальна кількість місяців між оцінюванням"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_6
@@ -1263,7 +1290,7 @@ msgstr "Заплановано"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:176
 #, python-format
 msgid "Please fill out appraisal survey."
-msgstr ""
+msgstr "Будь ласка, заповніть оцінку опитування."
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_1_2
@@ -1307,7 +1334,7 @@ msgstr "Звітність"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 msgid "Request Appraisal"
-msgstr ""
+msgstr "Запитати оцінку"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
@@ -1361,12 +1388,12 @@ msgstr "Надіслати форму оцінювання до"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
 msgid "Send Appraisal to"
-msgstr ""
+msgstr "Надіслати оцінювання"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Send Appraisals Form To"
-msgstr ""
+msgstr "Надіслати форму оцінювання"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_sent_ids
@@ -1376,7 +1403,7 @@ msgstr "Надіслати форми"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
 msgid "Set the minimum number of months between appraisal."
-msgstr ""
+msgstr "Встановіть мінімальну кількість місяців між оцінюванням."
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_config_settings_action
@@ -1447,7 +1474,7 @@ msgstr "Опитування"
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_survey_invite
 msgid "Survey Invitation Wizard"
-msgstr ""
+msgstr "Помічник запрошення взяти участь в опитуванні"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_survey_user_input
@@ -1506,7 +1533,7 @@ msgstr "Технічні навички щодо вимог до роботи"
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_6
 #: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_7
 msgid "The answer you entered is not valid."
-msgstr ""
+msgstr "Введена вами відповідь недійсна."
 
 #. module: hr_appraisal
 #: model_terms:survey.question,description:hr_appraisal.opinion_1
@@ -1759,6 +1786,9 @@ msgid ""
 "on %s. If you think it's too late, feel free to have a chat with your "
 "manager."
 msgstr ""
+"Ваше останнє оцінювання було %s. Ви зможете надіслати запит на нове "
+"оцінювання %s. Якщо ви вважаєте, що це запізно, не соромтеся зв'язатися з "
+"вашим менеджером."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_survey_id

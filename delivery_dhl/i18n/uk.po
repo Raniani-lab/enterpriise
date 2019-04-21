@@ -76,12 +76,12 @@ msgstr "6X4_thermal"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "7 - Express Easy"
-msgstr "7 - Легкий Express"
+msgstr "7 - Express Easy"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "8 - Express Easy"
-msgstr "8 - Express Просто"
+msgstr "8 - Express Easy"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_label_template:0
@@ -126,7 +126,7 @@ msgstr "9 - Europack"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "A - Auto Reversals"
-msgstr "A - Автоматичні зміни"
+msgstr "A - Auto Reversals"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_region_code:0
@@ -151,7 +151,7 @@ msgstr "Засновано на правилах"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "C - Medical Express"
-msgstr "C - Медичний Express"
+msgstr "C - Medical Express"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
@@ -171,7 +171,7 @@ msgstr "Перевірте це, якщо ваша упаковка підляг
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "D - Express Worldwide"
-msgstr "D - Експрес по всьому світу"
+msgstr "D - Express Worldwide"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
@@ -286,7 +286,7 @@ msgstr "Європа"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "F - Freight Worldwide"
-msgstr "F - Фрахт по всьому світу"
+msgstr "F - Freight Worldwide"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
@@ -302,12 +302,12 @@ msgstr "Фіксована ціна"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "G - Domestic Economy Select"
-msgstr "G - Економічний вітчизняний вибір"
+msgstr "G - Domestic Economy Select"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "H - Economy Select"
-msgstr "H - Економічний вибір"
+msgstr "H - Economy Select"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -357,7 +357,7 @@ msgstr "M - Express 10:30"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "N - Domestic Express"
-msgstr "N - Вітчизняний експерс"
+msgstr "N - Domestic Express"
 
 #. module: delivery_dhl
 #: selection:product.packaging,package_carrier_type:0
@@ -425,7 +425,7 @@ msgstr "Провайдер"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "Q - Medical Express"
-msgstr "Q - Медичний Express"
+msgstr "Q - Medical Express"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -440,7 +440,7 @@ msgstr "Регіон"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "S - Same Day"
-msgstr "S - Той же день"
+msgstr "S - Same Day"
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/delivery_dhl.py:131
@@ -505,7 +505,7 @@ msgstr "USPS"
 #: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
 #: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
 msgid "Unit(s)"
-msgstr "Штука(и)"
+msgstr "Одиниця(і)"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -515,12 +515,12 @@ msgstr "V - Europack"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "W - Economy Select"
-msgstr "W - Економічний вибір"
+msgstr "W - Economy Select"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "X - Express Envelope"
-msgstr "X - Конверт Express"
+msgstr "X - Express Envelope"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -536,7 +536,7 @@ msgstr "Ви не можете закрити доставку DHL без дат
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "Z - Destination Charges"
-msgstr "Z - Плата за призначення"
+msgstr "Z - Destination Charges"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_label_image_format:0

@@ -56,7 +56,7 @@ msgstr "Тусламжийн төвийн Баг"
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
 msgid "Is published"
-msgstr ""
+msgstr "Нийтлэгдсэн эсэх"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.not_published_any_team
@@ -86,7 +86,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
 msgid "Visible on current website"
-msgstr ""
+msgstr "Одоогийн вебсайт дээр харагдах"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url

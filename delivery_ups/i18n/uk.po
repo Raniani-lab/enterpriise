@@ -63,7 +63,7 @@ msgstr "Сантиметри"
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_cod_funds_code:0
 msgid "Check, Cashier's Check or MoneyOrder"
-msgstr "Чек, чек касира чи грошовий переказ"
+msgstr "Чек, касовий чек чи грошовий переказ"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_cod

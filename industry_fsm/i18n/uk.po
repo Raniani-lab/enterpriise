@@ -135,7 +135,7 @@ msgstr "Кінцева дата"
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.menu_fsm_root
 msgid "Field Service"
-msgstr ""
+msgstr "Сфера послуг"
 
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_product_task_map_user

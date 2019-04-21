@@ -3,7 +3,6 @@
 # * delivery_usps
 # 
 # Translators:
-# Yaroslav Molochko <onorua@gmail.com>, 2018
 # Bohdan Lisnenko, 2018
 # ТАрас <tratatuta@i.ua>, 2018
 # Martin Trigaux, 2019
@@ -41,7 +40,7 @@ msgstr "Засновано на правилах"
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Check this box if your account is validated by USPS"
-msgstr "Встановіть цей прапорець якщо USPS підтвердило ваш обліковий запис"
+msgstr "Позначте це, якщо USPS підтвердив ваш обліковий запис"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:52
@@ -161,13 +160,13 @@ msgstr "Великий конверт"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Large Flat Rate Box"
-msgstr "Велика шкала з єдиною ставкою"
+msgstr "Велика коробка з фіксованою ставкою"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Legal Flat Rate Envelope"
-msgstr "Законний конверт з одноразовою вартістю"
+msgstr "Конверт з одноразовою вартістю"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
@@ -183,7 +182,7 @@ msgstr "Обробляється"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Medium Flat Rate Box"
-msgstr "Тарифний блок середньою ставкою"
+msgstr "Тарифний блок із середньою ставкою"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
@@ -198,7 +197,7 @@ msgstr "Опція без доставки"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_container:0
 msgid "Non-rectangular"
-msgstr "Не-прямокутний"
+msgstr "Непрямокутний"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_label_file_type:0

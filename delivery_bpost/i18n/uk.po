@@ -240,7 +240,7 @@ msgstr "ЗРАЗОК"
 #: code:addons/delivery_bpost/models/delivery_bpost.py:80
 #, python-format
 msgid "Shipment created into bpost <br/> <b>Tracking Number : </b>%s"
-msgstr "Відправка створена в bpost<br/> <b>Номер відстеження: </b>%s"
+msgstr "Доставка створена в bpost<br/> <b>Номер відстеження: </b>%s"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:50
@@ -299,7 +299,7 @@ msgstr "USPS"
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "Unit(s)"
-msgstr "Штука(и)"
+msgstr "Одиниця(і)"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:91

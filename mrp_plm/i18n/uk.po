@@ -65,7 +65,7 @@ msgstr "&times;"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_bom__image_small
 msgid "64px * 64px"
-msgstr ""
+msgstr "64px * 64px"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban

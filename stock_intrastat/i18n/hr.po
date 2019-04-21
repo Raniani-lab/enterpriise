@@ -28,7 +28,7 @@ msgstr "Država"
 #. module: stock_intrastat
 #: model:ir.model,name:stock_intrastat.model_account_intrastat_report
 msgid "Intrastat Report"
-msgstr ""
+msgstr "Intrastat Izvještaj"
 
 #. module: stock_intrastat
 #: model:ir.model.fields,field_description:stock_intrastat.field_stock_warehouse__intrastat_region_id

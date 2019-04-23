@@ -307,12 +307,12 @@ class ResCompany(models.Model):
         As this provider does not have an API, we directly extract what we need
         from HTML.
         """
-        url_format = 'http://www.xe.com/currencytables/?from=%(currency_code)s&date=%(date)s'
+        url_format = 'http://www.xe.com/currencytables/?from=%(currency_code)s'
         today = fields.Date.today()
 
         # We generate all the exchange rates relative to the USD. This is purely arbitrary.
         try:
-            fetched_data = requests.request('GET', url_format % {'currency_code': 'USD', 'date': today})
+            fetched_data = requests.request('GET', url_format % {'currency_code': 'USD'})
         except:
             return False
 

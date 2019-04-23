@@ -95,6 +95,7 @@
 </td></tr>
 </table>
         </field>
+        <field name="lang">${object.partner_id.lang}</field>
         <field name="auto_delete" eval="True"/>
         <field name="user_signature" eval="False"/>
 </record>
@@ -195,6 +196,7 @@
 </td></tr>
 </table>
         </field>
+        <field name="lang">${object.partner_id.lang}</field>
         <field name="auto_delete" eval="True"/>
         <field name="user_signature" eval="False"/>
 </record>
@@ -294,6 +296,7 @@
         </field>
         <field name="report_template" ref="account.account_invoices" />
         <field name="report_name">Invoice_${ctx.get('code')}_${ctx.get('previous_date')}</field>
+        <field name="lang">${object.partner_id.lang}</field>
         <field name="auto_delete" eval="True"/>
         <field name="user_signature" eval="False"/>
     </record>
@@ -466,5 +469,6 @@
                 </table>
             </div>
         </field>
+        <field name="lang">${object.partner_id.lang}</field>
     </record>
 </odoo>

@@ -114,6 +114,8 @@
                 </table>
             </field>
             <field name="lang">${object.owner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
         </record>
     </data>
 </odoo>

@@ -421,10 +421,6 @@
         <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) |safe}</field>
         <field name="partner_to">${object.partner_id.id}</field>
         <field name="subject">${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})</field>
-        <field name="report_template" ref="account.account_invoices"/>
-        <field name="report_name">Invoice_${(object.number or '').replace('/','_')}${object.state == 'draft' and '_draft' or ''}</field>
-        <field name="lang">${object.partner_id.lang}</field>
-        <field name="auto_delete" eval="True"/>
         <field name="body_html" type="xml">
             <div style="background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
                 <table style="width:600px;margin:5px auto;">
@@ -469,6 +465,9 @@
                 </table>
             </div>
         </field>
+        <field name="report_template" ref="account.account_invoices"/>
+        <field name="report_name">Invoice_${(object.number or '').replace('/','_')}${object.state == 'draft' and '_draft' or ''}</field>
         <field name="lang">${object.partner_id.lang}</field>
+        <field name="auto_delete" eval="True"/>
     </record>
 </odoo>

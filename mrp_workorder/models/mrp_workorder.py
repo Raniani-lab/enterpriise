@@ -46,6 +46,11 @@ class MrpProductionWorkcenterLine(models.Model):
     picture = fields.Binary(related='current_quality_check_id.picture', readonly=False)
     component_qty_to_do = fields.Float(compute='_compute_component_qty_to_do')
 
+    @api.onchange('qty_producing')
+    def _onchange_qty_producing(self):
+        super(MrpProductionWorkcenterLine, self)._onchange_qty_producing()
+        self.qty_done = self.current_quality_check_id.move_line_id.qty_to_consume
+
     @api.depends('qty_done', 'component_remaining_qty')
     def _compute_component_qty_to_do(self):
         for wo in self:
@@ -80,11 +85,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 move = moves[0]
                 lines = wo._workorder_line_ids().filtered(lambda l: l.move_id in moves)
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
-                wo.component_remaining_qty = move.product_uom._compute_quantity(
-                    wo.qty_producing * sum(moves.mapped('unit_factor')),
-                    move.product_id.uom_id,
-                    round=False
-                ) - sum(completed_lines.mapped('qty_done'))
+                wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
                 wo.component_uom_id = lines[0].product_uom_id
 
     def action_back(self):
@@ -357,7 +358,6 @@ class MrpProductionWorkcenterLine(models.Model):
         if check_id is not None:
             next_check = self.env['quality.check'].browse(check_id)
             change_worksheet_page = position != len(ordered_check_ids) - 1 and next_check.point_id.worksheet == 'scroll'
-            old_allow_producing_quantity_change = self.allow_producing_quantity_change
             self.write({
                 'allow_producing_quantity_change': True if params.get('position') == 0 and all(c.quality_state == 'none' for c in self.check_ids) else False,
                 'current_quality_check_id': check_id,
@@ -365,18 +365,6 @@ class MrpProductionWorkcenterLine(models.Model):
                 'is_last_step': check_id == False,
                 'worksheet_page': next_check.point_id.worksheet_page if change_worksheet_page else self.worksheet_page,
             })
-            # Update the default quantities in component registration steps
-            if old_allow_producing_quantity_change and not self.allow_producing_quantity_change:
-                for check in self.check_ids.filtered(lambda c: c.component_id and c.component_id.tracking != 'serial' and c.quality_state == 'none') - next_check:
-                    moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.component_id)
-                    qty_done = moves[0].product_uom._compute_quantity(
-                        self.qty_producing * sum(moves.mapped('unit_factor')),
-                        moves[0].product_id.uom_id,
-                        round=False
-                    )
-                    rounding = moves[0].product_id.uom_id.rounding
-                    if float_compare(check.qty_done, qty_done, precision_rounding=rounding) > 0:
-                        check.qty_done = qty_done
 
     def _defaults_from_workorder_lines(self, product, test_type):
         # Check if a workorder line is not filled for this workorder. If it
@@ -612,3 +600,18 @@ class MrpWorkorderLine(models.Model):
         """ Delete or modify first the workorder line not linked to a check."""
         order = super(MrpWorkorderLine, self)._unreserve_order()
         return (self.check_ids,) + order
+
+    def write(self, values):
+        """ Using `record_production` may change the `qty_producing` on the following
+        workorder if the production is not totally done, and so changing the
+        `qty_to_consume` on some workorder lines.
+        Using the `change.production.qty` wizard may also impact those `qty_to_consume`.
+        We make this override to keep the `qty_done` field of the not yet processed
+        quality checks inline with their associated workorder line `qty_to_consume`."""
+        res = super(MrpWorkorderLine, self).write(values)
+        if 'qty_to_consume' in values:
+            for line in self:
+                if line.check_ids.quality_state == 'none' and line.check_ids.qty_done != line.qty_to_consume:
+                    # In case some lines are deleted or some quantities updated
+                    line.check_ids.qty_done = line.qty_to_consume
+        return res

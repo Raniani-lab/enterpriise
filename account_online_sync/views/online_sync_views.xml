@@ -34,7 +34,7 @@
             </group>
             <notebook>
               <page string="Bank Accounts">
-                <field name="account_online_journal_ids" nolabel="1" widget="one2many_list" mode="tree">
+                <field name="account_online_journal_ids" nolabel="1" widget="one2many" mode="tree">
                   <tree string="Bank Accounts" create="false" editable="bottom">
                     <field name="name"/>
                     <field name="account_number"/>
@@ -130,7 +130,7 @@
                       <group>
                       </group>
                     </group>
-                    <field name="account_ids" nolabel="1" widget="one2many_list" mode="tree" attrs="{'invisible': [('hide_table', '=', True)]}">
+                    <field name="account_ids" nolabel="1" widget="one2many" mode="tree" attrs="{'invisible': [('hide_table', '=', True)]}">
                       <tree create="false" editable="true">
                         <field name="account_number"/>
                         <field name="name"/>

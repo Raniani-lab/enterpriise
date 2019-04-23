@@ -31,5 +31,5 @@ class HelpdeskTeam(models.Model):
             'type': 'ir.actions.act_url',
             'name': "Redirect to the Website Helpdesk Rating Page",
             'target': 'self',
-            'url': "/helpdesk/rating/%s" % (self.id,)
+            'url': "/helpdesk/rating/"
         }

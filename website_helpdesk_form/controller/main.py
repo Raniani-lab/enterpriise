@@ -20,8 +20,13 @@ class WebsiteForm(WebsiteForm):
 
     @http.route('/website_form/<string:model_name>', type='http', auth="public", methods=['POST'], website=True)
     def website_form(self, model_name, **kwargs):
-        if request.params.get('partner_email'):
-            Partner = request.env['res.partner'].sudo().search([('email', '=', kwargs.get('partner_email'))], limit=1)
-            if Partner:
-                request.params['partner_id'] = Partner.id
+        email = request.params.get('partner_email')
+        if email:
+            partner = request.env['res.partner'].sudo().search([('email', '=', email)], limit=1)
+            if not partner:
+                partner = request.env['res.partner'].sudo().create({
+                    'email': email,
+                    'name': request.params.get('partner_name', False)
+                })
+            request.params['partner_id'] = partner.id
         return super(WebsiteForm, self).website_form(model_name, **kwargs)

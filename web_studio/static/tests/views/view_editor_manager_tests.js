@@ -176,6 +176,41 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('widget dropdown in list editor sidebar', async function(assert) {
+        assert.expect(6);
+
+        config.debug = false;
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree>" +
+                    "<field name='display_name'/>" +
+                    "<field name='priority' widget='priority'/>" +
+                "</tree>",
+        });
+        // select first column and check widget options
+        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Text', 'Widget name should be Text');
+
+        // select second column and check widget options
+        await testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
+        assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Priority', 'Widget name should be Priority');
+        assert.containsNone(vem, '#widget option[value="label_selection"]', "label_selection widget should not be there");
+
+        // check the widgets in debug mode
+        config.debug = true;
+
+        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Text (char)', 'Widget name should be Text (char)');
+
+        await testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
+        assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Priority (priority)', 'Widget name should be Priority (priority)');
+        assert.containsOnce(vem, '#widget option[value="label_selection"]', "label_selection widget should be there");
+
+        vem.destroy();
+    });
+
     QUnit.test('invisible list editor', async function (assert) {
         assert.expect(4);
 

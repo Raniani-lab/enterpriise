@@ -475,8 +475,9 @@
             <div class="o_web_studio_sidebar_select">
                 <label for="widget">Widget</label>
                 <select id="widget" name="widget" data-type="attributes">
-                    <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.widgetKey ===  w ? 'selected' : undefined">
-                        <t t-esc="w"/>
+                    <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.widgetKey ===  w[0] ? 'selected' : undefined" t-att-value="w[0]">
+                        <t t-set="desc" t-value="w[1].prototype.description"/>
+                        <t t-esc="desc || w[0]"/> <t t-if="widget.debug and desc">(<t t-esc="w[0]"/>)</t>
                     </option>
                 </select>
             </div>

@@ -127,17 +127,18 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             // in this widget and this shouldn't impact it
             var field = jQuery.extend(true, {}, this.fields[this.state.attrs.name]);
 
-            // field_registry contains all widgets
-            // We want to filter these widgets based on field types
+            // field_registry contains all widgets but we want to filter these
+            // widgets based on field types (and description for non debug mode)
             field.field_widgets = _.chain(field_registry.map)
                 .pairs()
                 .filter(function (arr) {
-                    return _.contains(arr[1].prototype.supportedFieldTypes, field.type) && arr[0].indexOf('.') < 0;
+                    var isSupported = _.contains(arr[1].prototype.supportedFieldTypes, field.type)
+                        && arr[0].indexOf('.') < 0;
+                    return config.debug ? isSupported : isSupported && arr[1].prototype.description;
                 })
-                .map(function (array) {
-                    return array[0];
+                .sortBy(function (arr) {
+                    return arr[1].prototype.description || arr[0];
                 })
-                .sortBy()
                 .value();
 
             this.state.field = field;

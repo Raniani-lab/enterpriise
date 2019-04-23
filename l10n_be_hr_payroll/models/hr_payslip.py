@@ -162,7 +162,7 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
 
 def compute_ip_deduction(payslip, categories, worked_days, inputs):
     tax_rate = 0.15
-    ip_amount = categories.GROSSIP * payslip.contract_id.ip_wage_rate / 100.0
+    ip_amount = categories.BASIC * payslip.contract_id.ip_wage_rate / 100.0
     if 0.0 <= ip_amount <= 15660:
         tax_rate = tax_rate / 2.0
     elif 15660.0 < ip_amount <= 31320:

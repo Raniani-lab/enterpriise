@@ -19,12 +19,4 @@
             </field>
         </field>
     </record>
-
-    <!-- JS stuff -->
-    <template id="assets_backend" inherit_id="web.assets_backend" name="Quality control IoT assets">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/quality_control_iot/static/src/js/iot_measure.js"></script>
-        </xpath>
-    </template>
-
 </odoo>

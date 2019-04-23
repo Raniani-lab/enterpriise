@@ -226,7 +226,7 @@
                         <t t-set="stats" t-value="t['stats']"/>
                         <div class="oe_structure" id="oe_structure_helpdesk_team_rating_1"/>
                         <div class="container oe_website_rating_team">
-                            <h1 t-esc="team.name"/>
+                            <h2 t-esc="team.name" class="text-muted" />
                             <div class="row mb32">
                                 <div class="col-lg-8">
                                     <t t-if="ratings" t-call="helpdesk.team_rating_data"/>

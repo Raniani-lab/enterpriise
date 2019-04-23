@@ -13,4 +13,4 @@ class HelpdeskTeam(models.Model):
     @api.depends('name', 'use_website_helpdesk_form')
     def _get_form_url(self):
         for team in self:
-            team.feature_form_url = (team.use_website_helpdesk_form and team.name and team.id) and ('/helpdesk/' + slug(team) + '/submit') or False
+            team.feature_form_url = (team.use_website_helpdesk_form and team.name and team.id) and ('/helpdesk/' + slug(team)) or False

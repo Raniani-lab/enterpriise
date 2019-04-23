@@ -347,7 +347,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_coupons"/>
                                 <div class="text-muted">
-                                    Grant coupons from Tickets
+                                    Grant coupons from tickets
                                 </div>
                                 <div id="use_coupons" attrs="{'invisible': [('use_coupons', '=', False)]}">
                                     <div class="text-warning mb4 mt16">

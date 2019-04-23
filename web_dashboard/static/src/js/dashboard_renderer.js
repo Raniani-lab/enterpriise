@@ -11,6 +11,7 @@ var pyUtils = require('web.py_utils');
 var viewRegistry = require('web.view_registry');
 
 var renderComparison = dataComparisonUtils.renderComparison;
+var renderVariation = dataComparisonUtils.renderVariation;
 
 var QWeb = core.qweb;
 
@@ -193,17 +194,10 @@ var DashboardRenderer = FormRenderer.extend({
                 fakeState.data = fakeState.comparisonData;
                 var $comparisonValue = this._renderFieldWidget(node, fakeState);
                 variation = this.state.variationData[statisticName];
-                fakeState.data[statisticName] = variation.magnitude;
-                var $variationValue = fieldUtils.format.percentage(
-                    variation.magnitude,
-                    statistic,
-                    this.formatOptions
-                );
+                fakeState.data[statisticName] = variation;
 
                 $el
-                .append($('<div>', {class: 'o_variation' + variation.signClass}).html(
-                    $variationValue
-                ))
+                .append(renderVariation(variation, statistic))
                 .append($('<div>', {class: 'o_comparison'}).append(
                     $originalValue,
                     $('<span>').html(" vs "),
@@ -218,9 +212,9 @@ var DashboardRenderer = FormRenderer.extend({
 
         // customize border left
         if (variation) {
-            if (variation.signClass === ' o_positive') {
+            if (variation > 0) {
                 $el.addClass('border-success');
-            } else if (variation.signClass === ' o_negative') {
+            } else if (variation < 0) {
                 $el.addClass('border-danger');
             }
         }

@@ -2,7 +2,6 @@ odoo.define('web_dashboard.dashboard_tests', function (require) {
 "use strict";
 
 var BasicFields = require('web.basic_fields');
-var concurrency = require('web.concurrency');
 var DashboardView = require('web_dashboard.DashboardView');
 var fieldRegistry = require('web.field_registry');
 var testUtils = require('web.test_utils');
@@ -18,11 +17,11 @@ var FieldFloat = BasicFields.FieldFloat;
 QUnit.module('Views', {
     beforeEach: function () {
         this.data = {
-            test_report : {
+            test_report: {
                 fields: {
                     categ_id: {string: "categ_id", type: 'many2one', relation: 'test_report'},
-                    sold: {string: "Sold", type: 'float', store: true, group_operator:'sum'},
-                    untaxed: {string: "Untaxed", type: 'float', group_operator:'sum', store: true},
+                    sold: {string: "Sold", type: 'float', store: true, group_operator: 'sum'},
+                    untaxed: {string: "Untaxed", type: 'float', group_operator: 'sum', store: true},
                 },
                 records: [{
                     display_name: "First",
@@ -38,11 +37,11 @@ QUnit.module('Views', {
                     categ_id: 2,
                 }],
             },
-            test_time_range : {
+            test_time_range: {
                 fields: {
                     categ_id: {string: "categ_id", type: 'many2one', relation: 'test_report'},
-                    sold: {string: "Sold", type: 'float', store: true, group_operator:'sum'},
-                    untaxed: {string: "Untaxed", type: 'float', group_operator:'sum', store: true},
+                    sold: {string: "Sold", type: 'float', store: true, group_operator: 'sum'},
+                    untaxed: {string: "Untaxed", type: 'float', group_operator: 'sum', store: true},
                     date: {string: "Date", type: 'date', sortable: true},
                     transformation_date: {string: "Transformation Date", type: 'datetime', sortable: true},
                 },
@@ -89,7 +88,7 @@ QUnit.module('Views', {
             "root has a child with 'o_dashboard_view' class");
         assert.containsN(dashboard, '.o_group', 2,
             "should have rendered two groups");
-        assert.hasClass(dashboard.$('.o_group .o_group'),'o_group_col_2',
+        assert.hasClass(dashboard.$('.o_group .o_group'), 'o_group_col_2',
             "inner group should have className o_group_col_2");
 
         dashboard.destroy();
@@ -139,11 +138,11 @@ QUnit.module('Views', {
             arch: '<dashboard>' +
                       '<widget name="pie_chart" title="Products sold" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
-            mockRPC: function (route, args){
-                if (route == '/web/dataset/call_kw/test_report/read_group') {
+            mockRPC: function (route, args) {
+                if (route === '/web/dataset/call_kw/test_report/read_group') {
                     assert.deepEqual(args.args, []);
-                    assert.deepEqual(args.model,"test_report");
-                    assert.deepEqual(args.method,"read_group");
+                    assert.deepEqual(args.model, "test_report");
+                    assert.deepEqual(args.method, "read_group");
                     assert.deepEqual(args.kwargs, {
                       context: {fill_temporal: true},
                       domain: [],
@@ -257,14 +256,13 @@ QUnit.module('Views', {
             View: DashboardView,
             model: 'test_time_range',
             data: this.data,
-            // debug: 1,
             context: {
                 timeRangeMenuData: {
                     //Q3 2018
-                    timeRange: ['&', ["transformation_date", ">=", "2018-07-01"],["transformation_date", "<=", "2018-09-30"]],
+                    timeRange: ['&', ["transformation_date", ">=", "2018-07-01"], ["transformation_date", "<=", "2018-09-30"]],
                     timeRangeDescription: 'This Quarter',
                     //Q4 2018
-                    comparisonTimeRange: ['&', ["transformation_date", ">=", "2018-10-01"],["transformation_date", "<=", "2018-12-31"]],
+                    comparisonTimeRange: ['&', ["transformation_date", ">=", "2018-10-01"], ["transformation_date", "<=", "2018-12-31"]],
                     comparisonTimeRangeDescription: 'Previous Period',
                 },
             },
@@ -434,7 +432,7 @@ QUnit.module('Views', {
                 if (args.method === 'read_group') {
                     nbReadGroup++;
                     var groupBy = nbReadGroup === 1 ? [] : ['categ_id'];
-                    assert.deepEqual(args.kwargs.fields, ['sold'],
+                    assert.deepEqual(args.kwargs.fields, ['sold:sum'],
                         "should read the correct fields");
                     assert.deepEqual(args.kwargs.groupby, groupBy,
                         "should group by the correct field");
@@ -466,7 +464,7 @@ QUnit.module('Views', {
         this.data.test_report.records[1].transformation_date = '2018-06-23';
 
 
-        var readGroups = [[], ['categ_id']]
+        var readGroups = [[], ['categ_id']];
         var dashboard = await createView({
             View: DashboardView,
             model: 'test_report',
@@ -646,9 +644,9 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.hasClass(dashboard.$('.o_group > div'),'o_invisible_modifier',
+        assert.hasClass(dashboard.$('.o_group > div'), 'o_invisible_modifier',
             "the aggregate container should be invisible");
-        assert.hasClass(dashboard.$('.o_aggregate[name=sold]'),'o_invisible_modifier',
+        assert.hasClass(dashboard.$('.o_aggregate[name=sold]'), 'o_invisible_modifier',
             "the aggregate should be invisible");
 
         dashboard.destroy();
@@ -666,7 +664,7 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.hasClass(dashboard.$('.o_formula'),'o_invisible_modifier',
+        assert.hasClass(dashboard.$('.o_formula'), 'o_invisible_modifier',
             "the formula should be invisible");
 
         dashboard.destroy();
@@ -687,7 +685,7 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.hasClass(dashboard.$('.o_aggregate[name=sold]'),'o_invisible_modifier',
+        assert.hasClass(dashboard.$('.o_aggregate[name=sold]'), 'o_invisible_modifier',
             "the aggregate 'sold' should be invisible");
 
         dashboard.destroy();
@@ -709,7 +707,7 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.hasClass(dashboard.$('.o_formula'),'o_invisible_modifier',
+        assert.hasClass(dashboard.$('.o_formula'), 'o_invisible_modifier',
             "the formula should be invisible");
 
         dashboard.destroy();
@@ -856,18 +854,19 @@ QUnit.module('Views', {
     QUnit.test('clicking on an aggregate', async function (assert) {
         assert.expect(21);
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
             data: this.data,
+            arch: '<dashboard>' +
+                    '<group>' +
+                        '<aggregate name="untaxed" field="untaxed"/>' +
+                        '<aggregate name="sold" field="sold"/>' +
+                    '</group>' +
+                    '<view type="graph"/>' +
+                    '<view type="pivot"/>' +
+                '</dashboard>',
             archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<group>' +
-                            '<aggregate name="untaxed" field="untaxed"/>' +
-                            '<aggregate name="sold" field="sold"/>' +
-                        '</group>' +
-                        '<view type="graph"/>' +
-                        '<view type="pivot"/>' +
-                    '</dashboard>',
                 'test_report,false,graph': '<graph>' +
                         '<field name="categ_id"/>' +
                         '<field name="sold" type="measure"/>' +
@@ -876,7 +875,6 @@ QUnit.module('Views', {
                         '<field name="categ_id" type="row"/>' +
                         '<field name="sold" type="measure"/>' +
                     '</pivot>',
-                'test_report,false,search': '<search></search>',
             },
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
@@ -888,45 +886,39 @@ QUnit.module('Views', {
             },
         });
 
-        await actionManager.doAction({
-            res_model: 'test_report',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-
-        assert.hasClass(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=sold]'),'selected',
+        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item[data-field=sold]'), 'selected',
             "sold measure should be active in graph view");
-        assert.doesNotHaveClass(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
+        assert.doesNotHaveClass(dashboard.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
             "untaxed measure should not be active in graph view");
-        assert.hasClass(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=sold]'),'selected',
+        assert.hasClass(dashboard.$('.o_pivot_measures_list .dropdown-item[data-field=sold]'), 'selected',
             "sold measure should be active in pivot view");
-        assert.doesNotHaveClass(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
+        assert.doesNotHaveClass(dashboard.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
             "untaxed measure should not be active in pivot view");
 
         // click on the 'untaxed' field: it should activate the 'untaxed' measure in both subviews
-        await testUtils.dom.click(actionManager.$('.o_aggregate[name=untaxed]'));
+        await testUtils.dom.click(dashboard.$('.o_aggregate[name=untaxed]'));
 
-        assert.doesNotHaveClass(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=sold]'), 'selected',
+        assert.doesNotHaveClass(dashboard.$('.o_graph_measures_list .dropdown-item[data-field=sold]'), 'selected',
             "sold measure should not be active in graph view");
-        assert.hasClass(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]'),'selected',
+        assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
             "untaxed measure should be active in graph view");
-        assert.doesNotHaveClass(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=sold]'), 'selected',
+        assert.doesNotHaveClass(dashboard.$('.o_pivot_measures_list .dropdown-item[data-field=sold]'), 'selected',
             "sold measure should not be active in pivot view");
-        assert.hasClass(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'),'selected',
+        assert.hasClass(dashboard.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
             "untaxed measure should be active in pivot view");
 
         assert.verifySteps([
             'untaxed:sum(untaxed)', 'sold:sum(sold)', // fields
             'categ_id', 'sold', // graph
-            'sold', // pivot
-            'sold', // pivot
+            'sold:sum', // pivot
+            'sold:sum', // pivot
             'untaxed:sum(untaxed)', 'sold:sum(sold)', // fields
             'categ_id', 'untaxed', // graph
-            'untaxed', // pivot
-            'untaxed', // pivot
+            'untaxed:sum', // pivot
+            'untaxed:sum', // pivot
         ]);
 
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
     QUnit.test('clicking on an aggregate interaction with cohort', async function (assert) {
@@ -940,23 +932,23 @@ QUnit.module('Views', {
         this.data.test_report.records[0].transformation_date = '2018-07-03';
         this.data.test_report.records[1].transformation_date = '2018-06-23';
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
             data: this.data,
+            arch: '<dashboard>' +
+                    '<group>' +
+                        '<aggregate name="untaxed" field="untaxed"/>' +
+                        '<aggregate name="sold" field="sold"/>' +
+                    '</group>' +
+                    '<view type="cohort"/>' +
+                '</dashboard>',
             archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<group>' +
-                            '<aggregate name="untaxed" field="untaxed"/>' +
-                            '<aggregate name="sold" field="sold"/>' +
-                        '</group>' +
-                        '<view type="cohort"/>' +
-                    '</dashboard>',
                 'test_report,false,cohort': '<cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week" measure="sold"/>',
-                'test_report,false,search': '<search></search>',
             },
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
-                    for(var i in args.kwargs.fields) {
+                    for (var i in args.kwargs.fields) {
                         assert.step(args.kwargs.fields[i]);
                     }
                 }
@@ -967,23 +959,17 @@ QUnit.module('Views', {
             },
         });
 
-        await actionManager.doAction({
-            res_model: 'test_report',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-
-        assert.hasClass(actionManager.$('.o_cohort_measures_list [data-field=sold]'),'selected',
+        assert.hasClass(dashboard.$('.o_cohort_measures_list [data-field=sold]'), 'selected',
             "sold measure should be active in cohort view");
-        assert.doesNotHaveClass(actionManager.$('.o_cohort_measures_list [data-field=untaxed]'), 'selected',
+        assert.doesNotHaveClass(dashboard.$('.o_cohort_measures_list [data-field=untaxed]'), 'selected',
             "untaxed measure should not be active in cohort view");
 
         // click on the 'untaxed' field: it should activate the 'untaxed' measure in cohort subview
-        await testUtils.dom.click(actionManager.$('.o_aggregate[name=untaxed]'));
+        await testUtils.dom.click(dashboard.$('.o_aggregate[name=untaxed]'));
 
-        assert.doesNotHaveClass(actionManager.$('.o_cohort_measures_list [data-field=sold]'), 'selected',
+        assert.doesNotHaveClass(dashboard.$('.o_cohort_measures_list [data-field=sold]'), 'selected',
             "sold measure should not be active in cohort view");
-        assert.hasClass(actionManager.$('.o_cohort_measures_list [data-field=untaxed]'),'selected',
+        assert.hasClass(dashboard.$('.o_cohort_measures_list [data-field=untaxed]'), 'selected',
             "untaxed measure should be active in cohort view");
 
         assert.verifySteps([
@@ -993,28 +979,26 @@ QUnit.module('Views', {
             'untaxed', // cohort
         ]);
 
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
     QUnit.test('clicking on aggregate with domain attribute', async function (assert) {
         assert.expect(19);
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
             data: this.data,
-            archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<group>' +
-                            '<aggregate name="untaxed" field="untaxed" domain="[(\'categ_id\', \'=\', 2)]" domain_label="Category 2"/>' +
-                            '<aggregate name="sold" field="sold" domain="[(\'categ_id\', \'=\', 1)]"/>' +
-                        '</group>' +
-                    '</dashboard>',
-                'test_report,false,search': '<search></search>',
-            },
+            arch: '<dashboard>' +
+                    '<group>' +
+                        '<aggregate name="untaxed" field="untaxed" domain="[(\'categ_id\', \'=\', 2)]" domain_label="Category 2"/>' +
+                        '<aggregate name="sold" field="sold" domain="[(\'categ_id\', \'=\', 1)]"/>' +
+                    '</group>' +
+                '</dashboard>',
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
                     assert.step(args.kwargs.fields[0]);
-                    for(var i in args.kwargs.domain) {
+                    for (var i in args.kwargs.domain) {
                         assert.step(args.kwargs.domain[i].join(''));
                     }
                 }
@@ -1022,20 +1006,14 @@ QUnit.module('Views', {
             },
         });
 
-        await actionManager.doAction({
-            res_model: 'test_report',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-
         // click on the 'untaxed' field: it should update the domain
-        await testUtils.dom.click(actionManager.$('.o_aggregate[name=untaxed]'));
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 2',
+        await testUtils.dom.click(dashboard.$('.o_aggregate[name=untaxed]'));
+        assert.strictEqual(dashboard.$('.o_control_panel .o_facet_values').text().trim(), 'Category 2',
             "should correctly display the filter in the search view");
 
         // click on the 'sold' field: it should update the domain
-        await testUtils.dom.click(actionManager.$('.o_aggregate[name=sold]'));
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'sold',
+        await testUtils.dom.click(dashboard.$('.o_aggregate[name=sold]'));
+        assert.strictEqual(dashboard.$('.o_control_panel .o_facet_values').text().trim(), 'sold',
             "should correctly display the filter in the search view");
 
         assert.verifySteps([
@@ -1050,7 +1028,7 @@ QUnit.module('Views', {
             'sold:sum(sold)', 'categ_id=1', 'categ_id=1',
         ]);
 
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
     QUnit.test('clicking on an aggregate with domain excluding all records for another an aggregate does not cause a crash with formulas', async function (assert) {
@@ -1058,26 +1036,24 @@ QUnit.module('Views', {
 
         this.data.test_report.fields.untaxed_2 = {string: "Untaxed_2", type: 'float', store: true};
 
-        _.each(this.data.test_report.records, function(record) {
+        _.each(this.data.test_report.records, function (record) {
             record.untaxed_2 = 3.1415;
         });
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
             data: this.data,
-            archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<aggregate name="untaxed" field="untaxed" domain="[(\'categ_id\', \'=\', 2)]"/>' +
-                        '<aggregate name="untaxed_2" field="untaxed_2" domain="[(\'categ_id\', \'=\', 1)]"/>' +
-                        '<formula name="formula" value="1 / record.untaxed_2"/>' +
-                        '<formula name="formula_2" value="record.untaxed_2 / record.untaxed_2"/>' +
-                    '</dashboard>',
-                'test_report,false,search': '<search></search>',
-            },
+            arch: '<dashboard>' +
+                    '<aggregate name="untaxed" field="untaxed" domain="[(\'categ_id\', \'=\', 2)]"/>' +
+                    '<aggregate name="untaxed_2" field="untaxed_2" domain="[(\'categ_id\', \'=\', 1)]"/>' +
+                    '<formula name="formula" value="1 / record.untaxed_2"/>' +
+                    '<formula name="formula_2" value="record.untaxed_2 / record.untaxed_2"/>' +
+                '</dashboard>',
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
                     assert.step(args.kwargs.fields[0]);
-                    for(var i in args.kwargs.domain) {
+                    for (var i in args.kwargs.domain) {
                         assert.step(args.kwargs.domain[i].join(''));
                     }
                 }
@@ -1085,18 +1061,12 @@ QUnit.module('Views', {
             },
         });
 
-        await actionManager.doAction({
-            res_model: 'test_report',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-
         // click on the 'untaxed' field: we should see zeros displayed as values
-        await testUtils.dom.click(actionManager.$('.o_aggregate[name=untaxed]'));
-        assert.strictEqual($('.o_aggregate[name="untaxed_2"] > .o_value').text(), "0.00",
+        await testUtils.dom.click(dashboard.$('.o_aggregate[name=untaxed]'));
+        assert.strictEqual(dashboard.$('.o_aggregate[name="untaxed_2"] > .o_value').text(), "0.00",
             "should display zero as no record satisfies constrains");
-        assert.strictEqual($('.o_formula[name="formula"] > .o_value').text(), "-", "Should display '-'");
-        assert.strictEqual($('.o_formula[name="formula_2"] > .o_value').text(), "-", "Should display '-'");
+        assert.strictEqual(dashboard.$('.o_formula[name="formula"] > .o_value').text(), "-", "Should display '-'");
+        assert.strictEqual(dashboard.$('.o_formula[name="formula_2"] > .o_value').text(), "-", "Should display '-'");
 
         assert.verifySteps([
             'untaxed:sum(untaxed)', 'categ_id=2',
@@ -1104,7 +1074,7 @@ QUnit.module('Views', {
             'untaxed:sum(untaxed)', 'categ_id=2', 'categ_id=2',
             'untaxed_2:undefined(untaxed_2)', 'categ_id=2', 'categ_id=1'
         ]);
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
     QUnit.test('open a graph view fullscreen', async function (assert) {
@@ -1296,11 +1266,11 @@ QUnit.module('Views', {
         });
 
         var chart = dashboard.renderer.subControllers.graph.renderer.chart;
-        assert.strictEqual(chart.config.type, 'bar', 'should have rendered the graph in "bar" mode')
+        assert.strictEqual(chart.config.type, 'bar', 'should have rendered the graph in "bar" mode');
         // switch to pie mode
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button[data-mode=pie]'));
-        var chart = dashboard.renderer.subControllers.graph.renderer.chart;
-        assert.strictEqual(chart.config.type, 'pie', 'should have rendered the graph in "pie" mode')
+        chart = dashboard.renderer.subControllers.graph.renderer.chart;
+        assert.strictEqual(chart.config.type, 'pie', 'should have rendered the graph in "pie" mode');
 
         // select 'untaxed' as measure
         activeMeasure = 'untaxed';
@@ -1499,20 +1469,20 @@ QUnit.module('Views', {
         assert.verifySteps([
             // initial read_group
             'categ_id', 'sold', // graph in dashboard
-            'sold', // pivot in dashboard
+            'sold:sum', // pivot in dashboard
 
             // after changing the measure in graph
             'categ_id', 'untaxed', // graph in dashboard
 
             // after changing the measures in pivot
-            'sold', 'untaxed', // pivot in dashboard
+            'sold:sum', 'untaxed:sum', // pivot in dashboard
 
             // pivot opened fullscreen
-            'sold', 'untaxed',
+            'sold:sum', 'untaxed:sum',
 
             // after coming back
             'categ_id', 'untaxed', // graph in dashboard
-            'sold', 'untaxed', // pivot in dashboard
+            'sold:sum', 'untaxed:sum', // pivot in dashboard
         ]);
 
         actionManager.destroy();
@@ -1772,7 +1742,7 @@ QUnit.module('Views', {
             "line", "should be in line chart mode");
         assert.doesNotHaveClass(dashboard.$('button[data-mode="bar"]'), 'active',
             'bar chart button should not be active');
-        assert.hasClass(dashboard.$('button[data-mode="line"]'),'active',
+        assert.hasClass(dashboard.$('button[data-mode="line"]'), 'active',
             'line chart button should be active');
 
         dashboard.destroy();
@@ -1817,7 +1787,7 @@ QUnit.module('Views', {
         assert.strictEqual(dashboard.$('tbody .o_pivot_header_cell_closed:contains(First)').length, 1,
             "row: should display one closed header with 'xpad'");
 
-        assert.strictEqual(dashboard.$('tbody tr:first td:nth(3)').text(), '8.00',
+        assert.strictEqual(dashboard.$('tbody tr:first td:nth(2)').text(), '8.00',
             "selected measure should be foo, with total 32");
 
         dashboard.destroy();
@@ -1864,7 +1834,7 @@ QUnit.module('Views', {
             "year", "should use year interval");
         assert.doesNotHaveClass(dashboard.$('button[data-interval="day"]'), 'active',
                 'day interval button should not be active');
-        assert.hasClass(dashboard.$('button[data-interval="year"]'),'active',
+        assert.hasClass(dashboard.$('button[data-interval="year"]'), 'active',
             'year interval button should be active');
 
         dashboard.destroy();
@@ -1886,7 +1856,7 @@ QUnit.module('Views', {
             },
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
-                    for(var i in args.kwargs.fields) {
+                    for (var i in args.kwargs.fields) {
                         assert.step(args.kwargs.fields[i]);
                     }
                 }
@@ -1959,125 +1929,109 @@ QUnit.module('Views', {
     QUnit.test('changes in search view do not affect measure selection in graph subview', async function (assert) {
         assert.expect(2);
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
             data: this.data,
+            arch: '<dashboard>' +
+                    '<view type="graph" ref="some_xmlid"/>' +
+                '</dashboard>',
             archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="graph" ref="some_xmlid"/>' +
-                        '</dashboard>',
                 'test_report,some_xmlid,graph': '<graph>' +
-                        '<field name="categ_id"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</graph>',
-                    'test_report,1,search': '<search>'+
-                        '<field name="categ_id" string="Label"/>' +
-                        '<filter string="categ" name="positive" domain="[(\'categ_id\', \'>=\', 0)]"/>' +
-                    '</search>',
+                    '<field name="categ_id"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</graph>',
+                'test_report,false,search': '<search>' +
+                    '<field name="categ_id" string="Label"/>' +
+                    '<filter string="categ" name="positive" domain="[(\'categ_id\', \'>=\', 0)]"/>' +
+                '</search>',
             },
         });
 
-        await actionManager.doAction({
-            res_model: 'test_report',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-            search_view_id: [1, 'search'],
-        });
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+        await testUtils.dom.click(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1));
+        assert.hasClass(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1), 'selected',
+            'groupby should be unselected');
+        await testUtils.dom.click(dashboard.$('.o_search_options button span.fa-filter'));
+        await testUtils.dom.click(dashboard.$('.o_filters_menu .o_menu_item a:first'));
+        assert.hasClass(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1), 'selected',
+            'groupby should be unselected');
 
-        await testUtils.dom.click($('.o_graph_buttons button:first'));
-        await testUtils.dom.click($('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1));
-        assert.hasClass($('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1),'selected',
-            'groupby should be unselected');
-        await testUtils.dom.click($('.o_search_options button span.fa-filter'));
-        assert.hasClass($('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1),'selected',
-            'groupby should be unselected');
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
-    QUnit.test('When there is a measure attribute we use it to filter the graph and pivot', async function(assert) {
+    QUnit.test('When there is a measure attribute we use it to filter the graph and pivot', async function (assert) {
         assert.expect(2);
 
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
             data: this.data,
+            arch: '<dashboard>' +
+                    '<view type="graph"/>' +
+                    '<group>' +
+                        '<aggregate name="number" field="id" group_operator="count" measure="__count__"/>' +
+                        '<aggregate name="untaxed" field="untaxed"/>' +
+                    '</group>' +
+                    '<view type="pivot"/>' +
+                '</dashboard>',
             archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="graph"/>' +
-                        '<group>' +
-                            '<aggregate name="number" field="id" group_operator="count" measure="__count__"/>' +
-                            '<aggregate name="untaxed" field="untaxed"/>' +
-                        '</group>' +
-                        '<view type="pivot"/>' +
-                    '</dashboard>',
                 'test_report,false,graph': '<graph>' +
-                        '<field name="categ_id"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</graph>',
+                    '<field name="categ_id"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</graph>',
                 'test_report,false,pivot': '<pivot>' +
-                        '<field name="categ_id" type="row"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</pivot>',
-                'test_report,false,search': '<search></search>',
+                    '<field name="categ_id" type="row"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</pivot>',
             },
         });
 
-        await actionManager.doAction({
-            name: 'Dashboard',
-            res_model: 'test_report',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-
-        // Clicking on aggregate to activate count measure
-        await testUtils.dom.click(actionManager.$('.o_aggregate:first .o_value'));
-        assert.hasClass(actionManager.$('.o_graph_measures_list [data-field=\'__count__\']'),'selected',
+        // click on aggregate to activate count measure
+        await testUtils.dom.click(dashboard.$('.o_aggregate:first .o_value'));
+        assert.hasClass(dashboard.$('.o_graph_measures_list [data-field=\'__count__\']'), 'selected',
             'count measure should be selected in graph view');
-        assert.hasClass(actionManager.$('.o_pivot_measures_list [data-field=\'__count\']'),'selected',
+        assert.hasClass(dashboard.$('.o_pivot_measures_list [data-field=\'__count\']'), 'selected',
             'count measure should be selected in pivot view');
 
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
-    QUnit.test('When no measure is given in the aggregate we use the field as measure', async function(assert) {
+    QUnit.test('When no measure is given in the aggregate we use the field as measure', async function (assert) {
         assert.expect(2);
 
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
             data: this.data,
+            arch: '<dashboard>' +
+                    '<view type="graph"/>' +
+                    '<group>' +
+                        '<aggregate name="number" field="id" group_operator="count" measure="__count__"/>' +
+                        '<aggregate name="untaxed" field="untaxed"/>' +
+                    '</group>' +
+                    '<view type="pivot"/>' +
+                '</dashboard>',
             archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="graph"/>' +
-                        '<group>' +
-                            '<aggregate name="number" field="id" group_operator="count" measure="__count__"/>' +
-                            '<aggregate name="untaxed" field="untaxed"/>' +
-                        '</group>' +
-                        '<view type="pivot"/>' +
-                    '</dashboard>',
                 'test_report,false,graph': '<graph>' +
-                        '<field name="categ_id"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</graph>',
+                    '<field name="categ_id"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</graph>',
                 'test_report,false,pivot': '<pivot>' +
-                        '<field name="categ_id" type="row"/>' +
-                        '<field name="sold" type="measure"/>' +
-                    '</pivot>',
-                'test_report,false,search': '<search></search>',
+                    '<field name="categ_id" type="row"/>' +
+                    '<field name="sold" type="measure"/>' +
+                '</pivot>',
             },
         });
 
-        await actionManager.doAction({
-            name: 'Dashboard',
-            res_model: 'test_report',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-
-        // Clicking on aggregate to activate untaxed measure
-        await testUtils.dom.click(actionManager.$('.o_aggregate:nth(1) .o_value'));
-        assert.hasClass(actionManager.$('.o_graph_measures_list [data-field=\'untaxed\']'),'selected',
+        // click on aggregate to activate untaxed measure
+        await testUtils.dom.click(dashboard.$('.o_aggregate:nth(1) .o_value'));
+        assert.hasClass(dashboard.$('.o_graph_measures_list [data-field=\'untaxed\']'), 'selected',
             'untaxed measure should be selected in graph view');
-        assert.hasClass(actionManager.$('.o_pivot_measures_list [data-field=\'untaxed\']'),'selected',
+        assert.hasClass(dashboard.$('.o_pivot_measures_list [data-field=\'untaxed\']'), 'selected',
             'untaxed measure should be selected in pivot view');
 
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
     QUnit.test('changes in search view do not affect measure selection in cohort subview', async function (assert) {
@@ -2091,37 +2045,31 @@ QUnit.module('Views', {
         this.data.test_report.records[0].transformation_date = '2018-07-03';
         this.data.test_report.records[1].transformation_date = '2018-06-23';
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
             data: this.data,
+            arch: '<dashboard>' +
+                    '<view type="cohort" ref="some_xmlid"/>' +
+                '</dashboard>',
             archs: {
-                'test_report,false,dashboard': '<dashboard>' +
-                        '<view type="cohort" ref="some_xmlid"/>' +
-                        '</dashboard>',
                 'test_report,some_xmlid,cohort': '<cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week"/>',
-                'test_report,1,search': '<search>'+
+                'test_report,false,search': '<search>' +
                     '<field name="categ_id" string="Label"/>' +
                     '<filter string="categ" name="positive" domain="[(\'categ_id\', \'>=\', 0)]"/>' +
                 '</search>',
             },
         });
 
-        await actionManager.doAction({
-            res_model: 'test_report',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-            search_view_id: [1, 'search'],
-        });
-
-        await testUtils.dom.click($('.o_cohort_buttons button:first'));
-        await testUtils.dom.click($('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1));
-        assert.hasClass($('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1),'selected',
+        await testUtils.dom.click(dashboard.$('.o_cohort_buttons button:first'));
+        await testUtils.dom.click(dashboard.$('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1));
+        assert.hasClass(dashboard.$('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
-        await testUtils.dom.click($('.o_search_options button span.fa-filter'));
-        assert.hasClass($('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1),'selected',
+        await testUtils.dom.click(dashboard.$('.o_search_options button span.fa-filter'));
+        assert.hasClass(dashboard.$('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
 
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
     QUnit.test('render aggregate node using clickable attribute', async function (assert) {
@@ -2140,23 +2088,23 @@ QUnit.module('Views', {
                     '</group>' +
                   '</dashboard>',
             archs: {
-                'test_report,xml_id,graph' : '<graph>' +
+                'test_report,xml_id,graph': '<graph>' +
                             '<field name="categ_id"/>' +
                             '<field name="sold" type="measure"/>' +
                         '</graph>'
             },
         });
 
-        assert.hasClass(dashboard.$('div[name="a"]'),'o_clickable',
+        assert.hasClass(dashboard.$('div[name="a"]'), 'o_clickable',
                     "By default aggregate should be clickable");
-        assert.hasClass(dashboard.$('div[name="b"]'),'o_clickable',
+        assert.hasClass(dashboard.$('div[name="b"]'), 'o_clickable',
                     "Clickable = true aggregate should be clickable");
         assert.doesNotHaveClass(dashboard.$('div[name="c"]'), 'o_clickable',
                     "Clickable = false aggregate should not be clickable");
 
         await testUtils.dom.click(dashboard.$('div[name="c"]'));
-        assert.hasClass(dashboard.$('.o_graph_measures_list [data-field="sold"]'),'selected',
-                    "Measure on graph should not have changed")
+        assert.hasClass(dashboard.$('.o_graph_measures_list [data-field="sold"]'), 'selected',
+                    "Measure on graph should not have changed");
 
         dashboard.destroy();
 
@@ -2181,7 +2129,7 @@ QUnit.module('Views', {
                     '</dashboard>',
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
-                    return Promise.resolve([{'some_value' : 8}]);
+                    return Promise.resolve([{some_value: 8}]);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -2210,21 +2158,19 @@ QUnit.module('Views', {
 
         window.Date = function TestDate() {
             // month are indexed from 0!
-            return new RealDate(2017,2,22);
+            return new RealDate(2017, 2, 22);
         };
         window.Date.now = function Test() {
-            return new Date(2017,2,22);
+            return new Date(2017, 2, 22);
         };
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_time_range',
             data: this.data,
-            archs: {
-                'test_time_range,false,dashboard': '<dashboard>' +
-                        '<aggregate name="some_value" field="sold" string="Some Value" widget="test"/>' +
-                    '</dashboard>',
-                'test_time_range,false,search': '<search></search>',
-            },
+            arch: '<dashboard>' +
+                    '<aggregate name="some_value" field="sold" string="Some Value" widget="test"/>' +
+                '</dashboard>',
             mockRPC: function (route, args) {
                 var def = this._super.apply(this, arguments);
                 if (args.method === 'read_group') {
@@ -2272,27 +2218,22 @@ QUnit.module('Views', {
             },
         });
 
-        await actionManager.doAction({
-            res_model: 'test_time_range',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-        assert.containsOnce(actionManager, '.o_aggregate .o_value');
+        assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply time range with today
-        await testUtils.dom.click($('button.o_time_range_menu_button'));
-        $('.o_time_range_selector').val('today');
-        await testUtils.dom.click($('.o_apply_range'));
-        assert.containsOnce(actionManager, '.o_aggregate .o_value');
+        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
+        dashboard.$('.o_time_range_selector').val('today');
+        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply range with today and comparison with previous period
-        await testUtils.dom.click($('button.o_time_range_menu_button'));
-        await testUtils.dom.click($('.o_comparison_checkbox'));
-        await testUtils.dom.click($('.o_apply_range'));
-        assert.strictEqual(actionManager.$('.o_aggregate .o_variation').text(), "300%");
-        assert.strictEqual(actionManager.$('.o_aggregate .o_comparison').text(), "The value is 16.00 vs The value is 4.00");
+        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
+        await testUtils.dom.click(dashboard.$('.o_comparison_checkbox'));
+        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "300%");
+        assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "The value is 16.00 vs The value is 4.00");
 
-        actionManager.destroy();
+        dashboard.destroy();
         delete fieldRegistry.map.test;
         window.Date = RealDate;
     });
@@ -2300,42 +2241,29 @@ QUnit.module('Views', {
     QUnit.test('rendering of a cohort tag with comparison active', async function (assert) {
         assert.expect(1);
 
-        var unpatchDate = patchDate(2016,11,20, 1, 0, 0);
+        var unpatchDate = patchDate(2016, 11, 20, 1, 0, 0);
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_time_range',
             data: this.data,
+            arch: '<dashboard>' +
+                    '<view type="cohort" ref="some_xmlid"/>' +
+                '</dashboard>',
             archs: {
-                'test_time_range,false,dashboard': '<dashboard>' +
-                        '<view type="cohort" ref="some_xmlid"/>' +
-                    '</dashboard>',
                 'test_time_range,some_xmlid,cohort': '<cohort string="Cohort" date_start="date" date_stop="transformation_date" interval="week"/>',
-                'test_time_range,false,search': '<search></search>',
             },
         });
 
-
-        await actionManager.doAction({
-            res_model: 'test_time_range',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-
-        await testUtils.dom.click($('.o_time_range_menu_button'));
-        $('.o_search_options .dropdown-menu.o_time_range_menu').one('click', function (ev) {
-            // This handler is on the webClient
-            // But since the test suite doesn't have one
-            // We manually set it here
-            ev.stopPropagation();
-        });
-        await testUtils.dom.click($('.o_time_range_menu .custom-control-label'));
-        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await testUtils.dom.click(dashboard.$('.o_time_range_menu_button'));
+        await testUtils.dom.click(dashboard.$('.o_time_range_menu .o_comparison_checkbox'));
+        await testUtils.dom.click(dashboard.$('.o_time_range_menu .o_apply_range'));
 
         // The test should be modified and extended.
-        assert.strictEqual($('.o_cohort_view div.o_view_nocontent').length, 1);
+        assert.strictEqual(dashboard.$('.o_cohort_view div.o_view_nocontent').length, 1);
 
         unpatchDate();
-        actionManager.destroy();
+        dashboard.destroy();
     });
 
     QUnit.test('rendering of an aggregate with comparison active', async function (assert) {
@@ -2347,26 +2275,24 @@ QUnit.module('Views', {
 
         window.Date = function TestDate() {
             // month are indexed from 0!
-            return new RealDate(2017,2,22);
+            return new RealDate(2017, 2, 22);
         };
         window.Date.now = function Test() {
-            return new Date(2017,2,22);
+            return new Date(2017, 2, 22);
         };
 
-        // create an action manager to test the interactions with the search view
-        var actionManager = await createActionManager({
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_time_range',
             data: this.data,
-            archs: {
-                'test_time_range,false,dashboard': '<dashboard>' +
-                            '<group>' +
-                                '<aggregate name="some_value" field="sold" string="Some Value"/>' +
-                            '</group>' +
-                    '</dashboard>',
-                'test_time_range,false,search': '<search></search>',
-            },
+            arch: '<dashboard>' +
+                    '<group>' +
+                        '<aggregate name="some_value" field="sold" string="Some Value"/>' +
+                    '</group>' +
+                '</dashboard>',
             mockRPC: function (route, args) {
 
-                function _readGroup (expectedDomain,readGroupResult) {
+                function _readGroup(expectedDomain, readGroupResult) {
                     assert.deepEqual(args.kwargs.fields, ['some_value:sum(sold)'], "should read the correct field");
                     assert.deepEqual(args.kwargs.domain, expectedDomain,
                         "should send the correct domain");
@@ -2402,38 +2328,33 @@ QUnit.module('Views', {
             },
         });
 
-        await actionManager.doAction({
-            res_model: 'test_time_range',
-            type: 'ir.actions.act_window',
-            views: [[false, 'dashboard']],
-        });
-        assert.strictEqual(actionManager.$('.o_aggregate .o_value').text().trim(), "8.00");
+        assert.strictEqual(dashboard.$('.o_aggregate .o_value').text().trim(), "8.00");
 
         // Apply time range with today
-        await testUtils.dom.click($('button.o_time_range_menu_button'));
-        $('.o_time_range_selector').val('today');
-        await testUtils.dom.click($('.o_apply_range'));
-        assert.strictEqual(actionManager.$('.o_aggregate .o_value').text().trim(), "16.00");
-        assert.containsOnce(actionManager, '.o_aggregate .o_value');
+        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
+        dashboard.$('.o_time_range_selector').val('today');
+        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        assert.strictEqual(dashboard.$('.o_aggregate .o_value').text().trim(), "16.00");
+        assert.containsOnce(dashboard, '.o_aggregate .o_value');
 
         // Apply range with today and comparison with previous period
-        await testUtils.dom.click($('button.o_time_range_menu_button'));
-        await testUtils.dom.click($('.o_comparison_checkbox'));
-        await testUtils.dom.click($('.o_apply_range'));
-        assert.strictEqual(actionManager.$('.o_aggregate .o_variation').text(), "300%");
-        assert.hasClass(actionManager.$('.o_aggregate'), 'border-success');
-        assert.strictEqual(actionManager.$('.o_aggregate .o_comparison').text(), "16.00 vs 4.00");
+        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
+        await testUtils.dom.click(dashboard.$('.o_comparison_checkbox'));
+        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "300%");
+        assert.hasClass(dashboard.$('.o_aggregate'), 'border-success');
+        assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "16.00 vs 4.00");
 
         // Apply range with last week and comparison with last year
-        await testUtils.dom.click($('button.o_time_range_menu_button'));
-        $('.o_time_range_selector').val('last_week');
-        $('.o_comparison_time_range_selector').val('previous_year');
-        await testUtils.dom.click($('.o_apply_range'));
-        assert.strictEqual(actionManager.$('.o_aggregate .o_variation').text(), "-75%");
-        assert.hasClass(actionManager.$('.o_aggregate'), 'border-danger');
-        assert.strictEqual(actionManager.$('.o_aggregate .o_comparison').text(), "4.00 vs 16.00");
+        await testUtils.dom.click(dashboard.$('button.o_time_range_menu_button'));
+        dashboard.$('.o_time_range_selector').val('last_week');
+        dashboard.$('.o_comparison_time_range_selector').val('previous_year');
+        await testUtils.dom.click(dashboard.$('.o_apply_range'));
+        assert.strictEqual(dashboard.$('.o_aggregate .o_variation').text(), "-75%");
+        assert.hasClass(dashboard.$('.o_aggregate'), 'border-danger');
+        assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "4.00 vs 16.00");
 
-        actionManager.destroy();
+        dashboard.destroy();
         window.Date = RealDate;
     });
 
@@ -2443,8 +2364,8 @@ QUnit.module('Views', {
         var readGroupNo = -3;
         var results = [
             "0.02", "0.15", "1.52", "15.23", "152.35",
-            "1.52k", "15.24k", "152.35k", "1.52M" , "15.23M",
-            "152.35M" , "1.52G"];
+            "1.52k", "15.24k", "152.35k", "1.52M", "15.23M",
+            "152.35M", "1.52G"];
 
         var dashboard = await createView({
             View: DashboardView,
@@ -2458,7 +2379,7 @@ QUnit.module('Views', {
             mockRPC: function (route, args) {
                 if (args.method === 'read_group') {
                     readGroupNo++;
-                    return Promise.resolve([{sold: Math.pow(10,readGroupNo) * 1.52346}]);
+                    return Promise.resolve([{sold: Math.pow(10, readGroupNo) * 1.52346}]);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -2470,7 +2391,7 @@ QUnit.module('Views', {
         for (var i = 0; i < 11; i++) {
             await dashboard.update({});
             assert.strictEqual(dashboard.$('.o_value').text(), results.shift(),
-            "should correctly display the aggregate's value");
+                "should correctly display the aggregate's value");
         }
 
         dashboard.destroy();

@@ -34,6 +34,7 @@ KanbanRecord.include({
 });
 
 var BackArrow = FieldInteger.extend({
+    description: "",
     events: {
         'click': '_onClick',
     },

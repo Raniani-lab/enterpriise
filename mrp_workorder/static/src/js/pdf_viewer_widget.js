@@ -16,6 +16,7 @@ var FieldPdfViewer = basicFields.FieldPdfViewer;
  */
 
 var FieldPdfViewerNoReload = FieldPdfViewer.extend({
+    description: "",
     supportedFieldTypes: ['binary'],
     template: 'FieldPdfViewer',
     formFixedHeight: '250px',

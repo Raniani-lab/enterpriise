@@ -13,6 +13,7 @@ var field_registry = require('web.field_registry');
 var relational_fields = require('web.relational_fields');
 
 var UpgradeBoolean = basic_fields.FieldBoolean.extend({
+    description: "",
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -26,8 +27,12 @@ var UpgradeBoolean = basic_fields.FieldBoolean.extend({
     renderWithLabel: function () {},
 });
 
+var UpgradeRadio = relational_fields.FieldRadio.extend({
+    description: "",
+});
+
 field_registry
     .add('upgrade_boolean', UpgradeBoolean)
-    .add('upgrade_radio', relational_fields.FieldRadio);
+    .add('upgrade_radio', UpgradeRadio);
 
 });

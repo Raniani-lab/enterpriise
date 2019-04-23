@@ -297,7 +297,6 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
                 self.tags = result.tags;
                 self.companies = result.companies;
                 self.has_mrr = result.has_mrr;
-                self.has_def_revenues = result.has_def_revenues;
                 self.has_template = result.has_template;
                 self.sales_team = result.sales_team;
         });
@@ -307,7 +306,6 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
         this.$main_dashboard = $(QWeb.render("sale_subscription_dashboard.dashboard", {
             has_mrr: this.has_mrr,
             has_template: this.has_template,
-            has_def_revenues: this.has_def_revenues,
             stat_types: _.sortBy(_.values(this.stat_types), 'prior'),
             forecast_stat_types:  _.sortBy(_.values(this.forecast_stat_types), 'prior'),
             start_date: this.start_date,
@@ -593,8 +591,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
         // To get the same numbers as in the dashboard, we need to give the filters to the backend
         if (this.selected_stat === 'mrr') {
             additional_context = {
-                'search_default_asset_end_date': moment(this.end_date).toDate(),
-                'search_default_asset_start_date': moment(this.start_date).toDate(),
+                'search_default_subscription_end_date': moment(this.end_date).toDate(),
+                'search_default_subscription_start_date': moment(this.start_date).toDate(),
                 // TODO: add contract_ids as another filter
             };
             view_xmlid = "sale_subscription_dashboard.action_invoice_line_entries_report";

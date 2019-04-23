@@ -51,23 +51,23 @@ class SalemanDashboard(http.Controller):
         ]
 
         starting_invoice_line_ids = request.env['account.invoice.line'].search(domain + [
-            ('asset_start_date', '>=', start_date),
-            ('asset_start_date', '<=', end_date),
+            ('subscription_start_date', '>=', start_date),
+            ('subscription_start_date', '<=', end_date),
         ], order='subscription_id')
         stopping_invoice_lines_ids = request.env['account.invoice.line'].search(domain + [
-            ('asset_end_date', '>=', start_date),
-            ('asset_end_date', '<=', end_date),
+            ('subscription_end_date', '>=', start_date),
+            ('subscription_end_date', '<=', end_date),
         ], order='subscription_id')
 
         # CANCELLED ONES
         for contract, previous_il_ids_it in groupby(stopping_invoice_lines_ids, lambda il: il.subscription_id):
             previous_il_ids = list(previous_il_ids_it)
-            previous_mrr = sum([x['asset_mrr'] for x in previous_il_ids])
+            previous_mrr = sum([x['subscription_mrr'] for x in previous_il_ids])
             previous_il_id = previous_il_ids[0]
 
             next_il_ids = request.env['account.invoice.line'].search([
-                ('asset_start_date', '>=', previous_il_id.asset_end_date),
-                ('asset_start_date', '<', previous_il_id.asset_end_date + relativedelta(months=+1)),
+                ('subscription_start_date', '>=', previous_il_id.subscription_end_date),
+                ('subscription_start_date', '<', previous_il_id.subscription_end_date + relativedelta(months=+1)),
                 ('subscription_id', '=', previous_il_id.subscription_id.id)
             ])
             if not next_il_ids:
@@ -86,7 +86,7 @@ class SalemanDashboard(http.Controller):
         # UP & DOWN & NEW ONES
         for contract, next_il_ids_it in groupby(starting_invoice_line_ids, lambda il: il.subscription_id):
             next_il_ids = list(next_il_ids_it)
-            next_mrr = sum([x['asset_mrr'] for x in next_il_ids])
+            next_mrr = sum([x['subscription_mrr'] for x in next_il_ids])
             next_il_id = next_il_ids[0]
 
             new_contract_modification = {
@@ -97,13 +97,13 @@ class SalemanDashboard(http.Controller):
 
             # Was there any invoice_line in the last 30 days for this subscription ?
             previous_il_ids = request.env['account.invoice.line'].search([
-                ('asset_end_date', '<=', next_il_id.asset_start_date),
-                ('asset_end_date', '>', next_il_id.asset_start_date - relativedelta(months=+1)),
+                ('subscription_end_date', '<=', next_il_id.subscription_start_date),
+                ('subscription_end_date', '>', next_il_id.subscription_start_date - relativedelta(months=+1)),
                 ('subscription_id', '=', next_il_id.subscription_id.id)]
             )
             # Careful : what happened if invoice_lines from multiple invoices during last 30 days ?
             if previous_il_ids:
-                previous_mrr = sum([x['asset_mrr'] for x in previous_il_ids.read(['asset_mrr'])])
+                previous_mrr = sum([x['subscription_mrr'] for x in previous_il_ids.read(['subscription_mrr'])])
 
                 new_contract_modification['previous_mrr'] = str(previous_mrr)
                 new_contract_modification['current_mrr'] = str(next_mrr)
@@ -126,8 +126,8 @@ class SalemanDashboard(http.Controller):
                 new_contract_modification['diff'] = next_mrr
 
                 active_invoice_line_ids = request.env['account.invoice.line'].search([
-                    ('asset_start_date', '<', next_il_id.asset_start_date),
-                    ('asset_end_date', '>', next_il_id.asset_start_date),
+                    ('subscription_start_date', '<', next_il_id.subscription_start_date),
+                    ('subscription_end_date', '>', next_il_id.subscription_start_date),
                     ('subscription_id', '=', next_il_id.subscription_id.id)]
                 )
                 if active_invoice_line_ids:
@@ -156,7 +156,7 @@ class SalemanDashboard(http.Controller):
         ])
 
         for invoice_id in current_invoice_ids:
-            invoice_nrr = sum([x.price_subtotal_signed for x in invoice_id.invoice_line_ids if x.asset_mrr == 0])
+            invoice_nrr = sum([x.price_subtotal_signed for x in invoice_id.invoice_line_ids if x.subscription_mrr == 0])
             if invoice_nrr > 0:
                 total_nrr += invoice_nrr
                 invoice_line = invoice_id.invoice_line_ids[0]

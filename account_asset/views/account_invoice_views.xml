@@ -1,16 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!-- Add "Asset Category" to supplier invoices -->
-    <record model="ir.ui.view" id="view_invoice_asset_category">
-        <field name="name">account.invoice.supplier.form</field>
+    <record id="view_invoice_supplier_form_asset_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_supplier_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="before">
-                <field string="Asset Category" name="asset_category_id" domain="[('type','=','purchase')]" context="{'default_type':'purchase'}"/>
+            <xpath expr="//sheet/div[1]" position="before">
+                <field name="number_asset_ids" invisible="1"/>
+                <field name="number_deferred_revenue_ids" invisible="1"/>
+                <field name="draft_asset_ids" invisible="1"/>
+                <field name="draft_deferred_revenue_ids" invisible="1"/>
+                <div class="oe_button_box" attrs="{'invisible': [('number_asset_ids', '=', 0), ('number_deferred_revenue_ids', '=', 0)]}">
+                    <button name="action_open_asset_ids"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-id-card-o"
+                        attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', True)]}">
+                        <field string="Asset(s)" name="number_asset_ids" widget="statinfo"/>
+                    </button>
+                    <button name="action_open_asset_ids"
+                        type="object"
+                        class="oe_stat_button text-danger"
+                        icon="fa-id-card-o"
+                        attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', False)]}">
+                        <field string="Asset(s)" name="number_asset_ids" widget="statinfo"/>
+                    </button>
+                    <button name="action_open_deferred_revenue_ids"
+                        class="oe_stat_button"
+                        icon="fa-id-card-o"
+                        type="object"
+                        attrs="{'invisible': ['|', ('number_deferred_revenue_ids', '=', 0), ('draft_deferred_revenue_ids', '=', True)]}">
+                        <field string="Deferred Revenue(s)" name="number_deferred_revenue_ids" widget="statinfo"/>
+                    </button>
+                    <button name="action_open_deferred_revenue_ids"
+                        class="oe_stat_button text-danger"
+                        icon="fa-id-card-o"
+                        type="object"
+                        attrs="{'invisible': ['|', ('number_deferred_revenue_ids', '=', 0), ('draft_deferred_revenue_ids', '=', False)]}">
+                        <field string="Deferred Revenue(s)" name="number_deferred_revenue_ids" widget="statinfo"/>
+                    </button>
+                </div>
             </xpath>
         </field>
     </record>
 
+    <record id="view_invoice_form_asset_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[1]" position="before">
+                <field name="number_asset_ids" invisible="1"/>
+                <field name="number_deferred_revenue_ids" invisible="1"/>
+                <field name="draft_asset_ids" invisible="1"/>
+                <field name="draft_deferred_revenue_ids" invisible="1"/>
+                <div class="oe_button_box" attrs="{'invisible': [('number_asset_ids', '=', 0), ('number_deferred_revenue_ids', '=', 0)]}">
+                    <button name="action_open_asset_ids"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-id-card-o"
+                        attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', True)]}">
+                        <field string="Asset(s)" name="number_asset_ids" widget="statinfo"/>
+                    </button>
+                    <button name="action_open_asset_ids"
+                        type="object"
+                        class="oe_stat_button text-danger"
+                        icon="fa-id-card-o"
+                        attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', False)]}">
+                        <field string="Asset(s)" name="number_asset_ids" widget="statinfo"/>
+                    </button>
+                    <button name="action_open_deferred_revenue_ids"
+                        class="oe_stat_button"
+                        icon="fa-id-card-o"
+                        type="object"
+                        attrs="{'invisible': ['|', ('number_deferred_revenue_ids', '=', 0), ('draft_deferred_revenue_ids', '=', True)]}">
+                        <field string="Deferred Revenue(s)" name="number_deferred_revenue_ids" widget="statinfo"/>
+                    </button>
+                    <button name="action_open_deferred_revenue_ids"
+                        class="oe_stat_button text-danger"
+                        icon="fa-id-card-o"
+                        type="object"
+                        attrs="{'invisible': ['|', ('number_deferred_revenue_ids', '=', 0), ('draft_deferred_revenue_ids', '=', False)]}">
+                        <field string="Deferred Revenue(s)" name="number_deferred_revenue_ids" widget="statinfo"/>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
 </odoo>

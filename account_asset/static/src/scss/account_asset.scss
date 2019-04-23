@@ -1,9 +1,19 @@
-.o_web_client .o_deprec_lines_toggler {
-    color: theme-color('danger');
-    &.o_is_posted {
-        color: theme-color('success');
+.o_radio_hide_bullet {
+    label::before {
+        display: none;
     }
-    &.o_unposted {
-        color: theme-color('warning');
+    label {
+        @extend .btn;
+        @extend .btn-secondary;
+    }
+    .custom-control {
+        @extend .pl-0;
+        @extend .mr-0;
+    }
+    .o_field_radio.o_horizontal.o_field_widget {
+        margin-bottom: 1px;
+    }
+    label::after {
+        display: none;
     }
 }

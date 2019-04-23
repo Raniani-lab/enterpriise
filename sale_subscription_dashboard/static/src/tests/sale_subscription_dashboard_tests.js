@@ -52,7 +52,6 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                         name: "YourCompany"
                     },
                     has_mrr: true,
-                    has_def_revenues: true,
                     has_template: true
                 },
                 compute_stats_graph: {

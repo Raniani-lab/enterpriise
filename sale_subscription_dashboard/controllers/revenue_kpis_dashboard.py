@@ -41,8 +41,7 @@ class RevenueKPIsDashboard(http.Controller):
             'tags': request.env['account.analytic.tag'].search_read([], fields=['name']),
             'companies': request.env['res.company'].search_read([], fields=['name']),
             'has_template': bool(request.env['sale.subscription.template'].search_count([])),
-            'has_def_revenues': bool(request.env['sale.subscription.template'].search([]).mapped('template_asset_category_id')),
-            'has_mrr': bool(request.env['account.invoice.line'].search_count([('asset_start_date', '!=', False)])),
+            'has_mrr': bool(request.env['account.invoice.line'].search_count([('subscription_start_date', '!=', False)])),
             'sales_team': request.env['crm.team'].search_read([], fields=['name'])
         }
 
@@ -125,8 +124,8 @@ class RevenueKPIsDashboard(http.Controller):
 
         for template in template_ids:
             lines_domain = [
-                ('asset_start_date', '<=', end_date),
-                ('asset_end_date', '>=', end_date),
+                ('subscription_start_date', '<=', end_date),
+                ('subscription_end_date', '>=', end_date),
                 ('subscription_id.template_id', '=', template.id),
             ]
             if filters.get('company_ids'):

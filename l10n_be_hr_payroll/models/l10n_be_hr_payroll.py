@@ -148,7 +148,7 @@ class HrContract(models.Model):
         'meal_voucher_paid_by_employer')
     def _compute_final_yearly_costs(self):
         for contract in self:
-            contract.final_yearly_costs = contract._get_advantages_costs() + (13.92 + 13.0 * 0.3507) * contract.wage
+            contract.final_yearly_costs = contract._get_advantages_costs() + (13.92 + 13.0 * EMPLOYER_ONSS) * contract.wage
 
     @api.onchange('final_yearly_costs')
     def _onchange_final_yearly_costs(self):

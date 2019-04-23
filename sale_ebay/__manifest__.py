@@ -41,7 +41,6 @@ Key Features
       'views/res_config_settings_views.xml',
       'views/res_partner_views.xml',
       'views/stock_picking_views.xml',
-      'data/mail_template_data.xml',
       'data/ir_cron_data.xml',
       'data/sale_ebay_data.xml',
       'data/product_data.xml',

@@ -55,6 +55,21 @@ var DocumentsSearchPanel = SearchPanel.extend({
             return filter.values[tagId];
         });
     },
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Override to select the first value instead of 'All' by default.
+     *
+     * @override
+     * @private
+     */
+    _getCategoryDefaultValue: function (category, validValues) {
+        var value = this._super.apply(this, arguments);
+        return _.contains(validValues, value) ? value : validValues[0];
+    },
 });
 
 return DocumentsSearchPanel;

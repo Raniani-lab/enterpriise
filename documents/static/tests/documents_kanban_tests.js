@@ -244,7 +244,7 @@ QUnit.module('DocumentsKanbanView', {
     },
 }, function () {
     QUnit.test('basic rendering', async function (assert) {
-        assert.expect(19);
+        assert.expect(20);
 
         var kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -257,10 +257,12 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        assert.strictEqual(kanban.$('header.active > label > span').text().trim(), 'Folder1',
+            "the first selected record should be the first folder")
         assert.containsOnce(kanban, '.o_search_panel_category_value:contains(All) header',
             "Should only have a single all selector");
 
-        testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
 
         assert.ok(kanban.$buttons.find('.o_documents_kanban_upload').is(':disabled'),
             "the upload button should be disabled on global view");
@@ -682,7 +684,7 @@ QUnit.module('DocumentsKanbanView', {
                         // as upload has been done ($.ajax() call cannot be mocked),
                         // attachment_id is unknown.
                         attachment_id: args.args[0][0].attachment_id,
-                        folder_id: false,
+                        folder_id: 1,
                         name: 'file.txt',
                         tag_ids: [[6, 0, []]]
                     }],
@@ -2379,6 +2381,8 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
+
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should have 4 related models");
 
@@ -2417,6 +2421,8 @@ QUnit.module('DocumentsKanbanView', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
+
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
 
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should have 4 related models");
@@ -2457,6 +2463,8 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
+
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_value[data-value-id=task]').text().replace(/\s/g, ""),
             'Task2', "should display the correct number of records");
@@ -2493,7 +2501,7 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document selector: selected tags are reset when switching between folders', async function (assert) {
-        assert.expect(7);
+        assert.expect(6);
 
         var kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -2512,7 +2520,6 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         // filter on records having tag Draft
         await testUtils.dom.click(kanban.$('.o_search_panel_filter_value:contains(Draft) input'));
 
@@ -2526,7 +2533,6 @@ QUnit.module('DocumentsKanbanView', {
             "tag selector should not be checked anymore");
 
         assert.verifySteps([
-            '[]',
             '[["folder_id","=",1]]',
             '[["folder_id","=",1],["tag_ids","in",[2]]]',
             '[["folder_id","=",2],["tag_ids","in",[2]]]',

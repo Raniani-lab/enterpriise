@@ -253,7 +253,7 @@ class AccountInvoice(models.Model):
                     'partner': record.get_validation('supplier'),
                     'VAT_Number': record.get_validation('VAT_Number'),
                     'currency': record.get_validation('currency'),
-                    'merged_lines': not (self.env['ir.config_parameter'].get_param('account_invoice_extract.no_merging_lines_by_taxes') != 'False'),
+                    'merged_lines': not (self.env['ir.config_parameter'].sudo().get_param('account_invoice_extract.no_merging_lines_by_taxes') != 'False'),
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
                 params = {
@@ -448,7 +448,7 @@ class AccountInvoice(models.Model):
         self.ensure_one()
         invoice_lines_to_create = []
         taxes_found = {}
-        if not self.env['ir.config_parameter'].get_param('account_invoice_extract.no_merging_lines_by_taxes'):
+        if not self.env['ir.config_parameter'].sudo().get_param('account_invoice_extract.no_merging_lines_by_taxes'):
             aggregated_lines = {}
             for il in invoice_lines:
                 description = il['description']['selected_value']['content'] if 'description' in il else None

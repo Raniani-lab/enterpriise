@@ -237,7 +237,7 @@ class MrpProductionWorkcenterLine(models.Model):
         - third: Pass to the next check or return a failure message.
         """
         self.ensure_one()
-        rounding = self.component_uom_id.rounding
+        rounding = self.product_uom_id.rounding
         if float_compare(self.qty_producing, 0, precision_rounding=rounding) <= 0\
                 or float_compare(self.qty_producing, self.qty_remaining, precision_rounding=rounding) > 0:
             raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))

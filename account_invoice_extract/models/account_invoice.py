@@ -143,7 +143,7 @@ class AccountInvoice(models.Model):
                                 record.extract_state = 'error_status'
                         except AccessError:
                             record.extract_state = 'error_status'
-                            self.extract_status_code = ERROR_NO_CONNECTION
+                            record.extract_status_code = ERROR_NO_CONNECTION
         return res
 
     def retry_ocr(self):

@@ -622,6 +622,7 @@ var transfer_call = function (parent, action) {
 
 core.action_registry.add("transfer_call", transfer_call);
 var VoipTopButton = Widget.extend({
+    name: 'voip',
     template:'voip.switch_panel_top_button',
     events: {
         "click": "_onToggleDisplay",

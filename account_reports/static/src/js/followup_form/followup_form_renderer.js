@@ -6,8 +6,10 @@ var datepicker = require('web.datepicker');
 var Dialog = require('web.Dialog');
 var dom = require('web.dom');
 var FormRenderer = require('web.FormRenderer');
+var SystrayMenu = require('web.SystrayMenu');
 
 var QWeb = core.qweb;
+var _t = core._t;
 
 var FollowupFormRenderer = FormRenderer.extend({
     events: _.extend({}, FormRenderer.prototype.events, {
@@ -19,6 +21,7 @@ var FollowupFormRenderer = FormRenderer.extend({
         'click .o_account_reports_summary': '_onEditSummary',
         'click .js_account_report_save_summary': '_onSaveSummary',
         'click [action]': '_onTriggerAction',
+        'click .o_account_reports_contact_info_call': '_onClickCall',
     }),
     /**
      * @override
@@ -228,6 +231,28 @@ var FollowupFormRenderer = FormRenderer.extend({
         }
         this.trigger_up('on_change_trust', {
             newTrust: newTrust
+        });
+    },
+    /**
+     * When the user click on phone, trigger an event to make voip call if voip installed.
+     *
+     * @private
+     * @param {MouseEvent} event
+     */
+    _onClickCall: function (ev) {
+        var hasVoip = _.find(SystrayMenu.Items, function (SystrayMenuItem) {
+            return SystrayMenuItem.prototype.name === 'voip';
+        });
+        if (!hasVoip) {
+            return;
+        }
+        ev.preventDefault();
+        var $el = $(ev.currentTarget);
+        this.do_notify(_t('Start Calling'), _t('Calling') + ' ' + $el.data('number'));
+        this.trigger_up('voip_call', {
+            resModel: $el.data('model'),
+            resId: $el.data('id'),
+            number: $el.data('number').toString(),
         });
     },
     /**

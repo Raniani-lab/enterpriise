@@ -335,6 +335,14 @@ var IoTLongpolling = BusService.extend({
         return Promise.resolve();
     },
     /**
+     * Stop listening to iot device with id `device_id`
+     * @param {string} iot_ip 
+     * @param {string} device_id 
+     */
+    removeListener: function(iot_ip, device_id) {
+        delete this._listeners[iot_ip].devices[device_id];
+    },
+    /**
      * Execute a action on device_id
      * Action depend of driver that support the device
      *
@@ -646,6 +654,12 @@ var DeviceProxy = core.Class.extend({
      */
     add_listener: function(callback) {
         return this._iot_longpolling.addListener(this._iot_ip, [this._identifier, ], callback);
+    },
+    /**
+     * Stop listening the device
+     */
+    remove_listener: function() {
+        return this._iot_longpolling.removeListener(this._iot_ip, this._identifier);
     },
 });
 

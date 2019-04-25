@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_iot/static/src/js/models.js"></script>
+            <script type="text/javascript" src="/pos_iot/static/src/js/payment.js"></script>
+            <link rel="stylesheet" href="/pos_iot/static/src/css/pos.css"/>
+        </xpath>
+    </template>
+
     <record id="pos_iot_config_view_form" model="ir.ui.view">
         <field name="name">pos.iot.config.form.view</field>
         <field name="model">pos.config</field>

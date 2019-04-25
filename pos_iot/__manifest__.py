@@ -13,8 +13,10 @@ It links the module
 """,
     'data': [
         'views/pos_config_views.xml',
-        'views/iot_views.xml', ],
+        'views/account_journal_views.xml',
+    ],
     'depends': ['point_of_sale', 'iot'],
+    'qweb': ['static/src/xml/pos.xml'],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

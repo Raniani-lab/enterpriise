@@ -43,6 +43,7 @@ class AccountMove(models.Model):
     def _auto_create_asset(self):
         create_list = []
         invoice_list = []
+        auto_validate = []
         for move in self:
             for move_line in move.line_ids:
                 if move_line.invoice_id and (move_line.account_id.can_create_asset or move_line.account_id.can_create_deferred_revenue) and move_line.account_id.create_asset != 'no':
@@ -58,15 +59,17 @@ class AccountMove(models.Model):
                         vals.update({
                             'model_id': model_id.id,
                         })
+                    auto_validate.append(move_line.account_id.create_asset == 'validate')
                     invoice_list.append(move_line.invoice_id)
                     create_list.append(vals)
 
         assets = self.env['account.asset'].create(create_list)
-        for asset, vals, invoice in zip(assets, create_list, invoice_list):
+        for asset, vals, invoice, validate in zip(assets, create_list, invoice_list, auto_validate):
             if 'model_id' in vals:
                 asset._onchange_model_id()
                 asset._onchange_method_period()
-                asset.validate()
+                if validate:
+                    asset.validate()
             if invoice:
                 msg = _('Asset created from invoice: <a href="/web#id={id}&model=account.invoice">{name}</a>').format(id=invoice.id, name=invoice.number)
                 asset.message_post(body=msg)

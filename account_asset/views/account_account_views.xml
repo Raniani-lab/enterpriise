@@ -16,10 +16,10 @@
                 </td>
                 <field name="create_asset" attrs="{'invisible': [('can_create_asset', '=', False), ('can_create_deferred_revenue', '=', False)]}" nolabel="1" widget="radio"/>
                 <td class="o_td_label">
-                    <label for="asset_model" string="Asset Model" attrs="{'invisible': ['|', ('create_asset', '!=', 'validate'), ('can_create_asset', '=', False)]}"/>
-                    <label for="asset_model" string="Deferred Revenue Model" attrs="{'invisible': ['|', ('create_asset', '!=', 'validate'), ('can_create_deferred_revenue', '=', False)]}"/>
+                    <label for="asset_model" string="Asset Model" attrs="{'invisible': ['|', ('create_asset', '=', 'no'), ('can_create_asset', '=', False)]}"/>
+                    <label for="asset_model" string="Deferred Revenue Model" attrs="{'invisible': ['|', ('create_asset', '=', 'no'), ('can_create_deferred_revenue', '=', False)]}"/>
                 </td>
-                <field name="asset_model" domain="[('state', '=', 'model')]" attrs="{'invisible': ['|', ('create_asset', '!=', 'validate'), '&amp;', ('can_create_asset', '=', False), ('can_create_deferred_revenue', '=', False)], 'required': ['&amp;', ('create_asset', '=', 'validate'), '|', ('can_create_asset', '=', True), ('can_create_deferred_revenue', '=', True)]}" nolabel="1" context="{'default_state': 'model', 'form_view_ref': form_view_ref, 'default_asset_type': asset_type}"/>
+                <field name="asset_model" domain="[('state', '=', 'model')]" attrs="{'invisible': ['|', ('create_asset', '=', 'no'), '&amp;', ('can_create_asset', '=', False), ('can_create_deferred_revenue', '=', False)], 'required': ['&amp;', ('create_asset', '=', 'validate'), '|', ('can_create_asset', '=', True), ('can_create_deferred_revenue', '=', True)]}" nolabel="1" context="{'default_state': 'model', 'form_view_ref': form_view_ref, 'default_asset_type': asset_type}"/>
             </field>
         </field>
     </record>

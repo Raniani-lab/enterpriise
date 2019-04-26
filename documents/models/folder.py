@@ -28,11 +28,11 @@ class DocumentFolder(models.Model):
         return name_array
 
     company_id = fields.Many2one('res.company', 'Company',
-                                 help="This workspace will only be available for the selected company")
+                                 help="This workspace will only be available to the selected company")
     parent_folder_id = fields.Many2one('documents.folder',
                                        string="Parent Workspace",
                                        ondelete="cascade",
-                                       help="Tag categories from parent workspaces will be shared to their sub workspaces")
+                                       help="A workspace will inherit the tags of its parent workspace")
     name = fields.Char(required=True, translate=True)
     description = fields.Html(string="Description")
     children_folder_ids = fields.One2many('documents.folder', 'parent_folder_id', string="Sub workspaces")
@@ -41,10 +41,13 @@ class DocumentFolder(models.Model):
     share_link_ids = fields.One2many('documents.share', 'folder_id', string="Share Links")
     facet_ids = fields.One2many('documents.facet', 'folder_id',
                                 string="Tag Categories",
-                                help="Select the tag categories to be used")
+                                help="Tag categories defined for this workspace")
     group_ids = fields.Many2many('res.groups', string="Access Groups",
-                                 help="This folder will only be available for the selected user groups")
+                                 help="This workspace will only be available to the selected user groups")
+
+    #stat buttons
     action_count = fields.Integer('Action Count', compute='_compute_action_count')
+    document_count = fields.Integer('Document Count', compute='_compute_document_count')
 
     @api.multi
     def _compute_action_count(self):
@@ -69,4 +72,29 @@ class DocumentFolder(models.Model):
             'view_mode': 'tree,form',
             'view_type': 'list',
             'context': "{'default_domain_folder_id': %s}" % self.id
+        }
+
+    @api.multi
+    def _compute_document_count(self):
+        read_group_var = self.env['documents.document'].read_group(
+            [('folder_id', 'in', self.ids)],
+            fields=['folder_id'],
+            groupby=['folder_id'])
+
+        document_count_dict = dict((d['folder_id'][0], d['folder_id_count']) for d in read_group_var)
+        for record in self:
+            record.document_count = document_count_dict.get(record.id, 0)
+
+    @api.multi
+    def action_see_documents(self):
+        domain = [('folder_id', '=', self.id)]
+        return {
+            'name': _('Documents'),
+            'domain': domain,
+            'res_model': 'documents.document',
+            'type': 'ir.actions.act_window',
+            'views': [(False, 'list'), (False, 'form')],
+            'view_mode': 'tree,form',
+            'view_type': 'list',
+            'context': "{'default_folder_id': %s}" % self.id
         }

@@ -5,13 +5,13 @@ from odoo.osv import expression
 
 class TagsCategories(models.Model):
     _name = "documents.facet"
-    _description = "Facet"
+    _description = "Category"
     _order = "sequence, name"
 
     folder_id = fields.Many2one('documents.folder', string="Workspace", ondelete="cascade")
     name = fields.Char(required=True)
     tag_ids = fields.One2many('documents.tag', 'facet_id')
-    tooltip = fields.Char(help="hover text description", string="Tooltip")
+    tooltip = fields.Char(help="Text shown when hovering on this tag category or its tags", string="Tooltip")
     sequence = fields.Integer('Sequence', default=10)
 
     _sql_constraints = [
@@ -28,13 +28,6 @@ class Tags(models.Model):
     facet_id = fields.Many2one('documents.facet', ondelete='cascade', required=True)
     name = fields.Char(required=True, translate=True)
     sequence = fields.Integer('Sequence', default=10)
-
-    @api.multi
-    def name_get(self):
-        name_array = []
-        for record in self:
-            name_array.append((record.id, "%s > %s" % (record.facet_id.name, record.name)))
-        return name_array
 
     _sql_constraints = [
         ('facet_name_unique', 'unique (facet_id, name)', "Tag already exists for this facet"),

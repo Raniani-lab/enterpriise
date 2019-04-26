@@ -14,11 +14,6 @@ class TestTags(TransactionCase):
         self.assertEqual(tag.name, 'Foo', 'should have the right name')
         self.assertTrue(tag.sequence > 0, 'should have a non-zero sequence')
 
-    def test_name_get(self):
-        facet_assets = self.env['documents.facet'].browse(self.ref('documents.documents_marketing_assets'))
-        tag_assets_ads = self.env['documents.tag'].browse(self.ref('documents.documents_marketing_assets_ads'))
-        self.assertEqual(tag_assets_ads.name_get(), [(tag_assets_ads.id, '%s > %s' % (facet_assets.name, tag_assets_ads.name))], 'should return formatted name containing facet name')
-
     def test_get_tags(self):
         folder_id = self.ref('documents.documents_marketing_folder')
         facet_assets = self.env['documents.facet'].browse(self.ref('documents.documents_marketing_assets'))

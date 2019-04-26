@@ -51,6 +51,7 @@ var DocumentsInspector = Widget.extend({
 
         this.nbDocuments = params.state.count;
         this.size = params.state.size;
+        this.focusTagInput = params.focusTagInput;
         this.currentFolder = _.findWhere(params.folders, {id: params.folderId});
 
         this.records = [];
@@ -281,7 +282,9 @@ var DocumentsInspector = Widget.extend({
             this.$tagInput.autocomplete({
                 delay: 0,
                 minLength: 0,
+                autoFocus: true,
                 select: function (event, ui) {
+                    self.trigger_up('set_focus_tag_input');
                     self._saveMulti({
                         tag_ids: {
                             operation: 'ADD_M2M',
@@ -298,6 +301,9 @@ var DocumentsInspector = Widget.extend({
             $tags.closest('.o_inspector_custom_field').toggleClass('o_disabled', disabled);
 
             this.$tagInput.appendTo($tags);
+            if (this.focusTagInput) {
+                this.$tagInput.focus();
+            }
         }
     },
     /**

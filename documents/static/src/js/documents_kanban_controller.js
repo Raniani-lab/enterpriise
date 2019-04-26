@@ -38,6 +38,7 @@ var DocumentsKanbanController = KanbanController.extend({
         save_multi: '_onSaveMulti',
         select_record: '_onRecordSelected',
         selection_changed: '_onSelectionChanged',
+        set_focus_tag_input: '_onSetFocusTagInput',
         share: '_onShareIDs',
         trigger_rule: '_onTriggerRule',
     }),
@@ -53,6 +54,8 @@ var DocumentsKanbanController = KanbanController.extend({
         this.anchorID = null; // used to select records with ctrl/shift keys
         this.fileUploadID = _.uniqueId('documents_file_upload');
         this._uploadedFileCount = 0;
+        // used to refocus the tag input if the inspector re-render was triggered by a tag update.
+        this._focusTagInput = false;
     },
     /**
      * @override
@@ -203,7 +206,9 @@ var DocumentsKanbanController = KanbanController.extend({
             folders: this._searchPanel.getFolders(),
             tags: this._searchPanel.getTags(),
             folderId: this._searchPanel.getSelectedFolderId(),
+            focusTagInput: this._focusTagInput,
         };
+        this._focusTagInput = false;
         this.documentsInspector = new DocumentsInspector(this, params);
         this.documentsInspector.insertAfter(this.$('.o_kanban_view')).then(function () {
             if (localState) {
@@ -690,6 +695,14 @@ var DocumentsKanbanController = KanbanController.extend({
         this._updateChatter(state).then(function () {
             self._renderDocumentsInspector(state);
         });
+    },
+    /**
+     * Sets the focus on the tag input for the next render of document inspector.
+     *
+     * @private
+     */
+    _onSetFocusTagInput: function () {
+        this._focusTagInput = true;
     },
     /**
      * Share the current domain.

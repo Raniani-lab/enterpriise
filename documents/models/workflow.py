@@ -37,8 +37,8 @@ class WorkflowActionRule(models.Model):
     create_model = fields.Selection([], string="Create")
 
     # Activity
-    remove_activities = fields.Boolean(string='Mark all Activities as done')
-    activity_option = fields.Boolean(string='Create a new activity')
+    remove_activities = fields.Boolean(string='Mark all as Done')
+    activity_option = fields.Boolean(string='Schedule Activity')
     activity_type_id = fields.Many2one('mail.activity.type', string="Activity type")
     activity_summary = fields.Char('Summary')
     activity_date_deadline_range = fields.Integer(string='Due Date In')

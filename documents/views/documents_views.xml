@@ -178,7 +178,7 @@
                             <field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right"/>
                             <field name="owner_id"/>
                             <field name="partner_id"/>
-                            <field name="company_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                             <field name="group_ids" widget="many2many_tags"/>
                             <field name="file_size" attrs="{ 'invisible' : [('type', '!=', 'binary')]}"/>
                             <field name="type" readonly="1"/>
@@ -251,7 +251,7 @@
         <search>
             <field name="name"/>
             <field name="parent_folder_id"/>
-            <filter string="Parent Folder" name="by_parent" domain="[]" context="{'group_by': 'parent_folder_id'}"/>
+            <filter string="Parent Workspace" name="by_parent" domain="[]" context="{'group_by': 'parent_folder_id'}"/>
          </search>
         </field>
     </record>
@@ -262,10 +262,8 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="sequence" widget="handle"/>
-                <field name="display_name"/>
-                <field name="parent_folder_id"/>
-                <field name="create_uid"/>
-                <field name="create_date"/>
+                <field name="display_name" string="Workspace"/>
+                <field name="facet_ids"  widget="many2many_tags" string="Tag Categories"/>
             </tree>
         </field>
     </record>
@@ -277,34 +275,46 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                            <button name="action_see_actions" type="object" class="oe_stat_button" icon="fa-gears">
-                                <div class="o_field_widget o_stat_info">
-                                    <span class="o_stat_value"><field name="action_count"/></span>
-                                    <span class="o_stat_text">Action(s)</span>
-                                </div>
-                            </button>
-                        </div>
+                        <button name="action_see_actions" type="object" class="oe_stat_button" icon="fa-gears">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="action_count"/></span>
+                                <span class="o_stat_text">Action(s)</span>
+                            </div>
+                        </button>
+                        <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file" attrs="{'invisible' : [('document_count', '=', 0)]}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="document_count"/></span>
+                                <span class="o_stat_text">Document(s)</span>
+                            </div>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1><field name="name" placeholder="E.g. Finance"/></h1>
                     </div>
                     <group>
                         <group>
-                            <field name="parent_folder_id"/>
-                            <field name="company_id"/>
+                            <field name="parent_folder_id" domain="[('id', '!=', id)]"/>
                             <field name="group_ids" widget="many2many_tags"/>
                         </group>
                         <group>
-                            <field name="facet_ids" context="{'form_view_ref' : 'documents.facet_view_form'}">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tags">
+                            <field name="facet_ids" context="{'form_view_ref' : 'documents.facet_view_form_list'}">
                                 <tree>
                                     <field name="sequence" widget="handle"/>
-                                    <field name="name"/>
+                                    <field name="name" string="Category"/>
+                                    <field name="tag_ids" string="Tags" widget="many2many_tags"/>
                                 </tree>
                             </field>
-                        </group>
-                        <label for="description"/>
-                        <field name="description" widget="html"/>
-                    </group>
+                        </page>
+                        <page string="Description">
+                            <field name="description" widget="html"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -497,7 +507,6 @@
         <field name="model">documents.workflow.rule</field>
         <field name="arch" type="xml">
             <form>
-
                 <sheet>
                     <div class="oe_title">
                       <label for="name" class="oe_edit_only"/>
@@ -529,12 +538,16 @@
                             <page string="Actions">
                                 <group>
                                     <field name="has_business_option" invisible="1"/>
-                                    <field name="create_model" attrs="{ 'invisible' : [('has_business_option', '=', False)]}"/>
-                                    <field name="partner_id"/>
-                                    <field name="user_id"/>
+                                    <group>
+                                        <field name="partner_id"/>
+                                        <field name="user_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="folder_id" />
+                                        <field name="create_model" attrs="{ 'invisible' : [('has_business_option', '=', False)]}"/>
+                                    </group>
                                 </group>
                                 <group>
-                                    <field name="folder_id" />
                                     <field name="tag_action_ids">
                                         <tree editable="bottom">
                                             <field name="action"/>
@@ -542,10 +555,12 @@
                                             <field name="tag_id" domain="[('facet_id','=',facet_id)]" options='{"no_open": True}'/>
                                         </tree>
                                     </field>
+                                </group>
+                                <group string="Activities">
                                     <field name="remove_activities"/>
                                     <field name="activity_option"/>
                                 </group>
-                                <group string="Activity" name="next_activity" autofocus="autofocus" attrs="{'invisible': [('activity_option', '=', False)]}">
+                                <group name="next_activity" attrs="{'invisible': [('activity_option', '=', False)]}">
                                     <group>
                                         <field name="activity_type_id" options="{'no_create': True, 'no_open': True}" attrs="{'required': [('activity_option', '=', True)]}"/>
                                         <field name="activity_summary" placeholder="e.g. Discuss proposal"/>
@@ -558,6 +573,8 @@
                                         </div>
                                         <field name="activity_user_id"/>
                                     </group>
+                                </group>
+                                <group attrs="{'invisible': [('activity_option', '=', False)]}">
                                     <field name="activity_note" placeholder="Log a note..."/>
                                 </group>
                             </page>
@@ -621,7 +638,7 @@
         <search>
             <field name="name"/>
             <field name="tag_ids"/>
-            <field name="folder_id"/>
+            <field name="folder_id" string="Workspace"/>
          </search>
         </field>
     </record>
@@ -637,14 +654,21 @@
                         <h1><field name="name" placeholder="E.g. Status"/></h1>
                     </div>
                     <group>
-                        <group>
-                            <field name="folder_id" required="1"/>
-                            <field name="tooltip"/>
-                        </group>
-                        <group>
-                            <field name="tag_ids"/>
-                        </group>
+                        <field name="folder_id" required="1"/>
                     </group>
+                    <notebook>
+                        <page string="Tags">
+                            <field name="tag_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Tooltip">
+                            <field name="tooltip"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -656,8 +680,9 @@
         <field name="arch" type="xml">
             <tree default_order="sequence">
                 <field name="sequence" widget="handle"/>
-                <field name="name"/>
-                <field name="folder_id"/>
+                <field name="name" string="Category"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="folder_id" string="Workspace"/>
             </tree>
         </field>
     </record>
@@ -688,13 +713,12 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
                     <group>
-                        <group>
-                            <field name="name"/>
-                        </group>
-                        <group>
-                            <field name="facet_id"/>
-                        </group>
+                        <field name="facet_id" string="Category"/>
                     </group>
                 </sheet>
             </form>
@@ -802,7 +826,7 @@
     </record>
 
     <record id="facet_action" model="ir.actions.act_window">
-      <field name="name">Manage Tag Categories</field>
+      <field name="name">Manage Tags by Category</field>
       <field name="res_model">documents.facet</field>
       <field name="view_mode">tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
@@ -824,6 +848,9 @@
       <field name="name">Workspaces</field>
       <field name="res_model">documents.folder</field>
       <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('documents.folder_view_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': False})]"/>
     </record>
 
     <record id="tag_action" model="ir.actions.act_window">
@@ -857,8 +884,8 @@
         <menuitem name="Configuration" id="documents.Config" parent="documents.menu_root" sequence="1"/>
 
             <menuitem name="Settings" id="documents.settings_menu" parent="documents.Config" action="configuration_action" groups="base.group_system" sequence="0"/>
-            <menuitem name="Workspace" id="documents.folder_menu" parent="documents.Config" action="folder_action" groups="documents.group_documents_manager" sequence="1"/>
-            <menuitem name="Tags" id="documents.category_menu" parent="documents.Config" action="facet_action" groups="documents.group_documents_manager" sequence="2"/>
+            <menuitem name="Workspaces" id="documents.folder_menu" parent="documents.Config" action="folder_action" groups="documents.group_documents_manager" sequence="1"/>
+            <menuitem name="Tags" id="documents.category_menu" parent="documents.Config" action="facet_action" groups="base.group_no_one" sequence="2"/>
             <menuitem name="Actions" id="documents.workflow_rules_menu" parent="documents.Config" groups="base.group_no_one" action="workflow_rule_action" sequence="3"/>
             <menuitem name="Shared Links" id="documents.share_menu" parent="documents.Config" action="share_action" sequence="4"/>
             <menuitem name="Documents" id="documents.attachment_list_view_temp" parent="documents.Config" action="document_debug_action" groups="base.group_no_one" sequence="5"/>

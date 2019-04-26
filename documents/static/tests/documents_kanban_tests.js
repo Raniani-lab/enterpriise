@@ -294,7 +294,7 @@ QUnit.module('DocumentsKanbanView', {
         assert.containsOnce(kanban, '.o_kanban_record:first .o_record_selector',
             "should have a 'selected' button");
         assert.containsOnce(kanban, '.o_content > .o_documents_inspector',
-            "should have a 'documents inspector' column");
+            "should have a 'document inspector' column");
 
         // check control panel buttons
         assert.containsN(kanban, '.o_cp_buttons .btn-primary', 3,
@@ -733,7 +733,7 @@ QUnit.module('DocumentsKanbanView', {
 
     QUnit.module('DocumentsInspector');
 
-    QUnit.test('documents inspector with no document selected', async function (assert) {
+    QUnit.test('document inspector with no document selected', async function (assert) {
         assert.expect(3);
 
         var kanban = await createDocumentsKanbanView({
@@ -757,7 +757,7 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.test('documents inspector with selected documents', async function (assert) {
+    QUnit.test('document inspector with selected documents', async function (assert) {
         assert.expect(5);
 
         var kanban = await createDocumentsKanbanView({
@@ -792,7 +792,7 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.test('documents inspector limits preview to 4 documents', async function (assert) {
+    QUnit.test('document inspector limits preview to 4 documents', async function (assert) {
         assert.expect(2);
 
         var kanban = await createDocumentsKanbanView({
@@ -821,7 +821,7 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.test('documents inspector shows selected records of the current page', async function (assert) {
+    QUnit.test('document inspector shows selected records of the current page', async function (assert) {
         assert.expect(6);
 
         var kanban = await createDocumentsKanbanView({
@@ -1408,7 +1408,7 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'new name',
             "should still display the new filename in the record");
         assert.strictEqual(kanban.$('.o_field_char[name=name]').val(), 'new name',
-            "should still display the new filename in the documents inspector");
+            "should still display the new filename in the document inspector");
 
         assert.verifySteps(['write', 'resolve', 'write']);
 
@@ -1542,7 +1542,7 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document inspector: add a tag', async function (assert) {
-        assert.expect(5);
+        assert.expect(7);
         var done = assert.async();
 
         var kanban = await createDocumentsKanbanView({
@@ -1569,6 +1569,7 @@ QUnit.module('DocumentsKanbanView', {
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
+        assert.notOk($('.o_inspector_tag_add').is(':focus'), "the tag input should not be focused");
 
         assert.containsOnce(kanban, '.o_inspector_tag');
 
@@ -1582,7 +1583,7 @@ QUnit.module('DocumentsKanbanView', {
 
             assert.containsN(kanban, '.o_inspector_tag', 2,
                 "should display two tags");
-
+            assert.ok($('.o_inspector_tag_add').is(':focus'), "the tag input should be focused");
             kanban.destroy();
             done();
         });
@@ -1857,7 +1858,7 @@ QUnit.module('DocumentsKanbanView', {
         assert.containsOnce(kanban, '.o_kanban_view:visible',
             "kanban view should still be visible");
         assert.containsOnce(kanban, '.o_documents_inspector:visible',
-            "documents inspector should still be visible");
+            "document inspector should still be visible");
 
         // close the chatter
         await testUtils.dom.click(kanban.$('.o_document_close_chatter'));

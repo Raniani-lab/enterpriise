@@ -895,3 +895,77 @@ class TestWorkOrder(common.TestMrpCommon):
         wo = wo_form.save()
         wo._next()
         wo.record_production()
+
+    def test_post_inventory(self):
+        """Test production of 2 finished products in one by one and posting intermediate inventory
+        between the two production"""
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        mrp_order_form.product_qty = 2
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.action_assign()
+        production.button_plan()
+        self.assertEqual(len(production.move_raw_ids), 3, "wrong number of raw moves")
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.final_lot_id = self.sp1
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo = wo_form.save()
+        wo.record_production()
+
+        production.post_inventory()
+        self.assertEqual(len(production.move_raw_ids), 6, "wrong number of raw moves")
+
+        done_raw_moves = production.move_raw_ids.filtered(lambda move: move.state == 'done')
+        self.assertEqual(len(done_raw_moves), 3, "wrong number of done raw moves")
+        self.assertEqual(done_raw_moves[0].quantity_done, 1, "Components are not consumed")
+        self.assertEqual(done_raw_moves[1].quantity_done, 12, "Components are not consumed")
+        self.assertEqual(done_raw_moves[2].quantity_done, 2, "Components are not consumed")
+
+        assigned_raw_moves = production.move_raw_ids.filtered(lambda move: move.state == 'assigned')
+        self.assertEqual(len(assigned_raw_moves), 3, "wrong number of reserved raw moves")
+
+        done_finished_move = production.move_finished_ids.filtered(lambda move: move.state == 'done')
+        self.assertEqual(len(done_finished_move), 1, "wrong number of done finished moves")
+        self.assertEqual(done_finished_move.quantity_done, 1, "finished product are not produced")
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.final_lot_id = self.sp2
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+
+        wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo = wo_form.save()
+        wo._next()
+        wo.record_production()
+
+        wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo = wo_form.save()
+        wo.record_production()
+        production.button_mark_done()
+        done_raw_moves = production.move_raw_ids.filtered(lambda move: move.state == 'done')
+        self.assertEqual(len(done_raw_moves), 6, "wrong number of done raw moves")
+        drm_elon = done_raw_moves.filtered(lambda move: move.product_id == self.elon_musk)
+        drm_metal = done_raw_moves.filtered(lambda move: move.product_id == self.metal_cylinder)
+        drm_child = done_raw_moves.filtered(lambda move: move.product_id == self.trapped_child)
+        self.assertEqual(drm_elon[0].quantity_done, 1, "Components are not consumed")
+        self.assertEqual(drm_elon[1].quantity_done, 1, "Components are not consumed")
+        self.assertEqual(drm_metal[0].quantity_done, 2, "Components are not consumed")
+        self.assertEqual(drm_metal[1].quantity_done, 2, "Components are not consumed")
+        self.assertEqual(drm_child[0].quantity_done, 12, "Components are not consumed")
+        self.assertEqual(drm_child[1].quantity_done, 12, "Components are not consumed")
+        done_finished_move = production.move_finished_ids.filtered(lambda move: move.state == 'done')
+        self.assertEqual(len(done_finished_move), 2, "wrong number of done finished moves")
+        self.assertEqual(done_finished_move[0].quantity_done, 1, "finished product are not produced")
+        self.assertEqual(done_finished_move[1].quantity_done, 1, "finished product are not produced")

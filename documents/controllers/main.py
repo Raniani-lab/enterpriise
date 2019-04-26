@@ -8,11 +8,12 @@ import os
 
 from ast import literal_eval
 
-from odoo import http, fields, models
+from odoo import http
 from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
 from odoo.osv import expression
-from odoo.tools import pycompat, consteq, limited_image_resize
+from odoo.tools import consteq, image_process
+
 logger = logging.getLogger(__name__)
 
 
@@ -127,23 +128,20 @@ class ShareRoute(http.Controller):
     @http.route(['/documents/image/<int:id>',
                  '/documents/image/<int:id>/<int:width>x<int:height>',
                  ], type='http', auth="public")
-    def content_image(self, id=None, field='datas', share_id=None, width=0, height=0, crop=False, share_token=None,
-                      avoid_if_small=False, upper_limit=False, **kw):
-        status, headers, content = self.binary_content(
-             id=id, field=field, share_id=share_id, share_token=share_token)
+    def content_image(self, id=None, field='datas', share_id=None, width=0, height=0, crop=False, share_token=None, **kwargs):
+        status, headers, image_base64 = self.binary_content(
+            id=id, field=field, share_id=share_id, share_token=share_token)
         if status != 200:
-            return request.env['ir.http']._response_by_status(status, headers, content)
+            return request.env['ir.http']._response_by_status(status, headers, image_base64)
 
-        content = limited_image_resize(
-            content, width=width, height=height, crop=crop, upper_limit=upper_limit, avoid_if_small=avoid_if_small)
+        image_base64 = image_process(image_base64, (width, height), crop=crop)
 
-        if content:
-            image_base64 = base64.b64decode(content)
-        else:
+        if not image_base64:
             return request.not_found()
 
-        headers.append(('Content-Length', len(image_base64)))
-        response = request.make_response(image_base64, headers)
+        content = base64.b64decode(image_base64)
+        headers = http.set_safe_image_headers(headers, content)
+        response = request.make_response(content, headers)
         response.status_code = status
         return response
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, exceptions, SUPERUSER_ID, modules, _
+from odoo import models, fields, api, _
 from odoo.osv import expression
-from odoo.tools import crop_image, image_resize_image
+from odoo.tools import image_process
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 import re
@@ -112,7 +112,7 @@ class Document(models.Model):
         for record in self:
             if record.mimetype and re.match('image.*(gif|jpeg|jpg|png)', record.mimetype):
                 try:
-                    record.thumbnail = crop_image(record.datas, type='center', size=(80, 80), ratio=(1, 1))
+                    record.thumbnail = image_process(record.datas, size=(80, 80), crop='center')
                 except Exception:
                     pass
             else:

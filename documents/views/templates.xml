@@ -162,7 +162,7 @@
         <t t-call="documents.public_page_layout">
             <t t-set="file_URL" t-value="base_url + '/document/download/' + share_id + '/' + token + '/' + str(document.id)"/>
             <t t-set="file_token" t-value="'share_token=' + token + '&amp;share_id=' + share_id + '&amp;'"/>
-            <t t-set="preview_URL" t-value="base_url + '/documents/image/' + str(document.id) + '/600x500?upper_limit=true' + '&amp;'"/>
+            <t t-set="preview_URL" t-value="base_url + '/documents/image/' + str(document.id) + '/600x500?'"/>
             <t t-set="normal_preview_URL" t-value="base_url + '/documents/image/' + str(document.id) + '?'"/>
             <t t-set="document_request" t-value="document.type == 'empty'"/>
 

@@ -34,8 +34,8 @@ def _load_product_sat_catalog(cr, registry):
     # Create xml_id, to allow make reference to this data
     cr.execute(
         """INSERT INTO ir_model_data
-           (name, res_id, module, model)
-           SELECT concat('prod_code_sat_', code), id, 'l10n_mx_edi', 'l10n_mx_edi.product.sat.code'
+           (name, res_id, module, model, noupdate)
+           SELECT concat('prod_code_sat_', code), id, 'l10n_mx_edi', 'l10n_mx_edi.product.sat.code', true
            FROM l10n_mx_edi_product_sat_code """)
 
 

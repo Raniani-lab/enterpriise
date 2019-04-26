@@ -140,11 +140,12 @@ class BpostRequest():
 
         # Announce shipment to bpost
         reference_id = str(picking.name.replace("/", "", 2))[:50]
-        ss, sn = self._parse_address(picking.company_id)
+        sender_partner_id = picking.picking_type_id.warehouse_id.partner_id
+        ss, sn = self._parse_address(sender_partner_id)
         rs, rn = self._parse_address(picking.partner_id)
         values = {'accountId': carrier.sudo().bpost_account_number,
                   'reference': reference_id,
-                  'sender': {'_record': picking.company_id,
+                  'sender': {'_record': sender_partner_id,
                              'streetName': ss,
                              'number': sn,
                              },

@@ -32,7 +32,7 @@
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_timesheet_manager"/>
                                 <field name="employee_id" groups="hr_timesheet.group_timesheet_manager"/>
                             </group>
-                            <group invisible="context.get('view_grid_add_line')">
+                            <group>
                                 <field name="date"/>
                                 <field name="unit_amount" string="Time Spent" widget="timesheet_uom"/>
                             </group>

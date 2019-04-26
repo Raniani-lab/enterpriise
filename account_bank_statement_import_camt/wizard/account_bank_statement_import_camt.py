@@ -188,7 +188,7 @@ class AccountBankStatementImport(models.TransientModel):
                     }
 
                     entry_vals['unique_import_id'] = _get_unique_import_id(
-                        entry=entry,
+                        entry=entry_details,
                         sequence=sequence,
                         name=statement_vals['name'],
                         date=entry_vals['date'],

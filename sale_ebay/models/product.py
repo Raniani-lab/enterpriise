@@ -4,6 +4,7 @@
 import base64
 import io
 import re
+import math
 
 from datetime import datetime, timedelta
 from ebaysdk.exception import ConnectionError
@@ -12,7 +13,6 @@ from xml.sax.saxutils import escape
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, RedirectWarning
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 # eBay api limits ItemRevise calls to 150 per day
 MAX_REVISE_CALLS = 150
@@ -475,13 +475,26 @@ class ProductTemplate(models.Model):
 
     @api.model
     def sync_product_status(self, sync_big_stocks=False, auto_commit=False):
-        self._sync_recent_product_status(1, sync_big_stocks=sync_big_stocks, auto_commit=auto_commit)
-        self._sync_old_product_status(sync_big_stocks=sync_big_stocks, auto_commit=auto_commit)
+        self._sync_product_status(sync_big_stocks=sync_big_stocks, auto_commit=auto_commit)
 
     @api.model
     def _sync_recent_product_status(self, page_number=1, sync_big_stocks=False, auto_commit=False):
-        call_data = {'StartTimeFrom': str(datetime.today()-timedelta(days=119)),
-                     'StartTimeTo': str(datetime.today()),
+        # TODO: remove in master
+        self._sync_product_status_ranged(page_number=page_number,
+                                         sync_big_stocks=sync_big_stocks,
+                                         auto_commit=auto_commit,
+                                         delta_days=0)
+
+    @api.model
+    def _sync_product_status_ranged(self, page_number=1, sync_big_stocks=False, auto_commit=False, delta_days=0):
+        """
+            Ebay specifies that the time ranges on which we query the seller's list
+            must be a value less than 120 days.
+            https://developer.ebay.com/devzone/xml/docs/reference/ebay/GetSellerList.html
+
+        """
+        call_data = {'StartTimeFrom': str(datetime.today()-timedelta(days=119+delta_days)),
+                     'StartTimeTo': str(datetime.today()-timedelta(days=delta_days)),
                      'DetailLevel': 'ReturnAll',
                      'Pagination': {'EntriesPerPage': 200,
                                     'PageNumber': page_number,
@@ -510,18 +523,19 @@ class ProductTemplate(models.Model):
         for item in items:
             domain = [
                 ('ebay_id', '=', item['ItemID']),
-                ('virtual_available', '>' if sync_big_stocks else '<', MAX_REVISE_CALLS),
+                ('virtual_available', '>=' if sync_big_stocks else '<', MAX_REVISE_CALLS),
                 ('ebay_use', '=', True),
             ]
             product = self.search(domain)
             if product:
                 product._sync_transaction(item, auto_commit=auto_commit)
         if page_number < int(response.dict()['PaginationResult']['TotalNumberOfPages']):
-            self._sync_recent_product_status(page_number + 1)
+            self._sync_product_status_ranged(page_number + 1)
 
     @api.model
     def _sync_old_product_status(self, sync_big_stocks=False, auto_commit=False):
-        date = (datetime.today()-timedelta(days=119)).strftime(DEFAULT_SERVER_DATE_FORMAT)
+        # TODO: remove in master
+        date = datetime.today() - timedelta(days=119)
         domain = [
             ('ebay_use', '=', True),
             ('ebay_start_date', '<', date),
@@ -533,6 +547,27 @@ class ProductTemplate(models.Model):
             response = self.ebay_execute('GetItem', {'ItemID': product.ebay_id})
             product._sync_transaction(response.dict()['Item'], auto_commit=auto_commit)
         return
+
+    @api.model
+    def _sync_product_status(self, sync_big_stocks=False, auto_commit=False):
+        """
+            We partition old products per block of 120 days,
+            and perform a query for each non-empty set of products
+        """
+        domain = [
+            ('ebay_use', '=', True),
+            ('virtual_available', '>=' if sync_big_stocks else '<', MAX_REVISE_CALLS),
+        ]
+        products = self.search(domain)
+        if not products:
+            return  # there is nothing to synchronize
+        oldest = min(products.mapped('ebay_start_date'))
+        upper_bound = math.ceil((datetime.today() - oldest).days / 120)
+        for i in range(upper_bound):
+            start_date = datetime.today() - timedelta(days=(i+1)*120)
+            end_date = datetime.today() - timedelta(days=i*120)
+            if products.filtered(lambda p: end_date > p.ebay_start_date >= start_date):
+                self._sync_product_status_ranged(1, delta_days=i*120, sync_big_stocks=sync_big_stocks, auto_commit=auto_commit)
 
     @api.one
     def _sync_transaction(self, item, auto_commit=False):
@@ -796,7 +831,7 @@ class ProductTemplate(models.Model):
 
     @api.one
     def unlink_listing_product_ebay(self):
-        self._sync_recent_product_status()
+        self._sync_product_status()
         self.write({
             'ebay_use': False,
             'ebay_id': False,
@@ -810,9 +845,8 @@ class ProductTemplate(models.Model):
 
     @api.model
     def sync_ebay_products(self, page_number=1):
-        self._sync_recent_product_status(1)
-        self._sync_old_product_status()
-
+        # TODO: remove in master
+        self._sync_product_status()
 
 class ProductProduct(models.Model):
     _inherit = "product.product"

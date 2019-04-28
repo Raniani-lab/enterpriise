@@ -59,7 +59,7 @@ msgstr "Nota de crédito"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_sheet_tag
 msgid "DataSheets"
-msgstr ""
+msgstr "Hojas de datos"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
@@ -84,7 +84,7 @@ msgstr "Nuevo"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_plans_tag
 msgid "Plans"
-msgstr ""
+msgstr "Planes"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
@@ -128,7 +128,7 @@ msgstr "Plantilla de firma"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_specs_tag
 msgid "Specs"
-msgstr ""
+msgstr "Especificaciones"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0

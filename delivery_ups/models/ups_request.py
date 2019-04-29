@@ -389,8 +389,8 @@ class UPSRequest():
 
         shipment.Shipper = self.factory_ns2.ShipperType()
         shipment.Shipper.Address = self.factory_ns2.ShipAddressType()
-        shipment.Shipper.AttentionName = shipper.name or ''
-        shipment.Shipper.Name = shipper.parent_id.name or shipper.name or ''
+        shipment.Shipper.AttentionName = (shipper.name or '')[:35]
+        shipment.Shipper.Name = (shipper.parent_id.name or shipper.name or '')[:35]
         shipment.Shipper.Address.AddressLine = [l for l in [shipper.street or '', shipper.street2 or ''] if l]
         shipment.Shipper.Address.City = shipper.city or ''
         shipment.Shipper.Address.PostalCode = shipper.zip or ''
@@ -403,8 +403,8 @@ class UPSRequest():
 
         shipment.ShipFrom = self.factory_ns2.ShipFromType()
         shipment.ShipFrom.Address = self.factory_ns2.ShipAddressType()
-        shipment.ShipFrom.AttentionName = ship_from.name or ''
-        shipment.ShipFrom.Name = ship_from.parent_id.name or ship_from.name or ''
+        shipment.ShipFrom.AttentionName = (ship_from.name or '')[:35]
+        shipment.ShipFrom.Name = (ship_from.parent_id.name or ship_from.name or '')[:35]
         shipment.ShipFrom.Address.AddressLine = [l for l in [ship_from.street or '', ship_from.street2 or ''] if l]
         shipment.ShipFrom.Address.City = ship_from.city or ''
         shipment.ShipFrom.Address.PostalCode = ship_from.zip or ''
@@ -416,8 +416,8 @@ class UPSRequest():
 
         shipment.ShipTo = self.factory_ns2.ShipToType()
         shipment.ShipTo.Address = self.factory_ns2.ShipToAddressType()
-        shipment.ShipTo.AttentionName = ship_to.name or ''
-        shipment.ShipTo.Name = ship_to.parent_id.name or ship_to.name or ''
+        shipment.ShipTo.AttentionName = (ship_to.name or '')[:35]
+        shipment.ShipTo.Name = (ship_to.parent_id.name or ship_to.name or '')[:35]
         shipment.ShipTo.Address.AddressLine = [l for l in [ship_to.street or '', ship_to.street2 or ''] if l]
         shipment.ShipTo.Address.City = ship_to.city or ''
         shipment.ShipTo.Address.PostalCode = ship_to.zip or ''

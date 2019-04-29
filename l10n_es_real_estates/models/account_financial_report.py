@@ -17,14 +17,14 @@ class AccountFinancialReport(models.Model):
 
         return {'count': count, 'total': total}
 
-    def _boe_export_mod_347(self, options, current_company, period, year):
+    def _boe_export_mod347(self, options, current_company, period, year):
         """ Overridden from l10n_es_reports to append the real estates record at
         the end of the generated BOE file.
         """
-        rslt = super(AccountFinancialReport, self)._boe_export_mod_347(options, current_company, period, year)
+        rslt = super(AccountFinancialReport, self)._boe_export_mod347(options, current_company, period, year)
 
         boe_report_options = self._mod347_build_boe_report_options(options, year)
-        self = self.with_context(self.set_context(boe_report_options))
+        self = self.with_context(self._set_context(boe_report_options))
         boe_wizard = self._retrieve_boe_manual_wizard(options)
         manual_params = boe_wizard.get_partners_manual_parameters_map()
         negocio_required_a = self._mod347_get_required_partner_ids_for_boe('real_estates', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'local_negocio')
@@ -46,7 +46,7 @@ class AccountFinancialReport(models.Model):
         return rslt
 
     def _mod347_write_type2_real_estates_records(self, report_data, year, current_company):
-        line_real_estate = self.env[''].browse(report_data['line_data']['id'])
+        line_real_estate = self.env['l10n_es_reports.real.estate'].browse(report_data['line_data']['id'])
         currency_id = current_company.currency_id
 
         # Group this real estate's invoices per partner
@@ -93,7 +93,12 @@ class AccountFinancialReport(models.Model):
             rslt += self._boe_format_string('I')
             rslt += self._boe_format_string(' ' * 22) # Blank, constant
 
-            year_amount_sum = currency_id.round(sum(i.currency_id.compute(i.amount_total_signed, currency_id) for i in partner_invoices))
+            convert = lambda i: i.currency_id._convert(i.amount_total_signed,
+                                                       currency_id,
+                                                       current_company,
+                                                       i.date or fields.Date.today(),
+                                                       round=True)
+            year_amount_sum = currency_id.round(sum(convert(i) for i in partner_invoices))
             rslt += self._boe_format_number(year_amount_sum, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
             rslt += address

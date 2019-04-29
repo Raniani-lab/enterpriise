@@ -83,6 +83,10 @@ class AccountInvoiceLine(models.Model):
                 'date': self.invoice_id.date_invoice,
                 'invoice_id': self.invoice_id.id,
             }
+            if self.asset_category_id.open_asset and self.asset_category_id.date_first_depreciation == 'manual':
+                # the asset will auto-confirm, so we need to set its date
+                # since in this case the date will be readonly
+                vals['first_depreciation_manual_date'] = self.invoice_id.date_invoice
             changed_vals = self.env['account.asset.asset'].onchange_category_id_values(vals['category_id'])
             vals.update(changed_vals['value'])
             asset = self.env['account.asset.asset'].create(vals)

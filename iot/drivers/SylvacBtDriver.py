@@ -33,8 +33,8 @@ class SylvacBtDriver(Driver):
         return False
 
     def disconnect(self):
-        del bt_devices[self.device_identifier()]
-        del iot_devices[self.device_identifier()]
+        del bt_devices[self.device_identifier]
+        del iot_devices[self.device_identifier]
 
 
 class GattSylvacBtDriver(Device):

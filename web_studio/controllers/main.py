@@ -1192,7 +1192,25 @@ class WebStudioController(http.Controller):
             })
         inline_view = request.env[model]._fields_view_get(view_type=subview_type)
         view_arch = inline_view['arch']
-        xml_node = etree.fromstring(view_arch)
+        xml_node = self._inline_view_filter_nodes(etree.fromstring(view_arch))
         xpath_node.insert(0, xml_node)
         studio_view.arch_db = etree.tostring(arch, encoding='utf-8', pretty_print=True)
         return studio_view.arch_db
+
+    def _inline_view_filter_nodes(self, inline_view_etree):
+        """
+        Filters out from a standard view some nodes that are
+        irrelevant in an inline view (like the chatter)
+
+        @param {Etree} inline_view_etree: the arch of the view
+        @return {Etree}
+        """
+        unwanted_xpath = [
+            "*[hasclass('oe_chatter')]",
+            "*[hasclass('o_attachment_preview')]",
+        ]
+        for path in unwanted_xpath:
+            for node in inline_view_etree.xpath(path):
+                inline_view_etree.remove(node)
+
+        return inline_view_etree

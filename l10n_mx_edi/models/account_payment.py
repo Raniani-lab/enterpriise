@@ -827,6 +827,16 @@ class AccountPayment(models.Model):
             })
         return super(AccountPayment, self).action_draft()
 
+    @api.multi
+    def unlink(self):
+        for rec in self.filtered(lambda r: r.l10n_mx_edi_is_required() and
+                                 r.l10n_mx_edi_pac_status == 'signed'):
+            rec._l10n_mx_edi_cancel()
+        if self.filtered(lambda p: p.l10n_mx_edi_pac_status == 'signed'):
+            raise UserError(_('In order to delete a payment, you must first '
+                              'cancel it in the SAT system.'))
+        return super(AccountPayment, self).unlink()
+
 
 class AccountRegisterPayments(models.TransientModel):
     _inherit = 'account.register.payments'

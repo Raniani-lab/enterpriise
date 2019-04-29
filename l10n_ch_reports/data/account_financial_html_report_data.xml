@@ -801,7 +801,7 @@
         <field name="name">= Résultat d'exploitation avant intérêts et impôts (EBIT) </field>
         <field name="code">CH_EBIT</field>
         <field name="level" eval="0"/>
-        <field name="sequence" eval="2"/>
+        <field name="sequence" eval="3"/>
         <field name="parent_id" ref="account_financial_report_line_ch_R"/>
         <field name="domain" eval=""/>
         <field name="formulas">balance = CH_EBITDA.balance + CH_68.balance</field>
@@ -823,7 +823,7 @@
         <field name="name">= Résultat d'exploitation avant impôts (EBT) </field>
         <field name="code">CH_EBT</field>
         <field name="level" eval="0"/>
-        <field name="sequence" eval="2"/>
+        <field name="sequence" eval="4"/>
         <field name="parent_id" ref="account_financial_report_line_ch_R"/>
         <field name="domain" eval=""/>
         <field name="formulas">balance = CH_EBIT.balance + CH_69.balance</field>
@@ -844,7 +844,7 @@
         <field name="name">= Résultat de l'exercice avant impôts</field>
         <field name="code">CH_RAI</field>
         <field name="level" eval="0"/>
-        <field name="sequence" eval="2"/>
+        <field name="sequence" eval="5"/>
         <field name="parent_id" ref="account_financial_report_line_ch_R"/>
         <field name="domain" eval=""/>
         <field name="formulas">balance = CH_EBT.balance + CH_7.balance + CH_80.balance + CH_85.balance</field>

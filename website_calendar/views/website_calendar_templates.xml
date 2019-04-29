@@ -239,7 +239,7 @@
                         <label for="phone" class="col-md-4 col-form-label">Your Phone</label>
                         <div class="col-md-8">
                           <input type="tel" class="form-control" name="phone" placeholder="+1 (650) 691-3277" required="1" id="phone_field" t-att-value="'mobile' in partner_data and partner_data['mobile']"/>
-                          <small t-if="appointment_type.reminder_ids.filtered(lambda r:r.type=='sms')" class="text-muted">
+                          <small t-if="appointment_type.reminder_ids.filtered(lambda r:r.alarm_type=='sms')" class="text-muted">
                               A text message reminder is sent to you before your appointment
                           </small>
                         </div>

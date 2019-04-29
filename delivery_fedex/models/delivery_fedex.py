@@ -448,7 +448,7 @@ class ProviderFedex(models.Model):
                 self.fedex_get_return_label(picking, tracking_number=request['tracking_number'], origin_date=request['date'])
             commercial_invoice = srm.get_document()
             if commercial_invoice:
-                fedex_documents = [('DocumentFedex.%s' % (self.fedex_label_file_type), commercial_invoice)]
+                fedex_documents = [('DocumentFedex.pdf', commercial_invoice)]
                 picking.message_post(body='Fedex Documents', attachments=fedex_documents)
         return res
 

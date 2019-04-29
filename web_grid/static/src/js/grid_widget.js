@@ -104,12 +104,14 @@ var FloatToggleWidget = BaseGridWidget.extend({
 
         // handlers
         function onClick () {
-            var closest = utils.closestNumber(current, range);
+            // current is in user's format
+            var currentFloat = field_utils.parse['float'](current);
+            var closest = utils.closestNumber(currentFloat, range);
             var closest_index = _.indexOf(range, closest);
             var next_index = closest_index+1 < range.length ? closest_index+1 : 0;
 
             current = range[next_index];
-            current = field_utils.format['float'](parseFloat(current), {}, self.formatOptions); // format the string to display on the button
+            current = field_utils.format['float'](current, {}, self.formatOptions); // format the string to display on the button
 
             self.trigger_up('grid_cell_refresh', {
                 selector: 'button',

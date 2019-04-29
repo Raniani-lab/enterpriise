@@ -297,7 +297,8 @@ class DHLProvider():
         etree.SubElement(billing_node, "ShipperAccountNumber").text = carrier.dhl_account_number
         etree.SubElement(billing_node, "ShippingPaymentType").text = param['ShippingPaymentType']
         if param["is_dutiable"]:
-            etree.SubElement(billing_node, "DutyPaymentType").text = "S"
+            # S:Shipper, R:Recipient, T:Third Party.
+            etree.SubElement(billing_node, "DutyPaymentType").text = carrier.env['ir.config_parameter'].get_param("delivery_dhl.duty_payment_type", "S")
 
         consignee_node = etree.SubElement(root, "Consignee")
         if param["recipient_partner"].parent_id:

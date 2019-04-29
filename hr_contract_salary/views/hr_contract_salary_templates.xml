@@ -661,7 +661,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="name">Name</label><span class="text-muted"> (LASTNAME FIRSTNAME)</span>
+                                                <label class="col-form-label" for="name">Name</label><span class="text-muted"> (Lastname Firstname)</span>
                                                 <input type="text" name="name" class="form-control" required="required" t-att-value="contract.employee_id.name if contract.employee_id.name != 'Simulation Employee' else ''"/>
                                             </div>
                                         </div>
@@ -908,8 +908,8 @@
                                                 <label class="col-form-label" for="spouse_professional_situation">Spouse Professional Situation</label>
                                                 <select name="spouse_professional_situation" class="form-control advantage_input">
                                                     <option value="without_income" t-att-selected="contract.employee_id.spouse_fiscal_status == 'without income'">Without Income</option>
+                                                    <option value="high_income" t-att-selected="contract.employee_id.spouse_fiscal_status == 'with income' and contract.employee_id.spouse_net_revenue &gt;= 225.0">Any other income</option>
                                                     <option value="low_income" t-att-selected="contract.employee_id.spouse_fiscal_status == 'with income' and contract.employee_id.spouse_net_revenue &lt; 225.0">With Income &lt; 225 €/month</option>
-                                                    <option value="high_income" t-att-selected="contract.employee_id.spouse_fiscal_status == 'with income' and contract.employee_id.spouse_net_revenue &gt;= 225.0">With Income &gt;= 225 €/month</option>
                                                     <option value="low_pension" t-att-selected="contract.employee_id.spouse_fiscal_status == 'with income' and contract.employee_id.spouse_other_net_revenue &lt; 450.0">With Pensions &lt; 450 €/month</option>
                                                     <option value="high_pension" t-att-selected="contract.employee_id.spouse_fiscal_status == 'with income' and contract.employee_id.spouse_other_net_revenue &gt;= 450.0">With Pensions &gt;= 450 €/month</option>
                                                 </select>

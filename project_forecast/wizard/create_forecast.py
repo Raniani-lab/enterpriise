@@ -149,7 +149,7 @@ class ProjectForecastCreateWizard(models.TransientModel):
 
     @api.onchange('resource_hours')
     def _onchange_warn_if_resource_hours_too_long(self):
-        if(self.employee_id and self.start_datetime and self.end_datetime):
+        if self.employee_id and self.start_datetime and self.end_datetime:
             max_resource_hours = self.employee_id._get_work_days_data(self.start_datetime, self.end_datetime)['hours']
             if self.resource_hours > max_resource_hours:
                 return {
@@ -166,6 +166,17 @@ class ProjectForecastCreateWizard(models.TransientModel):
             self.project_id = self.previous_forecast_id.project_id
             self.task_id = self.previous_forecast_id.task_id
             self.end_datetime = self.start_datetime + interval
+
+    @api.multi
+    def action_save_and_send(self):
+        """
+            we have a different send function to use with the save & send button, that's because
+            forecast could have been repeated when created, we have to find related ones so that
+            they are sent as well
+        """
+        related_forecasts = self.create_new()
+        for forecast in related_forecasts:
+            forecast.action_send()
 
     def action_create_new(self):
         self.ensure_one()

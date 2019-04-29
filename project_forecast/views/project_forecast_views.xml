@@ -119,7 +119,10 @@
              scales="day,week,month"
              precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
              on_create="%(project_forecast_create_wizard_action)d"
-      />
+             decoration-warning="published == False"
+      >
+        <field name="published" />
+      </gantt>
     </field>
   </record>
 

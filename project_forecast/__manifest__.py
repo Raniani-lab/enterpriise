@@ -18,6 +18,7 @@
         'views/res_config_settings_views.xml',
         'data/project_forecast_data.xml',
         'data/project_forecast_cron.xml',
+        'data/mail_data.xml',
         'wizard/repeat_views.xml',
         'wizard/create_views.xml',
     ],

@@ -4,6 +4,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
+import base64
 import logging
 import pytz
 
@@ -59,6 +60,9 @@ class ProjectForecast(models.Model):
 
     # repeat
     recurrency_id = fields.Many2one('project.forecast.recurrency', readonly=True, index=True)
+
+    # email
+    published = fields.Boolean(default=False)
 
     # consolidation color and exclude
     color = fields.Integer(string="Color", compute='_compute_color')
@@ -204,6 +208,8 @@ class ProjectForecast(models.Model):
         for fieldname in breaking_fields:
             if fieldname in values and not values.get('recurrency_id'):
                 values.update({'recurrency_id': False})
+        if ('published' not in values) and (set(values.keys()) & set(self._get_publish_important_fields())):
+            values['published'] = False
         return super().write(values)
 
     # ----------------------------------------------------
@@ -326,9 +332,9 @@ class ProjectForecast(models.Model):
                 elif cond[0] == 'project_id':
                     project_id = cond[2]
         # deduct project_id from task_id if feasible
-        if((not project_id) and task_id):
+        if (not project_id) and task_id:
             task = self.env['project.task'].browse(task_id)
-            if(task and task.project_id):
+            if task and task.project_id:
                 project_id = task.project_id.id
         # if we do not have enough information, raise
         if((not employee_id) or (not project_id)):
@@ -336,7 +342,7 @@ class ProjectForecast(models.Model):
         return (employee_id, project_id, task_id)
 
     def _adjust_grid_remove(self, forecasts, change):
-        if(sum(forecasts.mapped('resource_hours')) < abs(change)):
+        if sum(forecasts.mapped('resource_hours')) < abs(change):
             raise UserError(_('Cannot remove more hours than there actually is'))
         to_remove = abs(change)
         while(to_remove and forecasts):
@@ -348,6 +354,51 @@ class ProjectForecast(models.Model):
                 forecasts = forecasts - act_forecast
                 act_forecast.unlink()
 
+
+    # ----------------------------------------------------
+    #  Mail
+    # ----------------------------------------------------
+
+    @api.multi
+    def action_send(self):
+        group_project_user = self.env.ref('project.group_project_user')
+        template = self.env.ref('project_forecast.email_template_forecast_single')
+        # update context to build a link for view in the forecast
+        view_context = dict(self._context)
+        view_context.update({
+            'menu_id': str(self.env.ref('project.menu_main_pm').id),
+            'action_id': str(self.env.ref('project_forecast.project_forecast_action_by_user').id),
+            'dbname': self._cr.dbname,
+            'render_link': self.employee_id.user_id and self.employee_id.user_id in group_project_user.users,
+        })
+        forecast_template = template.with_context(view_context)
+
+        mails_to_send = self.env['mail.mail']
+        for forecast in self:
+            if forecast.employee_id.work_email:
+                # date and duration formatting: resource hours in the format hh:mm and localize start and end date
+                # according to employee tz
+                start_datetime = forecast.start_datetime
+                end_datetime = forecast.end_datetime
+                if forecast.employee_id.tz:
+                    start_datetime = pytz.utc.localize(start_datetime).astimezone(pytz.timezone(forecast.employee_id.tz)).replace(tzinfo=None)
+                    end_datetime = pytz.utc.localize(end_datetime).astimezone(pytz.timezone(forecast.employee_id.tz)).replace(tzinfo=None)
+                hours, minutes = divmod(abs(forecast.resource_hours) * 60, 60)
+                formatted_duration = '%02d:%02d' % (hours, minutes)
+                extra_context = dict(view_context)
+                extra_context.update({
+                    'resource_hours': formatted_duration,
+                    'formatted_start_datetime': start_datetime,
+                    'formatted_end_datetime': end_datetime,
+                })
+                mail_id = forecast_template.with_context(extra_context).send_mail(forecast.id, notif_layout='mail.mail_notification_light')
+                current_mail = self.env['mail.mail'].browse(mail_id)
+                mails_to_send |= current_mail
+
+        if mails_to_send:
+            mails_to_send.send()
+
+        self.write({'published': True})
 
     # ----------------------------------------------------
     # Business Methods
@@ -393,4 +444,15 @@ class ProjectForecast(models.Model):
         for field_name in self._get_repeatable_fields():
             values[field_name] = self[field_name]
         return self._convert_to_write(values)
+
+    @api.model
+    def _get_publish_important_fields(self):
+        return [
+            'employee_id',
+            'project_id',
+            'task_id',
+            'resource_hours',
+            'start_datetime',
+            'end_datetime'
+        ]
 

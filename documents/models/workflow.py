@@ -25,7 +25,8 @@ class WorkflowActionRule(models.Model):
     # Criteria
     criteria_partner_id = fields.Many2one('res.partner', string="Contact")
     criteria_owner_id = fields.Many2one('res.users', string="Owner")
-    criteria_tag_ids = fields.One2many('documents.workflow.tag.criteria', 'workflow_rule_id', string="Tags")
+    required_tag_ids = fields.Many2many('documents.tag', 'required_tag_ids_rule_table', string="Required Tags")
+    excluded_tag_ids = fields.Many2many('documents.tag', 'excluded_tag_ids_rule_table', string="Excluded Tags")
     limited_to_single_record = fields.Boolean(string="One record limit", compute='_compute_limited_to_single_record')
 
     # Actions
@@ -49,6 +50,13 @@ class WorkflowActionRule(models.Model):
     ], string='Due type', default='days')
     activity_note = fields.Html(string="Activity Note")
     activity_user_id = fields.Many2one('res.users', string='Responsible')
+
+    @api.onchange('domain_folder_id')
+    def _on_domain_folder_id_change(self):
+        if self.domain_folder_id != self.required_tag_ids.mapped('folder_id'):
+            self.required_tag_ids = False
+        if self.domain_folder_id != self.excluded_tag_ids.mapped('folder_id'):
+            self.excluded_tag_ids = False
 
     def _get_business(self):
         """
@@ -115,25 +123,6 @@ class WorkflowActionRule(models.Model):
             return self.create_record(documents=documents)
 
         return True
-
-
-class WorkflowTagCriteria(models.Model):
-    _name = "documents.workflow.tag.criteria"
-    _description = "Document Workflow Tag Criteria"
-
-    workflow_rule_id = fields.Many2one('documents.workflow.rule', ondelete='cascade')
-
-    operator = fields.Selection([
-        ('contains', "Contains"),
-        ('notcontains', "Does not contain"),
-    ], default='contains', required=True)
-
-    facet_id = fields.Many2one('documents.facet', string="Category")
-    tag_id = fields.Many2one('documents.tag', string="Tag", required=True)
-
-    @api.onchange('facet_id')
-    def on_folder_change(self):
-        self.tag_id = False
 
 
 class WorkflowTagAction(models.Model):

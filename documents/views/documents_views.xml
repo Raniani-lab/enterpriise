@@ -306,7 +306,7 @@
                     </group>
                     <notebook>
                         <page string="Tags">
-                            <field name="facet_ids" context="{'form_view_ref' : 'documents.facet_view_form_list'}">
+                            <field name="facet_ids" context="{'form_view_ref' : 'documents.facet_view_form_list', 'documents_view_from_folder' : True, 'default_folder_id' : id}">
                                 <tree>
                                     <field name="sequence" widget="handle"/>
                                     <field name="name" string="Category"/>
@@ -518,26 +518,6 @@
                     </div>
                     <group>
                         <notebook>
-                            <page string="Conditions">
-                                <field name="condition_type" widget="radio" groups="base.group_no_one"/>
-                                <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'documents.document'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
-                                <group>
-                                    <group>
-                                        <field name="domain_folder_id" required="1"/>
-                                        <field name="criteria_partner_id"  attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}"/>
-                                        <field name="criteria_owner_id"  attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}"/>
-                                    </group>
-                                    <group attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}">
-                                        <field name="criteria_tag_ids">
-                                            <tree editable="bottom">
-                                                <field name="operator"/>
-                                                <field name="facet_id" domain="[('folder_id','parent_of', parent.domain_folder_id)]" required="1"/>
-                                                <field name="tag_id" domain="[('facet_id','=',facet_id)]"/>
-                                            </tree>
-                                        </field>
-                                    </group>
-                                </group>
-                            </page>
                             <page string="Actions">
                                 <group>
                                     <field name="has_business_option" invisible="1"/>
@@ -554,7 +534,7 @@
                                     <field name="tag_action_ids">
                                         <tree editable="bottom">
                                             <field name="action"/>
-                                            <field name="facet_id" domain="[('folder_id','parent_of',[parent.folder_id, parent.domain_folder_id])]" required="1"/>
+                                            <field name="facet_id" domain="['|', ('folder_id','parent_of', parent.folder_id), ('folder_id', 'parent_of', parent.domain_folder_id)]" required="1"/>
                                             <field name="tag_id" domain="[('facet_id','=',facet_id)]" options='{"no_open": True}'/>
                                         </tree>
                                     </field>
@@ -579,6 +559,33 @@
                                 </group>
                                 <group attrs="{'invisible': [('activity_option', '=', False)]}">
                                     <field name="activity_note" placeholder="Log a note..."/>
+                                </group>
+                            </page>
+                            <page string="Conditions">
+                                <group>
+                                    <field name="domain_folder_id" required="1" groups="base.group_no_one"/>
+                                    <field name="condition_type" widget="radio" groups="base.group_no_one"/>
+                                </group>
+                                <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'documents.document'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
+                                <group attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}">
+                                    <group string="Tags">
+                                        <field name="required_tag_ids"
+                                               string="Contains"
+                                               widget="many2many_tags"
+                                               domain="[('id','not in', excluded_tag_ids), ('folder_id', '=', domain_folder_id)]"
+                                               options='{"no_open": True, "no_create": True}'
+                                        />
+                                        <field name="excluded_tag_ids"
+                                               string="Does not contain"
+                                               widget="many2many_tags"
+                                               domain="[('id','not in', required_tag_ids), ('folder_id', '=', domain_folder_id)]"
+                                               options='{"no_open": True, "no_create": True}'
+                                        />
+                                    </group>
+                                    <group string="Miscellaneous">
+                                        <field name="criteria_partner_id"/>
+                                        <field name="criteria_owner_id"/>
+                                    </group>
                                 </group>
                             </page>
                         </notebook>
@@ -620,18 +627,6 @@
         </field>
     </record>
 
-    <record id="workflow_criteria_view_tree" model="ir.ui.view">
-        <field name="name">criteria tree</field>
-        <field name="model">documents.workflow.tag.criteria</field>
-        <field name="arch" type="xml">
-            <tree editable="bottom">
-                <field name="operator"/>
-                <field name="facet_id"/>
-                <field name="tag_id"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- tags categories -->
 
     <record id="facet_view_search" model="ir.ui.view">
@@ -657,7 +652,7 @@
                         <h1><field name="name" placeholder="E.g. Status"/></h1>
                     </div>
                     <group>
-                        <field name="folder_id" required="1"/>
+                        <field name="folder_id" required="1" invisible="context.get('documents_view_from_folder')"/>
                     </group>
                     <notebook>
                         <page string="Tags">

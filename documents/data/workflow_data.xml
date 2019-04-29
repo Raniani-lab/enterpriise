@@ -159,15 +159,10 @@
             <field name="sequence">8</field>
             <field name="name" eval="'Set As ' + str(datetime.now().year) + ' Contracts'"/>
             <field name="domain_folder_id" ref="documents_finance_folder"/>
+            <field name="required_tag_ids" eval="[(4, ref('documents.documents_finance_status_inbox'))]"/>
             <field name="activity_option">True</field>
             <field name="activity_type_id" ref="documents.mail_documents_activity_data_tv"/>
             <field name="domain_folder_id" ref="documents.documents_finance_folder"/>
-        </record>
-
-        <record id="documents_contains_documents_rule_finance_2018contracts" model="documents.workflow.tag.criteria">
-            <field name="workflow_rule_id" ref="documents_rule_finance_2018contracts"/>
-            <field name="operator">contains</field>
-            <field name="tag_id" ref="documents.documents_finance_status_inbox"/>
         </record>
 
         <record id="documents_workflow_action_finance_status_validated" model="documents.workflow.action">

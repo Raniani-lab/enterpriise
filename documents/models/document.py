@@ -180,12 +180,10 @@ class Document(models.Model):
                     domain = expression.AND([[['owner_id', '=', rule.criteria_owner_id.id]], domain])
                 if rule.create_model:
                     domain = expression.AND([[['type', '=', 'binary']], domain])
-                if rule.criteria_tag_ids:
-                    contains_list = [criteria_tag.tag_id.id for criteria_tag in rule.criteria_tag_ids if criteria_tag.operator == 'contains']
-                    not_contains_list = [criteria_tag.tag_id.id for criteria_tag in rule.criteria_tag_ids if criteria_tag.operator == 'notcontains']
-                    if contains_list:
-                        domain = expression.AND([[['tag_ids', 'in', contains_list]], domain])
-                    domain = expression.AND([[['tag_ids', 'not in', not_contains_list]], domain])
+                if rule.required_tag_ids:
+                    domain = expression.AND([[['tag_ids', 'in', rule.required_tag_ids.ids]], domain])
+                if rule.excluded_tag_ids:
+                    domain = expression.AND([[['tag_ids', 'not in', rule.excluded_tag_ids.ids]], domain])
 
             folder_domain = [['folder_id', 'child_of', rule.domain_folder_id.id]]
             subset = expression.AND([[['id', 'in', self.ids]], domain, folder_domain])

@@ -169,23 +169,13 @@ class TestCaseDocuments(TransactionCase):
         """
         tests criteria of rules
         """
-        self.tag_criteria_b = self.env['documents.workflow.tag.criteria'].create({
-            'operator': 'contains',
-            'facet_id': self.tag_category_b.id,
-            'tag_id': self.tag_b.id,
-        })
-
-        self.tag_criteria_not_a_a = self.env['documents.workflow.tag.criteria'].create({
-            'operator': 'notcontains',
-            'facet_id': self.tag_category_a_a.id,
-            'tag_id': self.tag_a_a.id,
-        })
 
         self.workflow_rule_criteria = self.env['documents.workflow.rule'].create({
             'domain_folder_id': self.folder_a.id,
             'name': 'workflow rule on f_a & criteria',
             'condition_type': 'criteria',
-            'criteria_tag_ids': [(6, 0, [self.tag_criteria_b.id, self.tag_criteria_not_a_a.id])]
+            'required_tag_ids': [(6, 0, [self.tag_b.id])],
+            'excluded_tag_ids': [(6, 0, [self.tag_a_a.id])]
         })
 
         self.assertFalse(self.workflow_rule_criteria.limited_to_single_record,

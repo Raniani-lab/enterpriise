@@ -14,7 +14,8 @@
         'security/ir.model.access.csv',
         'security/helpdesk_timesheet_security.xml',
         'views/helpdesk_views.xml',
-        'views/project_views.xml'
+        'views/project_views.xml',
+        'data/helpdesk_timesheet_data.xml',
     ],
     'license': 'OEEL-1',
 }

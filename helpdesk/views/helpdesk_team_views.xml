@@ -190,9 +190,25 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_helpdesk_timesheet"/>
                                 <div class="text-muted">
-                                    Record timesheets on your tickets and reinvoice time to you customer through tasks.
+                                    Record timesheets on your tickets
                                 </div>
                                 <div id='helpdesk_timesheet' attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}">
+                                    <div class="text-warning mb4 mt16">
+                                        Save this page and refresh to activate the feature
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 o_setting_box" id="sale_timesheet" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}">
+                            <div class="o_setting_left_pane">
+                                <field name="use_helpdesk_sale_timesheet"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="use_helpdesk_sale_timesheet"/>
+                                <div class="text-muted">
+                                    Reinvoice time to your customer through tasks
+                                </div>
+                                <div id='helpdesk_sale_timesheet' attrs="{'invisible': [('use_helpdesk_sale_timesheet', '=', False)]}">
                                     <div class="text-warning mb4 mt16">
                                         Save this page and refresh to activate the feature
                                     </div>

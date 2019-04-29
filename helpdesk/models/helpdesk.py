@@ -50,6 +50,7 @@ class HelpdeskTeam(models.Model):
     use_website_helpdesk_forum = fields.Boolean('Help Center')
     use_website_helpdesk_slides = fields.Boolean('Enable eLearning')
     use_helpdesk_timesheet = fields.Boolean('Timesheet on Ticket', help="This required to have project module installed.")
+    use_helpdesk_sale_timesheet = fields.Boolean('Time Reinvoicing', help="Reinvoice the time spent on ticket through tasks.")
     use_credit_notes = fields.Boolean('Refunds')
     use_coupons = fields.Boolean('Coupons')
     use_product_returns = fields.Boolean('Returns')
@@ -107,6 +108,11 @@ class HelpdeskTeam(models.Model):
             self.alias_name = self.env['mail.alias']._clean_and_make_unique(self.name)
         if not self.use_alias:
             self.alias_name = False
+
+    @api.onchange('use_helpdesk_timesheet')
+    def _onchange_use_helpdesk_timesheet(self):
+        if not self.use_helpdesk_timesheet:
+            self.use_helpdesk_sale_timesheet = False
 
     @api.model
     def create(self, vals):
@@ -168,6 +174,11 @@ class HelpdeskTeam(models.Model):
             helpdesk_timesheet_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_timesheet')])
             if team.use_helpdesk_timesheet and helpdesk_timesheet_module.state not in ('installed', 'to install', 'to upgrade'):
                 helpdesk_timesheet_module.button_immediate_install()
+                module_installed = True
+
+            helpdesk_sale_timesheet_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_sale_timesheet')])
+            if team.use_helpdesk_sale_timesheet and helpdesk_sale_timesheet_module.state not in ('installed', 'to install', 'to upgrade'):
+                helpdesk_sale_timesheet_module.button_immediate_install()
                 module_installed = True
 
             account_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_account')])

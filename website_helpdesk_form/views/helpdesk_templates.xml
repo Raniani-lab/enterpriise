@@ -32,7 +32,17 @@
         <field name="view_id" ref="ticket_submited" />
     </record>
 
-    <template id="ticket_submit_form" name="Helpdesk: Submit a Ticket Form">
+    <template id="website_helpdesk_form_team" name="Website Helpdesk Form Team" inherit_id="website_helpdesk.team">
+        <xpath expr="//div[@id='website_helpdesk_form']" position="replace">
+            <div t-if="team.use_website_helpdesk_form">
+                <t t-set="default_values" t-value="default_partner_values"/>
+                <t t-set="template_xmlid" t-value="team.website_form_view_id.xml_id"/>
+                <t t-call="#{template_xmlid}"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="website_helpdesk_form.ticket_submit_form" name="Helpdesk: Submit a Ticket Form">
         <div class="container">
             <h2 class="text-muted">
                 Submit a Ticket

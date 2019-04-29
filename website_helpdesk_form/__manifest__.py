@@ -18,5 +18,6 @@ Generate tickets in Helpdesk app from a form published on your website. This for
         'views/helpdesk_views.xml',
         'views/helpdesk_templates.xml'
     ],
+    'post_init_hook': 'post_install_hook_ensure_team_forms',
     'license': 'OEEL-1',
 }

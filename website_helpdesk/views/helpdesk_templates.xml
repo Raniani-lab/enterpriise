@@ -23,8 +23,8 @@
             <t t-set="additional_title">Helpdesk Team</t>
             <div class="container mt16">
                 <t t-set="many_teams" t-value="len(teams)>1"/>
-                <div class="navbar navbar-expand-md navbar-light bg-light pb-0">
-                    <div t-if="many_teams" class="navbar-brand">Helpdesk</div>
+                <div t-if="many_teams" class="navbar navbar-expand-md navbar-light bg-light pb-0">
+                    <div class="navbar-brand">Helpdesk</div>
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#o-helpdesk-teams-navbar-collapse">
                         <span class="navbar-toggler-icon"/>
                     </button>
@@ -50,10 +50,9 @@
                     <div class="col-md-9">
                         <h2 class="o_page_header mt0 d-none" id="team-page"/>
                     </div>
-                    <div class="col-md-8 pl-4">
-                        <t t-call="website_helpdesk_form.ticket_submit_form"  t-if="team.use_website_helpdesk_form">
-                            <t t-set="default_values" t-value="default_partner_values"/>
-                        </t>
+                    <div class="col-md-9 pl-4">
+                        <!-- placeholder -->
+                        <div id="website_helpdesk_form"/>
                     </div>
                     <div class="col-md-3" id="right-column">
                         <div class="oe_structure" id="oe_structure_website_helpdesk_team_2"/>

@@ -48,8 +48,8 @@ var DataImportStmt = BaseImport.DataImport.extend({
         var self = this;
         var superProm = self._super.apply(this, arguments);
         superProm.then(function (message) {
-            if(message.length && message[0].type === 'bank_statement'){
-                self.statement_id = message[0].statement_id;
+            if(message.ids){
+                self.statement_line_ids = message.ids
             }
         });
         return superProm;
@@ -58,7 +58,7 @@ var DataImportStmt = BaseImport.DataImport.extend({
         this.do_action({
             name: _t("Reconciliation on Bank Statements"),
             context: {
-                'statement_ids': this.statement_id
+                'statement_line_ids': this.statement_line_ids
             },
             type: 'ir.actions.client',
             tag: 'bank_statement_reconciliation_view'

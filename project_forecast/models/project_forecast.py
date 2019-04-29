@@ -127,37 +127,6 @@ class ProjectForecast(models.Model):
             if forecast.task_id and (forecast.task_id not in forecast.project_id.tasks):
                 raise ValidationError(_("Your task is not in the selected project."))
 
-    @api.constrains('start_datetime', 'end_datetime', 'project_id', 'task_id', 'employee_id', 'active')
-    def _check_overlap(self):
-        self.env.cr.execute("""
-            SELECT F1.id, F1.start_datetime, F1.end_datetime, F1.project_id, F1.task_id
-            FROM project_forecast F1
-            INNER JOIN project_forecast F2
-                ON F1.employee_id = F2.employee_id AND F1.project_id = F2.project_id
-            WHERE F1.id != F2.id
-                AND (F1.task_id = F2.task_id OR (F1.task_id IS NULL AND F2.task_id IS NULL))
-                AND (
-                    F1.start_datetime BETWEEN F2.start_datetime AND F2.end_datetime
-                    OR
-                    F1.end_datetime BETWEEN F2.start_datetime AND F2.end_datetime
-                    OR
-                    F2.start_datetime BETWEEN F1.start_datetime AND F1.end_datetime
-                )
-                AND F1.active = 't'
-                AND F1.id IN %s
-        """, (tuple(self.ids),))
-        data = self.env.cr.dictfetchall()
-
-        project_ids = [item['project_id'] for item in data if item.get('project_id')]
-        task_ids = [item['task_id'] for item in data if item.get('task_id')]
-        if data:
-            project_names = self.env['project.project'].browse(project_ids).mapped('name')
-            task_names = self.env['project.task'].browse(task_ids).mapped('name')
-            message = _('Forecast should not overlap existing forecasts. To solve this, check the project(s): %s.') % (' ,'.join(project_names),)
-            if task_names:
-                message = _('%s Task(s): %s' % (message, ' ,'.join(task_names),))
-            raise ValidationError(message)
-
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         if self.employee_id:

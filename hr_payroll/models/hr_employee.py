@@ -28,14 +28,6 @@ class HrEmployee(models.Model):
             ('state', 'in', ['draft', 'confirmed'])
         ]))
 
-    def write(self, vals):
-        res = super(HrEmployee, self).write(vals)
-        if vals.get('contract_id'):
-            for employee in self:
-                employee.resource_calendar_id.transfer_leaves_to(employee.contract_id.resource_calendar_id, employee.resource_id)
-                employee.resource_calendar_id = employee.contract_id.resource_calendar_id
-        return res
-
     def generate_work_entries(self, date_start, date_stop):
         date_start = fields.Date.to_date(date_start)
         date_stop = fields.Date.to_date(date_stop)

@@ -13,8 +13,10 @@ class HelpdeskTicket(models.Model):
     @api.depends('repair_ids')
     @api.multi
     def _compute_repairs_count(self):
+        repair_data = self.env['repair.order'].read_group([('ticket_id', 'in', self.ids)], ['ticket_id'], ['ticket_id'])
+        mapped_data = dict([(r['ticket_id'][0], r['ticket_id_count']) for r in repair_data])
         for ticket in self:
-            ticket.repairs_count = len(ticket.repair_ids)
+            ticket.repairs_count = mapped_data.get(ticket.id, 0)
 
     @api.multi
     def action_view_repairs(self):

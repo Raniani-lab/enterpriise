@@ -17,7 +17,7 @@ class HelpdeskTicket(models.Model):
             ticket.repairs_count = len(ticket.repair_ids)
 
     @api.multi
-    def open_repairs(self):
+    def action_view_repairs(self):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',

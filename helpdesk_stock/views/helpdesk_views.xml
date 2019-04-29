@@ -12,7 +12,7 @@
                     context="{'default_ticket_id': id}"/>
             </field>
             <div class="oe_button_box" position="inside">
-                <button class="oe_stat_button" name="open_pickings" icon="fa-truck"
+                <button class="oe_stat_button" name="action_view_pickings" icon="fa-truck"
                     type="object" attrs="{'invisible': [('pickings_count', '=', 0)]}">
                     <field name="pickings_count" string="Returns" widget="statinfo" />
                 </button>

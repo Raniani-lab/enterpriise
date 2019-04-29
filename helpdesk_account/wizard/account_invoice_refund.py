@@ -19,7 +19,7 @@ class AccountInvoiceRefund(models.TransientModel):
     invoice_id = fields.Many2one('account.invoice', string='Invoice To Refund')
 
     @api.onchange('sale_order_id', 'partner_id')
-    def invoice_id_domain(self):
+    def _onchange_invoice_id_domain(self):
         domain = [('state', 'not in', ['draft', 'canceled']), ('type', '=', 'out_invoice')]
         if self.sale_order_id:
             domain += [('id', 'in', self.sale_order_id.invoice_ids.ids)]

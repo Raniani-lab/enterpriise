@@ -20,7 +20,7 @@ class HelpdeskTicket(models.Model):
             ticket.pickings_count = len(ticket.picking_ids)
 
     @api.multi
-    def open_pickings(self):
+    def action_view_pickings(self):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',

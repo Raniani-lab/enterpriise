@@ -1,0 +1,413 @@
+@mixin centerer($horizontal: true, $vertical: true) {
+    position: absolute;
+
+    @if ($horizontal and $vertical) {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    @else if ($horizontal) {
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+
+    @else if ($vertical) {
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+}
+
+$headerFont : Avengeance,
+$font-family-sans-serif;
+$subHeaderFont: ToonTime,
+$font-family-sans-serif;
+
+.o_referral_action {
+    cursor: pointer
+}
+
+.o_hr_referral_title {
+    color: $white;
+    h1 {
+        font-family: $headerFont;
+        color: $white;
+        font-size: 2rem;
+        margin: 0;
+        @include media-breakpoint-up(md) {
+            font-size: 3rem;
+        }
+    }
+    p {
+        font-size: 1rem;
+        color: $white;
+
+        @include media-breakpoint-up(md) {
+            font-size: 2rem;
+        }
+    }
+}
+
+.o_hr_referral_btn {
+    border-radius: 2px;
+    font-weight: bolder;
+    letter-spacing: .05rem;
+    white-space: nowrap;
+	&.side-btn{
+		background: transparent;
+    	border-color: $white;
+		color: $white;
+		text-transform: uppercase;
+		&:hover{
+			background: #ffffff45;
+		}
+	}
+    &.center {
+        @include centerer(true, false);
+        bottom: 1rem;
+    }
+}
+
+.o_hr_referral_wrapper {
+    background: url('/hr_referral/static/src/img/bg.jpg') center/cover no-repeat;
+    width: 100vw;
+    height: calc(100vh - #{$o-navbar-height});
+    position: relative;
+    overflow: hidden;
+    font-family: "Montserrat", #{$font-family-sans-serif};
+    color: $white;
+    .hr_referral_bg_city {
+	    background: url('/hr_referral/static/src/img/city.svg') center/cover no-repeat;
+	    @include centerer(true, false);
+	    width: 100%;
+	    height: 100%;
+	}
+
+	.hr_referral_bg_grass {
+	    background: url('/hr_referral/static/src/img/grass.svg') top center repeat-x, linear-gradient(0deg, #032a39 80%, rgba(255, 255, 255, 0) 96%);
+	    width: 100%;
+	    height: 40%;
+	    @include centerer(true, false);
+	    bottom: 0;
+	}
+}
+
+.o_hr_referral {
+    position: relative;
+    text-align: center;
+    height: calc(100vh - #{$o-navbar-height});
+    .superheroes {
+        @include centerer(true, false);
+	    bottom: 30%;
+	    width: 80%;
+	    height: 40vh;
+	    display: grid;
+	    grid-template-columns: 11% 11% 11% 12% 10% 12% 11% 11% 11%;
+        grid-template-areas: "friend-7 friend-5 friend-3 friend-1 super_user friend-2 friend-4 friend-6 friend-8";
+        &.superheroes_hoverer{
+        	.friend-name{
+        		opacity: 0;
+        		transition: .3s;
+        		@include centerer(true, false);
+        		top:0;
+        	}
+        	.friend-hoverer{
+        		position: relative;
+        		width: 100%;
+        		height: 100%;
+        		&:hover .friend-name{
+	        		opacity: 1;
+	        	}
+        	}
+        }
+        .super{
+        	display: flex;
+        	justify-content: center;
+        	width: 100%;
+        	max-height: 100%;
+        	@include centerer(true, false);
+        	.img{
+        		height: 100%;
+        	}
+        }
+        .super_user {
+			grid-area: super_user;
+            z-index: 10;
+            bottom: 0;
+        }
+        .friend-1{
+        	grid-area: friend-1;
+        	bottom:1rem;
+        	z-index: 9;
+        	height: 95%;
+        }
+        .friend-2{
+        	grid-area: friend-2;
+        	bottom:1.5rem;
+        	z-index: 9;
+        	height: 95%;
+        }
+        .friend-3{
+        	grid-area: friend-3;
+        	bottom:2rem;
+        	z-index: 8;
+        	height: 90%;
+        }
+        .friend-4{
+        	grid-area: friend-4;
+        	bottom:2.5rem;
+        	z-index: 8;
+        	height: 90%;
+        }
+        .friend-5{
+        	grid-area: friend-5;
+        	bottom:3rem;
+        	z-index: 7;
+        	height: 85%;
+        }
+        .friend-6{
+        	grid-area: friend-6;
+        	bottom:3.5rem;
+        	z-index: 7;
+        	height: 85%;
+        }
+        .friend-7{
+        	grid-area: friend-7;
+        	bottom:4rem;
+        	z-index: 6;
+        	height: 80%;
+        }
+        .friend-8{
+        	grid-area: friend-8;
+        	bottom:4.5rem;
+        	z-index: 6;
+        	height: 80%;
+        }
+        .behind{
+		    z-index: -1;
+        }
+        .front{
+		    bottom: -1rem !important;
+		    z-index: 11 !important;
+		    // max-height: 50%;
+        }
+    }
+    .user {
+        display: flex;
+        @include centerer(true, false);
+        margin-top: 1.5rem;
+        @include media-breakpoint-down(xs) {
+            margin-top: 0;
+            transform: translateX(-50%) scale(.8);
+        }
+    }
+    .user_image {
+        width: 130px;
+        height: 130px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        >img {
+            position: absolute;
+        }
+    }
+    .user_info {
+            @include centerer(true, true);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 350px;
+            height: 60%;
+            z-index: -1;
+            background: $white;
+            color: $gray-900;
+            border-radius: 2px;
+            padding: 0 2rem;
+        }
+    .user_level,
+    .user_points {
+        width: 25%;
+        text-align: center;
+        line-height: 2rem;
+    }
+
+    .user_level:before {
+        content: 'Level';
+        display: block;
+        font-weight: bold;
+    }
+
+    .user_points:before {
+        content: 'Points';
+        font-size: 0;
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin: 0 auto;
+        background: url('/hr_referral/static/src/img/points.svg') center/cover no-repeat;
+    }
+    @keyframes bounceIn {
+        0% {
+            transform: scale(0.1);
+            opacity: 0;
+        }
+
+        60% {
+            transform: scale(1.5);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+    @keyframes bounce {
+        0% {
+            -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+        }
+
+        3% {
+            -webkit-transform: scale3d(0.75, 1.25, 1);
+            transform: scale3d(0.75, 1.25, 1);
+        }
+
+        5% {
+            -webkit-transform: scale3d(1.25, 0.75, 1);
+            transform: scale3d(1.25, 0.75, 1);
+        }
+
+        10% {
+            -webkit-transform: scale3d(0.85, 1.15, 1);
+            transform: scale3d(0.85, 1.15, 1);
+        }
+
+        12% {
+            -webkit-transform: scale3d(1.05, 0.95, 1);
+            transform: scale3d(1.05, 0.95, 1);
+        }
+
+        15% {
+            -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+        }
+    }
+
+    @keyframes appear {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+	.o_level_up {
+        animation: bounceIn .2s both;
+        animation-fill-mode: both;
+        animation-delay: 3s;
+        @include o-position-absolute($top: -2.5rem);
+        z-index: 3;
+        cursor: pointer;
+
+        img {
+            animation: bounce 3s infinite;
+            max-height: 70px;
+        }
+
+        p {
+            @include centerer(true, false);
+            bottom: -150%;
+            min-width: 200px;
+            color: $white;
+            font-size: 1.5rem;
+            font-family: $headerFont;
+            animation: appear .5s both;
+            animation-delay: 5s;
+        }
+    }
+
+    .activity_wrapper {
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    .activity {
+        max-width: 400px;
+        margin: 0 auto;
+        .activity_stat {
+			text-align:center;
+			transition:.3s;
+			padding: 5px;
+			border-radius: 2px;
+			border: 1px solid transparent;
+			&:hover{
+				background: #ffffff29;
+			}
+        }
+        .activity_number {
+		    margin: 0px auto;
+		    color: #00a09d;
+		    font-size: 2rem;
+		    font-weight: bold;
+		    transition: .3s;
+        }
+
+        .activity_text {
+            color: $white;
+        }
+    }
+    .message {
+        background: rgba(255, 255, 255, 0.5);
+        color: $gray-900;
+        border-radius: 2px;
+        padding: 5px;
+        text-align: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        transition: .3s;
+        &:hover {
+            background: $white;
+        }
+        .img {
+        	max-width: 40px;
+        	float: left;
+        }
+    }
+}
+
+.o_choose_friend_wrapper{
+	height: calc(100vh - #{$o-navbar-height});
+	position: relative;
+	top:10%;
+    .friends_avatars{
+    	display: flex;
+    	justify-content: space-evenly;
+    	flex-wrap: wrap;
+    }
+    .o_choose_friend{
+        > div{
+            width: 100px;
+            height: 100px;
+            margin: 0 .5rem 1rem;
+            background: $white;
+            overflow: hidden;
+        }
+        &.o_choose_friend_available{
+            cursor: pointer;
+            div{
+                transition: .3s;
+            }
+            &:hover div{
+                opacity:.9;
+                transform:scale(1.1);
+            }
+        }
+        &.o_choose_friend_not_available{
+            cursor: not-allowed;
+        }
+    }
+}

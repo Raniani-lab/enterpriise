@@ -146,6 +146,7 @@
         <field name="published" />
         <field name="resource_time" />
         <field name="resource_hours" />
+        <field name="recurrency_id" />
       </gantt>
     </field>
   </record>

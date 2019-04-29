@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
             <field name='partner_email' position="after">
-                <field name="sale_order_ids" invisible="1"/>
+                <field name="commercial_partner_id" invisible="1"/>
                 <field name="sale_order_id" options="{'no_create': True}" groups="helpdesk.group_helpdesk_user"/>
             </field>
         </field>

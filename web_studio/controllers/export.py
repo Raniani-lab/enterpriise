@@ -346,7 +346,7 @@ def xmlid_getter():
             res = cache[record]
         except KeyError:
             # prefetch when possible
-            records = record.browse(record._prefetch[record._name])
+            records = record.browse(record._prefetch_ids)
             for rid, val in records.get_external_id().items():
                 cache[record.browse(rid)] = val
             res = cache[record]

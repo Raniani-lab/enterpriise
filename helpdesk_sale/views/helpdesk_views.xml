@@ -5,7 +5,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
-            <field name='partner_email' position="after">
+            <field name='email_cc' position="after">
                 <field name="commercial_partner_id" invisible="1"/>
                 <field name="sale_order_id" options='{"no_open": True}' readonly="1"/>
             </field>

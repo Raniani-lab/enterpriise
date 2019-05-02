@@ -449,10 +449,9 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 });
             var $removeButton = $(qweb.render('web_studio.Sidebar.Remove'));
             $removeButton.data('node', node.node);  // see @_onRemove
-            var $removeSection = $('<div>', {
-                class: 'card-body',
-            }).append($removeButton);
-            $removeSection.appendTo($accordionSection.find('.collapse'));
+            $accordionSection.find('.collapse')
+                .append($('<hr>'))
+                .append($removeButton);
         });
 
         // open the last section

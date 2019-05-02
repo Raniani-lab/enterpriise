@@ -141,6 +141,7 @@ class AccountInvoice(models.Model):
                 'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/parse'
             user_infos = {
                 'user_company_VAT': self.env.user.company_id.vat,
+                'user_company_name': self.env.user.company_id.name,
                 'user_lang': self.env.user.lang,
                 'user_email': self.env.user.email,
             }

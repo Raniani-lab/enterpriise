@@ -122,6 +122,14 @@ class HrPayslip(models.Model):
             'context': {}
         }
 
+    @api.model
+    def create(self, vals):
+        contract_id = vals.get('contract_id')
+        if contract_id and not vals.get('struct_id'):
+            vals['struct_id'] = self.env['hr.contract'].browse(contract_id).structure_type_id.default_struct_id.id
+        res = super(HrPayslip, self).create(vals)
+        return res
+
     @api.multi
     def unlink(self):
         if any(self.filtered(lambda payslip: payslip.state not in ('draft', 'cancel'))):

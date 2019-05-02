@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import UserError
@@ -23,7 +24,7 @@ class Project(models.Model):
 
     def action_view_project_forecast(self):
         Forecast = self.env['project.forecast'].with_context(active_id=self.id)
-        return Forecast.action_view_forecast('project_forecast.project_forecast_action_from_project')
+        return Forecast.action_view_forecast('project_forecast.project_forecast_action_by_project')
 
 
 class Task(models.Model):

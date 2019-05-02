@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+from collections import defaultdict
+from datetime import datetime, timedelta
 
-from datetime import date, timedelta, time, datetime
-from dateutil.relativedelta import relativedelta, MO, SU
-from lxml import etree
-import pytz
+from dateutil.relativedelta import relativedelta
 import logging
+import pytz
 
 from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.safe_eval import safe_eval
-from odoo.tools import float_round
 from odoo.osv import expression
+from odoo.tools.safe_eval import safe_eval
 
-from odoo.addons.resource.models.resource import HOURS_PER_DAY
+from odoo.addons.project_forecast.models.project_forecast_recurrency import repeat_span_to_relativedelta
 
 _logger = logging.getLogger(__name__)
 
@@ -20,172 +20,122 @@ _logger = logging.getLogger(__name__)
 class ProjectForecast(models.Model):
     _name = 'project.forecast'
     _description = 'Project Forecast'
+    _order = 'end_datetime,id desc'
+    _rec_name = 'name'
 
     def _default_employee_id(self):
         user_id = self.env.context.get('default_user_id', self.env.uid)
         employee_ids = self.env['hr.employee'].search([('user_id', '=', user_id)])
         return employee_ids and employee_ids[0] or False
 
-    def _default_start_date(self):
-        forecast_span = self.env.company.forecast_span
-        start_date = date.today()
-        # grid context: default start date should be the one of the first grid column
-        if self._context.get('grid_anchor'):
-            start_date = fields.Date.from_string(self._context['grid_anchor'])
+    def _default_start_datetime(self):
+        return fields.Datetime.to_string(datetime.combine(datetime.now(), datetime.min.time()))
 
-        if forecast_span == 'week':
-            start_date += relativedelta(weekday=MO(-1))  # beginning of current week
-        elif forecast_span == 'month':
-            start_date += relativedelta(day=1)  # beginning of current month
-        return fields.Date.to_string(start_date)
-
-    def _default_end_date(self):
-        forecast_span = self.env.company.forecast_span
-
-        start_date = self._default_start_date()
-        if 'default_start_date' in self._context:
-            start_date = self._context.get('default_start_date')
-        start_date = fields.Date.from_string(start_date)
-
-        delta = relativedelta()
-        if forecast_span == 'week':
-            delta = relativedelta(weekday=SU)  # end of current week
-        elif forecast_span == 'month':
-            delta = relativedelta(months=1, day=1, days=-1)  # end of current month
-        return fields.Date.to_string(start_date + delta)
+    def _default_end_datetime(self):
+        return fields.Datetime.to_string(datetime.combine(datetime.now(), datetime.max.time()))
 
     def _read_group_employee_ids(self, employee, domain, order):
-        group = self.env.ref('project.group_project_user', False) or self.env.ref('base.group_user')
-        return self.env['hr.employee'].search([('user_id', 'in', group.users.ids)])
+        return self.search(expression.OR([[['create_date', '<', datetime.now()]], domain])).mapped('employee_id')
 
     name = fields.Char(compute='_compute_name')
     active = fields.Boolean(default=True)
     employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, required=True, group_expand='_read_group_employee_ids')
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
-    project_id = fields.Many2one('project.project', string="Project", required=True)
+    project_id = fields.Many2one('project.project', string="Project", required=True, domain="[('allow_forecast', '=', True)]")
     task_id = fields.Many2one(
         'project.task', string="Task", domain="[('project_id', '=', project_id)]",
         group_expand='_read_forecast_tasks')
-    company_id = fields.Many2one('res.company', string="Company", related='project_id.company_id', store=True, readonly=True)
+    company_id = fields.Many2one('res.company', string="Company", readonly=True, default=lambda self: self.env.company)
 
     # used in custom filter
     stage_id = fields.Many2one(related='task_id.stage_id', string="Task stage", readonly=False)
     tag_ids = fields.Many2many(related='task_id.tag_ids', string="Task tags", readonly=False)
+    project_is_follower = fields.Boolean(related='project_id.message_is_follower')
 
     time = fields.Float(string="Allocated time / Time span", help="Percentage of working time", compute='_compute_time', store=True, digits=(16, 2))
 
-    start_date = fields.Date(default=_default_start_date, required=True)
-    end_date = fields.Date(default=_default_end_date, required=True)
+    start_datetime = fields.Datetime(required=True, default=_default_start_datetime)
+    end_datetime = fields.Datetime(required=True, default=_default_end_datetime)
+
+    # repeat
+    recurrency_id = fields.Many2one('project.forecast.recurrency', readonly=True, index=True)
+
     # consolidation color and exclude
     color = fields.Integer(string="Color", compute='_compute_color')
     exclude = fields.Boolean(string="Exclude", compute='_compute_exclude', store=True)
 
     # resource
     resource_hours = fields.Float(string="Planned hours", default=0)
-    resource_time = fields.Float("Allocated Time", compute='_compute_resource_time', inverse='_inverse_resource_time', compute_sudo=True, store=True, help="Expressed in the Unit of Measure of the project company")
-    forecast_uom = fields.Selection(related='company_id.forecast_uom', readonly=True)
+    resource_time = fields.Float("Allocated Time (%)", compute='_compute_resource_time', compute_sudo=True, store=True, help="Expressed in the Unit of Measure of the project company")
 
     _sql_constraints = [
-        ('check_start_date_lower_end_date', 'CHECK(end_date >= start_date)', 'Forecast end date should be greater or equal to its start date'),
+        ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Forecast end date should be greater than its start date'),
     ]
 
-    @api.one
     @api.depends('project_id', 'task_id', 'employee_id')
     def _compute_name(self):
-        group = self.env.context.get("group_by", "")
+        for forecast in self:
+            name_parts = [forecast.employee_id.name]
+            if forecast.task_id:  # optional field
+                name_parts += [forecast.task_id.name]
 
-        name = []
-        if "employee_id" not in group:
-            name.append(self.employee_id.name)
-        if ("project_id" not in group):
-            name.append(self.project_id.name)
-        if ("task_id" not in group and self.task_id):
-            name.append(self.task_id.name)
+            # express the duration in user lang
+            hours, minutes = divmod(abs(forecast.resource_hours) * 60, 60)
+            formatted_duration = '%02d:%02d' % (hours, minutes)
 
-        if name:
-            self.name = " - ".join(name)
-        else:
-            self.name = _("undefined")
+            name_parts += [forecast.project_id.name, formatted_duration]
+            forecast.name = " - ".join(name_parts)
 
-    @api.one
     @api.depends('project_id.color')
     def _compute_color(self):
-        self.color = self.project_id.color or 0
+        for forecast in self:
+            forecast.color = forecast.project_id.color or 0
 
-    @api.one
     @api.depends('project_id.name')
     def _compute_exclude(self):
-        self.exclude = (self.project_id.name == "Leaves")
+        for forecast in self:
+            forecast.exclude = (forecast.project_id.name == "Leaves")
 
-    @api.one
-    @api.depends('resource_hours', 'start_date', 'end_date', 'employee_id')
-    def _compute_time(self):
-        if not self.employee_id:
-            return
-
-        # We want to compute the number of hours that an **employee** works between 00:00:00 and 23:59:59
-        # according to him -- his **timezone**
-        start = datetime.combine(self.start_date, time.min)
-        stop = datetime.combine(self.end_date, time.max)
-        employee_tz = self.employee_id.user_id.tz and pytz.timezone(self.employee_id.user_id.tz)
-        if employee_tz:
-            start = employee_tz.localize(start).astimezone(pytz.utc)
-            stop = employee_tz.localize(stop).astimezone(pytz.utc)
-        tz_warning = _('The employee (%s) doesn\'t have a timezone, this might cause errors in the time computation. It is configurable on the user linked to the employee') % self.employee_id.name
-        if not employee_tz:
-            _logger.warning(tz_warning)
-        hours = self.employee_id._get_work_days_data(start, stop, compute_leaves=False)['hours']
-        if hours > 0:
-            self.time = self.resource_hours * 100.0 / hours
-        else:
-            self.time = 0  # allow to create a forecast for a day you are not supposed to work
-
-    @api.multi
-    @api.depends('resource_hours', 'company_id.forecast_uom', 'project_id.resource_calendar_id')
+    @api.depends('resource_hours',
+                 'start_datetime',
+                 'end_datetime',
+                 'employee_id',
+                 'employee_id.resource_calendar_id')
     def _compute_resource_time(self):
         for forecast in self:
-            factor = 1.0
-            if forecast.company_id.forecast_uom == 'day':
-                calendar = forecast.project_id.resource_calendar_id or forecast.company_id.resource_calendar_id
-                factor = calendar.hours_per_day if calendar else HOURS_PER_DAY
-            forecast.resource_time = float_round(forecast.resource_hours / factor, precision_digits=2)
+            if(forecast.employee_id and forecast.start_datetime and forecast.end_datetime and forecast.resource_hours):
+                available_work_hours = forecast.employee_id._get_work_days_data(forecast.start_datetime, forecast.end_datetime)['hours']
+                forecast.resource_time = 100 * forecast.resource_hours
+                if available_work_hours:  # avoid division by zero
+                    forecast.resource_time = int(forecast.resource_time / available_work_hours)
 
-    @api.multi
-    def _inverse_resource_time(self):
-        for forecast in self:
-            factor = 1.0
-            if forecast.company_id.forecast_uom == 'day':
-                calendar = forecast.project_id.resource_calendar_id or forecast.company_id.resource_calendar_id
-                factor = calendar.hours_per_day if calendar else HOURS_PER_DAY
-            forecast.resource_hours = float_round(forecast.resource_time * factor, precision_digits=2)
-
-    @api.one
     @api.constrains('resource_hours')
     def _check_time_positive(self):
-        if self.resource_hours and self.resource_hours < 0:
-            raise ValidationError(_("Forecasted time must be positive"))
+        for forecast in self:
+            if forecast.resource_hours and forecast.resource_hours < 0:
+                raise ValidationError(_("Forecasted time must be positive"))
 
-    @api.one
     @api.constrains('task_id', 'project_id')
     def _check_task_in_project(self):
-        if self.task_id and (self.task_id not in self.project_id.tasks):
-            raise ValidationError(_("Your task is not in the selected project."))
+        for forecast in self:
+            if forecast.task_id and (forecast.task_id not in forecast.project_id.tasks):
+                raise ValidationError(_("Your task is not in the selected project."))
 
-    @api.constrains('start_date', 'end_date', 'project_id', 'task_id', 'employee_id', 'active')
+    @api.constrains('start_datetime', 'end_datetime', 'project_id', 'task_id', 'employee_id', 'active')
     def _check_overlap(self):
         self.env.cr.execute("""
-            SELECT F1.id, F1.start_date, F1.end_date, F1.project_id, F1.task_id
+            SELECT F1.id, F1.start_datetime, F1.end_datetime, F1.project_id, F1.task_id
             FROM project_forecast F1
             INNER JOIN project_forecast F2
                 ON F1.employee_id = F2.employee_id AND F1.project_id = F2.project_id
             WHERE F1.id != F2.id
                 AND (F1.task_id = F2.task_id OR (F1.task_id IS NULL AND F2.task_id IS NULL))
                 AND (
-                    F1.start_date BETWEEN F2.start_date AND F2.end_date
+                    F1.start_datetime BETWEEN F2.start_datetime AND F2.end_datetime
                     OR
-                    F1.end_date BETWEEN F2.start_date AND F2.end_date
+                    F1.end_datetime BETWEEN F2.start_datetime AND F2.end_datetime
                     OR
-                    F2.start_date BETWEEN F1.start_date AND F1.end_date
+                    F2.start_datetime BETWEEN F1.start_datetime AND F1.end_datetime
                 )
                 AND F1.active = 't'
                 AND F1.id IN %s
@@ -202,37 +152,57 @@ class ProjectForecast(models.Model):
                 message = _('%s Task(s): %s' % (message, ' ,'.join(task_names),))
             raise ValidationError(message)
 
+    @api.onchange('employee_id')
+    def _onchange_employee_id(self):
+        if self.employee_id:
+            start = self.start_datetime or datetime.combine(datetime.now(), datetime.min.time())
+            end = self.end_datetime or datetime.combine(datetime.now(), datetime.max.time())
+            work_interval = self.employee_id._get_work_interval(start, end)
+            start_datetime, end_datetime = work_interval[self.employee_id.id]
+            if start_datetime:
+                self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+            if end_datetime:
+                self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+        if self.recurrency_id:
+            return {
+                'warning': {
+                    'title': _("Warning"),
+                    'message': _("This action will remove the current forecast from the recurrency. Are you sure you want to continue?"),
+                }
+            }
+
     @api.onchange('task_id')
     def _onchange_task_id(self):
         if self.task_id:
             self.project_id = self.task_id.project_id
+        if self.recurrency_id:
+            return {
+                'warning': {
+                    'title': _("Warning"),
+                    'message': _("This action will remove the current forecast from the recurrency. Are you sure you want to continue?"),
+                }
+            }
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
-        domain = [] if not self.project_id else [('project_id', '=', self.project_id.id)]
-        return {
-            'domain': {'task_id': domain},
-        }
-
-    @api.onchange('start_date')
-    def _onchange_start_date(self):
-        self.end_date = self.with_context(default_start_date=self.start_date)._default_end_date()
+        if self.recurrency_id:
+            return {
+                'warning': {
+                    'title': _("Warning"),
+                    'message': _("This action will remove the current forecast from the recurrency. Are you sure you want to continue?"),
+                }
+            }
 
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------
 
-    @api.model
-    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-        """ Set the widget `float_time` on `resource_time` field on view, depending on company configuration (so it can not be a groups on inherited view) """
-        result = super(ProjectForecast, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-
-        if view_type in ['tree', 'form', 'grid'] and self.env.company.forecast_uom == 'hour':
-            doc = etree.XML(result['arch'])
-            for node in doc.xpath("//field[@name='resource_time']"):
-                node.set('widget', 'float_time')
-            result['arch'] = etree.tostring(doc, encoding='unicode')
-        return result
+    def write(self, values):
+        breaking_fields = self._get_fields_breaking_recurrency()
+        for fieldname in breaking_fields:
+            if fieldname in values and not values.get('recurrency_id'):
+                values.update({'recurrency_id': False})
+        return super().write(values)
 
     # ----------------------------------------------------
     # Actions
@@ -242,92 +212,140 @@ class ProjectForecast(models.Model):
     def action_view_forecast(self, action_xmlid=None):
         """ This method extends the context of action defined in xml files to
             customize it according to the forecast span of the current company.
-
             :param action_xmlid: complete xml id of the action to return
             :returns action (dict): an action with a extended context, evaluable
                 by the webclient
         """
         if not action_xmlid:
-            action_xmlid = 'project_forecast.project_forecast_action_from_project'
-
+            action_xmlid = 'project_forecast.project_forecast_action_by_project'
         action = self.env.ref(action_xmlid).read()[0]
         context = {}
         if action.get('context'):
             eval_context = self.env['ir.actions.actions']._get_eval_context()
-            if 'active_id' in self._context:
-                eval_context.update({'active_id': self._context.get('active_id')})
             context = safe_eval(action['context'], eval_context)
+            if 'active_id' in self._context:
+                active_id = self._context.get('active_id')
+                context.update({
+                    'active_id': active_id,
+                    'project_id': active_id,
+                    'search_default_project_id': active_id,
+                    'default_project_id': active_id,
+                })
         # add the default employee (for creation)
         if self.env.user.employee_ids:
             context['default_employee_id'] = self.env.user.employee_ids[0].id
-        # hide range button for grid view
-        company = self.company_id or self.env.company
-        if company.forecast_span == 'day':
-            context['forecast_hide_range_month'] = True
-            context['forecast_hide_range_year'] = True
-        elif company.forecast_span == 'week':
-            context['forecast_hide_range_week'] = True
-            context['forecast_hide_range_year'] = True
-        elif company.forecast_span == 'month':
-            context['forecast_hide_range_week'] = True
-            context['forecast_hide_range_month'] = True
         action['context'] = context
-        # include UoM in action name, because in grid view we only see number and we don't know if it is hours or days
-        action['display_name'] = _('Forecast (in %s)') % ({key: value for key, value in self._fields['forecast_uom']._description_selection(self.env)}[company.forecast_uom],)
         return action
+
+    @api.model
+    def action_duplicate_period(self, start_datetime, end_datetime, interval):
+        forecasts_to_duplicate = self.search([('start_datetime', '>=', start_datetime), ('end_datetime', '<=', end_datetime), ('recurrency_id', '=', False)])
+        delta = repeat_span_to_relativedelta(1, interval)
+        list_values = []
+        for forecast in forecasts_to_duplicate:
+            new_values = forecast._get_record_repeatable_fields_as_values()
+            new_values.update({
+                'start_datetime': forecast.start_datetime + delta,
+                'end_datetime': forecast.end_datetime + delta,
+            })
+            list_values.append(new_values)
+        return self.create(list_values)
 
     # ----------------------------------------------------
     # Grid View Stuffs
     # ----------------------------------------------------
 
-    def _grid_pagination(self, field, span, step, anchor):
-        """ For forecast, we want the next and previous anchor date to be the border of the period, in order
-            to se the default start_date value to match the beginning of the forecast span (of the company)
-        """
-        pagination = super(ProjectForecast, self)._grid_pagination(field, span, step, anchor)
-        if field.type == 'date':
-            for pagination_key in ['next', 'prev']:
-                val = field.from_string(pagination[pagination_key]['default_%s' % field.name])
-                pagination[pagination_key]['default_%s' % field.name] = field.to_string(self._grid_start_of(span, step, val))
-        return pagination
-
     @api.multi
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
-        if column_field != 'start_date' or cell_field != 'resource_time':
-            raise exceptions.UserError(
-                _("Grid adjustment for project forecasts only supports the "
-                  "'start_date' columns field and the 'resource_time' cell "
-                  "field, got respectively %(column_field)r and "
-                  "%(cell_field)r") % {
-                    'column_field': column_field,
-                    'cell_field': cell_field,
-                }
-            )
+        """
+            Grid range when adjusting does not necessarily match the range of any forecast. Or might match many.
+            The strategy here is:
+                if adjustement > 0:
+                    -try to find a single forecast that perfectly match grid's range and domain, and if found
+                     adjust (add) his resource hours
+                    -if none or many forecast were found matching the grid's criteria, it is ambiguous and therefore
+                     we create a new forecast that fits the range/conditions and give it the whole change as resource_hours
+                     user can then modify it in gantt, or it'll fit the previous condition if there was none before
+                if we need to substract hours
+                    -we find all forecasts that belong to this grid column and repeatedly remove resource_hours from them,
+                     deleting the forecast when it's resource hours reach zero.
+                    -if the change is more than accumulated forecasts's hours (that mean the user entered a negative number)
+                     we raise an exception as this would lead to negatve resource_hours which is contrained as zero or positive
+        """
+        # find cell values
+        employee_id, project_id, task_id = self._adjust_grid_find_relational_values(row_domain)
+        start_datetime, end_datetime = self._adjust_grid_get_start_and_end_datetime(column_value)
+        existent_forecast = self.search(expression.AND([row_domain, [('start_datetime', '>=', start_datetime)], [('start_datetime', '<=', end_datetime)]]))
+        if change > 0:
+            # look if we can find one unique forecast in that time span
+            if len(existent_forecast) == 1:
+                existent_forecast.write({'resource_hours': existent_forecast.resource_hours + change})
+            else:
+                employee = self.env['hr.employee'].browse([employee_id])
+                employee_start, employee_end = employee._get_work_interval(start_datetime, end_datetime).get(employee_id)
+                self.create({
+                    'start_datetime': employee_start,
+                    'end_datetime': employee_end,
+                    'employee_id': employee_id,
+                    'project_id': project_id,
+                    'task_id': task_id,
+                    'resource_hours': change,
+                })
+        else:
+            # remove resource hours from last forecast, if it reaches 0 delete the forecast
+            self._adjust_grid_remove(existent_forecast, change)
 
-        from_, to_ = map(fields.Date.from_string, column_value.split('/'))
-        start = fields.Date.to_string(from_)
-        # range is half-open get the actual end date
-        end = fields.Date.to_string(to_ - relativedelta(days=1))
+    def _adjust_grid_get_start_and_end_datetime(self, column_value):
+        start_datetime = fields.Datetime.from_string(column_value.split('/')[0])
+        end_datetime = fields.Datetime.from_string(column_value.split('/')[1]) - relativedelta(seconds=1)
+        return (start_datetime, end_datetime)
 
-        # see if there is an exact match
-        cell = self.search(expression.AND([row_domain, [
-            '&',
-            ['start_date', '=', start],
-            ['end_date', '=', end]
-        ]]), limit=1)
-        # if so, adjust in-place
-        if cell:
-            cell[cell_field] += change
-            return False
+    def _adjust_grid_find_relational_values(self, row_domain):
+        """
+            In order to create/edit a forecast we need to find it's employee_id
+            and project_id at the very least. If possible task_id should be determined
+            as well. Since grid doesn't give it explicitly we look for it in the row_domain.
+            If neither employee_id nor project_id is found we raise an exception.
+            task_id is not mandatory therefore it might be false.
+            Also, since a task might be linked to a project, we try to get the project_id
+            from that relation if a task is found but no project
 
-        # otherwise copy an existing cell from the row, ignore eventual
-        # non-monthly forecast
-        self.search(row_domain, limit=1).ensure_one().copy({
-            'start_date': start,
-            'end_date': end,
-            cell_field: change,
-        })
-        return False
+            returns a tuple (employee_id, project_id, task_id=False)
+        """
+        employee_id = False
+        project_id = False
+        task_id = False
+        for cond in row_domain:
+            if((isinstance(cond, list) or isinstance(cond, tuple)) and len(cond) == 3 and cond[1] == '='):
+                if cond[0] == 'employee_id':
+                    employee_id = cond[2]
+                elif cond[0] == 'task_id':
+                    task_id = cond[2]
+                elif cond[0] == 'project_id':
+                    project_id = cond[2]
+        # deduct project_id from task_id if feasible
+        if((not project_id) and task_id):
+            task = self.env['project.task'].browse(task_id)
+            if(task and task.project_id):
+                project_id = task.project_id.id
+        # if we do not have enough information, raise
+        if((not employee_id) or (not project_id)):
+            raise exceptions.UserError(_('can only edit forecasts resource hours if grouped by at least employee and project'))
+        return (employee_id, project_id, task_id)
+
+    def _adjust_grid_remove(self, forecasts, change):
+        if(sum(forecasts.mapped('resource_hours')) < abs(change)):
+            raise UserError(_('Cannot remove more hours than there actually is'))
+        to_remove = abs(change)
+        while(to_remove and forecasts):
+            act_forecast = forecasts[0]
+            delta = min(to_remove, act_forecast.resource_hours)
+            to_remove -= delta
+            act_forecast.resource_hours -= delta
+            if act_forecast.resource_hours == 0:
+                forecasts = forecasts - act_forecast
+                act_forecast.unlink()
+
 
     # ----------------------------------------------------
     # Business Methods
@@ -342,3 +360,35 @@ class ProjectForecast(models.Model):
                 [('project_id', '=', self.env.context['default_project_id'])]
             ])
         return tasks.sudo().search(tasks_domain, order=order)
+
+    @api.model
+    def _get_fields_breaking_recurrency(self):
+        """Returns the list of field which when changed should break the relation of the forecast
+            with it's recurrency
+        """
+        return [
+            'employee_id',
+            'project_id',
+            'task_id'
+        ]
+
+    @api.model
+    def _get_repeatable_fields(self):
+        """
+            Returns the name of the fields meant to be cloned between repeated/duplicated forecast
+            Allows extending the model without breaking repeating, by adding new fields
+            to this list
+        """
+        return [
+            'employee_id',
+            'project_id',
+            'task_id',
+            'resource_hours',
+        ]
+
+    def _get_record_repeatable_fields_as_values(self):
+        values = {}
+        for field_name in self._get_repeatable_fields():
+            values[field_name] = self[field_name]
+        return self._convert_to_write(values)
+

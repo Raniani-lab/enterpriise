@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <div t-name="ForecastGanttView.buttons">
+        <button t-if="widget.is_action_enabled('create')" class="o_gantt_button_add btn btn-primary mr-3" title="Add record">
+            Add
+        </button>
+        <div class="d-inline-block mr-3">
+            <button class="o_gantt_button_prev btn btn-primary" title="Previous">
+                <span class="fa fa-arrow-left"/>
+            </button>
+            <button class="o_gantt_button_today btn btn-primary">
+                Today
+            </button>
+            <button class="o_gantt_button_next btn btn-primary" title="Next">
+                <span class="fa fa-arrow-right"/>
+            </button>
+        </div>
+        <button t-foreach="allowedScales" t-as="scale" t-attf-class="o_gantt_button_scale btn btn-secondary #{activateScale == scale ? 'active' : ''}" type="button" t-att-data-value="scale">
+            <t t-esc="SCALES[scale].string"/>
+        </button>
+        <div class="btn-group">
+            <button class="o_gantt_button_expand_rows btn btn-secondary" title="Expand rows">
+                <i class="fa fa-expand"/>
+            </button>
+            <button class="o_gantt_button_collapse_rows btn btn-secondary" title="Collapse rows">
+                <i class="fa fa-compress"/>
+            </button>
+        </div>
+        <button class="o_gantt_button_duplicate_period btn btn-secondary mr-3" title="Duplicate">
+            Duplicate period
+        </button>
+    </div>
+</templates>

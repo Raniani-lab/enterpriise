@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="project_view_kanban_inherit_project_forecast" model="ir.ui.view">
         <field name="name">project.kanban.inherit.project.forecast</field>

@@ -503,7 +503,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     onchange_km_home_work: function(event) {
         var distance = event.currentTarget.value;
         _.each($("input.km_home_work"), function(input) {
-            debugger;
             $(input).val(distance); // set the same distance on both inputs
         });
         this._rpc({

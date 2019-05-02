@@ -1715,7 +1715,7 @@ QUnit.module('ReportEditorManager', {
         });
 
         var editReportViewCalls = 0;
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1758,25 +1758,25 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        // Wait for the image modal to be fully loaded in two steps:
-        // First, the Bootstrap modal itself
-        $('body').one('shown.bs.modal', function () {
-            assert.containsOnce($('body'), '.modal-dialog.o_select_media_dialog',
-                'The bootstrap modal for media selection is open');
-        });
-        // Second, when the modal element is there, bootstrap focuses on the "image" tab
-        // then only could we use the widget and select an image safely
-        $('body').one('shown.bs.tab a[data-toggle="tab"]', function () {
-            var $modal = $('.modal-dialog.o_select_media_dialog');
-            testUtilsDom.click($modal.find('.o_image'));
-            testUtilsDom.click($modal.find('footer button:contains(Add)'));
-
-            done();
-            rem.destroy();
-        });
-
         // Process to use the report editor
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
+            // Wait for the image modal to be fully loaded in two steps:
+            // First, the Bootstrap modal itself
+            $('body').one('shown.bs.modal', function () {
+                assert.containsOnce($('body'), '.modal-dialog.o_select_media_dialog',
+                    'The bootstrap modal for media selection is open');
+            });
+            // Second, when the modal element is there, bootstrap focuses on the "image" tab
+            // then only could we use the widget and select an image safely
+            $('body').one('shown.bs.tab a[data-toggle="tab"]', function () {
+                var $modal = $('.modal-dialog.o_select_media_dialog');
+                testUtilsDom.click($modal.find('.o_image'));
+                testUtilsDom.click($modal.find('footer button:contains(Add)'));
+
+                done();
+                rem.destroy();
+            });
+
             var $page = rem.$('iframe').contents().find('.page');
             var $imageBlock = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Image)');
             testUtils.dragAndDrop($imageBlock, $page, {position: 'inside'});
@@ -2145,7 +2145,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -2158,7 +2158,7 @@ QUnit.module('ReportEditorManager', {
             reportViews: studioTestUtils.getReportViews(this.templates),
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             // detach then reattach $iframe to simulate iframe content loss
             $('<div />').replaceAll(rem.view.$iframe).replaceWith(rem.view.$iframe);
             rem.updateEditor();

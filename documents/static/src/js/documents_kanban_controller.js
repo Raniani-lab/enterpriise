@@ -163,25 +163,26 @@ var DocumentsKanbanController = KanbanController.extend({
         _.each(files, function (file) {
             data.append('ufile', file);
         });
-        var def = new Promise(function () {});
-        $.ajax({
-            url: '/web/binary/upload_attachment',
-            processData: false,
-            contentType: false,
-            type: "POST",
-            enctype: 'multipart/form-data',
-            data: data,
-            success: function (result) {
-                Promise.resolve(def);
-                var $el = $(result);
-                $.globalEval($el.contents().text());
-            },
-            error: function (error) {
-                self.do_notify(_t("Error"), _t("An error occurred during the upload"));
-                return Promise.resolve();
-            },
+        var prom = new Promise(function (resolve) {
+            $.ajax({
+                url: '/web/binary/upload_attachment',
+                processData: false,
+                contentType: false,
+                type: "POST",
+                enctype: 'multipart/form-data',
+                data: data,
+                success: function (result) {
+                    resolve();
+                    var $el = $(result);
+                    $.globalEval($el.contents().text());
+                },
+                error: function (error) {
+                    self.do_notify(_t("Error"), _t("An error occurred during the upload"));
+                    resolve();
+                },
+            });
         });
-        return def;
+        return prom;
     },
     /**
      * Renders and appends the documents inspector sidebar.

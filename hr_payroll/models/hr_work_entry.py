@@ -32,7 +32,7 @@ class HrWorkEnrty(models.Model):
         ('cancelled', 'Cancelled')
     ], default='draft')
     display_warning = fields.Boolean(string="Error")
-    leave_id = fields.Many2one('hr.leave', string='Leave')
+    leave_id = fields.Many2one('hr.leave', string='Time Off')
     company_id = fields.Many2one('res.company', string='Company', readonly=True, required=True,
         default=lambda self: self.env['res.company']._company_default_get())
 
@@ -311,14 +311,14 @@ class HrWorkEntryType(models.Model):
 
     name = fields.Char(required=True)
     code = fields.Char(required=True)
-    color = fields.Integer(default=1) # Will be used with the new calendar/kanban view
+    color = fields.Integer(default=0)
     sequence = fields.Integer(default=25)
     active = fields.Boolean(
         'Active', default=True,
         help="If the active field is set to false, it will allow you to hide the work entry type without removing it.")
-    is_leave = fields.Boolean(default=False, string="Leave")
+    is_leave = fields.Boolean(default=False, string="Time Off")
     is_unforeseen = fields.Boolean(default=False, string="Unforeseen Absence")
-    leave_type_ids = fields.One2many('hr.leave.type', 'work_entry_type_id', string='Leave Type')
+    leave_type_ids = fields.One2many('hr.leave.type', 'work_entry_type_id', string='Time Off Type')
 
     _sql_constraints = [
         ('unique_work_entry_code', 'UNIQUE(code)', 'The same code cannot be associated to multiple work entry types.'),

@@ -11,6 +11,7 @@ from odoo.addons import decimal_precision as dp
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round
+from odoo.tools.misc import format_date
 
 
 class HrPayslip(models.Model):
@@ -288,12 +289,10 @@ class HrPayslip(models.Model):
         else:
             return [(5, False, False)]
 
-    @api.onchange('struct_id')
+    @api.onchange('struct_id', 'date_from', 'employee_id')
     def _onchange_struct_id(self):
-        ttyme = datetime.combine(fields.Date.from_string(self.date_from), time.min)
-        locale = self.env.context.get('lang') or 'en_US'
         payslip_name = self.struct_id.payslip_name or _('Salary Slip')
-        self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name, tools.ustr(babel.dates.format_date(date=ttyme, format='MMMM-y', locale=locale)))
+        self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
         self.worked_days_line_ids = self._get_new_worked_days_lines()
 
     def get_salary_line_total(self, code):

@@ -105,6 +105,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
             LEFT JOIN res_company company                       ON company.id = aml.company_id
             LEFT JOIN account_account_type account_type         ON account_type.id = aml.user_type_id
             LEFT JOIN account_bank_statement_line st_line       ON st_line.id = aml.statement_line_id
+            LEFT JOIN account_payment payment                   ON payment.id = aml.payment_id
             LEFT JOIN account_journal journal                   ON journal.id = aml.journal_id
             WHERE aml.date <= %s
             AND aml.company_id = %s

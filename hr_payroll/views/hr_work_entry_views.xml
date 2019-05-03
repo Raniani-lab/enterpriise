@@ -8,6 +8,14 @@
         <field name="view_mode">calendar,tree,form,pivot</field>
     </record>
 
+    <record id="hr_work_entry_action_conflict" model="ir.actions.act_window">
+        <field name="name">Work Entry</field>
+        <field name="res_model">hr.work.entry</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('display_warning', '=', True)]</field>
+        <field name="view_mode">calendar,tree,form,pivot</field>
+    </record>
+
     <record id="hr_work_entry_calendar" model="ir.ui.view">
         <field name="name">hr.work.entry.calendar</field>
         <field name="model">hr.work.entry</field>

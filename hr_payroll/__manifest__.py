@@ -34,8 +34,8 @@
         'views/hr_leave_views.xml',
         'views/resource_views.xml',
         'views/hr_work_entry_template.xml',
-        'views/hr_payroll_menu.xml',
         'views/hr_payroll_report_views.xml',
+        'views/hr_payroll_menu.xml',
     ],
     'demo': ['data/hr_payroll_demo.xml'],
     'qweb': [

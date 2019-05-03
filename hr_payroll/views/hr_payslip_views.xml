@@ -339,6 +339,14 @@
             </search>
         </field>
     </record>
+    <record id="hr_payslip_action_view_to_pay" model="ir.actions.act_window">
+        <field name="name">Payslips To Pay</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form,pivot</field>
+        <field name="search_view_id" ref="view_hr_payslip_filter"/>
+        <field name="domain">[('state', 'in', ['draft', 'verify'])]</field>
+    </record>
     <record id="action_view_hr_payslip_form" model="ir.actions.act_window">
         <field name="name">Employee Payslips</field>
         <field name="res_model">hr.payslip</field>

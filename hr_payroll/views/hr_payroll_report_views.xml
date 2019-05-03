@@ -101,10 +101,5 @@
             <field name="help">This report performs analysis on your payslip.</field>
         </record>
 
-        <menuitem id="menu_report_product_all"
-            name="Payroll"
-            action="payroll_report_action"
-            parent="menu_hr_payroll_report"
-            sequence="1"/>
     </data>
 </odoo>

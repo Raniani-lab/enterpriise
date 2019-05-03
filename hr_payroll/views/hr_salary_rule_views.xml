@@ -62,6 +62,7 @@
                     <field name="type_id"/>
                     <field name="regular_pay"/>
                     <field name="use_worked_day_lines"/>
+                    <field name="schedule_pay"/>
                     <field name="country_id" options="{'no_create': True}"/>
                 </group>
                 <notebook colspan="4">

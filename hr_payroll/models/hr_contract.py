@@ -11,16 +11,7 @@ class HrContract(models.Model):
     _description = 'Employee Contract'
 
     structure_type_id = fields.Many2one('hr.payroll.structure.type', string="Salary Structure Type")
-    schedule_pay = fields.Selection([
-        ('monthly', 'Monthly'),
-        ('quarterly', 'Quarterly'),
-        ('semi-annually', 'Semi-annually'),
-        ('annually', 'Annually'),
-        ('weekly', 'Weekly'),
-        ('bi-weekly', 'Bi-weekly'),
-        ('bi-monthly', 'Bi-monthly'),
-    ], string='Scheduled Pay', index=True, default='monthly',
-    help="Defines the frequency of the wage payment.")
+    schedule_pay = fields.Selection(related='structure_type_id.default_struct_id.schedule_pay')
     resource_calendar_id = fields.Many2one(required=True, help="Employee's working schedule.")
     hours_per_week = fields.Float(related='resource_calendar_id.hours_per_week')
     full_time_required_hours = fields.Float(related='resource_calendar_id.full_time_required_hours')
@@ -32,8 +23,6 @@ class HrContract(models.Model):
 
     @api.onchange('structure_type_id')
     def _onchange_structure_type_id(self):
-        if self.structure_type_id.default_schedule_pay:
-            self.schedule_pay = self.structure_type_id.default_schedule_pay
         if self.structure_type_id.default_resource_calendar_id:
             self.resource_calendar_id = self.structure_type_id.default_resource_calendar_id
 

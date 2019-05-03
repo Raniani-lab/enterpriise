@@ -935,11 +935,11 @@ var ClientAction = AbstractAction.extend({
                 limit: 1,
             });
         };
-        var get_contained_quants = function (package_id) {
+        var get_contained_quants = function (quant_ids) {
             return self._rpc({
                 model: 'stock.quant',
-                method: 'search_read',
-                domain: [['package_id', '=', package_id]],
+                method: 'read',
+                args: [quant_ids],
             });
         };
         var package_already_scanned = function (package_id, quants) {
@@ -962,7 +962,7 @@ var ClientAction = AbstractAction.extend({
         return search_read_quants().then(function (packages) {
             if (packages.length) {
                 self.lastScannedPackage = packages[0].name;
-                return get_contained_quants(packages[0].id).then(function (quants) {
+                return get_contained_quants(packages[0].quant_ids).then(function (quants) {
                     var packageAlreadyScanned = package_already_scanned(packages[0].id, quants);
                     if (packageAlreadyScanned) {
                         return $.Deferred().reject(_t('This package is already scanned.'));

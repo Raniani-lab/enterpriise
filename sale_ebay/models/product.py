@@ -556,6 +556,7 @@ class ProductTemplate(models.Model):
         """
         domain = [
             ('ebay_use', '=', True),
+            ('ebay_start_date', '!=', False),
             ('virtual_available', '>=' if sync_big_stocks else '<', MAX_REVISE_CALLS),
         ]
         products = self.search(domain)

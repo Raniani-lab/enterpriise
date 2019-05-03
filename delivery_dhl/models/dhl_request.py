@@ -10,6 +10,7 @@ import requests
 
 from odoo import _
 from odoo.exceptions import UserError
+from odoo.tools import float_repr
 
 
 class DHLProvider():
@@ -344,7 +345,7 @@ class DHLProvider():
             etree.SubElement(piece_node, "Width").text = str(packaging.width)
             etree.SubElement(piece_node, "Height").text = str(packaging.height)
             etree.SubElement(piece_node, "Depth").text = str(packaging.length)
-        etree.SubElement(shipment_details_node, "Weight").text = str(param["total_weight"])
+        etree.SubElement(shipment_details_node, "Weight").text = float_repr(param["total_weight"], 3)
         etree.SubElement(shipment_details_node, "WeightUnit").text = param["weight_unit"]
         etree.SubElement(shipment_details_node, "GlobalProductCode").text = param["GlobalProductCode"]
         etree.SubElement(shipment_details_node, "LocalProductCode").text = param["GlobalProductCode"]

@@ -6,7 +6,9 @@
     """,
     "category": "Sales",
     "depends": ["sale_subscription", "account_taxcloud"],
-    "data": [],
+    "data": [
+        "views/subscription_portal_templates.xml"
+    ],
     "auto_install": True,
     "license": "OEEL-1",
 }

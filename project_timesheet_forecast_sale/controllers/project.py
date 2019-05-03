@@ -146,7 +146,7 @@ class TimesheetForecastController(SaleTimesheetController):
         sale_line_ids = request.env['project.task'].sudo().search_read([('project_id', 'in', projects.ids), ('sale_line_id', '!=', False)], ['sale_line_id'])
         sale_line_ids = [line_id['sale_line_id'][0] for line_id in sale_line_ids]
         order_ids = request.env['sale.order.line'].sudo().search_read([('id', 'in', sale_line_ids)], ['order_id'])
-        order_ids = [order_id['id'] for order_id in order_ids]
+        order_ids = [order_id['order_id'][0] for order_id in order_ids]
         so_line_data = request.env['sale.order.line'].sudo().search_read([('order_id', 'in', order_ids), '|', ('task_id', '!=', False), ('project_id', '!=', False), ('analytic_line_ids', '=', False)], ['id', 'order_id'])
         so_line_ids = [so_line['id'] for so_line in so_line_data]
         order_ids = [so_line['order_id'][0] for so_line in so_line_data]

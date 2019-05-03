@@ -382,7 +382,6 @@ class TestAccountReports(SavepointCase):
         # Init options.
         report = self.env['account.general.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -407,7 +406,6 @@ class TestAccountReports(SavepointCase):
         # Mark the '101200 Account Receivable' line to be unfolded.
         line_id = lines[0]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -423,7 +421,7 @@ class TestAccountReports(SavepointCase):
                 ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',         345.00,         '',             1730.00),
                 ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',         345.00,         '',             2075.00),
                 # Account Total.
-                ('Total ',                              '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('Total',                               '',             '',             '',         2875.00,        800.00,         2075.00),
             ],
         )
 
@@ -445,7 +443,7 @@ class TestAccountReports(SavepointCase):
                 ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',         '',             300.00,         -1000.00),
                 ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',         '',             300.00,         -1300.00),
                 # Account Total.
-                ('Total ',                              '',             '',             '',         0.00,           1300.00,        -1300.00),
+                ('Total',                               '',             '',             '',         0.00,           1300.00,        -1300.00),
             ],
         )
 
@@ -455,7 +453,6 @@ class TestAccountReports(SavepointCase):
         report = self.env['account.general.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
-        report = report.with_context(report._set_context(options))
 
         lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
         self.assertLinesValues(
@@ -488,7 +485,6 @@ class TestAccountReports(SavepointCase):
         # Mark the '101200 Account Receivable' line (for the company_child_eur company) to be unfolded.
         line_id = lines[1]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
@@ -504,7 +500,7 @@ class TestAccountReports(SavepointCase):
                 ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',         345.00,         '',             1730.00),
                 ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',         345.00,         '',             2075.00),
                 # Account Total.
-                ('Total ',                              '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('Total',                               '',             '',             '',         2875.00,        800.00,         2075.00),
             ],
         )
 
@@ -518,13 +514,14 @@ class TestAccountReports(SavepointCase):
         report = self.env['account.general.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         # Force the load more to expand lines one by one.
         report.MAX_LINES = 1
 
+        lines = report._get_lines(options, line_id=line_id)
+
         self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
+            lines,
             #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
             [   0,                                      1,              3,              4,          5,              6,              7],
             [
@@ -537,18 +534,22 @@ class TestAccountReports(SavepointCase):
                 # Load more.
                 ('Load more... (2 remaining)',          '',             '',             '',         '',             '',             ''),
                 # Account Total.
-                ('Total ',                              '',             '',             '',         2875.00,        800.00,         2075.00),
+                ('Total',                               '',             '',             '',         2875.00,        800.00,         2075.00),
             ],
         )
 
         # Store the load more values inside the options.
-        options['lines_offset'] = 1
-        options['lines_progress'] = 1385.00
-        report = report.with_context(report._set_context(options))
-        report.MAX_LINES = 1
+        line_id = 'loadmore_%s' % receivable_account.id
+        options.update({
+            'lines_offset': lines[3]['offset'],
+            'lines_progress': lines[3]['progress'],
+            'lines_remaining': lines[3]['remaining'],
+        })
+
+        lines = report._get_lines(options, line_id=line_id)
 
         self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
+            lines,
             #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
             [   0,                                      1,              3,              4,          5,              6,              7],
             [
@@ -560,10 +561,11 @@ class TestAccountReports(SavepointCase):
         )
 
         # Update the load more values inside the options.
-        options['lines_offset'] = 2
-        options['lines_progress'] = 1730.00
-        report = report.with_context(report._set_context(options))
-        report.MAX_LINES = 1
+        options.update({
+            'lines_offset': lines[1]['offset'],
+            'lines_progress': lines[1]['progress'],
+            'lines_remaining': lines[1]['remaining'],
+        })
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -584,7 +586,6 @@ class TestAccountReports(SavepointCase):
         report = self.env['account.general.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'journals', journal.ids)
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options),
@@ -1102,7 +1103,6 @@ class TestAccountReports(SavepointCase):
         # Init options.
         report = self.env['account.coa.report']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report.with_context(allowed_company_ids=self.cids)._get_lines(options),
@@ -1130,7 +1130,6 @@ class TestAccountReports(SavepointCase):
         report = self.env['account.coa.report']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report.with_context(allowed_company_ids=self.cids)._get_lines(options),
@@ -1168,7 +1167,6 @@ class TestAccountReports(SavepointCase):
         report = self.env['account.coa.report']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'journals', journal.ids)
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report.with_context(allowed_company_ids=self.cids)._get_lines(options),
@@ -1183,6 +1181,33 @@ class TestAccountReports(SavepointCase):
                 ('999999 Undistributed Profits/Losses', '',             1200.00,        '',             '',             '',             1200.00),
                 # Report Total.
                 ('Total',                               2185.00,        2185.00,        690.00,         690.00,         2875.00,        2875.00),
+            ],
+        )
+
+    def test_trial_balance_comparison_filter(self):
+        ''' Test folded/unfolded lines with one comparison. '''
+        # Init options.
+        report = self.env['account.coa.report']
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_comparison_filter(options, report, 'previous_period', 1)
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #                                           [  Initial Balance   ]          [ Month Balance - 1  ]          [   Month Balance    ]          [       Total        ]
+            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                      1,              2,              3,              4,              5,              6,              7,              8],
+            [
+                # Accounts.
+                ('101200 Account Receivable',           1025.00,        '',             460.00,         '',             690.00,         100.00,         2075.00,        ''),
+                ('101300 Tax Paid',                     555.00,         '',             60.00,         '',              90.00,          '',             705.00,         ''),
+                ('101401 Bank',                         '',             500.00,         '',             250.00,         100.00,         300.00,         '',             950.00),
+                ('111100 Account Payable',              '',             3055.00,        250.00,         460.00,         300.00,         690.00,         '',             3655.00),
+                ('111200 Tax Received',                 '',             225.00,         '',             60.00,          '',             90.00,          '',             375.00),
+                ('200000 Product Sales',                '',             300.00,         '',             400.00,         '',             600.00,         '',             1300.00),
+                ('220000 Expenses',                     100.00,         '',             400.00,         '',             600.00,         '',             1100.00,        ''),
+                ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             '',             '',             2400.00,        ''),
+                # Report Total.
+                ('Total',                               4080.00,        4080.00,        1170.00,        1170.00,        1780.00,        1780.00,        6280.00,        6280.00),
             ],
         )
 

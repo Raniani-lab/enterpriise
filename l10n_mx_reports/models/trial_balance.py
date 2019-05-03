@@ -287,6 +287,32 @@ class MxReportAccountTrial(models.AbstractModel):
         return chart
 
     @api.model
+    def _get_lines(self, options, line_id=None):
+        # Create new options with 'unfold_all' to compute the initial balances.
+        # Then, the '_do_query' will compute all sums/unaffected earnings/initial balances for all comparisons.
+        new_options = options.copy()
+        new_options['unfold_all'] = True
+        options_list = self._get_options_periods_list(new_options)
+        accounts_results, taxes_results = self.env['account.general.ledger']._do_query(options_list, fetch_lines=False)
+
+        grouped_accounts = {}
+        initial_balances = {}
+        comparison_table = [options.get('date')]
+        comparison_table += options.get('comparison') and options['comparison'].get('periods') or []
+        for account, periods_results in accounts_results:
+            grouped_accounts.setdefault(account, [])
+            for i, res in enumerate(periods_results):
+                if i == 0:
+                    initial_balances[account] = res.get('initial_balance', {}).get('balance', 0.0)
+                grouped_accounts[account].append({
+                    'balance': res.get('sum', {}).get('balance', 0.0),
+                    'debit': res.get('sum', {}).get('debit', 0.0),
+                    'credit': res.get('sum', {}).get('credit', 0.0),
+                })
+
+        return self._post_process(grouped_accounts, initial_balances, options, comparison_table)
+
+    @api.model
     def get_xml(self, options):
         qweb = self.env['ir.qweb']
         version = '1.3'

@@ -157,25 +157,44 @@ class AccountReport(models.AbstractModel):
 
     @api.model
     def _get_options_journals(self, options):
-        all_journals = []
         journals = []
         for journal_option in options.get('journals', []):
             if journal_option['id'] == 'divider':
                 continue
             if journal_option['selected']:
                 journals.append(journal_option)
-            all_journals.append(journal_option)
-        return journals or all_journals
+        return journals
 
     @api.model
     def _get_options_journals_domain(self, options):
         if not options.get('journals'):
             return []
-        return [('journal_id', 'in', [j['id'] for j in self._get_options_journals(options)])]
+
+        # Make sure to return an empty array when nothing selected to handle archived journals.
+        selected_journals = self._get_options_journals(options)
+        return selected_journals and [('journal_id', 'in', [j['id'] for j in self._get_options_journals(options)])] or []
 
     ####################################################
     # OPTIONS: date + comparison
     ####################################################
+
+    @api.model
+    def _get_options_periods_list(self, options):
+        ''' Get periods as a list of options, one per impacted period.
+        The first element is the range of dates requested in the report, others are the comparisons.
+
+        :param options: The report options.
+        :return:        A list of options having size 1 + len(options['comparison']['periods']).
+        '''
+        periods_options_list = []
+        if options.get('date'):
+            periods_options_list.append(options)
+        if options.get('comparison') and options['comparison'].get('periods'):
+            for period in options['comparison']['periods']:
+                period_options = options.copy()
+                period_options['date'] = period
+                periods_options_list.append(period_options)
+        return periods_options_list
 
     @api.model
     def _get_dates_period(self, options, date_from, date_to, mode, period_type=None):
@@ -694,6 +713,54 @@ class AccountReport(models.AbstractModel):
         domain += self._get_options_partner_domain(options)
         domain += self._get_options_all_entries_domain(options)
         return domain
+
+    ####################################################
+    # QUERIES
+    ####################################################
+
+    @api.model
+    def _get_query_currency_table(self, options):
+        ''' Construct the currency table as a mapping company -> rate to convert the amount to the user's company
+        currency in a multi-company/multi-currency environment.
+        The currency_table is a small postgresql table construct with VALUES.
+        :param options: The report options.
+        :return:        The query representing the currency table.
+        '''
+
+        user_company = self.env.company
+        user_currency = user_company.currency_id
+        if options.get('multi_company'):
+            company_ids = [c['id'] for c in self._get_options_companies(options) if c['id'] != user_company.id]
+            company_ids.append(self.env.user.company_id.id)
+            companies = self.env['res.company'].browse(company_ids)
+            conversion_date = options['date']['date_to']
+            currency_rates = companies.mapped('currency_id')._get_rates(user_company, conversion_date)
+        else:
+            companies = user_company
+            currency_rates = {user_currency.id: 1.0}
+
+        conversion_rates = []
+        for company in companies:
+            conversion_rates.append((
+                company.id,
+                currency_rates[user_company.currency_id.id] / currency_rates[company.currency_id.id],
+                user_currency.decimal_places,
+            ))
+
+        currency_table = ','.join('(%s, %s, %s)' % args for args in conversion_rates)
+        return '(VALUES %s) AS currency_table(company_id, rate, precision)' % currency_table
+
+    @api.model
+    def _query_get(self, options, domain=None):
+        domain = self._get_options_domain(options) + (domain or [])
+        self.env['account.move.line'].check_access_rights('read')
+
+        query = self.env['account.move.line']._where_calc(domain)
+
+        # Wrap the query with 'company_id IN (...)' to avoid bypassing company access rights.
+        self.env['account.move.line']._apply_ir_rules(query)
+
+        return query.get_sql()
 
     ####################################################
     # MISC
@@ -1225,22 +1292,46 @@ class AccountReport(models.AbstractModel):
             existing_manager = self.env['account.report.manager'].create({'report_name': self._name, 'company_id': selected_companies and selected_companies[0] or False, 'financial_report_id': self.id if 'id' in dir(self) else False})
         return existing_manager
 
-    def format_value(self, value, currency=False):
-        currency_id = currency or self.env.company.currency_id
-        if self.env.context.get('no_format'):
-            return currency_id.round(value)
-        if currency_id.is_zero(value):
-            # don't print -0.0 in reports
-            value = abs(value)
-        res = formatLang(self.env, value, currency_obj=currency_id)
-        return res
+    @api.model
+    def format_value(self, amount, currency=False, blank_if_zero=False):
+        ''' Format amount to have a monetary display (with a currency symbol).
+        E.g: 1000 => 1000.0 $
 
-    def _format_aml_name(self, aml):
-        name = '-'.join(
-            (aml.move_id.name not in ['', '/'] and [aml.move_id.name] or []) +
-            (aml.ref not in ['', '/', False] and [aml.ref] or []) +
-            ([aml.name] if aml.name and aml.name not in ['', '/'] else [])
-        )
+        :param amount:          A number.
+        :param currency:        An optional res.currency record.
+        :param blank_if_zero:   An optional flag forcing the string to be empty if amount is zero.
+        :return:                The formatted amount as a string.
+        '''
+        currency_id = currency or self.env.user.company_id.currency_id
+        if currency_id.is_zero(amount):
+            if blank_if_zero:
+                return ''
+            # don't print -0.0 in reports
+            amount = abs(amount)
+
+        if self.env.context.get('no_format'):
+            return amount
+        return formatLang(self.env, amount, currency_obj=currency_id)
+
+    @api.model
+    def _format_aml_name(self, line_name, move_ref, move_name):
+        ''' Format the display of an account.move.line record. As its very costly to fetch the account.move.line
+        records, only line_name, move_ref, move_name are passed as parameters to deal with sql-queries more easily.
+
+        :param line_name:   The name of the account.move.line record.
+        :param move_ref:    The reference of the account.move record.
+        :param move_name:   The name of the account.move record.
+        :return:            The formatted name of the account.move.line record.
+        '''
+        names = []
+        if move_name != '/':
+            names.append(move_name)
+        if move_ref and move_ref != '/':
+            names.append(move_ref)
+        if line_name and line_name != '/':
+            names.append(line_name)
+        name = '-'.join(names)
+        # TODO: check if no_format is still needed
         if len(name) > 35 and not self.env.context.get('no_format'):
             name = name[:32] + "..."
         return name

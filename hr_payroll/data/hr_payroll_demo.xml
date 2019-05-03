@@ -29,12 +29,12 @@
 
         <!-- Salary Structure -->
         <record id="structure_002" model="hr.payroll.structure">
-            <field name="name">Marketing Executive for Gilles Gravie</field>
+            <field name="name">Regular Pay</field>
             <field name="type_id" ref="structure_type_employee"/>
             <field name="regular_pay" eval="True"/>
         </record>
 
-        <!-- Salary Rules for Marketing Executive for Gilles Gravie-->
+        <!-- Salary Rules for Regular Pay-->
 
         <record id="hr_salary_rule_houserentallowance1" model="hr.salary.rule">
             <field name="amount_select">percentage</field>

@@ -1133,7 +1133,7 @@ msgstr "Кінець попереднього кварталу"
 #: code:addons/account_reports/models/account_followup_report.py:43
 #, python-format
 msgid "Excluded"
-msgstr "Виключити"
+msgstr "Виключений"
 
 #. module: account_reports
 #: model:account.financial.html.report,name:account_reports.account_financial_report_executivesummary0

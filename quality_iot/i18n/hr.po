@@ -22,12 +22,12 @@ msgstr ""
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_point__device_id
 msgid "Device"
-msgstr ""
+msgstr "Uređaj"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "IOT Uređaj"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__qcp_test_type
@@ -37,7 +37,7 @@ msgstr ""
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Točka kontrole kvalitete"
 
 #. module: quality_iot
 #: model_terms:ir.ui.view,arch_db:quality_iot.iot_device_view_form_inherit

@@ -30,7 +30,7 @@ msgstr "$20"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "1958 Royal"
-msgstr "1958 Royal"
+msgstr "1958 Королівський"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -206,7 +206,7 @@ msgstr "Кібер-безпека"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Discover"
-msgstr "Відкрийте для себе"
+msgstr "Відкрийте"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
@@ -257,7 +257,7 @@ msgstr "Google Plus"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "Greatly suits any need"
-msgstr "Дуже підходить будь-яка потреба"
+msgstr "Підходить будь-яка потреба"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -448,8 +448,8 @@ msgid ""
 "The next edition of Odoo Experience looks very promising. More than 150 talks are scheduled during those 3 days!\n"
 "                                    Find below some stand-out talks for the Business tracks."
 msgstr ""
-"Наступне видання Odoo Experience виглядає дуже перспективно. За ці 3 дні заплановано понад 150 переговорів!\n"
-"Нижче наведено кілька окремих розмов для бізнес-треків."
+"Наступне видання Odoo Experience виглядає дуже перспективно. За ці 3 дні заплановано понад 150 виступів!\n"
+"Нижче наведено кілька окремих виступів для бізнес-треків."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
@@ -464,8 +464,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "This pass gives you access to the catering and evening activities!"
-msgstr ""
-"Цей пропуск дає вам доступ до закладів громадського харчування та вечірок!"
+msgstr "Цей пропуск дає вам доступ до безкоштовного харчування та вечірок!"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template

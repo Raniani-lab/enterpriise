@@ -220,7 +220,7 @@ msgstr "Izvorni nalog za  nabavu"
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order__auto_sale_order_id
 msgid "Source Sales Order"
-msgstr ""
+msgstr "Izvorni prodajni nalog"
 
 #. module: inter_company_rules
 #: selection:res.company,rule_type:0 selection:res.config.settings,rule_type:0

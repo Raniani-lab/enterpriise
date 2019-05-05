@@ -4,8 +4,8 @@
 # 
 # Translators:
 # ТАрас <tratatuta@i.ua>, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgstr "Камера"
 #: code:addons/iot/static/src/js/iot.js:368
 #, python-format
 msgid "Click here to open your IoT Homepage"
-msgstr ""
+msgstr "Натисніть тут, щоби відкрити домашню сторінку IoT"
 
 #. module: iot
 #. openerp-web
@@ -76,7 +76,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:369
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
-msgstr ""
+msgstr "Натисніть на Розширені/Показати деталі/Деталі/Більше інформації"
 
 #. module: iot
 #. openerp-web
@@ -87,6 +87,8 @@ msgid ""
 "Click on Proceed to .../Add Exception/Visit this website/Go on to the "
 "webpage"
 msgstr ""
+"Натисніть Перейти до .../Додати виняток/Відвідати цей веб-сайт/Перейти на "
+"веб-сторінку"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -98,7 +100,7 @@ msgstr "Натисніть на"
 #: code:addons/iot/static/src/js/iot.js:244
 #, python-format
 msgid "Click on the link above to open your IoT Homepage"
-msgstr ""
+msgstr "Натисніть на посилання вище, щоби перейти на домашню сторінку IoT"
 
 #. module: iot
 #. openerp-web
@@ -112,7 +114,7 @@ msgstr "Закрити"
 #: code:addons/iot/static/src/js/iot.js:372
 #, python-format
 msgid "Close this window and try again"
-msgstr ""
+msgstr "Закрийте це вікно та спробуйте ще раз"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
@@ -138,7 +140,7 @@ msgstr "Підключення не вдалося"
 #, python-format
 msgid ""
 "Connection refused, please accept the certificate and restart the scan:"
-msgstr ""
+msgstr "З'єднання відхилено, прийміть сертифікат і перезапустіть сканування"
 
 #. module: iot
 #. openerp-web
@@ -146,7 +148,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:379
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "З'єднання з пристроєм не вдалося"
 
 #. module: iot
 #. openerp-web
@@ -204,14 +206,14 @@ msgstr "Назва для відображення"
 #: code:addons/iot/static/src/js/iot.js:371
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr ""
+msgstr "Тільки Firefox : Натисніть кнопку Підтвердити виключення безпеки"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:247
 #, python-format
 msgid "Firefox only: Click on Confirm Security Exception"
-msgstr ""
+msgstr "Тільки Firefox: Натисніть кнопку Підтвердити виключення безпеки"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -326,7 +328,7 @@ msgstr "Ок"
 #: code:addons/iot/static/src/js/iot.js:282
 #, python-format
 msgid "Pairing with IoT..."
-msgstr ""
+msgstr "З’єднання з IoT ..."
 
 #. module: iot
 #. openerp-web
@@ -336,6 +338,8 @@ msgid ""
 "Please accept the certificate of your IoT Box (procedure depends on your "
 "browser) :"
 msgstr ""
+"Прийміть сертифікат вашого IoT Box (процедура залежить від вашого браузера) "
+":"
 
 #. module: iot
 #. openerp-web
@@ -343,7 +347,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:359
 #, python-format
 msgid "Please check if the device is still connected."
-msgstr ""
+msgstr "Перевірте, чи пристрій досі підключений."
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -380,7 +384,7 @@ msgstr "Звіти"
 #: code:addons/iot/static/src/js/iot.js:248
 #, python-format
 msgid "Restart SCAN"
-msgstr ""
+msgstr "Перезапустити СКАН"
 
 #. module: iot
 #. openerp-web
@@ -411,12 +415,12 @@ msgstr "Успішно надіслано принтеру!"
 #: code:addons/iot/static/src/js/iot.js:361
 #, python-format
 msgid "The device is not responding"
-msgstr ""
+msgstr "Пристрій не відповідає"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
 msgid "There is no device connected to your IoT Boxes"
-msgstr "Не підключено жодних пристроїв до вашого IoT Boxes"
+msgstr "Не підключено жодних пристроїв до ваших IoT Box"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token

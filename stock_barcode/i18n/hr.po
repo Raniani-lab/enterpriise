@@ -335,7 +335,7 @@ msgstr "Nijedna skladišnica ili lokacija ne odgovara barkodu %(barcode)s"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
 msgid "Nomenclature"
-msgstr ""
+msgstr "Nomenklatrua"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.open_picking
@@ -387,7 +387,7 @@ msgstr "Vrsta dokumenta"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:52
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Prethodni"
 
 #. module: stock_barcode
 #. openerp-web

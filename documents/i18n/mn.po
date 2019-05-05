@@ -1294,7 +1294,7 @@ msgstr "Уншаагүй зурвасын тоо"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Logo"
-msgstr ""
+msgstr "Odoo лого"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout

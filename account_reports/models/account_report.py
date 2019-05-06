@@ -51,7 +51,6 @@ class AccountReport(models.AbstractModel):
     MAX_LINES = 80
     filter_multi_company = True
     filter_date = None
-    filter_cash_basis = None
     filter_all_entries = None
     filter_comparison = None
     filter_journals = None
@@ -1011,8 +1010,6 @@ class AccountReport(models.AbstractModel):
     def _set_context(self, options):
         """This method will set information inside the context based on the options dict as some options need to be in context for the query_get method defined in account_move_line"""
         ctx = self.env.context.copy()
-        if options.get('cash_basis'):
-            ctx['cash_basis'] = True
         if options.get('date') and options['date'].get('date_from'):
             ctx['date_from'] = options['date']['date_from']
         if options.get('date'):

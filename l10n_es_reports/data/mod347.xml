@@ -12,7 +12,6 @@
             <field name="unfold_all_filter" eval="True"/>
             <field name="show_journal_filter" eval="False"/>
             <field name="parent_id" ref="spanish_reports_menu"/>
-            <field name="cash_basis" eval="None"/>
         </record>
 
         <record id="mod_347_summary_title" model="account.financial.html.report.line">

@@ -43,9 +43,6 @@ class MxReportPartnerLedger(models.AbstractModel):
 
     def _do_query_group_by_account(self, options, line_id):
         select = ',\"account_move_line_account_tax_rel\".account_tax_id, SUM(\"account_move_line\".debit - \"account_move_line\".credit)'  # noqa
-        if options.get('cash_basis'):
-            select = select.replace('debit', 'debit_cash_basis').replace(
-                'credit', 'credit_cash_basis')
         sql = "SELECT \"account_move_line\".partner_id%s FROM %s WHERE %s%s AND \"account_move_line_account_tax_rel\".account_move_line_id = \"account_move_line\".id GROUP BY \"account_move_line\".partner_id, \"account_move_line_account_tax_rel\".account_tax_id"  # noqa
         context = self.env.context
         journal_ids = []
@@ -249,12 +246,8 @@ class MxReportPartnerLedger(models.AbstractModel):
                 amls = amls[-80:]
                 too_many = True
             for line in amls:
-                if options.get('cash_basis'):
-                    line_debit = line.debit_cash_basis
-                    line_credit = line.credit_cash_basis
-                else:
-                    line_debit = line.debit
-                    line_credit = line.credit
+                line_debit = line.debit
+                line_credit = line.credit
                 progress = progress + line_debit - line_credit
                 name = line.display_name
                 name = name[:32] + "..." if len(name) > 35 else name

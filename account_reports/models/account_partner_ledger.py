@@ -13,7 +13,6 @@ class ReportPartnerLedger(models.AbstractModel):
     _description = "Partner Ledger"
 
     filter_date = {'mode': 'range', 'filter': 'this_year'}
-    filter_cash_basis = False
     filter_all_entries = False
     filter_unfold_all = False
     filter_account_type = [{'id': 'receivable', 'name': _('Receivable'), 'selected': False}, {'id': 'payable', 'name': _('Payable'), 'selected': False}]
@@ -88,17 +87,14 @@ class ReportPartnerLedger(models.AbstractModel):
         with_currency_table = 'WITH currency_table(company_id, rate, precision) AS (VALUES %s)' % currency_table
 
         # Sum query
-        debit_field = 'debit_cash_basis' if options.get('cash_basis') else 'debit'
-        credit_field = 'credit_cash_basis' if options.get('cash_basis') else 'credit'
-        balance_field = 'balance_cash_basis' if options.get('cash_basis') else 'balance'
         tables, where_clause, params = self.env['account.move.line']._query_get(
             [('account_id.internal_type', 'in', account_types)])
         query = '''
             SELECT
                 \"account_move_line\".partner_id,
-                SUM(ROUND(\"account_move_line\".''' + debit_field + ''' * currency_table.rate, currency_table.precision))     AS debit,
-                SUM(ROUND(\"account_move_line\".''' + credit_field + ''' * currency_table.rate, currency_table.precision))    AS credit,
-                SUM(ROUND(\"account_move_line\".''' + balance_field + ''' * currency_table.rate, currency_table.precision))   AS balance
+                SUM(ROUND(\"account_move_line\".debit * currency_table.rate, currency_table.precision))     AS debit,
+                SUM(ROUND(\"account_move_line\".credit * currency_table.rate, currency_table.precision))    AS credit,
+                SUM(ROUND(\"account_move_line\".balance * currency_table.rate, currency_table.precision))   AS balance
             FROM %s
             LEFT JOIN currency_table                    ON currency_table.company_id = \"account_move_line\".company_id
             WHERE %s
@@ -222,12 +218,8 @@ class ReportPartnerLedger(models.AbstractModel):
                     remaining_lines = grouped_partners[partner]['total_lines'] - offset - len(amls)
 
                 for line in amls:
-                    if options.get('cash_basis'):
-                        line_debit = line.debit_cash_basis
-                        line_credit = line.credit_cash_basis
-                    else:
-                        line_debit = line.debit
-                        line_credit = line.credit
+                    line_debit = line.debit
+                    line_credit = line.credit
                     date = amls.env.context.get('date_to') or fields.Date.today()
                     line_currency = line.company_id.currency_id
                     line_debit = line_currency._convert(line_debit, used_currency, user_company, date)

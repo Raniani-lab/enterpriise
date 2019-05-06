@@ -13,7 +13,6 @@ class report_account_general_ledger(models.AbstractModel):
     _inherit = "account.report"
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
-    filter_cash_basis = False
     filter_all_entries = False
     filter_journals = True
     filter_analytic = True
@@ -34,87 +33,6 @@ class report_account_general_ledger(models.AbstractModel):
                 {'name': _("Credit"), 'class': 'number'},
                 {'name': _("Balance"), 'class': 'number'}]
 
-    def _get_with_statement(self, user_types, domain=None):
-        """ This function allow to define a WITH statement as prologue to the usual queries returned by query_get().
-            It is useful if you need to shadow a table entirely and let the query_get work normally although you're
-            fetching rows from your temporary table (built in the WITH statement) instead of the regular tables.
-
-            @returns: the WITH statement to prepend to the sql query and the parameters used in that WITH statement
-            @rtype: tuple(char, list)
-        """
-        sql = ''
-        params = []
-
-        #Cash basis option
-        #-----------------
-        #In cash basis, we need to show amount on income/expense accounts, but only when they're paid AND under the payment date in the reporting, so
-        #we have to make a complex query to join aml from the invoice (for the account), aml from the payments (for the date) and partial reconciliation
-        #(for the reconciled amount).
-        if self.env.context.get('cash_basis'):
-            if not user_types:
-                return sql, params
-            #we use query_get() to filter out unrelevant journal items to have a shadowed table as small as possible
-            tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=domain)
-            sql = """WITH account_move_line AS (
-              SELECT \"account_move_line\".id, \"account_move_line\".date, \"account_move_line\".name, \"account_move_line\".debit_cash_basis, \"account_move_line\".credit_cash_basis, \"account_move_line\".move_id, \"account_move_line\".account_id, \"account_move_line\".journal_id, \"account_move_line\".balance_cash_basis, \"account_move_line\".amount_residual, \"account_move_line\".partner_id, \"account_move_line\".reconciled, \"account_move_line\".company_id, \"account_move_line\".company_currency_id, \"account_move_line\".amount_currency, \"account_move_line\".balance, account.user_type_id, \"account_move_line\".analytic_account_id
-               FROM """ + tables + """
-               LEFT JOIN account_account account ON account.id = "account_move_line".account_id
-               WHERE (\"account_move_line\".journal_id IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
-                 OR \"account_move_line\".move_id NOT IN (SELECT DISTINCT aml.move_id FROM account_move_line aml LEFT JOIN account_account account ON aml.account_id = account.id WHERE user_type_id IN %s))
-                 AND """ + where_clause + """
-              UNION ALL
-              (
-               WITH payment_table AS (
-                 SELECT aml.move_id, \"account_move_line\".date,
-                        CASE WHEN (aml.balance = 0 OR sub_aml.total_per_account = 0)
-                            THEN 0
-                            ELSE part.amount / ABS(sub_aml.total_per_account)
-                        END as matched_percentage
-                   FROM account_partial_reconcile part
-                   LEFT JOIN account_move_line aml ON aml.id = part.debit_move_id
-                   LEFT JOIN account_account account ON aml.account_id = account.id
-                   LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
-                                FROM account_move_line
-                                GROUP BY move_id, account_id) sub_aml
-                            ON (aml.account_id = sub_aml.account_id AND sub_aml.move_id=aml.move_id)
-                   LEFT JOIN account_move am ON aml.move_id = am.id,""" + tables + """
-                   WHERE part.credit_move_id = "account_move_line".id
-                    AND account.user_type_id IN %s
-                    AND """ + where_clause + """
-                 UNION ALL
-                 SELECT aml.move_id, \"account_move_line\".date,
-                        CASE WHEN (aml.balance = 0 OR sub_aml.total_per_account = 0)
-                            THEN 0
-                            ELSE part.amount / ABS(sub_aml.total_per_account)
-                        END as matched_percentage
-                   FROM account_partial_reconcile part
-                   LEFT JOIN account_move_line aml ON aml.id = part.credit_move_id
-                   LEFT JOIN account_account account ON aml.account_id = account.id
-                   LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
-                                FROM account_move_line
-                                GROUP BY move_id, account_id) sub_aml
-                            ON (aml.account_id = sub_aml.account_id AND sub_aml.move_id=aml.move_id)
-                   LEFT JOIN account_move am ON aml.move_id = am.id,""" + tables + """
-                   WHERE part.debit_move_id = "account_move_line".id
-                    AND account.user_type_id IN %s
-                    AND """ + where_clause + """
-               )
-               SELECT aml.id, ref.date, aml.name,
-                 CASE WHEN aml.debit > 0 THEN ref.matched_percentage * aml.debit ELSE 0 END AS debit_cash_basis,
-                 CASE WHEN aml.credit > 0 THEN ref.matched_percentage * aml.credit ELSE 0 END AS credit_cash_basis,
-                 aml.move_id, aml.account_id, aml.journal_id,
-                 ref.matched_percentage * aml.balance AS balance_cash_basis,
-                 aml.amount_residual, aml.partner_id, aml.reconciled, aml.company_id, aml.company_currency_id, aml.amount_currency, aml.balance, account.user_type_id, aml.analytic_account_id
-                FROM account_move_line aml
-                RIGHT JOIN payment_table ref ON aml.move_id = ref.move_id
-                LEFT JOIN account_account account ON account.id = aml.account_id
-                WHERE journal_id NOT IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
-                  AND aml.move_id IN (SELECT DISTINCT aml.move_id FROM account_move_line aml LEFT JOIN account_account account ON account.id = aml.account_id WHERE account.user_type_id IN %s)
-              )
-            ) """
-            params = [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)]
-        return sql, params
-
     def _do_query_unaffected_earnings(self, options, line_id, company=None):
         ''' Compute the sum of ending balances for all accounts that are of a type that does not bring forward the balance in new fiscal years.
             This is needed to balance the trial balance and the general ledger reports (to have total credit = total debit)
@@ -125,17 +43,13 @@ class report_account_general_ledger(models.AbstractModel):
                COALESCE(SUM("account_move_line".amount_currency), 0),
                COALESCE(SUM("account_move_line".debit), 0),
                COALESCE(SUM("account_move_line".credit), 0)'''
-        if options.get('cash_basis'):
-            select = select.replace('debit', 'debit_cash_basis').replace('credit', 'credit_cash_basis').replace('balance', 'balance_cash_basis')
         select += " FROM %s WHERE %s"
-        user_types = self.env['account.account.type'].search([('type', 'in', ('receivable', 'payable'))])
-        with_sql, with_params = self._get_with_statement(user_types)
         aml_domain = [('account_id.user_type_id.include_initial_balance', '=', False)]
         if company:
             aml_domain += [('company_id', '=', company.id)]
         tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=aml_domain)
         query = select % (tables, where_clause)
-        self.env.cr.execute(with_sql + query, with_params + where_params)
+        self.env.cr.execute(query, where_params)
         res = self.env.cr.fetchone()
         date = self._context.get('date_to') or fields.Date.today()
         currency_convert = lambda x: company and company.currency_id._convert(x, self.env.company_id.currency_id, self.env.company_id, date) or x
@@ -145,8 +59,6 @@ class report_account_general_ledger(models.AbstractModel):
         if group_by_account:
             select = "SELECT \"account_move_line\".account_id"
             select += ',COALESCE(SUM(\"account_move_line\".debit-\"account_move_line\".credit), 0),SUM(\"account_move_line\".amount_currency),SUM(\"account_move_line\".debit),SUM(\"account_move_line\".credit)'
-            if options.get('cash_basis'):
-                select = select.replace('debit', 'debit_cash_basis').replace('credit', 'credit_cash_basis').replace('balance', 'balance_cash_basis')
         else:
             select = "SELECT \"account_move_line\".id"
         sql = "%s FROM %s WHERE %s%s"
@@ -157,12 +69,10 @@ class report_account_general_ledger(models.AbstractModel):
             sql += " ORDER BY MAX(\"account_move_line\".date),\"account_move_line\".id"
             if limit and isinstance(limit, int):
                 sql += " LIMIT " + str(limit)
-        user_types = self.env['account.account.type'].search([('type', 'in', ('receivable', 'payable'))])
-        with_sql, with_params = self._get_with_statement(user_types)
         tables, where_clause, where_params = self.env['account.move.line']._query_get()
         line_clause = line_id and ' AND \"account_move_line\".account_id = ' + str(line_id) or ''
         query = sql % (select, tables, where_clause, line_clause)
-        self.env.cr.execute(with_sql + query, with_params + where_params)
+        self.env.cr.execute(query, where_params)
         results = self.env.cr.fetchall()
         return results
 
@@ -230,7 +140,6 @@ class report_account_general_ledger(models.AbstractModel):
                     accounts[account]['initial_bal'][field] += unaffected_earnings_results[field]
                     accounts[account][field] += unaffected_earnings_results[field]
                 unaff_earnings_treated_companies.add(account.company_id)
-            #use query_get + with statement instead of a search in order to work in cash basis too
             aml_ids = self.with_context(strict_range=True)._do_query(options, account_id, group_by_account=False)
             aml_ids = [x[0] for x in aml_ids]
 
@@ -353,14 +262,9 @@ class report_account_general_ledger(models.AbstractModel):
                 if not context.get('print_mode'):
                     remaining_lines = grouped_accounts[account]['total_lines'] - offset - len(amls)
 
-
                 for line in amls:
-                    if options.get('cash_basis'):
-                        line_debit = line.debit_cash_basis
-                        line_credit = line.credit_cash_basis
-                    else:
-                        line_debit = line.debit
-                        line_credit = line.credit
+                    line_debit = line.debit
+                    line_credit = line.credit
                     date = amls.env.context.get('date_to') or fields.Date.today()
                     line_debit = line.company_id.currency_id._convert(line_debit, used_currency, company_id, date)
                     line_credit = line.company_id.currency_id._convert(line_credit, used_currency, company_id, date)

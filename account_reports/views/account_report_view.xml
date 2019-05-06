@@ -26,7 +26,6 @@
                         <group string="Available Filters &amp; Options">
                             <group>
                                 <field name="comparison"/>
-                                <field name="cash_basis"/>
                                 <field name="unfold_all_filter"/>
                                 <field name="hierarchy_option"/>
                             </group>

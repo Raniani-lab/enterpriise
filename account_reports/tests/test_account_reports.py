@@ -449,56 +449,6 @@ class TestAccountReports(SavepointCase):
             ],
         )
 
-    def test_general_ledger_cash_basis(self):
-        ''' Test folded/unfolded lines with the cash basis option. '''
-        # Check the cash basis option.
-        report = self.env['account.general.ledger']
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options['cash_basis'] = True
-        report = report.with_context(report._set_context(options))
-
-        lines = report._get_lines(options)
-        self.assertLinesValues(
-            lines,
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      5,              6,              7],
-            [
-                # Accounts.
-                ('101200 Account Receivable',           800.00,         800.00,         0.00),
-                ('101300 Tax Paid',                     228.26,         0.00,           228.26),
-                ('101401 Bank',                         800.00,         1750.00,        -950.00),
-                ('111100 Account Payable',              1750.00,        1750.00,        0.00),
-                ('111200 Tax Received',                 0.00,           104.35,         -104.35),
-                ('200000 Product Sales',                0.00,           695.65,         -695.65),
-                ('220000 Expenses',                     478.26,         0.00,           478.26),
-                ('999999 Undistributed Profits/Losses', 1043.48,        0.00,           1043.48),
-                # Report Total.
-                ('Total',                               5100.00,        5100.00,        0.00),
-            ],
-        )
-
-        # Mark the '101200 Account Receivable' line to be unfolded.
-        line_id = lines[0]['id']
-        options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
-
-        self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
-            #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
-            [   0,                                      1,              3,              4,          5,              6,              7],
-            [
-                # Account.
-                ('101200 Account Receivable',           '',             '',             '',         800.00,         800.00,         0.00),
-                # Initial Balance.
-                ('Initial Balance',                     '',             '',             '',         700.00,         700.00,         0.00),
-                # Account Move Lines.
-                ('INV/2017/0005',                       '02/01/2017',   'partner_c',    '',         100.00,             '',       100.00),
-                ('BNK1/2017/0004',                      '03/01/2017',   'partner_c',    '',             '',         100.00,         0.00),
-                # Account Total.
-                ('Total ',                              '',             '',             '',         800.00,         800.00,         0.00),
-            ],
-        )
-
     def test_general_ledger_multi_company(self):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
@@ -724,48 +674,6 @@ class TestAccountReports(SavepointCase):
                 # Account Move Lines.
                 ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   665.00,         '',             345.00,         320.00),
                 ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   320.00,         300.00,         '',             620.00),
-            ],
-        )
-
-    def test_partner_ledger_cash_basis(self):
-        ''' Test folded/unfolded lines with the cash basis option. '''
-        # Check the cash basis option.
-        report = self.env['account.partner.ledger']
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options['cash_basis'] = True
-        report = report.with_context(report._set_context(options))
-
-        lines = report._get_lines(options)
-        self.assertLinesValues(
-            lines,
-            #   Name                                    Init. Balance   Debit           Credit          Balance
-            [   0,                                      6,              7,              8,              9],
-            [
-                # Partners.
-                ('partner_a',                           0.00,           300.00,         300.00,         0.00),
-                ('partner_b',                           0.00,           0.00,           0.00,           0.00),
-                ('partner_c',                           100.00,         150.00,         100.00,         150.00),
-                ('partner_d',                           0.00,           0.00,           0.00,           0.00),
-                # Report Total.
-                ('Total',                               100.00,         450.00,         400.00,         150.00),
-            ],
-        )
-
-        # Mark the 'partner_a' line to be unfolded.
-        line_id = lines[0]['id']
-        options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
-
-        self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
-            #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
-            [   0,                      1,          2,              4,              6,              7,              8,              9],
-            [
-                # Partner.
-                ('partner_a',           '',         '',             '',             0.00,           300.00,         300.00,         0.00),
-                # Account Move Lines.
-                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   0.00,           '',             300.00,         -300.00),
-                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   -300.00,        300.00,         '',             0.00),
             ],
         )
 
@@ -1216,34 +1124,6 @@ class TestAccountReports(SavepointCase):
             ],
         )
 
-    def test_trial_balance_cash_basis(self):
-        ''' Test the cash basis option. '''
-        # Check the cash basis option.
-        report = self.env['account.coa.report']
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options['cash_basis'] = True
-        report = report.with_context(report._set_context(options))
-
-        self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
-            #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
-            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
-            [   0,                                      1,              2,              3,              4,              5,              6],
-            [
-                # Accounts.
-                ('101200 Account Receivable',           '',             '',             100.00,         100.00,         '',             ''),
-                ('101300 Tax Paid',                     189.13,         '',             39.13,          '',             228.26,         ''),
-                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
-                ('111100 Account Payable',              '',             '',             300.00,         300.00,         '',             ''),
-                ('111200 Tax Received',                 '',             91.30,          '',             13.05,          '',             104.35),
-                ('200000 Product Sales',                '',             608.70,         '',             86.95,          '',             695.65),
-                ('220000 Expenses',                     217.39,         '',             260.87,         '',             478.26,         ''),
-                ('999999 Undistributed Profits/Losses', 1043.48,        '',             '',             '',             1043.48,        ''),
-                # Report Total.
-                ('Total',                               1450.00,        1450.00,        800.00,         800.00,         1750.00,        1750.00),
-            ],
-        )
-
     def test_trial_balance_multi_company(self):
         ''' Test in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
@@ -1406,54 +1286,6 @@ class TestAccountReports(SavepointCase):
             [
                 ('Receivables',                                 2075.00),
                 ('101200 Account Receivable',                   2075.00),
-            ],
-        )
-
-    def test_balance_sheet_cash_basis(self):
-        ''' Test folded/unfolded lines with the cash basis option. '''
-        # Check the cash basis option.
-        report = self.env.ref('account_reports.account_financial_report_balancesheet0')._with_correct_filters()
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options['cash_basis'] = True
-        report = report.with_context(report._set_context(options))
-
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
-        self.assertLinesValues(
-            lines,
-            #   Name                                            Balance
-            [   0,                                              1],
-            [
-                ('ASSETS',                                      ''),
-                ('Current Assets',                              ''),
-                ('Bank and Cash Accounts',                      -950.00),
-                ('Receivables',                                 0.00),
-                ('Current Assets',                              0.00),
-                ('Prepayments',                                 0.00),
-                ('Total Current Assets',                        -950.00),
-                ('Plus Fixed Assets',                           0.00),
-                ('Plus Non-current Assets',                     0.00),
-                ('Total ASSETS',                                -950.00),
-
-                ('LIABILITIES',                                 ''),
-                ('Current Liabilities',                         ''),
-                ('Current Liabilities',                         0.00),
-                ('Payables',                                    0.00),
-                ('Total Current Liabilities',                   0.00),
-                ('Plus Non-current Liabilities',                0.00),
-                ('Total LIABILITIES',                           0.00),
-
-                ('EQUITY',                                      ''),
-                ('Unallocated Earnings',                        ''),
-                ('Current Year Unallocated Earnings',           ''),
-                ('Current Year Earnings',                       0.00),
-                ('Current Year Allocated Earnings',             0.00),
-                ('Total Current Year Unallocated Earnings',     0.00),
-                ('Previous Years Unallocated Earnings',         0.00),
-                ('Total Unallocated Earnings',                  0.00),
-                ('Retained Earnings',                           0.00),
-                ('Total EQUITY',                                0.00),
-
-                ('LIABILITIES + EQUITY',                        0.00),
             ],
         )
 

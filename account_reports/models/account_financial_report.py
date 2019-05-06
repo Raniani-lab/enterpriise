@@ -22,7 +22,6 @@ class ReportAccountFinancialReport(models.Model):
     line_ids = fields.One2many('account.financial.html.report.line', 'financial_report_id', string='Lines')
     date_range = fields.Boolean('Based on date ranges', default=True, help='specify if the report use date_range or single date')
     comparison = fields.Boolean('Allow comparison', default=True, help='display the comparison filter')
-    cash_basis = fields.Boolean('Allow cash basis mode', help='display the option to switch to cash basis mode')
     analytic = fields.Boolean('Allow analytic filters', help='display the analytic filters')
     hierarchy_option = fields.Boolean('Enable the hierarchy option', help='Display the hierarchy choice in the report options')
     show_journal_filter = fields.Boolean('Allow filtering by journals', help='display the journal filter in the report')
@@ -197,7 +196,6 @@ class ReportAccountFinancialReport(models.Model):
             self.filter_date = {'mode': 'single', 'filter': 'today'}
             if self.comparison:
                 self.filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
-        self.filter_cash_basis = False if self.cash_basis else None
         if self.unfold_all_filter:
             self.filter_unfold_all = False
         if self.show_journal_filter:
@@ -362,7 +360,6 @@ class ReportAccountFinancialReport(models.Model):
         linesDicts = [[{} for _ in range(0, amount_of_group_ids)] for _ in range(0, amount_of_periods)]
 
         res = line_obj.with_context(
-            cash_basis=options.get('cash_basis'),
             filter_domain=domain,
         )._get_lines(self, currency_table, options, linesDicts)
         return res
@@ -529,11 +526,6 @@ class AccountFinancialReportLine(models.Model):
                 select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".credit * %s, %s) '
             select += 'ELSE \"account_move_line\".credit END), 0) AS credit'
 
-        if self.env.context.get('cash_basis'):
-            for field in ['debit', 'credit', 'balance']:
-                #replace the columns selected but not the final column name (... AS <field>)
-                number_of_occurence = len(select.split(field)) - 1
-                select = select.replace(field, field + '_cash_basis', number_of_occurence - 1)
         return select, extra_params
 
     def _get_with_statement(self, financial_report):
@@ -687,7 +679,7 @@ class AccountFinancialReportLine(models.Model):
                     -- Part for the unreconciled journal items.
                     -- Using amount_residual if the account is reconciliable is needed in case of partial reconciliation
 
-                    SELECT ''' + select_clause_1.replace('"account_move_line"."balance_cash_basis"', 'CASE WHEN acc.reconcile THEN  "account_move_line".amount_residual ELSE "account_move_line".balance END AS balance_cash_basis') + '''
+                    SELECT ''' + select_clause_1.replace('"account_move_line"."balance"', 'CASE WHEN acc.reconcile THEN  "account_move_line".amount_residual ELSE "account_move_line".balance END AS balance') + '''
                     FROM account_move_line "account_move_line"
                     LEFT JOIN account_account acc ON "account_move_line".account_id = acc.id
                     WHERE "account_move_line".move_id IN %s
@@ -695,89 +687,6 @@ class AccountFinancialReportLine(models.Model):
                 )
             '''
             params = [tuple(bank_move_ids)] + [tuple(bank_move_ids)] + [tuple(bank_move_ids)] + [tuple(bank_move_ids)] + [tuple(bank_accounts.ids)]
-        elif self.env.context.get('cash_basis'):
-            #Cash basis option
-            #-----------------
-            #In cash basis, we need to show amount on income/expense accounts, but only when they're paid AND under the payment date in the reporting, so
-            #we have to make a complex query to join aml from the invoice (for the account), aml from the payments (for the date) and partial reconciliation
-            #(for the reconciled amount).
-            user_types = self.env['account.account.type'].search([('type', 'in', ('receivable', 'payable'))])
-            if not user_types:
-                return sql, params
-
-            # Get all columns from account_move_line using the psql metadata table in order to make sure all columns from the account.move.line model
-            # are present in the shadowed table.
-            sql = "SELECT column_name FROM information_schema.columns WHERE table_name='account_move_line'"
-            self.env.cr.execute(sql)
-            columns = []
-            columns_2 = []
-            replace_columns = {'date': 'ref.date',
-                                'debit_cash_basis': 'CASE WHEN aml.debit > 0 THEN ref.matched_percentage * aml.debit ELSE 0 END AS debit_cash_basis',
-                                'credit_cash_basis': 'CASE WHEN aml.credit > 0 THEN ref.matched_percentage * aml.credit ELSE 0 END AS credit_cash_basis',
-                                'balance_cash_basis': 'ref.matched_percentage * aml.balance AS balance_cash_basis'}
-            for field in self.env.cr.fetchall():
-                field = field[0]
-                columns.append("\"account_move_line\".\"%s\"" % (field,))
-                if field in replace_columns:
-                    columns_2.append(replace_columns.get(field))
-                else:
-                    columns_2.append('aml.\"%s\"' % (field,))
-            select_clause_1 = ', '.join(columns)
-            select_clause_2 = ', '.join(columns_2)
-
-            #we use query_get() to filter out unrelevant journal items to have a shadowed table as small as possible
-            tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=self._get_aml_domain())
-            sql = """WITH account_move_line AS (
-              SELECT """ + select_clause_1 + """
-               FROM """ + tables + """
-               WHERE (\"account_move_line\".journal_id IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
-                 OR \"account_move_line\".move_id NOT IN (SELECT DISTINCT aml.move_id FROM account_move_line aml LEFT JOIN account_account account ON aml.account_id = account.id WHERE account.user_type_id IN %s))
-                 AND """ + where_clause + """
-              UNION ALL
-              (
-               WITH payment_table AS (
-                 SELECT aml.move_id, \"account_move_line\".date,
-                        CASE WHEN (aml.balance = 0 OR sub_aml.total_per_account = 0)
-                            THEN 0
-                            ELSE part.amount / ABS(sub_aml.total_per_account)
-                        END as matched_percentage
-                   FROM account_partial_reconcile part
-                   LEFT JOIN account_move_line aml ON aml.id = part.debit_move_id
-                   LEFT JOIN account_account account ON aml.account_id = account.id
-                   LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
-                                FROM account_move_line
-                                GROUP BY move_id, account_id) sub_aml
-                            ON (aml.account_id = sub_aml.account_id AND sub_aml.move_id=aml.move_id)
-                   LEFT JOIN account_move am ON aml.move_id = am.id, """ + tables + """
-                   WHERE part.credit_move_id = "account_move_line".id
-                    AND account.user_type_id IN %s
-                    AND """ + where_clause + """
-                 UNION ALL
-                 SELECT aml.move_id, \"account_move_line\".date,
-                        CASE WHEN (aml.balance = 0 OR sub_aml.total_per_account = 0)
-                            THEN 0
-                            ELSE part.amount / ABS(sub_aml.total_per_account)
-                        END as matched_percentage
-                   FROM account_partial_reconcile part
-                   LEFT JOIN account_move_line aml ON aml.id = part.credit_move_id
-                   LEFT JOIN account_account account ON aml.account_id = account.id
-                   LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
-                                FROM account_move_line
-                                GROUP BY move_id, account_id) sub_aml
-                            ON (aml.account_id = sub_aml.account_id AND sub_aml.move_id=aml.move_id)
-                   LEFT JOIN account_move am ON aml.move_id = am.id, """ + tables + """
-                   WHERE part.debit_move_id = "account_move_line".id
-                    AND account.user_type_id IN %s
-                    AND """ + where_clause + """
-               )
-               SELECT """ + select_clause_2 + """
-                FROM account_move_line aml
-                RIGHT JOIN payment_table ref ON aml.move_id = ref.move_id
-                WHERE journal_id NOT IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
-                  AND aml.move_id IN (SELECT DISTINCT move_id FROM account_move_line aml LEFT JOIN account_account account ON aml.account_id = account.id WHERE account.user_type_id IN %s)
-              )
-            ) """
-            params = [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)] + where_params + [tuple(user_types.ids)]
         return sql, params
 
     def _compute_line(self, currency_table, financial_report, group_by=None, domain=[]):

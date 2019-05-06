@@ -12,7 +12,6 @@ class report_account_coa(models.AbstractModel):
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
-    filter_cash_basis = False
     filter_all_entries = False
     filter_hierarchy = False
     filter_unfold_all = None

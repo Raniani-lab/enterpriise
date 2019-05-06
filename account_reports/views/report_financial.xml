@@ -59,10 +59,6 @@
             </t>
         </div>
         <div class="col-4">
-            <t t-if="options.get('cash_basis')">Cash Basis</t><t t-if="options.get('cash_basis') == False">Accrual Basis<br/></t>
-            <t t-if="options.get('all_entries')" groups="account.group_account_user">With Draft Entries</t><t t-if="options.get('all_entries') == False">Posted Entries Only</t>
-        </div>
-        <div class="col-4">
             <div class="col-12">
                 <t t-if="options.get('multi_company')">
                     Companies:

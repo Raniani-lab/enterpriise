@@ -86,11 +86,6 @@ tour.register('account_reports_widgets', {
             trigger:    ".o_account_reports_filter_bool > a",
         },
         {
-            content:      "change cash basis filter",
-            trigger:    ".dropdown-item.js_account_report_bool_filter[data-filter='cash_basis']",
-            run: 'click'
-        },
-        {
             title:      "export xlsx",
             trigger:    'button[action="print_xlsx"]',
             run: 'click'

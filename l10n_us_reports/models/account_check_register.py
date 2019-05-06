@@ -11,8 +11,6 @@ class ReportCheckRegister(models.AbstractModel):
     _description = 'Check Register Report'
     _inherit = 'account.general.ledger'
 
-    filter_cash_basis = None
-
     def _get_filter_journals(self):
         #filter only the bank/cash/miscellaneous journals
         return self.env['account.journal'].search([

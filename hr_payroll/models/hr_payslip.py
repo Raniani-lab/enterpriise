@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import base64
+
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
@@ -9,11 +11,13 @@ from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, Inpu
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round, date_utils
 from odoo.tools.misc import format_date
+from odoo.tools.safe_eval import safe_eval
 
 
 class HrPayslip(models.Model):
     _name = 'hr.payslip'
     _description = 'Pay Slip'
+    _inherit = ['mail.thread.cc', 'mail.activity.mixin']
     _order = 'date_to desc'
 
     struct_id = fields.Many2one('hr.payroll.structure', string='Structure',
@@ -96,6 +100,24 @@ class HrPayslip(models.Model):
         self.compute_sheet()
         self.write({'state' : 'done'})
         self.mapped('payslip_run_id').action_close()
+        for payslip in self:
+            if not payslip.struct_id or not payslip.struct_id.report_id:
+                report = self.env.ref('hr_payroll.action_report_payslip', False)
+            else:
+                report = payslip.struct_id.report_id
+            pdf_content, content_type = report.render_qweb_pdf(payslip.id)
+            if payslip.struct_id.report_id.print_report_name:
+                pdf_name = safe_eval(payslip.struct_id.report_id.print_report_name, {'object': payslip})
+            else:
+                pdf_name = _("Payslip")
+            self.env['ir.attachment'].create({
+                'name': pdf_name,
+                'type': 'binary',
+                'datas': base64.encodestring(pdf_content),
+                'res_model': payslip._name,
+                'res_id': payslip.id
+            })
+
 
     def action_payslip_cancel(self):
         if self.filtered(lambda slip: slip.state == 'done'):

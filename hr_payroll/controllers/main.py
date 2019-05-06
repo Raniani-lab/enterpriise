@@ -24,8 +24,10 @@ class HrPayroll(Controller):
 
         for payslip in payslips:
             if not payslip.struct_id or not payslip.struct_id.report_id:
-                continue
-            pdf_content, _ = payslip.struct_id.report_id.render_qweb_pdf(payslip.id)
+                report = request.env.ref('hr_payroll.action_report_payslip', False)
+            else:
+                report = payslip.struct_id.report_id
+            pdf_content, _ = report.render_qweb_pdf(payslip.id)
             reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
 
             for page in range(reader.getNumPages()):

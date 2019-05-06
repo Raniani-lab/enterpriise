@@ -40,11 +40,6 @@
             <field name="sequence">11</field>
         </record>
 
-        <record id="documents_hr_folder" model="documents.folder">
-            <field name="name">HR</field>
-            <field name="sequence">12</field>
-        </record>
-
         <record id="documents_marketing_folder" model="documents.folder">
             <field name="name">Marketing</field>
             <field name="sequence">13</field>
@@ -90,13 +85,6 @@
             <field name="folder_id" ref="documents_finance_folder"/>
         </record>
 
-        <!-- Facets HR -->
-
-        <record id="documents_hr_documents" model="documents.facet">
-            <field name="name">Documents</field>
-            <field name="sequence">6</field>
-            <field name="folder_id" ref="documents_hr_folder"/>
-        </record>
 
         <!-- Facets marketing -->
 
@@ -246,26 +234,6 @@
             <field name="name" eval="str(datetime.now().year-1)"/>
             <field name="facet_id" ref="documents_finance_fiscal_year"/>
             <field name="sequence">5</field>
-        </record>
-
-        <!-- tags hr -->
-
-        <record id="documents_hr_documents_absences" model="documents.tag">
-            <field name="name">Absences</field>
-            <field name="facet_id" ref="documents_hr_documents"/>
-            <field name="sequence">10</field>
-        </record>
-
-        <record id="documents_hr_documents_contracts" model="documents.tag">
-            <field name="name">Contracts</field>
-            <field name="facet_id" ref="documents_hr_documents"/>
-            <field name="sequence">11</field>
-        </record>
-
-        <record id="documents_hr_documents_appraisal" model="documents.tag">
-            <field name="name">Appraisal</field>
-            <field name="facet_id" ref="documents_hr_documents"/>
-            <field name="sequence">12</field>
         </record>
 
         <!-- tags marketing -->

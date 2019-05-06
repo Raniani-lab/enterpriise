@@ -4,7 +4,6 @@
 
         <record id="documents_recruitment_folder" model="documents.folder" forcecreate="0">
             <field name="name">Recruitment</field>
-            <field name="parent_folder_id" ref="documents.documents_hr_folder"/>
             <field name="group_ids" eval="[(4, ref('hr_recruitment.group_hr_recruitment_user'))]"/>
             <field name="sequence">20</field>
         </record>

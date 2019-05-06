@@ -642,7 +642,6 @@ class TestAccountReports(SavepointCase):
         # Init options.
         report = self.env['account.partner.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -663,7 +662,6 @@ class TestAccountReports(SavepointCase):
         # Mark the 'partner_a' line to be unfolded.
         line_id = lines[0]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -684,7 +682,6 @@ class TestAccountReports(SavepointCase):
         report = self.env['account.partner.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
-        report = report.with_context(report._set_context(options))
         report = report.with_context(allowed_company_ids=self.cids)
 
         lines = report._get_lines(options)
@@ -706,7 +703,6 @@ class TestAccountReports(SavepointCase):
         # Mark the 'partner_a' line (for the company_child_eur company) to be unfolded.
         line_id = lines[0]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
         report = report.with_context(allowed_company_ids=self.cids)
 
         self.assertLinesValues(
@@ -733,14 +729,14 @@ class TestAccountReports(SavepointCase):
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
         report = report.with_context(allowed_company_ids=self.cids)
 
         # Force the load more to expand lines one by one.
         report.MAX_LINES = 1
+        lines = report._get_lines(options, line_id=line_id)
 
         self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
+            lines,
             #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
             [   0,                      1,          2,              4,              6,              7,              8,              9],
             [
@@ -753,11 +749,14 @@ class TestAccountReports(SavepointCase):
         )
 
         # Store the load more values inside the options.
-        options['lines_offset'] = 1
-        options['lines_progress'] = 985.00
-        report = report.with_context(report._set_context(options))
-        report = report.with_context(allowed_company_ids=self.cids)
+        line_id = 'loadmore_%s' % self.partner_a.id
+        options.update({
+            'lines_offset': lines[2]['offset'],
+            'lines_progress': lines[2]['progress'],
+            'lines_remaining': lines[2]['remaining'],
+        })
         report.MAX_LINES = 2
+        lines = report._get_lines(options, line_id=line_id)
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -773,11 +772,11 @@ class TestAccountReports(SavepointCase):
         )
 
         # Update the load more values inside the options.
-        options['lines_offset'] = 3
-        options['lines_progress'] = 940.00
-        report = report.with_context(report._set_context(options))
-        report = report.with_context(allowed_company_ids=self.cids)
-        report.MAX_LINES = 1
+        options.update({
+            'lines_offset': lines[2]['offset'],
+            'lines_progress': lines[2]['progress'],
+            'lines_remaining': lines[2]['remaining'],
+        })
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -795,7 +794,6 @@ class TestAccountReports(SavepointCase):
         report = self.env['account.partner.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'account_type', ['receivable'])
-        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -816,7 +814,6 @@ class TestAccountReports(SavepointCase):
         # Mark the 'partner_c' line to be unfolded.
         line_id = lines[2]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -835,7 +832,6 @@ class TestAccountReports(SavepointCase):
         report = self.env['account.partner.ledger']
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'account_type', ['payable'])
-        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -856,7 +852,6 @@ class TestAccountReports(SavepointCase):
         # Mark the 'partner_c' line to be unfolded.
         line_id = lines[2]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -865,6 +860,29 @@ class TestAccountReports(SavepointCase):
             [
                 # Partners.
                 ('partner_c',                           -1445.00,       0.00,           0.00,           -1445.00),
+            ],
+        )
+
+    def test_partner_ledger_filter_partner(self):
+        ''' Test the filter on partners/partner's categories. '''
+        # Init options with modified filter_partner:
+        # - partner_ids: ('partner_b', 'partner_c', 'partner_d')
+        # - partner_categories: ('partner_categ_a')
+        report = self.env['account.partner.ledger']
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
+        options['partner_ids'] = (self.partner_b + self.partner_c + self.partner_d).ids
+        options['partner_categories'] = self.partner_category_a.ids
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    Init. Balance   Debit           Credit          Balance
+            [   0,                                      6,              7,              8,              9],
+            [
+                # Partners.
+                ('partner_b',                           65.00,          0.00,           345.00,         -280.00),
+                ('partner_d',                           -1295.00,       345.00,         0.00,           -950.00),
+                # Report Total.
+                ('Total',                               -1230.00,       345.00,         345.00,         -1230.00),
             ],
         )
 

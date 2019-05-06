@@ -141,6 +141,7 @@ class AccountInvoice(models.Model):
                 'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/parse'
             user_infos = {
                 'user_company_VAT': self.env.user.company_id.vat,
+                'user_company_name': self.env.user.company_id.name,
                 'user_lang': self.env.user.lang,
                 'user_email': self.env.user.email,
             }
@@ -433,15 +434,13 @@ class AccountInvoice(models.Model):
     @api.multi
     def _set_supplier(self, supplier_ocr, vat_number_ocr):
         self.ensure_one()
-        partner_id = self.find_partner_id_with_name(supplier_ocr)
-        if partner_id != 0:
-            self.partner_id = partner_id
-            self._onchange_partner_id()
-        else:
-            partner_vat = self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1)
-            if partner_vat.exists():
-                self.partner_id = partner_vat
-                self._onchange_partner_id()
+        if not self.partner_id:
+            partner_id =  self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1).id
+            if not partner_id:
+                partner_id = self.find_partner_id_with_name(supplier_ocr)
+                if partner_id:
+                    self.write({'partner_bank_id': False, 'partner_id': partner_id})
+                    self._onchange_partner_id()
 
     @api.multi
     def _set_invoice_lines(self, invoice_lines, subtotal_ocr):
@@ -520,7 +519,7 @@ class AccountInvoice(models.Model):
                                 vals['invoice_line_tax_ids'] = [(4, taxes_record.id)]
                             else:
                                 vals['invoice_line_tax_ids'].append((4, taxes_record.id))
-                
+
                 invoice_lines_to_create.append(vals)
 
         invoice_lines = self.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(invoice_lines_to_create)
@@ -538,8 +537,10 @@ class AccountInvoice(models.Model):
     @api.multi
     def _set_currency(self, currency_ocr):
         self.ensure_one()
-        self.currency_id = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr), 
+        currency = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr),
             ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+        if currency:
+            self.currency_id = currency
 
     @api.multi
     def check_status(self):

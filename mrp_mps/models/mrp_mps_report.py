@@ -39,7 +39,7 @@ class MrpMpsReport(models.TransientModel):
             for bom in boms:
                 products = (bom.product_id or (bom.product_tmpl_id.product_variant_ids)).filtered(lambda x: x.mps_active)
                 if products:
-                    products.apply_active = True
+                    products.write({'apply_active': True})
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',

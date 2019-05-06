@@ -86,7 +86,6 @@ class HrPayslip(models.Model):
                         'debit': amount > 0.0 and amount or 0.0,
                         'credit': amount < 0.0 and -amount or 0.0,
                         'analytic_account_id': line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id,
-                        'tax_line_id': line.salary_rule_id.account_tax_id.id,
                     })
                     line_ids.append(debit_line)
                     debit_sum += debit_line[2]['debit'] - debit_line[2]['credit']
@@ -101,7 +100,6 @@ class HrPayslip(models.Model):
                         'debit': amount < 0.0 and -amount or 0.0,
                         'credit': amount > 0.0 and amount or 0.0,
                         'analytic_account_id': line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id,
-                        'tax_line_id': line.salary_rule_id.account_tax_id.id,
                     })
                     line_ids.append(credit_line)
                     credit_sum += credit_line[2]['credit'] - credit_line[2]['debit']
@@ -146,7 +144,6 @@ class HrSalaryRule(models.Model):
     _inherit = 'hr.salary.rule'
 
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', company_dependent=True)
-    account_tax_id = fields.Many2one('account.tax', 'Tax', company_dependent=True)
     account_debit = fields.Many2one('account.account', 'Debit Account', company_dependent=True, domain=[('deprecated', '=', False)])
     account_credit = fields.Many2one('account.account', 'Credit Account', company_dependent=True, domain=[('deprecated', '=', False)])
 

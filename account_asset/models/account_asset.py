@@ -343,7 +343,7 @@ class AccountAsset(models.Model):
 
     @api.multi
     def action_save_model(self):
-        form_view = self.env.ref('account_deferred_revenue.view_account_asset_revenue_form', False) or self.env.ref('account_asset.view_account_asset_form')
+        form_view = self.asset_type == 'sale' and self.env.ref('account_deferred_revenue.view_account_asset_revenue_form', False) or self.env.ref('account_asset.view_account_asset_form')
         return {
             'name': _('Save model'),
             'views': [[form_view.id, "form"]],
@@ -358,7 +358,7 @@ class AccountAsset(models.Model):
                 'default_method': self.method,
                 'default_method_number': self.method_number,
                 'default_method_period': self.method_period,
-                'default_progress_factor': self.method_progress_factor,
+                'default_method_progress_factor': self.method_progress_factor,
                 'default_prorata': self.prorata,
                 'default_prorata_date': self.prorata_date,
                 'default_analytic_tag_ids': [(6, 0, self.analytic_tag_ids.ids)],
@@ -583,12 +583,12 @@ class AccountAsset(models.Model):
                 vals.update(changed_vals['value'])
         with self.env.norecompute():
             new_recs = super(AccountAsset, self.with_context(mail_create_nolog=True)).create(vals_list)
+            if self.env.context.get('original_asset'):
+                # When original_asset is set, only one asset is created since its from the form view
+                original_asset = self.env['account.asset'].browse(self.env.context.get('original_asset'))
+                original_asset.model_id = new_recs
         new_recs.filtered(lambda r: r.state != 'model')._set_value()
         new_recs.filtered(lambda r: r.state != 'model')._amount_residual()
-        if self.env.context.get('original_asset'):
-            # When original_asset is set, only one asset is created since its from the form view
-            original_asset = self.env['account.asset'].browse(self.env.context.get('original_asset'))
-            original_asset.model_id = new_recs
         return new_recs
 
     @api.multi

@@ -19,7 +19,7 @@ var AccountAssetWidget = AbstractField.extend({
     events: _.extend({}, AbstractField.prototype.events, {
         'click': '_onClick',
     }),
-    description: "",
+    noLabel: true,
 
     //--------------------------------------------------------------------------
     // Public

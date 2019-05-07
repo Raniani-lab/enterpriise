@@ -147,6 +147,11 @@ class HrContract(models.Model):
 
         return self.env['hr.work.entry'].create(vals_list)
 
+    def _index_contracts(self):
+        action = self.env.ref('hr_payroll.action_hr_payroll_index').read()[0]
+        action['context'] = repr(self.env.context)
+        return action
+
     @api.multi
     def _get_work_hours(self, date_from, date_to):
         """

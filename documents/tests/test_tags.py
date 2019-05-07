@@ -23,6 +23,8 @@ class TestTags(TransactionCase):
         domain = [('folder_id', '=', folder_id)]
         folder_ids = self.env['documents.folder'].search([('parent_folder_id', 'parent_of', folder_id)]).ids
         tags = self.env['documents.tag']._get_tags(domain, folder_ids)
+        processed_tags = self.env['documents.document']._get_processed_tags(domain, folder_ids)
+        self.assertEqual(processed_tags[0]['group_hex_color'], '#F06050', 'first record should have the right color')
         self.assertEqual(len(tags), 4, 'should return a non-empty list of tags')
 
         first_record = {

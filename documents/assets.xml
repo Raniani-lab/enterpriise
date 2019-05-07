@@ -3,6 +3,7 @@
    <template id="assets_backend" name="documents assets backend" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/documents/static/src/js/documents_document_viewer.js"/>
+            <script type="text/javascript" src="/documents/static/src/js/documents_kanban_color_widget.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_kanban_controller.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_kanban_controller_mobile.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_kanban_model.js"/>

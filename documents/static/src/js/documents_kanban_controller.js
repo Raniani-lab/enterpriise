@@ -35,6 +35,7 @@ var DocumentsKanbanController = KanbanController.extend({
         delete_records: '_onDeleteRecords',
         document_viewer_attachment_changed: '_onDocumentViewerAttachmentChanged',
         download: '_onDownload',
+        get_search_panel_tags: '_onGetSearchPanelTags',
         kanban_image_clicked: '_onKanbanPreview',
         lock_attachment: '_onLock',
         open_chatter: '_onOpenChatter',
@@ -442,6 +443,13 @@ var DocumentsKanbanController = KanbanController.extend({
                 self.reload();
             }
         });
+    },
+    /**
+     * @private
+     * @param {Event} ev
+     */
+    _onGetSearchPanelTags: function (ev) {
+         ev.data.callback(this._searchPanel.getTags());
     },
     /**
      * @private

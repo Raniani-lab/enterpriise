@@ -123,12 +123,14 @@ QUnit.module('DocumentsKanbanView', {
             },
             'documents.tag': {
                 fields: {},
+                records: [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}],
                 get_tags: function () {
                     return [{
                       group_id: 2,
                       group_name: 'Priority',
                       group_sequence: 10,
                       group_tooltip: 'A priority tooltip',
+                      group_hex_color: '#F06050',
                       id: 5,
                       name: 'No stress',
                       sequence: 10,
@@ -138,6 +140,7 @@ QUnit.module('DocumentsKanbanView', {
                       group_name: 'Status',
                       group_sequence: 11,
                       group_tooltip: 'A Status tooltip',
+                      group_hex_color: '#6CC1ED',
                       id: 2,
                       name: 'Draft',
                       sequence: 10,
@@ -147,6 +150,7 @@ QUnit.module('DocumentsKanbanView', {
                       group_name: 'Status',
                       group_sequence: 11,
                       group_tooltip: 'A Status tooltip',
+                      group_hex_color: '#F7CD1F',
                       id: 1,
                       name: 'New',
                       sequence: 11,
@@ -2268,11 +2272,11 @@ QUnit.module('DocumentsKanbanView', {
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_group', 2,
             "should have 2 facets");
 
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:first label:first').text().trim(),
+        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:first label:first > span:nth(1)').text().trim(),
             'Priority', "the first facet should be 'Priority'");
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:first label:first').attr('title').trim(),
             'A priority tooltip', "the first facet have a tooltip");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last label:first').text().trim(),
+        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last label:first > span:nth(1)').text().trim(),
             'Status', "the last facet should be 'Status'");
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last label:first').attr('title').trim(),
             'A Status tooltip', "the last facet should be 'Status'");
@@ -2577,6 +2581,34 @@ QUnit.module('DocumentsKanbanView', {
             kanban.destroy();
             done();
         });
+    });
+
+    QUnit.test('documents Kanban color widget', async function (assert) {
+        assert.expect(4);
+        var self = this;
+        var kanban = await createDocumentsKanbanView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="tag_ids" widget="documents_kanban_color_tags"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+        });
+        assert.containsN(kanban, '.o_field_many2manytags', 5,
+            "All the records should have a color widget");
+
+        assert.containsN(kanban, '.o_field_many2manytags:nth(2) > span', 3,
+            "All the records should have 3 tags");
+
+        assert.containsOnce(kanban.$('.o_field_many2manytags:nth(2) > span:first'), '> span',
+            "should have a span for color ball");
+
+        assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
+            "rgb(247, 205, 31)", "should have the right color");
+
+        kanban.destroy();
     });
 });
 

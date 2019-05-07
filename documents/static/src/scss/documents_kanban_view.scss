@@ -67,6 +67,10 @@ $o-dms-inspector-bg-darker: #1A1A1A;
                 background-color: #fff0;
             }
 
+            .o_kanban_image, .o_kanban_image_wrapper {
+                height: 100%;
+            }
+
             .o_kanban_image .o_kanban_image_wrapper {
                 background-color: $gray-200;
             }
@@ -85,6 +89,16 @@ $o-dms-inspector-bg-darker: #1A1A1A;
 
             .o_kanban_details {
                 padding-left: $o-kanban-attachement-image-size + $o-kanban-inside-hgutter;
+                height: 100%;
+
+                .o_kanban_details_wrapper {
+                    height: 100%;
+
+                    .o_field_many2manytags {
+                        margin-top: 5px;
+                        white-space: normal;
+                    }
+                }
             }
 
             .o_kanban_record_title {

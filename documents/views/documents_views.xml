@@ -134,6 +134,7 @@
                                             <span><b>Requested Document</b></span>
                                         </t>
                                         <samp t-else="" class="text-muted"> </samp>
+                                        <field name="tag_ids" widget="documents_kanban_color_tags"/>
                                     </div>
                                     <div class="o_kanban_record_bottom">
                                         <time class="oe_kanban_bottom_left">

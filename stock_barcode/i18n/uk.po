@@ -66,7 +66,7 @@ msgstr "Дія клієнта штрих-коду комплектування"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot___barcode_scanned
 msgid "Barcode Scanned"
-msgstr "Штрихкод проскановано"
+msgstr "Штрих-код проскановано"
 
 #. module: stock_barcode
 #. openerp-web

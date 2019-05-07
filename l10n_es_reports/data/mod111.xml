@@ -134,7 +134,7 @@
             <field name="name">[07] Nº de perceptores</field>
             <field name="code">aeat_mod_111_07</field>
             <field name="parent_id" ref='mod_111_title_5'/>
-            <field name="domain" eval="[('tax_ids.tag_ids', '=', ref('l10n_es.mod_111_08')), ('tax_ids.tag_ids', '=', ref('l10n_es.mod_111_08'))]"/>
+            <field name="domain" eval="[('tax_ids.tag_ids', '=', ref('l10n_es.mod_111_08')), ('tax_ids.tag_ids', '=', ref('l10n_es.mod_111_09'))]"/>
             <field name="formulas">balance = count_rows</field>
             <field name="figure_type">no_unit</field>
             <field name="groupby">partner_id</field>

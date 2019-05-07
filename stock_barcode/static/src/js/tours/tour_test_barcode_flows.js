@@ -1923,6 +1923,7 @@ tour.register('test_bypass_source_scan', {test: true}, [
 
     {
         trigger: '.o_barcode_client_action',
+        extra_trigger: '.o_barcode_line',
         run: 'scan lot1',
     },
 

@@ -480,6 +480,10 @@ class MrpProductionWorkcenterLine(models.Model):
             wo.skip_completed_checks = False
             wo._change_quality_check(position=0)
 
+    def _get_byproduct_move_to_update(self):
+        moves = super(MrpProductionWorkcenterLine, self)._get_byproduct_move_to_update()
+        return moves.filtered(lambda m: m.product_id.tracking == 'none')
+
     def record_production(self):
         self.ensure_one()
         if any([(x.quality_state == 'none') for x in self.check_ids]):

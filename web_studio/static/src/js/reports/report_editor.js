@@ -384,7 +384,6 @@ var ReportEditor = Widget.extend(EditorMixin, {
         this.reportHTML = reportHTML;
 
         this.$dropZone = $();
-        this._resizeIframe();
 
         return this._updateContent().then(function () {
             if (self.selectedNode) {

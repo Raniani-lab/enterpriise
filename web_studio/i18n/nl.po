@@ -8,8 +8,8 @@
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Eric Geens <ericgeens@yahoo.com>, 2019
 # Cas Vissers <casvissers@brahoo.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Cas Vissers <c.vissers@brahoo.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
-"Last-Translator: Cas Vissers <c.vissers@brahoo.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -536,7 +536,7 @@ msgstr "Cohort weergave"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:191
 #, python-format
 msgid "Collapse First Level"
-msgstr ""
+msgstr "Eerste niveau inklappen"
 
 #. module: web_studio
 #. openerp-web
@@ -754,7 +754,7 @@ msgstr "Dag"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:245
 #, python-format
 msgid "Day Precision"
-msgstr ""
+msgstr "Dagelijkse precisie"
 
 #. module: web_studio
 #. openerp-web
@@ -790,7 +790,7 @@ msgstr "Standaard groeperen op"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:226
 #, python-format
 msgid "Default Scale"
-msgstr ""
+msgstr "Standaard schaal"
 
 #. module: web_studio
 #. openerp-web
@@ -882,14 +882,14 @@ msgstr "Weergave naam"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:184
 #, python-format
 msgid "Display Total row"
-msgstr ""
+msgstr "Toon totaal rij"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:177
 #, python-format
 msgid "Display Unavailability"
-msgstr ""
+msgstr "Toon onbeschikbaarheid"
 
 #. module: web_studio
 #. openerp-web
@@ -1340,7 +1340,7 @@ msgstr "Halve dag"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:249
 #, python-format
 msgid "Half Hour"
-msgstr ""
+msgstr "Half uur"
 
 #. module: web_studio
 #. openerp-web
@@ -1754,7 +1754,7 @@ msgstr "Maand"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:262
 #, python-format
 msgid "Month Precision"
-msgstr ""
+msgstr "Maandelijkse precisie"
 
 #. module: web_studio
 #. openerp-web
@@ -2033,7 +2033,7 @@ msgstr "Trek rechts"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:248
 #, python-format
 msgid "Quarter Hour"
-msgstr ""
+msgstr "Kwartier"
 
 #. module: web_studio
 #. openerp-web
@@ -2795,7 +2795,7 @@ msgstr "Week"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:254
 #, python-format
 msgid "Week Precision"
-msgstr ""
+msgstr "Wekelijkse precisie"
 
 #. module: web_studio
 #. openerp-web
@@ -3074,4 +3074,4 @@ msgstr "x_studio_"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:232
 #, python-format
 msgid "year"
-msgstr ""
+msgstr "jaar"

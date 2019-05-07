@@ -287,7 +287,7 @@ msgstr "Goedkeuring soort"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.message_approval
 msgid "Approval:"
-msgstr ""
+msgstr "Goedkeuring:"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__approval_ids
@@ -431,7 +431,7 @@ msgstr "BoM Revisie"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.report_mrp_bom_inherit_mrp_plm
 msgid "BoM Version"
-msgstr ""
+msgstr "BoM versie"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:157
@@ -1868,4 +1868,4 @@ msgstr "oe_kanban_text_red"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.message_approval
 msgid "was"
-msgstr ""
+msgstr "was"

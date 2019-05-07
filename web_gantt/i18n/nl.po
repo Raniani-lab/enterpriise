@@ -3,8 +3,8 @@
 # * web_gantt
 # 
 # Translators:
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2016
 # Martin Trigaux, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +32,7 @@ msgstr "Toevoegen"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:6
 #, python-format
 msgid "Add record"
-msgstr ""
+msgstr "Voeg record toe"
 
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_base
@@ -44,7 +44,7 @@ msgstr "Basis"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:27
 #, python-format
 msgid "Collapse rows"
-msgstr ""
+msgstr "Rijen inklappen"
 
 #. module: web_gantt
 #. openerp-web
@@ -66,7 +66,7 @@ msgstr "Dag"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:24
 #, python-format
 msgid "Expand rows"
-msgstr ""
+msgstr "Rijen uitvouwen"
 
 #. module: web_gantt
 #. openerp-web
@@ -86,7 +86,7 @@ msgstr "Gantt weergave"
 #: code:addons/web_gantt/models/models.py:34
 #, python-format
 msgid "Insufficient fields for Gantt View!"
-msgstr ""
+msgstr "Niet genoeg velden voor Gantt weergave!"
 
 #. module: web_gantt
 #. openerp-web
@@ -128,7 +128,7 @@ msgstr "Plan"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:77
 #, python-format
 msgid "Plan existing"
-msgstr ""
+msgstr "Plan bestaande"
 
 #. module: web_gantt
 #. openerp-web
@@ -142,14 +142,14 @@ msgstr "Vorige"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:120
 #, python-format
 msgid "Start Date:"
-msgstr ""
+msgstr "Startdatum:"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:121
 #, python-format
 msgid "Stop Date:"
-msgstr ""
+msgstr "Stopdatum:"
 
 #. module: web_gantt
 #. openerp-web
@@ -163,7 +163,7 @@ msgstr "Vandaag"
 #: code:addons/web_gantt/static/src/js/gantt_model.js:420
 #, python-format
 msgid "Undefined %s"
-msgstr ""
+msgstr "Niet gedefinieerd %s"
 
 #. module: web_gantt
 #. openerp-web

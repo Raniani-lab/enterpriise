@@ -169,7 +169,7 @@ class MxReportAccountTrial(models.AbstractModel):
                 ('id', 'in', account_ids.ids),
             ])
             name = tag.name
-            name = name[:98] + "..." if len(name) > 100 else name
+            name = name[:63] + "..." if len(name) > 65 else name
             cols = [{'name': ''}]
             childs = self._get_lines_fourth_level(accounts, grouped_accounts, initial_balances, options, comparison_table)
             if not childs:
@@ -212,7 +212,7 @@ class MxReportAccountTrial(models.AbstractModel):
                 if not non_zero:
                     continue
             name = account.code + " " + account.name
-            name = name[:98] + "..." if len(name) > 100 else name
+            name = name[:63] + "..." if len(name) > 65 else name
             tag = account.tag_ids.filtered(lambda r: r.color == 4)
             if len(tag) > 1:
                 raise UserError(_(

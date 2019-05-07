@@ -76,7 +76,7 @@ msgstr "Certificering proces"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
 msgid "Commercial Invoice Type"
-msgstr ""
+msgstr "Commercieel soort factuur"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,delivery_type:0
@@ -264,7 +264,7 @@ msgstr "LB"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
 msgid "Label Type"
-msgstr ""
+msgstr "Soort label"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_meter_number

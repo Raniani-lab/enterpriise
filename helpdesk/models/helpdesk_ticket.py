@@ -259,6 +259,9 @@ class HelpdeskTicket(models.Model):
     def create(self, vals):
         if vals.get('team_id'):
             vals.update(item for item in self._onchange_team_get_values(self.env['helpdesk.team'].browse(vals['team_id'])).items() if item[0] not in vals)
+        if 'partner_id' in vals and 'partner_email' not in vals:
+            partner_email = self.env['res.partner'].browse(vals['partner_id']).email
+            vals.update(partner_email=partner_email)
 
         # context: no_log, because subtype already handle this
         ticket = super(HelpdeskTicket, self).create(vals)

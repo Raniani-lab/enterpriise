@@ -473,7 +473,7 @@ msgstr "Verkoper"
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Person"
-msgstr ""
+msgstr "Verkoper"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids

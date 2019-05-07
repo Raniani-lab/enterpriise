@@ -110,7 +110,7 @@ msgstr "Stare factură"
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0
 msgid "Just done"
-msgstr ""
+msgstr "Doar făcut"
 
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0

@@ -4,10 +4,10 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Cas Vissers <casvissers@brahoo.nl>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,7 +70,7 @@ msgstr "Camera"
 #: code:addons/iot/static/src/js/iot.js:368
 #, python-format
 msgid "Click here to open your IoT Homepage"
-msgstr ""
+msgstr "Klik hier om uw IoT homepagina te openen"
 
 #. module: iot
 #. openerp-web
@@ -78,7 +78,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:369
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
-msgstr ""
+msgstr "Klik op Geavanceerd/Toon details/Details/Meer informati"
 
 #. module: iot
 #. openerp-web
@@ -89,6 +89,8 @@ msgid ""
 "Click on Proceed to .../Add Exception/Visit this website/Go on to the "
 "webpage"
 msgstr ""
+"Klik op verder gaan om .../Uitzondering toe voegen/Bezoek de website/Ga naar"
+" de webpagina"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -100,7 +102,7 @@ msgstr "Klik op de"
 #: code:addons/iot/static/src/js/iot.js:244
 #, python-format
 msgid "Click on the link above to open your IoT Homepage"
-msgstr ""
+msgstr "Klik op de bovenstaande link om uw IoT homepagina te openen"
 
 #. module: iot
 #. openerp-web
@@ -114,7 +116,7 @@ msgstr "Afsluiten"
 #: code:addons/iot/static/src/js/iot.js:372
 #, python-format
 msgid "Close this window and try again"
-msgstr ""
+msgstr "Sluit dit venster en probeer het opnieuw"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
@@ -141,6 +143,8 @@ msgstr "Verbinding mislukt"
 msgid ""
 "Connection refused, please accept the certificate and restart the scan:"
 msgstr ""
+"Connectie geweigerd, gelieve het certificaat te accepteren en de scan "
+"opnieuw te starten:"
 
 #. module: iot
 #. openerp-web
@@ -148,7 +152,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:379
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "Verbinden met apparaat mislukt"
 
 #. module: iot
 #. openerp-web
@@ -206,14 +210,14 @@ msgstr "Weergave naam"
 #: code:addons/iot/static/src/js/iot.js:371
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr ""
+msgstr "Alleen Firefox: klik op bevestig beveiligingsuitzondering"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:247
 #, python-format
 msgid "Firefox only: Click on Confirm Security Exception"
-msgstr ""
+msgstr "Alleen Firefox: klik op bevestig beveiligingsuitzondering"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -328,7 +332,7 @@ msgstr "OK"
 #: code:addons/iot/static/src/js/iot.js:282
 #, python-format
 msgid "Pairing with IoT..."
-msgstr ""
+msgstr "Verbinding maken met IoT..."
 
 #. module: iot
 #. openerp-web
@@ -338,6 +342,8 @@ msgid ""
 "Please accept the certificate of your IoT Box (procedure depends on your "
 "browser) :"
 msgstr ""
+"Accepteer aub het certificaat van uw IoT box (de procedure is afhankelijk "
+"van uw web browser):"
 
 #. module: iot
 #. openerp-web
@@ -345,7 +351,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:359
 #, python-format
 msgid "Please check if the device is still connected."
-msgstr ""
+msgstr "Gelieve te controleren of het toestel nog steeds verbonden is."
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -382,7 +388,7 @@ msgstr "Rapportages"
 #: code:addons/iot/static/src/js/iot.js:248
 #, python-format
 msgid "Restart SCAN"
-msgstr ""
+msgstr "SCAN herstarten"
 
 #. module: iot
 #. openerp-web
@@ -413,7 +419,7 @@ msgstr "Succesvol verzonden aan printer!"
 #: code:addons/iot/static/src/js/iot.js:361
 #, python-format
 msgid "The device is not responding"
-msgstr ""
+msgstr "Het toestel reageer niet"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action

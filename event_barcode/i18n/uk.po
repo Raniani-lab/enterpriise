@@ -68,7 +68,7 @@ msgstr "Штрих-код"
 #: model:ir.actions.client,name:event_barcode.event_barcode_action_main_view
 #: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form_inherit_barcode
 msgid "Barcode Interface"
-msgstr "Інтерфейс роботи зі штрихкодами"
+msgstr "Інтерфейс роботи зі штрих-кодами"
 
 #. module: event_barcode
 #: model_terms:ir.ui.view,arch_db:event_barcode.res_config_settings_view_form

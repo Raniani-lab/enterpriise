@@ -498,7 +498,7 @@ class View(models.Model):
 
         Returns a node if it exists within the given xpath, None otherwise
         """
-        for n in xpath.iter():
+        for n in reversed(list(xpath.iter())):
             if n.tag == node.tag and n.attrib == node.attrib and n.text == node.text:
                 return n
             # Find the node if it had been moved (only fields can be moved)

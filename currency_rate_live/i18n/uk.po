@@ -62,7 +62,7 @@ msgstr "Щодня"
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "European Central Bank"
-msgstr "Центральний европейський банк"
+msgstr "Центральний європейський банк"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
@@ -142,7 +142,7 @@ msgid ""
 "may be temporary down."
 msgstr ""
 "Неможливо підключитися до платформи обміну валют онлайн %s. Веб-сервіс може "
-"бути тимчасовим."
+"тимчасово впасти."
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:390
@@ -162,7 +162,7 @@ msgstr "Щотижня"
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "Yahoo (DISCONTINUED)"
-msgstr "Yahoo (ПОВЕРНЕНО)"
+msgstr "Yahoo (ВІДКЛЮЧЕНО)"
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:143
@@ -171,7 +171,7 @@ msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "
 "Please choose another one."
 msgstr ""
-"Ваша основна валюта (%s) не підтримується цим постачальником курсу обміну. "
+"Ваша основна валюта (%s) не підтримується цим постачальником обміну валют. "
 "Будь ласка, виберіть інший."
 
 #. module: currency_rate_live

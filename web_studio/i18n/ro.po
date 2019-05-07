@@ -1746,7 +1746,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/new_buttonbox_dialog.xml:7
 #, python-format
 msgid "My Button"
-msgstr ""
+msgstr "Butonul meu"
 
 #. module: web_studio
 #. openerp-web

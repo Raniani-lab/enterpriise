@@ -1084,7 +1084,7 @@ msgstr "Geef de hiërarchie keuze weer in de rapportage"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__doc_name
 msgid "Documents Name"
-msgstr ""
+msgstr "Documentnaam"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__domain
@@ -1213,7 +1213,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__export_format_ids
 msgid "Export to"
-msgstr ""
+msgstr "Exporteer naar"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard
@@ -1333,6 +1333,8 @@ msgid ""
 "From %s\n"
 "to  %s"
 msgstr ""
+"Van %s\n"
+"tot %s"
 
 #. module: account_reports
 #: selection:account.financial.html.report.line,special_date_changer:0
@@ -1352,7 +1354,7 @@ msgstr "Van:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__fun_to_call
 msgid "Function to Call"
-msgstr ""
+msgstr "Functie om aan te roepen"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:478
@@ -1378,7 +1380,7 @@ msgstr "Algemeen rapport"
 #: code:addons/account_reports/wizard/report_export_wizard.py:49
 #, python-format
 msgid "Generated Documents"
-msgstr ""
+msgstr "Gegenereerde documenten"
 
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_gt
@@ -1714,7 +1716,7 @@ msgstr "Naam"
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_reports_export_wizard__doc_name
 msgid "Name to give to the generated documents."
-msgstr ""
+msgstr "Naam voor de gegenereerde documenten."
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_net_assets0
@@ -1888,12 +1890,12 @@ msgstr "Bovenliggend pad"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__report_id
 msgid "Parent Report Id"
-msgstr ""
+msgstr "Bovenliggende rapport ID"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__export_wizard_id
 msgid "Parent Wizard"
-msgstr ""
+msgstr "Bovenliggende wizard"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:24
@@ -2536,7 +2538,7 @@ msgstr "Met vervallen facturen"
 #: code:addons/account_reports/models/account_report.py:1117
 #, python-format
 msgid "XLSX"
-msgstr ""
+msgstr "XLSX"
 
 #. module: account_reports
 #. openerp-web

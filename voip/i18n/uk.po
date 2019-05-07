@@ -170,6 +170,9 @@ msgid ""
 "Categories may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Категорії можуть запускати особливу поведінку, наприклад, відкривати "
+"перегляд календаря або автоматично позначати як виконано, коли документ "
+"завантажується"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
@@ -851,7 +854,7 @@ msgstr "Невідомо"
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Upload Document"
-msgstr ""
+msgstr "Завантажити документ"
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users

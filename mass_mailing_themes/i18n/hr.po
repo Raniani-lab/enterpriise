@@ -110,17 +110,17 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<strong>Anna Smith</strong>"
-msgstr ""
+msgstr "<strong>Anna Smith</strong>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<strong>Clark Hans</strong>"
-msgstr ""
+msgstr "<strong>Clark Hans</strong>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<strong>John Doe</strong>"
-msgstr ""
+msgstr "<strong>John Doe</strong>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
@@ -329,7 +329,7 @@ msgstr "ISKLJUČENO"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "OFF YOUR NEXT ORDER!"
-msgstr ""
+msgstr "OD VAŠE SLJEDEĆE NARUDŽBE!"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template

@@ -38,7 +38,7 @@ msgid ""
 "                <b>You can add new carrier accounts on the right side of the same page.</b>\n"
 "                <br/>"
 msgstr ""
-"<b>Після того, як буде створено ваш обліковий запис, перейдіть до Панелі приладів та натисніть на на стрілці поруч із ім’ям користувача, щоби налаштувати облікові записи постачальника. </b>\n"
+"<b>Після того, як буде створено ваш обліковий запис, перейдіть до Панелі приладів та натисніть на стрілку поруч з ім’ям користувача, щоби налаштувати облікові записи постачальника. </b>\n"
 "                <b>Ви можете додати нові облікові записи постачальника справа на тій же сторінці.</b>\n"
 "                <br/>"
 
@@ -48,6 +48,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('package_carrier_type', '!=', "
 "'easypost')]}\">Inches</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('package_carrier_type', '!=', "
+"'easypost')]}\">Дюйми</span>"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -221,7 +223,7 @@ msgstr "Введіть ключ товару API з облікового зап�
 #. module: delivery_easypost
 #: model:ir.model.fields,help:delivery_easypost.field_delivery_carrier__easypost_test_api_key
 msgid "Enter your API test key from Easypost account."
-msgstr "Введіть тестовий ключ API з облікового запису Easypost"
+msgstr "Введіть тестовий ключ API з облікового запису Easypost."
 
 #. module: delivery_easypost
 #: selection:delivery.carrier,delivery_type:0
@@ -329,7 +331,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_production_api_key
 msgid "Production API Key"
-msgstr "API -ключ продукції"
+msgstr "API-ключ виробництва"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__delivery_type

@@ -58,7 +58,7 @@ msgstr "Устаткування"
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
 msgid "Est. Next Failure"
-msgstr "Est. Next Failure"
+msgstr "Очікувана наступна помилка"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
@@ -73,7 +73,7 @@ msgstr "Прогнозований час до наступної відмови
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_equipment__expected_mtbf
 msgid "Expected MTBF"
-msgstr "Очікуваний MTBF"
+msgstr "Очікуваний середній час між невдачею"
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,help:mrp_maintenance.field_maintenance_equipment__expected_mtbf
@@ -99,12 +99,12 @@ msgstr "Дата останньої невдачі"
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_equipment__mtbf
 msgid "MTBF"
-msgstr "MTBF"
+msgstr "Середній час між невдачею"
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_equipment__mttr
 msgid "MTTR"
-msgstr "MTTR"
+msgstr "Середній час для ремонту"
 
 #. module: mrp_maintenance
 #: model:ir.ui.menu,name:mrp_maintenance.menu_equipment_dashboard
@@ -193,7 +193,7 @@ msgstr "Зберегти"
 #. module: mrp_maintenance
 #: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture2
 msgid "Scrub Plane"
-msgstr "Scrub Plane"
+msgstr "Рубанок"
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workcenter

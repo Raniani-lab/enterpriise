@@ -49,7 +49,7 @@ msgstr "Grupează după"
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
 msgid "My Project"
-msgstr ""
+msgstr "Proiectul meu"
 
 #. module: project_enterprise
 #: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning

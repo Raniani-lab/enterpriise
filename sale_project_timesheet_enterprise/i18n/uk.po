@@ -28,7 +28,7 @@ msgstr "Скасувати"
 #. module: sale_project_timesheet_enterprise
 #: model:ir.model,name:sale_project_timesheet_enterprise.model_project_task_create_sale_order
 msgid "Create SO from task"
-msgstr ""
+msgstr "Створити замовлення на продаж із завдання"
 
 #. module: sale_project_timesheet_enterprise
 #: code:addons/sale_project_timesheet_enterprise/models/project_task.py:13

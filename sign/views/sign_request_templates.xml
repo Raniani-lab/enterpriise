@@ -12,7 +12,6 @@
     <template id="assets_backend" inherit_id="web.assets_backend">
         <xpath expr="script[last()]" position="after">
             <script type="text/javascript" src="/sign/static/src/js/sign_backend.js"></script>
-            <script type="text/javascript" src="/sign/static/src/js/sign_widgets_tour.js"></script>
         </xpath>
         <xpath expr="link[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/sign/static/src/scss/sign_backend.scss"/>
@@ -25,6 +24,12 @@
     <template id="assets_frontend" inherit_id="web.assets_frontend">
         <xpath expr="link[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/sign/static/src/scss/sign_frontend.scss"/>
+        </xpath>
+    </template>
+
+    <template id="assets_tests" name="Sign Assets Tests" inherit_id="web.assets_tests">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/sign/static/tests/tours/sign_widgets_tour.js"></script>
         </xpath>
     </template>
 
@@ -115,6 +120,7 @@
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
+                <t t-call="web.conditional_assets_tests"/>
 
                 <script type="text/javascript">
                     odoo.define("sign.document_custom_page", function (require) {

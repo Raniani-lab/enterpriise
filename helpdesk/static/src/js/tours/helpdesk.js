@@ -63,10 +63,13 @@ tour.register('helpdesk_tour', {
     trigger: ".o_column_quick_create .o_quick_create_folded",
     content: _t('Add columns to configure <b>stages for your tickets</b>.<br/><i>e.g. Awaiting Customer Feedback, Customer Followup, ...</i>'),
     position: 'right',
-}, {
-    trigger: '.dropdown-toggle[data-menu-xmlid="helpdesk.helpdesk_menu_config"]',
-    content: _t('Click here and select "Helpdesk Teams" for further configuration.'),
-    position: 'bottom',
-}]);
+}
+// TODO: Restore this step
+// , {
+//     trigger: '.dropdown-toggle[data-menu-xmlid="helpdesk.helpdesk_menu_config"]',
+//     content: _t('Click here and select "Helpdesk Teams" for further configuration.'),
+//     position: 'bottom',
+// }
+]);
 
 });

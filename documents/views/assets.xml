@@ -14,7 +14,7 @@
             <script type="text/javascript" src="/documents/static/src/js/documents_inspector.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_inspector_mobile.js"/>
             <script type="text/javascript" src="/documents/static/src/js/systray_activity_menu.js"/>
-            <script type="text/javascript" src="/documents/static/src/js/tour.js"/>
+            <script type="text/javascript" src="/documents/static/src/js/tours/documents.js"></script>
 
             <link rel="stylesheet" type="text/scss" href="/documents/static/src/scss/documents_kanban_view.scss"/>
             <link rel="stylesheet" type="text/scss" href="/documents/static/src/scss/documents_kanban_view_mobile.scss"/>

@@ -25,7 +25,7 @@
         <script type="text/javascript" src="/web_studio/static/src/js/home_menu.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/icon_creator.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/utils.js"></script>
-        <script type="text/javascript" src="/web_studio/static/src/js/tour.js"></script>
+        <script type="text/javascript" src="/web_studio/static/src/js/tours/web_studio.js"></script>
     </template>
 
     <template id="web_studio.studio_assets" name="Web Studio Lazy Assets">
@@ -107,6 +107,12 @@
     <template id="webclient_bootstrap" inherit_id="web.webclient_bootstrap">
         <xpath expr="//t[@t-call-assets='web.assets_backend'][@t-css='false']" position="after">
             <t t-call-assets="web_studio.assets" groups="base.group_system"/>
+        </xpath>
+    </template>
+
+    <template id="assets_tests" name="Web Studio Assets Tests" inherit_id="web.assets_tests">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/web_studio/static/tests/tours/web_studio.js"></script>
         </xpath>
     </template>
 

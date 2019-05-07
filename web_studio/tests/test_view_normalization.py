@@ -2,6 +2,7 @@ import random
 import textwrap
 from odoo.http import _request_stack
 from odoo.tests.common import TransactionCase
+from odoo.tools import DotDict
 from odoo.addons.web_studio.controllers.main import WebStudioController
 
 
@@ -12,6 +13,7 @@ class TestViewNormalization(TransactionCase):
     def setUp(self):
         super(TestViewNormalization, self).setUp()
         random.seed('https://youtu.be/tFjNH9l6-sQ')
+        self.session = DotDict({'debug': False})
         _request_stack.push(self)
         self.base_view = self.env.ref('base.view_partner_form')
         self.gantt_view = self.env['ir.ui.view'].create({

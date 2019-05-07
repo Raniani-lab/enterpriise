@@ -12,6 +12,7 @@
         <script type="text/javascript">
             var odoo = {
                 session_info: <t t-raw="session_info"/>,
+                debug: "<t t-esc="debug"/>",
             };
         </script>
 

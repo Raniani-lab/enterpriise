@@ -138,7 +138,7 @@ tour.register('web_studio_new_app_tour', {
 
 tour.register('web_studio_tests_tour', {
     test: true,
-    url: "/web?studio=app_creator&debug=",
+    url: "/web?studio=app_creator",
 }, [{
     trigger: '.o_web_studio_new_app',
 }, {

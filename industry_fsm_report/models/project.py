@@ -40,8 +40,6 @@ class Task(models.Model):
             self.report_count = self.env[self.report_template_id.model_id.model].search_count([('x_task_id', '=', self.id)])
 
     def create_or_view_report(self):
-        if (self.allow_timesheets and self.allow_planning) and not (self.timesheet_ids or self.timesheet_timer_start):
-            raise UserError(_("You haven't started this task yet!"))
         action = self.report_template_id.action_id.read()[0]
         report = self.env[self.report_template_id.model_id.model].search([('x_task_id', '=', self.id)])
         action.update({

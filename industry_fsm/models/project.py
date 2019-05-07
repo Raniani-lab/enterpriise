@@ -5,7 +5,7 @@ from math import ceil
 from datetime import timedelta, datetime
 
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError, AccessError
+from odoo.exceptions import AccessError
 
 
 class Project(models.Model):
@@ -161,8 +161,6 @@ class Task(models.Model):
             return self.action_view_created_quotations()
 
     def action_view_material(self):
-        if not self.timesheet_ids and not self.timesheet_timer_start:
-            raise UserError(_("You haven't started this task yet!"))
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         domain = [('product_tmpl_id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
         return {'type': 'ir.actions.act_window',

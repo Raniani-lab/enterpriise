@@ -3,16 +3,15 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
-from odoo.tests import tagged, Form
+from odoo.tests import Form
 from odoo.tools import mute_logger
 from odoo import fields
 
 
-@tagged('post_install', '-at_install')
 class TestSubscription(TestSubscriptionCommon):
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.models')
-    def test_template(self):
+    def test_01_template(self):
         """ Test behaviour of on_change_template """
         Subscription = self.env['sale.subscription']
 
@@ -29,13 +28,13 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertTrue(temp.description, 'sale_subscription: description not copied on new cached sale.subscription record')
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.models')
-    def test_sale_order(self):
+    def test_02_sale_order(self):
         """ Test sales order line copying for recurring products on confirm"""
         self.sale_order.action_confirm()
         self.assertTrue(len(self.subscription.recurring_invoice_line_ids.ids) == 1, 'sale_subscription: recurring_invoice_line_ids not created when confirming sale_order with recurring_product')
         self.assertEqual(self.sale_order.subscription_management, 'upsell', 'sale_subscription: so should be set to "upsell" if not specified otherwise')
 
-    def test_auto_close(self):
+    def test_03_auto_close(self):
         """Ensure a 15 days old 'online payment' subscription gets closed if no token is set."""
         self.subscription_tmpl.payment_mode = 'success_payment'
         self.subscription.write({
@@ -88,7 +87,7 @@ class TestSubscription(TestSubscriptionCommon):
         line_values['account_id'] = self.account_receivable.id
         return line_values
 
-    def test_auto_payment_with_token(self):
+    def test_04_auto_payment_with_token(self):
         from mock import patch
 
         self.company = self.env.company_id
@@ -174,7 +173,7 @@ class TestSubscription(TestSubscriptionCommon):
         for patcher in patchers:
             patcher.stop()
 
-    def test_sub_creation(self):
+    def test_05_sub_creation(self):
         """ Test multiple subscription creation from single SO"""
         # Test subscription creation on SO confirm
         self.sale_order_2.action_confirm()
@@ -194,7 +193,8 @@ class TestSubscription(TestSubscriptionCommon):
         self.sale_order_5.action_confirm()
         self.assertEqual(self.sale_order_5.order_line.subscription_id.date, fields.Date.today() + relativedelta(months=+1),'sale_subscription: subscription creation should set the end date to : today + 1 month')
 
-    def test_renewal(self):
+    @mute_logger('odoo.models.unlink')
+    def test_06_renewal(self):
         """ Test subscription renewal """
         res = self.subscription.prepare_renewal_order()
         renewal_so_id = res['res_id']
@@ -218,7 +218,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertTrue('TestRenewalLine' in lines, 'sale_subscription: new line not present after renewal quotation confirmation')
         self.assertEqual(renewal_so.subscription_management, 'renew', 'sale_subscription: so should be set to "renew" in the renewal process')
 
-    def test_upsell_via_so(self):
+    def test_07_upsell_via_so(self):
         """Test the upsell flow using an intermediary upsell quote."""
         wiz = self.env['sale.subscription.wizard'].create({
             'subscription_id': self.subscription.id,
@@ -242,7 +242,7 @@ class TestSubscription(TestSubscriptionCommon):
         upsell_so.action_confirm()
         self.assertEqual(len(self.subscription.recurring_invoice_line_ids), 2)
 
-    def test_recurring_revenue(self):
+    def test_08_recurring_revenue(self):
         """Test computation of recurring revenue"""
         # Initial subscription is $100/y
         self.subscription_tmpl.recurring_rule_type = 'yearly'
@@ -257,7 +257,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertAlmostEqual(subscription.recurring_total, y_price, msg='total should not change when interval changes')
         self.assertAlmostEqual(subscription.recurring_monthly, y_price * (30 / 7.0) / 3, msg='unexpected MRR')
 
-    def test_analytic_account(self):
+    def test_09_analytic_account(self):
         """Analytic accounting flow."""
         # analytic account is copied on order confirmation
         self.sale_order_3.analytic_account_id = self.account_1
@@ -273,14 +273,14 @@ class TestSubscription(TestSubscriptionCommon):
             inv = subscription._recurring_create_invoice()
             self.assertEqual(inv.invoice_line_ids[0].account_analytic_id, subscription.analytic_account_id)
 
-    def test_take_snapshot(self):
+    def test_10_take_snapshot(self):
         Snapshot = self.env['sale.subscription.snapshot']
         before_count = Snapshot.search_count([('subscription_id', '=', self.subscription.id)])
         self.subscription._take_snapshot(datetime.date.today() - relativedelta(weeks=1))
         after_count = Snapshot.search_count([('subscription_id', '=', self.subscription.id)])
         self.assertEqual(after_count, before_count + 1)
 
-    def test_compute_kpi(self):
+    def test_11_compute_kpi(self):
         self.subscription.template_id.write({
             'good_health_domain': "[('recurring_monthly', '>=', 120.0)]",
             'bad_health_domain': "[('recurring_monthly', '<=', 80.0)]",
@@ -303,7 +303,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(self.subscription.kpi_3months_mrr_percentage, 0.5)
         self.assertEqual(self.subscription.health, 'done')
 
-    def test_cron_update_kpi(self):
+    def test_12_cron_update_kpi(self):
         Snapshot = self.env['sale.subscription.snapshot']
         subscriptions_count = self.env['sale.subscription'].search_count([('in_progress', '=', True)])
         before_count = Snapshot.search_count([])
@@ -311,7 +311,7 @@ class TestSubscription(TestSubscriptionCommon):
         after_count = Snapshot.search_count([])
         self.assertEqual(after_count, before_count + subscriptions_count)
 
-    def test_onchange_date_start(self):
+    def test_13_onchange_date_start(self):
         recurring_bound_tmpl = self.env['sale.subscription.template'].create({
             'name': 'Recurring Bound Template',
             'recurring_rule_boundary': 'limited',
@@ -323,7 +323,8 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(sub.template_id.recurring_rule_boundary, 'limited')
         self.assertIsInstance(sub.date, datetime.date)
 
-    def test_default_salesperson(self):
+    @mute_logger('odoo.addons.mail.models.mail_mail', 'odoo.models.unlink')
+    def test_14_default_salesperson(self):
         partner = self.env['res.partner'].create({'name': 'Tony Stark'})
         sub_form = Form(self.env['sale.subscription'])
         sub_form.template_id = self.subscription_tmpl
@@ -338,7 +339,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub = sub_form.save()
         self.assertEqual(sub.user_id, self.user_portal)
 
-    def test_next_invoice_date_last_date_of_month(self):
+    def test_15_next_invoice_date_last_date_of_month(self):
         """ This testcase will check the next invoice dates for monthly subscription. """
         self.subscription_tmpl.recurring_interval = 1
         # Created subscription with `date_start` set to last day of December and `recurring_next_date` as last day of January.
@@ -353,7 +354,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub.recurring_invoice()
         self.assertEqual(sub.recurring_next_date, datetime.date(2018, 4, 30), '`Date of Next Invoice` should be the last day of April 2018.')
 
-    def test_changed_next_invoice_date(self):
+    def test_16_changed_next_invoice_date(self):
         """This testcase will check next invoice dates if user change next invoice date manually"""
         self.subscription_tmpl.recurring_interval = 1
         # Created subscription with `date_start` and `recurring_next_date` to 5th of February and March respectively.

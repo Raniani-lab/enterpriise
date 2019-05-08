@@ -661,7 +661,7 @@ var Image = AbstractNewBuildingBlock.extend({
                 var $image = $("<img/>");
                 var dialog = new weWidgets.MediaDialog(self, {
                     onlyImages: true,
-                }, $image[0]);
+                }, $image[0]).open();
                 var value;
                 dialog.on("save", self, function (el) {
                     // el is a vanilla JS element

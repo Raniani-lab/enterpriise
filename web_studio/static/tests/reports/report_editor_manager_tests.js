@@ -1736,17 +1736,6 @@ QUnit.module('ReportEditorManager', {
                     editReportViewCalls++;
                     return Promise.reject();
                 }
-                if (route === '/some/relative/path/joes_garage.png') {
-                    // The web_editor Image selector widget waits for images to load
-                    // to make them visible and selectable
-                    // It does that by assigning the Deferred.resolve function
-                    // to the image's onload attribute
-                    // Since the test framework redirects images src fetching
-                    // We need to execute the onload ourselves to make images visible and selectable
-                    // and to be able to fully go on with the feature testing
-                    $('.modal-dialog.o_select_media_dialog .o_image img')[0].onload();
-                    return Promise.resolve('The white zone is for loading and unloading only');
-                }
                 return this._super.apply(this, arguments);
             },
         });

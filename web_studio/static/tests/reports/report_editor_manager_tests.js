@@ -884,9 +884,6 @@ QUnit.module('ReportEditorManager', {
                 'Only "o" should be selectable, not "docs"');
 
             await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
-            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
-            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
-            await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             var allAvailableFields = $('.o_web_studio_field_modal .o_field_selector_item').text().trim();
 
@@ -900,6 +897,9 @@ QUnit.module('ReportEditorManager', {
             assert.notOk(allAvailableFields.includes('Attachments'),
                 'one2many fields should not be present');
 
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             rem.destroy();
             done();

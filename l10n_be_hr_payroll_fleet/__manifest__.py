@@ -16,6 +16,7 @@
         'views/hr_contract_views.xml',
         'views/hr_dmfa_templates.xml',
         'views/report_payslip_templates.xml',
+        'views/hr_payslip_views.xml',
         'security/security.xml',
     ],
     'auto_install': True,

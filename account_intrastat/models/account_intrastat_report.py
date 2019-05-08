@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api, _, _lt
 
 
 class IntrastatReport(models.AbstractModel):
@@ -14,8 +14,8 @@ class IntrastatReport(models.AbstractModel):
     filter_multi_company = None
     filter_with_vat = False
     filter_intrastat_type = [
-        {'name': _('Arrival'), 'selected': False, 'id': 'arrival'},
-        {'name': _('Dispatch'), 'selected': False, 'id': 'dispatch'},
+        {'name': _lt('Arrival'), 'selected': False, 'id': 'arrival'},
+        {'name': _lt('Dispatch'), 'selected': False, 'id': 'dispatch'},
     ]
     filter_intrastat_extended = True
 

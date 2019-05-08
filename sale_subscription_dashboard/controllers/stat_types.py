@@ -3,7 +3,7 @@
 
 from dateutil.relativedelta import relativedelta
 from odoo.http import request
-from odoo import _
+from odoo import _lt
 
 
 def _execute_sql_query(fields, tables, conditions, query_args, filters, groupby=None):
@@ -340,15 +340,10 @@ def compute_mrr_growth_values(start_date, end_date, filters):
         'net_new_mrr': net_new_mrr,
     }
 
-# HACK: STAT_TYPES and FORECAST_STAT_TYPES are to be imported in other files.
-# We do want to identify the strings to be translated but we do not want to
-# translate them yet.
-# We then hack the definition of _() so that it does nothing.
-_ = lambda x: x
 
 STAT_TYPES = {
     'mrr': {
-        'name': _('Monthly Recurring Revenue'),
+        'name': _lt('Monthly Recurring Revenue'),
         'code': 'mrr',
         'dir': 'up',
         'prior': 1,
@@ -357,7 +352,7 @@ STAT_TYPES = {
         'compute': compute_mrr
     },
     'net_revenue': {
-        'name': _('Net Revenue'),
+        'name': _lt('Net Revenue'),
         'code': 'net_revenue',
         'dir': 'up',
         'prior': 2,
@@ -366,7 +361,7 @@ STAT_TYPES = {
         'compute': compute_net_revenue
     },
     'nrr': {
-        'name': _('Non-Recurring Revenue'),
+        'name': _lt('Non-Recurring Revenue'),
         'code': 'nrr',
         'dir': 'up',  # 'down' if fees ?
         'prior': 3,
@@ -375,7 +370,7 @@ STAT_TYPES = {
         'compute': compute_nrr
     },
     'arpu': {
-        'name': _('Revenue per Subscription'),
+        'name': _lt('Revenue per Subscription'),
         'code': 'arpu',
         'dir': 'up',
         'prior': 4,
@@ -384,7 +379,7 @@ STAT_TYPES = {
         'compute': compute_arpu
     },
     'arr': {
-        'name': _('Annual Run-Rate'),
+        'name': _lt('Annual Run-Rate'),
         'code': 'arr',
         'dir': 'up',
         'prior': 5,
@@ -393,7 +388,7 @@ STAT_TYPES = {
         'compute': compute_arr
     },
     'ltv': {
-        'name': _('Lifetime Value'),
+        'name': _lt('Lifetime Value'),
         'code': 'ltv',
         'dir': 'up',
         'prior': 6,
@@ -402,7 +397,7 @@ STAT_TYPES = {
         'compute': compute_ltv
     },
     'logo_churn': {
-        'name': _('Logo Churn'),
+        'name': _lt('Logo Churn'),
         'code': 'logo_churn',
         'dir': 'down',
         'prior': 7,
@@ -411,7 +406,7 @@ STAT_TYPES = {
         'compute': compute_logo_churn
     },
     'revenue_churn': {
-        'name': _('Revenue Churn'),
+        'name': _lt('Revenue Churn'),
         'code': 'revenue_churn',
         'dir': 'down',
         'prior': 8,
@@ -420,7 +415,7 @@ STAT_TYPES = {
         'compute': compute_revenue_churn
     },
     'nb_contracts': {
-        'name': _('Subscriptions'),
+        'name': _lt('Subscriptions'),
         'code': 'nb_contracts',
         'dir': 'up',
         'prior': 9,
@@ -432,17 +427,15 @@ STAT_TYPES = {
 
 FORECAST_STAT_TYPES = {
     'mrr_forecast': {
-        'name': _('Forecasted Annual MRR Growth'),
+        'name': _lt('Forecasted Annual MRR Growth'),
         'code': 'mrr_forecast',
         'prior': 1,
         'add_symbol': 'currency',
     },
     'contracts_forecast': {
-        'name': _('Forecasted Annual Subscriptions Growth'),
+        'name': _lt('Forecasted Annual Subscriptions Growth'),
         'code': 'contracts_forecast',
         'prior': 2,
         'add_symbol': '',
     },
 }
-
-del _

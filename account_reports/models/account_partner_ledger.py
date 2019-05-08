@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, _, fields
+from odoo import models, api, _, _lt, fields
 from odoo.tools.misc import format_date
 from datetime import timedelta
 
@@ -15,8 +15,8 @@ class ReportPartnerLedger(models.AbstractModel):
     filter_all_entries = False
     filter_unfold_all = False
     filter_account_type = [
-        {'id': 'receivable', 'name': _('Receivable'), 'selected': False},
-        {'id': 'payable', 'name': _('Payable'), 'selected': False},
+        {'id': 'receivable', 'name': _lt('Receivable'), 'selected': False},
+        {'id': 'payable', 'name': _lt('Payable'), 'selected': False},
     ]
     filter_unreconciled = False
     filter_partner = True

@@ -323,6 +323,10 @@ class TestHR(common.TransactionCase):
 
         # Reload work_entries (some might have been deleted/created when approving leaves)
         work_entries = self.env['hr.work.entry'].sudo(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])
+
+        # Some work entries are still conflicting (if not completely included in a leave)
+        self.assertFalse(work_entries.sudo(self.hr_payroll_user).action_validate())
+        work_entries.filtered('display_warning').write({'state': 'cancelled'})
         self.assertTrue(work_entries.sudo(self.hr_payroll_user).action_validate())
 
     def _test_fleet(self):

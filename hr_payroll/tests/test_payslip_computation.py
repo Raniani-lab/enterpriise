@@ -31,7 +31,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         })
         leave.action_approve()
 
-        work_entries = self.richard_emp.generate_work_entries(date(2015, 11, 10), date(2015, 11, 21))
+        work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2015, 11, 10), date(2015, 11, 21))
         work_entries.action_validate()
         hours = (self.contract_cdd | self.contract_cdi)._get_work_hours(date(2015, 11, 10), date(2015, 11, 20))  # across two contracts
         sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_payroll.work_entry_type_attendance').ids)
@@ -70,7 +70,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         })
         leave.action_approve()
 
-        work_entries = self.richard_emp.generate_work_entries(date(2016, 1, 1), date(2016, 2, 1))
+        work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 2, 1))
         work_entries.action_validate()
 
         # Call _onchange_employee to compute worked_days_line_ids and get the updated unpaid amount
@@ -97,7 +97,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         })
         leave_unpaid.action_approve()
 
-        work_entries = self.richard_emp.generate_work_entries(date(2016, 1, 1), date(2016, 2, 1))
+        work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 2, 1))
         work_entries.action_validate()
 
         # Call _onchange_employee to compute worked_days_line_ids

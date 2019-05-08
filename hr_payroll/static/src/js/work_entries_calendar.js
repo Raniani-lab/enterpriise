@@ -13,11 +13,7 @@ odoo.define('hr_payroll.work_entries_calendar', function(require) {
 
 
     var WorkEntryCalendarController = CalendarController.extend(WorkEntryControllerMixin, {
-        events: _.extend({}, CalendarController.prototype.events, {
-            'click .btn-work-entry-generate': '_onGenerateWorkEntries',
-            'click .btn-work-entry-validate': '_onValidateWorkEntries',
-            'click .btn-payslip-generate': '_onGeneratePayslips',
-        }),
+        events: _.extend({}, WorkEntryControllerMixin.events, CalendarController.prototype.events),
 
         // Returns the records from the model
         _fetchRecords: function () {
@@ -35,25 +31,8 @@ odoo.define('hr_payroll.work_entries_calendar', function(require) {
         _fetchLastDay: function () {
             return this.model.data.target_date.clone().endOf('month');
         },
-
-        /*
-            Event handlers
-        */
-
-        _onGenerateWorkEntries: function (e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            this._generateWorkEntries();
-        },
-        _onGeneratePayslips: function (e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            this._generatePayslips();
-        },
-        _onValidateWorkEntries: function (e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            this._validateWorkEntries();
+        _displayWarning: function ($warning) {
+            this.$('.o_calendar_container').before($warning);
         },
     });
 

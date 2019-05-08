@@ -50,6 +50,10 @@ class TestExamples(common.SavepointCase):
             employee = self.env['hr.employee'].create(employee_values)
         else:
             employee = self.env.ref(employee_values)
+            # Reset work entry generation
+            self.env['hr.work.entry'].search([('employee_id', '=', employee.id)]).unlink()
+            employee.contract_id.date_generated_from = datetime.datetime.now()
+            employee.contract_id.date_generated_to = datetime.datetime.now()
 
         # Setup the car, if specified
         if car_values is not None:
@@ -85,9 +89,7 @@ class TestExamples(common.SavepointCase):
 
         # Generate the poubelles
         if 'date_from' in payslip_values and 'date_to' in payslip_values:
-            employee.generate_work_entries(payslip_values['date_from'], datetime.datetime.combine(payslip_values['date_to'], datetime.datetime.max.time()))
-            work_entries = self.env['hr.work.entry'].search([
-                ('employee_id', '=', employee.id), ('state', '=', 'confirmed')])
+            work_entries = employee.contract_id._generate_work_entries(payslip_values['date_from'], payslip_values['date_to'])
             work_entries.action_validate()
             we_error = work_entries.filtered(lambda r: r.display_warning)
             we_error.write({'state': 'cancelled'})

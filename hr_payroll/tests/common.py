@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
-from odoo.fields import Date
+from odoo.fields import Date, Datetime
 from odoo.tests.common import TransactionCase
 
 
@@ -34,8 +35,8 @@ class TestPayslipBase(TransactionCase):
 
         # I create a contract for "Richard"
         self.env['hr.contract'].create({
-            'date_end': Date.to_string((datetime.now() + timedelta(days=365))),
-            'date_start': Date.today(),
+            'date_end': Date.to_date('2019-12-31'),
+            'date_start': Date.to_date('2018-01-01'),
             'name': 'Contract for Richard',
             'wage': 5000.0,
             'employee_id': self.richard_emp.id,
@@ -85,15 +86,27 @@ class TestPayslipBase(TransactionCase):
             'unpaid_work_entry_type_ids': [(4, self.work_entry_type_unpaid.id, False)]
         })
 
-    def create_calendar_leave(self, date_from, date_to, work_entry_type, calendar=None):
-        return self.env['resource.calendar.leaves'].create({
-            'name': 'leave name',
-            'date_from': date_from,
+    def create_work_entry(self, start, stop, work_entry_type=None):
+        work_entry_type = work_entry_type or self.work_entry_type
+        return self.env['hr.work.entry'].create({
+            'contract_id': self.richard_emp.contract_ids[0].id,
+            'name': "Work entry %s-%s" % (start, stop),
+            'date_start': start,
+            'date_stop': stop,
+            'employee_id': self.richard_emp.id,
+            'work_entry_type_id': work_entry_type.id,
+        })
+
+    def create_leave(self, date_from=None, date_to=None):
+        date_from = date_from or Datetime.today()
+        date_to = date_to or Datetime.today() + relativedelta(days=1)
+        return self.env['hr.leave'].create({
+            'name': 'Holiday !!!',
+            'employee_id': self.richard_emp.id,
+            'holiday_status_id': self.leave_type.id,
             'date_to': date_to,
-            'resource_id': self.richard_emp.resource_id.id,
-            'calendar_id': calendar and calendar.id or self.richard_emp.resource_calendar_id.id,
-            'work_entry_type_id': work_entry_type.id,  # Unpaid leave
-            'time_type': 'leave',
+            'date_from': date_from,
+            'number_of_days': 1,
         })
 
 

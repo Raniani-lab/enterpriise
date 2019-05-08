@@ -11,3 +11,4 @@ from . import hr_work_entry
 from . import hr_leave
 from . import resource
 from . import hr_rule_parameter
+from . import hr_work_intervals

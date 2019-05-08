@@ -119,7 +119,9 @@ class TestHrPayrollAccount(common.TransactionCase):
         self.hr_payslip_john.date_from = time.strftime('%Y-%m-01')
         # YTI Clean that brol
         self.hr_payslip_john.date_to = str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10]
+
         self.hr_payslip_john._onchange_employee()
+
 
         self.payslip_run = self.env['hr.payslip.run'].create({
             'date_start': time.strftime('%Y-%m-01'),
@@ -241,10 +243,13 @@ class TestHrPayrollAccount(common.TransactionCase):
         })
 
         # I generate the payslip by clicking on Generate button wizard.
-        payslip_employee.with_context(active_id=self.payslip_run.id, caca=True).compute_sheet()
+        payslip_employee.with_context(active_id=self.payslip_run.id).compute_sheet()
 
         # I add the payslip in the payslip run.
         self.payslip_run.slip_ids = payslip_employee.employee_ids.mapped('slip_ids')
+
+        # Test only with payslip that were just generated. Remove the payslip from setup
+        self.payslip_run.write({'slip_ids': [(3, self.hr_payslip_john.id)]})
 
         # I verify if the payslip run has payslip(s).
         self.assertTrue(len(self.payslip_run.slip_ids) > 0, 'Payslip(s) not added!')
@@ -253,19 +258,21 @@ class TestHrPayrollAccount(common.TransactionCase):
         self.assertEqual(self.payslip_run.state, 'verify', 'State not changed!')
 
         # I cancel one payslip and confirm another in the payslip run.
-        self.payslip_run.slip_ids[0].action_payslip_cancel()
-        self.payslip_run.slip_ids[1].action_payslip_done()
+        payslip_1 = self.payslip_run.slip_ids[0]
+        payslip_2 = self.payslip_run.slip_ids[1]
+        payslip_1.action_payslip_cancel()
+        payslip_2.action_payslip_done()
 
         # I verify the payslips' states.
-        self.assertEqual(self.payslip_run.slip_ids[0].state, 'cancel', 'State not changed!')
-        self.assertEqual(self.payslip_run.slip_ids[1].state, 'done', 'State not changed!')
+        self.assertEqual(payslip_1.state, 'cancel', 'State not changed!')
+        self.assertEqual(payslip_2.state, 'done', 'State not changed!')
 
         # I verify the payslip run is in close state.
         self.assertEqual(self.payslip_run.state, 'close', 'State not changed!')
 
         # I verify that the Accounting Entries are created or not.
-        self.assertFalse(self.payslip_run.slip_ids[0].move_id, 'Accounting Entries has been created!')
-        self.assertTrue(self.payslip_run.slip_ids[1].move_id, 'Accounting Entries has not been created!')
+        self.assertFalse(payslip_1.move_id, 'Accounting Entries has been created!')
+        self.assertTrue(payslip_2.move_id, 'Accounting Entries has not been created!')
     
     def test_04_hr_payslip(self):
         """ Checking the process of payslip run when you create payslip in a payslip run and you cancel a payslip and after you confirm the payslip run. """

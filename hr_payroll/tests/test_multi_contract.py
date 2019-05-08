@@ -22,7 +22,7 @@ class TestPayslipMultiContract(TestPayslipContractBase):
         start = datetime.strptime('2015-11-01', '%Y-%m-%d')
         end = datetime.strptime('2015-11-30', '%Y-%m-%d')
         end_generate = datetime(2015, 11, 30, 23, 59, 59)
-        work_entries = self.richard_emp.generate_work_entries(start, end_generate)
+        work_entries = self.richard_emp.contract_ids._generate_work_entries(start, end_generate)
         work_entries.action_validate()
 
         # First contact: 40h, start of the month
@@ -58,7 +58,7 @@ class TestPayslipMultiContract(TestPayslipContractBase):
         start = datetime.strptime('2015-11-01', '%Y-%m-%d')
         end = datetime.strptime('2015-11-30', '%Y-%m-%d')
         end_generate = datetime(2015, 11, 30, 23, 59, 59)
-        work_entries = self.richard_emp.generate_work_entries(start, end_generate)
+        work_entries = self.richard_emp.contract_ids._generate_work_entries(start, end_generate)
         work_entries.action_validate()
 
         payslip = self.env['hr.payslip'].create({

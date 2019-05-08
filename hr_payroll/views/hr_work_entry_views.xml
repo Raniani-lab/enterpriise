@@ -14,6 +14,13 @@
         <field name="view_mode">tree,gantt,calendar,form,pivot</field>
     </record>
 
+    <record id="hr_work_entry_action_conflict" model="ir.actions.act_window">
+        <field name="name">Work Entry</field>
+        <field name="res_model">hr.work.entry</field>
+        <field name="context">{'search_default_work_entries_error': 1}</field>
+        <field name="view_mode">tree,gantt,calendar,form,pivot</field>
+    </record>
+
     <record id="hr_work_entry_calendar" model="ir.ui.view">
         <field name="name">hr.work.entry.calendar</field>
         <field name="model">hr.work.entry</field>
@@ -91,7 +98,7 @@
                 <sheet>
                     <div attrs="{'invisible': [('display_warning', '=', False)]}">
                         <div class="alert alert-warning" role="alert" attrs="{'invisible': ['!', ('work_entry_type_id', '=', False)]}">
-                            This work entry cannot be validated.  The work_entry type is undefined.
+                            This work entry cannot be validated.  The work entry type is undefined.
                         </div>
                         <div attrs="{'invisible': [('work_entry_type_id', '=', False)]}">
                             <div class="alert alert-warning" role="alert" attrs="{'invisible': [('leave_id', '=', False)]}">
@@ -111,7 +118,6 @@
                     <group>
                         <group>
                             <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
-                            <field name="contract_id" readonly="1"/>
                             <field name="work_entry_type_id" attrs="{'readonly': [('state', '=', 'validated')]}" options="{'no_create': True, 'no_open': True}"/>
                             <field name="leave_id" attrs="{'invisible': [('leave_id', '=', False)]}"/>
                         </group>

@@ -1,12 +1,14 @@
 # # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
+from unittest.mock import patch
 import pytz
 
 from odoo.fields import Datetime, Date
-from odoo.tests.common import tagged
+from odoo.tests.common import tagged, TransactionCase
+from odoo.addons.hr_payroll.models.hr_work_entry import WorkIntervals
 from odoo.addons.hr_payroll.tests.common import TestPayslipBase
 
 
@@ -43,8 +45,8 @@ class TestWorkEntry(TestPayslipBase):
         attendance_nb = len(self.resource_calendar_id._attendance_intervals(self.start.replace(tzinfo=pytz.utc), self.end.replace(tzinfo=pytz.utc)))
         work_entry_nb = self.env['hr.work.entry'].search_count([
             ('employee_id', '=', self.richard_emp.id),
-            ('date_start', '>', self.start),
-            ('date_stop', '<', self.end)])
+            ('date_start', '>=', self.start),
+            ('date_stop', '<=', self.end)])
         self.assertEqual(attendance_nb, work_entry_nb, "One work_entry should be generated for each calendar attendance")
 
     def test_approve_multiple_day_work_entry(self):
@@ -115,45 +117,11 @@ class TestWorkEntry(TestPayslipBase):
             'date_stop': self.end,
         })
         self.assertFalse(work_entry1.action_validate(), "It should not validate work_entries without a type")
-
-    def test_approve_leave_work_entry(self):
-        start = datetime(2015, 11, 1, 9, 0, 0)
-        end = datetime(2015, 11, 3, 13, 0, 0)
-        leave = self.env['hr.leave'].create({
-            'name': 'Doctor Appointment',
-            'employee_id': self.richard_emp.id,
-            'holiday_status_id': self.leave_type.id,
-            'date_from': start,
-            'date_to': start + relativedelta(days=1),
-            'number_of_days': 2,
-        })
-        self.env['hr.work.entry'].create({
-            'name': '1',
-            'employee_id': self.richard_emp.id,
-            'contract_id': self.richard_emp.contract_id.id,
-            'work_entry_type_id': self.work_entry_type.id,
-            'date_start': start,
-            'date_stop': end,
-            'leave_id': leave.id, # work_entry conflicts with this leave
-        })
-        leave.action_approve()
-
-        new_leave_work_entries = self.env['hr.work.entry'].search([
-            ('date_start', '=', Datetime.to_datetime(datetime(2015, 11, 1, 9, 0, 0))),
-            ('date_stop', '=', Datetime.to_datetime(datetime(2015, 11, 2, 9, 0, 0))),
-            ('work_entry_type_id.is_leave', '=', True)
-        ])
-
-        new_work_entries = self.env['hr.work.entry'].search([
-            ('date_start', '=', Datetime.to_datetime(datetime(2015, 11, 2, 9, 0, 1))),
-            ('date_stop', '=', end),
-            ('work_entry_type_id.is_leave', '=', False)
-        ])
-
-        self.assertTrue(new_work_entries, "It should have created a work_entry for the last two days")
-        self.assertTrue(new_leave_work_entries, "It should have created a leave work_entry for the first day")
-
-        self.assertTrue((new_work_entries | new_leave_work_entries).action_validate(), "It should be able to validate the work_entries")
+        self.assertTrue(work_entry1.display_warning, "It should have a warning")
+        work_entry1.work_entry_type_id = self.work_entry_type
+        self.assertFalse(work_entry1.display_warning, "It should no longer have a warning")
+        work_entry1.work_entry_type_id = False
+        self.assertTrue(work_entry1.display_warning, "It should have a warning")
 
     def test_refuse_leave_work_entry(self):
         start = datetime(2015, 11, 1, 9, 0, 0)
@@ -182,7 +150,7 @@ class TestWorkEntry(TestPayslipBase):
 
     def test_time_normal_work_entry(self):
         # Normal attendances (global to all employees)
-        work_entries = self.richard_emp.generate_work_entries(self.start, self.end)
+        work_entries = self.richard_emp.contract_id._generate_work_entries(self.start, self.end)
         work_entries.action_validate()
         hours = self.richard_emp.contract_id._get_work_hours(self.start, self.end)
         sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_payroll.work_entry_type_attendance').ids)
@@ -202,7 +170,7 @@ class TestWorkEntry(TestPayslipBase):
         })
         work_entry.action_validate()
 
-        work_entries = self.richard_emp.generate_work_entries(self.start, self.end)
+        work_entries = self.richard_emp.contract_id._generate_work_entries(self.start, self.end)
         work_entries.action_validate()
         hours = self.richard_emp.contract_id._get_work_hours(self.start, self.end)
         sum_hours = sum(v for k, v in hours.items() if k in self.work_entry_type.ids)
@@ -223,39 +191,18 @@ class TestWorkEntry(TestPayslipBase):
         })
         leave_work_entry.action_validate()
 
-        work_entries = self.richard_emp.generate_work_entries(self.start, self.end)
+        work_entries = self.richard_emp.contract_id._generate_work_entries(self.start, self.end)
         work_entries.action_validate()
         hours = self.richard_emp.contract_id._get_work_hours(self.start, self.end)
         sum_hours = sum(v for k, v in hours.items() if k in self.work_entry_type_leave.ids)
 
         self.assertEqual(sum_hours, 5.0, "It should equal the number of hours richard should have worked")
 
-    def test_time_weekend_leave_work_entry(self):
-        # /!\ this is in the weekend => no calendar attendance at this time
-        start = datetime(2015, 11, 1, 10, 0, 0)
-        end = datetime(2015, 11, 1, 17, 0, 0)
-        leave_work_entry = self.env['hr.work.entry'].create({
-            'name': '1leave',
-            'employee_id': self.richard_emp.id,
-            'contract_id': self.richard_emp.contract_id.id,
-            'work_entry_type_id': self.work_entry_type_leave.id,
-            'date_start': start,
-            'date_stop': end,
-        })
-        leave_work_entry.action_validate()
-
-        work_entries = self.richard_emp.generate_work_entries(self.start, self.end)
-        work_entries.action_validate()
-        hours = self.richard_emp.contract_id._get_work_hours(self.start, self.end)
-        sum_hours = sum(v for k, v in hours.items() if k in self.work_entry_type_leave.ids)
-
-        self.assertEqual(sum_hours, 0.0, "This is in the weekend => the number of hours for this time off should be 0.")
-
     def test_payslip_generation_with_extra_work(self):
         # /!\ this is in the weekend (Sunday) => no calendar attendance at this time
         start = datetime(2015, 11, 1, 10, 0, 0)
         end = datetime(2015, 11, 1, 17, 0, 0)
-        work_entries = self.richard_emp.generate_work_entries(start, end + relativedelta(days=2))
+        work_entries = self.richard_emp.contract_id._generate_work_entries(start, end + relativedelta(days=2))
         work_entries.action_validate()
 
         work_entry = self.env['hr.work.entry'].create({
@@ -281,29 +228,73 @@ class TestWorkEntry(TestPayslipBase):
         self.assertEqual(work_line.number_of_hours, 8.0, "It should have 8 hours of work")  # Monday
         self.assertEqual(leave_line.number_of_hours, 7.0, "It should have 5 hours of extra work")  # Sunday
 
-    def test_multiple_work_entry_types_data(self):
-        self.env['resource.calendar.leaves'].create({
-            'name': 'leave name',
-            'date_from': self.start + relativedelta(days=1),
-            'date_to': self.start + relativedelta(days=1, hours=15),
-            'resource_id': self.richard_emp.resource_id.id,
-            'calendar_id': self.richard_emp.resource_calendar_id.id,
-            'work_entry_type_id': self.work_entry_type_leave.id,
-            'time_type': 'leave',
-        })
-        self.env['resource.calendar.attendance'].create({
-            'name': 'Extra hours',
-            'dayofweek': '6',
-            'hour_from': 8.0,
-            'hour_to': 17.0,
-            'resource_id': self.richard_emp.resource_id.id,
-            'calendar_id': self.richard_emp.resource_calendar_id.id,
-            'work_entry_type_id': self.work_entry_type.id,
-        })
-        work_entries = self.richard_emp.generate_work_entries(self.start, self.end)
-        work_entries.action_validate()
+    def test_outside_calendar(self):
+        """ Test leave work entries outside schedule are conflicting """
+        # Outside but not a leave
+        work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 3, 0), datetime(2018, 10, 10, 4, 0))
+        # Outside and a leave
+        work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 1, 0), datetime(2018, 10, 10, 2, 0), work_entry_type=self.work_entry_type_leave)
+        # Overlapping and a leave
+        work_entry_3 = self.create_work_entry(datetime(2018, 10, 10, 7, 0), datetime(2018, 10, 10, 10, 0), work_entry_type=self.work_entry_type_leave)
+        # Overlapping and not a leave
+        work_entry_4 = self.create_work_entry(datetime(2018, 10, 10, 11, 0), datetime(2018, 10, 10, 13, 0))
+        (work_entry_1 | work_entry_2 | work_entry_3 | work_entry_4)._mark_leaves_outside_schedule()
+        self.assertTrue(work_entry_2.display_warning, "It should conflict")
+        self.assertFalse(work_entry_1.display_warning, "It should not conflict")
+        self.assertFalse(work_entry_3.display_warning, "It should not conflict")
+        self.assertFalse(work_entry_4.display_warning, "It should not conflict")
 
-        hours = self.richard_emp.contract_id._get_work_hours(self.start, self.end)
-        sum_hours = sum(v for k, v in hours.items() if k in (self.work_entry_type_leave | self.work_entry_type).ids)
+    def test_write_conflict(self):
+        """ Test updating work entries dates recomputes conflicts """
+        work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
+        work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 12, 0), datetime(2018, 10, 10, 18, 0))
+        self.assertFalse(work_entry_1.display_warning, "It should not conflict")
+        self.assertFalse(work_entry_2.display_warning, "It should not conflict")
+        work_entry_1.date_stop = datetime(2018, 10, 10, 14, 0)
+        self.assertTrue(work_entry_1.display_warning, "It should conflict")
+        self.assertTrue(work_entry_2.display_warning, "It should conflict")
 
-        self.assertEqual(sum_hours, 53.0, "It should be the sum of both work entry types")
+        work_entry_1.date_stop = datetime(2018, 10, 10, 12, 0)  # cancel conflict
+        self.assertFalse(work_entry_1.display_warning, "It should no longer conflict")
+        self.assertFalse(work_entry_2.display_warning, "It should no longer conflict")
+
+    def test_write_move(self):
+        """ Test completely moving a work entry recomputes conflicts """
+        work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
+        work_entry_2 = self.create_work_entry(datetime(2018, 10, 18, 9, 0), datetime(2018, 10, 18, 12, 0))
+        work_entry_3 = self.create_work_entry(datetime(2018, 10, 18, 10, 0), datetime(2018, 10, 18, 12, 0))
+        work_entry_2.write({
+            'date_start': datetime(2018, 10, 10, 9, 0),
+            'date_stop': datetime(2018, 10, 10, 10, 0),
+        })
+        self.assertTrue(work_entry_1.display_warning)
+        self.assertTrue(work_entry_2.display_warning)
+        self.assertFalse(work_entry_3.display_warning)
+
+    def test_create_conflict(self):
+        """ Test creating a work entry recomputes conflicts """
+        work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
+        self.assertFalse(work_entry_1.display_warning, "It should not conflict")
+        work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 10, 0), datetime(2018, 10, 10, 18, 0))
+        self.assertTrue(work_entry_1.display_warning, "It should conflict")
+        self.assertTrue(work_entry_2.display_warning, "It should conflict")
+
+    def test_unarchive_conflict(self):
+        """ Test archive/unarchive a work entry recomputes conflicts """
+        work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
+        work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 10, 0), datetime(2018, 10, 10, 18, 0))
+        work_entry_2.active = False
+        self.assertFalse(work_entry_1.display_warning, "It should not conflict")
+        self.assertEqual(work_entry_2.state, 'cancelled', "It should be cancelled")
+        work_entry_2.active = True
+        self.assertTrue(work_entry_1.display_warning, "It should conflict")
+        self.assertTrue(work_entry_2.display_warning, "It should conflict")
+        self.assertEqual(work_entry_2.state, 'confirmed', "It should no longer be in state cancelled")
+
+    def test_validated_no_conflict(self):
+        """ Test validating a work entry removes the conflict """
+        work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
+        work_entry_1.state = 'validated'
+        work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 10, 0), datetime(2018, 10, 10, 18, 0))
+        self.assertTrue(work_entry_1.display_warning, "It should not conflict")
+        self.assertTrue(work_entry_2.display_warning, "It should conflict")

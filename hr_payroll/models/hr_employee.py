@@ -21,14 +21,6 @@ class HrEmployee(models.Model):
         for employee in self:
             employee.payslip_count = len(employee.slip_ids)
 
-    def has_non_validated_work_entries(self, date_from, date_to):
-        return bool(self.env['hr.work.entry'].search_count([
-            ('employee_id', 'in', self.ids),
-            ('date_start', '<=', date_to),
-            ('date_stop', '>=', date_from),
-            ('state', 'in', ['draft', 'confirmed'])
-        ]))
-
     def generate_work_entries(self, date_start, date_stop):
         date_start = fields.Date.to_date(date_start)
         date_stop = fields.Date.to_date(date_stop)
@@ -38,4 +30,4 @@ class HrEmployee(models.Model):
         else:
             current_contracts = self._get_all_contracts(date_start, date_stop, states=['open', 'pending', 'close'])
 
-        return current_contracts._generate_work_entries(date_start, date_stop)
+        return bool(current_contracts._generate_work_entries(date_start, date_stop))

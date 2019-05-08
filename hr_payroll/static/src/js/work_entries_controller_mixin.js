@@ -9,7 +9,7 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
 
     /*
         This mixin implements the behaviours necessary to generate and validate work entries and Payslips
-        It is intended to be used in a Controller and requires three methods to be defined on your Controller
+        It is intended to be used in a Controller and requires four methods to be defined on your Controller
 
          1. _fetchRecords
             Which should return a list of records containing at least the state and id fields
@@ -21,28 +21,34 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
          3. _fetchLastDay
             Same as _fetchFirstDay except that this is the last day of the period
 
-        This mixin is responsible for rendering the buttons in the control panel and adds the three following methods
+         4. _displayWarning
+            Which should insert in the DOM the warning rendered template received as argument.
+
+        This mixin is responsible for rendering the buttons in the control panel and adds the two following methods
 
         1. _generateWorkEntries
         2. _generatePayslips
-        3. _validateWorkEntries
     */
 
     var WorkEntryControllerMixin = {
-        /*
-            Overrides of Controller methods
-        */
-        renderButtons: function () {
-            this._super.apply(this, arguments);
-            this._renderWorkEntryButtons();
+
+        events: {
+            'click .btn-payslip-generate': '_onGeneratePayslips',
         },
 
+        /**
+         * @override
+         * @returns {Promise}
+         */
         _update: function () {
             var self = this;
             return this._super.apply(this, arguments).then(function () {
                 self.firstDay = self._fetchFirstDay().toDate();
                 self.lastDay = self._fetchLastDay().toDate();
                 self._renderWorkEntryButtons();
+                var now = moment();
+                if (self.firstDay > now) return Promise.resolve();
+                return self._generateWorkEntries();
             });
         },
 
@@ -52,12 +58,14 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
 
         _generateWorkEntries: function () {
             var self = this;
-            this._rpc({
+            return this._rpc({
                 model: 'hr.employee',
                 method: 'generate_work_entries',
                 args: [[], time.date_to_str(this.firstDay), time.date_to_str(this.lastDay)],
-            }).then(function () {
-                self.reload();
+            }).then(function (new_work_entries) {
+                if (new_work_entries) {
+                    self.reload();
+                }
             });
         },
 
@@ -76,44 +84,29 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
             }
 
             var records = this._fetchRecords();
-            var isvalidated = _.every(records, function (record) {
-                return record.state === 'validated';
-            });
+            var hasConflicts = records.some(function (record) { return record.display_warning; });
+            var allConflicts = records.every(function (record) { return record.display_warning; });
+            var allValidated = records.every(function (record) { return record.state === 'validated'; });
 
             this.$buttons.find('.btn-work-entry').remove();
 
-            var text = '';
-            var cl = '';
-
-            if (records.length === 0) {
-                text = _t("Generate Work Entries");
-                cl = 'btn-work-entry-generate';
-            }
-            else if (isvalidated && records.length !== 0) {
-                text = _t("Generate Payslips");
-                cl = 'btn-payslip-generate';
-            }
-            else if (!isvalidated) {
-                text = _t("Validate Work Entries");
-                cl = 'btn-work-entry-validate';
+            if (!allValidated && records.length !== 0) {
+                this.$buttons.append(QWeb.render('hr_payroll.work_entry_button', {
+                    button_text: _t("Generate Payslips"),
+                    event_class: 'btn-payslip-generate',
+                    disabled: hasConflicts,
+                }));
             }
 
-            this.$buttons.append(QWeb.render('hr_payroll.work_entry_button', {
-                button_text: text,
-                event_class: cl,
-            }));
+            if (hasConflicts && !allConflicts) {
+                this._displayWarning(QWeb.render('hr_payroll.work_entry_error_message'));
+            }
         },
 
-        _validateWorkEntries: function () {
-            var self = this;
-            var records = this._fetchRecords();
-            this._rpc({
-                model: 'hr.work.entry',
-                method: 'action_validate',
-                args: [_.map(records, function (record) { return record.id; })],
-            }).then(function () {
-                return self.reload();
-            });
+        _onGeneratePayslips: function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            this._generatePayslips();
         },
     };
 

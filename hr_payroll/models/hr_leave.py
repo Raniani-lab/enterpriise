@@ -1,12 +1,11 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 from datetime import datetime, date
-from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
-from odoo.addons.resource.models.resource import Intervals
 
 
 class HrLeaveType(models.Model):
@@ -74,69 +73,89 @@ class HrLeave(models.Model):
     @api.multi
     def _cancel_work_entry_conflict(self):
         """
-        Unlink any work_entry linked to a leave in self.
-        Re-create new work_entries where the leaves do not cover the full range of the deleted work_entries.
-        Create a leave work_entry for each leave in self.
-        Return True if one or more work_entries are unlinked.
+        Creates a leave work entry for each hr.leave in self.
+        Check overlapping work entries with self.
+        Work entries completely included in a leave are archived.
         e.g.:
-            |-------------------- work entry ------------------------|
-                            |------- leave --------|
+            |----- work entry ----|---- work entry ----|
+                |------------------- hr.leave ---------------|
                                     ||
                                     vv
-            |-- work entry--|---work entry leave---|----work entry---|
+            |----* work entry ****|
+                |************ work entry leave --------------|
         """
-        work_entries = self.env['hr.work.entry'].search([('leave_id', 'in', self.ids)])
-        if work_entries:
-            vals_list = []
-            for leave in self:
-                contract = leave.employee_id._get_contracts(leave.date_from, leave.date_to, states=['open', 'pending', 'close'])
-                if contract and len(contract) > 0:
-                    contract = contract[0]
-                start = max(leave.date_from, datetime.combine(contract.date_start, datetime.min.time()))
-                end = min(leave.date_to, datetime.combine(contract.date_end or date.max, datetime.max.time()))
-                work_entry_type = leave.holiday_status_id.work_entry_type_id
-                vals_list += [{
-                    'name': "%s%s" % (work_entry_type.name + ": " if work_entry_type else "", leave.employee_id.name),
-                    'date_start': start,
-                    'date_stop': end,
-                    'work_entry_type_id': work_entry_type.id,
-                    'display_warning': not bool(work_entry_type),
-                    'employee_id': leave.employee_id.id,
-                    'leave_id': leave.id,
-                    'state': 'confirmed',
-                    'contract_id': contract.id,
-                }]
+        if not self:
+            return
 
-            # create new work_entries where the leave does not cover the full work_entry
-            work_entries_intervals = Intervals(intervals=[(b.date_start, b.date_stop, b) for b in work_entries])
-            leave_intervals = Intervals(intervals=[(l.date_from, l.date_to, l) for l in self])
-            remaining_work_entries = work_entries_intervals - leave_intervals
+        # 1. Create a work entry for each leave
+        work_entries_vals_list = []
+        for leave in self:
+            contracts = leave.employee_id.sudo()._get_contracts(leave.date_from, leave.date_to, states=['open', 'pending', 'close'])
+            for contract in contracts:
+                # Generate only if it has aleady been generated
+                if leave.date_to >= contract.date_generated_from and leave.date_from <= contract.date_generated_to:
+                    work_entries_vals_list += contracts._get_work_entries_values(leave.date_from, leave.date_to)
 
-            for interval in remaining_work_entries:
-                work_entry = interval[2]
-                leave = work_entry.leave_id
-                work_entry_type = work_entry.work_entry_type_id
-                employee = work_entry.employee_id
+        new_leave_work_entries = self.env['hr.work.entry'].create(work_entries_vals_list)
 
-                work_entry_start = interval[0] + relativedelta(seconds=1) if leave.date_to == interval[0] else interval[0]
-                work_entry_stop = interval[1] - relativedelta(seconds=1) if leave.date_from == interval[1] else interval[1]
+        if new_leave_work_entries:
+            # 2. Fetch overlapping work entries, grouped by employees
+            start = min(self.mapped('date_from'), default=False)
+            stop = max(self.mapped('date_to'), default=False)
+            work_entry_groups = self.env['hr.work.entry'].read_group([
+                ('date_start', '<', stop),
+                ('date_stop', '>', start),
+                ('employee_id', 'in', self.employee_id.ids),
+            ], ['work_entry_ids:array_agg(id)', 'employee_id'], ['employee_id', 'date_start', 'date_stop'], lazy=False)
+            work_entries_by_employee = defaultdict(lambda: self.env['hr.work.entry'])
+            for group in work_entry_groups:
+                employee_id = group.get('employee_id')[0]
+                work_entries_by_employee[employee_id] |= self.env['hr.work.entry'].browse(group.get('work_entry_ids'))
 
-                vals_list += [{
-                    'name': "%s: %s" % (work_entry_type.name, employee.name),
-                    'date_start': work_entry_start,
-                    'date_stop': work_entry_stop,
-                    'work_entry_type_id': work_entry_type.id,
-                    'contract_id': work_entry.contract_id.id,
-                    'employee_id': employee.id,
-                    'state': 'confirmed',
-                }]
+            # 3. Archive work entries included in leaves
+            included = self.env['hr.work.entry']
+            overlappping = self.env['hr.work.entry']
+            for work_entries in work_entries_by_employee.values():
+                # Work entries for this employee
+                new_employee_work_entries = work_entries & new_leave_work_entries
+                previous_employee_work_entries = work_entries - new_leave_work_entries
 
-            date_start = min(work_entries.mapped('date_start'))
-            date_stop = max(work_entries.mapped('date_stop'))
-            self.env['hr.work.entry']._safe_duplicate_create(vals_list, date_start, date_stop)
-            work_entries.unlink()
+                # Build intervals from work entries
+                leave_intervals = new_employee_work_entries._to_intervals()
+                conflicts_intervals = previous_employee_work_entries._to_intervals()
+
+                # Compute intervals completely outside any leave
+                # Intervals are outside, but associated records are overlapping.
+                outside_intervals = conflicts_intervals - leave_intervals
+
+                overlappping |= self.env['hr.work.entry']._from_intervals(outside_intervals)
+                included |= previous_employee_work_entries - overlappping
+            overlappping.write({'leave_id': False})
+            included.write({'active': False})
+
+    def write(self, vals):
+        if not self:
             return True
-        return False
+        skip_check = not bool({'employee_id', 'state', 'date_from', 'date_to'} & vals.keys())
+
+        start = min(self.mapped('date_from') + [vals.get('date_from') or datetime.max])
+        stop = max(self.mapped('date_to') + [vals.get('date_to') or datetime.min])
+        with self.env['hr.work.entry']._error_checking(start=start, stop=stop, skip=skip_check):
+            return super().write(vals)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        start_dates = [v.get('date_from') for v in vals_list if v.get('date_from')]
+        stop_dates = [v.get('date_to') for v in vals_list if v.get('date_to')]
+        with self.env['hr.work.entry']._error_checking(start=min(start_dates, default=False), stop=max(stop_dates, default=False)):
+            return super().create(vals_list)
+
+    @api.multi
+    def action_confirm(self):
+        start = min(self.mapped('date_from'), default=False)
+        stop = max(self.mapped('date_to'), default=False)
+        with self.env['hr.work.entry']._error_checking(start=start, stop=stop):
+            return super().action_confirm()
 
     @api.multi
     def action_validate(self):
@@ -146,10 +165,20 @@ class HrLeave(models.Model):
 
     @api.multi
     def action_refuse(self):
-        super(HrLeave, self).action_refuse()
+        """
+        Override to archive linked work entries and recreate attendance work entries
+        where the refused leave was.
+        """
+        res = super(HrLeave, self).action_refuse()
         work_entries = self.env['hr.work.entry'].sudo().search([('leave_id', 'in', self.ids)])
-        work_entries.write({'display_warning': False, 'active': False})
-        return True
+
+        work_entries.write({'active': False})
+        # Re-create attendance work entries
+        vals_list = []
+        for work_entry in work_entries:
+            vals_list += work_entry.contract_id._get_work_entries_values(work_entry.date_start, work_entry.date_stop)
+        self.env['hr.work.entry'].create(vals_list)
+        return res
 
     def _get_number_of_days(self, date_from, date_to, employee_id):
         """ If an employee is currently working full time but requests a leave next month

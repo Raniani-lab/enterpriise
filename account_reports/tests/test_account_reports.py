@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from odoo import fields
 from odoo.tests import tagged
 from odoo.tests.common import Form, SavepointCase
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, date_utils
@@ -210,7 +211,7 @@ class TestAccountReports(SavepointCase):
         })
 
     @staticmethod
-    def _create_invoice(env, amount, partner, invoice_type, date):
+    def _create_invoice(env, amount, partner, invoice_type, date, clear_taxes=False):
         ''' Helper to create an account.move on the fly with only one line.
         N.B: The taxes are also applied.
         :param amount:          The amount of the unique account.move.line.
@@ -226,6 +227,8 @@ class TestAccountReports(SavepointCase):
         with invoice_form.invoice_line_ids.new() as invoice_line_form:
             invoice_line_form.name = 'test'
             invoice_line_form.price_unit = amount
+            if clear_taxes:
+                invoice_line_form.tax_ids.clear()
         invoice = invoice_form.save()
         invoice.post()
         return invoice
@@ -1892,59 +1895,890 @@ class TestAccountReports(SavepointCase):
     # TESTS: Cash Flow Statement
     # -------------------------------------------------------------------------
 
-    def test_cash_flow_statement_initial_state(self):
-        ''' Test folded/unfolded lines. '''
-        # Init options.
-        report = self.env.ref('account_reports.account_financial_report_cashsummary0')._with_correct_filters()
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        report = report.with_context(report._set_context(options))
+    def test_cash_flow_statement_1(self):
+        liquidity_journal_1 = self.env['account.journal'].search([
+            ('type', 'in', ('bank', 'cash')), ('company_id', '=', self.company_parent.id),
+        ], limit=1)
+        liquidity_account = liquidity_journal_1.default_credit_account_id
+        receivable_account_1 = self.env['account.account'].search([
+            ('user_type_id.type', '=', 'receivable'), ('company_id', '=', self.company_parent.id),
+        ], limit=1)
+        receivable_account_2 = receivable_account_1.copy()
+        receivable_account_2.name = 'Account Receivable 2'
+        receivable_account_3 = receivable_account_1.copy()
+        receivable_account_3.name = 'Account Receivable 3'
+        other_account_1 = receivable_account_1.copy(default={'user_type_id': self.env.ref('account.data_account_type_current_assets').id, 'reconcile': True})
+        other_account_1.name = 'Other account 1'
+        other_account_2 = receivable_account_1.copy(default={'user_type_id': self.env.ref('account.data_account_type_current_assets').id, 'reconcile': True})
+        other_account_2.name = 'Other account 2'
+        other_account_2.tag_ids |= self.env.ref('account.account_tag_financing')
 
-        lines = report._get_lines(options)
-        self.assertLinesValues(
-            lines,
-            #   Name                                                            Balance
-            [   0,                                                              1],
-            [
-                ('Cash and cash equivalents, beginning of period',              -750.00),
-                ('Net increase in cash and cash equivalents',                   ''),
-                ('Cash flows from operating activities',                        ''),
-                ('Advance Payments received from customers',                    0.00),
-                ('Cash received from operating activities',                     86.96),
-                ('Advance payments made to suppliers',                          0.00),
-                ('Cash paid for operating activities',                          -260.87),
-                ('Total Cash flows from operating activities',                  -173.91),
-                ('Cash flows from investing & extraordinary activities',        ''),
-                ('Cash in',                                                     0.00),
-                ('Cash out',                                                    0.00),
-                ('Total Cash flows from investing & extraordinary activities',  0.00),
-                ('Cash flows from financing activities',                        ''),
-                ('Cash in',                                                     0.00),
-                ('Cash out',                                                    0.00),
-                ('Total Cash flows from financing activities',                  0.00),
-                ('Cash flows from unclassified activities',                     ''),
-                ('Cash in',                                                     13.04),
-                ('Cash out',                                                    -39.13),
-                ('Total Cash flows from unclassified activities',               -26.09),
-                ('Total Net increase in cash and cash equivalents',             -200.00),
-                ('Cash and cash equivalents, closing balance',                  -950.00),
+        def assertCashFlowValues(lines, expected_lines):
+            folded_lines = []
+            for line in lines:
+                self.assertNotEquals(line['id'], 'cash_flow_line_unexplained_difference', 'Test failed due to an unexplained difference in the report.')
+                if line.get('style') != 'display: none;':
+                    folded_lines.append(line)
+            self.assertLinesValues(folded_lines, [0, 1], expected_lines)
+
+        expected_lines = [
+            ['Cash and cash equivalents, beginning of period',                      0.0],
+            ['Net increase in cash and cash equivalents',                           0.0],
+            ['Cash flows from operating activities',                                0.0],
+            ['Advance Payments received from customers',                            0.0],
+            ['Cash received from operating activities',                             0.0],
+            ['Advance payments made to suppliers',                                  0.0],
+            ['Cash paid for operating activities',                                  0.0],
+            ['Cash flows from investing & extraordinary activities',                0.0],
+            ['Cash in',                                                             0.0],
+            ['Cash out',                                                            0.0],
+            ['Cash flows from financing activities',                                0.0],
+            ['Cash in',                                                             0.0],
+            ['Cash out',                                                            0.0],
+            ['Cash flows from unclassified activities',                             0.0],
+            ['Cash in',                                                             0.0],
+            ['Cash out',                                                            0.0],
+            ['Cash and cash equivalents, closing balance',                          0.0],
+        ]
+
+        # Init report / options.
+        report = self.env['account.cash.flow.report'].with_context(allowed_company_ids=self.company_parent.ids)
+        options = self._init_options(report, *date_utils.get_month(fields.Date.from_string('2015-01-01')))
+
+        # ===================================================================================================
+        # CASE 1:
+        #
+        # Invoice:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | Receivable      | 345       |         | 2015-01-01
+        # 2   | Receivable      | 805       |         | 2015-01-01
+        # 3   | Tax Received    |           | 150     | 2015-01-01
+        # 4   | Product Sales   |           | 1000    | 2015-01-01
+        #
+        # Payment 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 4   | Receivable      |           | 230     | 2015-01-15
+        # 5   | Bank            | 230       |         | 2015-01-15
+        #
+        # Payment 2:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 6   | Receivable      |           | 230     | 2015-02-01
+        # 7   | Bank            | 230       |         | 2015-02-01
+        #
+        # Payment 3:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 8   | Receivable      |           | 1690    | 2015-02-15
+        # 9   | Bank            | 1690      |         | 2015-02-15
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 1           | 4             | 230
+        # 1           | 6             | 115
+        # 2           | 6             | 115
+        # 2           | 8             | 690
+        #
+        # Summary:
+        # The invoice is paid at 60% (690 / 1150).
+        # All payments are fully reconciled except the third that has 1000 credit left on the receivable account.
+        # ===================================================================================================
+
+        # Init invoice.
+        # self.partner_a.property_payment_term_id = self.env.ref('account.account_payment_term_advance')
+        invoice = self._create_invoice(self.env, 1000, self.partner_a, 'out_invoice', '2015-01-01')
+
+        # First payment.
+        # The tricky part is there is two receivable lines on the invoice.
+        self._create_payment(self.env, fields.Date.from_string('2015-01-15'), invoice, amount=230)
+
+        options['date']['date_to'] = '2015-01-15'
+        expected_lines[1][1] += 230.0               # Net increase in cash and cash equivalents         230.0
+        expected_lines[2][1] += 200.0               # Cash flows from operating activities              200.0
+        expected_lines[4][1] += 200.0               # Cash received from operating activities           200.0
+        expected_lines[13][1] += 30.0               # Cash flows from unclassified activities           30.0
+        expected_lines[14][1] += 30.0               # Cash in                                           30.0
+        expected_lines[16][1] += 230.0              # Cash and cash equivalents, closing balance        230.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # Second payment.
+        # The tricky part is two partials will be generated, one for each receivable line.
+        self._create_payment(self.env, fields.Date.from_string('2015-02-01'), invoice, amount=230)
+
+        options['date']['date_to'] = '2015-02-01'
+        expected_lines[1][1] += 230.0               # Net increase in cash and cash equivalents         460.0
+        expected_lines[2][1] += 200.0               # Cash flows from operating activities              400.0
+        expected_lines[4][1] += 200.0               # Cash received from operating activities           400.0
+        expected_lines[13][1] += 30.0               # Cash flows from unclassified activities           60.0
+        expected_lines[14][1] += 30.0               # Cash in                                           60.0
+        expected_lines[16][1] += 230.0              # Cash and cash equivalents, closing balance        460.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # Third payment.
+        # The tricky part is this payment will generate an advance in payments.
+        third_payment = self._create_payment(self.env, fields.Date.from_string('2015-02-15'), invoice, amount=1690)
+
+        options['date']['date_to'] = '2015-02-15'
+        expected_lines[1][1] += 1690.0              # Net increase in cash and cash equivalents         2150.0
+        expected_lines[2][1] += 1600.0              # Cash flows from operating activities              2000.0
+        expected_lines[3][1] += 1000.0              # Advance Payments received from customers          1000.0
+        expected_lines[4][1] += 600.0               # Cash received from operating activities           1000.0
+        expected_lines[13][1] += 90.0               # Cash flows from unclassified activities           150.0
+        expected_lines[14][1] += 90.0               # Cash in                                           150.0
+        expected_lines[16][1] += 1690.0             # Cash and cash equivalents, closing balance        2150.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # Second invoice.
+        # As the report date is unchanged, this reconciliation must not affect the report.
+        # It ensures the residual amounts is computed dynamically depending of the report date.
+        # Then, when including the invoice to the report, the advance payments must become a cash received.
+        second_invoice = self._create_invoice(self.env, 1000, self.partner_a, 'out_invoice', '2015-03-01', clear_taxes=True)
+
+        (second_invoice.line_ids + third_payment.move_line_ids)\
+            .filtered(lambda line: line.account_internal_type == 'receivable')\
+            .reconcile()
+
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        options['date']['date_to'] = '2015-03-15'
+        expected_lines[3][1] -= 1000.0              # Advance Payments received from customers          0.0
+        expected_lines[4][1] += 1000.0              # Cash received from operating activities           2000.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # ===================================================================================================
+        # CASE 2:
+        # Test the variation of the reconciled percentage from 800 / 1000 = 80% to 3800 / 4000 = 95%.
+        # Also test the cross-reconciliation between liquidity moves doesn't break the report.
+        #
+        # Liquidity move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 5   | Receivable 1    | 800       |         | 2015-04-01
+        # 6   | Receivable 3    |           | 250     | 2015-04-01
+        # 7   | other 1         |           | 250     | 2015-04-01
+        # 8   | Bank            |           | 300     | 2015-04-01
+        #
+        # Misc. move.
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | Receivable 1    |           | 1000    | 2015-04-02
+        # 2   | other 1         |           | 500     | 2015-04-02
+        # 3   | other 2         | 4500      |         | 2015-04-02
+        # 4   | Receivable 2    |           | 3000    | 2015-04-02
+        #
+        # Liquidity move 2:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 9   | Receivable 2    | 3200      |         | 2015-04-03
+        # 10  | Receivable 3    | 200       |         | 2015-04-03
+        # 11  | other 2         |           | 400     | 2015-04-03
+        # 12  | Bank            |           | 3000    | 2015-04-03
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 5           | 1             | 800
+        # 9           | 4             | 115
+        # 10          | 6             | 200
+        # ===================================================================================================
+
+        # First liquidity move.
+        liquidity_move_1 = self.env['account.move'].create({
+            'date': '2015-04-01',
+            'line_ids': [
+                (0, 0, {'debit': 800.0, 'credit': 0.0, 'account_id': receivable_account_1.id}),
+                (0, 0, {'debit': 0.0, 'credit': 250.0, 'account_id': receivable_account_3.id}),
+                (0, 0, {'debit': 0.0, 'credit': 250.0, 'account_id': other_account_1.id}),
+                (0, 0, {'debit': 0.0, 'credit': 300.0, 'account_id': liquidity_account.id}),
             ],
-        )
+        })
+        liquidity_move_1.post()
 
-        # Mark the 'Cash received from operating activities' line to be unfolded.
-        line_id = lines[4]['id']
-        options['unfolded_lines'] = [line_id]
-        report = report.with_context(report._set_context(options))
+        options['date']['date_to'] = '2015-04-01'
+        expected_lines[1][1] -= 300.0               # Net increase in cash and cash equivalents         1850.0
+        expected_lines[2][1] -= 550.0               # Cash flows from operating activities              1450.0
+        expected_lines[3][1] -= 550.0               # Advance Payments received from customers          -550.0
+        expected_lines[13][1] += 250.0              # Cash flows from unclassified activities           400.0
+        expected_lines[14][1] += 250.0              # Cash in                                           400.0
+        expected_lines[16][1] -= 300.0              # Cash and cash equivalents, closing balance        1850.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
 
-        self.assertLinesValues(
-            report._get_lines(options, line_id=line_id),
-            #   Name                                                            Balance
-            [   0,                                                              1],
-            [
-                ('Cash received from operating activities',                     86.96),
-                ('200000 Product Sales',                                        86.96),
-                ('Total Cash received from operating activities',               86.96),
+        # Misc. move.
+        # /!\ This move is reconciled at 800 / (1000 + 3000) = 20%.
+        misc_move = self.env['account.move'].create({
+            'date': '2015-04-02',
+            'line_ids': [
+                (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': receivable_account_1.id}),
+                (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': other_account_1.id}),
+                (0, 0, {'debit': 4500.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                (0, 0, {'debit': 0.0, 'credit': 3000.0, 'account_id': receivable_account_2.id}),
             ],
-        )
+        })
+        misc_move.post()
+
+        (liquidity_move_1.line_ids + misc_move.line_ids)\
+            .filtered(lambda line: line.account_id == receivable_account_1)\
+            .reconcile()
+
+        options['date']['date_to'] = '2015-04-02'
+        expected_lines[2][1] += 3200.0              # Cash flows from operating activities              4650.0
+        expected_lines[3][1] += 3200.0              # Advance Payments received from customers          2650.0
+        expected_lines[10][1] -= 3600.0             # Cash flows from financing activities              -3600.0
+        expected_lines[12][1] -= 3600.0             # Cash out                                          -3600.0
+        expected_lines[13][1] += 400.0              # Cash flows from unclassified activities           800.0
+        expected_lines[14][1] += 400.0              # Cash in                                           800.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # Second liquidity move.
+        liquidity_move_2 = self.env['account.move'].create({
+            'date': '2015-04-03',
+            'line_ids': [
+                (0, 0, {'debit': 3200.0, 'credit': 0.0, 'account_id': receivable_account_2.id}),
+                (0, 0, {'debit': 200.0, 'credit': 0.0, 'account_id': receivable_account_3.id}),
+                (0, 0, {'debit': 0.0, 'credit': 400.0, 'account_id': other_account_2.id}),
+                (0, 0, {'debit': 0.0, 'credit': 3000.0, 'account_id': liquidity_account.id}),
+            ],
+        })
+        liquidity_move_2.post()
+
+        # misc_move is now paid at 95%.
+        (liquidity_move_2.line_ids + misc_move.line_ids)\
+            .filtered(lambda line: line.account_id == receivable_account_2)\
+            .reconcile()
+
+        options['date']['date_to'] = '2015-04-03'
+        expected_lines[1][1] -= 3000.0              # Net increase in cash and cash equivalents         -1150.0
+        expected_lines[2][1] -= 2800.0              # Cash flows from operating activities              1850.0
+        expected_lines[3][1] -= 2800.0              # Advance Payments received from customers          -150.0
+        expected_lines[10][1] -= 275.0              # Cash flows from financing activities              -3875.0
+        expected_lines[11][1] += 400.0              # Cash in                                           400.0
+        expected_lines[12][1] -= 675.0              # Cash out                                          -4275.0
+        expected_lines[13][1] += 75.0               # Cash flows from unclassified activities           875.0
+        expected_lines[14][1] += 75.0               # Cash in                                           875.0
+        expected_lines[16][1] -= 3000.0             # Cash and cash equivalents, closing balance        -1150.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # Nothing should change in the cash flow report.
+        (liquidity_move_1.line_ids + liquidity_move_2.line_ids)\
+            .filtered(lambda line: line.account_id == receivable_account_3)\
+            .reconcile()
+
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # ===================================================================================================
+        # TEST THE UNFOLDED REPORT
+        # ===================================================================================================
+
+        self.assertLinesValues(report._get_lines(options), [0, 1], [
+            ['Cash and cash equivalents, beginning of period',                      0.0],
+            ['Net increase in cash and cash equivalents',                           -1150.0],
+            ['Cash flows from operating activities',                                1850.0],
+            ['Advance Payments received from customers',                            -150.0],
+            ['101220 Account Receivable 2',                                         -200.0],
+            ['101230 Account Receivable 3',                                         50.0],
+            ['Total Advance Payments received from customers',                      -150.0],
+            ['Cash received from operating activities',                             2000.0],
+            ['200000 Product Sales',                                                2000.0],
+            ['Total Cash received from operating activities',                       2000.0],
+            ['Advance payments made to suppliers',                                  0.0],
+            ['Cash paid for operating activities',                                  0.0],
+            ['Cash flows from investing & extraordinary activities',                0.0],
+            ['Cash in',                                                             0.0],
+            ['Cash out',                                                            0.0],
+            ['Cash flows from financing activities',                                -3875.0],
+            ['Cash in',                                                             400.0],
+            ['101250 Other account 2',                                              400.0],
+            ['Total Cash in',                                                       400.0],
+            ['Cash out',                                                            -4275.0],
+            ['101250 Other account 2',                                              -4275.0],
+            ['Total Cash out',                                                      -4275.0],
+            ['Cash flows from unclassified activities',                             875.0],
+            ['Cash in',                                                             875.0],
+            ['111200 Tax Received',                                                 150.0],
+            ['101240 Other account 1',                                              725.0],
+            ['Total Cash in',                                                       875.0],
+            ['Cash out',                                                            0.0],
+            ['Cash and cash equivalents, closing balance',                          -1150.0],
+            ['101401 Bank',                                                         -1150.0],
+            ['Total Cash and cash equivalents, closing balance',                    -1150.0],
+        ])
+
+        # ===================================================================================================
+        # CASE 3:
+        #
+        # Misc move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | other 1         |           | 500     | 2015-05-01
+        # 2   | other 2         | 500       |         | 2015-05-01
+        #
+        # Liquidity move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 3   | Bank            | 1000      |         | 2015-05-01
+        # 4   | other 2         |           | 500     | 2015-05-01
+        # 5   | other 2         |           | 500     | 2015-05-01
+        #
+        # Liquidity move 2:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 6   | Bank            |           | 500     | 2015-05-02
+        # 7   | other 2         | 500       |         | 2015-05-02
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 2           | 4             | 500
+        # 7           | 5             | 500
+        # ===================================================================================================
+
+        # Reset the report at 2015-05-01.
+        options['date']['date_from'] = '2015-05-01'
+        for line in expected_lines:
+            line[1] = 0
+        expected_lines[0][1] -= 1150.0              # Cash and cash equivalents, beginning of period    -1150.0
+        expected_lines[16][1] -= 1150.0             # Cash and cash equivalents, closing balance        -1150.0
+
+        # Init moves + reconciliation.
+        moves = self.env['account.move'].create([
+            {
+                'date': '2015-05-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 500.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-05-01',
+                'line_ids': [
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': other_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-05-02',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 500.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                ],
+            },
+        ])
+        moves.post()
+
+        moves.mapped('line_ids')\
+            .filtered(lambda line: line.account_id == other_account_2)\
+            .reconcile()
+
+        options['date']['date_to'] = '2015-05-01'
+        expected_lines[1][1] += 1000.0              # Net increase in cash and cash equivalents         1000.0
+        expected_lines[10][1] += 500.0              # Cash flows from financing activities              500.0
+        expected_lines[11][1] += 500.0              # Cash in                                           500.0
+        expected_lines[13][1] += 500.0              # Cash flows from unclassified activities           500.0
+        expected_lines[14][1] += 500.0              # Cash in                                           500.0
+        expected_lines[16][1] += 1000.0             # Cash and cash equivalents, closing balance        -150.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        options['date']['date_to'] = '2015-05-02'
+        expected_lines[1][1] -= 500.0               # Net increase in cash and cash equivalents         500.0
+        expected_lines[10][1] -= 500.0              # Cash flows from financing activities              0.0
+        expected_lines[11][1] -= 500.0              # Cash in                                           0.0
+        expected_lines[16][1] -= 500.0              # Cash and cash equivalents, closing balance        -650.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # ===================================================================================================
+        # CASE 4:
+        # The difficulty of this case is the liquidity move will pay the misc move at 1000 / 3000 = 1/3.
+        # However, you must take care of the sign because the 3000 in credit must become 1000 in debit.
+        #
+        # Misc move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | other 1         |           | 3000    | 2015-06-01
+        # 2   | other 2         | 5000      |         | 2015-06-01
+        # 3   | other 2         |           | 1000    | 2015-06-01
+        # 4   | other 2         |           | 1000    | 2015-06-01
+        #
+        # Liquidity move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 5   | Bank            |           | 1000    | 2015-06-01
+        # 6   | other 2         | 1000      |         | 2015-06-01
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 6           | 3             | 1000
+        # ===================================================================================================
+
+        # Init moves + reconciliation.
+        moves = self.env['account.move'].create([
+            {
+                'date': '2015-06-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 3000.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 5000.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': other_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-06-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                ],
+            },
+        ])
+        moves.post()
+
+        moves.mapped('line_ids')\
+            .filtered(lambda line: line.account_id == other_account_2 and abs(line.balance) == 1000.0)\
+            .reconcile()
+
+        options['date']['date_to'] = '2015-06-01'
+        expected_lines[1][1] -= 1000.0              # Net increase in cash and cash equivalents         -500.0
+        expected_lines[13][1] -= 1000.0             # Cash flows from unclassified activities           -500.0
+        expected_lines[14][1] -= 500.0              # Cash in                                            0.0
+        expected_lines[15][1] -= 500.0              # Cash out                                          -500.0
+        expected_lines[16][1] -= 1000.0             # Cash and cash equivalents, closing balance        -1650.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # ===================================================================================================
+        # CASE 5:
+        # Same as case 4 but this time, the liquidity move is creditor.
+        #
+        # Misc move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | other 1         | 3000      |         | 2015-06-02
+        # 2   | other 2         |           | 5000    | 2015-06-02
+        # 3   | other 2         | 1000      |         | 2015-06-02
+        # 4   | other 2         | 1000      |         | 2015-06-02
+        #
+        # Liquidity move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 5   | Bank            | 1000      |         | 2015-06-02
+        # 6   | other 2         |           | 1000    | 2015-06-02
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 3           | 6             | 1000
+        # ===================================================================================================
+
+        # Init moves + reconciliation.
+        moves = self.env['account.move'].create([
+            {
+                'date': '2015-06-01',
+                'line_ids': [
+                    (0, 0, {'debit': 3000.0, 'credit': 0.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 5000.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-06-01',
+                'line_ids': [
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': other_account_2.id}),
+                ],
+            },
+        ])
+        moves.post()
+
+        moves.mapped('line_ids')\
+            .filtered(lambda line: line.account_id == other_account_2 and abs(line.balance) == 1000.0)\
+            .reconcile()
+
+        options['date']['date_to'] = '2015-06-01'
+        expected_lines[1][1] += 1000.0              # Net increase in cash and cash equivalents         0.0
+        expected_lines[13][1] += 1000.0             # Cash flows from unclassified activities           500.0
+        expected_lines[14][1] += 500.0              # Cash in                                           500.0
+        expected_lines[15][1] += 500.0              # Cash out                                          0.0
+        expected_lines[16][1] += 1000.0             # Cash and cash equivalents, closing balance        -650.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # ===================================================================================================
+        # CASE 6:
+        # Test the additional lines on liquidity moves (e.g. bank fees) are well reported in the cash flow statement.
+        #
+        # Liquidity move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | Bank            | 3000      |         | 2015-07-01
+        # 2   | other 2         |           | 1000    | 2015-07-01
+        # 3   | Receivable 2    |           | 2000    | 2015-07-01
+        #
+        # Liquidity move 2:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 4   | Bank            |           | 3000    | 2015-07-01
+        # 5   | other 1         | 1000      |         | 2015-07-01
+        # 6   | Receivable 1    | 2000      |         | 2015-07-01
+        #
+        # Liquidity move 3:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 7   | Bank            | 1000      |         | 2015-07-01
+        # 8   | other 1         | 1000      |         | 2015-07-01
+        # 9   | Receivable 2    |           | 2000    | 2015-07-01
+        #
+        # Liquidity move 4:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 10  | Bank            |           | 1000    | 2015-07-01
+        # 11  | other 2         |           | 1000    | 2015-07-01
+        # 12  | Receivable 1    | 2000      |         | 2015-07-01
+        #
+        # Misc move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 13  | Receivable 1    |           | 4000    | 2015-07-01
+        # 14  | Receivable 2    | 4000      |         | 2015-07-01
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 13          | 12            | 2000
+        # 13          | 6             | 2000
+        # 14          | 3             | 2000
+        # 14          | 9             | 2000
+        # ===================================================================================================
+
+        # Init moves + reconciliation.
+        moves = self.env['account.move'].create([
+            {
+                'date': '2015-07-01',
+                'line_ids': [
+                    (0, 0, {'debit': 3000.0, 'credit': 0.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 2000.0, 'account_id': receivable_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-07-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 3000.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 2000.0, 'credit': 0.0, 'account_id': receivable_account_1.id}),
+                ],
+            },
+            {
+                'date': '2015-07-01',
+                'line_ids': [
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 2000.0, 'account_id': receivable_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-07-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 2000.0, 'credit': 0.0, 'account_id': receivable_account_1.id}),
+                ],
+            },
+            {
+                'date': '2015-07-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 4000.0, 'account_id': receivable_account_1.id}),
+                    (0, 0, {'debit': 4000.0, 'credit': 0.0, 'account_id': receivable_account_2.id}),
+                ],
+            },
+        ])
+        moves.post()
+
+        moves.mapped('line_ids')\
+            .filtered(lambda line: line.account_id == receivable_account_1)\
+            .reconcile()
+        moves.mapped('line_ids')\
+            .filtered(lambda line: line.account_id == receivable_account_2)\
+            .reconcile()
+
+        options['date']['date_to'] = '2015-07-01'
+        expected_lines[10][1] += 2000.0             # Cash flows from financing activities              2000.0
+        expected_lines[11][1] += 2000.0             # Cash in                                           2000.0
+        expected_lines[13][1] -= 2000.0             # Cash flows from unclassified activities           -1500.0
+        expected_lines[15][1] -= 2000.0             # Cash out                                          -3000.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # ===================================================================================================
+        # CASE 7:
+        # Liquidity moves are reconciled on the bank account.
+        #
+        # Liquidity move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | Bank            | 3000      |         | 2015-07-01
+        # 2   | other 2         |           | 1000    | 2015-07-01
+        # 3   | Receivable 2    |           | 2000    | 2015-07-01
+        #
+        # Liquidity move 2:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 4   | Bank            |           | 1500    | 2015-07-01
+        # 5   | other 1         | 500       |         | 2015-07-01
+        # 6   | Receivable 1    | 1000      |         | 2015-07-01
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 1           | 4             | 1500
+        # ===================================================================================================
+
+        # Reset the report at 2015-08-01.
+        options['date']['date_from'] = '2015-08-01'
+        for line in expected_lines:
+            line[1] = 0
+        expected_lines[0][1] -= 650.0               # Cash and cash equivalents, beginning of period    -650.0
+        expected_lines[16][1] -= 650.0              # Cash and cash equivalents, closing balance        -650.0
+
+        # Init moves + reconciliation.
+        moves = self.env['account.move'].create([
+            {
+                'date': '2015-08-01',
+                'line_ids': [
+                    (0, 0, {'debit': 3000.0, 'credit': 0.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 1000.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 2000.0, 'account_id': receivable_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-08-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 1500.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 500.0, 'credit': 0.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0, 'account_id': receivable_account_1.id}),
+                ],
+            },
+        ])
+        moves.post()
+
+        liquidity_account.reconcile = True
+        moves.mapped('line_ids')\
+            .filtered(lambda line: line.account_id == liquidity_account)\
+            .reconcile()
+
+        options['date']['date_to'] = '2015-08-01'
+        expected_lines[1][1] += 1500.0              # Net increase in cash and cash equivalents         1500.0
+        expected_lines[2][1] += 1000.0              # Cash flows from operating activities              1000.0
+        expected_lines[3][1] += 1000.0              # Advance Payments received from customers          1000.0
+        expected_lines[10][1] += 1000.0             # Cash flows from financing activities              1000.0
+        expected_lines[11][1] += 1000.0             # Cash in                                           1000.0
+        expected_lines[13][1] -= 500.0              # Cash flows from unclassified activities           -500.0
+        expected_lines[15][1] -= 500.0              # Cash out                                          -500.0
+        expected_lines[16][1] += 1500.0             # Cash and cash equivalents, closing balance        850.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # Undo the reconciliation.
+        moves.mapped('line_ids')\
+            .filtered(lambda line: line.account_id == liquidity_account)\
+            .remove_move_reconcile()
+        liquidity_account.reconcile = False
+
+        # ===================================================================================================
+        # CASE 8:
+        # Difficulties of these cases are:
+        # - The liquidity moves are reconciled to moves having a total amount of 0.0.
+        # - Double reconciliation between the liquidity and the misc moves.
+        # - The reconciliations are partials.
+        # - There are additional lines on the misc moves.
+        #
+        # Liquidity move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | Bank            |           | 100     | 2015-09-01
+        # 2   | Receivable 2    | 900       |         | 2015-09-01
+        # 3   | other 1         |           | 400     | 2015-09-01
+        # 4   | other 2         |           | 400     | 2015-09-01
+        #
+        # Misc move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 5   | other 1         | 500       |         | 2015-09-01
+        # 6   | other 1         |           | 500     | 2015-09-01
+        # 7   | other 2         | 500       |         | 2015-09-01
+        # 8   | other 2         |           | 500     | 2015-09-01
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 5           | 3             | 400
+        # 8           | 4             | 400
+        # ===================================================================================================
+
+        # Reset the report at 2015-09-01.
+        options['date']['date_from'] = '2015-09-01'
+        for line in expected_lines:
+            line[1] = 0
+        expected_lines[0][1] += 850.0               # Cash and cash equivalents, beginning of period    850.0
+        expected_lines[16][1] += 850.0              # Cash and cash equivalents, closing balance        850.0
+
+        # Init moves + reconciliation.
+        moves = self.env['account.move'].create([
+            {
+                'date': '2015-09-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 100.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 900.0, 'credit': 0.0, 'account_id': receivable_account_2.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 400.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 400.0, 'account_id': other_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-09-01',
+                'line_ids': [
+                    (0, 0, {'debit': 500.0, 'credit': 0.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 500.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': other_account_2.id}),
+                ],
+            },
+        ])
+        moves.post()
+
+        credit_line = moves[0].line_ids.filtered(lambda line: line.account_id == other_account_1)
+        debit_line = moves[1].line_ids.filtered(lambda line: line.account_id == other_account_1 and line.debit > 0.0)
+        (credit_line + debit_line).reconcile()
+
+        credit_line = moves[0].line_ids.filtered(lambda line: line.account_id == other_account_2)
+        debit_line = moves[1].line_ids.filtered(lambda line: line.account_id == other_account_2 and line.debit > 0.0)
+        (credit_line + debit_line).reconcile()
+
+        options['date']['date_to'] = '2015-09-01'
+        expected_lines[1][1] -= 100.0               # Net increase in cash and cash equivalents         -100.0
+        expected_lines[2][1] -= 900.0               # Cash flows from operating activities              -900.0
+        expected_lines[3][1] -= 900.0               # Advance Payments received from customers          -900.0
+        expected_lines[10][1] += 400.0              # Cash flows from financing activities              400.0
+        expected_lines[11][1] += 400.0              # Cash in                                           400.0
+        expected_lines[13][1] += 400.0              # Cash flows from unclassified activities           400.0
+        expected_lines[14][1] += 400.0              # Cash in                                           400.0
+        expected_lines[16][1] -= 100.0              # Cash and cash equivalents, closing balance        750.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+        # ===================================================================================================
+        # CASE 9:
+        # Same as case 8 but with inversed debit/credit.
+        #
+        # Liquidity move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 1   | Bank            | 100       |         | 2015-10-01
+        # 2   | Receivable 2    |           | 900     | 2015-10-01
+        # 3   | other 1         | 400       |         | 2015-10-01
+        # 4   | other 2         | 400       |         | 2015-10-01
+        #
+        # Misc move 1:
+        # Id  | Account         | Debit     | Credit  | Date
+        # ---------------------------------------------------
+        # 6   | other 1         |           | 500     | 2015-10-01
+        # 5   | other 1         | 500       |         | 2015-10-01
+        # 8   | other 2         |           | 500     | 2015-10-01
+        # 7   | other 2         | 500       |         | 2015-10-01
+        #
+        # Reconciliation table (account.partial.reconcile):
+        # Debit id    | Credit id     | Amount
+        # ---------------------------------------------------
+        # 5           | 3             | 400
+        # 8           | 4             | 400
+        # ===================================================================================================
+
+        # Reset the report at 2015-10-01.
+        options['date']['date_from'] = '2015-10-01'
+        for line in expected_lines:
+            line[1] = 0
+        expected_lines[0][1] += 750.0               # Cash and cash equivalents, beginning of period    750.0
+        expected_lines[16][1] += 750.0              # Cash and cash equivalents, closing balance        750.0
+
+        # Init moves + reconciliation.
+        moves = self.env['account.move'].create([
+            {
+                'date': '2015-10-01',
+                'line_ids': [
+                    (0, 0, {'debit': 100.0, 'credit': 0.0, 'account_id': liquidity_account.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 900.0, 'account_id': receivable_account_2.id}),
+                    (0, 0, {'debit': 400.0, 'credit': 0.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 400.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                ],
+            },
+            {
+                'date': '2015-10-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 500.0, 'credit': 0.0, 'account_id': other_account_1.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 500.0, 'account_id': other_account_2.id}),
+                    (0, 0, {'debit': 500.0, 'credit': 0.0, 'account_id': other_account_2.id}),
+                ],
+            },
+        ])
+        moves.post()
+
+        credit_line = moves[1].line_ids.filtered(lambda line: line.account_id == other_account_1 and line.credit > 0.0)
+        debit_line = moves[0].line_ids.filtered(lambda line: line.account_id == other_account_1)
+        (credit_line + debit_line).reconcile()
+
+        credit_line = moves[1].line_ids.filtered(lambda line: line.account_id == other_account_2 and line.credit > 0.0)
+        debit_line = moves[0].line_ids.filtered(lambda line: line.account_id == other_account_2)
+        (credit_line + debit_line).reconcile()
+
+        options['date']['date_to'] = '2015-10-01'
+        expected_lines[1][1] += 100.0               # Net increase in cash and cash equivalents         100.0
+        expected_lines[2][1] += 900.0               # Cash flows from operating activities              900.0
+        expected_lines[3][1] += 900.0               # Advance Payments received from customers          900.0
+        expected_lines[10][1] -= 400.0              # Cash flows from financing activities              -400.0
+        expected_lines[12][1] -= 400.0              # Cash out                                          -400.0
+        expected_lines[13][1] -= 400.0              # Cash flows from unclassified activities           -400.0
+        expected_lines[15][1] -= 400.0              # Cash out                                          -400.0
+        expected_lines[16][1] += 100.0              # Cash and cash equivalents, closing balance        850.0
+        assertCashFlowValues(report._get_lines(options), expected_lines)
+
+    def test_cash_flow_statement_2_multi_company_currency(self):
+        # Init report / options.
+        report = self.env['account.cash.flow.report'].with_context(allowed_company_ids=(self.company_parent + self.company_child_eur).ids)
+        options = self._init_options(report, *date_utils.get_month(fields.Date.from_string('2015-01-01')))
+
+        invoice = self._create_invoice(self.env, 1000, self.partner_a, 'out_invoice', '2015-01-01')
+        self._create_payment(self.env, fields.Date.from_string('2015-01-15'), invoice, amount=1035)
+        self.env.user.company_id = self.company_child_eur
+        invoice = self._create_invoice(self.env, 1000, self.partner_a, 'out_invoice', '2015-01-01')
+        self._create_payment(self.env, fields.Date.from_string('2015-01-15'), invoice, amount=1035)
+        self.env.user.company_id = self.company_parent
+
+        self.assertLinesValues(report._get_lines(options), [0, 1], [
+            ['Cash and cash equivalents, beginning of period',                      0.0],
+            ['Net increase in cash and cash equivalents',                           2070.0],
+            ['Cash flows from operating activities',                                1800.0],
+            ['Advance Payments received from customers',                            0.0],
+            ['Cash received from operating activities',                             1800.0],
+            ['200000 Product Sales',                                                900.0],
+            ['200000 Product Sales',                                                900.0],
+            ['Total Cash received from operating activities',                       1800.0],
+            ['Advance payments made to suppliers',                                  0.0],
+            ['Cash paid for operating activities',                                  0.0],
+            ['Cash flows from investing & extraordinary activities',                0.0],
+            ['Cash in',                                                             0.0],
+            ['Cash out',                                                            0.0],
+            ['Cash flows from financing activities',                                0.0],
+            ['Cash in',                                                             0.0],
+            ['Cash out',                                                            0.0],
+            ['Cash flows from unclassified activities',                             270.0],
+            ['Cash in',                                                             270.0],
+            ['111200 Tax Received',                                                 135.0],
+            ['111200 Tax Received',                                                 135.0],
+            ['Total Cash in',                                                       270.0],
+            ['Cash out',                                                            0.0],
+            ['Cash and cash equivalents, closing balance',                          2070.0],
+            ['101401 Bank',                                                         1035.0],
+            ['101401 Bank',                                                         1035.0],
+            ['Total Cash and cash equivalents, closing balance',                    2070.0],
+        ])
 
     # -------------------------------------------------------------------------
     # TESTS: Reconciliation Report

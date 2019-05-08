@@ -21,7 +21,7 @@
 
         <!-- Add gantt view mode to the hr.holidays dashboard -->
         <record id="hr_holidays.action_hr_holidays_dashboard" model="ir.actions.act_window">
-            <field name="view_mode">gantt,calendar,tree</field>
+            <field name="view_mode">gantt,calendar,tree,form</field>
             <field name="domain">[('holiday_type','=','employee')]</field>  <!-- overwrite to display refused leave -->
         </record>
         <record id="hr_holidays.hr_leave_action_all" model="ir.actions.act_window">

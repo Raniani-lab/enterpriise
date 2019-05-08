@@ -85,9 +85,6 @@
             <field name="round_days">HALF</field>
             <field name="round_days_type">DOWN</field>
         </record>
-        <record id="hr_holidays.holiday_status_hw" model="hr.leave.type">
-            <field name="work_entry_type_id" ref="work_entry_type_home_working"></field>
-        </record>
 
         <record id="work_entry_type_unpaid_leave" model="hr.work.entry.type">
             <field name="name">Unpaid</field>

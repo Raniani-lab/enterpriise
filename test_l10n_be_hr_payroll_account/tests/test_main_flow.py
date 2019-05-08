@@ -31,7 +31,7 @@ class TestHR(common.TransactionCase):
     def setUp(self):
         super(TestHR, self).setUp()
         self.user = self.create_user_employee(login='fgh', groups='base.group_user')
-        self.user_leave_team_leader = self.create_user_employee(login='sef', groups='hr_holidays.group_hr_holidays_team_leader')
+        self.user_leave_team_leader = self.create_user_employee(login='sef', groups='base.group_user')
         self.user.employee_id.leave_manager_id = self.user_leave_team_leader
         self.hr_user = self.create_user_employee(login='srt', groups='hr.group_hr_user')
         self.hr_holidays_user = self.create_user_employee(login='kut', groups='hr_holidays.group_hr_holidays_user')
@@ -108,7 +108,6 @@ class TestHR(common.TransactionCase):
         # --------------------------------------------------
         # Holiday user: Allocation
         # --------------------------------------------------
-        self.user.employee_id.parent_id = self.hr_holidays_user.employee_id
         allocation_no_validation = self.create_allocation(
             user=self.hr_holidays_user,
             employee=self.user.employee_id,

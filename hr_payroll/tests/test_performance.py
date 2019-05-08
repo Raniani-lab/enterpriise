@@ -99,7 +99,7 @@ class TestPayrollPerformance(TestPayslipBase):
     def test_performance_leave_confirm(self):
         leave = self.create_leave(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 18, 0))
         leave.action_draft()
-        with self.assertQueryCount(__system__=21, admin=88):
+        with self.assertQueryCount(__system__=21, admin=97):
             leave.action_confirm()
         leave.state = 'cancel'
 

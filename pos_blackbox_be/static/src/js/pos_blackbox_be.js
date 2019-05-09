@@ -333,7 +333,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
 
         orderline_change: function(line) {
             // don't try to rerender non-visible lines
-            if (this.pos.get_order() && line.node.parentNode) {
+            if (this.pos.get_order() && line.node && line.node.parentNode) {
                 return this._super(line);
             } else {
                 return undefined;
@@ -787,7 +787,11 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             var insz_or_bis_number = this.pos.get_cashier().insz_or_bis_number;
 
             if (! insz_or_bis_number) {
-                throw new Error("FDM error: " + _t("INSZ or BIS number not set for current cashier."));
+                this.pos.gui.show_popup('error',{
+                    'title': _t("Fiscal Data Module error"),
+                    'body': _t("INSZ or BIS number not set for current cashier."),
+                });
+                return false;
             }
 
             packet.add_field(new FDMPacketField("ticket date", 8, order.blackbox_pos_receipt_time.format("YYYYMMDD")));
@@ -1078,6 +1082,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
                         );
                     } else {
                         self.chrome.ready.then(function () {
+                            $(self.chrome.$el).find('.placeholder-posVersion').text(' Ver: ' + self.version.server_version + "1807BE_FDM");
                             var current = $(self.chrome.$el).find('.placeholder-posID').text();
                             $(self.chrome.$el).find('.placeholder-posID').text(' ID: ' + self.config.blackbox_pos_production_id);
                         });
@@ -1098,6 +1103,9 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             order.blackbox_base_price_in_euro_per_tax_letter = order.get_base_price_in_euro_per_tax_letter_list();
 
             var packet = this.proxy._build_fdm_hash_and_sign_request(order);
+            if (!packet) {
+                return new $.Deferred().reject();
+            }
             var def = this.proxy.request_fdm_hash_and_sign(packet).then(function (parsed_response) {
                 var def = new $.Deferred();
 
@@ -1316,7 +1324,38 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             } else {
                 posmodel_super.delete_current_order.apply(this, arguments);
             }
-        }
+        },
+
+        transfer_order_to_different_table: function () {
+            var self = this;
+            var old_order = this.get_order();
+            var new_order = this.add_new_order();
+            // remove all lines of the previous order and create a new one
+            old_order.get_orderlines().forEach(function (current) {
+                var decrease_line = current.clone();
+                decrease_line.order = old_order;
+                decrease_line.set_quantity(-current.get_quantity());
+                old_order.add_orderline(decrease_line);
+
+                var moved_line = current.clone();
+                moved_line.order = new_order;
+                new_order.add_orderline(moved_line);
+            });
+
+            // save the order with canceled lines
+            posmodel_super.set_order.call(this, old_order);
+            this.push_order(old_order).then(function () {
+
+                posmodel_super.set_order.call(self, new_order);
+                // disable blackbox_pro_forma to avoid saving a pro forma on set_order(null) call
+                new_order.blackbox_pro_forma = false;
+
+                // show table selection screen
+                posmodel_super.transfer_order_to_different_table.apply(self, arguments);
+                new_order.blackbox_pro_forma = true;
+            });
+
+        },
     });
 
     DB.include({
@@ -1411,6 +1450,10 @@ can no longer be modified. Please create a new line with eg. a negative quantity
     });
 
     screens.NumpadWidget.include({
+        start: function(event) {
+            this._super(event);
+            this.$el.find('.mode-button[data-mode=price]').prop("disabled",true);
+        },
         clickChangeMode: function (event) {
             if (event.currentTarget.attributes['data-mode'].nodeValue === "price") {
                 this.gui.show_popup("error", {

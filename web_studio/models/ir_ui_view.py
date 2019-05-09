@@ -776,7 +776,7 @@ class View(models.Model):
             if tcall in self.TEMPLATE_VIEWS_BLACKLIST:
                 continue
             if tcall not in cloned_templates:
-                callview = self.search([('type', '=', 'qweb'), ('key', '=', tcall)])
+                callview = self.search([('type', '=', 'qweb'), ('key', '=', tcall)], limit=1)
                 if not callview:
                     raise UserError(_("Template '%s' not found") % tcall)
                 callview.copy_qweb_template()

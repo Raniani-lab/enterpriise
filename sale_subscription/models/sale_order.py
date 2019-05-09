@@ -120,7 +120,7 @@ class SaleOrder(models.Model):
         """Split the order line according to subscription templates that must be created."""
         self.ensure_one()
         res = dict()
-        new_sub_lines = self.order_line.filtered(lambda l: not l.subscription_id and l.product_id.subscription_template_id)
+        new_sub_lines = self.order_line.filtered(lambda l: not l.subscription_id and l.product_id.subscription_template_id and l.product_id.recurring_invoice)
         templates = new_sub_lines.mapped('product_id').mapped('subscription_template_id')
         for template in templates:
             lines = self.order_line.filtered(lambda l: l.product_id.subscription_template_id == template)

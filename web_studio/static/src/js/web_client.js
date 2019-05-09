@@ -205,16 +205,16 @@ WebClient.include({
      * @returns {Boolean} the 'Studio editable' property of an action
      */
     _isStudioEditable: function (action) {
-        if (action && action.xml_id) {
-            if (action.type === 'ir.actions.act_window') {
-                // we don't want to edit Settings as it is a special case of form view
-                // this is a heuristic to determine if the action is Settings
-                if (action.res_model && action.res_model.indexOf('settings') === -1) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return action
+               && action.xml_id
+               && action.type === 'ir.actions.act_window'
+               && action.res_model
+               // we don't want to edit Settings as it is a special case of form view
+               // this is a heuristic to determine if the action is Settings
+               && action.res_model.indexOf('settings') === -1
+               // we don't want to edit Dashboard views
+               && action.res_model !== 'board.board'
+               ? true : false;
     },
     /**
      * Opens the Studio main action with the AM current action.

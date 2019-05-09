@@ -15,10 +15,9 @@
                 <field name="ip" invisible="1"/>
                 <field name="identifier" invisible="1"/>
                 <field name="boxes" invisible="1"/>
-                <div class="o_row mb8" attrs="{'invisible': [('test_type', '!=', 'measure')]}">
-                    <Label for="measure"/>
-                    <field name="measure" widget="iot_realtime_value"/>
-                </div>
+            </xpath>
+            <xpath expr="//field[@name='measure']" position="attributes">
+                <attribute name="widget">iot_realtime_value</attribute>
             </xpath>
             <field name="picture" position="attributes">
                 <attribute name="widget">iot_picture</attribute>

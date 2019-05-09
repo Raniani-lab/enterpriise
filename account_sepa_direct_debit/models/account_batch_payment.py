@@ -38,7 +38,7 @@ class AccountBatchPayment(models.Model):
             # Constrains on models ensure all the payments can generate SDD data before
             # calling this method, so we make no further check of their content here
 
-            company = self.env['res.company']._company_default_get()
+            company = self.env['res.company'].browse(self.env.context.get('force_company')) or self.env['res.company']._company_default_get()
 
             return {
                 'filename': 'PAIN008' + datetime.now().strftime('%Y%m%d%H%M%S') + '.xml',

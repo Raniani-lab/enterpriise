@@ -22,6 +22,9 @@
           <tns:nationalBox t-if="is_domestic">
             <atHome>
               <product t-esc="product"/>
+              <options t-if="saturday">
+                <common:saturdayDelivery/>
+              </options>
               <weight t-esc="weight"/>
               <receiver>
                 <common:name t-esc="receiver['_record'].name"/>
@@ -36,9 +39,6 @@
                 <common:emailAddress t-if="receiver['_record'].email" t-esc="receiver['_record'].email[:50]"/>
                 <common:phoneNumber t-if="receiver['_record'].phone" t-esc="receiver['_record'].phone[:20]"/>
               </receiver>
-              <options t-if="saturday">
-                <common:saturdayDelivery/>
-              </options>
             </atHome>
           </tns:nationalBox>
           <tns:internationalBox t-if="not is_domestic">

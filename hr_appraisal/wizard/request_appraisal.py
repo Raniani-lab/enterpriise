@@ -77,7 +77,7 @@ class RequestAppraisal(models.TransientModel):
             'date_close': self.deadline,
         })
         appraisal.message_subscribe(partner_ids=self.recipient_id.ids)
-        appraisal._onchange_employee_id()
+        appraisal.sudo()._onchange_employee_id()
         appraisal._onchange_company_id()
 
         ctx = {'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id)}

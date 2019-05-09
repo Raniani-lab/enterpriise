@@ -63,6 +63,7 @@ class SaleOrder(models.Model):
             'analytic_account_id': self.analytic_account_id.id,
             'recurring_next_date': recurring_next_date,
             'recurring_invoice_day': recurring_invoice_day,
+            'fiscal_position_id': self.fiscal_position_id.id,
             'payment_token_id': self.transaction_ids.get_last_transaction().payment_token_id.id if template.payment_mode in ['validate_send_payment', 'success_payment'] else False
         }
         default_stage = self.env['sale.subscription.stage'].search([('in_progress', '=', True)], limit=1)
@@ -213,6 +214,7 @@ class SaleOrderLine(models.Model):
                 'uom_id': line.product_uom.id,
                 'price_unit': line.price_unit,
                 'discount': line.discount if line.order_id.subscription_management != 'upsell' else False,
+                'tax_ids': [(6, 0, line.tax_id.ids)]
             }))
         return values
 

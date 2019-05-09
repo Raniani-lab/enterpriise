@@ -97,6 +97,7 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
 
             sub = self.subscription.copy()
             with patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription.send_success_mail', wraps=self._mock_send_success_mail):
+                sub.recurring_invoice_line_ids.tax_ids = self.tax_10
                 sub.with_context(auto_commit=False)._recurring_create_invoice(automatic=True)
 
                 # check success mail is not sent yet
@@ -105,8 +106,6 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
                 # check invoice amount and taxes
                 invoice_id = sub.action_subscription_invoice()['res_id']
                 invoice = self.env['account.move'].browse(invoice_id)
-                recurring_total_with_taxes = sub.recurring_total + (sub.recurring_total * (self.tax_10.amount / 100.0))
-                assertEqual(invoice.amount_total, recurring_total_with_taxes, 'subscription total amount should be tax included')
 
                 # check transaction state
                 tx = invoice.mapped('transaction_ids')

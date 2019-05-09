@@ -15,7 +15,8 @@ class TestSubscriptionCommon(SavepointCase):
         SaleOrder = cls.env['sale.order'].with_context(context_no_mail)
         Tax = cls.env['account.tax'].with_context(context_no_mail)
         Journal = cls.env['account.journal'].with_context(context_no_mail)
-        Product = cls.env['product.product'].with_context(context_no_mail)
+        FPos = cls.env['account.fiscal.position'].with_context(context_no_mail)
+        FPosMap = cls.env['account.fiscal.position.tax'].with_context(context_no_mail)
         ProductTmpl = cls.env['product.template'].with_context(context_no_mail)
 
         # Minimal CoA & taxes setup
@@ -44,6 +45,33 @@ class TestSubscriptionCommon(SavepointCase):
             'name': "10% tax",
             'amount_type': 'percent',
             'amount': 10,
+        })
+        cls.tax_20 = Tax.create({
+            'name': "20% tax",
+            'amount_type': 'percent',
+            'amount': 20,
+        })
+        cls.tax_0 =  Tax.create({
+            'name': "0% tax",
+            'amount_type': 'percent',
+            'amount': 0,
+        })
+        cls.fpos = FPos.create({
+            'name': 'FPOS-TEST',
+        })
+        FPosMap.create({
+            'position_id': cls.fpos.id,
+            'tax_src_id': cls.tax_10.id,
+            'tax_dest_id': cls.tax_0.id,
+        })
+
+        cls.fpos_partner = FPos.create({
+            'name': 'FPOS-PARTNER-TEST',
+        })
+        FPosMap.create({
+            'position_id': cls.fpos_partner.id,
+            'tax_src_id': cls.tax_0.id,
+            'tax_dest_id': cls.tax_20.id,
         })
 
         cls.journal = Journal.create({
@@ -137,6 +165,7 @@ class TestSubscriptionCommon(SavepointCase):
             'groups_id': [(6, 0, [group_portal_id])],
             'property_account_payable_id': cls.account_payable.id,
             'property_account_receivable_id': cls.account_receivable.id,
+            'property_account_position_id': cls.fpos_partner.id,
         })
 
         # Test analytic account

@@ -1,0 +1,47 @@
+<?xml version = "1.0" encoding="utf-8"?>
+<odoo>
+    <record id="web_map.res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.map</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval ="46"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Map view" string="Map View" data-key="map">
+                    <h2>Map View</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="token_map_view">
+                            <div class="o_setting_right_pane">
+                                <span class ="o_form_label">MapBox</span>
+                                <div class ="content-group">
+                                    <div class ="text-muted">
+                                        You need to configure this token to fully access the feature of the Mapview.
+                                    </div>
+                                    <label for="map_box_token" string="token: "/>
+                                    <field name ="map_box_token"/>
+                                    <div class ="text-muted">
+                                        Follow this link and create an account to obtain the token
+                                    </div>
+                                    <div class ="col-sm text-rigth" style="position:relative;">
+                                        <a class="oe_link"  href="https://www.mapbox.com/pricing/" target="_blank">
+                                        <i class="fa fa-arrow-right">
+                                        </i>
+                                        Get token</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="map_config_settings_action_model" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="web_map.res_config_settings_view_form"/>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>

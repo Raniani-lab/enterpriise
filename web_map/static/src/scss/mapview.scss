@@ -1,0 +1,70 @@
+$map-table-row-padding:25px;
+$map-table-line-padding:20px;
+$map-number-color:white;
+$map-number-font-size:19px;
+.o_map_view{
+    
+    height: 100%;
+    width: 100%;
+    
+    .o_map_container{
+        height: 100%;
+        width: 100%;
+
+        .o_map_popup_table{
+            vertical-align: top;
+                
+            .contentName{
+                font-weight: bold;
+                white-space: nowrap;
+                line-height: $map-table-row-padding; 
+                vertical-align: baseline;      
+            }
+           
+            .space{
+               padding-left: $map-table-line-padding;    
+            }
+            
+            .contentString{
+                vertical-align: baseline;
+            }
+        }
+        
+        div{
+            .center{
+                display:flex;
+                justify-content:left;
+                align-items:flex-end;        
+            }
+    
+            .divider{
+                width: 5px;
+                height: auto;
+                display:inline-block;
+            }
+        }
+    }
+
+    //the height and width correspond to the height and width of the custom icon png file
+    
+    .o_numbered_marker{
+        height: 45px !important;
+        width: 28px !important;
+        margin-top: -45px !important;
+        margin-left: -14px !important;
+        background-image: url("../../lib/leaflet/images/marker-icon-numbered.png");    
+    }
+    
+    
+    .o_number_icon{
+        color:$map-number-color;
+        font-size:$map-number-font-size;
+        text-align: center;
+        margin-top:10%;
+    }
+    
+    //used to disabled opening animation for the popups.
+    .leaflet-fade-anim .leaflet-popup {
+        transition: none;
+    }
+}

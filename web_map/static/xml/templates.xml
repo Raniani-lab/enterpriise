@@ -1,0 +1,37 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="map-popup">
+        <table class="o_map_popup_table">
+            <thead>
+                <tr>
+                    <th colspan="2"></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="records.records" t-as="record">
+                    <td class="contentName">
+                        <t t-esc ="record.string"/>
+                    </td>
+                    <td class ="space"></td>
+                    <td class="contentString">
+                        <t t-esc="record.field"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <div class="center">
+            <button class ="btn btn-primary edit">edit</button>
+            <div class="divider"/>
+            <a class="btn btn-primary" style="color:white" t-att-href="records.url" target="_blank">navigate to</a>
+        </div>
+    </t>
+
+    <t t-name="MapView.buttons">
+        <div>
+            <a class ="btn btn-primary" style="color:white" t-att-href="widget" target="_blank">View in Google Maps</a>
+        </div>
+    </t>
+</templates>

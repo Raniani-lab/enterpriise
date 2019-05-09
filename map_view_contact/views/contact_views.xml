@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="contact_map_view" model="ir.ui.view">
+        <field name="name">contact.partner.map.view</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <map res_partner="id">
+                <marker-popup>
+                    <field name="name" string="Name "/>
+                    <field name="contact_address_complete" string="Address "/>
+                </marker-popup>
+            </map>
+        </field>
+    </record>
+    <record id="action_contacts_map_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">map</field>
+        <field name="view_id" ref="contact_map_view"/>
+        <field name="act_window_id" ref="contacts.action_contacts"/>
+    </record>
+</odoo>

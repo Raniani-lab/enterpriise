@@ -15,9 +15,11 @@
     </record>
 
 
-    <!-- Add Gantt view -->
+
+
+    <!-- Add Gantt and map view -->
     <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
-        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity,gantt</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity,gantt,map</field>
     </record>
 
     <record id="project_task_action_planning_by_project" model="ir.actions.act_window">
@@ -60,6 +62,22 @@
             </gantt>
         </field>
     </record>
+
+    <!-- Adding map view to project-->
+    <record id="project_task_map_view" model="ir.ui.view">
+        <field name="name">project.task.view.map</field>
+        <field name="model">project.task</field>
+        <field name="priority">12</field>
+        <field name="arch" type="xml">
+            <map res_partner="partner_id"  default_order="planned_date_begin" routing="true">
+                <marker-popup>
+                    <field name="name" string="Task"/>
+                    <field name="user_id" string="Assigned to"/>
+                </marker-popup>
+            </map>
+        </field>
+    </record>
+
 
     <!-- Planning in Project -->
     <record id="project_task_view_search_planning" model="ir.ui.view">

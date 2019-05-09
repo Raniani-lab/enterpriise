@@ -9,7 +9,7 @@ Bridge module for project and enterprise
     """,
     'category': 'Project',
     'version': '1.0',
-    'depends': ['project'],
+    'depends': ['project','web_map'],
     'data': [
         'views/res_config_settings_views.xml',
         'views/project_task_views.xml',

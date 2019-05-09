@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+import copy
 import re
 from html2text import html2text
 
 from odoo import _, models, api
 from odoo.addons.iap import jsonrpc
 
+import logging as logger
+_logger = logger.getLogger(__name__)
 
 class MailThread(models.AbstractModel):
     _inherit = 'mail.thread'
@@ -65,17 +68,14 @@ class MailThread(models.AbstractModel):
                 ('id', 'in', list(pids)),
                 ('ocn_token', '!=', False)
             ])
-            identities = receiver_ids.mapped('ocn_token')
-            if identities:
+            if receiver_ids:
                 endpoint = self.env['res.config.settings']._get_endpoint()
-                params = {
-                    'ocn_tokens': identities,
-                    'data': self._ocn_prepare_payload(message, msg_vals)
-                }
-                jsonrpc(endpoint + '/iap/ocn/send', params=params)
+                chunks = self._ocn_prepare_payload(receiver_ids, message, msg_vals)
+                for chunk in chunks:
+                    jsonrpc(endpoint + '/iap/ocn/send', params=chunk)
 
     @api.model
-    def _ocn_prepare_payload(self, message, msg_vals):
+    def _ocn_prepare_payload(self, receiver_ids, message, msg_vals):
         """Returns dictionary containing message information for mobile device.
         This info will be delivered to mobile device via Google Firebase Cloud
         Messaging (FCM). And it is having limit of 4000 bytes (4kb)
@@ -106,22 +106,55 @@ class MailThread(models.AbstractModel):
             if channel.channel_type == 'chat':
                 payload['subject'] = author_name
                 payload['type'] = 'chat'
+                payload['android_channel_id'] = 'DirectMessage'
+            elif channel.channel_type == 'channel':
+                payload['subject'] = "#%s - %s" % (record_name, author_name)
+                payload['android_channel_id'] = 'ChannelMessage'
             else:
                 payload['subject'] = "#%s" % (record_name)
         else:
             payload['subject'] = record_name or subject
+            payload['android_channel_id'] = 'Following'
 
         # Check payload limit of 4000 bytes (4kb) and if remain space add the body
         payload_length = len(str(payload).encode('utf-8'))
+        body = msg_vals.get('body') if msg_vals else message.body
+        # FIXME: when msg_type is 'user_notification', the type value of msg_vals.get('body') is bytes
+        if type(body) == bytes:
+            body = body.decode("utf-8")
         if payload_length < 4000:
-            body = msg_vals.get('body') if msg_vals else message.body
-            # FIXME: when msg_type is 'user_notification', the type value of msg_vals.get('body') is bytes
-            if type(body) == bytes:
-                body = body.decode("utf-8")
-            body = re.sub(r'<a(.*?)>', r'<a>', body)  # To-Do : Replace this fix
-            body += self._generate_tracking_message(message, '<br/>')
-            payload['body'] = html2text(body)[:4000 - payload_length]
-        return payload
+            payload_body = body
+            payload_body = re.sub(r'<a(.*?)>', r'<a>', payload_body)  # To-Do : Replace this fix
+            payload_body += self._generate_tracking_message(message, '<br/>')
+            payload['body'] = html2text(payload_body)[:4000 - payload_length]
+
+        chunks = []
+        at_mention_ocn_token_list = []
+        identities_ocn_token_list = []
+        at_mention_analyser_id_list = self._at_mention_analyser(body)
+        for receiver_id in receiver_ids:
+            if receiver_id.id in at_mention_analyser_id_list:
+                at_mention_ocn_token_list.append(receiver_id.ocn_token)
+            else:
+                identities_ocn_token_list.append(receiver_id.ocn_token)
+
+        # first chunk
+        if identities_ocn_token_list:
+            chunks.append({
+                'ocn_tokens': identities_ocn_token_list,
+                'data': payload,
+            })
+
+        # second chunk for mentions with specific channel
+        if at_mention_ocn_token_list:
+            new_payload = copy.copy(payload)
+            new_payload['android_channel_id'] = 'AtMention'
+            chunks.append({
+                'ocn_tokens': at_mention_ocn_token_list,
+                'data': new_payload,
+            })
+
+        return chunks
 
     @api.model
     def _extract_model_and_id(self, msg_vals):
@@ -139,6 +172,28 @@ class MailThread(models.AbstractModel):
                 'res_id': match.group('id'),
             }
         return {}
+
+    @api.model
+    def _at_mention_analyser(self, body):
+        """
+        Analyse the message to see if there is a @Mention in the notification
+        :param body: original body of current mail.message record
+        :return: a array with the list of ids for the @Mention partners
+        """
+        at_mention_ids = []
+        regex = r"<a[^>]+data-oe-id=['\"](?P<id>\d+)['\"][^>]+data-oe-model=['\"](?P<model>[\w.]+)['\"][^>]+>@[^<]+<\/a>"
+        matches = re.finditer(regex, body)
+
+        for match in matches:
+            if match.group('model') == 'res.partner':
+                match_id = match.group('id')
+                try:
+                    at_mention_ids.append(int(match_id))
+                except (ValueError, TypeError):
+                    # We catch the exception because mail.message is mainly used by other app.
+                    # So it's better to have no id instead of blocking the process.
+                    _logger.error("Invalid conversion to int: %s" % match_id)
+        return at_mention_ids
 
     @api.model
     def _generate_tracking_message(self, message, return_line='\n'):

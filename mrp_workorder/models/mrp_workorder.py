@@ -62,7 +62,9 @@ class MrpProductionWorkcenterLine(models.Model):
     @api.onchange('qty_producing')
     def _onchange_qty_producing(self):
         super(MrpProductionWorkcenterLine, self)._onchange_qty_producing()
-        self.qty_done = self.current_quality_check_id.move_line_id.qty_to_consume
+        # retrieve qty_to_consume on the workorder line updated by onchange
+        workorder_line = self.current_quality_check_id.move_line_id
+        self.qty_done = workorder_line.new(origin=workorder_line).qty_to_consume
 
     @api.depends('qty_done', 'component_remaining_qty')
     def _compute_component_qty_to_do(self):
@@ -96,9 +98,10 @@ class MrpProductionWorkcenterLine(models.Model):
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
             if wo.test_type in ('register_byproducts', 'register_consumed_materials') and wo.quality_state == 'none':
                 if wo.test_type == 'register_byproducts':
-                    moves = wo.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
+                    moves = wo.move_finished_ids._origin.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
                 else:
-                    moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
+                    moves = wo.move_raw_ids._origin.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
+                # moves are actual records (for condition "l.move_id in moves")
                 move = moves[0]
                 lines = wo._workorder_line_ids().filtered(lambda l: l.move_id in moves)
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines

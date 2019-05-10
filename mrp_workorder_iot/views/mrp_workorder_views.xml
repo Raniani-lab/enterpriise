@@ -18,6 +18,9 @@
                 <field name="identifier" invisible="1"/>
                 <field name="boxes" invisible="1"/>
             </xpath>
+            <xpath expr="//field[@name='measure']" position="attributes">
+                <attribute name="widget">iot_realtime_value</attribute>
+            </xpath>
             <field name="picture" position="attributes">
                 <attribute name="widget">iot_picture</attribute>
                 <attribute name="options">{'ip_field': 'ip', 'identifier': 'identifier'}</attribute>

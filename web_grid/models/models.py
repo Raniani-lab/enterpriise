@@ -38,7 +38,7 @@ class Base(models.AbstractModel):
         # [{ __count, __domain, grouping, **row_fields, cell_field }]
         groups = self._read_group_raw(
             expression.AND([domain, column_info.domain]),
-            [col_field, cell_field] + row_fields,
+            [col_field, cell_field] + [f.partition(':')[0] for f in row_fields],
             [column_info.grouping] + row_fields,
             lazy=False
         )

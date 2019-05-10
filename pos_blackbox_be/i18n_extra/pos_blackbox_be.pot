@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-12 10:17+0000\n"
-"PO-Revision-Date: 2018-07-12 10:17+0000\n"
+"POT-Creation-Date: 2019-04-16 13:37+0000\n"
+"PO-Revision-Date: 2019-04-16 13:37+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,13 +21,20 @@ msgid "(size in bytes:"
 msgstr ""
 
 #. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.fdm_source
+msgid "--------------------------------------------------------------------\n"
+"\n"
+"CONTENT:"
+msgstr ""
+
+#. module: pos_blackbox_be
 #: model:account.tax,name:pos_blackbox_be.zero_vat_work_in_out
 msgid "0% (work in/out)"
 msgstr ""
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:261
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:259
 #, python-format
 msgid "1807BE_FDM"
 msgstr ""
@@ -166,7 +173,7 @@ msgstr ""
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1418
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1419
 #, python-format
 msgid "Adjusting the price is not allowed."
 msgstr ""
@@ -260,15 +267,20 @@ msgid "Can't modify the log book."
 msgstr ""
 
 #. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.pos_config_view_form_inherit_blackbox_be
+msgid "Certified PosBox Ref."
+msgstr ""
+
+#. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:249
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:246
 #, python-format
 msgid "Clock in"
 msgstr ""
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:255
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:252
 #, python-format
 msgid "Clock out"
 msgstr ""
@@ -343,7 +355,7 @@ msgstr ""
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1314
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1315
 #, python-format
 msgid "Deleting of orders is not allowed."
 msgstr ""
@@ -486,8 +498,8 @@ msgstr ""
 #: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1045
 #: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1052
 #: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1059
-#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1313
-#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1417
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1314
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1418
 #, python-format
 msgid "Fiscal Data Module error"
 msgstr ""
@@ -745,6 +757,13 @@ msgid "Not allowed to take back more than was ordered."
 msgstr ""
 
 #. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:258
+#, python-format
+msgid "Odoo"
+msgstr ""
+
+#. module: pos_blackbox_be
 #: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:51
 #, python-format
 msgid "Only one Point of Sale allowed per registered POSBox."
@@ -977,6 +996,12 @@ msgid "Revenue per category (NS):"
 msgstr ""
 
 #. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.fdm_source
+msgid "SIGNATURES:\n"
+"--------------------------------------------------------------------"
+msgstr ""
+
+#. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_user_id
 msgid "Salesman"
 msgstr ""
@@ -1006,7 +1031,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:44
 #: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:222
-#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:243
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:240
 #, python-format
 msgid "THIS IS NOT A VALID VAT TICKET"
 msgstr ""
@@ -1054,15 +1079,9 @@ msgid "The reprint and discount module are not allowed to be installed with the 
 msgstr ""
 
 #. module: pos_blackbox_be
-#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:642
+#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:631
 #, python-format
 msgid "This module is not allowed to be removed."
-msgstr ""
-
-#. module: pos_blackbox_be
-#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:634
-#, python-format
-msgid "This module is not allowed with the Fiscal Data Module."
 msgstr ""
 
 #. module: pos_blackbox_be
@@ -1344,6 +1363,11 @@ msgstr ""
 #. module: pos_blackbox_be
 #: selection:pos_blackbox_be.log,action:0
 msgid "delete"
+msgstr ""
+
+#. module: pos_blackbox_be
+#: model:ir.model.fields,help:pos_blackbox_be.field_pos_config_blackbox_pos_production_id
+msgid "e.g. BODO002... The POSBox must be certified by Odoo S.A. to be used with the blackbox."
 msgstr ""
 
 #. module: pos_blackbox_be

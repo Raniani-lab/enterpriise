@@ -7,6 +7,22 @@
     max-height: 1000px;
 }
 
+@include media-breakpoint-up(sm) {
+    .o_control_panel {
+        .o_cp_left {
+            .o_cp_sidebar {
+                display: flex;
+                padding-right: 25px;
+
+                > .btn-group {
+                    margin: auto 0;
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
 @include media-breakpoint-down(sm) {
     .o_control_panel {
         padding-right: 0;

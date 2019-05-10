@@ -88,7 +88,7 @@ QUnit.module('DocumentsKanbanView', {
                         activity_state: 'today', res_name: 'Write specs', tag_ids: [1, 2], share_ids: [], folder_id: 1,
                         available_rule_ids: [1, 2]},
                     {id: 2, name: 'blip', file_size: 20000, owner_id: 2, partner_id: 2,
-                        public: false, res_id: 2, res_model: 'task', res_model_name: 'Task',
+                        public: false, res_id: 2, mimetype: 'application/pdf', res_model: 'task', res_model_name: 'Task',
                         res_name: 'Write tests', tag_ids: [2], share_ids: [], folder_id: 1, available_rule_ids: [1]},
                     {id: 3, name: 'gnap', file_size: 15000, lock_uid: 3, owner_id: 2, partner_id: 1,
                         public: false, res_id: 2, res_model: 'documents.document', res_model_name: 'Task',
@@ -808,12 +808,19 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document inspector: document preview', function (assert) {
-        assert.expect(6);
+        assert.expect(9);
 
         var kanban = createDocumentsKanbanView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
+            mockRPC: function (route) {
+                if (route === '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model%3Ddocuments.document') {
+                    assert.step('pdf route');
+                    return $.when();
+                }
+                return this._super.apply(this, arguments);
+            },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -842,8 +849,17 @@ QUnit.module('DocumentsKanbanView', {
 
         testUtils.dom.click(kanban.$('.o_close_btn'));
 
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'));
+        testUtils.dom.click(kanban.$('.o_preview_available'));
+
+        assert.containsOnce(kanban, '.o_documents_split_pdf_area', "should have a pdf splitter");
+
+        testUtils.dom.click(kanban.$('.o_close_btn'));
+
         assert.containsNone(kanban, '.o_viewer_content',
             "should not have a document preview after pdf exit");
+
+        assert.verifySteps(['pdf route']);
 
         kanban.destroy();
     });

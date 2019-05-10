@@ -232,7 +232,7 @@ class DHLProvider():
                 etree.SubElement(piece_node, "Height").text = str(packaging.height)
                 etree.SubElement(piece_node, "Depth").text = str(packaging.length)
                 etree.SubElement(piece_node, "Width").text = str(packaging.width)
-                etree.SubElement(piece_node, "Weight").text = str(package.shipping_weight)
+                etree.SubElement(piece_node, "Weight").text = float_repr(package.shipping_weight, 3)
         elif param['package_ids'] and param.get('total_packages'):
             package = param['package_ids']
             for seq in range(1, param['total_packages'] + 1):
@@ -243,9 +243,9 @@ class DHLProvider():
                 etree.SubElement(piece_node, "Depth").text = str(package.length)
                 etree.SubElement(piece_node, "Width").text = str(package.width)
                 if seq == param['total_packages'] and param['last_package_weight']:
-                    etree.SubElement(piece_node, "Weight").text = str(param['last_package_weight'])
+                    etree.SubElement(piece_node, "Weight").text = float_repr(param['last_package_weight'], 3)
                 else:
-                    etree.SubElement(piece_node, "Weight").text = str(package.max_weight)
+                    etree.SubElement(piece_node, "Weight").text = float_repr(package.max_weight, 3)
         else:
             piece_node = etree.SubElement(pieces_node, "Piece")
             etree.SubElement(piece_node, "PieceID").text = str(1)
@@ -254,7 +254,7 @@ class DHLProvider():
             etree.SubElement(piece_node, "Height").text = str(packaging.height)
             etree.SubElement(piece_node, "Depth").text = str(packaging.length)
             etree.SubElement(piece_node, "Width").text = str(packaging.width)
-            etree.SubElement(piece_node, "Weight").text = str(param["total_weight"])
+            etree.SubElement(piece_node, "Weight").text = float_repr(param["total_weight"], 3)
 
         etree.SubElement(bkg_details_node, "PaymentAccountNumber").text = carrier.dhl_account_number
         if param["is_dutiable"]:

@@ -2279,6 +2279,12 @@ QUnit.module('Views', {
         });
 
         testUtils.dom.click($('.o_time_range_menu_button'));
+        $('.o_search_options .dropdown-menu.o_time_range_menu').one('click', function (ev) {
+            // This handler is on the webClient
+            // But since the test suite doesn't have one
+            // We manually set it here
+            ev.stopPropagation();
+        });
         testUtils.dom.click($('.o_time_range_menu .custom-control-label'));
         testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 

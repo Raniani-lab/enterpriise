@@ -6,21 +6,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-12 10:17+0000\n"
-"PO-Revision-Date: 2018-07-12 13:35+0200\n"
+"POT-Creation-Date: 2019-04-16 13:37+0000\n"
+"PO-Revision-Date: 2019-04-16 15:44+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: fr_BE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.0.8\n"
-"Last-Translator: \n"
-"Language: fr_BE\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.fdm_source
 msgid "(size in bytes:"
 msgstr "(taille en bytes:"
+
+#. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.fdm_source
+msgid ""
+"--------------------------------------------------------------------\n"
+"\n"
+"CONTENT:"
+msgstr ""
+"--------------------------------------------------------------------\n"
+"\n"
+"CONTENU:"
 
 #. module: pos_blackbox_be
 #: model:account.tax,name:pos_blackbox_be.zero_vat_work_in_out
@@ -29,7 +40,7 @@ msgstr "0% (work in/out)"
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:261
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:259
 #, python-format
 msgid "1807BE_FDM"
 msgstr "1807BE_FDM"
@@ -115,7 +126,7 @@ msgstr "<strong>Numéros de séquence:</strong>"
 #: model:ir.ui.view,arch_db:pos_blackbox_be.include_vat_notice_report_internal
 #: model:ir.ui.view,arch_db:pos_blackbox_be.user_report_template
 msgid "<strong>THIS IS NOT A VALID VAT TICKET</strong>"
-msgstr "<strong>CECI N'EST PAS UN TICKET TVA VALIDE</strong>"
+msgstr "<strong>CECI N'EST PAS UN TICKET DE CAISSE TVA VALABLE</strong>"
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.financial_report_template
@@ -170,7 +181,7 @@ msgstr "Adresse:"
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1418
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1419
 #, python-format
 msgid "Adjusting the price is not allowed."
 msgstr "Modifier le prix n'est pas autorisé."
@@ -261,18 +272,23 @@ msgstr "Les champs liés au module fiscal de peuvent être modifiés."
 #: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:563
 #, python-format
 msgid "Can't modify the log book."
-msgstr "Le journal d'historique ne peut être modifié."
+msgstr "Le fichier journal ne peut être modifié."
+
+#. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.pos_config_view_form_inherit_blackbox_be
+msgid "Certified PosBox Ref."
+msgstr "Num. PosBox Certifiée"
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:249
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:246
 #, python-format
 msgid "Clock in"
 msgstr "Travail in"
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:255
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:252
 #, python-format
 msgid "Clock out"
 msgstr "Travail out"
@@ -347,7 +363,7 @@ msgstr "Diminuer la quantité de"
 
 #. module: pos_blackbox_be
 #. openerp-web
-#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1314
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1315
 #, python-format
 msgid "Deleting of orders is not allowed."
 msgstr "Supprimer des commandes n'est pas autorisé."
@@ -490,8 +506,8 @@ msgstr "Date du module fiscal"
 #: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1045
 #: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1052
 #: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1059
-#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1313
-#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1417
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1314
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1418
 #, python-format
 msgid "Fiscal Data Module error"
 msgstr "Erreur du module fiscal"
@@ -613,7 +629,7 @@ msgstr "Numéro NISS ou BIS"
 #: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:790
 #, python-format
 msgid "INSZ or BIS number not set for current cashier."
-msgstr "numéro NISS ou BIS n'est pas présent pour le vendeur."
+msgstr "Le numéro NISS ou BIS n'est pas présent pour le vendeur."
 
 #. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_account_tax_identification_letter
@@ -676,12 +692,12 @@ msgstr "Lignes de point de vente"
 #: model:ir.actions.act_window,name:pos_blackbox_be.action_log_book_form
 #: model:ir.ui.menu,name:pos_blackbox_be.menu_log_book
 msgid "Log book"
-msgstr "Historique"
+msgstr "Fichier-journal"
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_blackbox_be_pro_forma_tree
 msgid "Logs"
-msgstr "Historique"
+msgstr "Fichier-journal"
 
 #. module: pos_blackbox_be
 #: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:339
@@ -751,6 +767,13 @@ msgstr "Pas d'enregistrement."
 #, python-format
 msgid "Not allowed to take back more than was ordered."
 msgstr "Interdiction de remprendre plus que ce qui a été commandé."
+
+#. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:258
+#, python-format
+msgid "Odoo"
+msgstr ""
 
 #. module: pos_blackbox_be
 #: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:51
@@ -992,6 +1015,13 @@ msgid "Revenue per category (NS):"
 msgstr "Revenu par catégorie (NS):"
 
 #. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.fdm_source
+msgid ""
+"SIGNATURES:\n"
+"--------------------------------------------------------------------"
+msgstr ""
+
+#. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_user_id
 msgid "Salesman"
 msgstr "Vendeur"
@@ -1021,10 +1051,10 @@ msgstr "Numéro d'identification de sécurité sociale"
 #. openerp-web
 #: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:44
 #: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:222
-#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:243
+#: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:240
 #, python-format
 msgid "THIS IS NOT A VALID VAT TICKET"
-msgstr "CECI N'EST PAS UN TICKET TVA VALIDE"
+msgstr "CECI N'EST PAS UN TICKET TVA VALABLE"
 
 #. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_table_id
@@ -1073,16 +1103,10 @@ msgstr ""
 "l'utilisation du module fiscal."
 
 #. module: pos_blackbox_be
-#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:642
+#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:631
 #, python-format
 msgid "This module is not allowed to be removed."
 msgstr "Ce module ne peut être supprimé."
-
-#. module: pos_blackbox_be
-#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:634
-#, python-format
-msgid "This module is not allowed with the Fiscal Data Module."
-msgstr "Ce module n'est pas autorisé avec le module fiscal."
 
 #. module: pos_blackbox_be
 #. openerp-web
@@ -1259,7 +1283,7 @@ msgstr "Carte de signature TVA"
 #: code:addons/pos_blackbox_be/static/src/xml/pos_blackbox_be.xml:194
 #, python-format
 msgid "VAT TICKET"
-msgstr "TICKET TVA"
+msgstr "TICKET DE CAISSE TVA"
 
 #. module: pos_blackbox_be
 #. openerp-web
@@ -1376,6 +1400,15 @@ msgstr "créer"
 #: selection:pos_blackbox_be.log,action:0
 msgid "delete"
 msgstr "supprimer"
+
+#. module: pos_blackbox_be
+#: model:ir.model.fields,help:pos_blackbox_be.field_pos_config_blackbox_pos_production_id
+msgid ""
+"e.g. BODO002... The POSBox must be certified by Odoo S.A. to be used with "
+"the blackbox."
+msgstr ""
+"pex. BODO002... La POSBox doit etre certifiée pas Odoo S.A. pour etre "
+"utilisée avec la boîte noire."
 
 #. module: pos_blackbox_be
 #: selection:pos_blackbox_be.log,action:0

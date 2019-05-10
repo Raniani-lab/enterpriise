@@ -134,7 +134,7 @@ class AccountBatchPayment(models.Model):
         #export and save the file for each batch payment
         self.check_access_rights('write')
         self.check_access_rule('write')
-        for record in self.sudo():
+        for record in self.with_context(force_company=self.env.user.company_id.id).sudo():
             export_file_data = record._generate_export_file()
             record.export_file = export_file_data['file']
             record.export_filename = export_file_data['filename']

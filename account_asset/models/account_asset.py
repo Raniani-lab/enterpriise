@@ -262,7 +262,7 @@ class AccountAssetAsset(models.Model):
                     depreciation_date = depreciation_date.replace(day=min(max_day_in_month, month_day))
 
                 # datetime doesn't take into account that the number of days is not the same for each month
-                if not self.prorata and self.method_period % 12 != 0 and self.date_first_depreciation == 'last_day_period':
+                if self.method_period % 12 != 0 and self.date_first_depreciation == 'last_day_period':
                     max_day_in_month = calendar.monthrange(depreciation_date.year, depreciation_date.month)[1]
                     depreciation_date = depreciation_date.replace(day=max_day_in_month)
 
@@ -440,6 +440,9 @@ class AccountAssetAsset(models.Model):
 
     @api.model
     def create(self, vals):
+        if self._context.get('import_file', False) and 'category_id' in vals:
+            changed_vals = self.onchange_category_id_values(vals['category_id'])
+            vals.update(changed_vals['value'])
         asset = super(AccountAssetAsset, self.with_context(mail_create_nolog=True)).create(vals)
         asset.sudo().compute_depreciation_board()
         return asset

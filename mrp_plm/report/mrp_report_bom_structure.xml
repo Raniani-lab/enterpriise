@@ -9,7 +9,8 @@
                 <span><t t-esc="data['version']"/></span>
             </td>
             <td class="o_mrp_ecos">
-                <span><a href="#" t-att-data-res-id="data['product'].id" t-att-data-model="'mrp.eco'" class="o_mrp_ecos_action"><t t-esc="data['ecos']"/></a></span>
+                <span t-if="data['report_type'] == 'html'"><a href="#" t-att-data-res-id="data['product'].id" t-att-data-model="'mrp.eco'" class="o_mrp_ecos_action"><t t-esc="data['ecos']"/></a></span>
+                <span t-if="data['report_type'] == 'pdf'"><t t-esc="data['ecos']"/></span>
             </td>
         </xpath>
         <xpath expr="//td[@name='td_mrp_bom_f']" position="after">

@@ -21,6 +21,7 @@
 # brokemeister <work@maltejansen.de>, 2018
 # Johannes Croe <jcr@odoo.com>, 2018
 # Martin Trigaux, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -28,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2018-08-02 11:35+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,7 +64,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "API keys"
-msgstr ""
+msgstr "API Schlüssel"
 
 #. module: delivery_easypost
 #: selection:delivery.carrier,delivery_type:0
@@ -189,7 +190,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_stock
 msgid "Easypost Delivery Methods"
-msgstr ""
+msgstr "Easypost Liefermethoden"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_label_file_type
@@ -331,7 +332,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_production_api_key
 msgid "Production API Key"
-msgstr ""
+msgstr "Produktion API Schöüssel"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__delivery_type
@@ -352,7 +353,7 @@ msgstr "Auswählen"
 #. module: delivery_easypost
 #: model:ir.actions.act_window,name:delivery_easypost.act_delivery_easypost_carrier_type
 msgid "Select a carrier"
-msgstr ""
+msgstr "Wählen sie einen Spediteur"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service__name
@@ -373,7 +374,7 @@ msgstr "Registrieren"
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_test_api_key
 msgid "Test API Key"
-msgstr ""
+msgstr "Test API Schlüssel"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:72
@@ -425,6 +426,8 @@ msgid ""
 "There is no rate available for the selected service level for one of your "
 "package. Please choose another service level."
 msgstr ""
+"Für das ausgewählte Servicelevel ist für eines Ihrer Pakete kein Tarif "
+"verfügbar. Bitte wählen Sie einen anderen Service Level."
 
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_stock_picking
@@ -471,9 +474,9 @@ msgstr "bpost"
 #: code:addons/delivery_easypost/models/delivery_carrier.py:86
 #, python-format
 msgid "error_message"
-msgstr ""
+msgstr "Fehlermeldung"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "to create a new account:"
-msgstr ""
+msgstr "Ein ein neues Konto:"

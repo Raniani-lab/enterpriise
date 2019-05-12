@@ -34,6 +34,8 @@
 # Jan Meyer, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
 # Martin Trigaux, 2019
+# Leon Grill <leg@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -41,7 +43,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,6 +72,22 @@ msgid ""
 "Any complaints about items or sellers may be sent to our support team: support@wesellyourstuff.com or (888) 555-0198. There is no guarantee of a resolution. Each case will be looked at individually, and the seller will be in contact as well.\n"
 "            "
 msgstr ""
+"\n"
+"Zahlung\n"
+"Alle Zahlungen sind sofort nach Erhalt fällig. Wenn eine Zahlung nicht eingeht oder die Zahlungsmethode abgelehnt wird, verwirkt der Käufer das Eigentum an den gekauften Artikeln. Wenn keine Zahlung eingeht, werden keine Artikel versendet.\n"
+"\n"
+"Versandbedingungen\n"
+"Der Versand wird vom Käufer in der Höhe bezahlt, die der Verkäufer zum Zeitpunkt des Kaufs vereinbart hat. Wenn ein Artikel während des Versands verloren geht, werden dem Käufer die Gesamtkosten des Artikels, einschließlich Versand, vom Verkäufer erstattet. Bei Versand ins Ausland können sich die Versandkosten verdoppeln. Wenn ein Artikel während des Versands beschädigt wird, übernimmt der Verkäufer keine Verantwortung.\n"
+"\n"
+"Rückerstattung / Rückgaberecht\n"
+"Artikel können aufgrund von Reklamationen erstattet oder zurückgesandt werden. Wenn ein Artikel während des Versands beschädigt wird, wird ein Ersatzartikel kostenlos versandt. Wenn ein Artikel nicht zufriedenstellend ist, ist eine schriftliche Erklärung erforderlich, bevor der Artikel für eine Rückerstattung in Betracht gezogen werden kann. Der Käufer muss die Beschreibung des Artikels berücksichtigen, bevor er eine Rückerstattung anfordert. Wenn der Artikel der Beschreibung des Verkäufers entspricht und der Käufer nicht zufrieden ist, ist der Verkäufer nicht für die Rückerstattung verantwortlich. Der Austausch wird von Fall zu Fall gewährt.\n"
+"\n"
+"Stornierung\n"
+"Ein Artikel kann storniert werden, bis die Zahlung bearbeitet wurde. Sobald die Zahlung bearbeitet wurde, ist der Käufer für die Zahlung verantwortlich.\n"
+"\n"
+"Beschwerden\n"
+"Beschwerden über Artikel oder Verkäufer können an unser Support-Team gesendet werden: support@wesellyourstuff.com oder (888) 555-0198. Es gibt keine Garantie für eine Lösung. Jeder Fall wird einzeln geprüft, und der Verkäufer wird auch in Kontakt sein.\n"
+"            "
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
@@ -81,6 +99,8 @@ msgstr "${object.company_id.name} Rechnung (Ref ${object.number or 'n/a'})"
 msgid ""
 "${object.company_id.name}: Please check the subscription ${object.name}"
 msgstr ""
+"${object.company_id.name}: Bitte überprüfen Sie das Abonnement "
+"${object.name}"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_rating
@@ -110,12 +130,12 @@ msgstr "(Falsche Adresse?)"
 #. module: sale_subscription
 #: selection:sale.subscription.alert,mrr_change_period:0
 msgid "1 Month"
-msgstr ""
+msgstr "1 Monat"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,mrr_change_period:0
 msgid "3 Months"
-msgstr ""
+msgstr "3 Monate"
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_alert
@@ -283,12 +303,12 @@ msgstr "<i class=\"fa fa-check\"/>"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-envelope\"/> Send email"
-msgstr ""
+msgstr "E-Mail senden"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -303,7 +323,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-fw fa-remove\"/> Closed"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-remove\"/> geschlossen"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1421,7 +1441,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Happy face"
-msgstr ""
+msgstr "glückliches Gesicht"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__health
@@ -1578,7 +1598,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:45
@@ -1659,6 +1679,8 @@ msgid ""
 "Invoice_${(object.number or '').replace('/','_')}${object.state == 'draft' "
 "and '_draft' or ''}"
 msgstr ""
+"Rechnung_${(object.number or '').replace('/','_')}${object.state == 'draft' "
+"and '_draft' or ''}"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success
@@ -1955,7 +1977,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Neutral face"
-msgstr ""
+msgstr "Neutrales Gesicht"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:40
@@ -2387,7 +2409,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Sad face"
-msgstr ""
+msgstr "trauriges Gesicht"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__sale_order_count
@@ -3172,7 +3194,7 @@ msgstr "Nutze geplante Arbeitszeit des Benutzers"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_field_name
 msgid "User field name"
-msgstr ""
+msgstr "Benutzer Feld Name"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

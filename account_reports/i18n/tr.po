@@ -8,9 +8,9 @@
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2018
 # Buket Şeker <buket_skr@hotmail.com>, 2019
 # Umur Akın <umura@projetgrup.com>, 2019
-# Ediz Duman <neps1192@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
+# Ediz Duman <neps1192@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2019\n"
+"Last-Translator: Ediz Duman <neps1192@gmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +51,7 @@ msgstr "& zaman;"
 #: code:addons/account_reports/models/account_report.py:597
 #, python-format
 msgid "(No Group)"
-msgstr ""
+msgstr "(Grupsuz)"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_financial_report.py:381
@@ -145,7 +145,7 @@ msgstr "<i class=\"fa fa-phone fa-fw\" role=\"img\" aria-label=\"Phone\" title=\
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
 msgid "<span class=\"fa fa-bar-chart\"/> Comparison:"
-msgstr ""
+msgstr "<span class=\"fa fa-bar-chart\"/> Karşılaştırma:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_journals
@@ -336,7 +336,7 @@ msgstr "Hesap"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_analytic_report
 msgid "Account Analytic Report"
-msgstr ""
+msgstr "Analitik Hesap Raporu"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_chart_template
@@ -381,7 +381,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Accrual Basis"
-msgstr ""
+msgstr "Tahakkuk Esası"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -405,7 +405,7 @@ msgstr "Bir Not Ekle"
 #: model:ir.model.fields,field_description:account_reports.field_res_company__totals_below_sections
 #: model:ir.model.fields,field_description:account_reports.field_res_config_settings__totals_below_sections
 msgid "Add totals below sections"
-msgstr ""
+msgstr "Bölümlerin altına toplam ekle"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_prepayments_received0
@@ -496,7 +496,7 @@ msgstr "Para Birimi Tutarı"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
-msgstr ""
+msgstr "Analitik Hesaplar:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_caret_options
@@ -509,12 +509,12 @@ msgstr "Analitik Kayıtları"
 #: model:ir.ui.menu,name:account_reports.menu_action_report_account_analytic
 #, python-format
 msgid "Analytic Report"
-msgstr ""
+msgstr "Analitik Rapor"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Tags:"
-msgstr ""
+msgstr "Analitik Etiketler:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template
@@ -524,7 +524,7 @@ msgstr "Not Ekle"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__applicable_filters_ids
 msgid "Applicable Filters"
-msgstr ""
+msgstr "Uygulanabilir Filtreler"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -561,7 +561,7 @@ msgstr "Otomatik"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
 msgid "Available Filters & Options"
-msgstr ""
+msgstr "Mevcut Filtreler ve Seçenekler"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_avgcre0
@@ -576,7 +576,7 @@ msgstr "Ortalama Borç Vadesi (Gün)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Bad debtor"
-msgstr ""
+msgstr "Kötü Borçlu"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:25
@@ -608,7 +608,7 @@ msgstr "Banka Uzlaştırma"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_bank_reconciliation_report
 msgid "Bank Reconciliation Report"
-msgstr ""
+msgstr "Banka Uzlaştırma Raporu"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_bank_view0
@@ -1129,7 +1129,7 @@ msgstr "Geçen Çeyrek Sonu"
 #: code:addons/account_reports/models/account_followup_report.py:43
 #, python-format
 msgid "Excluded"
-msgstr ""
+msgstr "Hariç"
 
 #. module: account_reports
 #: model:account.financial.html.report,name:account_reports.account_financial_report_executivesummary0
@@ -1207,7 +1207,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Filter:"
-msgstr ""
+msgstr "Filtre:"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__applicable_filters_ids
@@ -1373,7 +1373,7 @@ msgstr "Genel Vergi Raporu"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Good debtor"
-msgstr ""
+msgstr "İyi borçlu"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_gross_profit0
@@ -1552,7 +1552,7 @@ msgstr "PASİF"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_liabilities_and_equity_view0
 msgid "LIABILITIES + EQUITY"
-msgstr ""
+msgstr "PASİF + ÖZKAYNAK"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:211
@@ -1840,7 +1840,7 @@ msgstr "Diğer Gelirler"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_search_view
 msgid "Overdue Invoices"
-msgstr ""
+msgstr "Gecikmiş Faturalar"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_partner.py:174
@@ -1890,7 +1890,7 @@ msgstr "İş Ortağı"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Partner Categories:"
-msgstr ""
+msgstr "İş Ortağı Kategorileri:"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:292
@@ -1924,7 +1924,7 @@ msgstr "İş Ortakları"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Partners:"
-msgstr ""
+msgstr "İş Ortakları:"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:19
@@ -2082,7 +2082,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
 msgid "Report Definition"
-msgstr ""
+msgstr "Rapor Tanımı"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_form

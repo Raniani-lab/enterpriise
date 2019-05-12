@@ -15,6 +15,7 @@
 # e2f <projects@e2f.com>, 2018
 # e2f Production <e2f_prod@outlook.com>, 2018
 # Martin Trigaux, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -138,7 +139,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:104
 #, python-format
 msgid "Current activity"
-msgstr ""
+msgstr "Momentane Tätigkeit"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -288,7 +289,7 @@ msgstr "Weitere Infos"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:145
 #, python-format
 msgid "Motivation Text"
-msgstr ""
+msgstr "Motivationstext"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -316,14 +317,14 @@ msgstr "Weiter"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:300
 #, python-format
 msgid "Next week"
-msgstr ""
+msgstr "Nächste Woche"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:303
 #, python-format
 msgid "Next week unavailable"
-msgstr ""
+msgstr "Nächste Woche nicht verfügbar"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -422,14 +423,14 @@ msgstr "Bitte wählen Sie ein Projekt."
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:288
 #, python-format
 msgid "Previous week"
-msgstr ""
+msgstr "Vorherige Woche"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:291
 #, python-format
 msgid "Previous week unavailable"
-msgstr ""
+msgstr "Vorherige Woche nicht verfügbar"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -485,7 +486,7 @@ msgstr "Einstellungen"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:557
 #, python-format
 msgid "Show password"
-msgstr ""
+msgstr "Zeige Passwort"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -514,7 +515,7 @@ msgstr "Statistik"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:98
 #, python-format
 msgid "Subtract"
-msgstr ""
+msgstr "Abzug von"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -620,7 +621,7 @@ msgstr "Heutiger Plan"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:49
 #, python-format
 msgid "Toggle action"
-msgstr ""
+msgstr "Aktion umschalten"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -654,6 +655,8 @@ msgstr "Ein Odoo.com-Konto verwenden"
 #, python-format
 msgid "Use timesheet apps to manage your timesheets."
 msgstr ""
+"Verwalten Sie Ihre Arbeitszeittabellen mithilfe von Arbeitszeittabellen-"
+"Apps."
 
 #. module: project_timesheet_synchro
 #. openerp-web

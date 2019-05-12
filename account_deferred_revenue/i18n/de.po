@@ -15,6 +15,7 @@
 # Gab_Odoo <gab@odoo.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -185,7 +186,7 @@ msgstr "Einnahmen für nächste Periode"
 #. module: account_deferred_revenue
 #: model_terms:ir.actions.act_window,help:account_deferred_revenue.action_asset_revenue_report
 msgid "No deferred revenue"
-msgstr ""
+msgstr "Kein passiver Rechnungsabgrenzungsposten"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -273,7 +274,7 @@ msgstr "Laufend"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Sales Date"
-msgstr ""
+msgstr "Verkaufsdatum"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form

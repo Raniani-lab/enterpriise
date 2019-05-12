@@ -3,14 +3,23 @@
 # * quality_mrp_workorder
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Tina Rittmüller <tr@ife.de>, 2017
+# Wolfgang Taferner, 2017
+# Ermin Trevisan <trevi@twanda.com>, 2017
+# Henry Mineehen <info@mineehen.de>, 2017
+# DE T1 <e2f8846@yahoo.com>, 2017
+# Katharina Moritz <kmo@e2f.com>, 2017
+# ba566f9f7abd166f8f1f032649ec3e69, 2017
+# Martin Trigaux, 2019
+# Chris Egal <sodaswed@web.de>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,7 +67,7 @@ msgstr "Werte:"
 #. module: quality_mrp_workorder
 #: model:ir.model.fields,field_description:quality_mrp_workorder.field_mrp_workorder__norm_unit
 msgid "Norm Unit"
-msgstr ""
+msgstr "Norm Einheit"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality

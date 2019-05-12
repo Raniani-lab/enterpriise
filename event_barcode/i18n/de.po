@@ -3,7 +3,7 @@
 # * event_barcode
 # 
 # Translators:
-# Stefan Hartenfels <stefan.hartenfels@camptocamp.com>, 2017
+# ba566f9f7abd166f8f1f032649ec3e69, 2017
 # Niki Waibel, 2017
 # Mathias Neef <mn@copado.de>, 2017
 # Wolfgang Taferner, 2017
@@ -11,6 +11,7 @@
 # Anja Funk <anja.funk@afimage.de>, 2018
 # Martin Trigaux, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:13+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,6 +50,8 @@ msgid ""
 "<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
 "label=\"Barcode\"/>"
 msgstr ""
+"<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
+"label=\"Barcode\"/>"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:18

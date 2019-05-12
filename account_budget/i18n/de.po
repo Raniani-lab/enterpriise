@@ -16,6 +16,7 @@
 # Anja Funk <anja.funk@afimage.de>, 2018
 # Martin Trigaux, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -23,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:12+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,11 +47,13 @@ msgid ""
 "\"Start Date\" of the budget line should be included in the Period of the "
 "budget"
 msgstr ""
+"Das \"Startdatum\" der Budget Grenze sollte in den Zeitraum des Budget "
+"einbezogen werden"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_kanban
 msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
@@ -81,12 +84,13 @@ msgstr "Status der Aktivität"
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
 msgid "Amount really earned/spent."
-msgstr ""
+msgstr "Verdienter / ausgegebener Betrag."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__theoritical_amount
 msgid "Amount you are supposed to have earned/spent at this date."
 msgstr ""
+"Der Betrag, den Sie an diesem Datum verdient / ausgegeben haben sollen."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__planned_amount
@@ -94,6 +98,9 @@ msgid ""
 "Amount you plan to earn/spend. Record a positive amount if it is a revenue "
 "and a negative amount if it is a cost."
 msgstr ""
+"Betrag, den Sie verdienen / ausgeben möchten. Erfassen Sie einen positiven "
+"Betrag, wenn es sich um einen Umsatz handelt, und einen negativen Betrag, "
+"wenn es sich um Kosten handelt."
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_analytic_account
@@ -104,7 +111,7 @@ msgstr "Analysekonto"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_group_id
 msgid "Analytic Group"
-msgstr ""
+msgstr "Analisierte Gruppe"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -157,7 +164,7 @@ msgstr "Budget Name"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__crossovered_budget_state
 msgid "Budget State"
-msgstr ""
+msgstr "Budget Status"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_budget_post
@@ -186,7 +193,7 @@ msgstr "Budgets"
 #: model:ir.actions.act_window,name:account_budget.act_crossovered_budget_lines_view
 #: model:ir.ui.menu,name:account_budget.menu_act_crossovered_budget_lines_view
 msgid "Budgets Analysis"
-msgstr ""
+msgstr "Budgetanalyse"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -216,6 +223,8 @@ msgid ""
 "Comparison between practical and theoretical amount. This measure tells you "
 "if you are below or over budget."
 msgstr ""
+"Vergleich zwischen praktischer und theoretischer Menge. Diese Kennzahl gibt "
+"an, ob Sie unter oder über dem Budget liegen."
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -279,7 +288,7 @@ msgstr "Enddatum"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Entries..."
-msgstr ""
+msgstr "Einträge ..."
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_follower_ids
@@ -333,7 +342,7 @@ msgstr ""
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__is_above_budget
 msgid "Is Above Budget"
-msgstr ""
+msgstr "Liegt über dem Budget"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_is_follower
@@ -405,7 +414,7 @@ msgstr "Nächster Aktivitätstyp"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Not Cancelled"
-msgstr ""
+msgstr "Nicht Stoniert"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction_counter
@@ -462,7 +471,7 @@ msgstr "Geplanter Betrag"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Planned amount"
-msgstr ""
+msgstr "Geplante Menge"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__practical_amount
@@ -475,7 +484,7 @@ msgstr "Ist-Wert"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Practical amount"
-msgstr ""
+msgstr "Praktischer Betrag"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -542,7 +551,7 @@ msgstr "Plan-Wert"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Theoritical amount"
-msgstr ""
+msgstr "Theoretischer Betrag"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
@@ -578,6 +587,8 @@ msgstr "Zähler der ungelesenen Nachrichten"
 #: model_terms:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
 msgid "Use budgets to compare actual with expected revenues and costs"
 msgstr ""
+"Verwenden Sie Budgets, um die tatsächlichen mit den erwarteten Einnahmen und"
+" Kosten zu vergleichen"
 
 #. module: account_budget
 #: selection:crossovered.budget,state:0
@@ -601,3 +612,5 @@ msgid ""
 "You have to enter at least a budgetary position or analytic account on a "
 "budget line."
 msgstr ""
+"Sie müssen mindestens eine Haushaltsposition oder ein Analysekonto in einer "
+"Haushaltslinie eingeben."

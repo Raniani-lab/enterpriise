@@ -7,9 +7,9 @@
 # Tina Rittmüller <tr@ife.de>, 2017
 # Ermin Trevisan <trevi@twanda.com>, 2017
 # aNj <anj2j@yahoo.de>, 2017
-# e2f_de_t6 <e2f_de_t6@outlook.com>, 2017
+# b4d8887ced18b222d41dc1101b082e15, 2017
 # DE T2 <e2f48d4s5vd1s2@outlook.com>, 2017
-# DE R1 <e2fes1@hotmail.com>, 2017
+# 4e7311735ad180fde514b5b19202d965, 2017
 # e2f <projects@e2f.com>, 2018
 # Thorsten Vocks <thorsten.vocks@openbig.org>, 2018
 # Renzo Meister, 2018
@@ -18,6 +18,7 @@
 # Jan Meyer, 2018
 # Johannes Croe <jcr@odoo.com>, 2018
 # Martin Trigaux, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -25,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2017-12-13 15:20+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,7 +67,7 @@ msgstr "Basierend auf Vorschriften"
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_account_number
 msgid "Bpost Account Number"
-msgstr ""
+msgstr "Bpost-Kontonummer"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_delivery_nature

@@ -14,9 +14,10 @@
 # Philipp Hug <philipp@hug.cx>, 2017
 # Ermin Trevisan <trevi@twanda.com>, 2017
 # Katharina Moritz <kmo@e2f.com>, 2017
-# DE R1 <e2fes1@hotmail.com>, 2017
+# 4e7311735ad180fde514b5b19202d965, 2017
 # e2f <projects@e2f.com>, 2018
 # Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -24,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:12+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,6 +61,8 @@ msgid ""
 "<span class=\"fa fa-map-marker text-muted fa-fw\" role=\"img\" aria-"
 "label=\"Forecasted\" title=\"Forecasted\"/>"
 msgstr ""
+"<span class=\"fa fa-map-marker text-muted fa-fw\" role=\"img\" aria-"
+"label=\"Forecasted\" title=\"Forecasted\"/>"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -69,7 +72,7 @@ msgstr "<span class=\"text-muted\"/>"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_active
 msgid "Active in MPS"
-msgstr ""
+msgstr "Aktiv in MPS"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
@@ -153,7 +156,7 @@ msgstr "Datum"
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__product_uom_id
 msgid "Default unit of measure used for all stock operations."
-msgstr ""
+msgstr "Standardmaßeinheit, die für alle Lagervorgänge verwendet wird."
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_res_company__manufacturing_period
@@ -235,7 +238,7 @@ msgstr "Indirekte Menge"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
 msgid "Indirect Sales Forecast"
-msgstr ""
+msgstr "Indirekte Umsatzprognose"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report____last_update
@@ -283,7 +286,7 @@ msgstr "MPS"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_mps_report
 msgid "MPS Report"
-msgstr ""
+msgstr "MPS Bericht"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -335,7 +338,7 @@ msgstr "Monatlich"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_origin_id
 msgid "Origin Product"
-msgstr ""
+msgstr "Ursprungsprodukt"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__period
@@ -384,7 +387,7 @@ msgstr "Zeilen"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast
 msgid "Sales Forecast"
-msgstr ""
+msgstr "Verkaufsprognose"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
@@ -407,7 +410,7 @@ msgstr "Bundesland"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Lagerregel"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form

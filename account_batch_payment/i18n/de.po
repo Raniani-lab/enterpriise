@@ -9,6 +9,8 @@
 # Wolfgang Taferner, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
 # Michael Schütt <michael.schuett.lwl@gmail.com>, 2019
+# Leon Grill <leg@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -16,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:32+0000\n"
-"Last-Translator: Michael Schütt <michael.schuett.lwl@gmail.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,19 +34,20 @@ msgstr "Massendownload wizard für Accounts"
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
-msgstr ""
+msgstr "Kontoabstimmungs-Widget"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:75
 #, python-format
 msgid "All payments in the batch must belong to the same company."
 msgstr ""
+"Alle Zahlungen der selben Charge müssen demselben Unternehmen gehören."
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:84
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr ""
+msgstr "Alle Zahlungen der Charge müssen dieselbe Zahlungsmethode haben."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount
@@ -55,7 +58,7 @@ msgstr "Betrag"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__available_payment_method_ids
 msgid "Available Payment Method"
-msgstr ""
+msgstr "Verfügbare Zahlungsmethode"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__journal_id
@@ -70,7 +73,7 @@ msgstr "Bankjournal"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Batch Content"
-msgstr ""
+msgstr "Batch Content"
 
 #. module: account_batch_payment
 #: model:account.payment.method,name:account_batch_payment.account_payment_method_batch_deposit
@@ -122,7 +125,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Click here to download the generated file:"
-msgstr ""
+msgstr "Klicken Sie hier, um die generierte Datei herunterzuladen:"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
@@ -166,7 +169,7 @@ msgstr "Erstellt am"
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file_create_date
 msgid "Creation date of the related export file."
-msgstr ""
+msgstr "Erstellungsdatum der zugehörigen Exportdatei."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__currency_id
@@ -194,7 +197,7 @@ msgstr "Anzeigename"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Download export file"
-msgstr ""
+msgstr "Exportdatei herunterladen"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file
@@ -204,7 +207,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Exported File"
-msgstr ""
+msgstr "Exportierte Datei"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_file
@@ -215,7 +218,7 @@ msgstr "Datei"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__file_generation_enabled
 msgid "File Generation Enabled"
-msgstr ""
+msgstr "Dateierzeugung aktiviert"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_filename
@@ -225,7 +228,7 @@ msgstr "Dateiname"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_filename
 msgid "File name"
-msgstr ""
+msgstr "Dateiname"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__export_file
@@ -235,7 +238,7 @@ msgstr "Generierte XML-Datei"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_file_create_date
 msgid "Generation Date"
-msgstr ""
+msgstr "Erstellungsdatum"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
@@ -416,6 +419,7 @@ msgstr ""
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__payment_method_id
 msgid "The payment method used by the payments in this batch."
 msgstr ""
+"Die Zahlungsmethode, die von den Zahlungen in diesem Stapel verwendet wird."
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -440,7 +444,7 @@ msgstr "Warnung"
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__warning_message
 msgid "Warning message to display about the content of the downloadable file."
-msgstr ""
+msgstr "Warnmeldung zum Anzeigen des Inhalts der herunterladbaren Datei."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__file_generation_enabled
@@ -448,6 +452,8 @@ msgid ""
 "Whether or not this batch payment should display the 'Generate File' button "
 "instead of 'Print' in form view."
 msgstr ""
+"Gibt an, ob bei dieser Sammelzahlung die Schaltfläche \"Datei generieren\" "
+"anstelle von \"Drucken\" in der Formularansicht angezeigt werden soll."
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_payment.py:38
@@ -465,4 +471,4 @@ msgstr "auto ..."
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "re-Generate Export File"
-msgstr ""
+msgstr "regenerierte Export Datei"

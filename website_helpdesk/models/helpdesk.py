@@ -17,11 +17,11 @@ class HelpdeskTeam(models.Model):
     @api.onchange('use_website_helpdesk_form', 'use_website_helpdesk_forum', 'use_website_helpdesk_slides')
     def _onchange_use_website_helpdesk(self):
         if not (self.use_website_helpdesk_form or self.use_website_helpdesk_forum or self.use_website_helpdesk_slides) and self.website_published:
-            self.website_published = False
+            self.is_published = False
 
     def write(self, vals):
         if 'active' in vals and not vals['active']:
-            vals['website_published'] = False
+            vals['is_published'] = False
         return super(HelpdeskTeam, self).write(vals)
 
     def action_view_all_rating(self):

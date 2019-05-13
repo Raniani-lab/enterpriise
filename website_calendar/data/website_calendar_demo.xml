@@ -12,7 +12,7 @@
         </field>
         <field name="reminder_ids" eval="[(6, 0, [ref('calendar.alarm_notif_1')])]"/>
         <field name="employee_ids" eval="[(6, 0, [ref('hr.employee_admin')])]"/>
-        <field name="website_published" eval="True"/>
+        <field name="is_published" eval="True"/>
     </record>
 
     <record id="calendar_appointment_slot1" model="calendar.appointment.slot">

@@ -27,7 +27,7 @@
     </template>
 
     <record id="aboutus_page" model="website.page">
-        <field name="website_published">True</field>
+        <field name="is_published">True</field>
         <field name="url">/your-ticket-has-been-submitted</field>
         <field name="view_id" ref="ticket_submited" />
     </record>

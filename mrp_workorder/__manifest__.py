@@ -17,7 +17,6 @@
         'data/mrp_workorder_data.xml',
         'views/quality_views.xml',
         'views/mrp_production_views.xml',
-        'views/mrp_routing_views.xml',
         'views/mrp_workorder_views.xml',
         'views/mrp_workcenter_views.xml',
         'views/res_config_settings_view.xml'

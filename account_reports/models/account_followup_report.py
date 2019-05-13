@@ -270,6 +270,9 @@ class AccountFollowupReport(models.AbstractModel):
         Send by mail the followup to the customer
         """
         partner = self.env['res.partner'].browse(options.get('partner_id'))
+        non_printed_invoices = partner.unpaid_invoices.filtered(lambda inv: not inv.message_main_attachment_id)
+        if non_printed_invoices and partner.join_invoices:
+            raise UserError(_('You are trying to send a followup report to a partner for which you didn\'t print all the invoices ({})').format(" ".join(non_printed_invoices.mapped('name'))))
         email = self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice']).email
         options['keep_summary'] = True
         if email and email.strip():
@@ -293,7 +296,9 @@ class AccountFollowupReport(models.AbstractModel):
                 subject=_('%s Payment Reminder') % (self.env.company.name) + ' - ' + partner.name,
                 subtype_id=self.env.ref('mail.mt_note').id,
                 model_description=_('payment reminder'),
-                email_layout_xmlid='mail.mail_notification_light')
+                email_layout_xmlid='mail.mail_notification_light',
+                attachment_ids=partner.join_invoices and partner.unpaid_invoices.message_main_attachment_id.ids or [],
+            )
             return True
         raise UserError(_('Could not send mail to partner %s because it does not have any email address defined') % partner.display_name)
 

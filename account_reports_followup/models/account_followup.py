@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+># -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
@@ -6,29 +6,17 @@ from odoo import api, fields, models, _
 from odoo.exceptions import Warning, UserError
 from odoo.osv import expression
 
-class Followup(models.Model):
-    _name = 'account_followup.followup'
-    _description = 'Account Follow-up'
-    _rec_name = 'name'
-
-    followup_line_ids = fields.One2many('account_followup.followup.line', 'followup_id', 'Follow-up', copy=True)
-    company_id = fields.Many2one('res.company', 'Company', required=True,
-                                 default=lambda self: self.env.company)
-    name = fields.Char(related='company_id.name', readonly=True)
-
-    _sql_constraints = [('company_uniq', 'unique(company_id)', 'Only one follow-up per company is allowed')]
-
 
 class FollowupLine(models.Model):
     _name = 'account_followup.followup.line'
     _description = 'Follow-up Criteria'
-    _order = 'delay'
+    _order = 'delay asc'
 
     name = fields.Char('Follow-Up Action', required=True, translate=True)
     sequence = fields.Integer(help="Gives the sequence order when displaying a list of follow-up lines.")
     delay = fields.Integer('Due Days', required=True,
                            help="The number of days after the due date of the invoice to wait before sending the reminder.  Could be negative if you want to send a polite alert beforehand.")
-    followup_id = fields.Many2one('account_followup.followup', 'Follow Ups', required=True, ondelete="cascade")
+    company_id = fields.Many2one('res.company', 'Company', required=True, default=lambda self: self.env.company)
     sms_description = fields.Char('SMS Text Message', translate=True, default="Dear %(partner_name)s, it seems that some of your payments stay unpaid")
     description = fields.Text('Printed Message', translate=True, default="""
         Dear %(partner_name)s,
@@ -42,29 +30,46 @@ Best Regards,
     send_email = fields.Boolean('Send an Email', help="When processing, it will send an email", default=True)
     print_letter = fields.Boolean('Print a Letter', help="When processing, it will print a PDF", default=True)
     send_sms = fields.Boolean('Send an SMS Text Message', help="When processing, it will send an sms text message", default=False)
+    join_invoices = fields.Boolean('Join open Invoices')
     manual_action = fields.Boolean('Manual Action', help="When processing, it will set the manual action to be taken for that customer. ", default=False)
     manual_action_note = fields.Text('Action To Do', placeholder="e.g. Give a phone call, check with others , ...")
     manual_action_type_id = fields.Many2one('mail.activity.type', 'Manual Action Type', default=False)
     manual_action_responsible_id = fields.Many2one('res.users', 'Assign a Responsible', ondelete='set null')
 
-    _sql_constraints = [('days_uniq', 'unique(followup_id, delay)', 'Days of the follow-up levels must be different')]
+    auto_execute = fields.Boolean()
 
-    @api.constrains('description', 'sms_description')
+    _sql_constraints = [('days_uniq', 'unique(company_id, delay)', 'Days of the follow-up levels must be different per company')]
+
+    @api.constrains('description')
     def _check_description(self):
         for line in self:
             if line.description:
                 try:
-                    line.description % {'partner_name': '', 'date':'', 'user_signature': '', 'company_name': ''}
-                    line.sms_description % {'partner_name': '', 'date':'', 'user_signature': '', 'company_name': ''}
-                except:
+                    line.description % {'partner_name': '', 'date': '', 'user_signature': '', 'company_name': ''}
+                except KeyError:
                     raise Warning(_('Your description is invalid, use the right legend or %% if you want to use the percent character.'))
+
+    @api.constrains('sms_description')
+    def _check_sms_description(self):
+        for line in self:
+            if line.sms_description:
+                try:
+                    line.sms_description % {'partner_name': '', 'date': '', 'user_signature': '', 'company_name': ''}
+                except KeyError:
+                    raise Warning(_('Your sms description is invalid, use the right legend or %% if you want to use the percent character.'))
+
+    @api.onchange('auto_execute')
+    def _onchange_auto_execute(self):
+        if self.auto_execute:
+            self.manual_action = False
+            self.print_letter = False
 
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    followup_line_id = fields.Many2one('account_followup.followup.line', 'Follow-up Level')
-    followup_date = fields.Date('Latest Follow-up', index=True)
+    followup_line_id = fields.Many2one('account_followup.followup.line', 'Follow-up Level', copy=False)
+    followup_date = fields.Date('Latest Follow-up', index=True, copy=False)
 
 
 class ResPartner(models.Model):
@@ -73,6 +78,10 @@ class ResPartner(models.Model):
     payment_responsible_id = fields.Many2one('res.users', ondelete='set null', string='Follow-up Responsible',
                                              help="Optionally you can assign a user to this field, which will make him responsible for the action.",
                                              tracking=True, copy=False, company_dependent=True)
+
+    def _compute_join_invoices(self):
+        for record in self:
+            record.join_invoices = record._get_followup_level().join_invoices
 
     def _get_needofaction_fup_lines_domain(self, date):
         """ returns the part of the domain on account.move.line that will filter lines ready to reach another followup level.
@@ -102,24 +111,17 @@ class ResPartner(models.Model):
            - the followup ID of the next level
            - the delays in days of the next level
         """
-        followup_id = 'followup_id' in self.env.context and self.env.context['followup_id'] or self.env['account_followup.followup'].search([('company_id', '=', self.env.company.id)]).id
-        if not followup_id:
-            return {}
+        followup_line_ids = self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order="delay asc")
 
         current_date = fields.Date.today()
-        self.env.cr.execute(
-            "SELECT id, delay "\
-            "FROM account_followup_followup_line "\
-            "WHERE followup_id=%s "\
-            "ORDER BY delay", (followup_id,))
 
         previous_level = None
         fups = {}
-        for result in self.env.cr.dictfetchall():
-            delay = datetime.timedelta(days=result['delay'])
-            delay_in_days = result['delay']
-            fups[previous_level] = (current_date - delay, result['id'], delay_in_days)
-            previous_level = result['id']
+        for line in followup_line_ids:
+            delay = datetime.timedelta(days=line.delay)
+            delay_in_days = line.delay
+            fups[previous_level] = (current_date - delay, line.id, delay_in_days)
+            previous_level = line.id
         if previous_level:
             fups[previous_level] = (current_date - delay, previous_level, delay_in_days)
         return fups
@@ -151,6 +153,22 @@ class ResPartner(models.Model):
                         if level is None or level[1] < delay:
                             level = (next_level, delay)
         return level
+
+    def _get_followup_level(self):
+        self.ensure_one()
+        FollowupLine = self.env['account_followup.followup.line']
+        level = self.get_followup_level()
+        return FollowupLine.browse(level[0]) if level else FollowupLine
+
+    def _cron_execute_followup(self):
+        FollowupLine = self.env['account_followup.followup.line']
+        in_need_of_action = self._get_partners_in_need_of_action()
+        in_need_of_action_auto = self.env['res.partner']
+        for record in in_need_of_action:
+            record.followup_level = record._get_followup_level()
+            if record.followup_level.auto_execute:
+                in_need_of_action_auto += record
+        self.env['account.followup.report'].execute_followup(in_need_of_action_auto)
 
     def update_next_action(self, options=False):
         if not options or 'next_action_date' not in options or 'next_action_type' not in options:

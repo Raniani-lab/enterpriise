@@ -12,13 +12,13 @@ Module to automate letters for unpaid invoices, with multi-level recalls.
 You can define your multiple levels of recall through the menu:
 ---------------------------------------------------------------
     Configuration / Follow-up / Follow-up Levels
-    
+
 Once it is defined, you can automatically print recalls every day through simply clicking on the menu:
 ------------------------------------------------------------------------------------------------------
     Payment Follow-Up / Send Email and letters
 
-It will generate a PDF / send emails / set manual actions according to the the different levels 
-of recall defined. You can define different policies for different companies. 
+It will generate a PDF / send emails / set manual actions according to the the different levels
+of recall defined. You can define different policies for different companies.
 
 """,
     'website': 'https://www.odoo.com/page/billing',
@@ -27,6 +27,7 @@ of recall defined. You can define different policies for different companies.
         'security/account_followup_security.xml',
         'security/ir.model.access.csv',
         'data/account_followup_data.xml',
+        'data/cron.xml',
         'views/account_followup_views.xml',
         'views/res_config_settings_views.xml',
         'views/report_followup.xml',

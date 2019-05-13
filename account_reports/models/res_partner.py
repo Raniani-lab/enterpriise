@@ -18,14 +18,16 @@ class ResPartner(models.Model):
                                            domain=[('reconciled', '=', False),
                                                    ('account_id.deprecated', '=', False),
                                                    ('account_id.internal_type', '=', 'receivable')])
+    unpaid_invoices = fields.One2many('account.move', compute='_compute_unpaid_invoices', store=False)
     total_due = fields.Monetary(compute='_compute_for_followup', store=False, readonly=True)
     total_overdue = fields.Monetary(compute='_compute_for_followup', store=False, readonly=True)
     followup_status = fields.Selection(
         _FOLLOWUP_STATUS,
         compute='_compute_for_followup',
         store=False,
-        string='Followup status',
+        string='Follow-up Status',
         search='_search_status')
+    join_invoices = fields.Boolean(compute='_compute_join_invoices')
 
     def _search_status(self, operator, value):
         """
@@ -62,6 +64,14 @@ class ResPartner(models.Model):
             record.total_due = total_due
             record.total_overdue = total_overdue
             record.followup_status = followup_status
+
+    def _compute_unpaid_invoices(self):
+        for record in self:
+            record.unpaid_invoices = self.env['account.move'].search([('commercial_partner_id', '=', record.id), ('state', '=', 'posted'), ('invoice_payment_state', '!=', 'paid'), ('type', 'in', self.env['account.move'].get_sale_types())])
+
+    def _compute_join_invoices(self):
+        for record in self:
+            record.join_invoices = False
 
     def _get_partners_in_need_of_action(self, overdue_only=False):
         """
@@ -122,7 +132,7 @@ class ResPartner(models.Model):
             aml = self.env['account.move.line'].search([('id', '=', int(options['move_line_id']))], limit=1)
             old_date = aml.expected_pay_date
             aml.write({'expected_pay_date': options['expected_pay_date']})
-            msg = _('Expected pay date has been changed from %s to %s for invoice %s') % (old_date or _('any'), aml.expected_pay_date, aml.move_id.number)
+            msg = _('Expected pay date has been changed from %s to %s for invoice %s') % (old_date or _('any'), aml.expected_pay_date, aml.move_id.name)
             record.message_post(body=msg)
         return True
 

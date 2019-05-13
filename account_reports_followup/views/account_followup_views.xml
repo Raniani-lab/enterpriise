@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        
+
         <record id="view_account_followup_followup_line_tree" model="ir.ui.view">
             <field name="name">account_followup.followup.line.tree</field>
             <field name="model">account_followup.followup.line</field>
@@ -12,6 +12,7 @@
                     <field name="print_letter"/>
                     <field name="send_sms"/>
                     <field name="manual_action_type_id"/>
+                    <field name="company_id"  groups="base.group_multi_company"/>
                 </tree>
             </field>
         </record>
@@ -21,86 +22,71 @@
             <field name="model">account_followup.followup.line</field>
             <field name="arch" type="xml">
                 <form string="Follow-up Steps">
-                    <label for="name" class="oe_edit_only"/>
-                    <h1><field name="name"/></h1>
-                    <div class="oe_inline">
-                        After <field name="delay" class="oe_inline"/> days overdue, do the following actions:
-                    </div>
-                    <group>
-                        <field name="send_email"/>
-                        <field name="print_letter"/>
-                        <field name="send_sms"/>
-                        <field name="manual_action"/>
-                    </group>
-
-                    <group string="Manual Action" attrs="{'invisible': [('manual_action', '=', False)]}">
-                       <field name="manual_action_responsible_id"/>
-                       <field name="manual_action_type_id" attrs="{'required': [('manual_action', '!=', False)]}"/>
-                       <field name="manual_action_note" attrs="{'required': [('manual_action', '!=', False)]}"
-                            placeholder="e.g. Call the customer, check if it's paid, ..."/>
-                    </group>
-
-                    <group string="Send a Letter or Email" attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}">
-                        <p colspan="2" class="oe_grey">
-                            Write here the introduction in the letter,
-                            according to the level of the follow-up. You can
-                            use the following keywords in the text. Don't
-                            forget to translate in all languages you installed
-                            using to top right icon.
-                            <table>
-                                <tr><td t-translation="off">%%(partner_name)s</td><td>: Partner Name</td></tr>
-                                <tr><td t-translation="off">%%(date)s</td><td>: Current Date</td></tr>
-                                <tr><td t-translation="off">%%(user_signature)s</td><td>: User Name</td></tr>
-                                <tr><td t-translation="off">%%(company_name)s</td><td>: User's Company Name</td></tr>
-                            </table>
-                        </p>
-                        <field name="description" nolabel="1" colspan="2"/>
-                    </group>
-                    <group string="Send an SMS Text Message" attrs="{'invisible': [('send_sms', '=', False)]}">
-                        <field name="sms_description" widget="sms_widget" nolabel="1" colspan="2"/>
-                    </group>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <div class="oe_inline">
+                            After <field name="delay" class="oe_inline"/> days overdue, do the following actions:
+                        </div>
+                        <group>
+                            <group string="Options">
+                                <field name="auto_execute"/>
+                                <field name="join_invoices" attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}"/>
+                            </group>
+                            <group string="Action">
+                                <field name="send_email"/>
+                                <field name="send_sms"/>
+                                <field name="print_letter" attrs="{'invisible': [('auto_execute', '=', True)]}"/>
+                                <field name="manual_action" attrs="{'invisible': [('auto_execute', '=', True)]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Message" id='letter_format' attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False)]}">
+                                <field name="description" nolabel="1" colspan="2"/>
+                            </page>
+                            <page string="SMS Message" attrs="{'invisible': [('send_sms', '=', False)]}">
+                                <field name="sms_description" widget="sms_widget" nolabel="1" colspan="2"/>
+                            </page>
+                            <page string="Manual Action" attrs="{'invisible': [('manual_action', '=', False)]}">
+                                <group>
+                                    <group>
+                                        <field name="manual_action_responsible_id"/>
+                                        <field name="manual_action_type_id" attrs="{'required': [('manual_action', '!=', False)]}"/>
+                                        <field name="manual_action_note" attrs="{'required': [('manual_action', '!=', False)]}"
+                                            placeholder="e.g. Call the customer, check if it's paid, ..."/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="How to customize your messages?" attrs="{'invisible': [('send_email', '=', False), ('print_letter', '=', False), ('send_sms', '=', False)]}">
+                                <div class='alert alert-info' role="alert">
+                                    <h4 class="alert-heading" role="alert">In order to build customized messages:</h4>
+                                    <p>
+                                        Write here the introduction in the letter and mail or sms,
+                                        according to the level of the follow-up. You can
+                                        use the following keywords in the text. Don't
+                                        forget to translate in all languages you installed
+                                        using to top right icon.
+                                        <table>
+                                            <tr><td t-translation="off">%%(partner_name)s</td><td>: Partner Name</td></tr>
+                                            <tr><td t-translation="off">%%(date)s</td><td>: Current Date</td></tr>
+                                            <tr><td t-translation="off">%%(amount_due)s</td><td>: Amount Due by the partner</td></tr>
+                                            <tr><td t-translation="off">%%(user_signature)s</td><td>: User Name</td></tr>
+                                            <tr><td t-translation="off">%%(company_name)s</td><td>: User's Company Name</td></tr>
+                                        </table>
+                                    </p>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
 
-        <record id="view_account_followup_followup_form" model="ir.ui.view">
-            <field name="name">account_followup.followup.form</field>
-            <field name="model">account_followup.followup</field>
-            <field name="arch" type="xml">
-                <form string="Follow-up">
-                <sheet>
-                    <h1><field name="name"/></h1>
-                    <label for="company_id" groups="base.group_multi_company"/>
-                    <field name="company_id" options="{'no_create': True}" class="oe_inline" groups="base.group_multi_company"/>
-                    <p class="oe_grey">
-                        To remind customers of paying their invoices, you can
-                        define different actions depending on how severely
-                        overdue the customer is. These actions are bundled
-                        into follow-up levels that are triggered when the due
-                        date of an invoice has passed a certain
-                        number of days. If there are other overdue invoices for the 
-                        same customer, the actions of the most 
-                        overdue invoice will be executed. 
-                    </p>
-                    <field name="followup_line_ids"/>
-                </sheet>
-                </form>
-            </field>
-        </record>
-
-        <record id="view_account_followup_followup_tree" model="ir.ui.view">
-            <field name="name">account_followup.followup.tree</field>
-            <field name="model">account_followup.followup</field>
-            <field name="arch" type="xml">
-                <tree string="Follow-up">
-                    <field name="company_id" />
-                </tree>
-            </field>
-        </record>
-
-        <record id="view_account_followup_filter" model="ir.ui.view">
-            <field name="name">account.followup.select</field>
-            <field name="model">account_followup.followup</field>
+        <record id="view_account_followup_line_filter" model="ir.ui.view">
+            <field name="name">account.followup.line.select</field>
+            <field name="model">account_followup.followup.line</field>
             <field name="arch" type="xml">
                 <search string="Search Follow-up">
                     <field name="company_id" groups="base.group_multi_company"/>
@@ -108,30 +94,11 @@
             </field>
         </record>
 
-        <record id="view_account_followup_followup_kanban" model="ir.ui.view">
-            <field name="name">account_followup.followup.kanban</field>
-            <field name="model">account_followup.followup</field>
-            <field name="arch" type="xml">
-                <kanban>
-                    <field name="name"/>
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_global_click">
-                                <div>
-                                    <strong><i class="fa fa-building" role="img" aria-label="Enterprise"></i> <t t-esc="record.name.value"/></strong>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-            </field>
-        </record>
-
-        <record id="action_account_followup_definition_form" model="ir.actions.act_window">
+        <record id="action_account_followup_line_definition_form" model="ir.actions.act_window">
             <field name="name">Payment Follow-ups</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">account_followup.followup</field>
-            <field name="search_view_id" ref="view_account_followup_filter"/>
+            <field name="res_model">account_followup.followup.line</field>
+            <field name="search_view_id" ref="view_account_followup_line_filter"/>
             <field name="view_mode">tree,kanban,form</field>
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
@@ -144,7 +111,7 @@
           </field>
         </record>
 
-        <menuitem action="action_account_followup_definition_form" id="account_followup_menu" parent="account.account_invoicing_menu" name="Follow-up Levels" groups="account.group_account_manager" sequence="6"/>
+        <menuitem action="action_account_followup_line_definition_form" id="account_followup_menu" parent="account.account_invoicing_menu" name="Follow-up Levels" groups="account.group_account_manager" sequence="6"/>
 
         <record id="account_move_line_partner_tree" model="ir.ui.view">
             <field name="name">account.move.line.partner.tree</field>

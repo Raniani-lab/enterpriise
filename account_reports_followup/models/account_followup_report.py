@@ -16,7 +16,7 @@ class AccountFollowupReport(models.AbstractModel):
     def _get_next_date(self, followup_line, level):
         delay = followup_line.delay
         previous_followup = self.env['account_followup.followup.line'].search([('delay', '<', delay),
-                                                                                ('followup_id', '=', followup_line.followup_id.id)],
+                                                                                ('company_id', '=', self.env.company.id)],
                                                                                 order="delay desc", limit=1)
         if previous_followup:
             delay -= previous_followup.delay

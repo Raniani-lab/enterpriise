@@ -5,7 +5,7 @@
             <field name="name">Urging reminder email</field>
             <field name="sequence">4</field>
             <field name="delay">50</field>
-            <field name="followup_id" ref="demo_followup1"/>
+            <field name="company_id" ref="base.main_company"/>
             <field name="send_email">True</field>
             <field name="description">
 Dear %(partner_name)s,
@@ -25,7 +25,7 @@ Best Regards,
             <field name="name">Urging reminder letter</field>
             <field name="sequence">5</field>
             <field name="delay">60</field>
-            <field name="followup_id" ref="demo_followup1"/>
+            <field name="company_id" ref="base.main_company"/>
             <field eval="False" name="send_email"/>
             <field name="print_letter">True</field>
             <field name="description">

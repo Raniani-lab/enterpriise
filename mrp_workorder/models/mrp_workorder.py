@@ -8,6 +8,19 @@ from odoo.tools import float_compare, float_round
 from odoo.addons import decimal_precision as dp
 
 
+class MrpProductionWorkorder(models.Model):
+    _name = 'mrp.workcenter'
+    _inherit = 'mrp.workcenter'
+
+    @api.multi
+    def action_work_order(self):
+        if not self.env.context.get('desktop_list_view', False):
+            action = self.env.ref('mrp_workorder.mrp_workorder_action_tablet').read()[0]
+            return action
+        else:
+            return super(MrpProductionWorkorder, self).action_work_order()
+
+
 class MrpProductionWorkcenterLine(models.Model):
     _name = 'mrp.workorder'
     _inherit = ['mrp.workorder', 'barcodes.barcode_events_mixin']

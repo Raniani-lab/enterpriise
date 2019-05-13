@@ -97,7 +97,7 @@ class AccountFollowupReport(models.AbstractModel):
     def _execute_followup_partner(self, partner):
         if partner.followup_status == 'in_need_of_action':
             level = partner.get_followup_level()
-            followup_line = self.env['account_followup.followup.line'].browse(level[0])
+            followup_line = self.env['account_followup.followup.line'].browse(level[0]) if level else self.env['account_followup.followup.line']
             if followup_line.send_email:
                 partner.send_followup_email()
             if followup_line.manual_action:

@@ -1133,6 +1133,12 @@ class SaleSubscriptionAlert(models.Model):
                 domain += [('stage_id', '=', alert.stage_to_id.id)]
             super(SaleSubscriptionAlert, alert).write({'filter_domain': domain})
 
+    @api.multi
+    def unlink(self):
+        for record in self:
+            record.automation_id.active = False
+        return super(SaleSubscriptionAlert, self).unlink()
+
     def _configure_filter_pre_domain(self):
         for alert in self:
             if alert.stage_from_id:

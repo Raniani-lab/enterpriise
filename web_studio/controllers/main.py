@@ -11,7 +11,7 @@ from odoo import http, _
 from odoo.http import content_disposition, request
 from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.addons.web_studio.controllers import export
-from odoo.tools import ustr
+from odoo.tools import ustr, sql
 
 
 class WebStudioController(http.Controller):
@@ -276,7 +276,16 @@ class WebStudioController(http.Controller):
               This is why we need to search the name depending of the given id.
         """
         # Get current model
-        model = request.env['ir.model'].search([('model', '=', values.pop('model_name'))])
+        model_name = values.pop('model_name')
+        Model = request.env[model_name]
+        # If the model is backed by a sql view
+        # it doesn't make sense to add field, and won't work
+        table_kind = sql.table_kind(request.env.cr, Model._table)
+        if not table_kind or table_kind == 'v':
+            raise UserError(_('The model %s doesn\'t support adding fields.') % Model._name)
+
+        model = request.env['ir.model'].search([('model', '=', model_name)])
+
         values['model_id'] = model.id
 
         # Field type is called ttype in the database

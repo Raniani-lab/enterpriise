@@ -578,6 +578,9 @@ class AccountAsset(models.Model):
                     vals['first_depreciation_date'] = self._get_first_depreciation_date(original_move_line_ids[0])
                 else:
                     vals['first_depreciation_date'] = self._get_first_depreciation_date()
+            if self._context.get('import_file', False) and 'category_id' in vals:
+                changed_vals = self.onchange_category_id_values(vals['category_id'])
+                vals.update(changed_vals['value'])
         with self.env.norecompute():
             new_recs = super(AccountAsset, self.with_context(mail_create_nolog=True)).create(vals_list)
         new_recs.filtered(lambda r: r.state != 'model')._set_value()

@@ -54,7 +54,7 @@ class FinancialReportController(http.Controller):
                     content,
                     headers=[
                         ('Content-Type', account_report_model.get_export_mime_type('xaf')),
-                        ('Content-Disposition', 'attachment; filename=' + content_disposition(report_name + '.xaf;')),
+                        ('Content-Disposition', content_disposition(report_name + '.xaf')),
                         ('Content-Length', len(content))
                     ]
                 )
@@ -74,7 +74,7 @@ class FinancialReportController(http.Controller):
                     content,
                     headers=[
                         ('Content-Type', account_report_model.get_export_mime_type('csv')),
-                        ('Content-Disposition', 'attachment; filename=' + content_disposition(report_name + '.csv;')),
+                        ('Content-Disposition', content_disposition(report_name + '.csv')),
                         ('Content-Length', len(content))
                     ]
                 )
@@ -84,7 +84,7 @@ class FinancialReportController(http.Controller):
                     content,
                     headers=[
                         ('Content-Type', account_report_model.get_export_mime_type('zip')),
-                        ('Content-Disposition', 'attachment; filename=' + content_disposition(report_name + '.zip')),
+                        ('Content-Disposition', content_disposition(report_name + '.zip')),
                     ]
                 )
                 # Adding direct_passthrough to the response and giving it a file

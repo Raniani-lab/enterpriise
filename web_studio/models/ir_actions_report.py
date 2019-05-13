@@ -19,7 +19,7 @@ class IrActionsReport(models.Model):
         view = self.env['ir.ui.view'].search([
             ('type', '=', 'qweb'),
             ('key', '=', new.report_name),
-        ])
+        ], limit=1)
         view.ensure_one()
         new_view = view.with_context(lang=None).copy_qweb_template()
         copy_no = int(new_view.key.split('_copy_').pop())

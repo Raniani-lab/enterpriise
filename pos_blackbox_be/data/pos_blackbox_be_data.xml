@@ -32,6 +32,9 @@
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
             <field name="taxes_id" eval="[(6, 0, [ref('zero_vat_work_in_out')])]"/>
         </record>
+        <record id="point_of_sale.product_product_tip" model="product.product">
+            <field name="taxes_id" eval="[(6, 0, [ref('zero_vat_work_in_out')])]"/>
+        </record>
 
         <!-- read-only user that minfin functionaries can use to export data -->
         <record id="fdm_minfin" model="res.partner">

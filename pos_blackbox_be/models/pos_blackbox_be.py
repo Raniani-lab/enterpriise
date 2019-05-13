@@ -466,6 +466,7 @@ class pos_order_pro_forma(models.Model):
     name = fields.Char('Order Ref', readonly=True)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.users'].browse(self.env.uid).company_id.id, readonly=True)
     date_order = fields.Datetime('Order Date', readonly=True)
+    create_date = fields.Datetime(string="Pro Forma Creation")
     user_id = fields.Many2one('res.users', 'Salesman', help="Person who uses the cash register. It can be a reliever, a student or an interim employee.", readonly=True)
     amount_total = fields.Float(readonly=True)
     lines = fields.One2many('pos.order_line_pro_forma', 'order_id', 'Order Lines', readonly=True, copy=True)
@@ -615,8 +616,10 @@ class product_template(models.Model):
         blackbox_products = self.env['ir.model.data'].search([
             ('module', '=', 'pos_blackbox_be'), ('model', '=', 'product.template')
         ])
+        tip_products = self.env['pos.config'].search([]).mapped('tip_product_id').ids
+        to_keep = blackbox_products.mapped('res_id') + tip_products
         other_products = self.search([
-            ('id', 'not in', blackbox_products.mapped('res_id')), ('available_in_pos', '=', True)
+            ('id', 'not in', to_keep), ('available_in_pos', '=', True)
         ])
         return other_products.write({'available_in_pos': False})
 

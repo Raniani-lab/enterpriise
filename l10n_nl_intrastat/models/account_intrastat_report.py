@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from math import copysign
+
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo import release
@@ -82,7 +84,21 @@ class IntrastatReport(models.AbstractModel):
             country_dest_code = inv.partner_id.country_id and inv.partner_id.country_id.code or ''
             country_origin_code = inv.intrastat_country_id and inv.intrastat_country_id.code or ''
             country = country_origin_code if res['type'] == 'Arrival' else country_dest_code
+
+            # From the Manual for Statistical Declarations International Trade in Goods:
+            #
+            # For commodities where no supplementary unit is given, the weight has te be reported,
+            # rounded off in kilograms.
+            # [...]
+            # Weights below 1 kilogram should be rounded off above.
+            #
+            # Therefore:
+            #  5.2 => 5; -5.2 => -5; 0.2 => 1; -0.2 => -1
+            # If the mass is zero, we leave it like this: it means the user forgot to set the weight
+            # of the products, so it should be corrected.
             mass = line.product_id and line.quantity * (line.product_id.weight or line.product_id.product_tmpl_id.weight) or 0
+            if mass:
+                mass = copysign(round(mass) or 1.0, mass)
             transaction_period = str(inv.date_invoice.year) + str(inv.date_invoice.month).rjust(2, '0')
             file_content += ''.join([
                 transaction_period,                                             # Transaction period    length=6
@@ -99,7 +115,7 @@ class IntrastatReport(models.AbstractModel):
                 (res['commodity_code'] or '')[:8].ljust(8),                     # Commodity code        length=8
                 '00',                                                           # Taric                 length=2
                 mass >= 0 and '+' or '-',                                       # Mass sign             length=1
-                str(int(mass)).zfill(10),                                       # Mass                  length=10
+                str(int(abs(mass))).zfill(10),                                  # Mass                  length=10
                 '+',                                                            # Supplementary sign    length=1
                 '0000000000',                                                   # Supplementary unit    length=10
                 inv.amount_total_signed >= 0 and '+' or '-',                    # Invoice sign          length=1

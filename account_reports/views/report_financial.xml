@@ -306,6 +306,9 @@
             <span class="fa fa-circle color-transparent trust-partner" role="img" aria-label="Balance is normal" title="Balance is normal"></span>
         </t>
     </xpath>
+    <xpath expr="//*[hasclass('dropdown-menu')]" position="inside">
+        <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-parent-id="line['parent_id']" class="o_change_expected_date dropdown-item">Change expected payment date</a>
+    </xpath>
 </template>
 
 <template id="template_aged_partner_balance_report" inherit_id="account_reports.main_template" primary="True">

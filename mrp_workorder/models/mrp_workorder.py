@@ -74,17 +74,11 @@ class MrpProductionWorkcenterLine(models.Model):
         for wo in self:
             wo.finished_product_check_ids = wo.check_ids.filtered(lambda c: c.finished_product_sequence == wo.qty_produced)
 
-    @api.depends('state', 'quality_state', 'current_quality_check_id', 'qty_producing', 'component_tracking',
-        'current_quality_check_id.point_id.test_type',
-        'current_quality_check_id.point_id.component_id',
-        'current_quality_check_id.component_is_byproduct',
-        'production_id.move_finished_ids.state',
-        'production_id.move_finished_ids.product_id',
-        'move_raw_ids.state',
-        'move_raw_ids.product_id',
-        'workorder_line_ids.move_id',
-        'workorder_line_ids.lot_id',
-        'workorder_line_ids.qty_done')
+    @api.depends('state', 'quality_state', 'current_quality_check_id', 'qty_producing',
+                 'component_tracking', 'test_type', 'component_id',
+                 'move_finished_ids.state', 'move_finished_ids.product_id',
+                 'move_raw_ids.state', 'move_raw_ids.product_id',
+                 )
     def _compute_component_id(self):
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
             if wo.test_type in ('register_byproducts', 'register_consumed_materials') and wo.quality_state == 'none':

@@ -103,7 +103,7 @@
         </div>
     </template>
 
-    <template id="mrp_mps_report_backend" inherit_id="web.assets_backend" active="True">
+    <template id="mrp_mps_report_backend" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/mrp_mps/static/src/js/mrp_mps_report_widget.js"></script>
         </xpath>

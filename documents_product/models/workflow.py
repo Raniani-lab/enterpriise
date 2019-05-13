@@ -11,23 +11,24 @@ class WorkflowActionRuleProduct(models.Model):
     def create_record(self, documents=None):
         rv = super(WorkflowActionRuleProduct, self).create_record(documents=documents)
         if self.create_model == 'product.template':
-            new_obj = self.env[self.create_model].create({'name': 'product created from Documents'})
+            product = self.env[self.create_model].create({'name': 'product created from Documents'})
+            image_is_set = False
 
             for document in documents:
+                # this_document is the document in use for the workflow
                 this_document = document
                 if (document.res_model or document.res_id) and document.res_model != 'documents.document':
-                    this_document = document.copy()
-                    attachment_id_copy = document.attachment_id.with_context(no_document=True).copy()
-                    this_document.write({'attachment_id': attachment_id_copy.id})
-
-                # the 'no_document' key in the context indicates that this ir_attachment has already a
-                # documents.document and a new document shouldn't be automatically generated.
-                this_document.attachment_id.with_context(no_document=True).write({
-                    'res_model': self.create_model,
-                    'res_id': new_obj.id,
+                    attachment_copy = document.attachment_id.with_context(no_document=True).copy()
+                    this_document = document.copy({'attachment_id': attachment_copy.id})
+                this_document.write({
+                    'res_model': product._name,
+                    'res_id': product.id,
                 })
+                if 'image' in this_document.mimetype and not image_is_set:
+                    product.write({'image_original': this_document.datas})
+                    image_is_set = True
 
-            view_id = new_obj.get_formview_id()
+            view_id = product.get_formview_id()
             return {
                 'type': 'ir.actions.act_window',
                 'res_model': 'product.template',
@@ -36,7 +37,7 @@ class WorkflowActionRuleProduct(models.Model):
                 'view_type': 'form',
                 'view_mode': 'form',
                 'views': [(view_id, "form")],
-                'res_id': new_obj.id if new_obj else False,
+                'res_id': product.id if product else False,
                 'view_id': view_id,
             }
         return rv

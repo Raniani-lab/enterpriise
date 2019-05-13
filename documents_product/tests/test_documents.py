@@ -59,3 +59,26 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
 
         self.assertEqual(txt_doc.folder_id, self.folder_test, 'the text two document have a folder')
         self.assertEqual(gif_doc.folder_id, self.folder_test, 'the gif two document have a folder')
+
+    def test_create_product_from_workflow(self):
+
+        document_gif = self.env['documents.document'].create({
+            'datas': GIF,
+            'name': 'Test doc gif',
+            'datas_fname': 'file.gif',
+            'mimetype': 'image/gif',
+            'folder_id': self.folder_test.id,
+        })
+
+        workflow_rule = self.env['documents.workflow.rule'].create({
+            'domain_folder_id': self.folder_test.id,
+            'name': 'workflow product',
+            'create_model': 'product.template',
+        })
+
+        action = workflow_rule.apply_actions([document_gif.id])
+        new_product = self.env['product.template'].browse([action['res_id']])
+
+        self.assertEqual(document_gif.res_model, 'product.template')
+        self.assertEqual(document_gif.res_id, new_product.id)
+        self.assertEqual(new_product.image_original, document_gif.datas)

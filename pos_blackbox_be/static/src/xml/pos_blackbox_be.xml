@@ -233,9 +233,6 @@
         <t t-jquery="div[font='b']" t-operation="prepend">
             <t t-esc='order.blackbox_order_name'/>
         </t>
-        <t t-jquery="receipt" t-operation="append">
-            <t t-call="XmlFDMControlData"/>
-        </t>
     </t>
 
     <t t-extend="OrderChangeReceipt">
@@ -267,6 +264,11 @@
     <t t-extend="Chrome">
         <t t-jquery="img.pos-logo" t-operation="after">
             <table class="blackbox-ids">
+                <tr>
+                    <td>
+                        <span class="placeholder-posVersion"/>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <span class="placeholder-posID"/>

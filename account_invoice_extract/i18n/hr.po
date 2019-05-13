@@ -34,11 +34,15 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Ovdje postavljene vrijedonsti"
+" su specifične za pojedinui tvrtku.\" role=\"img\" aria-label=\"Ovdje "
+"postavljene vrijedonsti su specifične za pojedinui tvrtku.\" "
+"groups=\"base.group_multi_company\"/>"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "An error occured"
-msgstr ""
+msgstr "Došlo je do greške"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
@@ -48,7 +52,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Buy credits"
-msgstr ""
+msgstr "Kupi kredite"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_can_show_resend_button
@@ -218,12 +222,12 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Update status"
-msgstr ""
+msgstr "Ažuriraj status"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__user_selected
 msgid "User Selected"
-msgstr ""
+msgstr "Odabir korisnika"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0

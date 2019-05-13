@@ -103,7 +103,7 @@ msgid ""
 "in length."
 msgstr ""
 "Назва Довідкової Сторони Кредитора. Правило використання: обмежено довжиною "
-"70 символів."
+"у 70 символів."
 
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
@@ -163,7 +163,7 @@ msgstr "Кредитні перекази SEPA для відправлення"
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_pain_version
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_pain_version
 msgid "SEPA Pain Version"
-msgstr "Больова версія SEPA"
+msgstr "Проблемна версія SEPA"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_pain_version

@@ -3,3 +3,4 @@
 
 from . import iras_audit_file
 from . import account_invoice
+from . import account_generic_tax_report

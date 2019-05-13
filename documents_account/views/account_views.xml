@@ -7,10 +7,8 @@
             <field name="model">account.reconcile.model</field>
             <field name="inherit_id" ref="account.view_account_reconcile_model_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='second_line']" position="after">
-                    <group>
-                        <field name="activity_type_id" options="{'no_create': True, 'no_open': True}" attrs="{'invisible': [('to_check', '!=', True)]}"/>
-                    </group>
+                <xpath expr="//field[@name='to_check']" position="after">
+                    <field name="activity_type_id" options="{'no_create': True, 'no_open': True}" attrs="{'invisible': [('to_check', '!=', True)]}"/>
                 </xpath>
             </field>
         </record>

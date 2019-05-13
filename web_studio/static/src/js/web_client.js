@@ -208,16 +208,16 @@ WebClient.include({
      * @returns {Boolean} the 'Studio editable' property of an action
      */
     _isStudioEditable: function (action) {
-        if (action && action.xml_id) {
-            if (action.type === 'ir.actions.act_window') {
-                // we don't want to edit Settings as it is a special case of form view
-                // this is a heuristic to determine if the action is Settings
-                if (action.res_model && action.res_model.indexOf('settings') === -1) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return action
+               && action.xml_id
+               && action.type === 'ir.actions.act_window'
+               && action.res_model
+               // we don't want to edit Settings as it is a special case of form view
+               // this is a heuristic to determine if the action is Settings
+               && action.res_model.indexOf('settings') === -1
+               // we don't want to edit Dashboard views
+               && action.res_model !== 'board.board'
+               ? true : false;
     },
     /**
      * Opens the Studio main action with the AM current action.
@@ -299,6 +299,24 @@ WebClient.include({
     },
     /**
      * @private
+     * @returns {Promise}
+     */
+    _redrawMenuWidgets: function () {
+        var self = this;
+        var oldHomeMenu = this.home_menu;
+        var oldMenu = this.menu;
+        return this.instanciate_menu_widgets().then(function () {
+            if (oldHomeMenu) {
+                oldHomeMenu.destroy();
+            }
+            if (oldMenu) {
+                oldMenu.destroy();
+            }
+            self.menu.$el.prependTo(self.$el);
+        });
+    },
+    /**
+     * @private
      */
     _toggleStudioMode: function () {
         bus.trigger('studio_toggled', this.studioMode);
@@ -358,7 +376,7 @@ WebClient.include({
      */
     _onNewAppCreated: function (ev) {
         var self = this;
-        this.instanciate_menu_widgets().then(function () {
+        this._redrawMenuWidgets().then(function () {
             self.on_app_clicked({
                 data: {
                     menu_id: ev.data.menu_id,
@@ -380,7 +398,7 @@ WebClient.include({
         var self = this;
 
         var current_primary_menu = this.menu.current_primary_menu;
-        this.instanciate_menu_widgets().then(function () {
+        this._redrawMenuWidgets().then(function () {
             // reload previous state
             self.menu.toggle_mode(self.home_menu_displayed);
             self.menu.change_menu_section(current_primary_menu); // entering the current menu

@@ -12,7 +12,6 @@
         'l10n_cl', 'account_reports',
     ],
     'data': [
-        'data/account_financial_html_report_data.xml',
         'views/eightcolumns_report_view.xml'
     ],
     'installable': True,

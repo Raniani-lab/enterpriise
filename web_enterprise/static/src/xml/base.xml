@@ -127,7 +127,7 @@
 
 <header t-name="Menu">
     <nav class="o_main_navbar">
-        <a href="#" class="fa o_menu_toggle" title="Applications" aria-label="Applications"/>
+        <a href="#" class="fa fa-th o_menu_toggle" title="Applications" aria-label="Applications"/>
         <button type="button" class="fa fa-bars float-right d-block d-md-none o_mobile_menu_toggle" title="Toggle menu" aria-label="Toggle menu"/>
 
         <a href="#" class="o_menu_brand" role="button" />

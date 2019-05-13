@@ -457,6 +457,11 @@ var AbstractFieldBlock = AbstractNewBuildingBlock.extend({
                     order: 'order',
                     type: 'related',
                     filters: { searchable: false },
+                filter: function (field) {
+                    // For single fields (i.e. NOT a table), forbid putting x2many's
+                    // Because it just doesn't make sense otherwise
+                    return ! _.contains(['one2many', 'many2many'], field.type);
+                }
                 };
 
                 var target = self.targets[0];
@@ -464,7 +469,11 @@ var AbstractFieldBlock = AbstractNewBuildingBlock.extend({
                     target = self._filterTargets() || target;
                 }
 
-                var availableKeys = _.filter(self._getContextKeys(target.node), function (field) { return !!field.relation; });
+                var availableKeys = _.filter(self._getContextKeys(target.node), function (field) {
+                    // "docs" is a technical object referring to all records selected to issue the report for
+                    // it shouldn't be manipulated by the user
+                    return !!field.relation && field.name !== 'docs';
+                });
                 var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
                 dialog.on('field_default_values_saved', self, function (values) {
                     if (values.related.split('.').length < 2) {
@@ -652,10 +661,15 @@ var Image = AbstractNewBuildingBlock.extend({
                 var $image = $("<img/>");
                 var dialog = new weWidgets.MediaDialog(self, {
                     onlyImages: true,
-                }, $image[0]);
+                }, $image[0]).open();
                 var value;
-                dialog.on("save", self, function (event) {
-                    value = event.src;
+                dialog.on("save", self, function (el) {
+                    // el is a vanilla JS element
+                    // Javascript Element.src returns the full url (including protocol)
+                    // But we want only a relative path
+                    // https://www.w3schools.com/jsref/prop_img_src.asp
+                    // We indeed expect only one image at this point
+                    value = el.attributes.src.value;
                 });
                 dialog.on('closed', self, function () {
                     if (value) {

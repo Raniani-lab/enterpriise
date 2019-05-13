@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="asset_pause_form">
+        <field name="name">wizard.asset.pause.form</field>
+        <field name="model">account.asset.pause</field>
+        <field name="arch" type="xml">
+            <form string="Pause Asset">
+                <field name="action" invisible="1"/>
+                <group>
+                    <group>
+                        <td class="o_td_label">
+                            <label for="date" string="Pause Date" attrs="{'invisible': [('action', '!=', 'pause')]}"/>
+                            <label for="date" string="Sell Date" attrs="{'invisible': [('action', '!=', 'sell')]}"/>
+                        </td>
+                        <field name="date" required="1" nolabel="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="do_action" string="Pause" type="object" class="btn-primary" attrs="{'invisible': [('action', '!=', 'pause')]}"/>
+                    <button name="do_action" string="Sell" type="object" class="btn-primary" attrs="{'invisible': [('action', '!=', 'sell')]}"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

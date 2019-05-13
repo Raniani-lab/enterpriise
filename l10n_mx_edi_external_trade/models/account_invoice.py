@@ -68,7 +68,9 @@ class AccountInvoice(models.Model):
         if not self.l10n_mx_edi_external_trade:
             return values
 
-        ctx = dict(company_id=self.company_id.id, date=self.date_invoice)
+        date = self.date_invoice or fields.Date.today()
+        company_id = self.company_id
+        ctx = dict(company_id=company_id.id, date=date)
         customer = values['customer']
         values.update({
             'usd': self.env.ref('base.USD').with_context(ctx),
@@ -79,10 +81,10 @@ class AccountInvoice(models.Model):
         values['quantity_aduana'] = lambda p, i: sum([
             l.l10n_mx_edi_qty_umt for l in i.invoice_line_ids
             if l.product_id == p])
-        values['unit_value_usd'] = lambda l, c, u: c.compute(
-            l.l10n_mx_edi_price_unit_umt, u)
-        values['amount_usd'] = lambda origin, dest, amount: origin.compute(
-            amount, dest, round=False)
+        values['unit_value_usd'] = lambda l, c, u: c._convert(
+            l.l10n_mx_edi_price_unit_umt, u, company_id, date)
+        values['amount_usd'] = lambda origin, dest, amount: origin._convert(
+            amount, dest, company_id, date, round=False)
         # http://omawww.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/Complementoscfdi/GuiaComercioExterior3_3.pdf
         # ValorDolares : it depends of the currency  (p. 62-63):
         #   - if currency is MXN: ValorDolares = Importe (subtotal without discounts) / TipoCambioUSD
@@ -91,9 +93,9 @@ class AccountInvoice(models.Model):
         # There is a common mistake to mutiply the Qty UMT with the unit price UMT. (p. 76)
         #
         # TotalUSD : must be the sum of all the Valor Dolares fields (p. 48)
-        values['valor_usd'] = lambda l, u, c : c.compute(
+        values['valor_usd'] = lambda l, u, c: c._convert(
             l.price_subtotal / (1 - l.discount/100) if l.discount != 100 else
-            l.price_unit * l.quantity, u)
+            l.price_unit * l.quantity, u, company_id, date)
         values['total_usd'] = lambda i, u, c: sum([values['valor_usd'](l, u, c)
             for l in i])
 

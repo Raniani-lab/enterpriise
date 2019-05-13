@@ -7,6 +7,7 @@
 # Nicolás Broggi <rnbroggi@gmail.com>, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # Martin Trigaux, 2019
+# Vivian Montana <vmo@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Vivian Montana <vmo@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +52,7 @@ msgstr "Bluetooth"
 #. module: iot
 #: selection:iot.device,type:0
 msgid "Camera"
-msgstr ""
+msgstr "Cámara"
 
 #. module: iot
 #. openerp-web
@@ -108,19 +109,19 @@ msgstr ""
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Connect an IoT Box"
-msgstr ""
+msgstr "Conecta una IoT Box"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
 msgid "Connection"
-msgstr ""
+msgstr "Conexión"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:297
 #, python-format
 msgid "Connection failed"
-msgstr ""
+msgstr "La conexión falló"
 
 #. module: iot
 #. openerp-web
@@ -143,7 +144,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:41
 #, python-format
 msgid "Connection with the IoT Box failed!"
-msgstr ""
+msgstr "La conexión con el IoT Box falló"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_uid
@@ -167,12 +168,12 @@ msgstr ""
 #. module: iot
 #: selection:iot.device,type:0
 msgid "Device"
-msgstr ""
+msgstr "Dispositivo"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Device type"
-msgstr ""
+msgstr "Tipo de dispositivo"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_device_action
@@ -206,7 +207,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Found IoT Box(s)"
-msgstr ""
+msgstr "IoT Box(s) encontrada(s)"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
@@ -223,7 +224,7 @@ msgstr "ID"
 #. module: iot
 #: model:ir.model,name:iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "Dispositivo IOT"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
@@ -243,7 +244,7 @@ msgstr ""
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
 msgid "IoT"
-msgstr ""
+msgstr "IoT"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_box
@@ -255,19 +256,19 @@ msgstr "IoT Box"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip_url
 msgid "IoT Box Home Page"
-msgstr ""
+msgstr "Página de inicio del IoT Box"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_box_action
 #: model:ir.ui.menu,name:iot.iot_box_menu_action
 msgid "IoT Boxes"
-msgstr ""
+msgstr "IoT Boxes"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_ir_actions_report__device_id
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
-msgstr ""
+msgstr "Dispositivo IoT"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
@@ -304,7 +305,7 @@ msgstr "Red"
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "No IoT Box found !"
-msgstr ""
+msgstr "No se ha encontrado ningún IoT Box!"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -343,7 +344,7 @@ msgstr "Impresora"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
 msgid "Printer Reports"
-msgstr ""
+msgstr "Informes de la impresora"
 
 #. module: iot
 #: model:ir.model,name:iot.model_publisher_warranty_contract
@@ -377,7 +378,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:69
 #, python-format
 msgid "SCAN"
-msgstr ""
+msgstr "ESCANEAR"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box

@@ -48,7 +48,7 @@ msgstr "Ажилбар"
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
 msgid "Activity Type"
-msgstr ""
+msgstr "Ажилбарын төрөл"
 
 #. module: voip
 #. openerp-web

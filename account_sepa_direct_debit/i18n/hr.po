@@ -26,12 +26,12 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "(if applicable)"
-msgstr ""
+msgstr "(ukoliko je primjenjivo)"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "(optional)"
-msgstr ""
+msgstr "(opcionalno)"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
@@ -105,12 +105,12 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Signature:</strong>"
-msgstr ""
+msgstr "<strong>Potpis:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Start date:</strong>"
-msgstr ""
+msgstr "<strong>Početni datum:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
@@ -120,7 +120,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Zip:</strong>"
-msgstr ""
+msgstr "<strong>Poštanski broj:</strong>"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:80
@@ -153,7 +153,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_batch_payment
 msgid "Batch Payment"
-msgstr ""
+msgstr "Skupno plaćanje"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
@@ -393,7 +393,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__paid_invoice_ids
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Invoices Paid"
-msgstr ""
+msgstr "Plaćeni računi"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__paid_invoice_ids
@@ -516,6 +516,8 @@ msgid ""
 "Only IBAN account numbers can receive SEPA Direct Debit payments. Please "
 "select a journal associated to one."
 msgstr ""
+"Samo IBAN bankovni računi mogu primati SEPA direktno plaćanja. Molimo "
+"odaberite dnevnik pridružen takvom računu."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:94
@@ -532,7 +534,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__original_doc
 msgid "Original Document"
-msgstr ""
+msgstr "Originalni dokument"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__original_doc_filename

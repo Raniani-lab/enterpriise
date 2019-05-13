@@ -19,7 +19,6 @@
         'l10n_uk', 'account_reports'
     ],
     'data': [
-        'data/account_financial_html_report_data.xml',
         'views/views.xml',
         'security/ir.model.access.csv',
         'security/hmrc_security.xml',

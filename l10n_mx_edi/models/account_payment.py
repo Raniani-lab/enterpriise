@@ -585,6 +585,31 @@ class AccountPayment(models.Model):
     # SAT/PAC service methods
     # -------------------------------------------------------------------------
 
+    @api.multi
+    def _l10n_mx_edi_get_payment_write_off(self):
+        self.ensure_one()
+        writeoff_move_line = self.move_line_ids.filtered(lambda l: l.account_id == self.writeoff_account_id and l.name == self.writeoff_label)
+        res = {}
+        if writeoff_move_line and self.invoice_ids:
+            # get the writeoff value in invoice currency
+            last_invoice = self.invoice_ids[-1]
+            # if the invoice has the same currency as the company, use the balance
+            if last_invoice.currency_id == last_invoice.company_currency_id:
+                write_off_invoice_currency = writeoff_move_line.balance
+            # if the invoice has the same currency as the payment, use the amount_currency
+            elif last_invoice.currency_id == writeoff_move_line.currency_id:
+                write_off_invoice_currency = writeoff_move_line.amount_currency
+            # if the invoice don't have the same currency as the company or as the payment
+            # convert the write_off from the currency of the payment, to the currency of the invoice
+            else:
+                write_off_invoice_currency = writeoff_move_line.currency_id._convert(
+                    writeoff_move_line.amount_currency, last_invoice.currency_id,
+                    last_invoice.company_id, last_invoice.date
+                )
+            if write_off_invoice_currency > 0:
+                res[last_invoice.id] = write_off_invoice_currency
+        return res
+
     @api.model
     def _l10n_mx_edi_solfact_info(self, company_id, service_type):
         test = company_id.l10n_mx_edi_pac_test_env
@@ -826,6 +851,16 @@ class AccountPayment(models.Model):
                     record.l10n_mx_edi_cfdi_uuid),
             })
         return super(AccountPayment, self).action_draft()
+
+    @api.multi
+    def unlink(self):
+        for rec in self.filtered(lambda r: r.l10n_mx_edi_is_required() and
+                                 r.l10n_mx_edi_pac_status == 'signed'):
+            rec._l10n_mx_edi_cancel()
+        if self.filtered(lambda p: p.l10n_mx_edi_pac_status == 'signed'):
+            raise UserError(_('In order to delete a payment, you must first '
+                              'cancel it in the SAT system.'))
+        return super(AccountPayment, self).unlink()
 
 
 class AccountPaymentRegister(models.TransientModel):

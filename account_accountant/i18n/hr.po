@@ -31,6 +31,10 @@ msgid ""
 "specific.\" role=\"img\" aria-label=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Ovdje postavljene vrijedonsti"
+" su specifične za pojedinui tvrtku.\" role=\"img\" aria-label=\"Ovdje "
+"postavljene vrijedonsti su specifične za pojedinui tvrtku.\" "
+"groups=\"base.group_multi_company\"/>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -209,7 +213,7 @@ msgstr "Počnimo sa novim izlaznim računom."
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_lock_date
 msgid "Lock Date for All Users"
-msgstr ""
+msgstr "Datum zaključavanja za sve korisnike"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
@@ -225,7 +229,7 @@ msgstr "Datumi zaključavanja"
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
-msgstr ""
+msgstr "Zaključaj fiskalni period"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date

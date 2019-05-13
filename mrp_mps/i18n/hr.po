@@ -34,12 +34,12 @@ msgstr "&lt;&amp;hellip;&lt;"
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Demand Forecast"
-msgstr ""
+msgstr "<span class=\"fa fa-fw\">-</span> Predviđanje potražnje"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Indirect Demand"
-msgstr ""
+msgstr "<span class=\"fa fa-fw\">-</span> Indirektna potražnja"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -328,7 +328,7 @@ msgstr "Mjesečno"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_origin_id
 msgid "Origin Product"
-msgstr ""
+msgstr "Izvorni proizvod"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__period
@@ -377,7 +377,7 @@ msgstr "Retci"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast
 msgid "Sales Forecast"
-msgstr ""
+msgstr "Previđanje prodaje"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
@@ -400,12 +400,12 @@ msgstr "Stanje"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Skladišno pravilo"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
 msgid "Time Range"
-msgstr ""
+msgstr "Vremenski raspon"
 
 #. module: mrp_mps
 #. openerp-web
@@ -418,7 +418,7 @@ msgstr "Za proizvesti"
 #: code:addons/mrp_mps/models/mrp_mps_report.py:129
 #, python-format
 msgid "To Receive / To Supply / Produce"
-msgstr ""
+msgstr "Da zaprimi / opskrbi / proizvoede"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__to_supply

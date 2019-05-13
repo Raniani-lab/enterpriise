@@ -15,10 +15,7 @@ var registry = require('web.field_registry');
 
 var _t = core._t;
 
-var AccountAssetWidget = AbstractField.extend({
-    events: _.extend({}, AbstractField.prototype.events, {
-        'click': '_onClick',
-    }),
+var AccountAssetReversedWidget = AbstractField.extend({
     noLabel: true,
 
     //--------------------------------------------------------------------------
@@ -41,47 +38,16 @@ var AccountAssetWidget = AbstractField.extend({
      * @private
      */
     _render: function () {
-        var className = '';
-        var disabled = true;
-        var title;
-        if (this.recordData.move_posted_check) {
-            className = 'o_is_posted';
-            title = _t('Posted');
-        } else if (this.recordData.move_check) {
-            className = 'o_unposted';
-            title = _t('Accounting entries waiting for manual verification');
-        } else {
-            disabled = false;
-            title = _t('Unposted');
+        if (this.recordData.reverse_entry_id != false) {
+            var $icon = $('<i/>', {
+                title: _t('This move has been reversed')
+            }).addClass('fa fa-exclamation-circle')
+            this.$el.html($icon);
         }
-        var $button = $('<button/>', {
-            type: 'button',
-            title: title,
-            disabled: disabled,
-        }).addClass('btn btn-link fa fa-circle o_deprec_lines_toggler ' + className);
-        this.$el.html($button);
     },
 
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     * @param {MouseEvent} event
-     */
-    _onClick: function (event) {
-        event.stopPropagation();
-        this.trigger_up('button_clicked', {
-            attrs: {
-                name: 'create_move',
-                type: 'object',
-            },
-            record: this.record,
-        });
-    },
 });
 
-registry.add("deprec_lines_toggler", AccountAssetWidget);
+registry.add("deprec_lines_reversed", AccountAssetReversedWidget);
 
 });

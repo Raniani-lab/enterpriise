@@ -52,7 +52,7 @@ msgstr "К-сть старших (&gt;=65):"
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer_applicant
 msgid "${object.company_id.name} : Job Offer - ${object.name}"
-msgstr "${object.company_id.name} : Job Offer - ${object.name}"
+msgstr "${object.company_id.name} : Вакансія - ${object.name}"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -519,7 +519,7 @@ msgstr "Бетмен"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Birth"
-msgstr "Поява"
+msgstr "Народження"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -576,7 +576,7 @@ msgstr "Сертифікат"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Certificate Level:"
-msgstr "Рівень сертифіката:"
+msgstr "Рівень сертифікату:"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -753,7 +753,7 @@ msgstr "Відключено"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled Children"
-msgstr "Disabled Children"
+msgstr "Діти з інвалідністю"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -962,8 +962,8 @@ msgid ""
 "He/She will review your contract.<br/> Feel free to contact him/her if you "
 "have further questions."
 msgstr ""
-"Він/вона перегляне ваш контракт<br/> Не соромтеся зв'язатися з ним/нею, якщо"
-" у вас виникнуть додаткові запитання."
+"Він/вона перегляне ваш контракт.<br/> Не соромтеся зв'язатися з ним/нею, "
+"якщо у вас виникнуть додаткові запитання."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1007,7 +1007,7 @@ msgid ""
 "record without removing it."
 msgstr ""
 "Якщо активне поле встановлено як Помилкове, це дозволить вам приховати запис"
-" кадрів, не видаливши його."
+" ресурсу, не видаливши його."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1461,17 +1461,17 @@ msgstr "Посилання на моделювання"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Single"
-msgstr "Неодружений/а/"
+msgstr "Неодружений (незаміжня)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Spouse Birthdate"
-msgstr "Дата народження дружини"
+msgstr "Дата народження дружини (чоловіка)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Spouse Birthdate:"
-msgstr "Дата народження дружини:"
+msgstr "Дата народження дружини (чоловіка):"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1486,12 +1486,12 @@ msgstr "Ім'я та прізвище дружини (чоловіка)"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Spouse Net Revenue"
-msgstr "Чистий дохід чоловіка/дружини"
+msgstr "Чистий дохід чоловіка (дружини)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Spouse Other Net Revenue"
-msgstr "Інший чистий дохід чоловіка/дружини"
+msgstr "Інший чистий дохід чоловіка (дружини)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1608,7 +1608,7 @@ msgid ""
 "This cost simulation is only for information. If you want to choose another "
 "car model, please contact your HR manager."
 msgstr ""
-"Це моделювання витрат призначено лише для інформації. Якщо ви хочете вибрати"
+"Це моделювання витрат призначене лише для інформації. Якщо ви хочете вибрати"
 " іншу модель автомобіля, зверніться до свого менеджера з персоналу."
 
 #. module: hr_contract_salary

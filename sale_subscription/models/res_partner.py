@@ -10,9 +10,18 @@ class ResPartner(models.Model):
     subscription_count = fields.Integer(string='Subscriptions', compute='_subscription_count')
 
     def _subscription_count(self):
-        subscription_data = self.env['sale.subscription'].read_group(domain=[('partner_id', 'in', self.ids)],
-                                                                     fields=['partner_id'],
-                                                                     groupby=['partner_id'])
-        mapped_data = dict([(m['partner_id'][0], m['partner_id_count']) for m in subscription_data])
-        for partner in self:
-            partner.subscription_count = mapped_data.get(partner.id, 0)
+        # retrieve all children partners and prefetch 'parent_id' on them
+        all_partners = self.search([('id', 'child_of', self.ids)])
+        all_partners.read(['parent_id'])
+
+        subscription_data = self.env['sale.subscription'].read_group(
+            domain=[('partner_id', 'in', all_partners.ids)],
+            fields=['partner_id'], groupby=['partner_id']
+        )
+
+        for group in subscription_data:
+            partner = self.browse(group['partner_id'][0])
+            while partner:
+                if partner in self:
+                    partner.subscription_count += group['partner_id_count']
+                partner = partner.parent_id

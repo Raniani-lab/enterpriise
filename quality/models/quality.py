@@ -14,7 +14,6 @@ class TestType(models.Model):
     name = fields.Char('Name', required=True)
     technical_name = fields.Char('Technical name', required=True)
 
-
 class QualityPoint(models.Model):
     _name = "quality.point"
     _description = "Quality Control Point"
@@ -160,7 +159,9 @@ class QualityCheck(models.Model):
     alert_ids = fields.One2many('quality.alert', 'check_id', string='Alerts')
     alert_count = fields.Integer('# Quality Alerts', compute="_compute_alert_count")
     note = fields.Html(related='point_id.note', readonly=True)
-    test_type = fields.Char(related="point_id.test_type", readonly=True)
+    test_type_id = fields.Many2one('quality.point.test_type', 'Test Type',
+        required=True)
+    test_type = fields.Char(related='test_type_id.technical_name')
     picture = fields.Binary('Picture', attachment=True)
 
     @api.multi
@@ -180,6 +181,8 @@ class QualityCheck(models.Model):
     def create(self, vals):
         if 'name' not in vals or vals['name'] == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('quality.check') or _('New')
+        if 'point_id' in vals and not vals.get('test_type_id'):
+            vals['test_type_id'] = self.env['quality.point'].browse(vals['point_id']).test_type_id.id
         return super(QualityCheck, self).create(vals)
 
     @api.multi

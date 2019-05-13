@@ -21,6 +21,7 @@ Accounting Reports
         'views/account_journal_dashboard_view.xml',
         'views/res_config_settings_views.xml',
         'wizard/report_export_wizard.xml',
+        'views/account_activity.xml',
     ],
     'qweb': [
         'static/src/xml/account_report_template.xml',

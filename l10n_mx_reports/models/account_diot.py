@@ -55,7 +55,7 @@ class MxReportPartnerLedger(models.AbstractModel):
         tax_ids = self.env['account.tax'].search([
             ('type_tax_use', '=', 'purchase'),
             ('tax_exigibility', '=', 'on_payment')])
-        account_tax_ids = tax_ids.mapped('cash_basis_account_id')
+        account_tax_ids = tax_ids.mapped('invoice_repartition_line_ids.account_id')
         domain = [
             ('journal_id', 'in', journal_ids),
             ('account_id', 'not in', account_tax_ids.ids),
@@ -87,7 +87,7 @@ class MxReportPartnerLedger(models.AbstractModel):
         tax_ids = self.env['account.tax'].search([
             ('type_tax_use', '=', 'purchase'),
             ('tax_exigibility', '=', 'on_payment')])
-        account_tax_ids = tax_ids.mapped('cash_basis_account_id')
+        account_tax_ids = tax_ids.mapped('invoice_repartition_line_ids.account_id')
         base_domain = [
             ('date', '<=', context['date_to']),
             ('company_id', 'in', context['company_ids']),
@@ -95,6 +95,7 @@ class MxReportPartnerLedger(models.AbstractModel):
             ('account_id', 'not in', account_tax_ids.ids),
             ('tax_ids', 'in', tax_ids.ids),
         ]
+
         if context['date_from_aml']:
             base_domain.append(('date', '>=', context['date_from_aml']))
         without_vat = []
@@ -113,15 +114,13 @@ class MxReportPartnerLedger(models.AbstractModel):
             else:
                 partners[partner]['lines'] = self.env[
                     'account.move.line'].search(domain, order='date')
-            without_vat += (
-                (partner.name,)
-                if partner.country_id == mx_country and not partner.vat and
-                partners[partner]['lines']
-                else ())
-            without_too += ((partner.name,)
-                            if not partner.l10n_mx_type_of_operation and
-                            partners[partner]['lines']
-                            else ())
+
+            if partner.country_id == mx_country and not partner.vat and partners[partner]['lines']:
+                without_vat.append(partner.name)
+
+            if not partner.l10n_mx_type_of_operation and partners[partner]['lines']:
+                without_too.append(partner.name)
+
         if (without_vat or without_too) and self._context.get('raise'):
             msg = _('The report cannot be generated because of: ')
             msg += (
@@ -139,6 +138,14 @@ class MxReportPartnerLedger(models.AbstractModel):
             raise UserError(msg)
 
         return partners
+
+    @api.model
+    def get_taxes_with_financial_tag(self, tag_xmlid, allowed_tax_ids):
+         rep_lines = self.env['account.tax.repartition.line'].search([
+             '|', ('invoice_tax_id', 'in', allowed_tax_ids), ('refund_tax_id', 'in', allowed_tax_ids),
+             ('tag_ids', 'in', self.env['ir.model.data'].xmlid_to_res_id(tag_xmlid))])
+
+         return rep_lines.mapped('invoice_tax_id') | rep_lines.mapped('refund_tax_id')
 
     @api.model
     def _get_lines(self, options, line_id=None):
@@ -161,25 +168,22 @@ class MxReportPartnerLedger(models.AbstractModel):
         tag_0 = self.env.ref('l10n_mx.tag_diot_0')
         tag_ret = self.env.ref('l10n_mx.tag_diot_ret')
         tag_exe = self.env.ref('l10n_mx.tag_diot_exento')
-        tax_ids = self.env['account.tax'].search([
-            ('type_tax_use', '=', 'purchase')])
-        tax16 = tax_ids.search([('id', 'in', tax_ids.ids),
-                                ('tag_ids', 'in', tag_16.ids)])
-        taxnoncre = tax_ids.search([('id', 'in', tax_ids.ids), ('tag_ids', 'in', tag_non_cre.ids)]) if tag_non_cre else self.env['account.tax']
-        tax8 = tax_ids.search(
-            [('id', 'in', tax_ids.ids), ('tag_ids', 'in', tag_8.ids)]
-        ) if tag_8 else tag_8
-        tax8_noncre = tax_ids.search(
-            [('id', 'in', tax_ids.ids), ('tag_ids', 'in', tag_8_non_cre.ids)]
-        ) if tag_8_non_cre else tag_8_non_cre
-        taximp = tax_ids.search([('id', 'in', tax_ids.ids),
-                                ('tag_ids', 'in', tag_imp.ids)])
-        tax0 = tax_ids.search([('id', 'in', tax_ids.ids),
-                               ('tag_ids', 'in', tag_0.ids)])
-        tax_ret = tax_ids.search([('id', 'in', tax_ids.ids),
-                                  ('tag_ids', 'in', tag_ret.ids)])
-        tax_exe = tax_ids.search([('id', 'in', tax_ids.ids),
-                                  ('tag_ids', 'in', tag_exe.ids)])
+        rep_line_obj =  self.env['account.tax.repartition.line']
+        get_diot_tax = lambda rep_ln: rep_ln.mapped(lambda x: x.invoice_tax_id or x.refund_tax_id).filtered(lambda x: x.type_tax_use == 'purchase')
+        tax16 = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_16.ids)]))
+        taxnoncre = self.env['account.tax']
+        if tag_non_cre:
+            taxnoncre = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_non_cre.ids)]))
+        tax8 =  self.env['account.tax']
+        if tag_8:
+            tax8 = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_8.ids)]))
+        tax8_noncre = self.env['account.tax']
+        if tag_8_non_cre:
+            tax8_noncre = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_8_non_cre.ids)]))
+        taximp = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_imp.ids)]))
+        tax0 = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_0.ids)]))
+        tax_ret = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_ret.ids)]))
+        tax_exe = get_diot_tax(rep_line_obj.search([('tag_ids', 'in', tag_exe.ids)]))
         for partner in sorted_partners:
             amls = grouped_partners[partner]['lines']
             if not amls:
@@ -245,7 +249,7 @@ class MxReportPartnerLedger(models.AbstractModel):
                 amls = amls[-80:]
                 too_many = True
             for line in amls:
-                if options['cash_basis']:
+                if options.get('cash_basis'):
                     line_debit = line.debit_cash_basis
                     line_credit = line.credit_cash_basis
                 else:

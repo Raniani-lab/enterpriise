@@ -300,7 +300,6 @@ class AccountReport(models.AbstractModel):
         options_filter = self.filter_date.get('filter') or ('today' if mode == 'single' else 'fiscalyear')
         date_from = self.filter_date.get('date_from') and fields.Date.from_string(self.filter_date['date_from'])
         date_to = self.filter_date.get('date_to') and fields.Date.from_string(self.filter_date['date_to'])
-
         # Handle previous_options.
         if previous_options and previous_options.get('date') and previous_options['date'].get('filter') \
                 and not (previous_options['date']['filter'] == 'today' and mode == 'range'):
@@ -492,44 +491,44 @@ class AccountReport(models.AbstractModel):
     ####################################################
     # OPTIONS: hierarchy
     ####################################################
+    MOST_SORT_PRIO = 0
+    LEAST_SORT_PRIO = 99
+
+    # Create codes path in the hierarchy based on account.
+    def get_account_codes(self, account):
+        # A code is tuple(sort priority, actual code)
+        codes = []
+        if account.group_id:
+            group = account.group_id
+            while group:
+                code = '%s %s' % (group.code_prefix or '', group.name)
+                codes.append((self.MOST_SORT_PRIO, code))
+                group = group.parent_id
+        else:
+            # Limit to 3 levels.
+            code = account.code[:3]
+            while code:
+                codes.append((self.MOST_SORT_PRIO, code))
+                code = code[:-1]
+        return list(reversed(codes))
 
     @api.model
-    def _create_hierarchy(self, lines):
+    def _create_hierarchy(self, lines, options):
         """This method is called when the option 'hiearchy' is enabled on a report.
         It receives the lines (as computed by _get_lines()) in argument, and will add
         a hiearchy in those lines by using the account.group of accounts. If not set,
         it will fallback on creating a hierarchy based on the account's code first 3
         digits.
         """
+        is_number = ['number' in c.get('class') for c in self.get_header(options)[-1][1:]]
         # Avoid redundant browsing.
         accounts_cache = {}
-
-        MOST_SORT_PRIO = 0
-        LEAST_SORT_PRIO = 99
 
         # Retrieve account either from cache, either by browsing.
         def get_account(id):
             if id not in accounts_cache:
                 accounts_cache[id] = self.env['account.account'].browse(id)
             return accounts_cache[id]
-
-        # Create codes path in the hierarchy based on account.
-        def get_account_codes(account):
-            # A code is tuple(sort priority, actual code)
-            codes = []
-            if account.group_id:
-                group = account.group_id
-                while group:
-                    code = '%s %s' % (group.code_prefix or '', group.name)
-                    codes.append((MOST_SORT_PRIO, code))
-                    group = group.parent_id
-            else:
-                # Limit to 3 levels.
-                code = account.code[:3]
-                while code:
-                    codes.append((MOST_SORT_PRIO, code))
-                    code = code[:-1]
-            return list(reversed(codes))
 
         # Add the report line to the hierarchy recursively.
         def add_line_to_hierarchy(line, codes, level_dict, depth=None):
@@ -547,26 +546,29 @@ class AccountReport(models.AbstractModel):
             if not depth:
                 depth = line.get('level', 1)
             level_dict.setdefault('depth', depth)
-            level_dict.setdefault('parent_id', line.get('parent_id'))
+            level_dict.setdefault('parent_id', 'hierarchy_' + codes[0][1])
             level_dict.setdefault('children', {})
-            code = codes[0]
+            code = codes[1]
             codes = codes[1:]
             level_dict['children'].setdefault(code, {})
 
-            if codes:
+            if len(codes) > 1:
                 add_line_to_hierarchy(line, codes, level_dict['children'][code], depth=depth + 1)
             else:
                 level_dict['children'][code].setdefault('lines', [])
                 level_dict['children'][code]['lines'].append(line)
+                for l in level_dict['children'][code]['lines']:
+                    l['parent_id'] = 'hierarchy_' + code[1]
 
         # Merge a list of columns together and take care about str values.
         def merge_columns(columns):
-            return ['n/a' if any(isinstance(i, str) for i in x) else sum(x) for x in zip(*columns)]
+            return [('n/a' if any(i != '' for i in x) else '') if any(isinstance(i, str) for i in x) else sum(x) for x in zip(*columns)]
 
         # Get_lines for the newly computed hierarchy.
         def get_hierarchy_lines(values, depth=1):
             lines = []
             sum_sum_columns = []
+            unfold_all = self.env.context.get('print_mode') and len(options.get('unfolded_lines')) == 0
             for base_line in values.get('lines', []):
                 lines.append(base_line)
                 sum_sum_columns.append([c.get('no_format_name', c['name']) for c in base_line['columns']])
@@ -574,16 +576,18 @@ class AccountReport(models.AbstractModel):
             # For the last iteration, there might not be the children key (see add_line_to_hierarchy)
             for key in sorted(values.get('children', {}).keys()):
                 sum_columns, sub_lines = get_hierarchy_lines(values['children'][key], depth=values['depth'])
+                id = 'hierarchy_' + key[1]
                 header_line = {
-                    'id': 'hierarchy',
-                    'name': key[1],  # second member of the tuple
-                    'unfoldable': False,
-                    'unfolded': True,
+                    'id': id,
+                    'name': key[1] if len(key[1]) < 30 else key[1][:30] + '...',  # second member of the tuple
+                    'title_hover': key[1],
+                    'unfoldable': True,
+                    'unfolded': id in options.get('unfolded_lines') or unfold_all,
                     'level': values['depth'],
                     'parent_id': values['parent_id'],
                     'columns': [{'name': self.format_value(c) if not isinstance(c, str) else c} for c in sum_columns],
                 }
-                if key[0] == LEAST_SORT_PRIO:
+                if key[0] == self.LEAST_SORT_PRIO:
                     header_line['style'] = 'font-style:italic;'
                 lines += [header_line] + sub_lines
                 sum_sum_columns.append(sum_columns)
@@ -610,16 +614,16 @@ class AccountReport(models.AbstractModel):
         for line in lines + [None]:
             # Only deal with lines grouped by accounts.
             # And discriminating sections defined by account.financial.html.report.line
-            is_grouped_by_account = line and line.get('caret_options') == 'account.account'
+            is_grouped_by_account = line and line.get('caret_options')
             if not is_grouped_by_account or not line:
 
                 # No group code found in any lines, compute it automatically.
                 no_group_hierarchy = {}
                 for no_group_line in no_group_lines:
-                    codes = [(LEAST_SORT_PRIO, _('(No Group)'))]
+                    codes = [(self.LEAST_SORT_PRIO, _('(No Group)'))]
                     if not accounts_hierarchy:
-                        account = get_account(no_group_line.get('id'))
-                        codes = get_account_codes(account)
+                        account = get_account(no_group_line.get('account_id', no_group_line.get('id')))
+                        codes = [(0, 'root')] + self.get_account_codes(account)
                     add_line_to_hierarchy(no_group_line, codes, no_group_hierarchy)
                 no_group_lines = []
 
@@ -635,12 +639,12 @@ class AccountReport(models.AbstractModel):
                 continue
 
             # Exclude lines having no group.
-            account = get_account(line.get('id'))
+            account = get_account(line.get('account_id', line.get('id')))
             if not account.group_id:
                 no_group_lines.append(line)
                 continue
 
-            codes = get_account_codes(account)
+            codes = [(0, 'root')] + self.get_account_codes(account)
             add_line_to_hierarchy(line, codes, accounts_hierarchy)
 
         return new_lines
@@ -865,6 +869,12 @@ class AccountReport(models.AbstractModel):
             domain += [('tax_exigible', '=', True)]
         return self.open_action(options, domain)
 
+    def tax_tag_template_open_aml(self, options, params=None):
+        active_id = int(str(params.get('id')).split('_')[0])
+        tag_template = self.env['account.tax.report.line'].browse(active_id)
+        domain = [('tag_ids', 'in', tag_template.tag_ids.ids), ('tax_exigible', '=', True)]
+        return self.open_action(options, domain)
+
     def open_tax_report_line(self, options, params=None):
         active_id = int(str(params.get('id')).split('_')[0])
         line = self.env['account.financial.html.report.line'].browse(active_id)
@@ -919,6 +929,23 @@ class AccountReport(models.AbstractModel):
         action['context'] = {}
         return action
 
+    def periodic_tva_entries(self, options):
+        # Return action to open form view of newly entry created
+        ctx = self._set_context(options)
+        ctx['strict_range'] = True
+        self = self.with_context(ctx)
+        move = self.env['account.generic.tax.report']._generate_tax_closing_entry(options)
+        action = self.env.ref('account.action_move_journal_line').read()[0]
+        action = clean_action(action)
+        action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
+        action['res_id'] = move.id
+        return action
+
+    def _get_vat_report_attachments(self, options):
+        # Fetch pdf
+        pdf = self.get_pdf(options)
+        return [('vat_report.pdf', pdf)]
+
     def action_partner_reconcile(self, options, params):
         form = self.env.ref('account.action_manual_reconciliation', False)
         ctx = self.env.context.copy()
@@ -958,6 +985,8 @@ class AccountReport(models.AbstractModel):
                     domain = expression.AND([domain, [('date', '>=', opt_date['date_from'])]])
                 if opt_date.get('date_to'):
                     domain = expression.AND([domain, [('date', '<=', opt_date['date_to'])]])
+                if not opt_date.keys() & {'date_from', 'date_to'} and opt_date.get('date'):
+                    domain = expression.AND([domain, [('date', '<=', opt_date['date'])]])
             # In case the line has been generated for a "group by" financial line, append the parent line's domain to the one we created
             if params.get('financial_group_line_id'):
                 parent_financial_report_line = self.env['account.financial.html.report.line'].browse(params['financial_group_line_id'])
@@ -1088,7 +1117,7 @@ class AccountReport(models.AbstractModel):
         lines = self._get_lines(options, line_id=line_id)
 
         if options.get('hierarchy'):
-            lines = self._create_hierarchy(lines)
+            lines = self._create_hierarchy(lines, options)
 
         footnotes_to_render = []
         if self.env.context.get('print_mode', False):
@@ -1400,7 +1429,7 @@ class AccountReport(models.AbstractModel):
         lines = self.with_context(ctx)._get_lines(options)
 
         if options.get('hierarchy'):
-            lines = self._create_hierarchy(lines)
+            lines = self._create_hierarchy(lines, options)
 
         #write all data rows
         for y in range(0, len(lines)):
@@ -1481,3 +1510,17 @@ class AccountReport(models.AbstractModel):
 
     def get_txt(self, options):
         return False
+
+    ####################################################
+    # HOOKS
+    ####################################################
+
+    def _get_account_groups_for_asset_report(self):
+        """ Get the groups of account code
+        return: dict whose keys are the 2 first digits of an account (xx) or a
+                range of 2 first digits (xx-yy). If it is not a range, the value
+                for that key shouldbe a dict containeing the key 'name'. If it
+                is a range, it should also contain a dict for the key 'children'
+                that is defined the same way as this return value.
+        """
+        return {}

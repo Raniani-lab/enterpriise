@@ -847,7 +847,7 @@ class SaleSubscriptionLine(models.Model):
         for line in self:
             price = line.env['account.tax']._fix_tax_included_price(line.price_unit, line.product_id.sudo().taxes_id, [])
             line.price_subtotal = line.quantity * price * (100.0 - line.discount) / 100.0
-            if line.analytic_account_id.pricelist_id:
+            if line.analytic_account_id.pricelist_id.sudo().currency_id:
                 line.price_subtotal = line.analytic_account_id.pricelist_id.sudo().currency_id.round(line.price_subtotal)
 
     @api.onchange('product_id')
@@ -1132,6 +1132,12 @@ class SaleSubscriptionAlert(models.Model):
             if alert.stage_to_id:
                 domain += [('stage_id', '=', alert.stage_to_id.id)]
             super(SaleSubscriptionAlert, alert).write({'filter_domain': domain})
+
+    @api.multi
+    def unlink(self):
+        for record in self:
+            record.automation_id.active = False
+        return super(SaleSubscriptionAlert, self).unlink()
 
     def _configure_filter_pre_domain(self):
         for alert in self:

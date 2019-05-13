@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from math import copysign
+
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo import release
@@ -81,16 +83,30 @@ class IntrastatReport(models.AbstractModel):
             inv = line.invoice_id
             country_dest_code = inv.partner_id.country_id and inv.partner_id.country_id.code or ''
             country_origin_code = inv.intrastat_country_id and inv.intrastat_country_id.code or ''
-            num = len(inv.number) < 8 and inv.number or inv.number[:8]
-            mass = line.product_id and line.quantity * line.product_id.weight or 0
+            country = country_origin_code if res['type'] == 'Arrival' else country_dest_code
+
+            # From the Manual for Statistical Declarations International Trade in Goods:
+            #
+            # For commodities where no supplementary unit is given, the weight has te be reported,
+            # rounded off in kilograms.
+            # [...]
+            # Weights below 1 kilogram should be rounded off above.
+            #
+            # Therefore:
+            #  5.2 => 5; -5.2 => -5; 0.2 => 1; -0.2 => -1
+            # If the mass is zero, we leave it like this: it means the user forgot to set the weight
+            # of the products, so it should be corrected.
+            mass = line.product_id and line.quantity * (line.product_id.weight or line.product_id.product_tmpl_id.weight) or 0
+            if mass:
+                mass = copysign(round(mass) or 1.0, mass)
             transaction_period = str(inv.date_invoice.year) + str(inv.date_invoice.month).rjust(2, '0')
             file_content += ''.join([
                 transaction_period,                                             # Transaction period    length=6
-                res['commodity_code'] or '7',                                   # Commodity flow        length=1
+                '6' if res['type'] == 'Arrival' else '7',                       # Commodity flow        length=1
                 vat and vat[2:].replace(' ', '').ljust(12) or ''.ljust(12),     # VAT number            length=12
                 str(i).zfill(5),                                                # Line number           length=5
-                country_origin_code.ljust(3),                                   # Country of origin     length=3
-                country_dest_code.ljust(3),                                     # Destination country   length=3
+                '000',                                                          # Country of origin     length=3
+                country.ljust(3),                                               # Count. of cons./dest. length=3
                 res['invoice_transport'] or '3',                                # Mode of transport     length=1
                 '0',                                                            # Container             length=1
                 '00',                                                           # Traffic region/port   length=2
@@ -99,14 +115,14 @@ class IntrastatReport(models.AbstractModel):
                 (res['commodity_code'] or '')[:8].ljust(8),                     # Commodity code        length=8
                 '00',                                                           # Taric                 length=2
                 mass >= 0 and '+' or '-',                                       # Mass sign             length=1
-                str(int(mass)).zfill(10),                                       # Mass                  length=10
+                str(int(abs(mass))).zfill(10),                                  # Mass                  length=10
                 '+',                                                            # Supplementary sign    length=1
                 '0000000000',                                                   # Supplementary unit    length=10
                 inv.amount_total_signed >= 0 and '+' or '-',                    # Invoice sign          length=1
                 str(int(line.price_subtotal)).zfill(10),                        # Invoice value         length=10
                 '+',                                                            # Statistical sign      length=1
                 '0000000000',                                                   # Statistical value     length=10
-                ('%s%s' % (num, str(i).zfill(2))).ljust(10),                    # Administration number length=10
+                (inv.number or '')[-10:].ljust(10),                             # Administration number length=10
                 ''.ljust(3),                                                    # Reserve               length=3
                 ' ',                                                            # Correction items      length=1
                 '000',                                                          # Preference            length=3

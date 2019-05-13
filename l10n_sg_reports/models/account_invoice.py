@@ -19,7 +19,7 @@ class AccountInvoiceLine(models.Model):
                 price = record.price_unit * (1 - (record.discount or 0.0) / 100.0)
                 taxes = False
                 if record.invoice_line_tax_ids:
-                    taxes = record.invoice_line_tax_ids.compute_all(price, currency, record.quantity, product=record.product_id, partner=record.invoice_id.partner_id)
+                    taxes = record.invoice_line_tax_ids.compute_all(price, currency, record.quantity, product=record.product_id, partner=record.invoice_id.partner_id, is_refund=record.invoice_id.type in ('in_refund', 'out_refund'))
                 # According to IRAS document, there is only one tax
                 amount_tax = taxes['taxes'][0]['amount'] if taxes else 0.0
                 amount_tax_no_change = amount_tax

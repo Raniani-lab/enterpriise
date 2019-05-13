@@ -424,7 +424,7 @@ msgstr "Барааны баркодууд"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr ""
+msgstr "Барааны хөдөлгөөн (Stock Move Line)"
 
 #. module: stock_barcode
 #. openerp-web

@@ -94,10 +94,10 @@ def compute_arr(start_date, end_date, filters):
 
 
 def compute_ltv(start_date, end_date, filters):
-    fields = ['CASE WHEN COUNT(DISTINCT account_invoice_line.subscription_id)!=0 THEN SUM(account_invoice_line.asset_mrr)/COUNT(DISTINCT account_invoice_line.subscription_id) ELSE 0 END AS sum']
+    fields = ['CASE WHEN COUNT(DISTINCT account_invoice_line.subscription_id)!=0 THEN SUM(account_invoice_line.subscription_mrr)/COUNT(DISTINCT account_invoice_line.subscription_id) ELSE 0 END AS sum']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
-        "date %(date)s BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "date %(date)s BETWEEN account_invoice_line.subscription_start_date AND account_invoice_line.subscription_end_date",
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')"
@@ -121,7 +121,7 @@ def compute_nrr(start_date, end_date, filters):
         "account_invoice_line.invoice_id = account_invoice.id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
-        "account_invoice_line.asset_start_date IS NULL",
+        "account_invoice_line.subscription_start_date IS NULL",
     ]
 
     sql_results = _execute_sql_query(fields, tables, conditions, {
@@ -136,7 +136,7 @@ def compute_nb_contracts(start_date, end_date, filters):
     fields = ['COUNT(DISTINCT account_invoice_line.subscription_id) AS sum']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
-        "date %(date)s BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "date %(date)s BETWEEN account_invoice_line.subscription_start_date AND account_invoice_line.subscription_end_date",
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
@@ -151,10 +151,10 @@ def compute_nb_contracts(start_date, end_date, filters):
 
 
 def compute_mrr(start_date, end_date, filters):
-    fields = ['SUM(account_invoice_line.asset_mrr)']
+    fields = ['SUM(account_invoice_line.subscription_mrr)']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
-        "date %(date)s BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "date %(date)s BETWEEN account_invoice_line.subscription_start_date AND account_invoice_line.subscription_end_date",
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')"
@@ -172,7 +172,7 @@ def compute_logo_churn(start_date, end_date, filters):
     fields = ['COUNT(DISTINCT account_invoice_line.subscription_id) AS sum']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
-        "date %(date)s - interval '1 months' BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "date %(date)s - interval '1 months' BETWEEN account_invoice_line.subscription_start_date AND account_invoice_line.subscription_end_date",
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
@@ -188,7 +188,7 @@ def compute_logo_churn(start_date, end_date, filters):
     fields = ['COUNT(DISTINCT account_invoice_line.subscription_id) AS sum']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
-        "date %(date)s - interval '1 months' BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "date %(date)s - interval '1 months' BETWEEN account_invoice_line.subscription_start_date AND account_invoice_line.subscription_end_date",
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
@@ -196,7 +196,7 @@ def compute_logo_churn(start_date, end_date, filters):
         """NOT exists (
                     SELECT 1 from account_invoice_line ail
                     WHERE ail.subscription_id = account_invoice_line.subscription_id
-                    AND (date %(date)s BETWEEN ail.asset_start_date AND ail.asset_end_date)
+                    AND (date %(date)s BETWEEN ail.subscription_start_date AND ail.subscription_end_date)
                 )
         """,
     ]
@@ -212,10 +212,10 @@ def compute_logo_churn(start_date, end_date, filters):
 
 def compute_revenue_churn(start_date, end_date, filters):
 
-    fields = ['SUM(account_invoice_line.asset_mrr) AS sum']
+    fields = ['SUM(account_invoice_line.subscription_mrr) AS sum']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
-        "date %(date)s - interval '1 months' BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "date %(date)s - interval '1 months' BETWEEN account_invoice_line.subscription_start_date AND account_invoice_line.subscription_end_date",
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
@@ -223,7 +223,7 @@ def compute_revenue_churn(start_date, end_date, filters):
         """NOT exists (
                     SELECT 1 from account_invoice_line ail
                     WHERE ail.subscription_id = account_invoice_line.subscription_id
-                    AND (date %(date)s BETWEEN ail.asset_start_date AND ail.asset_end_date)
+                    AND (date %(date)s BETWEEN ail.subscription_start_date AND ail.subscription_end_date)
                 )
         """
     ]
@@ -245,10 +245,10 @@ def compute_mrr_growth_values(start_date, end_date, filters):
     net_new_mrr = 0
 
     # 1. NEW
-    fields = ['SUM(account_invoice_line.asset_mrr) AS sum']
+    fields = ['SUM(account_invoice_line.subscription_mrr) AS sum']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
-        "date %(date)s BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "date %(date)s BETWEEN account_invoice_line.subscription_start_date AND account_invoice_line.subscription_end_date",
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
@@ -256,7 +256,7 @@ def compute_mrr_growth_values(start_date, end_date, filters):
         """NOT exists (
                     SELECT 1 from account_invoice_line ail
                     WHERE ail.subscription_id = account_invoice_line.subscription_id
-                    AND (date %(date)s - interval '1 months' BETWEEN ail.asset_start_date AND ail.asset_end_date)
+                    AND (date %(date)s - interval '1 months' BETWEEN ail.subscription_start_date AND ail.subscription_end_date)
                 )
         """
     ]
@@ -268,7 +268,7 @@ def compute_mrr_growth_values(start_date, end_date, filters):
     new_mrr = 0 if not sql_results or not sql_results[0]['sum'] else sql_results[0]['sum']
 
     # 2. DOWN & EXPANSION
-    fields = ['account_invoice_line.subscription_id', 'SUM(account_invoice_line.asset_mrr) AS sum']
+    fields = ['account_invoice_line.subscription_id', 'SUM(account_invoice_line.subscription_mrr) AS sum']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
         "account_invoice.id = account_invoice_line.invoice_id",
@@ -281,14 +281,14 @@ def compute_mrr_growth_values(start_date, end_date, filters):
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
-        "account_invoice_line.asset_start_date BETWEEN date %(date)s - interval '1 months' + interval '1 days' and date %(date)s"
+        "account_invoice_line.subscription_start_date BETWEEN date %(date)s - interval '1 months' + interval '1 days' and date %(date)s"
     ], {'date': end_date}, filters, groupby=groupby)
 
     subquery_2 = _build_sql_query(fields, tables, [
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
-        "account_invoice_line.asset_end_date BETWEEN date %(date)s - interval '1 months' + interval '1 days' and date %(date)s"
+        "account_invoice_line.subscription_end_date BETWEEN date %(date)s - interval '1 months' + interval '1 days' and date %(date)s"
     ], {'date': end_date}, filters, groupby=groupby)
 
     computed_query = """
@@ -308,10 +308,10 @@ def compute_mrr_growth_values(start_date, end_date, filters):
             down_mrr -= account['diff']
 
     # 3. CHURNED
-    fields = ['SUM(account_invoice_line.asset_mrr)']
+    fields = ['SUM(account_invoice_line.subscription_mrr)']
     tables = ['account_invoice_line', 'account_invoice']
     conditions = [
-        "date %(date)s - interval '1 months' BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "date %(date)s - interval '1 months' BETWEEN account_invoice_line.subscription_start_date AND account_invoice_line.subscription_end_date",
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
@@ -319,7 +319,7 @@ def compute_mrr_growth_values(start_date, end_date, filters):
         """NOT exists (
                     SELECT 1 from account_invoice_line ail
                     WHERE ail.subscription_id = account_invoice_line.subscription_id
-                    AND (date %(date)s BETWEEN ail.asset_start_date AND ail.asset_end_date)
+                    AND (date %(date)s BETWEEN ail.subscription_start_date AND ail.subscription_end_date)
                 )
         """,
     ]

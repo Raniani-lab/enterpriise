@@ -3,8 +3,8 @@
 # * documents_project
 # 
 # Translators:
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
-"Набір дій та умов, які будуть доступні всім вкладенням, що відповідають "
+"Набір дій та умов, які будуть доступні всім прикріпленням, що відповідають "
 "умовам"
 
 #. module: documents_project
@@ -62,7 +62,7 @@ msgstr "Сторно"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__documents_project_settings
 msgid "Documents Project Settings"
-msgstr ""
+msgstr "Налаштування проекту документів"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__has_business_option
@@ -84,7 +84,7 @@ msgstr "Теги проекту"
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
 msgid "Project Workspace"
-msgstr ""
+msgstr "Робочий простір проекту"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
@@ -92,6 +92,8 @@ msgid ""
 "Select the new workspace to be used for project's documents for the projects and tasks\n"
 "                                of your company."
 msgstr ""
+"Виберіть нову робочу область, яка буде використана для документів проекту для проектів і завдань \n"
+"вашої компанії."
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
@@ -111,7 +113,7 @@ msgstr "Завдання"
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor Credit Note"
-msgstr "Кредитна заява продавця"
+msgstr "Сторно постачальника"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
@@ -121,4 +123,4 @@ msgstr "Рахунок постачальника"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder
 msgid "project default workspace"
-msgstr ""
+msgstr "робоча область проекту за замовчуванням"

@@ -6,6 +6,7 @@
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-03-20 14:36+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +28,8 @@ msgid ""
 "<i class=\"fa fa-lg fa-pencil-square-o mr-2\" aria-label=\"View quotations\""
 " title=\"View quotations\" role=\"img\"/>"
 msgstr ""
+"<i class=\"fa fa-lg fa-pencil-square-o mr-2\" aria-label=\"Bekijk offertes\""
+" title=\"Bekijk offertes\" role=\"img\"/>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
@@ -34,6 +37,8 @@ msgid ""
 "<i class=\"fa fa-lg fa-pencil-square-o mr-2\" aria-label=\"View quotations\""
 " title=\"View quotations\"/>"
 msgstr ""
+"<i class=\"fa fa-lg fa-pencil-square-o mr-2\" aria-label=\"Bekijk offertes\""
+" title=\"Bekijk offertes\"/>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm
@@ -41,6 +46,8 @@ msgid ""
 "<i class=\"fa fa-lg fa-plus-circle mr-2\" aria-label=\"Create new quotation\" title=\"Create new quotation\"/>\n"
 "                                New Quotation"
 msgstr ""
+"<i class=\"fa fa-lg fa-plus-circle mr-2\" aria-label=\"Maak nieuwe offerte\" title=\"Maak nieuwe offerte\"/>\n"
+"                                Nieuwe offerte"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
@@ -48,12 +55,14 @@ msgid ""
 "<i class=\"fa fa-lg fa-plus-circle mr-2\" aria-label=\"Create new quotation\" title=\"Create new quotation\"/>\n"
 "                        New Quotation"
 msgstr ""
+"<i class=\"fa fa-lg fa-plus-circle mr-2\" aria-label=\"Maak nieuwe offerte\" title=\"Maak nieuwe offerte\"/>\n"
+"Nieuwe offerte"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:123
 #, python-format
 msgid "<p class='o_view_nocontent_smiling_face'>No more Tasks</p>"
-msgstr ""
+msgstr "<p class='o_view_nocontent_smiling_face'>Geen taken meer</p>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm
@@ -61,25 +70,27 @@ msgid ""
 "<span attrs=\"{'invisible': [('planned_date_end', '=', False)]}\"> to "
 "</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('planned_date_end', '=', False)]}\"> tot "
+"</span>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Add materials"
-msgstr ""
+msgstr "Voeg materialen toe"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_billable
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__allow_billable
 msgid "Allow to bill Tasks"
-msgstr ""
+msgstr "Sta toe om taken te factureren"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__product_template_ids
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__product_template_ids
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_create_sale_order__product_template_ids
 msgid "Allowed Products"
-msgstr ""
+msgstr "Toegestane producten"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_res_config_settings
@@ -89,7 +100,7 @@ msgstr "Configuratie instellingen"
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task_create_sale_order
 msgid "Create SO from task"
-msgstr ""
+msgstr "Maak verkooporder vanuit taak"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_product_task_map__create_uid
@@ -125,7 +136,7 @@ msgstr "Gereed"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__partner_email
 msgid "Email "
-msgstr ""
+msgstr "E-mail"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__planned_date_end
@@ -135,12 +146,12 @@ msgstr "Einddatum"
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.menu_fsm_root
 msgid "Field Service"
-msgstr ""
+msgstr "Buitendienst"
 
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_product_task_map_user
 msgid "Fsm User"
-msgstr ""
+msgstr "Fsm gebruiker"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search
@@ -185,22 +196,22 @@ msgstr "Laatst bijgewerkt op"
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__material_line_ids
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_create_sale_order__material_line_ids
 msgid "Material Line"
-msgstr ""
+msgstr "Materiaallijn"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__material_line_product_count
 msgid "Material Line Product Count"
-msgstr ""
+msgstr "Materiaallijn product teller"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__material_line_total_price
 msgid "Material Line Total Price"
-msgstr ""
+msgstr "Totaalprijs materiaallijn"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_product_product__fsm_quantity
 msgid "Material Quantity"
-msgstr ""
+msgstr "Materiaal hoeveelheid"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__partner_mobile
@@ -242,12 +253,12 @@ msgstr "Telefoon"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search
 msgid "Planned for Today"
-msgstr ""
+msgstr "Gepland voor vandaag"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__planning_overlap
 msgid "Planning Overlap"
-msgstr ""
+msgstr "Planning overlap"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_product_product_kanban_material
@@ -264,7 +275,7 @@ msgstr "Product"
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_product_task_map
 msgid "Product Task Map"
-msgstr ""
+msgstr "Product taak map"
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_project_project__timesheet_product_id
@@ -309,13 +320,13 @@ msgstr "Aantal offertes"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Quotation(s)"
-msgstr ""
+msgstr "Offerte(s)"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Quotations created from this task"
-msgstr ""
+msgstr "Offertes aangemaakt vanuit deze taak"
 
 #. module: industry_fsm
 #: model:project.task,legend_done:industry_fsm.planning_task_0
@@ -340,7 +351,7 @@ msgstr "Verkooporder"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search
 msgid "Search planning"
-msgstr ""
+msgstr "Doorzoek planning"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm
@@ -367,22 +378,22 @@ msgstr "Taak"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_is_done
 msgid "Task Done"
-msgstr ""
+msgstr "Taak is gereed"
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_sale_order__task_id
 msgid "Task from which quotation have been created"
-msgstr ""
+msgstr "Taak van waaruit een offerte is aangemaakt"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_kanban
 msgid "Task name"
-msgstr ""
+msgstr "Taaknaam"
 
 #. module: industry_fsm
 #: sql_constraint:product.task.map:0
 msgid "The task and product must be unique on materials ordered!"
-msgstr ""
+msgstr "Deze taak en product moeten uniek zijn op de bestelde materialen!"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:89
@@ -401,7 +412,7 @@ msgstr "Bestede tijd"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm
 msgid "Time recorded on this task"
-msgstr ""
+msgstr "Tijd geregistreerd op deze taak"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.timesheet_view_form
@@ -411,7 +422,7 @@ msgstr "Urenstaat"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__timesheet_product_id
 msgid "Timesheet Product"
-msgstr ""
+msgstr "Urenstaat product"
 
 #. module: industry_fsm
 #: model:product.product,uom_name:industry_fsm.fsm_time_product
@@ -423,20 +434,20 @@ msgstr "Stuk(s)"
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form_sale
 msgid "Use Intervention Reports"
-msgstr ""
+msgstr "Gebruik interventie rapporten"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:165
 #, python-format
 msgid "You haven't started this task yet!"
-msgstr ""
+msgstr "U heeft deze taak nog niet gestart!"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "other task(s) for this employee at the same time."
-msgstr ""
+msgstr "andere taak/taken voor deze werknemer op dezelfde tijd."
 
 #. module: industry_fsm
 #: model:ir.actions.server,name:industry_fsm.project_task_action_worker_tasks
 msgid "project.task.action.worker.tasks"
-msgstr ""
+msgstr "project.task.action.worker.tasks"

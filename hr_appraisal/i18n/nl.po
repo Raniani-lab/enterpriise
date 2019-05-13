@@ -31,12 +31,14 @@ msgstr ""
 msgid ""
 "${object.appraisal_id.employee_id.name} Appraisal: ${object.survey_id.title}"
 msgstr ""
+"${object.appraisal_id.employee_id.name} Beoordeling: "
+"${object.survey_id.title}"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:175
 #, python-format
 msgid "%s appraisal: %s"
-msgstr ""
+msgstr "%s beoordeling: %s"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:128
@@ -92,6 +94,9 @@ msgid ""
 "                        Appraisal\n"
 "                    </span>"
 msgstr ""
+"<span class=\"o_stat_text\">\n"
+"                        Beoordeling\n"
+"                    </span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -178,7 +183,7 @@ msgstr "Aanvullende opmerkingen"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
 msgid "An appraisal will be automatically created."
-msgstr ""
+msgstr "Een beoordeling wordt automatisch aangemaakt."
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_11
@@ -273,7 +278,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
 msgid "Appraisal Scheduling"
-msgstr ""
+msgstr "Beoordeling planning"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:265
@@ -291,7 +296,7 @@ msgstr "Beoordeling statistieken"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_template_id
 msgid "Appraisal Survey Invite Email"
-msgstr ""
+msgstr "Beoordeling uitnodiging enquête e-mail"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
@@ -1068,7 +1073,7 @@ msgstr "Managers"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_max_period
 msgid "Maximum number of months between appraisals"
-msgstr ""
+msgstr "Maximum aantal maanden tussen beoordelingen."
 
 #. module: hr_appraisal
 #: model_terms:survey.question,description:hr_appraisal.appraisal_3
@@ -1094,7 +1099,7 @@ msgstr "Berichten"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_min_period
 msgid "Minimum number of months between appraisals"
-msgstr ""
+msgstr "Minimaal aantal maanden tussen beoordelingen"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_6
@@ -1372,12 +1377,12 @@ msgstr "Verzend beoordelingsformulier naar"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
 msgid "Send Appraisal to"
-msgstr ""
+msgstr "Verzend beoordeling naar"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Send Appraisals Form To"
-msgstr ""
+msgstr "Verstuur beoordelingsformulier naar"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_sent_ids
@@ -1387,7 +1392,7 @@ msgstr "Verzend formulieren"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
 msgid "Set the minimum number of months between appraisal."
-msgstr ""
+msgstr "Stel het minimaal aantal maanden in tussen beoordelingen."
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_config_settings_action
@@ -1779,6 +1784,8 @@ msgid ""
 "on %s. If you think it's too late, feel free to have a chat with your "
 "manager."
 msgstr ""
+"Uw laatste beoordeling was op %s. U kan een nieuwe beoordeling aanvragen op "
+"%s. Indien u denkt dat dit te laat is kan u chatten met uw manager."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_survey_id

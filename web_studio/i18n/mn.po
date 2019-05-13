@@ -931,7 +931,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Эвхэгддэг цэс"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban

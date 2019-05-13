@@ -6,6 +6,7 @@
         <field name="inherit_id" ref="quality.quality_point_view_form"/>
         <field name="arch" type="xml">
             <field name="test_type_id" position="after">
+                <field name="component_id" attrs="{'required': [('test_type', 'in', ('register_byproducts', 'register_consumed_materials'))], 'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('test_type', 'not in', ('register_byproducts', 'register_consumed_materials'))]}"/>
                 <field name="test_report_type" widget="selection" attrs="{'invisible': [('test_type','!=','print_label')]}"/>
             </field>
             <field name="picking_type_id" position="after">
@@ -15,7 +16,6 @@
             <field name="user_id" position="after">
                 <field name="worksheet" widget="radio" attrs="{'invisible': ['|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False)]}"/>
                 <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('worksheet', '!=', 'scroll')]}"/>
-                <field name="component_id" attrs="{'required': [('test_type', '=', 'register_consumed_materials')], 'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('test_type', '!=', 'register_consumed_materials')]}"/>
             </field>
         </field>
     </record>

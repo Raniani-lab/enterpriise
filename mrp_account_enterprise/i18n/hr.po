@@ -49,7 +49,7 @@ msgstr ""
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Quantity</span>"
-msgstr ""
+msgstr "<span>Količina</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure

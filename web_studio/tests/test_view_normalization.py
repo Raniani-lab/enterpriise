@@ -1304,6 +1304,52 @@ class TestViewNormalization(TransactionCase):
               </data>
             ''')
 
+    # Identical fields in same xpath do not have mistaken identity
+    def test_view_normalization_37(self):
+        self.view = self.base_view.create({
+            'arch_base':
+            '''
+              <data>
+                <group name="o2m_field"/>
+              </data>
+            ''',
+            'model': 'res.partner',
+            'type': 'form'})
+
+        self._test_view_normalization(
+            '''
+              <data>
+                <xpath expr="//group" position="inside">
+                    <tree>
+                        <div name="first_in_tree"/>
+                        <div name="middle"/>
+                        <div name="last_in_tree"/>
+                    </tree>
+                    <form>
+                        <div name="first_in_form"/>
+                        <div name="middle"/>
+                        <div name="last_in_form"/>
+                    </form>
+                </xpath>
+              </data>
+            ''',
+            '''
+              <data>
+                <xpath expr="//group[@name='o2m_field']" position="inside">
+                  <tree>
+                    <div name="first_in_tree"/>
+                    <div name="middle"/>
+                    <div name="last_in_tree"/>
+                  </tree>
+                  <form>
+                    <div name="first_in_form"/>
+                    <div name="middle"/>
+                    <div name="last_in_form"/>
+                  </form>
+                </xpath>
+              </data>
+            ''')
+
     def tearDown(self):
         super(TestViewNormalization, self).tearDown()
         random.seed()

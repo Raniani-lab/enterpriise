@@ -109,7 +109,7 @@
                 <t t-if="options['cash_basis']">Cash Basis</t>
                 <t t-if="not options['cash_basis']">Accrual Basis</t>
             </t>
-            <t t-if="options.get('all_entries') != None" groups="account.group_account_user"> 
+            <t t-if="options.get('all_entries') != None" groups="account.group_account_user">
                 <t t-if="options.get('cash_basis') != None">,</t>
                 <t t-if="options['all_entries']">With Draft Entries</t>
                 <t t-if="not options['all_entries']">Posted Entries Only</t>
@@ -271,10 +271,23 @@
         <div class="btn-group o_dropdown o_account_reports_filter_partner" t-if="options.get('partner')">
             <t t-call="account_reports.search_template_partner"/>
         </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_bool" t-if="options.get('cash_basis') != None or options.get('all_entries') != None or options.get('unfold_all') != None">
+        <div id="extra_options_dropdown" class="btn-group o_dropdown o_account_reports_filter_bool" t-if="options.get('cash_basis') != None or options.get('all_entries') != None or options.get('unfold_all') != None">
             <t t-call="account_reports.search_template_extra_options"/>
         </div>
     </template>
+
+    <template id="search_template_extra_options_generic_tax_report" inherit_id="account_reports.search_template_extra_options" primary="True">
+        <xpath expr="//div[@role='menu']" position="inside">
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('tax_grids') != None" title="Group amounts by tax grid" data-filter="tax_grids" groups="account.group_account_user">Use Tax Grid</a>
+        </xpath>
+    </template>
+
+    <template id="search_template_generic_tax_report" inherit_id="account_reports.search_template" primary="True">
+        <xpath expr="//div[@id='extra_options_dropdown']/t" position="replace">
+            <t t-call="account_reports.search_template_extra_options_generic_tax_report"/>
+        </xpath>
+    </template>
+
 
     </data>
 </odoo>

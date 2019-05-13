@@ -172,7 +172,8 @@ class Providerdhl(models.Model):
             shipment_request['RegionCode'] = srm._set_region_code(self.dhl_region_code)
             shipment_request['PiecesEnabled'] = srm._set_pieces_enabled(True)
             shipment_request['RequestedPickupTime'] = srm._set_requested_pickup_time(True)
-            shipment_request['Billing'] = srm._set_billing(self.dhl_account_number, "S", self.dhl_dutiable)
+            duty_payment_type = self.env['ir.config_parameter'].sudo().get_param("delivery_dhl.duty_payment_type", "S") if self.dhl_dutiable else None
+            shipment_request['Billing'] = srm._set_billing(self.dhl_account_number, "S", duty_payment_type)
             shipment_request['Consignee'] = srm._set_consignee(picking.partner_id)
             shipment_request['Shipper'] = srm._set_shipper(self.dhl_account_number, picking.company_id.partner_id, picking.picking_type_id.warehouse_id.partner_id)
             total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])
@@ -209,7 +210,8 @@ class Providerdhl(models.Model):
         shipment_request['RegionCode'] = srm._set_region_code(self.dhl_region_code)
         shipment_request['PiecesEnabled'] = srm._set_pieces_enabled(True)
         shipment_request['RequestedPickupTime'] = srm._set_requested_pickup_time(True)
-        shipment_request['Billing'] = srm._set_billing(self.dhl_account_number, "S", self.dhl_dutiable)
+        duty_payment_type = self.env['ir.config_parameter'].sudo().get_param("delivery_dhl.duty_payment_type", "S") if self.dhl_dutiable else None
+        shipment_request['Billing'] = srm._set_billing(self.dhl_account_number, "S", duty_payment_type)
         shipment_request['Consignee'] = srm._set_consignee(picking.picking_type_id.warehouse_id.partner_id)
         shipment_request['Shipper'] = srm._set_shipper(self.dhl_account_number, picking.partner_id, picking.partner_id)
         total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])

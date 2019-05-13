@@ -105,9 +105,6 @@
                     padding-top: 8px;
                     @include o-bg-color($o-web-studio-bg-medium);
 
-                    &:last-child() {
-                        padding: 9px 15px 37px;
-                    }
                     .row {
                         margin-bottom: 8px;
                     }

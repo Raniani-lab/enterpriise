@@ -81,18 +81,18 @@
             </button>
         </h5>
     </div>
-    <div t-att-id="id" class="collapse" t-att-aria-labelledby="header" data-parent="#accordion">
+    <div t-att-id="id" class="collapse card-body" t-att-aria-labelledby="header" data-parent="#accordion">
     <!-- dynamically inserted here -->
     </div>
 </div>
 
 <!-- edit components templates -->
-<div t-name="web_studio.ReportDirectiveTField" class="o_web_studio_sidebar_text card-body">
+<div t-name="web_studio.ReportDirectiveTField" class="o_web_studio_sidebar_text">
     <label>Field expression</label>
     <div class="o_web_studio_tfield_fieldexpression" />
 </div>
 
-<div t-name="web_studio.ReportDirectiveTIf" class="card-body">
+<div t-name="web_studio.ReportDirectiveTIf">
     <div class="o_web_studio_sidebar_text">
         <label for="if_expression">Visible if</label>
         <div class="o_web_studio_tif_ifexpression">
@@ -107,19 +107,19 @@
     <label for="o_web_studio_telse_elseexpression">Else <span class="float-left o_web_studio_telse_elseexpression"/> (t-if="<t t-esc="widget.tIf"/>")</label>
 </div>
 
-<div t-name="web_studio.ReportDirectiveTEsc" class="o_web_studio_sidebar_text card-body">
+<div t-name="web_studio.ReportDirectiveTEsc" class="o_web_studio_sidebar_text">
     <label for="if_expression">Esc expression</label>
     <div class="o_web_studio_tesc_escexpression" />
 </div>
 
-<div t-name="web_studio.ReportDirectiveTSet" class="o_web_studio_sidebar_text card-body">
+<div t-name="web_studio.ReportDirectiveTSet" class="o_web_studio_sidebar_text">
     <label for="set_expression">Set expression</label>
     <div class="o_web_studio_tset_setexpression" />
     <label for="value_expression">Related expression</label>
     <div class="o_web_studio_tset_valueexpression" />
 </div>
 
-<div t-name="web_studio.ReportDirectiveTForeach" class="o_web_studio_sidebar_text card-body">
+<div t-name="web_studio.ReportDirectiveTForeach" class="o_web_studio_sidebar_text">
     <label for="foreach_expression">Foreach expression</label>
     <div class="o_web_studio_tforeach_foreachexpression" />
     <label for="as_expression">As expression</label>
@@ -152,7 +152,7 @@
     </div>
 </div>
 
-<div t-name="web_studio.ReportColumn" class="card-body row">
+<div t-name="web_studio.ReportColumn" class="row">
     <div class="o_web_studio_sidebar_text col-6">
         <label for="o_web_studio_size">Size</label>
         <div class="input-group o_web_studio_size">
@@ -167,7 +167,7 @@
     </div>
 </div>
 
-<div t-name="web_studio.ReportImage" class="card-body">
+<div t-name="web_studio.ReportImage">
     <div class="o_web_studio_sidebar_text">
         <label for="o_web_studio_source">Source</label>
         <div class="o_web_studio_source"/>
@@ -181,13 +181,13 @@
     </div>
 </div>
 
-<div t-name="web_studio.ReportText" class="card-body">
+<div t-name="web_studio.ReportText">
     <div class="o_web_studio_sidebar_text">
         <div class="o_web_studio_text"/>
     </div>
 </div>
 
-<div t-name="web_studio.ReportLayoutEditable" class="o_web_studio_layout card-body">
+<div t-name="web_studio.ReportLayoutEditable" class="o_web_studio_layout">
     <div class="row no-gutters">
         <div class="col-9 o_web_studio_sidebar_text o_web_studio_margin">
             <label>Margins</label>

@@ -28,27 +28,27 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
 msgid "# Mailings"
-msgstr ""
+msgstr "К-сть розсилок"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__total_participant_count
 msgid "# of active and completed participants"
-msgstr "# активних та завершених учасників"
+msgstr "К-сть активних та завершених учасників"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__running_participant_count
 msgid "# of active participants"
-msgstr "# активних учасників"
+msgstr "К-сть активних учасників"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__completed_participant_count
 msgid "# of completed participants"
-msgstr "# завершених підисників"
+msgstr "К-сть завершених підисників"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__test_participant_count
 msgid "# of test participants"
-msgstr ""
+msgstr "К-сть тестових учасників"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -176,6 +176,8 @@ msgid ""
 "<span class=\"o_form_label\">Choose an existing record or create a new one "
 "to test</span>"
 msgstr ""
+"<span class=\"o_form_label\">Виберіть існуючий запис або створіть новий для "
+"тестування</span>"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -190,7 +192,7 @@ msgstr "<span class=\"oe_edit_only\">Назва</span>"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<span class=\"oe_inline\">after</span>"
-msgstr ""
+msgstr "<span class=\"oe_inline\">після</span>"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -249,7 +251,7 @@ msgstr "Дія"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_domain
 msgid "Activity Filter"
-msgstr ""
+msgstr "Фільтр дій"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_type
@@ -263,6 +265,8 @@ msgid ""
 "Activity will only be performed if record satisfies this domain, obtained "
 "from the combination of the activity filter and its inherited filter"
 msgstr ""
+"Активність буде виконуватися тільки тоді, коли запис задовольняє цей домен, "
+"отриманий з комбінації фільтра активності та його успадкованого фільтра"
 
 #. module: marketing_automation
 #: model:mail.mass_mailing,name:marketing_automation.mass_mailing_after_7_days
@@ -279,7 +283,7 @@ msgstr "Після 7 днів (якщо досі не клієнти)"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
 msgid "Applied Filter"
-msgstr ""
+msgstr "Застосований фільтр"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
@@ -466,7 +470,7 @@ msgstr "Видалити все"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
 msgid "Direct child traces"
-msgstr "Прямі дочірні простежування"
+msgstr "Прямі дочірні відслідковування"
 
 #. module: marketing_automation
 #. openerp-web
@@ -497,7 +501,7 @@ msgstr "Домен"
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__activity_domain
 msgid "Domain that applies to this activity and its child activities"
-msgstr ""
+msgstr "Домен, який застосовується до цієї дії та її дочірніх дій"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -578,7 +582,7 @@ msgstr "Виняток у дії сервера: %s"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 msgid "Exclude Test"
-msgstr ""
+msgstr "Виключити тест"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -747,18 +751,18 @@ msgstr "Помічено як завершено"
 #: model:ir.model.fields,field_description:marketing_automation.field_account_invoice_send__marketing_activity_id
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__marketing_activity_id
 msgid "Marketing Activity"
-msgstr "Дія відмічення"
+msgstr "Дія маркетингу"
 
 #. module: marketing_automation
 #: model:ir.module.category,name:marketing_automation.module_marketing_automation_category
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu
 msgid "Marketing Automation"
-msgstr "Автоматичне відмічення"
+msgstr "Автоматизація маркетингу"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.mail_mass_mailing_action_marketing_automation
 msgid "Marketing Automation Mailings"
-msgstr ""
+msgstr "Розсилки автоматизація маркетингу"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:589
@@ -794,7 +798,7 @@ msgstr "Маркетингова кампанія"
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_campaign_test
 msgid "Marketing Campaign: Launch a Test"
-msgstr ""
+msgstr "Маркетингова кампанія: Запустіть тест"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_participant
@@ -937,19 +941,19 @@ msgstr "Батьківський"
 #: code:addons/marketing_automation/models/marketing_participant.py:183
 #, python-format
 msgid "Parent activity mail bounced"
-msgstr "Батьківська дія  пошти відхилена"
+msgstr "Повідомлення батьківської дії  відхилене"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_participant.py:181
 #, python-format
 msgid "Parent activity mail clicked"
-msgstr "Пошта батьківської активності натиснута"
+msgstr "Повідомлення батьківської дії натиснуте"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_participant.py:182
 #, python-format
 msgid "Parent activity mail opened"
-msgstr "Пошта батьківської активності відкрита"
+msgstr "Повідомлення батьківської дії відкрите"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_participant.py:180
@@ -968,7 +972,7 @@ msgstr "Учасник"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
 msgid "Participant Name"
-msgstr ""
+msgstr "Ім'я учасника"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.marketing_participant_action_campaign
@@ -1121,7 +1125,7 @@ msgstr "Пошук учасників"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 msgid "Search Traces"
-msgstr ""
+msgstr "Пошук відслідковування"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_number
@@ -1196,7 +1200,7 @@ msgstr "Дані графіку статистики"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Stop"
-msgstr "Закінчення"
+msgstr "Зупинити"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
@@ -1224,7 +1228,7 @@ msgstr "Необхідно синхронізувати учасників"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "TEST"
-msgstr ""
+msgstr "ТЕСТ"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1241,12 +1245,12 @@ msgstr "Цільова модель"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__is_test
 msgid "Test Record"
-msgstr ""
+msgstr "Запис тесту"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__is_test
 msgid "Test Trace"
-msgstr ""
+msgstr "Відслідковування тесту"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1331,7 +1335,7 @@ msgstr "Оновити"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mail_mass_mailing_view_search
 msgid "Used in Marketing Automation"
-msgstr ""
+msgstr "Використовується в автоматизації маркетингу"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__unique_field_id
@@ -1382,14 +1386,13 @@ msgstr "Робочий процес"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Workflow Started On"
-msgstr "Робочий процес почато на"
+msgstr "Робочий процес почато"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:173
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
-msgstr ""
-"Щоб розпочати цю кампанію, потрібно налаштувати принаймні одну діяльність."
+msgstr "Щоб розпочати цю кампанію, потрібно встановити принаймні одну дію."
 
 #. module: marketing_automation
 #: selection:marketing.activity,trigger_type:0
@@ -1409,9 +1412,9 @@ msgstr "напр. пропозиції електронної комерції"
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 msgid "load our campaign templates"
-msgstr ""
+msgstr "завантажте наші шаблони кампанії"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 msgid "to get some ideas."
-msgstr ""
+msgstr "щоб отримати кілька ідей."

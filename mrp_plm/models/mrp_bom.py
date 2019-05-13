@@ -123,7 +123,10 @@ class MrpBomLine(models.Model):
     def bom_line_change(self, vals, operation='update'):
         MrpEco = self.env['mrp.eco']
         for line in self:
-            ecos = MrpEco.search([('bom_id', '=', line.bom_id.id), ('state', 'in', ('progress', 'rebase'))])
+            ecos = MrpEco.search([
+                ('bom_id', '=', line.bom_id.id), ('state', 'in', ('progress', 'rebase')),
+                ('type', 'in', ('bom', 'both'))
+            ])
             if ecos:
                 # Latest bom line (product, uom, operation_id, product_qty)
                 product_id = vals.get('product_id', line.product_id.id)

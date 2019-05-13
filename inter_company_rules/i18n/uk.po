@@ -60,7 +60,7 @@ msgid ""
 msgstr ""
 "<strong>\n"
 "                                <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml8\">Замовлення на продаж </span>\n"
-"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale')]}\" class=\"ml8\">Замовлення а купівлю </span>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale')]}\" class=\"ml8\">Замовлення на купівлю </span>\n"
 "                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale_purchase')]}\" class=\"ml8\"> Замовлення на продаж та купівлю </span>\n"
 "                            </strong>\n"
 "                            використовуючи"
@@ -135,15 +135,14 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__intercompany_user_id
 msgid "Inter Company User"
-msgstr "Користувач внутрішня компанія"
+msgstr "Користувач внутрішньої компанії"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:42
 #: code:addons/inter_company_rules/models/sale_order.py:46
 #, python-format
 msgid "Inter company user of company %s doesn't have enough access rights"
-msgstr ""
-"Внутрішня компанія користувач компанії %s немає достатніх прав доступу"
+msgstr "Внутрішній користувач компанії %s немає достатніх прав доступу"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
@@ -243,7 +242,7 @@ msgstr "Початкове замовлення на купівлю"
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order__auto_sale_order_id
 msgid "Source Sales Order"
-msgstr "Джерело продажів замовлення"
+msgstr "Джерело замовлення на продаж"
 
 #. module: inter_company_rules
 #: selection:res.company,rule_type:0 selection:res.config.settings,rule_type:0
@@ -307,7 +306,7 @@ msgstr "створити"
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
 msgid "to"
-msgstr "по"
+msgstr "до"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form

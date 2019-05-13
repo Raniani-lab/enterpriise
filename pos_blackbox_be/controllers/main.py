@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import hashlib
 import os
 
 from odoo import http
@@ -30,11 +31,13 @@ class GovCertificationController(http.Controller):
             absolute_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, relative_file_path))
             size_in_bytes = os.path.getsize(absolute_file_path)
 
-            with open(absolute_file_path, 'r') as f:
+            with open(absolute_file_path, 'rb') as f:
+                content = f.read()
                 data['files'].append({
                     'name': relative_file_path,
                     'size_in_bytes': size_in_bytes,
-                    'contents': f.read()
+                    'contents': content,
+                    'hash': hashlib.sha1(content).hexdigest()
                 })
 
         return request.render('pos_blackbox_be.fdm_source', data, mimetype='text/plain')

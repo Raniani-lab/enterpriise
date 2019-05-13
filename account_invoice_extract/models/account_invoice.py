@@ -143,7 +143,7 @@ class AccountInvoice(models.Model):
                                 record.extract_state = 'error_status'
                         except AccessError:
                             record.extract_state = 'error_status'
-                            self.extract_status_code = ERROR_NO_CONNECTION
+                            record.extract_status_code = ERROR_NO_CONNECTION
         return res
 
     def retry_ocr(self):
@@ -157,6 +157,7 @@ class AccountInvoice(models.Model):
                 'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/parse'
             user_infos = {
                 'user_company_VAT': self.env.company_id.vat,
+                'user_company_name': self.env.user.company_id.name,
                 'user_lang': self.env.user.lang,
                 'user_email': self.env.user.email,
             }
@@ -260,7 +261,7 @@ class AccountInvoice(models.Model):
                     'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/validate'
                 values = {
                     'total': record.get_validation('total'),
-                    'sub_total': record.get_validation('sub_total'),
+                    'subtotal': record.get_validation('subtotal'),
                     'global_taxes': record.get_validation('global_taxes'),
                     'global_taxes_amount': record.get_validation('global_taxes_amount'),
                     'date': record.get_validation('date'),
@@ -449,15 +450,13 @@ class AccountInvoice(models.Model):
     @api.multi
     def _set_supplier(self, supplier_ocr, vat_number_ocr):
         self.ensure_one()
-        partner_id = self.find_partner_id_with_name(supplier_ocr)
-        if partner_id != 0:
-            self.partner_id = partner_id
-            self._onchange_partner_id()
-        else:
-            partner_vat = self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1)
-            if partner_vat.exists():
-                self.partner_id = partner_vat
-                self._onchange_partner_id()
+        if not self.partner_id:
+            partner_id =  self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1).id
+            if not partner_id:
+                partner_id = self.find_partner_id_with_name(supplier_ocr)
+                if partner_id:
+                    self.write({'partner_bank_id': False, 'partner_id': partner_id})
+                    self._onchange_partner_id()
 
     @api.multi
     def _set_invoice_lines(self, invoice_lines, subtotal_ocr):
@@ -554,8 +553,10 @@ class AccountInvoice(models.Model):
     @api.multi
     def _set_currency(self, currency_ocr):
         self.ensure_one()
-        self.currency_id = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr),
+        currency = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr),
             ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+        if currency:
+            self.currency_id = currency
 
     @api.multi
     def check_status(self):
@@ -574,7 +575,7 @@ class AccountInvoice(models.Model):
             if result['status_code'] == SUCCESS:
                 record.extract_state = "waiting_validation"
                 ocr_results = result['results'][0]
-                self.extract_word_ids.unlink()
+                record.extract_word_ids.unlink()
 
                 supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
                 date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
@@ -589,7 +590,7 @@ class AccountInvoice(models.Model):
                 invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
                 if invoice_lines:
-                    self._set_invoice_lines(invoice_lines, subtotal_ocr)
+                    record._set_invoice_lines(invoice_lines, subtotal_ocr)
                 elif total_ocr:
                     vals_invoice_line = {
                         'name': "/",
@@ -605,14 +606,14 @@ class AccountInvoice(models.Model):
                             else:
                                 vals_invoice_line['invoice_line_tax_ids'].append((4, taxes_record.id))
                             vals_invoice_line['price_unit'] = subtotal_ocr
-                    self.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(vals_invoice_line)
+                    record.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(vals_invoice_line)
 
-                self._set_supplier(supplier_ocr, vat_number_ocr)
-                self.date_invoice = date_ocr
-                self.date_due = due_date_ocr
-                self.reference = invoice_id_ocr
+                record._set_supplier(supplier_ocr, vat_number_ocr)
+                record.date_invoice = date_ocr
+                record.date_due = due_date_ocr
+                record.reference = invoice_id_ocr
                 if self.user_has_groups('base.group_multi_currency'):
-                    self._set_currency(currency_ocr)
+                    record._set_currency(currency_ocr)
 
                 fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
                 for field in fields_with_boxes:
@@ -631,7 +632,7 @@ class AccountInvoice(models.Model):
                                 "word_box_height": word['coords'][3],
                                 "word_box_angle": word['coords'][4],
                             }))
-                        self.write({'extract_word_ids': data})
+                        record.write({'extract_word_ids': data})
             elif result['status_code'] == NOT_READY:
                 record.extract_state = 'extract_not_ready'
             else:

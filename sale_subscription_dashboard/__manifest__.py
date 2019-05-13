@@ -4,7 +4,7 @@
 {
     'name': 'Sale Subscription Dashboard',
     'version': '1.0',
-    'depends': ['sale_subscription', 'sale_subscription_asset'],
+    'depends': ['sale_subscription'],
     'description': """
 Sale Subscription Dashboard
 ===========================

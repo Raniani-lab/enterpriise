@@ -24,7 +24,7 @@ var DataImportStmt = BaseImport.DataImport.extend({
         });
     },
     create_model: function() {
-        return Promise().resolve();
+        return Promise.resolve();
     },
     import_options: function () {
         var options = this._super();

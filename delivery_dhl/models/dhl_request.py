@@ -10,6 +10,7 @@ from zeep.wsdl.utils import etree_to_string
 
 from odoo import _
 from odoo.exceptions import UserError
+from odoo.tools import float_repr
 
 class DHLProvider():
 
@@ -63,12 +64,13 @@ class DHLProvider():
         else:
             return "N"
 
-    def _set_billing(self, shipper_account, payment_type, is_dutiable):
+    def _set_billing(self, shipper_account, payment_type, duty_payment_type):
         billing = self.factory.Billing()
         billing.ShipperAccountNumber = shipper_account
         billing.ShippingPaymentType = payment_type
-        if is_dutiable:
-            billing.DutyPaymentType = "S"
+        if duty_payment_type:
+            # S:Shipper, R:Recipient, T:Third Party.
+            billing.DutyPaymentType = duty_payment_type
         return billing
 
     def _set_consignee(self, partner_id):

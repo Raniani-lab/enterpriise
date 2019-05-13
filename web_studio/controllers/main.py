@@ -11,7 +11,7 @@ from odoo import http, _
 from odoo.http import content_disposition, request
 from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.addons.web_studio.controllers import export
-from odoo.tools import ustr
+from odoo.tools import ustr, sql
 
 
 class WebStudioController(http.Controller):
@@ -276,7 +276,16 @@ class WebStudioController(http.Controller):
               This is why we need to search the name depending of the given id.
         """
         # Get current model
-        model = request.env['ir.model'].search([('model', '=', values.pop('model_name'))])
+        model_name = values.pop('model_name')
+        Model = request.env[model_name]
+        # If the model is backed by a sql view
+        # it doesn't make sense to add field, and won't work
+        table_kind = sql.table_kind(request.env.cr, Model._table)
+        if not table_kind or table_kind == 'v':
+            raise UserError(_('The model %s doesn\'t support adding fields.') % Model._name)
+
+        model = request.env['ir.model'].search([('model', '=', model_name)])
+
         values['model_id'] = model.id
 
         # Field type is called ttype in the database
@@ -1257,7 +1266,25 @@ class WebStudioController(http.Controller):
             })
         inline_view = request.env[model]._fields_view_get(view_type=subview_type)
         view_arch = inline_view['arch']
-        xml_node = etree.fromstring(view_arch)
+        xml_node = self._inline_view_filter_nodes(etree.fromstring(view_arch))
         xpath_node.insert(0, xml_node)
         studio_view.arch_db = etree.tostring(arch, encoding='utf-8', pretty_print=True)
         return studio_view.arch_db
+
+    def _inline_view_filter_nodes(self, inline_view_etree):
+        """
+        Filters out from a standard view some nodes that are
+        irrelevant in an inline view (like the chatter)
+
+        @param {Etree} inline_view_etree: the arch of the view
+        @return {Etree}
+        """
+        unwanted_xpath = [
+            "*[hasclass('oe_chatter')]",
+            "*[hasclass('o_attachment_preview')]",
+        ]
+        for path in unwanted_xpath:
+            for node in inline_view_etree.xpath(path):
+                inline_view_etree.remove(node)
+
+        return inline_view_etree

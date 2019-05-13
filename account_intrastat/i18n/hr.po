@@ -164,7 +164,7 @@ msgstr "ID"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:39
 #, python-format
 msgid "Incoterm Code"
-msgstr ""
+msgstr "Inkoterm šifra"
 
 #. module: account_intrastat
 #: model:ir.model.fields,help:account_intrastat.field_res_company__incoterm_id
@@ -195,7 +195,7 @@ msgstr "Intrastat Kod"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_country_id
 msgid "Intrastat Country"
-msgstr ""
+msgstr "Intrastat država"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:234
@@ -204,12 +204,12 @@ msgstr ""
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_intrastat
 #, python-format
 msgid "Intrastat Report"
-msgstr ""
+msgstr "Intrastat Izvještaj"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_transport_mode_id
 msgid "Intrastat Transport Mode"
-msgstr ""
+msgstr "Zadani način transporta"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
@@ -272,7 +272,7 @@ msgstr "Regija"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:32
 #, python-format
 msgid "Region Code"
-msgstr ""
+msgstr "Šifra regije"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -306,13 +306,13 @@ msgstr ""
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transport"
-msgstr ""
+msgstr "Transport"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:38
 #, python-format
 msgid "Transport Code"
-msgstr ""
+msgstr "Šifra transporta"
 
 #. module: account_intrastat
 #: sql_constraint:account.intrastat.code:0

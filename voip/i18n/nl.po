@@ -172,6 +172,9 @@ msgid ""
 "Categories may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Categorieeën kunnen specifiek gedrag doen afgaan zoals het openen van de "
+"kalender weergave of automatisch als gereed markeren wanneer een bestand "
+"geüpload is"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
@@ -202,7 +205,7 @@ msgstr "Configuratie instellingen"
 #: code:addons/voip/static/src/js/user_agent.js:295
 #, python-format
 msgid "Connecting..."
-msgstr ""
+msgstr "Verbinden..."
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_partner

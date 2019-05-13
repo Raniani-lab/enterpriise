@@ -18,8 +18,8 @@ class AccountInvoice(models.Model):
         ])
 
     @api.multi
-    def action_reconcile_to_check(self, params):
-        action = super(AccountInvoice, self).action_reconcile_to_check(params)
+    def action_reconcile_to_check(self):
+        action = super(AccountInvoice, self).action_reconcile_to_check()
         line = self.reconciliation_move_line_id
         if line:
             if not line.partner_id:

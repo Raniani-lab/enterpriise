@@ -156,7 +156,7 @@ msgid ""
 "Fill this only if you want automatic analytic accounting entries on "
 "production orders."
 msgstr ""
-"Заповніть це, лише якщо ви хочете, щоб автоматичні аналітичні записи "
+"Заповніть це, лише якщо ви хочете автоматичні аналітичні записи "
 "бухгалтерського обліку для виробничих замовлень."
 
 #. module: mrp_account

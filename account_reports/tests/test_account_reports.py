@@ -3,7 +3,7 @@ from odoo.tests import tagged
 from odoo.tests.common import Form, SavepointCase
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, date_utils
 from odoo.tools.misc import formatLang
-
+from unittest.mock import patch
 import datetime
 import copy
 import logging
@@ -169,6 +169,38 @@ class TestAccountReports(SavepointCase):
         inv_mar_8 = cls._create_invoice(cls.env, 600.0, cls.partner_d, 'out_invoice', cls.mar_year_minus_1)
 
         user.company_id = cls.company_parent
+
+        # Write the property on tag group
+        cls.tax_rec_account = cls.env['account.account'].create({
+            'name': 'TAX receivable account',
+            'code': 'TAX REC',
+            'user_type_id': cls.env.ref('account.data_account_type_current_assets').id,
+            'company_id': cls.company_parent.id,
+        })
+        cls.tax_pay_account = cls.env['account.account'].create({
+            'name': 'TAX payable account',
+            'code': 'TAX PAY',
+            'user_type_id': cls.env.ref('account.data_account_type_current_assets').id,
+            'company_id': cls.company_parent.id,
+        })
+        cls.tax_adv_account = cls.env['account.account'].create({
+            'name': 'TAX advance account',
+            'code': 'TAX ADV',
+            'user_type_id': cls.env.ref('account.data_account_type_current_assets').id,
+            'company_id': cls.company_parent.id,
+        })
+        # Set the tax rec/pay on tax_group
+        tax_groups = cls.env['account.tax.group'].search([])
+        tax_groups.write({
+            'property_tax_receivable_account_id': cls.tax_rec_account,
+            'property_tax_payable_account_id': cls.tax_pay_account
+        })
+
+        # Date filter helper
+        cls.january_date = datetime.datetime.strptime('2018-01-01', DEFAULT_SERVER_DATE_FORMAT).date()
+        cls.january_end_date = datetime.datetime.strptime('2018-01-31', DEFAULT_SERVER_DATE_FORMAT).date()
+        cls.february_date = datetime.datetime.strptime('2018-02-01', DEFAULT_SERVER_DATE_FORMAT).date()
+        cls.february_end_date = datetime.datetime.strptime('2018-02-28', DEFAULT_SERVER_DATE_FORMAT).date()
 
         # Create ir.filters to test the financial reports.
         cls.groupby_partner_filter = cls.env['ir.filters'].create({
@@ -2020,7 +2052,7 @@ class TestAccountReports(SavepointCase):
             [
                 ('Virtual GL Balance',                                          '',             ''),
                 ('Current balance of account 101401',                           '03/31/2017',   -950.00),
-                ('Operations to Process',                                       '',             ''),
+                ('Operations to Process',                                       '',             -100),
                 ('Unreconciled Bank Statement Lines',                           '',             ''),
                 ('CUST.IN/2017/0003',                                           '03/01/2017',   100.00),
                 ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
@@ -2030,7 +2062,7 @@ class TestAccountReports(SavepointCase):
                 ('CUST.IN/2017/0001',                                           '01/01/2017',   -600.00),
                 ('Total Virtual GL Balance',                                    '',             -1050.00),
                 ('Last Bank Statement Ending Balance',                          '03/01/2017',   -1050.00),
-                ('Unexplained Difference',                                      '',             ''),
+                ('Unexplained Difference',                                      '',             0),
             ],
         )
 
@@ -2049,7 +2081,7 @@ class TestAccountReports(SavepointCase):
             [
                 ('Virtual GL Balance',                                          '',             ''),
                 ('Current balance of account 101401',                           '03/31/2017',   -1900.00),
-                ('Operations to Process',                                       '',             ''),
+                ('Operations to Process',                                       '',             -200),
                 ('Unreconciled Bank Statement Lines',                           '',             ''),
                 ('CUST.IN/2017/0007',                                           '03/01/2017',   200.00),
                 ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
@@ -2059,7 +2091,7 @@ class TestAccountReports(SavepointCase):
                 ('CUST.IN/2017/0005',                                           '01/01/2017',   -1200.00),
                 ('Total Virtual GL Balance',                                    '',             -2100.00),
                 ('Last Bank Statement Ending Balance',                          '03/01/2017',   -2100.00),
-                ('Unexplained Difference',                                      '',             ''),
+                ('Unexplained Difference',                                      '',             0),
             ],
             currency=self.company_child_eur.currency_id,
         )
@@ -2092,14 +2124,14 @@ class TestAccountReports(SavepointCase):
             [
                 ('Virtual GL Balance',                                          '',             ''),
                 ('Current balance of account 101411',                           '03/31/2017',   2300.00),
-                ('Operations to Process',                                       '',             ''),
+                ('Operations to Process',                                       '',             0),
                 ('Unreconciled Bank Statement Lines',                           '',             ''),
                 ('CUST.IN/2017/0009',                                           '03/01/2017',   2300.00),
                 ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
                 ('CUST.IN/2017/0009',                                           '03/01/2017',   -2300.00),
                 ('Total Virtual GL Balance',                                    '',             2300.00),
                 ('Last Bank Statement Ending Balance',                          '03/01/2017',   2300.00),
-                ('Unexplained Difference',                                      '',             ''),
+                ('Unexplained Difference',                                      '',             0),
             ],
             currency=foreign_currency,
         )
@@ -2247,5 +2279,324 @@ class TestAccountReports(SavepointCase):
                 ('INV/2016/0001',                       '12/01/2016',   '12/01/2016',   '',     '',     '',         '',                 780.00),
                 ('',                                    '',             '',             '',     '',     '',         'Total Due',        895.00),
                 ('',                                    '',             '',             '',     '',     '',         'Total Overdue',    895.00),
+            ],
+        )
+
+    # -------------------------------------------------------------------------
+    # TESTS: VAT report
+    # -------------------------------------------------------------------------
+
+    def _close_vat_entries(self, report, options):
+        ctx = report._set_context(options)
+        ctx['strict_range'] = True
+        report = report.with_context(ctx)
+        move = report._generate_tax_closing_entry(options)
+        return move
+
+    def test_automatic_vat_closing_report_payable(self):
+        def _get_attachment(*args, **kwargs):
+            return []
+        report = self.env['account.generic.tax.report']
+        # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
+        # to return an empty attachment.
+        with patch.object(type(report), '_get_vat_report_attachments', autospec=True, side_effect=_get_attachment):
+            # Try closing VAT in two different period with one invoice in each period.
+            # Create an invoice in january and one in february
+            january_inv_date = datetime.datetime.strptime('2018-01-10', DEFAULT_SERVER_DATE_FORMAT).date()
+            february_inv_date = datetime.datetime.strptime('2018-02-12', DEFAULT_SERVER_DATE_FORMAT).date()
+
+            # December
+            self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', january_inv_date)
+            self._create_invoice(self.env, 100.0, self.partner_a, 'out_invoice', february_inv_date)
+
+            # Try closing vat entries for january
+            options = self._init_options(report, self.january_date, self.january_end_date)
+            move = self._close_vat_entries(report, options)
+            # assert element on move
+            self.assertEquals(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
+            debit_line = move.line_ids.filtered(lambda a: a.debit > 0)
+            credit_line = move.line_ids.filtered(lambda a: a.credit > 0)
+            self.assertEquals(debit_line.debit, 150)
+            self.assertEquals(credit_line.credit, 150)
+            self.assertEquals(credit_line.name, 'Payable tax amount')
+            self.assertEquals(credit_line.account_id.id, self.tax_pay_account.id)
+            move.post()
+
+            # Try closing vat entries for february
+            options = self._init_options(report, self.february_date, self.february_end_date)
+            move = self._close_vat_entries(report, options)
+            # assert element on move
+            self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
+            debit_line = move.line_ids.filtered(lambda a: a.debit == 15)
+            debit_line_balanced = move.line_ids.filtered(lambda a: a.name == 'Balance tax current account (payable)')
+            credit_line_total = move.line_ids.filtered(lambda a: a.credit > 0)
+            self.assertEquals(debit_line.debit, 15)
+            self.assertEquals(debit_line_balanced.debit, 150)
+            self.assertEquals(debit_line_balanced.account_id.id, self.tax_pay_account.id)
+            self.assertEquals(credit_line_total.credit, 165)
+            self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)
+
+    def test_automatic_vat_closing_report_receivable(self):
+        def _get_attachment(*args, **kwargs):
+            return []
+        report = self.env['account.generic.tax.report']
+        # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
+        # to return an empty attachment.
+        with patch.object(type(report), '_get_vat_report_attachments', autospec=True, side_effect=_get_attachment):
+            # Try closing VAT in two different period with one invoice in each period.
+            # Create an invoice in january and one in february
+            january_inv_date = datetime.datetime.strptime('2018-01-10', DEFAULT_SERVER_DATE_FORMAT).date()
+            february_inv_date = datetime.datetime.strptime('2018-02-12', DEFAULT_SERVER_DATE_FORMAT).date()
+
+            # December
+            self._create_invoice(self.env, 100.0, self.partner_a, 'in_invoice', january_inv_date)
+            self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', february_inv_date)
+
+            # Try closing vat entries for january
+            options = self._init_options(report, self.january_date, self.january_end_date)
+            move = self._close_vat_entries(report, options)
+            # assert element on move
+            self.assertEquals(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
+            debit_line = move.line_ids.filtered(lambda a: a.debit > 0)
+            credit_line = move.line_ids.filtered(lambda a: a.credit > 0)
+            self.assertEquals(debit_line.debit, 15)
+            self.assertEquals(debit_line.name, 'Receivable tax amount')
+            self.assertEquals(debit_line.account_id.id, self.tax_rec_account.id)
+            self.assertEquals(credit_line.credit, 15)
+            move.post()
+            # Try closing vat entries for february
+            options = self._init_options(report, self.february_date, self.february_end_date)
+            move = self._close_vat_entries(report, options)
+            # assert element on move
+            self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
+            debit_line = move.line_ids.filtered(lambda a: a.debit == 150)
+            credit_line_balanced = move.line_ids.filtered(lambda a: a.name == 'Balance tax current account (receivable)')
+            credit_line_total = move.line_ids.filtered(lambda a: a.name == 'Payable tax amount')
+            self.assertEquals(debit_line.debit, 150)
+            # Should balance the 15 previous usd on tax receivable
+            self.assertEquals(credit_line_balanced.credit, 15)
+            self.assertEquals(credit_line_balanced.account_id.id, self.tax_rec_account.id)
+            # We still need to pay 135 to the VAT
+            self.assertEquals(credit_line_total.credit, 135)
+            self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)
+
+
+    # -------------------------------------------------------------------------
+    # TESTS: GENERIC TAX REPORT
+    # -------------------------------------------------------------------------
+
+
+    def _create_tax_report_line(self, name, country, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
+        """ Creates a tax report line
+        """
+        create_vals = {
+            'name': name,
+            'country_id': country.id,
+        }
+        if tag_name:
+            create_vals['tag_name'] = tag_name
+        if parent_line:
+            create_vals['parent_id'] = parent_line.id
+        if sequence != None:
+            create_vals['sequence'] = sequence
+        if code:
+            create_vals['code'] = code
+        if formula:
+            create_vals['formula'] = formula
+
+        return self.env['account.tax.report.line'].create(create_vals)
+
+    def test_tax_report_grid(self):
+        test_country = self.env['res.country'].create({
+            'name': "L'Île de la Mouche",
+            'code': 'YY',
+        })
+
+        company = self.env.user.company_id
+        company.country_id = test_country
+        partner = self.env['res.partner'].create({'name': 'Provençal le Gaulois'})
+
+        # We generate a tax report with the following layout
+        #/Base
+        #   - Base 42%
+        #   - Base 11%
+        #/Tax
+        #   - Tax 42%
+        #       - 10.5%
+        #       - 31.5%
+        #   - Tax 11%
+        #/Tax difference (42% - 11%)
+
+        # We create the lines in a different order from the one they have in report,
+        # so that we ensure sequence is taken into account properly when rendering the report
+        tax_section =  self._create_tax_report_line('Tax', test_country, sequence=2)
+        base_section =  self._create_tax_report_line('Base', test_country, sequence=1)
+        base_11_line = self._create_tax_report_line('Base 11%', test_country, sequence=2, parent_line=base_section, tag_name='base_11')
+        base_42_line = self._create_tax_report_line('Base 42%', test_country, sequence=1, parent_line=base_section, tag_name='base_42')
+        tax_42_section = self._create_tax_report_line('Tax 42%', test_country, sequence=1, parent_line=tax_section, code='tax_42')
+        tax_31_5_line = self._create_tax_report_line('Tax 31.5%', test_country, sequence=2, parent_line=tax_42_section, tag_name='tax_31_5')
+        tax_10_5_line = self._create_tax_report_line('Tax 10.5%', test_country, sequence=1, parent_line=tax_42_section, tag_name='tax_10_5')
+        tax_11_line = self._create_tax_report_line('Tax 10.5%', test_country, sequence=2, parent_line=tax_section, tag_name='tax_11', code='tax_11')
+        tax_difference_line = self._create_tax_report_line('Tax difference (42%-11%)', test_country, sequence=3, formula='tax_42 - tax_11')
+
+        # Create two taxes linked to report lines
+        tax_template_11 = self.env['account.tax.template'].create({
+            'name': 'Impôt sur les revenus',
+            'amount': '11',
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'chart_template_id': company.chart_template_id.id,
+            'invoice_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'plus_report_line_ids': [base_11_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'plus_report_line_ids': [tax_11_line.id],
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'minus_report_line_ids': [base_11_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'minus_report_line_ids': [tax_11_line.id],
+                }),
+            ],
+        })
+
+        tax_template_42 = self.env['account.tax.template'].create({
+            'name': 'Impôt sur les revenants',
+            'amount': '42',
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'chart_template_id': company.chart_template_id.id,
+            'invoice_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'plus_report_line_ids': [base_42_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 25,
+                    'repartition_type': 'tax',
+                    'plus_report_line_ids': [tax_10_5_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 75,
+                    'repartition_type': 'tax',
+                    'plus_report_line_ids': [tax_31_5_line.id],
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'minus_report_line_ids': [base_42_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 25,
+                    'repartition_type': 'tax',
+                    'minus_report_line_ids': [tax_10_5_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 75,
+                    'repartition_type': 'tax',
+                    'minus_report_line_ids': [tax_31_5_line.id],
+                }),
+            ],
+        })
+        # The templates needs an xmlid in order so that we can call _generate_tax
+        self.env['ir.model.data'].create({
+            'name': 'account_reports.test_tax_report_tax_11',
+            'module': 'account_reports',
+            'res_id': tax_template_11.id,
+            'model': 'account.tax.template',
+        })
+        tax_11_id = tax_template_11._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template_11.id]
+        tax_11 = self.env['account.tax'].browse(tax_11_id)
+
+        self.env['ir.model.data'].create({
+            'name': 'account_reports.test_tax_report_tax_42',
+            'module': 'account_reports',
+            'res_id': tax_template_42.id,
+            'model': 'account.tax.template',
+        })
+        tax_42_id = tax_template_42._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template_42.id]
+        tax_42 = self.env['account.tax'].browse(tax_42_id)
+
+        # Create an invoice using the tax we just made
+        with Form(self.env['account.invoice'].with_context(type='out_invoice'), view='account.invoice_form') as invoice_form:
+            invoice_form.partner_id = partner
+            with invoice_form.invoice_line_ids.new() as invoice_line_form:
+                invoice_line_form.name = 'Turlututu'
+                invoice_line_form.quantity = 1
+                invoice_line_form.price_unit = 100
+                invoice_line_form.invoice_line_tax_ids.clear()
+                invoice_line_form.invoice_line_tax_ids.add(tax_11)
+                invoice_line_form.invoice_line_tax_ids.add(tax_42)
+        invoice = invoice_form.save()
+        invoice.action_invoice_open()
+
+        # Generate the report and check the results
+        report = self.env['account.generic.tax.report']
+        report_opt = report._get_options({'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': invoice.date, 'mode': 'range', 'date_from': invoice.date}})
+        new_context = report._set_context(report_opt)
+
+        # We check the taxes on invoice have impacted the report properly
+        inv_report_lines = report.with_context(new_context)._get_lines(report_opt)
+        self.assertLinesValues(
+            inv_report_lines,
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                (base_section.name,                 200),
+                (base_42_line.name,                 100),
+                (base_11_line.name,                 100),
+                (tax_section.name,                  53),
+                (tax_42_section.name,               42),
+                (tax_10_5_line.name,                10.5),
+                (tax_31_5_line.name,                31.5),
+                (tax_11_line.name,                  11),
+                (tax_difference_line.name,          31),
+            ],
+        )
+
+        # We refund the invoice
+        refund_wizard = self.env['account.invoice.refund'].with_context(active_ids=[invoice.id]).create({
+            'description': 'Test refund tax repartition',
+            'filter_refund': 'cancel',
+        })
+        refund_wizard.invoice_refund()
+
+        # We check the taxes on refund have impacted the report properly (everything should be 0)
+        ref_report_lines = report.with_context(new_context)._get_lines(report_opt)
+        self.assertLinesValues(
+            ref_report_lines,
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                (base_section.name,                 0),
+                (base_42_line.name,                 0),
+                (base_11_line.name,                 0),
+                (tax_section.name,                  0),
+                (tax_42_section.name,               0),
+                (tax_10_5_line.name,                0),
+                (tax_31_5_line.name,                0),
+                (tax_11_line.name,                  0),
+                (tax_difference_line.name,          0),
             ],
         )

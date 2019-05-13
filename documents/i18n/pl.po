@@ -22,6 +22,7 @@
 # Krystian Harkot <kharkot@trilab.pl>, 2019
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Grzegorz Krukar <grzegorzgk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -29,7 +30,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019\n"
+"Last-Translator: Grzegorz Krukar <grzegorzgk1@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1080,7 +1081,7 @@ msgstr "Spóźnione czynności"
 #. module: documents
 #: selection:documents.share,state:0
 msgid "Live"
-msgstr ""
+msgstr "Na produkcji"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single

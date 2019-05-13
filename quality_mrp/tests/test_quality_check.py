@@ -34,7 +34,7 @@ class TestQualityCheck(TestQualityMrpCommon):
         self.mrp_production_qc_test1.action_confirm()
         self.mrp_production_qc_test1.action_assign()
         produce_wiz = self.env['mrp.product.produce'].with_context(active_id=self.mrp_production_qc_test1.id).create({'qty_producing': self.mrp_production_qc_test1.product_qty, 'final_lot_id': self.env.ref('mrp.lot_product_27_0').id})
-        produce_wiz.workorder_line_ids.write({'qty_done': produce_wiz.qty_producing})
+        produce_wiz._workorder_line_ids().write({'qty_done': produce_wiz.qty_producing})
         produce_wiz.do_produce()
 
         # Check Quality Check for Production is created and check it's state is 'none'.

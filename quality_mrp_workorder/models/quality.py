@@ -7,12 +7,12 @@ from odoo import models, _
 class QualityCheck(models.Model):
     _inherit = "quality.check"
 
-    def _get_check_result(self, test_type):
-        if test_type == 'passfail':
+    def _get_check_result(self):
+        if self.test_type == 'passfail':
             return _('Success') if self.quality_state == 'pass' else _('Failure')
-        elif test_type == 'measure':
+        elif self.test_type == 'measure':
             return '{} {}'.format(self.measure, self.norm_unit)
-        return super(QualityCheck, self)._get_check_result(test_type)
+        return super(QualityCheck, self)._get_check_result()
 
     def redirect_after_pass_fail(self):
         self.ensure_one()

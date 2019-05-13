@@ -579,6 +579,10 @@ class AccountFinancialReportLine(models.Model):
                 bank_journals = self.env['account.journal'].search([('type', 'in', ('bank', 'cash'))])
             bank_accounts = bank_journals.mapped('default_debit_account_id') + bank_journals.mapped('default_credit_account_id')
 
+            if not bank_accounts:
+                raise UserError(
+                    _('No bank account found. Please set Default Debit and Default Credit accounts in journal(s): %s.') % ", ".join(str(b.name) for b in bank_journals)
+                )
             self._cr.execute('SELECT DISTINCT(move_id) FROM account_move_line WHERE account_id IN %s', [tuple(bank_accounts.ids)])
             bank_move_ids = tuple([r[0] for r in self.env.cr.fetchall()])
 

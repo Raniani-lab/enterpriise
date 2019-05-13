@@ -18,7 +18,6 @@ Features:
     'author': 'Camptocamp / Odoo',
     'website': 'https://www.odoo.com/page/subscriptions',
     'depends': [
-        'account_deferred_revenue',
         'sale_management',
         'portal',
         'web_cohort',

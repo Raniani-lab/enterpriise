@@ -31,10 +31,6 @@ class InvoiceTransactionCase(AccountingTestCase):
         self.product = self.env.ref("product.product_product_3")
         self.company = self.env.company_id
         self.account_settings = self.env['res.config.settings']
-        self.tax_tag_iva = self.env['account.account.tag'].create({
-            'name': 'IVA',
-            'applicability': 'taxes',
-        })
         self.tax_positive = self.tax_model.create({
             'name': 'IVA(16%) VENTAS TEST',
             'description': 'IVA(16%)',
@@ -42,7 +38,6 @@ class InvoiceTransactionCase(AccountingTestCase):
             'amount_type': 'percent',
             'type_tax_use': 'sale',
         })
-        self.tax_positive.tag_ids |= self.tax_tag_iva
         self.tax_positive.l10n_mx_cfdi_tax_type = 'Tasa'
         self.tax_negative = self.tax_model.create({
             'name': 'ISR',

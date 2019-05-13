@@ -287,13 +287,15 @@
                                             <field name="name"/>
                                         </form>
                                     </field>
-                                    <group class="oe_subtotal_footer oe_right">
-                                        <field name="recurring_total" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                        <field name="recurring_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
-                                            <label for="recurring_total_incl" />
-                                        </div>
-                                        <field name="recurring_total_incl" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <group name="group_note">
+                                        <group class="oe_subtotal_footer oe_right" name="group_subscription_total">
+                                            <field name="recurring_total" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                            <field name="recurring_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                                <label for="recurring_total_incl" />
+                                            </div>
+                                            <field name="recurring_total_incl" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                        </group>
                                     </group>
                                 </div>
                                 <div name="description">

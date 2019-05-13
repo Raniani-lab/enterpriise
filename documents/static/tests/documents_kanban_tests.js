@@ -2079,7 +2079,7 @@ QUnit.module('DocumentsKanbanView', {
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
-                if (args.method === 'message_get_suggested_recipients') {
+                if (route === '/mail/get_suggested_recipients') {
                     return Promise.resolve({1: []});
                 }
                 if (args.method === 'message_post') {

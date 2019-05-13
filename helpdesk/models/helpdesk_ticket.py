@@ -334,8 +334,8 @@ class HelpdeskTicket(models.Model):
 
     #DVE FIXME: if partner gets created when sending the message it should be set as partner_id of the ticket.
     @api.multi
-    def message_get_suggested_recipients(self):
-        recipients = super(HelpdeskTicket, self).message_get_suggested_recipients()
+    def _message_get_suggested_recipients(self):
+        recipients = super(HelpdeskTicket, self)._message_get_suggested_recipients()
         try:
             for ticket in self:
                 if ticket.partner_id and ticket.partner_id.email:

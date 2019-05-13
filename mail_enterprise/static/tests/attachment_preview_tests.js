@@ -104,7 +104,7 @@ QUnit.module('MailAttachmentOnSide', {
                     });
                     return Promise.resolve(requestedMessages);
                 }
-                if (args.method === 'message_get_suggested_recipients') {
+                if (route === '/mail/get_suggested_recipients') {
                     return Promise.resolve({2: []});
                 }
                 if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')){

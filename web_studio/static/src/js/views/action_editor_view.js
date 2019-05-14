@@ -20,7 +20,6 @@ var ActionEditorView = Widget.extend({
         this.default_view = flags.default_view;
         this.view_type = flags.view_type;
         this.can_default = flags.can_default;
-        this.can_set_another = flags.can_set_another;
         this.can_be_disabled = flags.can_be_disabled;
     },
 
@@ -50,9 +49,6 @@ var ActionEditorView = Widget.extend({
         switch (action) {
             case 'set_default_view':
                 eventName = 'studio_default_view';
-                break;
-            case 'set_another_view':
-                eventName = 'studio_set_another_view';
                 break;
             case 'disable_view':
                 eventName = 'studio_disable_view';

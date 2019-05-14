@@ -5,7 +5,6 @@ var AbstractAction = require('web.AbstractAction');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
 var dom = require('web.dom');
-var form_common = require('web.view_dialogs');
 var session = require('web.session');
 
 var ActionEditor = require('web_studio.ActionEditor');
@@ -22,7 +21,6 @@ var ActionEditorAction = AbstractAction.extend({
         'studio_disable_view': '_onDisableView',
         'studio_edit_view': '_onEditView',
         'studio_new_view': '_onNewView',
-        'studio_set_another_view': '_onSetAnotherView',
         'studio_edit_action': '_onEditAction',
     },
     /**
@@ -350,44 +348,6 @@ var ActionEditorAction = AbstractAction.extend({
     },
     /**
      * @private
-     * @param {String} view_mode
-     * @param {Integer} view_id
-     * @returns {Promise}
-     */
-    _setAnotherView: function (view_mode, view_id) {
-        var self = this;
-        var def = this._setAnotherViewRPC(this.action.id, view_mode, view_id);
-        return def.then(function (result) {
-            return self.do_action('action_web_studio_action_editor', {
-                action: result,
-                noEdit: true,
-            });
-        });
-    },
-    /**
-     * @private
-     * @param {Integer} action_id
-     * @param {String} view_mode
-     * @param {Integer} view_id
-     * @returns {Promise}
-     */
-    _setAnotherViewRPC: function (action_id, view_mode, view_id) {
-        var self = this;
-        core.bus.trigger('clear_cache');
-        return this._rpc({
-            route: '/web_studio/set_another_view',
-            params: {
-                action_id: action_id,
-                view_mode: view_mode,
-                view_id: view_id,
-                context: session.user_context,
-            },
-        }).then(function () {
-            return self._reloadAction(action_id);
-        });
-    },
-    /**
-     * @private
      * @param {string} [viewType]
      */
     _setEditedView: function (viewType) {
@@ -484,29 +444,6 @@ var ActionEditorAction = AbstractAction.extend({
                 viewType: view_type,
             });
         });
-    },
-    /**
-     * @private
-     * @param {OdooEvent} event
-     */
-    _onSetAnotherView: function (event) {
-        var self = this;
-        var view_type = event.data.view_type;
-
-        new form_common.SelectCreateDialog(this, {
-            res_model: 'ir.ui.view',
-            title: _t('Select a view'),
-            disable_multiple_selection: true,
-            no_create: true,
-            domain: [
-                ['type', '=', view_type],
-                ['mode', '=', 'primary'],
-                ['model', '=', this.action.res_model],
-            ],
-            on_selected: function (records) {
-                self._setAnotherView(view_type, records[0].id);
-            }
-        }).open();
     },
     /**
      * @private

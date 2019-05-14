@@ -391,18 +391,6 @@ class WebStudioController(http.Controller):
 
         return True
 
-    @http.route('/web_studio/set_another_view', type='json', auth='user')
-    def set_another_view(self, action_id, view_mode, view_id):
-
-        action_id = request.env['ir.actions.act_window'].browse(action_id)
-        window_view = request.env['ir.actions.act_window.view'].search([('view_mode', '=', view_mode), ('act_window_id', '=', action_id.id)])
-        if not window_view:
-            window_view = request.env['ir.actions.act_window.view'].create({'view_mode': view_mode, 'act_window_id': action_id.id})
-
-        window_view.view_id = view_id
-
-        return True
-
     def _get_studio_view(self, view):
         domain = [('inherit_id', '=', view.id), ('name', '=', self._generate_studio_view_name(view))]
         return view.search(domain, order='priority desc, name desc, id desc', limit=1)

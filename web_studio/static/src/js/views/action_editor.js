@@ -61,7 +61,6 @@ var ActionEditor = Widget.extend({
                 default_view: is_default_view,
                 can_default: !_.contains(['form', 'search'], view_type),
                 view_type: view_type,
-                can_set_another: true,
                 can_be_disabled: view_type !== 'search',
             });
 

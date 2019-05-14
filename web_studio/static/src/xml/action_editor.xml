@@ -36,7 +36,7 @@
             <img t-att-src="'/web_studio/static/src/img/view_type/' + widget.view_type + '.png'" t-attf-alt="View #{widget.view_type}"/>
         </div>
         <div class="o_web_studio_name"><t t-esc="widget.view_type"/></div>
-        <i class="dropdown-toggle fa fa-ellipsis-v o_web_studio_more" data-toggle="dropdown" role="img" aria-label="Dropdown menu" title="Dropdown menu"/>
+        <i t-if="widget.can_default or widget.can_be_disabled" class="dropdown-toggle fa fa-ellipsis-v o_web_studio_more" data-toggle="dropdown" role="img" aria-label="Dropdown menu" title="Dropdown menu"/>
         <div class="dropdown-menu dropdown-menu-right" role="menu">
             <t t-if="widget.can_default">
                 <a href="#" role="menuitem" t-attf-class="dropdown-item#{widget.default_view ? ' o_web_studio_view_type_default' : ''}" data-action="set_default_view">
@@ -44,8 +44,7 @@
                     Set as Default
                 </a>
             </t>
-            <a role="menuitem" href="#" data-action="set_another_view" class="dropdown-item" t-if="widget.can_set_another">Set another view</a>
-            <div t-if="widget.can_be_disabled" class="dropdown-divider" role="separator"/>
+            <div t-if="widget.can_default and widget.can_be_disabled" class="dropdown-divider" role="separator"/>
             <a role="menuitem" href="#" data-action="disable_view" class="dropdown-item" t-if="widget.can_be_disabled">Disable</a>
         </div>
     </div>

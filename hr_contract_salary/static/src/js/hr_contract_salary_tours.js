@@ -279,6 +279,14 @@ Tour.register('hr_contract_salary_tour', {
             run: 'text 75',
         },
         {
+            content: "Certificate",
+            trigger: 'label[for=certificate]',
+            run: function () {
+                $('select[name=certificate] option:contains(Master)').prop('selected', true);
+                $('select[name=certificate]').trigger('change');
+            },
+        },
+        {
             content: "School",
             trigger: 'input[name="study_school"]',
             run: 'text UCL',

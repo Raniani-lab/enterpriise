@@ -632,7 +632,7 @@ class AccountPayment(models.Model):
         username = pac_info['username']
         password = pac_info['password']
         for rec in self:
-            cfdi = rec.l10n_mx_edi_cfdi.decode('UTF-8')
+            cfdi = base64.decodestring(rec.l10n_mx_edi_cfdi)
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
@@ -643,7 +643,7 @@ class AccountPayment(models.Model):
             msg = getattr(response.resultados[0], 'mensaje', None)
             code = getattr(response.resultados[0], 'status', None)
             xml_signed = getattr(response.resultados[0], 'cfdiTimbrado', None)
-            rec._l10n_mx_edi_post_sign_process(xml_signed, code, msg)
+            rec._l10n_mx_edi_post_sign_process(base64.b64encode(xml_signed), code, msg)
 
     @api.multi
     def _l10n_mx_edi_solfact_cancel(self, pac_info):
@@ -655,10 +655,9 @@ class AccountPayment(models.Model):
         for rec in self:
             uuids = [rec.l10n_mx_edi_cfdi_uuid]
             certificate_id = rec.l10n_mx_edi_cfdi_certificate_id.sudo()
-            cer_pem = base64.encodestring(certificate_id.get_pem_cer(
-                certificate_id.content)).decode('UTF-8')
-            key_pem = base64.encodestring(certificate_id.get_pem_key(
-                certificate_id.key, certificate_id.password)).decode('UTF-8')
+            cer_pem = certificate_id.get_pem_cer(certificate_id.content)
+            key_pem = certificate_id.get_pem_key(
+                certificate_id.key, certificate_id.password)
             key_password = certificate_id.password
             try:
                 transport = Transport(timeout=20)
@@ -682,7 +681,7 @@ class AccountPayment(models.Model):
         username = pac_info['username']
         password = pac_info['password']
         for rec in self:
-            cfdi = [rec.l10n_mx_edi_cfdi.decode('UTF-8')]
+            cfdi = base64.decodestring(rec.l10n_mx_edi_cfdi)
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
@@ -693,8 +692,8 @@ class AccountPayment(models.Model):
             code = 0
             msg = None
             if response.Incidencias:
-                code = getattr(response.Incidencias[0][0], 'CodigoError', None)
-                msg = getattr(response.Incidencias[0][0], 'MensajeIncidencia', None)
+                code = getattr(response.Incidencias.Incidencia[0], 'CodigoError', None)
+                msg = getattr(response.Incidencias.Incidencia[0], 'MensajeIncidencia', None)
             xml_signed = getattr(response, 'xml', None)
             if xml_signed:
                 xml_signed = base64.b64encode(xml_signed.encode('utf-8'))
@@ -711,22 +710,21 @@ class AccountPayment(models.Model):
             uuid = inv.l10n_mx_edi_cfdi_uuid
             certificate_id = inv.l10n_mx_edi_cfdi_certificate_id.sudo()
             company_id = self.company_id
-            cer_pem = base64.encodestring(certificate_id.get_pem_cer(
-                certificate_id.content)).decode('UTF-8')
-            key_pem = base64.encodestring(certificate_id.get_pem_key(
-                certificate_id.key, certificate_id.password)).decode('UTF-8')
+            cer_pem = certificate_id.get_pem_cer(certificate_id.content)
+            key_pem = certificate_id.get_pem_key(
+                certificate_id.key, certificate_id.password)
             cancelled = False
             code = False
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
-                invoices_list = client.get_type("ns0:UUIDS")
-                invoices_list.uuids.string = [uuid]
+                uuid_type = client.get_type("ns0:stringArray")
+                invoices_list = uuid_type([uuid])
                 response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem, key_pem)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
                 continue
-            if not hasattr(response, 'Folios'):
+            if not (hasattr(response, 'Folios') and response.Folios):
                 msg = _('A delay of 2 hours has to be respected before to cancel')
             else:
                 code = getattr(response.Folios[0][0], 'EstatusUUID', None)

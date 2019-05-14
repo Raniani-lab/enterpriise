@@ -337,7 +337,7 @@ class AccountInvoice(models.Model):
         username = pac_info['username']
         password = pac_info['password']
         for inv in self:
-            cfdi = inv.l10n_mx_edi_cfdi.decode('UTF-8')
+            cfdi = base64.decodestring(inv.l10n_mx_edi_cfdi)
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
@@ -349,8 +349,10 @@ class AccountInvoice(models.Model):
             msg = getattr(res[0] if res else response, 'mensaje', None)
             code = getattr(res[0] if res else response, 'status', None)
             xml_signed = getattr(res[0] if res else response, 'cfdiTimbrado', None)
+            if xml_signed:
+                xml_signed = base64.b64encode(xml_signed)
             inv._l10n_mx_edi_post_sign_process(
-                xml_signed.encode('utf-8') if xml_signed else None, code, msg)
+                xml_signed if xml_signed else None, code, msg)
 
     @api.multi
     def _l10n_mx_edi_solfact_cancel(self, pac_info):
@@ -362,16 +364,16 @@ class AccountInvoice(models.Model):
         for inv in self:
             uuids = [inv.l10n_mx_edi_cfdi_uuid]
             certificate_id = inv.l10n_mx_edi_cfdi_certificate_id.sudo()
-            cer_pem = base64.encodestring(certificate_id.get_pem_cer(
-                certificate_id.content)).decode('UTF-8')
-            key_pem = base64.encodestring(certificate_id.get_pem_key(
-                certificate_id.key, certificate_id.password)).decode('UTF-8')
+            cer_pem = certificate_id.get_pem_cer(
+                certificate_id.content)
+            key_pem = certificate_id.get_pem_key(
+                certificate_id.key, certificate_id.password)
             key_password = certificate_id.password
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
-                response = client.service.cancelar(username, password, uuids, cer_pem.replace(
-                    '\n', ''), key_pem, key_password)
+                response = client.service.cancelar(
+                    username, password, uuids, cer_pem, key_pem, key_password)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
                 continue
@@ -409,7 +411,7 @@ class AccountInvoice(models.Model):
         username = pac_info['username']
         password = pac_info['password']
         for inv in self:
-            cfdi = [inv.l10n_mx_edi_cfdi.decode('UTF-8')]
+            cfdi = base64.decodestring(inv.l10n_mx_edi_cfdi)
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
@@ -420,8 +422,8 @@ class AccountInvoice(models.Model):
             code = 0
             msg = None
             if response.Incidencias:
-                code = getattr(response.Incidencias[0][0], 'CodigoError', None)
-                msg = getattr(response.Incidencias[0][0], 'MensajeIncidencia', None)
+                code = getattr(response.Incidencias.Incidencia[0], 'CodigoError', None)
+                msg = getattr(response.Incidencias.Incidencia[0], 'MensajeIncidencia', None)
             xml_signed = getattr(response, 'xml', None)
             if xml_signed:
                 xml_signed = base64.b64encode(xml_signed.encode('utf-8'))
@@ -438,19 +440,19 @@ class AccountInvoice(models.Model):
             uuid = inv.l10n_mx_edi_cfdi_uuid
             certificate_id = inv.l10n_mx_edi_cfdi_certificate_id.sudo()
             company_id = self.company_id
-            cer_pem = base64.encodestring(certificate_id.get_pem_cer(
-                certificate_id.content)).decode('UTF-8')
-            key_pem = base64.encodestring(certificate_id.get_pem_key(
-                certificate_id.key, certificate_id.password)).decode('UTF-8')
+            cer_pem = certificate_id.get_pem_cer(
+                certificate_id.content)
+            key_pem = certificate_id.get_pem_key(
+                certificate_id.key, certificate_id.password)
             cancelled = False
             code = False
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
-                invoices_list = client.get_type("ns0:UUIDS")()
-                invoices_list.uuids.string = [uuid]
-                response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem.replace(
-                    '\n', ''), key_pem)
+                uuid_type = client.get_type("ns0:stringArray")
+                invoices_list = uuid_type([uuid])
+                response = client.service.cancel(
+                    invoices_list, username, password, company_id.vat, cer_pem, key_pem)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
                 continue
@@ -688,8 +690,8 @@ class AccountInvoice(models.Model):
                 rate = round(abs(tax.amount), 2)
                 if tax.id not in taxes:
                     taxes.update({tax.id: {
-                        'name': (tax.tag_ids[0].name
-                                 if tax.tag_ids else tax.name).upper(),
+                        'name': (tax.invoice_repartition_line_ids.tag_ids[0].name
+                                 if tax.mapped('invoice_repartition_line_ids.tag_ids') else tax.name).upper(),
                         'amount': amount,
                         'rate': rate if tax.amount_type == 'fixed' else rate / 100.0,
                         'type': tax.l10n_mx_cfdi_tax_type,

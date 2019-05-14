@@ -64,14 +64,14 @@
         <field name="name">HR Payroll Structure: Multi Company</field>
         <field name="model_id" ref="model_hr_payroll_structure"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|', ('country_id', '=', False), ('country_id', '=', user.company_id.country_id.id)]</field>
+        <field name="domain_force">['|', ('country_id', '=', False), ('country_id', 'in', user.env.company_ids.mapped('country_id').ids)]</field>
     </record>
 
     <record id="ir_rule_hr_payslip_input_type_multi_company" model="ir.rule">
         <field name="name">HR Payslip Input Type: Multi Company</field>
         <field name="model_id" ref="model_hr_payslip_input_type"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|', ('country_id', '=', False), ('country_id', '=', user.company_id.country_id.id)]</field>
+        <field name="domain_force">['|', ('country_id', '=', False), ('country_id', 'in', user.env.company_ids.mapped('country_id').ids)]</field>
     </record>
 
     <record id="ir_rule_hr_payslip_multi_company" model="ir.rule">

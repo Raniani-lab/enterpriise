@@ -3,12 +3,12 @@ odoo.define('quality_iot.iot_picture', function (require) {
 
 var registry = require('web.field_registry');
 var TabletImage = require('quality.tablet_image_field').TabletImage;
-var IotValueFieldMixin = require('iot.widgets').IotValueFieldMixin;
+var iot_widgets = require('iot.widgets');
 var Dialog = require('web.Dialog');
 var core = require('web.core');
 var _t = core._t;
 
-var TabletImageIot = TabletImage.extend(IotValueFieldMixin, {
+var TabletImageIot = TabletImage.extend(iot_widgets.IotValueFieldMixin, {
     events: _.extend({}, TabletImage.prototype.events, {
         'click .o_input_file': '_onButtonClick',
     }),
@@ -17,29 +17,23 @@ var TabletImageIot = TabletImage.extend(IotValueFieldMixin, {
      * @private
      */
     _getDeviceInfo: function() {
-        this.test_type = this.record.data.test_type;
-        if (this.test_type === 'picture') {
-            this.ip = this.record.data.ip;
-            this.identifier = this.record.data.identifier;
+        if (this.record.data.test_type === 'picture') {
+            this.iot_device = new iot_widgets.DeviceProxy({ iot_ip: this.record.data.ip, identifier: this.record.data.identifier });
         }
         return Promise.resolve();
     },
 
     _onButtonClick: function (ev) {
+        var self = this;
         ev.stopImmediatePropagation();
-        if (this.record.data.ip) {
+        if (this.iot_device) {
             ev.preventDefault();
-            console.log(this);
             this.do_notify(_t('Capture image...'));
-            this.call(
-                'iot_longpolling',
-                'action',
-                this.ip,
-                this.identifier,
-                '',
-                this._onActionSuccess.bind(this),
-                this._onActionFail.bind(this)
-            );
+            this.iot_device.action('')
+                .then(function(data) {
+                    self._onActionSuccess(data);
+                })
+                .guardedCatch(self._onActionFail);
         }
     },
     /**

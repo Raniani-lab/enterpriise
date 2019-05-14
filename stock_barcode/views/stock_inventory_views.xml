@@ -26,7 +26,7 @@
                 <attribute name="barcode_trigger">validate</attribute>
             </xpath>
             <xpath expr="//field[@name='package_id']" position="after">
-                <field name="scan_location_id" readonly="1" attrs='{"invisible": [("state", "=", "draft")]}'/>
+                <field name="scan_location_id" options="{'no_create': True}" readonly="1" attrs='{"invisible": [("state", "=", "draft")]}'/>
             </xpath>
         </field>
     </record>
@@ -57,7 +57,7 @@
                 <group>
                     <field name="category_id" attrs="{'invisible': [('category_id', '=', False)]}"/>
                     <field name="product_id" attrs="{'invisible': [('product_id', '=', False)]}"/>
-                    <field name="location_id" attrs="{'invisible': [('location_id', '=', False)]}" />
+                    <field name="location_id" options="{'no_create': True}" attrs="{'invisible': [('location_id', '=', False)]}" />
                     <field name="lot_id" attrs="{'invisible': [('lot_id', '=', False)]}" />
                     <field name="date" attrs="{'invisible': [('date', '=', False)]}" />
                     <field name="state" attrs="{'invisible': [('state', '=', False)]}" />
@@ -65,8 +65,8 @@
                     <field name="move_ids" context="{'default_inventory_id': id}" string="Inventory Adjustments">
                         <tree>
                             <field name="product_id"/>
-                            <field name="location_id" string="From"/>
-                            <field name="location_dest_id" string="To"/>
+                            <field name="location_id" options="{'no_create': True}" string="From"/>
+                            <field name="location_dest_id" options="{'no_create': True}" string="To"/>
                             <field name="quantity_done"/>
                             <field name="state" invisible="1"/>
                         </tree>
@@ -94,7 +94,7 @@
                     <field name="product_qty" string="Real Quantity" />
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                     <field name="product_uom_id" groups="uom.group_uom" attrs="{'readonly': [('product_qty', '!=', 0.0)]}" />
-                    <field name="location_id" groups="stock.group_stock_multi_locations"/>
+                    <field name="location_id" options="{'no_create': True}" groups="stock.group_stock_multi_locations"/>
                     <field name="package_id" groups="stock.group_tracking_lot" domain="[('location_id', '=', location_id)]"/>
                 </group>
             </form>

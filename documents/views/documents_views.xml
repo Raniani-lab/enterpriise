@@ -94,7 +94,7 @@
                 <templates>
                     <t t-name="kanban-box">
                         <t t-set="fileRequest" t-value="record.type.raw_value === 'empty'"/>
-                        <div t-attf-class="oe_kanban_global_area o_kanban_attachment #{fileRequest ? 'oe_file_request' : ''}">
+                        <div draggable="true" t-attf-class="oe_kanban_global_area o_kanban_attachment #{fileRequest ? 'oe_file_request' : ''}">
                             <div t-attf-class="o_kanban_image #{fileRequest ? 'o_request_image' : ''}">
                                 <t t-set="webimage"
                                    t-value="new RegExp('image.*(gif|jpeg|jpg|png)').test(record.mimetype.value)"/>

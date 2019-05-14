@@ -1,5 +1,6 @@
 $o-dms-inspector-width: 320px;
 $o-dms-chatter-width: 450px;
+$o-dms-search-panel-category-padding: 4px;
 
 $o-dms-p: $o-horizontal-padding;
 $o-dms-p-small: $o-horizontal-padding*0.5;
@@ -32,8 +33,44 @@ $o-dms-inspector-bg-darker: #1A1A1A;
 ////// ======  Dashboard Kanban View ==========
 ////// ========================================
 
+.o_documents_drag_icon {
+    padding: 0px 3px;
+    color: white;
+    font-weight: bold;
+    background-color: $o-brand-primary;
+    border: 1px solid $o-brand-primary;
+    border-radius: 3px;
+    @include o-position-absolute($top: 0, $right: 0);
+    z-index: -9999;
+}
+
 .o_documents_kanban {
     align-items: flex-start;
+
+    // SearchPanel
+
+    .o_search_panel > .o_search_panel_section {
+        .o_drag_over_selector {
+
+            &.o_search_panel_filter_value, > header {
+                background-color: #e9ecef;
+                font-weight: bold;
+                padding-left: 10%;
+            }
+
+        }
+
+        .o_search_panel_category_value > header {
+            padding-top: $o-dms-search-panel-category-padding;
+            padding-bottom: $o-dms-search-panel-category-padding;
+            margin-top: -$o-dms-search-panel-category-padding + 1;
+            margin-bottom: -$o-dms-search-panel-category-padding + 1;
+
+            .o_toggle_fold {
+                padding-left: 4%;
+            }
+        }
+    }
 
     .o_documents_model_color {
         color: $o-dms-color-model;

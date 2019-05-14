@@ -23,6 +23,7 @@ var DocumentsKanbanController = KanbanController.extend({
     events: _.extend({}, KanbanController.prototype.events, {
         'click .o_document_close_chatter': '_onCloseChatter',
         'drop .o_documents_kanban_view': '_onDrop',
+        'dragstart .oe_kanban_global_area': '_onRecordDragStart',
         'dragover .o_documents_kanban_view': '_onHoverDrop',
         'dragleave .o_documents_kanban_view': '_onHoverLeave',
         'click .o_documents_kanban_share': '_onShareDomain',
@@ -54,6 +55,10 @@ var DocumentsKanbanController = KanbanController.extend({
      */
     init: function () {
         this._super.apply(this, arguments);
+        const state = this.model.get(this.handle, {raw: true});
+        this.unlockedRecordIDs = state.data
+            .filter(record => !record.data.lock_uid || record.data.lock_uid === session.uid)
+            .map(record => record.res_id);
         this.selectedRecordIDs = [];
         this.chatter = null;
         this.documentsInspector = null;
@@ -70,6 +75,11 @@ var DocumentsKanbanController = KanbanController.extend({
         this.$('.o_content').addClass('o_documents_kanban');
         $(window).on(this.fileUploadID, this._onFileUploaded.bind(this));
         return this._super.apply(this, arguments);
+    },
+
+    destroy: function () {
+        $(window).off(this.fileUploadID);
+        this._super.apply(this, arguments);
     },
 
     //--------------------------------------------------------------------------
@@ -91,12 +101,14 @@ var DocumentsKanbanController = KanbanController.extend({
      * @override
      */
     update: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            var state = self.model.get(self.handle, {raw: true});
-            var recordIDs = _.pluck(state.data, 'res_id');
-            self.selectedRecordIDs = _.intersection(self.selectedRecordIDs, recordIDs);
-            self.renderer.updateSelection(self.selectedRecordIDs);
+        return this._super.apply(this, arguments).then(() => {
+            const state = this.model.get(this.handle, {raw: true});
+            const recordIDs = state.data.map(record => record.res_id);
+            this.unlockedRecordIDs = state.data
+                .filter(record => !record.data.lock_uid || record.data.lock_uid === session.uid)
+                .map(record => record.res_id);
+            this.selectedRecordIDs = _.intersection(this.selectedRecordIDs, recordIDs);
+            this.renderer.updateSelection(this.selectedRecordIDs);
         });
     },
 
@@ -402,15 +414,17 @@ var DocumentsKanbanController = KanbanController.extend({
     },
     /**
      * @private
-     * @param {MouseEvent} ev
+     * @param {DragEvent} ev
      */
     _onDrop: function (ev) {
-        ev.preventDefault();
-        var self = this;
-        var always = function () {
-            self.$('.o_documents_kanban_view').removeClass('o_drop_over');
-            self.$('.o_upload_text').remove();
+        if (ev.originalEvent.dataTransfer.types.indexOf('Files') === -1) {
+            return;
         }
+        ev.preventDefault();
+        const always = () => {
+            this.$('.o_documents_kanban_view').removeClass('o_drop_over');
+            this.$('.o_upload_text').remove();
+        };
         this._processFiles(ev.originalEvent.dataTransfer.files).then(always).guardedCatch(always);
     },
     /**
@@ -456,9 +470,12 @@ var DocumentsKanbanController = KanbanController.extend({
     },
     /**
      * @private
-     * @param {MouseEvent} ev
+     * @param {DragEvent} ev
      */
     _onHoverDrop: function (ev) {
+        if (ev.originalEvent.dataTransfer.types.indexOf('Files') === -1) {
+            return;
+        }
         ev.preventDefault();
         this.renderer.$el.addClass('o_drop_over');
         if (this.$('.o_upload_text').length === 0) {
@@ -471,7 +488,7 @@ var DocumentsKanbanController = KanbanController.extend({
     },
     /**
      * @private
-     * @param {MouseEvent} ev
+     * @param {DragEvent} ev
      */
     _onHoverLeave: function (ev) {
         if ($.contains(this.renderer.$el[0], ev.target)) {
@@ -553,6 +570,48 @@ var DocumentsKanbanController = KanbanController.extend({
             method: 'get_formview_id',
             args: [ev.data.resID],
         }).then(always).guardedCatch(always);
+    },
+    /**
+     * Adds the selected documents to the data of the drag event and
+     * creates a custom drag icon to represent the dragged documents.
+     *
+     * @private
+     * @param {DragEvent} ev
+     */
+    _onRecordDragStart: function (ev) {
+        if (!ev.currentTarget.classList.contains('o_record_selected')) {
+            // triggers a click on unselected records so they can be selected and dragged at once.
+            ev.currentTarget.click();
+        }
+        const draggedRecordIDs = _.intersection(this.selectedRecordIDs, this.unlockedRecordIDs);
+        if (draggedRecordIDs.length === 0) {
+            return ev.preventDefault();
+        }
+        const lockedCount = this.selectedRecordIDs.length - draggedRecordIDs.length;
+        ev.originalEvent.dataTransfer.setData("o_documents_data", JSON.stringify({
+            recordIDs: draggedRecordIDs,
+            lockedCount,
+        }));
+
+        // Drag Icon
+        let dragIconContent = _.str.sprintf(_t('%s Documents'), draggedRecordIDs.length);
+        const lockedCountText = _.str.sprintf(_t(' (+%s locked)'), lockedCount);
+        if (draggedRecordIDs.length === 1) {
+            const state = this.model.get(this.handle);
+            const record = state.data.find(record => record.res_id === draggedRecordIDs[0]);
+            if (record) {
+                dragIconContent = record.data.name ? record.data.display_name : _t('Unnamed');
+            }
+        }
+        const $dragIcon = $('<span>', {
+            text: lockedCount ? dragIconContent += lockedCountText : dragIconContent,
+            class: 'o_documents_drag_icon'
+        }).appendTo($('body'));
+        ev.originalEvent.dataTransfer.setDragImage($dragIcon[0], -5, -5);
+
+        // as the DOM render doesn't happen in the current call stack, the .remove() of the dragIcon has to be
+        // moved back in the event queue so the setDragImage can use the dragIcon when it is in the DOM.
+        setTimeout(() => $dragIcon.remove());
     },
     /**
      * React to records selection changes to update the DocumentInspector with

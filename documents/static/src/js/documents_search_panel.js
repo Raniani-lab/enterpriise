@@ -6,9 +6,21 @@ odoo.define('documents.DocumentsSearchPanel', function (require) {
  * SearchPanel to be used in the documents kanban view.
  */
 
-var SearchPanel = require('web.SearchPanel');
+const core = require('web.core');
+const SearchPanel = require('web.SearchPanel');
 
-var DocumentsSearchPanel = SearchPanel.extend({
+const _t = core._t;
+
+const DocumentsSearchPanel = SearchPanel.extend({
+
+    events: {
+        ...SearchPanel.prototype.events,
+        'dragenter .o_search_panel_category_value, .o_search_panel_filter_value': '_onDragEnter',
+        'dragleave .o_search_panel_category_value, .o_search_panel_filter_value': '_onDragLeave',
+        'dragover .o_search_panel_category_value, .o_search_panel_filter_value': '_onDragOver',
+        'drop .o_search_panel_category_value, .o_search_panel_filter_value': '_onRecordDrop',
+    },
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -69,6 +81,116 @@ var DocumentsSearchPanel = SearchPanel.extend({
     _getCategoryDefaultValue: function (category, validValues) {
         var value = this._super.apply(this, arguments);
         return _.contains(validValues, value) ? value : validValues[0];
+    },
+    /**
+     * @private
+     * @param {jQueryElement} $target
+     * @returns {boolean}
+     */
+    _isValidDropZone($target) {
+        const fieldName = $target.closest('.o_search_panel_field').data('field-name');
+        const hasRightFieldName = ['folder_id', 'tag_ids'].includes(fieldName);
+        const hasID = $target.data('id') || $target.data('value-id');
+        return hasRightFieldName && hasID;
+    },
+
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     * @param {DragEvent} ev
+     */
+    _onDragEnter(ev) {
+        if (
+            !this._isValidDropZone($(ev.currentTarget)) ||
+            !ev.originalEvent.dataTransfer.types.includes('o_documents_data')
+        ) {
+            return;
+        }
+        ev.stopPropagation();
+        ev.preventDefault();
+        const $item = $(ev.currentTarget).closest('.o_search_panel_category_value');
+        const category = this.categories[$item.data('categoryId')];
+        const valueId = $item.data('id');
+        if (category && category.values[valueId].folded) {
+            category.values[valueId].folded = false;
+            // if the hovered folder has children, opens it and re renders the search panel
+            // to allow drops in its children.
+            this._render();
+        }
+        this.$('.o_drag_over_selector').removeClass('o_drag_over_selector');
+        $(ev.currentTarget).addClass('o_drag_over_selector');
+    },
+    /**
+     * @private
+     * @param {DragEvent} ev
+     */
+    _onDragLeave(ev) {
+        const target = document.elementFromPoint(ev.originalEvent.clientX, ev.originalEvent.clientY);
+        if (
+            !this._isValidDropZone($(ev.currentTarget)) ||
+            $.contains(ev.currentTarget, target) || // prevents drag zone flickering.
+            !ev.originalEvent.dataTransfer.types.includes('o_documents_data')
+        ) {
+            return;
+        }
+        ev.stopPropagation();
+        ev.preventDefault();
+        this.$('.o_drag_over_selector').removeClass('o_drag_over_selector');
+    },
+    /**
+     * @private
+     * @param {DragEvent} ev
+     */
+    _onDragOver(ev) {
+        if (
+            this._isValidDropZone($(ev.currentTarget)) &&
+            ev.originalEvent.dataTransfer.types.includes('o_documents_data')
+        ) {
+            ev.preventDefault();
+        }
+    },
+    /**
+     * Allows the selected kanban cards to be dropped in folders (workspaces) or tags.
+     *
+     * @private
+     * @param {DragEvent} ev
+     */
+    _onRecordDrop: function (ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+        var $item = $(ev.currentTarget);
+        $item.removeClass('o_drag_over_selector');
+        const fieldName = $item.closest('.o_search_panel_field').data('field-name');
+        const panelRecordID = $item.data('id') || $item.data('value-id');
+        const dataTransfer = ev.originalEvent.dataTransfer;
+        if (
+            !this._isValidDropZone($item) ||
+            !panelRecordID ||
+            !dataTransfer ||
+            !dataTransfer.types.includes('o_documents_data') ||
+            $item.find('> .active').length // prevents dropping in the current folder
+        ) {
+            return;
+        }
+
+        const data = JSON.parse(dataTransfer.getData("o_documents_data"));
+        if (data.lockedCount) {
+            this.do_notify(
+                "Partial transfer",
+                _.str.sprintf(_t('%s file(s) not moved because they are locked by another user'), data.lockedCount)
+            );
+        }
+
+        const vals = fieldName === 'tag_ids' ? { tag_ids: [[4, panelRecordID]] } : { folder_id: panelRecordID };
+
+        this._rpc({
+            model: 'documents.document',
+            method: 'write',
+            args: [data.recordIDs, vals],
+        }).then(() => this._notifyDomainUpdated());
     },
 });
 

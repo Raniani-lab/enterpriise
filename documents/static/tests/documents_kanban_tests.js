@@ -2602,7 +2602,6 @@ QUnit.module('DocumentsKanbanView', {
 
     QUnit.test('documents Kanban color widget', async function (assert) {
         assert.expect(4);
-        var self = this;
         var kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
             model: 'documents.document',
@@ -2624,6 +2623,60 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
             "rgb(247, 205, 31)", "should have the right color");
+
+        kanban.destroy();
+    });
+
+    QUnit.test('SearchPanel: can drag and drop in the search panel', async function (assert) {
+        assert.expect(4);
+        const kanban = await createDocumentsKanbanView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            mockRPC: function (route, args) {
+                if (args.method === 'write' && args.model === 'documents.document') {
+                    assert.deepEqual(
+                        args.args[0],
+                        [1, 4, 2],
+                        "should write the right records");
+                    assert.deepEqual(
+                        args.args[1],
+                        {folder_id: 2},
+                        "should have written on a folder");
+                    assert.step('documents.documents/write');
+                }
+                return this._super.apply(this, arguments);
+            },
+            arch: `
+            <kanban><templates><t t-name="kanban-box">
+                <div draggable="true" class="oe_kanban_global_area">
+                    <field name="name"/>
+                </div>
+            </t></templates></kanban>`,
+        });
+
+        const $yopRecord = kanban.$('.o_kanban_record:contains(yop) .o_record_selector')
+        // selects three records
+        await testUtils.dom.click($yopRecord);
+        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
+        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
+
+        // starts the drag on a selected record
+        const startEvent = new Event('dragstart', { bubbles: true, });
+        const dataTransfer = new DataTransfer();
+        startEvent.dataTransfer = dataTransfer;
+        $yopRecord[0].dispatchEvent(startEvent);
+
+        // drop on the second search panel category (folder)
+        const endEvent = new Event('drop', { bubbles: true, });
+        endEvent.dataTransfer = dataTransfer;
+        kanban.$('.o_search_panel_category_value header:eq(2)')[0].dispatchEvent(endEvent);
+
+        assert.verifySteps(['documents.documents/write']);
+
+        // makes sure that we are after the setTimeout of the dragStart handler
+        // that removes the drag Icon from the DOM.
+        await testUtils.nextTick();
 
         kanban.destroy();
     });

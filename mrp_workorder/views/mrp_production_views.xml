@@ -32,9 +32,10 @@
     </record>
 
     <record id="production_order_unplan_server_action" model="ir.actions.server">
-        <field name="name">Mrp: Unplan Production Orders</field>
+        <field name="name">Unplan orders</field>
         <field name="model_id" ref="mrp.model_mrp_production"/>
         <field name="binding_model_id" ref="mrp.model_mrp_production" />
+        <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">records.button_unplan()</field>
     </record>

@@ -2112,6 +2112,122 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('indicate that regular stored field can not be dropped in "Filters" section', async function (assert) {
+        assert.expect(3);
+
+        this.data.coucou.fields.display_name.store = true;
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<search>" +
+                "<field name='display_name'/>" +
+                "<filter string='My Name' " +
+                    "name='my_name' " +
+                    "domain='[(\"display_name\",\"=\",coucou)]'" +
+                "/>" +
+                "<group expand='0' string='Filters'>" +
+                    "<filter string='My Name2' " +
+                        "name='my_name2' " +
+                        "domain='[(\"display_name\",\"=\",coucou2)]'" +
+                    "/>" +
+                "</group>" +
+                "<group expand='0' string='Group By'>" +
+                    "<filter name='groupby_display_name' " +
+                    "domain='[]' context=\"{'group_by':'display_name'}\"/>" +
+                "</group>" +
+            "</search>",
+        });
+
+
+        // try to add a stored char field in the filters section
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields > .ui-draggable:first'), $('.o_web_studio_search_filters .o_web_studio_hook:first'), {disableDrop: true});
+
+        assert.hasClass(vem.$('.o_web_studio_search_filters'), 'text-muted',
+            "filter section should be muted");
+        assert.doesNotHaveClass(vem.$('.o_web_studio_search_group_by'), 'text-muted',
+            "groupby section should not be muted");
+        assert.doesNotHaveClass(vem.$('.o_web_studio_search_autocompletion_fields'), 'text-muted',
+            "autocompletion_fields section should not be muted");
+
+        vem.destroy();
+    });
+
+    QUnit.test('indicate that ungroupable field can not be dropped in "Filters" and "Group by" sections', async function (assert) {
+        assert.expect(3);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<search>" +
+                "<field name='display_name'/>" +
+                "<filter string='My Name' " +
+                    "name='my_name' " +
+                    "domain='[(\"display_name\",\"=\",coucou)]'" +
+                "/>" +
+                "<group expand='0' string='Filters'>" +
+                    "<filter string='My Name2' " +
+                        "name='my_name2' " +
+                        "domain='[(\"display_name\",\"=\",coucou2)]'" +
+                    "/>" +
+                "</group>" +
+                "<group expand='0' string='Group By'>" +
+                    "<filter name='groupby_display_name' " +
+                    "domain='[]' context=\"{'group_by':'display_name'}\"/>" +
+                "</group>" +
+            "</search>",
+        });
+
+        // try to add integer field in groupby
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields > .o_web_studio_field_integer:first'), $('.o_web_studio_search_group_by .o_web_studio_hook:first'), {disableDrop: true});
+
+        assert.hasClass(vem.$('.o_web_studio_search_group_by'), 'text-muted',
+            "groupby section should be muted");
+        assert.hasClass(vem.$('.o_web_studio_search_filters'), 'text-muted',
+            "filter section should be muted");
+        assert.doesNotHaveClass(vem.$('.o_web_studio_search_autocompletion_fields'), 'text-muted',
+            "autocompletion_fields section should be muted");
+
+        vem.destroy();
+    });
+
+    QUnit.test('indicate that separators can not be dropped in "Filters" and "Group by" sections', async function (assert) {
+        assert.expect(3);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<search>" +
+                "<field name='display_name'/>" +
+                "<filter string='My Name' " +
+                    "name='my_name' " +
+                    "domain='[(\"display_name\",\"=\",coucou)]'" +
+                "/>" +
+                "<group expand='0' string='Filters'>" +
+                    "<filter string='My Name2' " +
+                        "name='my_name2' " +
+                        "domain='[(\"display_name\",\"=\",coucou2)]'" +
+                    "/>" +
+                "</group>" +
+                "<group expand='0' string='Group By'>" +
+                    "<filter name='groupby_display_name' " +
+                    "domain='[]' context=\"{'group_by':'display_name'}\"/>" +
+                "</group>" +
+            "</search>",
+        });
+
+        // try to add seperator in groupby
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_components > .o_web_studio_filter_separator'), $('.o_web_studio_search_group_by .o_web_studio_hook:first'), {disableDrop: true});
+
+        assert.hasClass(vem.$('.o_web_studio_search_group_by'), 'text-muted',
+            "groupby section should be muted");
+        assert.hasClass(vem.$('.o_web_studio_search_autocompletion_fields'),'text-muted',
+            "autocompletion_fields section should be muted");
+        assert.doesNotHaveClass(vem.$('.o_web_studio_search_filters'), 'text-muted',
+            "filter section should not be muted");
+
+        vem.destroy();
+    });
+
     QUnit.module('Pivot');
 
     QUnit.test('empty pivot editor', async function (assert) {

@@ -270,6 +270,34 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
                 }
             },
         });
+        // Visually indicate the 'undroppable' portion
+        this.$el.droppable({
+            accept: ".o_web_studio_component",
+            tolerance: "touch",
+            over: function (ev, ui) {
+                var $autocompletionFields = self.$('.o_web_studio_search_autocompletion_fields');
+                var $filters = self.$('.o_web_studio_search_filters');
+                var $grouBy = self.$('.o_web_studio_search_group_by');
+                switch (ui.draggable.data('structure')) {
+                    case 'field':
+                        $filters.addClass('text-muted');
+                        var type = ui.draggable.data('new_attrs').type;
+                        var store = ui.draggable.data('new_attrs').store;
+                        if (!(_.contains(self.GROUPABLE_TYPES, type) && store === 'true')) {
+                            $grouBy.addClass('text-muted');
+                        }
+                        break;
+                    case 'filter':
+                    case 'separator':
+                        $grouBy.addClass('text-muted');
+                        $autocompletionFields.addClass('text-muted');
+                        break;
+                }
+            },
+            deactivate: function (ev, ui) {
+                self.$('.ui-droppable').removeClass('text-muted');
+            },
+        });
         this._addHookEmptyTable();
 
         return prom;

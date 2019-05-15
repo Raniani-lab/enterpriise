@@ -79,7 +79,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
                     'account_id': self.tax_account.id,
                 }),
             ],
-            'tax_repartition_line_ids': [
+            'refund_repartition_line_ids': [
                 (0,0, {
                     'factor_percent': 100,
                     'repartition_type': 'base',

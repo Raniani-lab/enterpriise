@@ -7,34 +7,67 @@ class TestSubscriptionCommon(SavepointCase):
     @classmethod
     def setUpClass(cls):
         super(TestSubscriptionCommon, cls).setUpClass()
-        Analytic = cls.env['account.analytic.account']
-        Subscription = cls.env['sale.subscription']
-        SubTemplate = cls.env['sale.subscription.template']
-        SaleOrder = cls.env['sale.order']
-        Tax = cls.env['account.tax']
-        Product = cls.env['product.product']
-        ProductTmpl = cls.env['product.template']
+        # disable most emails for speed
+        context_no_mail = {'no_reset_password': True, 'mail_create_nosubscribe': True, 'mail_create_nolog': True}
+        Analytic = cls.env['account.analytic.account'].with_context(context_no_mail)
+        Subscription = cls.env['sale.subscription'].with_context(context_no_mail)
+        SubTemplate = cls.env['sale.subscription.template'].with_context(context_no_mail)
+        SaleOrder = cls.env['sale.order'].with_context(context_no_mail)
+        Tax = cls.env['account.tax'].with_context(context_no_mail)
+        Journal = cls.env['account.journal'].with_context(context_no_mail)
+        Product = cls.env['product.product'].with_context(context_no_mail)
+        ProductTmpl = cls.env['product.template'].with_context(context_no_mail)
+
+        # Minimal CoA & taxes setup
+        user_type_payable = cls.env.ref('account.data_account_type_payable')
+        cls.account_payable = cls.env['account.account'].create({
+            'code': 'NC1110',
+            'name': 'Test Payable Account',
+            'user_type_id': user_type_payable.id,
+            'reconcile': True
+        })
+        user_type_receivable = cls.env.ref('account.data_account_type_receivable')
+        cls.account_receivable = cls.env['account.account'].create({
+            'code': 'NC1111',
+            'name': 'Test Receivable Account',
+            'user_type_id': user_type_receivable.id,
+            'reconcile': True
+        })
+        user_type_income = cls.env.ref('account.data_account_type_direct_costs')
+        cls.account_income = cls.env['account.account'].create({
+            'code': 'NC1112', 'name':
+            'Sale - Test Account',
+            'user_type_id': user_type_income.id
+        })
+
+        cls.tax_10 = Tax.create({
+            'name': "10% tax",
+            'amount_type': 'percent',
+            'amount': 10,
+        })
+
+        cls.journal = Journal.create({
+            'name': 'Sales Journal',
+            'type': 'sale',
+            'code': 'SUB0',
+        })
 
         # Test Subscription Template
         cls.subscription_tmpl = SubTemplate.create({
             'name': 'TestSubscriptionTemplate',
             'description': 'Test Subscription Template 1',
+            'journal_id': cls.journal.id,
         })
         cls.subscription_tmpl_2 = SubTemplate.create({
             'name': 'TestSubscriptionTemplate2',
             'description': 'Test Subscription Template 2',
+            'journal_id': cls.journal.id,
         })
         cls.subscription_tmpl_3 = SubTemplate.create({
             'name': 'TestSubscriptionTemplate3',
             'description': 'Test Subscription Template 3',
-            'recurring_rule_boundary':'limited'
-        })
-
-        # Test taxes
-        cls.percent_tax = Tax.create({
-            'name': "Percent tax",
-            'amount_type': 'percent',
-            'amount': 10,
+            'recurring_rule_boundary':'limited',
+            'journal_id': cls.journal.id,
         })
 
         # Test products
@@ -48,7 +81,8 @@ class TestSubscriptionCommon(SavepointCase):
         cls.product = Product.create({
             'product_tmpl_id': cls.product_tmpl.id,
             'price': 50.0,
-            'taxes_id': [(6, 0, [cls.percent_tax.id])],
+            'taxes_id': [(6, 0, [cls.tax_10.id])],
+            'property_account_income_id': cls.account_income.id,
         })
 
         cls.product_tmpl_2 = ProductTmpl.create({
@@ -61,7 +95,8 @@ class TestSubscriptionCommon(SavepointCase):
         cls.product2 = Product.create({
             'product_tmpl_id': cls.product_tmpl_2.id,
             'price': 20.0,
-            'taxes_id': [(6, 0, [cls.percent_tax.id])],
+            'taxes_id': [(6, 0, [cls.tax_10.id])],
+            'property_account_income_id': cls.account_income.id,
         })
 
         cls.product_tmpl_3 = ProductTmpl.create({
@@ -74,7 +109,8 @@ class TestSubscriptionCommon(SavepointCase):
         cls.product3 = Product.create({
             'product_tmpl_id': cls.product_tmpl_3.id,
             'price': 15.0,
-            'taxes_id': [(6, 0, [cls.percent_tax.id])],
+            'taxes_id': [(6, 0, [cls.tax_10.id])],
+            'property_account_income_id': cls.account_income.id,
         })
 
         cls.product_tmpl_4 = ProductTmpl.create({
@@ -87,7 +123,8 @@ class TestSubscriptionCommon(SavepointCase):
         cls.product4 = Product.create({
             'product_tmpl_id': cls.product_tmpl_4.id,
             'price': 15.0,
-            'taxes_id': [(6, 0, [cls.percent_tax.id])],
+            'taxes_id': [(6, 0, [cls.tax_10.id])],
+            'property_account_income_id': cls.account_income.id,
         })
 
         # Test user
@@ -97,7 +134,9 @@ class TestSubscriptionCommon(SavepointCase):
             'name': 'Beatrice Portal',
             'login': 'Beatrice',
             'email': 'beatrice.employee@example.com',
-            'groups_id': [(6, 0, [group_portal_id])]
+            'groups_id': [(6, 0, [group_portal_id])],
+            'property_account_payable_id': cls.account_payable.id,
+            'property_account_receivable_id': cls.account_receivable.id,
         })
 
         # Test analytic account

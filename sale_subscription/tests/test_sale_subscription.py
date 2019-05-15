@@ -149,10 +149,10 @@ class TestSubscription(TestSubscriptionCommon):
         self.original_prepare_invoice_line = self.subscription._prepare_invoice_line
 
         patchers = [
-            patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription._prepare_invoice_line', wraps=self._mock_prepare_invoice_line, create=True),
-            patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription._prepare_invoice_data', wraps=self._mock_prepare_invoice_data, create=True),
-            patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription._do_payment', wraps=self._mock_subscription_do_payment, create=True),
-            patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription.send_success_mail', wraps=self._mock_subscription_send_success_mail, create=True),
+            patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription._prepare_invoice_line', wraps=self._mock_prepare_invoice_line),
+            patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription._prepare_invoice_data', wraps=self._mock_prepare_invoice_data),
+            patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription._do_payment', wraps=self._mock_subscription_do_payment),
+            patch('odoo.addons.sale_subscription.models.sale_subscription.SaleSubscription.send_success_mail', wraps=self._mock_subscription_send_success_mail),
         ]
 
         for patcher in patchers:
@@ -177,6 +177,7 @@ class TestSubscription(TestSubscriptionCommon):
         invoice_id = self.subscription.action_subscription_invoice()['res_id']
         invoice = self.env['account.move'].browse(invoice_id)
         recurring_total_with_taxes = self.subscription.recurring_total + (self.subscription.recurring_total * (self.tax_10.amount / 100.0))
+        self.assertEqual(recurring_total_with_taxes, self.subscription.recurring_amount_total, 'sale_subscription: tax computation is faulty, amounts tax included computed by the onchange and by external computation should be equal')
         self.assertEqual(invoice.amount_total, recurring_total_with_taxes, 'website_subscription: the total of the recurring invoice created should be the subscription recurring total + the products taxes')
         self.assertTrue(all(line.tax_ids.ids == self.tax_10.ids for line in invoice.invoice_line_ids), 'website_subscription: All lines of the recurring invoice created should have the percent tax set on the subscription products')
         self.assertTrue(all(tax_line.tax_line_id == self.tax_10 for tax_line in invoice.line_ids.filtered('tax_line_id')), 'The invoice tax lines should be set and should all use the tax set on the subscription products')

@@ -15,6 +15,7 @@ class TestSubscriptionCommon(SavepointCase):
         SaleOrder = cls.env['sale.order'].with_context(context_no_mail)
         Tax = cls.env['account.tax'].with_context(context_no_mail)
         Journal = cls.env['account.journal'].with_context(context_no_mail)
+        Product = cls.env['product.product'].with_context(context_no_mail)
         ProductTmpl = cls.env['product.template'].with_context(context_no_mail)
 
         # Minimal CoA & taxes setup

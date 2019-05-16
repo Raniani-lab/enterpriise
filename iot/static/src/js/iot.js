@@ -585,7 +585,7 @@ var IotDeviceValueDisplay = Widget.extend(IotValueFieldMixin, {
     init: function (parent, params) {
         this._super.apply(this, arguments);
         this.identifier = params.data.identifier;
-        this.iot_id = params.data.iot_id.data.id;
+        this.iot_ip = params.data.iot_ip;
     },
     /**
      * @override
@@ -593,15 +593,8 @@ var IotDeviceValueDisplay = Widget.extend(IotValueFieldMixin, {
      */
     _getDeviceInfo: function() {
         var self = this;
-        var iot_id = this.iot_id;
-        return this._rpc({
-            model: 'iot.box',
-            method: 'search_read',
-            fields: ['id', 'ip'],
-            domain: [['id', '=', iot_id]]
-        }).then(function (iot_box) {
-           self.iot_device = new DeviceProxy({ identifier: self.identifier, iot_ip:iot_box[0].ip });
-        });
+        self.iot_device = new DeviceProxy({ identifier: this.identifier, iot_ip:this.iot_ip });
+        return Promise.resolve();
     },
 
     /**

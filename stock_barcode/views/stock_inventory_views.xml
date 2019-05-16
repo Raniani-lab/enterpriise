@@ -1,38 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo><data>
-
-    <record id="stock_inventory_view_form_inherit_stock_barcode" model="ir.ui.view">
-        <field name="name">stock.inventory.form.inherit</field>
-        <field name="model">stock.inventory</field>
-        <field name="inherit_id" ref="stock.view_inventory_form"/>
-        <field name="arch" type="xml">
-            <form position="inside">
-                <field name="_barcode_scanned" widget="inventory_barcode_handler"/>
-            </form>
-            <xpath expr="//button[@name='action_start']" position="attributes">
-                <attribute name="barcode_trigger">validate</attribute>
-            </xpath>
-            <xpath expr="//button[@name='action_validate']" position="attributes"> 
-                <attribute name="barcode_trigger">validate</attribute>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="stock_inventory_line_view_tree2_inherit_stock_barcode" model="ir.ui.view">
-        <field name="name">stock.inventory.line.tree2.inherit</field>
-        <field name="model">stock.inventory.line</field>
-        <field name="inherit_id" ref="stock.stock_inventory_line_tree2"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='product_tracking']" position="before">
-                <field name="product_barcode" invisible="1"/>
-            </xpath>
-            <xpath expr="//field[@name='product_qty']" position="attributes">
-                <attribute name="options">{'barcode_events': True}</attribute>
-                <attribute name="widget">field_float_scannable</attribute>
-            </xpath>
-        </field>
-    </record>
-
     <record id="stock_inventory_form_view_inherit" model="ir.ui.view">
         <field name="name">stock.inventory.form.view.inherit</field>
         <field name="model">stock.inventory</field>

@@ -121,8 +121,9 @@ class AccountFollowupReport(models.AbstractModel):
                 'id': line_num,
                 'name': '',
                 'class': 'total',
+                'style': 'border-top-style: double',
                 'unfoldable': False,
-                'level': 0,
+                'level': 3,
                 'columns': [{'name': v} for v in [''] * (3 if self.env.context.get('print_mode') else 5) + [total >= 0 and _('Total Due') or '', total_due]],
             })
             if total_issued > 0:
@@ -133,7 +134,7 @@ class AccountFollowupReport(models.AbstractModel):
                     'name': '',
                     'class': 'total',
                     'unfoldable': False,
-                    'level': 0,
+                    'level': 3,
                     'columns': [{'name': v} for v in [''] * (3 if self.env.context.get('print_mode') else 5) + [_('Total Overdue'), total_issued]],
                 })
             # Add an empty line after the total to make a space between two currencies
@@ -142,6 +143,7 @@ class AccountFollowupReport(models.AbstractModel):
                 'id': line_num,
                 'name': '',
                 'class': '',
+                'style': 'border-bottom-style: none',
                 'unfoldable': False,
                 'level': 0,
                 'columns': [{} for col in columns],

@@ -55,12 +55,12 @@ class ResPartner(models.Model):
         """
         Compute the fields 'total_due', 'total_overdue' and 'followup_status'
         """
-        partners_in_need_of_action = self._get_partners_in_need_of_action().ids
+        partners_in_need_of_action = self._get_partners_in_need_of_action()
+        today = fields.Date.context_today(self)
         for record in self:
             total_due = 0
             total_overdue = 0
             followup_status = "no_action_needed"
-            today = fields.Date.today()
             for aml in record.unreconciled_aml_ids:
                 if aml.company_id == self.env.user.company_id:
                     amount = aml.amount_residual
@@ -88,11 +88,11 @@ class ResPartner(models.Model):
 
     def _get_partners_in_need_of_action(self, overdue_only=False):
         """
-        Return a list of partners which are in status 'in_need_of_action'.
+        Return a list of partner ids which are in status 'in_need_of_action'.
         If 'overdue_only' is set to True, partners in status 'with_overdue_invoices' are included in the list
         """
         today = fields.Date.context_today(self)
-        domain = self.get_followup_lines_domain(today, overdue_only=overdue_only, only_unblocked=True)
+        domain = self.get_followup_lines_domain(today, overdue_only=False, only_unblocked=True)
         query = self.env['account.move.line']._where_calc(domain)
         tables, where_clause, where_params = query.get_sql()
         sql = """SELECT "account_move_line".partner_id
@@ -103,7 +103,7 @@ class ResPartner(models.Model):
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
         result = self.env.cr.fetchall()
-        return self.browse(result[0] if result else [])
+        return [p[0] for p in result]
 
     def _get_needofaction_fup_lines_domain(self, date):
         # that part of the domain concerns the date filtering and is overwritten in account_reports_followup

@@ -101,9 +101,10 @@ class sale_subscription(http.Controller):
         acquirers = request.env['payment.acquirer'].search([
             ('website_published', '=', True),
             ('registration_view_template_id', '!=', False),
-            ('token_implemented', '=', True)])
+            ('token_implemented', '=', True),
+            ('company_id', '=', account.company_id.id)])
         acc_pm = account.payment_token_id
-        part_pms = account.partner_id.payment_token_ids
+        part_pms = account.partner_id.payment_token_ids.filtered(lambda pms: pms.acquirer_id.company_id == account.company_id)
         display_close = account.template_id.sudo().user_closable and account.in_progress
         is_follower = request.env.user.partner_id.id in [follower.partner_id.id for follower in account.message_follower_ids]
         active_plan = account.template_id.sudo()

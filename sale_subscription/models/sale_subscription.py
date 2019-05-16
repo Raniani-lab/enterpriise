@@ -457,10 +457,12 @@ class SaleSubscription(models.Model):
         if not self.partner_id:
             raise UserError(_("You must first select a Customer for Subscription %s!") % self.name)
 
+        # VFE FIXME one day, we shouldn't use force_company anymore...
         if 'force_company' in self.env.context:
             company = self.env['res.company'].browse(self.env.context['force_company'])
         else:
             company = self.company_id
+            # Ensure subsequent calls use self.company_id if checking for force_company or company_id
             self = self.with_context(force_company=company.id, company_id=company.id)
 
         fpos_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
@@ -486,7 +488,7 @@ class SaleSubscription(models.Model):
             'origin': self.code,
             'fiscal_position_id': fpos_id,
             'payment_term_id': sale_order.payment_term_id.id if sale_order else self.partner_id.property_payment_term_id.id,
-            'company_id': company.id,
+            'company_id': company.id,  # VFE FIXME one day, should be self.company_id.id
             'comment': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
             'user_id': self.user_id.id,
         }
@@ -589,6 +591,7 @@ class SaleSubscription(models.Model):
                 'fiscal_position_id': fpos_id,
                 'user_id': subscription.user_id.id,
                 'payment_term_id': sale_order.payment_term_id.id if sale_order else subscription.partner_id.property_payment_term_id.id,
+                'company_id': subscription.company_id.id,
             }
         return res
 
@@ -1026,8 +1029,9 @@ class SaleSubscriptionTemplate(models.Model):
 
     @api.constrains('recurring_interval')
     def _check_recurring_interval(self):
-        if self.recurring_interval <= 0:
-            raise ValidationError(_("The recurring interval must be positive"))
+        for template in self:
+            if template.recurring_interval <= 0:
+                raise ValidationError(_("The recurring interval must be positive"))
 
     def _compute_subscription_count(self):
         subscription_data = self.env['sale.subscription'].read_group(domain=[('template_id', 'in', self.ids), ('stage_id', '!=', False)],

@@ -29,6 +29,7 @@ class SaleSubscriptionWizard(models.TransientModel):
             'fiscal_position_id': fpos_id,
             'subscription_management': 'upsell',
             'origin': self.subscription_id.code,
+            'company_id': self.subscription_id.company_id.id,
         }
         # we don't override the default if no payment terms has been set on the customer
         if self.subscription_id.partner_id.property_payment_term_id:

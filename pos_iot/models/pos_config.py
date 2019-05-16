@@ -8,3 +8,4 @@ class PosConfig(models.Model):
     iotbox_id = fields.Many2one('iot.box', 'Related Box')
     proxy_ip = fields.Char(string='IP Address', size=45, related='iotbox_id.ip', store=True,
         help='The hostname or ip address of the hardware proxy, Will be autodetected if left empty.')
+    iface_payment_terminal = fields.Boolean(string='Payment terminal', help="Pay wit a payment terminal.")

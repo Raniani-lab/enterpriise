@@ -11,7 +11,9 @@
     'description': """
 It links the module 
 """,
-    'data': ['views/pos_config_views.xml',],
+    'data': [
+        'views/pos_config_views.xml',
+        'views/iot_views.xml', ],
     'depends': ['point_of_sale', 'iot'],
     'installable': True,
     'auto_install': True,

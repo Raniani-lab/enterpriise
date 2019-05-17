@@ -310,6 +310,18 @@ class pos_session(models.Model):
         else:
             self.forbidden_modules_installed = False
 
+    def action_report_journal_file(self):
+        self.ensure_one()
+        pos = self.config_id
+        if not pos.blackbox_pos_production_id:
+            raise UserError(_("PoS %s is not a certified PoS") % pos.name)
+        return {
+            'type': 'ir.actions.act_url',
+            'url': "/journal_file/" + pos.blackbox_pos_production_id,
+            'target': 'self',
+        }
+
+
 class pos_order(models.Model):
     _inherit = 'pos.order'
 
@@ -333,12 +345,46 @@ class pos_order(models.Model):
 
     @api.model
     def create(self, values):
-        pos_session = self.env['pos.session'].browse(values.get('session_id'))
+        pos_session = self.env["pos.session"].browse(values.get("session_id"))
 
-        if pos_session.config_id.blackbox_pos_production_id and not values.get('blackbox_signature'):
-            raise UserError(_('Manually creating registered orders is not allowed.'))
+        if pos_session.config_id.blackbox_pos_production_id and not values.get("blackbox_signature"):
+            raise UserError(_("Manually creating registered orders is not allowed."))
 
-        return super(pos_order, self).create(values)
+        order = super(pos_order, self).create(values)
+        if order.blackbox_signature:
+            lines = "Lignes de commande: "
+            if order.lines:
+                lines += "\n* " + "\n* ".join([
+                        "%s x %s: %s" % (l.qty, l.product_id.name, l.price_subtotal_incl)
+                        for l in order.lines
+                    ])
+            description = """
+NORMAL SALES
+Date: {create_date}
+Réf: {pos_reference}
+Vendeur: {user_id}
+{lines}
+Total: {total}
+Compteur Ticket: {ticket_counters}
+Hash: {hash}
+POS Version: {pos_version}
+FDM ID: {fdm_id}
+POS ID: {pos_id}
+""".format(
+                create_date=order.create_date,
+                user_id=order.user_id.name,
+                lines=lines,
+                total=order.amount_total,
+                pos_reference=order.pos_reference,
+                hash=order.hash_chain,
+                pos_version=order.pos_version,
+                ticket_counters=order.blackbox_ticket_counters,
+                fdm_id=order.blackbox_unique_fdm_production_number,
+                pos_id=order.pos_production_id,
+            )
+            self.env["pos_blackbox_be.log"].create(description, "create", self._name, order.pos_reference)
+
+        return order
 
     @api.multi
     def unlink(self):
@@ -531,10 +577,43 @@ class pos_order_pro_forma(models.Model):
             session = self.env['pos.session'].browse(values['session_id'])
             values['name'] = session.config_id.sequence_id._next()
 
-            self.create(values)
+            order = self.create(values)
+            lines = "Lignes de commande: "
+            if order.lines:
+                lines += "\n* " + "\n* ".join([
+                        "%s x %s: %s" % (l.qty, l.product_id.name, l.price_subtotal_incl)
+                        for l in order.lines
+                    ])
+            description = """
+PRO FORMA SALES
+Date: {create_date}
+Réf: {pos_reference}
+Vendeur: {user_id}
+{lines}
+Total: {total}
+Compteur Ticket: {ticket_counters}
+Hash: {hash}
+POS Version: {pos_version}
+FDM ID: {fdm_id}
+POS ID: {pos_id}
+""".format(
+                create_date=order.create_date,
+                user_id=order.user_id.name,
+                lines=lines,
+                total=order.amount_total,
+                pos_reference=order.pos_reference,
+                hash=order.hash_chain,
+                pos_version=order.pos_version,
+                ticket_counters=order.blackbox_ticket_counters,
+                fdm_id=order.blackbox_unique_fdm_production_number,
+                pos_id=order.pos_production_id,
+            )
+            self.env["pos_blackbox_be.log"].create(description, "create", self._name, order.pos_reference)
+
 
 class pos_blackbox_be_log(models.Model):
     _name = 'pos_blackbox_be.log'
+    _order = 'id desc'
 
     user = fields.Many2one('res.users', readonly=True)
     action = fields.Selection([('create', 'create'), ('modify', 'modify'), ('delete', 'delete')], readonly=True)

@@ -61,6 +61,7 @@ class MailMessage(models.Model):
             "db_id": self.env['res.config.settings']._get_ocn_uuid()
         }
         if message.model == 'mail.channel':
+            payload['action'] = 'mail.action_discuss'
             channel = message.channel_ids.filtered(lambda r: r.id == message.res_id)
             if channel.channel_type == 'chat':
                 payload['subject'] = message.author_id.name

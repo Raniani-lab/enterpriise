@@ -56,8 +56,8 @@ class AccountFollowupReport(models.AbstractModel):
         partner = options.get('partner_id') and self.env['res.partner'].browse(options['partner_id']) or False
         if not partner:
             return []
-        lang_code = partner.lang or self.env.user.lang or 'en_US'
 
+        lang_code = partner.lang if self._context.get('print_mode') else self.env.user.lang or 'en_US'
         lines = []
         res = {}
         today = fields.Date.today()
@@ -121,8 +121,9 @@ class AccountFollowupReport(models.AbstractModel):
                 'id': line_num,
                 'name': '',
                 'class': 'total',
+                'style': 'border-top-style: double',
                 'unfoldable': False,
-                'level': 0,
+                'level': 3,
                 'columns': [{'name': v} for v in [''] * (3 if self.env.context.get('print_mode') else 5) + [total >= 0 and _('Total Due') or '', total_due]],
             })
             if total_issued > 0:
@@ -133,7 +134,7 @@ class AccountFollowupReport(models.AbstractModel):
                     'name': '',
                     'class': 'total',
                     'unfoldable': False,
-                    'level': 0,
+                    'level': 3,
                     'columns': [{'name': v} for v in [''] * (3 if self.env.context.get('print_mode') else 5) + [_('Total Overdue'), total_issued]],
                 })
             # Add an empty line after the total to make a space between two currencies
@@ -142,6 +143,7 @@ class AccountFollowupReport(models.AbstractModel):
                 'id': line_num,
                 'name': '',
                 'class': '',
+                'style': 'border-bottom-style: none',
                 'unfoldable': False,
                 'level': 0,
                 'columns': [{} for col in columns],

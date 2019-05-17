@@ -221,7 +221,7 @@
                                     </div>
 
                                     <!-- Holidays -->
-                                    <div class="form-group">
+                                    <div class="form-group" name="holidays_div">
                                         <div class="row">
                                             <label class="col-md-3 col-form-label" for="holidays_slider">
                                                 <i class="fa fa-1x fa-suitcase fa-fw"/> Extra Time Off

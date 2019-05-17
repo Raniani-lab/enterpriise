@@ -163,7 +163,7 @@ class BpostRequest():
                   'international_product': carrier.bpost_international_deliver_type,
                   'parcelValue': max(min(int(picking.sale_id.amount_total), 2500000), 100),           # according to bpost, 100 <= parcelValue <= 2500000
                   'contentDescription': ' '.join([
-                     "%d %s" % (line.product_qty, re.sub('[\W_]+', '', line.product_id.name or '')) for line in picking.move_line_ids
+                     "%d %s" % (line.qty_done, re.sub('[\W_]+', '', line.product_id.name or '')) for line in picking.move_line_ids
                   ])[:50],
                   'shipmentType': carrier.bpost_shipment_type,
                   'parcelReturnInstructions': carrier.bpost_parcel_return_instructions,
@@ -208,7 +208,10 @@ class BpostRequest():
                 'label': url_join(self.base_url, '%s/orders/%s/labels/%s' % (supercarrier.bpost_account_number, reference, carrier.bpost_label_stock_type))}
 
         self.debug_logger("%s\n%s\n%s" % (URLS[action], HEADERS[action], xml.decode('utf-8') if xml else None), 'bpost_request_%s' % action)
-        response = requests.request(METHODS[action], URLS[action], headers=HEADERS[action], data=xml)
+        try:
+            response = requests.request(METHODS[action], URLS[action], headers=HEADERS[action], data=xml, timeout=15)
+        except requests.exceptions.Timeout:
+            raise UserError(_('The BPost shipping service is unresponsive, please retry later.'))
         self.debug_logger("%s\n%s" % (response.status_code, response.text), 'bpost_response_%s' % action)
 
         return response.status_code, response.text

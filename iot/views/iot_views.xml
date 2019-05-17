@@ -104,6 +104,7 @@
                     <group name="iot_device_details">
                         <group>
                             <field name="iot_id" attrs="{'readonly': ['|', ('type', '!=', 'printer'), ('connection', '!=', 'network')]}"/>
+                            <field name="iot_ip" invisible="True"/>
                             <field name="identifier" readonly="True"/>
                             <field name="type"/>
                             <field name="connection"/>

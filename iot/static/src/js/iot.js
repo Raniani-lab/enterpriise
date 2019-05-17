@@ -13,7 +13,7 @@ var BusService = require('bus.BusService');
 var _t = core._t;
 
 ActionManager.include({
-    _executeReportAction: function (action, options) {
+    _executeReportAction: function (action) {
         if (action.device_id) {
             // Call new route that sends you report to send to printer
             var self = this;
@@ -23,15 +23,11 @@ ActionManager.include({
                 method: 'iot_render',
                 args: [action.id, action.context.active_ids, {'device_id': action.device_id}]
             }).then(function (result) {
-                self.call(
-                    'iot_longpolling',
-                    'action',
-                    result[0],
-                    result[1],
-                    {'document': result[2]},
-                    self._onActionSuccess.bind(self),
-                    self._onActionFail.bind(self)
-                );
+                var iot_device = new DeviceProxy({ iot_ip: result[0], identifier: result[1] });
+                iot_device.action({'document': result[2]})
+                    .then(function(data) {
+                        self._onActionSuccess.call(self, data);
+                    }).guardedCatch(self._onActionFail.bind(self));
             });
         }
         else {
@@ -336,6 +332,7 @@ var IoTLongpolling = BusService.extend({
         }
         this.stopPolling(iot_ip);
         this.startPolling(iot_ip);
+        return Promise.resolve();
     },
     /**
      * Execute a action on device_id
@@ -344,10 +341,8 @@ var IoTLongpolling = BusService.extend({
      * @param {String} iot_ip
      * @param {String} device_id
      * @param {Object} data contains the information needed to perform an action on this device_id
-     * @param {Callback} callback_success
-     * @param {Callback} callback_fail
      */
-    action: function (iot_ip, device_id, data, callback_success, callback_fail) {
+    action: function (iot_ip, device_id, data) {
         this.parseURL = new URL(window.location.href);
         var self = this;
         var data = {
@@ -360,8 +355,12 @@ var IoTLongpolling = BusService.extend({
         var options = {
             timeout: this.ACTION_TIMEOUT,
         };
-        return this._rpcIoT(iot_ip, this.ACTION_ROUTE, data, options
-            ).fail(callback_fail).then(callback_success);
+        var prom = new Promise(function(resolve, reject) {
+            self._rpcIoT(iot_ip, self.ACTION_ROUTE, data, options)
+                .then(resolve)
+                .fail(reject);
+        });
+        return prom;
     },
 
     /**
@@ -523,43 +522,34 @@ core.serviceRegistry.add('iot_longpolling', IoTLongpolling);
 
 var IotValueFieldMixin = {
 
+    /**
+     * @returns {Promise}
+     */
     willStart: function() {
+        this.iot_device = null; // the attribute to which the device proxy created with ``_getDeviceInfo`` will be assigned.
         return Promise.all([this._super(), this._getDeviceInfo()]);
     },
 
-    /**
-     * @override
-     */
     start: function() {
         this._super.apply(this, arguments);
-        var self = this;
-        if (self.ip && self.identifier) {
-            var devices = [ self.identifier ];
-            self.call('iot_longpolling', 'addListener', self.ip, devices, self._onValueChange.bind(self));
+        if (this.iot_device) {
+            this.iot_device.add_listener(this._onValueChange.bind(this));
         }
     },
 
     /**
+     * To implement
+     * @abstract
      * @private
      */
-    _getDeviceInfo: function() {
-        this.ip = this.record.data.ip;
-        this.identifier = this.record.data.identifier;
-        return Promise.resolve();
-    },
+    _getDeviceInfo: function() {},
 
     /**
+     * To implement
+     * @abstract
      * @private
      */
-    _onValueChange: function (data){
-        var self = this;
-        this._setValue(data.value)
-            .then(function() {
-                if (!self.isDestroyed()) {
-                    self._render();
-                }
-            });
-    },
+    _onValueChange: function (data){},
 };
 
 var IotRealTimeValue = basic_fields.InputField.extend(IotValueFieldMixin, {
@@ -570,8 +560,7 @@ var IotRealTimeValue = basic_fields.InputField.extend(IotValueFieldMixin, {
     _getDeviceInfo: function() {
         this.test_type = this.record.data.test_type;
         if (this.test_type === 'measure') {
-            this.ip = this.record.data.ip;
-            this.identifier = this.record.data.identifier;
+            this.iot_device = new DeviceProxy({ iot_ip: this.record.data.ip, identifier: this.record.data.identifier });            
         }
         return Promise.resolve();
     },
@@ -596,7 +585,7 @@ var IotDeviceValueDisplay = Widget.extend(IotValueFieldMixin, {
     init: function (parent, params) {
         this._super.apply(this, arguments);
         this.identifier = params.data.identifier;
-        this.iot_id = params.data.iot_id.data.id;
+        this.iot_ip = params.data.iot_ip;
     },
     /**
      * @override
@@ -604,15 +593,8 @@ var IotDeviceValueDisplay = Widget.extend(IotValueFieldMixin, {
      */
     _getDeviceInfo: function() {
         var self = this;
-        var iot_id = this.iot_id;
-        return this._rpc({
-            model: 'iot.box',
-            method: 'search_read',
-            fields: ['id', 'ip'],
-            domain: [['id', '=', iot_id]]
-        }).then(function (iot_box) {
-            self.ip = iot_box[0].ip;
-        });
+        self.iot_device = new DeviceProxy({ identifier: this.identifier, iot_ip:this.iot_ip });
+        return Promise.resolve();
     },
 
     /**
@@ -631,10 +613,47 @@ var IotDeviceValueDisplay = Widget.extend(IotValueFieldMixin, {
 field_registry.add('iot_realtime_value', IotRealTimeValue);
 widget_registry.add('iot_device_value_display', IotDeviceValueDisplay);
 
+var _iot_longpolling = new IoTLongpolling();
+
+/**
+ * Frontend interface to iot devices
+ */
+var DeviceProxy = core.Class.extend({
+    /**
+     * @param {Object} iot_device - Representation of an iot device
+     * @param {string} iot_device.iot_ip - The ip address of the iot box the device is connected to
+     * @param {string} iot_device.identifier - The device's unique identifier
+     */
+    init: function(iot_device) {
+        this._iot_longpolling = _iot_longpolling;
+        this._iot_ip = iot_device.iot_ip;
+        this._identifier = iot_device.identifier;
+    },
+
+    /**
+     * Call actions on the device
+     * @param {Object} data
+     * @returns {Promise}
+     */
+    action: function(data) {
+        return this._iot_longpolling.action(this._iot_ip, this._identifier, data);
+    },
+
+    /**
+     * Add `callback` to the listeners callbacks list it gets called everytime the device's value is updated.
+     * @param {function} callback
+     * @returns {Promise}
+     */
+    add_listener: function(callback) {
+        return this._iot_longpolling.addListener(this._iot_ip, [this._identifier, ], callback);
+    },
+});
+
 return {
     IotValueFieldMixin: IotValueFieldMixin,
     IotRealTimeValue: IotRealTimeValue,
     IotDeviceValueDisplay: IotDeviceValueDisplay,
     IoTLongpolling: IoTLongpolling,
+    DeviceProxy: DeviceProxy
 };
 });

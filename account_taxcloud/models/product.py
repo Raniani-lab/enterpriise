@@ -44,6 +44,13 @@ class ResCompany(models.Model):
     taxcloud_api_id = fields.Char(string='TaxCloud API ID')
     taxcloud_api_key = fields.Char(string='TaxCloud API KEY')
     tic_category_id = fields.Many2one('product.tic.category', string='Default TIC Code', help="Default TICs(Taxability information codes) code to get sales tax from TaxCloud by product category.")
+    is_taxcloud_configured = fields.Boolean(compute='_compute_is_taxcloud_configured',
+                                            help='Used to determine whether or not to warn the user to configure TaxCloud.')
+
+    @api.depends('taxcloud_api_id', 'taxcloud_api_key')
+    def _compute_is_taxcloud_configured(self):
+        for company in self:
+            company.is_taxcloud_configured = company.taxcloud_api_id and company.taxcloud_api_key
 
 class ProductCategory(models.Model):
     _inherit = "product.category"

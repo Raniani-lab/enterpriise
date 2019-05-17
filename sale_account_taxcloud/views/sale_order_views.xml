@@ -18,6 +18,7 @@ for order in records:
         <field name="arch" type="xml">
             <form position="inside">
                 <field name="is_taxcloud" invisible="1"/>
+                <field name="is_taxcloud_configured" invisible="1"/>
             </form>
             <xpath expr="//tree/field[@name='tax_id']" position="attributes">
                 <attribute name="attrs">{'column_invisible': [('parent.is_taxcloud', '=', True)]}</attribute>
@@ -26,6 +27,13 @@ for order in records:
             <xpath expr="//tree/field[@name='tax_id']" position="after">
                 <field name="price_tax" string="Tax" attrs="{'column_invisible': [('parent.is_taxcloud', '=', False)]}"/>
             </xpath>
+            <div name="button_box" position="after">
+                <div class="alert alert-info" role="alert"
+                     attrs="{'invisible': ['|', ('is_taxcloud_configured', '=', True), ('is_taxcloud', '=', False)]}">
+                    Please enter your Taxcloud credentials to compute tax rates automatically.
+                    <a class="alert-link" href="/web#action=account.action_account_config" role="button">Go to Settings.</a>
+                </div>
+            </div>
         </field>
     </record>
 </odoo>

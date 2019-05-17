@@ -10,6 +10,7 @@ from .taxcloud_request import TaxCloudRequest
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    is_taxcloud_configured = fields.Boolean(related='company_id.is_taxcloud_configured', help='Used to determine whether or not to warn the user to configure TaxCloud.')
     is_taxcloud = fields.Boolean(related='fiscal_position_id.is_taxcloud', help='Technical field to determine whether to hide taxes in views or not.')
 
     @api.multi

@@ -22,7 +22,7 @@ def run_after_commit(function, *args, **kwargs):
     """
     self, args = args[0], args[1:]
 
-    if (not self.env.context.get('disable_after_commit', True) or
+    if (self.env.context.get('disable_after_commit') or
             getattr(threading.currentThread(), 'testing', False)):
         _logger.debug("Method %s.%s called immediately", self, function)
         return function(self, *args, **kwargs)

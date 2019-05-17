@@ -54,7 +54,7 @@ class SaleSubscription(models.Model):
     team_id = fields.Many2one('crm.team', 'Sales Team', change_default=True, default=False)
     team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
     invoice_count = fields.Integer(compute='_compute_invoice_count')
-    country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True, readonly=False)
+    country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True, readonly=False, compute_sudo=True)
     industry_id = fields.Many2one('res.partner.industry', related='partner_id.industry_id', store=True, readonly=False)
     sale_order_count = fields.Integer(compute='_compute_sale_order_count')
     # customer portal

@@ -490,7 +490,7 @@ msgstr "62 - Bezoldigingen, sociale lasten en pensioenen"
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_l10n_be_tva_63_0
 msgid "63 - TVA à reverser sur notes de crédit recues"
-msgstr ""
+msgstr "63 - Terug te storten btw vermeld op ontvangen creditnota's"
 "63 - bedrag van de terug te storten belasting ingevolge ontvangen "
 "creditnota's"
 
@@ -524,7 +524,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_l10n_be_tva_64_0
 msgid "64 - TVA à recuperer sur notes de crédit delivrées"
-msgstr ""
+msgstr "64 - Te recupereren btw vermeld op uitgereikte creditnota's"
 "64 - bedrag van de te recupereren belasting ingevolge uitgereikte "
 "creditnota's"
 
@@ -815,7 +815,7 @@ msgstr "85 - Creditnota's voor overige bewerkingen"
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_l10n_be_tva_86_0
 msgid "86 - Acquisition intra-communautaires et ventes ABC"
-msgstr "86 - de intracommunautaire verwerving en ABC verkopen"
+msgstr "86 - Intracommunautaire verwerving en ABC verkopen"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_l10n_be_tva_87_0
@@ -1002,17 +1002,17 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_l10n_be_tva_operations_sortie0
 msgid "II A la sortie"
-msgstr "II Bij uitgang"
+msgstr "II Uitgaande handelingen"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_l10n_be_tva_operations_entree0
 msgid "III A l'entrée"
-msgstr "III Bij ingang"
+msgstr "III Inkomende handelingen"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_l10n_be_tva_taxes_dues0
 msgid "IV Dues"
-msgstr "IV Bijdragen"
+msgstr "IV Verschuldigd"
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/partner_vat_intra.py:80

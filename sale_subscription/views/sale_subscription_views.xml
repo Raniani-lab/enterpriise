@@ -419,7 +419,7 @@
                     </div>
                     <group name="config">
                         <group name="invoicing">
-                            <label for="recurring_interval" string="Invoice"/>
+                            <label for="recurring_interval" string="Invoice period"/>
                             <div class="o_row">
                                 <span class="mr-1">Every</span>
                                 <field name="recurring_interval" required="1"/>
@@ -430,7 +430,8 @@
                             <div class="o_row" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}">
                                 <span class="mr-1">For</span>
                                 <field name="recurring_rule_count"/>
-                                <field name="recurring_rule_type_readonly"/>
+                                 <field name="recurring_rule_type_readonly" invisible="1"/>
+                                <span class="mr-1">period(s)</span>
                             </div>
                             <field name="payment_mode" widget="radio"/>
                             <field name="invoice_mail_template_id"

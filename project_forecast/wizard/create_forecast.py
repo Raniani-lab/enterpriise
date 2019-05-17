@@ -40,6 +40,10 @@ class ProjectForecastCreateWizard(models.TransientModel):
     repeat_until = fields.Date()
     recurrency_id = fields.Many2one('project.forecast.recurrency')
 
+    # Autocomplete
+    previous_forecast_id = fields.Many2one('project.forecast', string='Recent Forecasts', store=False)
+    autocomplete_forecast_ids = fields.Many2many('project.forecast', store=False, compute='_compute_autocomplete_forecast_ids')
+
     # resource
     resource_hours = fields.Float(string="Planned hours")
     resource_time = fields.Float(string="Allocated Time (%)", compute='_compute_resource_time', compute_sudo=True, help="Expressed in the Unit of Measure of the project company")
@@ -51,6 +55,28 @@ class ProjectForecastCreateWizard(models.TransientModel):
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Forecast end date should be greater than its start date'),
         ('check_end_date_lower_repeat_until', 'CHECK(repeat_until IS NULL OR end_datetime < repeat_until)', 'Forecast should end before the repeat ends'),
     ]
+
+    @api.depends('employee_id')
+    def _compute_autocomplete_forecast_ids(self):
+        """Computes a list of forecasts that could be used to complete the creation wizard
+            forecasts must
+                -be assigned to the same employee
+                -have distinct projects
+            they are ordered by their end_datetime (most recent first)
+        """
+        if self.employee_id:
+            forecasts = self.env['project.forecast'].search([
+                ['employee_id', '=', self.employee_id.id]
+            ], order='end_datetime')
+            seen = {}
+
+            def filter_func(forecast):
+                uniq = seen.get(forecast.project_id, True)
+                seen[forecast.project_id] = False
+                return uniq
+
+            forecasts = forecasts.filtered(filter_func)
+            self.autocomplete_forecast_ids = forecasts
 
     @api.multi
     @api.depends('resource_hours',
@@ -131,6 +157,15 @@ class ProjectForecastCreateWizard(models.TransientModel):
                         'title': _('Warning!'),
                         'message': _('You are allocating more hours than available for this employee')}
                 }
+
+    @api.onchange('previous_forecast_id')
+    def _onchange_previous_forecast_id(self):
+        if self.previous_forecast_id and self.start_datetime:
+            interval = self.previous_forecast_id.end_datetime - self.previous_forecast_id.start_datetime
+            self.employee_id = self.previous_forecast_id.employee_id
+            self.project_id = self.previous_forecast_id.project_id
+            self.task_id = self.previous_forecast_id.task_id
+            self.end_datetime = self.start_datetime + interval
 
     def action_create_new(self):
         self.ensure_one()

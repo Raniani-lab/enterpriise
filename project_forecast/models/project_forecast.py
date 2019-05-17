@@ -75,7 +75,9 @@ class ProjectForecast(models.Model):
     @api.depends('project_id', 'task_id', 'employee_id')
     def _compute_name(self):
         for forecast in self:
-            name_parts = [forecast.employee_id.name]
+            name_parts = []
+            if not self.env.context.get('forecast_autocomplete_name'):
+                name_parts += [forecast.employee_id.name]
             if forecast.task_id:  # optional field
                 name_parts += [forecast.task_id.name]
 

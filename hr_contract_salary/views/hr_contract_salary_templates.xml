@@ -607,8 +607,8 @@
 
                                     <div class="form-group" name="employee_total_cost" title="Full time equivalent employer cost">
                                         <div class="row">
-                                            <label class="col-md-7 col-form-label" for="employee_total_cost">Employer Cost</label>
-                                            <div class="col-md-5">
+                                            <label class="col-md-6 col-form-label" for="employee_total_cost">Employer Cost</label>
+                                            <div class="col-md-6">
                                                 <div class="input-group">
                                                     <input type="text" disabled="disabled" name="employee_total_cost" class="form-control" t-att-value="contract.final_yearly_costs"/>
                                                     <div class="input-group-append">

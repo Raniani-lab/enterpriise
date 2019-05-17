@@ -6,6 +6,7 @@
     """,
     'category': 'Accounting',
     'depends': ['account_taxcloud', 'website_sale'],
+    'data': ['views/templates.xml'],
     'auto_install': True,
     'license': 'OEEL-1',
 }

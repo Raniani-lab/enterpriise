@@ -114,7 +114,7 @@
             <ul>
                 <li>Eco Vouchers: <t t-esc="advantages['eco_checks']"/> €/year</li>
                 <li>13th Month: <t t-esc="advantages['wage']"/> €/year</li>
-                <li>Holiday Bonus: <t t-esc="round(float(advantages['wage']) * 0.92, 2)"/> €/year</li>
+                <li>Double Holiday Pay: <t t-esc="round(float(advantages['wage']) * 0.92, 2)"/> €/year</li>
                 <li>Holidays: <t t-esc="advantages['holidays']"/> /year</li>
             </ul>
 

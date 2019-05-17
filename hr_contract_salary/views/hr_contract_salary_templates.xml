@@ -242,8 +242,8 @@
                                                         </t>
                                                     </datalist>
                                                 </div>
-                                                <span class="form-text mt8">In addition to your legal leaves, you can choose any number of extra time off you want.</span>
-                                                <span class="form-text mt8">The amount of annual time off (legal leaves) you get depends on your work schedule in the previous year. A full-time work schedule through the 12 months of the last year will grant you 20 annual time off (legal leaves).</span>
+                                                <span class="form-text mt8">In addition to your legal leaves, you can chose up to 15 extra days off.</span>
+                                                <span class="form-text mt8">The amount of annual time off (legal leaves) you get depends on your work schedule in the previous year. A full-time work schedule through the 12 months of the last year, under Belgian contract, will grant you 20 annual time off (legal leaves).</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">
@@ -413,7 +413,7 @@
                                                 <i class="fa fa-1x fa-leaf fa-fw"/> Eco Vouchers
                                             </label>
                                             <div class="col-md-7">
-                                                <span class="form-text">You'll receive this amount in the form of Eco Vouchers around June. This amount may be different based on your working schedule and the number of worked days during the year. </span>
+                                                <span class="form-text">You'll receive this amount in the form of Eco Vouchers around June. The exact amount is based on real worked day during the period between the first of June of last year and the 31th of May of this year.</span>
                                             </div>
                                             <div class="col-md-2 text-right">
                                                 <div class="input-group">
@@ -433,7 +433,7 @@
                                                 <i class="fa fa-1x fa-gift fa-fw fa-lg"/> 13<sup>th</sup> Month
                                             </label>
                                             <div class="col-md-7">
-                                                <span class="form-text">You'll receive this amount around December. This amount may be different based on your working schedule and the number of worked days during the year.</span>
+                                                <span class="form-text">If you meet conditions to benefit from 13th month, you will receive this amount around December. This amount may be different based on your working schedule and the number of worked days during the year.</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">
@@ -446,14 +446,14 @@
                                         </div>
                                     </div>
 
-                                    <!-- Holiday Bonus -->
+                                    <!-- Double Holiday Pay -->
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="col-md-3 col-form-label" for="double_holidays">
-                                                <i class="fa fa-1x fa-suitcase fa-fw"/> Holiday Bonus
+                                                <i class="fa fa-1x fa-suitcase fa-fw"/> Double Holiday Pay
                                             </label>
                                             <div class="col-md-7">
-                                                <span class="form-text">You'll receive this amount around June. This amount may be different based on your working schedule and the number of worked days during the year.</span>
+                                                <span class="form-text">You'll receive this amount around June. This amount will depend on the number of worked days during the previous year.</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">

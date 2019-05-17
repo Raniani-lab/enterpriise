@@ -103,11 +103,6 @@
                         <field name="mobile" nolabel="1"/>
                         <span>/ month</span>
                     </div>
-                    <label for="mobile_plus"/>
-                    <div class="o_row">
-                        <field name="mobile_plus" nolabel="1"/>
-                        <span>/ month</span>
-                    </div>
                 </group>
                 <group string="Yearly Advantages" name="yearly_advantages">
                     <label for="eco_checks"/>

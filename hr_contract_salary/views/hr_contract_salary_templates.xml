@@ -206,23 +206,16 @@
                                                 </div>
                                                 <div>
                                                     <label class="hr_cs_control hr_cs_control_radio">
-                                                        <input type="radio" name="mobile" value="1" t-att-checked="contract.mobile and not contract.mobile_plus" class="advantage_input"/>
+                                                        <input type="radio" name="mobile" value="1" t-att-checked="contract.mobile" class="advantage_input"/>
                                                         <t t-esc="default_mobile" /> €
                                                         <div class="hr_cs_control_indicator"/>
                                                     </label>
                                                 </div>
-                                                <div>
-                                                    <label class="hr_cs_control hr_cs_control_radio">
-                                                        <t t-esc="default_mobile + default_mobile_plus" /> € (+ International Communication)
-                                                        <input type="radio" name="mobile" value="3" t-att-checked="contract.mobile_plus" class="advantage_input"/>
-                                                        <div class="hr_cs_control_indicator"/>
-                                                    </label>
-                                                </div>
-                                                <span class="form-text mt8" id="mobile_tooltip">Your mobile phone subscription will be paid up to this amount.</span>
+                                                <span class="form-text mt8" id="mobile_tooltip">This BASE subscription include unlimited Internet, calls and SMS in Belgium + Rooming trough Europe (International Communications are excluded).</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">
-                                                    <input class="form-control" type="text" t-att-value="contract.mobile + contract.mobile_plus" disabled="disabled" name="mobile_amount"/>
+                                                    <input class="form-control" type="text" t-att-value="contract.mobile" disabled="disabled" name="mobile_amount"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>
@@ -232,7 +225,7 @@
                                     </div>
 
                                     <!-- Holidays -->
-                                    <div class="form-group">
+                                    <div class="form-group" name="holidays_div">
                                         <div class="row">
                                             <label class="col-md-3 col-form-label" for="holidays_slider">
                                                 <i class="fa fa-1x fa-suitcase fa-fw"/> Extra Time Off

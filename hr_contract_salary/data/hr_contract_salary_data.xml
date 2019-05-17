@@ -108,12 +108,6 @@
                 <t t-if="not advantages['has_mobile']">
                     <li>Mobile: No</li>
                 </t>
-                <t t-if="advantages['international_communication']">
-                    <li>International Communication: Yes</li>
-                </t>
-                <t t-if="not advantages['international_communication']">
-                    <li>International Communication: No</li>
-                </t>
             </ul>
 
             <h3>Yearly Advantages</h3>

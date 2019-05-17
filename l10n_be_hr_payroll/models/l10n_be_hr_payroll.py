@@ -58,9 +58,6 @@ class HrContract(models.Model):
     mobile = fields.Monetary(string="Mobile",
         tracking=True,
         help="The employee's mobile subscription will be paid up to this amount.")
-    mobile_plus = fields.Monetary(string="International Communication",
-        tracking=True,
-        help="The employee's mobile subscription for international communication will be paid up to this amount.")
     meal_voucher_amount = fields.Monetary(string="Meal Vouchers",
         tracking=True,
         help="Amount the employee receives in the form of meal vouchers per worked day.")
@@ -95,18 +92,6 @@ class HrContract(models.Model):
             else:
                 contract.wage_with_holidays = contract.wage
 
-    def _get_advantages_costs(self):
-        self.ensure_one()
-        return (
-            12.0 * self.representation_fees +
-            12.0 * self.fuel_card +
-            12.0 * self.internet +
-            12.0 * (self.mobile + self.mobile_plus) +
-            12.0 * self.transport_employer_cost +
-            self.warrants_cost +
-            220.0 * self.meal_voucher_paid_by_employer
-        )
-
     def _inverse_wage_with_holidays(self):
         for contract in self:
             if contract.holidays:
@@ -140,7 +125,7 @@ class HrContract(models.Model):
 
     @api.depends(
         'wage', 'fuel_card', 'representation_fees', 'transport_employer_cost',
-        'internet', 'mobile', 'mobile_plus', 'yearly_commission_cost',
+        'internet', 'mobile', 'yearly_commission_cost',
         'meal_voucher_paid_by_employer')
     def _compute_final_yearly_costs(self):
         for contract in self:
@@ -192,26 +177,19 @@ class HrContract(models.Model):
         if not self.transport_mode_public:
             self.public_transport_reimbursed_amount = 0
 
-    @api.onchange('mobile', 'mobile_plus')
-    def _onchange_mobile(self):
-        if self.mobile_plus and not self.mobile:
-            raise ValidationError(_('You should have a mobile subscription to select an international communication amount.'))
-
     def _get_advantages_costs(self):
         self.ensure_one()
         return (
             12.0 * self.representation_fees +
             12.0 * self.fuel_card +
             12.0 * self.internet +
-            12.0 * (self.mobile + self.mobile_plus) +
+            12.0 * self.mobile +
             12.0 * self.transport_employer_cost +
             self.yearly_commission_cost +
             220.0 * self.meal_voucher_paid_by_employer
         )
 
-    def _get_mobile_amount(self, has_mobile, international_communication):
-        if has_mobile and international_communication:
-            return self.env['ir.default'].sudo().get('hr.contract', 'mobile') + self.env['ir.default'].sudo().get('hr.contract', 'mobile_plus')
+    def _get_mobile_amount(self, has_mobile):
         if has_mobile:
             return self.env['ir.default'].sudo().get('hr.contract', 'mobile')
         return 0.0

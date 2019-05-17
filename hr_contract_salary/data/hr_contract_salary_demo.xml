@@ -230,7 +230,6 @@
         <field name="structure_type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
         <field name="wage">2650</field>
         <field name="commission_on_target">0.0</field>
-        <field name="mobile_plus">0.0</field>
         <field name="transport_mode_car" eval="True"/>
         <field name="new_car" eval="False"/>
         <field name="car_id" ref="fleet_vehicle_audi_a3_laurie_poiret"/>

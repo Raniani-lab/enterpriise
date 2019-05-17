@@ -12,6 +12,5 @@ class ResConfigSettings(models.TransientModel):
     default_representation_fees = fields.Float(string="Representation Fees", default_model="hr.contract")
     default_internet = fields.Float(string="Internet", default_model="hr.contract")
     default_mobile = fields.Float(string="Mobile", default_model="hr.contract")
-    default_mobile_plus = fields.Float(string="International Communication", default_model="hr.contract")
     default_meal_voucher_amount = fields.Float(string="Meal Vouchers", default_model="hr.contract")
     default_eco_checks = fields.Float(string="Eco Vouchers", default_model="hr.contract")

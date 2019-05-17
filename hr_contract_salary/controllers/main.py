@@ -225,7 +225,6 @@ class website_hr_contract_salary(http.Controller):
             'job_title': job_title,
             'freeze': freeze,
             'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
-            'default_mobile_plus': request.env['ir.default'].sudo().get('hr.contract', 'mobile_plus'),
             'original_link': get_current_url(request.httprequest.environ)})
 
         values.update(self._get_documents_src(contract.employee_id))
@@ -320,11 +319,6 @@ class website_hr_contract_salary(http.Controller):
             new_contract.mobile = request.env['ir.default'].sudo().get('hr.contract', 'mobile')
         else:
             new_contract.mobile = 0.0
-
-        if advantages['international_communication']:
-            new_contract.mobile_plus = request.env['ir.default'].sudo().get('hr.contract', 'mobile_plus')
-        else:
-            new_contract.mobile_plus = 0.0
 
         if advantages['transport_mode_car']:
             if advantages['new_car']:
@@ -469,7 +463,7 @@ class website_hr_contract_salary(http.Controller):
         thirteen_month_net = payslip.get_salary_line_total('NET')
         double_holidays_net = payslip.get_salary_line_total('NET') * 0.92
 
-        monthly_nature = round(transport_advantage + new_contract.internet + new_contract.mobile + new_contract.mobile_plus, 2)
+        monthly_nature = round(transport_advantage + new_contract.internet + new_contract.mobile, 2)
         monthly_cash = round(new_contract.warrant_value_employee / 12.0 + new_contract.meal_voucher_amount * 20.0 + new_contract.fuel_card, 2)
         yearly_cash = round(new_contract.eco_checks + thirteen_month_net + double_holidays_net, 2)
         monthly_total = round(monthly_nature + monthly_cash + yearly_cash / 12.0 + payslip.get_salary_line_total('NET') - new_contract.representation_fees, 2)
@@ -485,8 +479,8 @@ class website_hr_contract_salary(http.Controller):
         return result
 
     @http.route(['/salary_package/onchange_mobile/'], type='json', auth='public')
-    def onchange_mobile(self, has_mobile, international_communication):
-        return request.env['hr.contract'].sudo()._get_mobile_amount(has_mobile, international_communication)
+    def onchange_mobile(self, has_mobile):
+        return request.env['hr.contract'].sudo()._get_mobile_amount(has_mobile)
 
     @http.route(['/salary_package/onchange_car/'], type='json', auth='public')
     def onchange_car(self, car_option, vehicle_id):

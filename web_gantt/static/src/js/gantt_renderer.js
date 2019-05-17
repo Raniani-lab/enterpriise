@@ -246,6 +246,7 @@ var GanttRenderer = AbstractRenderer.extend({
         rows.forEach(function (row) {
             var pillsInfo = {
                 groupId: row.groupId,
+                resId: row.resId,
                 pills: row.records,
                 groupLevel: groupLevel,
             };

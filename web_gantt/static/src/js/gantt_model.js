@@ -333,6 +333,7 @@ var GanttModel = AbstractModel.extend({
                     groupId: subGroups[0].id,
                     groupedBy: groupedBy,
                     id: _.uniqueId('row'),
+                    resId: _.isArray(value) ? value[0] : value,
                     isGroup: isGroup,
                     isOpen: !_.findWhere(params.oldRows, {path: path, isOpen: false}),
                     path: path,

@@ -20,6 +20,7 @@
 # Marco Tarsia <marco.y.tarsia@gmail.com>, 2019
 # Martin Trigaux, 2019
 # JackTheHunter <Maximilian.N98@gmail.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -27,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: JackTheHunter <Maximilian.N98@gmail.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,7 +100,7 @@ msgstr "# Anhänge"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
 msgid "Auto Assign Date"
-msgstr ""
+msgstr "Datum automatisch zuweisen"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
@@ -115,7 +116,7 @@ msgstr "Kapazität"
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid "Create a new salesman"
-msgstr ""
+msgstr "Erstellen Sie einen neuen Verkäufer"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_uid
@@ -166,7 +167,7 @@ msgstr ""
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid "Define a new sales channel"
-msgstr ""
+msgstr "Definieren Sie einen neuen Vertriebskanal"
 
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
@@ -505,6 +506,8 @@ msgid ""
 "Sales Team the user is member of. Used to compute the members of a Sales "
 "Team through the inverse one2many"
 msgstr ""
+"Verkaufsteam, in dem der Benutzer Mitglied ist. Wird verwendet, um die "
+"Mitglieder eines Verkaufsteams über das inverse one2many zu berechnen"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids
@@ -514,7 +517,7 @@ msgstr "Verkäufer"
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_team_user
 msgid "Salesperson (Team Member)"
-msgstr ""
+msgstr "Verkäufer (Teammitglied)"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action

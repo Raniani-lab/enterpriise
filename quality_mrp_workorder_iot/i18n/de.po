@@ -54,7 +54,7 @@ msgstr "Ende"
 #. module: quality_mrp_workorder_iot
 #: model:ir.model,name:quality_mrp_workorder_iot.model_iot_trigger
 msgid "IOT Trigger"
-msgstr ""
+msgstr "IOT Auslöser"
 
 #. module: quality_mrp_workorder_iot
 #: selection:iot.trigger,action:0
@@ -114,12 +114,12 @@ msgstr "Überspringen"
 #. module: quality_mrp_workorder_iot
 #: selection:iot.trigger,action:0
 msgid "Take Measure"
-msgstr ""
+msgstr "Maßnahme ergreifen"
 
 #. module: quality_mrp_workorder_iot
 #: selection:iot.trigger,action:0
 msgid "Take Picture"
-msgstr ""
+msgstr "Ein Bild machen"
 
 #. module: quality_mrp_workorder_iot
 #: selection:iot.trigger,action:0

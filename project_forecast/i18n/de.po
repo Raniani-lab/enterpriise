@@ -16,6 +16,7 @@
 # Katharina Moritz <kmo@e2f.com>, 2018
 # Martin Trigaux, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
@@ -23,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +41,7 @@ msgstr "% Zeit"
 #: code:addons/project_forecast/models/project_forecast.py:202
 #, python-format
 msgid "%s Task(s): %s"
-msgstr ""
+msgstr "%s Aufgabe(en): %s"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
@@ -60,12 +61,12 @@ msgstr "Aktiv"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
 msgid "Allocated Time"
-msgstr ""
+msgstr "Zugewiesene Zeit"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__time
 msgid "Allocated time / Time span"
-msgstr ""
+msgstr "Zugewiesene Zeit / Zeitspanne"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
@@ -105,12 +106,12 @@ msgstr "Nach Tag"
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
 msgid "By month"
-msgstr ""
+msgstr "Im Monat"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
 msgid "By week"
-msgstr ""
+msgstr "In der Woche"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
@@ -170,13 +171,15 @@ msgstr ""
 msgid ""
 "Encode your forecast in a table displayed by days, weeks or the whole year."
 msgstr ""
+"Codieren Sie Ihre Vorhersage in einer Tabelle, die nach Tagen, Wochen oder "
+"dem ganzen Jahr angezeigt wird."
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__forecast_uom
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_uom
 #: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_uom
 msgid "Encode your forecasts in hours or days."
-msgstr ""
+msgstr "Kodieren Sie Ihre Prognosen in Stunden oder Tagen."
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_date
@@ -191,7 +194,7 @@ msgstr "Ausschließen"
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__resource_time
 msgid "Expressed in the Unit of Measure of the project company"
-msgstr ""
+msgstr "In der Maßeinheit der Projektgesellschaft ausgedrückt"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
@@ -203,7 +206,7 @@ msgstr "Prognose"
 #: code:addons/project_forecast/models/project_forecast.py:276
 #, python-format
 msgid "Forecast (in %s)"
-msgstr ""
+msgstr "Vorhersage (in%s)"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_report_activities
@@ -227,7 +230,7 @@ msgstr "Prognosenliste"
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_user
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Forecast by employee"
-msgstr ""
+msgstr "Prognose des Mitarbeiters"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_project
@@ -238,12 +241,13 @@ msgstr "Prognosen nach Projekt"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 msgid "Forecast by task"
-msgstr ""
+msgstr "Prognose nach Aufgabe"
 
 #. module: project_forecast
 #: sql_constraint:project.forecast:0
 msgid "Forecast end date should be greater or equal to its start date"
 msgstr ""
+"Das Enddatum der Prognose sollte größer oder gleich dem Startdatum sein"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:200
@@ -252,16 +256,18 @@ msgid ""
 "Forecast should not overlap existing forecasts. To solve this, check the "
 "project(s): %s."
 msgstr ""
+"Die Prognose sollte sich nicht mit bestehenden Prognosen überschneiden. Um "
+"dies zu lösen, überprüfen Sie die Projekte: %s."
 
 #. module: project_forecast
 #: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_user
 msgid "Forecast: view by employee"
-msgstr ""
+msgstr "Prognose: Ansicht nach Mitarbeiter"
 
 #. module: project_forecast
 #: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_project
 msgid "Forecast: view by project"
-msgstr ""
+msgstr "Prognose: Ansicht nach Projekt"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:166
@@ -282,6 +288,9 @@ msgid ""
 " field and the 'resource_time' cell field, got respectively %(column_field)r"
 " and %(cell_field)r"
 msgstr ""
+"Die Gitteranpassung für Projektvorhersagen unterstützt nur das Spaltenfeld "
+"'Startdatum' und das Zellenfeld 'Rüst-Zeit' mit% (column_field) r bzw.% "
+"(cell_field) r"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -397,24 +406,27 @@ msgid ""
 "The employee (%s) doesn't have a timezone, this might cause errors in the "
 "time computation. It is configurable on the user linked to the employee"
 msgstr ""
+"Der Mitarbeiter (%s) hat keine Zeitzone, dies kann zu Fehlern bei der "
+"Zeitberechnung führen. Sie kann für den Benutzer konfiguriert werden, der "
+"mit dem Mitarbeiter verknüpft ist"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_span
 #: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_span
 msgid "Time Span"
-msgstr ""
+msgstr "Zeitspanne"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__forecast_uom
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_uom
 #: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_uom
 msgid "Time Unit"
-msgstr ""
+msgstr "Zeiteinheit"
 
 #. module: project_forecast
 #: model:ir.filters,name:project_forecast.ir_filter_forecast_time_by_month
 msgid "Time by month"
-msgstr ""
+msgstr "Zeit im Monat"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__user_id
@@ -443,6 +455,9 @@ msgid ""
 "the project's forecasts and then delete the project or simply deactivate the"
 " project."
 msgstr ""
+"Sie können kein Projekt löschen, das Prognosen enthält. Sie können entweder "
+"alle Prognosen des Projekts löschen und anschließend das Projekt löschen "
+"oder das Projekt einfach deaktivieren."
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project.py:43
@@ -451,6 +466,9 @@ msgid ""
 "You cannot delete a task containing forecasts. You can either delete all the"
 " task's forecasts and then delete the task or simply deactivate the task."
 msgstr ""
+"Sie können keine Aufgabe löschen, die Prognosen enthält. Sie können entweder"
+" alle Vorhersagen der Aufgabe löschen und dann die Aufgabe löschen oder die "
+"Aufgabe einfach deaktivieren."
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:172

@@ -157,7 +157,7 @@ msgstr "Produkt-TIC-Kategorien"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_tic_category
 msgid "Product TIC Category"
-msgstr ""
+msgstr "Produkt TIC Kategorie"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_template

@@ -130,7 +130,7 @@ msgstr "Unternehmen"
 #: code:addons/account_yodlee/models/yodlee.py:199
 #, python-format
 msgid "Could not make sense of parameters: %s"
-msgstr ""
+msgstr "Es konnte den  Parameter nicht verstehen: %s"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:339
@@ -159,7 +159,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:228
 #, python-format
 msgid "Error %s, message: %s"
-msgstr ""
+msgstr "Fehler %s, Nachricht: %s"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:102
@@ -370,7 +370,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:206
 #, python-format
 msgid "Online institution"
-msgstr ""
+msgstr "Online-Institution"
 
 #. module: account_yodlee
 #: selection:account.online.provider,provider_type:0
@@ -405,6 +405,9 @@ msgid ""
 "Problem Updating Account (517): We are sorry, there was a technical problem "
 "updating your account. Please try again."
 msgstr ""
+"Problem bei der Aktualisierung Ihres Kontos (517): Es tut uns leid, bei der "
+"Aktualisierung Ihres Kontos ist ein technisches Problem aufgetreten. Bitte "
+"versuche es erneut."
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:366
@@ -721,7 +724,7 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.actions.client,name:account_yodlee.yodlee_widget
 msgid "Synchronization process completed"
-msgstr ""
+msgstr "Synchronisationsprozess abgeschlossen"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:60
@@ -782,4 +785,4 @@ msgstr "Zugangstoken"
 #: code:addons/account_yodlee/models/yodlee.py:297
 #, python-format
 msgid "message: %s"
-msgstr ""
+msgstr "Nachricht: %s"

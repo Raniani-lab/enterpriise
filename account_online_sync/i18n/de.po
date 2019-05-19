@@ -61,12 +61,13 @@ msgstr "<strong>Uuups</strong> Wir konnten nicht"
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully refreshed."
-msgstr ""
+msgstr "<strong>Erfolg!</strong> Ihr Konto wurde erfolgreich aktualisiert."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully updated."
 msgstr ""
+"<strong>Erfolgreich!</strong> Ihr Konto wurde erfolgreich aktualisiert."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -74,6 +75,7 @@ msgid ""
 "<strong>Well done!</strong> Your banking institution is now connected to "
 "Odoo."
 msgstr ""
+"<strong>Gut gemacht!</strong> Ihr Bankinstitut ist jetzt mit Odoo verbunden."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -155,7 +157,7 @@ msgstr "# Anhänge"
 #: code:addons/account_online_sync/models/online_sync.py:317
 #, python-format
 msgid "Automated Bank Synchronization"
-msgstr ""
+msgstr "Automatisierte Banksynchronisation"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__balance
@@ -631,7 +633,7 @@ msgstr "Erfolgreich"
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_account_online_wizard_form
 msgid "Synchronization result"
-msgstr ""
+msgstr "Synchronisationsergebnis"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__synchronization_status
@@ -681,7 +683,7 @@ msgstr ""
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
-msgstr ""
+msgstr "Das Konto wurde mit Ihrem Bankjournal verknüpft."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:63
@@ -701,6 +703,7 @@ msgstr ""
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
 msgstr ""
+"Zeitfehler: Der Server hat nicht innerhalb von 60 sekunden geantwortet"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__transactions
@@ -825,7 +828,7 @@ msgstr "neu laden"
 #: code:addons/account_online_sync/models/online_sync.py:107
 #, python-format
 msgid "transactions loaded"
-msgstr ""
+msgstr "Transaktionen geladen"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -833,6 +836,8 @@ msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
+"Ihr Konto aus folgenden Gründen\n"
+"                   Fehler während des Vorgangs:"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form

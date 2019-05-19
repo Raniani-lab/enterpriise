@@ -817,19 +817,19 @@ msgstr "Bsp. Dokument validieren"
 #: code:addons/documents/models/ir_attachment.py:43
 #, python-format
 msgid "ERROR: Invalid PDF file!"
-msgstr ""
+msgstr "FEHLER: Ungültige PDF-Datei!"
 
 #. module: documents
 #: code:addons/documents/models/ir_attachment.py:90
 #, python-format
 msgid "ERROR: Invalid list of pages to split. Example: 1,5-9,10"
-msgstr ""
+msgstr "FEHLER: Ungültige Liste der zu teilenden Seiten. Beispiel: 1,5-9,10"
 
 #. module: documents
 #: code:addons/documents/models/ir_attachment.py:85
 #, python-format
 msgid "ERROR: the file must be a PDF"
-msgstr ""
+msgstr "FEHLER: Die Datei muss eine PDF-Datei sein"
 
 #. module: documents
 #: selection:documents.document,type:0
@@ -2126,7 +2126,7 @@ msgstr "Geteilte Dokumente von"
 #: code:addons/documents/static/src/xml/documents_thread.xml:14
 #, python-format
 msgid "e.g. 1-5, 7, 8-9"
-msgstr ""
+msgstr "z.b. 1-5, 7, 8-9"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form

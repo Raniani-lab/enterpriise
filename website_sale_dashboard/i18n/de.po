@@ -97,7 +97,7 @@ msgstr "Erledigt"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "Follow your website traffic in Odoo."
-msgstr ""
+msgstr "Verfolgen Sie den Datenverkehr Ihrer Website in Odoo."
 
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0

@@ -94,7 +94,7 @@ msgstr "%s Bericht"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:107
 #, python-format
 msgid "(t-if=\""
-msgstr ""
+msgstr "(t-if=\""
 
 #. module: web_studio
 #. openerp-web
@@ -114,6 +114,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                Fügen Sie eine neue Zugriffssteuerungsliste hinzu\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. openerp-web
@@ -561,7 +565,7 @@ msgstr "Farbe"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:258
 #, python-format
 msgid "Colors"
-msgstr ""
+msgstr "Farben"
 
 #. module: web_studio
 #. openerp-web
@@ -1033,7 +1037,7 @@ msgstr "Editierbar"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:107
 #, python-format
 msgid "Else"
-msgstr ""
+msgstr "Sonst"
 
 #. module: web_studio
 #. openerp-web
@@ -1185,7 +1189,7 @@ msgstr "Datei"
 #: code:addons/web_studio/controllers/main.py:462
 #, python-format
 msgid "Filename for %s"
-msgstr ""
+msgstr "Dateiname für %s"
 
 #. module: web_studio
 #. openerp-web
@@ -1681,7 +1685,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:6
 #, python-format
 msgid "Minus"
-msgstr ""
+msgstr "Minus"
 
 #. module: web_studio
 #. openerp-web
@@ -1721,7 +1725,7 @@ msgstr "Modul"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_module_uninstall
 msgid "Module Uninstall"
-msgstr ""
+msgstr "Modul deinstallieren"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
@@ -2035,7 +2039,7 @@ msgstr "Schnelles Anlegen"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_qweb
 msgid "Qweb"
-msgstr ""
+msgstr "Qweb"
 
 #. module: web_studio
 #. openerp-web
@@ -2200,7 +2204,7 @@ msgstr "Gespeichert"
 #: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:121
 #, python-format
 msgid "Saving..."
-msgstr ""
+msgstr "Speichern..."
 
 #. module: web_studio
 #. openerp-web
@@ -2478,7 +2482,7 @@ msgstr "Technischer Name"
 #: code:addons/web_studio/models/ir_ui_view.py:779
 #, python-format
 msgid "Template '%s' not found"
-msgstr ""
+msgstr "Vorlage '%s' nicht gefunden"
 
 #. module: web_studio
 #. openerp-web

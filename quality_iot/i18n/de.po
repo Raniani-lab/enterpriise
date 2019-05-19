@@ -29,12 +29,12 @@ msgstr "Gerät"
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "IOT Gerät"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__qcp_test_type
 msgid "Qcp Test Type"
-msgstr ""
+msgstr "Qcp Test Art"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_point

@@ -467,7 +467,7 @@ msgstr "Er følger"
 #: model:ir.model.fields,field_description:approvals.field_approval_request__items
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Items"
-msgstr ""
+msgstr "Oppføringer"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_job_referral_award

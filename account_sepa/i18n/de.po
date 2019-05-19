@@ -191,12 +191,12 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
 msgid "Sct Generic"
-msgstr ""
+msgstr "Sct ohne Markenname"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_warning
 msgid "Sct Warning"
-msgstr ""
+msgstr "Sct Warnung"
 
 #. module: account_sepa
 #: selection:res.company,sepa_pain_version:0

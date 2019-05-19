@@ -143,6 +143,11 @@ msgid ""
 "                        Use this feature to store any files, like drawings or specifications.\n"
 "                    </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                        Laden Sie Dateien für Ihr Produkt hoch\n"
+"                    </p><p>\n"
+"                        Verwenden Sie diese Funktion, um Dateien wie Zeichnungen oder Spezifikationen zu speichern.\n"
+"                    </p>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -388,7 +393,7 @@ msgstr "Stückliste"
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom_line
 msgid "Bill of Material Line"
-msgstr ""
+msgstr "Stücklistenposition"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:155
@@ -548,7 +553,7 @@ msgstr "Verbraucht bei Vorgang"
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid "Create a bill of materials"
-msgstr ""
+msgstr "Erstellen Sie eine Stückliste"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action

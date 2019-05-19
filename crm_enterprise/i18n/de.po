@@ -81,7 +81,7 @@ msgstr "Tage zu konvertieren"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "Days To Opportunity"
-msgstr ""
+msgstr "Tage zur Verkaufschance"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -130,7 +130,7 @@ msgstr "Gruppieren nach"
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_activity_report__won_status
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won_status
 msgid "Is Won"
-msgstr ""
+msgstr "ist gewonnen"
 
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_lead
@@ -241,7 +241,7 @@ msgstr "Stufe"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Win/Loss Ratio"
-msgstr ""
+msgstr "Gewinn/Verlust Verhältnis"
 
 #. module: crm_enterprise
 #: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0

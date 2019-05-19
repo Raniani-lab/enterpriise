@@ -210,12 +210,12 @@ msgstr ""
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Easypost Tutorial"
-msgstr ""
+msgstr "Easypost Anleitung"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Easypost Website"
-msgstr ""
+msgstr "Easypost Website"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:35
@@ -449,7 +449,7 @@ msgstr "USPS"
 #: code:addons/delivery_easypost/models/delivery_carrier.py:128
 #, python-format
 msgid "You can't cancel Easypost shipping."
-msgstr ""
+msgstr "Sie können den Easypost-Versand nicht stornieren."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:54

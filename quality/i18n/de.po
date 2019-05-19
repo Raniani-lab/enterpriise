@@ -132,7 +132,7 @@ msgstr "# Anhänge"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__reason
 msgid "Cause"
-msgstr ""
+msgstr "Ursache"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__check_id
@@ -239,7 +239,7 @@ msgstr "Standardeinstellungen"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "Definiert den Typ des Qualitätskontrollpunkts."
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -698,7 +698,7 @@ msgstr "Qualitätskontrollpunkt"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr ""
+msgstr "Testtyp für die Qualitätskontrolle"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_tag
@@ -735,7 +735,7 @@ msgstr "Hauptursache"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_reason
 msgid "Root Cause for Quality Failure"
-msgstr ""
+msgstr "Grundursache für Qualitätsfehler"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__sequence

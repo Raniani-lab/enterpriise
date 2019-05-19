@@ -45,7 +45,7 @@ msgstr "Schnittstelle für Online Account Journal"
 #: code:addons/account_plaid/models/plaid.py:136
 #, python-format
 msgid "Only an Accountant is allowed to perform this operation."
-msgstr ""
+msgstr "Nur ein Buchhalter darf diesen Vorgang ausführen."
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -55,12 +55,12 @@ msgstr "Plaid"
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Plaid Error Type"
-msgstr ""
+msgstr "Plaid Fehlerart"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_item_id
 msgid "Plaid Item"
-msgstr ""
+msgstr "Plaid Artikel"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
@@ -82,12 +82,18 @@ msgid ""
 "error type: %s,\n"
 "request id: %s}"
 msgstr ""
+"Bei Plaid Services ist ein Fehler aufgetreten!\n"
+"{Nachricht: %s,\n"
+"Fehlermeldung: %s,\n"
+"Fehlerart: %s,\n"
+"Angefrage ID: %s}"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:74
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
 msgstr ""
+"Zeitfehler: Der Server hat nicht innerhalb von 60 sekunden geantwortet"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -97,4 +103,4 @@ msgstr "Yodlee"
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id
 msgid "item id in plaid database"
-msgstr ""
+msgstr "Artikel ID in der plaid Datenbank"

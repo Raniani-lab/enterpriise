@@ -431,7 +431,9 @@ var GanttRow = Widget.extend({
      */
     _getDecorationEvalContext: function (pillData) {
         return _.extend(
-            pillData,
+            _.mapObject(pillData, function (value, key) {
+                return value._isAMomentObject? value.format(value.f) : value;
+            }),
             session.user_context,
             {current_date: moment().format('YYYY-MM-DD')}
         );

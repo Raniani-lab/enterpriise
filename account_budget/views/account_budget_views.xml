@@ -364,12 +364,9 @@ Budgets
               action="act_crossovered_budget_lines_view" sequence="20"
               groups="account.group_account_user"/>
 
-    <!--  Shortcuts -->
     <act_window name="Budget Items"
                 context="{'search_default_analytic_account_id': [active_id], 'default_analytic_account_id': active_id}"
                 res_model="crossovered.budget.lines"
-                binding_model="account.analytic.account"
-                binding_views="form"
                 id="act_account_analytic_account_cb_lines"/>
 
 </odoo>

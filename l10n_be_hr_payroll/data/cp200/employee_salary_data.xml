@@ -39,7 +39,12 @@
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.mobile)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = 12.0</field>
+            <field name="amount_python_compute">
+if contract.mobile and not contract.internet:
+    result = 4.0 + 5.0
+if contract.mobile and contract.internet:
+    result = 4.0
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -54,8 +59,10 @@
 result = categories.BASIC
 if contract.internet:
     result += 5.0
-if contract.mobile:
-    result += 12.0
+if contract.mobile and not contract.internet:
+    result += 4.0 + 5.0
+if contract.mobile and contract.internet:
+    result += 4.0
             </field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
@@ -207,7 +214,12 @@ if contract.mobile:
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.mobile</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -12.0</field>
+            <field name="amount_python_compute">
+if contract.mobile and not contract.internet:
+    result = -4.0 - 5.0
+if contract.mobile and contract.internet:
+    result = -4.0
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 

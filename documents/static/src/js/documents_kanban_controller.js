@@ -14,6 +14,7 @@ var Chatter = require('mail.Chatter');
 var core = require('web.core');
 var KanbanController = require('web.KanbanController');
 var session = require('web.session');
+var utils = require('web.utils');
 
 var qweb = core.qweb;
 var _t = core._t;
@@ -615,15 +616,14 @@ var DocumentsKanbanController = KanbanController.extend({
         var self = this;
         var $upload_input = $('<input type="file" name="files[]"/>');
         $upload_input.on('change', function (e) {
+
             var f = e.target.files[0];
-            var reader = new FileReader();
             var always = function () {
                 $upload_input.removeAttr('disabled');
                 $upload_input.val("");
             };
-            reader.onload = function (e) {
-                 // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
-                var dataString = e.target.result;
+            utils.getDataURLFromFile(f).then(function (dataString) {
+                // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
                 var data = dataString.split(',', 2)[1];
                 var mimetype = dataString.substring(
                                         dataString.indexOf(":") + 1,
@@ -636,12 +636,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 }).then(function () {
                     return self.reload();
                 }).then(always).guardedCatch(always);
-            };
-            try {
-                reader.readAsDataURL(f);
-            } catch (err) {
-                console.warn(err);
-            }
+            });
         });
         $upload_input.click();
     },

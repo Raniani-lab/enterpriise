@@ -3,6 +3,7 @@ odoo.define('hr_contract_salary', function (require) {
 
 var concurrency = require('web.concurrency');
 var publicWidget = require('web.public.widget');
+var utils = require('web.utils');
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
@@ -92,14 +93,11 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             var file = $("input[name='" + document_name + "']");
             return new Promise(function(resolve) {
                 if (file[0].files[0]) {
-                    var fr = new FileReader();
-                    fr.onload = function(e) {
-                        var testString = e.target.result;
+                    utils.getDataURLFromFile(file[0].files[0]).then(function (testString) {
                         var regex = new RegExp(",(.{0,})", "g");
                         var img_src = regex.exec(testString)[1];
                         resolve(img_src);
-                    };
-                    fr.readAsDataURL(file[0].files[0]);
+                    });
                 } else {
                     resolve(false);
                 }
@@ -295,22 +293,19 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
 
     onchange_document: function(input) {
         if (input.target.files) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var testString = e.target.result;
+            utils.getDataURLFromFile(input.target.files[0]).then(function (testString) {
                 var regex = new RegExp(",(.{0,})", "g");
                 var img_src = regex.exec(testString)[1];
                 if (img_src.startsWith('JVBERi0')) {
-                    $('iframe#' + input.target.name + '_pdf').attr('src', e.target.result);
+                    $('iframe#' + input.target.name + '_pdf').attr('src', testString);
                     $('img#' + input.target.name + '_img').addClass('d-none');
                     $('iframe#' + input.target.name + '_pdf').removeClass('d-none');
                 } else {
-                    $('img#' + input.target.name + '_img').attr('src', e.target.result);
+                    $('img#' + input.target.name + '_img').attr('src', testString);
                     $('img#' + input.target.name + '_img').removeClass('d-none');
                     $('iframe#' + input.target.name + '_pdf').addClass('d-none');
                 }
-            };
-            reader.readAsDataURL(input.target.files[0]);
+            });
         }
     },
 

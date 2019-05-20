@@ -6,6 +6,7 @@ odoo.define('sign.views_custo', function(require) {
     var KanbanColumn = require("web.KanbanColumn");
     var KanbanRecord = require("web.KanbanRecord");
     var ListController = require("web.ListController");
+    var utils = require('web.utils');
 
     var _t = core._t;
 
@@ -109,14 +110,12 @@ odoo.define('sign.views_custo', function(require) {
         var $upload_input = $('<input type="file" name="files[]"/>');
         $upload_input.on('change', function (e) {
             var f = e.target.files[0];
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
+            utils.getDataURLFromFile(f).then(function (result) {
                 var args;
                 if (inactive) {
-                    args = [f.name, e.target.result, false];
+                    args = [f.name, result, false];
                 } else {
-                    args = [f.name, e.target.result];
+                    args = [f.name, result];
                 }
                 self._rpc({
                         model: 'sign.template',
@@ -142,12 +141,7 @@ odoo.define('sign.views_custo', function(require) {
                         $upload_input.removeAttr('disabled');
                         $upload_input.val("");
                     });
-            };
-            try {
-                reader.readAsDataURL(f);
-            } catch (e) {
-                console.warn(e);
-            }
+            });
         });
 
         $upload_input.click();

@@ -86,10 +86,10 @@ class QualityCheck(models.Model):
     # For components registration
     parent_id = fields.Many2one('quality.check', 'Parent Quality Check')
     component_id = fields.Many2one('product.product', 'Component')
-    component_uom_id = fields.Many2one(related='move_line_id.product_uom_id', readonly=True)
-    move_line_id = fields.Many2one('mrp.workorder.line', 'Workorder Line')
+    component_uom_id = fields.Many2one(related='workorder_line_id.product_uom_id', readonly=True)
+    workorder_line_id = fields.Many2one('mrp.workorder.line', 'Workorder Line', oldname='move_line_id')
     qty_done = fields.Float('Done', default=1.0, digits=dp.get_precision('Product Unit of Measure'))
-    final_lot_id = fields.Many2one('stock.production.lot', 'Finished Product Lot')
+    finished_lot_id = fields.Many2one('stock.production.lot', 'Finished Product Lot')
 
     # Computed fields
     title = fields.Char('Title', compute='_compute_title')

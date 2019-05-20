@@ -25,7 +25,7 @@
                             <field name="test_type" invisible="1"/>
                             <field name="control_date" string="Date"/>
                             <field name="user_id" string="Operator"/>
-                            <field name="final_lot_id" string="Finished Lot/Serial Number" attrs="{'column_invisible': [('parent.product_tracking', '=', 'none')]}"/>
+                            <field name="finished_lot_id" string="Finished Lot/Serial Number" attrs="{'column_invisible': [('parent.product_tracking', '=', 'none')]}"/>
                             <field name="title"/>
                             <field name="result"/>
                         </tree>
@@ -101,10 +101,10 @@
                     </div>
                     <div class="workorder_bar_center o_workorder_bar_content">
                         <div attrs="{'invisible': [('product_tracking', '=', 'none')]}">
-                            <label for="final_lot_id" string="Lot Number:" attrs="{'invisible': [('product_tracking', '!=', 'lot')]}"/>
-                            <label for="final_lot_id" string="Serial Number:" attrs="{'invisible': [('product_tracking', '!=', 'serial')]}"/>
-                            <field name="final_lot_id" context="{'default_product_id': product_id}" domain="[('id', 'in', allowed_lots_domain)]"/>
-                            <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus-square-o" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('final_lot_id', '!=', False)]}"/>
+                            <label for="finished_lot_id" string="Lot Number:" attrs="{'invisible': [('product_tracking', '!=', 'lot')]}"/>
+                            <label for="finished_lot_id" string="Serial Number:" attrs="{'invisible': [('product_tracking', '!=', 'serial')]}"/>
+                            <field name="finished_lot_id" context="{'default_product_id': product_id}" domain="[('id', 'in', allowed_lots_domain)]"/>
+                            <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus-square-o" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('finished_lot_id', '!=', False)]}"/>
                         </div>
                     </div>
                     <div class="workorder_bar_right o_workorder_bar_content o_workorder_bar_content_right">

@@ -167,7 +167,7 @@ class TestWorkOrder(common.TestMrpCommon):
         wo = mo.workorder_ids[0]
         wo.button_start()
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.final_lot_id = self.sp1
+        wo_form.finished_lot_id = self.sp1
         wo_form.lot_id = self.mc1
         with self.assertRaises(UserError):
             # try consume more with strict BoM
@@ -253,7 +253,7 @@ class TestWorkOrder(common.TestMrpCommon):
         wo.button_start()
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_done, 12, 'The suggested component qty_done is wrong')
-        wo_form.final_lot_id = self.sp1
+        wo_form.finished_lot_id = self.sp1
         wo_form.qty_done = 6
         wo = wo_form.save()
         wo.action_continue()
@@ -279,7 +279,7 @@ class TestWorkOrder(common.TestMrpCommon):
         wo = mo.workorder_ids[1]
         wo.button_start()
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id, self.sp1, 'The suggested final product is wrong')
+        self.assertEqual(wo_form.finished_lot_id, self.sp1, 'The suggested final product is wrong')
         self.assertEqual(wo_form.qty_done, 1, 'The suggested qty_done should be one as the component is a serial number')
         # try to write on readonly field
         with self.assertRaises(AssertionError):
@@ -291,7 +291,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         wo = mo.workorder_ids[2]
         wo.button_start()
-        self.assertEqual(wo.final_lot_id, self.sp1, 'The suggested final product is wrong')
+        self.assertEqual(wo.finished_lot_id, self.sp1, 'The suggested final product is wrong')
         wo.do_finish()
 
         mo.button_mark_done()
@@ -315,7 +315,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         wo = mo.workorder_ids[0]
         wo.button_start()
-        wo.final_lot_id = self.sp1
+        wo.finished_lot_id = self.sp1
         wo.lot_id = self.mc1
         wo.qty_done = 1
         wo._next()
@@ -323,7 +323,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         wo = mo.workorder_ids[1]
         wo.button_start()
-        self.assertEqual(wo.final_lot_id, self.sp1, 'The suggested final product is wrong')
+        self.assertEqual(wo.finished_lot_id, self.sp1, 'The suggested final product is wrong')
         wo.lot_id = self.elon1
         wo.action_continue()
         wo.lot_id = self.elon2
@@ -332,7 +332,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         wo = mo.workorder_ids[2]
         wo.button_start()
-        self.assertEqual(wo.final_lot_id, self.sp1, 'The suggested final product is wrong')
+        self.assertEqual(wo.finished_lot_id, self.sp1, 'The suggested final product is wrong')
         wo.do_finish()
 
         mo.button_mark_done()
@@ -356,7 +356,7 @@ class TestWorkOrder(common.TestMrpCommon):
         production.button_plan()
         wo = production.workorder_ids[0]
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.final_lot_id = self.sp1
+        wo_form.finished_lot_id = self.sp1
         self.assertEqual(wo_form.lot_id, self.mc1, "component lot should be prefilled")
         self.assertEqual(wo_form.qty_done, 2, "component quantity should be prefilled")
         wo = wo_form.save()
@@ -371,7 +371,7 @@ class TestWorkOrder(common.TestMrpCommon):
         wo.record_production()
         wo = production.workorder_ids[2]
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id, self.sp1, "final lot should be prefilled")
+        self.assertEqual(wo_form.finished_lot_id, self.sp1, "final lot should be prefilled")
         wo = wo_form.save()
         wo.do_finish()
         production.button_mark_done()
@@ -406,7 +406,7 @@ class TestWorkOrder(common.TestMrpCommon):
         production.button_plan()
         production.action_assign()
         wo_form = Form(production.workorder_ids, view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.final_lot_id = self.sp1
+        wo_form.finished_lot_id = self.sp1
         self.assertEqual(wo_form.lot_id, self.elon1, "component lot should be prefilled")
         self.assertEqual(wo_form.qty_done, 1, "component quantity should be 1 as final product is tracked")
         self.assertEqual(wo_form.component_remaining_qty, 1, "It needs 2 component")
@@ -421,7 +421,7 @@ class TestWorkOrder(common.TestMrpCommon):
         wo._next()
         wo.record_production()
         wo_form = Form(production.workorder_ids, view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.final_lot_id = self.sp2
+        wo_form.finished_lot_id = self.sp2
         self.assertEqual(wo_form.lot_id, self.elon2, "component lot should be prefilled")
         self.assertEqual(wo_form.qty_done, 1, "component quantity should be 1 as final product is tracked")
         self.assertEqual(wo_form.qty_producing, 1, "Quantity to produce should prefilled with 1 (serial tracked product)")
@@ -549,16 +549,16 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(production.workorder_ids[1].state, 'pending', "workorder state should be 'pending'")
 
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id.id, False, "final lot should be empty")
+        self.assertEqual(wo_form.finished_lot_id.id, False, "final lot should be empty")
         self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
         self.assertEqual(wo_form.qty_done, 2, "Wrong quantity to consume")
-        wo_form.final_lot_id = self.sp1
+        wo_form.finished_lot_id = self.sp1
         wo_form.lot_id = self.mc1
         wo = wo_form.save()
         wo._next()
         wo.record_production()
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.final_lot_id = self.sp2
+        wo_form.finished_lot_id = self.sp2
         self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
         self.assertEqual(wo_form.qty_done, 2, "Wrong quantity to consume")
         wo_form.lot_id = self.mc1
@@ -567,44 +567,44 @@ class TestWorkOrder(common.TestMrpCommon):
         wo.record_production()
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_done, 2, "Wrong quantity to consume")
-        wo_form.final_lot_id = self.sp3
+        wo_form.finished_lot_id = self.sp3
         wo_form.lot_id = self.mc1
         wo = wo_form.save()
         wo._next()
         wo.do_finish()
 
         wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id, self.sp1, "final lot should be prefilled")
+        self.assertEqual(wo_form.finished_lot_id, self.sp1, "final lot should be prefilled")
         self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
         wo_form.lot_id = self.elon1
         wo = wo_form.save()
         wo._next()
         wo.record_production()
         wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id, self.sp2, "final lot should be prefilled")
+        self.assertEqual(wo_form.finished_lot_id, self.sp2, "final lot should be prefilled")
         wo_form.lot_id = self.elon2
         wo = wo_form.save()
         wo._next()
         wo.record_production()
         wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id, self.sp3, "final lot should be prefilled")
+        self.assertEqual(wo_form.finished_lot_id, self.sp3, "final lot should be prefilled")
         wo_form.lot_id = self.elon3
         wo = wo_form.save()
         wo._next()
         wo.do_finish()
 
         wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id, self.sp1, "final lot should be prefilled")
+        self.assertEqual(wo_form.finished_lot_id, self.sp1, "final lot should be prefilled")
         self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
         wo = wo_form.save()
         wo.record_production()
         wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id, self.sp2, "final lot should be prefilled")
+        self.assertEqual(wo_form.finished_lot_id, self.sp2, "final lot should be prefilled")
         self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
         wo = wo_form.save()
         wo.record_production()
         wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.final_lot_id, self.sp3, "final lot should be prefilled")
+        self.assertEqual(wo_form.finished_lot_id, self.sp3, "final lot should be prefilled")
         self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce (serial tracked)")
         wo = wo_form.save()
         wo.do_finish()
@@ -791,15 +791,15 @@ class TestWorkOrder(common.TestMrpCommon):
 
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         wo_form.qty_producing = 1
-        wo_form.final_lot_id = lot1
+        wo_form.finished_lot_id = lot1
         wo = wo_form.save()
         wo.record_production()
 
         wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_remaining, 2, "it left 1 quantity to produce")
         self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
-        self.assertEqual(wo_form.final_lot_id, lot1, "Final lot should be the one entered in previous wo")
-        wo_form.final_lot_id = lot1
+        self.assertEqual(wo_form.finished_lot_id, lot1, "Final lot should be the one entered in previous wo")
+        wo_form.finished_lot_id = lot1
         wo_form.qty_producing = 2
         wo = wo_form.save()
         wo.record_production()
@@ -808,7 +808,7 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(wo_form.qty_remaining, 1, "it left 1 quantity to produce")
         self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
         with self.assertRaises(UserError):
-            wo_form.final_lot_id = lot2
+            wo_form.finished_lot_id = lot2
             wo_form.qty_producing = 1
             wo = wo_form.save()
             wo.record_production()
@@ -838,31 +838,31 @@ class TestWorkOrder(common.TestMrpCommon):
 
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
         wo_form.qty_producing = 1
-        wo_form.final_lot_id = lot1
+        wo_form.finished_lot_id = lot1
         wo = wo_form.save()
         wo.record_production()
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.final_lot_id = lot2
+        wo_form.finished_lot_id = lot2
         wo = wo_form.save()
         wo.record_production()
 
         wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_remaining, 2, "it left 1 quantity to produce")
         self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
-        self.assertEqual(wo_form.final_lot_id, lot1, "Final lot should be the one entered in previous wo")
+        self.assertEqual(wo_form.finished_lot_id, lot1, "Final lot should be the one entered in previous wo")
         wo = wo_form.save()
         wo.record_production()
         wo_form = Form(production.workorder_ids[1], view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_remaining, 1, "it left 1 quantity to produce")
         self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
-        self.assertEqual(wo_form.final_lot_id, lot2, "Final lot should be the one entered in previous wo")
+        self.assertEqual(wo_form.finished_lot_id, lot2, "Final lot should be the one entered in previous wo")
         wo = wo_form.save()
         wo.record_production()
 
         wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_remaining, 2, "it left 1 quantity to produce")
         self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
-        self.assertEqual(wo_form.final_lot_id, lot1, "Final lot should be the one entered in previous wo")
+        self.assertEqual(wo_form.finished_lot_id, lot1, "Final lot should be the one entered in previous wo")
         self.assertEqual(wo_form.component_id, self.elon_musk, "Should be a register component check")
         self.assertEqual(wo_form.qty_done, 1, "Component is serial tracked")
         self.assertEqual(wo_form.component_remaining_qty, 1, "Qty_producing is 1")
@@ -880,7 +880,7 @@ class TestWorkOrder(common.TestMrpCommon):
         wo_form = Form(production.workorder_ids[2], view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_remaining, 1, "it left 1 quantity to produce")
         self.assertEqual(wo_form.qty_producing, 1, "it suggest 1 quantity to produce")
-        self.assertEqual(wo_form.final_lot_id, lot2, "Final lot should be the one entered in previous wo")
+        self.assertEqual(wo_form.finished_lot_id, lot2, "Final lot should be the one entered in previous wo")
         self.assertEqual(wo_form.component_id, self.elon_musk, "Should be a register component check")
         self.assertEqual(wo_form.qty_done, 1, "Component is serial tracked")
         self.assertEqual(wo_form.component_remaining_qty, 1, "Qty_producing is 1")

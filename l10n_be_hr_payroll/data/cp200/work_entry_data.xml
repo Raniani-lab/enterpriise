@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+         <record id="hr_payroll.work_entry_type_attendance" model="hr.work.entry.type">
+            <field name="dmfa_code">1</field>
+        </record>
+
+        <record id="hr_payroll.work_entry_type_compensatory" model="hr.work.entry.type">
+            <field name="dmfa_code">20</field>
+        </record>
+
+        <record id="hr_payroll.work_entry_type_home_working" model="hr.work.entry.type">
+            <field name="dmfa_code">1</field>
+        </record>
+
+        <record id="hr_payroll.work_entry_type_unpaid_leave" model="hr.work.entry.type">
+            <field name="dmfa_code">30</field>
+        </record>
+
+        <record id="hr_payroll.work_entry_type_sick_leave" model="hr.work.entry.type">
+            <field name="dmfa_code">50</field>
+        </record>
+
+         <record id="hr_payroll.work_entry_type_legal_leave" model="hr.work.entry.type">
+            <field name="dmfa_code">1</field>
+        </record>
+
         <record id="work_entry_type_small_unemployment" model="hr.work.entry.type">
             <field name="name">Small Unemployment (Brief Holiday)</field>
             <field name="code">LEAVE205</field>
+            <field name="dmfa_code">70</field>
             <field name="is_leave">True</field>
             <field name="color">5</field>
         </record>
@@ -19,6 +45,7 @@
          <record id="work_entry_type_maternity" model="hr.work.entry.type">
             <field name="name">Maternity Time Off</field>
             <field name="code">LEAVE210</field>
+            <field name="dmfa_code">52</field> <!-- 51? -->
             <field name="is_leave">True</field>
             <field name="color">5</field>
         </record>
@@ -70,6 +97,7 @@
          <record id="work_entry_type_training_time_off" model="hr.work.entry.type">
             <field name="name">Training Time Off</field>
             <field name="code">LEAVE260</field>
+            <field name="dmfa_code">5</field>
             <field name="is_leave">True</field>
             <field name="color">5</field>
         </record>

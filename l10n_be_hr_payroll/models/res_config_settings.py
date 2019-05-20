@@ -14,3 +14,6 @@ class ResConfigSettings(models.TransientModel):
     default_mobile = fields.Float(string="Mobile", default_model="hr.contract")
     default_meal_voucher_amount = fields.Float(string="Meal Vouchers", default_model="hr.contract")
     default_eco_checks = fields.Float(string="Eco Vouchers", default_model="hr.contract")
+    onss_company_id = fields.Char(related='company_id.onss_company_id', readonly=False)
+    onss_registration_number = fields.Char(related='company_id.onss_registration_number', readonly=False)
+    dmfa_employer_class = fields.Char(related='company_id.dmfa_employer_class', readonly=False)

@@ -22,6 +22,7 @@ Belgian Payroll Rules.
 
     'data': [
         'security/ir.model.access.csv',
+        'security/l10n_be_hr_payroll_security.xml',
         'data/report_paperformat.xml',
         'views/report_payslip_template.xml',
         'views/reports.xml',
@@ -32,6 +33,9 @@ Belgian Payroll Rules.
         'views/hr_work_entry_views.xml',
         'views/report_termination_fees.xml',
         'views/report_termination_holidays.xml',
+        'views/hr_dmfa_template.xml',
+        'views/hr_dmfa_views.xml',
+        'views/res_company_views.xml',
         'data/l10n_be_hr_payroll_data.xml',
         'data/cp200/work_entry_data.xml',
         'data/hr_rule_parameters_data.xml',

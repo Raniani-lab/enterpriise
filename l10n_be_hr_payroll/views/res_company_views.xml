@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_company_view_form" model="ir.ui.view">
+        <field name="name">res.company.form.l10n_be_hr_payroll.inherit</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+        <data>
+            <xpath expr="//notebook" position="inside">
+                <page name="l10n_be_payroll" string="Belgian Payroll" groups="hr_payroll.group_hr_payroll_user">
+                    <group string="DMFA">
+                        <field name="onss_registration_number"/>
+                        <field name="onss_company_id"/>
+                        <field name="dmfa_employer_class"/>
+                        <field name="dmfa_location_unit_ids" context="{'default_company_id': active_id}">
+                            <tree editable="bottom">
+                                <field name="partner_id" options="{'no_create': True}"/>
+                                <field name="code"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </data>
+        </field>
+    </record>
+</odoo>

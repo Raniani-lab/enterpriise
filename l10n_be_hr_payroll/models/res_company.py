@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, _
+from odoo import fields, models, _
 
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
+
+    onss_company_id = fields.Char(string="ONSS Company ID", help="10-digit code given by ONSS")
+    onss_registration_number = fields.Char(string="ONSS Registration Number", help="9-digit code given by ONSS")
+    dmfa_employer_class = fields.Char(string="DMFA Employer Class", help="3-digit code given by ONSS")
+    dmfa_location_unit_ids = fields.One2many('l10n_be.dmfa.location.unit', 'company_id', string="Work address DMFA codes")
 
     def _create_resource_calendar(self):
         """

@@ -23,6 +23,25 @@
             <value model="res.config.settings" eval="obj().search([('chart_template_id', '=', obj().env.ref('l10n_be.l10nbe_chart_template').id)], order='create_date desc', limit=1).id"/>
         </function>
 
+        <record id="l10n_be_hr_payroll.res_company_be" model="res.company">
+            <field name="onss_company_id">125648354</field>
+            <field name="onss_registration_number">12548245</field>
+            <field name="dmfa_employer_class">578</field>
+        </record>
+
+        <record id="l10n_be_dmfa_location_unit" model="l10n_be.dmfa.location.unit">
+            <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+            <field name="partner_id" ref="hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+            <field name="code">578</field>
+        </record>
+
+        <record id="l10n_be_dmfa" model="l10n_be.dmfa">
+            <field name="reference">DMFA001</field>
+            <field name="year" eval="(DateTime.today() + relativedelta(years=-1, month=5, day=1)).year"/>
+            <field name="quarter" eval="str((DateTime.today() + relativedelta(years=-1, month=5, day=1)).month // 4 + 1)"/>
+            <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        </record>
+
         <!-- ++++++++++++++ June ++++++++++++++ -->
 
         <!-- Payslip batch -->

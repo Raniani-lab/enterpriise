@@ -41,6 +41,7 @@ var GanttRow = Widget.extend({
         this.name = pillsInfo.groupName;
         this.groupId = pillsInfo.groupId;
         this.groupLevel = pillsInfo.groupLevel;
+        this.groupedByField = pillsInfo.groupedByField;
         this.pills = _.map(pillsInfo.pills, _.clone);
         this.resId = pillsInfo.resId;
 

@@ -252,6 +252,7 @@ var GanttRenderer = AbstractRenderer.extend({
             };
             if (groupedBy.length) {
                 pillsInfo.groupName = row.name;
+                pillsInfo.groupedByField = row.groupedByField;
             }
             var params = {
                 canCreate: self.canCreate,

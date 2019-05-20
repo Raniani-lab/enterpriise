@@ -332,6 +332,7 @@ var GanttModel = AbstractModel.extend({
                     name: self._getFieldFormattedValue(value, self.fields[groupedByField]),
                     groupId: subGroups[0].id,
                     groupedBy: groupedBy,
+                    groupedByField: groupedByField,
                     id: _.uniqueId('row'),
                     resId: _.isArray(value) ? value[0] : value,
                     isGroup: isGroup,

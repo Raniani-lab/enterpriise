@@ -1778,7 +1778,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('display_unavailability attribute', async function (assert) {
-        assert.expect(3);
+        assert.expect(15);
 
         var gantt = await createView({
             View: GanttView,
@@ -1792,26 +1792,47 @@ QUnit.module('Views', {
                 if (args.method === 'gantt_unavailability') {
                     assert.strictEqual(args.model, 'tasks',
                         "the availability should be fetched on the correct model");
-                    var result = {};
-                    for (var i = 0; i < 31; i++) {
-                        if ((i + 1) % 7 === 6 || (i + 1) % 7 === 0) {
-                            // week-ends are unavailable
-                            result[i] = 1;
-                        } else {
-                            // not mandatory
-                            // result[i] = 0;
-                        }
-                    }
-                    return Promise.resolve(result);
+                    var rows = args.args[4];
+                    rows.forEach(function(r) {
+                        r.unavailabilities = [{
+                            start: '2018-12-05 13:00:00',
+                            stop: '2018-12-07 23:00:00'
+                        }, {
+                            start: '2018-12-16 09:00:00',
+                            stop: '2018-12-18 09:00:00'
+                        }]
+                    });
+                    return Promise.resolve(rows);
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        assert.hasClass(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-06 00:00:00"]'), 'o_gantt_unavailable',
-            "the 6th should be unavailable");
-        assert.containsN(gantt, '.o_gantt_cell.o_gantt_unavailable', 8,
-            "the week-ends should be unavailable");
+        var cell5 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-05 00:00:00"]');
+        assert.hasClass(cell5, 'o_gantt_unavailability', "the 5th cell should have unavailabilities");
+        assert.hasClass(cell5, 'o_gantt_unavailable_second_half', "the 5th cell should be gray in the afternoon");
+
+        var cell6 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-06 00:00:00"]');
+        assert.hasClass(cell6, 'o_gantt_unavailability', "the 6th cell should have unavailabilities");
+        assert.hasClass(cell6, 'o_gantt_unavailable_full', "the 6th cell should be fully grayed-out");
+
+        var cell7 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-07 00:00:00"]');
+        assert.hasClass(cell7, 'o_gantt_unavailability', "the 7th cell should have unavailabilities");
+        assert.hasClass(cell7, 'o_gantt_unavailable_full', "the 7th cell should be fully grayed-out");
+
+        var cell16 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-16 00:00:00"]');
+        assert.hasClass(cell16, 'o_gantt_unavailability', "the 16th cell should have unavailabilities");
+        assert.hasClass(cell16, 'o_gantt_unavailable_second_half', "the 16th cell should be gray in the afternoon");
+
+        var cell17 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-17 00:00:00"]');
+        assert.hasClass(cell17, 'o_gantt_unavailability', "the 18th cell should have unavailabilities");
+        assert.hasClass(cell17, 'o_gantt_unavailable_full', "the 18th cell should be fully grayed-out");
+
+        var cell18 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-18 00:00:00"]');
+        assert.hasClass(cell18, 'o_gantt_unavailability', "the 18th cell should have unavailabilities");
+        assert.hasClass(cell18, 'o_gantt_unavailable_first_half', "the 18th cell should be gray in the morning");
+
+        assert.containsN(gantt, '.o_gantt_cell.o_gantt_unavailability', 6, "6 cells have unavailabilities data");
 
         gantt.destroy();
     });

@@ -38,23 +38,116 @@ class Base(models.AbstractModel):
         return view
 
     @api.model
-    def gantt_unavailability(self, start_date, end_date, scale, group_bys=None):
+    def gantt_unavailability(self, start_date, end_date, scale, group_bys=None, rows=None):
         """
-        Get unavailability slots displayed in the Gantt view for a given time
-        range.
+        Get unavailabilities data to display in the Gantt view.
 
         This method is meant to be overriden by each model that want to
         implement this feature on a Gantt view.
 
         Example:
-            * start_date = 01/01/2000, end_date = 01/07/2000, scale = 'week'
-            * result could be {'1': 1, '4': 1, '6': 1} to display 01/02, 01/05
-              and 01/07 as unavailable
+            * start_date = 01/01/2000, end_date = 01/07/2000, scale = 'week',
+              rows = [{
+                groupedBy: "project_id, user_id, stage_id",
+                records: [1, 4, 2],
+                name: "My Awesome Project",
+                resId: 8,
+                rows: [{
+                    groupedBy: "user_id, stage_id",
+                    records: [1, 2],
+                    name: "Marcel",
+                    resId: 18,
+                    rows: [{
+                        groupedBy: "stage_id",
+                        records: [2],
+                        name: "To Do",
+                        resId: 3,
+                        rows: []
+                    }, {
+                        groupedBy: "stage_id",
+                        records: [1],
+                        name: "Done",
+                        resId: 9,
+                        rows: []
+                    }]
+                }, {
+                    groupedBy: "user_id, stage_id",
+                    records: [4],
+                    name: "Gilbert",
+                    resId: 22,
+                    rows: [{
+                        groupedBy: "stage_id",
+                        records: [4],
+                        name: "Done",
+                        resId: 9,
+                        rows: []
+                    }]
+                }]
+            }, {
+                groupedBy: "project_id, user_id, stage_id",
+                records: [3, 5, 7],
+                name: "My Other Project",
+                resId: 9,
+                rows: [{
+                    groupedBy: "user_id, stage_id",
+                    records: [3, 5, 7],
+                    name: "Undefined User",
+                    resId: None,
+                    rows: [{
+                        groupedBy: "stage_id",
+                        records: [3, 5, 7],
+                        name: "To Do",
+                        resId: 3,
+                        rows: []
+                    }]
+            }, {
+                groupedBy: "project_id, user_id, stage_id",
+                records: [],
+                name: "My group_expanded Project",
+                resId: 27,
+                rows: []
+            }]
+
+            * The expected return value of this function is the rows dict with
+              a new 'unavailabilities' key in each row for which you want to
+              display unavailabilities. Unavailablitities is a list in the form:
+              [{
+                  start: <start date of first unavailabity in UTC format>,
+                  stop: <stop date of first unavailabity in UTC format>
+              }, {
+                  start: <start date of second unavailabity in UTC format>,
+                  stop: <stop date of second unavailabity in UTC format>
+              }, ...]
+
+              To display that Marcel is unavailable January 2 afternoon and
+              January 4 the whole day in his To Do row, this particular row in
+              the rows dict should look like this when returning the dict at the
+              end of this function :
+              { ...
+                {
+                    groupedBy: "stage_id",
+                    records: [2],
+                    name: "To Do",
+                    resId: 3,
+                    rows: []
+                    unavailabilities: [{
+                        'start': '2018-01-02 14:00:00',
+                        'stop': '2018-01-02 18:00:00'
+                    }, {
+                        'start': '2018-01-04 08:00:00',
+                        'stop': '2018-01-04 18:00:00'
+                    }]
+                }
+                ...
+              }
+
+
 
         :param datetime start_date: start date
         :param datetime stop_date: stop date
         :param string scale: among "day", "week", "month" and "year"
         :param None | list[str] group_bys: group_by fields
+        :param dict rows: dict describing the current rows of the gantt view
         :returns: dict of unavailability
         """
-        return {}
+        return rows

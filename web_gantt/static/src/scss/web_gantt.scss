@@ -1,8 +1,9 @@
 $gantt-border-color: darken(theme-color('light'), 8%);
 $gantt-pill-height: 30px;
 $gantt-pill-padding: 3px;
-$gantt-highlight-today: #FFF9C4;
-$gantt-highlight-hover-row: #FFFDE7;
+$gantt-highlight-today: #FFFAAA;
+$gantt-highlight-hover-row: rgba($gantt-highlight-today, 0.6);
+$gantt-unavailability: #CCCCCC;
 
 // The progress feature is going to set background-size on the element to limit
 // the size of the decoration effects. Since decorations effects are done with
@@ -82,22 +83,59 @@ $gantt-highlight-hover-row: #FFFDE7;
                 &.o_gantt_today {
                     background-color: $gantt-highlight-today;
                     box-shadow: inset 1px 1px $gantt-border-color;
-                }
+                    &.o_gantt_unavailability {
+                        &.o_gantt_unavailable_first_half {
+                            background: linear-gradient(
+                                to right,
+                                $gantt-unavailability 50%,
+                                $gantt-highlight-today 50%
+                            );
+                            background-size: 100%;
+                        };
 
-                &.o_gantt_unavailable {
-                    background: repeating-linear-gradient(
-                        45deg,
-                        #606dbc,
-                        #606dbc 10px,
-                        #465298 10px,
-                        #465298 20px
-                    );
+                        &.o_gantt_unavailable_second_half {
+                            background: linear-gradient(
+                                to right,
+                                $gantt-highlight-today 50%,
+                                $gantt-unavailability 50%
+                            );
+                            background-size: 100%;
+                        };
+                    }
                 }
 
                 &.o_hovered {
                     background: $gantt-highlight-hover-row;
                     .o_gantt_cell_buttons {
                         display: block;
+                    }
+                    &.o_gantt_unavailability {
+                        &.o_gantt_unavailable_first_half {
+                            background: linear-gradient(
+                                to right,
+                                rgba($gantt-unavailability, 0.7) 50%,
+                                $gantt-highlight-hover-row 50%
+                            );
+                            background-size: 100%;
+                        };
+
+                        &.o_gantt_unavailable_second_half {
+                            background: linear-gradient(
+                                to right,
+                                $gantt-highlight-hover-row 50%,
+                                rgba($gantt-unavailability, 0.7) 50%
+                            );
+                            background-size: 100%;
+                        };
+
+                        &.o_gantt_unavailable_full {
+                            background: linear-gradient(
+                                to right,
+                                rgba($gantt-unavailability, 0.7) 50%,
+                                rgba($gantt-unavailability, 0.7) 50%
+                            );
+                            background-size: 100%;
+                        };
                     }
                 }
 
@@ -203,6 +241,22 @@ $gantt-highlight-hover-row: #FFFDE7;
                         }
                         @include gantt-gradient-decorations(transparent);
                     }
+                }
+
+                &.o_gantt_unavailability {
+                    background: linear-gradient(
+                        $gantt-unavailability,
+                        $gantt-unavailability
+                    ) no-repeat;
+
+                    &.o_gantt_unavailable_first_half {
+                        background-size: 50%;
+                    };
+
+                    &.o_gantt_unavailable_second_half {
+                        background-size: 50%;
+                        background-position: right;
+                    };
                 }
             }
         }

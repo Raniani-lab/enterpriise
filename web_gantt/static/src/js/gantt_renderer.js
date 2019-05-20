@@ -264,6 +264,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 disableResize: disableResize,
                 rowId: row.id,
                 scales: self.SCALES,
+                unavailabilities: row.unavailabilities,
             };
             rowWidgets.push(self._renderRow(pillsInfo, params));
             if (row.isGroup && row.isOpen) {

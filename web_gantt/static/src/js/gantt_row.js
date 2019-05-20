@@ -37,6 +37,7 @@ var GanttRow = Widget.extend({
      */
     init: function (parent, pillsInfo, viewInfo, options) {
         this._super.apply(this, arguments);
+        var self = this;
 
         this.name = pillsInfo.groupName;
         this.groupId = pillsInfo.groupId;
@@ -54,6 +55,12 @@ var GanttRow = Widget.extend({
         this.isGroup = options.isGroup;
         this.isOpen = options.isOpen;
         this.rowId = options.rowId;
+        this.unavailabilities = _.map(options.unavailabilities, function(u) {
+            u.startDate = self._convertToUserTime(u.start);
+            u.stopDate = self._convertToUserTime(u.stop);
+            return u;
+        });
+        this._snapToGrid(this.unavailabilities);
 
         this.consolidate = options.consolidate;
         this.consolidationParams = viewInfo.consolidationParams;
@@ -62,7 +69,7 @@ var GanttRow = Widget.extend({
         this.isTotal = this.groupId === 'groupTotal';
 
         this._adaptPills();
-        this._snapDates();
+        this._snapToGrid(this.pills);
         this._calculateLevel();
         if (this.isGroup && this.pills.length) {
             this._aggregateGroupedPills();
@@ -459,13 +466,39 @@ var GanttRow = Widget.extend({
     _insertIntoSlot: function () {
         var self = this;
         var intervalToken = this.SCALES[self.state.scale].interval;
+        var timeToken = this.SCALES[this.state.scale].time;
+        var precision = this.viewInfo.activeScaleInfo.precision;
+        var cellTime = this.SCALES[this.state.scale].cellPrecisions[precision];
         this.slots = _.map(this.viewInfo.slots, function (date, key) {
+            var slotStart = date;
+            var slotHalf = slotStart.clone().add(cellTime, timeToken);
+            var slotStop = date.clone().add(1, intervalToken);
+            var slotUnavailability;
+            self.unavailabilities.forEach(function (unavailability) {
+                if (unavailability.startDate < slotStop && unavailability.stopDate > slotStart) {
+                    if (precision === 'half' && unavailability.stopDate <= slotHalf) {
+                        if (!slotUnavailability) {
+                            slotUnavailability = 'first_half'
+                        } else if (slotUnavailability === 'second_half') {
+                            slotUnavailability = 'full';
+                        }
+                    } else if (precision === 'half' && unavailability.startDate >= slotHalf) {
+                        if (!slotUnavailability) {
+                            slotUnavailability = 'second_half'
+                        } else if (slotUnavailability === 'first_half') {
+                            slotUnavailability = 'full';
+                        }
+                    } else {
+                        slotUnavailability = 'full';
+                    }
+                }
+            });
             return {
                 isToday: date.isSame(new Date(), 'day') && self.state.scale !== 'day',
-                unavailable: self.state.unavailability && self.state.unavailability[key],
+                unavailability: slotUnavailability,
                 hasButtons: !self.isGroup && !self.isTotal,
-                start: date,
-                stop: date.clone().add(1, intervalToken),
+                start: slotStart,
+                stop: slotStop,
                 pills: [],
             };
         });
@@ -610,59 +643,61 @@ var GanttRow = Widget.extend({
         }
     },
     /**
-     * Snap dates based on scale precision
+     * Snap timespans start and stop dates on grid described by scale precision
+     * @params Array<Object> timeSpans objects representing timespans. They need
+     *      to have a startDate and a stopDate properties.
      *
      * @private
      */
-    _snapDates: function () {
+    _snapToGrid: function (timeSpans) {
         var self = this;
         var interval = this.viewInfo.activeScaleInfo.interval;
         switch (this.state.scale) {
             case 'day':
-                this.pills.forEach(function (pill) {
-                    var snappedStartDate = self._snapMinutes(pill.startDate, interval);
-                    var snappedStopDate = self._snapMinutes(pill.stopDate, interval);
+                timeSpans.forEach(function (span) {
+                    var snappedStartDate = self._snapMinutes(span.startDate, interval);
+                    var snappedStopDate = self._snapMinutes(span.stopDate, interval);
                     // Set min width
                     var minuteDiff = snappedStartDate.diff(snappedStopDate, 'minute');
                     if (minuteDiff === 0) {
-                        if (snappedStartDate > pill.startDate) {
-                            pill.startDate = snappedStartDate.subtract(interval, 'minute');
-                            pill.stopDate = snappedStopDate;
+                        if (snappedStartDate > span.startDate) {
+                            span.startDate = snappedStartDate.subtract(interval, 'minute');
+                            span.stopDate = snappedStopDate;
                         } else {
-                            pill.startDate = snappedStartDate;
-                            pill.stopDate = snappedStopDate.add(interval, 'minute');
+                            span.startDate = snappedStartDate;
+                            span.stopDate = snappedStopDate.add(interval, 'minute');
                         }
                     } else {
-                        pill.startDate = snappedStartDate;
-                        pill.stopDate = snappedStopDate;
+                        span.startDate = snappedStartDate;
+                        span.stopDate = snappedStopDate;
                     }
                 });
                 break;
             case 'week':
             case 'month':
-                this.pills.forEach(function (pill) {
-                    var snappedStartDate = self._snapHours(pill.startDate, interval);
-                    var snappedStopDate = self._snapHours(pill.stopDate, interval);
+                timeSpans.forEach(function (span) {
+                    var snappedStartDate = self._snapHours(span.startDate, interval);
+                    var snappedStopDate = self._snapHours(span.stopDate, interval);
                     // Set min width
                     var hourDiff = snappedStartDate.diff(snappedStopDate, 'hour');
                     if (hourDiff === 0) {
-                        if (snappedStartDate > pill.startDate) {
-                            pill.startDate = snappedStartDate.subtract(interval, 'hour');
-                            pill.stopDate = snappedStopDate;
+                        if (snappedStartDate > span.startDate) {
+                            span.startDate = snappedStartDate.subtract(interval, 'hour');
+                            span.stopDate = snappedStopDate;
                         } else {
-                            pill.startDate = snappedStartDate;
-                            pill.stopDate = snappedStopDate.add(interval, 'hour');
+                            span.startDate = snappedStartDate;
+                            span.stopDate = snappedStopDate.add(interval, 'hour');
                         }
                     } else {
-                        pill.startDate = snappedStartDate;
-                        pill.stopDate = snappedStopDate;
+                        span.startDate = snappedStartDate;
+                        span.stopDate = snappedStopDate;
                     }
                 });
                 break;
             case 'year':
-                this.pills.forEach(function (pill) {
-                    pill.startDate = pill.startDate.clone().startOf('month');
-                    pill.stopDate = pill.stopDate.clone().endOf('month');
+                timeSpans.forEach(function (span) {
+                    span.startDate = span.startDate.clone().startOf('month');
+                    span.stopDate = span.stopDate.clone().endOf('month');
                 });
                 break;
             default:

@@ -105,6 +105,7 @@ var GanttModel = AbstractModel.extend({
      * @returns {Promise<any>}
      */
     load: function (params) {
+        var self = this;
         this.modelName = params.modelName;
         this.fields = params.fields;
         this.domain = params.domain;
@@ -114,6 +115,7 @@ var GanttModel = AbstractModel.extend({
         this.progressField = params.progressField;
         this.consolidationParams = params.consolidationParams;
         this.collapseFirstLevel = params.collapseFirstLevel;
+        this.displayUnavailability = params.displayUnavailability;
 
         this.defaultGroupBy = params.defaultGroupBy ? [params.defaultGroupBy] : [];
         if (!params.groupedBy || !params.groupedBy.length) {
@@ -127,11 +129,7 @@ var GanttModel = AbstractModel.extend({
             fields: params.fields,
         };
         this._setRange(params.initialDate, params.scale);
-        var proms = [this._fetchData()];
-        if (params.displayUnavailability) {
-            proms.push(this._fetchUnavailability());
-        }
-        return Promise.all(proms).then(function () {
+        return this._fetchData().then(function () {
             // The 'load' function returns a promise which resolves with the
             // handle to pass to the 'get' function to access the data. In this
             // case, we don't want to pass any argument to 'get' (see its API).
@@ -251,6 +249,34 @@ var GanttModel = AbstractModel.extend({
                 oldRows: oldRows,
                 records: self.ganttData.records,
             });
+            var unavailabilityProm;
+            if (self.displayUnavailability) {
+                unavailabilityProm = self._fetchUnavailability();
+            }
+            return unavailabilityProm;
+        });
+    },
+    /**
+     * Compute rows for unavailability rpc call.
+     *
+     * @private
+     * @param {Object} rows in the format of ganttData.rows
+     * @returns {Object} simplified rows only containing useful attributes
+     */
+    _computeUnavailabilityRows: function(rows) {
+        var self = this;
+        return _.map(rows, function (r) {
+            if (r) {
+                return {
+                    groupedBy: r.groupedBy,
+                    records: r.records,
+                    name: r.name,
+                    resId: r.resId,
+                    rows: self._computeUnavailabilityRows(r.rows)
+                }
+            } else {
+                return r;
+            }
         });
     },
     /**
@@ -268,10 +294,36 @@ var GanttModel = AbstractModel.extend({
                 this.ganttData.startDate,
                 this.ganttData.stopDate,
                 this.ganttData.scale,
-                this.ganttData.groupedBy
+                this.ganttData.groupedBy,
+                this._computeUnavailabilityRows(this.ganttData.rows),
             ],
-        }).then(function (result) {
-            self.ganttData.unavailability = result;
+        }).then(function (enrichedRows) {
+            // Update ganttData.rows with the new unavailabilities data
+            self._updateUnavailabilityRows(self.ganttData.rows, enrichedRows);
+        });
+    },
+    /**
+     * Update rows with unavailabilities from enriched rows.
+     *
+     * @private
+     * @param {Object} original rows in the format of ganttData.rows
+     * @param {Object} enriched rows as returned by the gantt_unavailability rpc call
+     * @returns {Object} original rows enriched with the unavailabilities data
+     */
+    _updateUnavailabilityRows: function (original, enriched) {
+        var self = this;
+        _.zip(original, enriched).forEach(function (rowPair) {
+            var o = rowPair[0];
+            var e = rowPair[1];
+            o.unavailabilities = _.map(e.unavailabilities, function (u) {
+                // These are new data from the server, they haven't been parsed yet
+                u.start = self._parseServerValue({ type: 'datetime' }, u.start);
+                u.stop = self._parseServerValue({ type: 'datetime' }, u.stop);
+                return u;
+            });
+            if (o.rows && e.rows) {
+                self._updateUnavailabilityRows(o.rows, e.rows);
+            }
         });
     },
     /**

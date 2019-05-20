@@ -775,7 +775,7 @@ odoo.define('sign.template', function(require) {
                     var self = this;
                     framework.blockUI({overlayCSS: {opacity: 0}, blockMsgClass: 'o_hidden'});
                     this.iframeWidget = new EditablePDFIframe(this,
-                                                              '/web/image/' + this.sign_template.attachment_id.id,
+                                                              '/web/content/' + this.sign_template.attachment_id.id,
                                                               true,
                                                               {
                                                                   parties: this.sign_item_parties,

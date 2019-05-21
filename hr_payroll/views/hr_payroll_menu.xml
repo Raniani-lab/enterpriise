@@ -7,6 +7,27 @@
 
 
     <menuitem
+        id="menu_payroll_employees"
+        name="Employees"
+        parent="menu_hr_payroll_root"
+        groups="hr_payroll.group_hr_payroll_user"
+        sequence="3"/>
+
+        <menuitem
+            id="menu_hr_employee_user"
+            name="Employees"
+            action="hr.open_view_employee_list_my"
+            parent="menu_payroll_employees"
+            sequence="1"/>
+
+        <menuitem
+            id="menu_payroll_contracts"
+            name="Contratcs"
+            action="hr_contract.action_hr_contract"
+            parent="menu_payroll_employees"
+            sequence="2"/>
+
+    <menuitem
         id="menu_hr_payroll_salary_computation"
         name="Salary Computation"
         parent="menu_hr_payroll_root"

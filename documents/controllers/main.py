@@ -134,7 +134,7 @@ class ShareRoute(http.Controller):
         if status != 200:
             return request.env['ir.http']._response_by_status(status, headers, image_base64)
 
-        image_base64 = image_process(image_base64, (width, height), crop=crop)
+        image_base64 = image_process(image_base64, size=(int(width), int(height)), crop=crop)
 
         if not image_base64:
             return request.not_found()

@@ -9,12 +9,13 @@ odoo.define('documents.DocumentsInspector', function (require) {
 var core = require('web.core');
 var fieldRegistry = require('web.field_registry');
 var session = require('web.session');
+var dialogs = require('web.view_dialogs');
 var Widget = require('web.Widget');
 
 var _t = core._t;
 var qweb = core.qweb;
 
-var TAGS_SEARCH_LIMIT = 4;
+var TAGS_SEARCH_LIMIT = 8;
 
 var DocumentsInspector = Widget.extend({
     template: 'documents.DocumentsInspector',
@@ -102,17 +103,24 @@ var DocumentsInspector = Widget.extend({
         // we have to block some actions (like opening the record preview) when
         // there are pending 'multiSave' requests
         this.pendingSavingRequests = 0;
+
+        this._isLocked = this.records.some(record =>
+             record.data.lock_uid && record.data.lock_uid.res_id !== session.uid
+        );
     },
     /**
      * @override
      */
-    start: function () {
-        this._renderFields();
+    async start() {
         this._renderTags();
         this._renderRules();
         this._renderModel();
         this._updateButtons();
-        return this._super.apply(this, arguments);
+        await Promise.all([
+            this._renderFields(),
+            this._super.apply(this, arguments)
+        ]);
+        this.$('.o_inspector_table .o_input').prop('disabled', this._isLocked);
     },
 
     //--------------------------------------------------------------------------
@@ -175,6 +183,7 @@ var DocumentsInspector = Widget.extend({
      * @param {Object} [options] options to pass to the field
      * @param {string} [options.icon] optional icon to display
      * @param {string} [options.label] the label to display
+     * @return {Promise}
      */
     _renderField: function (fieldName, options) {
         options = options || {};
@@ -208,34 +217,37 @@ var DocumentsInspector = Widget.extend({
             viewType: 'kanban',
         });
         var fieldWidget = new FieldWidget(this, fieldName, record, options);
-        fieldWidget.appendTo($row.find('.o_inspector_value')).then(function() {
+        const prom = fieldWidget.appendTo($row.find('.o_inspector_value')).then(function() {
             fieldWidget.getFocusableElement().attr('id', fieldName);
             if (type === 'many2one' && values.length > 1) {
                 fieldWidget.$el.addClass('o_multiple_values');
             }
         });
-
         $row.insertBefore(this.$('.o_inspector_fields tbody tr.o_inspector_divider'));
+        return prom;
     },
     /**
      * @private
+     * @return {Promise}
      */
     _renderFields: function () {
         var options = {mode: 'edit'};
+        var proms = [];
         if (this.records.length === 1) {
-            this._renderField('name', options);
+            proms.push(this._renderField('name', options));
             if (this.records[0].data.type === 'url') {
-                this._renderField('url', options);
+                proms.push(this._renderField('url', options));
             }
-            this._renderField('partner_id', options);
+            proms.push(this._renderField('partner_id', options));
         }
         if (this.records.length > 0) {
-            this._renderField('owner_id', options);
-            this._renderField('folder_id', {
+            proms.push(this._renderField('owner_id', options));
+            proms.push(this._renderField('folder_id', {
                 icon: 'fa fa-folder o_documents_folder_color',
                 mode: 'edit',
-            });
+            }));
         }
+        return Promise.all(proms);
     },
     /**
      * @private
@@ -260,7 +272,7 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _renderRules: function () {
-        if (!this.currentFolder) {
+        if (!this.currentFolder || this._isLocked) {
            return;
         }
         var self = this;
@@ -275,20 +287,19 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _renderTags: function () {
-        var self = this;
         var $tags = this.$('.o_inspector_tags');
 
         // render common tags
-        _.each(this.commonTagIDs, function (tagID) {
-            var tag = _.findWhere(self.tags, {id: tagID});
+        const commonTags = this.tags.filter(tag => this.commonTagIDs.includes(tag.id));
+        for (const tag of commonTags) {
             if (tag) {
                 // hide unknown tags (this may happen if a document with tags
                 // is moved to another folder, but we keep those tags in case
                 // the document is moved back to its original folder)
                 var $tag = $(qweb.render('documents.DocumentsInspector.tag', tag));
-                $tag.appendTo(self.$('.o_inspector_tags'));
+                $tag.appendTo(this.$('.o_inspector_tags'));
             }
-        });
+        };
 
         // render autocomplete input (if there are still tags to add)
         if (this.tags.length > this.commonTagIDs.length) {
@@ -301,21 +312,29 @@ var DocumentsInspector = Widget.extend({
                 delay: 0,
                 minLength: 0,
                 autoFocus: true,
-                select: function (event, ui) {
-                    self.trigger_up('set_focus_tag_input');
-                    self._saveMulti({
-                        tag_ids: {
-                            operation: 'ADD_M2M',
-                            resIDs: [ui.item.id],
-                        },
-                    });
+                select: (event, ui) => {
+                    this.trigger_up('set_focus_tag_input');
+                    const currentId = ui.item.id;
+                    if (ui.item.special) {
+                        if (ui.item.special === 'more') {
+                            this._searchMore(this._lastSearchVal);
+                        }
+                    } else if (currentId) {
+                        this._saveMulti({
+                            tag_ids: {
+                                operation: 'ADD_M2M',
+                                resIDs: [currentId],
+                            },
+                        });
+                    }
                 },
-                source: function (req, resp) {
-                    resp(self._search(req.term));
+                source: (req, resp) => {
+                    resp(this._search(req.term));
+                    this._lastSearchVal = req.term;
                 },
             });
 
-            var disabled = this.records.length === 1 && !this.records[0].data.active;
+            var disabled = this._isLocked || (this.records.length === 1 && !this.records[0].data.active);
             $tags.closest('.o_inspector_custom_field').toggleClass('o_disabled', disabled);
 
             this.$tagInput.appendTo($tags);
@@ -351,11 +370,6 @@ var DocumentsInspector = Widget.extend({
      */
     _search: function (value) {
         var self = this;
-        var options = {
-            extract: function (el) {
-                return el.label;
-            }
-        };
         var tags = [];
         _.each(this.tags, function (tag) {
             // don't search amongst already linked tags
@@ -366,10 +380,71 @@ var DocumentsInspector = Widget.extend({
                 });
             }
         });
-        var searchResults = fuzzy.filter(value, tags, options).slice(0, TAGS_SEARCH_LIMIT);
-        return _.map(searchResults, function (result) {
-            return tags[result.index];
-        });
+        const lowerValue = value.toLowerCase();
+        const allSearchResults = tags.filter(tag => tag.label.toLowerCase().includes(lowerValue));
+        const searchResults = allSearchResults.slice(0, TAGS_SEARCH_LIMIT);
+        if (allSearchResults.length > TAGS_SEARCH_LIMIT) {
+            searchResults.push({
+                label: _t("Search more..."),
+                special: 'more',
+                classname: 'o_m2o_dropdown_option',
+            });
+        }
+
+        return searchResults;
+    },
+    /**
+     * @private
+     * @param {Object[]} [dynamicFilters=[]] filters to add to the search view
+     *   in the dialog (each filter has keys 'description' and 'domain')
+     */
+    _searchCreatePopup(dynamicFilters=[]) {
+        this.$('.o_inspector_tag_add').val('');
+        return new dialogs.SelectCreateDialog(this, {
+            domain: [['folder_id', '=', this.currentFolder.id]],
+            dynamicFilters: dynamicFilters || [],
+            no_create: true,
+            on_selected: records => this._saveMulti({
+                tag_ids: {
+                   operation: 'ADD_M2M',
+                   resIDs: records.map(record => record.id),
+                },
+            }),
+            res_model: 'documents.tag',
+            title: _t('Select tags'),
+        }).open();
+    },
+    /**
+     * Search for tags matching the value for either tag.name and tag.facet_id.name.
+     *
+     * @private
+     * @param {String} value
+     */
+    async _searchMore(value) {
+        let results;
+        if (value) {
+            results = await this._rpc({
+                model: 'documents.tag',
+                method: 'search_read',
+                fields: ['id'],
+                domain: ['&', '&',
+                            ['id', 'not in', this.commonTagIDs],
+                            ['folder_id', '=', this.currentFolder.id],
+                            '|',
+                                ['facet_id.name', 'ilike', value],
+                                ['name', 'ilike', value]
+                ],
+            });
+        }
+        let dynamicFilters;
+        if (results) {
+            const ids = results.map(result => result.id);
+            dynamicFilters = [{
+                description: _.str.sprintf(_t('Name or Category contains: %s'), value),
+                domain: [['id', 'in', ids]],
+            }];
+        }
+        await this._searchCreatePopup(dynamicFilters);
     },
     /**
      * Disable buttons if at least one of the selected records is locked by
@@ -378,16 +453,14 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _updateButtons: function () {
-        var disabled = _.some(this.records, function (record) {
-            return record.data.lock_uid && record.data.lock_uid.res_id !== session.uid;
-        });
         var binary = _.some(this.records, function (record) {
             return record.data.type === 'binary';
         });
-        if (disabled) {
+        if (this._isLocked) {
             this.$('.o_inspector_replace').prop('disabled', true);
             this.$('.o_inspector_delete').prop('disabled', true);
             this.$('.o_inspector_archive').prop('disabled', true);
+            this.$('.o_inspector_table .o_field_widget').prop('disabled', true);
         }
         if (!binary && (this.records.length > 1 || (this.records.length && this.records[0].data.type === 'empty'))) {
             this.$('.o_inspector_download').prop('disabled', true);

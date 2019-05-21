@@ -74,7 +74,7 @@ QUnit.module('DocumentsKanbanView', {
                         res_name: 'SO 0001', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
                     {id: 5, name: 'zip', file_size: 40000, lock_uid: 1, owner_id: 2, partner_id: 2,
                         public: false, res_id: 3, res_model: false, res_model_name: false,
-                        res_name: false, tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: [1, 2]},
+                        res_name: false, tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 4]},
                     {id: 6, name: 'pom', file_size: 70000, partner_id: 3,
                         public: true, res_id: 1, res_model: 'documents.document', res_model_name: 'Document',
                         res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 2, available_rule_ids: []},
@@ -1514,19 +1514,22 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
                 if (args.method === 'write') {
-                    assert.deepEqual(args.args[0], [1, 3],
+                    assert.deepEqual(args.args[0], [1, 5],
                         "should write on the selected records");
                     assert.deepEqual(args.args[1], {
-                        tag_ids: [[3, 1]],
+                        tag_ids: [[3, 2]],
                     }, "should write the correct value");
                 }
                 return this._super.apply(this, arguments);
+            },
+            session: {
+                uid: 1,
             },
         });
 
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
+        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
 
         assert.containsN(kanban, '.o_inspector_tag', 2,
             "should display two tags");
@@ -1574,10 +1577,10 @@ QUnit.module('DocumentsKanbanView', {
         searchValue('.o_inspector_tag_add', 'stress');
         concurrency.delay(0).then(async function () {
             assert.strictEqual(autocompleteLength(), 1,
-                "should have an entry in the autocomplete drodown");
+                "should have an entry in the autocomplete dropdown");
             var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
             // TO DO understand problem with autocomplete
-            await testUtils.dom.click($autocomplete.find('li > a'));
+            await testUtils.dom.click($autocomplete.find('li > a:first'));
 
             assert.containsN(kanban, '.o_inspector_tag', 2,
                 "should display two tags");
@@ -1634,7 +1637,7 @@ QUnit.module('DocumentsKanbanView', {
         var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
         assert.strictEqual(autocompleteLength(), 1,
             "should have an entry in the autocomplete dropdown");
-        await testUtils.dom.click($autocomplete.find('li > a'));
+        await testUtils.dom.click($autocomplete.find('li > a:first'));
 
         kanban.destroy();
     });
@@ -1707,6 +1710,9 @@ QUnit.module('DocumentsKanbanView', {
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
+            session: {
+                uid: 1,
+            },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1715,12 +1721,12 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(2)'));
+        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(0)'));
 
-        assert.containsN(kanban, '.o_inspector_rule', 4,
-            "should display the rules of the selected document (3 multi record, 1 single record)");
+        assert.containsN(kanban, '.o_inspector_rule', 3,
+            "should display the rules of the selected document (2 multi record, 1 single record)");
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(0) .o_record_selector'));
+        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
 
         assert.containsN(kanban, '.o_inspector_rule', 2,
             "should display the rules in common except the single record rule");
@@ -2588,7 +2594,7 @@ QUnit.module('DocumentsKanbanView', {
             assert.strictEqual(autocompleteLength(), 1,
                 "should have an entry in the autocomplete drodown");
             var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
-            await testUtils.dom.click($autocomplete.find('li > a'));
+            await testUtils.dom.click($autocomplete.find('li > a:first'));
 
             assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
                         "tag selector should still be checked");
@@ -2622,7 +2628,7 @@ QUnit.module('DocumentsKanbanView', {
             "should have a span for color ball");
 
         assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
-            "rgb(247, 205, 31)", "should have the right color");
+            "rgb(240, 96, 80)", "should have the right color");
 
         kanban.destroy();
     });

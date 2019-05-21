@@ -59,7 +59,7 @@
                  t-att-data-id="record.res_id"
                  t-att-title="record.data.name"/>
         </div>
-        <i t-if="nbPreviews === 1" class="o_inspector_open_chatter rounded-circle text-center fa fa-comments"/>
+        <i t-if="nbPreviews === 1" class="o_inspector_open_chatter rounded-circle text-center fa fa-comments" title="Open chatter"/>
         <div t-if="record_index == 1 and record_size == 4" class="w-100"/>
     </t>
     <div t-if="nbPreviews &gt; 1" class="o_selection_info w-100 text-center mt-2">
@@ -140,8 +140,8 @@
 <!-- Document tags template -->
 <t t-name="documents.DocumentsInspector.tag">
     <div class="o_inspector_tag o_inspector_trigger_hover_target" t-att-data-id="id">
-        <span class="o_tag_prefix"><t t-esc="group_name"/> &gt;</span>
-        <t t-esc="name"/>
+        <span class="o_tag_prefix" t-att-title="group_name"><t t-esc="group_name"/> &gt;</span>
+        <span class= "o_documents_tag_name" t-att-title="name" t-esc="name"/>
         <span class="o_inspector_tag_remove pull-right o_inspector_trigger_hover fa-fw">&#215;</span>
     </div>
 </t>

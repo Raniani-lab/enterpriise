@@ -120,6 +120,8 @@
                             <div class="o_kanban_details">
                                 <div class="o_kanban_details_wrapper">
                                     <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                        <i t-attf-class="o_documents_lock fa {{(record.lock_uid.raw_value == user_context.uid || !record.lock_uid.raw_value)? '' : ' fa-lock'}} {{(record.lock_uid.raw_value == user_context.uid)? ' fa-unlock-alt' : ''}}"
+                                               t-att-title="record.lock_uid.value"/>
                                         <field name="name" required="True" class="o_text_overflow"/>
                                     </div>
                                     <div class="o_kanban_record_body">
@@ -144,8 +146,6 @@
                                     <div class="o_kanban_record_bottom">
                                         <time class="oe_kanban_bottom_left">
                                             <field name="create_date" widget="date"/>
-                                            <i t-attf-class="fa #{(record.lock_uid.raw_value == user_context.uid || !record.lock_uid.raw_value)? '' : ' fa-lock'} #{(record.lock_uid.raw_value == user_context.uid)? ' fa-unlock-alt' : ''}"
-                                               t-att-title="record.lock_uid.value"/>
                                         </time>
                                         <div class="oe_kanban_bottom_right">
                                             <field name="activity_ids" widget="kanban_activity"/>
@@ -308,7 +308,11 @@
                     </group>
                     <notebook>
                         <page string="Tags">
-                            <field name="facet_ids" context="{'form_view_ref' : 'documents.facet_view_form_list', 'documents_view_from_folder' : True, 'default_folder_id' : id}">
+                            <field name="facet_ids" context="{
+                                'form_view_ref' : 'documents.facet_view_form_list',
+                                'documents_view_from_folder' : True,
+                                'default_folder_id' : id
+                            }">
                                 <tree>
                                     <field name="sequence" widget="handle"/>
                                     <field name="name" string="Category"/>
@@ -753,9 +757,9 @@
         <field name="name">tag tree</field>
         <field name="model">documents.tag</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
-                <field name="sequence" widget="handle"/>
-                <field name="name"  string="Tags" placeholder="Create a tag"/>
+            <tree create="false" default_order="facet_id">
+                <field name="facet_id"/>
+                <field name="name"  string="Tag"/>
             </tree>
         </field>
     </record>

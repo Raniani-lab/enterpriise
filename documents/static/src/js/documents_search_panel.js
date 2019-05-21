@@ -63,8 +63,12 @@ const DocumentsSearchPanel = SearchPanel.extend({
      */
     getTags: function () {
         var filter = _.findWhere(this.filters, {fieldName: 'tag_ids'});
-        return Object.keys(filter.values).map(function (tagId) {
-            return filter.values[tagId];
+        return Object.keys(filter.values).map(tagId => filter.values[tagId]).sort((a, b) => {
+            if (a.group_sequence === b.group_sequence) {
+                return a.sequence - b.sequence;
+            } else {
+                return a.group_sequence - b.group_sequence;
+            }
         });
     },
 

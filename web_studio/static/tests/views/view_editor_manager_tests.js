@@ -1728,8 +1728,8 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('kanban editor add image', async function (assert) {
-        assert.expect(3);
+    QUnit.test('kanban editor add and remove image', async function (assert) {
+        assert.expect(8);
         // We have to add relational model specifically named 'res.parter' or
         // 'res.users' because it is hard-coded in the kanban record editor.
         this.data['res.partner'] = {
@@ -1754,6 +1754,7 @@ QUnit.module('ViewEditorManager', {
                     "</templates>" +
                 "</kanban>";
         var fieldsView;
+        var editViewCount = 0;
 
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
@@ -1764,11 +1765,43 @@ QUnit.module('ViewEditorManager', {
                     return Promise.resolve({});
                 }
                 if (route === '/web_studio/edit_view') {
-                    assert.deepEqual(args.operations[0], {
-                        field: 'partner_id',
-                        type: 'kanban_image',
-                    }, "Proper field name and operation type should be passed");
-                    fieldsView.arch = arch;
+                    editViewCount++;
+                    if (editViewCount === 1) {
+                        assert.deepEqual(args.operations[0], {
+                            field: 'partner_id',
+                            type: 'kanban_image',
+                        }, "Proper field name and operation type should be passed");
+                        // the server sends the arch in string but it's post-processed
+                        // by the ViewEditorManager
+                        fieldsView.arch = "<kanban>" +
+                            "<templates>" +
+                                "<t t-name='kanban-box'>" +
+                                    "<div class='o_kanban_record'>" +
+                                        "<field name='display_name'/>" +
+                                        "<div class='oe_kanban_bottom_right'>" +
+                                            "<div>test</div>" + // dummy div to make sure img is deleted (otherwise parent div of only child will be deleted)
+                                            "<img t-att-src='kanban_image(\"res.partner\", \"image\", 1)' class='oe_kanban_avatar float-right' width='24' height='24'/>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</t>" +
+                            "</templates>" +
+                        "</kanban>";
+                    } else if (editViewCount === 2) {
+                        assert.strictEqual(args.operations[1].type, 'remove', 'Should have passed correct OP type');
+                        assert.strictEqual(args.operations[1].target.tag, 'img', 'Should have correct target tag');
+                        assert.deepEqual(args.operations[1].target.xpath_info, [
+                            {tag: 'kanban', indice: 1},
+                            {tag: 'templates', indice: 1},
+                            {tag: 't', indice: 1},
+                            {tag: 'div', indice: 1},
+                            {tag: 'div', indice: 1},
+                            {tag: 'img', indice: 1}],
+                            'Should have correct xpath_info as we do not have any tag identifier attribute on image img'
+                        );
+                        // the server sends the arch in string but it's post-processed
+                        // by the ViewEditorManager
+                        fieldsView.arch = arch;
+                    }
                     return Promise.resolve({
                         fields: fieldsView.fields,
                         fields_views: {
@@ -1791,6 +1824,15 @@ QUnit.module('ViewEditorManager', {
             "there should be 'Res Partner' option with proper value set in Field selection drop-down ");
         // Click 'Confirm' Button
         await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
+        var $img = vem.$('.oe_kanban_bottom_right img.oe_kanban_avatar');
+        assert.strictEqual($img.length, 1, "there should be an avatar image");
+        // Click on the image
+        await testUtils.dom.click($img);
+        // remove image from sidebar
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
+        assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this img from the view?",
+            "should display the correct message");
+        await testUtils.dom.click($('.modal-footer .btn-primary'));
 
         vem.destroy();
     });

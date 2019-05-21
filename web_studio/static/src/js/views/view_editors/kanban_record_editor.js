@@ -228,7 +228,24 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         }
 
         // add the image hook
-        if (!this.$('.oe_kanban_bottom_right').length) {
+        var $image = this.$('img.oe_kanban_avatar');
+        if ($image.length) {
+            $image.attr('data-node-id', this.node_id++);
+            // find image node from the arch
+            var imgNode = this._findNodeWithClass({
+                tag: 'img',
+                class: 'oe_kanban_avatar',
+            });
+            // bind handler on image clicked to be able to remove it
+            this.setSelectable($image);
+            $image.click(function () {
+                self.selected_node_id = $image.data('node-id');
+                self.trigger_up('node_clicked', {
+                    node: imgNode,
+                    $node: $image,
+                });
+            });
+        } else {
             var $kanban_image_hook = $('<div>')
                 .addClass('o_web_studio_add_kanban_image oe_kanban_bottom_right')
                 .append($('<span>', {

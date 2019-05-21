@@ -364,6 +364,9 @@
                 <t t-call="web_studio.ViewEditorSidebar.div"/>
             </div>
         </t>
+        <div t-if="widget.state.node.tag === 'img'" class="o_web_studio_sidebar_content o_display_img">
+            <t t-call="web_studio.ViewEditorSidebar.img"/>
+        </div>
         <div t-if="widget.state.node.tag === 'button'" class="o_web_studio_sidebar_content o_display_button">
             <t t-call="web_studio.ViewEditorSidebar.button"/>
         </div>
@@ -708,6 +711,13 @@
             <label for="set_cover" class="custom-control-label">Set Cover Image</label>
         </div>
     </div>
+    <t t-call="web_studio.Sidebar.Toolbox">
+        <t t-call="web_studio.Sidebar.Remove"/>
+    </t>
+</t>
+
+<!-- ImageEditor -->
+<t t-name="web_studio.ViewEditorSidebar.img">
     <t t-call="web_studio.Sidebar.Toolbox">
         <t t-call="web_studio.Sidebar.Remove"/>
     </t>

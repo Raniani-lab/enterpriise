@@ -148,7 +148,7 @@
                     Your subscription ${ctx.get('code')} is still valid but will be <strong>suspended</strong>
                     on ${ctx.get('date_close')} unless the payment succeeds in the mean time (we will retry once every day).
                     Please double-check that you have sufficient funds.<br/><br/>
-                    If you have any question, do not hesitate to contact us.<br/><br/>
+                    If you have any questions, do not hesitate to contact us.<br/><br/>
                     Thank you for choosing ${company.name}!
                     % if user.signature:
                         <br/><br/>
@@ -245,7 +245,7 @@
                         Your next invoice will be on ${ctx.get('next_date')}.
                     %endif
                     <br/><br/>
-                    If you have any question, do not hesitate to contact us.
+                    If you have any questions, do not hesitate to contact us.
                     <br/><br/>
                     Thank you for choosing ${company.name}!
                     % if user.signature
@@ -458,7 +458,7 @@
                                     Please remit payment at your earliest convenience.
                                 % endif
                             </p>
-                            <p>Do not hesitate to contact us if you have any question.</p>
+                            <p>Do not hesitate to contact us if you have any questions.</p>
                         </td></tr>
                         <tr><td style="padding:15px 20px 10px 20px;">${(object.user_id.signature or '')| safe}</td></tr>
                     </tbody>

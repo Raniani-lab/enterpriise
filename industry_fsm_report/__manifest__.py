@@ -18,4 +18,5 @@ Create Reports for Field Service
         'views/assets.xml',
         'data/fsm_report_data.xml',
     ],
+    'demo': ['data/fsm_report_demo.xml'],
 }

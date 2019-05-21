@@ -70,13 +70,12 @@ class AccountInvoice(models.Model):
                         ('company_id', '=', company.id),
                     ], limit=1)
                     if not tax:
-                        tax = self.env['account.tax'].sudo().create({
+                        tax = self.env['account.tax'].sudo().with_context(default_company_id=company.id).create({
                             'name': 'Tax %.3f %%' % (tax_rate),
                             'amount': tax_rate,
                             'amount_type': 'percent',
                             'type_tax_use': 'sale',
                             'description': 'Sales Tax',
-                            'company_id': company.id,
                             'active': False,  # these taxes should never be used manually
                         })
                     line.invoice_line_tax_ids = tax

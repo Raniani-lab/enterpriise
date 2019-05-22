@@ -7,14 +7,18 @@
             <field name="arch" type="xml">
             <data>
                  <xpath expr="//group[@name='duration_group']" position="after">
-                    <separator colspan="2" string="Allowance"/>
-                        <field name="driver_salay"/>
-                        <field name="house_rent_allowance_metro_nonmetro"/>
-                        <field name="supplementary_allowance"/>
-                    <separator colspan="2" string="Deduction"/>
-                        <field name="tds"/>
-                        <field name="voluntary_provident_fund"/>
-                        <field name="medical_insurance"/>
+                    <group col="2" colspan="2" name="right_column">
+                        <separator colspan="2" string="Allowance"/>
+                            <field name="driver_salay"/>
+                            <field name="house_rent_allowance_metro_nonmetro"/>
+                            <field name="supplementary_allowance"/>
+                    </group>
+                    <group col="2" colspan="2" name="right_column">
+                        <separator colspan="2" string="Deduction"/>
+                            <field name="tds"/>
+                            <field name="voluntary_provident_fund"/>
+                            <field name="medical_insurance"/>
+                    </group>
                  </xpath>
             </data>
             </field>

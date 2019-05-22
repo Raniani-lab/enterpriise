@@ -25,7 +25,7 @@ class SaleSubscription(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin']
 
     def _get_default_pricelist(self):
-        return self.env['product.pricelist'].search([('currency_id', '=', self.env.company_id.currency_id.id)], limit=1).id
+        return self.env['product.pricelist'].search([('currency_id', '=', self.env.company.currency_id.id)], limit=1).id
 
     name = fields.Char(required=True, tracking=True, default="New")
     code = fields.Char(string="Reference", required=True, tracking=True, index=True, copy=False)
@@ -33,7 +33,7 @@ class SaleSubscription(models.Model):
         'sale.subscription.stage', string='Stage', index=True,
         default=lambda s: s._get_default_stage_id(), group_expand='_read_group_stage_ids', tracking=True)
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account')
-    company_id = fields.Many2one('res.company', string="Company", default=lambda s: s.env.company_id, required=True)
+    company_id = fields.Many2one('res.company', string="Company", default=lambda s: s.env.company, required=True)
     partner_id = fields.Many2one('res.partner', string='Customer', required=True, auto_join=True)
     tag_ids = fields.Many2many('account.analytic.tag', string='Tags')
     date_start = fields.Date(string='Start Date', default=fields.Date.today)
@@ -1109,7 +1109,7 @@ class SaleSubscriptionAlert(models.Model):
         ('on_create_or_write', 'Modification'),
         ('on_time', 'Timed Condition'),
     ], string='Trigger On', required=True, default='on_create_or_write')
-    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company_id.currency_id)
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
     subscription_template_ids = fields.Many2many('sale.subscription.template', string='Subscription Templates')
     customer_ids = fields.Many2many('res.partner', string='Customers', domain=[('customer', '=', True)])
     company_id = fields.Many2one('res.company', string='Company')
@@ -1137,7 +1137,7 @@ class SaleSubscriptionAlert(models.Model):
     subscription_count = fields.Integer(compute='_compute_subscription_count')
 
     def _get_selection_mrr_change_unit(self):
-        return [('percentage', '%'), ('currency', self.env.company_id.currency_id.symbol)]
+        return [('percentage', '%'), ('currency', self.env.company.currency_id.symbol)]
 
     def _compute_subscription_count(self):
         for alert in self:

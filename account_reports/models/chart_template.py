@@ -10,7 +10,7 @@ class AccountChartTemplate(models.Model):
 
         # by default, anglo-saxon companies should have totals
         # displayed below sections in their reports
-        company = self.env.company_id
+        company = self.env.company
         company.totals_below_sections = company.anglo_saxon_accounting
 
         #set a default misc journal for the tax closure

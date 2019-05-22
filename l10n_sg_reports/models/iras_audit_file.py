@@ -44,15 +44,15 @@ class IrasAuditFile(models.AbstractModel):
         """
         Generate the informations about the company for the IRAS Audit File
         """
-        if not self.env.company_id.l10n_sg_unique_entity_number:
+        if not self.env.company.l10n_sg_unique_entity_number:
             raise UserError(_('Your company must have a UEN.'))
-        if not self.env.company_id.vat:
+        if not self.env.company.vat:
             raise UserError(_('Your company must have a GSTNo.'))
 
         return {
-            'CompanyName': self.env.company_id.name,
-            'CompanyUEN': self.env.company_id.l10n_sg_unique_entity_number,
-            'GSTNo': self.env.company_id.vat,
+            'CompanyName': self.env.company.name,
+            'CompanyUEN': self.env.company.l10n_sg_unique_entity_number,
+            'GSTNo': self.env.company.vat,
             'PeriodStart': date_from,
             'PeriodEnd': date_to,
             'IAFCreationDate': fields.Date.today(),
@@ -70,7 +70,7 @@ class IrasAuditFile(models.AbstractModel):
         transaction_count_total = 0
 
         invoice_ids = self.env['account.invoice'].search([
-            ('company_id', '=', self.env.company_id.id),
+            ('company_id', '=', self.env.company.id),
             ('type', 'in', ['in_invoice', 'in_refund']),
             ('state', 'in', ['open', 'in_payment', 'paid']),
             ('date', '>=', date_from),
@@ -120,7 +120,7 @@ class IrasAuditFile(models.AbstractModel):
         transaction_count_total = 0
 
         invoice_ids = self.env['account.invoice'].search([
-            ('company_id', '=', self.env.company_id.id),
+            ('company_id', '=', self.env.company.id),
             ('type', 'in', ['out_invoice', 'out_refund']),
             ('state', 'in', ['open', 'in_payment', 'paid']),
             ('date', '>=', date_from),
@@ -169,7 +169,7 @@ class IrasAuditFile(models.AbstractModel):
         transaction_count_total = 0
         glt_currency = 'SGD'
 
-        company_id = self.env.company_id
+        company_id = self.env.company
         move_line_ids = self.env['account.move.line'].search([
             ('company_id', '=', company_id.id),
             ('date', '>=', date_from),

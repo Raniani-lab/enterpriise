@@ -15,7 +15,7 @@ class AccountJournal(models.Model):
         """
         sepa_ct = self.env.ref('account_sepa.account_payment_method_sepa_ct')
         euro = self.env.ref('base.EUR')
-        if self.env.company_id.currency_id == euro:
+        if self.env.company.currency_id == euro:
             domain = ['&', ('type', '=', 'bank'), '|', ('currency_id', '=', euro.id), ('currency_id', '=', False)]
         else:
             domain = ['&', ('type', '=', 'bank'), ('currency_id', '=', euro.id)]

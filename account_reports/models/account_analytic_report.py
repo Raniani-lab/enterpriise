@@ -48,10 +48,10 @@ class analytic_report(models.AbstractModel):
             analytic_line_domain_for_group += [('group_id', '=', False)]
 
         currency_obj = self.env['res.currency']
-        user_currency = self.env.company_id.currency_id
+        user_currency = self.env.company.currency_id
         analytic_lines = self.env['account.analytic.line'].read_group(analytic_line_domain_for_group, ['amount', 'currency_id'], ['currency_id'])
         balance = sum([currency_obj.browse(row['currency_id'][0])._convert(
-            row['amount'], user_currency, self.env.company_id, fields.Date.today()) for row in analytic_lines])
+            row['amount'], user_currency, self.env.company, fields.Date.today()) for row in analytic_lines])
         return balance
 
     def _generate_analytic_group_line(self, group, analytic_line_domain, unfolded=False):

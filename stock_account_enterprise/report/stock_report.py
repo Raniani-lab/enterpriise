@@ -103,7 +103,7 @@ class StockReport(models.Model):
                 ) as move_valuation
             """
 
-            where, args = expression(domain + [('company_id', '=', self.env.company_id.id)], self).to_sql()
+            where, args = expression(domain + [('company_id', '=', self.env.company.id)], self).to_sql()
             self.env.cr.execute(query % where, args)
             res[0].update({
                 '__count': 1,

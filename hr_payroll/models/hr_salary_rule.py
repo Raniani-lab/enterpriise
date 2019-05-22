@@ -51,7 +51,7 @@ class HrPayrollStructure(models.Model):
     type_id = fields.Many2one(
         'hr.payroll.structure.type', required=True,
         default=lambda self: self.env.ref('hr_payroll.structure_type_employee', raise_if_not_found=False))
-    country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company_id.country_id)
+    country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
     note = fields.Text(string='Description')
     rule_ids = fields.One2many(
         'hr.salary.rule', 'struct_id',
@@ -84,7 +84,7 @@ class HrPayrollStructureType(models.Model):
     help="Defines the frequency of the wage payment.")
     default_resource_calendar_id = fields.Many2one(
         'resource.calendar', 'Default Working Hours',
-        default=lambda self: self.env.company_id.resource_calendar_id)
+        default=lambda self: self.env.company.resource_calendar_id)
     struct_ids = fields.One2many('hr.payroll.structure', 'type_id', string="Structures")
     default_struct_id = fields.Many2one('hr.payroll.structure', compute='_compute_default_struct_id')
 

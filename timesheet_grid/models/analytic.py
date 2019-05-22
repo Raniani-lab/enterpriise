@@ -139,7 +139,7 @@ class AnalyticLine(models.Model):
         result = super(AnalyticLine, self)._fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
         if view_type == 'grid':
             doc = etree.XML(result['arch'])
-            encoding_uom = self.env.company_id.timesheet_encode_uom_id
+            encoding_uom = self.env.company.timesheet_encode_uom_id
             # Here, we override the string put on unit_amount field to display only the UoM name in
             # the total label on the grid view.
             # Here, we select only the unit_amount field having no string set to give priority to

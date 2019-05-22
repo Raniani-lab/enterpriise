@@ -312,7 +312,7 @@ class ProductTemplate(models.Model):
     def _compute_quality_check_qty(self):
         for product_tmpl in self:
             quality_checks_by_state = self.env['quality.check'].read_group(
-                [('product_id', 'in', product_tmpl.product_variant_ids.ids), ('company_id', '=', self.env.company_id.id)],
+                [('product_id', 'in', product_tmpl.product_variant_ids.ids), ('company_id', '=', self.env.company.id)],
                 ['product_id'],
                 ['quality_state']
             )
@@ -322,7 +322,7 @@ class ProductTemplate(models.Model):
                 elif checks_data['quality_state'] == 'pass':
                     product_tmpl.quality_pass_qty = checks_data['quality_state_count']
             product_tmpl.quality_control_point_qty = self.env['quality.point'].search_count([
-                ('product_tmpl_id', '=', product_tmpl.id), ('company_id', '=', self.env.company_id.id)
+                ('product_tmpl_id', '=', product_tmpl.id), ('company_id', '=', self.env.company.id)
             ])
 
     def action_see_quality_control_points(self):
@@ -348,7 +348,7 @@ class ProductProduct(models.Model):
     def _compute_quality_check_qty(self):
         for product in self:
             quality_checks_by_state = self.env['quality.check'].read_group(
-                [('product_id', '=', product.id), ('company_id', '=', self.env.company_id.id)],
+                [('product_id', '=', product.id), ('company_id', '=', self.env.company.id)],
                 ['product_id'],
                 ['quality_state']
             )
@@ -358,7 +358,7 @@ class ProductProduct(models.Model):
                 elif checks_data['quality_state'] == 'pass':
                     product.quality_pass_qty = checks_data['quality_state_count']
             product.quality_control_point_qty = self.env['quality.point'].search_count([
-                ('product_id', '=', product.id), ('company_id', '=', self.env.company_id.id)
+                ('product_id', '=', product.id), ('company_id', '=', self.env.company.id)
             ])
 
     def action_see_quality_control_points(self):

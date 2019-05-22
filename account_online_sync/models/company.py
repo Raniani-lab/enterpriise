@@ -13,7 +13,7 @@ class ResCompany(models.Model):
         allowing to setup bank account instead of the default wizard used in community.
         If no bank journal exists yet, we trigger an error message asking to install
         a CoA, which will create the journal."""
-        company = self.env.company_id
+        company = self.env.company
 
         bank_journal = self.env['account.journal'].search([('company_id','=', company.id), ('type','=','bank'), ('bank_account_id', '=', False)], limit=1)
         if not bank_journal:

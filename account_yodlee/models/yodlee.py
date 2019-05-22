@@ -35,7 +35,7 @@ class YodleeProviderAccount(models.Model):
 
     @api.multi
     def register_new_user(self):
-        company_id = self.env.company_id
+        company_id = self.env.company
         username = self.env.registry.db_name + '_' + str(uuid.uuid4())
 
         # Implement funky password policy from Yodlee's REST API
@@ -72,13 +72,13 @@ class YodleeProviderAccount(models.Model):
         except requests.exceptions.Timeout:
             raise UserError(_('Timeout: the server did not reply within 30s'))
         self.check_yodlee_error(resp)
-        company_id = self.company_id or self.env.company_id
+        company_id = self.company_id or self.env.company
         company_id.yodlee_access_token = resp.json().get('session').get('cobSession')
 
     @api.multi
     def do_user_login(self):
         credentials = self._get_yodlee_credentials()
-        company_id = self.company_id or self.env.company_id
+        company_id = self.company_id or self.env.company
         headerVal = {'Authorization': '{cobSession=' + company_id.yodlee_access_token + '}'}
         requestBody = json.dumps({'user': {'loginName': company_id.yodlee_user_login, 'password': company_id.yodlee_user_password}})
         try:
@@ -114,7 +114,7 @@ class YodleeProviderAccount(models.Model):
     @api.multi
     def yodlee_fetch(self, url, params, data, type_request='POST'):
         credentials = self._get_yodlee_credentials()
-        company_id = self.company_id or self.env.company_id
+        company_id = self.company_id or self.env.company
         service_url = url
         url = credentials['url'] + url
         if not company_id.yodlee_user_login:
@@ -173,7 +173,7 @@ class YodleeProviderAccount(models.Model):
                 'fastlinkUrl': self._get_yodlee_credentials()['fastlink_url'],
                 'paramsUrl': paramsUrl,
                 'callbackUrl': callbackUrl,
-                'userToken': self.env.company_id.yodlee_user_access_token,
+                'userToken': self.env.company.yodlee_user_access_token,
                 'beta': beta,
                 'state': state,
                 'accessTokens': resp_json.get('user').get('accessTokens')[0],
@@ -200,7 +200,7 @@ class YodleeProviderAccount(models.Model):
         element = type(resp_json) is list and len(resp_json) > 0 and resp_json[0] or {}
         if element.get('providerAccountId'):
             new_provider_account = self.search([('provider_account_identifier', '=', element.get('providerAccountId')),
-                ('company_id', '=', self.env.company_id.id)], limit=1)
+                ('company_id', '=', self.env.company.id)], limit=1)
             if len(new_provider_account) == 0:
                 vals = {
                     'name': element.get('bankName') or _('Online institution'),

@@ -27,7 +27,7 @@ class ReportL10nNLIntrastat(models.AbstractModel):
     @api.model
     def _get_lines(self, options, line_id=None):
         lines = []
-        company_id = self.env.company_id
+        company_id = self.env.company
 
         country_ids = (self.env.ref('base.europe').country_ids - company_id.country_id).ids
 

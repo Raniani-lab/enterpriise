@@ -30,7 +30,7 @@ This feature is only supported/useful in spanish MOD347 report.""")
             if not threshold_currency:
                 raise UserError(_("Currency %s, used for a threshold in this report, is either nonexistent or inactive. Please create or activate it." % threshold_currency.name))
 
-            company_currency = self.env.company_id.currency_id
+            company_currency = self.env.company.currency_id
             return threshold_currency._convert(amount, company_currency, company, date)
 
     def _get_with_statement(self, financial_report):

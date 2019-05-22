@@ -136,7 +136,7 @@ class MXReportAccountCoa(models.AbstractModel):
         ctx = self._set_context(options)
         date = fields.Date.from_string(ctx['date_from'])
         chart = {
-            'vat': self.env.company_id.vat or '',
+            'vat': self.env.company.vat or '',
             'month': str(date.month).zfill(2),
             'year': date.year,
             'accounts': accounts
@@ -166,6 +166,6 @@ class MXReportAccountCoa(models.AbstractModel):
         date_report = fields.Date.from_string(context['date_from']) if context.get(
                 'date_from') else fields.date.today()
         return '%s%s%sCT' % (
-            self.env.company_id.vat or '',
+            self.env.company.vat or '',
             date_report.year,
             str(date_report.month).zfill(2))

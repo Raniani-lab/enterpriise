@@ -11,7 +11,7 @@ class ResConfigSettings(models.TransientModel):
         ('sale_purchase', 'Sale and Purchase Order')])
     auto_validation = fields.Selection([('draft', 'draft'), ('validated', 'validated')])
     rules_company_id = fields.Many2one('res.company', string='Select Company',
-        help='Select company to setup Inter company rules.', default=lambda self: self.env.company_id, readonly=True)
+        help='Select company to setup Inter company rules.', default=lambda self: self.env.company, readonly=True)
     warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse For Purchase Orders',
         help='Default value to set on Purchase Orders that will be created based on Sales Orders made to this company.')
 

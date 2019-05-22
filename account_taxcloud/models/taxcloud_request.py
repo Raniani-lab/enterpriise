@@ -87,7 +87,7 @@ class TaxCloudRequest(object):
                 tic_code = line.product_id.tic_category_id.code or \
                     line.product_id.categ_id.tic_category_id.code or \
                     line.company_id.tic_category_id.code or \
-                    line.env.company_id.tic_category_id.code
+                    line.env.company.tic_category_id.code
                 qty = line.quantity
                 price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
 

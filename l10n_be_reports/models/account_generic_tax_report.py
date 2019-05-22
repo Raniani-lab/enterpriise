@@ -49,7 +49,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         # Check
         if self.env.user.company_id.country_id.code != 'BE':
             return super(AccountGenericTaxReport, self).get_xml(options)
-        company = self.env.company_id
+        company = self.env.company
         vat_no = company.partner_id.vat
         if not vat_no:
             raise UserError(_('No VAT number associated with your company.'))
@@ -127,7 +127,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         rslt += '\t\t<ns2:Data>\t'
 
         grids_list = []
-        currency_id = self.env.company_id.currency_id
+        currency_id = self.env.company.currency_id
 
         ctx = self._set_context(options)
         ctx.update({'no_format': True, 'date_from': date_from, 'date_to': date_to})

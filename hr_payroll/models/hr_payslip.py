@@ -49,7 +49,7 @@ class HrPayslip(models.Model):
     line_ids = fields.One2many('hr.payslip.line', 'slip_id', string='Payslip Lines', readonly=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     company_id = fields.Many2one('res.company', string='Company', readonly=True, copy=False, required=True,
-        default=lambda self: self.env.company_id,
+        default=lambda self: self.env.company,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     worked_days_line_ids = fields.One2many('hr.payslip.worked_days', 'payslip_id',
         string='Payslip Worked Days', copy=True, readonly=True,
@@ -413,7 +413,7 @@ class HrPayslipInputType(models.Model):
     name = fields.Char(string='Description', required=True)
     code = fields.Char(required=True, help="The code that can be used in the salary rules")
     struct_ids = fields.Many2many('hr.payroll.structure', string='Avaibility in Structure', help='This input will be only available in those structure. If empty, it will be available in all payslip.')
-    country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company_id.country_id)
+    country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
 
 
 class HrPayslipRun(models.Model):
@@ -438,7 +438,7 @@ class HrPayslipRun(models.Model):
         help="If its checked, indicates that all payslips generated from here are refund payslips.")
     payslip_count = fields.Integer(compute='_compute_payslip_count')
     company_id = fields.Many2one('res.company', string='Company', readonly=True, required=True,
-        default=lambda self: self.env.company_id)
+        default=lambda self: self.env.company)
 
     def _compute_payslip_count(self):
         for payslip_run in self:

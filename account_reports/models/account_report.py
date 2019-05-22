@@ -73,7 +73,7 @@ class AccountReport(models.AbstractModel):
             if previous_options and previous_options.get('multi_company'):
                 company_map = dict((opt['id'], opt['selected']) for opt in previous_options.get('multi_company', []))
             else:
-                company_map = {self.env.company_id.id: True}
+                company_map = {self.env.company.id: True}
             options['multi_company'] = [
                 {'id': c.id, 'name': c.name, 'selected': company_map.get(c.id, False)} for c in companies
             ]
@@ -81,7 +81,7 @@ class AccountReport(models.AbstractModel):
     @api.model
     def _get_options_companies(self, options):
         if not options.get('multi_company'):
-            company = self.env.company_id
+            company = self.env.company
             return [{'id': company.id, 'name': company.name, 'selected': True}]
 
         all_companies = []
@@ -97,7 +97,7 @@ class AccountReport(models.AbstractModel):
         if options.get('multi_company'):
             return [('company_id', 'in', [c['id'] for c in self._get_options_companies(options)])]
         else:
-            return [('company_id', '=', self.env.company_id.id)]
+            return [('company_id', '=', self.env.company.id)]
 
     ####################################################
     # OPTIONS: journals
@@ -106,7 +106,7 @@ class AccountReport(models.AbstractModel):
     @api.model
     def _get_filter_journals(self):
         return self.env['account.journal'].search([
-            ('company_id', 'in', self.env.user.company_ids.ids or [self.env.company_id.id])
+            ('company_id', 'in', self.env.user.company_ids.ids or [self.env.company.id])
         ], order="company_id, name")
 
     @api.model
@@ -195,7 +195,7 @@ class AccountReport(models.AbstractModel):
         # If no date_from or not date_to, we are unable to determine a period
         if not period_type or period_type == 'custom':
             date = date_to or date_from
-            company_fiscalyear_dates = self.env.company_id.compute_fiscalyear_dates(date)
+            company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(date)
             if match(company_fiscalyear_dates['date_from'], company_fiscalyear_dates['date_to']):
                 period_type = 'fiscalyear'
                 if company_fiscalyear_dates.get('record'):
@@ -212,13 +212,13 @@ class AccountReport(models.AbstractModel):
                 period_type = 'custom'
         elif period_type == 'fiscalyear':
             date = date_to or date_from
-            company_fiscalyear_dates = self.env.company_id.compute_fiscalyear_dates(date)
+            company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(date)
             record = company_fiscalyear_dates.get('record')
             string = record and record.name
 
         if not string:
-            fy_day = self.env.company_id.fiscalyear_last_day
-            fy_month = int(self.env.company_id.fiscalyear_last_month)
+            fy_day = self.env.company.fiscalyear_last_day
+            fy_month = int(self.env.company.fiscalyear_last_month)
             if mode == 'single':
                 string = _('As of %s') % (format_date(self.env, fields.Date.to_string(date_to)))
             elif period_type == 'year' or (
@@ -260,7 +260,7 @@ class AccountReport(models.AbstractModel):
         if period_type == 'fiscalyear':
             # Don't pass the period_type to _get_dates_period to be able to retrieve the account.fiscal.year record if
             # necessary.
-            company_fiscalyear_dates = self.env.company_id.compute_fiscalyear_dates(date_to)
+            company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(date_to)
             return self._get_dates_period(options, company_fiscalyear_dates['date_from'], company_fiscalyear_dates['date_to'], mode)
         if period_type in ('month', 'today', 'custom'):
             return self._get_dates_period(options, *date_utils.get_month(date_to), mode, period_type='month')
@@ -322,7 +322,7 @@ class AccountReport(models.AbstractModel):
             date_from, date_to = date_utils.get_quarter(fields.Date.context_today(self))
             period_type = 'quarter'
         elif 'year' in options_filter:
-            company_fiscalyear_dates = self.env.company_id.compute_fiscalyear_dates(fields.Date.context_today(self))
+            company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.context_today(self))
             date_from = company_fiscalyear_dates['date_from']
             date_to = company_fiscalyear_dates['date_to']
         elif not date_from:
@@ -1022,7 +1022,7 @@ class AccountReport(models.AbstractModel):
         if options.get('multi_company'):
             company_ids = [c.get('id') for c in options['multi_company'] if c.get('selected')]
             company_ids = company_ids if len(company_ids) > 0 else [c.get('id') for c in options['multi_company']]
-        ctx['company_ids'] = len(company_ids) > 0 and company_ids or [self.env.company_id.id]
+        ctx['company_ids'] = len(company_ids) > 0 and company_ids or [self.env.company.id]
         if options.get('analytic_accounts'):
             ctx['analytic_account_ids'] = self.env['account.analytic.account'].browse([int(acc) for acc in options['analytic_accounts']])
         if options.get('analytic_tags'):
@@ -1057,7 +1057,7 @@ class AccountReport(models.AbstractModel):
 
         if options.get('journals'):
             journals_selected = set(journal['id'] for journal in options['journals'] if journal.get('selected'))
-            for journal_group in self.env['account.journal.group'].search([('company_id', '=', self.env.company_id.id)]):
+            for journal_group in self.env['account.journal.group'].search([('company_id', '=', self.env.company.id)]):
                 if journals_selected == set(journal_group.account_journal_ids.ids):
                     options['name_journal_group'] = journal_group.name
                     break
@@ -1110,7 +1110,7 @@ class AccountReport(models.AbstractModel):
         report_manager = self._get_report_manager(options)
         report = {'name': self._get_report_name(),
                 'summary': report_manager.summary,
-                'company_name': self.env.company_id.name,}
+                'company_name': self.env.company.name,}
         lines = self._get_lines(options, line_id=line_id)
 
         if options.get('hierarchy'):
@@ -1226,7 +1226,7 @@ class AccountReport(models.AbstractModel):
         return existing_manager
 
     def format_value(self, value, currency=False):
-        currency_id = currency or self.env.company_id.currency_id
+        currency_id = currency or self.env.company.currency_id
         if self.env.context.get('no_format'):
             return currency_id.round(value)
         if currency_id.is_zero(value):
@@ -1282,7 +1282,7 @@ class AccountReport(models.AbstractModel):
         rcontext = {
             'mode': 'print',
             'base_url': base_url,
-            'company': self.env.company_id,
+            'company': self.env.company,
         }
 
         body = self.env['ir.ui.view'].render_template(
@@ -1301,7 +1301,7 @@ class AccountReport(models.AbstractModel):
             rcontext.update({
                     'css': '',
                     'o': self.env.user,
-                    'res_company': self.env.company_id,
+                    'res_company': self.env.company,
                 })
             header = self.env['ir.actions.report'].render_template("web.external_layout", values=rcontext)
             header = header.decode('utf-8') # Ensure that headers and footer are correctly encoded

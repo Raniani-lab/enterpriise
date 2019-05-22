@@ -32,7 +32,7 @@ class ProviderAccount(models.Model):
     last_refresh = fields.Datetime(readonly=True, default=fields.Datetime.now())
     next_refresh = fields.Datetime("Next synchronization", compute='_compute_next_synchronization')
     account_online_journal_ids = fields.One2many('account.online.journal', 'account_online_provider_id')
-    company_id = fields.Many2one('res.company', required=True, readonly=True, default=lambda self: self.env.company_id)
+    company_id = fields.Many2one('res.company', required=True, readonly=True, default=lambda self: self.env.company)
 
     @api.one
     def _compute_next_synchronization(self):

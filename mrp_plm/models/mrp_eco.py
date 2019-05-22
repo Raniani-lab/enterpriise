@@ -164,7 +164,7 @@ class MrpEco(models.Model):
         'mrp.eco.stage', 'Stage', ondelete='restrict', copy=False, domain="[('type_id', '=', type_id)]",
         group_expand='_read_group_stage_ids', tracking=True,
         default=lambda self: self.env['mrp.eco.stage'].search([('type_id', '=', self._context.get('default_type_id'))], limit=1))
-    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company_id)
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     tag_ids = fields.Many2many('mrp.eco.tag', string='Tags')
     priority = fields.Selection([
         ('0', 'Normal'),

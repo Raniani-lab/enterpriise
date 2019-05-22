@@ -36,7 +36,7 @@ class RevenueKPIsDashboard(http.Controller):
                 }
                 for key, stat in FORECAST_STAT_TYPES.items()
             },
-            'currency_id': request.env.company_id.currency_id.id,
+            'currency_id': request.env.company.currency_id.id,
             'contract_templates': request.env['sale.subscription.template'].search_read([], fields=['name']),
             'tags': request.env['account.analytic.tag'].search_read([], fields=['name']),
             'companies': request.env['res.company'].search_read([], fields=['name']),

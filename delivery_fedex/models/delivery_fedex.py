@@ -252,7 +252,7 @@ class ProviderFedex(models.Model):
             srm.shipment_label('COMMON2D', self.fedex_label_file_type, self.fedex_label_stock_type, 'TOP_EDGE_OF_TEXT_FIRST', 'SHIPPING_LABEL_FIRST')
 
             order = picking.sale_id
-            company = order.company_id or picking.company_id or self.env.company_id
+            company = order.company_id or picking.company_id or self.env.company
             order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
 
             net_weight = self._fedex_convert_weight(picking.shipping_weight, self.fedex_weight_unit)

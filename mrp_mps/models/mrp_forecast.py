@@ -95,7 +95,7 @@ class SaleForecast(models.Model):
             location = warehouse[0].lot_stock_id if warehouse else False
             self.env['procurement.group'].run([self.env['procurement.group'].Procurement(
                 product, to_supply, product.uom_id, location, product.name,
-                'MPS', self.env.company_id, vals)])
+                'MPS', self.env.company, vals)])
         return False
 
     @api.model

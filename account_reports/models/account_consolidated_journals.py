@@ -17,7 +17,7 @@ class report_account_consolidated_journal(models.AbstractModel):
 
     # Override: disable multicompany
     def _get_filter_journals(self):
-        return self.env['account.journal'].search([('company_id', 'in', [self.env.company_id.id, False])], order="company_id, name")
+        return self.env['account.journal'].search([('company_id', 'in', [self.env.company.id, False])], order="company_id, name")
 
     @api.model
     def _get_options(self, previous_options=None):

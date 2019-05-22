@@ -21,7 +21,7 @@ class HrAppraisalReminder(models.Model):
         ], string='After event', required=True, default='last_appraisal')
     subject = fields.Char('Subject')
     body_html = fields.Html('Body')
-    company_id = fields.Many2one('res.company', required=True, ondelete='cascade', default=lambda self: self.env.company_id)
+    company_id = fields.Many2one('res.company', required=True, ondelete='cascade', default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('positif_number_months', 'CHECK(appraisal_reminder > 0)', "The reminder time must be bigger or equal to 1 month."),

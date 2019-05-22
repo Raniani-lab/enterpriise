@@ -340,7 +340,7 @@ class TestAccountReports(SavepointCase):
         :params columns:            The columns index.
         :param expected_values:     A list of iterables.
         '''
-        used_currency = currency or self.env.company_id.currency_id
+        used_currency = currency or self.env.company.currency_id
 
         # Compare the table length to see if any line is missing
         self.assertEquals(len(lines), len(expected_values))

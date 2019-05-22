@@ -14,7 +14,7 @@ class IrAttachment(models.Model):
 
         if vals.get('res_model') in {'project.project', 'project.task'} and vals.get('res_id'):
             project = self.env[vals['res_model']].browse(vals['res_id'])
-            company = project.company_id or self.env.company_id
+            company = project.company_id or self.env.company
             if company.exists() and company.documents_project_settings and company.project_folder:
                 for record in self:
                     document_dict = {'attachment_id': record.id,

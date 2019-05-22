@@ -62,8 +62,8 @@ class AccountFollowupReport(models.AbstractModel):
         res = {}
         today = fields.Date.today()
         line_num = 0
-        for l in partner.unreconciled_aml_ids.filtered(lambda l: l.company_id == self.env.company_id):
-            if l.company_id == self.env.company_id:
+        for l in partner.unreconciled_aml_ids.filtered(lambda l: l.company_id == self.env.company):
+            if l.company_id == self.env.company:
                 if self.env.context.get('print_mode') and l.blocked:
                     continue
                 currency = l.currency_id or l.company_id.currency_id
@@ -158,7 +158,7 @@ class AccountFollowupReport(models.AbstractModel):
         """
         partner = self.env['res.partner'].browse(options.get('partner_id'))
         lang = partner.lang or self.env.user.lang or 'en_US'
-        return self.env.company_id.with_context(lang=lang).overdue_msg or\
+        return self.env.company.with_context(lang=lang).overdue_msg or\
             self.env['res.company'].with_context(lang=lang).default_get(['overdue_msg'])['overdue_msg']
 
     def _get_report_manager(self, options):
@@ -166,14 +166,14 @@ class AccountFollowupReport(models.AbstractModel):
         Override
         Compute and return the report manager for the partner_id in options
         """
-        domain = [('report_name', '=', 'account.followup.report'), ('partner_id', '=', options.get('partner_id')), ('company_id', '=', self.env.company_id.id)]
+        domain = [('report_name', '=', 'account.followup.report'), ('partner_id', '=', options.get('partner_id')), ('company_id', '=', self.env.company.id)]
         existing_manager = self.env['account.report.manager'].search(domain, limit=1)
         if existing_manager and not options.get('keep_summary'):
             existing_manager.write({'summary': self._get_default_summary(options)})
         if not existing_manager:
             existing_manager = self.env['account.report.manager'].create({
                 'report_name': 'account.followup.report',
-                'company_id': self.env.company_id.id,
+                'company_id': self.env.company.id,
                 'partner_id': options.get('partner_id'),
                 'summary': self._get_default_summary(options)})
         return existing_manager
@@ -256,7 +256,7 @@ class AccountFollowupReport(models.AbstractModel):
             partner.with_context(mail_post_autofollow=True).message_post(
                 partner_ids=[partner.id],
                 body=body_html,
-                subject=_('%s Payment Reminder') % (self.env.company_id.name) + ' - ' + partner.name,
+                subject=_('%s Payment Reminder') % (self.env.company.name) + ' - ' + partner.name,
                 subtype_id=self.env.ref('mail.mt_note').id,
                 model_description=_('payment reminder'),
                 notif_layout='mail.mail_notification_light')
@@ -280,7 +280,7 @@ class AccountFollowupReport(models.AbstractModel):
         """
         if partner.followup_status == 'in_need_of_action':
             partner.send_followup_email()
-            next_date = fields.datetime.now() + timedelta(days=self.env.company_id.days_between_two_followups)
+            next_date = fields.datetime.now() + timedelta(days=self.env.company.days_between_two_followups)
             partner.update_next_action(options={'next_action_date': datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT), 'next_action_type': 'auto'})
             return partner
         return None

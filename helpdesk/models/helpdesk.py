@@ -24,7 +24,7 @@ class HelpdeskTeam(models.Model):
     active = fields.Boolean(default=True)
     company_id = fields.Many2one(
         'res.company', string='Company',
-        default=lambda self: self.env.company_id)
+        default=lambda self: self.env.company)
     sequence = fields.Integer(default=10)
     color = fields.Integer('Color Index', default=1)
     stage_ids = fields.Many2many(
@@ -63,7 +63,7 @@ class HelpdeskTeam(models.Model):
     upcoming_sla_fail_tickets = fields.Integer(string='Upcoming SLA Fail Tickets', compute='_compute_upcoming_sla_fail_tickets')
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
-        default=lambda self: self.env.company_id.resource_calendar_id)
+        default=lambda self: self.env.company.resource_calendar_id)
 
     @api.depends('name', 'portal_show_rating')
     def _compute_portal_rating_url(self):

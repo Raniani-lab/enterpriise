@@ -28,7 +28,7 @@ class HmrcVatObligation(models.Model):
     period_key = fields.Char('Period Key', readonly=True)
     date_received = fields.Date('Received Submission date', readonly=True)
     company_id = fields.Many2one('res.company', 'Company', required=True,
-        default=lambda self: self.env.company_id)
+        default=lambda self: self.env.company)
 
     @api.multi
     def name_get(self):
@@ -96,13 +96,13 @@ class HmrcVatObligation(models.Model):
 
         # look for open obligations in the -6 months +6 months range
         obligations = self.retrieve_vat_obligations(
-            self.env.company_id.vat,
+            self.env.company.vat,
             (today + relativedelta(months=-6)).strftime('%Y-%m-%d'),
             (today + relativedelta(months=6)).strftime('%Y-%m-%d'))
 
         for new_obligation in obligations:
             obligation = self.env['l10n_uk.vat.obligation'].search([('period_key', '=', new_obligation.get('periodKey')),
-                                                                 ('company_id', '=', self.env.company_id.id)])
+                                                                 ('company_id', '=', self.env.company.id)])
             status = 'open' if new_obligation['status'] == 'O' else 'fulfilled'
             if not obligation:
                 self.sudo().create({'date_start': new_obligation['start'],
@@ -111,7 +111,7 @@ class HmrcVatObligation(models.Model):
                                     'date_due': new_obligation['due'],
                                     'status': status,
                                     'period_key': new_obligation['periodKey'],
-                                    'company_id': self.env.company_id.id,
+                                    'company_id': self.env.company.id,
                                     })
             elif obligation.status != status or obligation.date_received != new_obligation.get('received_date'):
                 obligation.sudo().write({'status': status,
@@ -157,7 +157,7 @@ class HmrcVatObligation(models.Model):
         options = report._get_options()
         report_values = report._get_lines(options)
         values = self._fetch_values_from_report(report_values)
-        vat = self.env.company_id.vat
+        vat = self.env.company.vat
         res = self.env['hmrc.service']._login()
         if res: # If you can not login, return url for re-login
             return res

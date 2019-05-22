@@ -30,6 +30,6 @@ class ResConfigSettings(models.TransientModel):
         for category in res['data']:
             if not Category.search([('code', '=', category['TICID'])], limit=1):
                 Category.create({'code': category['TICID'], 'description': category['Description']})
-        if not self.env.company_id.tic_category_id:
-            self.env.company_id.tic_category_id = Category.search([('code', '=', 0)], limit=1)
+        if not self.env.company.tic_category_id:
+            self.env.company.tic_category_id = Category.search([('code', '=', 0)], limit=1)
         return True

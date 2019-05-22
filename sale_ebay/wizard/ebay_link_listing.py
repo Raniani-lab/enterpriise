@@ -45,14 +45,14 @@ class ebay_link_listing(models.TransientModel):
             ]).id if 'Storefront' in item else False,
             'ebay_price': currency._convert(
                 float(item['StartPrice']['value']),
-                self.env.company_id.currency_id,
-                self.env.company_id,
+                self.env.company.currency_id,
+                self.env.company,
                 fields.Date.today()
             ),
             'ebay_buy_it_now_price': currency._convert(
                 float(item['BuyItNowPrice']['value']),
-                self.env.company_id.currency_id,
-                self.env.company_id,
+                self.env.company.currency_id,
+                self.env.company,
                 fields.Date.today()
             ),
             'ebay_listing_type': item['ListingType'],
@@ -110,8 +110,8 @@ class ebay_link_listing(models.TransientModel):
                     'ebay_quantity_sold': variation['SellingStatus']['QuantitySold'],
                     'ebay_fixed_price': currency._convert(
                         float(variation['StartPrice']['value']),
-                        self.env.company_id.currency_id,
-                        self.env.company_id,
+                        self.env.company.currency_id,
+                        self.env.company,
                         fields.Date.today()
                     ),
                     'ebay_quantity': int(variation['Quantity']) - int(variation['SellingStatus']['QuantitySold']),
@@ -122,8 +122,8 @@ class ebay_link_listing(models.TransientModel):
                 'ebay_quantity_sold': item['SellingStatus']['QuantitySold'],
                 'ebay_fixed_price': currency._convert(
                     float(item['StartPrice']['value']),
-                    self.env.company_id.currency_id,
-                    self.env.company_id,
+                    self.env.company.currency_id,
+                    self.env.company,
                     fields.Date.today()
                 ),
                 'ebay_quantity': int(item['Quantity']) - int(item['SellingStatus']['QuantitySold']),

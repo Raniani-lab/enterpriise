@@ -173,7 +173,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
 
         lines.append(self._add_line(
             _("Virtual GL Balance"),
-            amount=None if self.env.company_id.totals_below_sections else computed_stmt_balance, level=0,
+            amount=None if self.env.company.totals_below_sections else computed_stmt_balance, level=0,
             style_class='o_account_reports_totals_below_sections' if self.env.user.company_id.totals_below_sections else '')
         )
 
@@ -223,7 +223,7 @@ The Virtual GL Balance represents the cash you'll have once all operations to pr
                         'caret_options': 'account.payment',
                     })
 
-        if self.env.company_id.totals_below_sections:
+        if self.env.company.totals_below_sections:
             lines.append(self._add_line(_('Total Virtual GL Balance'), computed_stmt_balance, level=1, style_class='total'))
             #recopy help tooltip of the Virtual GL Balance on its total
             lines[-1]['title_hover'] = lines[0]['title_hover']

@@ -81,8 +81,8 @@ class StockPicking(models.Model):
             picking['use_existing_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_existing_lots
             picking['show_entire_packs'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).show_entire_packs
             picking['actionReportDeliverySlipId'] = self.env.ref('stock.action_report_delivery').id
-            if self.env.company_id.nomenclature_id:
-                picking['nomenclature_id'] = [self.env.company_id.nomenclature_id.id]
+            if self.env.company.nomenclature_id:
+                picking['nomenclature_id'] = [self.env.company.nomenclature_id.id]
         return pickings
 
     def _get_picking_fields_to_read(self):
@@ -246,7 +246,7 @@ class StockPicking(models.Model):
         return True
 
     def on_barcode_scanned(self, barcode):
-        if not self.env.company_id.nomenclature_id:
+        if not self.env.company.nomenclature_id:
             # Logic for products
             product = self.env['product.product'].search(['|', ('barcode', '=', barcode), ('default_code', '=', barcode)], limit=1)
             if product:
@@ -277,7 +277,7 @@ class StockPicking(models.Model):
                 if self._check_destination_location(location):
                     return
         else:
-            parsed_result = self.env.company_id.nomenclature_id.parse_barcode(barcode)
+            parsed_result = self.env.company.nomenclature_id.parse_barcode(barcode)
             if parsed_result['type'] in ['weight', 'product']:
                 if parsed_result['type'] == 'weight':
                     product_barcode = parsed_result['base_code']
@@ -355,7 +355,7 @@ class StockPicking(models.Model):
             params = {
                 'model': 'stock.picking',
                 'picking_id': self.id,
-                'nomenclature_id': [self.env.company_id.nomenclature_id.id],
+                'nomenclature_id': [self.env.company.nomenclature_id.id],
             }
             return dict(action, target='fullscreen', params=params)
 

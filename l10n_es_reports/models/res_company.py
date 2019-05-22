@@ -14,7 +14,7 @@ class ResCompany(models.Model):
 
     @api.model
     def balance_sheet_menu_item_clicked(self):
-        current_company = self.env.company_id
+        current_company = self.env.company
 
         spanish_coa_bs_map = {
             self.env.ref('l10n_es.account_chart_template_pymes'): self.env.ref("l10n_es_reports.financial_report_balance_sheet_pymes").id,

@@ -28,7 +28,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def validate_taxes_on_invoice(self):
         company = self.company_id
-        shipper = company or self.env.company_id
+        shipper = company or self.env.company
         api_id = shipper.taxcloud_api_id
         api_key = shipper.taxcloud_api_key
         request = TaxCloudRequest(api_id, api_key)

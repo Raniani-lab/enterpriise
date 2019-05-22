@@ -42,7 +42,7 @@ class QualityPoint(models.Model):
         'product.template', 'Product', required=True,
         domain="[('type', 'in', ['consu', 'product'])]")
     picking_type_id = fields.Many2one('stock.picking.type', "Operation Type", required=True)
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company_id)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     user_id = fields.Many2one('res.users', 'Responsible')
     active = fields.Boolean(default=True)
     check_count = fields.Integer(compute="_compute_check_count")
@@ -86,7 +86,7 @@ class QualityAlertTeam(models.Model):
     _order = "sequence, id"
 
     name = fields.Char('Name', required=True)
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company_id)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     sequence = fields.Integer('Sequence')
     check_count = fields.Integer('# Quality Checks', compute='_compute_check_count')
     alert_count = fields.Integer('# Quality Alerts', compute='_compute_alert_count')
@@ -155,7 +155,7 @@ class QualityCheck(models.Model):
     lot_id = fields.Many2one('stock.production.lot', 'Lot', domain="[('product_id', '=', product_id)]")
     user_id = fields.Many2one('res.users', 'Responsible', tracking=True)
     team_id = fields.Many2one('quality.alert.team', 'Team', required=True)
-    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company_id)
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     alert_ids = fields.One2many('quality.alert', 'check_id', string='Alerts')
     alert_count = fields.Integer('# Quality Alerts', compute="_compute_alert_count")
     note = fields.Html(related='point_id.note', readonly=True)
@@ -214,7 +214,7 @@ class QualityAlert(models.Model):
     stage_id = fields.Many2one('quality.alert.stage', 'Stage', ondelete='restrict',
         group_expand='_read_group_stage_ids',
         default=lambda self: self.env['quality.alert.stage'].search([], limit=1).id, tracking=True)
-    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company_id)
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     reason_id = fields.Many2one('quality.reason', 'Root Cause')
     tag_ids = fields.Many2many('quality.tag', string="Tags")
     date_assign = fields.Datetime('Date Assigned')

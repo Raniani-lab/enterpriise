@@ -16,7 +16,7 @@ class AccountBudgetPost(models.Model):
     account_ids = fields.Many2many('account.account', 'account_budget_rel', 'budget_id', 'account_id', 'Accounts',
         domain=[('deprecated', '=', False)])
     company_id = fields.Many2one('res.company', 'Company', required=True,
-        default=lambda self: self.env.company_id)
+        default=lambda self: self.env.company)
 
     def _check_account_ids(self, vals):
         # Raise an error to prevent the account.budget.post to have not specified account_ids.
@@ -58,7 +58,7 @@ class CrossoveredBudget(models.Model):
     crossovered_budget_line = fields.One2many('crossovered.budget.lines', 'crossovered_budget_id', 'Budget Lines',
         states={'done': [('readonly', True)]}, copy=True)
     company_id = fields.Many2one('res.company', 'Company', required=True,
-        default=lambda self: self.env.company_id)
+        default=lambda self: self.env.company)
 
     @api.multi
     def action_budget_confirm(self):

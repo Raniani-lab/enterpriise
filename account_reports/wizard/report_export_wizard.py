@@ -76,7 +76,7 @@ class ReportExportWizard(models.TransientModel):
         return {
             'name': self.doc_name,
             'datas_fname': file_name,
-            'company_id': self.env.company_id.id,
+            'company_id': self.env.company.id,
             'datas': file_content,
             'mimetype': mimetype,
             'description': json.dumps(log_options_dict)

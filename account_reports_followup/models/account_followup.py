@@ -13,7 +13,7 @@ class Followup(models.Model):
 
     followup_line_ids = fields.One2many('account_followup.followup.line', 'followup_id', 'Follow-up', copy=True, oldname="followup_line")
     company_id = fields.Many2one('res.company', 'Company', required=True,
-                                 default=lambda self: self.env.company_id)
+                                 default=lambda self: self.env.company)
     name = fields.Char(related='company_id.name', readonly=True)
 
     _sql_constraints = [('company_uniq', 'unique(company_id)', 'Only one follow-up per company is allowed')]
@@ -99,7 +99,7 @@ class ResPartner(models.Model):
            - the followup ID of the next level
            - the delays in days of the next level
         """
-        followup_id = 'followup_id' in self.env.context and self.env.context['followup_id'] or self.env['account_followup.followup'].search([('company_id', '=', self.env.company_id.id)]).id
+        followup_id = 'followup_id' in self.env.context and self.env.context['followup_id'] or self.env['account_followup.followup'].search([('company_id', '=', self.env.company.id)]).id
         if not followup_id:
             return {}
 
@@ -140,7 +140,7 @@ class ResPartner(models.Model):
         level = None
         if fups:
             for aml in self.unreconciled_aml_ids:
-                if aml.company_id == self.env.company_id:
+                if aml.company_id == self.env.company:
                     index = aml.followup_line_id.id or None
                     followup_date = fups[index][0]
                     next_level = fups[index][1]

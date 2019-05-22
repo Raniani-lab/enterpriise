@@ -83,6 +83,6 @@ class IndividualAccountReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        if self.env.company_id.country_id != self.env.ref('base.be'):
+        if self.env.company.country_id != self.env.ref('base.be'):
             raise UserError(_("You must be logged into a Belgian company to print the individual account."))
         return {'report_data': self._get_report_data(data)}

@@ -180,5 +180,5 @@ class HrLeave(models.Model):
             if holiday.date_from and holiday.date_to:
                 contracts = holiday.employee_id.sudo()._get_contracts(holiday.date_from, holiday.date_to, states=['incoming', 'open', 'pending'])
                 contract_calendar = contracts[:1].resource_calendar_id if contracts else None
-                calendar = contract_calendar or holiday.employee_id.resource_calendar_id or self.env.company_id.resource_calendar_id
+                calendar = contract_calendar or holiday.employee_id.resource_calendar_id or self.env.company.resource_calendar_id
                 holiday.number_of_hours_display = holiday.number_of_days * (calendar.hours_per_day or HOURS_PER_DAY)

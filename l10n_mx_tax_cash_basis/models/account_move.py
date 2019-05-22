@@ -8,7 +8,7 @@ class AccountPartialReconcile(models.Model):
     _inherit = "account.partial.reconcile"
 
     def _get_amount_tax_cash_basis(self, amount, line):
-        if (self.env.company_id.country_id != self.env.ref('base.mx') or
+        if (self.env.company.country_id != self.env.ref('base.mx') or
                 not line.currency_id or not self.debit_move_id.currency_id or
                 not self.credit_move_id.currency_id):
             return (super(AccountPartialReconcile, self)

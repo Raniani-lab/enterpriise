@@ -62,7 +62,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
 
                 columns = [row['vat'].replace(' ', '').upper(), code, intra_code, amt]
                 if not context.get('no_format', False):
-                    currency_id = self.env.company_id.currency_id
+                    currency_id = self.env.company.currency_id
                     columns[3] = formatLang(self.env, columns[3], currency_obj=currency_id)
 
                 lines.append({
@@ -94,7 +94,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
 
     def get_xml(self, options):
         # Check
-        company = self.env.company_id
+        company = self.env.company
         company_vat = company.partner_id.vat
         if not company_vat:
             raise UserError(_('No VAT number associated with your company.'))

@@ -26,7 +26,7 @@ class ResConfigSettings(models.TransientModel):
                 'ocnuuid': self._get_ocn_uuid(),
                 'server_version': odoo.release.version,
                 'db': self.env.cr.dbname,
-                'company_name': self.env.company_id.name,
+                'company_name': self.env.company.name,
                 'url': ir_params.get_param('web.base.url')
             }
             # Register instance to ocn service. Unique with ocn.uuid

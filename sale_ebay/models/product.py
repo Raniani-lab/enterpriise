@@ -91,14 +91,14 @@ class ProductTemplate(models.Model):
         country = self.env['res.country'].browse(int(country_id))
         currency_id = self.env['ir.config_parameter'].sudo().get_param('ebay_currency')
         currency = self.env['res.currency'].browse(int(currency_id))
-        comp_currency = self.env.company_id.currency_id
+        comp_currency = self.env.company.currency_id
         item = {
             "Item": {
                 "Title": self._ebay_encode(self.ebay_title),
                 "PrimaryCategory": {"CategoryID": self.ebay_category_id.category_id},
-                "StartPrice": comp_currency._convert(self.ebay_price, currency, self.env.company_id, fields.Date.today())
+                "StartPrice": comp_currency._convert(self.ebay_price, currency, self.env.company, fields.Date.today())
                 if self.ebay_listing_type == 'Chinese'
-                else comp_currency._convert(self.ebay_fixed_price, currency, self.env.company_id, fields.Date.today()),
+                else comp_currency._convert(self.ebay_fixed_price, currency, self.env.company, fields.Date.today()),
                 "CategoryMappingAllowed": "true",
                 "Country": country.code,
                 "Currency": currency.name,
@@ -134,7 +134,7 @@ class ProductTemplate(models.Model):
             if self.env['ir.config_parameter'].sudo().get_param('ebay_gallery_plus'):
                 item['Item']['PictureDetails']['GalleryType'] = 'Plus'
         if self.ebay_listing_type == 'Chinese' and self.ebay_buy_it_now_price:
-            item['Item']['BuyItNowPrice'] = comp_currency._convert(self.ebay_buy_it_now_price, currency, self.env.company_id, fields.Date.today())
+            item['Item']['BuyItNowPrice'] = comp_currency._convert(self.ebay_buy_it_now_price, currency, self.env.company, fields.Date.today())
         NameValueList = []
         variant = self.product_variant_ids.filtered('ebay_use')
         # We set by default the brand and the MPN because of the new eBay policy
@@ -257,7 +257,7 @@ class ProductTemplate(models.Model):
             raise UserError(_("Error Encountered.\n No Variant Set To Be Listed On eBay."))
         currency_id = self.env['ir.config_parameter'].sudo().get_param('ebay_currency')
         currency = self.env['res.currency'].browse(int(currency_id))
-        comp_currency = self.env.company_id.currency_id
+        comp_currency = self.env.company.currency_id
         items = self._prepare_item_dict()
         items['Item']['Variations'] = {'Variation': []}
         variations = items['Item']['Variations']['Variation']
@@ -294,7 +294,7 @@ class ProductTemplate(models.Model):
                     ean = variant.barcode
             variations.append({
                 'Quantity': variant.ebay_quantity,
-                'StartPrice': comp_currency._convert(variant.ebay_fixed_price, currency, self.env.company_id, fields.Date.today()),
+                'StartPrice': comp_currency._convert(variant.ebay_fixed_price, currency, self.env.company, fields.Date.today()),
                 'VariationSpecifics': {'NameValueList': variant_name_values},
                 'Delete': False if variant.ebay_use else True,
                 'VariationProductListingDetails': {
@@ -729,7 +729,7 @@ class ProductTemplate(models.Model):
                 sale_order.team_id = int(self.env['ir.config_parameter'].sudo().get_param('ebay_sales_team'))
             currency = self.env['res.currency'].search([
                 ('name', '=', transaction['TransactionPrice']['_currencyID'])])
-            company_id = self.env.company_id
+            company_id = self.env.company
             IrDefault = self.env['ir.default']
             if variant.taxes_id:
                 taxes_id = variant.taxes_id.ids

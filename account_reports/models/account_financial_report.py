@@ -183,7 +183,7 @@ class ReportAccountFinancialReport(models.Model):
 
     def _get_filter_journals(self):
         if self == self.env.ref('account_reports.account_financial_report_cashsummary0'):
-            return self.env['account.journal'].search([('company_id', 'in', self.env.user.company_ids.ids or [self.env.company_id.id]), ('type', 'in', ['bank', 'cash'])], order="company_id, name")
+            return self.env['account.journal'].search([('company_id', 'in', self.env.user.company_ids.ids or [self.env.company.id]), ('type', 'in', ['bank', 'cash'])], order="company_id, name")
         return super(ReportAccountFinancialReport, self)._get_filter_journals()
 
     @api.multi
@@ -294,7 +294,7 @@ class ReportAccountFinancialReport(models.Model):
         return super(ReportAccountFinancialReport, self).unlink()
 
     def _get_currency_table(self):
-        used_currency = self.env.company_id.currency_id.with_context(company_id=self.env.company_id.id)
+        used_currency = self.env.company.currency_id.with_context(company_id=self.env.company.id)
         currency_table = {}
         for company in self.env['res.company'].search([]):
             if company.currency_id != used_currency:
@@ -499,7 +499,7 @@ class AccountFinancialReportLine(models.Model):
                 compared to the current user's company currency
             @returns: the string and parameters to use for the SELECT
         """
-        decimal_places = self.env.company_id.currency_id.decimal_places
+        decimal_places = self.env.company.currency_id.decimal_places
         extra_params = []
         select = '''
             COALESCE(SUM(\"account_move_line\".balance), 0) AS balance,
@@ -734,13 +734,13 @@ class AccountFinancialReportLine(models.Model):
                 if (row['balance'] > 0 and self.env.context.get('sum_if_pos')) or (row['balance'] < 0 and self.env.context.get('sum_if_neg')):
                     for field in ['debit', 'credit', 'balance', 'amount_residual']:
                         res[field] += row[field]
-            res['currency_id'] = self.env.company_id.currency_id.id
+            res['currency_id'] = self.env.company.currency_id.id
             return res
 
         sql = sql + "SELECT " + select + " FROM " + tables + " WHERE " + where_clause
         self.env.cr.execute(sql, where_params)
         results = self.env.cr.dictfetchall()[0]
-        results['currency_id'] = self.env.company_id.currency_id.id
+        results['currency_id'] = self.env.company.currency_id.id
         return results
 
     @api.multi
@@ -762,7 +762,7 @@ class AccountFinancialReportLine(models.Model):
             date_from = False
         if self.special_date_changer == 'from_fiscalyear' and date_to:
             date_tmp = fields.Date.from_string(date_to)
-            date_tmp = self.env.company_id.compute_fiscalyear_dates(date_tmp)['date_from']
+            date_tmp = self.env.company.compute_fiscalyear_dates(date_tmp)['date_from']
             date_from = date_tmp.strftime('%Y-%m-%d')
             strict_range = True
         return date_from, date_to, strict_range
@@ -847,7 +847,7 @@ class AccountFinancialReportLine(models.Model):
             return value
         value['no_format_name'] = value['name']
         if self.figure_type == 'float':
-            currency_id = self.env.company_id.currency_id
+            currency_id = self.env.company.currency_id
             if currency_id.is_zero(value['name']):
                 # don't print -0.0 in reports
                 value['name'] = abs(value['name'])
@@ -906,7 +906,7 @@ class AccountFinancialReportLine(models.Model):
         groups = groups or {'fields': [], 'ids': [()]}
         debit_credit = debit_credit and financial_report.debit_credit
         formulas = self._split_formulas()
-        currency = self.env.company_id.currency_id
+        currency = self.env.company.currency_id
 
         line_res_per_group = []
 
@@ -985,7 +985,7 @@ class AccountFinancialReportLine(models.Model):
                                     results_for_group[key][col] = safe_eval(formula, c, nocopy=True)
                     to_del = []
                     for key in results_for_group:
-                        if self.env.company_id.currency_id.is_zero(results_for_group[key]['balance']):
+                        if self.env.company.currency_id.is_zero(results_for_group[key]['balance']):
                             to_del.append(key)
                     for key in to_del:
                         del results_for_group[key]
@@ -1037,7 +1037,7 @@ class AccountFinancialReportLine(models.Model):
         final_result_table = []
         comparison_table = [options.get('date')]
         comparison_table += options.get('comparison') and options['comparison'].get('periods', []) or []
-        currency_precision = self.env.company_id.currency_id.rounding
+        currency_precision = self.env.company.currency_id.rounding
 
         # build comparison table
         for line in self:
@@ -1074,7 +1074,7 @@ class AccountFinancialReportLine(models.Model):
                 'id': line.id,
                 'name': line.name,
                 'level': line.level,
-                'class': 'o_account_reports_totals_below_sections' if self.env.company_id.totals_below_sections else '',
+                'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
                 'columns': [{'name': l} for l in res['line']],
                 'unfoldable': len(domain_ids) > 1 and line.show_domain != 'always',
                 'unfolded': line.id in options.get('unfolded_lines', []) or line.show_domain == 'always',
@@ -1108,7 +1108,7 @@ class AccountFinancialReportLine(models.Model):
                     if line.financial_report_id.name == 'Aged Receivable':
                         vals['trust'] = self.env['res.partner'].browse([domain_id]).trust
                     lines.append(vals)
-                if domain_ids and self.env.company_id.totals_below_sections:
+                if domain_ids and self.env.company.totals_below_sections:
                     lines.append({
                         'id': 'total_' + str(line.id),
                         'name': _('Total') + ' ' + line.name,
@@ -1131,7 +1131,7 @@ class AccountFinancialReportLine(models.Model):
             if len(lines) == 1:
                 new_lines = line.children_ids._get_lines(financial_report, currency_table, options, linesDicts)
                 if new_lines and line.formulas:
-                    if self.env.company_id.totals_below_sections:
+                    if self.env.company.totals_below_sections:
                         divided_lines = self._divide_line(lines[0])
                         result = [divided_lines[0]] + new_lines + [divided_lines[-1]]
                     else:

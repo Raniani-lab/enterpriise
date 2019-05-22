@@ -52,7 +52,7 @@ class report_account_general_ledger(models.AbstractModel):
         self.env.cr.execute(query, where_params)
         res = self.env.cr.fetchone()
         date = self._context.get('date_to') or fields.Date.today()
-        currency_convert = lambda x: company and company.currency_id._convert(x, self.env.company_id.currency_id, self.env.company_id, date) or x
+        currency_convert = lambda x: company and company.currency_id._convert(x, self.env.company.currency_id, self.env.company, date) or x
         return {'balance': currency_convert(res[0]), 'amount_currency': res[1], 'debit': currency_convert(res[2]), 'credit': currency_convert(res[3])}
 
     def _do_query(self, options, line_id, group_by_account=True, limit=False):
@@ -78,8 +78,8 @@ class report_account_general_ledger(models.AbstractModel):
 
     def _do_query_group_by_account(self, options, line_id):
         results = self._do_query(options, line_id, group_by_account=True, limit=False)
-        used_currency = self.env.company_id.currency_id
-        company = self.env['res.company'].browse(self._context.get('company_id')) or self.env.company_id
+        used_currency = self.env.company.currency_id
+        company = self.env['res.company'].browse(self._context.get('company_id')) or self.env.company
         date = self._context.get('date_to') or fields.Date.today()
         def build_converter(currency):
             def convert(amount):
@@ -101,8 +101,8 @@ class report_account_general_ledger(models.AbstractModel):
         return results
 
     def _group_by_account_id(self, options, line_id):
-        user_currency = self.env.company_id.currency_id
-        fiscalyear_dates = self.env.company_id.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        user_currency = self.env.company.currency_id
+        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
         context = self.env.context
         accounts = {}
 
@@ -202,7 +202,7 @@ class report_account_general_ledger(models.AbstractModel):
         offset = int(options.get('lines_offset', 0))
         lines = []
         context = self.env.context
-        company_id = self.env.company_id
+        company_id = self.env.company
         used_currency = company_id.currency_id
         line_id = line_id and int(line_id.split('_')[1]) or None
         aml_lines = []

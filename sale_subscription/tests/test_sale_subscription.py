@@ -90,7 +90,7 @@ class TestSubscription(TestSubscriptionCommon):
     def test_04_auto_payment_with_token(self):
         from mock import patch
 
-        self.company = self.env.company_id
+        self.company = self.env.company
 
         self.account_type_receivable = self.env['account.account.type'].create(
             {'name': 'receivable',

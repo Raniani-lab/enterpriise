@@ -8,7 +8,7 @@ class AEATTaxReportWizard(models.TransientModel):
     _description = "AEAT Tax Report Wizard"
     _modelo = None # To be defined in subclasses as 'xxx', where xxx is the modelo number of the implemented AEAT tax report
 
-    currency_id = fields.Many2one(string='Currency', comodel_name='res.currency', default=lambda x: x.env.company_id.currency_id)
+    currency_id = fields.Many2one(string='Currency', comodel_name='res.currency', default=lambda x: x.env.company.currency_id)
 
     def close_and_show_report(self):
         report = self.env.ref('l10n_es_reports.mod_' + self._modelo)

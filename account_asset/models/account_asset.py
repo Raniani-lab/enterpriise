@@ -22,9 +22,9 @@ class AccountAsset(models.Model):
     name = fields.Char(string='Asset Name', required=True, readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]})
     value = fields.Monetary(string='Gross Value', compute='_compute_value', inverse='_set_value', readonly=True, states={'draft': [('readonly', False)]}, store=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True, states={'draft': [('readonly', False)]},
-        default=lambda self: self.env.company_id.currency_id.id)
+        default=lambda self: self.env.company.currency_id.id)
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)]},
-        default=lambda self: self.env.company_id)
+        default=lambda self: self.env.company)
     state = fields.Selection([('model', 'Model'), ('draft', 'Draft'), ('open', 'Running'), ('paused', 'On Hold'), ('close', 'Closed')], 'Status', copy=False, default='draft',
         help="When an asset is created, the status is 'Draft'.\n"
             "If the asset is confirmed, the status goes in 'Running' and the depreciation lines can be posted in the accounting.\n"

@@ -352,8 +352,8 @@ class TestAccountReportsFilters(AccountingTestCase):
         frozen_today = fields.Date.today()
         with patch.object(fields.Date, 'today', lambda *args, **kwargs: frozen_today), patch.object(fields.Date, 'context_today', lambda *args, **kwargs: frozen_today):
 
-            self.env.company_id.fiscalyear_last_day = 30
-            self.env.company_id.fiscalyear_last_month = '6'
+            self.env.company.fiscalyear_last_day = 30
+            self.env.company.fiscalyear_last_month = '6'
             year_df, year_dt = date_utils.get_fiscal_year(fields.Date.today(), day=30, month=6)
             year_df_period_1, year_dt_period_1 = date_utils.get_fiscal_year(year_dt - relativedelta(years=1), day=30, month=6)
             year_df_period_2, year_dt_period_2 = date_utils.get_fiscal_year(year_dt - relativedelta(years=2), day=30, month=6)
@@ -457,7 +457,7 @@ class TestAccountReportsFilters(AccountingTestCase):
                     'name': 'custom %s' % i,
                     'date_from': fields.Date.to_string(quarters[-1][0]),
                     'date_to': fields.Date.to_string(quarters[-1][1]),
-                    'company_id': self.env.company_id.id,
+                    'company_id': self.env.company.id,
                 })
 
             self._assert_filter_date(
@@ -681,8 +681,8 @@ class TestAccountReportsFilters(AccountingTestCase):
                 },
             )
 
-            self.env.company_id.fiscalyear_last_day = 30
-            self.env.company_id.fiscalyear_last_month = '6'
+            self.env.company.fiscalyear_last_day = 30
+            self.env.company.fiscalyear_last_month = '6'
             year_df, year_dt = date_utils.get_fiscal_year(today, day=30, month=6)
             self._assert_filter_date(
                 {
@@ -706,7 +706,7 @@ class TestAccountReportsFilters(AccountingTestCase):
                 'name': 'custom 0',
                 'date_from': fields.Date.to_string(quarter_df),
                 'date_to': fields.Date.to_string(quarter_dt),
-                'company_id': self.env.company_id.id,
+                'company_id': self.env.company.id,
             })
             self._assert_filter_date(
                 {
@@ -1028,8 +1028,8 @@ class TestAccountReportsFilters(AccountingTestCase):
         frozen_today = fields.Date.today()
         with patch.object(fields.Date, 'today', lambda *args, **kwargs: frozen_today), patch.object(fields.Date, 'context_today', lambda *args, **kwargs: frozen_today):
 
-            self.env.company_id.fiscalyear_last_day = 30
-            self.env.company_id.fiscalyear_last_month = '6'
+            self.env.company.fiscalyear_last_day = 30
+            self.env.company.fiscalyear_last_month = '6'
             year_df, year_dt = date_utils.get_fiscal_year(fields.Date.today(), day=30, month=6)
             year_df_period_1, year_dt_period_1 = date_utils.get_fiscal_year(year_dt - relativedelta(years=1), day=30, month=6)
             year_df_period_2, year_dt_period_2 = date_utils.get_fiscal_year(year_dt - relativedelta(years=2), day=30, month=6)
@@ -1104,7 +1104,7 @@ class TestAccountReportsFilters(AccountingTestCase):
                     'name': 'custom %s' % i,
                     'date_from': fields.Date.to_string(quarters[-1][0]),
                     'date_to': fields.Date.to_string(quarters[-1][1]),
-                    'company_id': self.env.company_id.id,
+                    'company_id': self.env.company.id,
                 })
 
             self._assert_filter_date(

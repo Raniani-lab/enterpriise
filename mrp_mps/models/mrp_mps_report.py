@@ -20,10 +20,10 @@ class MrpMpsReport(models.TransientModel):
     _description = 'MPS Report'
 
     def _default_manufacturing_period(self):
-        return self.env.company_id.manufacturing_period
+        return self.env.company.manufacturing_period
 
     company_id = fields.Many2one('res.company', string="Company",
-        default=lambda self: self.env.company_id, required=True)
+        default=lambda self: self.env.company, required=True)
     period = fields.Selection([('month', 'Monthly'), ('week', 'Weekly'), ('day', 'Daily')], default=_default_manufacturing_period, string="Period")
     product_id = fields.Many2one('product.product', string='Product') # TODO: this object should not be used as wizard and as report
 
@@ -131,9 +131,9 @@ class MrpMpsReport(models.TransientModel):
         mo_type = self.env.ref('mrp.route_warehouse0_manufacture', raise_if_not_found=False)
         lead_time = 0
         if buy_type and buy_type.id in product.route_ids.ids:
-            lead_time = (product.seller_ids and product.seller_ids[0].delay or 0) + self.env.company_id.po_lead
+            lead_time = (product.seller_ids and product.seller_ids[0].delay or 0) + self.env.company.po_lead
         if mo_type and mo_type.id in product.route_ids.ids:
-            lead_time = product.produce_delay + self.env.company_id.manufacturing_lead
+            lead_time = product.produce_delay + self.env.company.manufacturing_lead
         leadtime = date + relativedelta.relativedelta(days=int(lead_time))
         # Take first day of month or week
         if self.period == 'month':
@@ -233,7 +233,7 @@ class MrpMpsReport(models.TransientModel):
         rcontext = {
             'products': [(x, res.get_data(x)) for x in self.env['product.product'].search(domain, limit=20)],
             'nb_periods': NUMBER_OF_COLS,
-            'company': self.env.company_id,
+            'company': self.env.company,
             'format_float': self.env['ir.qweb.field.float'].value_to_html,
         }
         result = {

@@ -64,7 +64,7 @@ class AccountInvoice(models.Model):
 
     def _compute_can_show_send_resend(self, record):
         can_show = True
-        if self.env.company_id.extract_show_ocr_option_selection == 'no_send':
+        if self.env.company.extract_show_ocr_option_selection == 'no_send':
             can_show = False
         if record.state not in 'draft':
             can_show = False
@@ -108,7 +108,7 @@ class AccountInvoice(models.Model):
         """When a message is posted on an account.invoice, send the attachment to iap-ocr if
         the res_config is on "auto_send" and if this is the first attachment."""
         res = super(AccountInvoice, self).message_post(**kwargs)
-        if self.env.company_id.extract_show_ocr_option_selection == 'auto_send':
+        if self.env.company.extract_show_ocr_option_selection == 'auto_send':
             account_token = self.env['iap.account'].get('invoice_ocr')
             for record in self:
                 if record.extract_state == "no_extract_requested":
@@ -117,8 +117,8 @@ class AccountInvoice(models.Model):
                         endpoint = self.env['ir.config_parameter'].sudo().get_param(
                             'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/parse'
                         user_infos = {
-                            'user_company_VAT': self.env.company_id.vat,
-                            'user_company_name': self.env.company_id.name,
+                            'user_company_VAT': self.env.company.vat,
+                            'user_company_name': self.env.company.name,
                             'user_lang': self.env.user.lang,
                             'user_email': self.env.user.email,
                         }
@@ -148,7 +148,7 @@ class AccountInvoice(models.Model):
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
-        if self.env.company_id.extract_show_ocr_option_selection == 'no_send':
+        if self.env.company.extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
         if attachments and attachments.exists() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
@@ -156,7 +156,7 @@ class AccountInvoice(models.Model):
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                 'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/parse'
             user_infos = {
-                'user_company_VAT': self.env.company_id.vat,
+                'user_company_VAT': self.env.company.vat,
                 'user_company_name': self.env.user.company_id.name,
                 'user_lang': self.env.user.lang,
                 'user_email': self.env.user.email,
@@ -270,7 +270,7 @@ class AccountInvoice(models.Model):
                     'partner': record.get_validation('supplier'),
                     'VAT_Number': record.get_validation('VAT_Number'),
                     'currency': record.get_validation('currency'),
-                    'merged_lines': self.env.company_id.extract_single_line_per_tax,
+                    'merged_lines': self.env.company.extract_single_line_per_tax,
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
                 params = {
@@ -463,7 +463,7 @@ class AccountInvoice(models.Model):
         self.ensure_one()
         invoice_lines_to_create = []
         taxes_found = {}
-        if self.env.company_id.extract_single_line_per_tax:
+        if self.env.company.extract_single_line_per_tax:
             aggregated_lines = {}
             for il in invoice_lines:
                 description = il['description']['selected_value']['content'] if 'description' in il else None

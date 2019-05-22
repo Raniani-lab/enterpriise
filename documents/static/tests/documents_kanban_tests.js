@@ -2279,11 +2279,11 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value:eq(1) header'));
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_section .o_search_panel_section_header').eq(0).text().trim(),
             'Workspace', "should have a 'Workspace' section");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_category_value', 3,
             "three of them should be visible");
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value:eq(1) header'));
         assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
             '_F1-test-description_', "should display the first folder");
 

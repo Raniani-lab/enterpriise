@@ -131,7 +131,7 @@ class crm_team(models.Model):
                 domain = safe_eval(salesteam['score_team_domain'], evaluation_context)
                 limit_date = fields.Datetime.to_string(datetime.datetime.now() - datetime.timedelta(hours=1))
                 domain.extend([('create_date', '<', limit_date), ('team_id', '=', False), ('user_id', '=', False)])
-                domain.extend(['|', ('stage_id.on_change', '=', False), '&', ('stage_id.probability', '!=', 0), ('stage_id.probability', '!=', 100)])
+                domain.extend(['|', ('stage_id.is_won', '=', False), '&', ('probability', '!=', 0), ('probability', '!=', 100)])
                 leads = self.env["crm.lead"].search(domain, limit=BUNDLE_LEADS)
                 haslead = haslead or (len(leads) == BUNDLE_LEADS)
                 _logger.info('Assignation of %s leads for team %s' % (len(leads), salesteam['id']))

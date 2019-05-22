@@ -79,8 +79,8 @@ class website_crm_score(models.Model):
             domain = safe_eval(score.domain, evaluation_context)
 
             # Don't replace the domain with a 'not in' like below... that doesn't make the same thing !!!
-            # domain.extend(['|', ('stage_id.on_change', '=', False), ('stage_id.probability', 'not in', [0,100])])
-            domain.extend(['|', ('stage_id.on_change', '=', False), '&', ('stage_id.probability', '!=', 0), ('stage_id.probability', '!=', 100)])
+            # domain.extend(['|', ('stage_id.is_won', '=', False), ('probability', 'not in', [0,100])])
+            domain.extend(['|', ('stage_id.is_won', '=', False), '&', ('probability', '!=', 0), ('probability', '!=', 100)])
 
             e = expression(domain, self.env['crm.lead'])
             where_clause, where_params = e.to_sql()

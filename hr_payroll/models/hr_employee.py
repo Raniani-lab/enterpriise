@@ -1,10 +1,6 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
-import pytz
-
 from odoo import api, fields, models
 
 
@@ -40,56 +36,13 @@ class HrEmployee(models.Model):
                 employee.resource_calendar_id = employee.contract_id.resource_calendar_id
         return res
 
-    @api.model
-    def generate_work_entry(self, date_start, date_stop):
-        attendance_type = self.env.ref('hr_payroll.work_entry_type_attendance')
-        vals_list = []
+    def generate_work_entries(self, date_start, date_stop):
+        date_start = fields.Date.to_date(date_start)
+        date_stop = fields.Date.to_date(date_stop)
 
-        date_start = fields.Datetime.to_datetime(date_start)
-        date_stop = fields.Datetime.to_datetime(date_stop) + relativedelta(hour=23, minute=59)
+        if self:
+            current_contracts = self._get_contracts(date_start, date_stop, states=['open', 'pending', 'close'])
+        else:
+            current_contracts = self._get_all_contracts(date_start, date_stop, states=['open', 'pending', 'close'])
 
-        current_contracts = self.env['hr.employee']._get_all_contracts(date_start, date_stop, states=['open', 'pending', 'close'])
-        current_employees = current_contracts.mapped('employee_id')
-        mapped_data = dict.fromkeys(current_employees, self.env['hr.contract'])
-
-        for contract in current_contracts:
-            mapped_data[contract.employee_id] |= contract
-
-        for employee, contracts in mapped_data.items():
-            # Approved leaves
-            emp_leaves = employee.resource_calendar_id.leave_ids.filtered(
-                lambda r:
-                    r.resource_id == employee.resource_id and
-                    r.date_from <= date_stop and
-                    r.date_to >= date_start
-                )
-            global_leaves = employee.resource_calendar_id.global_leave_ids
-
-            employee_leaves = (emp_leaves | global_leaves).mapped('holiday_id')
-            vals_list.extend(employee_leaves._get_work_entries_values())
-
-            for contract in contracts:
-                date_start_work_entries = max(date_start, fields.Datetime.to_datetime(contract.date_start)).replace(tzinfo=pytz.utc)
-                date_stop_work_entries = min(date_stop, datetime.combine(contract.date_end or datetime.max.date(), datetime.max.time())).replace(tzinfo=pytz.utc)
-
-                calendar = contract.resource_calendar_id
-                resource = employee.resource_id
-                attendances = calendar._work_intervals(date_start_work_entries, date_stop_work_entries, resource=resource)
-                # Attendances
-                for interval in attendances:
-                    work_entry_type_id = interval[2].mapped('work_entry_type_id')[:1] or attendance_type
-                    # All benefits generated here are using datetimes converted from the employee's timezone
-                    vals_list += [{
-                        'name': "%s: %s" % (work_entry_type_id.name, employee.name),
-                        'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
-                        'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
-                        'work_entry_type_id': work_entry_type_id.id,
-                        'employee_id': employee.id,
-                        'contract_id': contract.id,
-                        'state': 'confirmed',
-                    }]
-
-        new_work_entries = self.env['hr.work.entry']._safe_duplicate_create(vals_list, date_start, date_stop)
-        new_work_entries._compute_conflicts_leaves_to_approve()
-
-        return new_work_entries
+        return current_contracts._generate_work_entries(date_start, date_stop)

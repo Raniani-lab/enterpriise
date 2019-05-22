@@ -305,7 +305,7 @@ class TestHR(common.TransactionCase):
             end=Datetime.now() + relativedelta(days=13)
         )
 
-        self.user.employee_id.sudo(self.hr_payroll_user).generate_work_entry(Datetime.today().replace(day=1), Datetime.today() + relativedelta(months=1, day=1, days=-1, hour=23, minute=59))
+        self.user.employee_id.sudo(self.hr_payroll_user).generate_work_entries(Datetime.today().replace(day=1), Datetime.today() + relativedelta(months=1, day=1, days=-1, hour=23, minute=59))
         work_entries = self.env['hr.work.entry'].sudo(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])
         # should not be able to validate
         self.assertFalse(work_entries.sudo(self.hr_payroll_user).action_validate())

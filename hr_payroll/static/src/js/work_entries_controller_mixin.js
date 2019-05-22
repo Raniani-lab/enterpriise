@@ -54,8 +54,8 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
             var self = this;
             this._rpc({
                 model: 'hr.employee',
-                method: 'generate_work_entry',
-                args: [time.datetime_to_str(this.firstDay), time.datetime_to_str(this.lastDay)],
+                method: 'generate_work_entries',
+                args: [[], time.date_to_str(this.firstDay), time.date_to_str(this.lastDay)],
             }).then(function () {
                 self.reload();
             });

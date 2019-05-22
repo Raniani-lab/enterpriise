@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import math
-from dateutil.relativedelta import relativedelta
+
 from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from odoo.addons.resource.models.resource import Intervals
-from odoo.addons.resource.models.resource import HOURS_PER_DAY
+
 
 class HrLeaveType(models.Model):
     _inherit = 'hr.leave.type'
@@ -16,29 +17,6 @@ class HrLeaveType(models.Model):
 
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
-
-    @api.multi
-    def _get_work_entries_values(self):
-        vals_list = []
-        for leave in self:
-            contract = leave.employee_id._get_contracts(leave.date_from, leave.date_to, states=['open', 'pending', 'close'])
-            if contract and len(contract) > 0:
-                contract = contract[0]
-            start = max(leave.date_from, datetime.combine(contract.date_start, datetime.min.time()))
-            end = min(leave.date_to, datetime.combine(contract.date_end or date.max, datetime.max.time()))
-            work_entry_type = leave.holiday_status_id.work_entry_type_id
-            vals_list += [{
-                'name': "%s%s" % (work_entry_type.name + ": " if work_entry_type else "", leave.employee_id.name),
-                'date_start': start,
-                'date_stop': end,
-                'work_entry_type_id': work_entry_type.id,
-                'display_warning': not bool(work_entry_type),
-                'employee_id': leave.employee_id.id,
-                'leave_id': leave.id,
-                'state': 'confirmed',
-                'contract_id': contract.id,
-            }]
-        return vals_list
 
     @api.multi
     def _create_resource_leave(self):
@@ -109,7 +87,26 @@ class HrLeave(models.Model):
         """
         work_entries = self.env['hr.work.entry'].search([('leave_id', 'in', self.ids)])
         if work_entries:
-            vals_list = self._get_work_entries_values()
+            vals_list = []
+            for leave in self:
+                contract = leave.employee_id._get_contracts(leave.date_from, leave.date_to, states=['open', 'pending', 'close'])
+                if contract and len(contract) > 0:
+                    contract = contract[0]
+                start = max(leave.date_from, datetime.combine(contract.date_start, datetime.min.time()))
+                end = min(leave.date_to, datetime.combine(contract.date_end or date.max, datetime.max.time()))
+                work_entry_type = leave.holiday_status_id.work_entry_type_id
+                vals_list += [{
+                    'name': "%s%s" % (work_entry_type.name + ": " if work_entry_type else "", leave.employee_id.name),
+                    'date_start': start,
+                    'date_stop': end,
+                    'work_entry_type_id': work_entry_type.id,
+                    'display_warning': not bool(work_entry_type),
+                    'employee_id': leave.employee_id.id,
+                    'leave_id': leave.id,
+                    'state': 'confirmed',
+                    'contract_id': contract.id,
+                }]
+
             # create new work_entries where the leave does not cover the full work_entry
             work_entries_intervals = Intervals(intervals=[(b.date_start, b.date_stop, b) for b in work_entries])
             leave_intervals = Intervals(intervals=[(l.date_from, l.date_to, l) for l in self])

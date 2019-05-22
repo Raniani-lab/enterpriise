@@ -3,7 +3,6 @@
 
 from datetime import datetime, date
 
-from odoo.tests import common
 from odoo.addons.test_l10n_be_hr_payroll_account.tests.test_payslip import TestPayslipBase
 
 
@@ -15,7 +14,6 @@ class TestDoublePecule(TestPayslipBase):
         payslip = self.create_payslip(contract, structure, datetime(2019, 1, 1), datetime(2019, 1, 31))
 
         payslip.compute_sheet()
-
         self.check_payslip('double holiday pay', payslip, {
             'BASIC': 2500.0,
             'D.P': 2300.0,

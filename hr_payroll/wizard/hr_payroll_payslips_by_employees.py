@@ -13,10 +13,10 @@ class HrPayslipEmployees(models.TransientModel):
         return [('contract_ids.state', 'in', ('open', 'pending', 'close')), ('company_id', '=', self.env.company.id)]
 
     def _get_employees(self):
+        # YTI check dates too
         return self.env['hr.employee'].search(self._get_available_contracts_domain())
 
     employee_ids = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
-                                    domain=lambda self: self._get_available_contracts_domain(),
                                     default=lambda self: self._get_employees(), required=True)
 
     @api.multi
@@ -53,8 +53,7 @@ class HrPayslipEmployees(models.TransientModel):
                     'struct_id': contract.structure_type_id.default_struct_id.id,
                 })
                 payslip = self.env['hr.payslip'].new(values)
-                payslip.onchange_employee()
-                payslip._onchange_struct_id()
+                payslip._onchange_employee()
                 values = payslip._convert_to_write(payslip._cache)
                 payslips += Payslip.create(values)
         payslips.compute_sheet()

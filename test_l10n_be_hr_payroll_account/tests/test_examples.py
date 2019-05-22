@@ -85,8 +85,13 @@ class TestExamples(common.SavepointCase):
 
         # Generate the poubelles
         if 'date_from' in payslip_values and 'date_to' in payslip_values:
-            work_entries = employee.generate_work_entry(payslip_values['date_from'], payslip_values['date_to'])
+            employee.generate_work_entries(payslip_values['date_from'], datetime.datetime.combine(payslip_values['date_to'], datetime.datetime.max.time()))
+            work_entries = self.env['hr.work.entry'].search([
+                ('employee_id', '=', employee.id), ('state', '=', 'confirmed')])
             work_entries.action_validate()
+            we_error = work_entries.filtered(lambda r: r.display_warning)
+            we_error.write({'state': 'cancelled'})
+            (work_entries - we_error).action_validate()
 
         # Setup the payslip
         payslip_values = dict(payslip_values or {},
@@ -96,8 +101,7 @@ class TestExamples(common.SavepointCase):
         payslip_id.update(payslip_values)
 
         payslip_id.employee_id = employee.id
-        payslip_id.onchange_employee()
-        payslip_id._onchange_struct_id()
+        payslip_id._onchange_employee()
         values = payslip_id._convert_to_write(payslip_id._cache)
         payslip_id = self.Payslip.create(values)
         payslip_id.struct_id.journal_id = self.journal_id

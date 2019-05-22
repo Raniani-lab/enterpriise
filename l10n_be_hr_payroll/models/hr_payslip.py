@@ -83,33 +83,43 @@ class Payslip(models.Model):
         # 2. Deduct absences
         unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
         paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
-        paid_hours = contracts._get_work_data(paid_work_entry_types, date(year, 1, 1), date(year, 12, 31))['hours']
-        unpaid_hours = contracts._get_work_data(unpaid_work_entry_types, date(year, 1, 1), date(year, 12, 31))['hours']
+        hours = contracts._get_work_hours(date(year, 1, 1), date(year, 12, 31))
+        paid_hours = sum(v for k, v in hours.items() if k in paid_work_entry_types.ids)
+        unpaid_hours = sum(v for k, v in hours.items() if k in unpaid_work_entry_types.ids)
 
-        presence_prorata = paid_hours / (paid_hours + unpaid_hours)
+        presence_prorata = paid_hours / (paid_hours + unpaid_hours) if paid_hours or unpaid_hours else 0
         basic = self.contract_id.wage_with_holidays
         return basic * n_months / 12 * presence_prorata
+
+    def _get_contract_wage(self):
+        self.ensure_one()
+        if self.struct_id.country_id == self.env.ref('base.be'):
+            return self.contract_id.wage_with_holidays
+        return super()._get_contract_wage()
 
     def _get_paid_amount(self):
         self.ensure_one()
         if self.struct_id.country_id == self.env.ref('base.be'):
             struct_13th_month = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
-
             if self.struct_id == struct_13th_month:
                 return self._get_paid_amount_13th_month()
-            else:
-                contract = self.contract_id
-                unpaid_days = contract._get_work_data(
-                    self.struct_id.unpaid_work_entry_type_ids,
-                    self.date_from,
-                    self.date_to
-                )['days']
-                unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
-                paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
-                paid_days = contract._get_work_data(paid_work_entry_types, self.date_from, self.date_to)['days']
-                return self.contract_id.wage_with_holidays * paid_days / (paid_days + unpaid_days)
+            if self.worked_days_line_ids:
+                ratio = self._get_paid_unpaid_ratio()
+                return self.contract_id.wage_with_holidays * ratio
         return super()._get_paid_amount()
 
+    def _get_paid_unpaid_ratio(self):
+        self.ensure_one()
+        contract = self.contract_id
+        hours_per_day = (self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id).hours_per_day
+        mapped_data = contract._get_work_hours(self.date_from, self.date_to)
+        unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
+        unpaid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in unpaid_work_entry_types)
+        unpaid_days = unpaid_hours / hours_per_day
+        paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
+        paid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in paid_work_entry_types)
+        paid_days = paid_hours / hours_per_day
+        return paid_days / (paid_days + unpaid_days)
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 
@@ -232,20 +242,9 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
 
 def compute_ip(payslip, categories, worked_days, inputs):
     contract = payslip.contract_id
-
-    unpaid_days = contract._get_work_data(
-        payslip.struct_id.unpaid_work_entry_type_ids,
-        payslip.date_from,
-        payslip.date_to
-    )['days']
-
-    unpaid_work_entry_types = payslip.struct_id.unpaid_work_entry_type_ids
-    paid_work_entry_types = payslip.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
-    paid_days = contract._get_work_data(paid_work_entry_types, payslip.date_from, payslip.date_to)['days']
-
     basic_ip = contract.wage_with_holidays * contract.ip_wage_rate / 100.0
-
-    return basic_ip * paid_days / (paid_days + unpaid_days)
+    ratio = payslip.dict._get_paid_unpaid_ratio()
+    return basic_ip * ratio
 
 def compute_ip_deduction(payslip, categories, worked_days, inputs):
     tax_rate = 0.15

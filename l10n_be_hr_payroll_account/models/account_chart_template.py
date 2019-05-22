@@ -30,10 +30,17 @@ class AccountChartTemplate(models.Model):
         for company in companies:
             self.env.context = {'allowed_company_ids': company.ids}
 
-            if not self.env['account.journal'].search([
-                    ('code', '=', 'SLR'),
-                    ('name', '=', 'Salaries'),
-                    ('company_id', '=', company.id)]):
+            journal = self.env['account.journal'].search([
+                ('code', '=', 'SLR'),
+                ('name', '=', 'Salaries'),
+                ('company_id', '=', company.id)])
+            if journal:
+                account = self.env['account.account'].search([('code', 'like', '620200%')])
+                if not journal.default_credit_account_id:
+                    journal.default_credit_account_id = account.id
+                if not journal.default_debit_account_id:
+                    journal.default_debit_account_id = account.id
+            else:
                 journal = self.env['account.journal'].create({
                     'name': 'Salaries',
                     'code': 'SLR',

@@ -19,16 +19,22 @@ class TestPayslipMultiContract(TestPayslipContractBase):
         })
 
     def test_multi_contract(self):
+        start = datetime.strptime('2015-11-01', '%Y-%m-%d')
+        end = datetime.strptime('2015-11-30', '%Y-%m-%d')
+        end_generate = datetime(2015, 11, 30, 23, 59, 59)
+        work_entries = self.richard_emp.generate_work_entries(start, end_generate)
+        work_entries.action_validate()
+
         # First contact: 40h, start of the month
         payslip = self.env['hr.payslip'].create({
             'name': 'November 2015',
             'employee_id': self.richard_emp.id,
-            'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
-            'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
+            'date_from': start,
+            'date_to': end,
             'contract_id': self.contract_cdd.id,
             'struct_id': self.developer_pay_structure.id,
         })
-        payslip.onchange_employee()
+        payslip._onchange_employee()
         self.assertEqual(payslip.worked_days_line_ids.number_of_hours, 80, "It should be 80 hours of work this month for this contract")
         self.assertEqual(payslip.worked_days_line_ids.number_of_days, 10, "It should be 10 days of work this month for this contract")
 
@@ -36,27 +42,34 @@ class TestPayslipMultiContract(TestPayslipContractBase):
         payslip = self.env['hr.payslip'].create({
             'name': 'November 2015',
             'employee_id': self.richard_emp.id,
-            'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
-            'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
+            'date_from': start,
+            'date_to': end,
             'contract_id': self.contract_cdi.id,
             'struct_id': self.developer_pay_structure.id,
         })
-        payslip.onchange_employee()
+        payslip._onchange_employee()
         self.assertEqual(payslip.worked_days_line_ids.number_of_hours, 77, "It should be 77 hours of work this month for this contract")
         self.assertEqual(payslip.worked_days_line_ids.number_of_days, 11, "It should be 11 days of work this month for this contract")
 
     def test_multi_contract_holiday(self):
         # Leave during second contract
-        leave = self.create_calendar_leave(datetime(2015, 11, 17, 7, 0), datetime(2015, 11, 20, 18, 0), self.work_entry_type_leave, calendar=self.calendar_35h)
+        leave = self.create_leave(datetime(2015, 11, 17, 7, 0), datetime(2015, 11, 20, 18, 0))
+        leave.action_approve()
+        start = datetime.strptime('2015-11-01', '%Y-%m-%d')
+        end = datetime.strptime('2015-11-30', '%Y-%m-%d')
+        end_generate = datetime(2015, 11, 30, 23, 59, 59)
+        work_entries = self.richard_emp.generate_work_entries(start, end_generate)
+        work_entries.action_validate()
+
         payslip = self.env['hr.payslip'].create({
             'name': 'November 2015',
             'employee_id': self.richard_emp.id,
-            'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
-            'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
+            'date_from': start,
+            'date_to': end,
             'contract_id': self.contract_cdi.id,
             'struct_id': self.developer_pay_structure.id,
         })
-        payslip.onchange_employee()
+        payslip._onchange_employee()
         work = payslip.worked_days_line_ids.filtered(lambda line: line.work_entry_type_id == self.env.ref('hr_payroll.work_entry_type_attendance'))
         leave = payslip.worked_days_line_ids.filtered(lambda line: line.work_entry_type_id == self.work_entry_type_leave)
         self.assertEqual(work.number_of_hours, 49, "It should be 49 hours of work this month for this contract")
@@ -94,6 +107,8 @@ class TestPayslipMultiContract(TestPayslipContractBase):
                 'employee_id': self.richard_emp.id,
                 'structure_type_id': self.structure_type.id,
                 'state': 'open',
+                'date_generated_from': datetime.strptime('2015-11-30', '%Y-%m-%d'),
+                'date_generated_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
             })
 
     def test_leave_outside_contract(self):

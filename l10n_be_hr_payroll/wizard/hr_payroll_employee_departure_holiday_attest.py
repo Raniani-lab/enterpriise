@@ -92,7 +92,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             'date_from': max(self.employee_id.first_contract_in_company, self.employee_id.end_notice_period.replace(month=1, day=1)),
             'date_to': self.employee_id.end_notice_period,
         })
-        termination_payslip_n.onchange_employee()
+        termination_payslip_n._onchange_employee()
         termination_payslip_n.struct_id = struct_n_id.id
         termination_payslip_n.worked_days_line_ids = ''
         self.env['hr.payslip.input'].create({
@@ -125,7 +125,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             'date_from': max(self.employee_id.first_contract_in_company, (self.employee_id.end_notice_period + relativedelta(years=-1)).replace(month=1, day=1)),
             'date_to': max(self.employee_id.first_contract_in_company, (self.employee_id.end_notice_period + relativedelta(years=-1)).replace(month=12, day=31)),
         })
-        termination_payslip_n1.onchange_employee()
+        termination_payslip_n1._onchange_employee()
         termination_payslip_n1.struct_id = struct_n1_id.id
         termination_payslip_n1.worked_days_line_ids = ''
         self.env['hr.payslip.input'].create({

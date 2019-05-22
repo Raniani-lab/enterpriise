@@ -4,7 +4,8 @@
 import time
 import odoo.tests
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, tools
 from odoo.modules.module import get_module_resource
@@ -89,7 +90,7 @@ class TestHrPayrollAccount(common.TransactionCase):
 
         self.hr_contract_john = self.env['hr.contract'].create({
             'date_end': fields.Date.to_string(datetime.now() + timedelta(days=365)),
-            'date_start': fields.Date.today(),
+            'date_start': date(2010, 1, 1),
             'name': 'Contract for John',
             'wage': 5000.0,
             'employee_id': self.hr_employee_john.id,
@@ -107,7 +108,7 @@ class TestHrPayrollAccount(common.TransactionCase):
 
         self.hr_contract_mark = self.env['hr.contract'].create({
             'date_end': fields.Date.to_string(datetime.now() + timedelta(days=365)),
-            'date_start': fields.Date.today(),
+            'date_start': date(2010, 1, 1),
             'name': 'Contract for Mark',
             'wage': 5000.0,
             'employee_id': self.hr_employee_mark.id,
@@ -115,17 +116,14 @@ class TestHrPayrollAccount(common.TransactionCase):
             'state': 'open',
         })
 
-        self.hr_payslip_mark = self.env['hr.payslip'].create({
-            'employee_id': self.hr_employee_mark.id,
-            'struct_id' : self.hr_structure_softwaredeveloper.id,
-            'contract_id': self.hr_contract_mark.id,
-            'journal_id': self.account_journal.id,
-            'name': 'Test Payslip Mark',
-        })
+        self.hr_payslip_john.date_from = time.strftime('%Y-%m-01')
+        # YTI Clean that brol
+        self.hr_payslip_john.date_to = str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10]
+        self.hr_payslip_john._onchange_employee()
 
         self.payslip_run = self.env['hr.payslip.run'].create({
-            'date_end': '2011-09-30',
-            'date_start': '2011-09-01',
+            'date_start': time.strftime('%Y-%m-01'),
+            'date_end': str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10],
             'name': 'Payslip for Employee'
         })
 
@@ -243,7 +241,7 @@ class TestHrPayrollAccount(common.TransactionCase):
         })
 
         # I generate the payslip by clicking on Generate button wizard.
-        payslip_employee.with_context(active_id=self.payslip_run.id).compute_sheet()
+        payslip_employee.with_context(active_id=self.payslip_run.id, caca=True).compute_sheet()
 
         # I add the payslip in the payslip run.
         self.payslip_run.slip_ids = payslip_employee.employee_ids.mapped('slip_ids')

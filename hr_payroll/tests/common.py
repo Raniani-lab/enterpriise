@@ -53,6 +53,12 @@ class TestPayslipBase(TransactionCase):
             'is_leave': True,
             'code': 'LEAVETEST300',
         })
+        self.leave_type_unpaid = self.env['hr.leave.type'].create({
+            'name': 'Unpaid Leaves',
+            'time_type': 'leave',
+            'allocation_type': 'no',
+            'work_entry_type_id': self.work_entry_type_unpaid.id
+        })
 
         self.work_entry_type_leave = self.env['hr.work.entry.type'].create({
             'name': 'Leave',
@@ -99,7 +105,7 @@ class TestPayslipContractBase(TestPayslipBase):
         self.calendar_40h = self.env['resource.calendar'].create({'name': 'Default calendar'})
         self.calendar_35h = self.env['resource.calendar'].create({
             'name': '35h calendar',
-            'normal_attendance_ids': [
+            'attendance_ids': [
                 (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
                 (0, 0, {'name': 'Monday Evening', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 16, 'day_period': 'afternoon'}),
                 (0, 0, {'name': 'Tuesday Morning', 'dayofweek': '1', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
@@ -124,7 +130,9 @@ class TestPayslipContractBase(TestPayslipBase):
             'wage': 5000.0,
             'employee_id': self.richard_emp.id,
             'structure_type_id': self.structure_type.id,
-            'state': 'close',
+            'state': 'pending',
+            'date_generated_from': datetime.strptime('2015-11-16', '%Y-%m-%d'),
+            'date_generated_to': datetime.strptime('2015-11-16', '%Y-%m-%d'),
         })
 
         # This contract starts the next day
@@ -136,4 +144,6 @@ class TestPayslipContractBase(TestPayslipBase):
             'employee_id': self.richard_emp.id,
             'structure_type_id': self.structure_type.id,
             'state': 'open',
+            'date_generated_from': datetime.strptime('2015-11-15', '%Y-%m-%d'),
+            'date_generated_to': datetime.strptime('2015-11-15', '%Y-%m-%d'),
         })

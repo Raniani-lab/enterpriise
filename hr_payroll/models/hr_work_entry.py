@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import itertools
-import pytz
-
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
-from odoo.addons.resource.models.resource import Intervals
-from odoo.exceptions import ValidationError
+from odoo import api, fields, models
 
 
 class HrWorkEnrty(models.Model):
@@ -37,9 +32,8 @@ class HrWorkEnrty(models.Model):
         default=lambda self: self.env.company)
 
     _sql_constraints = [
-        ('_unique', 'unique (date_start, date_stop, employee_id, work_entry_type_id, active)', "Work entry already exists for this attendance"),
-        ('_work_entry_has_end', 'check (date_stop IS NOT NULL OR duration <> 0)', 'Work entry must end. Please define an end date or a duration.'),
-        ('_work_entry_start_before_end', 'check (date_stop is null OR (date_stop > date_start))', 'Starting time should be before end time.')
+        ('_work_entry_has_end', 'check (date_stop IS NOT NULL)', 'Work entry must end. Please define an end date or a duration.'),
+        ('_work_entry_start_before_end', 'check (date_stop > date_start)', 'Starting time should be before end time.')
     ]
 
     @api.onchange('duration')
@@ -49,6 +43,10 @@ class HrWorkEnrty(models.Model):
     def _get_duration(self, date_start, date_stop):
         if not date_start or not date_stop:
             return 0
+        if self.work_entry_type_id and self.work_entry_type_id.is_leave or self.leave_id:
+            calendar = self.contract_id.resource_calendar_id
+            contract_data = self.contract_id.employee_id._get_work_days_data(date_start, date_stop, compute_leaves=False, calendar=calendar)
+            return contract_data.get('hours', 0)
         dt = date_stop - date_start
         return dt.days * 24 + dt.seconds / 3600 # Number of hours
 
@@ -154,7 +152,7 @@ class HrWorkEnrty(models.Model):
         """
         # The search_read should be fast as date_start and date_stop are indexed from the
         # unique sql constraint
-        month_recs = self.search_read([('date_start', '>=', date_start), ('date_stop', '<=', date_stop)],
+        month_recs = self.search_read([('date_start', '<=', date_stop), ('date_stop', '>=', date_start)],
                                       ['employee_id', 'date_start', 'date_stop', 'work_entry_type_id'])
         existing_entries = {(
             r['date_start'],
@@ -183,124 +181,12 @@ class HrWorkEnrty(models.Model):
             'views': [[False, 'form']],
         }
 
-    def _split_by_day(self):
-        """
-        Split the work_entry by days and unlink the original work_entry.
-        @return recordset
-        """
-        def _split_range_by_day(start, end):
-            days = []
-            current_start = start
-            current_end = start.replace(hour=23, minute=59, second=59)
-            while current_end < end:
-                days.append((current_start, current_end))
-                current_start = current_end + relativedelta(seconds=1)
-                current_end = current_end + relativedelta(days=1)
-
-            days.append((current_start, end))
-
-            # filter to avoid dummy intervals starting and ending at the same time
-            return [(start, end) for start, end in days if start != end]
-
-        new_work_entries = self.env['hr.work.entry']
-        work_entries_to_unlink = self.env['hr.work.entry']
-
-        for work_entry in self:
-            if work_entry.date_start.date() == work_entry.date_stop.date():
-                new_work_entries |= work_entry
-            else:
-                values = {
-                    'name': work_entry.name,
-                    'employee_id': work_entry.employee_id.id,
-                    'work_entry_type_id': work_entry.work_entry_type_id.id,
-                    'contract_id': work_entry.contract_id.id,
-                }
-                work_entry_state = work_entry.state
-                work_entries_to_unlink |= work_entry
-                for start, stop in _split_range_by_day(work_entry.date_start, work_entry.date_stop):
-                    values['date_start'] = start
-                    values['date_stop'] = stop
-                    new_work_entry = self.create(values)
-                    # Write the state after the creation due to the ir.rule on work_entry state
-                    new_work_entry.state = work_entry_state
-                    new_work_entries |= new_work_entry
-
-        work_entries_to_unlink.unlink()
-        return new_work_entries
-
-    @api.multi
-    def _duplicate_to_calendar(self):
-        """
-            Duplicate data to keep the complexity in work_entry and not mess up payroll, etc.
-        """
-        attendance_type = self.env.ref('hr_payroll.work_entry_type_attendance')
-        attendance_work_entries = self.filtered(lambda b:
-            not b.work_entry_type_id.is_leave and
-            # Normal work_entry are global to all employees -> avoid duplicating it
-            not b.work_entry_type_id == attendance_type)
-        leave_work_entries = self.filtered(lambda b: b.work_entry_type_id.is_leave)
-
-        work_entries_to_duplicate = self.env['hr.work.entry']
-        for work_entry in attendance_work_entries:
-            work_entry = work_entry._split_by_day()
-            work_entries_to_duplicate |= work_entry
-
-        work_entries_to_duplicate._duplicate_to_calendar_attendance()
-        leave_work_entries._duplicate_to_calendar_leave()
-
-    @api.multi
-    def _duplicate_to_calendar_leave(self):
-        vals_list = []
-        for work_entry in self:
-            if not work_entry.leave_id:
-                vals_list += [{
-                    'name': work_entry.name,
-                    'date_from': work_entry.date_start,
-                    'date_to': work_entry.date_stop,
-                    'calendar_id': work_entry.employee_id.resource_calendar_id.id,
-                    'resource_id': work_entry.employee_id.resource_id.id,
-                    'work_entry_type_id': work_entry.work_entry_type_id.id,
-                }]
-        if vals_list:
-            self.env['resource.calendar.leaves'].create(vals_list)
-
-    @api.multi
-    def _duplicate_to_calendar_attendance(self):
-        mapped_data = {
-            work_entry: [
-                work_entry.date_start,
-                work_entry.date_stop,
-            ] for work_entry in self
-        }
-
-        if any(data[0].date() != data[1].date() for data in mapped_data.values()):
-            raise ValidationError(_("You can't validate a work_entry that covers several days."))
-
-        vals_list = []
-        for work_entry in self:
-            start, end = mapped_data.get(work_entry)
-
-            vals_list += [{
-                'name': work_entry.name,
-                'dayofweek': str(start.weekday()),
-                'date_from': start.date(),
-                'date_to': end.date(),
-                'hour_from': start.hour + start.minute / 60,
-                'hour_to': end.hour + end.minute / 60,
-                'calendar_id': work_entry.contract_id.resource_calendar_id.id,
-                'day_period': 'morning' if end.hour <= 12 else 'afternoon',
-                'resource_id': work_entry.employee_id.resource_id.id,
-                'work_entry_type_id': work_entry.work_entry_type_id.id,
-            }]
-        self.env['resource.calendar.attendance'].create(vals_list)
-
     @api.multi
     def action_validate(self):
         work_entries = self.filtered(lambda work_entry: work_entry.state != 'validated')
         work_entries.write({'display_warning': False})
         if not work_entries._check_if_error():
             work_entries.write({'state': 'validated'})
-            work_entries._duplicate_to_calendar()
             return True
         return False
 

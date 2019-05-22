@@ -81,11 +81,6 @@ class HrContract(models.Model):
         ('check_percentage_fiscal_voluntary_rate', 'CHECK(fiscal_voluntary_rate >= 0 AND fiscal_voluntary_rate <= 100)', 'The Fiscal Voluntary rate on wage should be between 0 and 100.')
     ]
 
-    def _get_wage(self):
-        self.ensure_one()
-        return self.wage_with_holidays
-
-
     @api.depends('holidays', 'wage', 'final_yearly_costs')
     def _compute_wage_with_holidays(self):
         for contract in self:

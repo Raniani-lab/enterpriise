@@ -1,16 +1,14 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import babel
-from datetime import date, datetime, time
+from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
-from pytz import timezone
 
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, _
 from odoo.addons import decimal_precision as dp
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_round
+from odoo.tools import float_round, date_utils
 from odoo.tools.misc import format_date
 
 
@@ -71,6 +69,7 @@ class HrPayslip(models.Model):
     basic_wage = fields.Monetary(compute='_compute_basic_net')
     net_wage = fields.Monetary(compute='_compute_basic_net')
     currency_id = fields.Many2one(related='contract_id.currency_id')
+    warning_message = fields.Char(readonly=True)
 
     @api.multi
     def _compute_basic_net(self):
@@ -139,7 +138,7 @@ class HrPayslip(models.Model):
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
         return True
 
-    def get_worked_day_lines(self):
+    def _get_worked_day_lines(self):
         """
         :returns: a list of dict containing the worked days values that should be applied for the given payslip
         """
@@ -148,42 +147,24 @@ class HrPayslip(models.Model):
         self.ensure_one()
         contract = self.contract_id
         if contract.resource_calendar_id:
+            paid_amount = self._get_contract_wage()
+            unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids.ids
 
-            unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
-            paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
-            normal_work_entry_type = self.env.ref('hr_payroll.work_entry_type_attendance')
-            paid_amount = self._get_paid_amount()
-            total_paid_days = contract._get_work_data(paid_work_entry_types, self.date_from, self.date_to)['days']
-            counted_days = 0
-            for work_entry_type in (paid_work_entry_types | unpaid_work_entry_types) - normal_work_entry_type:
-                work_data = contract._get_work_data(work_entry_type, self.date_from, self.date_to)
-                hours = work_data['hours']
-                days = work_data['days']
-
-                if hours:
-                    is_paid = work_entry_type in paid_work_entry_types
-                    counted_days += days if is_paid else 0
-                    line = {
-                        'sequence': work_entry_type.sequence,
-                        'work_entry_type_id': work_entry_type,
-                        'number_of_days': days,
-                        'number_of_hours': hours,
-                        'amount': days / total_paid_days * paid_amount if is_paid and total_paid_days else 0,
-                    }
-                    res.append(line)
-            # Any remaining day is a normal attendance
-            if normal_work_entry_type:
-                days = total_paid_days - counted_days
-                hours = days * contract.resource_calendar_id.hours_per_day
-                is_paid = normal_work_entry_type in paid_work_entry_types
-                normal_attendance_line = {
-                    'sequence': normal_work_entry_type.sequence,
-                    'work_entry_type_id': normal_work_entry_type,
+            work_hours = contract._get_work_hours(self.date_from, self.date_to)
+            total_hours = sum(work_hours.values()) or 1
+            for work_entry_type_id, hours in work_hours.items():
+                is_paid = work_entry_type_id not in unpaid_work_entry_types
+                calendar = contract.resource_calendar_id
+                days = round(hours / calendar.hours_per_day, 5) if calendar.hours_per_day else 0
+                seq = self.env['hr.work.entry.type'].browse(work_entry_type_id).sequence
+                attendance_line = {
+                    'sequence': seq,
+                    'work_entry_type_id': work_entry_type_id,
                     'number_of_days': days,
                     'number_of_hours': hours,
-                    'amount': days / total_paid_days * paid_amount if total_paid_days else 0,
+                    'amount': hours * paid_amount / total_hours if is_paid else 0,
                 }
-                res.append(normal_attendance_line)
+                res.append(attendance_line)
         return res
 
     def _get_base_local_dict(self):
@@ -249,8 +230,8 @@ class HrPayslip(models.Model):
                 }
         return result.values()
 
-    @api.onchange('employee_id', 'contract_id', 'date_from', 'date_to')
-    def onchange_employee(self):
+    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
+    def _onchange_employee(self):
         if (not self.employee_id) or (not self.date_from) or (not self.date_to):
             return
 
@@ -268,24 +249,27 @@ class HrPayslip(models.Model):
             self.contract_id = contracts[0]
             self.struct_id = contracts[0].structure_type_id.default_struct_id
 
+        payslip_name = self.struct_id.payslip_name or _('Salary Slip')
+        self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
+
+        if date_to > date_utils.end_of(fields.Date.today(), 'month'):
+            self.warning_message = _("This payslip can be erroneous! Work entries may not be generated for the period from %s to %s." %
+                (date_utils.add(date_utils.end_of(fields.Date.today(), 'month'), days=1), date_to))
+        else:
+            self.warning_message = False
+
         self.worked_days_line_ids = self._get_new_worked_days_lines()
 
     def _get_new_worked_days_lines(self):
         if self.struct_id.use_worked_day_lines:
             # computation of the salary worked days
-            worked_days_line_values = self.get_worked_day_lines()
+            worked_days_line_values = self._get_worked_day_lines()
             worked_days_lines = self.worked_days_line_ids.browse([])
             for r in worked_days_line_values:
                 worked_days_lines |= worked_days_lines.new(r)
             return worked_days_lines
         else:
             return [(5, False, False)]
-
-    @api.onchange('struct_id', 'date_from', 'employee_id')
-    def _onchange_struct_id(self):
-        payslip_name = self.struct_id.payslip_name or _('Salary Slip')
-        self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
-        self.worked_days_line_ids = self._get_new_worked_days_lines()
 
     def get_salary_line_total(self, code):
         self.ensure_one()
@@ -300,14 +284,22 @@ class HrPayslip(models.Model):
             'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in self.ids)},
         }
 
+    def _get_contract_wage(self):
+        self.ensure_one()
+        return self.contract_id.wage
+
     def _get_paid_amount(self):
         self.ensure_one()
-        return self.contract_id.wage - self._get_unpaid_amount()
+        if not self.worked_days_line_ids:
+            return self._get_contract_wage()
+        total_amount = 0
+        for line in self.worked_days_line_ids:
+            total_amount += line.amount
+        return total_amount
 
     def _get_unpaid_amount(self):
         self.ensure_one()
-        unpaid_days = self.contract_id._get_work_data(self.struct_id.unpaid_work_entry_type_ids, self.date_from, self.date_to)['days']
-        return unpaid_days * self.contract_id._get_average_wage_per_day()
+        return self._get_contract_wage() - self._get_paid_amount()
 
 
 class HrPayslipLine(models.Model):

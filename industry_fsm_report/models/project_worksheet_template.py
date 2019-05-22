@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from lxml import etree
+import time
 
-from odoo import api, fields, models
-
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class ProjectWorksheetTemplate(models.Model):
@@ -14,12 +16,20 @@ class ProjectWorksheetTemplate(models.Model):
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     model_id = fields.Many2one('ir.model', ondelete='cascade', readonly=True, domain=[('state', '=', 'manual')])
     action_id = fields.Many2one('ir.actions.act_window', readonly=True)
+    report_view_id = fields.Many2one('ir.ui.view', domain=[('type', '=', 'qweb')], readonly=True)
     active = fields.Boolean(default=True)
 
     def _compute_worksheet_count(self):
         for record in self:
             if record.model_id:
                 record.worksheet_count = self.env[record.model_id.model].search_count([])
+
+    @api.constrains('report_view_id', 'model_id')
+    def _check_report_view_type(self):
+        for worksheet_template in self:
+            if worksheet_template.model_id and worksheet_template.report_view_id:
+                if worksheet_template.report_view_id.type != 'qweb':
+                    raise ValidationError(_('The template to print this worksheet template should be a QWeb template.'))
 
     @api.model
     def create(self, vals):
@@ -93,13 +103,13 @@ class ProjectWorksheetTemplate(models.Model):
             'model_id': model.id,
             'domain_force': "[('create_uid', '=', user.id)]",
             'groups': [(6, 0, [self.env.ref('project.group_project_user').id])]
-            })
+        })
         self.env['ir.rule'].sudo().create({
             'name': name + '_all',
             'model_id': model.id,
             'domain_force': [(1, '=', 1)],
             'groups': [(6, 0, [self.env.ref('project.group_project_manager').id])]
-            })
+        })
         x_name_field = self.env['ir.model.fields'].search([('model_id', '=', model.id), ('name', '=', 'x_name')])
         x_name_field.sudo().write({'related': 'x_task_id.name'})  # possible only after target field have been created
         self.env['ir.ui.view'].sudo().create({
@@ -140,6 +150,9 @@ class ProjectWorksheetTemplate(models.Model):
             'model_id': model.id,
         })
 
+        # this must be done after form view creation and filling the 'model_id' field
+        template.sudo()._generate_qweb_report_template()
+
         return template
 
     @api.multi
@@ -157,6 +170,10 @@ class ProjectWorksheetTemplate(models.Model):
     def action_view_worksheets(self):
         return self.action_id.read()[0]
 
+    # ---------------------------------------------------------
+    # Business Methods
+    # ---------------------------------------------------------
+
     def get_x_model_form_action(self):
         action = self.action_id.read()[0]
         action.update({
@@ -165,3 +182,80 @@ class ProjectWorksheetTemplate(models.Model):
                         'form_view_initial_mode': 'readonly'}  # to avoid edit mode at studio exit
         })
         return action
+
+    def _get_qweb_arch_omitted_fields(self):
+        return [
+            'x_task_id', 'x_name',  # redundants
+            'x_customer_signature', 'x_worker_signature'  # treated separately by the template
+        ]
+
+    @api.model
+    def _get_qweb_arch(self, ir_model, qweb_template_name, form_view_id=False):
+        """ This function generates a qweb arch, from the form view of the given ir.model record.
+            This is needed because the number and names of the fields aren't known in advance.
+            :param ir_model: ir.model record
+            :returns the arch of the template qweb (t-name included)
+        """
+        fields_view_get_result = self.env[ir_model.model].fields_view_get(view_id=form_view_id, view_type='form', toolbar=False, submenu=False)
+        form_view_arch = fields_view_get_result['arch']
+        form_view_fields = fields_view_get_result['fields']
+
+        qweb_arch = etree.Element("div")
+        for field_node in etree.fromstring(form_view_arch).xpath('//field'):
+            field_name = field_node.attrib['name']
+            if field_name not in self._get_qweb_arch_omitted_fields():
+                field_info = form_view_fields[field_name]
+
+                widget = field_node.attrib.get('widget', False)
+                # no signature widget in qweb
+                if widget == 'signature':
+                    widget = 'image'
+                # adapt the widget syntax
+                if widget:
+                    field_node.attrib['t-options'] = "{'widget': '%s'}" % widget
+                    field_node.attrib.pop('widget')
+                # basic form view -> qweb node transformation
+                if field_info['type'] != 'binary' or widget in ['image']:
+                    # adapt the field node itself
+                    field_node.tag = 'div'
+                    field_node.attrib['t-field'] = 'worksheet.' + field_node.attrib['name']
+                    field_node.attrib['class'] = 'text-wrap col-9'
+                    field_node.attrib.pop('name')
+                    # generate a description
+                    description = etree.Element('div', {'class': 'col-3 font-weight-bold'})
+                    description.text = field_info['string']
+                    # insert all that in a container
+                    container = etree.Element('div', {'class': 'row mb-2', 'style': 'page-break-inside: avoid'})
+                    container.append(description)
+                    container.append(field_node)
+                    qweb_arch.append(container)
+
+        t_root = etree.Element('t', {'t-name': qweb_template_name})
+        t_root.append(qweb_arch)
+        return etree.tostring(t_root)
+
+    @api.multi
+    def _generate_qweb_report_template(self):
+        for worksheet_template in self:
+            report_name = ('%s_%s') % (worksheet_template.model_id.model.replace('.', '_'), str(time.time()))
+            new_arch = self._get_qweb_arch(worksheet_template.model_id, report_name)
+            if worksheet_template.report_view_id:  # update existing one
+                worksheet_template.report_view_id.write({'arch': new_arch})
+            else:  # create the new one
+                report_view = self.env['ir.ui.view'].create({
+                    'type': 'qweb',
+                    'model': False,  # template qweb for report
+                    'inherit_id': False,
+                    'mode': 'primary',
+                    'arch': new_arch,
+                    'name': report_name
+                })
+                self.env['ir.model.data'].create({
+                    'name': 'industry_fsm_report._custom_%s' % (report_name,),
+                    'module': 'industry_fsm_report',
+                    'res_id': report_view.id,
+                    'model': 'ir.ui.view',
+                    'noupdate': True,
+                })
+                # linking the new one
+                worksheet_template.write({'report_view_id': report_view.id})

@@ -16,6 +16,8 @@ Create Reports for Field Service
         'views/project_views.xml',
         'views/product_template_views.xml',
         'views/assets.xml',
+        'report/worksheet_custom_reports.xml',
+        'report/worksheet_custom_report_templates.xml',
         'data/fsm_report_data.xml',
     ],
     'demo': ['data/fsm_report_demo.xml'],

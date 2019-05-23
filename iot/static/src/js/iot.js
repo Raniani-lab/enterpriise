@@ -461,6 +461,7 @@ var IoTLongpolling = BusService.extend({
         // The backend has a maximum cycle time of 50 seconds so give +10 seconds
         this._rpcIoT(iot_ip, this.POLL_ROUTE, data, options)
             .then(function (result) {
+                self._listeners[iot_ip].rpc = false;
                 if (result.result) {
                     if (self._session_id === result.result.session_id) {
                         self._onSuccess(iot_ip, result.result);
@@ -468,7 +469,6 @@ var IoTLongpolling = BusService.extend({
                 } else {
                     self._onError();
                 }
-                self._listeners[iot_ip].rpc = false;
             }).fail(function (jqXHR, textStatus) {
                 if (textStatus === 'error' && self.parseURL.protocol === 'https:') {
                     self._doWarnCertificate(iot_ip);

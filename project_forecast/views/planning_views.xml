@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id" optional="hide" readonly="1"/>
-                <field name="task_id" optional="hide" readonly="1"/>
+                <field name="task_id" optional="hide" readonly="1" widget="task_with_hours"/>
             </xpath>
         </field>
     </record>
@@ -21,7 +21,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id" context="{'default_allow_forecast': True}"/>
-                <field name="task_id" attrs="{'invisible': [('project_id', '=', False)]}"/>
+                <field name="task_id" attrs="{'invisible': [('project_id', '=', False)]}"  widget="task_with_hours"/>
             </xpath>
         </field>
     </record>

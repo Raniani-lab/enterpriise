@@ -1317,10 +1317,6 @@ odoo.define('sign.document_signing', function (require) {
 
             function _sign() {
                 var signatureValues = {};
-                var token_list = this.token_list;
-                var name_list = this.name_list;
-                var create_uid = this.create_uid;
-                var state = this.state;
                 for(var page in this.iframeWidget.configuration) {
                     for(var i = 0 ; i < this.iframeWidget.configuration[page].length ; i++) {
                         var $elem = this.iframeWidget.configuration[page][i];
@@ -1367,11 +1363,7 @@ odoo.define('sign.document_signing', function (require) {
                     }
                     if (response === true) {
                         self.iframeWidget.disableItems();
-                        if(name_list && name_list.length>0) {
-                            this.token_list = token_list;
-                            this.name_list = name_list;
-                            this.create_uid = create_uid;
-                            this.state = state;
+                        if (self.name_list && self.name_list.length > 0) {
                             (new (self.get_nextdirectsigndialog_class())(self, self.RedirectURL, self.requestID)).open();
                         }
                         else {

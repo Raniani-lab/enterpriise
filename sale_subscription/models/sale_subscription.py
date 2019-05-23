@@ -27,6 +27,10 @@ class SaleSubscription(models.Model):
     def _get_default_pricelist(self):
         return self.env['product.pricelist'].search([('currency_id', '=', self.env.company.currency_id.id)], limit=1).id
 
+    @api.model
+    def _get_default_team(self):
+        return self.env['crm.team']._get_default_team_id()
+
     name = fields.Char(required=True, tracking=True, default="New")
     code = fields.Char(string="Reference", required=True, tracking=True, index=True, copy=False)
     stage_id = fields.Many2one(
@@ -52,7 +56,7 @@ class SaleSubscription(models.Model):
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
     user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
-    team_id = fields.Many2one('crm.team', 'Sales Team', change_default=True, default=False)
+    team_id = fields.Many2one('crm.team', 'Sales Team', change_default=True, default=_get_default_team)
     team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
     invoice_count = fields.Integer(compute='_compute_invoice_count')
     country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True, readonly=False, compute_sudo=True)
@@ -244,6 +248,11 @@ class SaleSubscription(models.Model):
             self.pricelist_id = self.partner_id.property_product_pricelist.id
         if self.partner_id.user_id:
             self.user_id = self.partner_id.user_id
+
+    @api.onchange('user_id')
+    def onchange_user_id(self):
+        if self.user_id and self.user_id.sale_team_id:
+            self.team_id = self.user_id.sale_team_id
 
     @api.onchange('date_start', 'template_id')
     def onchange_date_start(self):

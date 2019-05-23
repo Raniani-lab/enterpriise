@@ -61,7 +61,7 @@ class ProjectTask(models.Model):
 
     def _action_create_timesheet(self, time_spent):
         return {
-            "name": _("Finished time recording"),
+            "name": _("Confirm Time Spent"),
             "type": 'ir.actions.act_window',
             "res_model": 'project.task.create.timesheet',
             "views": [[False, "form"]],

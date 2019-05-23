@@ -43,6 +43,7 @@ class Task(models.Model):
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', oldname='allow_reports')
     worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template", oldname='report_template_id')
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
+    fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
@@ -59,7 +60,7 @@ class Task(models.Model):
     def action_fsm_worksheet(self):
         timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
         if timesheet_access and self.company_id.use_timesheet_timer and (self.allow_timesheets and self.allow_planning) and not (self.timesheet_ids or self.timesheet_timer_start):
-            raise UserError(_("You haven't started this task yet."))
+            raise UserError(_("Please, start the timer before recording the worksheet."))
         action = self.worksheet_template_id.action_id.read()[0]
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
         action.update({
@@ -67,13 +68,41 @@ class Task(models.Model):
             'views': [(False, 'form')],
             'context': {
                 'default_x_task_id': self.id,
-                'form_view_initial_mode': 'edit'
+                'form_view_initial_mode': 'edit',
+                'create': False,
             },
         })
         return action
 
-    def action_set_done(self):
-        for record in self:
-            if record.worksheet_template_id and not record.worksheet_count:
-                raise UserError(_("The report is not filled!."))
-        return super(Task, self).action_set_done()
+    @api.multi
+    def action_send_report(self):
+        self.ensure_one()
+        if self.worksheet_template_id and not self.worksheet_count:
+            raise UserError(_("To send the report, you need to set a worksheet template and create a worksheet."))
+
+        template_id = self.env.ref('industry_fsm_report.mail_template_data_send_report').id
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': {
+                'default_model': 'project.task',
+                'default_res_id': self.id,
+                'default_use_template': bool(template_id),
+                'default_template_id': template_id,
+                'model_description': self._name,
+                'fsm_mark_as_sent': True,
+            },
+        }
+
+    # ---------------------------------------------------------
+    # Business Methods
+    # ---------------------------------------------------------
+
+    def _message_post_after_hook(self, message, *args, **kwargs):
+        if self.env.context.get('fsm_mark_as_sent') and not self.fsm_is_sent:
+            self.write({'fsm_is_sent': True})

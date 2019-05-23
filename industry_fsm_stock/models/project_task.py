@@ -7,8 +7,8 @@ from odoo import models
 class Task(models.Model):
     _inherit = "project.task"
 
-    def _create_or_update_sale_order(self):
-        sale_order = super(Task, self)._create_or_update_sale_order()
+    def _fsm_create_sale_order(self):
+        sale_order = super(Task, self)._fsm_create_sale_order()
         self._validate_stock()
         return sale_order
 

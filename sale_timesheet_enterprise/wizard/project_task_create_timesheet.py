@@ -38,6 +38,4 @@ class ProjectTaskCreateTimesheet(models.TransientModel):
             'user_id': self.env.uid,
             'unit_amount': self.time_spent,
         }
-        self.env['account.analytic.line'].create(values)
-        if self.env.context.get('task_done'):
-            self.task_id.action_set_done()
+        return self.env['account.analytic.line'].create(values)

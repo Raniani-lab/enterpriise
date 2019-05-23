@@ -881,8 +881,9 @@ class SaleSubscriptionLine(models.Model):
 
     @api.depends('price_unit', 'quantity', 'discount', 'analytic_account_id.pricelist_id')
     def _compute_price_subtotal(self):
+        AccountTax = self.env['account.tax']
         for line in self:
-            price = line.env['account.tax']._fix_tax_included_price(line.price_unit, line.product_id.sudo().taxes_id, [])
+            price = AccountTax._fix_tax_included_price(line.price_unit, line.product_id.sudo().taxes_id, AccountTax)
             line.price_subtotal = line.quantity * price * (100.0 - line.discount) / 100.0
             if line.analytic_account_id.pricelist_id.sudo().currency_id:
                 line.price_subtotal = line.analytic_account_id.pricelist_id.sudo().currency_id.round(line.price_subtotal)

@@ -448,6 +448,11 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                         node: node.node,
                     });
                 })
+                .on('click', function () {
+                    self.trigger_up('node_expanded', {
+                        node: node.node,
+                    });
+                })
                 .on('mouseleave', function () {
                     self.trigger_up('hover_editor', {
                         node: undefined,

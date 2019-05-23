@@ -19,6 +19,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
     custom_events: _.extend({}, AbstractEditorManager.prototype.custom_events, {
         editor_clicked: '_onEditorClick',
         hover_editor: '_onHighlightPreview',
+        node_expanded: '_onNodeExpanded',
         drop_component: '_onDropComponent',
         begin_drag_component: '_onBeginDragComponent',
         element_removed: '_onElementRemoved',
@@ -408,6 +409,13 @@ var ReportEditorManager = AbstractEditorManager.extend({
      */
     _onHighlightPreview: function (ev) {
         this.view.highlight(ev.data.node);
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onNodeExpanded: function (ev) {
+        this.view.selectNode(ev.data.node);
     },
     /**
      * @private

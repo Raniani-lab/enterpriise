@@ -364,6 +364,26 @@ var ReportEditor = Widget.extend(EditorMixin, {
         }
     },
     /**
+     * Selects the given node if it's not already selected and deselects
+     * previously selected one.
+     *
+     * @private
+     * @param {Object} node
+     */
+    selectNode: function (node) {
+        if (this.selectedNode) {
+            if (this.selectedNode === node) {
+                return;
+            }
+            var $oldSelectedNodes = this._findAssociatedDOMNodes(this.selectedNode);
+            $oldSelectedNodes.removeClass('o_web_studio_report_selected');
+        }
+
+        this.selectedNode = node;
+        var $nodesToHighlight = this._findAssociatedDOMNodes(this.selectedNode);
+        $nodesToHighlight.addClass('o_web_studio_report_selected');
+    },
+    /**
      * @override
      */
     unselectedElements: function () {
@@ -735,19 +755,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         if ($node.closest('[t-field], [t-esc]').length) {
             $node = $node.closest('[t-field], [t-esc]');
         }
-        var node = $node.data('node');
-
-        if (this.selectedNode) {
-            if (this.selectedNode === node) {
-                return;
-            }
-            var $oldSelectedNodes = this._findAssociatedDOMNodes(this.selectedNode);
-            $oldSelectedNodes.removeClass('o_web_studio_report_selected');
-        }
-
-        this.selectedNode = node;
-        var $nodesToHighlight = this._findAssociatedDOMNodes(this.selectedNode);
-        $nodesToHighlight.addClass('o_web_studio_report_selected');
+        this.selectNode($node.data('node'));
         this.trigger_up('node_clicked', {
             node: this.selectedNode,
         });

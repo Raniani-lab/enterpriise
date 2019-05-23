@@ -203,7 +203,7 @@ QUnit.module('ReportEditorManager', {
     });
 
     QUnit.test('basic editor rendering', async function (assert) {
-        assert.expect(8);
+        assert.expect(12);
 
         this.templates.push({
             key: 'template1',
@@ -268,10 +268,23 @@ QUnit.module('ReportEditorManager', {
             assert.containsN(rem, '.o_web_studio_sidebar .o_web_studio_sidebar_content .card', 2,
                 "there should be 2 cards in the sidebar");
 
+            // click to edit first span
+            await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First span)'));
+            assert.hasClass(rem.$('iframe').contents().find('span:contains(First span)'),'o_web_studio_report_selected',
+                "the corresponding nodes should be selected");
+            assert.containsN(rem, '.o_web_studio_sidebar .o_web_studio_sidebar_content .card', 3,
+                "there should be 3 cards in the sidebar");
+            // click 2nd card on "Options" tab
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_content_properties div.card:eq(1)'));
+            assert.hasClass(rem.$('iframe').contents().find('div.class1'), 'o_web_studio_report_selected',
+                "the corresponding nodes should be selected");
+            assert.doesNotHaveClass(rem.$('iframe').contents().find('span:contains(First span)'), 'o_web_studio_report_selected',
+                "the corresponding node should not be selected now");
+
             // click on "Options" (shouldn't do anything)
             await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="options"]'));
-            assert.containsN(rem, '.o_web_studio_sidebar .o_web_studio_sidebar_content .card', 2,
-                "there should still be 2 cards in the sidebar");
+            assert.containsN(rem, '.o_web_studio_sidebar .o_web_studio_sidebar_content .card', 3,
+                "there should still be 3 cards in the sidebar");
 
             rem.destroy();
         });
@@ -1451,7 +1464,7 @@ QUnit.module('ReportEditorManager', {
     }));
 
     QUnit.test('edit block "Accounting Total"', loadIframeCss(async function (assert, done) {
-        assert.expect(2);
+        assert.expect(3);
 
         var initialDebugMode = config.debug;
         // show all nodes in the sidebar
@@ -1526,6 +1539,9 @@ QUnit.module('ReportEditorManager', {
             await testUtils.dom.click(rem.$('iframe').contents().find('main th'));
             var $card = rem.$('.o_web_studio_sidebar .card:has(.o_text:contains(table))');
             await testUtils.dom.click($card.find('[data-toggle="collapse"]'));
+            $card = rem.$('.o_web_studio_sidebar .card.o_web_studio_active');
+            assert.strictEqual($card.find('.o_text').text().trim(), 'table',
+                'Correct card should be active after sidebar updation');
 
             assert.strictEqual($card.find('.o_web_studio_report_currency_id .o_field_selector_chain_part').text().replace(/\s+/g, ' '),
                 ' o (Model Test) Child ', 'Should display the t-foreach value');

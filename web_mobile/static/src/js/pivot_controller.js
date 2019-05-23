@@ -29,7 +29,7 @@ PivotController.include({
      * @override
      * @private
      */
-    _renderFieldSelection: function () {
+    _renderGroupBySelection: function () {
         this._super.apply(this, arguments);
         this.$('.o_pivot_header_cell_opened,.o_pivot_header_cell_closed').tooltip('hide');
     },
@@ -43,7 +43,7 @@ PivotController.include({
      * @private
      * @param {MouseEvent} ev
      */
-    _onFieldMenuSelection: function (ev) {
+    _onGroupByMenuSelection: function (ev) {
         var $parent = $(ev.target).closest('.o_pivot_field_menu');
         if ($parent.length) {
             // Use vanillaJS node because jQuery doesn't support :hover selector

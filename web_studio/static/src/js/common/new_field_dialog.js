@@ -109,7 +109,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 record = self.model.get(recordID);
                 self.many2one_field = new Many2one(self, 'field', record, options);
                 self._registerWidget(recordID, 'field', self.many2one_field);
-                self.many2one_field.nodeOptions.no_create_edit = !config.debug;
+                self.many2one_field.nodeOptions.no_create_edit = !config.isDebug();
                 self.many2one_field.appendTo(self.$('.o_many2one_field'));
             }));
         } else if (_.contains(['many2many', 'many2one'], this.type)) {
@@ -122,7 +122,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 record = self.model.get(recordID);
                 self.many2one_model = new Many2one(self, 'model', record, options);
                 self._registerWidget(recordID, 'model', self.many2one_model);
-                self.many2one_model.nodeOptions.no_create_edit = !config.debug;
+                self.many2one_model.nodeOptions.no_create_edit = !config.isDebug();
                 self.many2one_model.appendTo(self.$('.o_many2one_model'));
             }));
         } else if (this.type === 'related') {
@@ -190,7 +190,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         var self = this;
         var $btn = $(ev.currentTarget);
 
-        if (config.debug) {
+        if (config.isDebug()) {
             var val = $btn.closest('li')[0].dataset.value;  // use dataset to always get a string
             var index = _.findIndex(this.selection, function (el) {return el[0] === val;});
             new Dialog(this, {

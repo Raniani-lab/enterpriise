@@ -769,9 +769,9 @@ QUnit.module('Studio', {}, function () {
             // there is one assert by operation
             assert.expect(layoutChangesOperations.length);
 
-            var initialDebugMode = config.debug;
+            var initialDebugMode = odoo.debug;
             // show 'class' in the sidebar
-            config.debug = true;
+            odoo.debug = true;
 
             var defs = [];
 
@@ -799,7 +799,7 @@ QUnit.module('Studio', {}, function () {
                     if (layoutChangesOperations.length) {
                         poll(layoutChangesOperations.shift());
                     } else {
-                        config.debug = initialDebugMode;
+                        odoo.debug = initialDebugMode;
                         done();
                     }
                 });

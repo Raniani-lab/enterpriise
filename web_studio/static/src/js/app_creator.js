@@ -34,7 +34,7 @@ var AppCreator = AbstractAction.extend(StandaloneFieldManagerMixin, {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
         this.currentStep = 1;
-        this.debug = config.debug;
+        this.debug = config.isDebug();
     },
     /**
      * @override

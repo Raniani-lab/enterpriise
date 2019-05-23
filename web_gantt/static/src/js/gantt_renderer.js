@@ -2,6 +2,7 @@ odoo.define('web_gantt.GanttRenderer', function (require) {
 "use strict";
 
 var AbstractRenderer = require('web.AbstractRenderer');
+var config = require('web.config');
 var core = require('web.core');
 var GanttRow = require('web_gantt.GanttRow');
 var qweb = require('web.QWeb');
@@ -59,7 +60,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 return py.parse(py.tokenize(value));
             }).value();
         if (params.popoverTemplate) {
-            this.popoverQWeb = new qweb(session.debug, {_s: session.origin});
+            this.popoverQWeb = new qweb(config.isDebug(), {_s: session.origin});
             this.popoverQWeb.add_template(utils.json_node_to_xml(params.popoverTemplate));
         } else {
             this.popoverQWeb = QWeb;

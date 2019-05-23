@@ -22,7 +22,7 @@ var ActionEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
 
-        this.debug = config.debug;
+        this.debug = config.isDebug();
         this.action = action;
         this.action_attrs = {
             name: action.display_name || action.name,

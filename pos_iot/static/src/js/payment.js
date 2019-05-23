@@ -183,6 +183,9 @@ screens.PaymentScreenWidget.include({
             if (data.Ticket !== false) {
                 line.ticket = data.Ticket.replace(/\n/g, "<br />");
             }
+            if (data.TicketMerchant) {
+                this.pos.proxy.printer.print_receipt("<div class='pos-receipt'/><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
+            }
             this.order_changes();
             this.terminal.remove_listener();
         } else if (line && data.Stage === 'WaitingForCard' && line.get_payment_status() !== 'waitingCancel') {

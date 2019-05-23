@@ -157,7 +157,6 @@ class account_bank_reconciliation_report(models.AbstractModel):
             accounts = journal.default_debit_account_id
 
         # Fetch data
-        print(self, self.env.context, options, journal)
         report_data = self._get_bank_rec_report_data(options, journal)
 
         # Compute totals

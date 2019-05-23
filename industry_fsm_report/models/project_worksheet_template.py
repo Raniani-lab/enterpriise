@@ -5,6 +5,7 @@ import time
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 
 
 class ProjectWorksheetTemplate(models.Model):
@@ -164,7 +165,10 @@ class ProjectWorksheetTemplate(models.Model):
         x_name_fields.write({'related': False})  # we need to manually remove relation to allow the deletion of fields
         self.env['ir.rule'].search([('model_id', 'in', models_ids)]).unlink()
         self.mapped('action_id').unlink()
-        self.mapped('model_id').unlink()
+
+        # context needed to avoid "manual" removal of related fields
+        self.mapped('model_id').with_context(**{MODULE_UNINSTALL_FLAG: True}).unlink()
+
         return super(ProjectWorksheetTemplate, self).unlink()
 
     def action_view_worksheets(self):

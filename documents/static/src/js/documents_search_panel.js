@@ -21,6 +21,14 @@ const DocumentsSearchPanel = SearchPanel.extend({
         'drop .o_search_panel_category_value, .o_search_panel_filter_value': '_onRecordDrop',
     },
 
+    /**
+     * @override
+     */
+    init: function () {
+        this._super.apply(this, arguments);
+        this.uploadingFolderIDs = [];
+    },
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -71,11 +79,37 @@ const DocumentsSearchPanel = SearchPanel.extend({
             }
         });
     },
+    /**
+     * set the list of currently uploading folders.
+     *
+     * @param {Array<integer>} uploadingFolderIDs the list of folders in which uploads are currently happening.
+     */
+    setUploadingFolderIDs: function (uploadingFolderIDs) {
+        this.uploadingFolderIDs = uploadingFolderIDs;
+        this._render();
+    },
 
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * Adds a spinner next to the folders in which a file is being uploaded.
+     *
+     * @private
+     */
+    _renderLoadingSpinners: function () {
+        const $folderSection = this.$('[data-field-name="folder_id"]');
+        $folderSection.find('.o_search_panel_spinner').remove();
+        $folderSection.find('.o_search_panel_category_value').each((i, el) => {
+            if (this.uploadingFolderIDs.includes(+el.getAttribute("data-id"))) {
+                const $spinner = $('<span>', {
+                    class: 'fa fa-spinner fa-spin o_search_panel_spinner',
+                });
+                $spinner.appendTo($(el).find('> header > label'));
+            }
+        });
+    },
     /**
      * Override to select the first value instead of 'All' by default.
      *
@@ -96,6 +130,14 @@ const DocumentsSearchPanel = SearchPanel.extend({
         const hasRightFieldName = ['folder_id', 'tag_ids'].includes(fieldName);
         const hasID = $target.data('id') || $target.data('value-id');
         return hasRightFieldName && hasID;
+    },
+    /**
+     * @private
+     * @override
+     */
+    _render: function () {
+        this._super.apply(this, arguments);
+        this._renderLoadingSpinners();
     },
 
     //--------------------------------------------------------------------------

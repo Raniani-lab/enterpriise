@@ -8,6 +8,8 @@ odoo.define('documents.DocumentsKanbanController', function (require) {
 
 var DocumentsInspector = require('documents.DocumentsInspector');
 var DocumentViewer = require('documents.DocumentViewer');
+var DocumentsProgressBar = require('documents.ProgressBar');
+var DocumentsProgressCard = require('documents.ProgressCard');
 
 var Chatter = require('mail.Chatter');
 
@@ -41,6 +43,7 @@ var DocumentsKanbanController = KanbanController.extend({
         lock_attachment: '_onLock',
         open_chatter: '_onOpenChatter',
         open_record: '_onOpenRecord',
+        progress_bar_abort: '_onProgressBarAbort',
         replace_file: '_onReplaceFile',
         save_multi: '_onSaveMulti',
         select_record: '_onRecordSelected',
@@ -63,8 +66,7 @@ var DocumentsKanbanController = KanbanController.extend({
         this.chatter = null;
         this.documentsInspector = null;
         this.anchorID = null; // used to select records with ctrl/shift keys
-        this.fileUploadID = _.uniqueId('documents_file_upload');
-        this._uploadedFileCount = 0;
+        this.uploads = {};
         // used to refocus the tag input if the inspector re-render was triggered by a tag update.
         this._focusTagInput = false;
     },
@@ -73,13 +75,7 @@ var DocumentsKanbanController = KanbanController.extend({
      */
     start: function () {
         this.$('.o_content').addClass('o_documents_kanban');
-        $(window).on(this.fileUploadID, this._onFileUploaded.bind(this));
         return this._super.apply(this, arguments);
-    },
-
-    destroy: function () {
-        $(window).off(this.fileUploadID);
-        this._super.apply(this, arguments);
     },
 
     //--------------------------------------------------------------------------
@@ -100,6 +96,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 .map(record => record.res_id);
             this.selectedRecordIDs = _.intersection(this.selectedRecordIDs, recordIDs);
             this.renderer.updateSelection(this.selectedRecordIDs);
+            return this._attachProgressBars();
         });
     },
     /**
@@ -116,6 +113,30 @@ var DocumentsKanbanController = KanbanController.extend({
     // Private
     //--------------------------------------------------------------------------
 
+     /**
+     * attaches the currently active progress bars that are uploading into the current folder.
+     *
+     * @private
+     */
+    async _attachProgressBars() {
+        const currentFolderID = this._searchPanel.getSelectedFolderId();
+        for (const upload of Object.values(this.uploads)) {
+            if (!currentFolderID || !upload.folderID || currentFolderID === upload.folderID) {
+                let $targetCard;
+                if (upload.progressCard) {
+                    await upload.progressCard.prependTo(this.$('.o_documents_kanban_view'));
+                    $targetCard = upload.progressCard.$el;
+                } else {
+                    $targetCard = this.$(`.o_kanban_attachment[data-id="${upload.documentID}"]`);
+                    $targetCard.find('.o_record_selector').addClass('o_hidden');
+                }
+                await upload.progressBar.appendTo($targetCard);
+            }
+        }
+        // searchPanel
+        const uploadingFolderIDs = _.uniq(_.pluck(this.uploads, 'folderID'));
+        this._searchPanel.setUploadingFolderIDs(uploadingFolderIDs);
+    },
     /**
      * @private
      */
@@ -126,6 +147,63 @@ var DocumentsKanbanController = KanbanController.extend({
             this.chatter.destroy();
             this.chatter = null;
         }
+    },
+    /**
+     * Creates a progress bar and a progress card and add them to the uploads.
+     *
+     * @private
+     * @param {integer} uploadID
+     * @param {integer} folderID
+     * @param {XMLHttpRequest} xhr
+     * @param {String} title title of the new progress bar (usually the name of the file).
+     * @param {String} type content_type/mimeType of the file
+     */
+    _makeNewProgress(uploadID, folderID, xhr, title, type) {
+        const progressCard = new DocumentsProgressCard(this, {
+            title,
+            type,
+        });
+        const progressBar = new DocumentsProgressBar(this, {
+            xhr,
+            title,
+            uploadID,
+        });
+        // the event listener is added here outside of the widgets as adding them outside of the scope of the definition
+        // prevents the event to be properly listened to (the issue seems to be related to the behaviour of xhr).
+        xhr.upload.addEventListener("progress", ev => {
+            if (ev.lengthComputable) {
+                progressCard.update(ev.loaded, ev.total);
+                progressBar.update(ev.loaded, ev.total);
+            }
+        });
+        this.uploads[uploadID] = {
+            folderID,
+            progressBar,
+            progressCard,
+        };
+    },
+    /**
+     * Creates a progress bar and add it to the uploads.
+     *
+     * @private
+     * @param {integer} uploadID
+     * @param {integer} documentID
+     * @param {XMLHttpRequest} xhr
+     */
+    _makeReplaceProgress(uploadID, documentID, xhr) {
+        const progressBar = new DocumentsProgressBar(this, {
+            xhr,
+            uploadID,
+        });
+        xhr.upload.addEventListener("progress", ev => {
+            if (ev.lengthComputable) {
+                progressBar.update(ev.loaded, ev.total);
+            }
+        });
+        this.uploads[uploadID] = {
+            documentID,
+            progressBar,
+        };
     },
     /**
      * Opens the chatter of the given record.
@@ -163,47 +241,73 @@ var DocumentsKanbanController = KanbanController.extend({
      * @param {Object[]} files
      * @returns {Promise}
      */
-    _processFiles: function (files) {
-        var self = this;
-        this._uploadedFileCount = files.length;
-        var $formContainer = this.$('.o_content').find('.o_documents_hidden_input_file_container');
-        if (!$formContainer.length) {
-            $formContainer = $(qweb.render('documents.HiddenInputFile', {
-                widget: this,
-                csrf_token: core.csrf_token,
-            }));
-            $formContainer.appendTo(this.$('.o_content'));
-        }
+    _processFiles: function (files, documentID) {
+        const uploadID = _.uniqueId('uploadID');
+        const folderID = this._searchPanel.getSelectedFolderId();
 
-        var data = new FormData();
-        $formContainer.find('input').each(function (index, input) {
-            if (input.name !== 'ufile') {
-                data.append(input.name, input.value);
+        if (!folderID || !files.length) {
+            return Promise.resolve();
+        }
+        const data = new FormData();
+
+        data.append('csrf_token', core.csrf_token);
+        data.append('folder_id', folderID);
+        if (documentID) {
+            if (files.length > 1) {
+                // preemptive return as it doesn't make sense to upload multiple files inside one document.
+                return Promise.resolve();
             }
-        });
-        _.each(files, function (file) {
+            data.append('document_id', documentID);
+        }
+        for (const file of files) {
             data.append('ufile', file);
-        });
-        var prom = new Promise(function (resolve) {
-            $.ajax({
-                url: '/web/binary/upload_attachment',
-                processData: false,
-                contentType: false,
-                type: "POST",
-                enctype: 'multipart/form-data',
-                data: data,
-                success: function (result) {
-                    resolve();
-                    var $el = $(result);
-                    $.globalEval($el.contents().text());
-                },
-                error: function (error) {
-                    self.do_notify(_t("Error"), _t("An error occurred during the upload"));
-                    resolve();
-                },
-            });
+        }
+        let title = files.length + ' Files';
+        let type;
+        if (files.length === 1) {
+            title = files[0].name;
+            type = files[0].type;
+        }
+        const prom = new Promise(resolve => {
+            const xhr = new window.XMLHttpRequest();
+            xhr.open('POST', '/documents/upload_attachment');
+            if (documentID) {
+                this._makeReplaceProgress(uploadID, documentID, xhr);
+            } else {
+                this._makeNewProgress(uploadID, folderID, xhr, title, type);
+            }
+            const progressPromise = this._attachProgressBars();
+            xhr.onload = async () => {
+                await progressPromise;
+                resolve();
+                const result = JSON.parse(xhr.response);
+                if (result.error) {
+                    this.do_notify(_t("Error"), result.error, true);
+                }
+                this._removeProgressBar(uploadID);
+            };
+            xhr.onerror = async () => {
+                await progressPromise;
+                resolve();
+                this.do_notify(xhr.status, _.str.sprintf(_t('message: %s'), xhr.reponseText), true);
+                this._removeProgressBar(uploadID);
+            };
+            xhr.send(data);
         });
         return prom;
+    },
+    /**
+     *
+     * @private
+     * @param {integer} uploadID
+     * @returns {Promise}
+     */
+    async _removeProgressBar(uploadID) {
+        const upload = this.uploads[uploadID];
+        upload.progressCard && upload.progressCard.destroy();
+        upload.progressBar.destroy();
+        delete this.uploads[uploadID];
+        await this.reload();
     },
     /**
      * Renders and appends the documents inspector sidebar.
@@ -421,45 +525,9 @@ var DocumentsKanbanController = KanbanController.extend({
             return;
         }
         ev.preventDefault();
-        const always = () => {
-            this.$('.o_documents_kanban_view').removeClass('o_drop_over');
-            this.$('.o_upload_text').remove();
-        };
-        this._processFiles(ev.originalEvent.dataTransfer.files).then(always).guardedCatch(always);
-    },
-    /**
-     * creates new documents when attachments are uploaded.
-     * arguments are each uploaded files. A slice is called on arguments to extract those values.
-     *
-     * @private
-     */
-    _onFileUploaded: function () {
-        var self = this;
-        var tagIDs = this._searchPanel.getSelectedTagIds();
-        var attachments = Array.prototype.slice.call(arguments, 1);
-        var createDict = _.map(attachments, function (attachment) {
-            var doc = {
-                name: attachment.filename,
-                attachment_id: attachment.id,
-                folder_id: self._searchPanel.getSelectedFolderId(),
-            };
-            if (tagIDs) {
-                doc.tag_ids = [[6, 0, tagIDs]];
-            }
-            return doc;
-        });
-        return this._rpc({
-            model: 'documents.document',
-            method: 'create',
-            args: [createDict],
-        }).then(function (result) {
-            if (result.length) {
-                if (result.length < self._uploadedFileCount) {
-                    self.do_notify(_t("Error"), _t("One or more files failed to upload"));
-                }
-                self.reload();
-            }
-        });
+        this.$('.o_documents_kanban_view').removeClass('o_drop_over');
+        this.$('.o_upload_text').remove();
+        this._processFiles(ev.originalEvent.dataTransfer.files);
     },
     /**
      * @private
@@ -477,6 +545,10 @@ var DocumentsKanbanController = KanbanController.extend({
             return;
         }
         ev.preventDefault();
+        if (!this._searchPanel.getSelectedFolderId()) {
+            // we can't upload without a folder_id.
+            return;
+        }
         this.renderer.$el.addClass('o_drop_over');
         if (this.$('.o_upload_text').length === 0) {
             var $upload_text = $('<div>').addClass("o_upload_text text-center text-white");
@@ -570,6 +642,16 @@ var DocumentsKanbanController = KanbanController.extend({
             method: 'get_formview_id',
             args: [ev.data.resID],
         }).then(always).guardedCatch(always);
+    },
+    /**
+     *
+     * @private
+     * @param {DragEvent} ev
+     * @param {integer} ev.data.uploadID
+     */
+    _onProgressBarAbort(ev) {
+        const uploadID = ev.data.uploadID;
+        this._removeProgressBar(uploadID);
     },
     /**
      * Adds the selected documents to the data of the drag event and
@@ -685,28 +767,8 @@ var DocumentsKanbanController = KanbanController.extend({
     _onReplaceFile: function (ev) {
         var self = this;
         var $upload_input = $('<input type="file" name="files[]"/>');
-        $upload_input.on('change', function (e) {
-
-            var f = e.target.files[0];
-            var always = function () {
-                $upload_input.removeAttr('disabled');
-                $upload_input.val("");
-            };
-            utils.getDataURLFromFile(f).then(function (dataString) {
-                // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
-                var data = dataString.split(',', 2)[1];
-                var mimetype = dataString.substring(
-                                        dataString.indexOf(":") + 1,
-                                        dataString.indexOf(";")
-                                        );
-                self._rpc({
-                    model: 'documents.document',
-                    method: 'write',
-                    args: [[ev.data.id], {datas: data, mimetype: mimetype, name: f.name}],
-                }).then(function () {
-                    return self.reload();
-                }).then(always).guardedCatch(always);
-            });
+        $upload_input.on('change', e => {
+            this._processFiles(e.target.files, ev.data.id);
         });
         $upload_input.click();
     },

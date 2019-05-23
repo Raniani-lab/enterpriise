@@ -6,6 +6,7 @@ var DocumentsKanbanView = require('documents.DocumentsKanbanView');
 var mailTestUtils = require('mail.testUtils');
 
 var concurrency = require('web.concurrency');
+var NotificationService = require('web.NotificationService');
 var relationalFields = require('web.relational_fields');
 var testUtils = require('web.test_utils');
 var {createDocumentsKanbanView} = require('documents.test_utils');
@@ -24,6 +25,18 @@ function searchValue(el, value) {
         throw new Error(`Found ${matches.length} elements instead of 1`);
     }
     matches.val(value).trigger('keydown');
+}
+
+function mockXHR(uploadXHR, customSend) {
+    // the original window.XMLHttpRequest must be saved and restored after it the mock version has been used.
+    window.XMLHttpRequest = class {
+        constructor () {
+            uploadXHR.push(this);
+            this.upload = new window.EventTarget();
+        }
+        open() {}
+        send(data) {customSend && customSend(data);}
+    };
 }
 
 QUnit.module('Views');
@@ -646,48 +659,6 @@ QUnit.module('DocumentsKanbanView', {
         await testUtils.dom.click(kanban.$buttons.find('button.o_documents_kanban_url'));
 
         kanban.destroy();
-    });
-
-    QUnit.test('can upload files', async function (assert) {
-        assert.expect(1);
-
-        const prom = testUtils.makeTestPromise();
-
-        var kanban = await createDocumentsKanbanView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            data: this.data,
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
-                if (args.method === 'create') {
-                    assert.deepEqual(args.args[0], [{
-                        // as upload has been done ($.ajax() call cannot be mocked),
-                        // attachment_id is unknown.
-                        attachment_id: args.args[0][0].attachment_id,
-                        folder_id: 1,
-                        name: 'file.txt',
-                        tag_ids: [[6, 0, []]]
-                    }],
-                        "should create a new document");
-                    prom.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-
-        const file = await testUtils.file.createFile({
-            name: 'file.txt',
-            content: 'test',
-            contentType: 'plain/text',
-        });
-        testUtils.file.dropFile(kanban.$('.o_documents_kanban_view'), file);
-        await prom;
-        kanban.destroy();
-
     });
 
     QUnit.test('can Request a file', async function (assert) {
@@ -2705,6 +2676,180 @@ QUnit.module('DocumentsKanbanView', {
         // that removes the drag Icon from the DOM.
         await testUtils.nextTick();
 
+        kanban.destroy();
+    });
+
+    QUnit.test('documents: upload progress bars', async function (assert) {
+        assert.expect(5);
+
+        const file = await testUtils.file.createFile({
+            name: 'text.txt',
+            content: 'hello, world',
+            contentType: 'text/plain',
+        });
+        const originalXMLHttpRequest = window.XMLHttpRequest;
+
+        const send = data => {
+            assert.step('xhrSend');
+        };
+        const mockedXHRs = [];
+        mockXHR(mockedXHRs, send);
+
+        const kanban = await createDocumentsKanbanView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: `
+            <kanban><templates><t t-name="kanban-box">
+                <div draggable="true" class="oe_kanban_global_area">
+                    <field name="name"/>
+                </div>
+            </t></templates></kanban>`,
+        });
+
+        testUtils.file.dropFile(kanban.$('.o_documents_kanban_view'), file);
+        assert.verifySteps(['xhrSend']);
+
+        await testUtils.nextTick();
+
+        const progressEvent = new Event('progress', { bubbles: true, });
+        progressEvent.loaded = 250000000;
+        progressEvent.total = 500000000;
+        progressEvent.lengthComputable = true;
+        mockedXHRs[0].upload.dispatchEvent(progressEvent);
+        assert.strictEqual(kanban.$('.o_documents_progress_text_left').text(), "Uploading... (50%)",
+            "the current upload progress should be at 50%");
+
+        assert.containsOnce(kanban, '[data-field-name="folder_id"] .o_search_panel_spinner',
+            "there must be a spinner representing the upload");
+
+        progressEvent.loaded = 350000000;
+        mockedXHRs[0].upload.dispatchEvent(progressEvent);
+        assert.strictEqual(kanban.$('.o_documents_progress_text_right').text(), "(350/500Mb)",
+            "the current upload progress should be at (350/500Mb)")
+
+        window.XMLHttpRequest = originalXMLHttpRequest;
+        kanban.destroy();
+    });
+
+    QUnit.test('documents: upload multiple progress bars', async function (assert) {
+        assert.expect(8);
+
+        const file1 = await testUtils.file.createFile({
+            name: 'text1.txt',
+            content: 'hello, world',
+            contentType: 'text/plain',
+        });
+        const file2 = await testUtils.file.createFile({
+            name: 'text2.txt',
+            content: 'hello, world',
+            contentType: 'text/plain',
+        });
+        const file3 = await testUtils.file.createFile({
+            name: 'text3.txt',
+            content: 'hello, world',
+            contentType: 'text/plain',
+        });
+        const originalXMLHttpRequest = window.XMLHttpRequest;
+
+        const send = data => {
+            assert.step('xhrSend');
+        };
+        const mockedXHRs = [];
+        mockXHR(mockedXHRs, send);
+
+        const kanban = await createDocumentsKanbanView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: `
+            <kanban><templates><t t-name="kanban-box">
+                <div draggable="true" class="oe_kanban_global_area">
+                    <field name="name"/>
+                </div>
+            </t></templates></kanban>`,
+        });
+
+        const $dropZone = kanban.$('.o_documents_kanban_view');
+        testUtils.file.dropFile($dropZone, file1);
+
+        // awaiting next tick as the file drop is not synchronous
+        await testUtils.nextTick();
+
+        assert.verifySteps(['xhrSend']);
+        assert.strictEqual(kanban.$('.o_kanban_record_title > span:eq(0)').text(), 'text1.txt',
+            "The first kanban card should be named after the file");
+
+        testUtils.file.dropFiles($dropZone, [file2, file3]);
+
+        // awaiting next tick as the file drop is not synchronous
+        await testUtils.nextTick();
+
+        assert.verifySteps(['xhrSend']);
+        assert.strictEqual(kanban.$('.o_kanban_record_title > span:eq(0)').text(), '2 Files',
+            "The new kanban card should be named after the amount of files");
+        assert.containsN(kanban, '.o_documents_progress_border', 2, "There should be 2 cards");
+
+        // simulates 1st upload successful completion
+        mockedXHRs[1].response = JSON.stringify({
+            success: "All files uploaded"
+        });
+        mockedXHRs[1].onload();
+
+        // awaiting next tick as the render of the notify card isn't synchronous
+        await testUtils.nextTick();
+
+        assert.containsOnce(kanban, '.o_documents_progress_border', "There should only be one card left");
+
+        window.XMLHttpRequest = originalXMLHttpRequest;
+        kanban.destroy();
+    });
+
+    QUnit.test('documents: notifies server side errors', async function (assert) {
+        assert.expect(3);
+
+        const file = await testUtils.file.createFile({
+            name: 'text.txt',
+            content: 'hello, world',
+            contentType: 'text/plain',
+        });
+        const originalXMLHttpRequest = window.XMLHttpRequest;
+        let mockedXHRs = [];
+
+        mockXHR(mockedXHRs);
+
+        const kanban = await createDocumentsKanbanView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            services: {
+                notification: NotificationService,
+            },
+            arch: `
+            <kanban><templates><t t-name="kanban-box">
+                <div draggable="true" class="oe_kanban_global_area">
+                    <field name="name"/>
+                </div>
+            </t></templates></kanban>`,
+        });
+
+        const $dropZone = kanban.$('.o_documents_kanban_view');
+        testUtils.file.dropFile($dropZone, file);
+        await testUtils.nextTick();
+
+
+        // simulates 1st upload server side error completion
+        mockedXHRs[0].response = JSON.stringify({
+            error: "One or more file(s) failed to upload"
+        });
+        mockedXHRs[0].onload();
+        await testUtils.nextTick();
+
+        assert.containsNone(kanban, '.o_documents_progress_border', "There should be no upload card left");
+        assert.containsOnce($, '.o_notification', "should display a notification on upload error");
+        assert.strictEqual($('.o_notification_content').text(), "One or more file(s) failed to upload",
+           "the notification message should be the response error message");
+        window.XMLHttpRequest = originalXMLHttpRequest;
         kanban.destroy();
     });
 

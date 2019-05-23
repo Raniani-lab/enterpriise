@@ -10,6 +10,8 @@
             <script type="text/javascript" src="/documents/static/src/js/documents_kanban_record.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_kanban_renderer.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_kanban_view.js"/>
+            <script type="text/javascript" src="/documents/static/src/js/documents_progress_card.js"/>
+            <script type="text/javascript" src="/documents/static/src/js/documents_progress_bar.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_search_panel.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_inspector.js"/>
             <script type="text/javascript" src="/documents/static/src/js/documents_inspector_mobile.js"/>

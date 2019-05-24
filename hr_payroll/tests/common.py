@@ -19,6 +19,7 @@ class TestPayslipBase(TransactionCase):
         self.prof_tax_rule_id = self.ref('hr_payroll.hr_salary_rule_professionaltax1')
         self.pf_rule_id = self.ref('hr_payroll.hr_salary_rule_providentfund1')
         self.mv_rule_id = self.ref('hr_payroll.hr_salary_rule_meal_voucher')
+        self.sum_of_alw_id = self.ref('hr_payroll.hr_salary_rule_sum_alw_category')
 
         # I create a new employee "Richard"
         self.richard_emp = self.env['hr.employee'].create({
@@ -94,7 +95,7 @@ class TestPayslipBase(TransactionCase):
             'rule_ids': [
                 (4, self.hra_rule_id), (4, self.conv_rule_id),
                 (4, self.prof_tax_rule_id), (4, self.pf_rule_id),
-                (4, self.mv_rule_id),
+                (4, self.mv_rule_id), (4, self.sum_of_alw_id),
             ],
             'unpaid_work_entry_type_ids': [(4, self.work_entry_type_unpaid.id, False)]
         })

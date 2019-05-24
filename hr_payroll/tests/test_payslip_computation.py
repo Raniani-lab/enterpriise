@@ -217,3 +217,18 @@ class TestPayslipComputation(TestPayslipContractBase):
 
         extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
         self.assertAlmostEqual(extra_attendance_line.number_of_days, 2.5, places=2)
+
+    def test_sum_catergory(self):
+        self.richard_payslip.compute_sheet()
+        self.richard_payslip.action_payslip_done()
+
+        self.richard_payslip2 = self.env['hr.payslip'].create({
+            'name': 'Payslip of Richard',
+            'employee_id': self.richard_emp.id,
+            'contract_id': self.contract_cdi.id,
+            'struct_id': self.developer_pay_structure.id,
+            'date_from': date(2016, 1, 1),
+            'date_to': date(2016, 1, 31)
+        })
+        self.richard_payslip2.compute_sheet()
+        self.assertEqual(2800, self.richard_payslip2.line_ids.filtered(lambda x: x.code == 'SUMALW').total)

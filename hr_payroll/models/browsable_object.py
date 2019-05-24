@@ -64,6 +64,18 @@ class Payslips(BrowsableObject):
     def rule_parameter(self, code):
         return self.env['hr.rule.parameter']._get_parameter_from_code(code, self.dict.date_to)
 
+    def sum_category(self, code, from_date, to_date=None):
+        if to_date is None:
+            to_date = fields.Date.today()
+        self.env.cr.execute("""SELECT sum(case when hp.credit_note = False then (pl.total) else (-pl.total) end)
+                    FROM hr_payslip as hp, hr_payslip_line as pl, hr_salary_rule_category as rc
+                    WHERE hp.employee_id = %s AND hp.state = 'done'
+                    AND hp.date_from >= %s AND hp.date_to <= %s AND hp.id = pl.slip_id
+                    AND rc.id = pl.category_id AND rc.code = %s""",
+                    (self.employee_id, from_date, to_date, code))
+        res = self.env.cr.fetchone()
+        return res and res[0] or 0.0
+
     @property
     def paid_amount(self):
         return self.dict._get_paid_amount()

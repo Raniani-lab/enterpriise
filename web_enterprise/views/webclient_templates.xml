@@ -52,6 +52,7 @@
         <xpath expr="//link[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/home_menu.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/home_menu_layout.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/kanban_view_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/menu_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/menu_search.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/control_panel_layout.scss"/>
@@ -74,6 +75,7 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/control_panel_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/home_menu.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/menu_mobile.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/search_panel_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_view.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/relational_fields.js"></script>
@@ -98,6 +100,7 @@
             <script type="text/javascript" src="/web_enterprise/static/tests/form_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/mobile_menu_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/relational_fields_mobile_tests.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/tests/views/kanban_mobile_tests.js"></script>
         </xpath>
     </template>
 

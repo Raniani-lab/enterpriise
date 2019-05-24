@@ -527,7 +527,7 @@ class generic_tax_report(models.AbstractModel):
 
     def _get_lines_by_tax(self, options, line_id, taxes):
         lines = []
-        types = ['sale', 'purchase', 'adjustment']
+        types = ['sale', 'purchase']
         groups = dict((tp, {}) for tp in types)
         for key, tax in taxes.items():
             if tax['obj'].type_tax_use == 'none':

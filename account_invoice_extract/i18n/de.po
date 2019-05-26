@@ -279,6 +279,8 @@ msgid ""
 "You don't have enough credit to extract datas from your invoice. You can buy"
 " new credits here:"
 msgstr ""
+"Sie haben nicht genug Guthaben, um Daten von Ihrer Rechnung zu extrahieren. "
+"Hier können Sie neue Credits kaufen:"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0

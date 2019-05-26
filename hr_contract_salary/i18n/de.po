@@ -619,7 +619,7 @@ msgstr "Klicken Sie zum Erstellen neuer Verträge hier."
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Commission on Target:"
-msgstr ""
+msgstr "Kommission auf Kurs:"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1270,7 +1270,7 @@ msgstr ""
 #: code:addons/hr_contract_salary/wizard/generate_simulation_link.py:131
 #, python-format
 msgid "No private address defined on the employee!"
-msgstr ""
+msgstr "Keine private Adresse für den Mitarbeiter definiert!"
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:589
@@ -1303,7 +1303,7 @@ msgstr "Originalvertrag"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Original Link:"
-msgstr ""
+msgstr "Original Link:"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1318,7 +1318,7 @@ msgstr "Sonstige angehörige Personen"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Other Transport Mode"
-msgstr ""
+msgstr "Anderer Transportmodus"
 
 #. module: hr_contract_salary
 #: selection:generate.simulation.link,contract_type:0
@@ -1468,7 +1468,7 @@ msgstr "Anzeigen <i class=\"fa fa-chevron-down\"/>"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_request_count
 msgid "Sign Request Count"
-msgstr ""
+msgstr "Anzahl der Zeichenanforderungen"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__url

@@ -655,7 +655,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "Helyörző"
 
 #. module: website_calendar
 #: code:addons/website_calendar/models/calendar_appointment.py:302

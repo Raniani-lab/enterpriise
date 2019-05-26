@@ -669,7 +669,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:137
 #, python-format
 msgid "Server not reachable, please try again later"
-msgstr ""
+msgstr "Server nicht erreichbar, bitte versuchen Sie es später erneut"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:333

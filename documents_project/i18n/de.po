@@ -7,6 +7,7 @@
 # Johannes Croe <jcr@odoo.com>, 2019
 # Martin Trigaux, 2019
 # Chris Egal <sodaswed@web.de>, 2019
+# Leon Grill <leg@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
+"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +65,7 @@ msgstr "Gutschrift"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__documents_project_settings
 msgid "Documents Project Settings"
-msgstr ""
+msgstr "Dokumente Projekteinstellungen"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__has_business_option
@@ -86,7 +87,7 @@ msgstr "Projekt Stichwörter"
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
 msgid "Project Workspace"
-msgstr ""
+msgstr "Projekt-Arbeitsbereich"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
@@ -94,6 +95,8 @@ msgid ""
 "Select the new workspace to be used for project's documents for the projects and tasks\n"
 "                                of your company."
 msgstr ""
+"Wählen Sie den neuen Arbeitsbereich, der für die Projektdokumente für die Projekte und Aufgaben\n"
+"                                Ihres Unternehmens verwendet werden soll.."
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
@@ -125,4 +128,4 @@ msgstr "Lieferantenrechnung"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder
 msgid "project default workspace"
-msgstr ""
+msgstr "Projekt Standard-Arbeitsbereich"

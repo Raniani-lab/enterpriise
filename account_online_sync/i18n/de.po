@@ -246,7 +246,7 @@ msgstr "Erstellt am"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__bank_statement_creation
 msgid "Creation of Bank Statements"
-msgstr ""
+msgstr "Erstellung von Kontoauszügen"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_journal__bank_statement_creation
@@ -613,7 +613,7 @@ msgstr "Anbieter für online Konto Synchronisation"
 #: code:addons/account_online_sync/models/online_sync.py:90
 #, python-format
 msgid "Server not reachable, please try again later"
-msgstr ""
+msgstr "Server nicht erreichbar, bitte versuchen Sie es später erneut"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__status

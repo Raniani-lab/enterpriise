@@ -192,7 +192,7 @@ msgstr "Suchen"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:22
 #, python-format
 msgid "String:"
-msgstr ""
+msgstr "Zeichenfolge:"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -212,7 +212,7 @@ msgstr ""
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:30
 #, python-format
 msgid "Value:"
-msgstr ""
+msgstr "Wert:"
 
 #. module: web_dashboard
 #: model:ir.model,name:web_dashboard.model_ir_ui_view

@@ -1936,7 +1936,7 @@ msgstr "PDF Dokument"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_report_paperformat
 msgid "Paper Format Config"
-msgstr ""
+msgstr "Papierformat Konfiguration"
 
 #. module: web_studio
 #. openerp-web

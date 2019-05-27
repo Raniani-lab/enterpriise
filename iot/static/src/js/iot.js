@@ -434,7 +434,7 @@ var IoTLongpolling = BusService.extend({
             method: 'POST',
         }, options);
         var request = $.ajax(queryOptions);
-        if (this._listeners[iot_ip]) {
+        if (this._listeners[iot_ip] && route === '/hw_drivers/event') {
             this._listeners[iot_ip].rpc = request;
             return this._listeners[iot_ip].rpc;
         } else {

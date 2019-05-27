@@ -10,10 +10,10 @@
         <link rel="shortcut icon" href="static/src/img/favicon.ico" type="image/x-icon"/>
 
         <script type="text/javascript">
-            var odoo = {
-                session_info: <t t-raw="session_info"/>,
-                debug: "<t t-esc="debug"/>",
-            };
+            var odoo = <t t-raw="json.dumps({
+                'session_info': session_info,
+                'debug': debug,
+            })"/>;
         </script>
 
         <t t-call-assets="web.assets_common"/>

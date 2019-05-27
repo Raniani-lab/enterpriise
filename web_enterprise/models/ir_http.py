@@ -13,7 +13,7 @@ class Http(models.AbstractModel):
     def webclient_rendering_context(self):
         """ Overrides community to prevent unnecessary load_menus request """
         return {
-            'session_info': json.dumps(self.session_info()),
+            'session_info': self.session_info(),
         }
 
     def session_info(self):

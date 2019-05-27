@@ -41,8 +41,6 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
         var $existing = $('#' + this.iFrameId);
 
         if ($existing.length) {
-            this.$el.hide();
-
             if (!this.invisible){
                 this.pdfViewer = $existing.data('pdfViewer');
                 this._goToPage(this.recordData[this.name + '_page'] || 1);
@@ -104,10 +102,9 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
         var $form = $('.o_form_view.o_workorder_tablet');
         if ($form.length) {
             if (this.invisible) {
-                $form.height('100%');
+                $form.css('min-height', '100%');
             } else {
-                $form.css('height', this.formFixedHeight);
-                $form.css('width', '100%');
+                $form.css('min-height', this.formFixedHeight);
             }
         }
     },
@@ -176,13 +173,12 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
         });
 
         // Appended to the container and adjust CSS rules
-        $el.appendTo($container);
+        $el.closest('.workorder_pdf').appendTo($container);
         $container.css('display', 'flex');
         $container.css('flex-direction', 'column');
 
         // Add unique ID to get it back after the next destroy/start cycle
-        // Wrap it in "div.workorder_pdf" to keep the CSS style
-        $el.attr('id', this.iFrameId).wrap('<div class="workorder_pdf"/>');
+        $el.attr('id', this.iFrameId);
 
         // Initialize the Widget only when it has been moved in the DOM
         this._superStart.apply(this, arguments);

@@ -6,7 +6,6 @@ from odoo.tools import image_process
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 from collections import OrderedDict
-import re
 
 
 class Document(models.Model):
@@ -111,12 +110,9 @@ class Document(models.Model):
     @api.depends('checksum')
     def _compute_thumbnail(self):
         for record in self:
-            if record.mimetype and re.match('image.*(gif|jpeg|jpg|png)', record.mimetype):
-                try:
-                    record.thumbnail = image_process(record.datas, size=(80, 80), crop='center')
-                except Exception:
-                    pass
-            else:
+            try:
+                record.thumbnail = image_process(record.datas, size=(80, 80), crop='center')
+            except Exception:
                 record.thumbnail = False
 
     @api.depends('attachment_type', 'url')

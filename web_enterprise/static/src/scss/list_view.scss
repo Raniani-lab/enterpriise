@@ -162,6 +162,9 @@
                 border-right: 1px solid $table-border-color;
             }
         }
+        .o_data_row.o_selected_row > .o_list_record_remove {
+            border-bottom: 1px solid $table-border-color;
+        }
     }
 }
 

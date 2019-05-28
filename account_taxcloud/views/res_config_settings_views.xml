@@ -23,7 +23,7 @@
                             <i title="Import/update TICs from TaxCloud" role="img" aria-label="Import/update TICs from TaxCloud" class="fa fa-refresh fa-fw"></i>
                         </button>
                     </div>
-                    <div class="mt16" attrs="{'invisible': [('taxcloud_api_id', '!=', ''), ('taxcloud_api_key', '!=', '')]}">
+                    <div class="mt16" attrs="{'invisible': [('taxcloud_api_id', '!=', False), ('taxcloud_api_key', '!=', False)]}">
                         <a href="https://www.odoo.com/documentation/user/online/fr/accounting/others/taxes/taxcloud.html" target="_new"><i class="fa fa-fw fa-arrow-right"/>How to Get Credentials</a>
                     </div>
                 </div>

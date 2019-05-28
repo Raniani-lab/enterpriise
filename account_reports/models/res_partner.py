@@ -4,6 +4,7 @@
 from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.tools.misc import format_date
+from odoo.osv import expression
 
 _FOLLOWUP_STATUS = [('in_need_of_action', 'In need of action'), ('with_overdue_invoices', 'With overdue invoices'), ('no_action_needed', 'No action needed')]
 
@@ -116,6 +117,9 @@ class ResPartner(models.Model):
         domain = super(ResPartner, self).get_followup_lines_domain(date, overdue_only=overdue_only, only_unblocked=only_unblocked)
         if not overdue_only:
             domain += self._get_needofaction_fup_lines_domain(date)
+        else:
+            partners_in_need_of_action = self._get_partners_in_need_of_action()
+            domain = expression.AND([domain, ['!', ('partner_id', 'in', partners_in_need_of_action)]])
         return domain
 
     def get_next_action(self):

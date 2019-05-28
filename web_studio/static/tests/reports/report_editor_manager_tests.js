@@ -3,6 +3,7 @@ odoo.define('web_studio.ReportEditorManager_tests', function (require) {
 
 var ace = require('web_editor.ace');
 var config = require('web.config');
+var MediaDialog = require('wysiwyg.widgets.MediaDialog');
 var NotificationService = require('web.NotificationService');
 var testUtils = require('web.test_utils');
 var testUtilsDom = require('web.test_utils_dom');
@@ -1742,6 +1743,14 @@ QUnit.module('ReportEditorManager', {
 
         // Process to use the report editor
         await rem.editorIframeDef.then(async function () {
+            var defMediaDialogInit = testUtils.makeTestPromise();
+            testUtils.mock.patch(MediaDialog, {
+                init: function () {
+                    this._super.apply(this, arguments);
+                    this.opened(defMediaDialogInit.resolve.bind(defMediaDialogInit));
+                },
+            });
+
             // Wait for the image modal to be fully loaded in two steps:
             // First, the Bootstrap modal itself
             $('body').one('shown.bs.modal', function () {
@@ -1750,18 +1759,19 @@ QUnit.module('ReportEditorManager', {
             });
             // Second, when the modal element is there, bootstrap focuses on the "image" tab
             // then only could we use the widget and select an image safely
-            $('body').one('shown.bs.tab a[data-toggle="tab"]', async function () {
-                var $modal = $('.modal-dialog.o_select_media_dialog');
+            defMediaDialogInit.then(async function () {
+                var $modal = $('.o_select_media_dialog');
                 await testUtilsDom.click($modal.find('.o_image'));
                 await testUtilsDom.click($modal.find('footer button:contains(Add)'));
 
+                testUtils.mock.unpatch(MediaDialog);
                 done();
                 rem.destroy();
             });
 
             var $page = rem.$('iframe').contents().find('.page');
             var $imageBlock = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Image)');
-            await testUtils.dragAndDrop($imageBlock, $page, {position: 'inside'});
+            await testUtils.dom.dragAndDrop($imageBlock, $page, {position: 'inside'});
         });
     });
 

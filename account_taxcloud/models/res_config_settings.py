@@ -23,8 +23,7 @@ class ResConfigSettings(models.TransientModel):
         if res.get('error_message'):
             raise ValidationError(
                 _('Unable to retrieve taxes from TaxCloud: ') + '\n' +
-                res['error_message'] + '\n\n' +
-                _('The configuration of TaxCloud is in the Accounting app, Settings menu.')
+                res['error_message']
             )
 
         for category in res['data']:

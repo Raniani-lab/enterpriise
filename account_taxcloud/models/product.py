@@ -34,16 +34,19 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     tic_category_id = fields.Many2one('product.tic.category', string="TaxCloud Category",
-        help="Each product falls into a category which has specific taxes predermined by the government."
-            "The system will use the Tax Cloud category set on the internal category of the product. If there"
-            "isn't any, the one on the product itself will be used. Only used in United States.")
+        help="This refers to TIC (Taxability Information Codes), these are used by TaxCloud to compute specific tax "
+             "rates for each product type. The value set here prevails over the one set on the product category.")
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
     taxcloud_api_id = fields.Char(string='TaxCloud API ID')
     taxcloud_api_key = fields.Char(string='TaxCloud API KEY')
-    tic_category_id = fields.Many2one('product.tic.category', string='Default TIC Code', help="Default TICs(Taxability information codes) code to get sales tax from TaxCloud by product category.")
+    tic_category_id = fields.Many2one('product.tic.category', string='Default TIC Code',
+                                      help="TIC (Taxability Information Codes) allow to get specific tax rates for each product type. "
+                                           "This default value applies if no product is used in the order/invoice, or if no TIC is set on "
+                                           "the product or its product category. By default, TaxCloud relies on the TIC *[0] Uncategorized* "
+                                           "default referring to general goods and services.")
     is_taxcloud_configured = fields.Boolean(compute='_compute_is_taxcloud_configured',
                                             help='Used to determine whether or not to warn the user to configure TaxCloud.')
 
@@ -56,9 +59,6 @@ class ProductCategory(models.Model):
     _inherit = "product.category"
 
     tic_category_id = fields.Many2one('product.tic.category', string='TIC Code',
-        help="TaxCloud uses Taxability Information Codes (TIC) to make sure each item in your catalog "
-             "is taxed at the right rate (or, for tax-exempt items, not taxed at all), so it's important "
-             "to make sure that each item is assigned a TIC. If you can't find the right tax category for "
-             "an item in your catalog, you can assign it to the 'General Goods and Services' TIC, 00000. "
-             "TaxCloud automatically assigns products to this TIC as a default, so unless you've changed an "
-             "item's TIC in the past, it should already be set to 00000.")
+        help="This refers to TIC (Taxability Information Codes), these are used by TaxCloud to compute specific tax rates for "
+             "each product type. This value is used when no TIC is set on the product. If no value is set here, the default "
+             "value set in Invoicing settings is used.")

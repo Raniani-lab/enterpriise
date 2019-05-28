@@ -18,9 +18,11 @@ class Task(models.Model):
     @api.model
     def default_get(self, fields):
         result = super(Task, self).default_get(fields)
-        project = self.env['project.project'].browse([self.env.context.get('default_project_id')])
-        if 'report_template_id' in fields and project:
-            result['report_template_id'] = project.report_template_id.id
+        default_project_id = self.env.context.get('default_project_id')
+        if default_project_id:
+            project = self.env['project.project'].browse(default_project_id)
+            if 'report_template_id' in fields:
+                result['report_template_id'] = project.report_template_id.id
         return result
 
     allow_reports = fields.Boolean(related='project_id.allow_reports')

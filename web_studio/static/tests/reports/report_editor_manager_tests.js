@@ -102,6 +102,7 @@ QUnit.module('ReportEditorManager', {
                     mimetype: {string: "mimetype", type: "char"},
                     checksum: {string: "checksum", type: "char"},
                     url: {string: "url", type: "char"},
+                    image_src: {string: "url", type: "char"},
                     type: {string: "type", type: "char"},
                     res_id: {string: "resID", type: "integer"},
                     res_model: {string: "model", type: "char"},
@@ -118,6 +119,7 @@ QUnit.module('ReportEditorManager', {
                     res_model: "ir.ui.view",
                     type: "binary",
                     url: "/some/relative/path/joes_garage.png",
+                    image_src: "/some/relative/path/joes_garage.png",
                 }],
             },
         };
@@ -1753,6 +1755,9 @@ QUnit.module('ReportEditorManager', {
                     editReportViewCalls++;
                     return Promise.reject();
                 }
+                if (route.indexOf('/some/relative/path/joes_garage.png') === 0) {
+                    return Promise.resolve();
+                }
                 return this._super.apply(this, arguments);
             },
         });
@@ -1777,7 +1782,7 @@ QUnit.module('ReportEditorManager', {
             // then only could we use the widget and select an image safely
             defMediaDialogInit.then(async function () {
                 var $modal = $('.o_select_media_dialog');
-                await testUtilsDom.click($modal.find('.o_image'));
+                await testUtilsDom.click($modal.find('.o_existing_attachment_cell'));
                 await testUtilsDom.click($modal.find('footer button:contains(Add)'));
 
                 testUtils.mock.unpatch(MediaDialog);

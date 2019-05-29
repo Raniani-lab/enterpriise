@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_iot/static/src/js/models.js"></script>
+            <script type="text/javascript" src="/pos_iot/static/src/js/payment.js"></script>
+            <link rel="stylesheet" href="/pos_iot/static/src/css/pos.css"/>
+        </xpath>
+    </template>
+
     <record id="pos_iot_config_view_form" model="ir.ui.view">
         <field name="name">pos.iot.config.form.view</field>
         <field name="model">pos.config</field>
@@ -12,6 +20,12 @@
             <xpath expr="//field[@name='iotbox_id']/../.." position="after">
                 <div attrs="{'invisible' : [('is_posbox', '=', False)]}">
                     <button name="%(iot.iot_box_action)d" icon="fa-arrow-right" type="action" string="IoT Boxes" class="btn-link mt8"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='iface_scan_via_proxy']/.." position="before">
+                <div class="row" attrs="{'invisible' : [('is_posbox', '=', False)]}">
+                    <label string="Payment terminal" for="iface_payment_terminal" class="col-lg-3 o_light_label"/>
+                    <field name="iface_payment_terminal"/>
                 </div>
             </xpath>
         </field>

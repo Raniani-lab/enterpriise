@@ -37,6 +37,7 @@ class IotDevice(models.Model):
         ('printer', 'Printer'),
         ('camera', 'Camera'),
         ('device', 'Device'),
+        ('payment', 'Payment Terminal'),
         ], readonly=True, default='device', string='Type',
         help="Type of device.")
     connection = fields.Selection([

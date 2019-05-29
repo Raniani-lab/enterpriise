@@ -51,6 +51,9 @@ var FollowupFormController = FormController.extend({
         this.$buttons.on('click',
             '.o_account_reports_followup_done_button',
             this._onDone.bind(this));
+        this.$buttons.on('click',
+            '.o_account_reports_followup_reconcile',
+            this._onReconcile.bind(this));
         this.$buttons.appendTo($node);
     },
 
@@ -261,6 +264,25 @@ var FollowupFormController = FormController.extend({
         }
         this.model.setManualReminder(this.handle);
         this.renderer.renderManualReminder();
+    },
+    /**
+     * When click on 'Reconcile' it will redirect on reconciliation.
+     *
+     * @private
+     */
+    _onReconcile: function () {
+        var partnerID = this.model.get(this.handle, {raw: true}).res_id;
+        var context = {
+            'mode': 'customers',
+            'partner_ids': [partnerID],
+        }
+        this.do_action({
+            type: 'ir.actions.client',
+            tag: 'manual_reconciliation_view',
+            views: [[false, 'form']],
+            target: 'current',
+            context: context,
+        });
     },
     /**
      * When the user changes the next_action_date, save it in the model.

@@ -16,6 +16,9 @@
             <button type="button" class="btn btn-primary o_account_reports_followup_done_button" style="display:none">
                 Done
             </button>
+            <button type="button" class="btn btn-secondary o_account_reports_followup_reconcile" data-toggle='tooltip'>
+                Reconcile
+            </button>
         </div>
     </t>
 

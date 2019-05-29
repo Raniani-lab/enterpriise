@@ -30,6 +30,8 @@ FollowupFormController.include({
             this._onDoItLater.bind(this));
         this.$buttons.on('click', '.o_account_reports_followup_done_button',
             this._onDone.bind(this));
+        this.$buttons.on('click', '.o_account_reports_followup_reconcile',
+            this._onReconcile.bind(this));
         this.$buttons.appendTo($node);
     },
 

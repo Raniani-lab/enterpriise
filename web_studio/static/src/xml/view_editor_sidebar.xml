@@ -727,4 +727,8 @@
         </div>
     </div>
 </t>
+
+<div t-name="web_studio.ExistingFieldsInputSearch">
+    <input type="text" class="o_web_studio_sidebar_search_input" placeholder="Search..." />
+</div>
 </templates>

@@ -92,6 +92,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         'change .o_display_chatter input[data-type="email_alias"]': '_onEmailAliasChanged',
         'click .o_web_studio_attrs':                         '_onDomainAttrs',
         'focus .o_display_filter input#domain':              '_onDomainEditor',
+        'keyup .o_web_studio_sidebar_search_input':          '_onSearchInputChange',
     },
     /**
      * @constructor
@@ -131,6 +132,9 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this.MODIFIERS_IN_NODE_AND_ATTRS = ['readonly', 'invisible', 'required'];
 
         this.state = params.state || {};
+
+        this._searchValue = '';
+        this._isSearchValueActive = false;
 
         if (this.state.node && (this.state.node.tag === 'field' || this.state.node.tag === 'filter')) {
             // deep copy of field because the object is modified
@@ -374,7 +378,15 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         var self = this;
         if (this.state.mode === 'new') {
             this.defs = [];
-            this._renderNewSections();
+            if (!this._isSearchValueActive) {
+                if (_.contains(['form', 'search'], this.view_type)) {
+                    this._renderComponentsSection();
+                }
+                if (_.contains(['list', 'form'], this.view_type)) {
+                    this._renderNewFieldsSection();
+                }
+            }
+            this._renderExistingFieldsSection();
             var defs = this.defs;
             delete this.defs;
             return Promise.all(defs).then(function () {
@@ -391,61 +403,76 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     /**
      * @private
      */
-    _renderNewSections: function () {
-        var self = this;
-        var widget_classes;
-        var form_widgets;
-        var $section;
-        var $sectionTitle;
-        var $sidebar_content = this.$('.o_web_studio_sidebar_content');
-
-        // Components
-        if (_.contains(['form', 'search'], this.view_type)) {
-            widget_classes = form_component_widget_registry.get(this.view_type + '_components');
-            form_widgets = widget_classes.map(function (FormComponent) {
-                return new FormComponent(self);
-            });
-            $sectionTitle = $('<h3>', {
-                html: _t('Components'),
-            });
-            $section = this._renderSection(form_widgets);
-            $section.addClass('o_web_studio_new_components');
-            $sidebar_content.append($sectionTitle, $section);
-        }
-        // New Fields
-        if (_.contains(['list', 'form'], this.view_type)) {
-            widget_classes = form_component_widget_registry.get('new_field');
-            form_widgets = widget_classes.map(function (FormComponent) {
-                return new FormComponent(self);
-            });
-            $sectionTitle = $('<h3>', {
-                html: _t('New Fields'),
-            });
-            $section = this._renderSection(form_widgets);
-            $section.addClass('o_web_studio_new_fields');
-            $sidebar_content.append($sectionTitle, $section);
+    _renderComponentsSection: function () {
+        const widgetClasses = form_component_widget_registry.get(this.view_type + '_components');
+        const formWidgets = widgetClasses.map(FormComponent => new FormComponent(this));
+        const $sectionTitle = $('<h3>', {
+            html: _t('Components'),
+        });
+        const $section = this._renderSection(formWidgets);
+        $section.addClass('o_web_studio_new_components');
+        const $sidebarContent = this.$('.o_web_studio_sidebar_content');
+        $sidebarContent.append($sectionTitle, $section);
+    },
+    /**
+     * @private
+     */
+    _renderExistingFieldsSection: function () {
+        const $existingFields = this.$('.o_web_studio_existing_fields');
+        if ($existingFields.length) {
+            $existingFields.remove();  // clean up before re-rendering
         }
 
-        // Existing Fields
-        var FormComponent = form_component_widget_registry.get('existing_field');
+        let formWidgets;
+        const formComponent = form_component_widget_registry.get('existing_field');
         if (this.view_type === 'search') {
-            form_widgets = _.map(this.fields, function (field) {
-                return new FormComponent(self, field.name, field.string, field.type, field.store);
-            });
+            formWidgets = Object.values(this.fields).map(field =>
+                new formComponent(this, field.name, field.string, field.type, field.store));
         } else {
-            var fields = _.sortBy(this.fields_not_in_view, function (field) {
+            const fields = _.sortBy(this.fields_not_in_view, function (field) {
                 return field.string.toLowerCase();
             });
-            form_widgets = _.map(fields, function (field) {
-                return new FormComponent(self, field.name, field.string, field.type);
+            formWidgets = fields.map(field => new formComponent(this, field.name, field.string, field.type));
+        }
+
+        if (this._searchValue) {
+            formWidgets = formWidgets.filter(result => {
+                const searchValue = this._searchValue.toLowerCase();
+                if (this.debug) {
+                    return result.label.toLowerCase().includes(searchValue) ||
+                        result.description.toLowerCase().includes(searchValue);
+                }
+                return result.label.toLowerCase().includes(searchValue);
             });
         }
-        $sectionTitle = $('<h3>', {
-            html: _t('Existing Fields'),
-        });
-        $section = this._renderSection(form_widgets);
+
+        const $sidebarContent = this.$('.o_web_studio_sidebar_content');
+        const $section = this._renderSection(formWidgets);
         $section.addClass('o_web_studio_existing_fields');
-        $sidebar_content.append($sectionTitle, $section);
+        if ($existingFields.length) {
+            $sidebarContent.append($section);
+        } else {
+            const $sectionTitle = $('<h3>', {
+                html: _t('Existing Fields'),
+            });
+            const $sectionSearchDiv = core.qweb.render('web_studio.ExistingFieldsInputSearch');
+            $sidebarContent.append($sectionTitle, $sectionSearchDiv, $section);
+        }
+    },
+    /**
+     * @private
+     */
+    _renderNewFieldsSection: function () {
+        const widgetClasses = form_component_widget_registry.get('new_field');
+        const formWidgets = widgetClasses.map(FormComponent => new FormComponent(this));
+        const $sectionTitle = $('<h3>', {
+            html: _t('New Fields'),
+        });
+        const $section = this._renderSection(formWidgets);
+        $section.addClass('o_web_studio_new_fields');
+
+        const $sidebarContent = this.$('.o_web_studio_sidebar_content');
+        $sidebarContent.append($sectionTitle, $section);
     },
     /**
      * @private
@@ -776,6 +803,16 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     _onRainbowImageReset: function () {
         this.$('input#rainbow_img_url').val('');
         this.$('input#rainbow_img_url').trigger('change');
+    },
+    /**
+     * Called when the search input value is changed -> adapts the fields list
+     *
+     * @private
+     */
+    _onSearchInputChange: function () {
+        this._searchValue = this.$('.o_web_studio_sidebar_search_input').val();
+        this._isSearchValueActive = true;
+        this._render();
     },
     /**
      * @private

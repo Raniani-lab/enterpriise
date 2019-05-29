@@ -156,6 +156,55 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('search existing fields into sidebar', async function (assert) {
+        assert.expect(8);
+
+        const odooCurrentDebugValue = odoo.debug;
+
+        odoo.debug = true;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree/>",
+        });
+
+        assert.containsOnce(vem, '.o_web_studio_sidebar',
+            "there should be a sidebar");
+        assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_new'),'active',
+            "the Add tab should be active in list view");
+        assert.strictEqual(vem.$('.o_web_studio_sidebar').find('.o_web_studio_field_type_container').length, 2,
+            "there should be two sections in Add (new & existing fields");
+        assert.containsN(vem,
+            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component', 11);
+
+        const $input = vem.$('.o_web_studio_sidebar_search_input');
+
+        $input.val("a");
+        await testUtils.fields.triggerKeyup($input);
+        assert.containsN(vem,
+            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component', 7);
+
+        $input.val("ar");
+        await testUtils.fields.triggerKeyup($input);
+        assert.containsN(vem,
+            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component', 2);
+
+        $input.val("art");
+        await testUtils.fields.triggerKeyup($input);
+        assert.containsOnce(vem,
+            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component');
+
+        $input.val("artt");
+        await testUtils.fields.triggerKeyup($input);
+        assert.containsNone(vem,
+            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component');
+
+        odoo.debug = odooCurrentDebugValue;
+
+        vem.destroy();
+    });
+
     QUnit.test('empty list editor', async function (assert) {
         assert.expect(5);
 

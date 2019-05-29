@@ -18,7 +18,7 @@
     > thead > tr > :not(:empty) {
         padding: ceil((($base * $ratio) / 1rem) * $o-root-font-size + 4px) 4px; // FIXME
     }
-    > tbody > tr:not(.o_list_view_grouped) > td {
+    > tbody > tr:not(.o_list_table_grouped) > td {
         padding: $body-padding 4px;
     }
     > tfoot > tr > :not(:empty) {
@@ -44,7 +44,7 @@
 }
 
 // Common style for list views (also inside form views)
-.o_list_view {
+.o_list_view .o_list_table {
     // We need this to be collapse because we want to add a border on the rows
     // for sale order/invoice lines of type section.
     border-collapse: collapse;
@@ -115,7 +115,7 @@
     }
 
     // -------   Grouped list views -------
-    &.o_list_view_grouped {
+    &.o_list_table_grouped {
         > tbody > tr.o_group_header {
             background-color: gray('200');
             box-shadow: inset 0 2px 0 #ffffff;
@@ -166,11 +166,11 @@
 }
 
 // Standalone list views
-.o_content > .table-responsive > .o_list_view.table {
+.o_content > .table-responsive > .o_list_view .table {
     // List views always have the table-sm class, maybe we should remove
     // it (and consider it does not exist) and change the default table paddings
     @include o-list-view-full-width-padding($base: $table-cell-padding-sm, $ratio: 2);
-    &:not(.o_list_view_grouped) {
+    &:not(.o_list_table_grouped) {
         @include media-breakpoint-up(xl) {
             @include o-list-view-full-width-padding($base: $table-cell-padding-sm, $ratio: 2.5);
         }

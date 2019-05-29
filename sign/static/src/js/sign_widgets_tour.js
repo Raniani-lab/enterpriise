@@ -23,7 +23,7 @@ odoo.define('sign_widgets_tour', function (require) {
             },
             {
                 content: "Mitchel",
-                trigger: 'table.o_list_view td.o_data_cell:contains(Admin)',
+                trigger: 'table.o_list_table td.o_data_cell:contains(Admin)',
                 run: 'click',
             },
 

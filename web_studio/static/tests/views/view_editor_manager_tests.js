@@ -534,7 +534,7 @@ QUnit.module('ViewEditorManager', {
             groupBy: ['priority'],
         });
 
-        assert.containsNone(vem, '.o_web_studio_list_view_editor .o_list_view_grouped',
+        assert.containsNone(vem, '.o_web_studio_list_view_editor .o_list_table_grouped',
             "The list should not be grouped");
 
         vem.destroy();

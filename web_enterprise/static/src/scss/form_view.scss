@@ -424,7 +424,7 @@
         }
     }
     // One2Many List views
-    .o_field_widget .o_list_view {
+    .o_field_widget .o_list_table {
         &.table-striped {
             > tbody {
                 > tr:not(.o_data_row) > td {

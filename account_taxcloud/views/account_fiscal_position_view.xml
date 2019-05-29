@@ -13,6 +13,10 @@
                     Please enter your Taxcloud credentials to compute tax rates automatically.
                     <a class="alert-link" href="/web#action=account.action_account_config" role="button">Go to Settings.</a>
                 </div>
+                <div class="alert alert-info" role="alert"
+                    attrs="{'invisible': ['|', ('auto_apply', '=', True), ('is_taxcloud', '=', False)]}">
+                    Enable <b>Detect Automatically</b> to automatically use TaxCloud when selling to American customers.
+                </div>
             </div>
             <xpath expr="//field[@name='name']" position="after">
                 <field name="is_taxcloud"/>

@@ -166,6 +166,7 @@ var GanttRenderer = AbstractRenderer.extend({
             progressField: this.progressField,
             consolidationParams: this.consolidationParams,
             state: this.state,
+            fieldsInfo: this.fieldsInfo,
             slots: this._getSlotsDates(),
             pillDecorations: this.pillDecorations,
             popoverQWeb: this.popoverQWeb,

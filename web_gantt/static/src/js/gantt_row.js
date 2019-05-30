@@ -44,6 +44,7 @@ var GanttRow = Widget.extend({
         this.pills = _.map(pillsInfo.pills, _.clone);
 
         this.viewInfo = viewInfo;
+        this.fieldsInfo = viewInfo.fieldsInfo;
         this.state = viewInfo.state;
         this.colorField = viewInfo.colorField;
 
@@ -431,10 +432,32 @@ var GanttRow = Widget.extend({
      */
     _getDecorationEvalContext: function (pillData) {
         return _.extend(
-            pillData,
+            this._getPillEvalContext(pillData),
             session.user_context,
             {current_date: moment().format('YYYY-MM-DD')}
         );
+    },
+    /**
+     * Evaluate the pill evaluation context.
+     *
+     * @private
+     * @param {Object} pillData
+     * @returns {Object} context
+     */
+    _getPillEvalContext: function (pillData) {
+        var pillContext = _.clone(pillData);
+        for (var fieldName in pillContext) {
+            if (this.fieldsInfo[fieldName]) {
+                var fieldType = this.fieldsInfo[fieldName].type;
+                if (fieldType === 'date' || fieldType === 'datetime') {
+                    if (pillContext[fieldName]) {
+                        pillContext[fieldName] = JSON.parse(JSON.stringify(pillContext[fieldName]));
+                    }
+                    continue;
+                }
+            }
+        }
+        return pillContext;
     },
     /**
      * Get context to display in popover template

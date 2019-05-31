@@ -218,7 +218,7 @@ screens.PaymentScreenWidget.include({
     send_request: function (data) {
         var self = this;
         this.terminal.action(data)
-            .then(function(data) {self._onActionResult.bind(self, data);})
+            .then(self._onActionResult.bind(self))
             .guardedCatch(self._onActionFail.bind(self));
     },
     _onActionResult: function (data) {
@@ -227,7 +227,9 @@ screens.PaymentScreenWidget.include({
                     'title': _t('Connection to terminal failed'),
                     'body':  _t('Please check if the terminal is still connected.'),
                 });
-            this.pos.get_order().selected_paymentline.set_payment_status('force_done');
+            if (this.pos.get_order().selected_paymentline) {
+                this.pos.get_order().selected_paymentline.set_payment_status('force_done');
+            }
             this.render_paymentlines();
         }
     },
@@ -236,7 +238,9 @@ screens.PaymentScreenWidget.include({
                 'title': _t('Connection to IoT Box failed'),
                 'body':  _t('Please check if the IoT Box is still connected.'),
             });
-        this.pos.get_order().selected_paymentline.set_payment_status('force_done');
+        if (this.pos.get_order().selected_paymentline) {
+            this.pos.get_order().selected_paymentline.set_payment_status('force_done');
+        }
         this.render_paymentlines();
     },
     _showErrorConfig: function () {

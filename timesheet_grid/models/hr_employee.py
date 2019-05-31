@@ -15,7 +15,7 @@ class Employee(models.Model):
         return [('groups_id', 'in', [group.id])] if group else []
 
     timesheet_validated = fields.Date(
-        "Timesheets Validation Date",
+        "Timesheets Validation Date", groups="hr.group_hr_user",
         help="Date until which the employee's timesheets have been validated")
     timesheet_manager_id = fields.Many2one(
         'res.users', string='Timesheet Responsible',
@@ -66,17 +66,8 @@ class Employee(models.Model):
         return result
 
 
-class User(models.Model):
-    _inherit = ['res.users']
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
 
-    timesheet_manager_id = fields.Many2one(related='employee_id.timesheet_manager_id')
-
-    def __init__(self, pool, cr):
-        """ Override of __init__ to add access rights.
-            Access rights are disabled by default, but allowed
-            on some specific fields defined in self.SELF_{READ/WRITE}ABLE_FIELDS.
-        """
-        init_res = super(User, self).__init__(pool, cr)
-        # duplicate list to avoid modifying the original reference
-        type(self).SELF_READABLE_FIELDS = ['timesheet_manager_id'] + type(self).SELF_READABLE_FIELDS
-        return init_res
+    timesheet_manager_id = fields.Many2one('res.users', string='Timesheet Responsible',
+        help="User responsible of timesheet validation. Should be Timesheet Manager.")

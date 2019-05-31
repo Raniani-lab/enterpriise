@@ -543,7 +543,8 @@ class SignRequestItem(models.Model):
 
     @api.multi
     def action_completed(self):
-        self.write({'signing_date': time.strftime(DEFAULT_SERVER_DATE_FORMAT), 'state': 'completed'})
+        date = fields.Date.context_today(self).strftime(DEFAULT_SERVER_DATE_FORMAT)
+        self.write({'signing_date': date, 'state': 'completed'})
         self.mapped('sign_request_id')._check_after_compute()
 
     @api.multi

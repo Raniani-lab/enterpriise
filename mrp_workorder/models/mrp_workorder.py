@@ -78,7 +78,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     moves = wo.production_id.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
                 else:
                     moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
-                move = moves[0]
+                move = moves[:1]
                 lines = wo.workorder_line_ids.filtered(lambda l: l.move_id in moves)
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_tracking != 'none' else lines
                 wo.component_remaining_qty = move.product_uom._compute_quantity(
@@ -190,7 +190,15 @@ class MrpProductionWorkcenterLine(models.Model):
             moves |= self.production_id.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == self.component_id)
         else:
             moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == self.component_id)
-        move = moves[0]
+        move = moves[:1]
+        if not move:
+            raise UserError(
+                _('No valid stock move found for product %s.\n\n'
+                  'Stock moves linked to raw materials were probably canceled. '
+                  'In order to solve the issue, use the "Update" button next to the "Quantity To Produce" '
+                  'in the manufacturing order to regenerate the necessary moves.'
+                ) % (self.component_id.display_name)
+            )
 
         lines_without_lots = self.workorder_line_ids.filtered(lambda l: l.move_id in moves and not l.lot_id)
         # Compute the theoretical quantity for the current production
@@ -379,7 +387,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.component_id)
                     check.qty_done = moves[0].product_uom._compute_quantity(
                         self.qty_producing * sum(moves.mapped('unit_factor')),
-                        moves[0].product_id.uom_id,
+                        moves[:1].product_id.uom_id,
                         round=False
                     )
 
@@ -429,7 +437,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == point.component_id and m.workorder_id == wo)
                     qty_done = 1.0
                     if point.component_id and moves and point.component_id.tracking != 'serial':
-                        qty_done = float_round(sum(moves.mapped('unit_factor')) * wo.qty_producing, precision_rounding=moves[0].product_uom.rounding)
+                        qty_done = float_round(sum(moves.mapped('unit_factor')) * wo.qty_producing, precision_rounding=moves[:1].product_uom.rounding)
                     # Do not generate qc for control point of type register_consumed_materials if the component is not consummed in this wo.
                     if not point.component_id or moves:
                         self.env['quality.check'].create({'workorder_id': wo.id,
@@ -454,7 +462,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == component)
                 qty_done = 1.0
                 if component.tracking != 'serial':
-                    qty_done = float_round(sum(moves.mapped('unit_factor')) * wo.qty_producing, precision_rounding=moves[0].product_uom.rounding)
+                    qty_done = float_round(sum(moves.mapped('unit_factor')) * wo.qty_producing, precision_rounding=moves[:1].product_uom.rounding)
                 self.env['quality.check'].create({
                     'workorder_id': wo.id,
                     'product_id': production.product_id.id,
@@ -476,7 +484,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     if by_product.tracking == 'serial':
                         qty_done = 1.0
                     else:
-                        qty_done = float_round(sum(moves.mapped('unit_factor')) * wo.qty_producing, precision_rounding=moves[0].product_uom.rounding)
+                        qty_done = float_round(sum(moves.mapped('unit_factor')) * wo.qty_producing, precision_rounding=moves[:1].product_uom.rounding)
                     self.env['quality.check'].create({
                         'workorder_id': wo.id,
                         'product_id': production.product_id.id,

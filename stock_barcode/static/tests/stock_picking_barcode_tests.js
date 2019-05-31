@@ -76,7 +76,7 @@ QUnit.module('Barcode', {
             stock_picking: {
                 fields: {
                     _barcode_scanned: {string: "Barcode Scanned", type: 'char'},
-                    move_line_ids: {
+                    move_line_ids_without_package: {
                         string: "one2many field",
                         relation: 'stock.move.line',
                         type: 'one2many',
@@ -84,10 +84,10 @@ QUnit.module('Barcode', {
                 },
                 records: [{
                     id: 2,
-                    move_line_ids: [3],
+                    move_line_ids_without_package: [3],
                 }, {
                     id: 5,
-                    move_line_ids: [5],
+                    move_line_ids_without_package: [5],
                 }],
             },
         };
@@ -106,7 +106,7 @@ QUnit.test('scan a product (no tracking)', function (assert) {
                 '<sheet>' +
                     '<notebook>' +
                         '<page string="Operations">' +
-                            '<field name="move_line_ids">' +
+                            '<field name="move_line_ids_without_package">' +
                                 '<tree>' +
                                     '<field name="product_id"/>' +
                                     '<field name="product_qty"/>' +
@@ -156,7 +156,7 @@ QUnit.test('scan a product tracked by lot', function (assert) {
                     '<notebook>' +
                         '<page string="Operations">' +
                             '<field name="display_name"/>' +
-                            '<field name="move_line_ids">' +
+                            '<field name="move_line_ids_without_package">' +
                                 '<tree>' +
                                     '<field name="product_id"/>' +
                                     '<field name="product_qty"/>' +
@@ -221,7 +221,7 @@ QUnit.test('scan a product verify onChange', function (assert) {
                     '<notebook>' +
                         '<page string="Operations">' +
                             '<field name="display_name"/>' +
-                            '<field name="move_line_ids">' +
+                            '<field name="move_line_ids_without_package">' +
                                 '<tree>' +
                                     '<field name="product_id"/>' +
                                     '<field name="product_qty"/>' +

@@ -29,7 +29,28 @@ class generic_tax_report(models.AbstractModel):
         return ctx
 
     def _sql_cash_based_taxes(self):
-        sql = """SELECT tax.id, SUM(CASE WHEN tax.type_tax_use = 'sale' THEN -"account_move_line".tax_base_amount ELSE "account_move_line".tax_base_amount END), SUM("account_move_line".balance) FROM account_tax tax, %s WHERE tax.id = "account_move_line".tax_line_id AND %s AND tax.tax_exigibility = 'on_payment' and "account_move_line".tax_exigible GROUP BY tax.id"""
+        sql = """SELECT id, sum(base) AS base, sum(net) AS net FROM (
+                    SELECT tax.id,
+                    SUM("account_move_line".balance) AS base,
+                    0.0 AS net
+                    FROM account_move_line_account_tax_rel rel, account_tax tax, %s
+                    WHERE (tax.tax_exigibility = 'on_payment')
+                    AND (rel.account_move_line_id = "account_move_line".id)
+                    AND (tax.id = rel.account_tax_id)
+                    AND ("account_move_line".tax_exigible)
+                    AND %s
+                    GROUP BY tax.id
+                    UNION
+                    SELECT tax.id,
+                    0.0 AS base,
+                    SUM("account_move_line".balance) AS net
+                    FROM account_tax tax, %s
+                    WHERE (tax.tax_exigibility = 'on_payment')
+                    AND "account_move_line".tax_line_id = tax.id
+                    AND ("account_move_line".tax_exigible)
+                    AND %s
+                    GROUP BY tax.id) cash_based
+                    GROUP BY id;"""
         return sql
 
     def _sql_tax_amt_regular_taxes(self):
@@ -50,8 +71,8 @@ class generic_tax_report(models.AbstractModel):
     def _compute_from_amls(self, options, taxes, period_number):
         sql = self._sql_cash_based_taxes()
         tables, where_clause, where_params = self.env['account.move.line']._query_get()
-        query = sql % (tables, where_clause)
-        self.env.cr.execute(query, where_params)
+        query = sql % (tables, where_clause, tables, where_clause)
+        self.env.cr.execute(query, where_params + where_params)
         results = self.env.cr.fetchall()
         for result in results:
             if result[0] in taxes:

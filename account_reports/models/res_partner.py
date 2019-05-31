@@ -34,20 +34,7 @@ class ResPartner(models.Model):
         """
         if operator != '=' or value not in ['in_need_of_action', 'with_overdue_invoices', 'no_action_needed']:
             return []
-
-        today = fields.Date.context_today(self)
-        domain = self.get_followup_lines_domain(today, overdue_only=value == 'with_overdue_invoices', only_unblocked=True)
-
-        query = self.env['account.move.line']._where_calc(domain)
-        tables, where_clause, where_params = query.get_sql()
-        sql = """SELECT "account_move_line".partner_id
-                 FROM %s
-                 WHERE %s
-                   AND "account_move_line".partner_id IS NOT NULL
-                 GROUP BY "account_move_line".partner_id"""
-        query = sql % (tables, where_clause)
-        self.env.cr.execute(query, where_params)
-        results = self.env.cr.fetchall()
+        results = self._get_partners_in_need_of_action(overdue_only= value == 'with_overdue_invoices').ids
         if value in ('in_need_of_action', 'with_overdue_invoices'):
             return [('id', 'in', results)]
         return [('id', 'not in', results)]

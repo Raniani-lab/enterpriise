@@ -34,7 +34,7 @@ class ResPartner(models.Model):
         """
         if operator != '=' or value not in ['in_need_of_action', 'with_overdue_invoices', 'no_action_needed']:
             return []
-        results = self._get_partners_in_need_of_action(overdue_only= value == 'with_overdue_invoices').ids
+        results = self._get_partners_in_need_of_action(overdue_only=(value == 'with_overdue_invoices'))
         if value in ('in_need_of_action', 'with_overdue_invoices'):
             return [('id', 'in', results)]
         return [('id', 'not in', results)]

@@ -100,6 +100,7 @@ class HrPayrollStructureType(models.Model):
         default=lambda self: self.env.company.resource_calendar_id)
     struct_ids = fields.One2many('hr.payroll.structure', 'type_id', string="Structures")
     default_struct_id = fields.Many2one('hr.payroll.structure', compute='_compute_default_struct_id')
+    country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
 
     def _compute_default_struct_id(self):
         for structure_type in self:

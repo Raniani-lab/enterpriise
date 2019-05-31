@@ -94,6 +94,7 @@ class TestPayrollSEPACreditTransfer(common.TransactionCase):
             'wage': 5000.0,
             'employee_id': self.hr_employee_john.id,
             'structure_type_id': self.hr_structure_type.id,
+            'state': 'open',
         })
 
         self.hr_payslip_john = self.env['hr.payslip'].create({

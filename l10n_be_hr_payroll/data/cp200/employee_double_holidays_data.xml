@@ -149,16 +149,12 @@ if contract.mobile and contract.internet:
             <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
         </record>
 
-        <record id="cp200_employees_double_holiday_pay_gross" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll.GROSS"/>
-            <field name="name">Gross</field>
-            <field name="code">GROSS</field>
-            <field name="sequence">101</field>
-            <field name="condition_select">none</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.DP + categories.ALW</field>
-            <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        </record>
+        <function model="hr.salary.rule" name="write">
+            <value model="hr.salary.rule" search="[
+                ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
+                ('code', '=', 'GROSS')]"/>
+            <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW', 'sequence': '101'}"/>
+        </function>
 
         <record id="cp200_employees_double_holiday_pay_p_p" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_pp"/>
@@ -224,15 +220,11 @@ if contract.mobile and contract.internet:
             <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
         </record>
 
-        <record id="cp200_employees_double_holiday_pay_net" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll.NET"/>
-            <field name="name">Net</field>
-            <field name="code">NET</field>
-            <field name="sequence">201</field>
-            <field name="condition_select">none</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.DP + categories.ALW + categories.DED</field>
-            <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        </record>
+        <function model="hr.salary.rule" name="write">
+            <value model="hr.salary.rule" search="[
+                ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
+                ('code', '=', 'NET')]"/>
+            <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW + categories.DED', 'sequence': '201'}"/>
+        </function>
     </data>
 </odoo>

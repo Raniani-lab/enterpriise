@@ -122,8 +122,8 @@ class HrPayslipRun(models.Model):
                                        readonly=False, copy=False)
 
     @api.multi
-    def draft_payslip_run(self):
-        super(HrPayslipRun, self).draft_payslip_run()
+    def action_draft(self):
+        super(HrPayslipRun, self).action_draft()
         self.write({'available_advice': False})
 
     @api.multi

@@ -57,7 +57,7 @@ class TestPayslip(common.TransactionCase):
         payslip.employee_id = self.env.ref('hr_contract_salary.hr_employee_laurie_poiret').id
         payslip.onchange_employee()
         payslip._onchange_struct_id()
-        payslip.journal_id = self.env['account.journal'].search([], limit=1).id
+        payslip.struct_id.journal_id = self.env['account.journal'].search([], limit=1).id
         values = payslip._convert_to_write(payslip._cache)
         payslip = Payslip.create(values)
 

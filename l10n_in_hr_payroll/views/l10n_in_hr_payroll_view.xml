@@ -30,7 +30,7 @@
                     <newline/>
                     <field name="available_advice"/>
                 </xpath>
-                 <xpath expr="//button[@name='draft_payslip_run']" position="after">
+                 <xpath expr="//button[@name='action_draft']" position="after">
                     <button name="create_advice" string="Create Advice" type="object" states="close" />
                  </xpath>
             </data>

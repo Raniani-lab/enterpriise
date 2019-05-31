@@ -63,8 +63,21 @@ class HrPayrollStructure(models.Model):
     regular_pay = fields.Boolean("Regular Pay", help="Check this option if this structure is the common one")
     unpaid_work_entry_type_ids = fields.Many2many('hr.work.entry.type')
     use_worked_day_lines = fields.Boolean(default=True, help="Worked days won't be computed/displayed in payslips.")
-
+    schedule_pay = fields.Selection([
+        ('monthly', 'Monthly'),
+        ('quarterly', 'Quarterly'),
+        ('semi-annually', 'Semi-annually'),
+        ('annually', 'Annually'),
+        ('weekly', 'Weekly'),
+        ('bi-weekly', 'Bi-weekly'),
+        ('bi-monthly', 'Bi-monthly'),
+    ], string='Scheduled Pay', index=True, default='monthly', help="Defines the frequency of the wage payment.")
     input_line_type_ids = fields.Many2many('hr.payslip.input.type', string='Other Input Line')
+
+    @api.onchange('type_id')
+    def onchange_type_id(self):
+        if not self.schedule_pay:
+            self.schedule_pay = self.type_id.default_schedule_pay
 
 
 class HrPayrollStructureType(models.Model):
@@ -87,6 +100,7 @@ class HrPayrollStructureType(models.Model):
         default=lambda self: self.env.company.resource_calendar_id)
     struct_ids = fields.One2many('hr.payroll.structure', 'type_id', string="Structures")
     default_struct_id = fields.Many2one('hr.payroll.structure', compute='_compute_default_struct_id')
+    country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
 
     def _compute_default_struct_id(self):
         for structure_type in self:

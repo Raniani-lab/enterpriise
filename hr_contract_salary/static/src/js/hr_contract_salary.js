@@ -150,9 +150,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             'phone': $("input[name='phone']").val(),
             'identification_id': $("input[name='identification_id']").val(),
             'country_id': parseInt($("select[name='country_id']").val()),
-            'certificate': _.find($("input[name='certificate']"), function(certificate) {
-                return certificate.checked;
-            }).value,
+            'certificate': $("select[name='certificate']").val(),
             'study_field': $("input[name='study_field']").val(),
             'study_school': $("input[name='study_school']").val(),
             'bank_account': $("input[name='bank_account']").val(),

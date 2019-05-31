@@ -802,18 +802,13 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="hr_cs_control hr_cs_control_radio mt4">Bachelor
-                                                    <input type="radio" name="certificate" value="bachelor" class="advantage_input" t-att-checked="contract.employee_id.certificate == 'bachelor'"/>
-                                                    <div class="hr_cs_control_indicator hr_cs_control_indicator_white"/>
-                                                </label>
-                                                <label class="hr_cs_control hr_cs_control_radio mt4">Master
-                                                    <input type="radio" name="certificate" value="master" class="advantage_input" t-att-checked="contract.employee_id.certificate == 'master'"/>
-                                                    <div class="hr_cs_control_indicator hr_cs_control_indicator_white"/>
-                                                </label>
-                                                <label class="hr_cs_control hr_cs_control_radio mt4">Other
-                                                    <input type="radio" name="certificate" value="other" class="advantage_input" t-att-checked="contract.employee_id.certificate == 'other'"/>
-                                                    <div class="hr_cs_control_indicator hr_cs_control_indicator_white"/>
-                                                </label>
+                                                <label class="col-form-label" for="certificate">Certificate</label>
+                                                <select name="certificate" class="form-control advantage_input" data-placeholder="Select a certificate" required="required">
+                                                    <option/>
+                                                    <option value="bachelor" t-att-selected="contract.employee_id.certificate == 'bachelor'">Bachelor</option>
+                                                    <option value="master" t-att-selected="contract.employee_id.certificate == 'master'">Master</option>
+                                                    <option value="other" t-att-selected="contract.employee_id.certificate == 'other'">Other</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

@@ -17,6 +17,7 @@ from odoo.tools.misc import format_date
 class HrPayslip(models.Model):
     _name = 'hr.payslip'
     _description = 'Pay Slip'
+    _order = 'date_to desc'
 
     struct_id = fields.Many2one('hr.payroll.structure', string='Structure',
         readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
@@ -419,6 +420,7 @@ class HrPayslipInputType(models.Model):
 class HrPayslipRun(models.Model):
     _name = 'hr.payslip.run'
     _description = 'Payslip Batches'
+    _order = 'date_end desc'
 
     name = fields.Char(required=True, readonly=True, states={'draft': [('readonly', False)]})
     slip_ids = fields.One2many('hr.payslip', 'payslip_run_id', string='Payslips', readonly=True,

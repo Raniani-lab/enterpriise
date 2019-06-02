@@ -29,13 +29,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_res_partner__signature_count
 #: model:ir.model.fields,field_description:sign.field_res_users__signature_count
 msgid "# Signatures"
-msgstr ""
+msgstr "# Aláírások"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:271
 #, python-format
 msgid "%s : Signature request"
-msgstr ""
+msgstr "%s : Aláírási kérelem"
 
 #. module: sign
 #: code:addons/sign/controllers/main.py:218
@@ -48,7 +48,7 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:333
 #, python-format
 msgid "%s has been signed"
-msgstr ""
+msgstr "%s aláírásra került"
 
 #. module: sign
 #: code:addons/sign/controllers/main.py:242
@@ -59,12 +59,12 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
 msgid ") has added you as a follower of the document"
-msgstr ""
+msgstr ") hozzáadta Önt a dokumentum követőjeként"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid ") has requested your signature on the document"
-msgstr ""
+msgstr ") kérelmezte az Ön aláírását a dokumentumra"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -74,7 +74,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "<br/>(the email access has not been sent)"
-msgstr ""
+msgstr "<br/>(az e-mail hozzáférés nem került elküldésre)"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
@@ -87,17 +87,17 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "<span class=\"o_stat_text\"> Signed</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Aláírva</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_partner_view_form
 msgid "<span class=\"o_stat_text\">Signature Requests</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Aláírási kérelmek</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "<span class=\"o_stat_text\">View</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Megtekintés</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
@@ -107,11 +107,16 @@ msgid ""
 "who clicks on the link. The link is private, only those that receive the "
 "link will be able to sign it.</span>"
 msgstr ""
+"<span class=\"text-muted\" attrs=\"{'invisible': [('url', '=', "
+"False)]}\">Ossza meg ezt a hivatkozást, és az Odoo létre fog hozni egy "
+"dokumentumot minden olyan személy számára, aki rákattint a hivatkozásra. A "
+"hivatkozás privát, csak azok fogják tudni aláírni, akik megkapják a "
+"linket.</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_type_view_form
 msgid "<span>(1.0 = full page size)</span>"
-msgstr ""
+msgstr "<span>(1.0 = teljes oldalméret)</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
@@ -120,6 +125,8 @@ msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>\n"
 "            They will be able to access this document and sign it as yourself."
 msgstr ""
+"<strong>Figyelem</strong> ne továbbítsa ezt az e-mailt más embereknek!<br/>\n"
+"            Képesek lesznek hozzáférni ezen dokumentumhoz, és aláírhatják azt az Ön nevében."
 
 #. module: sign
 #. openerp-web
@@ -129,6 +136,8 @@ msgid ""
 "A SMS will be sent to the following phone number. Please update it if it's "
 "not relevant."
 msgstr ""
+"Egy SMS fog elküldésre kerülni a következő telefonszámra. Kérem, frissítse "
+"azt, ha nem helytálló."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction
@@ -157,21 +166,21 @@ msgstr "Tevékenység állapota"
 #: code:addons/sign/static/src/js/sign_backend.js:254
 #, python-format
 msgid "Add Initials"
-msgstr ""
+msgstr "Aláírás hozzáadása"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:263
 #, python-format
 msgid "Add on all pages"
-msgstr ""
+msgstr "Hozzáadás minden oldalon"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:259
 #, python-format
 msgid "Add once"
-msgstr ""
+msgstr "Hozzáadás egyszer"
 
 #. module: sign
 #. openerp-web
@@ -212,7 +221,7 @@ msgstr "Mellékletek száma"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
 msgid "Automatic Partner Field"
-msgstr ""
+msgstr "Automatikus partner mező"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -262,7 +271,7 @@ msgstr "Válasszon egy sablont"
 #: code:addons/sign/static/src/js/sign_common.js:756
 #, python-format
 msgid "Click to start"
-msgstr ""
+msgstr "Kattintson a kezdéshez"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
@@ -367,7 +376,7 @@ msgstr "Ügyfél"
 #: code:addons/sign/static/src/js/sign_backend.js:187
 #, python-format
 msgid "Customize Field"
-msgstr ""
+msgstr "Mező testre szabása"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_date
@@ -377,12 +386,12 @@ msgstr "Dátum"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_height
 msgid "Default Height"
-msgstr ""
+msgstr "Alapértelmezett magasság"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_width
 msgid "Default Width"
-msgstr ""
+msgstr "Alapértelmezett szélesség"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -398,7 +407,7 @@ msgstr "Részletek"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_signature
 msgid "Digital Signature"
-msgstr ""
+msgstr "Digitális aláírás"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_users_view_form
@@ -454,12 +463,12 @@ msgstr "Documentum oldal"
 #: code:addons/sign/static/src/xml/sign_common.xml:97
 #, python-format
 msgid "Document Sign"
-msgstr ""
+msgstr "Dokumentum aláírás"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__template_id
 msgid "Document Template"
-msgstr ""
+msgstr "Dokumentum sablon"
 
 #. module: sign
 #. openerp-web
@@ -467,14 +476,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Download Document"
-msgstr ""
+msgstr "Dokumentum letöltése"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:79
 #, python-format
 msgid "Download original document"
-msgstr ""
+msgstr "Eredeti dokumentum letöltése"
 
 #. module: sign
 #: selection:sign.request.item,state:0
@@ -486,7 +495,7 @@ msgstr "Tervezet"
 #: code:addons/sign/static/src/xml/sign_backend.xml:72
 #, python-format
 msgid "Drag & Drop a field in the PDF"
-msgstr ""
+msgstr "Húzzon és ejtsen egy mezőt a PDF-be"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -506,7 +515,7 @@ msgstr "Duplikálás"
 #: code:addons/sign/static/src/js/sign_backend.js:874
 #, python-format
 msgid "Duplicated Template"
-msgstr ""
+msgstr "Duplikált sablon"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -516,19 +525,19 @@ msgstr "Szerkesztés"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Edit Fields"
-msgstr ""
+msgstr "Mezők szerkesztése"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Edit fields"
-msgstr ""
+msgstr "Mezők szerkesztése"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:56
 #, python-format
 msgid "Edit template name"
-msgstr ""
+msgstr "Sablonnév szerkesztése"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signer_email
@@ -557,7 +566,7 @@ msgstr "Hiba"
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__extension
 #: model:ir.model.fields,field_description:sign.field_sign_template__extension
 msgid "Extension"
-msgstr ""
+msgstr "Kiterjesztés"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__favorited_ids
@@ -577,12 +586,12 @@ msgstr "Név mező"
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_item_type_menu
 msgid "Field Types"
-msgstr ""
+msgstr "Mező típusok"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item
 msgid "Fields to be sign on Document"
-msgstr ""
+msgstr "Aláírandó mezők a dokumentumon"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__datas
@@ -626,7 +635,7 @@ msgstr "Feladó:"
 #. module: sign
 #: selection:sign.request,state:0
 msgid "Fully Signed"
-msgstr ""
+msgstr "Hiánytalanul aláírt"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -692,7 +701,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "In favorites, remove it"
-msgstr ""
+msgstr "A kedvencekben van, távolítsa el"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
@@ -727,7 +736,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__last_action_date
 msgid "Last Action Date"
-msgstr ""
+msgstr "Legutóbbi akció"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item____last_update
@@ -793,7 +802,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__url
 msgid "Link to Share"
-msgstr ""
+msgstr "Megosztandó hivatkozás"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -810,7 +819,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:87
 #, python-format
 msgid "Made with Odoo Sign"
-msgstr ""
+msgstr "Az Odoo Aláírás alkalmazásával készült"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_main_attachment_id
@@ -827,7 +836,7 @@ msgstr "Menedzser"
 #: code:addons/sign/static/src/xml/sign_backend.xml:27
 #, python-format
 msgid "Mandatory field"
-msgstr ""
+msgstr "Kötelező mező"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message
@@ -852,7 +861,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "Missing signature request"
-msgstr ""
+msgstr "Hiányzó aláírási kérelem"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sms_number
@@ -862,12 +871,12 @@ msgstr "Mobilszám"
 #. module: sign
 #: selection:sign.item.type,item_type:0
 msgid "Multiline Text"
-msgstr ""
+msgstr "Többsoros szöveg"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_multiline_text
 msgid "Multiline text"
-msgstr ""
+msgstr "Többsoros szöveg"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_template_share
@@ -878,7 +887,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "My Documents"
-msgstr ""
+msgstr "Dokumentumaim"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -889,7 +898,7 @@ msgstr "Kedvenceim"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Templates"
-msgstr ""
+msgstr "Sablonjaim"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__name
@@ -902,24 +911,26 @@ msgstr "Név"
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Name for the file"
-msgstr ""
+msgstr "A fájl neve"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Name or email..."
-msgstr ""
+msgstr "Név vagy e-mail..."
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:59
 #, python-format
 msgid "Need a valid PDF to add signature fields !"
-msgstr ""
+msgstr "Érvényes PDF szükséges az aláírási mezők hozzáadásához!"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Need to sign? Check your inbox to get your secure access"
 msgstr ""
+"Alá kell írnia? Ellenőrizze a bejövő leveleit a biztonságos hozzáférés "
+"megszerzéséhez"
 
 #. module: sign
 #. openerp-web
@@ -960,18 +971,18 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid "No documents to sign"
-msgstr ""
+msgstr "Nincsenek aláírandó dokumentumok"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Not in favorites, add it"
-msgstr ""
+msgstr "Nincs a kedvencek között, adja hozzá"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Not in favorites, set it"
-msgstr ""
+msgstr "Nincs a kedvencekben, állítsa be"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction_counter
@@ -1028,12 +1039,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
 msgid "Optional Link"
-msgstr ""
+msgstr "Opcionális hivatkozás"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Optional Message..."
-msgstr ""
+msgstr "Opcionális üzenet..."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_template__redirect_url
@@ -1041,6 +1052,8 @@ msgid ""
 "Optional link for redirection after signature instead of "
 "https://www.odoo.com/page/sign"
 msgstr ""
+"Opcionális hivatkozás az aláírás utáni átairányításra a "
+"https://www.odoo.com/page/sign helyett"
 
 #. module: sign
 #. openerp-web
@@ -1052,7 +1065,7 @@ msgstr "Opciók"
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "Or,"
-msgstr ""
+msgstr "Vagy,"
 
 #. module: sign
 #: selection:sign.request,activity_state:0
@@ -1095,7 +1108,7 @@ msgstr "Telefon"
 #: code:addons/sign/static/src/xml/sign_common.xml:60
 #, python-format
 msgid "Phone number..."
-msgstr ""
+msgstr "Telefonszám..."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__placeholder
@@ -1122,12 +1135,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__posX
 msgid "Position X"
-msgstr ""
+msgstr "X pozíció"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__posY
 msgid "Position Y"
-msgstr ""
+msgstr "Y pozíció"
 
 #. module: sign
 #. openerp-web
@@ -1146,7 +1159,7 @@ msgstr "Előnézet"
 #: code:addons/sign/static/src/js/sign_common.js:78
 #, python-format
 msgid "Print original document"
-msgstr ""
+msgstr "Eredeti dokumentum nyomtatása"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__progress
@@ -1168,7 +1181,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_backend.js:97
 #, python-format
 msgid "Request a Signature"
-msgstr ""
+msgstr "Aláírás kérése"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
@@ -1180,7 +1193,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_total
 msgid "Requested Signatures"
-msgstr ""
+msgstr "Kért aláírások"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__required
@@ -1193,21 +1206,21 @@ msgstr "Követelmény"
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #, python-format
 msgid "Resend"
-msgstr ""
+msgstr "Újraküldés"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:1035
 #, python-format
 msgid "Resend the invitation"
-msgstr ""
+msgstr "Meghívás újraküldése"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:999
 #, python-format
 msgid "Resent !"
-msgstr ""
+msgstr "Újra elküldve!"
 
 #. module: sign
 #. openerp-web
@@ -1243,29 +1256,29 @@ msgstr "Szerep"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_role_view_tree
 msgid "Role Name"
-msgstr ""
+msgstr "Szerep neve"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_item_role_menu
 msgid "Roles"
-msgstr ""
+msgstr "Szerepek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__sms_authentification
 msgid "SMS Authentification"
-msgstr ""
+msgstr "SMS hitelesítés"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:67
 #, python-format
 msgid "SMS Code"
-msgstr ""
+msgstr "SMS kód"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sms_token
 msgid "SMS Token"
-msgstr ""
+msgstr "SMS token"
 
 #. module: sign
 #. openerp-web
@@ -1297,7 +1310,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:448
 #, python-format
 msgid "Select the responsible"
-msgstr ""
+msgstr "Felelős kiválasztása"
 
 #. module: sign
 #: selection:sign.item.type,item_type:0
@@ -1326,12 +1339,12 @@ msgstr "Küldés"
 #: code:addons/sign/static/src/xml/sign_common.xml:61
 #, python-format
 msgid "Send SMS"
-msgstr ""
+msgstr "SMS küldése"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Send Signature Request"
-msgstr ""
+msgstr "Aláírási kérés küldése"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signer_id
@@ -1341,7 +1354,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Send a Copy"
-msgstr ""
+msgstr "Másolat küldése"
 
 #. module: sign
 #. openerp-web
@@ -1353,13 +1366,13 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__partner_ids
 msgid "Send a copy"
-msgstr ""
+msgstr "Másolat küldése"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_request_send_copy
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 msgid "Send a copy to third parties"
-msgstr ""
+msgstr "Másolat küldése harmadik feleknek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_wait
@@ -1378,7 +1391,7 @@ msgstr "Megosztás"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__share_link
 msgid "Share Link"
-msgstr ""
+msgstr "Hivatkozás megosztása"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1540,74 +1553,74 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template
 msgid "Signature Template"
-msgstr ""
+msgstr "Aláírási sablon"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:29
 #, python-format
 msgid "Signature configuration"
-msgstr ""
+msgstr "Aláírás konfigurációja"
 
 #. module: sign
 #: code:addons/sign/wizard/sign_send_request.py:71
 #, python-format
 msgid "Signature(s)"
-msgstr ""
+msgstr "Aláírás(ok)"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_action
 #: model:ir.ui.menu,name:sign.sign_request_menu
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Signatures"
-msgstr ""
+msgstr "Aláírások"
 
 #. module: sign
 #: selection:sign.request,state:0
 msgid "Signatures in Progress"
-msgstr ""
+msgstr "Folyamatban lévő aláírások"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Signed"
-msgstr ""
+msgstr "Aláírva"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signing_date
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Signed on"
-msgstr ""
+msgstr "Aláírva"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Signer Email"
-msgstr ""
+msgstr "Aláíró e-mailje"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__request_item_ids
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signer_ids
 msgid "Signers"
-msgstr ""
+msgstr "Aláírók"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signers_count
 msgid "Signers Count"
-msgstr ""
+msgstr "Aláírók száma"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:1345
 #, python-format
 msgid "Some fields have still to be completed !"
-msgstr ""
+msgstr "Néhány mezőt még ki kell tölteni!"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:863
 #, python-format
 msgid "Somebody is already filling a document which uses this template"
-msgstr ""
+msgstr "Valaki már kitölt egy dokumentumot, amely ezt a sablont használja"
 
 #. module: sign
 #. openerp-web
@@ -1617,6 +1630,8 @@ msgstr ""
 #, python-format
 msgid "Sorry, an error occured, please try to fill the document again."
 msgstr ""
+"Elnézést kérünk, hiba történt, kérjük, próbálja meg újból kitölteni a "
+"dokumentumot."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__state
@@ -1669,7 +1684,7 @@ msgstr "Sablon"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template or Tag"
-msgstr ""
+msgstr "Sablon vagy címke"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_template_menu
@@ -1688,12 +1703,12 @@ msgstr "Szöveg"
 #: code:addons/sign/static/src/js/sign_common.js:1082
 #, python-format
 msgid "Thank You !"
-msgstr ""
+msgstr "Köszönjük!"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "The document"
-msgstr ""
+msgstr "A dokumentum"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
@@ -1728,7 +1743,7 @@ msgstr "Borravaló"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "To Sign"
-msgstr ""
+msgstr "Aláírandó"
 
 #. module: sign
 #: selection:sign.request,activity_state:0
@@ -1760,6 +1775,8 @@ msgstr ""
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
 msgstr ""
+"Nem lehet elküldeni az SMS-t, kérem, lépjen kapcsolatba a dokumentum "
+"küldőjével."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_unread
@@ -1775,7 +1792,7 @@ msgstr "Olvasatlan üzenetek számlálója"
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 #: model_terms:ir.actions.act_window,help:sign.sign_template_with_archived_action
 msgid "Upload a PDF"
-msgstr ""
+msgstr "PDF feltöltése"
 
 #. module: sign
 #. openerp-web
@@ -1832,19 +1849,19 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:93
 #, python-format
 msgid "View External Document"
-msgstr ""
+msgstr "Külső dokumentum megtekintése"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:98
 #, python-format
 msgid "View Signed document"
-msgstr ""
+msgstr "Aláírt dokumentum megtekintése"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "View document now"
-msgstr ""
+msgstr "Dokumentum megtekintése most"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
@@ -1868,7 +1885,7 @@ msgstr "Figyelmeztetés"
 #: code:addons/sign/static/src/xml/sign_common.xml:82
 #, python-format
 msgid "We will let you know by email once everyone has signed."
-msgstr ""
+msgstr "Tudatni fogjuk Önnel e-mailben, amint mindenki aláírta."
 
 #. module: sign
 #. openerp-web
@@ -1895,7 +1912,7 @@ msgstr "Szélesség"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Write email or search contact..."
-msgstr ""
+msgstr "Írjon e-mailt, vagy keressen kapcsolatot..."
 
 #. module: sign
 #: code:addons/sign/controllers/main.py:151
@@ -1908,7 +1925,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:82
 #, python-format
 msgid "You can close the window and come back later."
-msgstr ""
+msgstr "Bezárhatja az ablakot, és visszajöhet később."
 
 #. module: sign
 #: code:addons/sign/models/sign_template.py:71
@@ -1921,13 +1938,13 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "You have completed the document"
-msgstr ""
+msgstr "Ön kitöltötte a dokumentumot"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
 msgid ""
 "You will be notified once the document has been signed by everyone involved."
-msgstr ""
+msgstr "Értesíteni fogjuk Önt, amint minden érintett aláírta a dokumentumot."
 
 #. module: sign
 #: code:addons/sign/models/sign_template.py:83
@@ -1936,6 +1953,8 @@ msgid ""
 "Your PDF file shouldn't be encrypted with a password in order to be used as "
 "a signature template"
 msgstr ""
+"A PDF fájl nem lehet jelszóval titkosított, ha aláírási sablonként szeretné "
+"használni"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:614
@@ -1949,7 +1968,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:51
 #, python-format
 msgid "Your email"
-msgstr ""
+msgstr "Az Ön e-mail címe"
 
 #. module: sign
 #. openerp-web
@@ -1966,7 +1985,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:45
 #, python-format
 msgid "Your name"
-msgstr ""
+msgstr "Az Ön neve"
 
 #. module: sign
 #. openerp-web
@@ -1974,7 +1993,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:1083
 #, python-format
 msgid "Your signature has been saved."
-msgstr ""
+msgstr "Az aláírása elmentésre került."
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_checkbox
@@ -1991,7 +2010,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "has been completed and signed by everyone."
-msgstr ""
+msgstr "kitöltésre került, és mindenki aláírta."
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action

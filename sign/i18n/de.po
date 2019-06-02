@@ -131,6 +131,8 @@ msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>\n"
 "            They will be able to access this document and sign it as yourself."
 msgstr ""
+"<strong>Warning</strong> Leiten Sie diese E-Mail nicht an andere Personen weiter!<br/>\n"
+"           Sie können auf dieses Dokument zugreifen und es als Sie selbst signieren."
 
 #. module: sign
 #. openerp-web
@@ -425,7 +427,7 @@ msgstr "Digitale Unterschrift"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_initials
 msgid "Digitial Initials"
-msgstr ""
+msgstr "Digital Initialen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
@@ -1201,6 +1203,8 @@ msgid ""
 "Request a signature to upload a template (or use an existing one)\n"
 "                to automate your signature process."
 msgstr ""
+"Fordern Sie eine Signatur an, um eine Vorlage hochzuladen (oder verwenden Sie eine vorhandene)\n"
+"               um Ihren Signaturprozess zu automatisieren."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_total
@@ -1947,6 +1951,8 @@ msgid ""
 "You can't delete a template for which signature requests exist but you can "
 "archive it instead."
 msgstr ""
+"Sie können keine Vorlage löschen, für die Signaturanforderungen vorhanden "
+"sind, aber Sie können sie stattdessen archivieren."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign

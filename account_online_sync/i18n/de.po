@@ -255,6 +255,9 @@ msgid ""
 "                                               will be created when fetching new transactions\n"
 "                                               from your bank account."
 msgstr ""
+"Definiert wann ein neuer Kontoauszug\n"
+"                                               wird erstellt, wenn neue Transaktionen abgerufen werden\n"
+"                                               von Ihrem Bankkonto."
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__display_name
@@ -424,7 +427,7 @@ msgstr ""
 #. module: account_online_sync
 #: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
 msgid "List of bank(s) providing online synchronization"
-msgstr ""
+msgstr "Liste der Banken, die Online-Synchronisation anbieten"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
@@ -568,7 +571,7 @@ msgstr "Plaid"
 #: code:addons/account_online_sync/models/online_sync.py:82
 #, python-format
 msgid "Please enter at least a character for the search"
-msgstr ""
+msgstr "Bitte geben Sie mindestens ein Zeichen für die Suche ein"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:285
@@ -650,7 +653,7 @@ msgstr "Jetzt synchronisieren"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__account_ids
 msgid "Synchronized accounts"
-msgstr ""
+msgstr "Synchronisierte Konten"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message
@@ -695,7 +698,7 @@ msgstr "Der folgende Fehler trat bei der Synchronisierung auf: %s"
 #: code:addons/account_online_sync/models/online_sync.py:105
 #, python-format
 msgid "The following transactions have been loaded in the system."
-msgstr ""
+msgstr "Die folgenden Transaktionen wurden in das System geladen."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:74
@@ -784,7 +787,7 @@ msgstr ""
 #: code:addons/account_online_sync/models/online_sync.py:287
 #, python-format
 msgid "You can not link two accounts to the same journal"
-msgstr ""
+msgstr "Sie können nicht zwei Konten mit demselben Journal verknüpfen"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0

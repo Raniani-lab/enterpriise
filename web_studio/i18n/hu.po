@@ -1732,7 +1732,7 @@ msgstr "Továbbiak"
 #: code:addons/web_studio/static/src/js/views/view_components.js:89
 #, python-format
 msgid "Multiline Text"
-msgstr ""
+msgstr "Többsoros szöveg"
 
 #. module: web_studio
 #. openerp-web

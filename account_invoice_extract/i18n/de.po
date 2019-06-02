@@ -172,7 +172,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "Not enough credit"
-msgstr ""
+msgstr "Nicht genug Guthaben"
 
 #. module: account_invoice_extract
 #: selection:res.company,extract_show_ocr_option_selection:0
@@ -210,6 +210,8 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 60 seconds."
 msgstr ""
+"Die Datenextraktion ist noch nicht abgeschlossen. Die Extraktion dauert "
+"normalerweise zwischen 5 und 60 Sekunden."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
@@ -231,7 +233,7 @@ msgstr "Benutzer ausgewählt"
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "Waiting extraction"
-msgstr ""
+msgstr "Warten auf Extraktion"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
@@ -285,4 +287,4 @@ msgstr ""
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "waiting extraction, but it is not ready"
-msgstr ""
+msgstr "Warten Extraktion, aber es ist nicht fertig"

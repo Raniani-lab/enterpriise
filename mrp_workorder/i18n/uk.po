@@ -197,7 +197,7 @@ msgstr "Партія"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Lot Number"
-msgstr "Партійни"
+msgstr "Партійний номер"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -635,13 +635,13 @@ msgstr ""
 #: code:addons/mrp_workorder/models/mrp_workorder.py:121
 #, python-format
 msgid "You did not set a lot/serial number for the final product"
-msgstr "Ви не встановили партію/серійний номер кінцевого продукту"
+msgstr "Ви не встановили партію/серійний номер кінцевого товару"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:478
 #, python-format
 msgid "You should provide a lot for the final product"
-msgstr "Ви повинні багато чого зробити для кінцевого товару"
+msgstr "Ви повинні вказати партію для кінцевого товару"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:476

@@ -31,9 +31,9 @@ var TabletImageIot = TabletImage.extend(iot_widgets.IotValueFieldMixin, {
             this.do_notify(_t('Capture image...'));
             this.iot_device.action('')
                 .then(function(data) {
-                    self._onActionSuccess(data);
+                    self._onIoTActionResult(data);
                 })
-                .guardedCatch(self._onActionFail);
+                .guardedCatch(self._onIoTActionFail);
         }
     },
     /**
@@ -51,34 +51,6 @@ var TabletImageIot = TabletImage.extend(iot_widgets.IotValueFieldMixin, {
                 this._setValue(data.image);
             }
         }
-    },
-    /**
-     * After a request to make action on camera and this call don't return true in the result
-     * this means that the IoT Box can't connect to camera
-     *
-     * @param {Object} data.result
-     */
-    _onActionSuccess: function (data){
-        if (!data.result) {
-            var $content = $('<p/>').text(_t('Please check if the camera is still connected.'));
-            var dialog = new Dialog(this, {
-                title: _t('Connection to Camera failed'),
-                $content: $content,
-            });
-            dialog.open();
-        }
-    },
-    /**
-     * After a request to make action on camera and this call fail
-     * this means that the customer browser can't connect to IoT Box
-     */
-    _onActionFail: function () {
-        var $content = $('<p/>').text(_t('Please check if the IoT Box is still connected.'));
-        var dialog = new Dialog(this, {
-            title: _t('Connection to IoT Box failed'),
-            $content: $content,
-        });
-        dialog.open();
     },
 });
 

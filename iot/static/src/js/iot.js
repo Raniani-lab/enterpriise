@@ -26,8 +26,8 @@ ActionManager.include({
                 var iot_device = new DeviceProxy({ iot_ip: result[0], identifier: result[1] });
                 iot_device.action({'document': result[2]})
                     .then(function(data) {
-                        self._onActionSuccess.call(self, data);
-                    }).guardedCatch(self._onActionFail.bind(self));
+                        self._onIoTActionResult.call(self, data);
+                    }).guardedCatch(self._onIoTActionFail.bind(self, result[0]));
             });
         }
         else {
@@ -35,21 +35,17 @@ ActionManager.include({
         }
     },
 
-    _onActionSuccess: function (data){
-        if (data.result) {
+    _onIoTActionResult: function (data){
+        if (data.result === true) {
             this.do_notify(_t('Successfully sent to printer!'));
         } else {
             this.do_warn(_t('Connection to Printer failed'), _t('Please check if the printer is still connected.'));
         }
     },
 
-    _onActionFail: function (data){
-        var $content = $('<p/>').text(_t('Please check if the IoT Box is still connected.'));
-        var dialog = new Dialog(this, {
-            title: _t('Connection to IoT Box failed'),
-            $content: $content,
-        });
-        dialog.open();
+    _onIoTActionFail: function (ip){
+        // Display the generic warning message when the connection to the IoT box failed.
+        this.call('iot_longpolling', '_doWarnFail', ip);
     },
 });
 
@@ -478,8 +474,8 @@ var IoTLongpolling = BusService.extend({
                     self._onError();
                 }
             }).fail(function (jqXHR, textStatus) {
-                if (textStatus === 'error' && self.parseURL.protocol === 'https:') {
-                    self._doWarnCertificate(iot_ip);
+                if (textStatus === 'error') {
+                    self._doWarnFail(iot_ip);
                 } else {
                     self._onError();
                 }
@@ -501,8 +497,11 @@ var IoTLongpolling = BusService.extend({
         this._delayedStartPolling(Math.min(this.RPC_DELAY * this._retries, this.MAX_RPC_DELAY));
     },
 
-    _doWarnCertificate: function (url){
+    _doWarnFail: function (url){
         var $content = $('<div/>')
+            .append($('<p/>').text(_t('Odoo cannot reach the IoT Box.')))
+            .append($('<span/>').text(_t('Please check if the IoT Box is still connected.')))
+            .append($('<p/>').text(_t('If you are on a secure server (HTTPS) check if you accepted the certificate:')))
             .append($('<p/>').html(_.str.sprintf('<a href="https://%s" target="_blank"><i class="fa fa-external-link"/>' + _t('Click here to open your IoT Homepage') + '</a>', url)))
             .append($('<li/>').text(_t('Please accept the certificate of your IoT Box (procedure depends on your browser) :')))
             .append($('<li/>').text(_t('Click on Advanced/Show Details/Details/More information')))
@@ -511,7 +510,7 @@ var IoTLongpolling = BusService.extend({
             .append($('<li/>').text(_t('Close this window and try again')));
 
         var dialog = new Dialog(this, {
-            title: _t('Connection to device failed'),
+            title: _t('Connection to IoT Box failed'),
             $content: $content,
             buttons: [
                 {
@@ -558,6 +557,31 @@ var IotValueFieldMixin = {
      * @private
      */
     _onValueChange: function (data){},
+     /**
+     * After a request to make action on device and this call don't return true in the result
+     * this means that the IoT Box can't connect to device
+     *
+     * @param {Object} data.result
+     */
+    _onIoTActionResult: function (data) {
+        if (data.result !== true) {
+            var $content = $('<p/>').text(_t('Please check if the device is still connected.'));
+            var dialog = new Dialog(this, {
+                title: _t('Connection to device failed'),
+                $content: $content,
+            });
+            dialog.open();
+          }
+    },
+
+    /**
+     * After a request to make action on device and this call fail
+     * this means that the customer browser can't connect to IoT Box
+     */
+    _onIoTActionFail: function () {
+        // Display the generic warning message when the connection to the IoT box failed.
+        this.call('iot_longpolling', '_doWarnFail', this.ip);
+    },
 };
 
 var IotRealTimeValue = basic_fields.InputField.extend(IotValueFieldMixin, {

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, api, models
+from odoo import fields, api, models, tools
 from odoo.tools.safe_eval import safe_eval
 from random import randint, shuffle
 import datetime
@@ -12,21 +12,6 @@ evaluation_context = {
     'datetime': datetime,
     'context_today': datetime.datetime.now,
 }
-
-
-try:
-    from flanker.addresslib import address
-
-    if hasattr(address, 'six'):
-        # Python 3 supported
-        def checkmail(mail):
-            return bool(address.validate_address(mail))
-    else:
-        _logger.info('Flanker version 0.9 or greater required for Python 3 compatibility')
-        def checkmail(mail): return True
-except ImportError:
-    _logger.info('The flanker Python module is not installed, so email validation is unavailable')
-    def checkmail(mail): return True
 
 
 class team_user(models.Model):
@@ -160,7 +145,7 @@ class crm_team(models.Model):
                 # Erase fake/false email
                 spams = [
                     x.id for x in leads
-                    if x.email_from and not checkmail(x.email_from)
+                    if x.email_from and not tools.email_validate(x.email_from)
                 ]
 
                 if spams:

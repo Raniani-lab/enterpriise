@@ -505,30 +505,23 @@
             background-color: white;
 
             .o_chatter_topbar {
-                margin: 0;
-                padding: 0;
+                height: $o-statusbar-height + $nav-tabs-border-width;
 
-                > .btn, > .o_followers {
-                    padding-top: 0;
-                    padding-bottom:0;
-                    height: $o-statusbar-height;
-                    line-height: $o-statusbar-height - ($o-root-font-size * ($input-btn-padding-y/1rem)); // FIXME
+                .btn, .btn.o_active {
+                    border-top: 0;
+                }
 
-                    .dropdown-menu {
-                        line-height: $line-height-base;
-                    }
-                }
-                > .btn:first-child {
-                    padding: 0 $o-horizontal-padding;
-                    border-left: none!important;
-                }
-                .o_followers {
-                    padding-right: $o-horizontal-padding;
-                }
             }
-            &.o_chatter_composer_active .o_chatter_topbar {
-                > .btn.o_active {
-                    border-width: 0 1px;
+
+            &.o_chatter_composer_active {
+                .o_chatter_topbar {
+                    .btn, .btn.o_active {
+                        border-top: 0;
+
+                        &:first-child {
+                            border-left: 0;
+                        }
+                    }
                 }
             }
             .o_thread_composer {
@@ -544,13 +537,6 @@
                         top: 100%;
                         bottom: auto;
                     }
-                }
-            }
-            .o_followers_title_box {
-                margin-left: $o-horizontal-padding/2;
-
-                .dropdown-toggle {
-                    padding-right: 0;
                 }
             }
         }

@@ -3,6 +3,7 @@
 
 import calendar
 from dateutil.relativedelta import relativedelta
+from math import copysign
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -90,7 +91,6 @@ class AccountAsset(models.Model):
             record.account_asset_id = record.original_move_line_ids[0].account_id
             record.display_model_choice = record.state == 'draft' and len(self.env['account.asset'].search([('state', '=', 'model'), ('account_asset_id.user_type_id', '=', record.user_type_id.id)]))
             record.display_account_asset_id = False
-            record.name = record.original_move_line_ids[0].name
             if not record.journal_id:
                 record.journal_id = misc_journal_id
             total_credit = sum(line.credit for line in record.original_move_line_ids)
@@ -319,7 +319,6 @@ class AccountAsset(models.Model):
         self.ensure_one()
         new_wizard = self.env['account.asset.pause'].create({
             'asset_id': self.id,
-            'action': 'pause',
         })
         return {
             'name': _('Pause Asset'),
@@ -333,14 +332,13 @@ class AccountAsset(models.Model):
     def action_set_to_close(self):
         """ Returns an action opening the asset pause wizard."""
         self.ensure_one()
-        new_wizard = self.env['account.asset.pause'].create({
+        new_wizard = self.env['account.asset.sell'].create({
             'asset_id': self.id,
-            'action': 'sell',
         })
         return {
-            'name': _('Pause Asset'),
+            'name': _('Sell Asset'),
             'view_mode': 'form',
-            'res_model': 'account.asset.pause',
+            'res_model': 'account.asset.sell',
             'type': 'ir.actions.act_window',
             'target': 'new',
             'res_id': new_wizard.id,
@@ -403,7 +401,6 @@ class AccountAsset(models.Model):
             'method_period',
             'method_progress_factor',
             'salvage_value',
-            'invoice_id',
             'original_move_line_ids',
         ]
         ref_tracked_fields = self.env['account.asset'].fields_get(fields)
@@ -442,9 +439,26 @@ class AccountAsset(models.Model):
             'res_id': move_ids[0],
         }
 
-    def _get_disposal_moves(self, disposal_date):
+    def _get_disposal_moves(self, invoice_line_ids):
+        def get_line(asset, amount, account):
+            return (0, 0, {
+                'name': asset.name,
+                'account_id': account.id,
+                'debit': 0.0 if float_compare(amount, 0.0, precision_digits=prec) > 0 else -amount,
+                'credit': amount if float_compare(amount, 0.0, precision_digits=prec) > 0 else 0.0,
+                'analytic_account_id': account_analytic_id.id if asset.asset_type == 'sale' else False,
+                'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'sale' else False,
+                'currency_id': company_currency != current_currency and current_currency.id or False,
+                'amount_currency': company_currency != current_currency and - 1.0 * asset.value_residual or 0.0,
+            })
+
         move_ids = []
-        for asset in self:
+        for asset, invoice_line_id in zip(self, invoice_line_ids):
+            account_analytic_id = asset.account_analytic_id
+            analytic_tag_ids = asset.analytic_tag_ids
+            company_currency = asset.company_id.currency_id
+            current_currency = asset.currency_id
+            prec = company_currency.decimal_places
             unposted_depreciation_move_ids = asset.depreciation_move_ids.filtered(lambda x: x.state == 'draft')
             if unposted_depreciation_move_ids:
                 old_values = {
@@ -456,16 +470,29 @@ class AccountAsset(models.Model):
 
                 # Create a new depr. line with the residual amount and post it
                 asset_sequence = len(asset.depreciation_move_ids) - len(unposted_depreciation_move_ids) + 1
+
+                initial_amount = sum(asset.original_move_line_ids.mapped(lambda r: r.debit - r.credit))
+                initial_account = asset.original_move_line_ids.account_id
+                depreciated_amount = copysign(sum(asset.depreciation_move_ids.filtered(lambda r: r.state == 'posted').mapped('amount_total')), -initial_amount)
+                depreciation_account = asset.account_depreciation_id
+                invoice_amount = copysign(invoice_line_id.price_subtotal, -initial_amount)
+                invoice_account = invoice_line_id.account_id
+                difference = -initial_amount - depreciated_amount - invoice_amount
+                difference_account = asset.company_id.gain_account_id if difference > 0 else asset.company_id.loss_account_id
+                line_datas = [(initial_amount, initial_account), (depreciated_amount, depreciation_account), (invoice_amount, invoice_account), (difference, difference_account)]
+                if not invoice_line_id:
+                    del line_datas[2]
                 vals = {
-                    'amount': asset.value_residual,
-                    'asset_id': asset,
-                    'move_ref': asset.name + ': ' + _('Disposal'),
+                    'amount': current_currency._convert(asset.value_residual, company_currency, asset.company_id, invoice_line_id.move_id.invoice_date or fields.Date.today()),
+                    'asset_id': asset.id,
+                    'ref': asset.name + ': ' + _('Disposal'),
                     'asset_remaining_value': 0,
-                    'asset_depreciated_value': asset.value - asset.salvage_value,  # the asset is completely depreciated
-                    'date': disposal_date,
+                    'asset_depreciated_value': max(asset.depreciation_move_ids.filtered(lambda x: x.state == 'posted'), key=lambda x: x.date, default=self.env['account.move']).asset_depreciated_value,
+                    'date': invoice_line_id.move_id.invoice_date or fields.Date.today(),
+                    'journal_id': asset.journal_id.id,
+                    'line_ids': [get_line(asset, amount, account) for amount, account in line_datas if account],
                 }
-                move_vals = self.env['account.move']._prepare_move_for_asset_depreciation(vals)
-                commands.append((0, 0, move_vals))
+                commands.append((0, 0, vals))
                 asset.write({'depreciation_move_ids': commands, 'method_number': asset_sequence})
                 tracked_fields = self.env['account.asset'].fields_get(['method_number'])
                 changes, tracking_value_ids = asset._message_track(tracked_fields, old_values)
@@ -475,14 +502,21 @@ class AccountAsset(models.Model):
 
         return move_ids
 
-    def set_to_close(self, disposal_date):
-        move_ids = self.with_context(allow_write=True)._get_disposal_moves(disposal_date)
+    def set_to_close(self, invoice_line_id):
+        self.ensure_one()
+        disposal_date = invoice_line_id.move_id.invoice_date
+        start_balance = sum(r.debit - r.credit for r in self.original_move_line_ids) or (self.value if self.asset_type == 'sale' else -self.value)
+        move_id = self._get_disposal_moves([invoice_line_id])
         self.write({'state': 'close', 'disposal_date': disposal_date})
-        if move_ids:
-            return self._return_disposal_view(move_ids)
+        if move_id:
+            return self._return_disposal_view(move_id)
 
     def set_to_draft(self):
         self.write({'state': 'draft'})
+
+    @api.multi
+    def set_to_running(self):
+        self.write({'state': 'open', 'disposal_date': False})
 
     def resume_after_pause(self):
         """ Sets an asset in 'paused' state back to 'open'.

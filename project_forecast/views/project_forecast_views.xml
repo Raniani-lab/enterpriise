@@ -121,6 +121,7 @@
              on_create="%(project_forecast_create_wizard_action)d"
              decoration-warning="published == False"
              decoration-danger="resource_time > 100"
+             display_unavailability="1"
       >
         <templates>
             <div t-name="gantt-popover" class="container-fluid">

@@ -221,7 +221,7 @@
                                     </div>
 
                                     <!-- Holidays -->
-                                    <div class="form-group">
+                                    <div class="form-group" name="holidays_div">
                                         <div class="row">
                                             <label class="col-md-3 col-form-label" for="holidays_slider">
                                                 <i class="fa fa-1x fa-suitcase fa-fw"/> Extra Time Off
@@ -239,7 +239,7 @@
                                                     </datalist>
                                                 </div>
                                                 <span class="form-text mt8">In addition to your legal leaves, you can choose any number of extra time off you want.</span>
-                                                <span class="form-text mt8">The amount of annual time off (legal leaves) you get depends on your work schedule in the previous year. A full-time work schedule through the 12 months of the last year will grant you 20 annual time off (legal leaves).</span>
+                                                <span class="form-text mt8">The amount of annual time off (legal leaves) you get depends on your work schedule in the previous year. A full-time work schedule through the 12 months under Belgian contrat of the last year will grant you 20 annual time off (legal leaves).</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">
@@ -607,8 +607,8 @@
 
                                     <div class="form-group" name="employee_total_cost" title="Full time equivalent employer cost">
                                         <div class="row">
-                                            <label class="col-md-7 col-form-label" for="employee_total_cost">Employer Cost</label>
-                                            <div class="col-md-5">
+                                            <label class="col-md-6 col-form-label" for="employee_total_cost">Employer Cost</label>
+                                            <div class="col-md-6">
                                                 <div class="input-group">
                                                     <input type="text" disabled="disabled" name="employee_total_cost" class="form-control" t-att-value="contract.final_yearly_costs"/>
                                                     <div class="input-group-append">

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models
+from odoo.osv import expression
 
 
 class IrActionsReport(models.Model):
@@ -46,3 +47,18 @@ class IrActionsReport(models.Model):
             report_model = self.env.get(report_model_name)
 
         return report_model
+
+    @api.multi
+    def associated_view(self):
+        action_data = super(IrActionsReport, self).associated_view()
+        domain = expression.normalize_domain(action_data['domain'])
+
+        view_name = self.report_name.split('.')[1].split('_copy_')[0]
+
+        domain = expression.OR([
+            domain,
+            ['&', ('name', 'ilike', view_name), ('type', '=', 'qweb')]
+        ])
+
+        action_data['domain'] = domain
+        return action_data

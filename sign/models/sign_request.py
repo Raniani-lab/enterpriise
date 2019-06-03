@@ -335,6 +335,12 @@ class SignRequest(models.Model):
 
         return True
 
+    def _get_font(self):
+        return "Helvetica"
+
+    def _get_normal_font_size(self):
+        return 0.015
+
     @api.one
     def generate_completed_document(self, password=""):
         if not self.template_id.sign_item_ids:
@@ -348,8 +354,8 @@ class SignRequest(models.Model):
             # password is not correct
             return
 
-        font = "Helvetica"
-        normalFontSize = 0.015
+        font = self._get_font()
+        normalFontSize = self._get_normal_font_size()
 
         packet = io.BytesIO()
         can = canvas.Canvas(packet)
@@ -537,7 +543,8 @@ class SignRequestItem(models.Model):
 
     @api.multi
     def action_completed(self):
-        self.write({'signing_date': time.strftime(DEFAULT_SERVER_DATE_FORMAT), 'state': 'completed'})
+        date = fields.Date.context_today(self).strftime(DEFAULT_SERVER_DATE_FORMAT)
+        self.write({'signing_date': date, 'state': 'completed'})
         self.mapped('sign_request_id')._check_after_compute()
 
     @api.multi

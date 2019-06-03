@@ -4,6 +4,7 @@
 from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.tools.misc import format_date
+from odoo.osv import expression
 
 _FOLLOWUP_STATUS = [('in_need_of_action', 'In need of action'), ('with_overdue_invoices', 'With overdue invoices'), ('no_action_needed', 'No action needed')]
 
@@ -33,20 +34,7 @@ class ResPartner(models.Model):
         """
         if operator != '=' or value not in ['in_need_of_action', 'with_overdue_invoices', 'no_action_needed']:
             return []
-
-        today = fields.Date.context_today(self)
-        domain = self.get_followup_lines_domain(today, overdue_only=value == 'with_overdue_invoices', only_unblocked=True)
-
-        query = self.env['account.move.line']._where_calc(domain)
-        tables, where_clause, where_params = query.get_sql()
-        sql = """SELECT "account_move_line".partner_id
-                 FROM %s
-                 WHERE %s
-                   AND "account_move_line".partner_id IS NOT NULL
-                 GROUP BY "account_move_line".partner_id"""
-        query = sql % (tables, where_clause)
-        self.env.cr.execute(query, where_params)
-        results = self.env.cr.fetchall()
+        results = self._get_partners_in_need_of_action(overdue_only=(value == 'with_overdue_invoices'))
         if value in ('in_need_of_action', 'with_overdue_invoices'):
             return [('id', 'in', results)]
         return [('id', 'not in', results)]
@@ -55,12 +43,12 @@ class ResPartner(models.Model):
         """
         Compute the fields 'total_due', 'total_overdue' and 'followup_status'
         """
-        partners_in_need_of_action = self._get_partners_in_need_of_action().ids
+        partners_in_need_of_action = self._get_partners_in_need_of_action()
+        today = fields.Date.context_today(self)
         for record in self:
             total_due = 0
             total_overdue = 0
             followup_status = "no_action_needed"
-            today = fields.Date.today()
             for aml in record.unreconciled_aml_ids:
                 if aml.company_id == self.env.user.company_id:
                     amount = aml.amount_residual
@@ -88,11 +76,11 @@ class ResPartner(models.Model):
 
     def _get_partners_in_need_of_action(self, overdue_only=False):
         """
-        Return a list of partners which are in status 'in_need_of_action'.
+        Return a list of partner ids which are in status 'in_need_of_action'.
         If 'overdue_only' is set to True, partners in status 'with_overdue_invoices' are included in the list
         """
         today = fields.Date.context_today(self)
-        domain = self.get_followup_lines_domain(today, overdue_only=overdue_only, only_unblocked=True)
+        domain = self.get_followup_lines_domain(today, overdue_only=False, only_unblocked=True)
         query = self.env['account.move.line']._where_calc(domain)
         tables, where_clause, where_params = query.get_sql()
         sql = """SELECT "account_move_line".partner_id
@@ -103,7 +91,7 @@ class ResPartner(models.Model):
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
         result = self.env.cr.fetchall()
-        return self.browse(result[0] if result else [])
+        return [p[0] for p in result]
 
     def _get_needofaction_fup_lines_domain(self, date):
         # that part of the domain concerns the date filtering and is overwritten in account_reports_followup
@@ -116,6 +104,9 @@ class ResPartner(models.Model):
         domain = super(ResPartner, self).get_followup_lines_domain(date, overdue_only=overdue_only, only_unblocked=only_unblocked)
         if not overdue_only:
             domain += self._get_needofaction_fup_lines_domain(date)
+        else:
+            partners_in_need_of_action = self._get_partners_in_need_of_action()
+            domain = expression.AND([domain, ['!', ('partner_id', 'in', partners_in_need_of_action)]])
         return domain
 
     def get_next_action(self):
@@ -123,8 +114,7 @@ class ResPartner(models.Model):
         Compute the next action status of the customer. It can be 'manual' or 'auto'.
         """
         self.ensure_one()
-        lang_code = self.lang or self.env.user.lang or 'en_US'
-        date_auto = format_date(self.env, fields.datetime.now() + timedelta(days=self.env.user.company_id.days_between_two_followups), lang_code=lang_code)
+        date_auto = format_date(self.env, fields.datetime.now() + timedelta(days=self.env.user.company_id.days_between_two_followups))
         if self.payment_next_action_date:
             return {
                 'type': 'manual',

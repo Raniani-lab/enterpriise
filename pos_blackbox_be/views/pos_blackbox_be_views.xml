@@ -241,6 +241,11 @@
                             <span class="o_stat_text">User Z</span>
                         </div>
                     </button>
+                    <button class="oe_stat_button" name="action_report_journal_file" type="object" icon="fa-file-text-o">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Journal File</span>
+                        </div>
+                    </button>
                 </div>
             </field>
         </record>
@@ -645,5 +650,14 @@ CONTENT:
 <t t-raw="current_file['contents']"/>
             </t>
         </template>
+
+        <template id="journal_file">
+FICHIER JOURNAL POUR CAISSE <t t-esc="pos_id" />:
+--------------------------------------------------------------------
+<t t-foreach="logs" t-as="log">
+<t t-esc="log.description"/>
+</t>
+        </template>
+
     </data>
 </odoo>

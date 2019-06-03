@@ -69,7 +69,7 @@
         </div>
         <div class="col">
             <div class="row no-gutters">
-                <div t-foreach="widget.slots" t-as="slot" t-attf-class="col o_gantt_cell #{slot.unavailable ? 'o_gantt_unavailable' : ''} #{slot.isToday ? 'o_gantt_today' : ''}" t-att-data-date="slot.date.format('YYYY-MM-DD HH:mm:ss')" t-attf-style="height: #{widget.cellHeight}px;">
+                <div t-foreach="widget.slots" t-as="slot" t-attf-class="col o_gantt_cell #{slot.unavailable ? 'o_gantt_unavailable' : ''} #{slot.isToday ? 'o_gantt_today' : ''}" t-att-data-date="slot.start.format('YYYY-MM-DD HH:mm:ss')" t-attf-style="height: #{widget.cellHeight}px;">
 
                     <!-- plan and add buttons -->
                     <div t-if="slot.hasButtons" class="o_gantt_cell_buttons">

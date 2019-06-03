@@ -314,7 +314,7 @@ var accountReportsWidget = AbstractAction.extend({
         // fold all menu
         this.$searchview_buttons.find('.js_foldable_trigger').click(function (event) {
             $(this).toggleClass('o_closed_menu o_open_menu');
-            self.$searchview_buttons.find('.o_foldable_menu[data-filter="'+$(this).data('filter')+'"]').toggleClass('o_closed_menu o_open_menu');
+            self.$searchview_buttons.find('.o_foldable_menu[data-filter="'+$(this).data('filter')+'"]').toggleClass('o_closed_menu');
         });
         // render filter (add selected class to the options that are selected)
         _.each(self.report_options, function(k) {

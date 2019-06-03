@@ -39,7 +39,7 @@ class FollowupSend(models.TransientModel):
     @api.depends('partner_ids')
     def _compute_snailmail_cost(self):
         for wizard in self:
-            wizard.snailmail_cost = wizard.env['snailmail.letter']._snailmail_estimate_from_documents(wizard.partner_ids._name, wizard.partner_ids.ids)
+            wizard.snailmail_cost = len(wizard.partner_ids.ids)
 
     @api.multi
     def snailmail_send_action(self):

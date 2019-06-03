@@ -176,9 +176,9 @@ class MrpProductionWorkcenterLine(models.Model):
                     moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == self.component_id)
                     workorder_line_values['raw_workorder_id'] = self.id
                 workorder_line_values.update({
-                    'move_id': moves[0].id,
+                    'move_id': moves[:1].id,
                     'product_id': self.component_id.id,
-                    'product_uom_id': moves[0].product_uom.id,
+                    'product_uom_id': moves[:1].product_uom.id,
                     'qty_done': 0.0,
                 })
                 self.env['mrp.workorder.line'].create(workorder_line_values)

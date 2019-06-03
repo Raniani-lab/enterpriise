@@ -159,7 +159,9 @@ $gantt-highlight-hover-row: #FFFDE7;
                         &.o_gantt_progress {
                             background-repeat: no-repeat;
                             @include resizable-background-color(lighten($o-brand-primary, 4%));
-                            @include gantt-gradient-decorations(lighten($o-brand-primary, 4%));
+                            &.decoration-info {
+                                @include gantt-gradient-decorations(lighten($o-brand-primary, 4%));
+                            }
                         }
 
                         &.o_gantt_pill_continuous_left {
@@ -183,6 +185,8 @@ $gantt-highlight-hover-row: #FFFDE7;
                                 background-color: $gantt-color;
                                 &.o_gantt_progress {
                                     @include resizable-background-color($gantt-color);
+                                }
+                                &.decoration-info {
                                     @include gantt-gradient-decorations($gantt-color);
                                 }
                             }
@@ -201,7 +205,9 @@ $gantt-highlight-hover-row: #FFFDE7;
                         &.decoration-secondary {
                             opacity: 0.5;
                         }
-                        @include gantt-gradient-decorations(transparent);
+                        &.decoration-info {
+                            @include gantt-gradient-decorations($o-brand-primary);
+                        }
                     }
                 }
             }

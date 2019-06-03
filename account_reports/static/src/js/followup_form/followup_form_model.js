@@ -4,6 +4,7 @@ odoo.define('accountReports.FollowupFormModel', function (require) {
 var BasicModel = require('web.BasicModel');
 var field_utils = require('web.field_utils');
 var session = require('web.session');
+var time = require('web.time');
 
 var FollowupFormModel = BasicModel.extend({
     /**
@@ -205,7 +206,7 @@ var FollowupFormModel = BasicModel.extend({
      */
     updateNextAction: function (handle) {
         var record = this.localData[handle];
-        var next_action_date = field_utils.parse.date(record.data.next_action_date, {}, {isUTC: true});
+        var next_action_date = field_utils.parse.date(record.data.next_action === 'auto' ? new moment.utc(record.data.next_action_date_auto, time.getLangDateFormat()) : record.data.next_action_date, {}, {});
         return this._rpc({
             model: 'res.partner',
             method: 'update_next_action',

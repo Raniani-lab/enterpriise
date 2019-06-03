@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="l10n_ae.tag_ae_01_dubai" model="account.account.tag">
+        <field name="name">Output VAT 5% (Dubai)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_01_abu_dhabi" model="account.account.tag">
+        <field name="name">Output VAT 5% (Abu Dhabi)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_01_sharjah" model="account.account.tag">
+        <field name="name">Output VAT 5% (Sharjah)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_01_ajman" model="account.account.tag">
+        <field name="name">Output VAT 5% (Ajman)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_01_umm_al_quwain" model="account.account.tag">
+        <field name="name">Output VAT 5% (Umm Al Quwain)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_01_ras_al_khaima" model="account.account.tag">
+        <field name="name">Output VAT 5% (Ras Al-Khaima)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_01_fujairah" model="account.account.tag">
+        <field name="name">Output VAT 5% (Fujairah)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_02" model="account.account.tag">
+        <field name="name">Input VAT 5%</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_03" model="account.account.tag">
+        <field name="name">Exempted Output VAT</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_04" model="account.account.tag">
+        <field name="name">Exempted Input VAT</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_05" model="account.account.tag">
+        <field name="name">Output VAT 0%</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_06" model="account.account.tag">
+        <field name="name">Input VAT 0%</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_07" model="account.account.tag">
+        <field name="name">Import VAT 5%</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_08" model="account.account.tag">
+        <field name="name">Export VAT 0%</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_09" model="account.account.tag">
+        <field name="name">Reverse Charge TVA -5%(sales)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_10" model="account.account.tag">
+        <field name="name">Reverse Charge TVA -5%(purchase)</field>
+        <field name="applicability">taxes</field>
+    </record>
+    <record id="l10n_ae.tag_ae_11" model="account.account.tag">
+        <field name="name">Tourist Refund scheme 5%</field>
+        <field name="applicability">taxes</field>
+    </record>
+</odoo>

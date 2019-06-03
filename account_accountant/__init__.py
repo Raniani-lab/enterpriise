@@ -39,3 +39,23 @@ def uninstall_hook(cr, registry):
                                              (3, env.ref("account.group_account_user").id)]})
     except ValueError as e:
             _logger.warning(e)
+
+    # make the account_accountant features disappear (magic)
+    env.ref("account.group_account_user").write({'users': [(5, False, False)]})
+
+    # this menu should always be there, as the module depends on account.
+    # if it's not, there is something wrong with the db that should be investigated.
+    invoicing_menu = env.ref("account.menu_finance")
+    menus_to_move = [
+        "account.menu_finance_receivables",
+        "account.menu_finance_payables",
+        "account.menu_finance_entries",
+        "account.menu_finance_reports",
+        "account.menu_finance_configuration",
+        "account.menu_board_journal_1",
+    ]
+    for menu_xmlids in menus_to_move:
+        try:
+            env.ref(menu_xmlids).parent_id = invoicing_menu
+        except ValueError as e:
+            _logger.warning(e)

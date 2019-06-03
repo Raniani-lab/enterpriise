@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.documents</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="70"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_documents_block')]" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_documents_settings')]" position="inside">
+                <div class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="documents_recruitment_settings"/>
+                    </div>
+                    <div class="o_setting_right_pane o_documents_right_pane">
+                        <label for="documents_recruitment_settings"/>
+                        <div class="row">
+                            <div class="text-muted col-md-12">
+                                Select the new workspace to be used for recruitment's documents
+                            </div>
+                        </div>
+                        <div class="content-group" attrs="{'invisible' : [('documents_recruitment_settings', '=', False)]}">
+                            <div class="mt16">
+                               <field name="recruitment_folder_id" attrs="{'required' : [('documents_recruitment_settings', '=', True)]}"/>
+                            </div>
+                        </div>
+                        <label for="recruitment_tag_ids" attrs="{'invisible' : [('documents_recruitment_settings', '=', False)]}"/>
+                        <div class="row" attrs="{'invisible' : [('documents_recruitment_settings', '=', False)]}">
+                            <div class="text-muted col-md-12">
+                                Select the tags to be applied to applicant's new documents
+                            </div>
+                        </div>
+                        <div class="content-group" attrs="{'invisible' : [('documents_recruitment_settings', '=', False)]}">
+                            <div class="mt16">
+                               <field name="recruitment_tag_ids" widget="many2many_tags" domain="[('folder_id','=', recruitment_folder_id)]"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

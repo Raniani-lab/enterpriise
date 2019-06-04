@@ -1156,7 +1156,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('kanban editor', async function (assert) {
-        assert.expect(13);
+        assert.expect(18);
 
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
@@ -1172,6 +1172,13 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
+        assert.containsN(vem, '.o_kanban_record', 13);
+        assert.containsN(vem, '.o_kanban_record.o_kanban_demo', 6);
+        assert.containsN(vem, '.o_kanban_record.o_kanban_ghost', 6);
+        assert.doesNotHaveClass(vem.$('.o_kanban_record:first'), 'o_kanban_ghost',
+            "first record should not be a ghost");
+        assert.doesNotHaveClass(vem.$('.o_kanban_record:first'), 'o_kanban_demo',
+            "first record should not be a demo");
         assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
             "there should be one node");
         assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'),'o_web_studio_widget_empty',

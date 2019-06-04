@@ -82,15 +82,15 @@ odoo.define('sign.views_custo', function(require) {
                 this.$buttons.find(selector_button).text(_t("Send a Request")).off("click").on("click", function (e) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
-                    _sign_upload_file.call(self, true, false);
+                    _sign_upload_file.call(self, true, false, 'sign_send_request');
                 });
                 this.$buttons.find(selector_button).after(
-                    $('<button class="btn btn-primary o-kanban-button-new o-direct ml8" type="button">Sign Directly</button>')
+                    $('<button class="btn btn-primary o-kanban-button-new o-direct ml8" type="button">Sign Now</button>')
                     .off('click')
                     .on('click', function (e) {
                         e.preventDefault();
                         e.stopImmediatePropagation();
-                        _sign_upload_file.call(self, false, true);
+                        _sign_upload_file.call(self, false, true, 'sign_sign_now');
                     }));
                     this.$buttons.find(selector_button+'.o-direct').after(
                     $('<button class="btn btn-link o-kanban-button-new ml8" type="button">'+ _t('UPLOAD A PDF TEMPLATE') +'</button>')
@@ -98,7 +98,7 @@ odoo.define('sign.views_custo', function(require) {
                     .on('click', function (e) {
                         e.preventDefault();
                         e.stopImmediatePropagation();
-                        _sign_upload_file.call(self, false, false);
+                        _sign_upload_file.call(self, false, false, 'sign_template_edit');
                 }));
             },
 
@@ -113,7 +113,7 @@ odoo.define('sign.views_custo', function(require) {
         };
     }
 
-    function _sign_upload_file(inactive, sign_directly_without_mail) {
+    function _sign_upload_file(inactive, sign_directly_without_mail, sign_edit_context) {
         var self = this;
         var sign_directly_without_mail =  sign_directly_without_mail || false;
         var $upload_input = $('<input type="file" name="files[]"/>');
@@ -137,6 +137,7 @@ odoo.define('sign.views_custo', function(require) {
                             tag: 'sign.Template',
                             name: _t("New Template"),
                             context: {
+                                sign_edit_call: sign_edit_context,
                                 id: data.template,
                                 sign_directly_without_mail: sign_directly_without_mail,
                             },
@@ -185,13 +186,11 @@ odoo.define('sign.template', function(require) {
             },
             'click .o_sign_validate_field_button': function (e) {
                 this.hide();
-            }
+            },   
         },
 
         init: function(parent, parties, options, select_options) {
             options = options || {};
-
-            this.title = options.title || _t("Customize Field");
             this._super(parent, options);
             //TODO: Add buttons for save, discard and remove.
             this.parties = parties;
@@ -204,7 +203,6 @@ odoo.define('sign.template', function(require) {
             this.$optionsSelect = this.$('.o_sign_options_select');
             sign_utils.resetResponsibleSelectConfiguration();
             sign_utils.resetOptionsSelectConfiguration();
-
             var self = this;
             return this._super().then(function() {
                 sign_utils.setAsResponsibleSelect(self.$responsibleSelect.find('select'), self.$currentTarget.data('responsible'), self.parties);
@@ -212,7 +210,7 @@ odoo.define('sign.template', function(require) {
                 self.$('input[type="checkbox"]').prop('checked', self.$currentTarget.data('required'));
 
                 self.$('#o_sign_name').val(self.$currentTarget.data('name') );
-                self.title = self.title + ' <span class="fa fa-long-arrow-right"/> ' + self.$currentTarget.prop('field-name') + ' Field';
+                self.title = self.$currentTarget.prop('field-name');
                 if (self.$currentTarget.prop('field-type') !== 'selection') {
                     self.$('.o_sign_options_group').hide();
                 }
@@ -224,31 +222,51 @@ odoo.define('sign.template', function(require) {
             var self = this;
             this.$currentTarget = $targetEl;
             this.$elPopover = $("<div class='o_sign_item_popover'/>");
+            var buttonClose = '<button class="o_sign_close_button">&times;</button>';
             this.appendTo(this.$elPopover).then(function() {
                 var options = {
-                    title: self.title,
+                    title: self.title + buttonClose,
                     content: function () {
                         return self.$el;
                     },
                     html: true,
                     placement: 'right',
-                    trigger:'focus',
+                    trigger: 'focus',
                 };
                 self.$currentTarget.popover(options).one('inserted.bs.popover', function (e) {
                     $('.popover').addClass('o_popover_offset');
+                    $('.o_sign_close_button').on('click', function (e) {
+                        self.$currentTarget.popover("hide");
+                    });
                 });
                 self.$currentTarget.popover("toggle");
+                
 
             });
         },
         hide: function() {
-            this.$currentTarget.popover("hide");
+            var self = this;
             var resp = parseInt(this.$responsibleSelect.find('select').val());
             var selected_options = this.$optionsSelect.find('#o_sign_options_select_input').data('item_options');
             var required = this.$('input[type="checkbox"]').prop('checked');
             var name = this.$('#o_sign_name').val();
+
+            this.$currentTarget.popover("hide");
+
             this.getParent().currentRole = resp;
-            this.$currentTarget.data({responsible: resp, required: required, name: name, option_ids: selected_options}).trigger('itemChange');
+            if (! name) {
+                name = self.$currentTarget.prop('field-name');
+            }
+            var inputDict = {responsible: resp, required: required, option_ids: selected_options, name: name};
+            var outputDict = {};
+            for (var key in inputDict) {
+                if (inputDict[key]) {           
+                    outputDict[key] = inputDict[key];
+                }
+            }
+            this.$currentTarget.find(".o_placeholder").text(name);
+            this.$currentTarget.data(outputDict).trigger('itemChange');
+            this.$currentTarget.popover("hide");
         }
     });
 
@@ -306,24 +324,24 @@ odoo.define('sign.template', function(require) {
 
             this.customPopovers = {};
             this.events = _.extend(this.events || {}, {
-                'itemChange .o_sign_sign_item': function(e) {
+                'itemChange .o_sign_sign_item': function (e) {
                     this.updateSignItem($(e.target));
                     this.$iframe.trigger('templateChange');
                 },
 
-                'itemDelete .o_sign_sign_item': function(e) {
+                'itemDelete .o_sign_sign_item': function (e) {
                     this.deleteSignItem($(e.target));
                     this.$iframe.trigger('templateChange');
                 },
 
-                'itemClone .o_sign_sign_item': function(e) {
+                'itemClone .o_sign_sign_item': function (e) {
                     var $target = $(e.target);
                     this.updateSignItem($target);
 
                     page_loop:
-                    for(var i = 1 ; i <= this.nbPages ; i++) {
-                        for(var j = 0 ; j < this.configuration[i].length ; j++) {
-                            if(this.types[this.configuration[i][j].data('type')].item_type === 'signature') {
+                    for (var i = 1; i <= this.nbPages; i++) {
+                        for (var j = 0; j < this.configuration[i].length; j++) {
+                            if (this.types[this.configuration[i][j].data('type')].item_type === 'signature') {
                                 continue page_loop;
                             }
                         }
@@ -450,6 +468,12 @@ odoo.define('sign.template', function(require) {
 
                             self.$('.ui-selected').each(function(i, el) {
                                 self.deleteSignItem($(el));
+                                // delete the associated popovers. At this point, there should only be one popover
+                                var popovers = window.document.querySelectorAll('[id^="popover"]');
+                                for (let i = 0; i < popovers.length; i += 1) {
+                                    var tmp = popovers[i];
+                                     document.getElementById(tmp.id).remove();
+                                }
                             });
                             self.$iframe.trigger('templateChange');
                         });
@@ -616,7 +640,9 @@ odoo.define('sign.template', function(require) {
             },
 
             'keydown .o_sign_template_name_input': function (e) {
-                if (e.keyCode === 13) {
+                if (e.keyCode === 107) {
+                // Old behavior: event when 'Enter' key is pressed
+                // Test: '+' key is pressed
                     this.$templateNameInput.blur();
                 }
             },
@@ -639,7 +665,7 @@ odoo.define('sign.template', function(require) {
         init: function(parent, options) {
             this._super.apply(this, arguments);
 
-            if(options.context.id === undefined) {
+            if (options.context.id === undefined) {
                 return;
             }
 
@@ -648,19 +674,24 @@ odoo.define('sign.template', function(require) {
             this.sign_directly_without_mail = options["context"].sign_directly_without_mail || false;
 
             var self = this;
+            
+            var $closeButton = $('<button/>', {html: _t("Close"), type: "button"})
+                .addClass('btn btn-secondary')
+                .on('click', function () {
+                    return self.do_action('sign.sign_template_action', {
+                        clear_breadcrumbs: true
+                       });
+
+                });
             var button_name_sign = _t("Send");
             if(self.sign_directly_without_mail) {
-                button_name_sign = _t("Sign Directly");
+                button_name_sign = _t("Sign Now");
             }
             var $sendButton = $('<button/>', {html: button_name_sign, type: "button"})
-                .addClass('btn btn-primary')
+                .addClass('btn btn-secondary')
                 .on('click', function() {
-                    self.do_action({
-                        type: 'ir.actions.act_window',
-                        res_model: 'sign.send.request',
-                        views: [[false , 'form']],
-                        target: 'new',
-                        context: {
+                    self.do_action('sign.action_sign_send_request', {
+                        additional_context: {
                             'active_id': self.templateID,
                             'sign_directly_without_mail': self.sign_directly_without_mail,
                         },
@@ -669,18 +700,26 @@ odoo.define('sign.template', function(require) {
             var $shareButton = $('<button/>', {html: _t("Share"), type: "button"})
                 .addClass('btn btn-secondary')
                 .on('click', function() {
-                    self.do_action({
-                        type: 'ir.actions.act_window',
-                        res_model: 'sign.template.share',
-                        views: [[false, 'form']],
-                        target: 'new',
-                        context: {
-                            'active_id': self.templateID,
+                    self.do_action('sign.action_sign_template_share', {
+                        additional_context: {
+                            active_id: self.templateID,
                         },
                     });
                 });
-            this.cp_content = {$buttons: $sendButton.add($shareButton)};
+            
+            // If context: sign_template_edit: primary button: Close
+            // if context : sign_send_request: primary button: Send a request
+            // if context : sign_sign_now: primary button: Sign Now (send a request renamed)
+
+            if (! options.context.sign_edit_call || options.context.sign_edit_call === 'sign_template_edit') {
+                $closeButton.switchClass('btn-secondary', 'btn-primary');
+                this.cp_content = {$buttons: $closeButton.add($sendButton).add($shareButton)};
+            } else if (options.context.sign_edit_call === 'sign_sign_now' || options.context.sign_edit_call === 'sign_send_request') {
+                $sendButton.switchClass('btn-secondary', 'btn-primary');
+                this.cp_content = {$buttons: $sendButton.add($shareButton).add($closeButton)};
+            }
         },
+
 
         willStart: function() {
             if(this.templateID === undefined) {
@@ -809,11 +848,9 @@ odoo.define('sign.template', function(require) {
             this.$('.o_content').append(core.qweb.render('sign.template', {widget: this}));
 
             this.$('iframe,.o_sign_template_name_input').prop('disabled', this.has_sign_requests);
-
             this.$templateNameInput = this.$('.o_sign_template_name_input').first();
             this.$templateNameInput.trigger('input');
             this.initialTemplateName = this.$templateNameInput.val();
-
             this.refresh_cp();
         },
 
@@ -1075,13 +1112,12 @@ odoo.define('sign.document_signing_backend', function(require) {
 
     var NoPubThankYouDialog = document_signing.ThankYouDialog.extend({
         template: "sign.no_pub_thank_you_dialog",
-
-        init: function (parent, RedirectURL, requestID, options) {
+        init: function (parent, RedirectURL, RedirectURLText, requestID, options) {
             options = (options || {});
             if (!options.buttons) {
                 options.buttons = [{text: _t("Ok"), close: true}];
             }
-            this._super(parent, RedirectURL, requestID, options);
+            this._super(parent, RedirectURL, RedirectURLText, requestID, options);
         },
 
         on_closed: function () {

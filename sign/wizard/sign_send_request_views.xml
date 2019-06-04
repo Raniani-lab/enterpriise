@@ -5,8 +5,6 @@
         <field name="model">sign.send.request</field>
         <field name="arch" type="xml">
             <form>
-                <H2 invisible="context.get('sign_directly_without_mail',False)">Send Signature Request</H2>
-                <H2 invisible="not context.get('sign_directly_without_mail',False)">Sign directly without sending mail request, email will be sent after sign</H2>
                 <field name="signer_ids" placeholder="Write email or search contact..." attrs="{'invisible': [('signers_count', '=', 0)]}"  nolabel="1" class="o_sign_flat_o2m">
                     <tree editable="bottom" create="false" delete="false" >
                         <field name="role_id" force_save="1"/>
@@ -28,9 +26,9 @@
                     </div>
                 </group>
                 <footer>
-                    <button string="Sign Directly" name="sign_directly" type="object" class="btn-primary" invisible="context.get('sign_directly_without_mail',False)" attrs="{'invisible': [('is_user_signer', '=', False)]}"/>
+                    <button string="Sign Now" name="sign_directly" type="object" class="btn-primary" invisible="context.get('sign_directly_without_mail',False)" attrs="{'invisible': [('is_user_signer', '=', False)]}"/>
                     <button string="Send" name="send_request" type="object" class="btn-primary" invisible="context.get('sign_directly_without_mail',False)"/>
-                    <button string="Sign Directly" name="sign_directly_without_mail" type="object" class="btn-primary" invisible="not context.get('sign_directly_without_mail',False)"/>
+                    <button string="Sign Now" name="sign_directly_without_mail" type="object" class="btn-primary" invisible="not context.get('sign_directly_without_mail',False)"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

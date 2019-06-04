@@ -36,6 +36,7 @@ def _fix_image_transparency(image):
             if pixels[x, y] == (0, 0, 0, 0):
                 pixels[x, y] = (255, 255, 255, 0)
 
+
 class SignRequest(models.Model):
     _name = "sign.request"
     _description = "Signature Request"
@@ -45,7 +46,6 @@ class SignRequest(models.Model):
     def _default_access_token(self):
         return str(uuid.uuid4())
 
-    @api.model
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).state.selection]
 
@@ -56,7 +56,7 @@ class SignRequest(models.Model):
 
     request_item_ids = fields.One2many('sign.request.item', 'sign_request_id', string="Signers")
     state = fields.Selection([
-        ("sent", "Signatures in Progress"),
+        ("sent", "Sent"),
         ("signed", "Fully Signed"),
         ("canceled", "Canceled")
     ], default='sent', tracking=True, group_expand='_expand_states')
@@ -66,7 +66,7 @@ class SignRequest(models.Model):
     nb_wait = fields.Integer(string="Sent Requests", compute="_compute_count", store=True)
     nb_closed = fields.Integer(string="Completed Signatures", compute="_compute_count", store=True)
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
-    progress = fields.Integer(string="Progress", compute="_compute_count")
+    progress = fields.Char(string="Progress", compute="_compute_count")
 
     active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
@@ -87,10 +87,7 @@ class SignRequest(models.Model):
             rec.nb_wait = wait
             rec.nb_closed = closed
             rec.nb_total = wait + closed
-            if rec.nb_wait + rec.nb_closed <= 0:
-                rec.progress = 0
-            else:
-                rec.progress = rec.nb_closed*100 / (rec.nb_total)
+            rec.progress = "{} / {}".format(wait, wait + closed)
 
     @api.depends('request_item_ids.state', 'request_item_ids.partner_id.name')
     def _compute_request_item_infos(self):
@@ -127,7 +124,7 @@ class SignRequest(models.Model):
             },
         }
 
-    def open_sign_request(self):
+    def open_request(self):
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
@@ -189,7 +186,7 @@ class SignRequest(models.Model):
         self.write({'state': 'signed'})
         self.env.cr.commit()
         if not self.check_is_encrypted():
-            #if the file is encrypted, we must wait that the document is decrypted
+            # if the file is encrypted, we must wait that the document is decrypted
             self.send_completed_document()
 
     def check_is_encrypted(self):
@@ -245,10 +242,11 @@ class SignRequest(models.Model):
             'subject': subject,
             'body': message,
         }, engine='ir.qweb', minimal_qcontext=True)
+        mails = self.env['mail.mail']
         for follower in followers:
             if not follower.email:
                 continue
-            self.env['sign.request']._message_send_mail(
+            mails |= self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
@@ -258,6 +256,7 @@ class SignRequest(models.Model):
                  'subject': subject or _('%s : Signature request') % self.reference}
             )
             self.message_subscribe(partner_ids=follower.ids)
+        mail_sender(instance=self, mails=mails)
 
     def send_completed_document(self):
         self.ensure_one()
@@ -268,6 +267,7 @@ class SignRequest(models.Model):
             self.generate_completed_document()
 
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        mails = self.env['mail.mail']
         for signer in self.request_item_ids:
             if not signer.partner_id or not signer.partner_id.email:
                 continue
@@ -288,7 +288,7 @@ class SignRequest(models.Model):
                 'res_id': self.id,
             })
 
-            self.env['sign.request']._message_send_mail(
+            mails |= self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
@@ -298,6 +298,7 @@ class SignRequest(models.Model):
                  'subject': _('%s has been signed') % self.reference,
                  'attachment_ids': [(4, attachment.id)]}
             )
+        mail_sender(instance=self, mails=mails)
 
         tpl = self.env.ref('sign.sign_template_mail_completed')
         body = tpl.render({
@@ -306,11 +307,11 @@ class SignRequest(models.Model):
             'subject': '%s signed' % self.reference,
             'body': '',
         }, engine='ir.qweb', minimal_qcontext=True)
-
+        mails = self.env['mail.mail']
         for follower in self.mapped('message_follower_ids.partner_id') - self.request_item_ids.mapped('partner_id'):
             if not follower.email:
                 continue
-            self.env['sign.request']._message_send_mail(
+            mails |= self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
@@ -319,7 +320,7 @@ class SignRequest(models.Model):
                  'email_to': formataddr((follower.name, follower.email)),
                  'subject': _('%s has been signed') % self.reference}
             )
-
+        mail_sender(instance=self, mails=mails)
         return True
 
     def _get_font(self):
@@ -488,7 +489,7 @@ class SignRequestItem(models.Model):
     def _default_access_token(self):
         return str(uuid.uuid4())
 
-    partner_id = fields.Many2one('res.partner', string="Partner", ondelete='cascade')
+    partner_id = fields.Many2one('res.partner', string="Contact", ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
@@ -532,6 +533,7 @@ class SignRequestItem(models.Model):
 
     def send_signature_accesses(self, subject=None, message=None):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        mails = self.env['mail.mail']
         for signer in self:
             if not signer.partner_id or not signer.partner_id.email:
                 continue
@@ -545,7 +547,7 @@ class SignRequestItem(models.Model):
                 'body': message if message != '<p><br></p>' else False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
-            self.env['sign.request']._message_send_mail(
+            mails |= self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': signer.sign_request_id.reference},
                 {'model_description': 'signature', 'company': signer.create_uid.company_id},
@@ -554,6 +556,8 @@ class SignRequestItem(models.Model):
                  'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
                  'subject': subject}
             )
+
+        mail_sender(instance=self, mails=mails)
 
     def sign(self, signature):
         self.ensure_one()
@@ -599,3 +603,23 @@ class SignRequestItem(models.Model):
         for rec in self:
             rec._reset_sms_token()
             self.env['sms.api']._send_sms([rec.sms_number], _('Your confirmation code is %s') % rec.sms_token)
+
+def mail_sender(instance, mails):
+    """
+    Sending mail may take a while. if the number of recipient is larger than a threshold,
+    it must be processed in the queue.
+    The threshold is the same than in mail_threads.py:  recipients_max = 50
+    :param instance:  model instance. This function is called by sign.request and sign.request.item
+    :param mails: list of mails
+    :type mail: mail object
+    :return: None
+    """
+    """
+    
+    :param mail: the mail to be sent
+    :type mail: mail object
+    :return: None
+    :rtype:
+    """
+    if len(mails) < 50:
+        instance.env['mail.mail'].process_email_queue(mails.ids)

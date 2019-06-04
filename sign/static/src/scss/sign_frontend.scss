@@ -19,7 +19,13 @@
 
             .o_sign_header_instruction {
                 font-size: 1.2em;
-                flex: 1 1 auto;
+                text-align: center;
+            }
+            .o_logo {
+                text-align: left;
+            }
+            .o_odoo {
+                text-align: right;
             }
         }
     }

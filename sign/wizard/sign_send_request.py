@@ -118,5 +118,5 @@ class SignSendRequestSigner(models.TransientModel):
     _description = 'Sign send request signer'
 
     role_id = fields.Many2one('sign.item.role', readonly=True)
-    partner_id = fields.Many2one('res.partner', required=True)
+    partner_id = fields.Many2one('res.partner', required=True, string="Contact")
     sign_send_request_id = fields.Many2one('sign.send.request')

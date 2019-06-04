@@ -18,6 +18,7 @@ class SignTemplate(models.Model):
 
     attachment_id = fields.Many2one('ir.attachment', string="Attachment", required=True, ondelete='cascade')
     name = fields.Char(related='attachment_id.name', readonly=False)
+    display_name = fields.Char(compute='_compute_extension')
     datas = fields.Binary(related='attachment_id.datas', readonly=False)
     sign_item_ids = fields.One2many('sign.item', 'template_id', string="Signature Items", copy=True)
     responsible_count = fields.Integer(compute='_compute_responsible_count', string="Responsible Count")
@@ -39,16 +40,20 @@ class SignTemplate(models.Model):
     tag_ids = fields.Many2many('sign.template.tag', string='Tags')
     color = fields.Integer()
     extension = fields.Char(compute='_compute_extension')
-    redirect_url = fields.Char(string="Optional Link",
-        help="Optional link for redirection after signature instead of https://www.odoo.com/page/sign")
+    redirect_url = fields.Char(string="Redirect Link", default="",
+        help="Optional link for redirection after signature")
+    redirect_url_text = fields.Char(string="Link Label", default="Open Link",
+        help="Optional text to display on the button link")
 
     @api.depends('attachment_id.name')
     def _compute_extension(self):
         for template in self:
-            if template.attachment_id.name:
-                template.extension = '.' + template.attachment_id.name.split('.')[-1]
+            if template.attachment_id.mimetype:
+                template.extension = template.attachment_id.mimetype.replace('application/', '').replace(';base64', '')
             else:
                 template.extension = ''
+            if template.attachment_id.name:
+                template.display_name = template.attachment_id.name.replace('.pdf', '')
 
     @api.depends('sign_item_ids.responsible_id')
     def _compute_responsible_count(self):
@@ -137,6 +142,15 @@ class SignTemplate(models.Model):
         option_id = option if option else self.env['sign.item.option'].create({'value': value})
         return option_id.id
 
+    def open_requests(self,):
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Sign requests"),
+            "res_model": "sign.request",
+            "domain": [["template_id.id", "in", self.ids]],
+            "views": [[False, 'kanban'],[False, "form"]],
+            "res_id": self.id,
+        }
 
 class SignTemplateTag(models.Model):
 
@@ -227,9 +241,23 @@ class SignItemParty(models.Model):
 
     name = fields.Char(required=True, translate=True)
 
-    sms_authentification = fields.Boolean('SMS Authentification', default=False)
+    sms_authentification = fields.Boolean('SMS Authentication', default=False,)
 
     @api.model
     def add(self, name):
         party = self.search([('name', '=', name)])
         return party.id if party else self.create({'name': name}).id
+
+    def buy_credits(self):
+        service_name = 'sms'
+        url = self.env['iap.account'].get_credits_url(service_name)
+        return {
+            'name': 'Buy SMS credits',
+            'res_model': 'ir.actions.act_url',
+            'type': 'ir.actions.act_url',
+            'target': 'current',
+            'url': url
+        }
+
+
+

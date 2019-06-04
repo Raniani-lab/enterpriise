@@ -2,33 +2,28 @@
 <templates xml:space="preserve">
     <t t-name="sign.sign_item" name="Signature Item">
         <t t-if="readonly">
-            <div t-if="type == 'signature' || type == 'initial'" class="o_sign_sign_item text-center" style="text-align: center;" t-att-data-signature="value"><span class="o_sign_helper"/><img t-if="value" t-att-src="value" alt="Signature"/><t t-if="!value"><t t-esc="placeholder"/></t><t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
-
-            <div t-if="type == 'text' || type == 'textarea'" class="o_sign_sign_item"><t t-esc="value"/><t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
-
-            <div t-if="type == 'checkbox'" class="o_sign_sign_item"><t t-if="value == 'on'">X</t><t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
-
-            <div t-if="type == 'selection'" class="o_sign_sign_item" style="white-space: normal;">
-                <div class="o_sign_select_options_display"/>
-                <t t-if="editMode" t-call="sign.sign_item_configuration"/>
-            </div>
+            <!-- TEMPLATE EDITION or REQUEST DISPLAY -->
+            <div t-if="type == 'signature' || type == 'initial'" class="o_sign_sign_item text-center" style="text-align: center;" t-att-data-signature="value"><span class="o_sign_helper"/> <img t-if="value" t-att-src="value" alt="Signature"/> <t t-if="!value"><span class="o_placeholder"><t t-esc="placeholder"/></span></t> <t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
+            <div t-if="type == 'text' || type == 'textarea'" class="o_sign_sign_item" style="text-align: center;"><t t-if="!value"><span class="o_placeholder"><t t-esc="placeholder"/></span></t><t t-esc="value"/><t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
+            <div t-if="type == 'checkbox'" class="o_sign_sign_item" style="margin: 2px; padding:2px"><t t-if="value == 'on'">&#9745;</t><t t-if="value == 'off'">&#9744;</t><t t-if="!value"><span class="o_placeholder"><t t-esc="placeholder"/></span></t><t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
+            <div t-if="type == 'selection'" class="o_sign_sign_item" style="white-space: normal;text-align: center;"><t t-if="!value"><span class="o_placeholder"><t t-esc="placeholder"/></span></t><div class="o_sign_select_options_display"/><t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
         </t>
 
         <t t-if="!readonly">
-            <button t-if="type == 'signature' || type == 'initial'" class="o_sign_sign_item text-center"><span class="o_sign_helper"/><t t-esc="placeholder"/></button>
+            <!-- SIGN SESSION : filling the signature values  -->
+            <button t-if="type == 'signature' || type == 'initial'" class="o_sign_sign_item text-center" style="color:#757575;"><span class="o_sign_helper"/><span class="o_placeholder"><t t-esc="placeholder"/></span></button>
             <input t-if="type == 'text'" type="text" class="o_sign_sign_item" t-att-placeholder="placeholder"/>
             <input t-if="type == 'checkbox'" type="checkbox" class="o_sign_sign_item"/>
             <textarea t-if="type == 'textarea'" class="o_sign_sign_item" t-att-placeholder="placeholder"/>
-            <div t-if="type == 'selection'" class="o_sign_sign_item" style="white-space: normal;">
-                <div class="o_sign_select_options_display"></div>
-            </div>
+            <div t-if="type == 'selection'" class="o_sign_sign_item" style="white-space: normal;color: #757575;"><div class="o_sign_select_options_display"/></div>
         </t>
     </t>
 
     <div t-name="sign.sign_item_configuration" class="o_sign_config_area">
-        <span class="fa fa-arrows" role="img" aria-label="Signature configuration" title="Signature configuration"/>
+         <span class="fa fa-arrows" role="img" aria-label="Signature configuration" title="Signature configuration"/>
         <div class="o_sign_item_display">
-            <span class="o_sign_responsible_display"/>
+<!--            Don't display role for checkbox. We don't have place-->
+            <t t-if="type != 'checkbox'"><span class="o_sign_responsible_display"/></t>
         </div>
     </div>
 
@@ -81,24 +76,7 @@
     <div t-name="sign.thank_you_dialog">
         <div class="o_thankyou_message">We will let you know by email once everyone has signed.<br/>
         You can close the window and come back later.</div>
-        <t t-if="!widget.RedirectURL">
-            <div class="o_promote_esign o_thankyou_link">
-                <img src="/sign/static/description/icon.png" alt="Document Sign" class="img img-fluid d-inline-block"/>
-                <a class="pl-3" target="_blank" href="https://www.odoo.com/page/sign">Made with Odoo Sign</a>
-            </div>
-        </t>
-        <t t-if="widget.RedirectURL">
-            <div class="o_promote_esign o_thankyou_link">
-                <img src="/sign/static/description/icon.png" alt="Document Sign" class="img img-fluid d-inline-block"/>
-                <a class="pl-3" target="_blank" t-att-href="widget.RedirectURL">View External Document</a>
-            </div>
-        </t>
-        <div class="o_go_to_document o_thankyou_link">
-            <img src="/sign/static/description/icon.png" alt="Document Sign" class="img img-fluid d-inline-block"/>
-            <a class="pl-3" href="#">View Signed document</a>
-        </div>
     </div>
-
     <div t-name="sign.no_pub_thank_you_dialog" t-extend="sign.thank_you_dialog">
         <t t-jquery=".o_promote_esign" t-operation="replace"/>
     </div>

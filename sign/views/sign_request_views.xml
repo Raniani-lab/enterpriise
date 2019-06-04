@@ -21,10 +21,10 @@
                         <div class="o_kanban_title clearfix">
                             <div class="o_dropdown_kanban dropdown">
                                 <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                    <span class="fa fa-bars fa-lg"/>
+                                    <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
-                                    <a role="menuitem" type="object" name="open_sign_request" class="dropdown-item">Details</a>
+                                    <a role="menuitem" type="object" name="open_request" class="dropdown-item">Details</a>
                                     <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
                                         <t t-if="!record.active.raw_value">Restore</t>
                                         <t t-if="record.active.raw_value">Archive</t>
@@ -82,7 +82,7 @@
                 <header>
                     <button string="Resend" type="object" states="canceled" name="action_resend" class="oe_highlight oe_read_only"/>
                     <button string="Preview" type="object" name="go_to_document" class="oe_highlight"/>
-                    <button string="Get Completed Document" type="object" states="signed" name="get_completed_document" class="oe_read_only oe_highlight"/>
+                    <button string="Download Document" type="object" states="signed" name="get_completed_document" class="oe_read_only oe_highlight"/>
                     <button name="%(sign.action_sign_request_send_copy)d" string="Send a Copy" type="action"/>
                     <button string="Cancel" type="object" states="sent,signed" name="action_canceled" class="oe_read_only" confirm="This will delete all the already completed documents of this request and disable every sent accesses, are you sure?"/>
                     <field name="state" widget="statusbar" statusbar_visible="sent,signed"/>
@@ -191,15 +191,12 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
-                        <label for="partner_id" class="oe_edit_only"/>
-                        <h1><field name="partner_id"/></h1>
-                        <label for="role_id" class="oe_edit_only"/>
-                        <h2><field name="role_id"/></h2>
-                    </div>
                     <group>
                         <group>
-                            <field name="access_token"/>
+                            <field name="partner_id"/>
+                            <field name="role_id"/>
+                            <field name="signer_email"/>
+                            <field name="access_token" invisible="1"/>
                             <field name="signing_date"/>
                         </group>
                         <group>

@@ -11,6 +11,9 @@ class TestPayslipFlow(TestPayslipBase):
 
     def test_00_payslip_flow(self):
         """ Testing payslip flow and report printing """
+        # activate Richard's contract
+        self.richard_emp.contract_ids[0].state = 'open'
+
         # I create an employee Payslip
         richard_payslip = self.env['hr.payslip'].create({
             'name': 'Payslip of Richard',

@@ -19,9 +19,7 @@ chatter messages and channel.
         'web_mobile',
     ],
     'data': [
-        'views/res_config_settings_views.xml',
         'views/ocn_assets.xml'
     ],
     'installable': True,
-    'auto_install': True
 }

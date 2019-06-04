@@ -6,10 +6,9 @@ var ajax = require('web.ajax');
 
 //Send info only if client is mobile
 if (mobile.methods.getFCMKey) {
-    var sessionInfo = odoo.session_info;
-    if (sessionInfo.fcm_project_id) {
+    var registerDevice = function (fcm_project_id) {
         mobile.methods.getFCMKey({
-            project_id: sessionInfo.fcm_project_id,
+            project_id: fcm_project_id,
             inbox_action: sessionInfo.inbox_action,
         }).then(function (response) {
             if (response.success) {
@@ -18,8 +17,25 @@ if (mobile.methods.getFCMKey) {
                     method: 'register_device',
                     args: [response.data.subscription_id, response.data.device_name],
                     kwargs: {},
+                }).then(function (ocn_token) {
+                    if (mobile.methods.setOCNToken) {
+                        mobile.methods.setOCNToken({ocn_token: ocn_token});
+                    }
                 });
             }
+        });
+    };
+    var sessionInfo = odoo.session_info;
+    if (sessionInfo.fcm_project_id) {
+        registerDevice(sessionInfo.fcm_project_id);
+    } else {
+        ajax.rpc('/web/dataset/call_kw/res.config.settings/get_fcm_project_id', {
+            model: 'res.config.settings',
+            method: 'get_fcm_project_id',
+            args: [],
+            kwargs: {},
+        }).then(function (response) {
+            registerDevice(response);
         });
     }
 }

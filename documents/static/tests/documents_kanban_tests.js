@@ -597,7 +597,7 @@ QUnit.module('DocumentsKanbanView', {
                 if (args.method === 'create_share') {
                     assert.deepEqual(args.args, [{
                         domain: domain.concat([
-                            ['folder_id', '=', 1], ['res_model', 'in', ['task']],
+                            ['folder_id', 'child_of', 1], ['res_model', 'in', ['task']],
                         ]),
                         folder_id: 1,
                         tag_ids: [[6, 0, []]],
@@ -2541,9 +2541,9 @@ QUnit.module('DocumentsKanbanView', {
             "tag selector should not be checked anymore");
 
         assert.verifySteps([
-            '[["folder_id","=",1]]',
-            '[["folder_id","=",1],["tag_ids","in",[2]]]',
-            '[["folder_id","=",2],["tag_ids","in",[2]]]',
+            '[["folder_id","child_of",1]]',
+            '[["folder_id","child_of",1],["tag_ids","in",[2]]]',
+            '[["folder_id","child_of",2],["tag_ids","in",[2]]]',
         ]);
 
         kanban.destroy();

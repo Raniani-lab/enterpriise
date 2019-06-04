@@ -13,6 +13,42 @@ initialDate = new Date(initialDate.getTime() - initialDate.getTimezoneOffset() *
 
 var createView = testUtils.createView;
 
+// The gantt view uses momentjs for all time computation, which bypasses
+// tzOffset, making it hard to test. We had two solutions to test this:
+//
+// 1. Change everywhere in gantt where we use momentjs to manual
+//    manipulations using tzOffset so that we can manipulate it tests.
+//    Pros:
+//      - Consistent with other mechanisms in Odoo.
+//      - Full coverage of the behavior since we can manipulate in tests
+//    Cons:
+//      - We need to change nearly everything everywhere in gantt
+//      - The code works, it is sad to have to change it, risking to
+//        introduce new bugs, just to be able to test this.
+//      - Just applying the tzOffset to the date is not as easy as it
+//        sounds. Moment is smart. It offsets the date with the offset
+//        that you would locally have AT THAT DATE. Meaning that it
+//        sometimes offsets of 1 hour or 2 hour in the same locale
+//        depending as if the particular datetime we are offseting would
+//        be in DST or not at that time. We would have to handle all
+//        the DST conversion shenanigans manually to be correct.
+//
+// 2. Use the same computation path as the production code to compute
+//    the expected value.
+//    Pros:
+//      - Very easy to implement
+//      - Momentjs is smart, see last Con above. It does all the heavy
+//        lifting for us and it is a well known, stable and maintained
+//        library, so we can trust it on these matters.
+//    Cons:
+//      - The test relies on the behavior of Momentjs. If the library
+//        has a bug, the gantt view will have an issue that this test
+//        will never be able to see.
+//
+// Considering the Cons of the first option are tremendous and the one
+// of the second option is offest by the fact that we consider Momentjs
+// to be a trustworthy library, we chose option 2. It was required in
+// only a few test but we think it was still interesting to mention it.
 
 function getPillItemWidth($el) {
     return $el.attr('style').split('width: ')[1].split(';')[0];
@@ -556,6 +592,41 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('if a on_create is specified, execute the action rather than opening a dialog. And reloads after the action', async function(assert){
+        assert.expect(3);
+        var reloadCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" on_create="this_is_create_action" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (route === '/web/dataset/search_read') {
+                    reloadCount++;
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        testUtils.mock.intercept(gantt, 'do_action', function (event) {
+            assert.strictEqual(event.data.action, 'this_is_create_action');
+            event.data.options.on_close();
+        });
+
+        assert.strictEqual(reloadCount, 1);
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_add'));
+        await testUtils.nextTick();
+
+        assert.strictEqual(reloadCount, 2);
+
+        gantt.destroy();
+    })
+
     QUnit.test('open a dialog to add a new task', async function (assert) {
         assert.expect(3);
 
@@ -617,7 +688,7 @@ QUnit.module('Views', {
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
         await testUtils.nextTick();
         // check that the dialog is opened with prefilled fields
-        var $modal = $('.modal-lg');
+        var $modal = $('.modal');
         assert.strictEqual($modal.length, 1, 'There should be one modal opened');
         assert.strictEqual($modal.find('.modal-title').text(), "Create");
         await testUtils.fields.editInput($modal.find('input[name=name]'), 'Task 8');
@@ -697,6 +768,207 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('open a dialog to create a task, does not have a delete button', async function(assert){
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+        });
+
+        // open dialog to create a task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
+
+        var $modal = $('.modal');
+        assert.containsNone($modal, '.o_btn_remove', 'There should be no delete button on create dialog');
+
+        gantt.destroy();
+
+    });
+
+    QUnit.test('open a dialog to edit a task, has a delete buttton', async function(assert){
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+        });
+
+        // open dialog to create a task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
+        // create the task
+        await testUtils.modal.clickButton('Save & Close');
+        // open dialog to view the task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.nextTick();
+
+        var $modal = $('.modal');
+
+        assert.strictEqual($modal.find('.o_btn_remove').length, 1, 'There should be a delete button on edit dialog');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('clicking on delete button in edit dialog triggers a confirmation dialog, clicking discard does not call unlink on the model', async function(assert){
+        assert.expect(4);
+
+        var unlinkCallCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+            mockRPC: function (route, args) {
+                if (args.method === 'unlink') {
+                    unlinkCallCount++;
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        // open dialog to create a task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
+        // create the task
+        await testUtils.modal.clickButton('Save & Close');
+        // open dialog to view the task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.nextTick();
+
+        var $modal = $('.modal');
+
+        // trigger the delete button
+        await testUtils.modal.clickButton('Remove');
+        await testUtils.nextTick();
+
+        var $dialog = $('.modal-dialog');
+
+        // there sould be one more dialog
+        assert.strictEqual($dialog.length, 2, 'Should have opened a new dialog');
+        assert.strictEqual(unlinkCallCount, 0, 'should not call unlink on the model if dialog is cancelled');
+
+        // trigger cancel
+        await testUtils.modal.clickButton('Cancel');
+        await testUtils.nextTick();
+
+        $dialog = $('.modal-dialog');
+        assert.strictEqual($dialog.length, 0, 'Should have closed all dialog');
+        assert.strictEqual(unlinkCallCount, 0, 'Unlink should not have been called');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('clicking on delete button in edit dialog triggers a confirmation dialog, clicking ok call unlink on the model', async function(assert){
+        assert.expect(4);
+
+        var unlinkCallCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form>' +
+                        '<field name="name"/>' +
+                        '<field name="start"/>' +
+                        '<field name="stop"/>' +
+                        '<field name="stage"/>' +
+                        '<field name="project_id"/>' +
+                        '<field name="user_id"/>' +
+                    '</form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+            mockRPC: function (route, args) {
+                if (args.method === 'unlink') {
+                    unlinkCallCount++;
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        // open dialog to create a task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
+        // create the task
+        await testUtils.modal.clickButton('Save & Close');
+        // open dialog to view the task
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.nextTick();
+
+        // trigger the delete button
+        await testUtils.modal.clickButton('Remove');
+        await testUtils.nextTick();
+
+        var $dialog = $('.modal-dialog');
+
+        // there sould be one more dialog
+        assert.strictEqual($dialog.length, 2, 'Should have opened a new dialog');
+        assert.strictEqual(unlinkCallCount, 0, 'should not call unlink on the model if dialog is cancelled');
+
+        // trigger ok
+        await testUtils.modal.clickButton('Ok');
+        await testUtils.nextTick();
+
+        $dialog = $('.modal-dialog');
+        assert.strictEqual($dialog.length, 0, 'Should have closed all dialog');
+        assert.strictEqual(unlinkCallCount, 1, 'Unlink should have been called');
+
+        gantt.destroy();
+    });
+
     QUnit.test('create dialog with timezone', async function (assert) {
         assert.expect(4);
 
@@ -750,6 +1022,116 @@ QUnit.module('Views', {
 
         // create the task
         await testUtils.modal.clickButton('Save & Close');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is not present if edit === false and plan is not specified', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="false" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.strictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is not present if edit === false and plan is true', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="false" plan="true" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.strictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is not present if edit === true and plan === false', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="true" plan="false" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.strictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is present if edit === true and plan is not set', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="true" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.notStrictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('plan button is present if edit === true and plan is true', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" edit="true" plan="true" />',
+            archs: {
+                'tasks,false,list': '<tree><field name="name"/></tree>',
+                'tasks,false,search': '<search><field name="name"/></search>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.notStrictEqual(gantt.$('.o_gantt_cell_plan').length, 0);
 
         gantt.destroy();
     });
@@ -1318,6 +1700,144 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('gantt_unavailability reloads when the view\'s scale changes', async function(assert){
+        assert.expect(11);
+
+        var unavailabilityCallCount = 0;
+        var unavailabilityScaleArg = 'none';
+        var reloadCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                var result;
+                if (route === '/web/dataset/search_read') {
+                    reloadCount++;
+                    result = this._super.apply(this, arguments);
+                }
+                else if (args.method === 'gantt_unavailability') {
+                    unavailabilityCallCount++;
+                    unavailabilityScaleArg = args.args[2];
+                    result = args.args[4];
+                }
+                return Promise.resolve(result);
+            },
+        });
+
+        assert.strictEqual(reloadCount, 1, 'view should have loaded')
+        assert.strictEqual(unavailabilityCallCount, 1, 'view should have loaded unavailability');
+
+        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=week]'));
+        assert.strictEqual(reloadCount, 2, 'view should have reloaded when switching scale to week')
+        assert.strictEqual(unavailabilityCallCount, 2, 'view should have reloaded when switching scale to week');
+        assert.strictEqual(unavailabilityScaleArg, 'week', 'unavailability should have been called with the week scale');
+
+        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=month]'));
+        assert.strictEqual(reloadCount, 3, 'view should have reloaded when switching scale to month')
+        assert.strictEqual(unavailabilityCallCount, 3, 'view should have reloaded when switching scale to month');
+        assert.strictEqual(unavailabilityScaleArg, 'month', 'unavailability should have been called with the month scale');
+
+        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=year]'));
+        assert.strictEqual(reloadCount, 4, 'view should have reloaded when switching scale to year')
+        assert.strictEqual(unavailabilityCallCount, 4, 'view should have reloaded when switching scale to year');
+        assert.strictEqual(unavailabilityScaleArg, 'year', 'unavailability should have been called with the year scale');
+
+        gantt.destroy();
+
+    });
+
+    QUnit.test('gantt_unavailability reload when period changes', async function(assert){
+        assert.expect(6);
+
+        var unavailabilityCallCount = 0;
+        var reloadCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                var result;
+                if (route === '/web/dataset/search_read') {
+                    reloadCount++;
+                    result = this._super.apply(this, arguments);
+                }
+                else if (args.method === 'gantt_unavailability') {
+                    unavailabilityCallCount++;
+                    result = args.args[4];
+                }
+                return Promise.resolve(result);
+            },
+        });
+
+        assert.strictEqual(reloadCount, 1, 'view should have loaded')
+        assert.strictEqual(unavailabilityCallCount, 1, 'view should have loaded unavailability');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        assert.strictEqual(reloadCount, 2, 'view should have reloaded when clicking next')
+        assert.strictEqual(unavailabilityCallCount, 2, 'view should have reloaded unavailability when clicking next');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        assert.strictEqual(reloadCount, 3, 'view should have reloaded when clicking prev')
+        assert.strictEqual(unavailabilityCallCount, 3, 'view should have reloaded unavailability when clicking prev');
+
+        gantt.destroy();
+
+    });
+
+    QUnit.test('gantt_unavailability should not reload when period changes if display_unavailability is not set', async function(assert){
+        assert.expect(6);
+
+        var unavailabilityCallCount = 0;
+        var reloadCount = 0;
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                var result;
+                if (route === '/web/dataset/search_read') {
+                    reloadCount++;
+                    result = this._super.apply(this, arguments);
+                }
+                else if (args.method === 'gantt_unavailability') {
+                    unavailabilityCallCount++;
+                    result = {};
+                }
+                return Promise.resolve(result);
+            },
+        });
+
+        assert.strictEqual(reloadCount, 1, 'view should have loaded')
+        assert.strictEqual(unavailabilityCallCount, 0, 'view should not have loaded unavailability');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        assert.strictEqual(reloadCount, 2, 'view should have reloaded when clicking next')
+        assert.strictEqual(unavailabilityCallCount, 0, 'view should not have reloaded unavailability when clicking next');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        assert.strictEqual(reloadCount, 3, 'view should have reloaded when clicking prev')
+        assert.strictEqual(unavailabilityCallCount, 0, 'view should not have reloaded unavailability when clicking prev');
+
+        gantt.destroy();
+
+    });
+
     // ATTRIBUTES TESTS
 
     QUnit.test('create attribute', async function (assert) {
@@ -1707,7 +2227,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('display_unavailability attribute', async function (assert) {
-        assert.expect(3);
+        assert.expect(14);
 
         var gantt = await createView({
             View: GanttView,
@@ -1721,26 +2241,47 @@ QUnit.module('Views', {
                 if (args.method === 'gantt_unavailability') {
                     assert.strictEqual(args.model, 'tasks',
                         "the availability should be fetched on the correct model");
-                    var result = {};
-                    for (var i = 0; i < 31; i++) {
-                        if ((i + 1) % 7 === 6 || (i + 1) % 7 === 0) {
-                            // week-ends are unavailable
-                            result[i] = 1;
-                        } else {
-                            // not mandatory
-                            // result[i] = 0;
-                        }
-                    }
-                    return Promise.resolve(result);
+                    var rows = args.args[4];
+                    rows.forEach(function(r) {
+                        r.unavailabilities = [{
+                            start: '2018-12-05 13:00:00',
+                            stop: '2018-12-07 23:00:00'
+                        }, {
+                            start: '2018-12-16 09:00:00',
+                            stop: '2018-12-18 09:00:00'
+                        }]
+                    });
+                    return Promise.resolve(rows);
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        assert.hasClass(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-06 00:00:00"]'), 'o_gantt_unavailable',
-            "the 6th should be unavailable");
-        assert.containsN(gantt, '.o_gantt_cell.o_gantt_unavailable', 8,
-            "the week-ends should be unavailable");
+        var cell5 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-05 00:00:00"]');
+        assert.hasClass(cell5, 'o_gantt_unavailability', "the 5th cell should have unavailabilities");
+        assert.hasClass(cell5, 'o_gantt_unavailable_second_half', "the 5th cell should be gray in the afternoon");
+
+        var cell6 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-06 00:00:00"]');
+        assert.hasClass(cell6, 'o_gantt_unavailability', "the 6th cell should have unavailabilities");
+        assert.hasClass(cell6, 'o_gantt_unavailable_full', "the 6th cell should be fully grayed-out");
+
+        var cell7 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-07 00:00:00"]');
+        assert.hasClass(cell7, 'o_gantt_unavailability', "the 7th cell should have unavailabilities");
+        assert.hasClass(cell7, 'o_gantt_unavailable_full', "the 7th cell should be fully grayed-out");
+
+        var cell16 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-16 00:00:00"]');
+        assert.hasClass(cell16, 'o_gantt_unavailability', "the 16th cell should have unavailabilities");
+        assert.hasClass(cell16, 'o_gantt_unavailable_second_half', "the 16th cell should be gray in the afternoon");
+
+        var cell17 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-17 00:00:00"]');
+        assert.hasClass(cell17, 'o_gantt_unavailability', "the 18th cell should have unavailabilities");
+        assert.hasClass(cell17, 'o_gantt_unavailable_full', "the 18th cell should be fully grayed-out");
+
+        var cell18 = gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-18 00:00:00"]');
+        assert.hasClass(cell18, 'o_gantt_unavailability', "the 18th cell should have unavailabilities");
+        assert.hasClass(cell18, 'o_gantt_unavailable_first_half', "the 18th cell should be gray in the morning");
+
+        assert.containsN(gantt, '.o_gantt_cell.o_gantt_unavailability', 6, "6 cells have unavailabilities data");
 
         gantt.destroy();
     });
@@ -1971,6 +2512,100 @@ QUnit.module('Views', {
 
         gantt.destroy();
         testUtils.unpatch(GanttRenderer);
+    });
+
+    QUnit.test('dst spring forward', async function (assert) {
+        assert.expect(2);
+
+        // This is one of the few tests which have dynamic assertions, see
+        // our justification for it in the comment at the top of this file.
+
+        var firstStartDateUTCString = '2019-03-30 03:00:00';
+        var firstStartDateUTC = moment.utc(firstStartDateUTCString);
+        var firstStartDateLocalString = firstStartDateUTC.local().format('YYYY-MM-DD hh:mm:ss');
+        this.data.tasks.records.push({
+            id: 99,
+            name: 'DST Task 1',
+            start: firstStartDateUTCString,
+            stop: '2019-03-30 03:30:00',
+        });
+
+        var secondStartDateUTCString = '2019-03-31 03:00:00';
+        var secondStartDateUTC = moment.utc(secondStartDateUTCString);
+        var secondStartDateLocalString = secondStartDateUTC.local().format('YYYY-MM-DD hh:mm:ss');
+        this.data.tasks.records.push({
+            id: 99,
+            name: 'DST Task 2',
+            start: secondStartDateUTCString,
+            stop: '2019-03-31 03:30:00',
+        });
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" default_scale="day"/>',
+            viewOptions: {
+                initialDate: new Date(2019, 2, 30, 8, 0, 0),
+            },
+        });
+
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_cell[data-date="' + firstStartDateLocalString + '"] .o_gantt_pill_wrapper:contains(DST Task 1)',
+            'should be in the right cell');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_cell[data-date="' + secondStartDateLocalString + '"] .o_gantt_pill_wrapper:contains(DST Task 2)',
+            'should be in the right cell');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('dst fall back', async function (assert) {
+        assert.expect(2);
+
+        // This is one of the few tests which have dynamic assertions, see
+        // our justification for it in the comment at the top of this file.
+
+        var firstStartDateUTCString = '2019-10-26 03:00:00';
+        var firstStartDateUTC = moment.utc(firstStartDateUTCString);
+        var firstStartDateLocalString = firstStartDateUTC.local().format('YYYY-MM-DD hh:mm:ss');
+        this.data.tasks.records.push({
+            id: 99,
+            name: 'DST Task 1',
+            start: firstStartDateUTCString,
+            stop: '2019-10-26 03:30:00',
+        });
+
+        var secondStartDateUTCString = '2019-10-27 03:00:00';
+        var secondStartDateUTC = moment.utc(secondStartDateUTCString);
+        var secondStartDateLocalString = secondStartDateUTC.local().format('YYYY-MM-DD hh:mm:ss');
+        this.data.tasks.records.push({
+            id: 99,
+            name: 'DST Task 2',
+            start: secondStartDateUTCString,
+            stop: '2019-10-27 03:30:00',
+        });
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" default_scale="day"/>',
+            viewOptions: {
+                initialDate: new Date(2019, 9, 26, 8, 0, 0),
+            },
+        });
+
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_cell[data-date="' + firstStartDateLocalString + '"] .o_gantt_pill_wrapper:contains(DST Task 1)',
+            'should be in the right cell');
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_cell[data-date="' + secondStartDateLocalString + '"] .o_gantt_pill_wrapper:contains(DST Task 2)',
+            'should be in the right cell');
+
+        gantt.destroy();
     });
 
     // OTHER TESTS

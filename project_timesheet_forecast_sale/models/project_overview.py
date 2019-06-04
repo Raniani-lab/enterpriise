@@ -79,11 +79,11 @@ class ProjectOverview(models.Model):
                     F.order_line_id AS sale_line_id,
                     SUM(F.resource_hours) / SUM(F.working_days_count) * count(*) AS number_hours
                 FROM generate_series(
-                    (SELECT min(start_date) FROM project_forecast WHERE active=true)::date,
-                    (SELECT max(end_date) FROM project_forecast WHERE active=true)::date,
+                    (SELECT min(start_datetime) FROM project_forecast WHERE active=true)::date,
+                    (SELECT max(end_datetime) FROM project_forecast WHERE active=true)::date,
                     '1 day'::interval
                 ) date
-                    LEFT JOIN project_forecast F ON date >= F.start_date AND date <= end_date
+                    LEFT JOIN project_forecast F ON date >= F.start_datetime AND date <= end_datetime
                     LEFT JOIN hr_employee E ON F.employee_id = E.id
                     LEFT JOIN resource_resource R ON E.resource_id = R.id
                     LEFT JOIN sale_order_line S ON F.order_line_id = S.id
@@ -165,7 +165,7 @@ class ProjectOverview(models.Model):
             return stat_buttons
 
         if len(self) == 1:
-            action = clean_action(self.env['project.forecast'].with_context(active_id=self.id).action_view_forecast('project_forecast.project_forecast_action_from_project'))
+            action = clean_action(self.env['project.forecast'].with_context(active_id=self.id).action_view_forecast('project_forecast.project_forecast_action_by_project'))
             action['context']['default_project_id'] = self.id
         else:
             action = clean_action(self.env['project.forecast'].action_view_forecast('project_forecast.project_forecast_action_by_project'))

@@ -18,11 +18,11 @@ class Forecast(models.Model):
     # TODO JEM: should be moved to project_forecast and mixed with compute_time (see master-forecast-poc2-jem)
     working_days_count = fields.Integer("Number of working days", compute='_compute_working_days_count', store=True)
 
-    @api.depends('employee_id', 'employee_id.resource_calendar_id', 'start_date', 'end_date')
+    @api.depends('employee_id', 'employee_id.resource_calendar_id', 'start_datetime', 'end_datetime')
     def _compute_working_days_count(self):
         for forecast in self:
-            start_dt = datetime.datetime.combine(forecast.start_date, datetime.time.min)
-            stop_dt = datetime.datetime.combine(forecast.end_date, datetime.time.max)
+            start_dt = forecast.start_datetime
+            stop_dt = forecast.end_datetime
             forecast.working_days_count = forecast.employee_id._get_work_days_data(start_dt, stop_dt)['days']
 
     @api.depends('resource_hours', 'effective_hours')
@@ -33,7 +33,7 @@ class Forecast(models.Model):
             else:
                 forecast.percentage_hours = 0
 
-    @api.depends('task_id', 'user_id', 'start_date', 'end_date', 'project_id.analytic_account_id', 'task_id.timesheet_ids')
+    @api.depends('task_id', 'user_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'task_id.timesheet_ids')
     def _compute_effective_hours(self):
         Timesheet = self.env['account.analytic.line']
         for forecast in self:
@@ -42,8 +42,8 @@ class Forecast(models.Model):
             else:
                 domain = [
                     ('user_id', '=', forecast.user_id.id),
-                    ('date', '>=', forecast.start_date),
-                    ('date', '<=', forecast.end_date)
+                    ('date', '>=', forecast.start_datetime.date()),
+                    ('date', '<=', forecast.end_datetime.date())
                 ]
                 if forecast.task_id:
                     timesheets = Timesheet.search(expression.AND([[('task_id', '=', forecast.task_id.id)], domain]))

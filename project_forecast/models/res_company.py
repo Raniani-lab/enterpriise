@@ -7,12 +7,22 @@ from odoo import fields, models
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    forecast_uom = fields.Selection([
-        ('hour', 'Hours'),
-        ('day', 'Days'),
-    ], string="Time Unit", default='day', required=True, help="Encode your forecasts in hours or days.")
-    forecast_span = fields.Selection([
-        ('day', 'By day'),
-        ('week', 'By week'),
-        ('month', 'By month')
-    ], string="Time Span", default='month', required=True, help="Encode your forecast in a table displayed by days, weeks or the whole year.")
+    forecast_generation_span_interval = fields.Integer(
+        string='Rate of forecast generation',
+        required=True,
+        help="Delay for the rate at which recurring forecasts should be generated",
+        readonly=False,
+        default=1,
+    )
+    forecast_generation_span_uom = fields.Selection([
+        ('week', 'Week(s)'),
+        ('month', 'Month(s)')
+    ], required=True,
+        help="Unit for the rate at which recurring forecasts should be generated",
+        readonly=False,
+        default='month',
+    )
+    forecast_default_view = fields.Selection([
+        ('gantt', 'Gantt'),
+        ('grid', 'Grid')
+    ], default="gantt", required=True, help="Which view should be seen by default for forecasts")

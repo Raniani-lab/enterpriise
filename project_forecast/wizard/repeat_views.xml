@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_forecast_repeat_view_form" model="ir.ui.view">
+        <field name="name">Repeat a forecast</field>
+        <field name="model">project.forecast.repeat</field>
+        <field name="arch" type="xml">
+            <form string="Repeat forecast">
+                <sheet>
+                    <field name="related_forecast_id" invisible="1"/>
+                    <group>
+                        <group>
+                            <label for="repeat_interval" />
+                            <div class="o_row">
+                                <field name="repeat_interval" class="oe_inline mr-1"/>
+                                <field name="repeat_unit" class="width: 100%"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="repeat_until" string="Until" class="oe_inline"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_repeat" string="OK" class="btn-primary" type="object" />
+                    <button string="discard" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

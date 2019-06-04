@@ -301,7 +301,7 @@ class Base(models.AbstractModel):
         _labelize = self._get_date_formatter(step, field, locale=locale)
 
         if field.type == 'datetime':  # we want the column label to be the infos in user tz, while the date domain should still be in UTC
-            _date_tz = date.astimezone(pytz.timezone(self._context.get('tz', 'UTC')))
+            _date_tz = date.astimezone(pytz.timezone(self._context.get('tz') or 'UTC'))
         else:
             _date_tz = date
 
@@ -369,7 +369,7 @@ class Base(models.AbstractModel):
         if field.type in ['date', 'datetime']:
             if field.type == 'datetime':
                 today_utc = pytz.utc.localize(field.today(self))
-                today = today_utc.astimezone(pytz.timezone(self._context.get('tz', 'UTC')))
+                today = today_utc.astimezone(pytz.timezone(self._context.get('tz') or 'UTC'))
             else:
                 today = field.from_string(field.context_today(self))
             diff = self._grid_step_by(span)
@@ -397,7 +397,7 @@ class Base(models.AbstractModel):
             :param field: `odoo.field` used as grouping criteria
         """
         if field.type == 'datetime':
-            user_tz = pytz.timezone(self._context.get('tz', 'UTC'))
+            user_tz = pytz.timezone(self._context.get('tz') or 'UTC')
             return datetime_range(self._grid_start_of(span, step, anchor), self._grid_end_of(span, step, anchor), step, user_tz)
         return date_range(self._grid_start_of(span, step, anchor), self._grid_end_of(span, step, anchor))
 

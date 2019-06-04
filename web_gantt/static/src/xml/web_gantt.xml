@@ -69,12 +69,12 @@
         </div>
         <div class="col">
             <div class="row no-gutters">
-                <div t-foreach="widget.slots" t-as="slot" t-attf-class="col o_gantt_cell #{slot.unavailable ? 'o_gantt_unavailable' : ''} #{slot.isToday ? 'o_gantt_today' : ''}" t-att-data-date="slot.date.format('YYYY-MM-DD HH:mm:ss')" t-attf-style="height: #{widget.cellHeight}px;">
+                <div t-foreach="widget.slots" t-as="slot" t-attf-class="col o_gantt_cell #{slot.unavailability ? ('o_gantt_unavailability o_gantt_unavailable_' + slot.unavailability) : ''} #{slot.isToday ? 'o_gantt_today' : ''}" t-att-data-date="slot.start.format('YYYY-MM-DD HH:mm:ss')" t-attf-style="height: #{widget.cellHeight}px;">
 
                     <!-- plan and add buttons -->
                     <div t-if="slot.hasButtons" class="o_gantt_cell_buttons">
                         <i t-if="widget.options.canCreate" title="Create" class="o_gantt_cell_add fa fa-plus"/>
-                        <i t-if="widget.options.canEdit" title="Plan existing" class="o_gantt_cell_plan fa fa-search-plus"/>
+                        <i t-if="widget.options.canPlan" title="Plan existing" class="o_gantt_cell_plan fa fa-search-plus"/>
                     </div>
 
                     <!-- pills -->

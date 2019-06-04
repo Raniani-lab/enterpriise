@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="email_template_forecast_single" model="mail.template">
+            <field name="name">Forecast new schedule</field>
+            <field name="email_from">${(object.company_id.email or '')}</field>
+            <field name="subject">Forecast: new schedule</field>
+            <field name="email_to">${object.employee_id.work_email}</field>
+            <field name="model_id" ref="model_project_forecast"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Dear ${object.employee_id.name or ''},</p><br/>
+                    <p>You have been assigned the following forecast.</p><br/>
+                    <table style="table-layout: fixed;">
+                        <tr>
+                            <th style="padding: 5px;text-align: left;">From</th>
+                            <td style="padding: 5px;">${ctx.formatted_start_datetime}</td>
+                        </tr>
+                        <tr>
+                            <th style="padding: 5px;text-align: left;">To</th>
+                            <td style="padding: 5px;">${ctx.formatted_end_datetime}</td>
+                        </tr>
+                        <tr>
+                            <th style="padding: 5px;text-align: left;">Project</th>
+                            <td style="padding: 5px;">${object.project_id.name}</td>
+                        </tr>
+                        % if object.task_id
+                            <tr>
+                                <th style="padding: 5px;text-align: left;">Task</th>
+                                <td style="padding: 5px;">${object.task_id.name or ''}</td>
+                            </tr>
+                        % endif
+                        <tr>
+                            <th style="padding: 5px;text-align: left;">Planned Hours</th>
+                            <td style="padding: 5px;">${ctx.resource_hours}</td>
+                        </tr>
+
+                    </table>
+                    % if ctx.render_link
+                        <div style="margin: 15px; text-align: center">
+                            <a href="/web?#action=${ctx.get('action_id')}&amp;model=project.forecast&amp;view_type=gantt&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }"
+                            style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
+                            >View Forecast</a>
+                        </div>
+                    % endif
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

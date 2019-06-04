@@ -40,6 +40,7 @@ var GanttRenderer = AbstractRenderer.extend({
 
         this.canCreate = params.canCreate;
         this.canEdit = params.canEdit;
+        this.canPlan = params.canPlan;
         this.cellPrecisions = params.cellPrecisions;
         this.colorField = params.colorField;
         this.progressField = params.progressField;
@@ -246,15 +247,18 @@ var GanttRenderer = AbstractRenderer.extend({
         rows.forEach(function (row) {
             var pillsInfo = {
                 groupId: row.groupId,
+                resId: row.resId,
                 pills: row.records,
                 groupLevel: groupLevel,
             };
             if (groupedBy.length) {
                 pillsInfo.groupName = row.name;
+                pillsInfo.groupedByField = row.groupedByField;
             }
             var params = {
                 canCreate: self.canCreate,
                 canEdit: self.canEdit,
+                canPlan: self.canPlan,
                 isGroup: row.isGroup,
                 consolidate: (groupLevel === 0) && (self.state.groupedBy[0] === self.consolidationParams.maxField),
                 hideSidebar: hideSidebar,
@@ -262,6 +266,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 disableResize: disableResize,
                 rowId: row.id,
                 scales: self.SCALES,
+                unavailabilities: row.unavailabilities,
             };
             rowWidgets.push(self._renderRow(pillsInfo, params));
             if (row.isGroup && row.isOpen) {
@@ -306,6 +311,7 @@ var GanttRenderer = AbstractRenderer.extend({
         var params = {
             canCreate: this.canCreate,
             canEdit: this.canEdit,
+            canPlan: this.canPlan,
             hideSidebar: this.state.groupedBy.length === 0,
             isGroup: true,
             rowId: '__total_row__',

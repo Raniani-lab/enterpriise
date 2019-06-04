@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="forecast_backend_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="project_forecast/static/src/js/forecast_gantt_view.js" />
+            <script type="text/javascript" src="project_forecast/static/src/js/forecast_gantt_controller.js" />
+            <script type="text/javascript" src="project_forecast/static/src/js/forecast_gantt_renderer.js" />
+            <script type="text/javascript" src="project_forecast/static/src/js/forecast_gantt_row.js" />
+        </xpath>
+    </template>
+</odoo>

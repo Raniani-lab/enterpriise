@@ -70,12 +70,9 @@ class AccountReport(models.AbstractModel):
 
         companies = self.env.user.company_ids
         if len(companies) > 1:
-            if previous_options and previous_options.get('multi_company'):
-                company_map = dict((opt['id'], opt['selected']) for opt in previous_options.get('multi_company', []))
-            else:
-                company_map = {self.env.company.id: True}
+            allowed_company_ids = self._context.get('allowed_company_ids', self.env.company.ids)
             options['multi_company'] = [
-                {'id': c.id, 'name': c.name, 'selected': company_map.get(c.id, False)} for c in companies
+                {'id': c.id, 'name': c.name, 'selected': c.id in allowed_company_ids} for c in companies
             ]
 
     @api.model
@@ -730,8 +727,8 @@ class AccountReport(models.AbstractModel):
         user_company = self.env.company
         user_currency = user_company.currency_id
         if options.get('multi_company'):
-            company_ids = [c['id'] for c in self._get_options_companies(options) if c['id'] != user_company.id]
-            company_ids.append(self.env.user.company_id.id)
+            company_ids = [c['id'] for c in self._get_options_companies(options) if c['id'] != user_company.id and c['selected']]
+            company_ids.append(self.env.company.id)
             companies = self.env['res.company'].browse(company_ids)
             conversion_date = options['date']['date_to']
             currency_rates = companies.mapped('currency_id')._get_rates(user_company, conversion_date)
@@ -1154,10 +1151,7 @@ class AccountReport(models.AbstractModel):
             if self.env.user.id not in group_multi_company.users.ids:
                 options.pop('multi_company')
             else:
-                for c in options['multi_company']:
-                    if c['selected'] and c['id'] not in user_company_ids:
-                        c['selected'] = False
-
+                options['multi_company'] = [opt for opt in options['multi_company'] if opt['id'] in user_company_ids]
 
     @api.multi
     def get_html(self, options, line_id=None, additional_context=None):

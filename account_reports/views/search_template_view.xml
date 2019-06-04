@@ -122,25 +122,6 @@
         </div>
     </template>
 
-    <template id="search_template_multi_company">
-        <a type="button" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-filter"/>
-            Companies:
-            <t t-set="selected_companies" t-value="', '.join(company.get('name') for company in options['multi_company'] if company.get('selected'))"/>
-            <t t-if="selected_companies">
-                <t t-esc="selected_companies"/>
-            </t>
-            <t t-else="">
-                All
-            </t>
-        </a>
-        <div class="dropdown-menu o_filters_menu" role="menu">
-            <t t-foreach="options['multi_company']" t-as="c">
-                <a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="c.get('name')" data-filter="multi_company" t-att-data-id="c.get('id')"><t t-esc="c.get('name')"/></a>
-            </t>
-        </div>
-    </template>
-
     <template id="search_template_journals">
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-book"/>
@@ -246,9 +227,6 @@
         </div>
         <div class="btn-group o_dropdown o_account_reports_filter_date_cmp" t-if="options.get('comparison') != None">
             <t t-call="account_reports.search_template_comparison"/>
-        </div>
-        <div class="btn-group o_dropdown o_account_reports_filter_multi_company" t-if="options.get('multi_company') != None">
-            <t t-call="account_reports.search_template_multi_company"/>
         </div>
         <div class="btn-group o_dropdown o_account_reports_filter_journals" t-if="options.get('journals') != None">
             <t t-call="account_reports.search_template_journals"/>

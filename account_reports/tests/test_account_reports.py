@@ -38,7 +38,6 @@ class TestAccountReports(SavepointCase):
             'name': 'company_child_eur',
             'currency_id': cls.env.ref('base.EUR').id,
         })
-        cls.cids = [cls.company_parent.id, cls.company_child_eur.id]
 
         # EUR = 2 USD
         cls.eur_to_usd = cls.env['res.currency.rate'].create({
@@ -287,11 +286,11 @@ class TestAccountReports(SavepointCase):
 
     def _init_options(self, report, date_from, date_to):
         ''' Create new options at a certain date.
-        :param report:      The report.
-        :param filter:      One of the following values: ('today', 'custom', 'this_month', 'this_quarter', 'this_year', 'last_month', 'last_quarter', 'last_year').
-        :param date_from:   A datetime object or False.
-        :param date_to:     A datetime object.
-        :return:            The newly created options.
+        :param report:          The report.
+        :param filter:          One of the following values: ('today', 'custom', 'this_month', 'this_quarter', 'this_year', 'last_month', 'last_quarter', 'last_year').
+        :param date_from:       A datetime object or False.
+        :param date_to:         A datetime object.
+        :return:                The newly created options.
         '''
         report.filter_date = {
             'date_from': date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
@@ -450,11 +449,11 @@ class TestAccountReports(SavepointCase):
     def test_general_ledger_multi_company(self):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
-        report = self.env['account.general.ledger']
+        company_ids = (self.company_parent + self.company_child_eur).ids
+        report = self.env['account.general.ledger'].with_context(allowed_company_ids=company_ids)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                    Debit           Credit          Balance
@@ -487,7 +486,7 @@ class TestAccountReports(SavepointCase):
         options['unfolded_lines'] = [line_id]
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
             [   0,                                      1,              3,              4,          5,              6,              7],
             [
@@ -606,33 +605,6 @@ class TestAccountReports(SavepointCase):
             ],
         )
 
-        # Do the same in a multi-currency environment.
-        report = report.with_context(allowed_company_ids=self.cids)
-        journal = self.env['account.journal'].with_context(allowed_company_ids=self.cids).search(
-            [('company_id', '=', self.company_child_eur.id), ('type', '=', 'sale')])
-
-        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'journals', journal.ids)
-        options = self._update_multi_selector_filter(options, 'multi_company', self.company_child_eur.ids)
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      5,              6,              7],
-            [
-                # Accounts.
-                ('101200 Account Receivable',           2875.00,        0.00,           2875.00),
-                ('111200 Tax Received',                 0.00,           375.00,         -375.00),
-                ('200000 Product Sales',                0.00,           1300.00,        -1300.00),
-                ('999999 Undistributed Profits/Losses', 0.00,           1200.00,        -1200.00),
-                # Report Total.
-                ('Total',                               2875.00,        2875.00,        0.00),
-                # Tax Declaration.
-                ('Tax Declaration',                     '',             '',             ''),
-                ('Name',                                'Base Amount',  'Tax Amount',   ''),
-                ('Tax 15.00% (15.0)',                   600.00,         375.00,         ''),
-            ],
-        )
-
     # -------------------------------------------------------------------------
     # TESTS: Partner Ledger
     # -------------------------------------------------------------------------
@@ -679,10 +651,9 @@ class TestAccountReports(SavepointCase):
     def test_partner_ledger_multi_company(self):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
-        report = self.env['account.partner.ledger']
+        company_ids = (self.company_parent + self.company_child_eur).ids
+        report = self.env['account.partner.ledger'].with_context(allowed_company_ids=company_ids)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
-        report = report.with_context(allowed_company_ids=self.cids)
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -703,7 +674,6 @@ class TestAccountReports(SavepointCase):
         # Mark the 'partner_a' line (for the company_child_eur company) to be unfolded.
         line_id = lines[0]['id']
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(allowed_company_ids=self.cids)
 
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
@@ -725,11 +695,10 @@ class TestAccountReports(SavepointCase):
         line_id = 'partner_%s' % self.partner_a.id
 
         # Mark the 'partner_a' line to be unfolded.
-        report = self.env['account.partner.ledger']
+        company_ids = (self.company_parent + self.company_child_eur).ids
+        report = self.env['account.partner.ledger'].with_context(allowed_company_ids=company_ids)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         options['unfolded_lines'] = [line_id]
-        report = report.with_context(allowed_company_ids=self.cids)
 
         # Force the load more to expand lines one by one.
         report.MAX_LINES = 1
@@ -934,12 +903,12 @@ class TestAccountReports(SavepointCase):
     def test_aged_receivable_multi_company(self):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
-        report = self.env['account.aged.receivable']
+        company_ids = (self.company_parent + self.company_child_eur).ids
+        report = self.env['account.aged.receivable'].with_context(allowed_company_ids=company_ids)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
@@ -961,7 +930,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                    JRNL        Account         Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
             [   0,                      1,          2,              4,              5,              6,              7,              8,              9,          10],
             [
@@ -1047,12 +1016,12 @@ class TestAccountReports(SavepointCase):
     def test_aged_payable_multi_company(self):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
-        report = self.env['account.aged.payable']
+        company_ids = (self.company_parent + self.company_child_eur).ids
+        report = self.env['account.aged.payable'].with_context(allowed_company_ids=company_ids)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
@@ -1074,7 +1043,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                    JRNL        Account         Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
             [   0,                      1,          2,              4,              5,              6,              7,              8,              9,          10],
             [
@@ -1100,7 +1069,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
             [   0,                                      4,              5,              6,              7,              8,              9,          10],
             [
@@ -1123,7 +1092,7 @@ class TestAccountReports(SavepointCase):
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
             #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
             [   0,                                      1,              2,              3,              4,              5,              6],
@@ -1145,12 +1114,12 @@ class TestAccountReports(SavepointCase):
     def test_trial_balance_multi_company(self):
         ''' Test in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
-        report = self.env['account.coa.report']
+        company_ids = (self.company_parent + self.company_child_eur).ids
+        report = self.env['account.coa.report'].with_context(allowed_company_ids=company_ids)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
             #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
             [   0,                                      1,              2,              3,              4,              5,              6],
@@ -1187,7 +1156,7 @@ class TestAccountReports(SavepointCase):
         options = self._update_multi_selector_filter(options, 'journals', journal.ids)
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
             #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
             [   0,                                      1,              2,              3,              4,              5,              6],
@@ -1241,7 +1210,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #   Name                                    NET             TAX
             [   0,                                      1,              2],
             [
@@ -1263,7 +1232,7 @@ class TestAccountReports(SavepointCase):
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
@@ -1309,7 +1278,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                            Balance
             [   0,                                              1],
             [
@@ -1323,7 +1292,7 @@ class TestAccountReports(SavepointCase):
         self.company_parent.totals_below_sections = False
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                            Balance
             [   0,                                              1],
             [
@@ -1335,12 +1304,13 @@ class TestAccountReports(SavepointCase):
     def test_balance_sheet_multi_company(self):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
-        report = self.env.ref('account_reports.account_financial_report_balancesheet0')._with_correct_filters()
+        company_ids = (self.company_parent + self.company_child_eur).ids
+        report = self.env.ref('account_reports.account_financial_report_balancesheet0')\
+            .with_context(allowed_company_ids=company_ids)._with_correct_filters()
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
-        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
@@ -1386,7 +1356,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                            Balance
             [   0,                                              1],
             [
@@ -1409,7 +1379,7 @@ class TestAccountReports(SavepointCase):
         options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            partner_a   partner_b   partner_c   partner_d
@@ -1455,7 +1425,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                            partner_a   partner_b   partner_c   partner_d
             [   0,                                              1,          2,          3,          4],
             [
@@ -1470,7 +1440,7 @@ class TestAccountReports(SavepointCase):
         options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            partner_a   partner_b
@@ -1516,7 +1486,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                            partner_a   partner_b
             [   0,                                              1,          2],
             [
@@ -1536,7 +1506,7 @@ class TestAccountReports(SavepointCase):
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Debit       Credit      Balance
@@ -1582,7 +1552,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                            Debit       Credit      Balance
             [   0,                                              1,          2,          3],
             [
@@ -1600,7 +1570,7 @@ class TestAccountReports(SavepointCase):
         # options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
         # report = report.with_context(report._set_context(options))
         #
-        # lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        # lines = report._get_lines(options)
         # self.assertLinesValues(
         #     lines,
         #     #                                                   [       Debit       ]   [       Credit      ]   [       Balance     ]
@@ -1651,7 +1621,7 @@ class TestAccountReports(SavepointCase):
         options = self._update_comparison_filter(options, report, 'previous_period', 1)
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance     Comparison  %
@@ -1697,7 +1667,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                            Balance     Previous Period
             [   0,                                              1,          2],
             [
@@ -1712,7 +1682,7 @@ class TestAccountReports(SavepointCase):
         options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #                                                   [                   Balance                 ]   [                  Comparison               ]
@@ -1760,7 +1730,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #                                                   [                   Balance                 ]   [                  Comparison               ]
             #   Name                                            partner_a   partner_b   partner_c   partner_d   partner_a   partner_b   partner_c   partner_d
             [   0,                                              1,          2,          3,          4,          5,          6,          7,          8],
@@ -1782,7 +1752,7 @@ class TestAccountReports(SavepointCase):
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
@@ -1809,7 +1779,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                            Balance
             [   0,                                              1],
             [
@@ -1830,7 +1800,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #   Name                                            Balance
             [   0,                                              1],
             [
@@ -1860,7 +1830,7 @@ class TestAccountReports(SavepointCase):
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                                            Balance
@@ -1897,7 +1867,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                                            Balance
             [   0,                                                              1],
             [
@@ -1921,7 +1891,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #   Name                                                            Date            Amount
             [   0,                                                              1,              3],
             [
@@ -1943,14 +1913,14 @@ class TestAccountReports(SavepointCase):
 
     def test_reconciliation_report_multi_company_currency(self):
         ''' Test the lines in a multi-company/multi-currency environment. '''
-        bank_journal = self.env['account.journal'].with_context(allowed_company_ids=self.cids).search([('company_id', '=', self.company_child_eur.id), ('type', '=', 'bank')])
+        bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_child_eur.id), ('type', '=', 'bank')])
 
         # Init options.
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
         options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #   Name                                                            Date            Amount
             [   0,                                                              1,              3],
             [
@@ -1993,7 +1963,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #   Name                                                            Date            Amount
             [   0,                                                              1,              3],
             [
@@ -2022,7 +1992,7 @@ class TestAccountReports(SavepointCase):
         options = self._init_options(report, *date_utils.get_quarter(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                    Debit           Credit          Balance
@@ -2045,7 +2015,7 @@ class TestAccountReports(SavepointCase):
         options['unfolded_lines'] = [line_id]
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id)
+        lines = report._get_lines(options, line_id=line_id)
         self.assertLinesValues(
             lines,
             #   Name                                    Debit           Credit          Balance
@@ -2064,7 +2034,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                    Debit           Credit          Balance
             [   0,                                      1,              2,              3],
             [
@@ -2084,7 +2054,7 @@ class TestAccountReports(SavepointCase):
         options = self._update_multi_selector_filter(options, 'journals', bank_journal.ids)
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options)
+        lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                    Debit           Credit          Balance
@@ -2105,7 +2075,7 @@ class TestAccountReports(SavepointCase):
         options['unfolded_lines'] = [line_id]
         report = report.with_context(report._set_context(options))
 
-        lines = report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id)
+        lines = report._get_lines(options, line_id=line_id)
         self.assertLinesValues(
             lines,
             #   Name                                    Debit           Credit          Balance
@@ -2124,7 +2094,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options, line_id=line_id),
+            report._get_lines(options, line_id=line_id),
             #   Name                                    Debit           Credit          Balance
             [   0,                                      1,              2,              3],
             [
@@ -2146,7 +2116,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report.with_context(allowed_company_ids=self.cids)._get_lines(options),
+            report._get_lines(options),
             #   Name                                    Date,           Due Date,       Doc.    Comm.   Exp. Date   Blocked             Total Due
             [   0,                                      1,              2,              3,      4,      5,          6,                  7],
             [

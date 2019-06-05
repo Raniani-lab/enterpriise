@@ -134,12 +134,12 @@ var IotScanButton = Widget.extend({
                     resolve();
                 }).fail(reject);
             });
-            promise.guardedCatch(function (jqXHR, textStatus) {
+            promise.guardedCatch(function (jqXHR) {
                 // * If the request to /hw_proxy/hello returns an error while we contacted it in https,
                 // * it could mean the server certificate is not yet accepted by the client.
                 // * To know if it is really the case, we try to fetch an image on the http port of the server.
                 // * If it loads successfully, we put informations of connection in parameter of image.
-                if (textStatus === 'error' && self.parseURL.protocol === 'https:') {
+                if (jqXHR.statusText === 'error' && self.parseURL.protocol === 'https:') {
                     var imgSrc = url + self.controlImage;
                     img.src = imgSrc.replace('https://', 'http://');
                     img.onload = function(XHR) {

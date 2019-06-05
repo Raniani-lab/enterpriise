@@ -20,6 +20,8 @@ class HrContract(models.Model):
     hours_per_week = fields.Float(related='resource_calendar_id.hours_per_week')
     full_time_required_hours = fields.Float(related='resource_calendar_id.full_time_required_hours')
     is_fulltime = fields.Boolean(related='resource_calendar_id.is_fulltime')
+    wage_type = fields.Selection([('monthly', 'Monthly Fixed Wage'), ('hourly', 'Hourly Wage')], related='structure_type_id.wage_type')
+    hourly_wage = fields.Monetary('Hourly Wage', digits=(16, 2), default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
 
     date_generated_from = fields.Datetime(string='Generated From', readonly=True, required=True,
         default=lambda self: datetime.now().replace(hour=0, minute=0, second=0))

@@ -131,6 +131,7 @@
                         <group>
                             <field name="name"/>
                             <field name="country_id"/>
+                            <field name="wage_type"/>
                         </group>
                         <group>
                             <field name="default_schedule_pay"/>
@@ -151,6 +152,7 @@
                 <field name="name"/>
                 <field name="default_schedule_pay"/>
                 <field name="default_resource_calendar_id"/>
+                <field name="wage_type"/>
             </tree>
         </field>
     </record>

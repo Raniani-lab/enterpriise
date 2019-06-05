@@ -11,6 +11,27 @@
                 <field name="currency_id" invisible="1"/>
                 <field name="structure_type_id" required="1"/>
             </xpath>
+            <xpath expr="//page[@name='information']" position="attributes">
+                <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='information']" position="after">
+                <page string="Salary Information" name="information_salary_hourly" attrs="{'invisible': [('wage_type', '!=', 'hourly')]}">
+                    <group name="main_info_hourly">
+                        <group name="salary_and_advantages_hourly" string="Hourly Advantages in Cash">
+                            <field name="wage_type"/>
+                            <label for="wage"/>
+                            <div class="o_row" name="wage">
+                                <field name="hourly_wage" nolabel="1"/>
+                                <span>/ hour</span>
+                            </div>
+                            <field name="advantages" nolabel="1" placeholder="Advantages..." colspan="2" invisible="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//label[@for='wage']" position="before">
+                <field name="wage_type"/>
+            </xpath>
         </field>
     </record>
 

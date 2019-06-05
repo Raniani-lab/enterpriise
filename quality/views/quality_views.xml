@@ -44,6 +44,44 @@
         </field>
     </record>
 
+    <record id="quality_alert_view_tree" model="ir.ui.view">
+        <field name="name">quality.alert.view.tree</field>
+        <field name="model">quality.alert</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_tmpl_id" optional="show"/>
+                <field name="product_id" optional="hide"/>
+                <field name="lot_id" optional="hide"/>
+                <field name="team_id" optional="show"/>
+                <field name="user_id" optional="show"/>
+                <field name="tag_ids" optional="hide" widget="many2many_tags"/>
+                <field name="reason_id" optional="hide"/>
+                <field name="priority" optional="hide"/>
+                <field name="date_assign" optional="show"/>
+                <field name="partner_id" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="quality_point_view_tree" model="ir.ui.view">
+        <field name="name">quality.point.view.tree</field>
+        <field name="model">quality.point</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="title" optional="show"/>
+                <field name="product_tmpl_id" optional="show"/>
+                <field name="product_id" optional="hide"/>
+                <field name="picking_type_id" optional="hide" string="Operation"/>
+                <field name="test_type_id" optional="show" string="Type"/>
+                <field name="team_id" optional="show"/>
+                <field name="user_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
     <!-- js stuff -->
     <template id="assets_backend" inherit_id="web.assets_backend" name="Quality assets">
         <xpath expr="." position="inside">

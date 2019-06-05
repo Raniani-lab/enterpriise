@@ -137,16 +137,16 @@
     </record>
 
     <record id="quality_alert_view_tree" model="ir.ui.view">
-        <field name="name">quality.alert.view.tree</field>
+        <field name="name">quality.alert.view.tree.inherit.quality.control</field>
         <field name="model">quality.alert</field>
+        <field name="inherit_id" ref="quality.quality_alert_view_tree"/>
         <field name="arch" type="xml">
-            <tree>
-                <field name="display_name" string="Name"/>
-                <field name="check_id"/>
-                <field name="stage_id"/>
-                <field name="description"/>
-                <field name="company_id" groups="base.group_multi_company"/>
-            </tree>
+            <field name="user_id" position="after">
+                <field name="check_id" optional="show"/>
+            </field>
+            <field name="priority" position="after">
+                <field name="description" optional="hide"/>
+            </field>
         </field>
     </record>
 
@@ -395,12 +395,14 @@
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
             <tree>
-                <field name='product_id'/>
-                <field name="lot_id"/>
-                <field name="control_date" string="Checked Date"/>
-                <field name="user_id" string="Checked By"/>
-                <field name="quality_state"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name='product_id' optional="show"/>
+                <field name="lot_id" optional="show"/>
+                <field name="picking_id" optional="hide" string="Transfer"/>
+                <field name="control_date" string="Checked Date" optional="show"/>
+                <field name="user_id" string="Checked By" optional="show"/>
+                <field name="point_id" optional="hide"/>
+                <field name="team_id" optional="show"/>
+                <field name="quality_state" optional="show"/>
             </tree>
         </field>
     </record>
@@ -804,6 +806,18 @@
     </record>
 
     <!-- QUALITY.POINT -->
+    <record id="quality_point_view_tree" model="ir.ui.view">
+        <field name="name">quality.point.view.tree.inherit.quality.control</field>
+        <field name="model">quality.point</field>
+        <field name="inherit_id" ref="quality.quality_point_view_tree"/>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='test_type_id']" position="before">
+                <field name="measure_frequency_type" optional="hide" string="Control Type"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="quality_point_view_search" model="ir.ui.view">
         <field name="name">quality.point.view.search</field>
         <field name="model">quality.point</field>
@@ -823,21 +837,6 @@
                     <filter string="Responsible" name="groupby_user_id" context="{'group_by': 'user_id'}"/>
                 </group>
             </search>
-        </field>
-    </record>
-
-    <record id="quality_point_view_tree" model="ir.ui.view">
-        <field name="name">quality.point.view.tree</field>
-        <field name="model">quality.point</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
-                <field name="title"/>
-                <field name="product_tmpl_id"/>
-                <field name="picking_type_id"/>
-                <field name="company_id" groups="base.group_multi_company"/>
-            </tree>
         </field>
     </record>
 

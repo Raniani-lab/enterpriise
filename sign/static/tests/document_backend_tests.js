@@ -111,10 +111,10 @@ QUnit.module('document_backend_tests', {
             },
         });
 
-        testUtils.fields.many2one.clickOpenDropdown('template_id');
+        await testUtils.fields.many2one.clickOpenDropdown('template_id');
         await testUtils.fields.many2one.clickItem('template_id', 'Search');
 
-        testUtils.dom.click($('.modal .o_data_row:first'));
+        await testUtils.dom.click($('.modal .o_data_row:first'));
 
         assert.strictEqual(form.$('.o_field_widget[name=template_id] input').val(), 'some template');
 

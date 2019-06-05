@@ -33,11 +33,11 @@ class AccountAsset(models.Model):
     asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], compute='_compute_asset_type', store=True, index=True)
 
     # Depreciation params
-    method = fields.Selection([('linear', 'Linear'), ('degressive', 'Degressive'), ('degressive_then_linear', 'Accelerated Degressive')], string='Method', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default='linear',
+    method = fields.Selection([('linear', 'Straight Line'), ('degressive', 'Degressive'), ('degressive_then_linear', 'Accelerated Degressive')], string='Method', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default='linear',
         help="Choose the method to use to compute the amount of depreciation lines.\n"
-            "  * Linear: Calculated on basis of: Gross Value / Number of Depreciations\n"
+            "  * Straight Line: Calculated on basis of: Gross Value / Number of Depreciations\n"
             "  * Degressive: Calculated on basis of: Residual Value * Degressive Factor\n"
-            "  * Accelerated Degressive: Like Degressive but with a minimum depreciation value equal to the linear value.")
+            "  * Accelerated Degressive: Like Degressive but with a minimum depreciation value equal to the straight line value.")
     method_number = fields.Integer(string='Number of Depreciations', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default=5, help="The number of depreciations needed to depreciate your asset")
     method_period = fields.Selection([('1', 'Months'), ('12', 'Years')], string='Number of Months in a Period', readonly=True, default='12', states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
         help="The amount of time between two depreciations")

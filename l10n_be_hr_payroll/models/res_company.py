@@ -18,6 +18,8 @@ class ResCompany(models.Model):
             company.resource_calendar_id = self.env['resource.calendar'].create({
                 'name': _('Standard 38 hours/week'),
                 'company_id': company.id,
+                'hours_per_day': 7.6,
+                'full_time_required_hours': 38.0,
                 'attendance_ids': [
                     (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
                     (0, 0, {'name': 'Monday Afternoon', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),

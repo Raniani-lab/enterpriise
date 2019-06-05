@@ -49,6 +49,17 @@
         </field>
     </record>
 
+    <record id="mrp_bom_tree_view_tree" model="ir.ui.view">
+        <field name="name">mrp.bom.tree.inherit.mrp.plm</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='routing_id']" position="after">
+                <field name="version" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="mrp_bom_action_kanban">
         <field name="name">Bill of Materials</field>
         <field name="res_model">mrp.bom</field>

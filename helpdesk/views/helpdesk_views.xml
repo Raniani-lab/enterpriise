@@ -366,10 +366,14 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <tree string="Tickets">
-                <field name="display_name"/>
-                <field name="partner_id"/>
-                <field name="user_id"/>
-                <field name="stage_id"/>
+                <field name="display_name" string="Ticket Name"/>
+                <field name="partner_id" optional="show"/>
+                <field name="user_id" optional="show"/>
+                <field name="ticket_type_id" optional="hide"/>
+                <field name="priority" optional="hide"/>
+                <field name="tag_ids" optional="hide" widget="many2many_tags"/>
+                <field name="stage_id" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
             </tree>
         </field>
     </record>

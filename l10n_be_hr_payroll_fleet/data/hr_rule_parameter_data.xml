@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <record id="rule_parameter_health_indice_reference" model="hr.rule.parameter">
             <field name="name">Health Indice Reference</field>
             <field name="code">health_indice_reference</field>
@@ -61,8 +61,7 @@
             <field name="date_from" eval="datetime(2018, 1, 1).date()"/>
         </record>
         <record id="rule_parameter_value_co2_reference_petrol_lpg_2019" model="hr.rule.parameter.value">
-            <field name="parameter_value">88</field>
-            <!-- <field name="parameter_value">107</field> KEEP THIS VALUE -->
+            <field name="parameter_value">107</field>
             <field name="rule_parameter_id" ref="rule_parameter_co2_reference_petrol_lpg"/>
             <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
         </record>
@@ -78,8 +77,7 @@
             <field name="date_from" eval="datetime(2018, 1, 1).date()"/>
         </record>
         <record id="rule_parameter_value_co2_reference_diesel_2019" model="hr.rule.parameter.value">
-            <field name="parameter_value">86</field>
-            <!-- <field name="parameter_value">88</field> KEEP THIS VALUE -->
+            <field name="parameter_value">88</field>
             <field name="rule_parameter_id" ref="rule_parameter_co2_reference_diesel"/>
             <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
         </record>

@@ -10,6 +10,7 @@ try:
 except ImportError:
     from Queue import Queue, Empty  # pylint: disable=deprecated-module
 
+from odoo import _
 from odoo.addons.hw_drivers.controllers.driver import Driver, event_manager, mpdm
 
 eftapi = ctypes.CDLL("eftapi.so")
@@ -27,6 +28,7 @@ class SixDriver(Driver):
         self._device_connection = 'network'
         self._device_name = "Six Payment Terminal %s" % self.device_identifier
         self.actions = Queue()
+        self.last_transaction = None
 
     @classmethod
     def supported(cls, device):
@@ -42,6 +44,12 @@ class SixDriver(Driver):
                 self.open_shift()
                 self.actions.put({
                     'type': b'debit',
+                    'amount': data['amount'],
+                    'currency': data['currency'].encode(),
+                })
+            elif data['messageType'] == 'Reversal' and self.check_reversal(data['TransactionID']):
+                self.actions.put({
+                    'type': b'reversal',
                     'amount': data['amount'],
                     'currency': data['currency'].encode(),
                 })
@@ -84,6 +92,23 @@ class SixDriver(Driver):
         self.call_eftapi('EFT_Balance')
         self.send_status(ticket_merchant=self.get_merchant_receipt())
 
+    def check_reversal(self, id):
+        """Checks if the transaction with the specified transaction ID can be
+        reversed
+        """
+
+        self.call_eftapi('EFT_QueryStatus')
+        self.call_eftapi('EFT_Complete', 1)  # Needed to read messages from driver
+        reader_status = ctypes.c_long()
+        self.call_eftapi('EFT_GetDeviceEventCode', ctypes.byref(reader_status))
+        if reader_status.value != 0:
+            self.send_status(error=_("A card is still inserted in the Payment Terminal, please remove it then try again."))
+        elif self.last_transaction['owner'] != self.data['owner'] or self.last_transaction['id'] != id:
+            self.send_status(error=_("Another payment was processed after the one you're trying to reverse, you cannot reverse it anymore."))
+        else:
+            return True
+        return False
+
     def run(self):
         """Transactions need to be async to be aborted. Therefore, they cannot
         be executed directly in 'action' so we process them in a queue.
@@ -111,7 +136,8 @@ class SixDriver(Driver):
             self.call_eftapi('EFT_PutCurrency', transaction['currency'])
             self.call_eftapi('EFT_Transaction', transaction['type'], transaction['amount'], 0)
 
-            self.send_status(stage='WaitingForCard')
+            if transaction['type'] == b'debit':
+                self.send_status(stage='WaitingForCard')
 
             completed_command = ctypes.c_long()
             while completed_command.value != 3:
@@ -123,8 +149,10 @@ class SixDriver(Driver):
             self.call_eftapi('EFT_PutAsync', 0)
             self.call_eftapi('EFT_Commit', 1)
 
+            self.last_transaction = transaction
+
             self.send_status(
-                response="Approved",
+                response="Approved" if transaction['type'] == b'debit' else "Reversed",
                 ticket=self.get_customer_receipt(),
                 ticket_merchant=self.get_merchant_receipt(),
             )
@@ -193,6 +221,7 @@ class SixDriver(Driver):
             'Ticket': ticket,
             'TicketMerchant': ticket_merchant,
             'Error': error,
+            'Reversal': True,  # The payments can be reversed
         }
         event_manager.device_changed(self)
 

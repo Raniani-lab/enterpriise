@@ -42,7 +42,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
 
-        this.debug = config.debug;
+        this.debug = config.isDebug();
         this.report = params.report;
         this.state = params.state || {};
         this.paperFormat = params.paperFormat || {};

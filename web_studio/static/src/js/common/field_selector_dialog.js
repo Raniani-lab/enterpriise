@@ -24,7 +24,7 @@ var FieldSelectorDialog = Dialog.extend({
                 };
             }), 'string');
         this.show_new = show_new;
-        this.debug = config.debug;
+        this.debug = config.isDebug();
 
         var options = {
             title: _t('Select a Field'),

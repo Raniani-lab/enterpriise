@@ -1,8 +1,8 @@
 odoo.define('web_studio.SearchRenderer', function (require) {
 "use strict";
 
+var config = require('web.config');
 var core = require('web.core');
-var session = require('web.session');
 var utils = require('web.utils');
 var Widget = require('web.Widget');
 
@@ -143,7 +143,7 @@ var SearchRenderer = Widget.extend({
         var $tbody = this.$('.o_web_studio_search_autocompletion_fields tbody');
         var field_string = this.fields[node.attrs.name].string;
         var display_string = node.attrs.string || field_string;
-        if (session.debug) {
+        if (config.isDebug()) {
             display_string += ' (' + node.attrs.name +')';
         }
         var $new_row = $('<tr>').append(
@@ -182,7 +182,7 @@ var SearchRenderer = Widget.extend({
         // we use a regex to get the field string
         var display_string = node.attrs.string;
         var field_name = node.attrs.context.match(":.?'(.*)'")[1];
-        if (session.debug) {
+        if (config.isDebug()) {
             display_string += ' (' + field_name +')';
         }
         var $new_row = $('<tr>').append(

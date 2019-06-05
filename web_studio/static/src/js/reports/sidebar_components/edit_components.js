@@ -1,8 +1,8 @@
 odoo.define('web_studio.reportEditComponents', function (require) {
 "use strict";
 
-var core = require('web.core');
 var config = require('web.config');
+var core = require('web.core');
 var utils = require('web.utils');
 var fieldRegistry = require('web.field_registry');
 var ModelFieldSelector = require('web.ModelFieldSelector');
@@ -364,7 +364,7 @@ var LayoutEditable = AbstractEditComponent.extend({
     init: function (parent, params) {
         this._super.apply(this, arguments);
 
-        this.debug = config.debug;
+        this.debug = config.isDebug();
         this.isTable = params.node.tag === 'table';
         this.isNodeText = _.contains(this.componentsList, 'text');
         this.allClasses = params.node.attrs.class || "";
@@ -683,7 +683,7 @@ var TIf = AbstractEditComponent.extend({
         var value = Domain.prototype.conditionToDomain(this.node.attrs['t-if'] || '');
         var dialog = new DomainSelectorDialog(this, 'record_fake_model', value, {
             readonly: this.mode === "readonly",
-            debugMode: config.debug,
+            debugMode: config.isDebug(),
             fields: availableKeys,
             default: [[availableKeys[0].name, '!=', false]],
         }).open();

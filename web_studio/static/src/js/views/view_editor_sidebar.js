@@ -104,7 +104,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     init: function (parent, params) {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
-        this.debug = config.debug;
+        this.debug = config.isDebug();
 
         this.view_type = params.view_type;
         this.model_name = params.model_name;
@@ -138,7 +138,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 .filter(function (arr) {
                     var isSupported = _.contains(arr[1].prototype.supportedFieldTypes, field.type)
                         && arr[0].indexOf('.') < 0;
-                    return config.debug ? isSupported : isSupported && arr[1].prototype.description;
+                    return config.isDebug() ? isSupported : isSupported && arr[1].prototype.description;
                 })
                 .sortBy(function (arr) {
                     return arr[1].prototype.description || arr[0];
@@ -162,7 +162,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                         return _.contains(['char', 'many2one'], field.type);
                     })
                     .map(function (val, key) {
-                        return [val.name, session.debug ? _.str.sprintf('%s (%s)', val.string, val.name) : val.string];
+                        return [val.name, config.isDebug() ? _.str.sprintf('%s (%s)', val.string, val.name) : val.string];
                     })
                     .value();
                 _.findWhere(OPTIONS_BY_WIDGET[this.widgetKey], {name: 'full_name'}).selection = selection.concat(signFields);
@@ -513,7 +513,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             size: 'medium',
             operators: ["=", "!=", "<", ">", "<=", ">=", "in", "not in", "set", "not set"],
             followRelations: false,
-            debugMode: session.debug,
+            debugMode: config.isDebug(),
             $content: $(_.str.sprintf(
                 _t("<div><p>The <strong>%s</strong> property is only applied to records matching this filter.</p></div>"),
                 modifier
@@ -544,7 +544,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         var model = this.state.node.tag === 'filter' ? this.model_name : this.state.field.relation;
         var dialog = new DomainSelectorDialog(this, model, $input.val(), {
             readonly: false,
-            debugMode: session.debug,
+            debugMode: config.isDebug(),
         }).open();
         dialog.on("domain_selected", this, function (e) {
             $input.val(Domain.prototype.arrayToString(e.data.domain)).change();

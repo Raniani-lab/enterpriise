@@ -121,7 +121,7 @@ var DashboardRenderer = FormRenderer.extend({
             delay: { show: 1000, hide: 0 },
             title: function () {
                 return QWeb.render('web_dashboard.StatisticTooltip', {
-                    debug: config.debug,
+                    debug: config.isDebug(),
                     node: node,
                 });
             }
@@ -226,7 +226,7 @@ var DashboardRenderer = FormRenderer.extend({
         }
 
         this._registerModifiers(node, this.state, $el);
-        if (config.debug || node.attrs.help) {
+        if (config.isDebug() || node.attrs.help) {
             this._addStatisticTooltip($el, node);
         }
         return $el;

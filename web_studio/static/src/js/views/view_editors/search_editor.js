@@ -1,6 +1,7 @@
 odoo.define('web_studio.SearchEditor', function (require) {
 "use strict";
 
+var config = require('web.config');
 var Domain = require('web.Domain');
 var DomainSelectorDialog = require("web.DomainSelectorDialog");
 var session = require('web.session');
@@ -214,7 +215,7 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
                             [["id","=",1]],
                             {
                                 readonly: false,
-                                debugMode: session.debug,
+                                debugMode: config.isDebug(),
                                 $content: $domain_div,
                             }
                         );

@@ -5,7 +5,6 @@ var mailTestUtils = require('mail.testUtils');
 
 var ace = require('web_editor.ace');
 var concurrency = require('web.concurrency');
-var config = require('web.config');
 var fieldRegistry = require('web.field_registry');
 var framework = require('web.framework');
 var ListRenderer = require('web.ListRenderer');
@@ -179,7 +178,7 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('widget dropdown in list editor sidebar', async function(assert) {
         assert.expect(6);
 
-        config.debug = false;
+        odoo.debug = false;
 
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
@@ -199,7 +198,7 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem, '#widget option[value="label_selection"]', "label_selection widget should not be there");
 
         // check the widgets in debug mode
-        config.debug = true;
+        odoo.debug = true;
 
         await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
         assert.strictEqual(vem.$('#widget option:selected').text().trim(), 'Text (char)', 'Widget name should be Text (char)');
@@ -2915,8 +2914,8 @@ QUnit.module('ViewEditorManager', {
         var done = assert.async();
 
         // the XML editor button is only available in debug mode
-        var initialDebugMode = config.debug;
-        config.debug = true;
+        var initialDebugMode = odoo.debug;
+        odoo.debug = true;
 
         // the XML editor lazy loads its libs and its templates so its start
         // method is monkey-patched to know when the widget has started
@@ -2969,7 +2968,7 @@ QUnit.module('ViewEditorManager', {
             assert.containsOnce(vem, '.o_ace_view_editor', "the XML editor should be opened");
 
             // restore monkey-patched elements
-            config.debug = initialDebugMode;
+            odoo.debug = initialDebugMode;
             testUtils.mock.unpatch(ace);
 
             vem.destroy();
@@ -2982,8 +2981,8 @@ QUnit.module('ViewEditorManager', {
         var done = assert.async();
 
         // the XML editor button is only available in debug mode
-        var initialDebugMode = config.debug;
-        config.debug = true;
+        var initialDebugMode = odoo.debug;
+        odoo.debug = true;
 
         // the XML editor lazy loads its libs and its templates so its start
         // method is monkey-patched to know when the widget has started
@@ -3075,7 +3074,7 @@ QUnit.module('ViewEditorManager', {
                 "the operation stack should be reset");
 
             // restore monkey-patched elements
-            config.debug = initialDebugMode;
+            odoo.debug = initialDebugMode;
             testUtils.mock.unpatch(ace);
 
             vem.destroy();
@@ -3332,8 +3331,8 @@ QUnit.module('ViewEditorManager', {
         assert.expect(8);
 
         // inline selection edition is only available in non debug mode
-        var initialDebugMode = config.debug;
-        config.debug = false;
+        var initialDebugMode = odoo.debug;
+        odoo.debug = false;
         var fieldsView;
         var arch = "<tree><field name='display_name'/></tree>";
         var vem = await studioTestUtils.createViewEditorManager({
@@ -3390,7 +3389,7 @@ QUnit.module('ViewEditorManager', {
          // Click 'Confirm' button for the new field dialog
         await testUtils.dom.click($('.modal button:contains("Confirm")'));
 
-        config.debug = initialDebugMode;
+        odoo.debug = initialDebugMode;
         vem.destroy();
     });
 
@@ -3398,8 +3397,8 @@ QUnit.module('ViewEditorManager', {
         assert.expect(16);
 
         // Dialog to edit selection values is only available in debug mode
-        var initialDebugMode = config.debug;
-        config.debug = true;
+        var initialDebugMode = odoo.debug;
+        odoo.debug = true;
         var fieldsView;
         var arch = "<tree><field name='display_name'/></tree>";
         var vem = await studioTestUtils.createViewEditorManager({
@@ -3477,7 +3476,7 @@ QUnit.module('ViewEditorManager', {
             .val('Sulochan');
         await testUtils.dom.click($('.modal button:contains(Confirm)'));
 
-        config.debug = initialDebugMode;
+        odoo.debug = initialDebugMode;
         vem.destroy();
     });
 
@@ -3527,8 +3526,8 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('blockUI not removed just after rename', async function (assert) {
         assert.expect(13);
         // renaming is only available in debug mode
-        var initialDebugMode = config.debug;
-        config.debug = true;
+        var initialDebugMode = odoo.debug;
+        odoo.debug = true;
 
         var blockUI = framework.blockUI;
         var unblockUI = framework.unblockUI;
@@ -3593,7 +3592,7 @@ QUnit.module('ViewEditorManager', {
 
         framework.blockUI = blockUI;
         framework.unblockUI = unblockUI;
-        config.debug = initialDebugMode;
+        odoo.debug = initialDebugMode;
     });
 
     QUnit.module('X2Many');
@@ -3629,8 +3628,8 @@ QUnit.module('ViewEditorManager', {
         assert.expect(9);
 
         // the 'More' button is only available in debug mode
-        var initialDebugMode = config.debug;
-        config.debug = true;
+        var initialDebugMode = odoo.debug;
+        odoo.debug = true;
 
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
@@ -3725,7 +3724,7 @@ QUnit.module('ViewEditorManager', {
             "there should be button to edit the field properties");
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_parameters'));
 
-        config.debug = initialDebugMode;
+        odoo.debug = initialDebugMode;
         vem.destroy();
     });
 

@@ -326,7 +326,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             };
             var record = self.model.get(recordID);
             self.many2one = new EditMenuMany2One(self, 'model', record, options);
-            self.many2one.nodeOptions.no_create_edit = !config.debug;
+            self.many2one.nodeOptions.no_create_edit = !config.isDebug();
             self._registerWidget(recordID, 'model', self.many2one);
             self.many2one.appendTo(self.$('.js_model'));
         }));

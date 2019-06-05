@@ -4,7 +4,7 @@ odoo.define('web_enterprise.DebugManager', function (require) {
 var config = require('web.config');
 var WebClient = require('web.WebClient');
 
-if (config.debug) {
+if (config.isDebug()) {
     WebClient.include({
         start: function() {
             var self = this;

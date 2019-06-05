@@ -1468,9 +1468,9 @@ QUnit.module('ReportEditorManager', {
     QUnit.test('edit block "Accounting Total"', loadIframeCss(async function (assert, done) {
         assert.expect(3);
 
-        var initialDebugMode = config.debug;
+        var initialDebugMode = odoo.debug;
         // show all nodes in the sidebar
-        config.debug = true;
+        odoo.debug = true;
 
         this.templates.push({
             key: 'template1',
@@ -1554,7 +1554,7 @@ QUnit.module('ReportEditorManager', {
             await testUtils.dom.click(rem.$('.o_web_studio_report_currency_id .o_field_selector_close'));
 
             rem.destroy();
-            config.debug = initialDebugMode;
+            odoo.debug = initialDebugMode;
             done();
         });
     }));
@@ -1875,9 +1875,9 @@ QUnit.module('ReportEditorManager', {
                 });
             },
         });
-        var initialDebugMode = config.debug;
+        var initialDebugMode = odoo.debug;
         // the XML editor button is only available in debug mode
-        config.debug = true;
+        odoo.debug = true;
 
         var self = this;
         this.templates.push({
@@ -1973,7 +1973,7 @@ QUnit.module('ReportEditorManager', {
                 assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
                     "the iframe should be re-rendered");
 
-                config.debug = initialDebugMode;
+                odoo.debug = initialDebugMode;
                 testUtils.mock.unpatch(ace);
                 rem.destroy();
             });

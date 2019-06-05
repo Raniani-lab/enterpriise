@@ -3,7 +3,10 @@ odoo.define('project_timesheet_synchro.test_screen_navigation', function (requir
 
 var tour = require('web_tour.tour');
 
-tour.register('activity_creation', { test: true, url: '/project_timesheet_synchro/timesheet_app' },
+tour.register('activity_creation', {
+    test: true,
+    url: '/project_timesheet_synchro/timesheet_app',
+},
     [
         {
             content: "Open the menu",
@@ -50,7 +53,10 @@ tour.register('activity_creation', { test: true, url: '/project_timesheet_synchr
     ]
 );
 
-tour.register('test_screen_navigation', { test: true, url: '/project_timesheet_synchro/timesheet_app' },
+tour.register('test_screen_navigation', {
+    test: true,
+    url: '/project_timesheet_synchro/timesheet_app',
+},
     [
         {
             content: "Open the menu",

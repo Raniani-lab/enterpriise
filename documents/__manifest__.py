@@ -20,11 +20,11 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
-        'assets.xml',
         'data/documents_data.xml',
         'data/workflow_data.xml',
         'data/files_data.xml',
         'data/mail_templates.xml',
+        'views/assets.xml',
         'views/documents_views.xml',
         'views/templates.xml',
         'views/activity_views.xml',

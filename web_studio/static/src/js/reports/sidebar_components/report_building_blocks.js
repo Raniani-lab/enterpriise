@@ -1,8 +1,8 @@
 odoo.define('web_studio.reportNewComponents', function (require) {
 "use strict";
 
-var core = require('web.core');
 var config = require('web.config');
+var core = require('web.core');
 var Dialog = require('web.Dialog');
 var weWidgets = require('wysiwyg.widgets');
 
@@ -35,7 +35,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
         if (this.fa) {
             this.$el.append('<i class="fa ' + this.fa + '">');
         }
-        if (config.debug && this.description) {
+        if (config.isDebug() && this.description) {
             this.$el.addClass('o_web_studio_debug');
             this.$el.append($('<div>')
                 .addClass('o_web_studio_component_description')

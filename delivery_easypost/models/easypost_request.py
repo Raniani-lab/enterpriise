@@ -258,7 +258,7 @@ class EasypostRequest():
             customs_info.update({
                 'order[shipments][%d][customs_info][customs_items][%d][description]' % (shipment_id, customs_item_id): line.product_id.name,
                 'order[shipments][%d][customs_info][customs_items][%d][quantity]' % (shipment_id, customs_item_id): unit_quantity,
-                'order[shipments][%d][customs_info][customs_items][%d][value]' % (shipment_id, customs_item_id): unit_quantity * line.product_id.list_price,
+                'order[shipments][%d][customs_info][customs_items][%d][value]' % (shipment_id, customs_item_id): line.sale_price,
                 'order[shipments][%d][customs_info][customs_items][%d][currency]' % (shipment_id, customs_item_id): line.picking_id.company_id.currency_id.name,
                 'order[shipments][%d][customs_info][customs_items][%d][weight]' % (shipment_id, customs_item_id): line.env['delivery.carrier']._easypost_convert_weight(line.product_id.weight * unit_quantity),
                 'order[shipments][%d][customs_info][customs_items][%d][origin_country]' % (shipment_id, customs_item_id): line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code,

@@ -153,14 +153,10 @@ class ProviderUPS(models.Model):
             if picking.weight_bulk:
                 packages.append(Package(self, picking.weight_bulk))
 
-            invoice_line_total = 0
-            for move in picking.move_lines:
-                invoice_line_total += picking.company_id.currency_id.round(move.product_id.lst_price * move.product_qty)
-
             shipment_info = {
                 'description': picking.origin,
                 'total_qty': sum(sml.qty_done for sml in picking.move_line_ids),
-                'ilt_monetary_value': '%d' % invoice_line_total,
+                'ilt_monetary_value': '%d' % sum(sml.sale_price for sml in picking.move_line_ids),
                 'itl_currency_code': self.env.company.currency_id.name,
                 'phone': picking.partner_id.mobile or picking.partner_id.phone or picking.sale_id.partner_id.mobile or picking.sale_id.partner_id.phone,
             }

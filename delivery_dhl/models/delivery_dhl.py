@@ -99,18 +99,14 @@ class Providerdhl(models.Model):
 
     def _rate_shipment_vals(self, order=False, picking=False):
         if picking:
-            order = picking.sale_id
             warehouse_partner_id = picking.picking_type_id.warehouse_id.partner_id
-            currency_id = order.currency_id.name or picking.company_id.currency_id
+            currency_id = picking.sale_id.currency_id.name or picking.company_id.currency_id
             destination_partner_id = picking.partner_id
-            if order:
-                total_value = sum([line.product_id.lst_price * line.product_qty for line in order.order_line if not line.display_type])
-            else:
-                total_value = sum([line.product_id.lst_price * line.product_qty for line in picking.move_lines])
+            total_value = sum(sml.sale_price for sml in picking.move_line_ids)
         else:
             warehouse_partner_id = order.warehouse_id.partner_id
             currency_id = order.currency_id.name or order.company_id.currency_id
-            total_value = sum([line.product_id.lst_price * line.product_qty for line in order.order_line if not line.display_type])
+            total_value = sum(line.price_reduce_taxinc * line.product_uom_qty for line in order.order_line.filtered(lambda l: l.product_id.type in ('consu', 'product') and not l.display_type))
             destination_partner_id = order.partner_id
 
         rating_request = {}

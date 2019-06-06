@@ -2680,6 +2680,38 @@ QUnit.module('DocumentsKanbanView', {
 
         kanban.destroy();
     });
+
+    QUnit.test('documents Kanban: displays youtube thumbnails', async function (assert) {
+        assert.expect(1);
+
+        this.data['documents.document'].records.push({
+            folder_id: 1,
+            id: 12,
+            name: 'youtubeVideo',
+            type: 'url',
+            url: 'https://youtu.be/Ayab6wZ_U1A'
+        });
+
+        const kanban = await createDocumentsKanbanView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: `
+                <kanban><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(youtubeVideo) .o_record_selector'));
+
+        assert.strictEqual(
+            kanban.$('.o_documents_inspector img, .o_documents_single_preview .o_preview_available').attr('data-src'),
+            "https://img.youtube.com/vi/Ayab6wZ_U1A/0.jpg",
+            "the inspector should display the thumbnail of the youtube video");
+        kanban.destroy();
+    });
 });
 
 });

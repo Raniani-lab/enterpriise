@@ -230,6 +230,14 @@ $o-dms-inspector-bg-darker: #1A1A1A;
                 box-shadow: 0 1px 10px -2px $o-dms-inspector-bg-darker;
                 animation: o_documents_preview_in 0.2s ease-out 0s 1 normal backwards;
 
+                &.o_non_image_preview:not(.o_documents_single_preview) {
+                    // allows previews to resize and stack properly if they are not images.
+                    max-width: 50%;
+                    .o_preview_available {
+                        max-width: 100%;
+                    }
+                }
+
                 @for $i from 2 through 5 {
                     &:nth-child(#{$i}){
                         animation-delay: $i * 50ms;

@@ -106,12 +106,13 @@
                                 <t t-set="binaryPreviewable"
                                    t-value="new RegExp('(image|video|application/pdf|text)').test(record.mimetype.value) &amp;&amp; record.type.raw_value === 'binary'"/>
                                 <!-- should be made more generic if we support different websites for videos -->
-                                <t t-set="supportedUrlVideo"
-                                   t-value="record.url.raw_value.length ? new RegExp('((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))').test(record.url.raw_value) : false"/>
-                                <div t-attf-class="o_kanban_image_wrapper #{(webimage || binaryPreviewable || supportedUrlVideo) ? 'oe_kanban_previewer' : ''}" t-att-title="fileRequest ? 'Upload file' : ''">
-                                    <div t-if="supportedUrlVideo" class="o_image o_image_thumbnail" data-mimetype="video"/>
+                                <t t-set="youtubeUrlMatch" t-value="record.url.raw_value ? record.url.raw_value.match('youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]{11})') : false"/>
+                                <t t-set="youtubeVideoToken" t-value="youtubeUrlMatch ? youtubeUrlMatch.length > 1 ? youtubeUrlMatch[1] : false : false"/>
+                                <div t-attf-class="o_kanban_image_wrapper #{(webimage or binaryPreviewable or youtubeVideoToken) ? 'oe_kanban_previewer' : ''}" t-att-title="fileRequest ? 'Upload file' : ''">
+                                    <img t-if="youtubeVideoToken" width="100" height="100" alt="Document" class="o_attachment_image"
+                                         t-attf-src="https://img.youtube.com/vi/{{youtubeVideoToken}}/0.jpg"/>
                                     <div t-elif="record.type.raw_value == 'url'" class="o_url_image fa fa-link fa-3x text-muted"/>
-                                    <img t-elif="webimage" t-attf-src="/documents/image/#{record.id.raw_value}?field=thumbnail&amp;signature=#{record.checksum.value}" width="100" height="100" alt="Document" class="o_attachment_image"/>
+                                    <img t-elif="webimage" t-attf-src="/documents/image/#{record.id.raw_value}?field=thumbnail&amp;signature=#{record.checksum.value}" width="100" height="100" alt="Youtube Video" class="o_attachment_image"/>
                                     <div t-elif="fileRequest" class="fa fa-upload fa-3x text-muted"/>
                                     <div t-else="!webimage" class="o_image o_image_thumbnail" t-att-data-mimetype="record.mimetype.value"/>
                                 </div>

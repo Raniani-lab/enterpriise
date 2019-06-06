@@ -53,16 +53,33 @@ var DocumentsInspector = Widget.extend({
         this.size = params.state.size;
         this.focusTagInput = params.focusTagInput;
         this.currentFolder = _.findWhere(params.folders, {id: params.folderId});
+        this.recordsData = {};
 
         this.records = [];
-        _.each(params.recordIDs, function (resID) {
+        for (const resID of params.recordIDs) {
             var record = _.findWhere(params.state.data, {res_id: resID});
             if (record) {
-                self.records.push(_.extend(record, {
+                let youtubeToken;
+                let youtubeUrlMatch;
+                if (record.data.url && record.data.url.length) {
+                    /** youtu<A>/<B><token>
+                     * A = .be|be.com
+                     * B = watch?v=|''
+                     * token = <11 case sensitive alphanumeric characters and _>
+                     */
+                    youtubeUrlMatch = record.data.url.match('youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]{11})');
+                }
+                if (youtubeUrlMatch && youtubeUrlMatch.length > 1) {
+                     youtubeToken = youtubeUrlMatch[1];
+                }
+                this.recordsData[record.id] = {
                     isImage: new RegExp('image.*(gif|jpeg|jpg|png)').test(record.data.mimetype),
-                }));
+                    isYouTubeVideo: !!youtubeToken,
+                    youtubeToken,
+                };
+                this.records.push(record);
             }
-        });
+        }
         this.tags = params.tags;
         var tagIDsByRecord = _.map(this.records, function (record) {
             return record.data.tag_ids.res_ids;

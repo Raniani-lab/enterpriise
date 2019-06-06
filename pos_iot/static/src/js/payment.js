@@ -69,7 +69,11 @@ screens.PaymentScreenWidget.include({
     render_paymentlines: function() {
         var self = this;
         this._super();
-        var line = this.pos.get_order().selected_paymentline;
+        var order = this.pos.get_order();
+        if (!order) {
+            return;
+        }
+        var line = order.selected_paymentline;
         if (line && line.get_payment_status()) {
             this.$el.find('.send_payment_request').click(function () {
                 self.send_payment_request();

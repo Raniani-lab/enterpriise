@@ -2613,13 +2613,15 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a related field', async function (assert) {
-        assert.expect(19);
+        assert.expect(21);
 
 
         this.data.coucou.fields.related_field = {
             string: "Related",
             type: 'related',
         };
+        this.data.product.fields.display_name.store = false;
+        this.data.product.fields.m2o.store = true;
 
         var nbEdit = 0;
         var fieldsView;
@@ -2636,6 +2638,8 @@ QUnit.module('ViewEditorManager', {
                             false, "copy arg should be correct");
                         assert.strictEqual(args.operations[0].node.field_description.readonly,
                             true, "readonly arg should be correct");
+                        assert.strictEqual(args.operations[0].node.field_description.store,
+                            false, "store arg should be correct");
                         fieldsView.arch = "<tree><field name='display_name'/><field name='related_field'/></tree>";
                     } else if (nbEdit === 1) {
                         assert.strictEqual(args.operations[1].node.field_description.related,
@@ -2646,6 +2650,8 @@ QUnit.module('ViewEditorManager', {
                             false, "copy arg should be correct");
                         assert.strictEqual(args.operations[0].node.field_description.readonly,
                             true, "readonly arg should be correct");
+                        assert.strictEqual(args.operations[1].node.field_description.store,
+                            true, "store arg should be correct");
                     } else if (nbEdit === 2) {
                         assert.strictEqual(args.operations[2].node.field_description.related,
                             'm2o.partner_ids', "related arg should be correct");

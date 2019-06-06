@@ -23,7 +23,6 @@ class SignRequest(models.Model):
                 self.env["ir.attachment"].create(
                     {
                         "name": request.reference,
-                        "datas_fname": "%s.pdf" % request.reference,
                         "datas": request.completed_document,
                         "type": "binary",
                         "res_model": self.env["sale.order"]._name,

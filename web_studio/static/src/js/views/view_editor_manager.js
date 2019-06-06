@@ -587,12 +587,13 @@ var ViewEditorManager = AbstractEditorManager.extend({
     },
     /**
      * @override
+     * @param {Object} [lastOp]
      */
     _cleanOperationsStack: function (lastOp) {
         // As the studio view arch is stored in this widget, if this view
         // is updated directly with the XML editor, the arch should be updated.
         // The operations may not have any sense anymore so they are dropped.
-        if (lastOp.view_id === this.studio_view_id) {
+        if (lastOp && lastOp.view_id === this.studio_view_id) {
             this.studio_view_arch = lastOp.new_arch;
             this._super.apply(this, arguments);
         }
@@ -1133,6 +1134,28 @@ var ViewEditorManager = AbstractEditorManager.extend({
     },
     /**
      * @private
+     * @param {int} view_id
+     * @returns {Promise}
+     */
+    _restoreDefaultView: async function (view_id) {
+        core.bus.trigger('clear_cache');
+        const result = await this._rpc({
+            route: '/web_studio/restore_default_view',
+            params: {
+                view_id: view_id,
+            },
+        });
+        await this._applyChangeHandling(result);
+        this.studio_view_id = null;
+        this.operations = [];
+        this.operations_undone = [];
+        this.studio_view_arch = "";
+        this._updateButtons();
+        await this._updateSidebar(this.sidebar.state.mode);
+        bus.trigger('toggle_snack_bar', _t("Saved"), true);
+    },
+    /**
+     * @private
      * @param {String} model_name
      * @param {String} field_name
      * @param {*} value
@@ -1490,6 +1513,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
             case 'separator':
                 this._addSeparator(type, node, xpath_info, position);
                 break;
+            case 'restore':
+                this._restoreDefaultView(this.view_id);
         }
     },
 });

@@ -239,8 +239,19 @@
         .o_web_studio_sidebar_toolbox {
             flex: 1 0 100%;
 
-            > button.btn {
+            button.btn {
+                @include o-web-studio-btn;
                 flex: 1 1 auto;
+            }
+
+            > div {
+                display: flex;
+                align-content: space-between;
+            }
+
+            .o_web_studio_restore {
+                margin-top: inherit;
+                width: 100%;
             }
         }
         .o_web_studio_remove_warning_groups {
@@ -253,4 +264,8 @@
             @include o-web-studio-sidebar-btn-link;
         }
     }
+}
+
+.o_web_studio_restore_default_view_dialog {
+    white-space: pre;
 }

@@ -308,14 +308,16 @@
                 </div>
             </t>
             <t t-call="web_studio.Sidebar.Toolbox" t-if="widget.debug">
-                <t t-call="web_studio.Sidebar.Parameters"/>
-                <t t-if="!widget.isEditingX2m">
-                    <t t-call="web_studio.Sidebar.XMLEditor"/>
-                </t>
-
-                <t t-if="_.contains(['list', 'form'], widget.view_type)">
-                    <button class="btn btn-secondary o_web_studio_defaults">Default Values</button>
-                </t>
+                <div>
+                    <t t-call="web_studio.Sidebar.Parameters"/>
+                    <t t-if="!widget.isEditingX2m" class="ml-1 mr-1">
+                        <t t-call="web_studio.Sidebar.XMLEditor"/>
+                    </t>
+                    <t t-if="_.contains(['list', 'form'], widget.view_type)">
+                        <button class="btn btn-secondary o_web_studio_defaults">Default Values</button>
+                    </t>
+                </div>
+                <button class="btn btn-danger float-right o_web_studio_restore">Restore Default View</button>
             </t>
         </t>
     </div>

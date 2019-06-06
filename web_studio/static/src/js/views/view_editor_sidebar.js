@@ -71,6 +71,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         'click .o_display_view .o_web_studio_defaults':      '_onDefaultValues',
         'change #show_invisible':                            '_onShowInvisibleToggled',
         'click .o_web_studio_remove':                        '_onElementRemoved',
+        'click .o_web_studio_restore':                       '_onRestoreDefaultView',
         'change .o_display_view input':                      '_onViewChanged',
         'change .o_display_view select':                     '_onViewChanged',
         'click .o_web_studio_edit_selection_values':         '_onSelectionValues',
@@ -775,6 +776,22 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     _onRainbowImageReset: function () {
         this.$('input#rainbow_img_url').val('');
         this.$('input#rainbow_img_url').trigger('change');
+    },
+    /**
+     * @private
+     */
+    _onRestoreDefaultView: function () {
+        var self = this;
+        var message = _t('Are you sure you want to restore the default view?\r\nAll customization done with Studio on this view will be lost.');
+
+        Dialog.confirm(this, message, {
+            confirm_callback: function () {
+                self.trigger_up('view_change', {
+                    structure: 'restore',
+                });
+            },
+            dialogClass: 'o_web_studio_restore_default_view_dialog'
+        });
     },
     /**
      * @private

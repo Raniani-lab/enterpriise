@@ -429,12 +429,34 @@ class WebStudioController(http.Controller):
             'studio_view_arch': studio_view and studio_view.arch_db or "<data/>",
         }
 
+    def _return_view(self, view, studio_view):
+        ViewModel = request.env[view.model]
+        fields_view = ViewModel.with_context({'studio': True}).fields_view_get(view.id, view.type)
+        view_type = 'list' if view.type == 'tree' else view.type
+
+        return {
+            'fields_views': {view_type: fields_view},
+            'fields': ViewModel.fields_get(),
+            'studio_view_id': studio_view.id,
+        }
+
+    @http.route('/web_studio/restore_default_view', type='json', auth='user')
+    def restore_default_view(self, view_id):
+        view = request.env['ir.ui.view'].browse(view_id)
+        self._set_studio_view(view, "")
+
+        studio_view = self._get_studio_view(view)
+
+        return self._return_view(view, studio_view)
+
     @http.route('/web_studio/edit_view', type='json', auth='user')
     def edit_view(self, view_id, studio_view_arch, operations=None):
         IrModelFields = request.env['ir.model.fields']
         view = request.env['ir.ui.view'].browse(view_id)
 
         parser = etree.XMLParser(remove_blank_text=True)
+        if studio_view_arch == "":
+            studio_view_arch = '<data/>'
         arch = etree.fromstring(studio_view_arch, parser=parser)
         model = view.model
 
@@ -526,15 +548,7 @@ class WebStudioController(http.Controller):
             # the change he would like to make.
             self._set_studio_view(view, new_arch)
 
-        ViewModel = request.env[view.model]
-        fields_view = ViewModel.with_context({'studio': True}).fields_view_get(view.id, view.type)
-        view_type = 'list' if view.type == 'tree' else view.type
-
-        return {
-            'fields_views': {view_type: fields_view},
-            'fields': ViewModel.fields_get(),
-            'studio_view_id': studio_view.id,
-        }
+        return self._return_view(view, studio_view)
 
     @http.route('/web_studio/rename_field', type='json', auth='user')
     def rename_field(self, studio_view_id, studio_view_arch, model, old_name, new_name):

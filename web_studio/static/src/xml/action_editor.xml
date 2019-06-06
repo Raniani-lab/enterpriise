@@ -45,6 +45,11 @@
                 </a>
             </t>
             <div t-if="widget.can_default and widget.can_be_disabled" class="dropdown-divider" role="separator"/>
+            <t t-if="widget.debug">
+                <a href="#" role="menuitem" class="dropdown-item" data-action="restore_default_view">
+                    Restore Default View
+                </a>
+            </t>
             <a role="menuitem" href="#" data-action="disable_view" class="dropdown-item" t-if="widget.can_be_disabled">Disable</a>
         </div>
     </div>

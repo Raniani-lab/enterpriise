@@ -18,6 +18,7 @@ var _lt = core._lt;
 var ActionEditorAction = AbstractAction.extend({
     custom_events: {
         'studio_default_view': '_onSetDefaultView',
+        'studio_restore_default_view': '_onRestoreDefaultView',
         'studio_disable_view': '_onDisableView',
         'studio_edit_view': '_onEditView',
         'studio_new_view': '_onNewView',
@@ -443,6 +444,31 @@ var ActionEditorAction = AbstractAction.extend({
                 action: result,
                 viewType: view_type,
             });
+        });
+    },
+    /**
+     * @private
+     */
+    _onRestoreDefaultView: function (event) {
+        var self = this;
+
+        var message = _t('Are you sure you want to restore the default view?\r\nAll customization done with studio on this view will be lost.');
+
+        Dialog.confirm(this, message, {
+            confirm_callback: function () {
+                var context = _.extend({}, self.action.context, {studio: true, lang: false});
+                //To restore the default view from an inherited one, we need first to retrieve the default view id
+                var loadViewDef = self.loadViews(self.action.res_model, context, self.views, { load_filters: true });
+                loadViewDef.then(function (fields_views) {
+                    self._rpc({
+                        route: '/web_studio/restore_default_view',
+                        params: {
+                            view_id: fields_views[event.data.view_type].view_id,
+                        },
+                    });
+                });
+            },
+            dialogClass: 'o_web_studio_restore_default_view_dialog'
         });
     },
     /**

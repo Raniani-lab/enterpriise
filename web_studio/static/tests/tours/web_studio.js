@@ -7,7 +7,7 @@ var utils = require('web_studio.utils');
 
 tour.register('web_studio_tests_tour', {
     test: true,
-    url: "/web?studio=app_creator&debug=1",
+    url: "/web?studio=app_creator&debug=tests",
 }, [{
     trigger: '.o_web_studio_new_app',
 }, {
@@ -254,6 +254,26 @@ tour.register('web_studio_tests_tour', {
 }, {
     // export all modifications
     trigger: '.o_web_studio_export',
+}, {
+    // click on the created app
+    trigger: '.o_app[data-menu-xmlid*="studio"]:last',
+}, {
+    // switch to form view
+    trigger: '.o_web_studio_views_icons > a[data-name="form"]',
+}, {
+    extra_trigger: '.o_web_studio_form_view_editor',
+    // click on the view tab
+    trigger: '.o_web_studio_view',
+}, {
+    // click on the restore default view button
+    trigger: '.o_web_studio_restore',
+}, {
+    // click on the ok button
+    trigger: '.modal-footer .btn.btn-primary',
+}, {
+    // checks that the field doesn't exist anymore
+    extra_trigger: 'label.o_form_label:not(:contains("COUCOU"))',
+    trigger: '.o_web_studio_leave'
 }]);
 
 tour.register('web_studio_new_report_tour', {

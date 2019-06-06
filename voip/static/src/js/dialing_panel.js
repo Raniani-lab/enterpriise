@@ -12,7 +12,6 @@ var SystrayMenu = require('web.SystrayMenu');
 var WebClient = require('web.WebClient');
 var Widget = require('web.Widget');
 
-var dialingPanel = null;
 var _t = core._t;
 var HEIGHT_OPEN = '480px';
 var HEIGHT_FOLDED = '0px';
@@ -54,9 +53,6 @@ var DialingPanel = Widget.extend({
      * @constructor
      */
     init: function () {
-        if (dialingPanel) {
-            return dialingPanel;
-        }
         this._super.apply(this, arguments);
         this.inCall = false;
         this._shown = false;
@@ -65,7 +61,6 @@ var DialingPanel = Widget.extend({
         this.userAgent = new UserAgent(this);
 
 
-        dialingPanel = this;
         this.tabs = {
             'recent': new DialingTab.RecentTab(this),
             'nextActivities': new DialingTab.ActivitiesTab(this),

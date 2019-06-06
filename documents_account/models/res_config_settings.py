@@ -27,4 +27,5 @@ class ResConfigSettings(models.TransientModel):
 
     @api.onchange('account_folder')
     def on_account_folder_change(self):
-        self.account_tags = False
+        if self.account_folder != self.account_tags.mapped('folder_id'):
+            self.account_tags = False

@@ -26,4 +26,5 @@ class ResConfigSettings(models.TransientModel):
 
     @api.onchange('product_folder')
     def on_product_folder_change(self):
-        self.product_tags = False
+        if self.product_folder != self.product_tags.mapped('folder_id'):
+            self.product_tags = False

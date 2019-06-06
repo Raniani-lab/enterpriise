@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-16 13:37+0000\n"
+"POT-Creation-Date: 2019-05-15 13:54+0000\n"
 "PO-Revision-Date: 2019-04-16 15:44+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -49,6 +49,11 @@ msgstr "1807BE_FDM"
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
 msgid "<span class=\"o_stat_text\">Financial X</span>"
 msgstr "<span class=\"o_stat_text\">Rapport X</span>"
+
+#. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
+msgid "<span class=\"o_stat_text\">Journal File</span>"
+msgstr "<span class=\"o_stat_text\">Fichier Journal</span>"
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
@@ -462,6 +467,11 @@ msgid "FDM transactions"
 msgstr "Transactions FDM"
 
 #. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.journal_file
+msgid "FICHIER JOURNAL POUR CAISSE"
+msgstr ""
+
+#. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
 msgid "Financial Z"
 msgstr "Rapport-Z"
@@ -692,12 +702,12 @@ msgstr "Lignes de point de vente"
 #: model:ir.actions.act_window,name:pos_blackbox_be.action_log_book_form
 #: model:ir.ui.menu,name:pos_blackbox_be.menu_log_book
 msgid "Log book"
-msgstr "Fichier-journal"
+msgstr "Journal d'événements"
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_blackbox_be_pro_forma_tree
 msgid "Logs"
-msgstr "Fichier-journal"
+msgstr "Événements"
 
 #. module: pos_blackbox_be
 #: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:339
@@ -892,6 +902,12 @@ msgid "Plu Hash"
 msgstr "Hash PLU"
 
 #. module: pos_blackbox_be
+#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:317
+#, python-format
+msgid "PoS %s is not a certified PoS"
+msgstr "Le PdV %s n'est une caisse certifiée"
+
+#. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_config_id
 msgid "Point of Sale"
 msgstr "Point de vente"
@@ -927,6 +943,11 @@ msgstr "Version pdv"
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_pricelist_id
 msgid "Pricelist"
 msgstr "Liste de prix"
+
+#. module: pos_blackbox_be
+#: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_create_date
+msgid "Pro Forma Creation"
+msgstr "Date de création du pro forma"
 
 #. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_session_pro_forma_order_ids

@@ -31,7 +31,7 @@ class TimesheetForecastReport(models.Model):
                         F.employee_id AS employee_id,
                         F.task_id AS task_id,
                         F.project_id AS project_id,
-                        F.resource_hours / F.working_days_count AS number_hours,
+                        F.resource_hours / NULLIF(F.working_days_count, 0) AS number_hours,
                         'forecast' AS line_type,
                         F.id AS id
                     FROM generate_series(

@@ -132,7 +132,19 @@ QUnit.module('Views', {
     });
 
     QUnit.test('ungrouped gantt rendering', async function (assert) {
-        assert.expect(18);
+        assert.expect(20);
+
+        // This is one of the few tests which have dynamic assertions, see
+        // our justification for it in the comment at the top of this file
+
+        var task2 = this.data.tasks.records[1];
+        var startDateUTCString = task2.start;
+        var startDateUTC = moment.utc(startDateUTCString);
+        var startDateLocalString = startDateUTC.local().format('YYYY-MM-DD hh:mm:ss A');
+
+        var stopDateUTCString = task2.stop;
+        var stopDateUTC = moment.utc(stopDateUTCString);
+        var stopDateLocalString = stopDateUTC.local().format('YYYY-MM-DD hh:mm:ss A');
 
         var POPOVER_DELAY = GanttRow.prototype.POPOVER_DELAY;
         GanttRow.prototype.POPOVER_DELAY = 0;
@@ -199,15 +211,10 @@ QUnit.module('Views', {
         await testUtils.nextTick();
         assert.containsOnce($, 'div.popover', 'should have a popover');
 
-        // TODO: these two assertions will fail with a different timezone
-        // (hence, on runbot) because of momentJS `local()` function that
-        // doesn't use the session.getTZOffset mocked in this test but we
-        // haven't f another way to achieve the same behaviour without it
-
-        // assert.strictEqual($('div.popover li:contains(Start Date)').text(), 'Start Date: 2018-12-17 12:30:00 PM',
-        //     'popover should display start date of task 2 in local time');
-        // assert.strictEqual($('div.popover li:contains(Stop Date)').text(), 'Stop Date: 2018-12-22 07:29:59 AM',
-        //     'popover should display start date of task 2 in local time');
+        assert.strictEqual($('div.popover li:contains(Start Date)').text(), 'Start Date: ' + startDateLocalString,
+            'popover should display start date of task 2 in local time');
+        assert.strictEqual($('div.popover li:contains(Stop Date)').text(), 'Stop Date: ' + stopDateLocalString,
+            'popover should display start date of task 2 in local time');
 
         gantt.destroy();
         assert.containsNone(gantt, 'div.popover', 'should not have a popover anymore');

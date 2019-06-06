@@ -127,7 +127,7 @@ var GanttController = AbstractController.extend({
         return new dialogs.FormViewDialog(this, {
             title: _.str.sprintf(title),
             res_model: this.modelName,
-            views: this.dialogViews,
+            view_id: this.dialogViews[0][0],
             res_id: resID,
             readonly: !this.is_action_enabled('edit'),
             deletable: this.is_action_enabled('edit') && resID,

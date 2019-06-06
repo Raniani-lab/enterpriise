@@ -716,11 +716,15 @@ var ReportEditor = Widget.extend(EditorMixin, {
                 self.trigger_up('iframe_ready');
                 resolve();
             };
-            // determine when the body has been inserted
-            reportHTML = reportHTML.replace(
-                '</body>',
-                '<script>window.top.' + self._onUpdateContentId + '()</script></body>'
-            );
+            if (reportHTML.error) {
+                throw new Error(reportHTML.message || reportHTML.error);
+            } else {
+                // determine when the body has been inserted
+                reportHTML = reportHTML.replace(
+                    '</body>',
+                    '<script>window.top.' + self._onUpdateContentId + '()</script></body>'
+                );
+            }
 
             // inject HTML
             var cwindow = self.$iframe[0].contentWindow;

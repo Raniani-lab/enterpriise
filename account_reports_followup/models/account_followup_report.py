@@ -46,8 +46,7 @@ class AccountFollowupReport(models.AbstractModel):
             # Compute the next_action date
             if not options.get('keep_summary'):
                 next_date = self._get_next_date(followup_line, level)
-                lang_code = partner.lang or self.env.user.lang or 'en_US'
-                infos['next_action']['date_auto'] = format_date(self.env, next_date, lang_code=lang_code)
+                infos['next_action']['date_auto'] = format_date(self.env, next_date)
         return infos
 
     @api.multi

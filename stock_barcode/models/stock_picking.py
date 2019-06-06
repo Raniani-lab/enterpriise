@@ -159,7 +159,7 @@ class StockPicking(models.Model):
             # set a `qty_done`: a next scan of this product will open the
             # lots wizard.
             picking_type_lots = (self.picking_type_id.use_create_lots or self.picking_type_id.use_existing_lots)
-            self.move_line_ids += self.move_line_ids.new({
+            self.move_line_ids_without_package += self.move_line_ids.new({
                 'product_id': product.id,
                 'product_uom_id': product.uom_id.id,
                 'location_id': self.location_id.id,

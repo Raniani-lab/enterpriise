@@ -217,6 +217,7 @@ var GanttModel = AbstractModel.extend({
                 method: 'read_group',
                 fields: this._getFields(),
                 domain: domain,
+                context: this.context,
                 groupBy: this.ganttData.groupedBy,
                 lazy: this.ganttData.groupedBy.length === 1,
             });
@@ -296,6 +297,7 @@ var GanttModel = AbstractModel.extend({
                 this.ganttData.groupedBy,
                 this._computeUnavailabilityRows(this.ganttData.rows),
             ],
+            context: this.context,
         }).then(function (enrichedRows) {
             // Update ganttData.rows with the new unavailabilities data
             self._updateUnavailabilityRows(self.ganttData.rows, enrichedRows);

@@ -1,9 +1,11 @@
 odoo.define('web_mobile.barcode_fields', function (require) {
 "use strict";
 
-var mobile = require('web_mobile.rpc');
 var field_registry = require('web.field_registry');
+require('web._field_registry');
 var relational_fields = require('web.relational_fields');
+
+var mobile = require('web_mobile.rpc');
 
 /**
  * Override the Many2One to open a dialog in mobile.

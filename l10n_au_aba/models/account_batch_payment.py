@@ -85,7 +85,7 @@ class AccountBatchPayment(models.Model):
                     + _normalise_bsb(payment.partner_bank_account_id.aba_bsb) \
                     + to_fixed_width(payment.partner_bank_account_id.acc_number, 9, right=True) \
                     + ' ' + '50' \
-                    + to_fixed_width(str(int(aud_currency.round(credit) * 100)), 10, '0', right=True) \
+                    + to_fixed_width(str(round(aud_currency.round(credit) * 100)), 10, '0', right=True) \
                     + to_fixed_width(payment.partner_bank_account_id.acc_holder_name or payment.partner_id.name, 32) \
                     + to_fixed_width(payment.communication or 'Payment', 18) \
                     + _normalise_bsb(bank_account.aba_bsb) \
@@ -102,7 +102,7 @@ class AccountBatchPayment(models.Model):
                     + _normalise_bsb(bank_account.aba_bsb) \
                     + to_fixed_width(bank_account.acc_number, 9, right=True) \
                     + ' ' + '13' \
-                    + to_fixed_width(str(int(aud_currency.round(debit) * 100)), 10, fill='0', right=True) \
+                    + to_fixed_width(str(round(aud_currency.round(debit) * 100)), 10, fill='0', right=True) \
                     + to_fixed_width(bank_account.acc_holder_name or self.journal_id.company_id.name, 32) \
                     + to_fixed_width('PAYMENTS %s' % fields.Date.from_string(fields.Date.context_today(self)).strftime('%d%m%y'), 18) \
                     + _normalise_bsb(bank_account.aba_bsb) \
@@ -112,9 +112,9 @@ class AccountBatchPayment(models.Model):
             append_detail(detail_summary, detail_record, credit, debit)
 
         footer_record = '7' + '999-999' + (' ' * 12) \
-                + to_fixed_width(str(int(aud_currency.round(abs(detail_summary['credit_total'] - detail_summary['debit_total'])) * 100)), 10, fill='0', right=True) \
-                + to_fixed_width(str(int(aud_currency.round(detail_summary['credit_total']) * 100)), 10, fill='0', right=True) \
-                + to_fixed_width(str(int(aud_currency.round(detail_summary['debit_total']) * 100)), 10, fill='0', right=True) \
+                + to_fixed_width(str(round(aud_currency.round(abs(detail_summary['credit_total'] - detail_summary['debit_total'])) * 100)), 10, fill='0', right=True) \
+                + to_fixed_width(str(round(aud_currency.round(detail_summary['credit_total']) * 100)), 10, fill='0', right=True) \
+                + to_fixed_width(str(round(aud_currency.round(detail_summary['debit_total']) * 100)), 10, fill='0', right=True) \
                 + (' ' * 24) \
                 + to_fixed_width(str(len(detail_summary['detail_records'])), 6, fill='0', right=True) \
                 + (' ' * 40)

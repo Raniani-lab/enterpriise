@@ -99,6 +99,13 @@ class IntrastatReport(models.AbstractModel):
             mass = line.product_id and line.quantity * (line.product_id.weight or line.product_id.product_tmpl_id.weight) or 0
             if mass:
                 mass = copysign(round(mass) or 1.0, mass)
+
+            # In the case of the value:
+            # If the invoice value does not reconcile with the actual value of the goods, deviating
+            # provisions apply. This applies, for instance, in the event of free delivery...
+            # [...]
+            # The actual value of the goods must be given
+            value = line.price_subtotal or line.product_id.lst_price
             transaction_period = str(inv.date_invoice.year) + str(inv.date_invoice.month).rjust(2, '0')
             file_content += ''.join([
                 transaction_period,                                             # Transaction period    length=6
@@ -119,7 +126,7 @@ class IntrastatReport(models.AbstractModel):
                 '+',                                                            # Supplementary sign    length=1
                 '0000000000',                                                   # Supplementary unit    length=10
                 inv.amount_total_signed >= 0 and '+' or '-',                    # Invoice sign          length=1
-                str(int(line.price_subtotal)).zfill(10),                        # Invoice value         length=10
+                str(int(value)).zfill(10),                                      # Invoice value         length=10
                 '+',                                                            # Statistical sign      length=1
                 '0000000000',                                                   # Statistical value     length=10
                 (inv.number or '')[-10:].ljust(10),                             # Administration number length=10

@@ -130,10 +130,9 @@ class CrossoveredBudgetLines(models.Model):
                     group_line['practical_amount'] = 0
                     group_line['theoritical_amount'] = 0
 
-                if group_line.get('__domain'):
-                    all_budget_lines_that_compose_group = self.search(group_line['__domain'])
-                else:
-                    all_budget_lines_that_compose_group = self.search([])
+                domain = group_line.get('__domain') or domain
+                all_budget_lines_that_compose_group = self.search(domain)
+
                 for budget_line_of_group in all_budget_lines_that_compose_group:
                     if 'practical_amount' in fields or 'percentage' in fields:
                         group_line['practical_amount'] += budget_line_of_group.practical_amount

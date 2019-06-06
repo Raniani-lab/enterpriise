@@ -22,12 +22,14 @@
                                         <field name="percentage"/>
                                     </tree>
                                     <form string="Budget Items">
+                                        <group>
                                         <field name="crossovered_budget_id"/>
                                         <field name="general_budget_id"/>
                                         <field name="date_from"/>
                                         <field name="date_to"/>
                                         <field name="paid_date"/>
                                         <field name="planned_amount" widget="monetary"/>
+                                        </group>
                                     </form>
                                 </field>
                         </page>

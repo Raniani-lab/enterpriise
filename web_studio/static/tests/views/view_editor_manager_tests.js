@@ -2606,7 +2606,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a related field', async function (assert) {
-        assert.expect(13);
+        assert.expect(19);
 
 
         this.data.coucou.fields.related_field = {
@@ -2625,17 +2625,29 @@ QUnit.module('ViewEditorManager', {
                     if (nbEdit === 0) {
                         assert.strictEqual(args.operations[0].node.field_description.related,
                             'm2o.display_name', "related arg should be correct");
+                        assert.strictEqual(args.operations[0].node.field_description.copy,
+                            false, "copy arg should be correct");
+                        assert.strictEqual(args.operations[0].node.field_description.readonly,
+                            true, "readonly arg should be correct");
                         fieldsView.arch = "<tree><field name='display_name'/><field name='related_field'/></tree>";
                     } else if (nbEdit === 1) {
                         assert.strictEqual(args.operations[1].node.field_description.related,
                             'm2o.m2o', "related arg should be correct");
                         assert.strictEqual(args.operations[1].node.field_description.relation,
                             'partner', "relation arg should be correct for m2o");
+                        assert.strictEqual(args.operations[0].node.field_description.copy,
+                            false, "copy arg should be correct");
+                        assert.strictEqual(args.operations[0].node.field_description.readonly,
+                            true, "readonly arg should be correct");
                     } else if (nbEdit === 2) {
                         assert.strictEqual(args.operations[2].node.field_description.related,
                             'm2o.partner_ids', "related arg should be correct");
                         assert.strictEqual(args.operations[2].node.field_description.relational_model,
                             'product', "relational model arg should be correct for o2m");
+                        assert.strictEqual(args.operations[0].node.field_description.copy,
+                            false, "copy arg should be correct");
+                        assert.strictEqual(args.operations[0].node.field_description.readonly,
+                            true, "readonly arg should be correct");
                     }
                     nbEdit++;
                     return Promise.resolve({

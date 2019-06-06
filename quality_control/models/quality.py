@@ -341,9 +341,9 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    quality_control_point_qty = fields.Integer(compute='_compute_quality_check_qty')
-    quality_pass_qty = fields.Integer(compute='_compute_quality_check_qty')
-    quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty')
+    quality_control_point_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
+    quality_pass_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
+    quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
 
     def _compute_quality_check_qty(self):
         for product in self:

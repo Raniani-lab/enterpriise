@@ -12,6 +12,7 @@
         'views/res_config_settings_views.xml',
         'views/hr_contract_views.xml',
         'views/report_payslip_templates.xml',
+        'security/security.xml',
     ],
     'auto_install': True,
 }

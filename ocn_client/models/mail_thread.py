@@ -101,6 +101,7 @@ class MailThread(models.AbstractModel):
                 payload['res_id'] = result['res_id']
 
         if model == 'mail.channel':
+            payload['action'] = 'mail.action_discuss'
             # todo xdo could we just browse res_id? or are we using the fact that res_id could not be in channel_ids?
             channel = message.channel_ids.filtered(lambda r: r.id == res_id)
             if channel.channel_type == 'chat':

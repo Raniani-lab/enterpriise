@@ -42,6 +42,25 @@ class GovCertificationController(http.Controller):
 
         return request.render('pos_blackbox_be.fdm_source', data, mimetype='text/plain')
 
+    @http.route("/journal_file/<string:serial>", auth="user")
+    def journal_file(self, serial, **kw):
+        """ Give the journal file report for a specific blackbox
+        serial: e.g. BODO002bd6034a
+        """
+        logs = request.env["pos_blackbox_be.log"].search([
+            ("action", "=", "create"),
+            ("model_name", "in", ["pos.order", "pos.order_pro_forma"]),
+            ("description", "ilike", serial),
+        ], order='id')
+
+        data = {
+            'pos_id': serial,
+            'logs': logs,
+        }
+
+        return request.render("pos_blackbox_be.journal_file", data, mimetype="text/plain")
+
+
 class BlackboxPOSController(PosController):
     @http.route()
     def pos_web(self, **k):

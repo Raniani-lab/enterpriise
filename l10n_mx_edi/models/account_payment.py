@@ -602,7 +602,7 @@ class AccountPayment(models.Model):
             # convert the write_off from the currency of the payment, to the currency of the invoice
             else:
                 write_off_invoice_currency = writeoff_move_line.currency_id._convert(
-                    writeoff_move_line.amount_currency, last_invoice.currency_id,
+                    writeoff_move_line.amount_currency or writeoff_move_line.balance, last_invoice.currency_id,
                     last_invoice.company_id, last_invoice.date
                 )
             if write_off_invoice_currency > 0:

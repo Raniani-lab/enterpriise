@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-16 13:37+0000\n"
-"PO-Revision-Date: 2019-04-16 13:37+0000\n"
+"POT-Creation-Date: 2019-05-15 13:54+0000\n"
+"PO-Revision-Date: 2019-05-15 13:54+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -42,6 +42,11 @@ msgstr ""
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
 msgid "<span class=\"o_stat_text\">Financial X</span>"
+msgstr ""
+
+#. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
+msgid "<span class=\"o_stat_text\">Journal File</span>"
 msgstr ""
 
 #. module: pos_blackbox_be
@@ -451,6 +456,11 @@ msgstr ""
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_order_filter_registered_transactions
 msgid "FDM transactions"
+msgstr ""
+
+#. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.journal_file
+msgid "FICHIER JOURNAL POUR CAISSE"
 msgstr ""
 
 #. module: pos_blackbox_be
@@ -876,6 +886,12 @@ msgid "Plu Hash"
 msgstr ""
 
 #. module: pos_blackbox_be
+#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:317
+#, python-format
+msgid "PoS %s is not a certified PoS"
+msgstr ""
+
+#. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_config_id
 msgid "Point of Sale"
 msgstr ""
@@ -910,6 +926,11 @@ msgstr ""
 #. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_pricelist_id
 msgid "Pricelist"
+msgstr ""
+
+#. module: pos_blackbox_be
+#: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_create_date
+msgid "Pro Forma Creation"
 msgstr ""
 
 #. module: pos_blackbox_be

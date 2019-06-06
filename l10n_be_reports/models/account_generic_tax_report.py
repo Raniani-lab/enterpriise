@@ -21,10 +21,6 @@ class AccountGenericTaxReport(models.AbstractModel):
     def _get_reports_buttons(self):
         buttons = super(AccountGenericTaxReport, self)._get_reports_buttons()
         if self.env.user.company_id.country_id.code == 'BE':
-            for button_entry in buttons:
-                if button_entry['action'] == 'periodic_tva_entries':
-                    button_entry['action'] = 'periodic_tva_entries_wizard'
-                    break
             buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 

@@ -275,7 +275,7 @@ class FedexRequest():
         LabelSpecification.LabelOrder = label_order
         self.RequestedShipment.LabelSpecification = LabelSpecification
 
-    def commercial_invoice(self, document_stock_type):
+    def commercial_invoice(self, document_stock_type, send_etd=False):
         shipping_document = self.factory.ShippingDocumentSpecification()
         shipping_document.ShippingDocumentTypes = "COMMERCIAL_INVOICE"
         commercial_invoice_detail = self.factory.CommercialInvoiceDetail()
@@ -284,6 +284,11 @@ class FedexRequest():
         commercial_invoice_detail.Format.StockType = document_stock_type
         shipping_document.CommercialInvoiceDetail = commercial_invoice_detail
         self.RequestedShipment.ShippingDocumentSpecification = shipping_document
+        if send_etd:
+            self.RequestedShipment.SpecialServicesRequested.SpecialServiceTypes.append('ELECTRONIC_TRADE_DOCUMENTS')
+            etd_details = self.factory.EtdDetail()
+            etd_details.RequestedDocumentCopies.append('COMMERCIAL_INVOICE')
+            self.RequestedShipment.SpecialServicesRequested.EtdDetail = etd_details
 
     def shipping_charges_payment(self, shipping_charges_payment_account):
         self.RequestedShipment.ShippingChargesPayment = self.factory.Payment()

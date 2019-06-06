@@ -46,6 +46,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
         self.partner_agrolait.commercial_partner_id.write({
             'country_id': self.env.ref('base.us').id,
             'state_id': self.env.ref('base.state_us_23').id,
+            'zip': 39301,
         })
         self.partner_agrolait.write({
             'country_id': self.env.ref('base.us').id,

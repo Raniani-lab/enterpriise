@@ -202,6 +202,7 @@ class GithubController(http.Controller):
             return {
                 'action': MAP_GITHUB_EVENT_ACTION.get(payload_data['action'], payload_data['action']),
                 'object_type': 'issue',
+                'object_label': _('issue'),
                 'object': self._parse_github_payload_event_issue(payload_data['issue']),
             }
         if event_type == 'pull_request':
@@ -225,9 +226,9 @@ class GithubController(http.Controller):
                 commits.append({
                     'id': commit['id'],
                     'url': commit['url'],
-                    'author': commit['author']['username'],
+                    'author': commit['author'].get('username', commit['author']['name']),
                     'author_email': commit['author']['email'],
-                    'committer': commit['committer']['username'],
+                    'committer': commit['committer'].get('username', commit['committer']['name']),
                     'committer_email': commit['committer']['email'],
                     'message': commit['message'].split('\n')[0], # only the first line of the commit message
                     'message_long': commit['message'],

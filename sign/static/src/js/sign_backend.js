@@ -59,6 +59,9 @@ odoo.define('sign.views_custo', function(require) {
         return {
             renderButtons: function () {
                 this._super.apply(this, arguments);
+                if (!this.$buttons) {
+                    return; // lists in modal don't have buttons
+                }
                 if (this.modelName === "sign.template") {
                     this._sign_upload_file_button();
                     this.$buttons.find('button.o_button_import').hide();

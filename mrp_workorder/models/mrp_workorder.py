@@ -97,13 +97,8 @@ class MrpProductionWorkcenterLine(models.Model):
     def _compute_component_data(self):
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
             if wo.test_type in ('register_byproducts', 'register_consumed_materials') and wo.quality_state == 'none':
-                if wo.test_type == 'register_byproducts':
-                    moves = wo.move_finished_ids._origin.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
-                else:
-                    moves = wo.move_raw_ids._origin.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
-                # moves are actual records (for condition "l.move_id in moves")
-                move = moves[0]
-                lines = wo._workorder_line_ids().filtered(lambda l: l.move_id in moves)
+                move = wo.current_quality_check_id.move_line_id.move_id
+                lines = wo._workorder_line_ids().filtered(lambda l: l.move_id == move)
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
                 wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
                 wo.component_uom_id = lines[0].product_uom_id
@@ -160,7 +155,12 @@ class MrpProductionWorkcenterLine(models.Model):
         for workorder in self:
             for check in workorder.check_ids:
                 if check.quality_state == 'none' and not check.workorder_line_id and check.component_id:
-                    check.write(workorder._defaults_from_workorder_lines(check.component_id, check.test_type))
+                    assigned_to_check_moves = workorder.check_ids.mapped('move_line_id').mapped('move_id')
+                    if check.test_type == 'register_consumed_materials':
+                        move = workorder.move_raw_ids.filtered(lambda move: move.state not in ('done', 'cancel') and move.product_id == check.component_id and move not in assigned_to_check_moves)
+                    else:
+                        move = workorder.move_finished_ids.filtered(lambda move: move.state not in ('done', 'cancel') and move.product_id == check.component_id and move not in assigned_to_check_moves)
+                    check.write(workorder._defaults_from_workorder_lines(move, check.test_type))
         return res
 
     def _create_subsequent_checks(self):
@@ -185,7 +185,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 self.workorder_line_id.write({'qty_to_consume': self.workorder_line_id.qty_done})
             # Check if it exists a workorder line not used. If it could not find
             # one, create it without prefilled values.
-            elif not self._defaults_from_workorder_lines(self.component_id, self.test_type):
+            elif not self._defaults_from_workorder_lines(self.move_line_id.move_id, self.test_type):
                 moves = self.env['stock.move']
                 workorder_line_values = {}
                 if self.test_type == 'register_byproducts':
@@ -195,9 +195,9 @@ class MrpProductionWorkcenterLine(models.Model):
                     moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == self.component_id)
                     workorder_line_values['raw_workorder_id'] = self.id
                 workorder_line_values.update({
-                    'move_id': moves[0].id,
+                    'move_id': moves[:1].id,
                     'product_id': self.component_id.id,
-                    'product_uom_id': moves[0].product_uom.id,
+                    'product_uom_id': moves[:1].product_uom.id,
                     'qty_done': 0.0,
                 })
                 self.env['mrp.workorder.line'].create(workorder_line_values)
@@ -219,7 +219,8 @@ class MrpProductionWorkcenterLine(models.Model):
                     'test_type_id': self.current_quality_check_id.test_type_id.id,
                     'team_id': self.current_quality_check_id.team_id.id,
                 })
-            quality_check_data.update(self._defaults_from_workorder_lines(self.component_id, self.current_quality_check_id.test_type))
+            move = parent_id.move_line_id.move_id
+            quality_check_data.update(self._defaults_from_workorder_lines(move, self.current_quality_check_id.test_type))
             self.env['quality.check'].create(quality_check_data)
 
     def _generate_lines_values(self, move, qty_to_consume):
@@ -386,14 +387,14 @@ class MrpProductionWorkcenterLine(models.Model):
                 'worksheet_page': next_check.point_id.worksheet_page if change_worksheet_page else self.worksheet_page,
             })
 
-    def _defaults_from_workorder_lines(self, product, test_type):
+    def _defaults_from_workorder_lines(self, move, test_type):
         # Check if a workorder line is not filled for this workorder. If it
         # happens select it in order to create quality_check
         self.ensure_one()
         if test_type == 'register_byproducts':
-            available_workorder_lines = self.finished_workorder_line_ids.filtered(lambda wl: not wl.qty_done and wl.product_id == product)
+            available_workorder_lines = self.finished_workorder_line_ids.filtered(lambda wl: not wl.qty_done and wl.move_id == move)
         else:
-            available_workorder_lines = self.raw_workorder_line_ids.filtered(lambda wl: not wl.qty_done and wl.product_id == product)
+            available_workorder_lines = self.raw_workorder_line_ids.filtered(lambda wl: not wl.qty_done and wl.move_id == move)
         if available_workorder_lines:
             workorder_line = available_workorder_lines[0]
             return {
@@ -445,57 +446,55 @@ class MrpProductionWorkcenterLine(models.Model):
 
             move_raw_ids = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel'))
             move_finished_ids = wo.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel'))
+            values_to_create = []
             for point in points:
                 # Check if we need a quality control for this point
                 if point.check_execute_now():
                     moves = self.env['stock.move']
+                    values = {
+                        'workorder_id': wo.id,
+                        'point_id': point.id,
+                        'team_id': point.team_id.id,
+                        'product_id': production.product_id.id,
+                        # Two steps are from the same production
+                        # if and only if the produced quantities at the time they were created are equal.
+                        'finished_product_sequence': wo.qty_produced,
+                    }
                     if point.test_type == 'register_byproducts':
                         moves = move_finished_ids.filtered(lambda m: m.product_id == point.component_id)
-                    if point.test_type == 'register_consumed_materials':
+                    elif point.test_type == 'register_consumed_materials':
                         moves = move_raw_ids.filtered(lambda m: m.product_id == point.component_id)
-                    # qty_done = 1.0
-                    # Do not generate qc for control point of type register_consumed_materials if the component is not consummed in this wo.
-                    if not point.component_id or moves:
-                        values = {
-                            'workorder_id': wo.id,
-                            'point_id': point.id,
-                            'team_id': point.team_id.id,
-                            'product_id': production.product_id.id,
-                            # Fill in the full quantity by default
-                            'qty_done': 1.0,
-                            # Two steps are from the same production
-                            # if and only if the produced quantities at the time they were created are equal.
-                            'finished_product_sequence': wo.qty_produced,
-                        }
-                        if moves:
-                            processed_move |= moves
-                            values.update(wo._defaults_from_workorder_lines(point.component_id, point.test_type))
-                        self.env['quality.check'].create(values)
+                    else:
+                        values_to_create.append(values)
+                    # Create 'register ...' checks
+                    for move in moves:
+                        check_vals = values.copy()
+                        check_vals.update(wo._defaults_from_workorder_lines(move, point.test_type))
+                        values_to_create.append(check_vals)
+                    processed_move |= moves
 
             # Generate quality checks associated with unreferenced components
-            tracked_product_without_check = ((move_raw_ids | move_finished_ids) - processed_move).mapped('product_id').filtered(lambda product: product.tracking != 'none')
+            moves_without_check = ((move_raw_ids | move_finished_ids) - processed_move).filtered(lambda move: move.has_tracking != 'none')
             quality_team_id = self.env['quality.alert.team'].search([], limit=1).id
-            for product in tracked_product_without_check:
+            for move in moves_without_check:
                 values = {
                     'workorder_id': wo.id,
                     'product_id': production.product_id.id,
-                    'component_id': product.id,
+                    'component_id': move.product_id.id,
                     'team_id': quality_team_id,
                     # Two steps are from the same production
                     # if and only if the produced quantities at the time they were created are equal.
                     'finished_product_sequence': wo.qty_produced,
                 }
-                if product in move_raw_ids.mapped('product_id'):
+                if move in move_raw_ids:
                     test_type = self.env.ref('mrp_workorder.test_type_register_consumed_materials')
-                    values.update({'test_type_id': test_type.id})
-                    values.update(wo._defaults_from_workorder_lines(product, test_type.technical_name))
-                    self.env['quality.check'].create(values)
-                if product in move_finished_ids.mapped('product_id'):
+                if move in move_finished_ids:
                     test_type = self.env.ref('mrp_workorder.test_type_register_byproducts')
-                    values.update({'test_type_id': test_type.id})
-                    values.update(wo._defaults_from_workorder_lines(product, test_type.technical_name))
-                    self.env['quality.check'].create(values)
+                values.update({'test_type_id': test_type.id})
+                values.update(wo._defaults_from_workorder_lines(move, test_type.technical_name))
+                values_to_create.append(values)
 
+            self.env['quality.check'].create(values_to_create)
             # Set default quality_check
             wo.skip_completed_checks = False
             wo._change_quality_check(position=0)

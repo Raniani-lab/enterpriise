@@ -12,17 +12,22 @@ class TestStockReport(common.TransactionCase):
     def setUp(self):
         super(TestStockReport, self).setUp()
 
-        products = self.env['product.product'].with_context(to_date=fields.Date.today()).search([('product_tmpl_id.type', '=', 'product')])
+        products = self.env['product.product'].search([('product_tmpl_id.type', '=', 'product')])
         moves = self.env['stock.move'].search([])
-        incoming_moves = self.env['stock.move'].search([('picking_id.picking_type_id.code', '=', 'incoming')])
+        for move in moves:
+            if move._is_in():
+                move._create_in_svl()
+            elif move._is_out():
+                move._create_out_svl()
 
-        self.inventory_valuation = sum(product.stock_value for product in products)
-        self.total_move_valuation = sum(move.product_qty * move.product_id.standard_price for move in moves)
-        self.incoming_move_valuation = sum(move.product_qty * move.product_id.standard_price for move in incoming_moves)
+        self.inventory_valuation = sum(product.value_svl for product in products)
+        self.total_move_valuation = sum(moves.mapped('stock_valuation_layer_ids.value'))
+        incoming_moves = self.env['stock.move'].search([('picking_id.picking_type_id.code', '=', 'incoming')])
+        self.incoming_move_valuation = sum(incoming_moves.mapped('stock_valuation_layer_ids.value'))
 
     def test_valuation(self):
         # without domain
-        value = self.env['stock.report'].read_group([], ['valuation:sum(valuation)'], '')
+        value = self.env['stock.report'].with_context(debug=True).read_group([], ['valuation:sum(valuation)'], '')
 
         self.assertEqual(value[0]['valuation'], self.total_move_valuation,
                          "Calling read group with valuation and without domain should give the total move valuation of the inventory")
@@ -54,13 +59,13 @@ class TestStockReport(common.TransactionCase):
         # Takes date_done into account when in domain but doesn't care about the operator
         value = self.env['stock.report'].read_group([('date_done', '=', get_test_date())], ['stock_value:sum(stock_value)'], '')
 
-        self.assertEqual(value[0]['stock_value'], 0,
-                         "Read group on stock_value should take date_done into account in domain")
+        self.assertEqual(value[0]['stock_value'], self.inventory_valuation,
+                         "Read group on stock_value should not take date_done into account in domain")
 
         value = self.env['stock.report'].read_group([('date_done', '<', get_test_date())], ['stock_value:sum(stock_value)'], '')
 
-        self.assertEqual(value[0]['stock_value'], 0,
-                         "Read group on stock_value should take date_done into account in domain in the same manner whatever the operator is")
+        self.assertEqual(value[0]['stock_value'], self.inventory_valuation,
+                         "Read group on stock_value should note take date_done into account in domain")
 
         # with domain should be the same value
         value = self.env['stock.report'].read_group([('picking_type_code', '=', 'incoming')], ['stock_value:sum(stock_value)'], '')

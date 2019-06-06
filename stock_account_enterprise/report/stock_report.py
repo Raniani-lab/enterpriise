@@ -5,7 +5,6 @@ import re
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from odoo.fields import Date
 from odoo.osv.expression import expression
 
 
@@ -65,10 +64,8 @@ class StockReport(models.Model):
             res = [{}]
 
         if stock_value:
-            date = Date.to_string(Date.from_string(next((d[2] for d in domain if d[0] == 'date_done'), Date.today())))
-
-            products = self.env['product.product'].with_context(to_date=date).search([('product_tmpl_id.type', '=', 'product')])
-            value = sum(product.stock_value for product in products)
+            products = self.env['product.product'].search([('product_tmpl_id.type', '=', 'product')])
+            value = sum(product.value_svl for product in products)
 
             res[0].update({
                 '__count': 1,
@@ -81,25 +78,17 @@ class StockReport(models.Model):
                     SUM(move_valuation.valuation) as valuation
                 FROM (
                     SELECT
-                        CASE property.value_text -- cost method
-                            WHEN 'fifo' THEN move.value
-                            WHEN 'average' THEN move.value
-                            ELSE move.product_qty * product_property.value_float -- standard price
-                        END as valuation
+                        sum(svl.value) AS valuation
                     FROM
                         stock_move move
-                        INNER JOIN product_product product ON move.product_id = product.id
-                        INNER JOIN product_template ON product.product_tmpl_id = product_template.id
-                        INNER JOIN product_category category ON product_template.categ_id = category.id
-                        LEFT JOIN ir_property property ON property.res_id = CONCAT('product.category,', category.id)
-                        INNER JOIN ir_property product_property ON product_property.res_id = CONCAT('product.product,', product.id)
+                        INNER JOIN stock_valuation_layer AS svl ON svl.stock_move_id = move.id
                     WHERE
                         move.id IN (
                             SELECT id
                             FROM stock_report
                             WHERE %s )
-                        AND (property.company_id is null or property.company_id = move.company_id)
-                        AND product_property.company_id = move.company_id
+                 GROUP BY
+                        move.id
                 ) as move_valuation
             """
 

@@ -36,7 +36,6 @@ class RentalWizard(models.TransientModel):
     qty_available_during_period = fields.Float(
         string="Quantity available for given period (Stock - In Rent)",
         compute='_compute_rental_availability')
-    enough_stock = fields.Boolean(compute="_compute_rental_availability")
 
     is_product_storable = fields.Boolean(compute="_compute_is_product_storable")
 
@@ -45,6 +44,7 @@ class RentalWizard(models.TransientModel):
         if self.tracking != 'serial':
             super(RentalWizard, self)._compute_rented_during_period()
         elif not self.product_id or not self.pickup_date or not self.return_date:
+            self.rented_qty_during_period = 0.0
             return
         else:
             fro, to = self.product_id._unavailability_period(self.pickup_date, self.return_date)
@@ -84,11 +84,7 @@ class RentalWizard(models.TransientModel):
     @api.depends('quantity', 'rentable_qty', 'rented_qty_during_period')
     def _compute_rental_availability(self):
         for rent in self:
-            if not rent.product_id or not rent.is_product_storable or not rent.pickup_date or not rent.return_date:
-                rent.enough_stock = True
-            else:
-                rent.qty_available_during_period = max(rent.rentable_qty - rent.rented_qty_during_period, 0)
-                rent.enough_stock = (rent.quantity <= rent.qty_available_during_period)
+            rent.qty_available_during_period = max(rent.rentable_qty - rent.rented_qty_during_period, 0)
 
     @api.depends('product_id')
     def _compute_is_product_storable(self):
@@ -101,10 +97,15 @@ class RentalWizard(models.TransientModel):
         if len(self.lot_ids) > self.quantity:
             self.quantity = len(self.lot_ids)
 
+    @api.onchange('quantity')
+    def _onchange_qty(self):
+        """Remove last lots when qty is decreased."""
+        if len(self.lot_ids) > self.quantity:
+            self.lot_ids = self.lot_ids[:int(self.quantity)]
+
     @api.onchange('qty_available_during_period')
     def _onchange_qty_available_during_period(self):
         """If no quantity is available for given period, don't show any choice for the serial numbers."""
-        # TODO replace with the use of qty_available_during_period in lot_ids domain?
         if self.qty_available_during_period <= 0:
             return {
                 'domain':

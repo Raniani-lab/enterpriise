@@ -13,7 +13,7 @@ class RentalSchedule(models.Model):
         ('reserved', 'Reserved'),
         ('pickedup', 'Pickedup'),
         ('returned', 'Returned'),
-    ], string="Lot/SN Status", readonly=True)
+    ], string="Rental Status (advanced)", readonly=True)
 
     def _report_line_status(self):
         return """

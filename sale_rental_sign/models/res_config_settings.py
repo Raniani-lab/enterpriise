@@ -9,6 +9,7 @@ class ResConfigSettings(models.TransientModel):
     rental_sign_tmpl_id = fields.Many2one(
         "sign.template",
         related="company_id.rental_sign_tmpl_id",
-        string="Default Document Template",
+        string="Default Document",
+        help="Set a default document template for all rentals in the current company",
         readonly=False,
     )

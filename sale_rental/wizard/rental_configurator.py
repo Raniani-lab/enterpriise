@@ -28,10 +28,10 @@ class RentalWizard(models.TransientModel):
     quantity = fields.Float("Quantity", default=1, required=True)  # Can be changed on SO line later if needed
 
     duration = fields.Float(
-        string="Duration in hours", compute="_compute_duration_pricing",
+        string="Duration", compute="_compute_duration_pricing",
         help="Duration of the rental (in hours)")
     duration_display = fields.Float(
-        string="Duration", compute="_compute_duration_pricing",
+        string="Duration (in pricing unit)", compute="_compute_duration_pricing",
         help="Duration of the rental (in unit of the pricing)")
     pricing_id = fields.Many2one(
         'rental.pricing', compute="_compute_duration_pricing",

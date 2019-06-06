@@ -13,7 +13,7 @@ class RentalProcessing(models.TransientModel):
     rental_wizard_line_ids = fields.One2many('rental.order.wizard.line', 'rental_order_wizard_id')
     status = fields.Selection(
         selection=[
-            ('pickup', 'Pick Up'),
+            ('pickup', 'Pickup'),
             ('return', 'Return'),
         ],
     )

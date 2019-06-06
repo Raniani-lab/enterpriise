@@ -34,7 +34,7 @@ class ProductTemplate(models.Model):
 
     preparation_time = fields.Float(
         string="Before Pickup", default=_default_preparation_time,
-        help="Temporarily make this product unavailable before pickup.", company_dependent=True)
+        help="Make the product unavailable between 2 rentals (e.g. admin processing, repair).", company_dependent=True)
 
     def _get_qty_in_rent(self):
         rentable = self.filtered('rent_ok')
@@ -56,13 +56,9 @@ class ProductProduct(models.Model):
     qty_in_rent = fields.Float("Quantity currently in rent", compute='_get_qty_in_rent')
 
     def _get_qty_in_rent_domain(self):
-        # now = fields.Datetime.now()
         return [
             ('is_rental', '=', True),
             ('product_id', 'in', self.ids),
-            # TODO replace dates domain with order_id.rental_status != done ?
-            # ('pickup_date', '<=', now),  # pickup_date or reservation_begin ???
-            # ('return_date', '>=', now),  # return_date or return_date ???
             ('state', 'in', ['sale', 'done'])]
 
     def _get_qty_in_rent(self):

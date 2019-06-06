@@ -43,21 +43,21 @@ ProductConfiguratorWidget.include({
     _checkIfRentable: function (productId, dataPointID) {
         var self = this;
         if (productId && this.nodeOptions.rent) {
-          return this._rpc({
-            model: 'product.product',
-            method: 'read',
-            args: [productId, ['rent_ok']],
-          }).then(function (r) {
-              if (r && r[0].rent_ok) {
-                  self._openRentalConfigurator({
-                          default_product_id: productId
-                      },
-                      dataPointID
-                  );
-                  return Promise.resolve(true);
-              }
-              return Promise.resolve(false);
-          });
+            return this._rpc({
+                model: 'product.product',
+                method: 'read',
+                args: [productId, ['rent_ok']],
+            }).then(function (r) {
+                if (r && r[0].rent_ok) {
+                    self._openRentalConfigurator({
+                            default_product_id: productId
+                        },
+                        dataPointID
+                    );
+                    return Promise.resolve(true);
+                }
+                return Promise.resolve(false);
+            });
         }
         return Promise.resolve(false);
     },
@@ -88,16 +88,16 @@ ProductConfiguratorWidget.include({
             var defaultPickupDate, defaultReturnDate;
             if (parent.state.data.length > 1) {
                 parent.state.data.forEach(function (item) {
-                  if (item.data.is_rental) {
-                    defaultPickupDate = item.data.pickup_date;
-                    defaultReturnDate = item.data.return_date;
-                  }
+                    if (item.data.is_rental) {
+                        defaultPickupDate = item.data.pickup_date;
+                        defaultReturnDate = item.data.return_date;
+                    }
                 });
                 if (defaultPickupDate) {
-                  data.default_pickup_date = defaultPickupDate;
+                    data.default_pickup_date = defaultPickupDate;
                 }
                 if (defaultReturnDate) {
-                  data.default_return_date = defaultReturnDate;
+                    data.default_return_date = defaultReturnDate;
                 }
             }
         }
@@ -105,12 +105,12 @@ ProductConfiguratorWidget.include({
         /** Sale_stock_rental defaults (to avoid having a very little bit of js in sale_stock_rental) */
 
         if (self.recordData.warehouse_id) {
-           data.default_warehouse_id = self.recordData.warehouse_id.data.id;
+            data.default_warehouse_id = self.recordData.warehouse_id.data.id;
         }
         if (self.recordData.reserved_lot_ids) {
-          data.default_lot_ids = this._convertFromMany2Many(
-              this.recordData.reserved_lot_ids
-          );
+            data.default_lot_ids = this._convertFromMany2Many(
+                this.recordData.reserved_lot_ids
+            );
         }
 
         return data;

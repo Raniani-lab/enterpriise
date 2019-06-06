@@ -9,8 +9,8 @@ class RentalSchedule(models.Model):
     lot_id = fields.Many2one('stock.production.lot', 'Serial Number', readonly=True)
     # TODO color depending on report_line_status
 
-    def _get_name(self):
-        return """COALESCE(lot_info.name, t.name) as name,"""
+    def _get_product_name(self):
+        return """COALESCE(lot_info.name, t.name) as product_name,"""
 
     def _id(self):
         return """COALESCE(lot_info.lot_id, sol.id) as id,"""

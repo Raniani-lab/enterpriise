@@ -12,14 +12,18 @@ class ResConfigSettings(models.TransientModel):
     # Padding Time
 
     padding_time = fields.Float(
-        string="Before pickup",
+        string="Padding Time",
         related='company_id.padding_time', readonly=False,
-        help="The product is considered unavailable * hours before its pickup.")
+        help="This is the default padding time set on newly created products. You can change it in the product form.")
 
     # Extra Costs
 
-    extra_hour = fields.Float("Extra Hour", related="company_id.extra_hour", readonly=False)
-    extra_day = fields.Float("Extra Day", related="company_id.extra_day", readonly=False)
+    extra_hour = fields.Float(
+        "Extra Hour", related="company_id.extra_hour", readonly=False,
+        help="Those are the default extra costs set on newly created products. You can change them from the product form.")
+    extra_day = fields.Float(
+        "Extra Day", related="company_id.extra_day", readonly=False,
+        help="Those are the default extra costs set on newly created products. You can change them from the product form.")
     # extra_week = fields.Monetary("Extra Week")
     min_extra_hour = fields.Integer("Minimum delay time before applying fines.", related="company_id.min_extra_hour", readonly=False)
     # week uom disabled in rental for the moment

@@ -909,7 +909,7 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(len(production.move_raw_ids), 3, "wrong number of raw moves")
 
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.final_lot_id = self.sp1
+        wo_form.finished_lot_id = self.sp1
         wo = wo_form.save()
         wo._next()
         wo.record_production()
@@ -940,7 +940,7 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(done_finished_move.quantity_done, 1, "finished product are not produced")
 
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        wo_form.final_lot_id = self.sp2
+        wo_form.finished_lot_id = self.sp2
         wo = wo_form.save()
         wo._next()
         wo.record_production()

@@ -97,7 +97,7 @@ class MrpProductionWorkcenterLine(models.Model):
     def _compute_component_data(self):
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
             if wo.test_type in ('register_byproducts', 'register_consumed_materials') and wo.quality_state == 'none':
-                move = wo.current_quality_check_id.move_line_id.move_id
+                move = wo.current_quality_check_id.workorder_line_id.move_id
                 lines = wo._workorder_line_ids().filtered(lambda l: l.move_id == move)
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
                 wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
@@ -155,7 +155,7 @@ class MrpProductionWorkcenterLine(models.Model):
         for workorder in self:
             for check in workorder.check_ids:
                 if check.quality_state == 'none' and not check.workorder_line_id and check.component_id:
-                    assigned_to_check_moves = workorder.check_ids.mapped('move_line_id').mapped('move_id')
+                    assigned_to_check_moves = workorder.check_ids.mapped('workorder_line_id').mapped('move_id')
                     if check.test_type == 'register_consumed_materials':
                         move = workorder.move_raw_ids.filtered(lambda move: move.state not in ('done', 'cancel') and move.product_id == check.component_id and move not in assigned_to_check_moves)
                     else:
@@ -185,7 +185,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 self.workorder_line_id.write({'qty_to_consume': self.workorder_line_id.qty_done})
             # Check if it exists a workorder line not used. If it could not find
             # one, create it without prefilled values.
-            elif not self._defaults_from_workorder_lines(self.move_line_id.move_id, self.test_type):
+            elif not self._defaults_from_workorder_lines(self.workorder_line_id.move_id, self.test_type):
                 moves = self.env['stock.move']
                 workorder_line_values = {}
                 if self.test_type == 'register_byproducts':
@@ -219,7 +219,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     'test_type_id': self.current_quality_check_id.test_type_id.id,
                     'team_id': self.current_quality_check_id.team_id.id,
                 })
-            move = parent_id.move_line_id.move_id
+            move = parent_id.workorder_line_id.move_id
             quality_check_data.update(self._defaults_from_workorder_lines(move, self.current_quality_check_id.test_type))
             self.env['quality.check'].create(quality_check_data)
 

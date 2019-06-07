@@ -7,14 +7,16 @@ from odoo import api, fields, models, _
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
-    repairs_count = fields.Integer('Repairs Count', compute='_compute_repairs_count')
+    repairs_count = fields.Integer('Repairs Count', compute='_compute_repairs_count', compute_sudo=True)
     repair_ids = fields.One2many('repair.order', 'ticket_id', string='Repairs')
 
     @api.depends('repair_ids')
     @api.multi
     def _compute_repairs_count(self):
+        repair_data = self.env['repair.order'].sudo().read_group([('ticket_id', 'in', self.ids)], ['ticket_id'], ['ticket_id'])
+        mapped_data = dict([(r['ticket_id'][0], r['ticket_id_count']) for r in repair_data])
         for ticket in self:
-            ticket.repairs_count = len(ticket.repair_ids)
+            ticket.repairs_count = mapped_data.get(ticket.id, 0)
 
     @api.multi
     def open_repairs(self):
@@ -24,5 +26,5 @@ class HelpdeskTicket(models.Model):
             'name': _('Repairs'),
             'res_model': 'repair.order',
             'view_mode': 'tree,form',
-            'domain': [('id', 'in', self.repair_ids.ids)],
+            'domain': [('ticket_id', '=', self.id)],
         }

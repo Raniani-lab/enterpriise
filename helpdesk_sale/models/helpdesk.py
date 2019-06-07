@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
-    sale_order_ids = fields.Many2many('sale.order', compute="compute_sale_order_ids")
+    sale_order_ids = fields.Many2many('sale.order', compute="compute_sale_order_ids", compute_sudo=True)
     sale_order_id = fields.Many2one('sale.order', string='Sales Order', domain="[('id', 'in', sale_order_ids)]")
 
     @api.depends('partner_id')
@@ -16,4 +16,4 @@ class HelpdeskTicket(models.Model):
             domain = []
             if ticket.partner_id.commercial_partner_id:
                 domain = [('partner_id', 'child_of', ticket.partner_id.commercial_partner_id.id)]
-            ticket.sale_order_ids = ticket.env['sale.order'].search(domain)
+            ticket.sale_order_ids = self.env['sale.order'].sudo().search(domain)

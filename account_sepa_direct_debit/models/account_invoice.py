@@ -11,11 +11,11 @@ class AccountInvoice(models.Model):
     sdd_paying_mandate_id = fields.Many2one(comodel_name='sdd.mandate', help="Once this invoice has been paid with Direct Debit, contains the mandate that allowed the payment.", copy=False)
 
 
-    def action_move_create(self):
+    def invoice_validate(self):
         """ Overridden to automatically trigger the payment of the invoice if a
         mandate is available.
         """
-        res = super(AccountInvoice, self).action_move_create()
+        res = super(AccountInvoice, self).invoice_validate()
 
         # Automatic payment only for customer's invoice
         # i.e. credit notes from vendors shouldn't have their payment automated

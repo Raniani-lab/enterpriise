@@ -10,6 +10,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name" class="field_name"/>
                 <field name="alias_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

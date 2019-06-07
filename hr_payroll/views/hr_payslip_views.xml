@@ -11,6 +11,7 @@
                 <field name="sequence"/>
                 <field name="name"/>
                 <field name="code"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                 <field name="quantity"/>
                 <field name="rate"/>
                 <field name="amount"/>
@@ -399,6 +400,7 @@
                 <field name="date_end"/>
                 <field name="credit_note"/>
                 <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

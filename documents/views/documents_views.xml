@@ -237,6 +237,7 @@
                 <field name="name" required="True"/>
                 <field name="res_model"/>
                 <field name="create_date"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>
@@ -263,6 +264,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="display_name" string="Workspace"/>
                 <field name="facet_ids"  widget="many2many_tags" string="Tag Categories"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

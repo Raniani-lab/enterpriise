@@ -266,6 +266,7 @@
                 <field name="effectivity_date"/>
                 <field name="state" invisible="1"/>
                 <field name="stage_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

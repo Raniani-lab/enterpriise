@@ -29,6 +29,7 @@
                     <field name="total_due" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
                     <field name="total_overdue" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
                     <field name="followup_status"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                 </tree>
             </field>
         </record>

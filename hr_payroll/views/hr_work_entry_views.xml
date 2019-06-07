@@ -146,6 +146,7 @@
                 <field name="state"/>
                 <field name="date_start" string="Beginning"/>
                 <field name="display_warning"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

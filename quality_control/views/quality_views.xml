@@ -145,6 +145,7 @@
                 <field name="check_id"/>
                 <field name="stage_id"/>
                 <field name="description"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>
@@ -399,6 +400,7 @@
                 <field name="control_date" string="Checked Date"/>
                 <field name="user_id" string="Checked By"/>
                 <field name="quality_state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>
@@ -673,10 +675,11 @@
         <field name="name">quality.alert.team.view.tree</field>
         <field name="model">quality.alert.team</field>
         <field name="arch" type="xml">
-                 <tree string="Teams">
-                    <field name="sequence" widget="handle"/>
-                    <field name="name"/>
-                </tree>
+            <tree string="Teams">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
         </field>
     </record>
 
@@ -831,6 +834,7 @@
                 <field name="title"/>
                 <field name="product_tmpl_id"/>
                 <field name="picking_type_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

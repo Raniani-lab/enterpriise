@@ -91,6 +91,7 @@
                 <field name="date_close"/>
                 <field name="date_final_interview"/>
                 <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

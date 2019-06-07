@@ -77,24 +77,8 @@ class ForecastRecurrency(models.Model):
                 })
                 value_list.append(new_forecast_values)
                 act_start, act_end = act_start + delta, act_end + delta
-            recurrency.write({'last_generated_end_datetime': act_end})
+            recurrency.write({'last_generated_end_datetime': act_end - delta})
         return self.env['project.forecast'].create(value_list)
-
-    @api.model
-    def _max_repeat_until(self, start_datetime):
-        forecast_generation_span_interval = self.env.company.forecast_generation_span_interval
-        forecast_generation_span_uom = self.env.company.forecast_generation_span_uom
-
-        if 'default_start_date' in self._context:
-            start_datetime = self._context.get('default_start_date')
-        start_datetime = fields.Date.from_string(start_datetime)
-
-        max_end_date = start_datetime + repeat_span_to_relativedelta(
-            forecast_generation_span_interval,
-            forecast_generation_span_uom
-        )
-
-        return fields.Datetime.from_string(max_end_date)
 
     @api.multi
     def _get_repeat_delta(self):
@@ -104,12 +88,17 @@ class ForecastRecurrency(models.Model):
         return deltas
 
     @api.multi
-    def _get_repeat_ends(self, initial_start_dt, repeat_limit_dt=False):
+    def _get_repeat_ends(self, initial_start_dt=False, repeat_limit_dt=False):
         repeat_ends = {}
-        repeat_limit_dt = repeat_limit_dt or self._max_repeat_until(initial_start_dt)
+        repeat_limit_dt = repeat_limit_dt or datetime.max
         for recurrency in self:
-            recurrency_limit_dt = recurrency.repeat_until or repeat_limit_dt
-            repeat_ends[recurrency.id] = min(recurrency_limit_dt, repeat_limit_dt, self._max_repeat_until(initial_start_dt))
+            company_span = repeat_span_to_relativedelta(
+                recurrency.company_id.forecast_generation_span_interval,
+                recurrency.company_id.forecast_generation_span_uom,
+            )
+            limit = fields.Datetime.now() + company_span
+            recurrency_limit = recurrency.repeat_until or datetime.max
+            repeat_ends[recurrency.id] = min(repeat_limit_dt, limit, recurrency_limit)
         return repeat_ends
 
     @api.multi
@@ -143,22 +132,21 @@ class ForecastRecurrency(models.Model):
                 '&',
                 '&',
                 ('company_id', '=', company.id),
-                ('last_generated_end_datetime', '<', datetime.now() - delta),
+                ('last_generated_end_datetime', '<', fields.Datetime.now() + delta),
                 '|',
                 ('repeat_until', '=', False),
-                ('repeat_until', '<', datetime.now() - delta),
+                ('repeat_until', '>', fields.Datetime.now() - delta),
             ])
             repeat_interval_map = recurrencies._get_repeat_delta()
-            repeat_end_map = recurrencies._get_repeat_ends(datetime.now())
+            repeat_end_map = recurrencies._get_repeat_ends()
             for recurrency in recurrencies:
                 last_forecast = recurrency.forecast_ids.sorted(key=lambda x: x.end_datetime)
                 if last_forecast:
-                    last_forecast = last_forecast[0]
+                    last_forecast = last_forecast[-1]
                     repeat_interval = repeat_interval_map.get(recurrency.id)
                     act_start = last_forecast.start_datetime + repeat_interval
                     act_end = last_forecast.end_datetime + repeat_interval
                     values = []
-
                     while(act_end < repeat_end_map.get(recurrency.id)):
                         new_values = last_forecast._get_record_repeatable_fields_as_values()
                         new_values.update({
@@ -171,7 +159,6 @@ class ForecastRecurrency(models.Model):
                         act_start, act_end = act_start + repeat_interval, act_end + repeat_interval
 
                     Forecast.create(values)
-                    recurrency.write({'last_generated_end_datetime': act_end})
+                    recurrency.write({'last_generated_end_datetime': act_end - repeat_interval})
                 else:
                     recurrency.unlink()
-

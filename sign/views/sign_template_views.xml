@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                             <a type="object" name="toggle_favorited" aria-label="Not in favorites, set it" title="Not in favorites, add it"
-                                class="fa fa-lg fa-star-o favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0"/>
+                                class="fa fa-lg fa-star-o favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0" groups="sign.group_sign_manager" />
                             <a type="object" name="toggle_favorited" aria-label="In favorites, remove it" title="In favorites, remove it"
                                 class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) == 0"/>
                             <span><field name="attachment_id"/><field name="extension"/></span>
@@ -104,7 +104,8 @@
                             <field name="responsible_count" invisible="1"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags"/>
                             <field name="redirect_url" widget="url"/>
-                            <field name="favorited_ids" widget="many2many_tags" options="{'color_field': 'color'}" invisible="1"/>
+                            <field name="privacy"/>
+                            <field name="favorited_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </group>
                     <notebook>

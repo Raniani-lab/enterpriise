@@ -23,7 +23,14 @@ class SignTemplate(models.Model):
     responsible_count = fields.Integer(compute='_compute_responsible_count', string="Responsible Count")
 
     active = fields.Boolean(default=True, string="Active", oldname='archived')
-    favorited_ids = fields.Many2many('res.users', string="Favorite of")
+    privacy = fields.Selection([('employee', 'All Users'), ('invite', 'On Invitation')],
+                               string="Privacy", default="invite",
+                               help="Set who can use this template:\n"
+                                    "- All Users: all users of the Sign application can view and use the template\n"
+                                    "- On Invitation: only invited users can view and use the template\n"
+                                    "Invited users can always edit the document template.\n"
+                                    "Existing requests based on this template will not be affected by changes.")
+    favorited_ids = fields.Many2many('res.users', string="Invited Users")
 
     share_link = fields.Char(string="Share Link", copy=False)
 

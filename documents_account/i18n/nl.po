@@ -179,6 +179,8 @@ msgid ""
 "Select the workspace to be used for accounting's documents for the invoices\n"
 "                                    of your company."
 msgstr ""
+"Selecteer de werkplaats die gebruikt moet worden voor de boekhoudkundige documenten voor de facturen\n"
+"van dit bedrijf."
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0

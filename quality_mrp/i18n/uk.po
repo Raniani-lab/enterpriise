@@ -3,9 +3,7 @@
 # * quality_mrp
 # 
 # Translators:
-# Martin Trigaux, 2018
 # Bohdan Lisnenko, 2018
-# ТАрас <tratatuta@i.ua>, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
@@ -34,12 +32,12 @@ msgstr ""
 #. module: quality_mrp
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
 msgid "<span class=\"o_stat_text\">Quality Alert</span>"
-msgstr "<span class=\"o_stat_text\">Якість попередження</span>"
+msgstr "<span class=\"o_stat_text\">Сповіщення якості</span>"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_ids
 msgid "Alerts"
-msgstr "Застереження"
+msgstr "Сповіщення"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__check_ids
@@ -55,18 +53,18 @@ msgstr "Замовлення на виробництво"
 #: model:ir.model.fields,field_description:quality_mrp.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:quality_mrp.field_quality_check__production_id
 msgid "Production Order"
-msgstr "Заявка на виробництво"
+msgstr "Замовлення на виробництво"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
 msgid "Quality Alert"
-msgstr "Якісне сповіщення "
+msgstr "Сповіщення якості"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_count
 msgid "Quality Alert Count"
-msgstr "Якість попередження кількості"
+msgstr "Кількість сповіщення якості"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_check

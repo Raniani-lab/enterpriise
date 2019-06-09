@@ -675,7 +675,7 @@ msgstr "Aanvraag document"
 #: code:addons/documents/models/mail_activity.py:25
 #, python-format
 msgid "Document Request: %s Uploaded by: %s"
-msgstr ""
+msgstr "Document aanvraag: %s Geüpload door: %s"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action

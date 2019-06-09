@@ -108,7 +108,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__name
 msgid "Approval Subject"
-msgstr ""
+msgstr "Onderwerp goedkeuring"
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_approval_menu_all
@@ -161,7 +161,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approver_ids
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Approvers"
-msgstr ""
+msgstr "Goedkeurders"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -638,7 +638,7 @@ msgstr "Aantal berichten met leveringsfout"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__request_to_validate_count
 msgid "Number of requests to validate"
-msgstr ""
+msgstr "Aantal aanvragen om te valideren"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_unread_counter

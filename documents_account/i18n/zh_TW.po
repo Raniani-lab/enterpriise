@@ -6,6 +6,7 @@
 # sejun huang <sejun.huang@gmail.com>, 2019
 # Martin Trigaux, 2019
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
+# Jeanphy <hzh0292@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
+"Last-Translator: Jeanphy <hzh0292@qq.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -103,7 +104,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__folder_id
 msgid "Folder"
-msgstr ""
+msgstr "檔案夾"
 
 #. module: documents_account
 #: model:ir.model.fields,help:documents_account.field_account_reports_export_wizard__folder_id
@@ -145,7 +146,7 @@ msgstr "請在憑單和付款匹配期間創建日記帳分錄"
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
-msgstr ""
+msgstr "产品模板"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_move_line__reconciliation_invoice_id
@@ -177,7 +178,7 @@ msgstr ""
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
-msgstr ""
+msgstr "簽名範本"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
@@ -202,7 +203,7 @@ msgstr "供應商採購折讓單"
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "供應商賬單"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder

@@ -123,7 +123,7 @@ msgid ""
 "Connect Timesheets to Odoo to synchronize your activities across all "
 "devices."
 msgstr ""
-"Підключіть розклад до Odoo, щоб синхронізувати свої дії на всіх пристроях."
+"Підключіть nf,tks до Odoo, щоб синхронізувати свої дії на всіх пристроях."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -185,7 +185,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:42
 #, python-format
 msgid "Get Things Done"
-msgstr "Отримайте виконані речі"
+msgstr "Наведіть лад із процесами"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -206,7 +206,7 @@ msgstr "Магазин Google Play "
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:491
 #, python-format
 msgid "Keep data"
-msgstr "Зберігати дані"
+msgstr "Зберігайте дані"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -245,7 +245,7 @@ msgstr "Логін"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:540
 #, python-format
 msgid "Login to an on premise Odoo instance"
-msgstr "Увійдіть до системи Odoo на прикладі"
+msgstr "Увійдіть до системи Odoo на вашому сервері"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -552,17 +552,17 @@ msgid ""
 "''Synchronization with the external timesheet application'' (available in "
 "Odoo Enterprise Edition)."
 msgstr ""
-"Сервер, до якого ви підключилися, не підтримує синхронізацію розкладу. Ви "
+"Сервер, до якого ви підключилися, не підтримує синхронізацію табеля. Ви "
 "повинні звернутися до свого адміністратора, щоби встановити модуль "
-"''Синхронізація із зовнішньою програмою для розкладу'' (доступна в Odoo "
-"Enterprise Edition)."
+"''Синхронізація із зовнішнім додатком табеля' (доступна у версії Odoo "
+"Enterprise)."
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:24
 #, python-format
 msgid "This Week"
-msgstr "На тижні"
+msgstr "Цього тижня"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -589,7 +589,7 @@ msgstr "Одиниця виміру часу"
 #: model:ir.actions.client,name:project_timesheet_synchro.project_timesheet_synchro_app_action
 #: model:ir.ui.menu,name:project_timesheet_synchro.menu_timesheet_app
 msgid "Timesheet App"
-msgstr "Додаток розкладу"
+msgstr "Додаток табелю"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -735,7 +735,7 @@ msgstr "Було створено вашу базу даних та обліко
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:21
 #, python-format
 msgid "Your personal timesheets"
-msgstr "Ваш персональний розклад"
+msgstr "Ваші персональні табелі"
 
 #. module: project_timesheet_synchro
 #. openerp-web

@@ -299,7 +299,7 @@ msgstr "Producten"
 #: model:ir.model.fields,help:industry_fsm.field_project_task__product_template_ids
 #: model:ir.model.fields,help:industry_fsm.field_project_task_create_sale_order__product_template_ids
 msgid "Products allowed to be added on this Task's Material"
-msgstr ""
+msgstr "Producten die mogen toegevoegd worden aan deze taak zijn materialen"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_project

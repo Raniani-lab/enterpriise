@@ -7,8 +7,8 @@
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # Martin Trigaux, 2019
 # krnkris, 2019
-# gezza <geza.nagy@oregional.hu>, 2019
 # Ákos Nagy <akos.nagy@oregional.hu>, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 14:08+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2019\n"
+"Last-Translator: gezza <geza.nagy@oregional.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_inspector.js:272
 #, python-format
 msgid "+ Add a tag "
-msgstr ""
+msgstr "+ Címke hozzáadása"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -39,12 +39,12 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
 msgid "2018"
-msgstr ""
+msgstr "2018"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
 msgid "2019"
-msgstr ""
+msgstr "2019"
 
 #. module: documents
 #. openerp-web
@@ -59,7 +59,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Bytes</b>"
-msgstr ""
+msgstr "<b>Byte</b>"
 
 #. module: documents
 #. openerp-web
@@ -71,17 +71,17 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Gb</b>"
-msgstr ""
+msgstr "<b>Gb</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Kb</b>"
-msgstr ""
+msgstr "<b>Kb</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Mb</b>"
-msgstr ""
+msgstr "<b>Mb</b>"
 
 #. module: documents
 #. openerp-web
@@ -103,16 +103,18 @@ msgid ""
 "<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
 "aria-label=\"Loading\" title=\"Loading\"/>"
 msgstr ""
+"<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
+"aria-label=\"Loading\" title=\"Loading\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
-msgstr ""
+msgstr "<i class=\"fa fa-download fa-fw\"/>  Összes letöltése"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download fa-fw\"/> Download"
-msgstr ""
+msgstr "<i class=\"fa fa-download fa-fw\"/> Letöltés"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -120,16 +122,18 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> E-mail szerverek "
+"konfigurálása"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-link\"/> Go to URL"
-msgstr ""
+msgstr "<i class=\"fa fa-link\"/> Webcím felkeresése"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-upload\"/>  Upload"
-msgstr ""
+msgstr "<i class=\"fa fa-upload\"/>  Feltöltés"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -257,7 +261,7 @@ msgstr "Tevékenység típus"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_type_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_type_id
 msgid "Activity type"
-msgstr ""
+msgstr "Tevékenységtípus"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
@@ -270,17 +274,17 @@ msgstr "Hozzáadás"
 #: code:addons/documents/static/src/xml/documents_kanban.xml:8
 #, python-format
 msgid "Add URL"
-msgstr ""
+msgstr "Webcím hozzáadása"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
 msgid "Add Url"
-msgstr ""
+msgstr "Webcím hozzáadása"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_ads
 msgid "Ads"
-msgstr ""
+msgstr "Hirdetések"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
@@ -310,7 +314,7 @@ msgstr "Álnevesített modell"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "All locked files"
-msgstr ""
+msgstr "Összes zárolt fájl"
 
 #. module: documents
 #. openerp-web
@@ -322,12 +326,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
 msgid "Allows to"
-msgstr ""
+msgstr "Lehetővé teszi"
 
 #. module: documents
 #: model:ir.module.category,description:documents.module_category_documents_management
 msgid "Allows you to manage your documents."
-msgstr ""
+msgstr "Lehetővé teszi a dokumentumok kezelését."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_appraisal
@@ -394,12 +398,12 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_kanban_view.js:29
 #, python-format
 msgid "Attachments Kanban"
-msgstr ""
+msgstr "Kanban mellékletek"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
 msgid "Available Rules"
-msgstr ""
+msgstr "Elérhető szabályok"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_bill
@@ -419,7 +423,7 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
 msgid "Brochures"
-msgstr ""
+msgstr "Brosúrák"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_mail_activity_type__folder_id
@@ -847,7 +851,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__favorited_ids
 msgid "Favorite of"
-msgstr ""
+msgstr "Kedvencnek jelölte: "
 
 #. module: documents
 #: selection:documents.document,type:0

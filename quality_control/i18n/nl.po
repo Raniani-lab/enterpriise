@@ -85,6 +85,8 @@ msgid ""
 "<span class=\"o_stat_text\">Pass:</span>\n"
 "                        <span class=\"o_stat_text\">Fail:</span>"
 msgstr ""
+"<span class=\"o_stat_text\">Geslaagd:</span>\n"
+"                        <span class=\"o_stat_text\">Mislukt:</span>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -624,7 +626,7 @@ msgstr "Kwaliteit controlepunt"
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_control_point_qty
 #: model:ir.model.fields,field_description:quality_control.field_product_template__quality_control_point_qty
 msgid "Quality Control Point Qty"
-msgstr ""
+msgstr "Kwaliteit controlepunt hvh"
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_point_action

@@ -106,14 +106,14 @@ msgid ""
 " project."
 msgstr ""
 "Цей звіт виконує аналіз на вашому табелі і прогнозі. Це дозволяє мати "
-"глобальний перегляд на попередній прогноз і те, що дійсно було зроблено. "
+"загальний огляд попереднього прогнозу і те, що дійсно було зроблено. "
 "Порівняння старої оцінки та ефективної роботи допоможе вам краще спланувати "
 "свій майбутній проект."
 
 #. module: project_timesheet_forecast
 #: selection:project.timesheet.forecast.report.analysis,line_type:0
 msgid "Timesheet"
-msgstr "Табель часу"
+msgstr "Табель"
 
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis

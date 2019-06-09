@@ -234,7 +234,7 @@ msgstr "Vaste prijs"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
 msgid "Generate return label"
-msgstr ""
+msgstr "Genereer retourlabel"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -481,7 +481,7 @@ msgstr "De laatste stap is de"
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
 msgid "The return label is automatically generated at the delivery"
-msgstr ""
+msgstr "Het retourlabel is automatisch gegenereerd bij de levering"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex

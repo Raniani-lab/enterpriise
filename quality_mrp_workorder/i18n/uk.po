@@ -61,7 +61,7 @@ msgstr "Міра:"
 #. module: quality_mrp_workorder
 #: model:ir.model.fields,field_description:quality_mrp_workorder.field_mrp_workorder__norm_unit
 msgid "Norm Unit"
-msgstr "Стандартний блок"
+msgstr "Стандартна одиниця"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
@@ -107,4 +107,4 @@ msgstr "Підтвердити"
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr "Наряд"
+msgstr "Робоче замовлення"

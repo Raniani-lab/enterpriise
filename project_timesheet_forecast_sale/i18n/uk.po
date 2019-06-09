@@ -80,6 +80,10 @@ msgid ""
 "Mapping' of the project, the timesheet entry will be linked to this sales "
 "order item."
 msgstr ""
+"Елемент замовлення на продаж, з яким пов'язано завдання. Якщо табелі "
+"працівника на цьому завданні, і якщо цей працівник не знаходиться в розділі "
+"\"Співробітник/Елемент замовлення на продаж\" проекту, запис табеля буде "
+"пов'язаний з цим елементом замовлення на продаж."
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_task

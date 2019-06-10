@@ -14,10 +14,10 @@
                     <!-- Title -->
                     <h2 t-esc="line['product'].name"/>
                     <strong><t t-esc="line['mo_qty']"/> <t t-esc="line['mo_uom'].name"/>, from <t t-esc="line['mocount']"/> manufacturing order(s).</strong>
-                    <t t-if="line['sub_product_moves']">
+                    <t t-if="line['byproduct_moves']">
                         <h3>By product(s)</h3>
                     </t>
-                    <div t-foreach="line['sub_product_moves']" t-as="sub">
+                    <div t-foreach="line['byproduct_moves']" t-as="sub">
                         <t t-esc="sub.product_id.name"/>
                         <t t-esc="sub.product_uom_qty"/> <t t-esc="sub.product_uom.name"/>
                     </div>

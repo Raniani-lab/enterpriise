@@ -574,13 +574,20 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def do_finish(self):
         self.record_production()
-        action = self.env.ref('mrp_workorder.mrp_workorder_action_tablet').read()[0]
-        action['domain'] = [('state', 'not in', ['done', 'cancel', 'pending']), ('workcenter_id', '=', self.workcenter_id.id)]
-        action['context'] = {
-            'form_view_initial_mode': 'edit',
-            'no_breadcrumbs': True,
-            'search_default_workcenter_id': self.workcenter_id.id,
-        }
+        # workorder tree view action should redirect to the same view instead of workorder kanban view when WO mark as done.
+        if self.env.context.get('active_model') == self._name:
+            action = self.env.ref('mrp.action_mrp_workorder_production_specific').read()[0]
+            action['context'] = {'search_default_production_id': self.production_id.id}
+            action['target'] = 'main'
+        else:
+            # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
+            action = self.env.ref('mrp_workorder.mrp_workorder_action_tablet').read()[0]
+            action['context'] = {
+                'form_view_initial_mode': 'edit',
+                'no_breadcrumbs': True,
+                'search_default_workcenter_id': self.workcenter_id.id
+            }
+        action['domain'] = [('state', 'not in', ['done', 'cancel', 'pending'])]
         return action
 
     def on_barcode_scanned(self, barcode):

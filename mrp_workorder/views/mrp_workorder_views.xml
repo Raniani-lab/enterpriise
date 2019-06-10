@@ -293,6 +293,7 @@
         <xpath expr="//script[last()]" position="after">
             <script type="text/javascript" src="/mrp_workorder/static/tests/pdf_viewer_widget_tests.js"/>
             <script type="text/javascript" src="/mrp_workorder/static/tests/embed_viewer_widget_tests.js"/>
+            <script type="text/javascript" src="/mrp_workorder/static/tests/work_order_navigation_test.js"/>
         </xpath>
     </template>
 

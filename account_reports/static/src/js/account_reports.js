@@ -5,12 +5,12 @@ var core = require('web.core');
 var Context = require('web.Context');
 var AbstractAction = require('web.AbstractAction');
 var Dialog = require('web.Dialog');
-var crash_manager = require('web.crash_manager');
 var datepicker = require('web.datepicker');
 var session = require('web.session');
 var field_utils = require('web.field_utils');
 var RelationalFields = require('web.relational_fields');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
+var WarningDialog = require('web.CrashManager').WarningDialog;
 var Widget = require('web.Widget');
 
 var QWeb = core.qweb;
@@ -362,7 +362,11 @@ var accountReportsWidget = AbstractAction.extend({
                 }
             }
             if (error) {
-                crash_manager.show_warning({data: {message: _t('Date cannot be empty')}});
+                new WarningDialog(self, {
+                    title: _t("Odoo Warning"),
+                }, {
+                    message: _t("Date cannot be empty")
+                }).open();
             } else {
                 self.reload();
             }
@@ -403,7 +407,7 @@ var accountReportsWidget = AbstractAction.extend({
             self.report_options[$(this).data('filter')] = $(this).data('id');
             self.reload();
         });
-        this.$searchview_buttons.find('.js_account_report_date_cmp_filter').click(function (event){
+        this.$searchview_buttons.find('.js_account_report_date_cmp_filter').click(function (event) {
             self.report_options.comparison.filter = $(this).data('filter');
             var error = false;
             var number_period = $(this).parent().find('input[name="periods_number"]');
@@ -411,7 +415,7 @@ var accountReportsWidget = AbstractAction.extend({
             if ($(this).data('filter') === 'custom') {
                 var date_from = self.$searchview_buttons.find('.o_datepicker_input[name="date_from_cmp"]');
                 var date_to = self.$searchview_buttons.find('.o_datepicker_input[name="date_to_cmp"]');
-                if (date_from.length > 0){
+                if (date_from.length > 0) {
                     error = date_from.val() === "" || date_to.val() === "";
                     self.report_options.comparison.date_from = field_utils.parse.date(date_from.val());
                     self.report_options.comparison.date_to = field_utils.parse.date(date_to.val());
@@ -422,7 +426,11 @@ var accountReportsWidget = AbstractAction.extend({
                 }
             }
             if (error) {
-                crash_manager.show_warning({data: {message: _t('Date cannot be empty')}});
+                new WarningDialog(self, {
+                    title: _t("Odoo Warning"),
+                }, {
+                    message: _t("Date cannot be empty")
+                }).open();
             } else {
                 self.reload();
             }

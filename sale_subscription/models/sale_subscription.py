@@ -860,14 +860,12 @@ class SaleSubscriptionLine(models.Model):
     _name = "sale.subscription.line"
     _description = "Subscription Line"
 
-    def _get_default_uom_id(self):
-        return self.env['uom.uom'].search([], limit=1, order='id').id
-
     product_id = fields.Many2one('product.product', string='Product', domain="[('recurring_invoice','=',True)]", required=True)
     analytic_account_id = fields.Many2one('sale.subscription', string='Subscription')
     name = fields.Text(string='Description', required=True)
     quantity = fields.Float(string='Quantity', help="Quantity that will be invoiced.", default=1.0)
-    uom_id = fields.Many2one('uom.uom', default=_get_default_uom_id, string='Unit of Measure', required=True)
+    uom_id = fields.Many2one('uom.uom', string='Unit of Measure', required=True, domain="[('category_id', '=', product_uom_category_id)]")
+    product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True)
     price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price')
     discount = fields.Float(string='Discount (%)', digits='Discount')
     price_subtotal = fields.Float(compute='_compute_price_subtotal', string='Subtotal', digits='Account', store=True)
@@ -892,14 +890,12 @@ class SaleSubscriptionLine(models.Model):
 
     @api.onchange('product_id', 'quantity')
     def onchange_product_quantity(self):
-        domain = {}
         subscription = self.analytic_account_id
         company_id = subscription.company_id.id
         pricelist_id = subscription.pricelist_id.id
         context = dict(self.env.context, company_id=company_id, force_company=company_id, pricelist=pricelist_id, quantity=self.quantity)
         if not self.product_id:
             self.price_unit = 0.0
-            domain['uom_id'] = []
         else:
             partner = subscription.partner_id.with_context(context)
             if partner.lang:
@@ -908,19 +904,15 @@ class SaleSubscriptionLine(models.Model):
             product = self.product_id.with_context(context)
             self.price_unit = product.price
 
-            if not self.uom_id:
+            if not self.uom_id or product.uom_id.category_id.id != self.uom_id.category_id.id:
                 self.uom_id = product.uom_id.id
             if self.uom_id.id != product.uom_id.id:
                 self.price_unit = product.uom_id._compute_price(self.price_unit, self.uom_id)
-            domain['uom_id'] = [('category_id', '=', product.uom_id.category_id.id)]
-
-        return {'domain': domain}
 
     @api.onchange('uom_id')
     def onchange_uom_id(self):
         if not self.uom_id:
             self.price_unit = 0.0
-            return {'domain': {'uom_id': [('category_id', '=', self.product_id.uom_id.category_id.id)]}}
         else:
             return self.onchange_product_quantity()  # don't forward port
 

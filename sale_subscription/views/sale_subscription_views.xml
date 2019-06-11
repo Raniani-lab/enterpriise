@@ -245,6 +245,7 @@
                                             <field name="product_id" domain="[('recurring_invoice', '=', True)]" context="{'default_recurring_invoice': True}"/>
                                             <field name="name" optional="show"/>
                                             <field name="quantity"/>
+                                            <field name="product_uom_category_id" invisible="1"/>
                                             <field name="uom_id" string="UoM" groups="uom.group_uom" optional="show"/>
                                             <field name="price_unit"/>
                                             <field name="discount" string="Disc.%" groups="sale.group_discount_per_so_line" optional="show"/>
@@ -256,6 +257,7 @@
                                                     <field name="product_id" domain="[('recurring_invoice', '=', True)]" context="{'default_recurring_invoice': True}"/>
                                                     <field name="name"/>
                                                     <label for="quantity"/>
+                                                    <field name="product_uom_category_id" invisible="1"/>
                                                     <div class="o_row">
                                                         <field name="quantity"/>
                                                         <field name="uom_id"/>

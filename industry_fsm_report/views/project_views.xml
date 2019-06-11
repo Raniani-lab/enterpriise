@@ -1,20 +1,20 @@
 <odoo>
 
-    <record id="project_report_template_view_form" model="ir.ui.view">
-        <field name="name">project.report.template.view.form</field>
-        <field name="model">project.report.template</field>
+    <record id="project_worksheet_template_view_form" model="ir.ui.view">
+        <field name="name">project.worksheet.template.view.form</field>
+        <field name="model">project.worksheet.template</field>
         <field name="arch" type="xml">
             <form>
                 <header>
                     <field name="model_id" invisible="True"/>
-                    <widget name="open_studio_button" attrs="{'invisible': [('model_id', '=', False)]}" />
+                    <widget name="open_studio_button" attrs="{'invisible': [('model_id', '=', False)]}" groups="base.group_system"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_reports" type="object" class="oe_stat_button" icon="fa-archive">
+                        <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-archive">
                             <div class="o_field_widget o_stat_info">
-                                <span class="o_stat_value"><field name="report_count"/></span>
-                                <span class="o_stat_text"> Report(s)</span>
+                                <span class="o_stat_value"><field name="worksheet_count"/></span>
+                                <span class="o_stat_text"> Worksheet(s)</span>
                             </div>
                         </button>
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" >
@@ -34,25 +34,25 @@
         </field>
     </record>
 
-    <record id="project_report_template_view_list" model="ir.ui.view">
-        <field name="name">project.report.template.view.form</field>
-        <field name="model">project.report.template</field>
+    <record id="project_worksheet_template_view_list" model="ir.ui.view">
+        <field name="name">project.worksheet.template.view.form</field>
+        <field name="model">project.worksheet.template</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name" string="Template name"/>
-                <field name="report_count" string="Reports"/>
+                <field name="worksheet_count" string="Worksheets"/>
             </tree>
         </field>
     </record>
 
-    <record id="action_fsm_reports" model="ir.actions.act_window">
-        <field name="name">Report Templates</field>
-        <field name="res_model">project.report.template</field>
+    <record id="action_fsm_worksheets" model="ir.actions.act_window">
+        <field name="name">Worksheet Templates</field>
+        <field name="res_model">project.worksheet.template</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,graph,pivot</field>
     </record>
 
-    <menuitem id="project_report_template_menu" name="Report template" action="action_fsm_reports"
+    <menuitem id="project_worksheet_template_menu" name="Worksheet templates" action="action_fsm_worksheets"
         sequence="10" parent="project.menu_project_config"
         groups="project.group_project_user"/>
 
@@ -62,8 +62,8 @@
         <field name="inherit_id" ref="industry_fsm.project_view_form_simplified_inherit"/>
         <field name="arch" type="xml">
             <field name="allow_planning" position="after">
-                <field name="allow_reports"/>
-                <field name="report_template_id"  attrs="{'invisible': [('allow_reports', '=', False)]}"/>
+                <field name="allow_worksheets"/>
+                <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </field>
         </field>
     </record>
@@ -74,8 +74,8 @@
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='extra_settings']" position="inside">
-                <field name="allow_reports"/>
-                <field name="report_template_id"  attrs="{'invisible': [('allow_reports', '=', False)]}"/>
+                <field name="allow_worksheets"/>
+                <field name="worksheet_template_id"  attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </xpath>
         </field>
     </record>
@@ -85,47 +85,54 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_material']" position="before">
-                <field name="allow_reports" invisible="True" />
-                <field name="report_count" invisible="True" />
-                <button class="oe_stat_button" name="create_or_view_report"
-                    type="object" groups="project.group_project_user" help="Report from this task"
-                    attrs="{'invisible': ['|', ('allow_reports', '=', False), ('report_template_id', '=', False)]}">
-                    <div class="row">
-                        <div class="col-4 align-self-center ml-3" style="font-size:2rem;">
-                            <i class="fa fa-check text-success" aria-label="Edit" title="Edit report" attrs="{'invisible': [('report_count', '=', 0)]}" />
-                            <i class="fa fa-circle text-danger" aria-label="Create" title="Create report" attrs="{'invisible': [('report_count', '!=', 0)]}" />
-                        </div>
-                        <span class="o_stat_info align-self-center">Report</span>
-                    </div>
+            <xpath expr="//button[@name='action_fsm_view_material']" position="before">
+                <field name="allow_worksheets" invisible="1"/>
+                <field name="worksheet_count" invisible="1"/>
+                <button class="oe_stat_button" name="action_fsm_worksheet"  icon="fa-pencil" type="object" groups="project.group_project_user" help="Worksheet from this task" attrs="{'invisible': ['|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False)]}">
+                    Worksheet
                 </button>
             </xpath>
             <field name="sale_line_id" position="after">
-                <field name="report_template_id" attrs="{'invisible': [('allow_reports', '=', False)]}"/>
+                <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </field>
         </field>
     </record>
 
-    <record id="project_task_view_form_fsm_inherit" model="ir.ui.view">
+    <record id="project_task_view_form_inherit" model="ir.ui.view">
         <field name="name">task.form.inherit</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="industry_fsm.project_task_view_form_fsm"/>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_material']" position="before">
-                <field name="allow_reports" invisible="True" />
-                <field name="report_count" invisible="True" />
-                <field name="report_template_id" invisible="True"/>
-                <button class="oe_stat_button" name="create_or_view_report"
-                    type="object" groups="project.group_project_user" help="Report from this task"
-                    attrs="{'invisible': ['|', ('allow_reports', '=', False), ('report_template_id', '=', False)]}">
-                    <div class="row">
-                        <div class="col-4 align-self-center ml-3" style="font-size:2rem;">
-                            <i class="fa fa-check text-success" aria-label="Edit" title="Edit report" attrs="{'invisible': [('report_count', '=', 0)]}" />
-                            <i class="fa fa-circle text-danger" aria-label="Create" title="Create report" attrs="{'invisible': [('report_count', '!=', 0)]}" />
-                        </div>
-                        <span class="o_stat_info align-self-center">Report</span>
-                    </div>
+            <xpath expr="//button[@name='action_fsm_validate']" position="before">
+                <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '=', 'draft'), ('worksheet_template_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', True)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='timesheet_timer_start']" position="before">
+                <field name="fsm_is_sent" invisible="1"/>
+                <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '=', 'draft'), ('worksheet_template_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_view_material']" position="before">
+                <field name="allow_worksheets" invisible="1"/>
+                <field name="worksheet_count" invisible="1"/>
+                <field name="worksheet_template_id" invisible="1"/>
+                <button class="oe_stat_button" name="action_fsm_worksheet"
+                    type="object" groups="project.group_project_user" help="Worksheet from this task"
+                    attrs="{'invisible': [('worksheet_template_id', '=', False)]}">
+                    Worksheet
                 </button>
+            </xpath>
+            <field name="project_id" position="after">
+                <label class="oe_edit_only" for="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
+                <field class="oe_edit_only" name="worksheet_template_id" nolabel="1" attrs="{'invisible': [('allow_worksheets', '=', False)]}" options="{'no_create': True, 'no_edit': True}"/>
+            </field>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="context">{
+                    'default_allow_planning': True,
+                    'default_allow_billable': True,
+                    'default_allow_worksheets': True
+                    }
+                </attribute>
             </xpath>
         </field>
     </record>

@@ -12,7 +12,7 @@
                         <field name="partner_id"/>
                     </group>
                     <group>
-                        <field name="product_id" options="{'no_create_edit': True, 'no_create': True}" attrs="{'required': True}"/>
+                        <field name="product_id" context="{'default_type': 'service', 'default_service_policy': 'delivered_timesheet'}"/>
                         <field name="price_unit" widget='monetary' options="{'currency_field': 'currency_id', 'field_digits': True}" attrs="{'required': True}"/>
                         <field name="currency_id" invisible="1"/>
                     </group>

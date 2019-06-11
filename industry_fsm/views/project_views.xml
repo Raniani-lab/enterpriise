@@ -1,4 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="project_enterprise.project_task_action_planning_groupby_user" model="ir.actions.act_window">
+        <field name="context" eval="{'search_default_group_by_user_id': 1, 'fsm_mode': True}"/>
+    </record>
 
     <!-- allow billable and default product on new project form -->
     <record id="project_view_form_simplified_inherit" model="ir.ui.view">
@@ -8,7 +13,7 @@
         <field name="arch" type="xml">
             <field name="allow_planning" position="after">
                 <field name="allow_billable"/>
-                <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
+                <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)], 'required': [('allow_billable', '=', True)]}"/>
             </field>
         </field>
     </record>
@@ -39,7 +44,7 @@
                 </attribute>
             </xpath>
             <xpath expr="//button[@name='toggle_active']" position="before">
-                <button class="oe_stat_button" name="action_view_material"
+                <button class="oe_stat_button" name="action_fsm_view_material"
                     type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', '|', ('allow_billable', '=', False), ('billable_type', '!=', 'no'), ('sale_order_id', '!=', False)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
@@ -49,17 +54,9 @@
                         <field name="currency_id" invisible="True"/>
                     </div>
                 </button>
-                <button class="oe_stat_button" name="create_or_view_created_quotations"
-                    type="object" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
-                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
-                        <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
-                        New Quotation
-                    </div>
-                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '=', 0)]}">
-                        <i class="fa fa-lg fa-pencil-square-o mr-2" aria-label="View quotations" title="View quotations"/>
-                        <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
-                    </div>
-                </button>
+            </xpath>
+            <xpath expr="//field[@name='planned_date_begin']" position="before">
+                <button class="btn btn-secondary pl-0 pr-0" type="action" name="%(project_enterprise.project_task_action_planning_groupby_user)d" context="{'default_project_id': project_id, 'search_default_user': 1}" attrs="{'invisible': ['|', ('allow_planning', '=', False), '&amp;', ('planned_date_begin', '!=', False), ('planned_date_end', '!=', False)]}">Plan this task</button>
             </xpath>
             <xpath expr="//page[@name='extra_info']" position="attributes">
                 <attribute name="groups">base.group_no_one</attribute>
@@ -74,7 +71,6 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='extra_settings']" position="inside">
-                <field name="allow_planning"/>
                 <field name="allow_billable"/>
                 <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
                 <field name="product_template_ids" widget="many2many_tags" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
@@ -122,37 +118,56 @@
                 <attribute name="invisible">context.get('default_task_id')</attribute>
             </xpath>
             <xpath expr="//field[@name='date']" position="attributes">
-                <attribute name="invisible">context.get('from_field_service')</attribute>
+                <attribute name="invisible">context.get('fsm_mode')</attribute>
             </xpath>
         </field>
     </record>
 
     <!-- fsm task form view -->
-    <record id="project_task_view_form_fsm" model="ir.ui.view">
+    <record id="project_task_view_form" model="ir.ui.view">
         <field name="name">project.task.view.form.fsm</field>
         <field name="model">project.task</field>
-        <field name="priority">100</field>
         <field name="arch" type="xml">
             <form>
-                <div style="background-color: white; border-bottom: 1px solid lightgrey">
-                    <field name="use_timesheet_timer" invisible="True"/>
-                    <field name="allow_timesheets" invisible="True"/>
-                    <field name="allow_billable" invisible="True"/>
-                    <field name="timesheet_ids" invisible="True"/>
-                    <field name="fsm_is_done" invisible="True"/>
-                    <field name="analytic_account_active" invisible="True"/>
+                <header>
+                    <field name="display_timesheet_timer" invisible="1"/>
+                    <field name="allow_billable" invisible="1"/>
+                    <field name="allow_timesheets" invisible="1"/>
+                    <field name="fsm_state" invisible="1"/>
+                    <field name="timesheet_timer_pause" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+
+                    <button class="btn-primary" name="action_fsm_validate" type="object" string="Validate"
+                        attrs="{'invisible': ['|', ('allow_timesheets', '=', False), '|', '|', ('timesheet_ids', '=', []), ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft')]}"/>
+                    <button class="btn-primary" name="action_fsm_validate" type="object" string="Validate"
+                        attrs="{'invisible': ['|', ('allow_timesheets', '=', True), ('fsm_state', '!=', 'draft')]}"/>
+
                     <button class="btn-primary" name="action_timer_start" type="object" string="Start"
-                        attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}" style="margin-left: 16px;"/>
-                    <button class="btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
-                        attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}" style="margin-left: 16px;"/>
-                    <button class="btn-primary" name="action_set_done" type="object" string="Done"
-                        attrs="{'invisible': [('fsm_is_done', '=', True)]}" style="margin-left: 16px;"/>
+                        attrs="{'invisible': ['|', '|', '|', ('timesheet_ids', '!=', []), ('fsm_state', '!=', 'draft'), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"/>
+                    <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
+                        attrs="{'invisible': ['|', '|', '|', ('timesheet_ids', '=', []), ('fsm_state', '!=', 'draft'), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"/>
+                    <button class="btn-primary btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
+                        attrs="{'invisible': ['|', ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
+                    <button class="btn-primary" name="action_timer_pause" type="object" string="Pause"
+                        attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '!=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
+                    <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume"
+                        attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
+
+                    <button class="btn-secondary" name="action_fsm_validate" type="object" string="Validate"
+                        attrs="{'invisible': ['|', ('allow_timesheets', '=', False), '|', '|', ('timesheet_ids', '!=', []), ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft')]}"/>
+
+                    <field name="invoice_count" invisible="1"/>
+                    <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
+                        attrs="{'invisible': ['|', ('allow_billable', '=', False), '|', ('fsm_state', '=', 'draft'), ('invoice_count', '!=', 0)]}" groups="sales_team.group_sale_salesman"/>
+                    <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
+                        attrs="{'invisible': ['|', ('allow_billable', '=', False), '|', ('fsm_state', '=', 'draft'), ('invoice_count', '=', 0)]}" groups="sales_team.group_sale_salesman"/>
+
                     <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 mt-2 font-weight-bold"/>
-                </div>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_view_material"
-                            type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', '|', ('fsm_is_done', '=', True), ('allow_billable', '=', False), ('sale_order_id', '!=', False)]}">
+                        <button class="oe_stat_button" name="action_fsm_view_material"
+                            type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': [('allow_billable', '=', False)]}">
                             <div class="o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>
@@ -161,19 +176,7 @@
                                 <field name="currency_id" invisible="True"/>
                             </div>
                         </button>
-                        <button class="oe_stat_button" name="create_or_view_created_quotations"
-                            type="object" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
-                            <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
-                                <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
-                                New Quotation
-                            </div>
-                            <div class="ml-3" attrs="{'invisible': [('quotation_count', '=', 0)]}">
-                                <i class="fa fa-lg fa-pencil-square-o mr-2" aria-label="View quotations" title="View quotations" role="img"/>
-                                <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
-                            </div>
-                        </button>
-                        <button class="oe_stat_button" name="action_view_timesheets"
-                            type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': [('timesheet_ids', '=', [])]}">
+                        <button class="oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': [('allow_timesheets', '=', False)]}">
                             <div class="o_stat_info">
                                 <div>Time</div>
                                 <span class="o_stat_value">
@@ -181,32 +184,36 @@
                                 </span>
                             </div>
                         </button>
-                        <button type="object" name="action_view_so" class="oe_stat_button" icon="fa-dollar" attrs="{'invisible': [('sale_order_id', '=', False)]}" string="Sales Order"/>
-                        <field name="sale_order_id" invisible="1"/>
+                        <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                        </button>
                     </div>
                     <group>
                         <group>
                             <label for="name" class="oe_edit_only"/>
                             <field name="name" nolabel="1" class="oe_edit_only"/>
-                            <field name="partner_id"
+                            <field name="partner_id" required="1"
                                 context="{'search_default_customer':1, 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
                                 options='{"always_reload": True, "no_quick_create": True}'
                                 widget="res_partner_many2one"/>
                             <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>
-                            <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_mobile', '=', False)]}"/>
+                            <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_mobile', '=', False)]}" class="oe_edit_only"/>
                             <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_email', '=', False)]}"/>
+                            <field name="stage_id" invisible="1"/>
                         </group>
                         <group>
                             <label for="project_id" class="oe_edit_only"/>
-                            <field name="project_id" domain="[('allow_planning', '=', True)]" required="True" nolabel="1" class="oe_edit_only"/>
+                            <field name="project_id" domain="[('allow_planning', '=', True)]" required="True" nolabel="1" class="oe_edit_only" options="{'no_create': True, 'no_edit': True}"/>
                             <label for="planned_date_begin" string="Date"/>
                             <div class="o_row">
                                 <field name="planned_date_begin"/>
                                 <span attrs="{'invisible': [('planned_date_end', '=', False)]}"> to </span>
                                 <field name="planned_date_end"/>
                             </div>
+                            <field name="user_id" options="{'no_open': True}"/>
                         </group>
                         <field name="description" colspan="2"/>
+                        <field name="timesheet_ids" invisible="1"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -218,6 +225,52 @@
         </field>
     </record>
 
+    <!-- Quotation button in Project task form -->
+    <record id="project_task_view_form_quotation" model="ir.ui.view">
+        <field name="name">view.form.fsm.inherit.quotation</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="allow_billable" invisible="1"/>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_view_material']" position="after">
+                <button name="action_fsm_view_quotations"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-pencil-square-o"
+                    attrs="{'invisible': ['|', ('allow_billable', '=', False), ('quotation_count', '=', 0)]}">
+                    <field string="Quotation(s)" name="quotation_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+    </record>
+
+    <!-- Quotation and sales order button in Fsm task form -->
+    <record id="project_task_view_form_fsm_quotation" model="ir.ui.view">
+        <field name="name">view.form.fsm.inherit.quotation</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_task_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='timesheet_timer_start']" position="after">
+                <field name="allow_billable" invisible="1"/>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_view_material']" position="after">
+                <button name="action_fsm_view_quotations"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa fa-pencil-square-o"
+                    attrs="{'invisible': ['|', ('allow_billable', '=', False), ('quotation_count', '=', 0)]}">
+                    <field string="Quotation(s)" name="quotation_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+    </record>
+
     <!-- Improve the task kanban in Project -->
     <record id="view_task_kanban_inherit" model="ir.ui.view">
         <field name="name">view.task.kanban.inherit</field>
@@ -226,6 +279,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">
                 <field name="timesheet_timer_start" invisible="True" />
+                <field name="timesheet_timer_pause" invisible="True" />
                 <field name="planned_date_begin" invisible="True"/>
                 <field name="planned_date_end" invisible="True"/>
                 <t t-if="record.planned_date_begin.raw_value and record.planned_date_end.raw_value">
@@ -234,25 +288,38 @@
                     <div t-else="" role="status" t-attf-class="#{moment().startOf('day').isAfter(moment(record.planned_date_begin.raw_value.toISOString())) ? 'alert-danger' : ''}"
                         t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format('ll')"/>
                 </t>
-                <t t-if="record.timesheet_timer_start.raw_value">
-                    <i class="fa fa-play" style="color: green; font-size: 20px;"></i>
+                <t t-if="record.timesheet_timer_pause.raw_value">
+                    <i class="fa fa-pause text-warning"></i>
+                </t>
+                <t t-elif="record.timesheet_timer_start.raw_value">
+                    <i class="fa fa-play text-success"></i>
                 </t>
             </xpath>
         </field>
     </record>
 
-    <record id="project_task_view_search" model="ir.ui.view">
-        <field name="name">project.task.view.search</field>
+    <record id="project_task_view_search_fsm" model="ir.ui.view">
+        <field name="name">project.task.view.search.fsm</field>
         <field name="model">project.task</field>
         <field name="arch" type="xml">
             <search string="Search planning">
-                <filter string="My Tasks" name="my_tasks"
-                    domain="[('user_id', '=', uid)]"/>
+                <field name="name" string="Tasks"/>
+                <field name="partner_id" operator="child_of"/>
+                <field name="user_id"/>
+                <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
+                <separator />
+                <filter string="To Do" name="todo" domain="[('fsm_state', '=', 'draft')]"/>
                 <separator />
                 <filter name="planned_today" string="Planned for Today" domain="[
                     ('planned_date_begin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
                     ('planned_date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
-                <filter name="planned_future" string="Future" domain="[('planned_date_begin', '>=', datetime.datetime.today().strftime('%Y-%m-%d'))]"/>
+                <filter name="planned_future" string="Future" domain="[('planned_date_begin', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Start Date" name="groupby_planned_date_begin" context="{'group_by': 'planned_date_begin'}"/>
+                    <filter string="Responsible" name="groupby_user" context="{'group_by':'user_id'}"/>
+                    <filter string="Stage" name="groupby_stage" context="{'group_by':'stage_id'}"/>
+                    <filter string="Company" name="groupby_company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                </group>
             </search>
         </field>
     </record>
@@ -263,29 +330,44 @@
         <field name="model">project.task</field>
         <field name="priority">100</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="planned_date_begin:day" default_order="planned_date_begin">
+            <kanban default_group_by="planned_date_begin:day" default_order="planned_date_begin" class="o_fsm_kanban">
                 <field name="user_id"/>
                 <field name="planned_date_begin"/>
+                <field name="planned_date_begin"/>
                 <field name="partner_id" widget="res_partner_many2one"/>
-                <field name="activity_state"/>
+                <field name="partner_city"/>
+                <field name="partner_zip"/>
+                <field name="fsm_state"/>
+                <field name="timesheet_timer_start"/>
+                <field name="display_timesheet_timer"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                            <div class="oe_kanban_content row">
-                                <div class="col">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div t-if="record.fsm_state.raw_value != 'draft'" class="float_right">
+                                        <i class="fa fa-check text-success"/>
+                                    </div>
                                     <strong><field name="name" string="Task name"/></strong>
                                     <div>
                                         <field name="partner_id"/>
                                     </div>
-                                    <div class="o_kanban_record_bottom">
-                                        <div class="oe_kanban_bottom_left">
-                                            <strong><t t-if="record.planned_date_begin.raw_value" t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format('HH:mm')"/></strong>
-                                            <field name="activity_ids" widget="kanban_activity"/>
-                                        </div>
-                                        <div class="oe_kanban_bottom_right">
-                                            <div class="badge badge-primary" t-if="widget.getParent().getParent().columnOptions and widget.getParent().getParent().columnOptions.groupedBy != 'stage_id'">
-                                                <field name="stage_id"/>
-                                            </div>
+                                    <div>
+                                        <t t-if="record.partner_city.raw_value">
+                                            <t t-esc="record.partner_city.raw_value"/> - <t t-esc="record.partner_zip.raw_value"/>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <strong><t t-if="record.planned_date_begin.raw_value" t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format('HH:mm')"/></strong>
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <div t-if="record.display_timesheet_timer.raw_value &amp;&amp; record.timesheet_timer_start.raw_value">
+                                            <i class="fa fa-play text-success"/>
                                         </div>
                                     </div>
                                 </div>
@@ -297,21 +379,71 @@
         </field>
     </record>
 
+    <record id="project_task_action_fsm" model="ir.actions.act_window">
+        <field name="name">My Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="domain">[('allow_planning', '=', True)]</field>
+        <field name="context">{
+            'fsm_mode': True,
+            'search_default_my_tasks': True,
+            'search_default_planned_future': True,
+            'search_default_todo': True,
+        }</field>
+    </record>
+
+    <record id="project_task_action_fsm_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="act_window_id" ref="project_task_action_fsm"/>
+    </record>
+
+    <record id="project_task_action_fsm_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form"/>
+        <field name="act_window_id" ref="project_task_action_fsm"/>
+    </record>
+
     <!-- Main action for the app -->
     <record id="project_task_action_worker_tasks" model="ir.actions.server">
         <field name="name">project.task.action.worker.tasks</field>
         <field name="model_id" ref="industry_fsm.model_project_task"/>
         <field name="state">code</field>
-        <field name="code"> action = model.action_worker_tasks()</field>
+        <field name="code">action = model.action_fsm_tasks()</field>
     </record>
 
-    <menuitem id="menu_fsm_root" name="Field Service"
+    <menuitem id="menu_fsm_root"
+        name="Field Service"
         sequence="25"
         web_icon="industry_fsm,static/description/icon.png"
-        groups="project.group_project_user"/>
+        groups="industry_fsm.group_fsm_user"/>
 
-    <menuitem id="fsm_tasks_menu" name="My Tasks" action="project_task_action_worker_tasks"
-        sequence="10" parent="industry_fsm.menu_fsm_root"
-        groups="project.group_project_user"/>
+    <menuitem id="fsm_tasks_menu"
+        name="My Tasks"
+        action="project_task_action_worker_tasks"
+        sequence="10"
+        parent="industry_fsm.menu_fsm_root"
+        groups="industry_fsm.group_fsm_user"/>
+
+    <menuitem id="fsm_planning_menu"
+        name="Planning"
+        sequence="15"
+        parent="industry_fsm.menu_fsm_root"
+        groups="industry_fsm.group_fsm_manager"/>
+
+    <menuitem id="project_task_menu_planning_by_user_fsm"
+        name="By User"
+        sequence="10"
+        action="project_enterprise.project_task_action_planning_groupby_user"
+        parent="fsm_planning_menu"/>
+
+    <menuitem id="project_task_menu_planning_by_project_fsm"
+        name="By Project"
+        sequence="15"
+        action="project_enterprise.project_task_action_planning_groupby_project"
+        parent="fsm_planning_menu"/>
 
 </odoo>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Field Service",
-    'summary': 'Plan your Onsite interventions',
+    'summary': "Schedule and track onsite operations, invoice time and material",
     'description': """
 Field Services Management
 =========================
@@ -18,7 +18,7 @@ Adds the following options:
 - create Sales order with timesheets and products from tasks
 
     """,
-    'category': 'Industry',
+    'category': 'Industry/Field Service',
     'version': '1.0',
     'depends': ['project_enterprise', 'sale_project_timesheet_enterprise'],
     'data': [
@@ -28,7 +28,7 @@ Adds the following options:
         'views/res_config_settings_views.xml',
         'views/product_product_views.xml',
         'views/project_views.xml',
-        'wizard/project_task_create_sale_order_views.xml',
+        'views/assets.xml',
     ],
     'application': True,
     'demo': ['data/fsm_demo.xml'],

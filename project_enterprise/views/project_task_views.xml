@@ -26,9 +26,10 @@
         <field name="type">ir.actions.act_window</field>
         <field name="name">Planning</field>
         <field name="res_model">project.task</field>
+        <field name="domain">[('allow_planning', '=', True)]</field>
         <field name="view_mode">gantt,kanban,tree,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="project.view_task_search_form"/>
-        <field name="context">{'default_project_id': active_id, 'search_default_project_id': [active_id], 'search_default_user': 1}</field>
+        <field name="context">{'default_project_id': active_id, 'search_default_user': 1}</field>
     </record>
 
     <record id="project_view_kanban_inherit" model="ir.ui.view">
@@ -50,6 +51,20 @@
         </field>
     </record>
 
+    <!-- Form view used by the gantt -->
+    <record id="project_task_view_form_allow_planning_domain" model="ir.ui.view">
+        <field name="name">project.task.view.form.allow.planning.domain</field>
+        <field name="model">project.task</field>
+        <field name="priority">900</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="domain">[('allow_planning', '=', True)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Adding manager gantt view to Project -->
     <record id="project_task_view_gantt" model="ir.ui.view">
         <field name="name">project.task.view.gantt</field>
@@ -58,7 +73,24 @@
         <field name="arch" type="xml">
             <gantt date_start="planned_date_begin"
                 date_stop="planned_date_end"
-                default_scale="week">
+                default_scale="week"
+                string="Planning"
+                precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:half'}">
+                <templates>
+                    <div t-name="gantt-popover" class="container-fluid">
+                        <div class="row no-gutters">
+                            <div class="col">
+                                <ul class="pl-1 mb-0">
+                                    <li t-if="partner_id"><strong>Customer: </strong> <t t-esc="partner_id[1]"/></li>
+                                    <li><strong>Start Date: </strong> <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD HH:mm:ss')"/></li>
+                                    <li><strong>Stop Date: </strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD HH:mm:ss')"/></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </templates>
+                <field name="partner_id"/>
             </gantt>
         </field>
     </record>
@@ -78,7 +110,6 @@
         </field>
     </record>
 
-
     <!-- Planning in Project -->
     <record id="project_task_view_search_planning" model="ir.ui.view">
         <field name="name">project.task.view.search.planning</field>
@@ -89,31 +120,67 @@
                 <field name="user_id"/>
                 <filter string="My Project" name="my_project" domain="[('user_id','=', uid)]"/>
                 <group expand="1" string="Group By">
-                    <filter string="Assigned To" name="group_by_user_id" context="{'group_by':'user_id'}"/>
+                    <filter string="Assigned to" name="group_by_user_id" context="{'group_by':'user_id'}"/>
                     <filter string="Project" name="group_by_project" context="{'group_by':'project_id'}"/>
                 </group>
             </search>
         </field>
     </record>
 
-    <record id="project_task_action_planning" model="ir.actions.act_window">
-        <field name="name">Planning</field>
+    <record id="project_task_action_planning_groupby_user" model="ir.actions.act_window">
+        <field name="name">Planning by Employee</field>
         <field name="res_model">project.task</field>
         <field name="view_type">form</field>
-        <field name="view_mode">gantt,kanban,tree,form,calendar,pivot,graph,activity</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,activity</field>
+        <field name="domain">[('allow_planning', '=', True)]</field>
+        <field name="search_view_id" ref="project_enterprise.project_task_view_search_planning"/>
+        <field name="context" eval="{'search_default_group_by_user_id': 1}"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_user_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form_allow_planning_domain"/>
+        <field name="act_window_id" ref="project_task_action_planning_groupby_user"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_user_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_task_view_gantt"/>
+        <field name="act_window_id" ref="project_enterprise.project_task_action_planning_groupby_user"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_project" model="ir.actions.act_window">
+        <field name="name">Planning by Project</field>
+        <field name="res_model">project.task</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,activity</field>
         <field name="domain">[('allow_planning', '=', True)]</field>
         <field name="search_view_id" ref="project_task_view_search_planning"/>
-        <field name="context">{'search_default_group_by_user_id': 1, 'search_default_group_by_project': 1}</field>
+        <field name="context" eval="{'search_default_group_by_project': 1}"/>
     </record>
 
-    <menuitem id="project_task_menu" name="Tasks" sequence="12" parent="project.menu_main_pm"/>
-
-    <menuitem id="project_task_menu_planning" name="Planning" sequence="12" action="project_task_action_planning"
-        parent="project_task_menu"/>
-
-    <record  id="project.menu_project_management" model="ir.ui.menu">
-        <field name="parent_id" ref="project_enterprise.project_task_menu"/>
+    <record id="project_task_action_planning_groupby_project_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form_allow_planning_domain"/>
+        <field name="act_window_id" ref="project_task_action_planning_groupby_project"/>
     </record>
 
+    <record id="project_task_action_planning_groupby_project_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_task_view_gantt"/>
+        <field name="act_window_id" ref="project_enterprise.project_task_action_planning_groupby_project"/>
+    </record>
+
+    <menuitem id="project_planning_menu" name="Planning" sequence="12" parent="project.menu_main_pm"/>
+
+    <menuitem id="project_task_menu_planning_by_user" name="By Employee" sequence="12"
+        action="project_task_action_planning_groupby_user" parent="project_planning_menu"/>
+
+    <menuitem id="project_task_menu_planning_by_project" name="By Project" sequence="13"
+        action="project_task_action_planning_groupby_project" parent="project_planning_menu"/>
 
 </odoo>

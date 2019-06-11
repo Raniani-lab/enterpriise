@@ -15,4 +15,3 @@ class ProductTaskMap(models.Model):
     _sql_constraints = [
         ('task_product_uniq', 'unique (task_id, product_id)', 'The task and product must be unique on materials ordered!'),
     ]
-

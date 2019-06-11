@@ -26,7 +26,7 @@ var OpenStudioButton = Widget.extend({
      */
     start: function () {
         this._super.apply(this, arguments);
-        this.$el.text(_('Design Report Template'));
+        this.$el.text(_('Design Worksheet Template'));
     },
 
     /**
@@ -36,7 +36,7 @@ var OpenStudioButton = Widget.extend({
     _onButtonClick: function (event) {
         var self = this;
         this._rpc({
-            'model': 'project.report.template',
+            'model': 'project.worksheet.template',
             'method': 'get_x_model_form_action',
             'args': [this.record.res_id]
         })

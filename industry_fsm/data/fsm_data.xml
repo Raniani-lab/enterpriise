@@ -9,9 +9,10 @@
         </record>
 
         <record id="planning_project_stage_1" model="project.task.type">
-            <field name="sequence">1</field>
+            <field name="sequence">5</field>
             <field name="name">Done</field>
             <field name="legend_blocked">Not validated</field>
+            <field name="is_closed" eval="True"/>
         </record>
 
         <record id="fsm_time_product" model="product.product">

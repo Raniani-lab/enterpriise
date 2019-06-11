@@ -1147,7 +1147,8 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document inspector: update document info with one document selected', async function (assert) {
-        assert.expect(6);
+        assert.expect(7);
+        var count = 0;
 
         var M2O_DELAY = relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY;
         relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = 0;
@@ -1164,8 +1165,17 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
                 if (args.method === 'write') {
-                    assert.deepEqual(args.args, [[1], {owner_id: 3}],
-                        "should save the change directly");
+                    count++;
+                    switch (count) {
+                        case 1:
+                            assert.deepEqual(args.args, [[1], {owner_id: 3}],
+                                "should save the change directly");
+                            break;
+                        case 2:
+                            assert.deepEqual(args.args, [[1], {owner_id: false}],
+                                "should save false value");
+                            break;
+                    }
                 }
                 return this._super.apply(this, arguments);
             },
@@ -1189,6 +1199,7 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(), 'De Bruyne',
             "should display the new value in the many2one");
 
+        kanban.$('.o_field_many2one[name=owner_id] input').val('').trigger('keyup').trigger('focusout');
         relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = M2O_DELAY;
         kanban.destroy();
     });

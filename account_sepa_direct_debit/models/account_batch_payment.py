@@ -13,7 +13,7 @@ from odoo.exceptions import ValidationError, UserError
 class AccountBatchPayment(models.Model):
     _inherit = 'account.batch.payment'
 
-    sdd_required_collection_date = fields.Date(string='Required collection date', default=fields.Date.today, readonly=True, states={'draft': [('readonly', '=', False)]}, help="Date when the company expects to receive the payments of this batch.")
+    sdd_required_collection_date = fields.Date(string='Required collection date', default=fields.Date.today, readonly=True, states={'draft': [('readonly', False)]}, help="Date when the company expects to receive the payments of this batch.")
 
     def _get_methods_generating_files(self):
         rslt = super(AccountBatchPayment, self)._get_methods_generating_files()

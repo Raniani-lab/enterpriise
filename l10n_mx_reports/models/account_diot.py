@@ -242,7 +242,7 @@ class MxReportPartnerLedger(models.AbstractModel):
             amls = grouped_partners[partner]['lines']
             too_many = False
             if len(amls) > 80 and not context.get('print_mode'):
-                amls = amls[-80:]
+                amls = amls[:80]
                 too_many = True
             for line in amls:
                 if options['cash_basis']:

@@ -48,7 +48,7 @@
                         <cfdi:Concepto
                             t-att-ClaveProdServ="line.product_id.l10n_mx_edi_code_sat_id.code"
                             t-att-NoIdentificacion="record._get_string_cfdi(line.product_id.default_code or '')"
-                            t-att-Cantidad="line.quantity"
+                            t-att-Cantidad="'%.6f' % line.quantity"
                             t-att-ClaveUnidad="line.uom_id.l10n_mx_edi_code_sat_id.code"
                             t-att-Unidad="record._get_string_cfdi(line.uom_id.name, 20)"
                             t-att-Descripcion="record._get_string_cfdi(line.name, 1000)"

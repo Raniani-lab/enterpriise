@@ -80,7 +80,7 @@
                                 t-att-MonedaDR="invoice.currency_id.name"
                                 t-att-TipoCambioDR="inv_rate"
                                 t-att-MetodoDePagoDR="invoice.l10n_mx_edi_get_payment_method_cfdi()"
-                                t-att-NumParcialidad="len(invoice.payment_ids.filtered(lambda p: p.state not in ('draft', 'cancelled')).ids)"
+                                t-att-NumParcialidad="len(invoice.payment_ids.filtered(lambda p: p.state not in ('draft', 'cancelled') and not p.move_line_ids.mapped('move_id.reverse_entry_id')).ids)"
                                 t-att-ImpSaldoAnt="'%0.*f' % (decimal_precision, invoice.residual + amount_payment)"
                                 t-att-ImpPagado="'%0.*f' % (decimal_precision, amount_payment - writeoff_vals.get(invoice.id, 0))"
                                 t-att-ImpSaldoInsoluto="'%0.*f' % (decimal_precision, amount_insoluto + writeoff_vals.get(invoice.id, 0))"/>

@@ -106,7 +106,10 @@ class WebStudioController(http.Controller):
             'res_model': 'ir.actions.report',
             'views': [[False, 'kanban'], [False, 'form']],
             'target': 'current',
-            'domain': [("binding_model_id.transient","=",False)],
+            'domain': [
+                '|', ("binding_model_id", "=", False),
+                '&', ("binding_model_id", "!=", False), ("binding_model_id.transient", "=", False),
+            ],
             'context': {
                 'default_model': model.model,
                 'search_default_model': model.model,

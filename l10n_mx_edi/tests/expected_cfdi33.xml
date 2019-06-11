@@ -27,7 +27,7 @@
         UsoCFDI="P01"/>
     <cfdi:Conceptos>
         <cfdi:Concepto
-            Cantidad="1.0"
+            Cantidad="1.000000"
             ClaveProdServ="01010101"
             ClaveUnidad="H87"
             Descripcion='[FURN_7800] Desk Combination Desk combination, black-brown: chair + desk + drawer.'

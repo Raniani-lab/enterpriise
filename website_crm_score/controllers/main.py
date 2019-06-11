@@ -37,15 +37,15 @@ class ContactController(WebsiteForm):
         lead_id = lead_model.decode(request)
 
         # domain: leads that are still open:
-        # NOT [ on_change AND (proba = 0 OR proba = 100) ]
+        # NOT [ is_won AND (proba = 0 OR proba = 100) ]
         # the condition on the lead_id is prepended
         domain = [
             ('id', '=', lead_id),
             '|',
-            ('stage_id.on_change', '=', False),
+            ('stage_id.is_won', '=', False),
             '&',
-            ('stage_id.probability', '!=', 0),
-            ('stage_id.probability', '!=', 100)
+            ('probability', '!=', 0),
+            ('probability', '!=', 100)
         ]
         lead_instance = lead_model.sudo().search(domain)
 

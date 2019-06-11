@@ -46,8 +46,6 @@ class TestScoring(common.TransactionCase):
 
         self.stage = self.crm_stage.create({
             'name': 'testing',
-            'probability': '50',
-            'on_change': False,
         }).id
 
         # Lead Data

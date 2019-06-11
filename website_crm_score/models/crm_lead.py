@@ -88,6 +88,10 @@ class Lead(models.Model):
                 return {}
         return super(Lead, self)._onchange_user_values(user_id)
 
+    @api.onchange('lang_id')
+    def _onchange_lang_id(self):
+        self._onchange_compute_probability(optional_field_name='lang_id')
+
     # Overwritte ORM to add or remove the assign date
     @api.model
     def create(self, vals):

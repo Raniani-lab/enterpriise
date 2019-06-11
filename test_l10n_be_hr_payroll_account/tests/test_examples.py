@@ -52,7 +52,6 @@ class TestExamples(common.SavepointCase):
 
         # Setup the payslip
         payslip_values = dict(payslip_values or {},
-                              journal_id=self.journal_id,
                               contract_id=employee.contract_id)
 
         payslip_id = self.Payslip.new(self.Payslip.default_get(self.Payslip.fields_get()))
@@ -63,6 +62,7 @@ class TestExamples(common.SavepointCase):
         payslip_id._onchange_struct_id()
         values = payslip_id._convert_to_write(payslip_id._cache)
         payslip_id = self.Payslip.create(values)
+        payslip_id.struct_id.journal_id = self.journal_id
 
         # Compute the payslip
         payslip_id.compute_sheet()

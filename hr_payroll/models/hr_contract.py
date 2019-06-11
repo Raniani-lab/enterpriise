@@ -5,7 +5,6 @@ from odoo import api, fields, models
 from datetime import date, datetime, time
 from collections import Counter
 
-
 class HrContract(models.Model):
     _inherit = 'hr.contract'
     _description = 'Employee Contract'

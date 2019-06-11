@@ -89,14 +89,18 @@ class HrPayslip(models.Model):
 
     @api.multi
     def action_payslip_done(self):
+        if any(slip.state == 'cancel' for slip in self):
+            raise ValidationError(_("You can't validate a cancelled payslip."))
         self.compute_sheet()
-        return self.write({'state': 'done'})
+        self.write({'state' : 'done'})
+        self.mapped('payslip_run_id').action_close()
 
     @api.multi
     def action_payslip_cancel(self):
         if self.filtered(lambda slip: slip.state == 'done'):
             raise UserError(_("Cannot cancel a payslip that is done."))
-        return self.write({'state': 'cancel'})
+        self.write({'state': 'cancel'})
+        self.mapped('payslip_run_id').action_close()
 
     @api.multi
     def refund_sheet(self):
@@ -119,19 +123,6 @@ class HrPayslip(models.Model):
             'context': {}
         }
 
-    @api.model
-    def create(self, vals):
-        res = super(HrPayslip, self).create(vals)
-        if not res.payslip_run_id:
-            self.env['hr.payslip.run'].create({
-                'name': res.name,
-                'date_start': res.date_from,
-                'date_end': res.date_to,
-                'slip_ids': [(4, res.id)],
-                'state': 'close',
-            })
-        return res
-
     @api.multi
     def unlink(self):
         if any(self.filtered(lambda payslip: payslip.state not in ('draft', 'cancel'))):
@@ -140,7 +131,7 @@ class HrPayslip(models.Model):
 
     @api.multi
     def compute_sheet(self):
-        for payslip in self:
+        for payslip in self.filtered(lambda slip: slip.state not in ['cancel', 'done']):
             number = payslip.number or self.env['ir.sequence'].next_by_code('salary.slip')
             # delete old payslip lines
             payslip.line_ids.unlink()
@@ -446,14 +437,16 @@ class HrPayslipRun(models.Model):
         for payslip_run in self:
             payslip_run.payslip_count = len(self.slip_ids)
 
-    @api.multi
-    def draft_payslip_run(self):
+    def action_draft(self):
         return self.write({'state': 'draft'})
 
-    @api.multi
-    def close_payslip_run(self):
-        self.mapped('slip_ids').filtered(lambda payslip: payslip.state != 'done').action_payslip_done()
-        return self.write({'state': 'close'})
+    def action_close(self):
+        if self._are_payslips_ready():
+            self.write({'state' : 'close'})
+
+    def action_validate(self):
+        self.mapped('slip_ids').filtered(lambda slip: slip.state != 'cancel').action_payslip_done()
+        self.action_close()
 
     def action_open_payslips(self):
         self.ensure_one()
@@ -464,6 +457,10 @@ class HrPayslipRun(models.Model):
             "domain": [['id', 'in', self.slip_ids.ids]],
             "name": "Payslips",
         }
+
+    def _are_payslips_ready(self):
+        return all(slip.state in ['done', 'cancel'] for slip in self.mapped('slip_ids'))
+
 
 class ContributionRegisterReport(models.AbstractModel):
     _name = 'report.hr_payroll.contribution_register'

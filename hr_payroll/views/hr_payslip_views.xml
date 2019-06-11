@@ -299,7 +299,7 @@
                         <group>
                             <group string="Miscellaneous">
                                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
-                                <field name="payslip_run_id" domain="[('state','=','draft')]"/>
+                                <field name="payslip_run_id" domain="[('state','in',('draft', 'verify'))]"/>
                             </group>
                             <group name="accounting" string="Accounting">
                                 <field name="paid" readonly="1"/>
@@ -443,8 +443,8 @@
             <form string="Payslips Batches">
             <header>
                 <button name="%(action_hr_payslip_by_employees)d" type="action" states="draft" string="Generate Payslips" class="oe_highlight"/>
-                <button name="close_payslip_run" type="object" string="Validate" states="verify" class="oe_highlight"/>
-                <button string="Set to Draft" name="draft_payslip_run" type="object" states="close"/>
+                <button name="action_validate" type="object" string="Validate" states="verify" class="oe_highlight"/>
+                <button string="Set to Draft" name="action_draft" type="object" states="close"/>
                 <field name="state" widget="statusbar"/>
             </header>
             <sheet>
@@ -480,6 +480,16 @@
         <field name="search_view_id" ref="hr_payslip_run_filter"/>
     </record>
 
+    <!--  Shortcuts -->
+
+    <act_window name="Payslip Lines"
+        domain="[('partner_id', '=', active_id)]"
+        context="{'default_partner_id': active_id, 'search_default_partner_id': 1}"
+        res_model="hr.payslip.line"
+        binding_model="res.partner"
+        binding_views="form"
+        id="act_contribution_reg_payslip_lines"/>
+
     <record model="ir.actions.server" id="action_hr_payroll_confirm_payroll">
         <field name="name">Confirm</field>
         <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
@@ -491,14 +501,14 @@
         </field>
     </record>
 
-    <!--  Shortcuts -->
-
-    <act_window name="Payslip Lines"
-        domain="[('partner_id', '=', active_id)]"
-        context="{'default_partner_id': active_id, 'search_default_partner_id': 1}"
-        res_model="hr.payslip.line"
-        binding_model="res.partner"
-        binding_views="form"
-        id="act_contribution_reg_payslip_lines"/>
-
+    <record model="ir.actions.server" id="action_hr_payroll_cancel_payroll">
+        <field name="name">Cancel</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                records.action_payslip_cancel()
+        </field>
+    </record>
 </odoo>

@@ -162,7 +162,6 @@ class account_bank_reconciliation_report(models.AbstractModel):
 
         # Fetch data
         report_data = self._get_bank_rec_report_data(options, journal)
-        self = self.with_context(line_currency=report_data['line_currency'])
 
         # Compute totals
         unrec_tot = sum([-(aml_values['balance']) for aml_values in report_data['not_reconciled_payments']])

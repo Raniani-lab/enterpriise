@@ -72,6 +72,11 @@ file_filter = account_plaid/i18n/<lang>.po
 source_file = account_plaid/i18n/account_plaid.pot
 source_lang = en
 
+[odoo-master.account_predictive_bills]
+file_filter = account_predictive_bills/i18n/<lang>.po
+source_file = account_predictive_bills/i18n/account_predictive_bills.pot
+source_lang = en
+
 [odoo-master.account_reports]
 file_filter = account_reports/i18n/<lang>.po
 source_file = account_reports/i18n/account_reports.pot
@@ -212,9 +217,34 @@ file_filter = helpdesk/i18n/<lang>.po
 source_file = helpdesk/i18n/helpdesk.pot
 source_lang = en
 
+[odoo-master.helpdesk_account]
+file_filter = helpdesk_account/i18n/<lang>.po
+source_file = helpdesk_account/i18n/helpdesk_account.pot
+source_lang = en
+
+[odoo-master.helpdesk_repair]
+file_filter = helpdesk_repair/i18n/<lang>.po
+source_file = helpdesk_repair/i18n/helpdesk_repair.pot
+source_lang = en
+
+[odoo-master.helpdesk_sale]
+file_filter = helpdesk_sale/i18n/<lang>.po
+source_file = helpdesk_sale/i18n/helpdesk_sale.pot
+source_lang = en
+
+[odoo-master.helpdesk_sale_coupon]
+file_filter = helpdesk_sale_coupon/i18n/<lang>.po
+source_file = helpdesk_sale_coupon/i18n/helpdesk_sale_coupon.pot
+source_lang = en
+
 [odoo-master.helpdesk_sale_timesheet]
 file_filter = helpdesk_sale_timesheet/i18n/<lang>.po
 source_file = helpdesk_sale_timesheet/i18n/helpdesk_sale_timesheet.pot
+source_lang = en
+
+[odoo-master.helpdesk_stock]
+file_filter = helpdesk_stock/i18n/<lang>.po
+source_file = helpdesk_stock/i18n/helpdesk_stock.pot
 source_lang = en
 
 [odoo-master.helpdesk_timesheet]
@@ -232,9 +262,29 @@ file_filter = hr_contract_salary/i18n/<lang>.po
 source_file = hr_contract_salary/i18n/hr_contract_salary.pot
 source_lang = en
 
+[odoo-master.hr_documents]
+file_filter = hr_documents/i18n/<lang>.po
+source_file = hr_documents/i18n/hr_documents.pot
+source_lang = en
+
 [odoo-master.hr_holidays_gantt]
 file_filter = hr_holidays_gantt/i18n/<lang>.po
 source_file = hr_holidays_gantt/i18n/hr_holidays_gantt.pot
+source_lang = en
+
+[odoo-master.hr_payroll]
+file_filter = hr_payroll/i18n/<lang>.po
+source_file = hr_payroll/i18n/hr_payroll.pot
+source_lang = en
+
+[odoo-master.hr_payroll_account]
+file_filter = hr_payroll_account/i18n/<lang>.po
+source_file = hr_payroll_account/i18n/hr_payroll_account.pot
+source_lang = en
+
+[odoo-master.hr_payroll_gantt]
+file_filter = hr_payroll_gantt/i18n/<lang>.po
+source_file = hr_payroll_gantt/i18n/hr_payroll_gantt.pot
 source_lang = en
 
 [odoo-master.im_livechat_enterprise]
@@ -245,6 +295,11 @@ source_lang = en
 [odoo-master.industry_fsm]
 file_filter = industry_fsm/i18n/<lang>.po
 source_file = industry_fsm/i18n/industry_fsm.pot
+source_lang = en
+
+[odoo-master.industry_fsm_report]
+file_filter = industry_fsm_report/i18n/<lang>.po
+source_file = industry_fsm_report/i18n/industry_fsm_report.pot
 source_lang = en
 
 [odoo-master.inter_company_rules]
@@ -277,9 +332,9 @@ file_filter = mass_mailing_themes/i18n/<lang>.po
 source_file = mass_mailing_themes/i18n/mass_mailing_themes.pot
 source_lang = en
 
-[odoo-master.mrp_account]
-file_filter = mrp_account/i18n/<lang>.po
-source_file = mrp_account/i18n/mrp_account.pot
+[odoo-master.mrp_account_enterprise]
+file_filter = mrp_account_enterprise/i18n/<lang>.po
+source_file = mrp_account_enterprise/i18n/mrp_account_enterprise.pot
 source_lang = en
 
 [odoo-master.mrp_maintenance]
@@ -302,9 +357,19 @@ file_filter = mrp_workorder/i18n/<lang>.po
 source_file = mrp_workorder/i18n/mrp_workorder.pot
 source_lang = en
 
+[odoo-master.mrp_workorder_iot]
+file_filter = mrp_workorder_iot/i18n/<lang>.po
+source_file = mrp_workorder_iot/i18n/mrp_workorder_iot.pot
+source_lang = en
+
 [odoo-master.ocn_client]
 file_filter = ocn_client/i18n/<lang>.po
 source_file = ocn_client/i18n/ocn_client.pot
+source_lang = en
+
+[odoo-master.pos_enterprise]
+file_filter = pos_enterprise/i18n/<lang>.po
+source_file = pos_enterprise/i18n/pos_enterprise.pot
 source_lang = en
 
 [odoo-master.pos_iot]
@@ -312,14 +377,14 @@ file_filter = pos_iot/i18n/<lang>.po
 source_file = pos_iot/i18n/pos_iot.pot
 source_lang = en
 
-[odoo-master.pos_restaurant_iot]
-file_filter = pos_restaurant_iot/i18n/<lang>.po
-source_file = pos_restaurant_iot/i18n/pos_restaurant_iot.pot
-source_lang = en
-
 [odoo-master.pos_loyalty]
 file_filter = pos_loyalty/i18n/<lang>.po
 source_file = pos_loyalty/i18n/pos_loyalty.pot
+source_lang = en
+
+[odoo-master.pos_restaurant_iot]
+file_filter = pos_restaurant_iot/i18n/<lang>.po
+source_file = pos_restaurant_iot/i18n/pos_restaurant_iot.pot
 source_lang = en
 
 [odoo-master.project_enterprise]
@@ -357,6 +422,11 @@ file_filter = quality_control/i18n/<lang>.po
 source_file = quality_control/i18n/quality_control.pot
 source_lang = en
 
+[odoo-master.quality_control_iot]
+file_filter = quality_control_iot/i18n/<lang>.po
+source_file = quality_control_iot/i18n/quality_control_iot.pot
+source_lang = en
+
 [odoo-master.quality_iot]
 file_filter = quality_iot/i18n/<lang>.po
 source_file = quality_iot/i18n/quality_iot.pot
@@ -382,16 +452,6 @@ file_filter = sale_account_taxcloud/i18n/<lang>.po
 source_file = sale_account_taxcloud/i18n/sale_account_taxcloud.pot
 source_lang = en
 
-[odoo-master.sale_coupon]
-file_filter = sale_coupon/i18n/<lang>.po
-source_file = sale_coupon/i18n/sale_coupon.pot
-source_lang = en
-
-[odoo-master.sale_coupon_delivery]
-file_filter = sale_coupon_delivery/i18n/<lang>.po
-source_file = sale_coupon_delivery/i18n/sale_coupon_delivery.pot
-source_lang = en
-
 [odoo-master.sale_ebay]
 file_filter = sale_ebay/i18n/<lang>.po
 source_file = sale_ebay/i18n/sale_ebay.pot
@@ -400,6 +460,11 @@ source_lang = en
 [odoo-master.sale_enterprise]
 file_filter = sale_enterprise/i18n/<lang>.po
 source_file = sale_enterprise/i18n/sale_enterprise.pot
+source_lang = en
+
+[odoo-master.sale_intrastat]
+file_filter = sale_intrastat/i18n/<lang>.po
+source_file = sale_intrastat/i18n/sale_intrastat.pot
 source_lang = en
 
 [odoo-master.sale_project_timesheet_enterprise]
@@ -412,14 +477,19 @@ file_filter = sale_subscription/i18n/<lang>.po
 source_file = sale_subscription/i18n/sale_subscription.pot
 source_lang = en
 
-[odoo-master.sale_subscription_asset]
-file_filter = sale_subscription_asset/i18n/<lang>.po
-source_file = sale_subscription_asset/i18n/sale_subscription_asset.pot
-source_lang = en
-
 [odoo-master.sale_subscription_dashboard]
 file_filter = sale_subscription_dashboard/i18n/<lang>.po
 source_file = sale_subscription_dashboard/i18n/sale_subscription_dashboard.pot
+source_lang = en
+
+[odoo-master.sale_subscription_taxcloud]
+file_filter = sale_subscription_taxcloud/i18n/<lang>.po
+source_file = sale_subscription_taxcloud/i18n/sale_subscription_taxcloud.pot
+source_lang = en
+
+[odoo-master.sale_timesheet_enterprise]
+file_filter = sale_timesheet_enterprise/i18n/<lang>.po
+source_file = sale_timesheet_enterprise/i18n/sale_timesheet_enterprise.pot
 source_lang = en
 
 [odoo-master.sign]
@@ -447,6 +517,11 @@ file_filter = stock_barcode_mobile/i18n/<lang>.po
 source_file = stock_barcode_mobile/i18n/stock_barcode_mobile.pot
 source_lang = en
 
+[odoo-master.stock_barcode_quality_control]
+file_filter = stock_barcode_quality_control/i18n/<lang>.po
+source_file = stock_barcode_quality_control/i18n/stock_barcode_quality_control.pot
+source_lang = en
+
 [odoo-master.stock_enterprise]
 file_filter = stock_enterprise/i18n/<lang>.po
 source_file = stock_enterprise/i18n/stock_enterprise.pot
@@ -465,6 +540,11 @@ source_lang = en
 [odoo-master.voip]
 file_filter = voip/i18n/<lang>.po
 source_file = voip/i18n/voip.pot
+source_lang = en
+
+[odoo-master.voip_crm]
+file_filter = voip_crm/i18n/<lang>.po
+source_file = voip_crm/i18n/voip_crm.pot
 source_lang = en
 
 [odoo-master.voip_onsip]
@@ -555,11 +635,6 @@ source_lang = en
 [odoo-master.website_helpdesk_slides]
 file_filter = website_helpdesk_slides/i18n/<lang>.po
 source_file = website_helpdesk_slides/i18n/website_helpdesk_slides.pot
-source_lang = en
-
-[odoo-master.website_sale_coupon]
-file_filter = website_sale_coupon/i18n/<lang>.po
-source_file = website_sale_coupon/i18n/website_sale_coupon.pot
 source_lang = en
 
 [odoo-master.website_sale_dashboard]

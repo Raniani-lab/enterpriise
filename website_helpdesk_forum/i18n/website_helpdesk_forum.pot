@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
-"PO-Revision-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
+"PO-Revision-Date: 2019-06-12 12:34+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,6 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-label=\"Question has accepted answer\"/>"
-msgstr ""
-
-#. module: website_helpdesk_forum
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-label=\"Redirect to external link\"/>"
 msgstr ""
 
 #. module: website_helpdesk_forum
@@ -95,12 +90,12 @@ msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Question has accepted answer"
+msgid "Question"
 msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Redirect to external link"
+msgid "Question has accepted answer"
 msgstr ""
 
 #. module: website_helpdesk_forum

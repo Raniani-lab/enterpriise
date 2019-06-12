@@ -179,7 +179,7 @@ class ProjectForecast(models.Model):
                 values.update({'recurrency_id': False})
         if ('published' not in values) and (set(values.keys()) & set(self._get_publish_important_fields())):
             values['published'] = False
-        return super().write(values)
+        return super(ProjectForecast, self).write(values)
 
     # ----------------------------------------------------
     # Actions
@@ -227,7 +227,6 @@ class ProjectForecast(models.Model):
             })
             list_values.append(new_values)
         return self.create(list_values)
-
 
     # ----------------------------------------------------
     # Gantt view
@@ -371,7 +370,6 @@ class ProjectForecast(models.Model):
             if act_forecast.resource_hours == 0:
                 forecasts = forecasts - act_forecast
                 act_forecast.unlink()
-
 
     # ----------------------------------------------------
     #  Mail

@@ -6,7 +6,7 @@
     </xpath>
     <xpath expr="//td[hasclass('d-none')]" position="after">
       <td class="text-right">
-        <span t-field="l.intrastat_product_origin_country_id"/>
+        <span t-field="line.intrastat_product_origin_country_id"/>
       </td>
     </xpath>
   </template>

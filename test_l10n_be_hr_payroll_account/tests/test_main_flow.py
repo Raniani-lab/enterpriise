@@ -45,6 +45,7 @@ class TestHR(common.TransactionCase):
 
     def create_user_employee(self, login, groups):
         user = mail_new_test_user(self.env, login=login, groups=groups)
+        user.company_id.country_id = self.env.ref('base.be')
         employee = self.env['hr.employee'].create({
             'name': 'Employee %s' % login,
             'user_id': user.id,

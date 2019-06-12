@@ -8,6 +8,9 @@
     'description': """
     """,
     'data': [
+        'security/ir.model.access.csv',
+        'data/hr_rule_parameter_data.xml',
+        'data/cp200_employee_salary_data.xml',
         'views/fleet_views.xml',
         'views/res_config_settings_views.xml',
         'views/hr_contract_views.xml',

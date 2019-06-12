@@ -13,7 +13,7 @@ class ResCompany(models.Model):
         38 hours/week for Belgian companies
         """
         country_be = self.env.ref('base.be')
-        be_companies = self.filtered(lambda c: c.country_id == country_be)
+        be_companies = self.filtered(lambda c: c.country_id == country_be and not c.resource_calendar_id)
         for company in be_companies:
             company.resource_calendar_id = self.env['resource.calendar'].create({
                 'name': _('Standard 38 hours/week'),
@@ -31,6 +31,8 @@ class ResCompany(models.Model):
                     (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
                     (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
                     (0, 0, {'name': 'Friday Afternoon', 'dayofweek': '4', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'})
-                ]
+                ],
+                'hours_per_day': 7.6,
+                'full_time_required_hours': 38.0,
             }).id
         super(ResCompany, self - be_companies)._create_resource_calendar()

@@ -137,7 +137,7 @@ if contract.mobile and contract.internet:
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.ip)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = - categories.BASIC * contract.ip_wage_rate / 100.0</field>
+            <field name="amount_python_compute">result = - compute_ip(payslip, categories, worked_days, inputs)</field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
@@ -255,7 +255,7 @@ if contract.mobile and contract.internet:
             <field name="sequence">172</field>
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.ip)</field>
-            <field name="amount_python_compute">result = categories.BASIC * contract.ip_wage_rate / 100.0</field>
+            <field name="amount_python_compute">result = compute_ip(payslip, categories, worked_days, inputs)</field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 

@@ -3,6 +3,7 @@
 
 import datetime
 from collections import OrderedDict
+from pytz import timezone
 
 from odoo.tests import common, tagged
 
@@ -16,18 +17,50 @@ class TestExamples(common.SavepointCase):
         cls.Payslip = cls.env['hr.payslip']
         cls.journal_id = cls.env['account.journal'].search([], limit=1).id
 
-    def case_test(self, line_values, employee_values, payslip_values=None, contract_values=None, holiday_values=[]):
+        cls.leave_type_bank_holidays = cls.env['hr.leave.type'].create({
+            'name': 'Bank Holiday',
+            'request_unit': 'hour',
+            'allocation_type': 'no',
+            'validity_start': datetime.date(2015, 1, 1),
+            'company_id': cls.env.ref('l10n_be_hr_payroll.res_company_be').id,
+            'work_entry_type_id': cls.env.ref('hr_payroll.work_entry_type_leave').id,
+        })
+        cls.leave_type_unpaid = cls.env['hr.leave.type'].create({
+            'name': 'Unpaid',
+            'request_unit': 'hour',
+            'allocation_type': 'no',
+            'validity_start': datetime.date(2015, 1, 1),
+            'company_id': cls.env.ref('l10n_be_hr_payroll.res_company_be').id,
+            'work_entry_type_id': cls.env.ref('hr_payroll.work_entry_type_unpaid_leave').id,
+        })
+
+    def case_test(self, line_values, employee_values, payslip_values=None, contract_values=None, holidays_values=None, car_values=None, car_contract_values=None):
         """
             Line_values is a dict with key = line.code and value = line.value
             Employee_values is either a dict to pass to create or an xmlid
             Payslip_values is a dict to pass to create
             Contract_values is a dict to pass to create
         """
+        if holidays_values is None:
+            holidays_values = []
+
         # Setup the employee
+
         if isinstance(employee_values, dict):
             employee = self.env['hr.employee'].create(employee_values)
         else:
             employee = self.env.ref(employee_values)
+
+        # Setup the car, if specified
+        if car_values is not None:
+            car = self.env['fleet.vehicle'].create(car_values)
+            contract_values.update({
+                'transport_mode_car': True,
+                'car_id': car.id,
+            })
+
+        if car_contract_values is not None:
+            car.log_contracts.write(car_contract_values)
 
         # Setup the contract, use the above employee
         if isinstance(contract_values, dict):
@@ -37,13 +70,18 @@ class TestExamples(common.SavepointCase):
             contract_id.write({'state': 'open'})
 
         # Setup the holidays, use the above employee and contract
-        for holiday in holiday_values:
-            if isinstance(holiday, dict):
-                holiday_value = dict(holiday,
-                                    employee_id=employee.id,
-                                    contract_id=contract_id.id)
-                work_entry = self.env['hr.work.entry'].create(holiday_value)
-                work_entry.action_validate()
+        holidays = self.env['hr.leave']
+        for holiday_values in holidays_values:
+            if isinstance(holiday_values, dict):
+                holiday_values.update({
+                    'employee_id': employee.id,
+                    'request_unit_hours': True,
+                })
+                holiday = self.env['hr.leave'].new(holiday_values)
+                holiday._onchange_request_unit_hours()
+                holidays |= self.env['hr.leave'].create(holiday._convert_to_write(holiday._cache))
+        holidays.action_validate()
+        self.env['hr.work.entry'].search([('leave_id', 'in', holidays.ids)]).action_validate()
 
         # Generate the poubelles
         if 'date_from' in payslip_values and 'date_to' in payslip_values:
@@ -68,9 +106,14 @@ class TestExamples(common.SavepointCase):
         payslip_id.compute_sheet()
 
         # Check that all is right
+        error = False
+        result = ""
         for code, value in line_values.items():
-            self.assertEqual(payslip_id.get_salary_line_total(code), value,
-                             'Line %s for employee %s failed' % (code, employee.name))
+            payslip_value = payslip_id.get_salary_line_total(code)
+            if payslip_id.get_salary_line_total(code) != value:
+                error = True
+                result += "Code: %s, Expected: %s, Reality: %s\n" % (code, value, payslip_value)
+        self.assertEqual(error, False, 'The payslip values are incorrect for the following codes:\n' + result)
 
         # Confirm the payslip
         payslip_id.action_payslip_done()
@@ -82,24 +125,24 @@ class TestExamples(common.SavepointCase):
             ('ATN.MOB', 4.00),
             ('SALARY', 2659.00),
             ('ONSS', -347.53),
-            ('ATN.CAR', 154.71),
-            ('GROSS', 2466.18),
+            ('ATN.CAR', 149.29),
+            ('GROSS', 2460.75),
             ('P.P', -533.87),
-            ('ATN.CAR.2', -154.71),
+            ('ATN.CAR.2', -149.29),
             ('ATN.INT.2', -5.00),
             ('ATN.MOB.2', -4.00),
             ('M.ONSS', -23.66),
-            ('MEAL_V_EMP', -20.71),
+            ('MEAL_V_EMP', -21.80),
             ('REP.FEES', 150.00),
-            ('NET', 1874.23),
+            ('NET', 1873.14),
         ])
         payslip = {
-            'date_from': datetime.date.today().replace(year=2018, month=2, day=1),
-            'date_to': datetime.date.today().replace(year=2018, month=2, day=28),
+            'date_from': datetime.date(2019, 2, 1),
+            'date_to': datetime.date(2019, 2, 28),
         }
         contract = self.env.ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')
-        # Set the start date to January 2018 to take into account on payslip
-        contract.date_start = contract.date_start.replace(year=2018, month=1, day=1)
+        # Set the start date to January 2019 to take into account on payslip
+        contract.date_start = datetime.date(2019, 1, 1)
         self.case_test(values, 'hr_contract_salary.hr_employee_laurie_poiret', payslip_values=payslip)
 
     def test_example(self):
@@ -120,30 +163,33 @@ class TestExamples(common.SavepointCase):
         self.case_test(values, employee, payslip_values=payslip, contract_values=contract)
 
     # 4 hours unpaid, 2 days leave, no atn and no car
+    # Note: The IP is not the same as in the reference payslip, as it
+    # was incorrectly computed by SDWorx during 2018
+
     def test_without_car_without_atn(self):
         values = OrderedDict([
-            ('BASIC', 3655.33),
+            ('BASIC', 3656.7),
             ('ATN.INT', 0.00),
             ('ATN.MOB', 0.0),
-            ('SALARY', 3655.33),
-            ('ONSS', -477.75),
+            ('SALARY', 3656.7),
+            ('ONSS', -477.93),
             ('ATN.CAR', 0),
-            ('GROSSIP', 0),
-            ('IP.PART', 0),
-            ('GROSS', 3177.57),
-            ('P.P', -873.33),
+            ('GROSSIP', 3178.77),
+            ('IP.PART', -914.18),
+            ('GROSS', 2264.6),
+            ('P.P', -476.6),
             ('ATN.CAR.2', 0),
             ('ATN.INT.2', 0),
             ('ATN.MOB.2', 0),
-            ('M.ONSS', -34.72),
-            ('MEAL_V_EMP', -21.8),
+            ('M.ONSS', -34.73),
+            ('MEAL_V_EMP', -21.80),
             ('REP.FEES', 150.00),
-            ('IP', 0),
-            ('IP.DED', 0),
-            ('NET', 2397.73),
+            ('IP', 914.18),
+            ('IP.DED', -68.56),
+            ('NET', 2727.08),
         ])
         employee = {
-            'name': 'Roger',
+            'name': 'Roger2',
         }
         contract = {
             'name': 'Contract For Roger',
@@ -153,8 +199,8 @@ class TestExamples(common.SavepointCase):
             'representation_fees': 150,
             'internet': 0,
             'mobile': 0,
-            'ip_wage_rate': 0,
-            'ip': False,
+            'ip_wage_rate': 25,
+            'ip': True,
             'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
         }
         payslip = {
@@ -162,11 +208,193 @@ class TestExamples(common.SavepointCase):
             'date_to': datetime.date.today().replace(year=2018, month=11, day=30),
             'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
         }
-        unpaid_work_entry_type = self.env.ref('hr_payroll.work_entry_type_unpaid_leave')
-        holiday = [{
-            'name': 'Unpaid work entry',
-            'work_entry_type_id': unpaid_work_entry_type.id,
-            'date_start': datetime.datetime(2018, 11, 6, 7, 0),
-            'date_stop': datetime.datetime(2018, 11, 6, 12, 0),
+        holidays_values = [{
+            'name': 'Unpaid Leave 4 hours',
+            'holiday_status_id': self.leave_type_unpaid.id,
+            'request_date_from': datetime.date(2018, 11, 6),
+            'request_date_to': datetime.date(2018, 11, 6),
+            'request_hour_from': '7',
+            'request_hour_to': '12',
+        }, {
+            'name': 'Bank Holiday',
+            'holiday_status_id': self.leave_type_bank_holidays.id,
+            'request_date_from': datetime.date(2018, 11, 9),
+            'request_date_to': datetime.date(2018, 11, 9),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
         }]
-        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holiday_values=holiday)
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holidays_values)
+
+    # 2 unpaid days + 2 bank holidays + IP + Mobile + 1 child + extra leaves
+    # IP should be correct as we are in 2019,
+    def test_with_car_with_atn_with_child(self):
+        values = OrderedDict([
+            ('BASIC', 3217.75),
+            ('ATN.INT', 5.00),
+            ('ATN.MOB', 0.0),
+            ('SALARY', 3222.75),
+            ('ONSS', -421.21),
+            ('ATN.CAR', 109.92),
+            ('GROSSIP', 2911.46),
+            ('IP.PART', -804.44),
+            ('GROSS', 2107.02),
+            ('P.P', -350.53),
+            ('ATN.CAR.2', -109.92),
+            ('ATN.INT.2', -5.00),
+            ('ATN.MOB.2', 0),
+            ('M.ONSS', -29.90),
+            ('MEAL_V_EMP', -20.71),
+            ('REP.FEES', 150.00),
+            ('IP', 804.44),
+            ('IP.DED', -60.33),
+            ('NET', 2485.06),
+        ])
+        address = self.env['res.partner'].create({
+            'name': 'Roger',
+        })
+        employee = {
+            'name': 'Roger3',
+            'address_home_id': address.id,
+            'marital': 'cohabitant',
+            'spouse_fiscal_status': 'with income',
+            'spouse_net_revenue': 500,
+            'spouse_other_net_revenue': 0,
+            'children': 1,
+        }
+        model = self.env['fleet.vehicle.model'].create({
+            'name': 'Opel Model',
+            'brand_id': self.env.ref('fleet.brand_opel').id,
+        })
+        car = {
+            'model_id': model.id,
+            'driver_id': address.id,
+            'acquisition_date': datetime.date(2018, 1, 15),
+            'first_contract_date': datetime.date(2018, 1, 15),
+            'car_value': 29235.15,
+            'fuel_type': 'diesel',
+            'co2': 89,
+        }
+        car_contract = {
+            'recurring_cost_amount_depreciated': 562.52,
+        }
+        contract = {
+            'name': 'Contract For Roger',
+            'date_start': datetime.date(2019, 1, 1),
+            'wage': 3542.63,
+            'fuel_card': 150,
+            'holidays': 1,
+            'meal_voucher_amount': 7.45,
+            'representation_fees': 150,
+            'internet': 38,
+            'mobile': 0,
+            'ip_wage_rate': 25,
+            'ip': True,
+            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+        }
+        payslip = {
+            'date_from': datetime.date.today().replace(year=2019, month=5, day=1),
+            'date_to': datetime.date.today().replace(year=2019, month=5, day=31),
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
+        }
+        holiday = [{
+            'name': 'Unpaid Leave Day 1',
+            'holiday_status_id': self.leave_type_unpaid.id,
+            'request_date_from': datetime.date(2019, 5, 1),
+            'request_date_to': datetime.date(2019, 5, 1),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+        }, {
+            'name': 'Unpaid Leave Day 2',
+            'holiday_status_id': self.leave_type_unpaid.id,
+            'request_date_from': datetime.date(2019, 5, 2),
+            'request_date_to': datetime.date(2019, 5, 2),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+        }, {
+            'name': 'Bank Holiday Day 1',
+            'holiday_status_id': self.leave_type_bank_holidays.id,
+            'request_date_from': datetime.date(2019, 5, 6),
+            'request_date_to': datetime.date(2019, 5, 6),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+        }, {
+            'name': 'Bank Holiday Day 2',
+            'holiday_status_id': self.leave_type_bank_holidays.id,
+            'request_date_from': datetime.date(2019, 5, 7),
+            'request_date_to': datetime.date(2019, 5, 7),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+        }]
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holiday, car_values=car, car_contract_values=car_contract)
+
+    # ATN + No leave + IP (2019) + car
+    def test_with_car_with_atn_with_car(self):
+        values = OrderedDict([
+            ('BASIC', 3473.56),
+            ('ATN.INT', 5.00),
+            ('ATN.MOB', 4.0),
+            ('SALARY', 3482.56),
+            ('ONSS', -455.17),
+            ('ATN.CAR', 109.17),
+            ('GROSSIP', 3136.56),
+            ('IP.PART', -868.39),
+            ('GROSS', 2268.17),
+            ('P.P', -465.98),
+            ('ATN.CAR.2', -109.17),
+            ('ATN.INT.2', -5.00),
+            ('ATN.MOB.2', -4.00),
+            ('M.ONSS', -32.72),
+            ('MEAL_V_EMP', -22.89),
+            ('REP.FEES', 150.00),
+            ('IP', 868.39),
+            ('IP.DED', -65.13),
+            ('NET', 2581.67),
+        ])
+        values = OrderedDict([])
+        address = self.env['res.partner'].create({
+            'name': 'Roger4',
+        })
+        employee = {
+            'name': 'Roger4',
+            'address_home_id': address.id,
+            'marital': 'cohabitant',
+            'spouse_fiscal_status': 'with income',
+            'spouse_net_revenue': 500,
+            'spouse_other_net_revenue': 0,
+        }
+        model = self.env['fleet.vehicle.model'].create({
+            'name': 'Opel Model',
+            'brand_id': self.env.ref('fleet.brand_opel').id,
+        })
+        car = {
+            'model_id': model.id,
+            'driver_id': address.id,
+            'acquisition_date': datetime.date(2014, 12, 10),
+            'first_contract_date': datetime.date(2014, 12, 10),
+            'car_value': 28138.86,
+            'fuel_type': 'diesel',
+            'co2': 88.00,
+        }
+        car_contract = {
+            'recurring_cost_amount_depreciated': 503.12,
+        }
+        contract = {
+            'name': 'Contract For Roger',
+            'date_start': datetime.date(2019, 1, 1),
+            'wage': 3470.36,
+            'fuel_card': 150,
+            'holidays': 1,
+            'meal_voucher_amount': 7.45,
+            'representation_fees': 150,
+            'internet': 38,
+            'mobile': 0,
+            'ip_wage_rate': 25,
+            'ip': True,
+            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+        }
+        payslip = {
+            'date_from': datetime.date.today().replace(year=2019, month=3, day=1),
+            'date_to': datetime.date.today().replace(year=2019, month=3, day=31),
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
+        }
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, car_values=car, car_contract_values=car_contract)

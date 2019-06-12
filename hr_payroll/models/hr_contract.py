@@ -33,11 +33,15 @@ class HrContract(models.Model):
             ('date_to', '>=', min(self.mapped('date_start'))),
         ])
 
+    def _get_wage(self):
+        self.ensure_one()
+        return self.wage
+
     def _get_average_wage_per_day(self):
         # there are always 13 weeks in 3 months
         self.ensure_one()
         work_days_per_week = len(set(self.resource_calendar_id._get_global_attendances().mapped('dayofweek')))
-        return self.wage * 3 / 13 / work_days_per_week if work_days_per_week else 0.0 
+        return self._get_wage() * 3 / 13 / work_days_per_week if work_days_per_week else 0.0 
 
     @api.multi
     def _get_work_data(self, work_entry_types, date_from, date_to):

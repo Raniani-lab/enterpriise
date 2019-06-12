@@ -23,11 +23,11 @@
                 </group>
             </xpath>
             <xpath expr="//field[@name='attendance_ids']" position="after">
-                <group class="oe_subtotal_footer oe_right" style="width: 25% !important;">
+                <group class="oe_subtotal_footer oe_right">
                     <label for="hours_per_week" string="Total"/>
-                    <div class="o_row">
+                    <div class="d-flex">
                         <field name="hours_per_week" nolabel="1"/>
-                        <span> hours/week</span>
+                        <span class="ml-2"> hours/week</span>
                     </div>
                 </group>
             </xpath>

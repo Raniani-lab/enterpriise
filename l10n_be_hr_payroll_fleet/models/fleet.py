@@ -5,6 +5,7 @@ import babel.dates
 
 from odoo import api, fields, models
 from odoo.tools.misc import format_date
+from odoo.tools.float_utils import float_round
 
 from odoo.fields import Datetime, Date
 
@@ -164,7 +165,19 @@ class FleetVehicle(models.Model):
 class FleetVehicleLogContract(models.Model):
     _inherit = 'fleet.vehicle.log.contract'
 
-    recurring_cost_amount_depreciated = fields.Float("Recurring Cost Amount (depreciated)", tracking=True)
+    recurring_cost_amount_depreciated = fields.Float("Depreciated Cost Amount", tracking=True, compute='_compute_recurring_cost_amount_depreciated', store=True)
+
+    def _compute_recurring_cost_amount_depreciated(self):
+        for contract in self:
+            cost = contract.cost_generated
+            if contract.cost_frequency == "daily":
+                cost *= 30.0
+            elif contract.cost_frequency == "weekly":
+                cost *= 4.0
+            elif contract.cost_frequency == "yearly":
+                cost /= 12.0
+
+            contract.recurring_cost_amount_depreciated = float_round(contract.vehicle_id.co2_fee + cost, precision_digits=2)
 
 
 class FleetVehicleModel(models.Model):

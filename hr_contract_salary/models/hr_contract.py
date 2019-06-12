@@ -69,17 +69,11 @@ class HrContract(models.Model):
         cars = contracts.mapped('car_id').filtered(lambda car: not car.active and not car.license_plate)
         vehicle_contracts = cars.with_context(active_test=False).mapped('log_contracts').filtered(
             lambda contract: not contract.active)
-        costs = vehicle_contracts.mapped('cost_id')
 
-        if contracts or employees or partners or cars or vehicle_contracts or costs:
-            _logger.info('Salary: About to unlink vehicle costs %s, vehicle contracts %s, vehicles %s, partners %s, employees %s, contracts %s.',
-                         costs.ids, vehicle_contracts.ids, cars.ids, partners.ids, employees.ids, contracts.ids)
+        if contracts or employees or partners or cars or vehicle_contracts:
+            _logger.info('Salary: About to unlink vehicle contracts %s, vehicles %s, partners %s, employees %s, contracts %s.',
+                         vehicle_contracts.ids, cars.ids, partners.ids, employees.ids, contracts.ids)
             # Delete costs and vehicle contracts in cascade
-            for cost in costs:
-                try:
-                    cost.unlink()
-                except ValueError:
-                    pass
             for car in cars:
                 try:
                     car.unlink()

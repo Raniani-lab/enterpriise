@@ -13,7 +13,7 @@
         <record id="subscription_uom_year" model="uom.uom">
             <field name="name">Year(s)</field>
             <field ref="uom_categ_time" name="category_id"/>
-            <field name="factor_inv" eval="10.0"/>
+            <field name="factor_inv" eval="12.0"/>
             <field name="uom_type">bigger</field>
         </record>
 

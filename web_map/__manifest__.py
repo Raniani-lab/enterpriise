@@ -4,7 +4,7 @@
     'summary':"Defines the map view for odoo enterprise",
     'description':"Allows the viewing of records on a map",
     'version':'1.0',
-    'depends':['web'],
+    'depends':['web', 'base_setup'],
     'data':[
         "views/assets.xml",
         "views/res_config_settings.xml",

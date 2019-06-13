@@ -175,7 +175,7 @@ var DashboardRenderer = FormRenderer.extend({
             formatter = fieldUtils.format[formatType];
             if (this.state.compare) {
                 var comparisonValue = this.state.comparisonData[statisticName];
-                comparisonValue = _.contains(['date', 'datetime'], statistic.type) ? (fieldValue === 0 ? NaN : moment(comparisonValue)) : comparisonValue;
+                comparisonValue = _.contains(['date', 'datetime'], statistic.type) ? (comparisonValue === 0 ? NaN : moment(comparisonValue)) : comparisonValue;
                 variation = this.state.variationData[statisticName];
                 renderComparison($el, fieldValue, comparisonValue, variation, formatter, statistic, this.formatOptions);
                 $('.o_comparison', $el).append(valueLabel);

@@ -18,7 +18,7 @@ class Employee(models.Model):
         "Timesheets Validation Date", groups="hr.group_hr_user",
         help="Date until which the employee's timesheets have been validated")
     timesheet_manager_id = fields.Many2one(
-        'res.users', string='Timesheet Responsible',
+        'res.users', string='Timesheet',
         domain=_get_timesheet_manager_id_domain,
         help="User responsible of timesheet validation. Should be Timesheet Manager.")
 
@@ -68,5 +68,5 @@ class Employee(models.Model):
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'
 
-    timesheet_manager_id = fields.Many2one('res.users', string='Timesheet Responsible',
+    timesheet_manager_id = fields.Many2one('res.users', string='Timesheet',
         help="User responsible of timesheet validation. Should be Timesheet Manager.")

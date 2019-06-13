@@ -33,7 +33,7 @@
         </xpath>
         <xpath expr="//page[@name='hr_settings']" position="inside">
             <page string="Appraisal">
-                <group string="Appraisals Sent To">
+                <group string="Appraisals Set Up">
                     <field name="appraisal_by_manager" invisible="1"/>
                     <label for="appraisal_by_manager" attrs="{'invisible':[('appraisal_by_manager', '=', False)]}"/>
                     <field name="appraisal_manager_ids" nolabel="1" widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_manager', '=', False)]}" readonly="1"/>

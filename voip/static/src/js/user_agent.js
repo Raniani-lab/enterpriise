@@ -82,7 +82,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Mutes the current call
      */
     muteCall: function () {
-        if (this.callState === CALL_STATE.ONGOING_CALL) {
+        if (this.callState === CALL_STATE.ONGOING_CALL && this.mode !== "demo") {
             this._toggleMute(true);
         }
     },
@@ -92,7 +92,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {string} number number clicked
      */
     sendDtmf: function (number) {
-        if (this.callState === CALL_STATE.ONGOING_CALL) {
+        if (this.callState === CALL_STATE.ONGOING_CALL && this.mode !== "demo") {
             this.sipSession.dtmf(number);
         }
     },
@@ -102,7 +102,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {string} number
      */
     transfer: function (number) {
-        if (this.callState === CALL_STATE.ONGOING_CALL) {
+        if (this.callState === CALL_STATE.ONGOING_CALL && this.mode !== "demo") {
             this.sipSession.refer(number);
         }
     },
@@ -110,7 +110,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Unmutes the current call
      */
     unmuteCall: function () {
-       if (this.callState === CALL_STATE.ONGOING_CALL) {
+       if (this.callState === CALL_STATE.ONGOING_CALL && this.mode !== "demo") {
             this._toggleMute(false);
         }
     },

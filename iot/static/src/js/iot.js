@@ -66,7 +66,7 @@ var IotScanButton = Widget.extend({
     init: function (parent, record) {
         this._super.apply(this, arguments);
         this.token = record.data.token;
-        this.parseURL = new URL(window.location.href);
+        this.protocol = window.location.protocol;
         this.controlImage = '/iot.jpg';
         this.box_connect = '/hw_drivers/box/connect?token=' + btoa(this.token);
     },
@@ -80,40 +80,69 @@ var IotScanButton = Widget.extend({
         //  onNewIp - your listener function for new IPs
         //compatibility for firefox and chrome
         var MyPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
-        var pc = new MyPeerConnection({
-            iceServers: []
-        });
-        var noop = function () {};
-        var localIPs = {};
-        var ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g;
 
-        function iterateIP(ip) {
-            if (!localIPs[ip]){
-                if (ip.length < 16){
-                    localIPs[ip] = true;
-                    onNewIP(ip);
+        if (MyPeerConnection) {
+            var pc = new MyPeerConnection({
+                iceServers: []
+            });
+            var noop = function () {};
+            var localIPs = {};
+            var ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g;
+
+            function iterateIP(ip) {
+                if (!localIPs[ip]){
+                    if (ip.length < 16){
+                        localIPs[ip] = true;
+                        onNewIP(ip);
+                    }
                 }
             }
+
+            if (typeof pc.createDataChannel !== "undefined") {
+                //create a bogus data channel
+                pc.createDataChannel('');
+
+                // create offer and set local description
+                pc.createOffer().then(function (sdp) {
+                    sdp.sdp.split('\n').forEach(function (line) {
+                        if (line.indexOf('candidate') < 0) return;
+                        line.match(ipRegex).forEach(iterateIP);
+                    });
+
+                    pc.setLocalDescription(sdp, noop, noop);
+                });
+
+                //listen for candidate events
+                pc.onicecandidate = function (ice) {
+                    if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+                    ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+                };
+            } else {
+                this._RTCNotSupported();
+            }
+        } else {
+            this._RTCNotSupported();
         }
+    },
 
-        //create a bogus data channel
-        pc.createDataChannel('');
+    _RTCNotSupported: function () {
+        var $content = $('<div/>')
+            .append($('<p/>').html(_t('The scan function doesn\'t work with your browser. <br>\
+                Please use another browser (e.g. Firefox, Chrome) or use the token to connect to your IoT BoX. <br>')));
 
-        // create offer and set local description
-        pc.createOffer().then(function (sdp) {
-            sdp.sdp.split('\n').forEach(function (line) {
-                if (line.indexOf('candidate') < 0) return;
-                line.match(ipRegex).forEach(iterateIP);
-            });
-
-            pc.setLocalDescription(sdp, noop, noop);
+        var dialog = new Dialog(this, {
+            title: _t('Scan Function Not Allowed'),
+            $content: $content,
+            buttons: [
+                {
+                    text: _t('Close'),
+                    classes: 'btn-secondary o_form_button_cancel',
+                    close: true,
+                }
+            ],
         });
 
-        //listen for candidate events
-        pc.onicecandidate = function (ice) {
-            if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
-            ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
-        };
+        dialog.open();
     },
 
     _scanRange: function (urls, range) { 
@@ -133,7 +162,7 @@ var IotScanButton = Widget.extend({
                 // * it could mean the server certificate is not yet accepted by the client.
                 // * To know if it is really the case, we try to fetch an image on the http port of the server.
                 // * If it loads successfully, we put informations of connection in parameter of image.
-                if (textStatus === 'error' && self.parseURL.protocol === 'https:') {
+                if (textStatus === 'error' && self.protocol === 'https:') {
                     var imgSrc = url + self.controlImage;
                     img.src = imgSrc.replace('https://', 'http://');
                     img.onload = function(XHR) {
@@ -169,10 +198,10 @@ var IotScanButton = Widget.extend({
 
         for (var i = 0; i < ipPerRange; i++) {
             var port = '';
-            if (this.parseURL.protocol === 'http:') {
+            if (this.protocol === 'http:') {
                 port = ':8069';
             }
-            this.ranges[range].urls.push(this.parseURL.protocol + '//' + (range + i) + port);
+            this.ranges[range].urls.push(this.protocol + '//' + (range + i) + port);
         }
     },
 
@@ -343,7 +372,7 @@ var IoTLongpolling = BusService.extend({
      * @param {Callback} callback_fail
      */
     action: function (iot_ip, device_id, data, callback_success, callback_fail) {
-        this.parseURL = new URL(window.location.href);
+        this.protocol = window.location.protocol;
         var self = this;
         var data = {
             params: {
@@ -419,9 +448,9 @@ var IoTLongpolling = BusService.extend({
      * @param {Object} options.timeout
      */
     _rpcIoT: function (iot_ip, route, data, options) {
-        this.parseURL = new URL(window.location.href);
-        var port = this.parseURL.protocol === 'http:' ? ':8069' : '';
-        var url = this.parseURL.protocol + '//' + iot_ip + port;
+        this.protocol = window.location.protocol;
+        var port = this.protocol === 'http:' ? ':8069' : '';
+        var url = this.protocol + '//' + iot_ip + port;
         var queryOptions = _.extend({
             url: url + route,
             dataType: 'json',
@@ -466,7 +495,7 @@ var IoTLongpolling = BusService.extend({
                     self._onError();
                 }
             }).fail(function (jqXHR, textStatus) {
-                if (textStatus === 'error' && self.parseURL.protocol === 'https:') {
+                if (textStatus === 'error' && self.protocol === 'https:') {
                     self._doWarnCertificate(iot_ip);
                 } else {
                     self._onError();

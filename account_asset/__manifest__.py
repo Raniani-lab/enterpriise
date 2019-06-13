@@ -28,4 +28,5 @@ Keeps track of depreciations, and creates corresponding journal entries.
         "static/src/xml/account_asset_template.xml",
     ],
     'license': 'OEEL-1',
+    'auto_install': True,
 }

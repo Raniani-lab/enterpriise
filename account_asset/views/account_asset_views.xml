@@ -8,27 +8,20 @@
             <form string="Asset">
                 <field name="user_type_id" invisible="1"/>
                 <field name="display_account_asset_id" invisible="1"/>
-                <field name="display_warning_account_type" invisible="1"/>
                 <field name="display_model_choice" invisible="1"/>
                 <field name="state" invisible="1"/>
                 <field name="total_depreciation_entries_count" invisible="1"/>
                 <header invisible="context.get('active_model')=='account.move.line'">
                     <button name="validate" states="draft" string="Confirm" type="object" class="oe_highlight"/>
                     <button type="object" name="compute_depreciation_board" string="Compute Depreciation" states="draft"/>
-                    <button name="action_set_to_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"/>
+                    <button name="action_set_to_close" string="Sell or Dispose" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', '!=', 'open'), ('asset_type', '!=', 'purchase')]}"/>
                     <button name="set_to_draft" string="Set to Draft" type="object" attrs="{'invisible': ['|', ('depreciation_entries_count', '!=', 0), ('state', '!=', 'open')]}"/>
-                    <button name="action_asset_pause" string="Pause Depreciation" type="object" attrs="{'invisible': [('state', '!=', 'open')]}"/>
+                    <button name="action_asset_pause" string="Pause Depreciation" type="object" attrs="{'invisible': ['|', ('state', '!=', 'open'), ('asset_type', '!=', 'purchase')]}"/>
                     <button name="resume_after_pause" string="Resume Depreciation" type="object" attrs="{'invisible': [('state', '!=', 'paused')]}"/>
                     <button name="action_asset_modify" states="open" string="Modify Depreciation" type="object"/>
                     <button name="action_save_model" states="open,paused,close" string="Save Model" type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,open" attrs="{'invisible': [('state', '=', 'model')]}"/>
                 </header>
-                <div class="alert alert-info" role="alert" attrs="{'invisible': ['|', ('display_warning_account_type','=',False), ('asset_type', '=', 'sale')]}" name="alert_div">
-                    The account from the selected Journal Items is not configured to generate assets.
-                </div>
-                <div class="alert alert-info" role="alert" attrs="{'invisible': ['|', ('display_warning_account_type','=',False), ('asset_type', '=', 'purchase')]}" name="alert_div">
-                    The account from the selected Journal Items is not configured to generate deferred revenues.
-                </div>
                 <sheet>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '=', 'model')]}">
@@ -53,7 +46,7 @@
                             <field name="first_depreciation_date" attrs="{'invisible': [('state', '=', 'model')]}"/>
                             <field name="asset_type" invisible="1"/>
                             <field name="active" invisible="1"/>
-                            <field name="account_asset_id" attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '=', 'sale')], 'required': [('state', '=', 'model')]}"/>
+                            <field name="account_asset_id" attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')], 'required': [('state', '=', 'model')]}"/>
                             <field name="account_depreciation_id" required="1"/>
                             <field name="account_depreciation_expense_id" required="1"/>
                             <field name="journal_id" required="1"/>
@@ -64,9 +57,9 @@
                             <field name="currency_id" groups="base.group_multi_currency"/>
                             <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                             <field name="value" widget="monetary" required="1" attrs="{'invisible': [('state', '=', 'model')]}" options="{'currency_field': 'currency_id'}" help="Gross value of asset"/>
-                            <field name="salvage_value" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': ['|', ('asset_type','=','sale'), ('state', '=', 'model')]}"/>
+                            <field name="salvage_value" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': ['|', ('asset_type','!=','purchase'), ('state', '=', 'model')]}"/>
                             <field name="value_residual" widget="monetary" attrs="{'invisible': [('state', '=', 'model')]}" options="{'currency_field': 'currency_id'}" readonly="1"/>
-                            <field name="method" widget="radio" attrs="{'invisible': [('asset_type','=','sale')]}" options="{'horizontal': true}"/>
+                            <field name="method" widget="radio" attrs="{'invisible': [('asset_type','!=','purchase')]}" options="{'horizontal': true}"/>
                             <field name="method_progress_factor" attrs="{'invisible':[('method','=','linear')], 'required':[('method','in',('degressive', 'degressive_then_linear'))]}"/>
                             <label for="method_number"/>
                             <div class="o_row">
@@ -260,8 +253,10 @@
     <record model="ir.actions.act_window" id="action_account_asset_form">
         <field name="name">Assets</field>
         <field name="res_model">account.asset</field>
-        <field name="view_mode">tree,kanban,form</field>
-        <field name="view_id" ref="view_account_asset_purchase_tree"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_purchase_tree')}),
+            (0, 0, {'view_mode': 'kanban'}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_form')})]"/>
         <field name="domain">[('asset_type', '=', 'purchase'), ('state', '!=', 'model')]</field>
         <field name="context">{'asset_type': 'purchase', 'default_asset_type': 'purchase'}</field>
     </record>

@@ -48,7 +48,7 @@ class AccountAsset(models.Model):
     salvage_value = fields.Monetary(string='Salvage Value', digits=0, readonly=True, states={'draft': [('readonly', False)]},
         help="It is the amount you plan to have that you cannot depreciate.")
     original_move_line_ids = fields.One2many('account.move.line', 'asset_id', string='Journal Items', readonly=True, states={'draft': [('readonly', False)]}, copy=False)
-    asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset')], index=True, readonly=False, states={'draft': [('readonly', False)]}, store=True)
+    asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], index=True, readonly=False, states={'draft': [('readonly', False)]})
     account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tag')
     first_depreciation_date = fields.Date(
@@ -67,7 +67,6 @@ class AccountAsset(models.Model):
     # model-related fields
     model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]})
     user_type_id = fields.Many2one('account.account.type', related="account_asset_id.user_type_id", string="Type of the account")
-    display_warning_account_type = fields.Boolean(compute="_compute_value")
     display_model_choice = fields.Boolean(compute="_compute_value")
     display_account_asset_id = fields.Boolean(compute="_compute_value")
 
@@ -84,30 +83,29 @@ class AccountAsset(models.Model):
             if any(account != record.original_move_line_ids[0].account_id for account in record.original_move_line_ids.mapped('account_id')):
                 raise UserError(_("All the lines should be from the same account"))
             record.account_asset_id = record.original_move_line_ids[0].account_id
-            record.display_warning_account_type = not record.account_asset_id.can_create_asset and not record.account_asset_id.can_create_deferred_revenue
             record.display_model_choice = record.state == 'draft' and len(self.env['account.asset'].search([('state', '=', 'model'), ('account_asset_id.user_type_id', '=', record.user_type_id.id)]))
             record.display_account_asset_id = False
             record.name = record.original_move_line_ids[0].name
             if not record.journal_id:
                 record.journal_id = misc_journal_id
-            record.value = sum(line.credit+line.debit for line in record.original_move_line_ids)
+            total_credit = sum(line.credit for line in record.original_move_line_ids)
+            total_debit = sum(line.debit for line in record.original_move_line_ids)
+            record.value = total_credit + total_debit
+            if (total_credit and total_debit) or record.value == 0:
+                raise UserError(_("You cannot create an asset from lines containing credit and debit on the account or with a null amount"))
             record.first_depreciation_date = record._get_first_depreciation_date()
 
     def _set_value(self):
         for record in self:
-            if record.original_move_line_ids:
-                is_debit = any(line.credit == 0 for line in record.original_move_line_ids)
-                is_credit = any(line.debit == 0 for line in record.original_move_line_ids)
-                if is_debit and is_credit:
-                    raise UserError(_("You cannot create an asset from lines containing credit and debit on the account or with a null amount"))
-                if is_debit:
-                    record.asset_type = 'purchase'
-                else:
-                    record.asset_type = 'sale'
-            if not record.asset_type and 'asset_type' in self.env.context:
+            if 'asset_type' in self.env.context:
                 record.asset_type = self.env.context['asset_type']
+            elif record.original_move_line_ids:
+                account = record.original_move_line_ids.account_id
+                record.asset_type = account.asset_type
+                if not account.asset_type:
+                    raise UserError(_('The account "%s" does not allow to create asset') % account.name)
             if not record.account_asset_id:
-                record.account_asset_id = record.account_depreciation_id if record.asset_type == 'purchase' else record.account_depreciation_expense_id
+                record.account_depreciation_id if record.asset_type in ('purchase', 'expense') else record.account_depreciation_expense_id
 
     @api.onchange('value')
     def _onchange_value(self):
@@ -144,8 +142,13 @@ class AccountAsset(models.Model):
 
     @api.onchange('account_depreciation_id')
     def _onchange_account_depreciation_id(self):
-        if self.asset_type == 'sale' and self.state == 'model':
-            self.account_asset_id = self.account_depreciation_id  # account_asset_id is not displayed in the sale-model form but is technicaly required
+        """
+        The field account_asset_id is required but invisible in the Deferred Revenue Model form.
+        Therfore, set it when account_depreciation_id changes.
+        """
+        if self.asset_type in ('sale', 'expense') and self.state == 'model':
+            self.account_asset_id = self.account_depreciation_id
+
 
     @api.onchange('account_asset_id')
     def _onchange_account_asset_id(self):
@@ -339,10 +342,15 @@ class AccountAsset(models.Model):
         }
 
     def action_save_model(self):
-        form_view = self.env.ref('account_deferred_revenue.view_account_asset_revenue_form', False) or self.env.ref('account_asset.view_account_asset_form')
+        form_ref = {
+            'purchase': 'account_asset.view_account_asset_form',
+            'sale': 'account_deferred_revenue.view_account_asset_revenue_form',
+            'expense': 'account_deferred_revenue.view_account_asset_expense_form',
+        }.get(self.asset_type)
+
         return {
             'name': _('Save model'),
-            'views': [[form_view.id, "form"]],
+            'views': [[self.env.ref(form_ref).id, "form"]],
             'res_model': 'account.asset',
             'type': 'ir.actions.act_window',
             'context': {
@@ -400,8 +408,13 @@ class AccountAsset(models.Model):
             if asset.method == 'linear':
                 del(tracked_fields['method_progress_factor'])
             dummy, tracking_value_ids = asset._message_track(tracked_fields, dict.fromkeys(fields))
-            asset.message_post(subject=_('Asset created'), tracking_value_ids=tracking_value_ids)
-            msg = _('An asset has been created for this move: <a href="/web#id={id}&model=account.asset">{name}</a>').format(id=asset.id, name=asset.name)
+            asset_name = {
+                'purchase': (_('Asset created'), _('An asset has been created for this move:')),
+                'sale': (_('Deferred revenue created'), _('A deferred revenue has been created for this move:')),
+                'expense': (_('Deferred expense created'), _('A deferred expense has been created for this move:')),
+            }[asset.asset_type]
+            msg = asset_name[1] + ' <a href="/web#id=%s&model=account.asset">%s</a>' % (asset.id, asset.name)
+            asset.message_post(subject=asset_name[0], tracking_value_ids=tracking_value_ids)
             for move_id in asset.original_move_line_ids.mapped('move_id'):
                 move_id.message_post(body=msg)
             if not asset.depreciation_move_ids:

@@ -78,7 +78,7 @@ class TestAccountAsset(common.TransactionCase):
         """ Test if an an asset is created when an invoice is validated with an
         item on an account for generating entries.
         """
-        self.env.context = {**self.env.context, **{'asset_type': 'sale'}}
+        self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
         self._load('account', 'test', 'account_minimal_test.xml')
         self._load('account_asset', 'test', 'account_deferred_revenue_demo_test.xml')
 
@@ -196,7 +196,7 @@ class TestAccountAsset(common.TransactionCase):
         move_line_ids = move_ids.mapped('line_ids').filtered(lambda x: x.debit)
 
         asset = self.env['account.asset'].new({'original_move_line_ids': [(6, 0, move_line_ids.ids)]})
-        asset_form = Form(self.env['account.asset'].with_context(default_original_move_line_ids=move_line_ids.ids))
+        asset_form = Form(self.env['account.asset'].with_context(default_original_move_line_ids=move_line_ids.ids, asset_type='purchase'))
         asset_form._values['original_move_line_ids'] = [(6, 0, move_line_ids.ids)]
         asset_form._perform_onchange(['original_move_line_ids'])
         asset_form.account_depreciation_expense_id = self.env.ref('account_asset.cas')

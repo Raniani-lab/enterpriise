@@ -8,10 +8,9 @@
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <field name="asset_id" invisible="1"/>
                 <field name="asset_asset_type" invisible="1"/>
+                <field name="asset_ids_display_name" invisible="1"/>
                 <field name="number_asset_ids" invisible="1"/>
-                <field name="number_deferred_revenue_ids" invisible="1"/>
                 <field name="draft_asset_ids" invisible="1"/>
-                <field name="draft_deferred_revenue_ids" invisible="1"/>
                 <button name="open_asset_view"
                     attrs="{'invisible': ['|', ('asset_id', '=', False), ('asset_asset_type', '=', 'sale')]}"
                     class="oe_stat_button"
@@ -31,28 +30,14 @@
                     class="oe_stat_button"
                     icon="fa-id-card-o"
                     attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', True)]}">
-                    <field string="Asset(s)" name="number_asset_ids" widget="statinfo"/>
+                    <field name="asset_ids_display_name" nolabel="1"/>
                 </button>
                 <button name="action_open_asset_ids"
                     type="object"
                     class="oe_stat_button text-danger"
                     icon="fa-id-card-o"
                     attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', False)]}">
-                    <field string="Asset(s)" name="number_asset_ids" widget="statinfo"/>
-                </button>
-                <button name="action_open_deferred_revenue_ids"
-                    class="oe_stat_button"
-                    icon="fa-id-card-o"
-                    type="object"
-                    attrs="{'invisible': ['|', ('number_deferred_revenue_ids', '=', 0), ('draft_deferred_revenue_ids', '=', True)]}">
-                    <field string="Deferred Revenue(s)" name="number_deferred_revenue_ids" widget="statinfo"/>
-                </button>
-                <button name="action_open_deferred_revenue_ids"
-                    class="oe_stat_button text-danger"
-                    icon="fa-id-card-o"
-                    type="object"
-                    attrs="{'invisible': ['|', ('number_deferred_revenue_ids', '=', 0), ('draft_deferred_revenue_ids', '=', False)]}">
-                    <field string="Deferred Revenue(s)" name="number_deferred_revenue_ids" widget="statinfo"/>
+                    <field name="asset_ids_display_name" nolabel="1"/>
                 </button>
             </xpath>
         </field>

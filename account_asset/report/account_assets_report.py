@@ -198,6 +198,7 @@ class assets_report(models.AbstractModel):
                 AND asset.first_depreciation_date <= %(date_to)s
                 AND (asset.disposal_date >= %(date_from)s OR asset.disposal_date IS NULL)
                 AND asset.state not in ('model', 'draft')
+                AND asset.asset_type = 'purchase'
 
                 ORDER BY account.code;
             """.format(where_account_move=where_account_move)

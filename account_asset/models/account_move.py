@@ -17,11 +17,9 @@ class AccountMove(models.Model):
     asset_manually_modified = fields.Boolean(help='This is a technical field stating that a depreciation line has been manually modified. It is used to recompute the depreciation table of an asset/deferred revenue.', copy=False)
 
     asset_ids = fields.One2many('account.asset', string='Assets', compute="_compute_asset_ids")
-    deferred_revenue_ids = fields.One2many('account.asset', compute="_compute_asset_ids")
+    asset_ids_display_name = fields.Char(compute="_compute_asset_ids")
     number_asset_ids = fields.Integer(compute="_compute_asset_ids")
-    number_deferred_revenue_ids = fields.Integer(compute="_compute_asset_ids")
     draft_asset_ids = fields.Boolean(compute="_compute_asset_ids")
-    draft_deferred_revenue_ids = fields.Boolean(compute="_compute_asset_ids")
 
     @api.onchange('amount_total')
     def _onchange_amount(self):
@@ -62,7 +60,7 @@ class AccountMove(models.Model):
                 continue
 
             for move_line in move.line_ids:
-                if (move_line.account_id.can_create_asset or move_line.account_id.can_create_deferred_revenue) and move_line.account_id.create_asset != 'no':
+                if move_line.account_id and (move_line.account_id.can_create_asset) and move_line.account_id.create_asset != 'no':
                     vals = {
                         'name': move_line.name,
                         'company_id': move_line.company_id.id,
@@ -87,7 +85,13 @@ class AccountMove(models.Model):
                 if validate:
                     asset.validate()
             if invoice:
-                msg = _('Asset created from invoice: <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>') % (invoice.id, invoice.name)
+                asset_name = {
+                    'purchase': _('Asset'),
+                    'sale': _('Deferred revenue'),
+                    'expense': _('Deferred expense'),
+                }[asset.asset_type]
+                msg = _('%s created from invoice') % (asset_name)
+                msg += ': \<a href=# data-oe-model=account.move data-oe-id=%d>%s\</a>' % (invoice.id, invoice.name)
                 asset.message_post(body=msg)
         return assets
 
@@ -141,13 +145,16 @@ class AccountMove(models.Model):
     @api.depends('line_ids.asset_id')
     def _compute_asset_ids(self):
         for record in self:
-            assets = record.mapped('line_ids.asset_id')
-            record.asset_ids = assets.filtered(lambda x: x.asset_type == 'purchase')
-            record.deferred_revenue_ids = assets.filtered(lambda x: x.asset_type == 'sale')
+            record.asset_ids = record.mapped('line_ids.asset_id')
             record.number_asset_ids = len(record.asset_ids)
-            record.number_deferred_revenue_ids = len(record.deferred_revenue_ids)
+            if record.number_asset_ids:
+                asset_type = {
+                    'sale': _('Deferred Revenue(s)'),
+                    'purchase': _('Asset(s)'),
+                    'expense': _('Deferred Expense(s)')
+                }
+                record.asset_ids_display_name = '%s %s' % (len(record.asset_ids), asset_type.get(record.asset_ids[0].asset_type))
             record.draft_asset_ids = bool(record.asset_ids.filtered(lambda x: x.state == "draft"))
-            record.draft_deferred_revenue_ids = bool(record.deferred_revenue_ids.filtered(lambda x: x.state == "draft"))
 
     @api.model
     def create_asset_move(self, vals):
@@ -166,7 +173,7 @@ class AccountMove(models.Model):
         }
 
     def action_open_asset_ids(self):
-        return {
+        ret = {
             'name': _('Assets'),
             'view_type': 'form',
             'view_mode': 'tree,form',
@@ -175,16 +182,15 @@ class AccountMove(models.Model):
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', self.asset_ids.ids)],
         }
-
-    def action_open_deferred_revenue_ids(self):
-        form_view = self.env.ref('account_deferred_revenue.view_account_asset_revenue_form', False) or self.env.ref('account_asset.view_account_asset_form')
-        return {
-            'name': _('Deferred Revenues'),
-            'res_model': 'account.asset',
-            'views': [[False, "tree"], [form_view.id, "form"]],
-            'type': 'ir.actions.act_window',
-            'domain': [('id', 'in', self.deferred_revenue_ids.ids)],
-        }
+        if self.asset_asset_type == 'sale':
+            form_view = self.env.ref('account_deferred_revenue.view_account_asset_revenue_form')
+            ret['name'] = _('Deferred Revenues')
+            ret['views'] = [[False, "tree"], [form_view.id, "form"]],
+        elif self.asset_asset_type == 'expense':
+            form_view = self.env.ref('account_deferred_revenue.view_account_asset_expense_form')
+            ret['name'] = _('Deferred Expenses')
+            ret['views'] = [[False, "tree"], [form_view.id, "form"]],
+        return ret
 
 
 class AccountMoveLine(models.Model):
@@ -192,16 +198,25 @@ class AccountMoveLine(models.Model):
 
     asset_id = fields.Many2one('account.asset', string='Asset Linked', ondelete="set null", help="Asset created from this Journal Item", copy=False)
 
-    def turn_as_asset(self):
+    def _turn_as_asset(self, asset_type, view_name, view):
         ctx = self.env.context.copy()
-        ctx.update({'default_original_move_line_ids': [(6, False, self.env.context['active_ids'])]})
+        ctx.update({
+            'default_original_move_line_ids': [(6, False, self.env.context['active_ids'])],
+            'asset_type': asset_type,
+        })
+        if any(line.move_id.state == 'draft' for line in self):
+            raise UserError(_("All the lines should be posted"))
+        if any(account != self[0].account_id for account in self.mapped('account_id')):
+            raise UserError(_("All the lines should be from the same account"))
         self.env['account.asset']._check_original_move_line_ids(ctx['default_original_move_line_ids'])
-        view = self.browse(self.env.context['active_id']).credit and self.env.ref('account_deferred_revenue.view_account_asset_revenue_modal', False) or self.env.ref('account_asset.view_account_asset_modal')  # If account_deferred_revenue is installed and this is a credit line, take the right view
         return {
-            "name": _("Turn as an asset"),
+            "name": view_name,
             "type": "ir.actions.act_window",
             "res_model": "account.asset",
             "views": [[view.id, "form"]],
             "target": "new",
             "context": ctx,
         }
+
+    def turn_as_asset(self):
+        return self._turn_as_asset('purchase', _("Turn as an asset") ,self.env.ref("account_asset.view_account_asset_modal"))

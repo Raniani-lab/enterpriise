@@ -89,7 +89,7 @@
             <field name="inherit_id" ref="account_bank_statement_import.account_bank_statement_import_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//ul[@id='statement_format']" position="inside">
-                    <li>Belgium Coded Statement of Account (.CODA) <a href="/l10n_be_coda/static/csv/Ontvangen_CODA.2013-01-11-18.59.15.txt" class="ml4" download="test_be_coda.text"><i class="fa fa-download mr4"></i>Import Sample Template</a></li>
+                    <li>Belgium Coded Statement of Account (.CODA) <a href="/l10n_be_coda/static/csv/Ontvangen_CODA.2013-01-11-18.59.15.txt" class="ml4" download="test_be_coda.text"><i class="fa fa-download mr4"></i>Import Sample Template</a> <span class="ml-4"><field name="split_transactions"/>Split Transactions</span></li>
                 </xpath>
             </field>
         </record>

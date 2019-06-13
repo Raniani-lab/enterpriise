@@ -298,7 +298,7 @@ class Task(models.Model):
             for line in self.material_line_ids:
                 existing_line = self.env['sale.order.line'].search([('order_id', '=', sale_order.id), ('product_id', '=', line.product_id.id)], limit=1)
                 if existing_line:
-                    existing_line.write({'product_uom_qty': line.existing_line + line.quantity})
+                    existing_line.write({'product_uom_qty': existing_line.product_uom_qty + line.quantity})
                 else:
                     self.env['sale.order.line'].create({
                         'order_id': sale_order.id,

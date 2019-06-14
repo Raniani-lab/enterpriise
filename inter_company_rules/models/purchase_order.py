@@ -44,7 +44,16 @@ class purchase_order(models.Model):
         # check pricelist currency should be same with SO/PO document
         company_partner = self.company_id.partner_id.sudo(intercompany_uid)
         if self.currency_id.id != company_partner.property_product_pricelist.currency_id.id:
-            raise Warning(_('You cannot create SO from PO because sale price list currency is different than purchase price list currency.'))
+            raise Warning(
+                _('You cannot create SO from PO because sale price list currency is different than purchase price list currency.')
+                + '\n'
+                + _('The currency of the SO is obtained from the pricelist of the company partner.')
+                + '\n\n ({} {}, {} {}, {} {} (ID: {}))'.format(
+                    _('SO currency:'), company_partner.property_product_pricelist.currency_id.name,
+                    _('Pricelist:'), company_partner.property_product_pricelist.display_name,
+                    _('Partner:'), company_partner.display_name, company_partner.id,
+                )
+            )
 
         # create the SO and generate its lines from the PO lines
         SaleOrderLine = self.env['sale.order.line']

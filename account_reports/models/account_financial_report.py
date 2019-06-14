@@ -726,7 +726,7 @@ class AccountFinancialReportLine(models.Model):
             select_clause_2 = ', '.join(columns_2)
 
             #we use query_get() to filter out unrelevant journal items to have a shadowed table as small as possible
-            tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=self._get_aml_domain())
+            tables, where_clause, where_params = self.env['account.move.line']._query_get()
             sql = """WITH account_move_line AS (
               SELECT """ + select_clause_1 + """
                FROM """ + tables + """

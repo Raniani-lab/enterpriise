@@ -7,8 +7,8 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     @api.multi
-    def action_invoice_create(self, grouped=False, final=False):
-        invoice_ids = super(SaleOrder, self).action_invoice_create(grouped, final)
+    def _create_invoices(self, grouped=False, final=False):
+        invoice_ids = super(SaleOrder, self)._create_invoices(grouped, final)
         inv_obj = refunds = self.env['account.invoice']
         invoices_with_reward = inv_obj.browse(invoice_ids).filtered(lambda inv:
                     inv.type == 'out_invoice'and

@@ -69,7 +69,7 @@ class HmrcVatObligation(models.Model):
             status = 'O' if status == 'open' else 'F'
             params.update({'status': status})
         resp = requests.get(url, headers=headers, params=params)
-        response = json.loads(resp.content)
+        response = json.loads(resp.content.decode())
         if resp.status_code == 200:
             # Create obligations
             return response.get('obligations')
@@ -170,7 +170,7 @@ class HmrcVatObligation(models.Model):
         r = requests.post(url, headers=headers, data=json.dumps(data))
         # Need to do something with the result?
         if r.status_code == 201: #Successful post
-            response = json.loads(r.content)
+            response = json.loads(r.content.decode())
             msg = _('Tax return successfully posted:') + ' <br/>'
             msg += '<b>' + _('Date Processed') + ': </b>' + response['processingDate'] + '<br/>'
             if response.get('paymentIndicator'):
@@ -191,7 +191,7 @@ class HmrcVatObligation(models.Model):
         else:  # other issues
             _logger.exception(_("HMRC other issue : %s") % r.content)
             # even 'normal' hmrc errors have a json body. Otherwise will also raise.
-            response = json.loads(r.content)
+            response = json.loads(r.content.decode())
             # Recuperate error message
             if response.get('errors'):
                 msgs = ""

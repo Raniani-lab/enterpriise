@@ -46,6 +46,7 @@
         padding-right: 10px;
         height: 30px;
         position: relative;
+        flex: 0 0 auto;
 
         .o_dial_unfold {
             display: none;
@@ -95,8 +96,7 @@
         flex: 1 1 auto;
         display: flex;
         flex-flow: column nowrap;
-        min-height: auto;
-        height: auto;
+        min-height: 0;
     }
     .o_dial_panel{
         ul.nav.nav-tabs {

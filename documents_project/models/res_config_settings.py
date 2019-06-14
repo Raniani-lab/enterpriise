@@ -26,4 +26,5 @@ class ResConfigSettings(models.TransientModel):
 
     @api.onchange('project_folder')
     def on_project_folder_change(self):
-        self.project_tags = False
+        if self.project_folder != self.project_tags.mapped('folder_id'):
+            self.project_tags = False

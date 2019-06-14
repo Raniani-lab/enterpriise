@@ -230,4 +230,7 @@ var OnlineSyncAccountInstitutionSelector = AbstractAction.extend({
 
 });
 core.action_registry.add('online_sync_institution_selector', OnlineSyncAccountInstitutionSelector);
+return {
+    OnlineSyncAccountInstitutionSelector: OnlineSyncAccountInstitutionSelector,
+}
 });

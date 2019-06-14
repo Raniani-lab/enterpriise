@@ -59,3 +59,21 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
 
         self.assertEqual(txt_doc.folder_id, self.folder_test, 'the text two document have a folder')
         self.assertEqual(gif_doc.folder_id, self.folder_test, 'the gif two document have a folder')
+
+    def test_default_res_id_model(self):
+        """
+        Test default res_id and res_model from context are used for document creation.
+        """
+        self.company_test.write({'documents_product_settings': True})
+
+        attachment = self.env['ir.attachment'].with_context(
+            default_res_id=self.product_test.id,
+            default_res_model=self.product_test._name,
+        ).create({
+            'datas': GIF,
+            'name': 'Test gif two',
+            'datas_fname': 'fileTwoGif.gif',
+            'mimetype': 'image/gif',
+        })
+        document = self.env['documents.document'].search([('attachment_id', '=', attachment.id)])
+        self.assertTrue(document, "It should have created a document from default values")

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-15 13:54+0000\n"
+"POT-Creation-Date: 2019-06-12 13:22+0000\n"
 "PO-Revision-Date: 2019-04-16 15:44+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -334,7 +334,6 @@ msgstr "Créé par"
 
 #. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_blackbox_be_log_create_date
-#: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_create_date
 msgid "Created on"
 msgstr "Créé le"
 
@@ -776,7 +775,7 @@ msgstr "Pas d'enregistrement."
 #: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:275
 #, python-format
 msgid "Not allowed to take back more than was ordered."
-msgstr "Interdiction de remprendre plus que ce qui a été commandé."
+msgstr "Interdiction de reprendre plus que ce qui n'a été commandé."
 
 #. module: pos_blackbox_be
 #. openerp-web
@@ -1064,6 +1063,41 @@ msgid "Session"
 msgstr "Session"
 
 #. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1508
+#, python-format
+msgid ""
+"Session has already been Worked Out. Open a new session to keep selling."
+msgstr "La session a déjà enregistré un Travail In. Ouvrez une nouvelle session "
+"pour continuer à vendre."
+
+#. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1538
+#, python-format
+msgid "Session has already been initialized Worked In."
+msgstr "La session a déjà enregistré un Travail In."
+
+#. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:417
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1545
+#, python-format
+msgid "Session has been Worked Out. Open a new session to keep selling."
+msgstr ""
+"La session a enregistré un Travail Out. Ouvrez une nouvelle session pour "
+"continuer à vendre."
+
+#. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:412
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1501
+#, python-format
+msgid "Session is not initialized yet. Register a Work In event first."
+msgstr ""
+"La session n'a pas été démarrée. Enregistez un Travail In pour commencer."
+
+#. module: pos_blackbox_be
 #: model:ir.model.fields,help:pos_blackbox_be.field_res_users_insz_or_bis_number
 msgid "Social security identification number"
 msgstr "Numéro d'identification de sécurité sociale"
@@ -1334,6 +1368,11 @@ msgid "VSC ID:"
 msgstr "ID de la carte TVA:"
 
 #. module: pos_blackbox_be
+#: selection:pos.session,work_status:0
+msgid "Valid"
+msgstr "Valide"
+
+#. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_line_pro_forma_vat_letter
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_line_vat_letter
 msgid "Vat Letter"
@@ -1360,16 +1399,23 @@ msgid "Version of Odoo that created the order"
 msgstr "Version de Odoo qui a créé cette commande"
 
 #. module: pos_blackbox_be
+#: selection:pos.session,work_status:0
 #: model:product.product,name:pos_blackbox_be.product_product_work_in
 #: model:product.template,name:pos_blackbox_be.product_product_work_in_product_template
 msgid "WORK IN"
 msgstr "TRAVAIL IN"
 
 #. module: pos_blackbox_be
+#: selection:pos.session,work_status:0
 #: model:product.product,name:pos_blackbox_be.product_product_work_out
 #: model:product.template,name:pos_blackbox_be.product_product_work_out_product_template
 msgid "WORK OUT"
 msgstr "TRAVAIL OUT"
+
+#. module: pos_blackbox_be
+#: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_session_work_status
+msgid "Work Status"
+msgstr "Status Travail In/Out"
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.financial_report_template
@@ -1382,8 +1428,12 @@ msgid "X USERS"
 msgstr "UTILISATEURS X"
 
 #. module: pos_blackbox_be
-#: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_financial_x
 #: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_user_x
+msgid "X-User"
+msgstr "Utilisateur-X"
+
+#. module: pos_blackbox_be
+#: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_financial_x
 msgid "X-report"
 msgstr "Rapport-X"
 
@@ -1407,8 +1457,12 @@ msgid "Z USERS"
 msgstr "UTILISATEURS Z"
 
 #. module: pos_blackbox_be
-#: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_financial_z
 #: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_user_z
+msgid "Z-User"
+msgstr "Utilisateur-Z"
+
+#. module: pos_blackbox_be
+#: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_financial_z
 msgid "Z-report"
 msgstr "Rapport-Z"
 
@@ -1425,10 +1479,10 @@ msgstr "supprimer"
 #. module: pos_blackbox_be
 #: model:ir.model.fields,help:pos_blackbox_be.field_pos_config_blackbox_pos_production_id
 msgid ""
-"e.g. BODO002... The POSBox must be certified by Odoo S.A. to be used with "
+"e.g. BODO001... The IoT Box must be certified by Odoo S.A. to be used with "
 "the blackbox."
 msgstr ""
-"pex. BODO002... La POSBox doit etre certifiée pas Odoo S.A. pour etre "
+"pex. BODO001... La IoT Box doit etre certifiée pas Odoo S.A. pour être "
 "utilisée avec la boîte noire."
 
 #. module: pos_blackbox_be

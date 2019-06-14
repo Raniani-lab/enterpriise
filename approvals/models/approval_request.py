@@ -155,7 +155,7 @@ class ApprovalRequest(models.Model):
         if self.category_id.is_manager_approver:
             employee = self.env['hr.employee'].search([('user_id', '=', self.request_owner_id.id)], limit=1)
             if employee.parent_id.user_id:
-                new_users += employee.parent_id.user_id
+                new_users |= employee.parent_id.user_id
         for user in new_users - current_users:
             self.approver_ids += self.env['approval.approver'].new({
                 'user_id': user.id,

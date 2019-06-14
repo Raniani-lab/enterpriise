@@ -37,6 +37,27 @@ class TestPayslipComputation(TestPayslipContractBase):
         sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_payroll.work_entry_type_attendance').ids)
         self.assertEqual(sum_hours, 59, 'It should count 59 attendance hours')  # 24h first contract + 35h second contract
 
+    def test_work_data_with_exceeding_interval(self):
+        self.env['hr.work.entry'].create({
+            'name': 'Attendance',
+            'employee_id': self.richard_emp.id,
+            'contract_id': self.contract_cdd.id,
+            'work_entry_type_id': self.env.ref('hr_payroll.work_entry_type_attendance').id,
+            'date_start': datetime(2015, 11, 9, 20, 0),
+            'date_stop': datetime(2015, 11, 10, 7, 0)
+        }).action_validate()
+        self.env['hr.work.entry'].create({
+            'name': 'Attendance',
+            'employee_id': self.richard_emp.id,
+            'contract_id': self.contract_cdd.id,
+            'work_entry_type_id': self.env.ref('hr_payroll.work_entry_type_attendance').id,
+            'date_start': datetime(2015, 11, 10, 21, 0),
+            'date_stop': datetime(2015, 11, 11, 5, 0),
+        }).action_validate()
+        hours = self.contract_cdd._get_work_hours(date(2015, 11, 10), date(2015, 11, 10))
+        sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_payroll.work_entry_type_attendance').ids)
+        self.assertAlmostEqual(sum_hours, 18, delta=0.01, msg='It should count 18 attendance hours')  # 8h normal day + 7h morning + 3h night
+
     def test_unpaid_amount(self):
         self.assertAlmostEqual(self.richard_payslip._get_unpaid_amount(), 0, places=2, msg="It should be paid the full wage")
 

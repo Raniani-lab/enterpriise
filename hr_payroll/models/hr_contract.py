@@ -199,8 +199,8 @@ class HrContract(models.Model):
         )
 
         for work_entry in work_entries:
-            date_start = datetime.combine(max(date_from, work_entry.date_start), time.min)
-            date_stop = datetime.combine(min(date_to, work_entry.date_stop), time.max)
+            date_start = max(date_from, work_entry.date_start)
+            date_stop = min(date_to, work_entry.date_stop)
             if work_entry.work_entry_type_id.is_leave:
                 contract = work_entry.contract_id
                 calendar = contract.resource_calendar_id

@@ -6,7 +6,7 @@
             <p class="question-block" t-foreach="slides" t-as="slide" >
                 <div class="media">
                     <a t-attf-href="/slides/slide/#{slug(slide)}">
-                        <img class="mr-3 oe_slides_apart_small" t-attf-src="/web/image/slide.slide/#{slide.id}/image_128" alt="Slide image"/>
+                        <img class="mr-3 oe_slides_apart_small" t-att-src="website.image_url(slide, 'image_128')" alt="Slide image"/>
                     </a>
                     <div class="media-body">
                         <a t-attf-href="/slides/slide/#{slug(slide)}"><h5 class="mt-0" t-esc="slide.name"/></a>

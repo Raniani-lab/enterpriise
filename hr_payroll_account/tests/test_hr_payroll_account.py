@@ -81,6 +81,7 @@ class TestHrPayrollAccount(common.TransactionCase):
                     self.ref('hr_payroll.hr_salary_rule_meal_voucher'),
             ])],
             'journal_id' : self.account_journal.id,
+            'type_id': self.env.ref('hr_payroll.structure_type_employee').id,
         })
 
         self.hr_structure_type = self.env['hr.payroll.structure.type'].create({

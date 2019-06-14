@@ -49,8 +49,7 @@ class HrPayrollStructure(models.Model):
 
     name = fields.Char(required=True)
     type_id = fields.Many2one(
-        'hr.payroll.structure.type', required=True,
-        default=lambda self: self.env.ref('hr_payroll.structure_type_employee', raise_if_not_found=False))
+        'hr.payroll.structure.type', required=True)
     country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
     note = fields.Text(string='Description')
     rule_ids = fields.One2many(

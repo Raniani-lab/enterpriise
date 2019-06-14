@@ -248,6 +248,7 @@ class TestHR(common.TransactionCase):
     def create_structure(self, user, name, code):
         struct_form = Form(self.env['hr.payroll.structure'].sudo(user))
         struct_form.name = name
+        struct_form.type_id = self.env.ref('l10n_be_hr_payroll.structure_type_employee_cp200')
         return struct_form.save()
 
     def _test_contract(self):

@@ -15,7 +15,8 @@ class HrContract(models.Model):
 
     structure_type_id = fields.Many2one('hr.payroll.structure.type', string="Salary Structure Type")
     schedule_pay = fields.Selection(related='structure_type_id.default_struct_id.schedule_pay')
-    resource_calendar_id = fields.Many2one(required=True, help="Employee's working schedule.")
+    resource_calendar_id = fields.Many2one(required=True, default=lambda self: self.env.company.resource_calendar_id,
+        help="Employee's working schedule.")
     hours_per_week = fields.Float(related='resource_calendar_id.hours_per_week')
     full_time_required_hours = fields.Float(related='resource_calendar_id.full_time_required_hours')
     is_fulltime = fields.Boolean(related='resource_calendar_id.is_fulltime')

@@ -73,7 +73,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         options_list = self._get_options_periods_list(options)
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date']['date_from'])
-        company_currency = self.env.user.company_id.currency_id
+        company_currency = self.env.company.currency_id
 
         expanded_account = line_id and self.env['account.account'].browse(int(line_id[8:]))
         accounts_results, taxes_results = self._do_query(options_list, expanded_account=expanded_account)

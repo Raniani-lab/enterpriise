@@ -1296,7 +1296,7 @@ class AccountReport(models.AbstractModel):
         :param blank_if_zero:   An optional flag forcing the string to be empty if amount is zero.
         :return:                The formatted amount as a string.
         '''
-        currency_id = currency or self.env.user.company_id.currency_id
+        currency_id = currency or self.env.company.currency_id
         if currency_id.is_zero(amount):
             if blank_if_zero:
                 return ''

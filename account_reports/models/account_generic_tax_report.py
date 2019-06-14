@@ -24,7 +24,7 @@ class generic_tax_report(models.AbstractModel):
     def _get_options(self, previous_options=None):
         # We want the filter_tax_grids option to only be available if tax report line
         # objects are available for the country of our company.
-        if not self.env['account.tax.report.line'].search_count([('country_id', '=', self.env.user.company_id.country_id.id)]):
+        if not self.env['account.tax.report.line'].search_count([('country_id', '=', self.env.company.country_id.id)]):
             self.filter_tax_grids = None
 
         return super(generic_tax_report, self)._get_options(previous_options)
@@ -164,7 +164,7 @@ class generic_tax_report(models.AbstractModel):
          the correct receivable/payable account. Also takes into account amount already paid via advance tax payment account.
         """
         # make the preliminary checks
-        company = self.env.user.company_id
+        company = self.env.company
         if options.get('multi_company'):
             # Ensure that we only have one company selected
             selected_company = False
@@ -362,7 +362,7 @@ class generic_tax_report(models.AbstractModel):
 
     def _get_lines_by_grid(self, options, line_id, grids):
         # Fetch the report layout to use
-        country = self.env.user.company_id.country_id
+        country = self.env.company.country_id
         report_lines = self.env['account.tax.report.line'].search([('country_id', '=', country.id), ('parent_id', '=', False)])
 
         # Build the report, line by line
@@ -589,7 +589,7 @@ class generic_tax_report(models.AbstractModel):
     def _compute_tax_report_data(self, options):
         rslt = {}
         grouping_key = options.get('tax_grids') and 'account.tax.report.line' or 'account.tax'
-        search_domain = options.get('tax_grids') and [('country_id', '=', self.env.user.company_id.country_id.id)] or [('company_id', '=', self.env.user.company_id.id)]
+        search_domain = options.get('tax_grids') and [('country_id', '=', self.env.company.country_id.id)] or [('company_id', '=', self.env.company.id)]
         empty_data_dict = options.get('tax_grids') and {'balance': 0} or {'net': 0, 'tax': 0}
         for record in self.env[grouping_key].with_context(active_test=False).search(search_domain):
             rslt[record.id] = {'obj': record, 'show': False, 'periods': [empty_data_dict.copy()]}

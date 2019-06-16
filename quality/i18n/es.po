@@ -27,9 +27,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -86,6 +86,11 @@ msgstr "Actividades"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
 msgid "Activity State"
 msgstr "Estado de la actividad"
+
+#. module: quality
+#: model:res.groups,name:quality.group_quality_manager
+msgid "Administrator"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -270,6 +275,11 @@ msgid "Display Name"
 msgstr "Nombre a mostrar"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
+msgid "Email cc"
+msgstr ""
+
+#. module: quality
 #: selection:quality.check,quality_state:0
 msgid "Failed"
 msgstr "Fallido"
@@ -409,6 +419,11 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Lot"
@@ -426,11 +441,6 @@ msgstr "Baja"
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Adjuntos principales"
-
-#. module: quality
-#: model:res.groups,name:quality.group_quality_manager
-msgid "Manager"
-msgstr "Responsable"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error
@@ -460,15 +470,15 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:32
+#: code:addons/quality/models/quality.py:31
+#: code:addons/quality/models/quality.py:68
 #: code:addons/quality/models/quality.py:69
-#: code:addons/quality/models/quality.py:70
-#: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:181
+#: code:addons/quality/models/quality.py:143
 #: code:addons/quality/models/quality.py:182
-#: code:addons/quality/models/quality.py:209
-#: code:addons/quality/models/quality.py:244
-#: code:addons/quality/models/quality.py:245
+#: code:addons/quality/models/quality.py:183
+#: code:addons/quality/models/quality.py:212
+#: code:addons/quality/models/quality.py:247
+#: code:addons/quality/models/quality.py:248
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
@@ -804,6 +814,7 @@ msgid "Technical name"
 msgstr "Nombre técnico"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__test_type_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "Tipo de prueba"

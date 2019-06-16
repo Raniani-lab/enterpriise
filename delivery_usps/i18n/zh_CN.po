@@ -4,8 +4,8 @@
 # 
 # Translators:
 # 肖彤 吴 <944086436@qq.com>, 2017
-# liAnGjiA <liangjia@qq.com>, 2018
 # e2f <projects@e2f.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # Gary Wei <Gary.wei@elico-corp.com>, 2018
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
@@ -14,9 +14,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -61,11 +61,6 @@ msgstr "内容类型"
 #: selection:delivery.carrier,delivery_type:0
 msgid "DHL"
 msgstr "DHL"
-
-#. module: delivery_usps
-#: model:ir.model,name:delivery_usps.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "交货方式"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_delivery_nature
@@ -357,6 +352,11 @@ msgid "Shipment created into USPS <br/> <b>Tracking Number : </b>%s"
 msgstr "装运形成USPS<br/><b>运单号：</b>%s"
 
 #. module: delivery_usps
+#: model:ir.model,name:delivery_usps.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
+
+#. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Small Flat Rate Box"
 msgstr "小号统一费用纸箱"
@@ -434,12 +434,6 @@ msgid "USPS Configuration"
 msgstr "USPS配置"
 
 #. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
-msgid "USPS Delivery Methods"
-msgstr "USPS 交货方式"
-
-#. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_domestic
 #: model:product.product,name:delivery_usps.product_product_delivery_usps_domestic
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_domestic_product_template
@@ -488,6 +482,12 @@ msgstr "USPS 邮件类型"
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_service
 msgid "USPS Service"
 msgstr "USPS服务"
+
+#. module: delivery_usps
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
+msgid "USPS Shipping Methods"
+msgstr ""
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_username

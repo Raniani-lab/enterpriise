@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-12-13 15:20+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -38,7 +38,7 @@ msgid "Allow deliveries on Saturday (extra charges apply)"
 msgstr "Дозволити доставку в суботу (додаткові збори застосовуються)"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:98
+#: code:addons/delivery_bpost/models/bpost_request.py:100
 #, python-format
 msgid ""
 "Authentication error -- wrong credentials\n"
@@ -123,11 +123,6 @@ msgid "DOCUMENTS"
 msgstr "ДОКУМЕНТИ"
 
 #. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Способи доставки"
-
-#. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_saturday
 msgid "Delivery on Saturday"
 msgstr "Доставка в суботу"
@@ -195,7 +190,7 @@ msgid "PNG"
 msgstr "PNG"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:134
+#: code:addons/delivery_bpost/models/bpost_request.py:136
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
 msgstr "Упаковка більше 30 кг не приймаються bpost."
@@ -206,7 +201,7 @@ msgid "Passphrase"
 msgstr "Парольна фраза"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:58
+#: code:addons/delivery_bpost/models/bpost_request.py:60
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Будь ласка, надішліть щонайменше один товар для доставки."
@@ -220,6 +215,13 @@ msgstr "Пакування товару"
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "Провайдер"
+
+#. module: delivery_bpost
+#: code:addons/delivery_bpost/models/delivery_bpost.py:85
+#: code:addons/delivery_bpost/models/delivery_bpost.py:126
+#, python-format
+msgid "Return shipment created into bpost <br/> <b>Tracking Number : </b>%s"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
@@ -243,7 +245,18 @@ msgid "Shipment created into bpost <br/> <b>Tracking Number : </b>%s"
 msgstr "Доставка створена в bpost<br/> <b>Номер відстеження: </b>%s"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:50
+#: model:ir.model,name:delivery_bpost.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
+
+#. module: delivery_bpost
+#: code:addons/delivery_bpost/models/bpost_request.py:267
+#, python-format
+msgid "The BPost shipping service is unresponsive, please retry later."
+msgstr ""
+
+#. module: delivery_bpost
+#: code:addons/delivery_bpost/models/bpost_request.py:52
 #, python-format
 msgid ""
 "The address of your company/warehouse is incomplete or wrong (Missing field(s):  \n"
@@ -253,7 +266,7 @@ msgstr ""
 " %s)"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:60
+#: code:addons/delivery_bpost/models/bpost_request.py:62
 #, python-format
 msgid ""
 "The estimated shipping cannot be computed because the weight of your product"
@@ -263,7 +276,7 @@ msgstr ""
 "відсутня."
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:56
+#: code:addons/delivery_bpost/models/bpost_request.py:58
 #, python-format
 msgid ""
 "The estimated shipping price cannot be computed because all your products "
@@ -273,7 +286,7 @@ msgstr ""
 " є послугами/цифровими."
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:42
+#: code:addons/delivery_bpost/models/bpost_request.py:44
 #, python-format
 msgid ""
 "The recipient address is incomplete or wrong (Missing field(s):  \n"
@@ -302,7 +315,7 @@ msgid "Unit(s)"
 msgstr "Одиниця(і)"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/delivery_bpost.py:91
+#: code:addons/delivery_bpost/models/delivery_bpost.py:97
 #, python-format
 msgid ""
 "You can not cancel a bpost shipment when a shipping label has already been "
@@ -311,13 +324,13 @@ msgstr ""
 "Ви не можете скасувати відправку bpost, коли вже створено ярлик доставки."
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/delivery_bpost.py:96
+#: code:addons/delivery_bpost/models/delivery_bpost.py:102
 #, python-format
 msgid "You cannot compute a passphrase for non-bpost carriers."
 msgstr "Ви не можете обчислити парольну фразу для жодних bpost перевізників."
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:52
+#: code:addons/delivery_bpost/models/bpost_request.py:54
 #, python-format
 msgid "Your company/warehouse address must be in Belgium to ship with bpost"
 msgstr ""
@@ -371,13 +384,7 @@ msgid "bpost Default Packaging Type"
 msgstr "Тип упаковки bpost за замовчуванням"
 
 #. module: delivery_bpost
-#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
-msgid "bpost Delivery Methods"
-msgstr "Методи доставки bpost "
-
-#. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:46
+#: code:addons/delivery_bpost/models/bpost_request.py:48
 #, python-format
 msgid ""
 "bpost Domestic is used only to ship inside Belgium. Please change the "
@@ -387,7 +394,7 @@ msgstr ""
 "ласка, змініть метод доставки в Міжнародний bpost."
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:44
+#: code:addons/delivery_bpost/models/bpost_request.py:46
 #, python-format
 msgid ""
 "bpost International is used only to ship outside Belgium. Please change the "
@@ -397,15 +404,13 @@ msgstr ""
 " ласка, змініть метод доставки на адресу Вітчизняний bpost."
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:112
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
+msgid "bpost Shipping Methods"
+msgstr ""
+
+#. module: delivery_bpost
+#: code:addons/delivery_bpost/models/bpost_request.py:114
 #, python-format
 msgid "bpost did not return prices for this destination country."
 msgstr "bpost не повернув ціни для цієї країни призначення."
-
-#. module: delivery_bpost
-#: model:product.product,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic
-#: model:product.product,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world
-#: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
-#: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
-msgid "kg"
-msgstr "кг"

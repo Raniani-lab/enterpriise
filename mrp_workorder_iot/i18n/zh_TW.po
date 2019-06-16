@@ -1,17 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality_mrp_iot
+# * mrp_workorder_iot
 # 
 # Translators:
-# Martin Trigaux, 2018
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
+# Martin Trigaux, 2019
+# Andy Cheng <andy.cheng@richsoda.com>, 2019
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
+"PO-Revision-Date: 2019-06-12 12:37+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,81 +21,202 @@ msgstr ""
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__boxes
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__action
+msgid "Action"
+msgstr "動作"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__boxes
 msgid "Boxes"
 msgstr ""
 
-#. module: quality_mrp_iot
-#. openerp-web
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:10
-#, python-format
-msgid "Clear"
-msgstr "清除"
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Cancel"
+msgstr "取消"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__device_name
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Close MO"
+msgstr "關閉 MO"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Close WO"
+msgstr "關閉 WO"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__create_uid
+msgid "Created by"
+msgstr "創立者"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__create_date
+msgid "Created on"
+msgstr "建立於"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__device_id
+msgid "Device"
+msgstr "設備"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__device_name
 msgid "Device Name: "
 msgstr ""
 
-#. module: quality_mrp_iot
-#. openerp-web
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:9
-#, python-format
-msgid "Edit"
-msgstr "編輯"
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__display_name
+msgid "Display Name"
+msgstr "顯示名稱"
 
-#. module: quality_mrp_iot
-#: model:ir.model,name:quality_mrp_iot.model_iot_trigger
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Fail"
+msgstr "失敗"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Finish"
+msgstr "結束"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__id
+msgid "ID"
+msgstr "ID"
+
+#. module: mrp_workorder_iot
+#: model:ir.model,name:mrp_workorder_iot.model_iot_trigger
 msgid "IOT Trigger"
 msgstr "物聯網觸發"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__identifier
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__ip
+msgid "IP Address"
+msgstr "IP地址"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__identifier
 msgid "Identifier"
 msgstr "標識"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__ip
-msgid "IoT Box Home Page"
-msgstr "物聯網盒子首頁"
-
-#. module: quality_mrp_iot
-#: model_terms:ir.ui.view,arch_db:quality_mrp_iot.mrp_workcenter_view_form_iot
+#. module: mrp_workorder_iot
+#: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.mrp_workcenter_view_form_iot
 msgid "IoT Triggers"
 msgstr ""
 
-#. module: quality_mrp_iot
-#. openerp-web
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:19
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:24
-#, python-format
-msgid "Take a Picture"
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__key
+msgid "Key"
+msgstr "鍵"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger____last_update
+msgid "Last Modified on"
+msgstr "最後修改於"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__write_uid
+msgid "Last Updated by"
+msgstr "最後更新者"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__write_date
+msgid "Last Updated on"
+msgstr "最後更新於"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Next"
+msgstr "下一個"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pack"
+msgstr "包裹"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pass"
+msgstr "通過"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pause"
+msgstr "暫停"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Previous"
+msgstr "前一個"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Delivery Slip"
+msgstr "列印送貨單"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Labels"
+msgstr "標籤列印"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Operation"
+msgstr "列印操作"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Record Production"
+msgstr "記錄生產"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Scrap"
+msgstr "報廢"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__sequence
+msgid "Sequence"
+msgstr "序號"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Skip"
+msgstr "跳過"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Take Measure"
+msgstr "採取措施"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Take Picture"
 msgstr "拍照"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workcenter__trigger_ids
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workcenter__trigger_ids
 msgid "Triggers"
 msgstr ""
 
-#. module: quality_mrp_iot
-#. openerp-web
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:12
-#, python-format
-msgid "Uploading..."
-msgstr "正在上傳..."
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Validate"
+msgstr "驗證"
 
-#. module: quality_mrp_iot
-#: model:ir.model,name:quality_mrp_iot.model_mrp_workcenter
+#. module: mrp_workorder_iot
+#: model:ir.model,name:mrp_workorder_iot.model_mrp_workcenter
 msgid "Work Center"
 msgstr "工作中心"
 
-#. module: quality_mrp_iot
-#: model:ir.model,name:quality_mrp_iot.model_mrp_workorder
+#. module: mrp_workorder_iot
+#: model:ir.model,name:mrp_workorder_iot.model_mrp_workorder
 msgid "Work Order"
 msgstr "工單"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_iot_trigger__workcenter_id
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__workcenter_id
 msgid "Workcenter"
 msgstr "工作中心"

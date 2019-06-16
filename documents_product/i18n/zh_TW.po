@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2019
 # sejun huang <sejun.huang@gmail.com>, 2019
+# Jeanphy <hzh0292@qq.com>, 2019
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -50,7 +51,17 @@ msgstr "創建"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
+msgid "Create signature request"
+msgstr ""
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
+msgstr ""
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
+msgid "Customer invoice"
 msgstr ""
 
 #. module: documents_product
@@ -84,6 +95,11 @@ msgid "Plans"
 msgstr ""
 
 #. module: documents_product
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
+msgid "Product"
+msgstr "商品"
+
+#. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
@@ -91,14 +107,13 @@ msgstr ""
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product Workspace"
 msgstr ""
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
-msgstr ""
+msgstr "产品模板"
 
 #. module: documents_product
 #: model:documents.folder,name:documents_product.documents_product_folder
@@ -112,14 +127,12 @@ msgstr ""
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid ""
-"Select the workspace to be used for product's documents for the products of\n"
-"                                    your company."
+msgid "Select the workspace to be used for product's documents"
 msgstr ""
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
+msgid "Sign directly"
 msgstr ""
 
 #. module: documents_product
@@ -140,7 +153,7 @@ msgstr "供應商採購折讓單"
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "供應商賬單"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder

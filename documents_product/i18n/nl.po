@@ -3,18 +3,19 @@
 # * documents_product
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,8 +54,18 @@ msgstr "Aanmaken"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
+msgid "Create signature request"
+msgstr "Handtekeningsverzoek"
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
 msgstr "Creditfactuur"
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
+msgid "Customer invoice"
+msgstr "Klantfactuur"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_sheet_tag
@@ -87,6 +98,11 @@ msgid "Plans"
 msgstr "Plannen"
 
 #. module: documents_product
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
+msgid "Product"
+msgstr "Product"
+
+#. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
@@ -94,7 +110,6 @@ msgstr "Productlabels"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product Workspace"
 msgstr "Product werkplaats"
 
@@ -115,15 +130,13 @@ msgstr "Selecteer de labels voor nieuwe productdocumenten"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid ""
-"Select the workspace to be used for product's documents for the products of\n"
-"                                    your company."
+msgid "Select the workspace to be used for product's documents"
 msgstr ""
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr "Handtekening sjabloon"
+msgid "Sign directly"
+msgstr "Direct ondertekenen"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_specs_tag

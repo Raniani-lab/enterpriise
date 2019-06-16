@@ -9,14 +9,13 @@
 # Martin Trigaux, 2017
 # Luis M. Ontalba <luis.martinez@tecnativa.com>, 2017
 # e2f <projects@e2f.com>, 2018
-# Carlos Vásquez <carlos.vasquez@clearcorp.co.cr>, 2018
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Cristopher Cravioto <ccr@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -126,17 +125,7 @@ msgid "Service Provider"
 msgstr "Proveedor de servicio"
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:387
-#, python-format
-msgid ""
-"The Yahoo currency rate web service has been discontinued. Please select "
-"another currency rate provider."
-msgstr ""
-"El servicio web de tipos de cambio de Yahoo ha sido descontinuado. Por favor"
-" seleccione otro proveedor de servicio."
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:103
+#: code:addons/currency_rate_live/models/res_config_settings.py:98
 #, python-format
 msgid ""
 "Unable to connect to the online exchange rate platform %s. The web service "
@@ -144,7 +133,7 @@ msgid ""
 msgstr ""
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:390
+#: code:addons/currency_rate_live/models/res_config_settings.py:382
 #, python-format
 msgid ""
 "Unable to connect to the online exchange rate platform. The web service may "
@@ -160,12 +149,7 @@ msgid "Weekly"
 msgstr "Semanalmente"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
-msgid "Yahoo (DISCONTINUED)"
-msgstr "Yahoo (DESCONTINUADO)"
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:143
+#: code:addons/currency_rate_live/models/res_config_settings.py:137
 #, python-format
 msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "

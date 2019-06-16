@@ -1,17 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality_mrp_iot
+# * mrp_workorder_iot
 # 
 # Translators:
+# Kristoffer Grundström <hamnisdude@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2019
+# Haojun Zou <apollo_zhj@msn.com>, 2019
 # Leif Persson <leifpz54@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2019-01-16 08:40+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
+"PO-Revision-Date: 2019-06-12 12:37+0000\n"
 "Last-Translator: Leif Persson <leifpz54@gmail.com>, 2019\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -20,81 +23,202 @@ msgstr ""
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__boxes
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__action
+msgid "Action"
+msgstr "Åtgärd"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__boxes
 msgid "Boxes"
 msgstr ""
 
-#. module: quality_mrp_iot
-#. openerp-web
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:10
-#, python-format
-msgid "Clear"
-msgstr "Töm"
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Cancel"
+msgstr "Avbryt"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__device_name
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Close MO"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Close WO"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__create_uid
+msgid "Created by"
+msgstr "Skapad av"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__create_date
+msgid "Created on"
+msgstr "Skapad den"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__device_id
+msgid "Device"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__device_name
 msgid "Device Name: "
 msgstr ""
 
-#. module: quality_mrp_iot
-#. openerp-web
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:9
-#, python-format
-msgid "Edit"
-msgstr "Redigera"
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__display_name
+msgid "Display Name"
+msgstr "Visningsnamn"
 
-#. module: quality_mrp_iot
-#: model:ir.model,name:quality_mrp_iot.model_iot_trigger
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Fail"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Finish"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__id
+msgid "ID"
+msgstr "ID"
+
+#. module: mrp_workorder_iot
+#: model:ir.model,name:mrp_workorder_iot.model_iot_trigger
 msgid "IOT Trigger"
 msgstr ""
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__identifier
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__ip
+msgid "IP Address"
+msgstr "IP-adress"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__identifier
 msgid "Identifier"
 msgstr ""
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__ip
-msgid "IoT Box Home Page"
-msgstr ""
-
-#. module: quality_mrp_iot
-#: model_terms:ir.ui.view,arch_db:quality_mrp_iot.mrp_workcenter_view_form_iot
+#. module: mrp_workorder_iot
+#: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.mrp_workcenter_view_form_iot
 msgid "IoT Triggers"
 msgstr ""
 
-#. module: quality_mrp_iot
-#. openerp-web
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:19
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:24
-#, python-format
-msgid "Take a Picture"
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__key
+msgid "Key"
+msgstr "Nyckel"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger____last_update
+msgid "Last Modified on"
+msgstr "Senast redigerad"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__write_uid
+msgid "Last Updated by"
+msgstr "Senast uppdaterad av"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__write_date
+msgid "Last Updated on"
+msgstr "Senast uppdaterad"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Next"
+msgstr "Framåt"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pack"
+msgstr "Packa"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pass"
 msgstr ""
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workcenter__trigger_ids
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Pause"
+msgstr "Pausa"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Previous"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Delivery Slip"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Labels"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Print Operation"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Record Production"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Scrap"
+msgstr "Skräp"
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__sequence
+msgid "Sequence"
+msgstr "Sekvens"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Skip"
+msgstr "Hoppa över"
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Take Measure"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Take Picture"
+msgstr ""
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workcenter__trigger_ids
 msgid "Triggers"
 msgstr ""
 
-#. module: quality_mrp_iot
-#. openerp-web
-#: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:12
-#, python-format
-msgid "Uploading..."
-msgstr "Överför…"
+#. module: mrp_workorder_iot
+#: selection:iot.trigger,action:0
+msgid "Validate"
+msgstr "Bekräfta"
 
-#. module: quality_mrp_iot
-#: model:ir.model,name:quality_mrp_iot.model_mrp_workcenter
+#. module: mrp_workorder_iot
+#: model:ir.model,name:mrp_workorder_iot.model_mrp_workcenter
 msgid "Work Center"
 msgstr "Produktionsgrupp"
 
-#. module: quality_mrp_iot
-#: model:ir.model,name:quality_mrp_iot.model_mrp_workorder
+#. module: mrp_workorder_iot
+#: model:ir.model,name:mrp_workorder_iot.model_mrp_workorder
 msgid "Work Order"
 msgstr "Arbetsorder"
 
-#. module: quality_mrp_iot
-#: model:ir.model.fields,field_description:quality_mrp_iot.field_iot_trigger__workcenter_id
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__workcenter_id
 msgid "Workcenter"
 msgstr ""

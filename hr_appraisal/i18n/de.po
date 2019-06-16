@@ -25,14 +25,15 @@
 # Thomas Neu <t.neu@runbox.com>, 2019
 # Martin Trigaux, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,6 +60,8 @@ msgid ""
 "<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Meeting</a> for <a "
 "href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s's</a> appraisal"
 msgstr ""
+"<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Meeting</a> für <a "
+"href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s's</a> Bewertung"
 
 #. module: hr_appraisal
 #: model:mail.template,body_html:hr_appraisal.mail_template_user_input_appraisal
@@ -91,6 +94,9 @@ msgid ""
 "specific.\" role=\"img\" aria-label=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
@@ -181,6 +187,11 @@ msgid "Additional comments"
 msgstr "Zusätzliche Kommentare"
 
 #. module: hr_appraisal
+#: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
+msgid "Administrator"
+msgstr ""
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
 msgid "An appraisal will be automatically created."
 msgstr ""
@@ -243,7 +254,7 @@ msgstr "Beurteilung Frist"
 #. module: hr_appraisal
 #: model:mail.activity.type,name:hr_appraisal.mail_act_appraisal_form
 msgid "Appraisal Form to Fill"
-msgstr ""
+msgstr "Bewertungsformular ausfüllen"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
@@ -301,7 +312,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
 msgid "Appraisal by Manager"
-msgstr ""
+msgstr "Beurteilung durch den Manager"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_1_3
@@ -313,7 +324,7 @@ msgstr "Beurteilung für Periode"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:196
 #, python-format
 msgid "Appraisal form(s) have been sent"
-msgstr ""
+msgstr "Bewertungsformular (e) wurden gesendet"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_from_department
@@ -439,7 +450,7 @@ msgstr "Kollegen"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_appraisal
 msgid "Colleagues Appraisal"
-msgstr ""
+msgstr "Mitarbeiterbeurteilung"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__color
@@ -497,7 +508,7 @@ msgstr "Erstellt am"
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
 msgid "Create a new appraisal"
-msgstr ""
+msgstr "Erstellen Sie eine neue Bewertung"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__create_uid
@@ -719,6 +730,8 @@ msgid ""
 "Fill form <a href=\"%s\">%s</a> for <a href=\"#\" data-oe-model=\"%s\" data-"
 "oe-id=\"%s\">%s's</a> appraisal"
 msgstr ""
+"Formular ausfüllen <a href=\"%s\">%s</a> für <a href=\"#\" data-oe-"
+"model=\"%s\" data-oe-id=\"%s\">%s's</a> Bewertung."
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -941,7 +954,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -1054,7 +1067,6 @@ msgstr "Hauptanhänge"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_ids
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
-#: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
 msgid "Manager"
 msgstr "Manager"
 
@@ -1755,6 +1767,7 @@ msgstr "Arbeitsplan"
 #, python-format
 msgid "You cannot delete appraisal which is in %s state"
 msgstr ""
+"Sie können keine Beurteilungen löschen, %s die sich im Status befinden"
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree

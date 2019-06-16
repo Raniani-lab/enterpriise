@@ -7,14 +7,15 @@
 # e2f <projects@e2f.com>, 2018
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-02-15 11:47+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,15 +31,6 @@ msgid ""
 msgstr ""
 "<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
 "label=\"Question has accepted answer\"/>"
-
-#. module: website_helpdesk_forum
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid ""
-"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
-"label=\"Redirect to external link\"/>"
-msgstr ""
-"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
-"label=\"Redirect to external link\"/>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -110,13 +102,13 @@ msgstr "流行问题"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Question has accepted answer"
-msgstr "问题已接受回复"
+msgid "Question"
+msgstr "疑问"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Redirect to external link"
-msgstr "重指向外部链接"
+msgid "Question has accepted answer"
+msgstr "问题已接受回复"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum

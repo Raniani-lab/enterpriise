@@ -9,7 +9,6 @@
 # Yaorong Li <55yaorong.li@gmail.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # snow wang <147156565@qq.com>, 2018
-# keecome <7017511@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
@@ -17,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:35+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -380,10 +379,18 @@ msgid "Add a Task"
 msgstr "添加任务"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:81
+#: code:addons/timesheet_grid/models/analytic.py:88
 #, python-format
 msgid "All selected timesheets are already validated"
 msgstr "所有选择的工时表已经被确认了"
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:93
+#, python-format
+msgid ""
+"All selected timesheets are already validated. You are not indicated as "
+"responsible for your timesheet so you can't validate your own timesheet."
+msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -452,6 +459,7 @@ msgstr "显示名称"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
+#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__employee_id
 msgid "Employee"
 msgstr "员工"
@@ -575,23 +583,27 @@ msgid "Non Validated"
 msgstr "非验证"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:106
+#: code:addons/timesheet_grid/models/analytic.py:118
 #, python-format
 msgid ""
-"Only a Timesheets Manager is allowed to create an entry older than the "
-"validation limit."
-msgstr "只允许时间表管理员创建早于验证限制的条目。"
-
-#. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:121
-#, python-format
-msgid "Only a Timesheets Manager is allowed to delete a validated entry."
+"Only a Timesheets Approver or Manager is allowed to create an entry older "
+"than the validation limit."
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:115
+#: code:addons/timesheet_grid/models/analytic.py:133
 #, python-format
-msgid "Only a Timesheets Manager is allowed to modify a validated entry."
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to delete a validated "
+"entry."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:127
+#, python-format
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to modify a validated "
+"entry."
 msgstr ""
 
 #. module: timesheet_grid
@@ -624,7 +636,7 @@ msgid "Task"
 msgstr "任务"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:76
+#: code:addons/timesheet_grid/models/analytic.py:83
 #, python-format
 msgid "There aren't any timesheet to validate"
 msgstr "这并没有任何需要验证的时间表"
@@ -635,8 +647,8 @@ msgid "Time Spent"
 msgstr "花费的时间"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:157
-#: code:addons/timesheet_grid/models/analytic.py:167
+#: code:addons/timesheet_grid/models/analytic.py:169
+#: code:addons/timesheet_grid/models/analytic.py:179
 #, python-format
 msgid "Timesheet Adjustment"
 msgstr "工时表调整"

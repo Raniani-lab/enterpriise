@@ -17,14 +17,15 @@
 # brokemeister <work@maltejansen.de>, 2018
 # Johannes Croe <jcr@odoo.com>, 2018
 # Martin Trigaux, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,11 +85,6 @@ msgstr "Abholung bei Lieferung"
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
 msgstr "DHL"
-
-#. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Auslieferungsmethoden"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -153,7 +149,7 @@ msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:209
+#: code:addons/delivery_ups/models/ups_request.py:200
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Bitte wählen Sie mindestens ein Eintrag zum Versenden"
@@ -174,6 +170,14 @@ msgid "Provider"
 msgstr "Anbieter"
 
 #. module: delivery_ups
+#: code:addons/delivery_ups/models/delivery_ups.py:300
+#, python-format
+msgid ""
+"Return label generated<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> "
+"%s"
+msgstr ""
+
+#. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "SPL"
 msgstr "SPL"
@@ -189,13 +193,13 @@ msgid "Saturday Delivery"
 msgstr "Samstagszustellung"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:231
+#: code:addons/delivery_ups/models/delivery_ups.py:330
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Versand Nr %s wurde storniert"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:202
+#: code:addons/delivery_ups/models/delivery_ups.py:206
 #, python-format
 msgid ""
 "Shipment created into UPS<br/><b>Tracking Numbers:</b> "
@@ -204,7 +208,12 @@ msgstr ""
 "Sendung erstellt bei UPS<br/><b>Sendungsnummer</b>%s<br/><b>Pakete:</b>%s"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:187
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/ups_request.py:174
 #, python-format
 msgid ""
 "The address of your company is missing or wrong.\n"
@@ -214,7 +223,7 @@ msgstr ""
 "(fehlende(s)  Feld(er) : %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:197
+#: code:addons/delivery_ups/models/ups_request.py:184
 #, python-format
 msgid ""
 "The address of your warehouse is missing or wrong.\n"
@@ -224,7 +233,7 @@ msgstr ""
 "(Fehlende Felder : %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:215
+#: code:addons/delivery_ups/models/ups_request.py:205
 #, python-format
 msgid ""
 "The delivery cannot be done because the weight of your product is missing."
@@ -232,7 +241,7 @@ msgstr ""
 "Die Lieferung kann nicht erfolgen, da das Gewicht des Produkts fehlt. "
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:211
+#: code:addons/delivery_ups/models/ups_request.py:202
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -242,7 +251,7 @@ msgstr ""
 " Gewichtsangabe hat."
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:219
+#: code:addons/delivery_ups/models/ups_request.py:209
 #, python-format
 msgid ""
 "The recipient address is missing or wrong.\n"
@@ -302,12 +311,6 @@ msgid "UPS Default Packaging Type"
 msgstr "UPS Standard Verpackungstyp"
 
 #. module: delivery_ups
-#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
-msgid "UPS Delivery Methods"
-msgstr "UPS Liefermethoden"
-
-#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_file_type
 msgid "UPS Label File Type"
 msgstr "UPS Aufkleber Datei Typ"
@@ -320,7 +323,7 @@ msgstr "UPS Passwort"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_saturday_delivery
 msgid "UPS Saturday Delivery"
-msgstr ""
+msgstr "UPS Samstagszustellung"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_service_type
@@ -333,6 +336,12 @@ msgstr "UPS Service Type"
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_shipper_number
 msgid "UPS Shipper Number"
 msgstr "UPS Shipper Number"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+msgid "UPS Shipping Methods"
+msgstr ""
 
 #. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us

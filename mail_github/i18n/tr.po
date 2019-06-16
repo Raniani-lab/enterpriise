@@ -17,9 +17,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-02-15 11:45+0000\n"
 "Last-Translator: Ediz Duman <neps1192@gmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
@@ -106,8 +106,8 @@ msgstr "Oluşturulma"
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel
-msgid "Discussion channel"
-msgstr "Tartışma Kanalı"
+msgid "Discussion Channel"
+msgstr "Mesajlaşma Kanalı"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__display_name
@@ -345,6 +345,7 @@ msgstr "Yeni bir tane oluştur"
 
 #. module: mail_github
 #: code:addons/mail_github/controllers/main.py:197
+#: code:addons/mail_github/controllers/main.py:205
 #, python-format
 msgid "issue"
 msgstr "sorun"
@@ -365,8 +366,8 @@ msgid "on repository"
 msgstr "depoda"
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:211
-#: code:addons/mail_github/controllers/main.py:218
+#: code:addons/mail_github/controllers/main.py:212
+#: code:addons/mail_github/controllers/main.py:219
 #, python-format
 msgid "pull request"
 msgstr "çekme talebi"

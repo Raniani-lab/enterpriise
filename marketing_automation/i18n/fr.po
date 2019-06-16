@@ -20,16 +20,16 @@
 # bb76cd9ac0cb7e20167a14728edb858b, 2017
 # e2f <projects@e2f.com>, 2019
 # Martin Trigaux, 2019
-# Eloïse Stilmant <est@odoo.com>, 2019
 # Elias Alouane <e.alouane@ahktunis.org>, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-12-13 15:21+0000\n"
-"Last-Translator: Elias Alouane <e.alouane@ahktunis.org>, 2019\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -448,14 +448,14 @@ msgstr "Supprimer"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:181
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:198
 #, python-format
 msgid "Delete Activity"
 msgstr "Supprimer l'activité"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:183
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:200
 #, python-format
 msgid "Delete All"
 msgstr "Tout supprimer"
@@ -467,7 +467,7 @@ msgstr "Gérer les suivis enfants"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:188
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:205
 #, python-format
 msgid "Discard"
 msgstr "Annuler"
@@ -560,13 +560,13 @@ msgid "Exception"
 msgstr "Exception"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:593
+#: code:addons/marketing_automation/models/marketing_campaign.py:592
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr "Exception dans le publipostage : %s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:563
+#: code:addons/marketing_automation/models/marketing_campaign.py:562
 #, python-format
 msgid "Exception in server action: %s"
 msgstr "Exception dans l'action du serveur : %s"
@@ -613,6 +613,11 @@ msgid "It will be generated automatically once you save this record."
 msgstr ""
 "Elle sera générée automatiquement dès que vous aurez enregistré cet "
 "enregistrement."
+
+#. module: marketing_automation
+#: model:mail.mass_mailing,subject:marketing_automation.mass_mailing_after_7_days
+msgid "Join partnership!"
+msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -760,7 +765,7 @@ msgid "Marketing Automation Mailings"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:589
+#: code:addons/marketing_automation/models/marketing_campaign.py:588
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
 msgstr ""
@@ -768,7 +773,7 @@ msgstr ""
 "publipostage %s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:559
+#: code:addons/marketing_automation/models/marketing_campaign.py:558
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
 msgstr ""
@@ -990,7 +995,7 @@ msgstr "Effectuer"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:204
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:221
 #, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr "Veuillez sauver la campagne pour ajouter une sous activité"
@@ -1042,7 +1047,7 @@ msgstr "Modèle de l'enregistrement"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:361
-#: code:addons/marketing_automation/models/marketing_campaign.py:465
+#: code:addons/marketing_automation/models/marketing_campaign.py:464
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
 #: selection:marketing.trace,state:0
 #, python-format
@@ -1050,7 +1055,7 @@ msgid "Rejected"
 msgstr "Rejeté"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:538
+#: code:addons/marketing_automation/models/marketing_campaign.py:537
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
 msgstr "Rejeté par le filtre d'activité ou l'enregistrement supprimé/archivé"
@@ -1213,7 +1218,7 @@ msgstr "Sujet"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:360
-#: code:addons/marketing_automation/models/marketing_campaign.py:464
+#: code:addons/marketing_automation/models/marketing_campaign.py:463
 #, python-format
 msgid "Success"
 msgstr "Succès"
@@ -1257,7 +1262,7 @@ msgstr "Tests"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:192
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:209
 #, python-format
 msgid ""
 "This Activity has a dependant child activity. 'DELETE ALL' will delete all "
@@ -1267,7 +1272,7 @@ msgstr ""
 "DELETE ALL » supprimera toutes les activités enfant."
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:585
+#: code:addons/marketing_automation/models/marketing_campaign.py:584
 #, python-format
 msgid ""
 "To use this feature you should be an administrator or belong to the "
@@ -1375,6 +1380,11 @@ msgstr "Type de durée de validité"
 #: selection:marketing.activity,validity_duration_type:0
 msgid "Weeks"
 msgstr "Semaines"
+
+#. module: marketing_automation
+#: model:mail.mass_mailing,subject:marketing_automation.mass_mailing_offer_free_trial
+msgid "Welcome!"
+msgstr "Bienvenue!"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form

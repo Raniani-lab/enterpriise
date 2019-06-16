@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Kaya Zeren <kayazeren@gmail.com>, 2017
-# Umur Akın <umura@projetgrup.com>, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2019\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,29 +22,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
-msgid "Assets"
-msgstr "Demirbaşlar"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Assets in running state"
-msgstr "Çalışır durumdaki demirbaşlar"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Category"
-msgstr "Kategorisi"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "Account used to recognize the revenue"
+msgstr ""
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Category of asset"
-msgstr "Demirbaş Kategorisi"
+msgid "Account used to record the deferred income"
+msgstr ""
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Company"
-msgstr "Firma"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
+msgid "Asset Model"
+msgstr ""
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -52,7 +42,7 @@ msgid "Compute Revenue"
 msgstr "Geliri Hesapla"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_modal
 msgid "Confirm"
 msgstr "Onayla"
 
@@ -62,48 +52,27 @@ msgid "Cumulative Revenue"
 msgstr "Kümülatif Gelir"
 
 #. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Current Revenue"
-msgstr "Anlık Gelir"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Customer"
-msgstr "Müşteri"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Date of Revenue Sales"
-msgstr "Gelir Satış Tarihi"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
+msgid "Deferred Revenue Account"
+msgstr "Ertelenmiş Gelir Hesabı"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Date of asset"
-msgstr "Varlık Tarihi"
+msgid "Deferred Revenue Amount"
+msgstr ""
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_invoice_revenue_recognition_category
-msgid "Deferred Revenue"
-msgstr "Ertelenmiş Gelir"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "Deferred Revenue Model name"
+msgstr ""
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.action_account_revenue_report_graph
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.action_account_revenue_report_pivot
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Deferred Revenue Analysis"
-msgstr "Ertelenmiş Gelirler"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_invoice_asset_form
-msgid "Deferred Revenue Type"
-msgstr "Ertelenmiş Gelir Türü"
-
-#. module: account_deferred_revenue
-#: model:ir.actions.act_window,name:account_deferred_revenue.action_account_asset_asset_list_normal_sale
-#: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_asset_asset_list_normal_sale
-msgid "Deferred Revenue Types"
-msgstr "Ertelenmiş Gelir Türleri"
+#: model:ir.actions.act_window,name:account_deferred_revenue.action_account_revenue_model_form
+#: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_revenue_model_recognition
+msgid "Deferred Revenue Models"
+msgstr ""
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -112,56 +81,35 @@ msgstr "Ertelenmiş Gelir Adı"
 
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_account_revenue_form
-#: model:ir.actions.act_window,name:account_deferred_revenue.action_asset_revenue_report
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_revenue_recognition
-#: model:ir.ui.menu,name:account_deferred_revenue.menu_action_asset_revenue_report
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_sale_tree
 msgid "Deferred Revenues"
 msgstr "Ertelenmiş Gelirler"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Draft"
-msgstr "Taslak"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Entries"
-msgstr "Kayıtlar"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Extended Filters..."
-msgstr "Gelişmiş Filtreler..."
-
-#. module: account_deferred_revenue
-#: model_terms:ir.actions.act_window,help:account_deferred_revenue.action_asset_revenue_report
-msgid ""
-"From this report, you can have an overview of your deferred revenue. The\n"
-"            search bar can also be used to personalize your revenue recognition reporting."
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+msgid "Deferred Revenues Models"
 msgstr ""
-"Bu rapordan, ertelenmiş geliriniz hakkında genel bir bilgiye sahip olabilirsiniz.\n"
-"            Arama çubuğu, gelir tanıma raporlamanızı kişiselleştirmek için de kullanılabilir."
 
 #. module: account_deferred_revenue
-#: model:ir.ui.menu,name:account_deferred_revenue.menu_recognition_depreciation_confirmation_wizard
-msgid "Generate Deferred Revenues Entries"
-msgstr "Ertelenmiş Gelir Kayıtlarını Oluştur"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_modal
+msgid "Discard"
+msgstr "Vazgeç"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Gross value of asset"
-msgstr "Demirbaşın brüt değeri"
+msgid "First Recognition Date"
+msgstr ""
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
 msgid "Group By..."
 msgstr "Grupla..."
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Invoice"
-msgstr "Fatura"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
+msgid "Journal"
+msgstr "Yevmiye"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -174,49 +122,37 @@ msgid "Next Period Revenue"
 msgstr "Sonraki Dönem Geliri"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.actions.act_window,help:account_deferred_revenue.action_asset_revenue_report
-msgid "No deferred revenue"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "Number of Recognitions"
+msgstr ""
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+msgid "Period length"
 msgstr ""
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Number of Revenues"
-msgstr "Gelir Sayısı"
+msgid "Related Sales"
+msgstr ""
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Partner"
-msgstr "İş Ortağı"
-
-#. module: account_deferred_revenue
-#: model:ir.actions.act_window,name:account_deferred_revenue.action_recognition_depreciation_confirmation_wizard
-msgid "Post Installment Lines"
-msgstr "Kayıtları Oluştur"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Posted"
-msgstr "Onaylı"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Posted depreciation lines"
-msgstr "Onaylı amortisman kalemleri"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Recognition in draft state"
-msgstr "Taslak halindeki tanıma"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Residual"
-msgstr "Kalan"
+msgid "Residual Amount to Recognize"
+msgstr ""
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue"
 msgstr "Gelir"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
+msgid "Revenue Account"
+msgstr ""
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -225,19 +161,8 @@ msgstr "Gelir Kalemleri"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Revenue Date"
 msgstr "Gelir Tarihi"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Revenue Entry"
-msgstr "Gelir Kaydı"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Revenue Information"
-msgstr "Gelir Bilgisi"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -245,33 +170,17 @@ msgid "Revenue Lines"
 msgstr "Gelir Satırları"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_sale_tree
 msgid "Revenue Name"
 msgstr "Gelir Adı"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Revenue Recognition"
 msgstr "Gelirlerin Muhasebeleştirilmesi"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Running"
-msgstr "Aktif"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Sales Date"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "e.g. Annual Subscription"
 msgstr ""
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Sell or Dispose"
-msgstr "Sat veya At"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Set to Draft"
-msgstr "Taslağa  Ayarla"

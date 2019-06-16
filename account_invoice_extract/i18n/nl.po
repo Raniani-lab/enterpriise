@@ -3,19 +3,20 @@
 # * account_invoice_extract
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
-# Cas Vissers <casvissers@brahoo.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Martin Trigaux, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Cas Vissers <casvissers@brahoo.nl>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:36+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,9 +49,10 @@ msgid "An error occured"
 msgstr "Er is een fout opgetreden"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
-msgid "An error occured during digitalization. Try resending the bill."
-msgstr ""
+#: code:addons/account_invoice_extract/models/account_invoice.py:26
+#, python-format
+msgid "An error occurred"
+msgstr "Er is een fout opgetreden"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
@@ -101,6 +103,16 @@ msgstr "Weergave naam"
 #: selection:res.company,extract_show_ocr_option_selection:0
 msgid "Do not process bills"
 msgstr "Facturen niet verwerken"
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
+msgid "Enable to get only one invoice line per tax"
+msgstr "Schakel in om slechts één factuurregel per BTW tarief te ontvangen"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_error_message
+msgid "Error message"
+msgstr "Foutmelding"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_word_ids
@@ -169,6 +181,12 @@ msgid "Last Updated on"
 msgstr "Laatst bijgewerkt op"
 
 #. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:28
+#, python-format
+msgid "No document name provided"
+msgstr "Geen naam aan het document gegeven"
+
+#. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "No extract requested"
 msgstr "Geen extractie aangevraagd"
@@ -177,6 +195,12 @@ msgstr "Geen extractie aangevraagd"
 #: selection:account.invoice,extract_state:0
 msgid "Not enough credit"
 msgstr "Onvoldoende credit"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
+#: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
+msgid "OCR Single Invoice Line Per Tax"
+msgstr "OCR één factuurregel per BTW tarief"
 
 #. module: account_invoice_extract
 #: selection:res.company,extract_show_ocr_option_selection:0
@@ -191,22 +215,33 @@ msgstr "Verwerken facturen automatisch op aanvraag"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_show_ocr_option_selection
 msgid "Processing Option"
-msgstr ""
+msgstr "Verwerkingsoptie"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Resend For Digitalization"
-msgstr ""
+msgstr "Opnieuw verzenden voor digitalisering"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Send For Digitalization"
-msgstr ""
+msgstr "Verzenden Voor Digitalisering"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_show_ocr_option_selection
 msgid "Send mode on invoices attachments"
 msgstr "Verstuur modus op factuur bijlagen"
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:31
+#, python-format
+msgid "Server not available. Please retry later"
+msgstr "Server niet bereikbaar, probeer het later opnieuw"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_status_code
+msgid "Status code"
+msgstr "Status code"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
@@ -218,11 +253,25 @@ msgstr ""
 " de 5 en 60 seconden."
 
 #. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:27
+#, python-format
+msgid "The document could not be found"
+msgstr "Het document werd niet gevonden"
+
+#. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 60 seconds."
 msgstr ""
+"De gegevensextractie is gestart. Het duurt meestal tussen de 5 en 60 "
+"seconden."
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:29
+#, python-format
+msgid "Unsupported image format"
+msgstr "Niet ondersteund bestandsformaat"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
@@ -287,6 +336,13 @@ msgid ""
 msgstr ""
 "U hebt onvoldoende krediet om gegevens uit uw factuur te halen. U kunt hier "
 "nieuw krediet kopen:"
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:30
+#, python-format
+msgid "You must send the same quantity of documents and file names"
+msgstr ""
+"De hoeveelheid documenten is niet gelijk aan de hoeveelheid bestandsnamen"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0

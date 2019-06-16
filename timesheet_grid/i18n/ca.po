@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:35+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
@@ -210,9 +210,17 @@ msgid "Add a Task"
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:81
+#: code:addons/timesheet_grid/models/analytic.py:88
 #, python-format
 msgid "All selected timesheets are already validated"
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:93
+#, python-format
+msgid ""
+"All selected timesheets are already validated. You are not indicated as "
+"responsible for your timesheet so you can't validate your own timesheet."
 msgstr ""
 
 #. module: timesheet_grid
@@ -282,6 +290,7 @@ msgstr "Mostrar Nom"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
+#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__employee_id
 msgid "Employee"
 msgstr "Empleat"
@@ -405,23 +414,27 @@ msgid "Non Validated"
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:106
+#: code:addons/timesheet_grid/models/analytic.py:118
 #, python-format
 msgid ""
-"Only a Timesheets Manager is allowed to create an entry older than the "
-"validation limit."
+"Only a Timesheets Approver or Manager is allowed to create an entry older "
+"than the validation limit."
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:121
+#: code:addons/timesheet_grid/models/analytic.py:133
 #, python-format
-msgid "Only a Timesheets Manager is allowed to delete a validated entry."
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to delete a validated "
+"entry."
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:115
+#: code:addons/timesheet_grid/models/analytic.py:127
 #, python-format
-msgid "Only a Timesheets Manager is allowed to modify a validated entry."
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to modify a validated "
+"entry."
 msgstr ""
 
 #. module: timesheet_grid
@@ -454,7 +467,7 @@ msgid "Task"
 msgstr "Tasca"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:76
+#: code:addons/timesheet_grid/models/analytic.py:83
 #, python-format
 msgid "There aren't any timesheet to validate"
 msgstr ""
@@ -465,8 +478,8 @@ msgid "Time Spent"
 msgstr "Temps dedicat"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:157
-#: code:addons/timesheet_grid/models/analytic.py:167
+#: code:addons/timesheet_grid/models/analytic.py:169
+#: code:addons/timesheet_grid/models/analytic.py:179
 #, python-format
 msgid "Timesheet Adjustment"
 msgstr ""

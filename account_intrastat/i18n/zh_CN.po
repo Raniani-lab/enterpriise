@@ -3,22 +3,22 @@
 # * account_intrastat
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
-# liAnGjiA <liangjia@qq.com>, 2019
 # v2exerer <9010446@qq.com>, 2019
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2019
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2019
+# bf2549c5415a9287249cba2b8a5823c7, 2019
 # keecome <7017511@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# Martin Trigaux, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:36+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +41,17 @@ msgid "<span class=\"fa fa-filter\"/> Options:"
 msgstr "<span class=\"fa fa-filter\"/> 选项:"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:16
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "<span class=\"fa fa-filter\"/> Partners:"
+msgstr "<span class=\"fa fa-filter\"/> 业务伙伴:"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "All"
+msgstr "全部"
+
+#. module: account_intrastat
+#: code:addons/account_intrastat/models/account_intrastat_report.py:17
 #, python-format
 msgid "Arrival"
 msgstr "到达"
@@ -67,7 +77,7 @@ msgid "Commodity"
 msgstr "优惠"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:33
+#: code:addons/account_intrastat/models/account_intrastat_report.py:34
 #: model:ir.model.fields,field_description:account_intrastat.field_product_category__intrastat_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_id
@@ -96,14 +106,14 @@ msgid "Country"
 msgstr "国家/地区"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:30
+#: code:addons/account_intrastat/models/account_intrastat_report.py:31
 #: code:addons/account_intrastat/models/account_sales_report.py:24
 #, python-format
 msgid "Country Code"
 msgstr "国家/地区代码"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:28
+#: code:addons/account_intrastat/models/account_intrastat_report.py:29
 #, python-format
 msgid "Date"
 msgstr "日期"
@@ -120,7 +130,7 @@ msgid "Default incoterm for Intrastat"
 msgstr "默认的国际贸易术语"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:17
+#: code:addons/account_intrastat/models/account_intrastat_report.py:18
 #, python-format
 msgid "Dispatch"
 msgstr "派遣"
@@ -162,7 +172,12 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:39
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "Include VAT"
+msgstr ""
+
+#. module: account_intrastat
+#: code:addons/account_intrastat/models/account_intrastat_report.py:40
 #, python-format
 msgid "Incoterm Code"
 msgstr "贸易代码"
@@ -197,7 +212,7 @@ msgid "Intrastat Country"
 msgstr "欧盟内部国家"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:234
+#: code:addons/account_intrastat/models/account_intrastat_report.py:256
 #: model:ir.actions.client,name:account_intrastat.action_account_report_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_report
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_intrastat
@@ -247,6 +262,11 @@ msgid "Last Modified on"
 msgstr "最后更改日"
 
 #. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "Only with VAT numbers"
+msgstr ""
+
+#. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_category
 msgid "Product Category"
 msgstr "产品分类"
@@ -257,7 +277,7 @@ msgid "Product Template"
 msgstr "产品模板"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:43
+#: code:addons/account_intrastat/models/account_intrastat_report.py:44
 #, python-format
 msgid "Quantity"
 msgstr "数量"
@@ -268,7 +288,7 @@ msgid "Region"
 msgstr "地区"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:32
+#: code:addons/account_intrastat/models/account_intrastat_report.py:33
 #, python-format
 msgid "Region Code"
 msgstr "地区代码"
@@ -279,13 +299,13 @@ msgid "Standard"
 msgstr "标准"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:29
+#: code:addons/account_intrastat/models/account_intrastat_report.py:30
 #, python-format
 msgid "System"
 msgstr "系统"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:224
+#: code:addons/account_intrastat/models/account_intrastat_report.py:246
 #: code:addons/account_intrastat/models/account_sales_report.py:114
 #, python-format
 msgid "Total"
@@ -297,7 +317,7 @@ msgid "Transaction"
 msgstr "交易"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:31
+#: code:addons/account_intrastat/models/account_intrastat_report.py:32
 #, python-format
 msgid "Transaction Code"
 msgstr "交易代码"
@@ -308,7 +328,7 @@ msgid "Transport"
 msgstr "物流"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:38
+#: code:addons/account_intrastat/models/account_intrastat_report.py:39
 #, python-format
 msgid "Transport Code"
 msgstr "物流代码"
@@ -319,7 +339,7 @@ msgid "Triplet code/type/country_id must be unique."
 msgstr "三项 代码/类型/ country_id必须是唯一的。"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:34
+#: code:addons/account_intrastat/models/account_intrastat_report.py:35
 #, python-format
 msgid "Type"
 msgstr "类型"
@@ -331,14 +351,19 @@ msgid "VAT"
 msgstr "增值税"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:44
+#: code:addons/account_intrastat/models/account_intrastat_report.py:45
 #: code:addons/account_intrastat/models/account_sales_report.py:25
 #, python-format
 msgid "Value"
 msgstr "值"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:42
+#: code:addons/account_intrastat/models/account_intrastat_report.py:43
 #, python-format
 msgid "Weight"
 msgstr "重量"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "With VAT numbers"
+msgstr ""

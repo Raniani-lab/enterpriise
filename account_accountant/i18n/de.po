@@ -20,14 +20,16 @@
 # Johannes Croe <jcr@odoo.com>, 2019
 # Stephan Schulze <stephan.schulze@bmfgroup.de>, 2019
 # Rudolf Schnapka <rs@techno-flex.de>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
+# Leon Grill <leg@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
-"Last-Translator: Rudolf Schnapka <rs@techno-flex.de>, 2019\n"
+"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,6 +44,9 @@ msgid ""
 "specific.\" role=\"img\" aria-label=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -140,6 +145,7 @@ msgstr "Anzeigename"
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
+"Kein Zugriff, überspringen Sie diese Daten für die E-Mail des Benutzers"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_fiscal_year
@@ -163,7 +169,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/res_config_settings.py:36
+#: code:addons/account_accountant/models/res_config_settings.py:37
 #, python-format
 msgid ""
 "Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
@@ -207,7 +213,7 @@ msgstr "Zuletzt aktualisiert am"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last day of your fiscal year"
-msgstr ""
+msgstr "Letzter Tag Ihres Geschäftsjahres"
 
 #. module: account_accountant
 #. openerp-web
@@ -237,6 +243,14 @@ msgstr "Sperrdaten"
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
 msgstr "Ihre Geschäftsperiode sperren"
+
+#. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
+#: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
+msgid ""
+"No users can edit journal entries related to a tax prior and inclusive of "
+"this date."
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -273,7 +287,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
-msgstr ""
+msgstr "Kreditorenrechnungskonten vorhersagen"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_product_product_categories
@@ -300,6 +314,12 @@ msgstr "Zeichnen Sie die Umsatzkosten in Ihren Journal-Einträgen auf"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Save"
 msgstr "Speichern"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date
+msgid "Tax Lock Date"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form

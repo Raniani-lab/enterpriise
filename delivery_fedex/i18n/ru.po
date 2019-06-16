@@ -14,9 +14,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Dmitry sky <d.v.selitsky@gmail.com>, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
@@ -97,11 +97,6 @@ msgid "Default Package Type"
 msgstr "Тип пакета по умолчанию"
 
 #. module: delivery_fedex
-#: model:ir.model,name:delivery_fedex.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Способы доставки"
-
-#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_key
 msgid "Developer Key"
 msgstr "Код Разработчика"
@@ -118,7 +113,7 @@ msgid "Easypost"
 msgstr ""
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:220
+#: code:addons/delivery_fedex/models/delivery_fedex.py:224
 #, python-format
 msgid ""
 "Error:\n"
@@ -152,6 +147,26 @@ msgstr "FEDEX_GROUND"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_NEXT_DAY_AFTERNOON"
+msgstr ""
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_NEXT_DAY_EARLY_MORNING"
+msgstr ""
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_NEXT_DAY_END_OF_DAY"
+msgstr ""
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_NEXT_DAY_MID_MORNING"
+msgstr ""
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
 msgid "FIRST_OVERNIGHT"
 msgstr "FIRST_OVERNIGHT"
 
@@ -167,14 +182,14 @@ msgid "FedEx Account Number"
 msgstr ""
 
 #. module: delivery_fedex
-#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
-msgid "FedEx Delivery Methods"
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery
+msgid "FedEx Saturday Delivery"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery
-msgid "FedEx Saturday Delivery"
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
+msgid "FedEx Shipping Methods"
 msgstr ""
 
 #. module: delivery_fedex
@@ -232,11 +247,6 @@ msgid "Fixed Price"
 msgstr "Фиксированная цена"
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
-msgid "Generate return label"
-msgstr ""
-
-#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Go to"
 msgstr "Перейти к"
@@ -277,7 +287,7 @@ msgid "No carrier integration"
 msgstr "Нет интеграции с доставщиком"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:441
+#: code:addons/delivery_fedex/models/delivery_fedex.py:446
 #, python-format
 msgid "No packages for this picking"
 msgstr ""
@@ -426,23 +436,28 @@ msgid "Screenshot"
 msgstr ""
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:533
+#: code:addons/delivery_fedex/models/delivery_fedex.py:539
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Отгрузка № %s была отменена"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:426
+#: code:addons/delivery_fedex/models/delivery_fedex.py:431
 #, python-format
 msgid "Shipment created into Fedex <br/> <b>Tracking Number : </b>%s"
 msgstr "Отправка, созданная в Fedex <br/><b> Номер отслеживания: </b>%s"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:369
+#: code:addons/delivery_fedex/models/delivery_fedex.py:374
 #, python-format
 msgid ""
 "Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
 "%s<br/><b>Packages:</b> %s"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_delivery_carrier
+msgid "Shipping Methods"
 msgstr ""
 
 #. module: delivery_fedex
@@ -467,11 +482,6 @@ msgstr "Стандартные услуги"
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "The last step is the"
 msgstr "Последний шаг - это"
-
-#. module: delivery_fedex
-#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
-msgid "The return label is automatically generated at the delivery"
-msgstr ""
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -502,7 +512,7 @@ msgid "Unit(s)"
 msgstr "шт."
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:226
+#: code:addons/delivery_fedex/models/delivery_fedex.py:230
 #, python-format
 msgid ""
 "Warning:\n"

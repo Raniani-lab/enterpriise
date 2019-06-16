@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
 "Last-Translator: Kim Asplund <kim.asplund@gmail.com>, 2018\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
@@ -245,22 +245,17 @@ msgstr "Namn"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:368
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:370
 #, python-format
 msgid "No Rewards Available"
 msgstr ""
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:384
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:386
 #, python-format
 msgid "Please select a reward"
 msgstr ""
-
-#. module: pos_loyalty
-#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
-msgid "Point Cost"
-msgstr "Poängkostnad"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_product_id
@@ -318,6 +313,11 @@ msgstr "Vunna poäng"
 #, python-format
 msgid "Points Won:"
 msgstr "Vunna poäng:"
+
+#. module: pos_loyalty
+#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
+msgid "Points per Currency"
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pp_currency
@@ -522,7 +522,7 @@ msgstr "Typ av belöning."
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:369
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:371
 #, python-format
 msgid ""
 "There are no rewards available for this customer as part of the loyalty "

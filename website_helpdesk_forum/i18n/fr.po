@@ -13,9 +13,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-02-15 11:47+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -30,13 +30,6 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
 "label=\"Question has accepted answer\"/>"
-msgstr ""
-
-#. module: website_helpdesk_forum
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid ""
-"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
-"label=\"Redirect to external link\"/>"
 msgstr ""
 
 #. module: website_helpdesk_forum
@@ -109,13 +102,13 @@ msgstr "Questions Populaires"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Question has accepted answer"
-msgstr "La question possède une réponse validée"
+msgid "Question"
+msgstr "Question"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Redirect to external link"
-msgstr "Rediriger vers un lien externe"
+msgid "Question has accepted answer"
+msgstr "La question possède une réponse validée"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum

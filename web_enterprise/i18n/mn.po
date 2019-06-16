@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:35+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
@@ -264,8 +264,9 @@ msgstr "Өөрийн захиалгыг шинэчлэх"
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:92
 #, python-format
-msgid "You have more users than your subscription allows."
-msgstr "Таны захиалга дээр зөвшөөрснөөс олон хэрэглэгч байна."
+msgid ""
+"You have more users or more apps installed than your subscription allows."
+msgstr ""
 
 #. module: web_enterprise
 #. openerp-web

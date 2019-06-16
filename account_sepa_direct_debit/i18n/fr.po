@@ -3,17 +3,32 @@
 # * account_sepa_direct_debit
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
-# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2018
-# Marie Willemyns <mwi@odoo.com>, 2018
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
+# Xavier Belmere <Info@cartmeleon.com>, 2017
+# Micky Jault <micky037@hotmail.fr>, 2017
+# Florian Hatat, 2017
+# Bertrand LATOUR <divoir@gmail.com>, 2017
+# 6534c450c77b2549e41c52e2051f5839, 2017
+# 71728729ee5e25c3ecd8d7420ddb9ca7, 2017
+# Olivier Lenoir <olivier.lenoir@free.fr>, 2017
+# fr trans <e2ffr05@hotmail.com>, 2017
+# 44fd1b7fd1ad5b321e37d151521961ad, 2017
+# bb76cd9ac0cb7e20167a14728edb858b, 2017
+# Fabien Pinckaers <fp@openerp.com>, 2017
+# Lionel Sausin <ls@numerigraphe.com>, 2017
+# Melanie Bernard <mbe@odoo.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Eloïse Stilmant <est@odoo.com>, 2019
+# Marie Willemyns <mwi@odoo.com>, 2019
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
+"PO-Revision-Date: 2017-12-13 15:20+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +48,6 @@ msgstr "(facultatif)"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
-#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_invoice_form_inherit
 msgid ""
 "<span class=\"alert alert-info\" attrs=\"{'invisible': ['|', '|', "
 "('sdd_mandate_usable', '!=', True), ('payment_type', '!=', 'inbound'), "
@@ -155,6 +169,16 @@ msgstr "Actif/ve"
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Active Mandates"
 msgstr "Mandats actifs"
+
+#. module: account_sepa_direct_debit
+#: model:ir.model,name:account_sepa_direct_debit.model_res_partner_bank
+msgid "Bank Accounts"
+msgstr "Comptes bancaires"
+
+#. module: account_sepa_direct_debit
+#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment__sdd_batch_booking
+msgid "Batch Booking"
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_batch_payment
@@ -643,9 +667,9 @@ msgid "Print"
 msgstr "Imprimer"
 
 #. module: account_sepa_direct_debit
-#: model:ir.model,name:account_sepa_direct_debit.model_account_register_payments
-msgid "Register Payments"
-msgstr "Enregistrer des paiements"
+#: model:ir.model.fields,help:account_sepa_direct_debit.field_account_batch_payment__sdd_batch_booking
+msgid "Request batch booking from the bank for the related bank statements."
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment__sdd_required_collection_date
@@ -842,8 +866,7 @@ msgstr ""
 "                    recourir au prélèvement automatique pour régler les factures que nous vous envoyons."
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:219
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:231
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:211
 #, python-format
 msgid ""
 "This invoice cannot be paid via SEPA Direct Debit, as there is no valid "
@@ -874,7 +897,7 @@ msgstr ""
 "cette option est activée.\n"
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:150
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:146
 #, python-format
 msgid ""
 "Trying to generate a Direct Debit XML file containing payments from another "
@@ -885,7 +908,7 @@ msgstr ""
 "ce fichier."
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:153
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:149
 #, python-format
 msgid ""
 "Trying to generate a Direct Debit XML for payments coming from another "
@@ -895,7 +918,7 @@ msgstr ""
 " modes de paiement autres que le prélèvement SEPA."
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:201
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:197
 #, python-format
 msgid ""
 "Trying to register a payment on a mandate belonging to a different partner."
@@ -904,7 +927,7 @@ msgstr ""
 " partenaire."
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:66
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:67
 #, python-format
 msgid ""
 "Unable to post payment '%s' due to no usable mandate being available at date"
@@ -918,7 +941,23 @@ msgid "Validate"
 msgstr "Valider"
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:32
+#: code:addons/account_sepa_direct_debit/models/res_partner_bank.py:12
+#, python-format
+msgid ""
+"You cannot delete a bank account linked to an active SEPA Direct Debit "
+"mandate."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: code:addons/account_sepa_direct_debit/models/account_invoice.py:36
+#, python-format
+msgid ""
+"You cannot do direct debit on a customer to pay a refund to him, or on a "
+"supplier to pay an invoice from him."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:33
 #, python-format
 msgid ""
 "You cannot generate a SEPA Direct Debit file with a required collection date"
@@ -926,7 +965,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_invoice.py:35
+#: code:addons/account_sepa_direct_debit/models/account_invoice.py:40
 #, python-format
 msgid ""
 "You cannot pay an invoice with a mandate that does not cover the moment when"
@@ -945,7 +984,7 @@ msgstr ""
 "valider."
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:28
+#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:29
 #, python-format
 msgid ""
 "Your company must have a creditor identifier in order to issue SEPA Direct "

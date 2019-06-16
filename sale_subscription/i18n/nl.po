@@ -7,20 +7,20 @@
 # Pol Van Dingenen <pol.vandingenen@vanroey.be>, 2017
 # Eric Geens <ericgeens@yahoo.com>, 2018
 # Cas Vissers <casvissers@brahoo.nl>, 2019
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Cas Vissers <c.vissers@brahoo.nl>, 2019
 # dpms <pieter.van.de.wygaert@telenet.be>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,6 +64,12 @@ msgstr ""
 "\n"
 "Klachten\n"
 "Klachten over items of verkopers kunnen aan ons support team gestuurd worden: support@wesellyourstuff.com of (888) 555-0198. Er is geen garantie voor een oplossing. Elk geval zal individueel behandeld worden, er wordt contact opgenomen met de verkoper."
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:744
+#, python-format
+msgid " E-mail sent to customer."
+msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
@@ -214,6 +220,50 @@ msgid ""
 "            </div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
+"                <table style=\"width:600px;margin:5px auto;\">\n"
+"                    <tbody>\n"
+"                        <tr><td>\n"
+"                            <a href=\"/\"><img src=\"/web/binary/company_logo\" style=\"vertical-align:baseline;max-width:100px;\"/></a>\n"
+"                        </td><td style=\"text-align:right;vertical-align:middle;\">\n"
+"                                Abonnement factuur\n"
+"                        </td></tr>\n"
+"                    </tbody>\n"
+"                </table>\n"
+"                <table style=\"width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;\">\n"
+"                    <tbody>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
+"                            <p>Beste ${object.partner_id.name}\n"
+"                                % if object.partner_id.parent_id:\n"
+"                                    (${object.partner_id.parent_id.name})\n"
+"                                % endif\n"
+"                            </p>\n"
+"                            <p>\n"
+"                                Als bijlage vind u uw\n"
+"                                % if object.number:\n"
+"                                    factuur<strong>${object.number}</strong>\n"
+"                                % else:\n"
+"                                    factuur\n"
+"                                %endif\n"
+"                                % if object.origin:\n"
+"                                    (met referentie: ${object.origin} )\n"
+"                                % endif\n"
+"                                met als totaalbedrag <strong>${format_amount(object.amount_total, object.currency_id)}</strong>\n"
+"                                van ${object.company_id.name}.\n"
+"                                % if object.state=='paid':\n"
+"                                    Deze factuur is al betaald.\n"
+"                                % else:\n"
+"                                    Gelieve zo spoedig mogelijk te betalen.\n"
+"                                % endif\n"
+"                            </p>\n"
+"                            <p>Twijfel niet om ons te contacteren als u nog vragen heeft.</p>\n"
+"                        </td></tr>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.user_id.signature or '')| safe}</td></tr>\n"
+"                    </tbody>\n"
+"                </table>\n"
+"            </div>\n"
+"        "
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_rating
@@ -438,6 +488,11 @@ msgstr "<span class=\"mr-1\">Elke</span>"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "<span class=\"mr-1\">For</span>"
 msgstr "<span class=\"mr-1\">Voor</span>"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "<span class=\"mr-1\">period(s)</span>"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
@@ -1118,6 +1173,11 @@ msgid "Add options to the subscription directly or through a quotation"
 msgstr "Voeg direct opties aan het abonnement of via een offerte"
 
 #. module: sale_subscription
+#: model:res.groups,name:sale_subscription.group_sale_subscription_manager
+msgid "Administrator"
+msgstr "Beheerder"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Alert Name"
 msgstr "Naam waarschuwing"
@@ -1184,6 +1244,29 @@ msgstr "Geautomatiseerde actie"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__auto_close_limit
 msgid "Automatic closing limit"
 msgstr "Automatisch: afsluitingslimiet"
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:734
+#, python-format
+msgid ""
+"Automatic payment failed after multiple attempts. Subscription closed "
+"automatically."
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:739
+#, python-format
+msgid "Automatic payment failed. Subscription set to \"To Renew\"."
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:699
+#, python-format
+msgid ""
+"Automatic payment succeeded. Payment reference: <a href=# data-oe-"
+"model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a "
+"href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>."
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_published
@@ -1890,6 +1973,7 @@ msgstr ""
 " het record."
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_account_invoice_line__subscription_end_date
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__date
 msgid ""
 "If set in advance, the subscription will be set to pending 1 month before "
@@ -1972,7 +2056,6 @@ msgstr ""
 "facturatiedatum."
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Invoice"
 msgstr "Factuur"
@@ -2018,6 +2101,11 @@ msgstr "Factuur voor inschrijving ${ctx.get('code')}"
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Invoice only on successful payment"
 msgstr "Factuur alleen bij succesvolle betaling"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "Invoice period"
+msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
@@ -2217,11 +2305,6 @@ msgid "Main Attachment"
 msgstr "Hoofd bijlage"
 
 #. module: sale_subscription
-#: model:res.groups,name:sale_subscription.group_sale_subscription_manager
-msgid "Manage Subscriptions"
-msgstr "Beheer abbonementen"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Manage your payment methods"
 msgstr "Beheer uw betaalmethodes"
@@ -2291,6 +2374,7 @@ msgid "Month(s)"
 msgstr "Maand(en)"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_account_invoice_line__subscription_mrr
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__recurring_monthly
@@ -2511,13 +2595,13 @@ msgid "Planned"
 msgstr "Gepland"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:461
+#: code:addons/sale_subscription/models/sale_subscription.py:460
 #, python-format
 msgid "Please define Date of Next Invoice of \"%s\"."
 msgstr "Definieer een datum van volgende factuur voor \"%s\"."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:457
+#: code:addons/sale_subscription/models/sale_subscription.py:456
 #, python-format
 msgid "Please define a sale journal for the company \"%s\"."
 msgstr "U dient een verkoop dagboek aan te maken voor bedrijf ¨%s¨"
@@ -2734,11 +2818,6 @@ msgstr "Retenties"
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_cohort_action
 msgid "Retention Analysis"
 msgstr "Retentie analyse"
-
-#. module: sale_subscription
-#: model:ir.ui.menu,name:sale_subscription.menu_account_asset_asset_list_normal_sale
-msgid "Revenue Types"
-msgstr "Omzetsoorten"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__in_progress
@@ -3053,6 +3132,11 @@ msgid "Subscription Count"
 msgstr "Aantal abonnementen"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_account_invoice_line__subscription_end_date
+msgid "Subscription End Date"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_line
 msgid "Subscription Line"
 msgstr "Abonnement regel"
@@ -3095,6 +3179,11 @@ msgstr "Abonnementsfase"
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_stage
 msgid "Subscription Stages"
 msgstr "Abonnementsfases"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_account_invoice_line__subscription_start_date
+msgid "Subscription Start Date"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_template
@@ -3290,6 +3379,13 @@ msgid "Terms and conditions"
 msgstr "Voorwaarden"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trigger_field_ids
+msgid ""
+"The action will be triggered if and only if one of these fields is "
+"updated.If empty, all fields are watched."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_wizard__date_from
 msgid ""
 "The discount applied when creating a sales order will be computed as the "
@@ -3320,7 +3416,7 @@ msgstr ""
 "verlengd. "
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:995
+#: code:addons/sale_subscription/models/sale_subscription.py:992
 #, python-format
 msgid "The recurring interval must be positive"
 msgstr "De herhalingsinterval moet positief zijn"
@@ -3344,7 +3440,7 @@ msgstr ""
 "activiteiten."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:479
+#: code:addons/sale_subscription/models/sale_subscription.py:478
 #, python-format
 msgid "This invoice covers the following period: %s - %s"
 msgstr "Deze factuur omvat de volgende periode: %s - %s"
@@ -3575,6 +3671,11 @@ msgstr ""
 "Wilt u terugkerende facturatie via abonnementen? Start door hier te klikken."
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trigger_field_ids
+msgid "Watched fields"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid ""
 "We always listen to our customer. Could you specify the reason for "
@@ -3695,9 +3796,11 @@ msgid ""
 "You must define a product for everything you sell or purchase,\n"
 "            whether it's a storable product, a consumable or a service."
 msgstr ""
+"U moet een product definiëren voor alles dat u verkoopt of inkoopt,\n"
+"of het nu een fysiek product, verbruikersartikel of dienst is."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:446
+#: code:addons/sale_subscription/models/sale_subscription.py:445
 #, python-format
 msgid "You must first select a Customer for Subscription %s!"
 msgstr "U moet eerst een klant selecteren voor abonnement %s!"

@@ -5,18 +5,18 @@
 # Translators:
 # Tamás Dombos, 2019
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
-# Martin Trigaux, 2019
 # krnkris, 2019
-# gezza <geza.nagy@oregional.hu>, 2019
 # Ákos Nagy <akos.nagy@oregional.hu>, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,11 +25,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: documents
+#: model:mail.template,subject:documents.mail_template_document_request
+msgid ""
+"\n"
+"                Document Request ${object.name != False and ': '+ object.name or ''}\n"
+"            "
+msgstr ""
+
+#. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:272
+#: code:addons/documents/static/src/js/documents_inspector.js:279
 #, python-format
 msgid "+ Add a tag "
-msgstr ""
+msgstr "+ Címke hozzáadása"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -39,12 +47,12 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
 msgid "2018"
-msgstr ""
+msgstr "2018"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
 msgid "2019"
-msgstr ""
+msgstr "2019"
 
 #. module: documents
 #. openerp-web
@@ -59,7 +67,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Bytes</b>"
-msgstr ""
+msgstr "<b>Byte</b>"
 
 #. module: documents
 #. openerp-web
@@ -71,17 +79,17 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Gb</b>"
-msgstr ""
+msgstr "<b>Gb</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Kb</b>"
-msgstr ""
+msgstr "<b>Kb</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Mb</b>"
-msgstr ""
+msgstr "<b>Mb</b>"
 
 #. module: documents
 #. openerp-web
@@ -103,16 +111,18 @@ msgid ""
 "<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
 "aria-label=\"Loading\" title=\"Loading\"/>"
 msgstr ""
+"<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
+"aria-label=\"Loading\" title=\"Loading\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
-msgstr ""
+msgstr "<i class=\"fa fa-download fa-fw\"/>  Összes letöltése"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download fa-fw\"/> Download"
-msgstr ""
+msgstr "<i class=\"fa fa-download fa-fw\"/> Letöltés"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -120,16 +130,18 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> E-mail szerverek "
+"konfigurálása"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-link\"/> Go to URL"
-msgstr ""
+msgstr "<i class=\"fa fa-link\"/> Webcím felkeresése"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-upload\"/>  Upload"
-msgstr ""
+msgstr "<i class=\"fa fa-upload\"/>  Feltöltés"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -159,6 +171,115 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b>Requested Document</b></span>"
+msgstr ""
+
+#. module: documents
+#: model:mail.template,body_html:documents.mail_template_document_request
+msgid ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;\"><tr><td align=\"center\">\n"
+"                    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: white; color: #454748; border-collapse:separate;\">\n"
+"                    <tbody>\n"
+"                        <!-- HEADER -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"middle\">\n"
+"                                        <span style=\"font-size: 10px;\">\n"
+"                                            Document Request: <br/>\n"
+"                                            % if object.name:\n"
+"                                                <span style=\"font-size: 20px; font-weight: bold;\">\n"
+"                                                    ${object.name | safe}\n"
+"                                                </span>\n"
+"                                            % endif\n"
+"                                        </span><br/>\n"
+"                                    </td><td valign=\"middle\" align=\"right\">\n"
+"                                        <img src=\"/logo.png?company=${object.create_uid.company_id.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${object.create_uid.company_id.name}\"/>\n"
+"                                    </td></tr>\n"
+"                                    <tr><td colspan=\"2\" style=\"text-align:center;\">\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                        <!-- CONTENT -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                                        <div>\n"
+"                                            Hello ${object.owner_id.name},\n"
+"                                            <br/><br/>\n"
+"                                            ${object.create_uid.name} (${object.create_uid.email}) asks you to provide the following document:\n"
+"                                            <br/><br/>\n"
+"                                            <center>\n"
+"                                                <div>\n"
+"                                                    % if object.name:\n"
+"                                                        <b>${object.name | safe}</b>\n"
+"                                                    % endif\n"
+"                                                </div>\n"
+"                                                <div>\n"
+"                                                    % if object.activity_note:\n"
+"                                                        <i>${object.activity_note | safe}</i>\n"
+"                                                    % endif\n"
+"                                                </div>\n"
+"                                                <br/>\n"
+"                                                <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"                                                    <a href=\"${object.full_url}\" style=\"background-color: #875A7B; padding: 20px 30px 20px 30px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                                                        Upload the requested document\n"
+"                                                    </a>\n"
+"                                                </div>\n"
+"                                            </center><br/>\n"
+"                                            Please provide us with the missing document before the link expires (planned on ${object.date_deadline}).\n"
+"                                            <br/>\n"
+"                                            % if user and user.signature:\n"
+"                                                ${user.signature | safe}\n"
+"                                            % endif\n"
+"                                            <br/>\n"
+"                                        </div>\n"
+"                                    </td></tr>\n"
+"                                    <tr><td style=\"text-align:center;\">\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                        <!-- FOOTER -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"middle\" align=\"left\">\n"
+"                                        ${object.create_uid.company_id.name}\n"
+"                                    </td></tr>\n"
+"                                    <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
+"                                        ${object.create_uid.company_id.phone}\n"
+"                                        % if object.create_uid.company_id.email\n"
+"                                            | <a href=\"'mailto:%s' % ${object.create_uid.company_id.email}\" style=\"text-decoration:none; color: #454748;\">${object.create_uid.company_id.email}</a>\n"
+"                                        % endif\n"
+"                                        % if object.create_uid.company_id.website\n"
+"                                            | <a href=\"'%s' % ${object.create_uid.company_id.website}\" style=\"text-decoration:none; color: #454748;\">\n"
+"                                            ${object.create_uid.company_id.website}\n"
+"                                        </a>\n"
+"                                        % endif\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                    </tbody>\n"
+"                    </table>\n"
+"                    </td></tr>\n"
+"                    <!-- POWERED BY -->\n"
+"                    <tr><td align=\"center\" style=\"min-width: 590px;\">\n"
+"                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
+"                          <tr><td style=\"text-align: center; font-size: 13px;\">\n"
+"                            % if object.date_deadline:\n"
+"                                This link expires on <b>${object.date_deadline}.</b><br/>\n"
+"                            % endif\n"
+"                            Powered by <a target=\"_blank\" href=\"https://www.odoo.com/page/documents\" style=\"color: #875A7B;\">Odoo Documents</a>\n"
+"                          </td></tr>\n"
+"                        </table>\n"
+"                    </td></tr>\n"
+"                </table>\n"
+"            "
 msgstr ""
 
 #. module: documents
@@ -257,7 +378,7 @@ msgstr "Tevékenység típus"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_type_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_type_id
 msgid "Activity type"
-msgstr ""
+msgstr "Tevékenységtípus"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
@@ -270,17 +391,22 @@ msgstr "Hozzáadás"
 #: code:addons/documents/static/src/xml/documents_kanban.xml:8
 #, python-format
 msgid "Add URL"
-msgstr ""
+msgstr "Webcím hozzáadása"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
 msgid "Add Url"
+msgstr "Webcím hozzáadása"
+
+#. module: documents
+#: model:res.groups,name:documents.group_documents_manager
+msgid "Administrator"
 msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_ads
 msgid "Ads"
-msgstr ""
+msgstr "Hirdetések"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
@@ -310,7 +436,7 @@ msgstr "Álnevesített modell"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "All locked files"
-msgstr ""
+msgstr "Összes zárolt fájl"
 
 #. module: documents
 #. openerp-web
@@ -322,17 +448,29 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
 msgid "Allows to"
-msgstr ""
+msgstr "Lehetővé teszi"
 
 #. module: documents
 #: model:ir.module.category,description:documents.module_category_documents_management
 msgid "Allows you to manage your documents."
+msgstr "Lehetővé teszi a dokumentumok kezelését."
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:180
+#, python-format
+msgid "An error occurred during the upload"
 msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_appraisal
 msgid "Appraisal"
 msgstr "Értékelés"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
+msgid "Apps and workspaces to be synchronized"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -394,12 +532,12 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_kanban_view.js:29
 #, python-format
 msgid "Attachments Kanban"
-msgstr ""
+msgstr "Kanban mellékletek"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
 msgid "Available Rules"
-msgstr ""
+msgstr "Elérhető szabályok"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_bill
@@ -419,7 +557,7 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
 msgid "Brochures"
-msgstr ""
+msgstr "Brosúrák"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_mail_activity_type__folder_id
@@ -482,6 +620,7 @@ msgstr "Konfiguráció"
 #. module: documents
 #: model:ir.model,name:documents.model_res_partner
 #: model:ir.model.fields,field_description:documents.field_documents_document__partner_id
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -519,6 +658,11 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
 msgid "Create a tag"
+msgstr ""
+
+#. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Create signature request"
 msgstr ""
 
 #. module: documents
@@ -564,6 +708,11 @@ msgid "Criteria"
 msgstr ""
 
 #. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Customer invoice"
+msgstr ""
+
+#. module: documents
 #: selection:documents.request_wizard,activity_date_deadline_range_type:0
 #: selection:documents.share,activity_date_deadline_range_type:0
 #: selection:documents.workflow.rule,activity_date_deadline_range_type:0
@@ -579,11 +728,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
 msgid "Default Values"
 msgstr "Alapértelmezett értékek"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
-msgid "Default Workspaces"
-msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -653,8 +797,8 @@ msgid "Document Request"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/document.py:334
-#: code:addons/documents/models/document.py:354
+#: code:addons/documents/models/document.py:340
+#: code:addons/documents/models/document.py:360
 #: code:addons/documents/models/mail_activity.py:25
 #, python-format
 msgid "Document Request: %s Uploaded by: %s"
@@ -754,7 +898,7 @@ msgstr "Tervezet"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:405
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:450
 #, python-format
 msgid "Drop files here to upload"
 msgstr ""
@@ -800,21 +944,34 @@ msgid "ERROR: Invalid PDF file!"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/ir_attachment.py:90
+#: code:addons/documents/models/ir_attachment.py:87
 #, python-format
 msgid "ERROR: Invalid list of pages to split. Example: 1,5-9,10"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/ir_attachment.py:85
+#: code:addons/documents/models/ir_attachment.py:82
 #, python-format
 msgid "ERROR: the file must be a PDF"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__email_cc
+msgid "Email cc"
 msgstr ""
 
 #. module: documents
 #: selection:documents.document,type:0
 msgid "Empty"
 msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:180
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:434
+#, python-format
+msgid "Error"
+msgstr "Hiba"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_expense
@@ -847,7 +1004,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__favorited_ids
 msgid "Favorite of"
-msgstr ""
+msgstr "Kedvencnek jelölte: "
 
 #. module: documents
 #: selection:documents.document,type:0
@@ -885,7 +1042,6 @@ msgid "Fiscal"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__folder_id
 msgid "Folder"
 msgstr ""
@@ -1063,6 +1219,11 @@ msgid "Late Activities"
 msgstr "Késő tevékenységek"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
+
+#. module: documents
 #: selection:documents.share,state:0
 msgid "Live"
 msgstr "Élő"
@@ -1126,11 +1287,6 @@ msgid "Manage document tags"
 msgstr ""
 
 #. module: documents
-#: model:res.groups,name:documents.group_documents_manager
-msgid "Manager"
-msgstr "Menedzser"
-
-#. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
 msgid "Mark As Draft"
 msgstr ""
@@ -1186,7 +1342,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:140
+#: code:addons/documents/static/src/js/documents_inspector.js:144
 #, python-format
 msgid "Multiple values"
 msgstr ""
@@ -1199,7 +1355,7 @@ msgstr "Tevékenységeim"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Documents"
-msgstr ""
+msgstr "Dokumentumaim"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1244,13 +1400,13 @@ msgid "Next Activity Type"
 msgstr "Következő tevékenységtípus"
 
 #. module: documents
-#: code:addons/documents/models/document.py:148
+#: code:addons/documents/models/document.py:149
 #, python-format
 msgid "Not a file"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/document.py:154
+#: code:addons/documents/models/document.py:155
 #, python-format
 msgid "Not attached"
 msgstr ""
@@ -1299,6 +1455,18 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Website"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:434
+#, python-format
+msgid "One or more files failed to upload"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__limited_to_single_record
+msgid "One record limit"
 msgstr ""
 
 #. module: documents
@@ -1584,7 +1752,7 @@ msgid "Share Links"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/share.py:133
+#: code:addons/documents/models/share.py:140
 #, python-format
 msgid "Share domain"
 msgstr ""
@@ -1595,7 +1763,7 @@ msgid "Share links"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/share.py:133
+#: code:addons/documents/models/share.py:140
 #, python-format
 msgid "Share selected records"
 msgstr ""
@@ -1648,7 +1816,7 @@ msgstr ""
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
+msgid "Sign directly"
 msgstr ""
 
 #. module: documents
@@ -1804,7 +1972,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid ""
-"This file has been requested.\n"
+"This document has been requested.\n"
 "                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
 msgstr ""
 
@@ -1956,11 +2124,6 @@ msgid "User"
 msgstr "Felhasználó"
 
 #. module: documents
-#: model:ir.model,name:documents.model_res_users
-msgid "Users"
-msgstr "Felhasználók"
-
-#. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_vat
 msgid "VAT"
 msgstr "ÁFA"
@@ -2051,6 +2214,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__folder_id
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id

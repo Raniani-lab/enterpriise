@@ -7,8 +7,8 @@
 # Olivier Lenoir <olivier.lenoir@free.fr>, 2016
 # Clo <clo@odoo.com>, 2016
 # Lucas Deliege <lud@odoo.com>, 2016
-# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
 # Hubert TETARD <htetard@apik-conseils.com>, 2017
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
 # Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2017
 # Micky Jault <micky037@hotmail.fr>, 2017
 # Félix Desjardins <felixinx@gmail.com>, 2017
@@ -17,9 +17,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -251,22 +251,17 @@ msgstr "Nom"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:368
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:370
 #, python-format
 msgid "No Rewards Available"
 msgstr "Pas de récompense disponible"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:384
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:386
 #, python-format
 msgid "Please select a reward"
 msgstr "Veuillez sélectionner une récompense"
-
-#. module: pos_loyalty
-#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
-msgid "Point Cost"
-msgstr "Coût d'un point"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_product_id
@@ -324,6 +319,11 @@ msgstr "Points gagnés"
 #, python-format
 msgid "Points Won:"
 msgstr "Points gagnés:"
+
+#. module: pos_loyalty
+#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
+msgid "Points per Currency"
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pp_currency
@@ -536,7 +536,7 @@ msgstr "Le type de récompense"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:369
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:371
 #, python-format
 msgid ""
 "There are no rewards available for this customer as part of the loyalty "

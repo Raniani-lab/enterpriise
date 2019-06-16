@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
@@ -38,7 +38,23 @@ msgstr "Создать"
 
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0
+msgid "Create signature request"
+msgstr ""
+
+#. module: documents_sign
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
+msgid "Create signature template(s)"
+msgstr ""
+
+#. module: documents_sign
+#: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
+msgstr ""
+
+#. module: documents_sign
+#: selection:documents.workflow.rule,create_model:0
+msgid "Customer invoice"
 msgstr ""
 
 #. module: documents_sign
@@ -57,15 +73,25 @@ msgid "Has Business Option"
 msgstr ""
 
 #. module: documents_sign
+#: code:addons/documents_sign/models/workflow.py:53
+#, python-format
+msgid "New templates"
+msgstr ""
+
+#. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
 msgstr ""
 
 #. module: documents_sign
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
-msgid "Request a Signature"
-msgstr "Запросить подпись"
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
+msgid "Request a signature and sign directly"
+msgstr ""
+
+#. module: documents_sign
+#: selection:documents.workflow.rule,create_model:0
+msgid "Sign directly"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -75,11 +101,6 @@ msgstr "Подпись запроса"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template
 msgid "Signature Template"
-msgstr ""
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
 msgstr ""
 
 #. module: documents_sign

@@ -11,14 +11,15 @@
 # Martin Trigaux, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
 # Umur Akın <umura@projetgrup.com>, 2019
+# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
+"Last-Translator: Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,6 +50,11 @@ msgid "And barcode"
 msgstr ""
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_line__check_ids
+msgid "Associated step"
+msgstr ""
+
+#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Availability"
 msgstr "Başlayabileceği Tarih"
@@ -57,6 +63,16 @@ msgstr "Başlayabileceği Tarih"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Block"
 msgstr "Blok"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+msgid "By-product"
+msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+msgid "CONTINUE CONSUMPTION"
+msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
@@ -71,10 +87,14 @@ msgstr "Kontroller"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_id
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Component"
 msgstr "Bileşen"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_qty_to_do
+msgid "Component Qty To Do"
+msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_uom_id
@@ -118,7 +138,7 @@ msgid "Do not update page"
 msgstr "Sayfayı güncelleme"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:111
+#: code:addons/mrp_workorder/models/quality.py:127
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__qty_done
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
@@ -189,6 +209,11 @@ msgid "Is Last Step"
 msgstr "Son Adım mı"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_unfinished_wo
+msgid "Is Last Work Order To Process"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_lot
 msgid "Is Last lot"
 msgstr "İlk Lot mu"
@@ -224,7 +249,7 @@ msgid "Mark as Done and Close MO"
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:367
+#: code:addons/mrp_workorder/models/mrp_workorder.py:394
 #, python-format
 msgid "Menu"
 msgstr "Menü"
@@ -297,8 +322,8 @@ msgid "Planning by Workcenter"
 msgstr "İş Merkezine Göre Planla"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:242
-#: code:addons/mrp_workorder/models/mrp_workorder.py:268
+#: code:addons/mrp_workorder/models/mrp_workorder.py:245
+#: code:addons/mrp_workorder/models/mrp_workorder.py:283
 #, python-format
 msgid ""
 "Please ensure the quantity to produce is nonnegative and does not exceed the"
@@ -308,19 +333,19 @@ msgstr ""
 "geçmediğinden emin olun."
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:246
+#: code:addons/mrp_workorder/models/mrp_workorder.py:251
 #, python-format
 msgid "Please enter a Lot/SN."
 msgstr "Lütfen bir Lot/Seri Girin"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:248
+#: code:addons/mrp_workorder/models/mrp_workorder.py:253
 #, python-format
 msgid "Please enter a positive quantity."
 msgstr "Lütfen pozitif bir miktar girin"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:255
+#: code:addons/mrp_workorder/models/mrp_workorder.py:268
 #, python-format
 msgid "Please upload a picture."
 msgstr "Lütfen bir resim yükleyin"
@@ -339,6 +364,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Process"
 msgstr "Süreç"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
+msgid "Product To Register"
+msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_production
@@ -408,17 +438,6 @@ msgstr "Adet"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Record production"
 msgstr "Üretim Kaydını İşle"
-
-#. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_is_byproduct
-msgid "Register a by product"
-msgstr ""
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:105
-#, python-format
-msgid "Register component(s)"
-msgstr "Bileşenleri Kaydet"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_remaining_qty
@@ -513,6 +532,11 @@ msgstr "Adımlar"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type
+msgid "Technical name"
+msgstr "Teknik adı:"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "Test Türü"
@@ -533,7 +557,7 @@ msgid "Title"
 msgstr "Başlık"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:111
+#: code:addons/mrp_workorder/models/quality.py:127
 #, python-format
 msgid "To Do"
 msgstr "Yapılacak"
@@ -562,11 +586,11 @@ msgstr "Ölçü Birimi"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
-msgid "Validate"
-msgstr "Doğrula"
+msgid "VALIDATE"
+msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:554
+#: code:addons/mrp_workorder/models/mrp_workorder.py:573
 #, python-format
 msgid "Warning"
 msgstr "Uyarı"
@@ -610,6 +634,11 @@ msgid "Workorder Line"
 msgstr ""
 
 #. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_mrp_workorder_line
+msgid "Workorder move line"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__worksheet
 msgid "Worksheet"
 msgstr "Çalışma Tablosu"
@@ -625,7 +654,7 @@ msgid "Worksheet page"
 msgstr "Çalışma Sayfası"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:555
+#: code:addons/mrp_workorder/models/mrp_workorder.py:574
 #, python-format
 msgid ""
 "You are using components from another lot. \n"
@@ -633,19 +662,27 @@ msgid ""
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:121
+#: code:addons/mrp_workorder/models/mrp_workorder.py:125
 #, python-format
 msgid "You did not set a lot/serial number for the final product"
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:478
+#: code:addons/mrp_workorder/models/mrp_workorder.py:265
+#, python-format
+msgid ""
+"You should consume the quantity of %s defined in the BoM. If you want to "
+"consume more or less components, change the consumption setting on the BoM."
+msgstr ""
+
+#. module: mrp_workorder
+#: code:addons/mrp_workorder/models/mrp_workorder.py:492
 #, python-format
 msgid "You should provide a lot for the final product"
 msgstr "Final ürün için bir lot sağlamalısınız"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:476
+#: code:addons/mrp_workorder/models/mrp_workorder.py:490
 #, python-format
 msgid "You still need to do the quality checks!"
 msgstr "Hala kalite kontrollerini yapmanız gerekiyor!"

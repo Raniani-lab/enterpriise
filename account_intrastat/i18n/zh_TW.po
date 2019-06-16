@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:36+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -36,7 +36,17 @@ msgid "<span class=\"fa fa-filter\"/> Options:"
 msgstr "<span class=\"fa fa-filter\"/> 選項:"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:16
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "<span class=\"fa fa-filter\"/> Partners:"
+msgstr "<span class=\"fa fa-filter\"/> 業務夥伴:"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "All"
+msgstr "所有"
+
+#. module: account_intrastat
+#: code:addons/account_intrastat/models/account_intrastat_report.py:17
 #, python-format
 msgid "Arrival"
 msgstr "到達"
@@ -62,7 +72,7 @@ msgid "Commodity"
 msgstr "優惠"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:33
+#: code:addons/account_intrastat/models/account_intrastat_report.py:34
 #: model:ir.model.fields,field_description:account_intrastat.field_product_category__intrastat_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_id
@@ -91,14 +101,14 @@ msgid "Country"
 msgstr "國家"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:30
+#: code:addons/account_intrastat/models/account_intrastat_report.py:31
 #: code:addons/account_intrastat/models/account_sales_report.py:24
 #, python-format
 msgid "Country Code"
 msgstr "國家/地區代碼"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:28
+#: code:addons/account_intrastat/models/account_intrastat_report.py:29
 #, python-format
 msgid "Date"
 msgstr "日期"
@@ -115,7 +125,7 @@ msgid "Default incoterm for Intrastat"
 msgstr "預設的國際貿易術語歐盟內部"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:17
+#: code:addons/account_intrastat/models/account_intrastat_report.py:18
 #, python-format
 msgid "Dispatch"
 msgstr "派遣"
@@ -157,7 +167,12 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:39
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "Include VAT"
+msgstr ""
+
+#. module: account_intrastat
+#: code:addons/account_intrastat/models/account_intrastat_report.py:40
 #, python-format
 msgid "Incoterm Code"
 msgstr "貿易代碼"
@@ -192,7 +207,7 @@ msgid "Intrastat Country"
 msgstr "歐盟內部國家"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:234
+#: code:addons/account_intrastat/models/account_intrastat_report.py:256
 #: model:ir.actions.client,name:account_intrastat.action_account_report_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_report
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_intrastat
@@ -242,6 +257,11 @@ msgid "Last Modified on"
 msgstr "最後修改於"
 
 #. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "Only with VAT numbers"
+msgstr ""
+
+#. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_category
 msgid "Product Category"
 msgstr "產品分類"
@@ -252,7 +272,7 @@ msgid "Product Template"
 msgstr "产品模板"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:43
+#: code:addons/account_intrastat/models/account_intrastat_report.py:44
 #, python-format
 msgid "Quantity"
 msgstr "數量"
@@ -263,7 +283,7 @@ msgid "Region"
 msgstr "地區"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:32
+#: code:addons/account_intrastat/models/account_intrastat_report.py:33
 #, python-format
 msgid "Region Code"
 msgstr "地區代碼"
@@ -274,13 +294,13 @@ msgid "Standard"
 msgstr "標準"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:29
+#: code:addons/account_intrastat/models/account_intrastat_report.py:30
 #, python-format
 msgid "System"
 msgstr "系統"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:224
+#: code:addons/account_intrastat/models/account_intrastat_report.py:246
 #: code:addons/account_intrastat/models/account_sales_report.py:114
 #, python-format
 msgid "Total"
@@ -292,7 +312,7 @@ msgid "Transaction"
 msgstr "交易"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:31
+#: code:addons/account_intrastat/models/account_intrastat_report.py:32
 #, python-format
 msgid "Transaction Code"
 msgstr "交易代碼"
@@ -303,7 +323,7 @@ msgid "Transport"
 msgstr "物流"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:38
+#: code:addons/account_intrastat/models/account_intrastat_report.py:39
 #, python-format
 msgid "Transport Code"
 msgstr "物流代碼"
@@ -314,7 +334,7 @@ msgid "Triplet code/type/country_id must be unique."
 msgstr "三項 代碼/類型/ country_id必須是唯一的。"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:34
+#: code:addons/account_intrastat/models/account_intrastat_report.py:35
 #, python-format
 msgid "Type"
 msgstr "類型"
@@ -326,14 +346,19 @@ msgid "VAT"
 msgstr "增值稅"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:44
+#: code:addons/account_intrastat/models/account_intrastat_report.py:45
 #: code:addons/account_intrastat/models/account_sales_report.py:25
 #, python-format
 msgid "Value"
 msgstr "值"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:42
+#: code:addons/account_intrastat/models/account_intrastat_report.py:43
 #, python-format
 msgid "Weight"
 msgstr "重量"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "With VAT numbers"
+msgstr ""

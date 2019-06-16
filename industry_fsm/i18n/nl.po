@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-03-20 14:36+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -299,7 +299,7 @@ msgstr "Producten"
 #: model:ir.model.fields,help:industry_fsm.field_project_task__product_template_ids
 #: model:ir.model.fields,help:industry_fsm.field_project_task_create_sale_order__product_template_ids
 msgid "Products allowed to be added on this Task's Material"
-msgstr ""
+msgstr "Producten die mogen toegevoegd worden aan deze taak zijn materialen"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_project

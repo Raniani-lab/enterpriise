@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Xu Lei <xulei8@qq.com>, 2017
-# 苏州远鼎 <tiexinliu@126.com>, 2017
 # waveyeung <waveyeung@qq.com>, 2017
 # Gary Wei <Gary.wei@elico-corp.com>, 2017
 # v2exerer <9010446@qq.com>, 2017
@@ -13,16 +12,16 @@
 # 老窦 北京 <2662059195@qq.com>, 2018
 # e2f <projects@e2f.com>, 2019
 # Martin Trigaux, 2019
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # snow wang <147156565@qq.com>, 2019
 # Allen Xie <xfz@forisen.com>, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-12-13 15:21+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -453,14 +452,14 @@ msgstr "刪除"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:181
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:198
 #, python-format
 msgid "Delete Activity"
 msgstr "删除活动"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:183
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:200
 #, python-format
 msgid "Delete All"
 msgstr "全部删除"
@@ -472,10 +471,10 @@ msgstr "直系子痕迹"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:188
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:205
 #, python-format
 msgid "Discard"
-msgstr "放弃"
+msgstr "丢弃"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
@@ -563,13 +562,13 @@ msgid "Exception"
 msgstr "异常"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:593
+#: code:addons/marketing_automation/models/marketing_campaign.py:592
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr "邮件群发异常：%s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:563
+#: code:addons/marketing_automation/models/marketing_campaign.py:562
 #, python-format
 msgid "Exception in server action: %s"
 msgstr "服务器操作异常：%s"
@@ -614,6 +613,11 @@ msgstr "ID"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "It will be generated automatically once you save this record."
 msgstr "保存此记录后将自动生成参与者。"
+
+#. module: marketing_automation
+#: model:mail.mass_mailing,subject:marketing_automation.mass_mailing_after_7_days
+msgid "Join partnership!"
+msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -761,13 +765,13 @@ msgid "Marketing Automation Mailings"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:589
+#: code:addons/marketing_automation/models/marketing_campaign.py:588
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
 msgstr "<%s>"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:559
+#: code:addons/marketing_automation/models/marketing_campaign.py:558
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
 msgstr "<%s>"
@@ -984,7 +988,7 @@ msgstr "执行"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:204
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:221
 #, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr "请保存营销活动以添加子活动"
@@ -1036,7 +1040,7 @@ msgstr "记录模型"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:361
-#: code:addons/marketing_automation/models/marketing_campaign.py:465
+#: code:addons/marketing_automation/models/marketing_campaign.py:464
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
 #: selection:marketing.trace,state:0
 #, python-format
@@ -1044,7 +1048,7 @@ msgid "Rejected"
 msgstr "已拒绝"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:538
+#: code:addons/marketing_automation/models/marketing_campaign.py:537
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
 msgstr "已被活动过滤器拒绝或记录已删除/归档"
@@ -1205,7 +1209,7 @@ msgstr "主题"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:360
-#: code:addons/marketing_automation/models/marketing_campaign.py:464
+#: code:addons/marketing_automation/models/marketing_campaign.py:463
 #, python-format
 msgid "Success"
 msgstr "成功"
@@ -1249,7 +1253,7 @@ msgstr "测试"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:192
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:209
 #, python-format
 msgid ""
 "This Activity has a dependant child activity. 'DELETE ALL' will delete all "
@@ -1257,7 +1261,7 @@ msgid ""
 msgstr "此活动具有相关子活动。'DELETE ALL' 将删除所有子活动。"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:585
+#: code:addons/marketing_automation/models/marketing_campaign.py:584
 #, python-format
 msgid ""
 "To use this feature you should be an administrator or belong to the "
@@ -1362,6 +1366,11 @@ msgstr "有效期类型"
 #: selection:marketing.activity,validity_duration_type:0
 msgid "Weeks"
 msgstr "周"
+
+#. module: marketing_automation
+#: model:mail.mass_mailing,subject:marketing_automation.mass_mailing_offer_free_trial
+msgid "Welcome!"
+msgstr "欢迎!"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form

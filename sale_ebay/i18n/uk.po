@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -43,8 +43,9 @@ msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
 " and the listing duration should set to Good 'Til Canceled"
 msgstr ""
-"Якщо ви хочете встановити кількість до 0, параметр Out Of Stock має бути "
-"включений, а тривалість запису має бути встановлено на Good 'Til Canceled"
+"Якщо ви хочете встановити кількість до 0, параметр Немає на складі має бути "
+"включений, а термін знаходження товару має бути встановлено на Товар "
+"знаходиться до скасування"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:398
@@ -54,7 +55,7 @@ msgid ""
 " Or if you try to delete a variation, you cannot do it by unselecting it. Setting the quantity to 0 is the safest method to make a variation unavailable."
 msgstr ""
 "Вам потрібно вибрати принаймні 2 варіанти для переліку варіантів.\n"
-"  Або якщо ви намагаєтесь видалити варіант, ви не можете це зробити, скасувавши його. Встановлення кількості до 0 - найбезпечніший спосіб зробити варіант недоступним."
+"Або якщо ви намагаєтесь видалити варіант, ви не можете це зробити, скасувавши його. Встановлення кількості до 0 - найбезпечніший спосіб зробити варіант недоступним."
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
@@ -353,7 +354,7 @@ msgstr "Додати галерею"
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "Good 'Til Cancelled (only for fixed price)"
-msgstr "Добре до закриття (тільки для фіксованої ціни)"
+msgstr "Товар знаходиться до закриття (тільки для фіксованої ціни)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__id
@@ -383,7 +384,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_item_condition_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_item_condition_id
 msgid "Item Condition"
-msgstr "Стан елемента"
+msgstr "Стан елементу"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category____last_update
@@ -421,7 +422,7 @@ msgstr "Останні оновлення"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__leaf_category
 msgid "Leaf Category"
-msgstr "Гілка категорії"
+msgstr "Категорія гілки"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
@@ -687,17 +688,17 @@ msgid "Sync now"
 msgstr "Синхронізувати зараз"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:746
+#: code:addons/sale_ebay/models/product.py:782
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
 msgstr "Покупець вибрав наступний метод доставки:\n"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:742
-#: code:addons/sale_ebay/models/product.py:743
+#: code:addons/sale_ebay/models/product.py:778
+#: code:addons/sale_ebay/models/product.py:779
 #, python-format
 msgid "The Buyer Posted :\n"
-msgstr "Покупець опублікувава :\n"
+msgstr "Покупець опублікував :\n"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
@@ -853,7 +854,7 @@ msgstr "ID користувача eBay "
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_variant_url
 msgid "eBay Variant URL"
-msgstr "варіант URL-адреси eBay"
+msgstr "Варіант URL-адреси eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_site
@@ -867,18 +868,18 @@ msgid ""
 "eBay error: Impossible to synchronize the categories. \n"
 "'%s'"
 msgstr ""
-"помилка eBay: Неможливо синхронізувати категорії. \n"
+"Помилка eBay: Неможливо синхронізувати категорії. \n"
 "'%s'"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:495
-#: code:addons/sale_ebay/models/product.py:568
+#: code:addons/sale_ebay/models/product.py:508
+#: code:addons/sale_ebay/models/product.py:604
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the products. \n"
 "'%s'"
 msgstr ""
-"помилка eBay: Неможливо синхронізувати товари. \n"
+"Помилка eBay: Неможливо синхронізувати товари. \n"
 "'%s'"
 
 #. module: sale_ebay

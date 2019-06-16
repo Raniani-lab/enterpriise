@@ -7,7 +7,6 @@
 # 苏州远鼎 <tiexinliu@126.com>, 2018
 # Gary Wei <Gary.wei@elico-corp.com>, 2018
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
-# Eddie Lim <bhweelim@yahoo.com>, 2018
 # Rangy Chen <rangychen@163.com>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
 # bf2549c5415a9287249cba2b8a5823c7, 2018
@@ -21,9 +20,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2018-08-02 11:35+0000\n"
 "Last-Translator: diaojiaolou <124412206@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -142,11 +141,6 @@ msgid "Delivery Carrier"
 msgstr "交货承运商"
 
 #. module: delivery_easypost
-#: model:ir.model,name:delivery_easypost.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "交货方式"
-
-#. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__display_name
 #: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service__display_name
 msgid "Display Name"
@@ -186,12 +180,6 @@ msgid "Easypost Configuration"
 msgstr "Easypost 配置"
 
 #. module: delivery_easypost
-#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_stock
-msgid "Easypost Delivery Methods"
-msgstr "Easypost 交货方式"
-
-#. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_label_file_type
 msgid "Easypost Label File Type"
 msgstr "Easypost 标签文件类型"
@@ -205,6 +193,12 @@ msgstr "Easypost 订单参考"
 #: model:ir.model,name:delivery_easypost.model_easypost_service
 msgid "Easypost Service"
 msgstr "Easypost 服务"
+
+#. module: delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_stock
+msgid "Easypost Shipping Methods"
+msgstr ""
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -260,7 +254,7 @@ msgid "If not set, the less expensive available service level will be chosen."
 msgstr "如未设置，那么将选择less扩展服务级别。"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:311
+#: code:addons/delivery_easypost/models/easypost_request.py:322
 #, python-format
 msgid ""
 "It seems Easypost do not provide shipments for this order.                We"
@@ -323,7 +317,7 @@ msgid "Product Packaging"
 msgstr "产品包装"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:216
+#: code:addons/delivery_easypost/models/easypost_request.py:224
 #, python-format
 msgid "Product packaging used in pack %s is not configured for easypost."
 msgstr "‎产品‎‎打包用‎‎包装‎ %s ‎未为 easypost 配置。‎"
@@ -362,8 +356,13 @@ msgstr "服务等级名称"
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:106
 #, python-format
-msgid "Shipping label for packages"
-msgstr "装运的包装标签"
+msgid "Shipment created into Easypost<br/><b>Tracking Numbers:</b> %s<br/>"
+msgstr ""
+
+#. module: delivery_easypost
+#: model:ir.model,name:delivery_easypost.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -425,7 +424,7 @@ msgid ""
 msgstr "因为产品重量缺失所以估计价格不能被计算。"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:322
+#: code:addons/delivery_easypost/models/easypost_request.py:333
 #, python-format
 msgid ""
 "There is no rate available for the selected service level for one of your "
@@ -449,7 +448,7 @@ msgid "USPS"
 msgstr "USPS"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/delivery_carrier.py:128
+#: code:addons/delivery_easypost/models/delivery_carrier.py:156
 #, python-format
 msgid "You can't cancel Easypost shipping."
 msgstr "您不能取消 Easypost 运输."
@@ -477,6 +476,7 @@ msgstr "bpost"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:86
+#: code:addons/delivery_easypost/models/delivery_carrier.py:123
 #, python-format
 msgid "error_message"
 msgstr "error_message"

@@ -13,9 +13,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
@@ -197,12 +197,6 @@ msgid "DHL Default Packaging Type"
 msgstr "DHL Varsayılan Paketleme Türü"
 
 #. module: delivery_dhl
-#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
-msgid "DHL Delivery Methods"
-msgstr "DHL Teslimat Yöntemi"
-
-#. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_password
 msgid "DHL Password"
 msgstr "DHL Şifre"
@@ -213,7 +207,13 @@ msgid "DHL Product"
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:378
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
+msgid "DHL Shipping Methods"
+msgstr ""
+
+#. module: delivery_dhl
+#: code:addons/delivery_dhl/models/dhl_request.py:314
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
 msgstr "DHL Site ID eksik, lütfen teslimat yöntemi ayarlarınızı değiştirin."
@@ -238,7 +238,7 @@ msgid "DHL USA -> International"
 msgstr "DHL ABD -> Uluslararası"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:382
+#: code:addons/delivery_dhl/models/dhl_request.py:318
 #, python-format
 msgid ""
 "DHL account number is missing, please modify your delivery method settings."
@@ -246,15 +246,10 @@ msgstr ""
 "DHLhesap numarası eksik, lütfen teslimat yöntemi ayarlarınızı değiştirin."
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:380
+#: code:addons/delivery_dhl/models/dhl_request.py:316
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
 msgstr "DHL şifresi eksik, lütfen teslimat yöntemi ayarlarınızı değiştirin."
-
-#. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Teslimat Yöntemleri"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_dutiable
@@ -364,18 +359,6 @@ msgid "No carrier integration"
 msgstr "Taşıyıcı entegrasyonu yok"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:179
-#, python-format
-msgid "No service available for the selected product"
-msgstr "Seçilen ürün için hizmet mevcut değil"
-
-#. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:82
-#, python-format
-msgid "No shipping available for the selected DHL product"
-msgstr "Seçilen DHL ürünü için sevkıyat mevcut değil"
-
-#. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "O - DOM Express 10:30"
 msgstr "O - DOM Expres 10:30"
@@ -401,7 +384,7 @@ msgid "Package Weight Unit"
 msgstr "Paket Ağırlık Birimi"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:400
+#: code:addons/delivery_dhl/models/dhl_request.py:336
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "En az bir adet kargolanacak ürün sağlayın."
@@ -442,9 +425,15 @@ msgid "S - Same Day"
 msgstr "S - Aynı Gün"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/delivery_dhl.py:131
+#: code:addons/delivery_dhl/models/delivery_dhl.py:190
+#: code:addons/delivery_dhl/models/delivery_dhl.py:230
 #, python-format
 msgid "Shipment created into DHL <br/> <b>Tracking Number : </b>%s"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_delivery_carrier
+msgid "Shipping Methods"
 msgstr ""
 
 #. module: delivery_dhl
@@ -453,7 +442,7 @@ msgid "T - Express 12:00"
 msgstr "T - Expres 12:00"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:388
+#: code:addons/delivery_dhl/models/dhl_request.py:324
 #, python-format
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
@@ -461,7 +450,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:396
+#: code:addons/delivery_dhl/models/dhl_request.py:332
 #, python-format
 msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
@@ -469,12 +458,20 @@ msgid ""
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:402
+#: code:addons/delivery_dhl/models/dhl_request.py:338
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
 msgstr "Ürününüzün ağırlığı olmadığı için tahmini fiyat hesaplanamadı."
+
+#. module: delivery_dhl
+#: code:addons/delivery_dhl/models/delivery_dhl.py:161
+#, python-format
+msgid ""
+"There is no price available for this shipping, you should rather try with "
+"the DHL product %s"
+msgstr ""
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -521,7 +518,7 @@ msgid "Y - Express 12:00"
 msgstr "Y - Expres 12:00"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/delivery_dhl.py:146
+#: code:addons/delivery_dhl/models/delivery_dhl.py:243
 #, python-format
 msgid "You can't cancel DHL shipping without pickup date."
 msgstr "Teslim alma işlemi olmadan DHL gönderimini iptal edemezsiniz."

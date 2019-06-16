@@ -3,16 +3,31 @@
 # * mail_github
 # 
 # Translators:
+# Antonio Trueba, 2017
+# Mateo Tibaquirá Palacios <nestormateo@gmail.com>, 2017
+# Carles Antoli <carlesantoli@hotmail.com>, 2017
+# Leonardo Chianea <noamixcontenidos@gmail.com>, 2017
+# Ivan Nieto <ivan.n.s@tuta.io>, 2017
+# Pablo Rojas <rojaspablo88@gmail.com>, 2017
 # Martin Trigaux, 2018
-# Cristopher Cravioto <ccr@odoo.com>, 2018
+# Ana Juaristi <ajuaristio@gmail.com>, 2018
+# oihane <oihanecruce@gmail.com>, 2018
+# Javier Ramirez <elbomba887@gmail.com>, 2018
+# José Vicente <txusev@gmail.com>, 2018
+# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Nicolás Broggi <rnbroggi@gmail.com>, 2018
+# e2f <projects@e2f.com>, 2018
 # Miquel Torner <miq@odoo.com>, 2018
+# Cristopher Cravioto <ccr@odoo.com>, 2019
+# Pedro M. Baeza <pedro.baeza@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Miquel Torner <miq@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
+"PO-Revision-Date: 2017-02-15 11:45+0000\n"
+"Last-Translator: Pedro M. Baeza <pedro.baeza@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,8 +114,8 @@ msgstr "Creado el"
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel
-msgid "Discussion channel"
-msgstr "Canal de discusión"
+msgid "Discussion Channel"
+msgstr "Canal de conversaciones"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__display_name
@@ -338,6 +353,7 @@ msgstr "creado uno nuevo"
 
 #. module: mail_github
 #: code:addons/mail_github/controllers/main.py:197
+#: code:addons/mail_github/controllers/main.py:205
 #, python-format
 msgid "issue"
 msgstr "incidencia"
@@ -358,8 +374,8 @@ msgid "on repository"
 msgstr "en el repositorio"
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:211
-#: code:addons/mail_github/controllers/main.py:218
+#: code:addons/mail_github/controllers/main.py:212
+#: code:addons/mail_github/controllers/main.py:219
 #, python-format
 msgid "pull request"
 msgstr "hacer una solicitud"

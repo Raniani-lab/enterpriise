@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:36+0000\n"
 "Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
@@ -40,9 +40,10 @@ msgid "An error occured"
 msgstr ""
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
-msgid "An error occured during digitalization. Try resending the bill."
-msgstr ""
+#: code:addons/account_invoice_extract/models/account_invoice.py:26
+#, python-format
+msgid "An error occurred"
+msgstr "A fost generată o eroare"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
@@ -93,6 +94,16 @@ msgstr "Nume afișat"
 #: selection:res.company,extract_show_ocr_option_selection:0
 msgid "Do not process bills"
 msgstr ""
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
+msgid "Enable to get only one invoice line per tax"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_error_message
+msgid "Error message"
+msgstr "Mesaj de eroare"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_word_ids
@@ -161,6 +172,12 @@ msgid "Last Updated on"
 msgstr "Ultima actualizare pe"
 
 #. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:28
+#, python-format
+msgid "No document name provided"
+msgstr ""
+
+#. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "No extract requested"
 msgstr ""
@@ -168,6 +185,12 @@ msgstr ""
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "Not enough credit"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
+#: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
+msgid "OCR Single Invoice Line Per Tax"
 msgstr ""
 
 #. module: account_invoice_extract
@@ -201,6 +224,17 @@ msgid "Send mode on invoices attachments"
 msgstr ""
 
 #. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:31
+#, python-format
+msgid "Server not available. Please retry later"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_status_code
+msgid "Status code"
+msgstr ""
+
+#. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
@@ -208,10 +242,22 @@ msgid ""
 msgstr ""
 
 #. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:27
+#, python-format
+msgid "The document could not be found"
+msgstr ""
+
+#. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 60 seconds."
+msgstr ""
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:29
+#, python-format
+msgid "Unsupported image format"
 msgstr ""
 
 #. module: account_invoice_extract
@@ -274,6 +320,12 @@ msgstr ""
 msgid ""
 "You don't have enough credit to extract datas from your invoice. You can buy"
 " new credits here:"
+msgstr ""
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:30
+#, python-format
+msgid "You must send the same quantity of documents and file names"
 msgstr ""
 
 #. module: account_invoice_extract

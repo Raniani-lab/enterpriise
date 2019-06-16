@@ -3,15 +3,14 @@
 # * account_sepa
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Bohdan Lisnenko, 2019
+# Bohdan Lisnenko, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -37,11 +36,9 @@ msgid "Config Settings"
 msgstr "Налаштування"
 
 #. module: account_sepa
-#: model:ir.model,name:account_sepa.model_account_abstract_payment
-msgid ""
-"Contains the logic shared between models which allows to register payments"
+#: model:ir.model.fields,field_description:account_sepa.field_account_payment__display_qr_code
+msgid "Display Qr Code"
 msgstr ""
-"Містить логіку, розділену між моделями, яка дозволяє реєструвати платежі"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_orgid_issr
@@ -75,8 +72,8 @@ msgid "Identification assigned by an institution (eg. VAT number)."
 msgstr "Ідентифікація, призначена установою (наприклад, номер ПДВ)."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:44
-#: code:addons/account_sepa/models/account_batch_payment.py:51
+#: code:addons/account_sepa/models/account_batch_payment.py:45
+#: code:addons/account_sepa/models/account_batch_payment.py:52
 #, python-format
 msgid ""
 "In result, the file might not be accepted by all bank as a valid SEPA Credit"
@@ -121,27 +118,21 @@ msgid "Payments to send via SEPA"
 msgstr "Платежі для відправлення через SEPA"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:42
+#: code:addons/account_sepa/models/account_batch_payment.py:43
 #, python-format
 msgid "Please note that the following warning has been raised:"
 msgstr "Зверніть увагу, що було висунуто таке попередження:"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:46
+#: code:addons/account_sepa/models/account_batch_payment.py:47
 #, python-format
 msgid "Please note that the following warnings have been raised:"
 msgstr "Зверніть увагу на те, що виникли такі попередження:"
 
 #. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_payment__partner_bank_account_id
-#: model:ir.model.fields,field_description:account_sepa.field_account_register_payments__partner_bank_account_id
-msgid "Recipient Bank Account"
-msgstr "Банківський рахунок одержувача"
-
-#. module: account_sepa
-#: model:ir.model,name:account_sepa.model_account_register_payments
-msgid "Register Payments"
-msgstr "Зареєструвати платежі"
+#: model:ir.model.fields,field_description:account_sepa.field_account_payment__qr_code_url
+msgid "Qr Code Url"
+msgstr ""
 
 #. module: account_sepa
 #: model:account.payment.method,name:account_sepa.account_payment_method_sepa_ct
@@ -178,6 +169,12 @@ msgstr ""
 "чином, для створення XML потрібні деякі виправлення."
 
 #. module: account_sepa
+#: code:addons/account_sepa/models/account_payment.py:27
+#, python-format
+msgid "Scan me with your banking app."
+msgstr ""
+
+#. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
 msgid "Sct Generic"
 msgstr "Загальний Sct"
@@ -207,7 +204,13 @@ msgstr ""
 "рахунку IBAN та банківським BIC."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:353
+#: code:addons/account_sepa/models/account_payment.py:38
+#, python-format
+msgid "The SEPA QR Code information is not set correctly."
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_batch_payment.py:354
 #, python-format
 msgid ""
 "The account %s, linked to partner '%s', is not of type IBAN.\n"
@@ -217,7 +220,7 @@ msgstr ""
 "Для використання функцій SEPA потрібен дійсний обліковий запис IBAN."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:103
+#: code:addons/account_sepa/models/account_batch_payment.py:104
 #, python-format
 msgid ""
 "The account %s, of journal '%s', is not of type IBAN.\n"
@@ -227,7 +230,7 @@ msgstr ""
 "Для використання функцій SEPA потрібен дійсний обліковий запис IBAN."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:47
+#: code:addons/account_sepa/models/account_payment.py:70
 #, python-format
 msgid ""
 "The account '%s' (journal %s) requires a Bank Identification Code (BIC) to "
@@ -237,14 +240,14 @@ msgstr ""
 "оплати через SEPA. Будь ласка, налаштуйте його спочатку."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:317
+#: code:addons/account_sepa/models/account_batch_payment.py:318
 #, python-format
 msgid ""
 "The amount of the payment '%s' is too high. The maximum permitted is %s."
 msgstr "Сума платежу '%s' занадто велика. Максимально допустима сума %s."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:90
+#: code:addons/account_sepa/models/account_batch_payment.py:91
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by a BIC"
@@ -253,7 +256,7 @@ msgstr ""
 "ідентифікується BIC"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:92
+#: code:addons/account_sepa/models/account_batch_payment.py:93
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by an IBAN"
@@ -262,7 +265,7 @@ msgstr ""
 "ідентифікується IBAN"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:111
+#: code:addons/account_sepa/models/account_batch_payment.py:112
 #, python-format
 msgid ""
 "The following payments have no recipient bank account set: %s. \n"
@@ -272,7 +275,7 @@ msgstr ""
 "\n"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:45
+#: code:addons/account_sepa/models/account_payment.py:68
 #, python-format
 msgid ""
 "The journal '%s' requires a proper IBAN account to pay via SEPA. Please "
@@ -282,7 +285,7 @@ msgstr ""
 "ласка, налаштуйте його спочатку."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:56
+#: code:addons/account_sepa/models/account_payment.py:79
 #, python-format
 msgid ""
 "The partner account '%s' requires a Bank Identification Code (BIC) to pay "
@@ -293,7 +296,7 @@ msgstr ""
 "спочатку."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:18
+#: code:addons/account_sepa/models/account_batch_payment.py:19
 #, python-format
 msgid ""
 "The text used in SEPA files can only contain the following characters :\n"
@@ -311,13 +314,13 @@ msgstr ""
 "/ - ? : ( ) . , ' + (space)"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:88
+#: code:addons/account_sepa/models/account_batch_payment.py:89
 #, python-format
 msgid "The transaction %s is instructed in another currency than EUR"
 msgstr "Транзакція %s вказується в іншій валюті, а не в євро"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:347
+#: code:addons/account_sepa/models/account_batch_payment.py:348
 #, python-format
 msgid "There is no Bank Identifier Code recorded for bank account '%s'"
 msgstr ""
@@ -325,7 +328,7 @@ msgstr ""
 "рахунку'%s'"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:191
+#: code:addons/account_sepa/models/account_batch_payment.py:192
 #, python-format
 msgid ""
 "There is no Bank Identifier Code recorded for bank account '%s' of journal "
@@ -335,7 +338,7 @@ msgstr ""
 "рахунку '%s' журналу '%s'"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:189
+#: code:addons/account_sepa/models/account_batch_payment.py:190
 #, python-format
 msgid "Too many transactions for a single file."
 msgstr "Забагато транзакцій для одного файлу."
@@ -357,7 +360,7 @@ msgid "Your Company Name"
 msgstr "Назва вашої компанії"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:84
+#: code:addons/account_sepa/models/account_batch_payment.py:85
 #, python-format
 msgid "Your bank account is not labelled in EUR"
 msgstr "Ваш банківський рахунок не позначено в євро"

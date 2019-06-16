@@ -5,17 +5,17 @@
 # Translators:
 # Denis Trepalin <zekarious@gmail.com>, 2017
 # Максим Дронь <dronmax@gmail.com>, 2017
+# Martin Trigaux, 2017
 # Collex100, 2017
 # Sergey Vilizhanin, 2018
 # Evgeny <transingularity@gmail.com>, 2018
-# Martin Trigaux, 2019
 # Dmitry sky <d.v.selitsky@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Dmitry sky <d.v.selitsky@gmail.com>, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
@@ -60,11 +60,6 @@ msgstr "Тип данных"
 #: selection:delivery.carrier,delivery_type:0
 msgid "DHL"
 msgstr ""
-
-#. module: delivery_usps
-#: model:ir.model,name:delivery_usps.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Способы доставки"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_delivery_nature
@@ -358,6 +353,11 @@ msgid "Shipment created into USPS <br/> <b>Tracking Number : </b>%s"
 msgstr "Отправка, созданная в USPS <br/> <b> Номер отслеживания: </b>%s"
 
 #. module: delivery_usps
+#: model:ir.model,name:delivery_usps.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
+
+#. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Small Flat Rate Box"
 msgstr "Малая плоская коробка тарифа"
@@ -437,12 +437,6 @@ msgid "USPS Configuration"
 msgstr ""
 
 #. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
-msgid "USPS Delivery Methods"
-msgstr ""
-
-#. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_domestic
 #: model:product.product,name:delivery_usps.product_product_delivery_usps_domestic
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_domestic_product_template
@@ -491,6 +485,12 @@ msgstr "Почтовый тип USPS"
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_service
 msgid "USPS Service"
 msgstr "Служба USPS"
+
+#. module: delivery_usps
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
+msgid "USPS Shipping Methods"
+msgstr ""
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_username

@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-03-20 14:43+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -23,13 +23,13 @@ msgstr ""
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_view_kanban_inherit
 msgid "<span class=\"o_label\">Planning</span>"
-msgstr ""
+msgstr "<span class=\"o_label\">Планування</span>"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_project__allow_planning
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__allow_planning
 msgid "Allow Planning"
-msgstr ""
+msgstr "Дозволити планування"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning

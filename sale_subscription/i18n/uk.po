@@ -8,16 +8,16 @@
 # ТАрас <tratatuta@i.ua>, 2018
 # Olga Lugova <trolka.olug@gmail.com>, 2018
 # Bohdan Lisnenko, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,9 +63,15 @@ msgstr ""
 "            "
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:744
+#, python-format
+msgid " E-mail sent to customer."
+msgstr ""
+
+#. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
 msgid "${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})"
-msgstr "${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})"
+msgstr "${object.company_id.name} Рахунок (Ref ${object.number or 'n/a'})"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -437,6 +443,11 @@ msgstr "<span class=\"mr-1\">Кожен</span>"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "<span class=\"mr-1\">For</span>"
 msgstr "<span class=\"mr-1\">Для</span>"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "<span class=\"mr-1\">period(s)</span>"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
@@ -1117,6 +1128,11 @@ msgid "Add options to the subscription directly or through a quotation"
 msgstr "Додайте параметри підписки безпосередньо або через цитату"
 
 #. module: sale_subscription
+#: model:res.groups,name:sale_subscription.group_sale_subscription_manager
+msgid "Administrator"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Alert Name"
 msgstr "Назва сповіщення"
@@ -1183,6 +1199,29 @@ msgstr "Автоматизована дія"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__auto_close_limit
 msgid "Automatic closing limit"
 msgstr "Автоматичне закриття ліміту"
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:734
+#, python-format
+msgid ""
+"Automatic payment failed after multiple attempts. Subscription closed "
+"automatically."
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:739
+#, python-format
+msgid "Automatic payment failed. Subscription set to \"To Renew\"."
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_subscription.py:699
+#, python-format
+msgid ""
+"Automatic payment succeeded. Payment reference: <a href=# data-oe-"
+"model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a "
+"href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>."
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_published
@@ -1885,6 +1924,7 @@ msgid ""
 msgstr "Якщо є, ця умова повинна бути виконана до оновлення запису."
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_account_invoice_line__subscription_end_date
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__date
 msgid ""
 "If set in advance, the subscription will be set to pending 1 month before "
@@ -1965,7 +2005,6 @@ msgid ""
 msgstr "Введіть функції безпосередньо, їх буде враховано в наступній проплаті"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Invoice"
 msgstr "Рахунок"
@@ -2011,6 +2050,11 @@ msgstr "Рахунок за передплату ${ctx.get('code')}"
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Invoice only on successful payment"
 msgstr "Виставлення рахунку тільки після успішної оплати"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "Invoice period"
+msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
@@ -2209,11 +2253,6 @@ msgid "Main Attachment"
 msgstr "Основне прикріплення"
 
 #. module: sale_subscription
-#: model:res.groups,name:sale_subscription.group_sale_subscription_manager
-msgid "Manage Subscriptions"
-msgstr "Управління підписками"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Manage your payment methods"
 msgstr "Керувати моїми способами оплати"
@@ -2283,6 +2322,7 @@ msgid "Month(s)"
 msgstr "Місяць(і)"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_account_invoice_line__subscription_mrr
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__recurring_monthly
@@ -2502,13 +2542,13 @@ msgid "Planned"
 msgstr "Заплановано"
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:461
+#: code:addons/sale_subscription/models/sale_subscription.py:460
 #, python-format
 msgid "Please define Date of Next Invoice of \"%s\"."
 msgstr "Будь ласка, визначте дату наступного рахунку\"%s\"."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:457
+#: code:addons/sale_subscription/models/sale_subscription.py:456
 #, python-format
 msgid "Please define a sale journal for the company \"%s\"."
 msgstr "Будь ласка, визначте журнал продажу для компанії \"%s\"."
@@ -2725,11 +2765,6 @@ msgstr "Утримання"
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_cohort_action
 msgid "Retention Analysis"
 msgstr "Аналіз збереження"
-
-#. module: sale_subscription
-#: model:ir.ui.menu,name:sale_subscription.menu_account_asset_asset_list_normal_sale
-msgid "Revenue Types"
-msgstr "Типи доходів"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__in_progress
@@ -3044,6 +3079,11 @@ msgid "Subscription Count"
 msgstr "Підрахунок підписки"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_account_invoice_line__subscription_end_date
+msgid "Subscription End Date"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_line
 msgid "Subscription Line"
 msgstr "Рядок підписки"
@@ -3086,6 +3126,11 @@ msgstr "Стадія підписки"
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_stage
 msgid "Subscription Stages"
 msgstr "Стадії підписки"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_account_invoice_line__subscription_start_date
+msgid "Subscription Start Date"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_template
@@ -3281,6 +3326,13 @@ msgid "Terms and conditions"
 msgstr "Терміни та умови"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trigger_field_ids
+msgid ""
+"The action will be triggered if and only if one of these fields is "
+"updated.If empty, all fields are watched."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_wizard__date_from
 msgid ""
 "The discount applied when creating a sales order will be computed as the "
@@ -3310,7 +3362,7 @@ msgstr ""
 "Наступний рахунок буде створений на цю дату, тоді термін буде продовжено."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:995
+#: code:addons/sale_subscription/models/sale_subscription.py:992
 #, python-format
 msgid "The recurring interval must be positive"
 msgstr "Повторюваний інтервал повинен бути позитивним"
@@ -3332,7 +3384,7 @@ msgid ""
 msgstr "Ця панель дозволяє фільтрувати нагоди на основі запланованих дій."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:479
+#: code:addons/sale_subscription/models/sale_subscription.py:478
 #, python-format
 msgid "This invoice covers the following period: %s - %s"
 msgstr "Цей рахунок-фактура охоплює наступний період: %s - %s"
@@ -3564,6 +3616,11 @@ msgstr ""
 "натиснувши тут"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trigger_field_ids
+msgid "Watched fields"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid ""
 "We always listen to our customer. Could you specify the reason for "
@@ -3679,9 +3736,11 @@ msgid ""
 "You must define a product for everything you sell or purchase,\n"
 "            whether it's a storable product, a consumable or a service."
 msgstr ""
+"Ви повинні визначити товар для всього, що ви продаєте або купуєте,\n"
+"            будь-який товар, що зберігається, витратний матеріал або послуга."
 
 #. module: sale_subscription
-#: code:addons/sale_subscription/models/sale_subscription.py:446
+#: code:addons/sale_subscription/models/sale_subscription.py:445
 #, python-format
 msgid "You must first select a Customer for Subscription %s!"
 msgstr "Спочатку потрібно вибрати замовника для підписки %s!"

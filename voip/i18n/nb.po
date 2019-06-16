@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:35+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Marius Stedjan <marius@stedjan.com>, 2019\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:314
+#: code:addons/voip/static/src/js/user_agent.js:315
 #, python-format
 msgid " Please check your configuration."
 msgstr "Vennligst sjekk oppsettet ditt."
@@ -132,7 +132,7 @@ msgstr "Oppringning til"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/dialing_panel.js:673
 #, python-format
 msgid "Calling "
 msgstr "Ringer"
@@ -176,7 +176,7 @@ msgstr "Kategori"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:498
+#: code:addons/voip/static/src/js/dialing_panel.js:493
 #, python-format
 msgid "Click to unblock"
 msgstr ""
@@ -195,7 +195,7 @@ msgstr "Konfigurasjonsinnstillinger"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:295
+#: code:addons/voip/static/src/js/user_agent.js:296
 #, python-format
 msgid "Connecting..."
 msgstr ""
@@ -237,7 +237,7 @@ msgstr "Kunde"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:478
+#: code:addons/voip/static/src/js/dialing_panel.js:473
 #, python-format
 msgid "Customer unavailable"
 msgstr "Kunde utilgjengelig"
@@ -376,7 +376,7 @@ msgstr "Innkommende"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:485
+#: code:addons/voip/static/src/js/user_agent.js:492
 #, python-format
 msgid "Incoming call from "
 msgstr "Innkommende anrop fra"
@@ -518,8 +518,8 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:219
-#: code:addons/voip/static/src/js/user_agent.js:224
+#: code:addons/voip/static/src/js/user_agent.js:220
+#: code:addons/voip/static/src/js/user_agent.js:225
 #, python-format
 msgid "One or more parameter is missing. Please check your configuration."
 msgstr ""
@@ -587,14 +587,14 @@ msgstr "Telefonsamtaler"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:177
+#: code:addons/voip/static/src/js/dialing_panel.js:172
 #, python-format
 msgid "Please check if a phone number is given for the current phonecall"
 msgstr "Sjekk om et telefonnummer er oppgitt for denne samtalen"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:341
+#: code:addons/voip/static/src/js/user_agent.js:342
 #, python-format
 msgid "Please check your configuration.</br> (Reason receives :"
 msgstr ""
@@ -708,7 +708,7 @@ msgstr "Standard"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/dialing_panel.js:673
 #, python-format
 msgid "Start Calling"
 msgstr ""
@@ -730,6 +730,11 @@ msgid "Summary"
 msgstr "Oppsummering"
 
 #. module: voip
+#: selection:mail.activity.type,category:0
+msgid "Tax report"
+msgstr ""
+
+#. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP adress of your PBX Server"
 msgstr ""
@@ -741,14 +746,14 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:479
+#: code:addons/voip/static/src/js/dialing_panel.js:474
 #, python-format
 msgid "The customer is temporary unavailable. Please try later."
 msgstr "Kunden er midlertidig utilgjengelig. Vennligst prøv senere."
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:570
+#: code:addons/voip/static/src/js/user_agent.js:577
 #, python-format
 msgid ""
 "The number is incorrect, the user credentials could be wrong or the "
@@ -758,14 +763,14 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:176
+#: code:addons/voip/static/src/js/dialing_panel.js:171
 #, python-format
 msgid "The phonecall has no number"
 msgstr "Telefonsamtalen mangler nummer"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:244
+#: code:addons/voip/static/src/js/user_agent.js:245
 #, python-format
 msgid ""
 "The server configuration could be wrong. Please check your configuration."
@@ -781,7 +786,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:313
+#: code:addons/voip/static/src/js/user_agent.js:314
 #, python-format
 msgid "The websocket uri could be wrong."
 msgstr ""
@@ -899,16 +904,16 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:187
-#: code:addons/voip/static/src/js/dialing_panel.js:289
-#: code:addons/voip/static/src/js/dialing_panel.js:310
+#: code:addons/voip/static/src/js/dialing_panel.js:182
+#: code:addons/voip/static/src/js/dialing_panel.js:284
+#: code:addons/voip/static/src/js/dialing_panel.js:305
 #, python-format
 msgid "You are already in a call"
 msgstr "Du er allerede i en samtale"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:298
+#: code:addons/voip/static/src/js/user_agent.js:299
 #, python-format
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
@@ -932,7 +937,7 @@ msgstr "sek"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:340
+#: code:addons/voip/static/src/js/user_agent.js:341
 #, python-format
 msgid "the connection cannot be made. "
 msgstr ""

@@ -7,6 +7,9 @@
             <field name="model">l10n_be_reports.periodic.vat.xml.export</field>
             <field name="arch" type="xml">
                 <form string="Export Options">
+                    <div class="alert alert-warning" role="alert" attrs="{'invisible': [('control_value', '=', False)]}">
+                        Some controls failed
+                    </div>
                     <div>
                         Choose option(s) before exporting XML
                     </div>
@@ -18,6 +21,7 @@
                              <field name="grid91"/>
                          </group>
                     </group>
+                    <field name="control_value"/>
                     <footer>
                         <button string='Export XML' name="print_xml" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>

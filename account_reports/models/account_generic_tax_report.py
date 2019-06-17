@@ -8,6 +8,9 @@ from odoo.tools.misc import formatLang, format_date
 from odoo.exceptions import UserError, RedirectWarning
 from odoo.addons.web.controllers.main import clean_action
 from dateutil.relativedelta import relativedelta
+import json
+import base64
+from collections import defaultdict
 
 class generic_tax_report(models.AbstractModel):
     _inherit = 'account.report'
@@ -195,16 +198,18 @@ class generic_tax_report(models.AbstractModel):
         if move.line_ids:
             line_ids_vals += [(2, aml.id) for aml in move.line_ids]
         # create new move
+        move_vals = {}
         if len(line_ids_vals):
-            move_vals = {
-                'line_ids': line_ids_vals
-            }
-            move.write(move_vals)
+            move_vals['line_ids'] = line_ids_vals
         else:
             if raise_on_empty:
                 action = self.env.ref('account.action_tax_group')
                 msg = _('It seems that you have no entries to post, are you sure you correctly configured the accounts on your tax groups?')
                 raise RedirectWarning(msg, action.id, _('Configure your TAX accounts'))
+        move_vals['tax_report_control_error'] = bool(options.get('tax_report_control_error'))
+        if options.get('tax_report_control_error'):
+            move.message_post(body=options.get('tax_report_control_error'))
+        move.write(move_vals)
         return move
 
     def _get_columns_name(self, options):
@@ -455,11 +460,46 @@ class generic_tax_report(models.AbstractModel):
                         rslt_balances = totals_by_line.get(active_section['id'])
                         totals_by_line[active_section['id']] = line_balances if not rslt_balances else [line_balances[i] + rslt_balances[i] for i in range(0, len(rslt_balances))]
 
+        self.compute_check(lines, options)
+
         #Treat the last sections (the one that were not followed by a line with lower level)
         while active_sections_stack:
             assign_active_section(col_nber)
 
         return balances_by_code
+
+    def compute_check(self, lines, options):
+        if not self.get_checks_to_perform(defaultdict(lambda: 0)):
+            return  # nothing to do here
+
+
+        col_nber = len(options['comparison']['periods']) + 1
+        mapping = {}
+        controls = []
+        html_lines = []
+        for line in lines:
+            if line.get('line_code'):
+                mapping[line['line_code']] = line['columns'][0]['balance']
+        for i, calc in enumerate(self.get_checks_to_perform(mapping)):
+            if calc[1]:
+                if isinstance(calc[1], float):
+                    value = self.format_value(calc[1])
+                else:
+                    value = calc[1]
+                controls.append({'name': calc[0], 'id': 'control_' + str(i), 'columns': [{'name': value, 'style': 'white-space:nowrap;', 'balance': calc[1]}]})
+                html_lines.append("<tr><td>{name}</td><td>{amount}</td></tr>".format(name=calc[0], amount=value))
+        if controls:
+            lines.extend([{'id': 'section_control', 'name': _('Controls failed'), 'unfoldable': False, 'columns': [{'name': '', 'style': 'white-space:nowrap;', 'balance': ''}] * col_nber, 'level': 0, 'line_code': False}] + controls)
+            options['tax_report_control_error'] = "<table width='100%'><tr><th>Control</th><th>Difference</th></tr>{}</table>".format("".join(html_lines))
+
+    def get_checks_to_perform(self, d):
+        """ To override in localizations
+        If value is a float, it will be formatted with format_value
+        The line is not displayed if it is falsy (0, 0.0, False, ...)
+        :param d: the mapping dictionay between codes and values
+        :return: iterable of tuple (name, value)
+        """
+        return ()
 
     def _get_total_line_eval_dict(self, period_balances_by_code, period_date_from, period_date_to, options):
         """ By default, this function only returns period_balances_by_code; but it

@@ -4,11 +4,14 @@ from odoo.tools import date_utils
 from odoo.tools.misc import format_date
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+import json
+import base64
 
 class AccountMove(models.Model):
     _inherit = "account.move"
 
     is_tax_closing = fields.Boolean(help="technical field used to know if this move is the vat closing move", default=False)
+    tax_report_control_error = fields.Boolean(help="technical field used to know if there was a failed control check")
 
     def action_open_tax_report(self):
         action = self.env.ref('account_reports.action_account_report_gt').read()[0]

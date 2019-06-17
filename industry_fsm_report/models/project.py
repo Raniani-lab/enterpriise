@@ -20,7 +20,7 @@ class Project(models.Model):
                 result['worksheet_template_id'] = default_worksheet.id
         return result
 
-    allow_worksheets = fields.Boolean("Allow Worksheets", help="Enables customizable worksheets on tasks.")
+    allow_worksheets = fields.Boolean("Worksheets", help="Enables customizable worksheets on tasks.")
     worksheet_template_id = fields.Many2one(
         'project.worksheet.template',
         string="Default Worksheet",

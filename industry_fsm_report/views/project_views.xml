@@ -129,7 +129,7 @@
             </xpath>
             <field name="project_id" position="after">
                 <label class="oe_edit_only" for="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
-                <field class="oe_edit_only" name="worksheet_template_id" nolabel="1" attrs="{'invisible': [('allow_worksheets', '=', False)]}" options="{'no_create': True, 'no_edit': True}"/>
+                <field class="oe_edit_only" name="worksheet_template_id" nolabel="1" attrs="{'invisible': [('allow_worksheets', '=', False)]}" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
             </field>
             <xpath expr="//field[@name='project_id']" position="attributes">
                 <attribute name="context">{

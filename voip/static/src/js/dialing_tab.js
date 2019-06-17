@@ -87,7 +87,8 @@ var PhonecallTab = Widget.extend({
         }).then(function (phonecall) {
             self._displayInQueue(phonecall).then(function (phonecallWidget) {
                 self.currentPhonecall = phonecallWidget;
-                self._selectCall(phonecallWidget);
+                return self._selectCall(phonecallWidget);
+            }).then(function () {
                 self.phonecallDetails.showCallDisplay();
                 self.phonecallDetails.activateInCallButtons();
             });
@@ -157,10 +158,12 @@ var PhonecallTab = Widget.extend({
      * @private
      */
     _closePhoneDetails: function () {
-        this.replace(this.phonecallDetails.$el);
-        this.selectedPhonecall = false;
-        this.trigger_up('showPanelHeader');
-        this.refreshPhonecallsStatus();
+        var self = this;
+        this.replace(this.phonecallDetails.$el).then(function() {
+            self.selectedPhonecall = false;
+            self.trigger_up('showPanelHeader');
+            self.refreshPhonecallsStatus();
+        });
     },
     /**
      * Computes the scroll limit before triggering the lazy loading of the
@@ -222,22 +225,26 @@ var PhonecallTab = Widget.extend({
             w.destroy();
         });
         this.phonecalls = [];
-        _.each(phonecallsData, function (phonecall) {
+        var proms = phonecallsData.map(function (phonecall) {
             phonecall.callTries = callTries[phonecall.id];
-            self._displayInQueue(phonecall);
+            return self._displayInQueue(phonecall);
         });
-        //Select again the selected phonecall before the refresh
-        var previousSelection = this.selectedPhonecall &&
-            _.findWhere(this.phonecalls, {id: this.selectedPhonecall.id});
-        if (previousSelection) {
-            this._selectCall(previousSelection);
-        }
+        Promise.all(proms).then(function () {
+            //Select again the selected phonecall before the refresh
+            var previousSelection = self.selectedPhonecall &&
+                _.findWhere(self.phonecalls, {id: self.selectedPhonecall.id});
+            if (previousSelection) {
+                self._selectCall(previousSelection);
+            }
+        });
     },
     /**
      * Opens the details of a phonecall widget.
      *
      * @private
      * @param {Widget} phonecall
+     *
+     * @return {Promise}
      */
     _selectCall: function (phonecall) {
         var $el = this.$el;
@@ -245,15 +252,17 @@ var PhonecallTab = Widget.extend({
             $el = this.phonecallDetails.$el;
         }
         this.phonecallDetails = new Phonecall.PhonecallDetails(this, phonecall);
-        this.phonecallDetails.replace($el);
-        this.selectedPhonecall = phonecall;
-        this.trigger_up('hidePanelHeader');
-        this.phonecallDetails.on('closePhonecallDetails', this, function () {
-            this._closePhoneDetails();
-        });
-        this.phonecallDetails.on('clickOnNumber', this, function (ev) {
-            this.currentPhonecall = this.selectedPhonecall;
-            this.trigger_up('callNumber', {number: ev.data.number});
+        var self = this;
+        return this.phonecallDetails.replace($el).then(function () {
+            self.selectedPhonecall = phonecall;
+            self.trigger_up('hidePanelHeader');
+            self.phonecallDetails.on('closePhonecallDetails', self, function () {
+                self._closePhoneDetails();
+            });
+            self.phonecallDetails.on('clickOnNumber', self, function (ev) {
+                self.currentPhonecall = self.selectedPhonecall;
+                self.trigger_up('callNumber', {number: ev.data.number});
+            });
         });
     },
 
@@ -305,7 +314,7 @@ var ActivitiesTab = PhonecallTab.extend({
      * @override
      */
     callFromTab: function () {
-         this._autoCall();
+        this._autoCall();
     },
 
     /**
@@ -317,30 +326,26 @@ var ActivitiesTab = PhonecallTab.extend({
      * @param {Object} params
      * @param  {String} params.number
      * @param  {Integer} params.activityId
+     * @return {Promise}
      */
     callFromActivityWidget: function (params) {
         var self = this;
         this.autoCallMode = false;
-        return new Promise(function (resolve, reject) {
-            this.currentPhonecall = _.find(this.phonecalls, function (phonecall) {
-                return phonecall.activity_id === params.activityId;
+        this.currentPhonecall = _.find(this.phonecalls, function (phonecall) {
+            return phonecall.activity_id === params.activityId;
+        });
+        if (this.currentPhonecall) {
+            return this._selectCall(this.currentPhonecall);
+        }
+        return this._rpc({
+            model: 'voip.phonecall',
+            method: 'get_from_activity_id',
+            args: [params.activityId]
+        }).then(function (phonecall) {
+            self._displayInQueue(phonecall).then(function (phonecallWidget) {
+                self.currentPhonecall = phonecallWidget;
+                return self._selectCall(self.currentPhonecall);
             });
-            if (this.currentPhonecall) {
-                this._selectCall(this.currentPhonecall);
-                resolve();
-            } else {
-                this._rpc({
-                    model: 'voip.phonecall',
-                    method: 'get_from_activity_id',
-                    args: [params.activityId]
-                }).then(function (phonecall) {
-                    self._displayInQueue(phonecall).then(function (phonecallWidget) {
-                        self.currentPhonecall = phonecallWidget;
-                        self._selectCall(phonecallWidget);
-                        resolve();
-                    });
-                });
-            }
         });
     },
     /**
@@ -359,6 +364,8 @@ var ActivitiesTab = PhonecallTab.extend({
      * @override
      */
     initPhonecall: function () {
+        var self = this;
+        var _super = this._super.bind(this);
         if (!this.currentPhonecall.id) {
             return;
         }
@@ -366,8 +373,8 @@ var ActivitiesTab = PhonecallTab.extend({
         this._rpc({
             model: 'voip.phonecall',
             method: 'init_call',
-            args: [this.currentPhonecall.id],
-        }).then(this._super.bind(this));
+            args: [self.currentPhonecall.id],
+        }).then(_super);
     },
     /**
      * @override
@@ -434,25 +441,28 @@ var ActivitiesTab = PhonecallTab.extend({
     /**
      * @private
      * @override
+     *
+     * @return {Promise}
      */
     _selectCall: function () {
-        this._super.apply(this, arguments);
         var self = this;
-        this.phonecallDetails.on('cancelActivity', this, function () {
-            if (this.autoCallMode) {
-                this.refreshPhonecallsStatus().then(function () {
+        return this._super.apply(this, arguments).then(function () {
+            self.phonecallDetails.on('cancelActivity', self, function () {
+                if (self.autoCallMode) {
+                    self.refreshPhonecallsStatus().then(function () {
                     self._autoCall();
                 });
             } else {
-                this._closePhoneDetails();
+                self._closePhoneDetails();
             }
         });
-        this.phonecallDetails.on('markActivityDone', this, function () {
-            if (this.autoCallMode) {
-                this.refreshPhonecallsStatus().then(function () {
+            self.phonecallDetails.on('markActivityDone', self, function () {
+                if (self.autoCallMode) {
+                    self.refreshPhonecallsStatus().then(function () {
                     self._autoCall();
                 });
             }
+        });
         });
     }
 });
@@ -485,8 +495,9 @@ var RecentTab = PhonecallTab.extend({
         }).then(function (phonecall) {
             return self._displayInQueue(phonecall).then(function (phonecallWidget) {
                 self.currentPhonecall = phonecallWidget;
-                self._selectCall(phonecallWidget);
-                return phonecallWidget;
+                return self._selectCall(phonecallWidget).then(function () {
+                    return phonecallWidget;
+                });
             });
         });
     },
@@ -512,15 +523,16 @@ var RecentTab = PhonecallTab.extend({
         }).then(function (phonecall) {
             return self._displayInQueue(phonecall).then(function (phonecallWidget) {
                 self.currentPhonecall = phonecallWidget;
-                self._selectCall(phonecallWidget);
-                 return phonecallWidget;
+                return self._selectCall(phonecallWidget).then(function () {
+                    return phonecallWidget;
+                });
             });
         });
     },
     /**
      * @override
      *
-     * @param {Object} phonecall if given the functiondoesn't have to create a
+     * @param {Object} phonecall if given the function doesn't have to create a
      *                           new phonecall
      */
     initPhonecall: function (phonecall) {
@@ -533,13 +545,10 @@ var RecentTab = PhonecallTab.extend({
                 args: [
                     this.currentPhonecall.id,
                 ],
-            }).then(function (phonecall) {
-                self._displayInQueue(phonecall).then(function (phonecallWidget) {
-                    self.currentPhonecall = phonecallWidget;
-                    self._selectCall(phonecallWidget);
-                    _super();
-                });
-            });
+            }).then(self._displayInQueue.bind(self)).then(function (phonecallWidget) {
+                self.currentPhonecall = phonecallWidget;
+                return self._selectCall(phonecallWidget);
+            }).then(_super);
         } else {
             _super();
         }
@@ -654,9 +663,8 @@ var ContactsTab = PhonecallTab.extend({
             ],
         }).then(function (phonecall) {
             self.currentPhonecall = self._createPhonecallWidget(phonecall);
-            self._selectCall(self.currentPhonecall);
-            _super();
-        });
+            return self._selectCall(self.currentPhonecall);
+        }).then(_super);
     },
     /**
      * @override

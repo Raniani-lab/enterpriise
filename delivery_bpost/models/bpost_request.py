@@ -150,6 +150,14 @@ class BpostRequest():
         sender_partner_id = picking.picking_type_id.warehouse_id.partner_id
         ss, sn = self._parse_address(sender_partner_id)
         rs, rn = self._parse_address(picking.partner_id)
+        if carrier.bpost_shipment_type in ('SAMPLE', 'GIFT', 'DOCUMENTS'):
+            shipping_value = 100
+        else:
+            shipping_value = 0
+            for line in picking.move_line_ids :
+                price_unit = line.move_id.sale_line_id.price_reduce_taxinc or line.product_id.list_price
+                shipping_value += price_unit * line.qty_done
+            shipping_value = max(min(int(shipping_value*100), 2500000), 100) # according to bpost, 100 <= parcelValue <= 2500000
         values = {'accountId': carrier.sudo().bpost_account_number,
                   'reference': reference_id,
                   'sender': {'_record': sender_partner_id,
@@ -168,7 +176,7 @@ class BpostRequest():
                   'saturday': carrier.bpost_saturday,
                   # international
                   'international_product': carrier.bpost_international_deliver_type,
-                  'parcelValue': max(min(int(picking.sale_id.amount_total), 2500000), 100),           # according to bpost, 100 <= parcelValue <= 2500000
+                  'parcelValue': shipping_value,
                   'contentDescription': ' '.join([
                      "%d %s" % (line.qty_done, re.sub('[\W_]+', '', line.product_id.name or '')) for line in picking.move_line_ids
                   ])[:50],

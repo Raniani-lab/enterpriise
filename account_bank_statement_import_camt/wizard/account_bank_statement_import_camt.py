@@ -2,12 +2,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import io
+import logging
 import re
 from functools import partial
 
 from lxml import etree
 
-from odoo import models
+from odoo import models, _
+from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
 
 def _generic_get(*nodes, xpath, namespaces, placeholder=None):
     if placeholder is not None:
@@ -119,7 +123,8 @@ class AccountBankStatementImport(models.TransientModel):
         ns = {k or 'ns': v for k, v in root.nsmap.items()}
 
         curr_cache = {c['name']: c['id'] for c in self.env['res.currency'].search_read([], ['id', 'name'])}
-        statement_list = []
+        statements_per_iban = {}
+        currency_per_iban = {}
         unique_import_set = set([])
         currency = account_no = False
         has_multi_currency = self.env.user.user_has_groups('base.group_multi_currency')
@@ -235,10 +240,23 @@ class AccountBankStatementImport(models.TransientModel):
                 end_amount *= -1
             statement_vals['balance_end_real'] = end_amount
 
-            statement_list.append(statement_vals)
-
             # Account Number    1..1
             # if not IBAN value then... <Othr><Id> would have.
             account_no = statement.xpath('ns:Acct/ns:Id/ns:IBAN/text() | ns:Acct/ns:Id/ns:Othr/ns:Id/text()', namespaces=ns)[0]
 
+            # Save statements and currency
+            statements_per_iban.setdefault(account_no, []).append(statement_vals)
+            currency_per_iban[account_no] = currency
+
+        # If statements target multiple journals, returns thoses targeting the current journal
+        if len(statements_per_iban) > 1:
+            account_no = self.env['account.journal'].browse(self.env.context.get('journal_id')).bank_acc_number
+            _logger.warning("The following statements will not be imported because they are targeting another journal (current journal id: %s):\n- %s",
+                            account_no, "\n- ".join("{}: {} statement(s)".format(iban, len(statements)) for iban, statements in statements_per_iban.items() if iban != account_no))
+            if not account_no:
+                raise UserError(_("Please set the IBAN account on your bank journal.\n\nThis CAMT file is targeting several IBAN accounts but none match the current journal."))
+
+        # Otherwise, returns those from only account_no
+        statement_list = statements_per_iban.get(account_no, [])
+        currency = currency_per_iban.get(account_no)
         return currency, account_no, statement_list

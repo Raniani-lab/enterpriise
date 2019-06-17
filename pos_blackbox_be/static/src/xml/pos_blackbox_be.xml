@@ -233,6 +233,9 @@
         <t t-jquery="div[font='b']" t-operation="prepend">
             <t t-esc='order.blackbox_order_name'/>
         </t>
+        <t t-jquery="receipt" t-operation="append">
+            <t t-call="XmlFDMControlData"/>
+        </t>
     </t>
 
     <t t-extend="OrderChangeReceipt">
@@ -258,6 +261,11 @@
             <h3>
                 Odoo <t t-esc="server_version"/>1807BE_FDM
             </h3>
+        </t>
+    </t>
+    <t t-extend="SaleDetailsReport">
+        <t t-jquery="receipt" t-operation="prepend">
+            <div bold="on" size="double">THIS IS NOT A VALID VAT TICKET</div>
         </t>
     </t>
 

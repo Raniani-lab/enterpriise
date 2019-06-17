@@ -34,7 +34,7 @@ class pos_config(models.Model):
 
     report_sequence_number = fields.Integer()
     blackbox_pos_production_id = fields.Char("Registered IoT Box serial number",
-        help='e.g. BODO002... The IoT Box must be certified by Odoo S.A. to be used with the blackbox.',
+        help='e.g. BODO001... The IoT Box must be certified by Odoo S.A. to be used with the blackbox.',
         copy=False)
 
     @api.constrains('blackbox_pos_production_id')
@@ -135,6 +135,11 @@ class pos_session(models.Model):
     total_discount = fields.Monetary(compute='_compute_discounts')
     amount_of_corrections = fields.Integer(compute='_compute_corrections')
     total_corrections = fields.Monetary(compute='_compute_corrections')
+    work_status = fields.Selection([
+        ('work_in', 'WORK IN'),
+        ('valid', 'Valid'),
+        ('work_out', 'WORK OUT')
+    ], compute='_compute_work_status')
 
     @api.one
     @api.depends('statement_ids')
@@ -212,6 +217,24 @@ class pos_session(models.Model):
                 if line.price_subtotal_incl < 0:
                     self.amount_of_corrections += 1
                     self.total_corrections += line.price_subtotal_incl
+
+    @api.depends('order_ids')
+    def _compute_work_status(self):
+        work_in = self.env.ref('pos_blackbox_be.product_product_work_in', raise_if_not_found=False)
+        work_out = self.env.ref('pos_blackbox_be.product_product_work_out', raise_if_not_found=False)
+        for session in self:
+            if not session.order_ids:
+                # no orders yet, needs to fill work_in
+                session.work_status = 'work_in'
+            elif session.order_ids[0].lines and session.order_ids[0].lines[0].product_id == work_in:
+                # last order is a work in
+                session.work_status = 'valid'
+            elif session.order_ids[0].lines and session.order_ids[0].lines[0].product_id == work_out:
+                # last order is a work in, needs to create a new session or work in again
+                session.work_status = 'work_out'
+            else:
+                # last order is a normal one, assuming has already made a work in
+                session.work_status = 'valid'
 
     @api.multi
     def action_pos_session_closing_control(self):

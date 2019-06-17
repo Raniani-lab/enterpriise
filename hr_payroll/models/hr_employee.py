@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import pytz
 
 from odoo import api, fields, models
@@ -44,8 +45,8 @@ class HrEmployee(models.Model):
         attendance_type = self.env.ref('hr_payroll.work_entry_type_attendance')
         vals_list = []
 
-        date_start = fields.Datetime.to_datetime(date_start)
-        date_stop = fields.Datetime.to_datetime(date_stop)
+        date_start = fields.Datetime.to_datetime(date_start) + relativedelta(hour=0, minute=0, second=0)
+        date_stop = fields.Datetime.to_datetime(date_stop) + relativedelta(hour=23, minute=59, second=59)
 
         current_contracts = self.env['hr.employee']._get_all_contracts(date_start, date_stop, states=['open', 'pending', 'close'])
         current_employees = current_contracts.mapped('employee_id')

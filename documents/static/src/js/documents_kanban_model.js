@@ -152,7 +152,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
         var changes = _.mapObject(values, function (value, fieldName) {
             var field = parent.fields[fieldName];
             if (field.type === 'many2one') {
-                value = value.id;
+                value = value.id || false;
             } else if (field.type === 'many2many') {
                 var command = value.operation === 'FORGET' ? 3 : 4;
                 value = _.map(value.resIDs, function (resID) {

@@ -187,7 +187,7 @@ class ProviderFedex(models.Model):
             commodity_country_of_manufacture = order.warehouse_id.partner_id.country_id.code
 
             for line in order.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu']):
-                commodity_amount = line.price_total / line.product_uom_qty
+                commodity_amount = line.price_reduce_taxinc
                 total_commodities_amount += (commodity_amount * line.product_uom_qty)
                 commodity_description = line.product_id.name
                 commodity_number_of_piece = '1'
@@ -265,7 +265,7 @@ class ProviderFedex(models.Model):
                 commodity_country_of_manufacture = picking.picking_type_id.warehouse_id.partner_id.country_id.code
 
                 for operation in picking.move_line_ids:
-                    commodity_amount = operation.move_id.sale_line_id.price_unit or operation.product_id.list_price
+                    commodity_amount = operation.move_id.sale_line_id.price_reduce_taxinc or operation.product_id.list_price
                     total_commodities_amount += (commodity_amount * operation.qty_done)
                     commodity_description = operation.product_id.name
                     commodity_number_of_piece = '1'

@@ -87,7 +87,7 @@ class MailActivity(models.Model):
         # update phonecalls and broadcast refresh notifications on bus
         if phonecall_values_to_keep:
             bus_notifications = []
-            for index, message in enumerate(self):
+            for index, message in enumerate(messages):
                 if index in phonecall_values_to_keep:
                     values_to_keep = phonecall_values_to_keep[index]
                     phonecall = values_to_keep['voip_phonecall_id']

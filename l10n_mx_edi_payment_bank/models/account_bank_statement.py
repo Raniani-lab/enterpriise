@@ -4,13 +4,10 @@ from odoo import api, models
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
 
-    def process_reconciliation(self, counterpart_aml_dicts=None,
-                               payment_aml_rec=None, new_aml_dicts=None):
-        res = super(AccountBankStatementLine, self).process_reconciliation(
-            counterpart_aml_dicts=counterpart_aml_dicts,
-            payment_aml_rec=payment_aml_rec, new_aml_dicts=new_aml_dicts)
-        payments = res.mapped('line_ids.payment_id')
-        payments.write({
+    def _l10n_mx_edi_get_payment_extra_data(self, invoice_ids=None):
+        res = super(AccountBankStatementLine,
+                    self)._l10n_mx_edi_get_payment_extra_data(invoice_ids)
+        res.update({
             'l10n_mx_edi_partner_bank_id': self.bank_account_id.id,
         })
         return res

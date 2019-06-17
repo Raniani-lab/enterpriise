@@ -27,7 +27,7 @@
               </options>
               <weight t-esc="weight"/>
               <receiver>
-                <common:name t-esc="receiver['_record'].name"/>
+                <common:name t-esc="receiver['_record'].name or receiver['_record'].display_name"/>
                 <common:company t-esc="receiver['company']"/>
                 <common:address>
                   <common:streetName t-esc="receiver['streetName']"/>

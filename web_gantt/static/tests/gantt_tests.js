@@ -2086,6 +2086,36 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('decoration attribute with date', async function (assert) {
+        assert.expect(6);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" decoration-danger="start &lt; \'2018-12-19 00:00:00\'">' +
+                '</gantt>',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.hasClass(gantt.$('.o_gantt_pill[data-id=1]'), 'decoration-danger',
+            'should have a "decoration-danger" class on task 1');
+        assert.hasClass(gantt.$('.o_gantt_pill[data-id=2]'), 'decoration-danger',
+            'should have a "decoration-danger" class on task 2');
+        assert.hasClass(gantt.$('.o_gantt_pill[data-id=5]'), 'decoration-danger',
+            'should have a "decoration-danger" class on task 5');
+        assert.doesNotHaveClass(gantt.$('.o_gantt_pill[data-id=3]'), 'decoration-danger',
+            'should not have a "decoration-danger" class on task 3');
+        assert.doesNotHaveClass(gantt.$('.o_gantt_pill[data-id=4]'), 'decoration-danger',
+            'should not have a "decoration-danger" class on task 4');
+        assert.doesNotHaveClass(gantt.$('.o_gantt_pill[data-id=7]'), 'decoration-danger',
+            'should not have a "decoration-danger" class on task 7');
+
+        gantt.destroy();
+    });
+
     QUnit.test('consolidation feature', async function (assert) {
         assert.expect(25);
 

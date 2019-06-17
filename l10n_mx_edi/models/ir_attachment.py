@@ -24,18 +24,9 @@ class IrAttachment(models.Model):
         looking for a valid UUID that matches against the 'cfdi_uuid' in the
         invoice related to the attachment
         """
-        attachment_ids = self.filtered(
+        self.filtered(
             lambda r: r.datas and r.res_model == 'account.invoice' and
-            splitext(r.name)[1].lower() in ('.pdf', '.xml'))
-        for attach in attachment_ids:
-            # If it's a PDF, looks for an XML with the same name
-            if splitext(attach.name)[1].lower() == '.pdf':
-                file_name = '%s.xml' % splitext(attach.name)[0]
-                attach = self.search([
-                    ('name', '=', file_name),
-                    ('res_model', '=', attach.res_model),
-                    ('res_id', '=', attach.res_id)])
-            attach.check_valid_uuid()
+            splitext(r.name)[1].lower() == '.xml').check_valid_uuid()
         return super(IrAttachment, self).unlink()
 
     @api.multi

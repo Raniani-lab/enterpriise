@@ -40,7 +40,7 @@
         <field name="name">mrp.workorder.view.form.inherit.quality.tablet.new</field>
         <field name="model">mrp.workorder</field>
         <field name="arch" type="xml">
-            <form string="Production Workcenter" delete="0" create="0" class="o_workorder_tablet">
+            <form string="Production Workcenter" delete="0" create="0" class="o_workorder_tablet" js_class="tablet_pdf_viewer">
                 <field name="allow_producing_quantity_change" invisible="1"/>
                 <field name="raw_workorder_line_ids" invisible="1">
                     <!-- to save those values updated in _onchange_qty_producing -->
@@ -281,6 +281,7 @@
         <xpath expr="." position="inside">
             <link rel="stylesheet" type="text/scss" href="/mrp_workorder/static/src/scss/tablet_view.scss"/>
             <script type="text/javascript" src="/mrp_workorder/static/src/js/mrp_workorder.js"></script>
+            <script type="text/javascript" src="/mrp_workorder/static/src/js/pdf_viewer_no_reload.js"></script>
             <script type="text/javascript" src="/mrp_workorder/static/src/js/pdf_viewer_widget.js"></script>
         </xpath>
     </template>

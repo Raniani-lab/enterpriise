@@ -69,8 +69,7 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
             default_res_model=self.product_test._name,
         ).create({
             'datas': GIF,
-            'name': 'Test gif two',
-            'datas_fname': 'fileTwoGif.gif',
+            'name': 'fileTwoGif.gif',
             'mimetype': 'image/gif',
         })
         document = self.env['documents.document'].search([('attachment_id', '=', attachment.id)])

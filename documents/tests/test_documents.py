@@ -340,9 +340,8 @@ class TestCaseDocuments(TransactionCase):
             default_res_id=document.id,
             default_res_model=document._name,
         ).create({
-            'name': 'attachment name',
+            'name': 'attachmentGif.gif',
             'datas': GIF,
-            'datas_fname': 'attachmentGif.gif',
         })
         self.assertEqual(attachment.res_id, document.id, "It should be linked to the default res_id")
         self.assertEqual(attachment.res_model, document._name, "It should be linked to the default res_model")

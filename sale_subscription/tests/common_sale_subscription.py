@@ -12,7 +12,6 @@ class TestSubscriptionCommon(SavepointCase):
         SubTemplate = cls.env['sale.subscription.template']
         SaleOrder = cls.env['sale.order']
         Tax = cls.env['account.tax']
-        Product = cls.env['product.product']
         ProductTmpl = cls.env['product.template']
 
         # Test Subscription Template
@@ -45,8 +44,8 @@ class TestSubscriptionCommon(SavepointCase):
             'subscription_template_id': cls.subscription_tmpl.id,
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
         })
-        cls.product = Product.create({
-            'product_tmpl_id': cls.product_tmpl.id,
+        cls.product = cls.product_tmpl.product_variant_id
+        cls.product.write({
             'price': 50.0,
             'taxes_id': [(6, 0, [cls.percent_tax.id])],
         })
@@ -58,8 +57,8 @@ class TestSubscriptionCommon(SavepointCase):
             'subscription_template_id': cls.subscription_tmpl_2.id,
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
         })
-        cls.product2 = Product.create({
-            'product_tmpl_id': cls.product_tmpl_2.id,
+        cls.product2 = cls.product_tmpl_2.product_variant_id
+        cls.product2.write({
             'price': 20.0,
             'taxes_id': [(6, 0, [cls.percent_tax.id])],
         })
@@ -71,8 +70,8 @@ class TestSubscriptionCommon(SavepointCase):
             'subscription_template_id': cls.subscription_tmpl_2.id,
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
         })
-        cls.product3 = Product.create({
-            'product_tmpl_id': cls.product_tmpl_3.id,
+        cls.product3 = cls.product_tmpl_3.product_variant_id
+        cls.product3.write({
             'price': 15.0,
             'taxes_id': [(6, 0, [cls.percent_tax.id])],
         })
@@ -84,8 +83,8 @@ class TestSubscriptionCommon(SavepointCase):
             'subscription_template_id': cls.subscription_tmpl_3.id,
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
         })
-        cls.product4 = Product.create({
-            'product_tmpl_id': cls.product_tmpl_4.id,
+        cls.product4 = cls.product_tmpl_4.product_variant_id
+        cls.product4.write({
             'price': 15.0,
             'taxes_id': [(6, 0, [cls.percent_tax.id])],
         })

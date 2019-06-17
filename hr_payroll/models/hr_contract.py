@@ -213,5 +213,5 @@ class HrContract(models.Model):
                 work_data[work_entry.work_entry_type_id.id] += contract_data.get('hours', 0)
             else:
                 dt = date_stop - date_start
-                work_data[work_entry.work_entry_type_id.id] += dt.days * 24 + dt.seconds / 3600 # Number of hours
+                work_data[work_entry.work_entry_type_id.id] += dt.days * 24 + dt.seconds / 3600  # Number of hours
         return work_data

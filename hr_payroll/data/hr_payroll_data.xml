@@ -55,16 +55,8 @@
             <field name="digits">4</field>
         </record>
 
-        <!-- Work entries Type -->
-        <record id="work_entry_type_attendance" model="hr.work.entry.type">
-            <field name="name">Attendance</field>
-            <field name="color">0</field>
-            <field name="code">WORK100</field>
-            <field name="round_days">HALF</field>
-            <field name="round_days_type">DOWN</field>
-        </record>
-
-        <record id="work_entry_type_leave" model="hr.work.entry.type">
+        <!-- Work Entry Type -->
+         <record id="work_entry_type_leave" model="hr.work.entry.type">
             <field name="name">Generic Time Off</field>
             <field name="code">LEAVE100</field>
             <field name="color">3</field>
@@ -132,5 +124,6 @@
         <record id="hr_holidays.holiday_status_cl" model="hr.leave.type">
             <field name="work_entry_type_id" ref="work_entry_type_legal_leave"></field>
         </record>
+
     </data>
 </odoo>

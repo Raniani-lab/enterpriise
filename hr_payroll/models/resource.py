@@ -3,8 +3,6 @@
 
 from odoo.osv.expression import AND
 from odoo.tools import float_compare
-from datetime import datetime
-
 from odoo import models, fields, api
 
 
@@ -33,18 +31,3 @@ class ResourceCalendar(models.Model):
                 calendar.work_time_rate = calendar.hours_per_week / calendar.full_time_required_hours * 100
             else:
                 calendar.work_time_rate = 100
-
-
-class ResourceCalendarAttendance(models.Model):
-    _inherit = 'resource.calendar.attendance'
-
-    def _default_work_entry_type_id(self):
-        return self.env.ref('hr_payroll.work_entry_type_attendance', raise_if_not_found=False)
-
-    work_entry_type_id = fields.Many2one('hr.work.entry.type', 'Work Entry Type', default=_default_work_entry_type_id)
-
-
-class ResourceCalendarLeave(models.Model):
-    _inherit = 'resource.calendar.leaves'
-
-    work_entry_type_id = fields.Many2one('hr.work.entry.type', 'Work Entry Type')

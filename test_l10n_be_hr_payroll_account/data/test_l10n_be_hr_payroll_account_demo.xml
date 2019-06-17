@@ -65,7 +65,7 @@
         </record>
         <record id="hr_line_admin1" model="hr.payslip.worked_days">
             <field name="name">Normal working days</field>
-            <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+            <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
             <field name="number_of_days">20</field>
             <field name="number_of_hours">160</field>
             <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
@@ -94,7 +94,7 @@
         </record>
         <record id="hr_line_demo1" model="hr.payslip.worked_days">
             <field name="name">Normal working days</field>
-            <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+            <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
             <field name="number_of_days">18</field>
             <field name="number_of_hours">144</field>
             <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
@@ -140,7 +140,7 @@
         </record>
         <record id="hr_line_admin1_may" model="hr.payslip.worked_days">
             <field name="name">Normal working days</field>
-            <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+            <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
             <field name="number_of_days">22</field>
             <field name="number_of_hours">175</field>
             <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
@@ -161,7 +161,7 @@
         </record>
         <record id="hr_line_demo1_may" model="hr.payslip.worked_days">
             <field name="name">Normal working days</field>
-            <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+            <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
             <field name="number_of_days">20</field>
             <field name="number_of_hours">16</field>
             <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
@@ -200,7 +200,7 @@
 
     <record id="hr_line_lap_january_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">18</field>
         <field name="number_of_hours">144</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -232,7 +232,7 @@
 
     <record id="hr_line_lap_february_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -255,7 +255,7 @@
 
     <record id="hr_line_lap_march_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -278,7 +278,7 @@
 
     <record id="hr_line_lap_april_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -301,7 +301,7 @@
 
     <record id="hr_line_lap_may_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -324,7 +324,7 @@
 
     <record id="hr_line_lap_june_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -347,7 +347,7 @@
 
     <record id="hr_line_lap_july_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -370,7 +370,7 @@
 
     <record id="hr_line_lap_august_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">0</field>
         <field name="number_of_hours">0</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -402,7 +402,7 @@
 
     <record id="hr_line_lap_september_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -425,7 +425,7 @@
 
     <record id="hr_line_lap_october_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -448,7 +448,7 @@
 
     <record id="hr_line_lap_november_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
@@ -471,7 +471,7 @@
 
     <record id="hr_line_lap_december_demo1" model="hr.payslip.worked_days">
         <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
+        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
         <field name="number_of_days">22</field>
         <field name="number_of_hours">176</field>
         <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>

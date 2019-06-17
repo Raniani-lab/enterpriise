@@ -44,7 +44,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2015, 11, 10), date(2015, 11, 21))
         work_entries.action_validate()
         hours = (self.contract_cdd | self.contract_cdi)._get_work_hours(date(2015, 11, 10), date(2015, 11, 20))  # across two contracts
-        sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_payroll.work_entry_type_attendance').ids)
+        sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_work_entry.work_entry_type_attendance').ids)
         self.assertEqual(sum_hours, 59, 'It should count 59 attendance hours')  # 24h first contract + 35h second contract
 
     def test_work_data_with_exceeding_interval(self):
@@ -52,7 +52,7 @@ class TestPayslipComputation(TestPayslipContractBase):
             'name': 'Attendance',
             'employee_id': self.richard_emp.id,
             'contract_id': self.contract_cdd.id,
-            'work_entry_type_id': self.env.ref('hr_payroll.work_entry_type_attendance').id,
+            'work_entry_type_id': self.env.ref('hr_work_entry.work_entry_type_attendance').id,
             'date_start': datetime(2015, 11, 9, 20, 0),
             'date_stop': datetime(2015, 11, 10, 7, 0)
         }).action_validate()
@@ -60,12 +60,12 @@ class TestPayslipComputation(TestPayslipContractBase):
             'name': 'Attendance',
             'employee_id': self.richard_emp.id,
             'contract_id': self.contract_cdd.id,
-            'work_entry_type_id': self.env.ref('hr_payroll.work_entry_type_attendance').id,
+            'work_entry_type_id': self.env.ref('hr_work_entry.work_entry_type_attendance').id,
             'date_start': datetime(2015, 11, 10, 21, 0),
             'date_stop': datetime(2015, 11, 11, 5, 0),
         }).action_validate()
         hours = self.contract_cdd._get_work_hours(date(2015, 11, 10), date(2015, 11, 10))
-        sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_payroll.work_entry_type_attendance').ids)
+        sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_work_entry.work_entry_type_attendance').ids)
         self.assertAlmostEqual(sum_hours, 18, delta=0.01, msg='It should count 18 attendance hours')  # 8h normal day + 7h morning + 3h night
 
     def test_unpaid_amount(self):
@@ -122,7 +122,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
         self.assertAlmostEqual(extra_attendance_line.amount, 0.0, places=2, msg="His unpaid time off must be paid 0.")
 
-        attendance_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
+        attendance_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_work_entry.work_entry_type_attendance').code)
         self.assertAlmostEqual(attendance_line.amount, 4523.80, delta=0.01, msg="His attendance must be paid 4523.80")
 
     def test_worked_days_with_unpaid(self):
@@ -150,7 +150,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         self.richard_payslip_quarter._onchange_employee()
         work_days = self.richard_payslip_quarter.worked_days_line_ids
 
-        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
+        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_work_entry.work_entry_type_attendance').code)
         self.assertAlmostEqual(leave_line.number_of_days, 62.5, places=2)
 
         extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
@@ -181,7 +181,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         self.richard_payslip_quarter._onchange_employee()
         work_days = self.richard_payslip_quarter.worked_days_line_ids
 
-        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
+        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_work_entry.work_entry_type_attendance').code)
         self.assertAlmostEqual(leave_line.number_of_days, 49.5, places=2)
 
         extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
@@ -212,7 +212,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         self.richard_payslip_quarter._onchange_employee()
         work_days = self.richard_payslip_quarter.worked_days_line_ids
 
-        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_payroll.work_entry_type_attendance').code)
+        leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_work_entry.work_entry_type_attendance').code)
         self.assertAlmostEqual(leave_line.number_of_days, 62.5, places=2)
 
         extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)

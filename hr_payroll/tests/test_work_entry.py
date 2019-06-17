@@ -71,7 +71,7 @@ class TestWorkEntry(TestPayslipBase):
         work_entry1 = self.env['hr.work.entry'].create({
             'name': '1',
             'employee_id': self.richard_emp.id,
-            'work_entry_type_id': self.env.ref('hr_payroll.work_entry_type_attendance').id,
+            'work_entry_type_id': self.env.ref('hr_work_entry.work_entry_type_attendance').id,
             'contract_id': self.richard_emp.contract_id.id,
             'date_start': start,
             'date_stop': end + relativedelta(hours=5),
@@ -79,7 +79,7 @@ class TestWorkEntry(TestPayslipBase):
         self.env['hr.work.entry'].create({
             'name': '2',
             'employee_id': self.richard_emp.id,
-            'work_entry_type_id': self.env.ref('hr_payroll.work_entry_type_attendance').id,
+            'work_entry_type_id': self.env.ref('hr_work_entry.work_entry_type_attendance').id,
             'contract_id': self.richard_emp.contract_id.id,
             'date_start': start + relativedelta(hours=3),
             'date_stop': end,
@@ -153,7 +153,7 @@ class TestWorkEntry(TestPayslipBase):
         work_entries = self.richard_emp.contract_id._generate_work_entries(self.start, self.end)
         work_entries.action_validate()
         hours = self.richard_emp.contract_id._get_work_hours(self.start, self.end)
-        sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_payroll.work_entry_type_attendance').ids)
+        sum_hours = sum(v for k, v in hours.items() if k in self.env.ref('hr_work_entry.work_entry_type_attendance').ids)
 
         self.assertEqual(sum_hours, 168.0)
 
@@ -220,7 +220,7 @@ class TestWorkEntry(TestPayslipBase):
             'default_date_end': Date.to_string(end + relativedelta(days=1))
             }).compute_sheet()
         payslip = self.env['hr.payslip'].search([('employee_id', '=', self.richard_emp.id)])
-        work_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.env.ref('hr_payroll.work_entry_type_attendance')) # From default calendar.attendance
+        work_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.env.ref('hr_work_entry.work_entry_type_attendance')) # From default calendar.attendance
         leave_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.work_entry_type)
 
         self.assertTrue(work_line, "It should have a work line in the payslip")

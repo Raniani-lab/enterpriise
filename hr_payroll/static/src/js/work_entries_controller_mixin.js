@@ -91,7 +91,7 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
             this.$buttons.find('.btn-work-entry').remove();
 
             if (!allValidated && records.length !== 0) {
-                this.$buttons.append(QWeb.render('hr_payroll.work_entry_button', {
+                this.$buttons.append(QWeb.render('hr_work_entry.work_entry_button', {
                     button_text: _t("Generate Payslips"),
                     event_class: 'btn-payslip-generate',
                     disabled: hasConflicts,
@@ -99,7 +99,7 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
             }
 
             if (hasConflicts && !allConflicts) {
-                this._displayWarning(QWeb.render('hr_payroll.work_entry_error_message'));
+                this._displayWarning(QWeb.render('hr_work_entry.work_entry_error_message'));
             }
         },
 

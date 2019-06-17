@@ -82,14 +82,14 @@
     <menuitem
         id="menu_work_entry"
         name="Work Entries"
-        action="hr_work_entry_action"
+        action="hr_work_entry.hr_work_entry_action"
         parent="menu_hr_payroll_work_entries_root"
         sequence="25"/>
 
     <menuitem
         id="menu_work_entry_conflicts"
         name="Conflicts"
-        action="hr_work_entry_action_conflict"
+        action="hr_work_entry.hr_work_entry_action_conflict"
         parent="menu_hr_payroll_work_entries_root"
         sequence="50"/>
 
@@ -120,7 +120,7 @@
     />
     <menuitem
         id="menu_hr_work_entry_type_view"
-        action="action_view_hr_work_entry_type"
+        action="hr_work_entry.hr_work_entry_type_action"
         parent="menu_hr_work_entry_confirguration"
     />
 

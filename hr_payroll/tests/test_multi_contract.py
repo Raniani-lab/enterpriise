@@ -70,7 +70,7 @@ class TestPayslipMultiContract(TestPayslipContractBase):
             'struct_id': self.developer_pay_structure.id,
         })
         payslip._onchange_employee()
-        work = payslip.worked_days_line_ids.filtered(lambda line: line.work_entry_type_id == self.env.ref('hr_payroll.work_entry_type_attendance'))
+        work = payslip.worked_days_line_ids.filtered(lambda line: line.work_entry_type_id == self.env.ref('hr_work_entry.work_entry_type_attendance'))
         leave = payslip.worked_days_line_ids.filtered(lambda line: line.work_entry_type_id == self.work_entry_type_leave)
         self.assertEqual(work.number_of_hours, 49, "It should be 49 hours of work this month for this contract")
         self.assertEqual(leave.number_of_hours, 28, "It should be 28 hours of leave this month for this contract")

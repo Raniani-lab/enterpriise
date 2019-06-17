@@ -89,9 +89,9 @@ class TestExamples(common.SavepointCase):
             ('ATN.INT.2', -5.00),
             ('ATN.MOB.2', -4.00),
             ('M.ONSS', -23.66),
-            ('MEAL_V_EMP', -20.71),
+            ('MEAL_V_EMP', -21.8),
             ('REP.FEES', 150.00),
-            ('NET', 1874.23),
+            ('NET', 1873.14),
         ])
         payslip = {
             'date_from': datetime.date.today().replace(year=2018, month=2, day=1),
@@ -136,11 +136,11 @@ class TestExamples(common.SavepointCase):
             ('ATN.INT.2', 0),
             ('ATN.MOB.2', 0),
             ('M.ONSS', -34.72),
-            ('MEAL_V_EMP', -21.8),
+            ('MEAL_V_EMP', -22.89),
             ('REP.FEES', 150.00),
             ('IP', 0),
             ('IP.DED', 0),
-            ('NET', 2397.73),
+            ('NET', 2396.64),
         ])
         employee = {
             'name': 'Roger',

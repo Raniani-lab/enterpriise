@@ -26,8 +26,8 @@ class HrEmployee(models.Model):
         date_stop = fields.Date.to_date(date_stop)
 
         if self:
-            current_contracts = self._get_contracts(date_start, date_stop, states=['open', 'pending', 'close'])
+            current_contracts = self._get_contracts(date_start, date_stop, states=['open', 'close'])
         else:
-            current_contracts = self._get_all_contracts(date_start, date_stop, states=['open', 'pending', 'close'])
+            current_contracts = self._get_all_contracts(date_start, date_stop, states=['open', 'close'])
 
         return bool(current_contracts._generate_work_entries(date_start, date_stop))

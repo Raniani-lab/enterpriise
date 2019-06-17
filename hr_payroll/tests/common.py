@@ -202,7 +202,8 @@ class TestPayslipContractBase(TestPayslipBase):
             'wage': 5000.0,
             'employee_id': self.richard_emp.id,
             'structure_type_id': self.structure_type.id,
-            'state': 'pending',
+            'state': 'open',
+            'kanban_state': 'blocked',
             'date_generated_from': datetime.strptime('2015-11-16', '%Y-%m-%d'),
             'date_generated_to': datetime.strptime('2015-11-16', '%Y-%m-%d'),
         })
@@ -216,6 +217,7 @@ class TestPayslipContractBase(TestPayslipBase):
             'employee_id': self.richard_emp.id,
             'structure_type_id': self.structure_type.id,
             'state': 'open',
+            'kanban_state': 'normal',
             'date_generated_from': datetime.strptime('2015-11-15', '%Y-%m-%d'),
             'date_generated_to': datetime.strptime('2015-11-15', '%Y-%m-%d'),
         })

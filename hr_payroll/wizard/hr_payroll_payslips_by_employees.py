@@ -13,7 +13,7 @@ class HrPayslipEmployees(models.TransientModel):
     _description = 'Generate payslips for all selected employees'
 
     def _get_available_contracts_domain(self):
-        return [('contract_ids.state', 'in', ('open', 'pending', 'close')), ('company_id', '=', self.env.company.id)]
+        return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)]
 
     def _get_employees(self):
         # YTI check dates too
@@ -58,7 +58,7 @@ class HrPayslipEmployees(models.TransientModel):
         payslips = self.env['hr.payslip']
         Payslip = self.env['hr.payslip']
 
-        contracts = self.employee_ids._get_contracts(payslip_run.date_start, payslip_run.date_end, states=['open', 'pending', 'close'])
+        contracts = self.employee_ids._get_contracts(payslip_run.date_start, payslip_run.date_end, states=['open', 'close'])
         contracts._generate_work_entries(payslip_run.date_start, payslip_run.date_end)
         work_entries = self.env['hr.work.entry'].search([
             ('date_start', '<=', payslip_run.date_end),

@@ -32,7 +32,7 @@ class HrLeave(models.Model):
 
         for leave in self.filtered(lambda l: l.employee_id):
 
-            contract = leave.employee_id.sudo()._get_contracts(leave.date_from, leave.date_to, states=['open', 'pending'])
+            contract = leave.employee_id.sudo()._get_contracts(leave.date_from, leave.date_to, states=['open'])
             if contract and contract.resource_calendar_id != leave.employee_id.resource_calendar_id:
                 resource_leave_values += [{
                     'name': leave.name,
@@ -59,7 +59,11 @@ class HrLeave(models.Model):
             domain = [
                 ('employee_id', '=', holiday.employee_id.id),
                 ('date_start', '<=', holiday.date_to),
+                '|',
                 ('state', 'not in', ['draft', 'cancel']),
+                '&',
+                ('state', '=', 'draft'),
+                ('kanban_state', '=', 'done'),
                 '|',
                     ('date_end', '>=', holiday.date_from),
                     '&',
@@ -90,7 +94,7 @@ class HrLeave(models.Model):
         # 1. Create a work entry for each leave
         work_entries_vals_list = []
         for leave in self:
-            contracts = leave.employee_id.sudo()._get_contracts(leave.date_from, leave.date_to, states=['open', 'pending', 'close'])
+            contracts = leave.employee_id.sudo()._get_contracts(leave.date_from, leave.date_to, states=['open', 'close'])
             for contract in contracts:
                 # Generate only if it has aleady been generated
                 if leave.date_to >= contract.date_generated_from and leave.date_from <= contract.date_generated_to:
@@ -191,7 +195,8 @@ class HrLeave(models.Model):
         if employee_id:
             employee = self.env['hr.employee'].browse(employee_id)
             # Use sudo otherwise base users can't compute number of days
-            contracts = employee.sudo()._get_contracts(date_from, date_to, states=['incoming', 'open', 'pending'])
+            contracts = employee.sudo()._get_contracts(date_from, date_to, states=['open'])
+            contracts |= employee.sudo()._get_incoming_contracts(date_from, date_to)
             calendar = contracts[:1].resource_calendar_id if contracts else None # Note: if len(contracts)>1, the leave creation will crash because of unicity constaint
             return employee._get_work_days_data(date_from, date_to, calendar=calendar)
 
@@ -200,7 +205,8 @@ class HrLeave(models.Model):
     def _get_calendar(self):
         self.ensure_one()
         if self.date_from and self.date_to:
-            contracts = self.employee_id.sudo()._get_contracts(self.date_from, self.date_to, states=['incoming', 'open', 'pending'])
+            contracts = self.employee_id.sudo()._get_contracts(self.date_from, self.date_to, states=['open'])
+            contracts |= self.employee_id.sudo()._get_incoming_contracts(self.date_from, self.date_to)
             contract_calendar = contracts[:1].resource_calendar_id if contracts else None
             return contract_calendar or self.employee_id.resource_calendar_id or self.env.company.resource_calendar_id
         return super()._get_calendar()

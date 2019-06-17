@@ -44,6 +44,7 @@ class HelpdeskTeam(models.Model):
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email alias', default=True)
+    allow_portal_ticket_closing = fields.Boolean('Ticket closing', help="Allow customers to close their tickets")
     use_website_helpdesk_form = fields.Boolean('Website Form')
     use_website_helpdesk_livechat = fields.Boolean('Live chat',
         help="In Channel: You can create a new ticket by typing /helpdesk [ticket title]. You can search ticket by typing /helpdesk_search [Keyword1],[Keyword2],.")
@@ -371,6 +372,16 @@ class HelpdeskTeam(models.Model):
                 count_dict.update((data['user_id'][0], data['user_id_count']) for data in read_group_res)
                 new_user = new_user.browse(min(count_dict, key=count_dict.get))
         return new_user
+
+    def _get_closing_stage(self):
+        """
+            Return the first closing kanban stage or the last stage of the pipe if none
+        """
+        closed_stage = self.stage_ids.filtered(lambda stage: stage.is_close)
+        if not closed_stage:
+            closed_stage = self.stage_ids[-1]
+        return closed_stage
+
 
 
 class HelpdeskStage(models.Model):

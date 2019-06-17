@@ -103,6 +103,7 @@ class HelpdeskTicket(models.Model):
     partner_name = fields.Char(string='Customer Name')
     partner_email = fields.Char(string='Customer Email')
 
+    closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
 
@@ -289,9 +290,14 @@ class HelpdeskTicket(models.Model):
         assigned_tickets = closed_tickets = self.browse()
         if vals.get('user_id'):
             assigned_tickets = self.filtered(lambda ticket: not ticket.assign_date)
-        if vals.get('stage_id') and self.env['helpdesk.stage'].browse(vals.get('stage_id')).is_close:
-            closed_tickets = self.filtered(lambda ticket: not ticket.close_date)
-
+        new_stage_id = vals.get('stage_id')
+        if new_stage_id:
+            new_stage = self.env['helpdesk.stage'].browse(new_stage_id)
+            if new_stage.is_close:
+                closed_tickets = self.filtered(lambda ticket: not ticket.close_date)
+            # allow partner to close again a ticket that has been re-opened
+            elif self.closed_by_partner and new_stage != self.stage_id and new_stage != self.team_id._get_closing_stage():
+                vals['closed_by_partner'] = False
         now = datetime.datetime.now()
         res = super(HelpdeskTicket, self - assigned_tickets - closed_tickets).write(vals)
         res &= super(HelpdeskTicket, assigned_tickets - closed_tickets).write(dict(vals, **{

@@ -73,12 +73,18 @@
     Dear ${object.sudo().partner_id.name or 'Madam/Sir'},<br /><br />
     Your request
     % if object.access_token:
-    <a href="/helpdesk/ticket/${object.id}/${object.access_token}">${object.name}</a>
+    <a href="/my/ticket/${object.id}/${object.access_token}">${object.name}</a>
     % endif
     has been received and is being reviewed by our ${object.team_id.name or ''} team.
     The reference of your ticket is ${object.id}.<br /><br />
-    To add additional comments, reply to this email.<br />
-    Thank you,<br /><br />
+
+    <div style="text-align: center; margin: 16px 0px 16px 0px;">
+        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" href="${object.get_portal_url()}">View the ticket</a><br/>
+    </div>
+
+    To add additional comments, reply to this email.<br/><br/>
+
+    Thank you,<br/><br/>
     ${object.team_id.name or 'Helpdesk'} Team.
 </div>
         </field>

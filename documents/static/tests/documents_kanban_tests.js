@@ -1253,6 +1253,7 @@ QUnit.module('DocumentsKanbanView', {
             "should display the new value in the many2one");
 
         kanban.$('.o_field_many2one[name=owner_id] input').val('').trigger('keyup').trigger('focusout');
+        await testUtils.nextTick();
         relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = M2O_DELAY;
         kanban.destroy();
     });

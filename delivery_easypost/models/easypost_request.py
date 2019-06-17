@@ -246,6 +246,7 @@ class EasypostRequest():
                 unit_quantity = line.product_uom_id._compute_quantity(line.product_qty, line.product_id.uom_id, rounding_method='HALF-UP')
             else:
                 unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')
+            hs_code = line.product_id.hs_code or ''
             customs_info.update({
                 'order[shipments][%d][customs_info][customs_items][%d][description]' % (shipment_id, customs_item_id): line.product_id.name,
                 'order[shipments][%d][customs_info][customs_items][%d][quantity]' % (shipment_id, customs_item_id): unit_quantity,
@@ -253,6 +254,7 @@ class EasypostRequest():
                 'order[shipments][%d][customs_info][customs_items][%d][currency]' % (shipment_id, customs_item_id): line.picking_id.company_id.currency_id.name,
                 'order[shipments][%d][customs_info][customs_items][%d][weight]' % (shipment_id, customs_item_id): line.env['delivery.carrier']._easypost_convert_weight(line.product_id.weight * unit_quantity),
                 'order[shipments][%d][customs_info][customs_items][%d][origin_country]' % (shipment_id, customs_item_id): line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code,
+                'order[shipments][%d][customs_info][customs_items][%d][hs_tariff_number]' % (shipment_id, customs_item_id): hs_code,
             })
             customs_item_id += 1
         return customs_info

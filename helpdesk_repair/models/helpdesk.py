@@ -25,5 +25,5 @@ class HelpdeskTicket(models.Model):
             'res_model': 'repair.order',
             'view_mode': 'tree,form',
             'domain': [('ticket_id', '=', self.id)],
-            'context': dict(self._context, create=False),
+            'context': dict(self._context, create=False, default_company_id=self.company_id.id, default_ticket_id=self.id),
         }

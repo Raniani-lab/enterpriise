@@ -7,9 +7,9 @@
         <field name="arch" type="xml">
             <field name="stage_id" position="before">
                 <field name="use_coupons" invisible="1"/>
-                <button type="action" name="%(helpdesk_sale_coupon_generate_action)d" string="Coupon" 
+                <button type="action" name="%(helpdesk_sale_coupon_generate_action)d" string="Coupon"
                     groups="helpdesk.group_helpdesk_user" attrs="{'invisible': [('use_coupons', '=', False)]}"
-                    context="{'default_ticket_id': id}"/>
+                    context="{'default_ticket_id': id, 'default_company_id': company_id}"/>
             </field>
             <div class="oe_button_box" position="inside">
                 <button class="oe_stat_button" name="open_coupons" icon="fa-ticket"

@@ -23,4 +23,7 @@ class HelpdeskTicket(models.Model):
             'res_model': 'sale.coupon',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.coupon_ids.ids)],
+            'context': {
+                'default_company_id': self.company_id.id
+            },
         }

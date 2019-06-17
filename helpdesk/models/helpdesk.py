@@ -26,7 +26,7 @@ class HelpdeskTeam(models.Model):
     name = fields.Char('Helpdesk Team', required=True, translate=True)
     description = fields.Text('About Team', translate=True)
     active = fields.Boolean(default=True)
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     sequence = fields.Integer("Sequence", default=10)
     color = fields.Integer('Color Index', default=1)
     stage_ids = fields.Many2many(

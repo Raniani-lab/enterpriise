@@ -57,11 +57,13 @@ class Task(models.Model):
 
     def _default_planned_date_begin(self):
         if self.env.context.get('fsm_mode'):
-            return datetime.now()
+            now = datetime.now()
+            return now + timedelta(minutes=15 - now.minute % 15, seconds=-now.second)
 
     def _default_planned_date_end(self):
         if self.env.context.get('fsm_mode'):
-            return datetime.now() + timedelta(hours=1)
+            now = datetime.now()
+            return now + timedelta(minutes=15 - now.minute % 15, seconds=-now.second) + timedelta(hours=1)
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')

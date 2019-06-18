@@ -72,7 +72,7 @@
                 action="action_view_list_customer_statements" sequence="20"/>
 
         <record model="ir.actions.server" id="action_account_reports_customer_statements_do_followup">
-            <field name="name">Process Follow-ups</field>
+            <field name="name">Process follow-ups</field>
             <field name="model_id" ref="model_res_partner"/>
             <field name="binding_model_id" ref="model_res_partner" />
             <field name="state">code</field>

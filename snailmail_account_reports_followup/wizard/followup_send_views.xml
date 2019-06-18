@@ -49,7 +49,7 @@
         </record>
 
        <act_window
-            name="Send By Post"
+            name="Send by post"
             id="followup_send"
             res_model="followup.send"
             binding_model="res.partner"

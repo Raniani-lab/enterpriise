@@ -241,6 +241,7 @@ class TestMpsMps(common.TransactionCase):
         seller = self.env['product.supplierinfo'].create({
             'name': partner.id,
             'price': 12.0,
+            'delay': 0
         })
         self.screw.seller_ids = [(6, 0, [seller.id])]
         self.mps_screw.action_replenish()

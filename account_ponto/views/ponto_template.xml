@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="PontoTemplateFooter">
+    <div>
+      <button class="btn btn-primary js_ponto_continue">Continue</button>
+      <button class="btn btn-default js_cancel">Cancel</button>
+    </div>
+  </t>
+
+  <t t-name="PontoTemplate">
+    <div>
+        <div>
+          <h4>Please enter your access token</h4>
+          <p>follow the guide on <a href="https://docs.google.com/document/d/1apzAtCgZl5mfEz5-Z8iETqd6WXGbV0R2KuAvEL87rBI" target="blank">this link</a> to know how to get your ponto access token</p>
+          <input type="text" name="ponto_token" class="ponto_token"/>
+        </div>
+      </div>
+  </t>
+
+  <t t-extend="OnlineSyncSearchBankFooter">
+    <t t-jquery=".js_configure_manually" t-operation="after">
+      <a class="link_ponto_account" href="#">or link with Ponto (Beta)</a>
+    </t>
+  </t>
+
+</templates>

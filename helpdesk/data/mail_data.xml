@@ -82,7 +82,7 @@
     ${object.team_id.name or 'Helpdesk'} Team.
 </div>
         </field>
-        <field name="lang"> ${object.partner_id.lang or object.user_id.lang or user.lang}</field>
+        <field name="lang">${object.partner_id.lang or object.user_id.lang or user.lang}</field>
         <field name="auto_delete" eval="False"/>
     </record>
 
@@ -104,7 +104,7 @@
     ${object.team_id.name or 'Helpdesk'} Team.
 </div>
         </field>
-        <field name="lang"> ${object.partner_id.lang or object.user_id.lang or user.lang}</field>
+        <field name="lang">${object.partner_id.lang or object.user_id.lang or user.lang}</field>
         <field name="auto_delete" eval="False"/>
     </record>
 

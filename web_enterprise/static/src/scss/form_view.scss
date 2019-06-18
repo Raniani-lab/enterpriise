@@ -372,6 +372,10 @@
                         @include o-form-sheet-negative-margin;
                         margin-top: -$o-horizontal-padding;
 
+                        // use original padding-left for handle cell in editable list
+                        .o_editable_list tr > :first-child.o_handle_cell {
+                            padding-left: $o-horizontal-padding;
+                        }
                         tr > :first-child {
                             &, .o_input {
                                 @include o-form-sheet-inner-left-padding;

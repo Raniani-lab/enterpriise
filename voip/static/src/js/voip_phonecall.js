@@ -361,16 +361,17 @@ var PhonecallDetails = Widget.extend({
      */
     _onToPartnerClick: function (ev) {
         ev.preventDefault();
+        var self = this;
         var res_id;
         var def = new Promise(function (resolve) {
-            if (this.partner_id) {
-                res_id = this.partner_id;
+            if (self.partner_id) {
+                res_id = self.partner_id;
                 resolve();
             } else {
                 var domain = ['|',
-                            ['phone', '=', this.phone],
-                            ['mobile', '=', this.phone]];
-                this._rpc({
+                            ['phone', '=', self.phone],
+                            ['mobile', '=', self.phone]];
+                self._rpc({
                     method: 'search_read',
                     model: "res.partner",
                     kwargs: {
@@ -378,18 +379,18 @@ var PhonecallDetails = Widget.extend({
                         fields: ['id'],
                         limit: 1
                     }
-                }).then(function(ids) {
-                    if (ids.length)
+                }).then(function (ids) {
+                    if (ids.length) {
                         res_id = ids[0].id;
-                }).always(function(){
+                    }
                     resolve();
-                })
+                }).guardedCatch(resolve);
             }
         });
 
         Promise.resolve(def).then((function() {
             if (res_id !== undefined) {
-                this.do_action({
+                self.do_action({
                     type: 'ir.actions.act_window',
                     res_model: "res.partner",
                     res_id: res_id,
@@ -397,15 +398,15 @@ var PhonecallDetails = Widget.extend({
                     target: 'current',
                 });
             } else {
-                this.do_action({
+                self.do_action({
                     type: 'ir.actions.act_window',
                     res_model: "res.partner",
                     views: [[false, 'form']],
                     target: 'current',
                     context: {
-                        default_email: this.email,
-                        default_phone: this.phone,
-                        default_mobile: this.mobile,
+                        default_email: self.email,
+                        default_phone: self.phone,
+                        default_mobile: self.mobile,
                     },
                 });
             }

@@ -45,7 +45,7 @@ class GovCertificationController(http.Controller):
     @http.route("/journal_file/<string:serial>", auth="user")
     def journal_file(self, serial, **kw):
         """ Give the journal file report for a specific blackbox
-        serial: e.g. BODO002bd6034a
+        serial: e.g. BODO001bd6034a
         """
         logs = request.env["pos_blackbox_be.log"].search([
             ("action", "=", "create"),

@@ -285,7 +285,7 @@ class OnlineAccountWizard(models.TransientModel):
         # Link account to journal
         journal_already_linked = []
         for account in self.account_ids:
-            account.account_online_wizard_id.write({'last_sync': self.sync_date})
+            account.online_account_id.write({'last_sync': self.sync_date})
             if account.action == 'link':
                 if not account.journal_id:
                     raise UserError(_('Please link your accounts to a journal or select "do not link" as action to do'))

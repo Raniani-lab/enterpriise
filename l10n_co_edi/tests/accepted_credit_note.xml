@@ -33,14 +33,19 @@ Colombia</EMI_10>
                 <EMI_13>Scranton</EMI_13>
                 <EMI_14>18540</EMI_14>
                 <EMI_15>CO</EMI_15>
-                <EMI_18>YourCompany
-1725 Slough Ave.
+                <EMI_18>1725 Slough Ave.
 
 Scranton Pennsylvania 18540
 Colombia</EMI_18>
 
                 <TAC>
-                    <TAC_1>R-01-PN</TAC_1><TAC_1>E-01</TAC_1><TAC_1>O-01</TAC_1><TAC_1>A-01</TAC_1>
+                    <TAC_1>R-01-PN</TAC_1>
+                </TAC><TAC>
+                    <TAC_1>E-01</TAC_1>
+                </TAC><TAC>
+                    <TAC_1>O-01</TAC_1>
+                </TAC><TAC>
+                    <TAC_1>A-01</TAC_1>
                 </TAC>
 
                 <ICC></ICC>
@@ -76,7 +81,13 @@ Jonesboro Arkansas 72401
 Colombia</ADQ_18>
 
                 <TCR>
-                    <TCR_1>R-01-PN</TCR_1><TCR_1>E-01</TCR_1><TCR_1>O-01</TCR_1><TCR_1>A-01</TCR_1>
+                    <TCR_1>R-01-PN</TCR_1>
+                </TCR><TCR>
+                    <TCR_1>E-01</TCR_1>
+                </TCR><TCR>
+                    <TCR_1>O-01</TCR_1>
+                </TCR><TCR>
+                    <TCR_1>A-01</TCR_1>
                 </TCR>
 
                 <ICR></ICR>
@@ -183,7 +194,7 @@ Colombia</ADQ_18>
                     <ITE_6>COP</ITE_6>
                     <ITE_7>250.0</ITE_7>
                     <ITE_8>COP</ITE_8>
-                    <ITE_10>[FURN_0096] Customizable Desk (White, Steel)</ITE_10>
+                    <ITE_10>[FURN_0096] Customizable Desk (Steel, White)</ITE_10>
                     <ITE_11>Line 1</ITE_11>
                     <ITE_18>FURN_0096</ITE_18>
                     <ITE_19>33750.0</ITE_19>
@@ -199,7 +210,7 @@ Colombia</ADQ_18>
 
                     <MYM>
                         
-                        <MYM_2>[FURN_0096] Customizable Desk (White, Steel)</MYM_2>
+                        <MYM_2>[FURN_0096] Customizable Desk (Steel, White)</MYM_2>
                     </MYM>
 
                     <IDE>
@@ -217,7 +228,7 @@ Colombia</ADQ_18>
                     <ITE_6>COP</ITE_6>
                     <ITE_7>0.2</ITE_7>
                     <ITE_8>COP</ITE_8>
-                    <ITE_10>[FURN_0096] Customizable Desk (White, Steel)</ITE_10>
+                    <ITE_10>[FURN_0096] Customizable Desk (Steel, White)</ITE_10>
                     <ITE_11>Line 2</ITE_11>
                     <ITE_18>FURN_0096</ITE_18>
                     <ITE_19>0.2</ITE_19>
@@ -233,7 +244,7 @@ Colombia</ADQ_18>
 
                     <MYM>
                         
-                        <MYM_2>[FURN_0096] Customizable Desk (White, Steel)</MYM_2>
+                        <MYM_2>[FURN_0096] Customizable Desk (Steel, White)</MYM_2>
                     </MYM>
 
                     <IDE>

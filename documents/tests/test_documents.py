@@ -330,3 +330,19 @@ class TestCaseDocuments(TransactionCase):
                          'the document should have the newly added attachment')
         self.assertFalse(activity.exists(), 'the activity should be done')
         self.assertFalse(activity_2.exists(), 'the activity_2 should be done')
+
+    def test_default_res_id_model(self):
+        """
+        Test default res_id and res_model from context are used for linking attachment to document.
+        """
+        document = self.env['documents.document'].create({'folder_id': self.folder_b.id})
+        attachment = self.env['ir.attachment'].with_context(
+            default_res_id=document.id,
+            default_res_model=document._name,
+        ).create({
+            'name': 'attachmentGif.gif',
+            'datas': GIF,
+        })
+        self.assertEqual(attachment.res_id, document.id, "It should be linked to the default res_id")
+        self.assertEqual(attachment.res_model, document._name, "It should be linked to the default res_model")
+        self.assertEqual(document.attachment_id, attachment, "Document should be linked to the created attachment")

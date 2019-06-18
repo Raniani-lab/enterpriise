@@ -185,6 +185,7 @@
                 name="pos_blackbox_be.financial_report_template_x"
                 file="pos_blackbox_be.financial_report_template_x"
                 menu="False"
+                print_report_name="(object.name + '_financial_x_report')"
                 attachment_use="False"/>
         <report id="action_report_pos_financial_z"
                 string="Z-report"
@@ -193,23 +194,26 @@
                 name="pos_blackbox_be.financial_report_template_z"
                 file="pos_blackbox_be.financial_report_template_z"
                 menu="False"
+                print_report_name="(object.name + '_financial_z_report')"
                 attachment_use="True"
                 attachment="(object.name + '_financial_z_report.pdf')"/>
         <report id="action_report_pos_user_x"
-                string="X-report"
+                string="X-User"
                 model="pos.session"
                 report_type="qweb-pdf"
                 name="pos_blackbox_be.user_report_template_x"
                 file="pos_blackbox_be.user_report_template_x"
                 menu="False"
+                print_report_name="(object.name + '_user_x_report')"
                 attachment_use="False"/>
         <report id="action_report_pos_user_z"
-                string="Z-report"
+                string="Z-User"
                 model="pos.session"
                 report_type="qweb-pdf"
                 name="pos_blackbox_be.user_report_template_z"
                 file="pos_blackbox_be.user_report_template_z"
                 menu="False"
+                print_report_name="(object.name + '_user_z_report')"
                 attachment_use="True"
                 attachment="(object.name + '_user_z_report.pdf')"/>
 

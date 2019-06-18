@@ -7,7 +7,7 @@ var utils = require('web_studio.utils');
 
 tour.register('web_studio_tests_tour', {
     test: true,
-    url: "/web?studio=app_creator",
+    url: "/web?studio=app_creator&debug=1",
 }, [{
     trigger: '.o_web_studio_new_app',
 }, {

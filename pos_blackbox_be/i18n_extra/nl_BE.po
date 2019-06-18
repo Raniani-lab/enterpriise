@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-16 13:37+0000\n"
+"POT-Creation-Date: 2019-06-12 13:22+0000\n"
 "PO-Revision-Date: 2016-12-22 15:14+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -48,6 +48,11 @@ msgstr ""
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
 msgid "<span class=\"o_stat_text\">Financial X</span>"
 msgstr "<span class=\"o_stat_text\">Financieel X</span>"
+
+#. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
+msgid "<span class=\"o_stat_text\">Journal File</span>"
+msgstr ""
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
@@ -168,7 +173,8 @@ msgstr "Actie"
 #, python-format
 msgid "Adding additional payments to registered orders is not allowed."
 msgstr ""
-"Extra betalingen toevoegen aan geregistreerde bestellingen is niet toegestaan."
+"Extra betalingen toevoegen aan geregistreerde bestellingen is niet "
+"toegestaan."
 
 #. module: pos_blackbox_be
 #. openerp-web
@@ -328,7 +334,6 @@ msgstr "Gemaakt door"
 
 #. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_blackbox_be_log_create_date
-#: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_create_date
 msgid "Created on"
 msgstr "Gemaakt op"
 
@@ -461,6 +466,11 @@ msgid "FDM transactions"
 msgstr "FDM transacties"
 
 #. module: pos_blackbox_be
+#: model:ir.ui.view,arch_db:pos_blackbox_be.journal_file
+msgid "FICHIER JOURNAL POUR CAISSE"
+msgstr ""
+
+#. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.view_pos_session_form
 msgid "Financial Z"
 msgstr "Financieel Z"
@@ -579,8 +589,8 @@ msgid ""
 "Fiscal Position %s (tax %s) has an invalid tax amount. Only 21%%, 12%%, 6%% "
 "and 0%% are allowed."
 msgstr ""
-"Fiscale Positie %s (tax %s) Heeft een ongeldig BTW percentage. Enkel 21%%, 12%%, 6%% "
-"of 0%% is toegelaten."
+"Fiscale Positie %s (tax %s) Heeft een ongeldig BTW percentage. Enkel 21%%, "
+"12%%, 6%% of 0%% is toegelaten."
 
 #. module: pos_blackbox_be
 #: model:product.template,name:pos_blackbox_be.food1
@@ -874,8 +884,8 @@ msgid ""
 "Person who uses the cash register. It can be a reliever, a student or an "
 "interim employee."
 msgstr ""
-"Persoon die de kassa gebruikt. Dit kan een kassabediende, student of "
-"interim arbeider zijn."
+"Persoon die de kassa gebruikt. Dit kan een kassabediende, student of interim "
+"arbeider zijn."
 
 #. module: pos_blackbox_be
 #. openerp-web
@@ -888,6 +898,12 @@ msgstr "Gelieve de `Vat Signing Card` te initialiseren met PIN."
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_plu_hash
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_plu_hash
 msgid "Plu Hash"
+msgstr ""
+
+#. module: pos_blackbox_be
+#: code:addons/pos_blackbox_be/models/pos_blackbox_be.py:317
+#, python-format
+msgid "PoS %s is not a certified PoS"
 msgstr ""
 
 #. module: pos_blackbox_be
@@ -926,6 +942,11 @@ msgstr "Kassaversie"
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_pricelist_id
 msgid "Pricelist"
 msgstr "Prijslijst"
+
+#. module: pos_blackbox_be
+#: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_pro_forma_create_date
+msgid "Pro Forma Creation"
+msgstr ""
 
 #. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_session_pro_forma_order_ids
@@ -1044,6 +1065,37 @@ msgid "Session"
 msgstr "Sessie"
 
 #. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1508
+#, python-format
+msgid ""
+"Session has already been Worked Out. Open a new session to keep selling."
+msgstr ""
+
+#. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1538
+#, python-format
+msgid "Session has already been initialized Worked In."
+msgstr ""
+
+#. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:417
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1545
+#, python-format
+msgid "Session has been Worked Out. Open a new session to keep selling."
+msgstr ""
+
+#. module: pos_blackbox_be
+#. openerp-web
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:412
+#: code:addons/pos_blackbox_be/static/src/js/pos_blackbox_be.js:1501
+#, python-format
+msgid "Session is not initialized yet. Register a Work In event first."
+msgstr ""
+
+#. module: pos_blackbox_be
 #: model:ir.model.fields,help:pos_blackbox_be.field_res_users_insz_or_bis_number
 msgid "Social security identification number"
 msgstr "INSZ- of BIS-nummer"
@@ -1119,8 +1171,8 @@ msgid ""
 "quantity."
 msgstr ""
 "Deze bestelregel is reeds vastgelegd in een pro forma bestelling en \n"
-"kan niet langer aangepast worden. Creër een nieuwe regel met bijvoorbeeld een "
-"negatieve hoeveelheid."
+"kan niet langer aangepast worden. Creër een nieuwe regel met bijvoorbeeld "
+"een negatieve hoeveelheid."
 
 #. module: pos_blackbox_be
 #: model:ir.model.fields,help:pos_blackbox_be.field_pos_order_blackbox_ticket_counters
@@ -1129,8 +1181,8 @@ msgid ""
 "Ticket counter returned by the Fiscal Data Module (format: counter / total "
 "event type)"
 msgstr ""
-"Bestelbon teller afkomstig van de `Fiscal Data` module (formaat: teller / totaal "
-"event type)"
+"Bestelbon teller afkomstig van de `Fiscal Data` module (formaat: teller / "
+"totaal event type)"
 
 #. module: pos_blackbox_be
 #. openerp-web
@@ -1314,6 +1366,11 @@ msgid "VSC ID:"
 msgstr ""
 
 #. module: pos_blackbox_be
+#: selection:pos.session,work_status:0
+msgid "Valid"
+msgstr ""
+
+#. module: pos_blackbox_be
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_line_pro_forma_vat_letter
 #: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_order_line_vat_letter
 msgid "Vat Letter"
@@ -1340,16 +1397,23 @@ msgid "Version of Odoo that created the order"
 msgstr "Versie van Odoo die het order heeft gecreëerd"
 
 #. module: pos_blackbox_be
+#: selection:pos.session,work_status:0
 #: model:product.product,name:pos_blackbox_be.product_product_work_in
 #: model:product.template,name:pos_blackbox_be.product_product_work_in_product_template
 msgid "WORK IN"
 msgstr "ARBEID IN"
 
 #. module: pos_blackbox_be
+#: selection:pos.session,work_status:0
 #: model:product.product,name:pos_blackbox_be.product_product_work_out
 #: model:product.template,name:pos_blackbox_be.product_product_work_out_product_template
 msgid "WORK OUT"
 msgstr "ARBEID UIT"
+
+#. module: pos_blackbox_be
+#: model:ir.model.fields,field_description:pos_blackbox_be.field_pos_session_work_status
+msgid "Work Status"
+msgstr ""
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.financial_report_template
@@ -1362,8 +1426,12 @@ msgid "X USERS"
 msgstr "X GEBRUIKERS"
 
 #. module: pos_blackbox_be
-#: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_financial_x
 #: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_user_x
+msgid "X-User"
+msgstr "X-gebruikers"
+
+#. module: pos_blackbox_be
+#: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_financial_x
 msgid "X-report"
 msgstr "X-rapport"
 
@@ -1373,7 +1441,8 @@ msgstr "X-rapport"
 msgid ""
 "Your session still contains open orders (%s). Please close all of them first."
 msgstr ""
-"De sessie bevat nog open bestellingen (%s). Gelieve deze eerst af te handelen."
+"De sessie bevat nog open bestellingen (%s). Gelieve deze eerst af te "
+"handelen."
 
 #. module: pos_blackbox_be
 #: model:ir.ui.view,arch_db:pos_blackbox_be.financial_report_template
@@ -1386,10 +1455,14 @@ msgid "Z USERS"
 msgstr "Z GEBRUIKERS"
 
 #. module: pos_blackbox_be
-#: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_financial_z
 #: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_user_z
+msgid "Z-User"
+msgstr "Z-Gebruiker"
+
+#. module: pos_blackbox_be
+#: model:ir.actions.report,name:pos_blackbox_be.action_report_pos_financial_z
 msgid "Z-report"
-msgstr "Z-rapport"
+msgstr "Z-report"
 
 #. module: pos_blackbox_be
 #: selection:pos_blackbox_be.log,action:0
@@ -1404,11 +1477,11 @@ msgstr "verwijder"
 #. module: pos_blackbox_be
 #: model:ir.model.fields,help:pos_blackbox_be.field_pos_config_blackbox_pos_production_id
 msgid ""
-"e.g. BODO002... The POSBox must be certified by Odoo S.A. to be used with "
+"e.g. BODO001... The IoT Box must be certified by Odoo S.A. to be used with "
 "the blackbox."
 msgstr ""
-"Bijv. BODO002... De POSBox moet door Odoo S.A. gecertificeerd zijn om met "
-"de blackbox gebruikt te worden."
+"Bijv. BODO001... De IoT Box moet door Odoo S.A. gecertificeerd zijn om met de "
+"blackbox gebruikt te worden."
 
 #. module: pos_blackbox_be
 #: selection:pos_blackbox_be.log,action:0

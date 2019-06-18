@@ -147,7 +147,7 @@ odoo.define('web_map.MapModel', function (require) {
          * @private
          * @param {integer} id id from a partner 
          */
-        _removeRecordByPartnerId(id) {
+        _removeRecordByPartnerId: function (id) {
             this.data.records = this.data.records.filter(function (record) {
                 return record.partner_id[0] != id;
             });
@@ -157,7 +157,7 @@ odoo.define('web_map.MapModel', function (require) {
          * adds the corresponding partner to a record
          * @private
          */
-        _addPartnerToRecord() {
+        _addPartnerToRecord: function () {
 
             var self = this;
             this.data.records.forEach(function (record) {

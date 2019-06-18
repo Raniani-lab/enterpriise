@@ -152,15 +152,18 @@ return KanbanRenderer.extend(EditorMixin, {
      * @param {DocumentFragment} fragment
      */
     _renderUngrouped: function (fragment) {
+        var self = this;
         var isDashboard = this.$el.hasClass('o_kanban_dashboard');
         this.recordEditor = new KanbanRecordEditor(
             this, this.kanbanRecord, this.recordOptions, this.arch, isDashboard);
         this.widgets.push(this.recordEditor);
         this.defs.push(this.recordEditor.appendTo(fragment));
 
-        this._renderDemoDivs(fragment, 6);
-        this._renderGhostDivs(fragment, 6);
-
+        Promise.all(this.defs).then(function () {
+            // these divs need to be rendered after the kanban record
+            self._renderDemoDivs(fragment, 6);
+            self._renderGhostDivs(fragment, 6);
+        });
     },
 });
 

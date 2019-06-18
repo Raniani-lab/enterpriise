@@ -76,6 +76,7 @@ class TestExamples(common.SavepointCase):
         # Setup the contract, use the above employee
         if isinstance(contract_values, dict):
             contract_values = dict(contract_values,
+                                   structure_type_id=payslip_values.get('struct_id').type_id.id,
                                    employee_id=employee.id)
             contract_id = self.env['hr.contract'].create(contract_values)
             contract_id.write({'state': 'open'})

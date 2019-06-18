@@ -48,7 +48,7 @@ class HrContract(models.Model):
         Generate a work_entries list between date_start and date_stop for one contract.
         :return: list of dictionnary.
         """
-        attendance_type = self.env.ref('hr_payroll.work_entry_type_attendance')
+        default_work_entry_type = self.structure_type_id.default_work_entry_type_id
         vals_list = []
 
         for contract in self:
@@ -64,7 +64,7 @@ class HrContract(models.Model):
             )
             # Attendances
             for interval in attendances:
-                work_entry_type_id = interval[2].mapped('work_entry_type_id')[:1] or attendance_type
+                work_entry_type_id = interval[2].mapped('work_entry_type_id')[:1] or default_work_entry_type
                 # All benefits generated here are using datetimes converted from the employee's timezone
                 contract_vals += [{
                     'name': "%s: %s" % (work_entry_type_id.name, employee.name),

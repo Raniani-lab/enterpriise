@@ -99,6 +99,8 @@ class HrPayrollStructureType(models.Model):
         default=lambda self: self.env.company.resource_calendar_id)
     struct_ids = fields.One2many('hr.payroll.structure', 'type_id', string="Structures")
     default_struct_id = fields.Many2one('hr.payroll.structure', compute='_compute_default_struct_id')
+    default_work_entry_type_id = fields.Many2one('hr.work.entry.type', help="Work entry type for regular attendances.", required=True,
+                                                 default=lambda self: self.env.ref('hr_payroll.work_entry_type_attendance', raise_if_not_found=False))
     country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
 
     def _compute_default_struct_id(self):

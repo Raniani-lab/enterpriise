@@ -135,6 +135,7 @@
                         <group>
                             <field name="default_schedule_pay"/>
                             <field name="default_resource_calendar_id"/>
+                            <field name="default_work_entry_type_id"/>
                         </group>
                     </group>
                 </sheet>

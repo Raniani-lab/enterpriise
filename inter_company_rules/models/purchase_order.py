@@ -38,11 +38,11 @@ class purchase_order(models.Model):
         if not intercompany_uid:
             raise Warning(_('Provide at least one user for inter company relation for % ') % company.name)
         # check intercompany user access rights
-        if not SaleOrder.sudo(intercompany_uid).check_access_rights('create', raise_exception=False):
+        if not SaleOrder.with_user(intercompany_uid).check_access_rights('create', raise_exception=False):
             raise Warning(_("Inter company user of company %s doesn't have enough access rights") % company.name)
 
         # check pricelist currency should be same with SO/PO document
-        company_partner = self.company_id.partner_id.sudo(intercompany_uid)
+        company_partner = self.company_id.partner_id.with_user(intercompany_uid)
         if self.currency_id.id != company_partner.property_product_pricelist.currency_id.id:
             raise Warning(
                 _('You cannot create SO from PO because sale price list currency is different than purchase price list currency.')
@@ -59,11 +59,11 @@ class purchase_order(models.Model):
         SaleOrderLine = self.env['sale.order.line']
         # read it as sudo, because inter-compagny user can not have the access right on PO
         sale_order_data = self.sudo()._prepare_sale_order_data(self.name, company_partner, company, self.dest_address_id and self.dest_address_id.id or False)
-        sale_order = SaleOrder.sudo(intercompany_uid).create(sale_order_data[0])
+        sale_order = SaleOrder.with_user(intercompany_uid).create(sale_order_data[0])
         # lines are browse as sudo to access all data required to be copied on SO line (mainly for company dependent field like taxes)
         for line in self.order_line.sudo():
             so_line_vals = self._prepare_sale_order_line_data(line, company, sale_order.id)
-            SaleOrderLine.sudo(intercompany_uid).create(so_line_vals)
+            SaleOrderLine.with_user(intercompany_uid).create(so_line_vals)
 
         # write vendor reference field on PO
         if not self.partner_ref:
@@ -71,7 +71,7 @@ class purchase_order(models.Model):
 
         #Validation of sales order
         if company.auto_validation == 'validated':
-            sale_order.sudo(intercompany_uid).action_confirm()
+            sale_order.with_user(intercompany_uid).action_confirm()
 
     @api.one
     def _prepare_sale_order_data(self, name, partner, company, direct_delivery_address):
@@ -122,7 +122,7 @@ class purchase_order(models.Model):
             taxes = line.product_id.taxes_id
         company_taxes = [tax_rec for tax_rec in taxes if tax_rec.company_id.id == company.id]
         if sale_id:
-            so = self.env["sale.order"].sudo(company.intercompany_user_id).browse(sale_id)
+            so = self.env["sale.order"].with_user(company.intercompany_user_id).browse(sale_id)
             company_taxes = so.fiscal_position_id.map_tax(company_taxes, line.product_id, so.partner_id)
         quantity = line.product_id and line.product_uom._compute_quantity(line.product_qty, line.product_id.uom_id) or line.product_qty
         price = line.product_id and line.product_uom._compute_price(price, line.product_id.uom_id) or price

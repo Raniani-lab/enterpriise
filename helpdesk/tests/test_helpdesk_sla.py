@@ -20,11 +20,11 @@ class TestHelpdeskSLA(HelpdeskTransactionCase):
         super(TestHelpdeskSLA, self).setUp()
         self.Sla = self.env['helpdesk.sla']
         # the manager enables our test team to use SLA's
-        self.test_team.sudo(self.helpdesk_manager.id).write({'use_sla': True})
+        self.test_team.with_user(self.helpdesk_manager).write({'use_sla': True})
         # we check the associated group has correctly been applied to all users
         self.assertTrue(self.helpdesk_user.user_has_groups('helpdesk.group_use_sla'), "SLA group not applied to user after applying it to team.")
         # the manager then creates a SLA for our test team, to be applied to all its tickets regardless of type or priority
-        self.test_sla = self.Sla.sudo(self.helpdesk_manager.id).create({
+        self.test_sla = self.Sla.with_user(self.helpdesk_manager).create({
             'name': 'A day, an hour and a minute on all Tickets',
             'team_id': self.test_team.id,
             'stage_id': self.stage_done.id,
@@ -38,7 +38,7 @@ class TestHelpdeskSLA(HelpdeskTransactionCase):
         # counting from monday 1 day+ 1hour based on ticket creation time
         ticket_expected_deadline = '2016-06-27 14:08:07'
 
-        ticket1 = self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({
+        ticket1 = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
             'name': 'test ticket 1',
             'team_id': self.test_team.id,
         })
@@ -62,7 +62,7 @@ class TestHelpdeskSLA(HelpdeskTransactionCase):
         self.assertEqual(str(ticket1.deadline), ticket_expected_deadline)
 
         # helpdesk user creates a second ticket and closes it without SLA fail
-        ticket2 = self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({
+        ticket2 = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
             'name': 'test ticket 2',
             'team_id': self.test_team.id,
         })
@@ -74,14 +74,14 @@ class TestHelpdeskSLA(HelpdeskTransactionCase):
 
     def test_sla_priority(self):
         # the manager creates SLAs for ticket priorities
-        self.test_sla_high = self.Sla.sudo(self.helpdesk_manager.id).create({
+        self.test_sla_high = self.Sla.with_user(self.helpdesk_manager).create({
             'name': '20 hours on High Priority Tickets',
             'team_id': self.test_team.id,
             'stage_id': self.stage_done.id,
             'priority': '2',
             'time_hours': 20,
         })
-        self.test_sla_urgent = self.Sla.sudo(self.helpdesk_manager.id).create({
+        self.test_sla_urgent = self.Sla.with_user(self.helpdesk_manager).create({
             'name': '12 hours on Urgent Tickets',
             'team_id': self.test_team.id,
             'stage_id': self.stage_done.id,
@@ -89,7 +89,7 @@ class TestHelpdeskSLA(HelpdeskTransactionCase):
             'time_hours': 12,
         })
         # helpdesk user creates a ticket
-        new_ticket = self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({
+        new_ticket = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
             'name': 'New Ticket',
             'team_id': self.test_team.id,
         })
@@ -106,14 +106,14 @@ class TestHelpdeskSLA(HelpdeskTransactionCase):
 
     def test_sla_type(self):
         # the manager creates SLAs for ticket types
-        self.test_sla_question = self.Sla.sudo(self.helpdesk_manager.id).create({
+        self.test_sla_question = self.Sla.with_user(self.helpdesk_manager).create({
             'name': '12 hours on Question Tickets',
             'team_id': self.test_team.id,
             'stage_id': self.stage_done.id,
             'ticket_type_id': self.type_question.id,
             'time_hours': 12,
         })
-        self.test_sla_issue = self.Sla.sudo(self.helpdesk_manager.id).create({
+        self.test_sla_issue = self.Sla.with_user(self.helpdesk_manager).create({
             'name': '20 hours on Issue Tickets',
             'team_id': self.test_team.id,
             'stage_id': self.stage_done.id,
@@ -121,7 +121,7 @@ class TestHelpdeskSLA(HelpdeskTransactionCase):
             'time_hours': 20,
         })
         # helpdesk user creates a ticket
-        new_ticket = self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({
+        new_ticket = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
             'name': 'Undefined Ticket',
             'team_id': self.test_team.id,
         })
@@ -132,7 +132,7 @@ class TestHelpdeskSLA(HelpdeskTransactionCase):
         self.assertTrue(new_ticket.sla_id == self.test_sla_question, "Incorrect SLA associated with ticket.")
 
         # helpdesk user creates an issue ticket
-        issue_ticket = self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({
+        issue_ticket = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
             'name': 'Issue',
             'team_id': self.test_team.id,
             'ticket_type_id': self.type_issue.id,

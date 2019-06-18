@@ -25,7 +25,7 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         self.env['account.chart.template'].browse(1).with_context(allowed_company_ids=self.company_b.ids).load_for_current_company(15.0, 15.0)
 
         # Create customer invoice for company A. (No need to call onchange as all the needed values are specified)
-        customer_invoice = self.env['account.move'].sudo(self.res_users_company_a).create({
+        customer_invoice = self.env['account.move'].with_user(self.res_users_company_a).create({
             'type': 'out_invoice',
             'partner_id': self.company_b.partner_id.id,
             'currency_id': self.env.ref('base.EUR').id,
@@ -41,13 +41,13 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         self.assertEquals(customer_invoice.state, 'draft', 'Initially customer invoice should be in the "Draft" state')
 
         # Validate invoice
-        customer_invoice.sudo(self.res_users_company_a).post()
+        customer_invoice.with_user(self.res_users_company_a).post()
 
         # Check Invoice status should be open after validate.
         self.assertEquals(customer_invoice.state, 'posted', 'Invoice should be in Open state.')
 
         # I check that the vendor bill is created with proper data.
-        supplier_invoice = self.env['account.move'].sudo(self.res_users_company_b.id).search([('type', '=', 'in_invoice')], limit=1)
+        supplier_invoice = self.env['account.move'].with_user(self.res_users_company_b).search([('type', '=', 'in_invoice')], limit=1)
 
         self.assertTrue(supplier_invoice.invoice_line_ids[0].quantity == 1, "Quantity in invoice line is incorrect.")
         self.assertTrue(supplier_invoice.invoice_line_ids[0].product_id.id == self.product_consultant.id, "Product in line is incorrect.")

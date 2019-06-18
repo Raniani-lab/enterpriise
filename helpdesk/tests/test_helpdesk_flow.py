@@ -39,42 +39,42 @@ class TestHelpdeskFlow(HelpdeskTransactionCase):
             # self.assertRaises(AccessError, record.unlink(), "Helpdesk user could unlink %s" % record._name)
 
         # helpdesk.team access rights
-        team = self.env['helpdesk.team'].sudo(self.helpdesk_manager.id).create({'name': 'test'})
-        team.sudo(self.helpdesk_user.id).read()
-        test_not_write_and_unlink(self, team.sudo(self.helpdesk_user.id))
+        team = self.env['helpdesk.team'].with_user(self.helpdesk_manager).create({'name': 'test'})
+        team.with_user(self.helpdesk_user).read()
+        test_not_write_and_unlink(self, team.with_user(self.helpdesk_user))
         with self.assertRaises(AccessError):
-            team.sudo(self.helpdesk_user.id).create({'name': 'test create'})
+            team.with_user(self.helpdesk_user).create({'name': 'test create'})
         test_write_and_unlink(team)
 
         # helpdesk.ticket access rights
-        ticket = self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({'name': 'test'})
+        ticket = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({'name': 'test'})
         ticket.read()
         test_write_and_unlink(ticket)
 
         # helpdesk.stage access rights
-        stage = self.env['helpdesk.stage'].sudo(self.helpdesk_manager.id).create({
+        stage = self.env['helpdesk.stage'].with_user(self.helpdesk_manager).create({
             'name': 'test',
             'team_ids': [(6, 0, [self.test_team.id])],
         })
-        stage.sudo(self.helpdesk_user.id).read()
-        test_not_write_and_unlink(self, stage.sudo(self.helpdesk_user.id))
+        stage.with_user(self.helpdesk_user).read()
+        test_not_write_and_unlink(self, stage.with_user(self.helpdesk_user))
         with self.assertRaises(AccessError):
-            stage.sudo(self.helpdesk_user.id).create({
+            stage.with_user(self.helpdesk_user).create({
                 'name': 'test create',
                 'team_ids': [(6, 0, [self.test_team.id])],
             })
         test_write_and_unlink(stage)
 
         # helpdesk.sla access rights
-        sla = self.env['helpdesk.sla'].sudo(self.helpdesk_manager.id).create({
+        sla = self.env['helpdesk.sla'].with_user(self.helpdesk_manager).create({
             'name': 'test',
             'team_id': self.test_team.id,
             'stage_id': self.stage_done.id,
         })
-        sla.sudo(self.helpdesk_user.id).read()
-        test_not_write_and_unlink(self, sla.sudo(self.helpdesk_user.id))
+        sla.with_user(self.helpdesk_user).read()
+        test_not_write_and_unlink(self, sla.with_user(self.helpdesk_user))
         with self.assertRaises(AccessError):
-            sla.sudo(self.helpdesk_user.id).create({
+            sla.with_user(self.helpdesk_user).create({
                 'name': 'test create',
                 'team_id': self.test_team.id,
                 'stage_id': self.stage_done.id,
@@ -82,25 +82,25 @@ class TestHelpdeskFlow(HelpdeskTransactionCase):
         test_write_and_unlink(sla)
 
         # helpdesk.ticket.type access rights
-        ticket_type = self.env['helpdesk.ticket.type'].sudo(self.helpdesk_manager.id).create({
+        ticket_type = self.env['helpdesk.ticket.type'].with_user(self.helpdesk_manager).create({
             'name': 'test with unique name please',
         })
-        ticket_type.sudo(self.helpdesk_user.id).read()
-        test_not_write_and_unlink(self, ticket_type.sudo(self.helpdesk_user.id))
+        ticket_type.with_user(self.helpdesk_user).read()
+        test_not_write_and_unlink(self, ticket_type.with_user(self.helpdesk_user))
         with self.assertRaises(AccessError):
-            ticket_type.sudo(self.helpdesk_user.id).create({
+            ticket_type.with_user(self.helpdesk_user).create({
                 'name': 'test create with unique name please',
             })
         test_write_and_unlink(ticket_type)
 
         # helpdesk.tag access rights
-        tag = self.env['helpdesk.tag'].sudo(self.helpdesk_user.id).create({'name': 'test with unique name please'})
+        tag = self.env['helpdesk.tag'].with_user(self.helpdesk_user).create({'name': 'test with unique name please'})
         tag.read()
         test_write_and_unlink(tag)
 
     def test_assign_close_dates(self):
         # helpdesk user create a ticket
-        ticket1 = self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({
+        ticket1 = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
             'name': 'test ticket 1',
             'team_id': self.test_team.id,
         })
@@ -125,12 +125,12 @@ class TestHelpdeskFlow(HelpdeskTransactionCase):
             'name': 'Freddy Krueger'
         })
         # helpdesk user creates 2 tickets for the partner
-        ticket1 = self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({
+        ticket1 = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
             'name': 'partner ticket 1',
             'team_id': self.test_team.id,
             'partner_id': partner.id,
         })
-        self.env['helpdesk.ticket'].sudo(self.helpdesk_user.id).create({
+        self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create({
             'name': 'partner ticket 2',
             'team_id': self.test_team.id,
             'partner_id': partner.id,

@@ -19,10 +19,10 @@ class MarketingCampaignTest(MarketingCampaignTestBase):
         self.mock_datetime.now.return_value = date
         self.mock_datetime2.now.return_value = date
 
-        Campaign = self.env['marketing.campaign'].sudo(self.user_market)
-        Activity = self.env['marketing.activity'].sudo(self.user_market)
-        MassMail = self.env['mail.mass_mailing'].sudo(self.user_market)
-        ServerAction = self.env['ir.actions.server'].sudo(self.user_market)
+        Campaign = self.env['marketing.campaign'].with_user(self.user_market)
+        Activity = self.env['marketing.activity'].with_user(self.user_market)
+        MassMail = self.env['mail.mass_mailing'].with_user(self.user_market)
+        ServerAction = self.env['ir.actions.server'].with_user(self.user_market)
 
         # Create campaign
         campaign = Campaign.create({
@@ -63,7 +63,7 @@ for record in records:
             'campaign_id': campaign.id,
             'parent_id': act_0.id,
             'activity_type': 'action',
-            'server_action_id': server_action.sudo(self.user_market).id,
+            'server_action_id': server_action.id,
             'trigger_type': 'act',
             'interval_number': '1',
             'interval_type': 'hours',
@@ -137,9 +137,9 @@ for record in records:
     def test_unique_field_many2one(self):
         self.test_rec3.write({'partner_id': self.test_partner2.id})
 
-        Campaign = self.env['marketing.campaign'].sudo(self.user_market)
-        Activity = self.env['marketing.activity'].sudo(self.user_market)
-        MassMail = self.env['mail.mass_mailing'].sudo(self.user_market)
+        Campaign = self.env['marketing.campaign'].with_user(self.user_market)
+        Activity = self.env['marketing.activity'].with_user(self.user_market)
+        MassMail = self.env['mail.mass_mailing'].with_user(self.user_market)
 
         partner_field = self.env['ir.model.fields'].search(
             [('model_id', '=', self.test_model.id), ('name', '=', 'partner_id')])
@@ -189,9 +189,9 @@ for record in records:
 
     @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
     def test_unique_field(self):
-        Campaign = self.env['marketing.campaign'].sudo(self.user_market)
-        Activity = self.env['marketing.activity'].sudo(self.user_market)
-        MassMail = self.env['mail.mass_mailing'].sudo(self.user_market)
+        Campaign = self.env['marketing.campaign'].with_user(self.user_market)
+        Activity = self.env['marketing.activity'].with_user(self.user_market)
+        MassMail = self.env['mail.mass_mailing'].with_user(self.user_market)
 
         name_field = self.env['ir.model.fields'].search(
             [('model_id', '=', self.test_model.id), ('name', '=', 'display_name')])

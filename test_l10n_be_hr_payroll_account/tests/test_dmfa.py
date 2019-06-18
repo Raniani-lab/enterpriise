@@ -18,12 +18,12 @@ class TestDMFA(common.TransactionCase):
         company.dmfa_employer_class = 456
         company.onss_registration_number = 45645
         company.onss_company_id = 45645
-        self.env['l10n_be.dmfa.location.unit'].sudo(user).create({
+        self.env['l10n_be.dmfa.location.unit'].with_user(user).create({
             'company_id': lap.company_id.id,
             'code': 123,
             'partner_id': lap.address_id.id,
         })
-        dmfa = self.env['l10n_be.dmfa'].sudo(user).create({
+        dmfa = self.env['l10n_be.dmfa'].with_user(user).create({
             'reference': 'TESTDMFA',
             'company_id': self.env.ref('l10n_be_hr_payroll.res_company_be').id
         })

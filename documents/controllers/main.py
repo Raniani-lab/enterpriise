@@ -278,7 +278,7 @@ class ShareRoute(http.Controller):
                 share_id,
             )
         if document_id:
-            document_request = http.request.env['documents.document'].sudo(share.create_uid).browse(document_id)
+            document_request = http.request.env['documents.document'].with_user(share.create_uid).browse(document_id)
             if share.type == 'ids':
                 documents_check = share.document_ids
             else:
@@ -317,7 +317,7 @@ class ShareRoute(http.Controller):
                         'owner_id': share.owner_id.id,
                         'folder_id': folder_id,
                     }
-                    document = documents.sudo(share.create_uid).with_context(binary_field_real_user=http.request.env.user).create(document_dict)
+                    document = documents.with_user(share.create_uid).with_context(binary_field_real_user=http.request.env.user).create(document_dict)
                     document.message_post(body=chatter_message)
                     if share.activity_option:
                         document.documents_set_activity(settings_record=share)

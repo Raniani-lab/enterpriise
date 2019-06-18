@@ -54,7 +54,7 @@ class TestHR(common.TransactionCase):
         return user
 
     def create_leave_type(self, user, name='Leave Type', allocation='no', request_unit='day', validation='no_validation'):
-        leave_type_form = Form(self.env['hr.leave.type'].sudo(user))
+        leave_type_form = Form(self.env['hr.leave.type'].with_user(user))
         leave_type_form.name = name
         leave_type_form.allocation_type = allocation
         leave_type_form.request_unit = request_unit
@@ -64,7 +64,7 @@ class TestHR(common.TransactionCase):
         return leave_type_form.save()
 
     def create_allocation(self, user, employee, leave_type, number_of_days=10):
-        allocation_form = Form(self.env['hr.leave.allocation'].sudo(user))
+        allocation_form = Form(self.env['hr.leave.allocation'].with_user(user))
         allocation_form.number_of_days = number_of_days
         allocation_form.employee_id = employee
         allocation_form.holiday_status_id = leave_type
@@ -72,7 +72,7 @@ class TestHR(common.TransactionCase):
 
     def create_leave(self, user, leave_type, start, end, employee=None):
         employee = employee or user.employee_id
-        leave_form = Form(self.env['hr.leave'].sudo(user))
+        leave_form = Form(self.env['hr.leave'].with_user(user))
         leave_form.employee_id = employee
         leave_form.holiday_status_id = leave_type
         leave_form.date_from = start
@@ -120,11 +120,11 @@ class TestHR(common.TransactionCase):
         self.assertEqual(allocation_no_validation.state, 'refuse')
 
         # Holiday manager reset to draft
-        allocation_no_validation.sudo(self.hr_holidays_manager).action_draft()
+        allocation_no_validation.with_user(self.hr_holidays_manager).action_draft()
         self.assertEqual(allocation_no_validation.state, 'draft')
 
         # Holiday user approve allocation
-        allocation_no_validation.sudo(self.user).action_confirm()
+        allocation_no_validation.with_user(self.user).action_confirm()
         allocation_no_validation.action_approve()
         self.assertEqual(allocation_no_validation.state, 'validate')
         self.assertEqual(allocation_no_validation.first_approver_id, self.hr_holidays_user.employee_id)
@@ -142,12 +142,12 @@ class TestHR(common.TransactionCase):
         self.assertEqual(allocation.state, 'confirm')
 
         # Holyday User approves
-        allocation.sudo(self.hr_holidays_user).action_approve()
+        allocation.with_user(self.hr_holidays_user).action_approve()
         self.assertEqual(allocation.state, 'validate1')
         self.assertEqual(allocation.first_approver_id, self.hr_holidays_user.employee_id)
 
         # Holiday Manager validates
-        allocation.sudo(self.hr_holidays_manager).action_validate()
+        allocation.with_user(self.hr_holidays_manager).action_validate()
         self.assertEqual(allocation.state, 'validate')
         self.assertEqual(allocation.second_approver_id, self.hr_holidays_manager.employee_id)
 
@@ -156,7 +156,7 @@ class TestHR(common.TransactionCase):
         # --------------------------------------------------
 
         # User request a leave which does not require validation
-        leave_form = Form(self.env['hr.leave'].sudo(self.user))
+        leave_form = Form(self.env['hr.leave'].with_user(self.user))
         leave_form.holiday_status_id = allocation_no_validation.holiday_status_id
         leave_form.request_unit_half = True
         leave_form.request_date_from = Date.today() + relativedelta(days=1)
@@ -183,31 +183,31 @@ class TestHR(common.TransactionCase):
         self.assertEqual(leave.state, 'confirm', "Should be in `confirm` state")
 
         # Team leader approves
-        leave.sudo(self.user_leave_team_leader).action_approve()
+        leave.with_user(self.user_leave_team_leader).action_approve()
         self.assertEqual(leave.state, 'validate1')
         self.assertEqual(leave.first_approver_id, self.user_leave_team_leader.employee_id)
 
         # Holiday manager applies second approval
-        leave.sudo(self.hr_holidays_manager).action_validate()
+        leave.with_user(self.hr_holidays_manager).action_validate()
 
         self.assertEqual(leave.state, 'validate')
         self.assertEqual(leave.second_approver_id, self.hr_holidays_manager.employee_id)
 
     def create_salary_structure_type(self, user):
-        structure_type_form = Form(self.env['hr.payroll.structure.type'].sudo(user))
+        structure_type_form = Form(self.env['hr.payroll.structure.type'].with_user(user))
         structure_type_form.name = 'Structure Type - Test'
         return structure_type_form.save()
 
     def create_salary_structure(self, user, name, code):
         structure_type = self.create_salary_structure_type(user)
 
-        struct_form = Form(self.env['hr.payroll.structure'].sudo(user))
+        struct_form = Form(self.env['hr.payroll.structure'].with_user(user))
         struct_form.name = name
         struct_form.type_id = structure_type
         return struct_form.save()
 
     def create_contract(self, user, name, structure, wage, employee, state, start, end=None, car=None):
-        contract_form = Form(self.env['hr.contract'].sudo(user))
+        contract_form = Form(self.env['hr.contract'].with_user(user))
         contract_form.name = name
         contract_form.employee_id = employee
         contract_form.structure_type_id = structure.type_id
@@ -220,34 +220,34 @@ class TestHR(common.TransactionCase):
         return contract_form.save()
 
     def create_work_entry_type(self, user, name, code, is_leave=False, leave_type=None):
-        work_entry_type_form = Form(self.env['hr.work.entry.type'].sudo(user))
+        work_entry_type_form = Form(self.env['hr.work.entry.type'].with_user(user))
         work_entry_type_form.name = name
         work_entry_type_form.code = code
         return work_entry_type_form.save()
 
     def link_leave_work_entry_type(self, user, work_entry_type, leave_type):
-        with Form(leave_type.sudo(user)) as leave_type_form:
+        with Form(leave_type.with_user(user)) as leave_type_form:
             leave_type_form.work_entry_type_id = work_entry_type
 
     def create_vehicle_model(self, user, brand_name, model_name):
-        vehicle_brand_form = Form(self.env['fleet.vehicle.model.brand'].sudo(user))
+        vehicle_brand_form = Form(self.env['fleet.vehicle.model.brand'].with_user(user))
         vehicle_brand_form.name = brand_name
         brand = vehicle_brand_form.save()
 
-        vehicle_model_form = Form(self.env['fleet.vehicle.model'].sudo(user))
+        vehicle_model_form = Form(self.env['fleet.vehicle.model'].with_user(user))
         vehicle_model_form.name = model_name
         vehicle_model_form.brand_id = brand
         return vehicle_model_form.save()
 
     def create_vehicle(self, user, model, driver=None):
-        vehicle_form = Form(self.env['fleet.vehicle'].sudo(user))
+        vehicle_form = Form(self.env['fleet.vehicle'].with_user(user))
         vehicle_form.model_id = model
         vehicle_form.fuel_type = 'lpg'
         vehicle_form.driver_id = driver or self.env['res.partner']
         return vehicle_form.save()
 
     def create_structure(self, user, name, code):
-        struct_form = Form(self.env['hr.payroll.structure'].sudo(user))
+        struct_form = Form(self.env['hr.payroll.structure'].with_user(user))
         struct_form.name = name
         struct_form.type_id = self.env.ref('l10n_be_hr_payroll.structure_type_employee_cp200')
         return struct_form.save()
@@ -307,10 +307,10 @@ class TestHR(common.TransactionCase):
             end=Datetime.now() + relativedelta(days=13)
         )
 
-        self.user.employee_id.sudo(self.hr_payroll_user).generate_work_entries(Datetime.today().replace(day=1), Datetime.today() + relativedelta(months=1, day=1, days=-1, hour=23, minute=59))
-        work_entries = self.env['hr.work.entry'].sudo(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])
+        self.user.employee_id.with_user(self.hr_payroll_user).generate_work_entries(Datetime.today().replace(day=1), Datetime.today() + relativedelta(months=1, day=1, days=-1, hour=23, minute=59))
+        work_entries = self.env['hr.work.entry'].with_user(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])
         # should not be able to validate
-        self.assertFalse(work_entries.sudo(self.hr_payroll_user).action_validate())
+        self.assertFalse(work_entries.with_user(self.hr_payroll_user).action_validate())
         work_entries_with_error = work_entries.filtered(lambda b: b.display_warning)
 
         self.env['hr.leave'].search([('employee_id', "=", self.user.employee_id.id)])
@@ -321,15 +321,15 @@ class TestHR(common.TransactionCase):
 
         # Check work_entries conflicting with a leave, approve them as payroll manager
         conflicting_leave = work_entries_with_error.filtered(lambda b: b.leave_id and b.leave_id.state != 'validate')
-        conflicting_leave.mapped('leave_id').sudo(self.hr_payroll_user).action_approve()
+        conflicting_leave.mapped('leave_id').with_user(self.hr_payroll_user).action_approve()
 
         # Reload work_entries (some might have been deleted/created when approving leaves)
-        work_entries = self.env['hr.work.entry'].sudo(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])
+        work_entries = self.env['hr.work.entry'].with_user(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])
 
         # Some work entries are still conflicting (if not completely included in a leave)
-        self.assertFalse(work_entries.sudo(self.hr_payroll_user).action_validate())
+        self.assertFalse(work_entries.with_user(self.hr_payroll_user).action_validate())
         work_entries.filtered('display_warning').write({'state': 'cancelled'})
-        self.assertTrue(work_entries.sudo(self.hr_payroll_user).action_validate())
+        self.assertTrue(work_entries.with_user(self.hr_payroll_user).action_validate())
 
     def _test_fleet(self):
         car_model = self.create_vehicle_model(
@@ -346,7 +346,7 @@ class TestHR(common.TransactionCase):
         # Add access rigths to be able to access the employee's private address
         # (in real use, the HR managing employees cars would be granted hr and fleet rights)
         with additional_groups(self.hr_fleet_manager, 'base.group_private_addresses'):
-            with Form(car.sudo(self.hr_fleet_manager)) as car_form:
+            with Form(car.with_user(self.hr_fleet_manager)) as car_form:
                 car_form.driver_id = self.env['res.partner'].search([('id', '=', self.user.employee_id.address_home_id.id)], limit=1)
 
     def _test_payroll(self):

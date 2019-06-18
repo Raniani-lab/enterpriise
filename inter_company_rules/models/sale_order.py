@@ -42,17 +42,17 @@ class sale_order(models.Model):
         if not intercompany_uid:
             raise Warning(_('Provide one user for intercompany relation for % ') % company.name)
         # check intercompany user access rights
-        if not PurchaseOrder.sudo(intercompany_uid).check_access_rights('create', raise_exception=False):
+        if not PurchaseOrder.with_user(intercompany_uid).check_access_rights('create', raise_exception=False):
             raise Warning(_("Inter company user of company %s doesn't have enough access rights") % company.name)
 
         # create the PO and generate its lines from the SO
         PurchaseOrderLine = self.env['purchase.order.line']
         # read it as sudo, because inter-compagny user can not have the access right on PO
         po_vals = self.sudo()._prepare_purchase_order_data(company, company_partner)
-        purchase_order = PurchaseOrder.sudo(intercompany_uid).create(po_vals[0])
+        purchase_order = PurchaseOrder.with_user(intercompany_uid).create(po_vals[0])
         for line in self.order_line.sudo():
             po_line_vals = self._prepare_purchase_order_line_data(line, self.date_order, purchase_order.id, company)
-            PurchaseOrderLine.sudo(intercompany_uid).create(po_line_vals)
+            PurchaseOrderLine.with_user(intercompany_uid).create(po_line_vals)
 
         # write customer reference field on SO
         if not self.client_order_ref:
@@ -60,7 +60,7 @@ class sale_order(models.Model):
 
         # auto-validate the purchase order if needed
         if company.auto_validation == 'validated':
-            purchase_order.sudo(intercompany_uid).button_confirm()
+            purchase_order.with_user(intercompany_uid).button_confirm()
 
     @api.one
     def _prepare_purchase_order_data(self, company, company_partner):
@@ -81,7 +81,7 @@ class sale_order(models.Model):
         ], limit=1)
         if not picking_type_id:
             intercompany_uid = company.intercompany_user_id.id
-            picking_type_id = PurchaseOrder.sudo(intercompany_uid)._default_picking_type()
+            picking_type_id = PurchaseOrder.with_user(intercompany_uid)._default_picking_type()
         res = {
             'name': self.env['ir.sequence'].sudo().next_by_code('purchase.order'),
             'origin': self.name,
@@ -119,7 +119,7 @@ class sale_order(models.Model):
         # fetch taxes by company not by inter-company user
         company_taxes = taxes.filtered(lambda t: t.company_id == company)
         if purchase_id:
-            po = self.env["purchase.order"].sudo(company.intercompany_user_id).browse(purchase_id)
+            po = self.env["purchase.order"].with_user(company.intercompany_user_id).browse(purchase_id)
             company_taxes = po.fiscal_position_id.map_tax(company_taxes, so_line.product_id, po.partner_id)
 
         quantity = so_line.product_id and so_line.product_uom._compute_quantity(so_line.product_uom_qty, so_line.product_id.uom_po_id) or so_line.product_uom_qty

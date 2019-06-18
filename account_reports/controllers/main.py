@@ -14,7 +14,7 @@ class FinancialReportController(http.Controller):
     def get_report(self, model, options, output_format, token, financial_id=None, **kw):
         uid = request.session.uid
         account_report_model = request.env['account.report']
-        report_obj = request.env[model].sudo(uid)
+        report_obj = request.env[model].with_user(uid)
         options = json.loads(options)
         if financial_id and financial_id != 'null':
             report_obj = report_obj.browse(int(financial_id))

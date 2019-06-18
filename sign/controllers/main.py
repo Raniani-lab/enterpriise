@@ -119,7 +119,7 @@ class Sign(http.Controller):
         if not template:
             return http.request.not_found()
 
-        sign_request = http.request.env['sign.request'].sudo(template.create_uid).create({
+        sign_request = http.request.env['sign.request'].with_user(template.create_uid).create({
             'template_id': template.id,
             'reference': "%(template_name)s-public" % {'template_name': template.attachment_id.name},
             'favorited_ids': [(4, template.create_uid.id)],

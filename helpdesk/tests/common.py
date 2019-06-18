@@ -26,9 +26,9 @@ class HelpdeskTransactionCase(TransactionCase):
             'groups_id': [(6, 0, [self.env.ref('helpdesk.group_helpdesk_user').id])]
         })
         # the manager defines a team for our tests (the .sudo() at the end is to avoid potential uid problems)
-        self.test_team = self.env['helpdesk.team'].sudo(self.helpdesk_manager.id).create({'name': 'Test Team'}).sudo()
+        self.test_team = self.env['helpdesk.team'].with_user(self.helpdesk_manager).create({'name': 'Test Team'}).sudo()
         # He then defines its stages
-        stage_as_manager = self.env['helpdesk.stage'].sudo(self.helpdesk_manager.id)
+        stage_as_manager = self.env['helpdesk.stage'].with_user(self.helpdesk_manager)
         self.stage_new = stage_as_manager.create({
             'name': 'New',
             'sequence': 10,
@@ -55,9 +55,9 @@ class HelpdeskTransactionCase(TransactionCase):
         }).sudo()
 
         # He also creates a ticket types for Question and Issue
-        self.type_question = self.env['helpdesk.ticket.type'].sudo(self.helpdesk_manager.id).create({
+        self.type_question = self.env['helpdesk.ticket.type'].with_user(self.helpdesk_manager).create({
             'name': 'Question_test',
         }).sudo()
-        self.type_issue = self.env['helpdesk.ticket.type'].sudo(self.helpdesk_manager.id).create({
+        self.type_issue = self.env['helpdesk.ticket.type'].with_user(self.helpdesk_manager).create({
             'name': 'Issue_test',
         }).sudo()

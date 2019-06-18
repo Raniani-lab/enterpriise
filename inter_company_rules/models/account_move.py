@@ -27,7 +27,7 @@ class AccountMove(models.Model):
         :param company: The targeted new company (res.company record).
         :return:        The newly created invoices.
         '''
-        invoices_ctx = self.sudo(company.intercompany_user_id).with_context(default_company_id=company.id)
+        invoices_ctx = self.with_user(company.intercompany_user_id).with_context(default_company_id=company.id)
 
         # Prepare invoice values.
         invoices_vals_per_type = {}

@@ -128,7 +128,7 @@ class sale_subscription(http.Controller):
             'acquirers': list(acquirers),
             'acc_pm': acc_pm,
             'part_pms': part_pms,
-            'is_salesman': request.env['res.users'].sudo(request.uid).has_group('sales_team.group_sale_salesman'),
+            'is_salesman': request.env['res.users'].with_user(request.uid).has_group('sales_team.group_sale_salesman'),
             'action': action,
             'message': message,
             'message_class': message_class,

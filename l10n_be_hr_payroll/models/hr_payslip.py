@@ -294,17 +294,26 @@ def compute_ip_deduction(payslip, categories, worked_days, inputs):
         tax_rate = tax_rate * 3.0 / 4.0
     return - min(ip_amount * tax_rate, 11745)
 
+# ref: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/deductions/workers_reductions/workbonus.html
 def compute_employment_bonus_employees(payslip, categories, worked_days, inputs):
-    salary = categories.BRUT
     bonus_basic_amount = payslip.rule_parameter('work_bonus_basic_amount')
     wage_lower_bound = payslip.rule_parameter('work_bonus_reference_wage_low')
+    ratio = 1
+
+    if payslip.worked_days_line_ids:
+        rc = payslip.contract_id.resource_calendar_id
+        worked_hours = sum(payslip.worked_days_line_ids.mapped('number_of_hours'))
+        full_time_hours = sum(payslip.worked_days_line_ids.mapped('number_of_days')) * rc.full_time_required_hours / (rc.full_time_required_hours / rc.hours_per_day)
+        ratio = worked_hours / full_time_hours
+
+    salary = categories.BRUT * ratio
 
     if salary <= wage_lower_bound:
         result = bonus_basic_amount
     elif salary <= payslip.rule_parameter('work_bonus_reference_wage_high'):
         coeff = payslip.rule_parameter('work_bonus_coeff')
         result = bonus_basic_amount - (coeff * (salary - wage_lower_bound))
-    return result
+    return min(result, -categories.ONSS) * ratio
 
 def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, inputs):
     rates = [

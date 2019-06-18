@@ -60,14 +60,14 @@ class ProjectTask(models.Model):
     def action_timer_stop(self):
         self.ensure_one()
         start_time = self.timesheet_timer_start
-        if start_time:
+        if start_time:  # timer was either running or paused
             pause_time = self.timesheet_timer_pause
             if pause_time:
                 start_time = start_time + (fields.Datetime.now() - pause_time)
-                self.write({'timesheet_timer_pause': False})
+            else:
+                self.action_timer_pause()
             minutes_spent = (fields.Datetime.now() - start_time).total_seconds() / 60
             minutes_spent = self._timer_rounding(minutes_spent)
-            self.write({'timesheet_timer_start': False})
             return self._action_create_timesheet(minutes_spent * 60 / 3600)
         return False
 

@@ -12,8 +12,8 @@
         <field name="inherit_id" ref="hr_timesheet.project_project_view_form_simplified_inherit_timesheet"/>
         <field name="arch" type="xml">
             <field name="allow_planning" position="after">
-                <field name="allow_billable"/>
-                <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)], 'required': [('allow_billable', '=', True)]}"/>
+                <field name="allow_billable" attrs="{'invisible': [('allow_planning', '=', False)]}"/>
+                <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)], 'required': [('allow_billable', '=', True), (allow_timesheets', '=', True)]}"/>
             </field>
         </field>
     </record>
@@ -59,8 +59,8 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='extra_settings']" position="inside">
-                <field name="allow_billable"/>
-                <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
+                <field name="allow_billable" attrs="{'invisible': [('allow_planning', '=', False)]}"/>
+                <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False), ('allow_timesheets', '=', True)]}"/>
                 <field name="product_template_ids" widget="many2many_tags" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
             </xpath>
         </field>

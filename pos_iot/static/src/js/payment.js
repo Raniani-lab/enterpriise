@@ -169,7 +169,10 @@ screens.PaymentScreenWidget.include({
     click_delete_paymentline: function(cid) {
         var lines = this.pos.get_order().get_paymentlines();
         for ( var i = 0; i < lines.length; i++ ) {
-            if (lines[i].cid === cid && lines[i].get_payment_status()) {
+            if (lines[i].cid === cid && ['waitingCard', 'timeout'].includes(lines[i].get_payment_status())) {
+                // When a user deletes a payment line that wasn't started, we
+                // don't need to send the cancel command. If other payments are
+                // being processed, they won't be canceled.
                 this.send_payment_cancel();
                 clearTimeout(this.payment_timer);
             }
@@ -189,6 +192,9 @@ screens.PaymentScreenWidget.include({
      */
     _onValueChange: function (data) {
         var line = this.pos.get_order().selected_paymentline;
+        if (data.owner && data.owner !== this.pos.iot_device_proxies.payment._iot_longpolling._session_id) {
+            return;
+        }
         if (line && data.Response === 'Approved') {
             line.set_payment_status('done');
             clearTimeout(this.payment_timer);

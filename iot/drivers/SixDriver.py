@@ -46,12 +46,14 @@ class SixDriver(Driver):
                     'type': b'debit',
                     'amount': data['amount'],
                     'currency': data['currency'].encode(),
+                    'owner': self.data['owner'],
                 })
             elif data['messageType'] == 'Reversal' and self.check_reversal(data['TransactionID']):
                 self.actions.put({
                     'type': b'reversal',
                     'amount': data['amount'],
                     'currency': data['currency'].encode(),
+                    'owner': self.data['owner'],
                 })
             elif data['messageType'] == 'OpenShift':
                 self.open_shift()
@@ -137,7 +139,7 @@ class SixDriver(Driver):
             self.call_eftapi('EFT_Transaction', transaction['type'], transaction['amount'], 0)
 
             if transaction['type'] == b'debit':
-                self.send_status(stage='WaitingForCard')
+                self.send_status(stage='WaitingForCard', owner=transaction['owner'])
 
             completed_command = ctypes.c_long()
             while completed_command.value != 3:
@@ -155,6 +157,7 @@ class SixDriver(Driver):
                 response="Approved" if transaction['type'] == b'debit' else "Reversed",
                 ticket=self.get_customer_receipt(),
                 ticket_merchant=self.get_merchant_receipt(),
+                owner=transaction['owner']
             )
 
         except:
@@ -199,7 +202,7 @@ class SixDriver(Driver):
         if res != 0:
             self.send_error(res)
 
-    def send_status(self, response=False, stage=False, ticket=False, ticket_merchant=False, error=False):
+    def send_status(self, response=False, stage=False, ticket=False, ticket_merchant=False, error=False, owner=False):
         """Triggers a device_changed to notify all listeners of the new status.
 
         :param response: The result of a transaction
@@ -212,6 +215,8 @@ class SixDriver(Driver):
         :type ticket_merchant: String
         :param error: The error that happened, if any
         :type error: String
+        :param owner: The session id of the POS that should process the update
+        :type owner: String
         """
 
         self.data = {
@@ -222,6 +227,7 @@ class SixDriver(Driver):
             'TicketMerchant': ticket_merchant,
             'Error': error,
             'Reversal': True,  # The payments can be reversed
+            'owner': owner or self.data['owner'],
         }
         event_manager.device_changed(self)
 

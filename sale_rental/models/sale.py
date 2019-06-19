@@ -3,8 +3,7 @@
 
 from datetime import timedelta
 from odoo import api, fields, models, _
-from odoo.tools import float_compare
-from odoo.addons.mail.models.mail_template import format_tz
+from odoo.tools import float_compare, format_datetime
 
 
 class RentalOrder(models.Model):
@@ -177,9 +176,9 @@ class RentalOrderLine(models.Model):
         if (self.is_rental):
             return "\n%s %s\n%s %s" % (
                 _("Rental from"),
-                format_tz(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, format='short'),
+                format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format='short'),
                 _("to"),
-                format_tz(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, format='short'),
+                format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short'),
             )
         else:
             return ""
@@ -259,7 +258,7 @@ class RentalOrderLine(models.Model):
         return "%s\n%s: %s\n%s: %s" % (
             self.product_id.name,
             _("Expected"),
-            format_tz(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, format='short'),
+            format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, format='short'),
             _("Returned"),
-            format_tz(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=self.env.user.tz, format='short')
+            format_datetime(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=self.env.user.tz, format='short')
         )

@@ -22,10 +22,6 @@ class Project(models.Model):
             raise UserError(_('You cannot delete a project containing forecasts. You can either delete all the project\'s forecasts and then delete the project or simply deactivate the project.'))
         return super(Project, self).unlink()
 
-    def action_view_project_forecast(self):
-        Forecast = self.env['project.forecast'].with_context(active_id=self.id)
-        return Forecast.action_view_forecast('project_forecast.project_forecast_action_by_project')
-
 
 class Task(models.Model):
     _inherit = 'project.task'

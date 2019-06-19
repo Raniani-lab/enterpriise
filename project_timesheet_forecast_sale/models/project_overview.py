@@ -165,10 +165,10 @@ class ProjectOverview(models.Model):
             return stat_buttons
 
         if len(self) == 1:
-            action = clean_action(self.env['project.forecast'].with_context(active_id=self.id).action_view_forecast('project_forecast.project_forecast_action_by_project'))
+            action = clean_action(self.env.ref('project_forecast.project_forecast_action_by_project').read()[0])
             action['context']['default_project_id'] = self.id
         else:
-            action = clean_action(self.env['project.forecast'].action_view_forecast('project_forecast.project_forecast_action_by_project'))
+            action = clean_action(self.env.ref('project_forecast.project_forecast_action_by_project').read()[0])
         action.setdefault('context', {})['search_default_future'] = 0
 
         stat_buttons.append({

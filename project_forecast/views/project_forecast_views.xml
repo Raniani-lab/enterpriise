@@ -309,5 +309,18 @@
         parent="project.menu_project_report"
         action="project_forecast_action_report_activities"/>
 
+    <!-- Actions from project kanban -->
+    <record id="project_forecast_action_from_project" model="ir.actions.act_window">
+        <field name="name">Forecast</field>
+        <field name="res_model">project.forecast</field>
+        <field name="view_mode">gantt,tree,form,pivot</field>
+        <field name="context">{'group_by': ['user_id'],
+            'default_project_id': active_id,
+            'search_default_project_id': [active_id],
+            'search_default_group_by_user_id': 1,
+            'project_task_display_forecast': 1,
+        }</field>
+    </record>
+
 </data>
 </odoo>

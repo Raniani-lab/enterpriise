@@ -173,35 +173,6 @@ class ProjectForecast(models.Model):
     # ----------------------------------------------------
 
     @api.model
-    def action_view_forecast(self, action_xmlid=None):
-        """ This method extends the context of action defined in xml files to
-            customize it according to the forecast span of the current company.
-            :param action_xmlid: complete xml id of the action to return
-            :returns action (dict): an action with a extended context, evaluable
-                by the webclient
-        """
-        if not action_xmlid:
-            action_xmlid = 'project_forecast.project_forecast_action_by_project'
-        action = self.env.ref(action_xmlid).read()[0]
-        context = {}
-        if action.get('context'):
-            eval_context = self.env['ir.actions.actions']._get_eval_context()
-            context = safe_eval(action['context'], eval_context)
-            if 'active_id' in self._context:
-                active_id = self._context.get('active_id')
-                context.update({
-                    'active_id': active_id,
-                    'project_id': active_id,
-                    'search_default_project_id': active_id,
-                    'default_project_id': active_id,
-                })
-        # add the default employee (for creation)
-        if self.env.user.employee_ids:
-            context['default_employee_id'] = self.env.user.employee_ids[0].id
-        action['context'] = context
-        return action
-
-    @api.model
     def action_duplicate_period(self, start_datetime, end_datetime, interval):
         forecasts_to_duplicate = self.search([('start_datetime', '>=', start_datetime), ('end_datetime', '<=', end_datetime), ('recurrency_id', '=', False)])
         delta = repeat_span_to_relativedelta(1, interval)

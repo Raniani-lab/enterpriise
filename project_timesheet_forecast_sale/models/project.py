@@ -4,16 +4,6 @@
 from odoo import api, models, _
 
 
-class Project(models.Model):
-
-    _inherit = "project.project"
-
-    @api.multi
-    def action_view_project_forecast(self):
-        """ Override to display remaining hours in task name get """
-        return super(Project, self.with_context(project_task_display_forecast=True)).action_view_project_forecast()
-
-
 class Task(models.Model):
 
     _inherit = 'project.task'

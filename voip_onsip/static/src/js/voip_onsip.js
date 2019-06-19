@@ -1,9 +1,9 @@
-odoo.define('voip.onsip', function(require) {
+odoo.define('voip.onsip', function (require) {
 "use strict";
 
-var VoipUserAgent = require('voip.user_agent');
+const UserAgent = require('voip.UserAgent');
 
-VoipUserAgent.include({
+UserAgent.include({
 
     //--------------------------------------------------------------------------
     // Private
@@ -12,8 +12,8 @@ VoipUserAgent.include({
     /**
      * @override
      */
-    _getUaConfig: function (result) {
-        var config = this._super.apply(this, arguments);
+    _getUaConfig(result) {
+        let config = this._super(...arguments);
         config.authorizationUser = result.onsip_auth_user;
         return config;
     },

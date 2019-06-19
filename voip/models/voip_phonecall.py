@@ -33,6 +33,8 @@ class VoipPhonecall(models.Model):
         ('cancel', 'Cancelled'),
         ('open', 'To Do'),
         ('done', 'Held'),
+        ('rejected', 'Rejected'),
+        ('missed',   'Missed')
     ], string='Status', default='open',
         help='The status is set to To Do, when a call is created.\n'
              'When the call is over, the status is set to Held.\n'
@@ -47,16 +49,14 @@ class VoipPhonecall(models.Model):
         self.call_date = fields.Datetime.now()
         self.start_time = int(time.time())
 
-    def hangup_call(self, done=True):
+    def hangup_call(self, duration_seconds=0, done=True):
         self.ensure_one()
-        stop_time = int(time.time())
-        duration_seconds = float(stop_time - self.start_time)
-        duration = round(duration_seconds / 60, 2)
+        duration_minutes = round(duration_seconds / 60, 2)
         if done:
             note = False
-            if (self.activity_id):
+            if self.activity_id:
                 note = self.activity_id.note
-                minutes = int(duration)
+                minutes = int(duration_minutes)
                 seconds = int(duration_seconds - minutes * 60)
                 duration_log = '<br/><p>Call duration: %smin %ssec</p>' % (minutes, seconds)
                 if self.activity_id.note:
@@ -66,16 +66,16 @@ class VoipPhonecall(models.Model):
                 self.activity_id.action_done()
             self.write({
                 'state': 'done',
-                'duration': duration,
+                'duration': duration_minutes,
                 'note': note,
             })
         else:
             self.write({
-                'duration': duration,
+                'duration': duration_minutes,
             })
         return
 
-    def rejected_call(self):
+    def canceled_call(self):
         self.ensure_one()
         self.state = "pending"
 
@@ -88,47 +88,48 @@ class VoipPhonecall(models.Model):
             self.activity_id.unlink()
         return res_id
 
-    def get_info(self):
+    def _get_info(self):
         infos = []
-        for rec in self:
-            info = {'id': rec.id,
-                    'name': rec.name,
-                    'state': rec.state,
-                    'date_deadline': rec.date_deadline,
-                    'call_date': rec.call_date,
-                    'duration': rec.duration,
-                    'phone': rec.phone,
-                    'mobile': rec.mobile,
-                    'note': rec.note,
-                    }
-            if rec.partner_id:
-                ir_model = self.env['ir.model'].search([('model', '=', 'res.partner')])
-                info.update(
-                    partner_id=rec.partner_id.id,
-                    activity_res_id=rec.partner_id.id,
-                    activity_res_model='res.partner',
-                    activity_model_name=ir_model.display_name,
-                    partner_name=rec.partner_id.name,
-                    partner_image_64=rec.partner_id.image_64,
-                    partner_email=rec.partner_id.email
-                )
-            if rec.activity_id:
-                ir_model = self.env['ir.model'].search([('model', '=', rec.activity_id.res_model)])
-                info.update(
-                    activity_id=rec.activity_id.id,
-                    activity_res_id=rec.activity_id.res_id,
-                    activity_res_model=rec.activity_id.res_model,
-                    activity_model_name=ir_model.display_name,
-                    activity_summary=rec.activity_id.summary,
-                    activity_note=rec.activity_id.note,
-                )
-            elif rec.mail_message_id:
-                ir_model = self.env['ir.model'].search([('model', '=', rec.mail_message_id.model)])
-                info.update(
-                    activity_res_id=rec.mail_message_id.res_id,
-                    activity_res_model=rec.mail_message_id.model,
-                    activity_model_name=ir_model.display_name,
-                )
+        for record in self:
+            info = {
+                'id': record.id,
+                'name': record.name,
+                'state': record.state,
+                'date_deadline': record.date_deadline,
+                'call_date': record.call_date,
+                'duration': record.duration,
+                'phone': record.phone,
+                'mobile': record.mobile,
+                'note': record.note,
+            }
+            if record.partner_id:
+                ir_model = record.env['ir.model'].search([('model', '=', 'res.partner')])
+                info.update({
+                    'partner_id': record.partner_id.id,
+                    'activity_res_id': record.partner_id.id,
+                    'activity_res_model': 'res.partner',
+                    'activity_model_name': ir_model.display_name,
+                    'partner_name': record.partner_id.name,
+                    'partner_image_64': record.partner_id.image_64,
+                    'partner_email': record.partner_id.email
+                })
+            if record.activity_id:
+                ir_model = record.env['ir.model'].search([('model', '=', record.activity_id.res_model)])
+                info.update({
+                    'activity_id': record.activity_id.id,
+                    'activity_res_id': record.activity_id.res_id,
+                    'activity_res_model': record.activity_id.res_model,
+                    'activity_model_name': ir_model.display_name,
+                    'activity_summary': record.activity_id.summary,
+                    'activity_note': record.activity_id.note
+                })
+            elif record.mail_message_id:
+                ir_model = record.env['ir.model'].search([('model', '=', record.mail_message_id.model)])
+                info.update({
+                    'activity_res_id': record.mail_message_id.res_id,
+                    'activity_res_model': record.mail_message_id.model,
+                    'activity_model_name': ir_model.display_name
+                })
             infos.append(info)
         return infos
 
@@ -142,7 +143,7 @@ class VoipPhonecall(models.Model):
             ('user_id', '=', self.env.user.id),
             ('date_deadline', '<=', fields.Date.today()),
             ('state', '!=', 'done')
-        ], order='sequence,date_deadline,id').get_info()
+        ], order='sequence,date_deadline,id')._get_info()
 
     @api.model
     def get_recent_list(self, search_expr=None, offset=0, limit=None):
@@ -153,56 +154,95 @@ class VoipPhonecall(models.Model):
         ]
         if search_expr:
             domain += [['name', 'ilike', search_expr]]
-        return self.search(domain, offset=offset, limit=limit, order='call_date desc').get_info()
+        return self.search(domain, offset=offset, limit=limit, order='call_date desc')._get_info()
+
+    @api.model
+    def _create_and_init(self, vals):
+        phonecall = self.create(vals)
+        phonecall.init_call()
+        return phonecall._get_info()[0]
+
+    def _update_and_init(self, vals):
+        self.ensure_one()
+        self.update(vals)
+        return self._get_info()[0]
 
     @api.model
     def create_from_contact(self, partner_id):
         partner = self.env['res.partner'].browse(partner_id)
-        phonecall = self.create({
+        vals = {
             'name': partner.name,
             'phone': partner.sanitized_phone,
             'mobile': partner.sanitized_mobile,
             'partner_id': partner_id,
-        })
-        phonecall.init_call()
-        return phonecall.get_info()[0]
+        }
+        return self._create_and_init(vals)
 
     @api.model
     def create_from_recent(self, phonecall_id):
         recent_phonecall = self.browse(phonecall_id)
-        phonecall = self.create({
-            'name': recent_phonecall.name,
+        vals = {
+            'name': _('Call to %s') % recent_phonecall.phone,
             'phone': recent_phonecall.phone,
             'mobile': recent_phonecall.mobile,
             'partner_id': recent_phonecall.partner_id.id,
-        })
-        phonecall.init_call()
-        return phonecall.get_info()[0]
+        }
+        return self._create_and_init(vals)
 
     @api.model
     def create_from_number(self, number):
-        name = _('Call to ') + number
-        phonecall = self.create({
-            'name': name,
+        vals = {
+            'name': _('Call to %s') % number,
             'phone': number,
-        })
-        phonecall.init_call()
-        return phonecall.get_info()[0]
+        }
+        return self._create_and_init(vals)
+
+    def create_from_missed_call(self, number, partner_id=False):
+        self.ensure_one()
+        vals = {
+            'name': _('Missed Call from %s') % number,
+            'phone': number,
+            'state': 'missed',
+            'phonecall_type': 'incoming',
+            'partner_id': partner_id,
+        }
+        return self._update_and_init(vals)
+
+    def create_from_rejected_call(self, number, partner_id=False):
+        self.ensure_one()
+        vals = {
+            'name': _('Rejected Incoming Call from %s') % number,
+            'phone': number,
+            'phonecall_type': 'incoming',
+            'state': 'rejected',
+            'partner_id': partner_id,
+        }
+        return self._update_and_init(vals)
+
+    def create_from_incoming_call_accepted(self, number, partner_id=False):
+        self.ensure_one()
+        vals = {
+            'name': _('Incoming call from %s') % number,
+            'phone': number,
+            'state': 'done',
+            'phonecall_type': 'incoming',
+            'partner_id': partner_id,
+        }
+        return self._update_and_init(vals)
 
     @api.model
     def create_from_incoming_call(self, number, partner_id=False):
         if partner_id:
-            name = _('Call from ') + self.env['res.partner'].browse([partner_id]).display_name
+            name = _('Incoming call from %s') % self.env['res.partner'].browse([partner_id]).display_name
         else:
-            name = _('Call from ') + number
-        phonecall = self.create({
+            name = _('Incoming call from %s') % number
+        vals = {
             'name': name,
             'phone': number,
             'phonecall_type': 'incoming',
             'partner_id': partner_id,
-        })
-        phonecall.init_call()
-        return phonecall.get_info()[0]
+        }
+        return self._create_and_init(vals)
 
     @api.model
     def create_from_activity(self, activity):
@@ -229,7 +269,6 @@ class VoipPhonecall(models.Model):
 
     @api.model
     def create_from_phone_widget(self, model, res_id, number):
-        name = _('Call to ') + number
         partner_id = False
         if model == 'res.partner':
             partner_id = res_id
@@ -239,17 +278,16 @@ class VoipPhonecall(models.Model):
             partner_field_name = [k for k, v in fields if v.type == 'many2one' and v.comodel_name == 'res.partner'][0]
             if len(partner_field_name):
                 partner_id = record[partner_field_name].id
-        phonecall = self.create({
-            'name': name,
+        vals = {
+            'name': _('Call to %s') % number,
             'phone': number,
             'partner_id': partner_id,
-        })
-        phonecall.init_call()
-        return phonecall.get_info()[0]
+        }
+        return self._create_and_init(vals)
 
     @api.model
     def get_from_activity_id(self, activity_id):
         phonecall = self.search([('activity_id', '=', activity_id)])
         phonecall.date_deadline = fields.Date.today()
         phonecall.init_call()
-        return phonecall.get_info()[0]
+        return phonecall._get_info()[0]

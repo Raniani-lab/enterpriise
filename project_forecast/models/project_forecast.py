@@ -51,9 +51,6 @@ class ProjectForecast(models.Model):
     # used in custom filter
     stage_id = fields.Many2one(related='task_id.stage_id', string="Task stage", readonly=False)
     tag_ids = fields.Many2many(related='task_id.tag_ids', string="Task tags", readonly=False)
-    project_is_follower = fields.Boolean(related='project_id.message_is_follower')
-
-    time = fields.Float(string="Allocated time / Time span", help="Percentage of working time", compute='_compute_time', store=True, digits=(16, 2))
 
     start_datetime = fields.Datetime(required=True, default=_default_start_datetime)
     end_datetime = fields.Datetime(required=True, default=_default_end_datetime)

@@ -67,10 +67,7 @@
                                 icon="fa-calendar">
                                 <field string="Appointments" name="appointment_count" widget="statinfo"/>
                             </button>
-                            <button class="oe_stat_button" name="website_publish_button"
-                                type="object" icon="fa-globe">
-                                <field name="is_published" widget="website_button"/>
-                            </button>
+                            <field name="is_published" widget="website_redirect_button"/>
                         </div>
                     </div>
                     <div class="oe_title">

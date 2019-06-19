@@ -295,7 +295,7 @@ class Document(models.Model):
         """
         self.ensure_one()
         if self.lock_uid:
-            if self.env.user == self.lock_uid or self.env.user._is_admin() or self.user_has_groups(
+            if self.env.user == self.lock_uid or self.env.is_admin() or self.user_has_groups(
                     'documents.group_document_manager'):
                 self.lock_uid = False
         else:

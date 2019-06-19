@@ -7,7 +7,7 @@ import logging
 from datetime import timedelta, date, datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _, SUPERUSER_ID
+from odoo import api, fields, models, _
 from odoo.fields import Datetime
 from odoo.exceptions import ValidationError, AccessError
 from odoo.osv import expression
@@ -600,7 +600,7 @@ class MarketingActivity(models.Model):
         )
 
         # we only allow to continue if the user has sufficient rights, as a sudo() follows
-        if self.env.uid != SUPERUSER_ID and not self.user_has_groups('marketing_automation.group_marketing_automation_user'):
+        if not self.env.is_superuser() and not self.user_has_groups('marketing_automation.group_marketing_automation_user'):
             raise AccessError(_('To use this feature you should be an administrator or belong to the marketing automation group.'))
         try:
             mailing.sudo().send_mail(res_ids)

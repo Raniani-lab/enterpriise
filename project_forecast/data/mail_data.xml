@@ -15,11 +15,11 @@
                     <table style="table-layout: fixed;">
                         <tr>
                             <th style="padding: 5px;text-align: left;">From</th>
-                            <td style="padding: 5px;">${ctx.formatted_start_datetime}</td>
+                            <td style="padding: 5px;">${format_datetime(object.start_datetime, tz=object.employee_id.tz)}</td>
                         </tr>
                         <tr>
                             <th style="padding: 5px;text-align: left;">To</th>
-                            <td style="padding: 5px;">${ctx.formatted_end_datetime}</td>
+                            <td style="padding: 5px;">${format_datetime(object.end_datetime, tz=object.employee_id.tz)}</td>
                         </tr>
                         <tr>
                             <th style="padding: 5px;text-align: left;">Project</th>
@@ -33,11 +33,11 @@
                         % endif
                         <tr>
                             <th style="padding: 5px;text-align: left;">Planned Hours</th>
-                            <td style="padding: 5px;">${ctx.resource_hours}</td>
+                            <td style="padding: 5px;">${format_duration(object.resource_hours)}</td>
                         </tr>
 
                     </table>
-                    % if ctx.render_link
+                    % if group_project_user_id in object.employee_id.user_id.groups_id.ids
                         <div style="margin: 15px; text-align: center">
                             <a href="/web?#action=${ctx.get('action_id')}&amp;model=project.forecast&amp;view_type=gantt&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }"
                             style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"

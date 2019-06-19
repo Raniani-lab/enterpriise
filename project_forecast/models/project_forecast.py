@@ -12,6 +12,7 @@ from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
 from odoo.tools.safe_eval import safe_eval
+from odoo import tools
 
 from odoo.addons.project_forecast.models.project_forecast_recurrency import repeat_span_to_relativedelta
 
@@ -80,11 +81,7 @@ class ProjectForecast(models.Model):
             if forecast.task_id:  # optional field
                 name_parts += [forecast.task_id.name]
 
-            # express the duration in user lang
-            hours, minutes = divmod(abs(forecast.resource_hours) * 60, 60)
-            formatted_duration = '%02d:%02d' % (hours, minutes)
-
-            name_parts += [forecast.project_id.name, formatted_duration]
+            name_parts += [forecast.project_id.name, tools.format_duration(forecast.resource_hours)]
             forecast.name = " - ".join(name_parts)
 
     @api.depends('project_id.color')
@@ -371,35 +368,20 @@ class ProjectForecast(models.Model):
     def action_send(self):
         group_project_user = self.env.ref('project.group_project_user')
         template = self.env.ref('project_forecast.email_template_forecast_single')
+
         # update context to build a link for view in the forecast
-        view_context = dict(self._context)
-        view_context.update({
+        additionnal_context = {
             'menu_id': str(self.env.ref('project.menu_main_pm').id),
             'action_id': str(self.env.ref('project_forecast.project_forecast_action_by_user').id),
             'dbname': self._cr.dbname,
-            'render_link': self.employee_id.user_id and self.employee_id.user_id in group_project_user.users,
-        })
-        forecast_template = template.with_context(view_context)
+            'group_project_user_id': self.env.ref('project.group_project_user').id,  # needed to include link to forecast
+        }
+        forecast_template = template.with_context(**additionnal_context)
 
         mails_to_send = self.env['mail.mail']
         for forecast in self:
             if forecast.employee_id.work_email:
-                # date and duration formatting: resource hours in the format hh:mm and localize start and end date
-                # according to employee tz
-                start_datetime = forecast.start_datetime
-                end_datetime = forecast.end_datetime
-                if forecast.employee_id.tz:
-                    start_datetime = pytz.utc.localize(start_datetime).astimezone(pytz.timezone(forecast.employee_id.tz)).replace(tzinfo=None)
-                    end_datetime = pytz.utc.localize(end_datetime).astimezone(pytz.timezone(forecast.employee_id.tz)).replace(tzinfo=None)
-                hours, minutes = divmod(abs(forecast.resource_hours) * 60, 60)
-                formatted_duration = '%02d:%02d' % (hours, minutes)
-                extra_context = dict(view_context)
-                extra_context.update({
-                    'resource_hours': formatted_duration,
-                    'formatted_start_datetime': start_datetime,
-                    'formatted_end_datetime': end_datetime,
-                })
-                mail_id = forecast_template.with_context(extra_context).send_mail(forecast.id, notif_layout='mail.mail_notification_light')
+                mail_id = forecast_template.send_mail(forecast.id, notif_layout='mail.mail_notification_light')
                 current_mail = self.env['mail.mail'].browse(mail_id)
                 mails_to_send |= current_mail
 
@@ -407,6 +389,8 @@ class ProjectForecast(models.Model):
             mails_to_send.send()
 
         self.write({'published': True})
+
+        return {'type': 'ir.actions.act_window_close'}
 
     # ----------------------------------------------------
     # Business Methods

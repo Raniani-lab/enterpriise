@@ -114,7 +114,6 @@
              date_stop="end_datetime"
              consolidation="resource_time"
              consolidation_max='{"employee_id": 100}'
-             consolidation_exclude="exclude"
              color="color"
              default_scale="week"
              scales="day,week,month"

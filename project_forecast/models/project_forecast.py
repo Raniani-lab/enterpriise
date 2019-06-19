@@ -64,9 +64,7 @@ class ProjectForecast(models.Model):
     # email
     published = fields.Boolean(default=False)
 
-    # consolidation color and exclude
     color = fields.Integer(string="Color", compute='_compute_color')
-    exclude = fields.Boolean(string="Exclude", compute='_compute_exclude', store=True)
 
     # resource
     resource_hours = fields.Float(string="Planned hours", default=0)
@@ -96,11 +94,6 @@ class ProjectForecast(models.Model):
     def _compute_color(self):
         for forecast in self:
             forecast.color = forecast.project_id.color or 0
-
-    @api.depends('project_id.name')
-    def _compute_exclude(self):
-        for forecast in self:
-            forecast.exclude = (forecast.project_id.name == "Leaves")
 
     @api.depends('resource_hours',
                  'start_datetime',

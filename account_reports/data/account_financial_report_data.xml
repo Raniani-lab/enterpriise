@@ -617,11 +617,6 @@
             <field name="tag">account_report</field>
             <field name="context" eval="{'model': 'account.aged.payable'}" />
         </record>
-        <record id="action_account_followup" model="ir.actions.client">
-            <field name="name">Customers Statement</field>
-            <field name="tag">account_report_followup</field>
-            <field name="context" eval="{'model': 'account.followup.report'}" />
-        </record>
         <record id="action_account_report_coa" model="ir.actions.client">
             <field name="name">Trial Balance</field>
             <field name="tag">account_report</field>

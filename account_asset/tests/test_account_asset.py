@@ -7,7 +7,7 @@ from odoo.modules.module import get_resource_path
 from odoo.exceptions import UserError, ValidationError, MissingError
 from odoo.tools import float_compare, date_utils
 from odoo.tests.common import Form
-from odoo.addons.account_reports.tests.test_account_reports import _init_options
+from odoo.addons.account_reports.tests.common import _init_options
 
 
 import datetime

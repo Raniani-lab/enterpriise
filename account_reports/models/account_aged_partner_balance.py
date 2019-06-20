@@ -13,13 +13,21 @@ class report_account_aged_partner(models.AbstractModel):
     filter_date = {'mode': 'single', 'filter': 'today'}
     filter_unfold_all = False
     filter_partner = True
+    order_selected_column = {'default': 0}
 
     def _get_columns_name(self, options):
-        columns = [{}]
-        columns += [
-            {'name': v, 'class': 'number', 'style': 'white-space:nowrap;'}
-            for v in [_("JRNL"), _("Account"), _("Reference"), _("Not due on: %s") % format_date(self.env, options['date']['date_to']),
-                      _("1 - 30"), _("31 - 60"), _("61 - 90"), _("91 - 120"), _("Older"), _("Total")]
+        columns = [
+            {},
+            {'name': _("JRNL"), 'class': '', 'style': 'text-align:center; white-space:nowrap;'},
+            {'name': _("Account"), 'class': '', 'style': 'text-align:center; white-space:nowrap;'},
+            {'name': _("Exp. Date"), 'class': 'date', 'style': 'white-space:nowrap;'},
+            {'name': _("As of: %s") % format_date(self.env, options['date']['date_to']), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
+            {'name': _("1 - 30"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
+            {'name': _("31 - 60"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
+            {'name': _("61 - 90"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
+            {'name': _("91 - 120"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
+            {'name': _("Older"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
+            {'name': _("Total"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
         ]
         return columns
 
@@ -46,9 +54,10 @@ class report_account_aged_partner(models.AbstractModel):
                 'id': 'partner_%s' % (values['partner_id'],),
                 'name': values['name'],
                 'level': 2,
-                'columns': [{'name': ''}] * 3 + [{'name': self.format_value(sign * v)} for v in [values['direction'], values['4'],
-                                                                                                 values['3'], values['2'],
-                                                                                                 values['1'], values['0'], values['total']]],
+                'columns': [{'name': ''}] * 3 + [{'name': self.format_value(sign * v), 'no_format': sign * v}
+                                                 for v in [values['direction'], values['4'],
+                                                           values['3'], values['2'],
+                                                           values['1'], values['0'], values['total']]],
                 'trust': values['trust'],
                 'unfoldable': True,
                 'unfolded': 'partner_%s' % (values['partner_id'],) in options.get('unfolded_lines'),
@@ -74,7 +83,7 @@ class report_account_aged_partner(models.AbstractModel):
                         'level': 4,
                         'parent_id': 'partner_%s' % (values['partner_id'],),
                         'columns': [{'name': v} for v in [aml.journal_id.code, aml.account_id.code, self._format_aml_name(aml.name, aml.ref, aml.move_id.name)]] +\
-                                   [{'name': v} for v in [line['period'] == 6-i and self.format_value(sign * line['amount']) or '' for i in range(7)]],
+                                   [{'name': self.format_value(sign * v, blank_if_zero=True), 'no_format': sign * v} for v in [line['period'] == 6-i and line['amount'] or 0 for i in range(7)]],
                         'action_context': {
                             'default_type': aml.move_id.type,
                             'default_journal_id': aml.move_id.journal_id.id,
@@ -87,7 +96,7 @@ class report_account_aged_partner(models.AbstractModel):
                 'name': _('Total'),
                 'class': 'total',
                 'level': 2,
-                'columns': [{'name': ''}] * 3 + [{'name': self.format_value(sign * v)} for v in [total[6], total[4], total[3], total[2], total[1], total[0], total[5]]],
+                'columns': [{'name': ''}] * 3 + [{'name': self.format_value(sign * v), 'no_format': sign * v} for v in [total[6], total[4], total[3], total[2], total[1], total[0], total[5]]],
             }
             lines.append(total_line)
         return lines

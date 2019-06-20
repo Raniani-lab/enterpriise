@@ -7,6 +7,8 @@ import logging
 import lxml.html
 import datetime
 import ast
+from collections import defaultdict
+from math import copysign
 
 from dateutil.relativedelta import relativedelta
 
@@ -58,6 +60,7 @@ class AccountReport(models.AbstractModel):
     filter_unfold_all = None
     filter_hierarchy = None
     filter_partner = None
+    order_selected_column = None
 
     ####################################################
     # OPTIONS: multi_company
@@ -505,6 +508,15 @@ class AccountReport(models.AbstractModel):
             return [('move_id.state', '!=', 'cancel')]
 
     ####################################################
+    # OPTIONS: order column
+    ####################################################
+
+    @api.model
+    def _init_order_selected_column(self, options, previous_options=None):
+        if self.order_selected_column is not None:
+            options['selected_column'] = previous_options and previous_options.get('selected_column') or self.order_selected_column['default']
+
+    ####################################################
     # OPTIONS: hierarchy
     ####################################################
     MOST_SORT_PRIO = 0
@@ -527,6 +539,26 @@ class AccountReport(models.AbstractModel):
                 codes.append((self.MOST_SORT_PRIO, code))
                 code = code[:-1]
         return list(reversed(codes))
+
+    @api.model
+    def _sort_lines(self, lines, options):
+        def merge_tree(line):
+            sorted_list.append(line)
+            for l in sorted(tree[line['id']], key=lambda k: selected_sign * k['columns'][selected_column - k.get('colspan', 1)]['no_format']):
+                merge_tree(l)
+
+        sorted_list = []
+        selected_column = abs(options['selected_column']) - 1
+        selected_sign = -copysign(1, options['selected_column'])
+        tree = defaultdict(list)
+        if 'sortable' not in self._get_columns_name(options)[selected_column].get('class', ''):
+            return lines  # Nothing to do here
+        for line in lines:
+            tree[line.get('parent_id')].append(line)
+        for line in sorted(tree[None], key=lambda k: ('total' in k.get('class', ''), selected_sign * k['columns'][selected_column - k.get('colspan', 1)]['no_format'])):
+            merge_tree(line)
+
+        return sorted_list
 
     @api.model
     def _create_hierarchy(self, lines, options):
@@ -686,7 +718,7 @@ class AccountReport(models.AbstractModel):
             self._init_filter_comparison(options, previous_options=previous_options)
 
         filter_list = [attr for attr in dir(self)
-                       if attr.startswith('filter_') and attr not in ('filter_date', 'filter_comparison') and len(attr) > 7 and not callable(getattr(self, attr))]
+                       if (attr.startswith('filter_') or attr.startswith('order_')) and attr not in ('filter_date', 'filter_comparison') and len(attr) > 7 and not callable(getattr(self, attr))]
         for filter_key in filter_list:
             options_key = filter_key[7:]
             init_func = getattr(self, '_init_%s' % filter_key, None)
@@ -769,7 +801,12 @@ class AccountReport(models.AbstractModel):
 
     def get_header(self, options):
         if not options.get('groups', {}).get('ids'):
-            return [self._get_columns_name(options)]
+            columns = self._get_columns_name(options)
+            if 'selected_column' in options and self.order_selected_column:
+                selected_column = columns[abs(options['selected_column']) - 1]
+                if 'sortable' in selected_column.get('class', ''):
+                    selected_column['class'] = (options['selected_column'] > 0 and 'up ' or 'down ') + selected_column['class']
+            return [columns]
         return self._get_columns_name_hierarchy(options)
 
     #TO BE OVERWRITTEN
@@ -1165,6 +1202,8 @@ class AccountReport(models.AbstractModel):
 
         if options.get('hierarchy'):
             lines = self._create_hierarchy(lines, options)
+        if options.get('selected_column'):
+            lines = self._sort_lines(lines, options)
 
         footnotes_to_render = []
         if self.env.context.get('print_mode', False):
@@ -1500,6 +1539,8 @@ class AccountReport(models.AbstractModel):
 
         if options.get('hierarchy'):
             lines = self._create_hierarchy(lines, options)
+        if options.get('selected_column'):
+            lines = self._sort_lines(lines, options)
 
         #write all data rows
         for y in range(0, len(lines)):

@@ -41,6 +41,21 @@
         tbody tr:not(.o_account_reports_level0):hover {
             background-color: #f0f0f0;
         }
+        th.o_account_report_column_header {
+            &.sortable::before {
+                content: '\f07d';
+                font-family: 'FontAwesome';
+                color: lightgray;
+            }
+            &.up::before {
+                content: '\f176';
+                color: black;
+            }
+            &.down::before {
+                content: '\f175';
+                color: black;
+            }
+        }
     }
     &.o_account_reports_followup {
         padding-top: 0px;

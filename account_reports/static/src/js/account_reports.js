@@ -124,6 +124,7 @@ var accountReportsWidget = AbstractAction.extend({
         'click .js_account_report_foldable': 'fold_unfold',
         'click [action]': 'trigger_action',
         'click .o_account_reports_load_more span': 'load_more',
+        'click .o_account_reports_table thead th': 'selected_column',
     },
 
     custom_events: {
@@ -281,6 +282,18 @@ var accountReportsWidget = AbstractAction.extend({
         }
         this.report_options['filter_accounts'] = query;
         this.render_footnotes();
+    },
+    selected_column: function(e) {
+        var self = this;
+        if (self.report_options.selected_column !== undefined) {
+            var col_number = Array.prototype.indexOf.call(e.currentTarget.parentElement.children, e.currentTarget) + 1; // we can't have negative 0 so lets start index at 1
+            if (self.report_options.selected_column && self.report_options.selected_column == col_number) {
+                self.report_options.selected_column = -col_number;
+            } else {
+                self.report_options.selected_column = col_number;
+            }
+            self.reload()
+        }
     },
     render_searchview_buttons: function() {
         var self = this;

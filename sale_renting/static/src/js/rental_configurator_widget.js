@@ -1,5 +1,8 @@
 odoo.define('sale_renting.rental_configurator', function (require) {
+var core = require('web.core');
 var ProductConfiguratorWidget = require('sale.product_configurator');
+
+var _t = core._t;
 
 /**
  * Extension of the ProductConfiguratorWidget to support rental product configuration.
@@ -13,6 +16,32 @@ var ProductConfiguratorWidget = require('sale.product_configurator');
  *
  */
 ProductConfiguratorWidget.include({
+    /**
+     * Show edit button (in Edit Mode) with a calendar icon
+     * after the product/product_template
+     *
+     * @override
+     * @private
+     */
+    _addConfigurationEditButton: function () {
+        if (this.recordData.is_rental) {
+            var $inputDropdown = this.$('.o_input_dropdown');
+            if ($inputDropdown.length !== 0 && this.$('.o_edit_product_configuration').length === 0) {
+                var $editConfigurationButton = $('<button>', {
+                    type: 'button',
+                    class: 'fa fa-calendar btn btn-secondary o_edit_product_configuration',
+                    tabindex: '-1',
+                    draggable: false,
+                    'aria-label': _t('Edit dates'),
+                    title: _t('Edit dates')
+                });
+
+                $inputDropdown.after($editConfigurationButton);
+            }
+        } else {
+            this._super.apply(this, arguments);
+        }
+    },
     /**
      * Override of sale.product_configurator Hook
      *

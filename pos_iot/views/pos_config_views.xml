@@ -2,8 +2,10 @@
 <odoo>
     <template id="assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_iot/static/src/js/iot.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/models.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/payment.js"></script>
+            <script type="text/javascript" src="/pos_iot/static/src/js/popups.js"></script>
             <link rel="stylesheet" href="/pos_iot/static/src/css/pos.css"/>
         </xpath>
     </template>

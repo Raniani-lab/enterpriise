@@ -378,7 +378,7 @@ QUnit.module('ReportEditorManager', {
         // paper width minus paperformat margins and content container margins
         var contentWidth = width - leftMargin - rightMargin - 5 - 10;
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -395,7 +395,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 55,
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             var containerStyles = rem.editor.$iframe.parent().css([
                 'paddingTop', 'paddingLeft', 'paddingRight', 'width'
             ]);

@@ -72,6 +72,7 @@ class HrContract(models.Model):
                     'work_entry_type_id': work_entry_type_id.id,
                     'employee_id': employee.id,
                     'contract_id': contract.id,
+                    'company_id': contract.company_id.id,
                     'state': 'confirmed',
                 }]
 
@@ -98,6 +99,7 @@ class HrContract(models.Model):
                     'display_warning': not bool(work_entry_type),
                     'employee_id': employee.id,
                     'leave_id': leave.holiday_id and leave.holiday_id.id,
+                    'company_id': contract.company_id.id,
                     'state': 'confirmed',
                     'contract_id': contract.id,
                 }]

@@ -13,9 +13,9 @@
                 <group name="rental_specs">
                     <label for="pickup_date" string="Date"/>
                     <div class="o_row">
-                        <field name="pickup_date"/>
+                        <field name="pickup_date" widget="daterange" options="{'related_end_date': 'return_date'}"/>
                         <span> to </span>
-                        <field name="return_date"/>
+                        <field name="return_date" widget="daterange" options="{'related_start_date': 'pickup_date'}"/>
                     </div>
                     <label for="duration"/>
                     <div>

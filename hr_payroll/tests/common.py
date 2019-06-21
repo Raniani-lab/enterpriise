@@ -61,6 +61,7 @@ class TestPayslipBase(TransactionCase):
             'name': 'Legal Leaves',
             'time_type': 'leave',
             'allocation_type': 'no',
+            'validity_start': False,
             'work_entry_type_id': self.work_entry_type_leave.id
         })
 

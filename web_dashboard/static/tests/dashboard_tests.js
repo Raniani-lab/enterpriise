@@ -213,6 +213,67 @@ QUnit.module('Views', {
         });
     });
 
+    QUnit.test('pie chart mode, groupby, and measure not altered by favorite filters', function (assert) {
+        // Pie Chart is rendered asynchronously.
+        // concurrency.delay is a fragile way that we use to wait until the
+        // graph is rendered.
+        // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
+        var done = assert.async();
+        assert.expect(8);
+
+        var self = this;
+        createAsyncView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            context: {
+                graph_mode: 'line',
+                graph_measure: 'untaxed',
+                graph_groupbys: [],
+            },
+            arch: '<dashboard>' +
+                      '<widget name="pie_chart" title="Products sold" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
+                  '</dashboard>',
+            mockRPC: function (route, args){
+                if (route == '/web/dataset/call_kw/test_report/read_group') {
+                    assert.deepEqual(args.args, []);
+                    assert.deepEqual(args.model,"test_report");
+                    assert.deepEqual(args.method,"read_group");
+                    assert.deepEqual(args.kwargs, {
+                      context: {fill_temporal: true},
+                      domain: [],
+                      fields: ["categ_id", "sold"],
+                      groupby: ["categ_id"],
+                      lazy: false,
+                    });
+                }
+
+                return this._super.apply(this, arguments);
+            }
+
+        })
+        .then(function (dashboard) {
+            self.dashboard = dashboard;
+        })
+        .then(concurrency.delay.bind(concurrency, 0))
+        .then(concurrency.delay.bind(concurrency, 0))
+        .then(function () {
+            assert.strictEqual($('.o_widget').length, 1,
+                "there should be a node with o_widget class");
+
+            var texts = $('svg text');
+            assert.deepEqual(texts.length, 4,
+                "texts must contain exactly 4 elements");
+            assert.strictEqual(texts.text(), "63%38%FirstSecond",
+                "there should be 4 texts visible");
+            assert.strictEqual($('.o_widget label').text(), "Products sold",
+                "the title of the graph should be displayed");
+            self.dashboard.destroy();
+            delete widgetRegistry.map.test;
+            done();
+        });
+    });
+
     QUnit.test('rendering of a pie chart widget and comparison active', function (assert) {
         // Pie Chart is rendered asynchronously.
         // concurrency.delay is a fragile way that we use to wait until the

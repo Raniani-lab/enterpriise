@@ -11,17 +11,11 @@
   <t t-name="PontoTemplate">
     <div>
         <div>
-          <h4>Please enter your access token</h4>
-          <p>follow the guide on <a href="https://docs.google.com/document/d/1apzAtCgZl5mfEz5-Z8iETqd6WXGbV0R2KuAvEL87rBI" target="blank">this link</a> to know how to get your ponto access token</p>
+          <h4>Connect to your institution</h4>
+          <p>The synchronization with this institution is supported via a third party service called <strong>ponto</strong>. Follow the guide on <a href="https://docs.google.com/document/d/1apzAtCgZl5mfEz5-Z8iETqd6WXGbV0R2KuAvEL87rBI" target="blank">this link</a> to know how to synchronize your institution with Odoo. Once you've created and linked your account, please enter your access token below and click continue.</p>
           <input type="text" name="ponto_token" class="ponto_token"/>
         </div>
       </div>
-  </t>
-
-  <t t-extend="OnlineSyncSearchBankFooter">
-    <t t-jquery=".js_configure_manually" t-operation="after">
-      <a class="link_ponto_account" href="#">or link with Ponto (Beta)</a>
-    </t>
   </t>
 
 </templates>

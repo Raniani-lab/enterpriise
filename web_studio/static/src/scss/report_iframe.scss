@@ -20,6 +20,13 @@ div.page {
     }
 }
 
+// ignore bootstrap media query in iframe since it is not applied when printing
+@media (min-width: 576px) {
+    .container {
+        max-width: none;
+    }
+}
+
 .o_no_content_helper {
     border: 2px dashed gray('400');
     margin-top: 10px;

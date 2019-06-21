@@ -13,13 +13,9 @@ VoipUserAgent.include({
      * @override
      */
     _getUaConfig: function (result) {
-        return {
-            uri: result.login +'@'+result.pbx_ip,
-            wsServers: result.wsServer || null,
-            authorizationUser: result.onsip_auth_user,
-            password: result.password,
-            log: {builtinEnabled: false},
-        };
+        var config = this._super.apply(this, arguments);
+        config.authorizationUser = result.onsip_auth_user;
+        return config;
     },
 });
 

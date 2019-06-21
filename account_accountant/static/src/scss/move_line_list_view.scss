@@ -1,6 +1,10 @@
 .o_move_line_list_view {
     display: flex;
 
+    .o_list_view {
+        overflow: auto;
+    }
+
     .o_group_name_custom {
         font-weight: normal;
         white-space: pre-wrap !important;
@@ -23,7 +27,6 @@
         height: 100%;
     }
     .o_attachment_preview {
-        overflow: auto;
         height: 100%;
 
         .o_move_line_empty, .o_move_line_without_attachment {

@@ -48,6 +48,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             this._super.apply(this, arguments);
 
             this.currentAttachments = [];
+            this.hide_attachment = false;
 
         },
 
@@ -79,6 +80,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                         class: 'o_attachment_control',
                     }));
                     self.$attachmentPreview.appendTo(self.$('.o_content'));
+                    self.$attachmentPreview.toggleClass('hidden', self.hide_attachment);
                 }
             });
         },
@@ -134,6 +136,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
         },
 
         _onToggleAttachment: function() {
+            this.hide_attachment = !this.hide_attachment;
             this.$attachmentPreview.toggleClass('hidden');
         },
 

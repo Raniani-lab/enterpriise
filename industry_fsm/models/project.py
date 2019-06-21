@@ -126,6 +126,11 @@ class Task(models.Model):
         invoices = self.mapped('sale_order_id.invoice_ids')
         action = self.env.ref('account.action_invoice_tree1').read()[0]
         action['domain'] = [('id', 'in', invoices.ids)]
+        # prevent view with onboarding banner
+        list_view = self.env.ref('account.invoice_tree')
+        form_view = self.env.ref('account.invoice_form')
+        action['views'] = [[list_view.id, 'list'], [form_view.id, 'form']]
+
         return action
 
     def action_fsm_tasks(self):

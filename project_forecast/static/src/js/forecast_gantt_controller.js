@@ -193,12 +193,15 @@ var ForecastGanttController = GanttController.extend({
      */
     _getDialogButtons: function (resId) {
         var record = resId ? _.findWhere(this.model.get().records, {id: resId,}) : {};
-        var buttons = [{
-            text: _t('Save'),
-            classes: 'btn-primary',
-            click: this._onDialogSaveClicked(),
-        }];
-        if(!record.id){
+        var buttons = [];
+        if(this.is_action_enabled('edit')){
+            buttons.push({
+                text: _t('Save'),
+                classes: 'btn-primary',
+                click: this._onDialogSaveClicked(),
+            });
+        }
+        if(!record.id && this.is_action_enabled('edit')){
             buttons.push({
                 text: _t('Save & send'),
                 classes: 'btn-primary',
@@ -211,7 +214,7 @@ var ForecastGanttController = GanttController.extend({
             });
         }
         // send (higlighted)
-        if(record.id && !record.published){
+        if(record.id && !record.published && this.is_action_enabled('edit')){
             buttons.push({
                 text: _t('Send'),
                 classes: 'btn-primary',
@@ -219,7 +222,7 @@ var ForecastGanttController = GanttController.extend({
                 click: this._onObjectButtonClick.bind(this, 'action_send', resId),
             });
         }
-        if(record.id){
+        if(record.id && this.is_action_enabled('delete')){
             buttons.push({
                 text: _t('Delete', true),
                 classes: 'btn-secondary',
@@ -227,7 +230,7 @@ var ForecastGanttController = GanttController.extend({
                 click: this._onObjectButtonClick.bind(this, 'unlink', resId,  _t('This will remove this forecast. Are you sure you want to continue?'), null),
             });
         }
-        if(record.id && record.recurrency_id){
+        if(record.id && record.recurrency_id && this.is_action_enabled('delete')){
             var comodelRecordId = record['recurrency_id'][0];
             buttons.push({
                 text: _t('Delete all', true),
@@ -236,7 +239,7 @@ var ForecastGanttController = GanttController.extend({
                 click: this._onObjectButtonClick.bind(this, 'action_remove_all', comodelRecordId, _t('This will remove this forecast and all related ones. Are you sure you want to continue?'), 'project.forecast.recurrency'),
             });
         }
-        if(record.id && record.recurrency_id){
+        if(record.id && record.recurrency_id && this.is_action_enabled('delete')){
             var recurrencyId = record['recurrency_id'][0];
             var start_datetime = record['start_datetime']
             buttons.push({
@@ -247,7 +250,7 @@ var ForecastGanttController = GanttController.extend({
             });
         }
         // send, not highlited
-        if(record.id && record.published){
+        if(record.id && record.published && this.is_action_enabled('edit')){
             buttons.push({
                 text: _t('Send'),
                 classes: 'btn-secondary',

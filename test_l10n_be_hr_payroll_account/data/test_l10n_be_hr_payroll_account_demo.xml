@@ -54,7 +54,7 @@
         <!-- Payslip Admin  -->
         <record id="hr_payslip_admin" model="hr.payslip">
             <field name="name" eval="'Mitchell Admin ' + time.strftime('June %Y')"/>
-            <field name="contract_id" ref="hr_contract.hr_contract_admin"/>
+            <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
             <field name="date_from" eval="time.strftime('%Y-6-1')"/>
             <field name="date_to" eval="time.strftime('%Y-6-30')"/>
             <field name="employee_id" ref="hr.employee_admin"/>
@@ -68,7 +68,7 @@
             <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
             <field name="number_of_days">20</field>
             <field name="number_of_hours">160</field>
-            <field name="contract_id" ref="hr_contract.hr_contract_admin"/>
+            <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
             <field name="payslip_id" ref="hr_payslip_admin"/>
         </record>
         <record id="hr_line_admin2" model="hr.payslip.worked_days">
@@ -76,7 +76,7 @@
             <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_long_leave"/>
             <field name="number_of_days">2</field>
             <field name="number_of_hours">16</field>
-            <field name="contract_id" ref="hr_contract.hr_contract_admin"/>
+            <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
             <field name="payslip_id" ref="hr_payslip_admin"/>
         </record>
 
@@ -129,7 +129,7 @@
         <!-- Payslip Admin  -->
         <record id="hr_payslip_admin_may" model="hr.payslip">
             <field name="name" eval="'Mitchell Admin ' + time.strftime('May %Y')"/>
-            <field name="contract_id" ref="hr_contract.hr_contract_admin"/>
+            <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
             <field name="date_from" eval="time.strftime('%Y-5-1')"/>
             <field name="date_to" eval="time.strftime('%Y-5-31')"/>
             <field name="employee_id" ref="hr.employee_admin"/>
@@ -143,7 +143,7 @@
             <field name="work_entry_type_id" ref="hr_payroll.work_entry_type_attendance"/>
             <field name="number_of_days">22</field>
             <field name="number_of_hours">175</field>
-            <field name="contract_id" ref="hr_contract.hr_contract_admin"/>
+            <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
             <field name="payslip_id" ref="hr_payslip_admin_may"/>
         </record>
 
@@ -498,5 +498,5 @@
         <value eval="[1, 2]"/>
         <value eval="{'company_id': ref('base.main_company')}"/>
     </function>
-    
+
 </odoo>

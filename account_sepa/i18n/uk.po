@@ -38,7 +38,7 @@ msgstr "Налаштування"
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__display_qr_code
 msgid "Display Qr Code"
-msgstr ""
+msgstr "Відображати Qr-код"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_orgid_issr
@@ -132,7 +132,7 @@ msgstr "Зверніть увагу на те, що виникли такі по
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__qr_code_url
 msgid "Qr Code Url"
-msgstr ""
+msgstr "Url Qr-коду"
 
 #. module: account_sepa
 #: model:account.payment.method,name:account_sepa.account_payment_method_sepa_ct
@@ -172,7 +172,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_payment.py:27
 #, python-format
 msgid "Scan me with your banking app."
-msgstr ""
+msgstr "Відскануйте мене за допомогою вашого банківського додатку."
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
@@ -207,7 +207,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_payment.py:38
 #, python-format
 msgid "The SEPA QR Code information is not set correctly."
-msgstr ""
+msgstr "Інформація QR-коду SEPA встановлена неправильно."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:354

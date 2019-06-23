@@ -42,7 +42,7 @@ msgstr "Налаштування точки продажу"
 #. module: pos_enterprise
 #: model:ir.model.fields,field_description:pos_enterprise.field_pos_config__is_installed_pos_iot
 msgid "Pos IoT is installed"
-msgstr ""
+msgstr "Точка продажу IoT втсановлена"
 
 #. module: pos_enterprise
 #: model_terms:ir.ui.view,arch_db:pos_enterprise.pos_config_view_form

@@ -140,7 +140,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__folder_id
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
 msgid "Folder"
-msgstr ""
+msgstr "Mappa"
 
 #. module: documents_account
 #: model:ir.model.fields,help:documents_account.field_account_reports_export_wizard__folder_id
@@ -156,7 +156,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
-msgstr ""
+msgstr "Üzleti lehetősége van"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__id
@@ -224,7 +224,7 @@ msgstr ""
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
-msgstr ""
+msgstr "Termék sablon"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_move_line__reconciliation_invoice_id

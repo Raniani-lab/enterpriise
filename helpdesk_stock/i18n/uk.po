@@ -28,7 +28,7 @@ msgstr "Клієнт"
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.view_stock_return_picking_form_inherit_helpdesk_stock
 msgid "Delivery to Return"
-msgstr ""
+msgstr "Доставка на повернення"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,help:helpdesk_stock.field_helpdesk_ticket__tracking
@@ -48,7 +48,7 @@ msgstr "Партія/Серійний номер"
 #. module: helpdesk_stock
 #: model:ir.model.fields,help:helpdesk_stock.field_helpdesk_ticket__lot_id
 msgid "Lot/Serial number concerned by the ticket"
-msgstr ""
+msgstr "Партійний/серійний номер, що стосується заявки"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__product_id
@@ -58,7 +58,7 @@ msgstr "Товар"
 #. module: helpdesk_stock
 #: model:ir.model.fields,help:helpdesk_stock.field_helpdesk_ticket__product_id
 msgid "Product concerned by the ticket"
-msgstr ""
+msgstr "Товар, що відноситься до заявки"
 
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.helpdesk_ticket_view_form_inherit_helpdesk_stock
@@ -70,22 +70,22 @@ msgstr "Повернути"
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__picking_ids
 #, python-format
 msgid "Return Orders"
-msgstr ""
+msgstr "Замовлення на повернення"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__pickings_count
 msgid "Return Orders Count"
-msgstr ""
+msgstr "Підрахунок замовлення на повернення"
 
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_stock_return_picking
 msgid "Return Picking"
-msgstr "Повернути коплектування"
+msgstr "Повернути комплектування"
 
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.helpdesk_ticket_view_form_inherit_helpdesk_stock
 msgid "Returns"
-msgstr ""
+msgstr "Повернення"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__sale_order_id

@@ -315,7 +315,7 @@ msgstr "Виграні бали:"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
 msgid "Points per Currency"
-msgstr ""
+msgstr "Балів за одиницю валюти"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pp_currency

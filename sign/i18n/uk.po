@@ -184,7 +184,7 @@ msgstr "Додати один раз"
 #. module: sign
 #: model:res.groups,name:sign.group_sign_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Адміністратор"
 
 #. module: sign
 #. openerp-web

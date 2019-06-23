@@ -47,7 +47,7 @@ msgstr "Та штрих-код"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_line__check_ids
 msgid "Associated step"
-msgstr ""
+msgstr "Пов'язаний крок"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
@@ -62,12 +62,12 @@ msgstr "Блок"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "By-product"
-msgstr ""
+msgstr "Побічний товар"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "CONTINUE CONSUMPTION"
-msgstr ""
+msgstr "ПРОДОВЖИТИ СПОЖИВАННЯ"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
@@ -89,7 +89,7 @@ msgstr "Компонент"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_qty_to_do
 msgid "Component Qty To Do"
-msgstr ""
+msgstr "К-сть компонентів, які необхідно зробити"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_uom_id
@@ -206,7 +206,7 @@ msgstr "Є останнім кроком"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_unfinished_wo
 msgid "Is Last Work Order To Process"
-msgstr ""
+msgstr "Останнє робоче замовлення до обробки"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_lot
@@ -363,7 +363,7 @@ msgstr "Обробити"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
 msgid "Product To Register"
-msgstr ""
+msgstr "Товар для реєстрації"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_production
@@ -583,7 +583,7 @@ msgstr "Одиниця виміру"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "VALIDATE"
-msgstr ""
+msgstr "ПІДТВЕРДИТИ"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:573
@@ -672,6 +672,9 @@ msgid ""
 "You should consume the quantity of %s defined in the BoM. If you want to "
 "consume more or less components, change the consumption setting on the BoM."
 msgstr ""
+"Ви повинні спожити кількість %s визначену у специфікації. Якщо ви хочете "
+"спожити більше або менше компонентів, змініть налаштування споживання на "
+"специфікації."
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:492

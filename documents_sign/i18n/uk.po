@@ -42,13 +42,13 @@ msgstr "Створити"
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0
 msgid "Create signature request"
-msgstr ""
+msgstr "Створити запит на підпис"
 
 #. module: documents_sign
 #: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
 #: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
 msgid "Create signature template(s)"
-msgstr ""
+msgstr "Створити шаблон підпису"
 
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0
@@ -58,7 +58,7 @@ msgstr "Сторно"
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0
 msgid "Customer invoice"
-msgstr ""
+msgstr "Рахунок клієнта"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_request__documents_tag_ids
@@ -79,7 +79,7 @@ msgstr "Має бізнес-функцію"
 #: code:addons/documents_sign/models/workflow.py:53
 #, python-format
 msgid "New templates"
-msgstr ""
+msgstr "Нові шаблони"
 
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0
@@ -89,12 +89,12 @@ msgstr "Шаблон товару"
 #. module: documents_sign
 #: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
 msgid "Request a signature and sign directly"
-msgstr ""
+msgstr "Зробити запит на підпис та підписати безпосередньо"
 
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0
 msgid "Sign directly"
-msgstr ""
+msgstr "Підписати безпосередньо"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request

@@ -25,21 +25,21 @@ msgstr ""
 #: code:addons/quality_iot/static/src/js/iot_picture.js:33
 #, python-format
 msgid "Capture image..."
-msgstr ""
+msgstr "Захоплення зображення..."
 
 #. module: quality_iot
 #. openerp-web
 #: code:addons/quality_iot/static/src/js/iot_picture.js:71
 #, python-format
 msgid "Connection to Camera failed"
-msgstr ""
+msgstr "Помилка підключення до камери"
 
 #. module: quality_iot
 #. openerp-web
 #: code:addons/quality_iot/static/src/js/iot_picture.js:84
 #, python-format
 msgid "Connection to IoT Box failed"
-msgstr ""
+msgstr "З'єднання з IoT Box не вдалося"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_point__device_id
@@ -56,14 +56,14 @@ msgstr "Пристрій IOT"
 #: code:addons/quality_iot/static/src/js/iot_picture.js:82
 #, python-format
 msgid "Please check if the IoT Box is still connected."
-msgstr ""
+msgstr "Перевірте, чи IoT Box досі підключено."
 
 #. module: quality_iot
 #. openerp-web
 #: code:addons/quality_iot/static/src/js/iot_picture.js:69
 #, python-format
 msgid "Please check if the camera is still connected."
-msgstr ""
+msgstr "Перевірте, чи камера досі підключена."
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__qcp_test_type

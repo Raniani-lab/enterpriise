@@ -5,14 +5,15 @@
 # Translators:
 # Martin Trigaux, 2019
 # Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
+# Rick Hunter <rick_hunter_ec@yahoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:35+0000\n"
 "PO-Revision-Date: 2019-01-16 08:42+0000\n"
-"Last-Translator: Gabriel Umana <gabriel.umana@delfixcr.com>, 2019\n"
+"Last-Translator: Rick Hunter <rick_hunter_ec@yahoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,22 +24,22 @@ msgstr ""
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "(Un)archiving a wall. Do you want to proceed?"
-msgstr ""
+msgstr "(Des)archivando un muro. ¿Quiere proceder?"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<b>Hey! No wall found</b>"
-msgstr ""
+msgstr "<b>¡Hey! No se encontró el muro</b>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<i class=\"fa fa-plus-circle\"/> Create Now"
-msgstr ""
+msgstr "<i class=\"fa fa-plus-circle\"/> Crear ahora"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "<i class=\"fa fa-twitter\"/> <strong> Join the wall</strong>"
-msgstr ""
+msgstr "<i class=\"fa fa-twitter\"/> <strong> Join the wall</strong>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -82,12 +83,12 @@ msgstr "Creado el"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Decrease zoom level"
-msgstr ""
+msgstr "Disminuir el nivel de zoom"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Delete this tweet"
-msgstr ""
+msgstr "Eliminar este tweet"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__description
@@ -102,12 +103,12 @@ msgstr "Nombre mostrado"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Exit full screen"
-msgstr ""
+msgstr "Salir de pantalla completa"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Hey! No tweet found"
-msgstr ""
+msgstr "¡Hey! No se ha encontrado ningún tweet"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__id
@@ -122,7 +123,7 @@ msgstr "Imagen"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Increase zoom level"
-msgstr ""
+msgstr "Incrementar el nivel de zoom"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_live
@@ -172,12 +173,12 @@ msgstr ""
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Mixed"
-msgstr ""
+msgstr "Mezclado"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Most recent tweets, most popular tweets, or both"
-msgstr ""
+msgstr "Tweets más recientes, tweets más populares, o los dos "
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__name
@@ -188,7 +189,7 @@ msgstr "Nombre"
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Popular"
-msgstr ""
+msgstr "Popular"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -198,7 +199,7 @@ msgstr ""
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Recent"
-msgstr ""
+msgstr "Reciente"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -274,12 +275,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__total_tweets
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Total Tweets"
-msgstr ""
+msgstr "Total de tweets"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__tweet_ids
 msgid "Tweet"
-msgstr ""
+msgstr "Tweet"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__tweet_html
@@ -325,7 +326,7 @@ msgstr ""
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Type of tweets"
-msgstr ""
+msgstr "Tipo de tweets"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_published

@@ -57,7 +57,7 @@ msgstr "Створити завдання"
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Create signature request"
-msgstr ""
+msgstr "Створити запит на підпис"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
@@ -67,7 +67,7 @@ msgstr "Сторно"
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Customer invoice"
-msgstr ""
+msgstr "Рахунок клієнта"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__documents_project_settings
@@ -104,6 +104,8 @@ msgstr "Робочий простір проекту"
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
 msgid "Select the new workspace to be used for project's documents"
 msgstr ""
+"Оберіть нову робочу область, яка буде використовуватися для документів "
+"проекту"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
@@ -113,7 +115,7 @@ msgstr "Виберіть теги, які будуть застосовані д
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Sign directly"
-msgstr ""
+msgstr "Підписати безпосередньо"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0

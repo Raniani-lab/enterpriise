@@ -45,7 +45,7 @@ msgstr "Купони"
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_ticket__coupons_count
 msgid "Coupons Count"
-msgstr ""
+msgstr "Підрахунок купонів"
 
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_sale_coupon_generate__create_uid
@@ -71,7 +71,7 @@ msgstr "Згенерувати"
 #: model:ir.actions.act_window,name:helpdesk_sale_coupon.helpdesk_sale_coupon_generate_action
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_coupon.helpdesk_sale_coupon_generate_view_form
 msgid "Generate a Coupon"
-msgstr ""
+msgstr "Створити купон"
 
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_ticket__coupon_ids
@@ -106,7 +106,7 @@ msgstr "Останнє оновлення"
 #. module: helpdesk_sale_coupon
 #: model:ir.model,name:helpdesk_sale_coupon.model_helpdesk_sale_coupon_generate
 msgid "Sales Coupon Generate from Helpdesk"
-msgstr ""
+msgstr "Створення продажних купонів зі служби підтримки"
 
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_sale_coupon_generate__ticket_id

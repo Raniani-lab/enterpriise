@@ -33,7 +33,7 @@ msgstr "Заявки служби підтримки"
 #. module: helpdesk_repair
 #: model:ir.model.fields,help:helpdesk_repair.field_repair_order__ticket_id
 msgid "Related Helpdesk Ticket"
-msgstr ""
+msgstr "Пов'язана заявка служби підтримки"
 
 #. module: helpdesk_repair
 #: model_terms:ir.ui.view,arch_db:helpdesk_repair.helpdesk_ticket_view_form_inherit_helpdesk_repair
@@ -56,7 +56,7 @@ msgstr "Ремонти"
 #. module: helpdesk_repair
 #: model:ir.model.fields,field_description:helpdesk_repair.field_helpdesk_ticket__repairs_count
 msgid "Repairs Count"
-msgstr ""
+msgstr "Підрахунок ремонтів"
 
 #. module: helpdesk_repair
 #: model:ir.model.fields,field_description:helpdesk_repair.field_repair_order__ticket_id

@@ -177,7 +177,7 @@ msgstr "Дія необхідна"
 #. module: website_calendar
 #: model:res.groups,name:website_calendar.group_calendar_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Адміністратор"
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.website_calendar_report

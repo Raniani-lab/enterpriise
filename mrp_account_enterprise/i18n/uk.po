@@ -98,7 +98,7 @@ msgstr "<strong>Вартість одиниці</strong>"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "By product(s)"
-msgstr "Товаром(и)"
+msgstr "За товаром(и)"
 
 #. module: mrp_account_enterprise
 #: model:ir.actions.report,name:mrp_account_enterprise.action_cost_struct_mrp_production

@@ -73,7 +73,7 @@ msgstr "Стан дії"
 #. module: quality
 #: model:res.groups,name:quality.group_quality_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Адміністратор"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -260,7 +260,7 @@ msgstr "Назва для відображення"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "Email cc"
 
 #. module: quality
 #: selection:quality.check,quality_state:0
@@ -403,7 +403,7 @@ msgstr "Останнє оновлення"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Список cc від вхідної пошти."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id

@@ -146,22 +146,22 @@ msgstr "FEDEX_GROUND"
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
 msgid "FEDEX_NEXT_DAY_AFTERNOON"
-msgstr ""
+msgstr "FEDEX_NEXT_DAY_AFTERNOON"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
 msgid "FEDEX_NEXT_DAY_EARLY_MORNING"
-msgstr ""
+msgstr "FEDEX_NEXT_DAY_EARLY_MORNING"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
 msgid "FEDEX_NEXT_DAY_END_OF_DAY"
-msgstr ""
+msgstr "FEDEX_NEXT_DAY_END_OF_DAY"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
 msgid "FEDEX_NEXT_DAY_MID_MORNING"
-msgstr ""
+msgstr "FEDEX_NEXT_DAY_MID_MORNING"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
@@ -188,7 +188,7 @@ msgstr "Суботня доставка FedEx "
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
 msgid "FedEx Shipping Methods"
-msgstr ""
+msgstr "Методи доставки FedEx"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -459,7 +459,7 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model,name:delivery_fedex.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Методи доставки"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery

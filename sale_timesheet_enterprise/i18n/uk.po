@@ -58,7 +58,7 @@ msgstr "Налаштування"
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task_create_timesheet
 msgid "Create Timesheet from task"
-msgstr ""
+msgstr "Створити табель із завдання"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__create_uid
@@ -118,17 +118,17 @@ msgstr "Запишіть витрачений час та виставте ра�
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Round timesheets"
-msgstr ""
+msgstr "Заокруглити табелі"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__timesheet_rounding
 msgid "Rounding up"
-msgstr ""
+msgstr "Заокруглення"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
 msgid "STOP"
-msgstr ""
+msgstr "ЗУПИНИТИ"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_sale_order_line
@@ -143,7 +143,7 @@ msgstr "Зберегти"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
 msgid "Save time"
-msgstr ""
+msgstr "Зберегти час"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
@@ -169,7 +169,7 @@ msgstr "Час"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_start
 msgid "Timesheet Timer Start"
-msgstr ""
+msgstr "Початок таймеру табеля"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet
@@ -182,7 +182,7 @@ msgstr "Виставлення рахунків по табелям"
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__use_timesheet_timer
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Use Start and Stop"
-msgstr ""
+msgstr "Використовуйте Почати та Зупинити"
 
 #. module: sale_timesheet_enterprise
 #: code:addons/sale_timesheet_enterprise/wizard/project_task_create_timesheet.py:18

@@ -3,8 +3,8 @@
 # * documents_product
 # 
 # Translators:
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,7 +52,7 @@ msgstr "Створити"
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
 msgid "Create signature request"
-msgstr ""
+msgstr "Створити запит на підпис"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
@@ -62,7 +62,7 @@ msgstr "Сторно"
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
 msgid "Customer invoice"
-msgstr ""
+msgstr "Рахунок клієнта"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_sheet_tag
@@ -129,11 +129,12 @@ msgstr "Виберіть теги, які будуть застосовані д
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Select the workspace to be used for product's documents"
 msgstr ""
+"Оберіть робочу область, яка буде використовуватися для документів товару"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
 msgid "Sign directly"
-msgstr ""
+msgstr "Підписати безпосередньо"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_specs_tag

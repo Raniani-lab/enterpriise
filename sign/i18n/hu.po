@@ -1196,6 +1196,8 @@ msgid ""
 "Request a signature to upload a template (or use an existing one)\n"
 "                to automate your signature process."
 msgstr ""
+"Kérjen egy aláírást egy sablon feltöltéséhez (vagy használjon egy már meglévőt)\n"
+"                az aláírási folyamata automatizálsához."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_total
@@ -1498,28 +1500,28 @@ msgstr "Aláírási tétel"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item_role
 msgid "Signature Item Party"
-msgstr ""
+msgstr "Aláírási tételben érdekelt fél"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_item_role_action
 msgid "Signature Item Role"
-msgstr ""
+msgstr "Aláírási tétel szerep"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_item_type_action
 #: model:ir.model,name:sign.model_sign_item_type
 msgid "Signature Item Type"
-msgstr ""
+msgstr "Aláírási tétel típusa"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item_value
 msgid "Signature Item Value"
-msgstr ""
+msgstr "Aláírási tétel értéke"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_item_ids
 msgid "Signature Items"
-msgstr ""
+msgstr "Aláírási tételek"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_send_request
@@ -1528,7 +1530,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_request_id
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Signature Request"
-msgstr ""
+msgstr "Aláírási kérés"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:163
@@ -1536,22 +1538,22 @@ msgstr ""
 #: code:addons/sign/wizard/sign_send_request.py:17
 #, python-format
 msgid "Signature Request - %s"
-msgstr ""
+msgstr "Aláírási kérés - %s"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_item
 msgid "Signature Request Item"
-msgstr ""
+msgstr "Aláírási kérés tétel"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_item_action
 msgid "Signature Request Items"
-msgstr ""
+msgstr "Aláírási kérés tételek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_request_ids
 msgid "Signature Requests"
-msgstr ""
+msgstr "Aláírási kérések"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_request_item_menu
@@ -1729,6 +1731,8 @@ msgid ""
 "The signature access you are trying to reach does not exist. Maybe the signature request has been deleted or modified. <br/>\n"
 "                    If there still exists a signature request for this document, check your inbox to get your access!"
 msgstr ""
+"Az aláírási kérés, amelyet próbál elérni, nem létezik. Talán az aláírási kérés törlésre vagy módosításra került. <br/>\n"
+"                    Ha a dokumentumnak még mindig létezik aláírási kérése, ellenőrizze a bejövő leveleit a hozzáférés megszerzéséhez!"
 
 #. module: sign
 #: code:addons/sign/models/sign_template.py:82
@@ -1944,6 +1948,8 @@ msgid ""
 "You can't delete a template for which signature requests exist but you can "
 "archive it instead."
 msgstr ""
+"Nem törölhet olyan sablont, amelynek aláírási kérései vannak, de ehelyett "
+"archiválhatja."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign

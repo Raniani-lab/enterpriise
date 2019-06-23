@@ -4,8 +4,8 @@
 # 
 # Translators:
 # ТАрас <tratatuta@i.ua>, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -130,14 +130,14 @@ msgstr "Підключення не вдалося"
 #: code:addons/iot/static/src/js/iot.js:53
 #, python-format
 msgid "Connection to IoT Box failed"
-msgstr ""
+msgstr "З'єднання з IoT Box не вдалося"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:46
 #, python-format
 msgid "Connection to Printer failed"
-msgstr ""
+msgstr "З'єднання з принтером не вдалося"
 
 #. module: iot
 #. openerp-web
@@ -268,7 +268,7 @@ msgstr "Пристрій IoT"
 #: code:addons/iot/static/src/js/iot.js:273
 #, python-format
 msgid "IoTBox connected"
-msgstr ""
+msgstr "IoTBox підключено"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
@@ -328,14 +328,14 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:51
 #, python-format
 msgid "Please check if the IoT Box is still connected."
-msgstr ""
+msgstr "Перевірте, чи IoT Box досі підключено."
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:46
 #, python-format
 msgid "Please check if the printer is still connected."
-msgstr ""
+msgstr "Перевірте чи принтер досі підключено."
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -401,7 +401,7 @@ msgstr "Не підключено жодних пристроїв до ваши�
 #: code:addons/iot/static/src/js/iot.js:275
 #, python-format
 msgid "This IoTBox has already connected"
-msgstr ""
+msgstr "Цей IoTBox уже підключено"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token
@@ -432,13 +432,13 @@ msgstr "USB"
 #: code:addons/iot/drivers/SylvacUSBDriver.py:34
 #, python-format
 msgid "Unknow device"
-msgstr ""
+msgstr "Невідомий пристрій"
 
 #. module: iot
 #: code:addons/iot/drivers/KeyboardUSBDriver.py:39
 #, python-format
 msgid "Unknow keyboard"
-msgstr ""
+msgstr "Невідома клавіатура"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_box__screen_url

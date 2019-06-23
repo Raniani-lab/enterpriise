@@ -51,7 +51,7 @@ msgstr ""
 "Всі платежі сплачуються після отримання. Якщо платіж не отримано або спосіб оплати відхилено, покупець втрачає право власності на будь-які придбані товари. Якщо платіж не отримано, жодного елемента не буде відправлено.\n"
 "\n"
 "Політика доставки\n"
-"Доставка буде оплачена покупцем у сумі, узгодженої з продавцем під час покупки. Якщо товар буде втрачено під час доставки, продавець повертає покупцеві повну вартість товару, включаючи доставку. Витрати на доставку можуть подвоїтися, якщо доставка здійснюється за кордон. Якщо товар пошкоджений під час доставки, продавець не несе відповідальності.\n"
+"Доставка буде оплачена покупцем у сумі, узгодженою з продавцем під час покупки. Якщо товар буде втрачено під час доставки, продавець повертає покупцеві повну вартість товару, включаючи доставку. Витрати на доставку можуть подвоїтися, якщо доставка здійснюється за кордон. Якщо товар пошкоджений під час доставки, продавець не несе відповідальності.\n"
 "\n"
 "Політика повернення коштів\n"
 "Товари мають право на повернення або повернення на підставі скарги. Якщо товар пошкоджений під час доставки, заміна буде надіслана безкоштовно. Якщо товар є незадовільним, необхідно надати письмове пояснення перед тим, як його можна бути розглянути для повернення коштів. Покупець повинен взяти до уваги опис товару, перш ніж подавати запит на відшкодування. Якщо товар відповідає опису продавця і покупець не задоволений, продавець не несе відповідальності за повернення коштів. Обміни надаються на індивідуальній основі.\n"
@@ -66,7 +66,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_subscription.py:744
 #, python-format
 msgid " E-mail sent to customer."
-msgstr ""
+msgstr " Електронна пошта надіслана клієнта."
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
@@ -216,6 +216,50 @@ msgid ""
 "            </div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
+"                <table style=\"width:600px;margin:5px auto;\">\n"
+"                    <tbody>\n"
+"                        <tr><td>\n"
+"                            <a href=\"/\"><img src=\"/web/binary/company_logo\" style=\"vertical-align:baseline;max-width:100px;\"/></a>\n"
+"                        </td><td style=\"text-align:right;vertical-align:middle;\">\n"
+"                                Рахунок на підписку\n"
+"                        </td></tr>\n"
+"                    </tbody>\n"
+"                </table>\n"
+"                <table style=\"width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;\">\n"
+"                    <tbody>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
+"                            <p>Шановний(а) ${object.partner_id.name}\n"
+"                                % if object.partner_id.parent_id:\n"
+"                                    (${object.partner_id.parent_id.name})\n"
+"                                % endif\n"
+"                            </p>\n"
+"                            <p>\n"
+"                                У прикріпленні ваш\n"
+"                                % if object.number:\n"
+"                                    рахунок <strong>${object.number}</strong>\n"
+"                                % else:\n"
+"                                    рахунок\n"
+"                                %endif\n"
+"                                % if object.origin:\n"
+"                                    (with reference: ${object.origin} )\n"
+"                                % endif\n"
+"                                у сумі <strong>${format_amount(object.amount_total, object.currency_id)}</strong>\n"
+"                                від ${object.company_id.name}.\n"
+"                                % if object.state=='paid':\n"
+"                                    Цей рахунок вже оплачено.\n"
+"                                % else:\n"
+"                                    Здійсніть платіж якомога раніше.\n"
+"                                % endif\n"
+"                            </p>\n"
+"                            <p>Не соромтеся звертатися до нас, якщо у вас виникли питання.</p>\n"
+"                        </td></tr>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.user_id.signature or '')| safe}</td></tr>\n"
+"                    </tbody>\n"
+"                </table>\n"
+"            </div>\n"
+"        "
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_rating
@@ -447,7 +491,7 @@ msgstr "<span class=\"mr-1\">Для</span>"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "<span class=\"mr-1\">period(s)</span>"
-msgstr ""
+msgstr "<span class=\"mr-1\">період(и)</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
@@ -592,8 +636,8 @@ msgstr ""
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                    Шановний(а) ${object.partner_id.name},<br/><br/>\n"
 "                    Вашу підписку (${ctx.get('code')}) щойно оновлено\n"
-"                    %if ctx.get('total_amount') and ctx.get('payment_token'):\n"
-"                        via a payment of ${ctx['total_amount']} ${ctx['currency']} charged on ${ctx['payment_token']}.\n"
+"                    %if ctx.get('total_amount') та ctx.get('payment_token'):\n"
+"                        через платіж ${ctx['total_amount']} ${ctx['currency']} який стягується ${ctx['payment_token']}.\n"
 "                    %endif\n"
 "                    <br/><br/>\n"
 "                    У прикрпіленому файлі ви знайдете рахунок.\n"
@@ -769,10 +813,10 @@ msgstr ""
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                    Вітаємо ${object.partner_id.name},<br/><br/>\n"
-"                    % if ctx.get('payment_token') and ctx.get('total_amount'):\n"
+"                    % if ctx.get('payment_token') та ctx.get('total_amount'):\n"
 "                       Наша остаточна спроба обробити платіж за підписку, використовуючи спосіб оплати\n"
 "                        ${ctx['payment_token']}\n"
-"                        for ${ctx['total_amount']} ${ctx.get('currency')} failed.\n"
+"                        для ${ctx['total_amount']} ${ctx.get('currency')} не вдалося.\n"
 "                        % if ctx.get('error'):\n"
 "                            Ваш банк або кредитна установа надав такі відомості про проблему: <pre>${ctx['error']}</pre>.\n"
 "                        %endif\n"
@@ -932,7 +976,7 @@ msgstr ""
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"middle\">\n"
 "                    % set company = object.company_id or object.user_id.company_id or user.company_id\n"
-"                    <span style=\"font-size: 10px;\">Your Subscription</span><br/>\n"
+"                    <span style=\"font-size: 10px;\">Ваша підписка</span><br/>\n"
 "                    <span style=\"font-size: 20px; font-weight: bold;\">${object.name}</span>\n"
 "                </td></tr>\n"
 "                <tr><td valign=\"middle\" align=\"right\">\n"
@@ -950,10 +994,10 @@ msgstr ""
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                    Вітаємо ${object.partner_id.name},<br/><br/>\n"
-"                    % if ctx.get('payment_token') and ctx.get('total_amount'):\n"
+"                    % if ctx.get('payment_token') та ctx.get('total_amount'):\n"
 "                        Не вдалося обробити платіж за підписку, використовуючи ваш спосіб оплати\n"
 "                        ${ctx['payment_token']}\n"
-"                        for ${ctx['total_amount']} ${ctx.get('currency')}.\n"
+"                        для ${ctx['total_amount']} ${ctx.get('currency')}.\n"
 "                        % if ctx.get('error'):\n"
 "                            Ваш банк або кредитна установа надав такі відомості про проблему: <pre>${ctx['error']}</pre>.\n"
 "                        %endif\n"
@@ -1057,7 +1101,7 @@ msgstr "Назва дії"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_needaction
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_needaction
 msgid "Action Needed"
-msgstr "Дія необхідна"
+msgstr "Необхідна дія"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__state
@@ -1120,17 +1164,18 @@ msgstr "Додати опис..."
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid "Add in Subscription"
-msgstr "Додати в передплату"
+msgstr "Додати в підписку"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Add options to the subscription directly or through a quotation"
-msgstr "Додайте параметри підписки безпосередньо або через цитату"
+msgstr ""
+"Додайте параметри підписки безпосередньо або через комерційну пропозицію"
 
 #. module: sale_subscription
 #: model:res.groups,name:sale_subscription.group_sale_subscription_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Адміністратор"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -1152,8 +1197,8 @@ msgid ""
 "              negative (churn, invoice not paid...)."
 msgstr ""
 "Повідомлення використовуються для інформування продавця про те, яка підписка\n"
-" потребує його уваги. Вона може бути позитивною (upsell) або\n"
-" негативною (churn, рахунок-фактура не оплачується ...)."
+" потребує його уваги. Вона може бути позитивною (допродаж) або\n"
+" негативною (повернення, рахунок-фактура не оплачується ...)."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:44
@@ -1207,12 +1252,14 @@ msgid ""
 "Automatic payment failed after multiple attempts. Subscription closed "
 "automatically."
 msgstr ""
+"Автоматична оплата не вдалася після декількох спроб. Підписка закривається "
+"автоматично."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:739
 #, python-format
 msgid "Automatic payment failed. Subscription set to \"To Renew\"."
-msgstr ""
+msgstr "Автоматична оплата не вдалася. Підписка встановлена на \"Оновити\"."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:699
@@ -1222,6 +1269,9 @@ msgid ""
 "model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a "
 "href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>."
 msgstr ""
+"Автоматичний платіж виконано. Посилання на оплату: <a href=# data-oe-"
+"model=payment.transaction data-oe-id=%d>%s</a>; Сума: %s. Рахунок <a href=# "
+"data-oe-model=account.invoice data-oe-id=%d>Переглянути рахунок</a>."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_published
@@ -1316,7 +1366,8 @@ msgstr ""
 #: code:addons/sale_subscription/static/src/js/tour.js:68
 #, python-format
 msgid "Choose a product name.<br/><i>(e.g. eLearning Access)</i>"
-msgstr "Вибрати назву товару.<br/><i>(напр., Доступ eLearning)</i>"
+msgstr ""
+"Вибрати назву товару.<br/><i>(напр., Доступ до електронного навчання)</i>"
 
 #. module: sale_subscription
 #. openerp-web
@@ -1696,7 +1747,7 @@ msgstr "Чернетка"
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Draft invoice"
-msgstr "Ченетка рахунку-фактури"
+msgstr "Ченетка рахунка-фактури"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_date_deadline_range
@@ -1738,7 +1789,8 @@ msgstr "Кінцева дата"
 #, python-format
 msgid "Enter a name for this template.<br/><i>(e.g. eLearning Yearly)</i>"
 msgstr ""
-"Введіть назву для цього шаблону.<br/><i>(наприклад, eLearning щороку)</i>"
+"Введіть назву для цього шаблону.<br/><i>(наприклад, Електронне навчання "
+"щороку)</i>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1791,7 +1843,7 @@ msgstr "Назавжди"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Future Activities"
-msgstr "Майбутня діяльність"
+msgstr "Майбутні дії"
 
 #. module: sale_subscription
 #. openerp-web
@@ -1886,7 +1938,7 @@ msgstr "Якщо позначено, то повідомленя потребу�
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_needaction
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Якщо відмічено, то нові повідомлення будуть потребувати вашої уваги."
+msgstr "Якщо позначено, то нові повідомлення будуть потребувати вашої уваги."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_has_error
@@ -2002,7 +2054,8 @@ msgstr "Промисловість"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid ""
 "Insert the options directly, they will be invoiced on the next invoice date."
-msgstr "Введіть функції безпосередньо, їх буде враховано в наступній проплаті"
+msgstr ""
+"Введіть функції безпосередньо, їх буде враховано в наступному рахунку."
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
@@ -2039,7 +2092,7 @@ msgstr "Рядки рахунку"
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__recurring_rule_type
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__recurring_rule_type_readonly
 msgid "Invoice automatically repeat at specified interval"
-msgstr "Рахунок автоматично повторяється в заданий інтервал"
+msgstr "Рахунок автоматично повторюється у заданий інтервал"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_success
@@ -2054,7 +2107,7 @@ msgstr "Виставлення рахунку тільки після успіш
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Invoice period"
-msgstr ""
+msgstr "Період рахунку"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
@@ -2095,22 +2148,22 @@ msgstr "Журнал"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__kpi_1month_mrr_delta
 msgid "KPI 1 Month MRR Delta"
-msgstr "KPI 1 Month MRR Delta"
+msgstr "Дельта KPI MRR 1 місяця"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__kpi_1month_mrr_percentage
 msgid "KPI 1 Month MRR Percentage"
-msgstr "KPI 1 Month MRR Percentage"
+msgstr "Відсоток KPI MRR 1 місяця"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__kpi_3months_mrr_percentage
 msgid "KPI 3 Months MRR Percentage"
-msgstr "KPI 3 Months MRR Percentage"
+msgstr "Відсоток KPI MRR 3 місяців"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__kpi_3months_mrr_delta
 msgid "KPI 3 months MRR Delta"
-msgstr "KPI 3 months MRR Delta"
+msgstr "Дельта KPI MRR 3 місяців"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription____last_update
@@ -2545,7 +2598,7 @@ msgstr "Заплановано"
 #: code:addons/sale_subscription/models/sale_subscription.py:460
 #, python-format
 msgid "Please define Date of Next Invoice of \"%s\"."
-msgstr "Будь ласка, визначте дату наступного рахунку\"%s\"."
+msgstr "Будь ласка, визначте дату наступного рахунку \"%s\"."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:456
@@ -2635,37 +2688,37 @@ msgstr "Середнє оцінювання"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__rating_template_id
 msgid "Rating Email Template"
-msgstr "Шаблон листа оцінки"
+msgstr "Шаблон електронного листа оцінки"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_last_feedback
 msgid "Rating Last Feedback"
-msgstr "Останній зворотній зв'язок рейтингу"
+msgstr "Останній зворотній зв'язок оцінки"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_last_image
 msgid "Rating Last Image"
-msgstr "Останнє зображення рейтингу"
+msgstr "Останнє зображення оцінювання"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_last_value
 msgid "Rating Last Value"
-msgstr "Останнє значення рейтингу"
+msgstr "Останнє значення оцінювання"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__rating_operator
 msgid "Rating Operator"
-msgstr "Рейтинг оператора"
+msgstr "Оцінювання оператора"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__rating_percentage
 msgid "Rating Percentage"
-msgstr "Відсоток рейтингу"
+msgstr "Відсоток оцінювання"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Rating Satisfaction"
-msgstr "Рейтинг вдоволеності"
+msgstr "Оцінювання вдоволеності"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_count
@@ -2696,7 +2749,7 @@ msgstr "Одиниця повторення"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "Recurrence:"
-msgstr "Повернення:"
+msgstr "Повторення:"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_total
@@ -3020,7 +3073,7 @@ msgid ""
 "Planned: Future activities."
 msgstr ""
 "Етап заснований на діях\n"
-"Прострочений: термін виконання вже минув\n"
+"Протерміновано: термін виконання вже минув\n"
 "Сьогодні: дата дії сьогодні\n"
 "Заплановано: майбутні дії."
 
@@ -3048,7 +3101,7 @@ msgstr "Розглянути"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Subscription"
-msgstr "Передплата"
+msgstr "Підписка"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_alert
@@ -3081,7 +3134,7 @@ msgstr "Підрахунок підписки"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_account_invoice_line__subscription_end_date
 msgid "Subscription End Date"
-msgstr ""
+msgstr "Кінцева дата підписки"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_line
@@ -3096,7 +3149,7 @@ msgstr "Рядки підписки"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_management
 msgid "Subscription Management"
-msgstr "Керування передплатою"
+msgstr "Керування підпискою"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_product_product__recurring_invoice
@@ -3130,7 +3183,7 @@ msgstr "Стадії підписки"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_account_invoice_line__subscription_start_date
 msgid "Subscription Start Date"
-msgstr ""
+msgstr "Початкова дата підписки"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_template
@@ -3331,6 +3384,8 @@ msgid ""
 "The action will be triggered if and only if one of these fields is "
 "updated.If empty, all fields are watched."
 msgstr ""
+"Дія буде спрацьовувати тільки тоді, коли одне з цих полів буде оновлено. "
+"Якщо порожньо, усі поля спостерігаються."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_wizard__date_from
@@ -3375,7 +3430,7 @@ msgstr "Користувач буде мати доступ до підписо�
 #. module: sale_subscription
 #: model:res.groups,comment:sale_subscription.group_sale_subscription_manager
 msgid "The user will have write access to Subscriptions."
-msgstr "Користувач матиме доступ до запису на підписки."
+msgstr "Користувач матиме доступ до підписок для написання."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -3489,7 +3544,7 @@ msgid ""
 "- 'Send Email': automatically send an email (available in email_template)"
 msgstr ""
 "Тип дії сервера. Доступні наступні значення:\n"
-"- 'Execute Python Code': блок коду python, який буде виконуватися\n"
+"- \"Викнати код Python\": блок коду python, який буде виконуватися\n"
 "- \"Створити або скопіювати новий запис\": створити новий запис із новими значеннями або скопіювати існуючий запис у вашу базу даних\n"
 "- \"Написати на запис\": оновіть значення запису\n"
 "- \"Виконати кілька дій\": визначити дію, яка запускає кілька інших дій сервера\n"
@@ -3521,7 +3576,7 @@ msgstr "Ціна одиниці"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__uom_id
 msgid "Unit of Measure"
-msgstr "Одиниця виміру"
+msgstr "Одиниця вимірювання"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_unread
@@ -3582,12 +3637,12 @@ msgid ""
 msgstr ""
 "Використовуйте підписки для завдань, проблем, табелю та рахунків-фактур на основі\n"
 "                 виконаної роботи, витрат та/або замовлення на продаж. Odoo автоматично керуватиме\n"
-"                 сповіщення про поновлення підписки на потрібного продавця."
+"                 сповіщеннями про поновлення підписки на потрібного продавця."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trg_date_resource_field_id
 msgid "Use the user's working schedule."
-msgstr "Використовувати графік робочого часу користувача"
+msgstr "Використовуйте графік робочого часу користувача."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_field_name
@@ -3618,7 +3673,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trigger_field_ids
 msgid "Watched fields"
-msgstr ""
+msgstr "Спостережувані поля"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3627,13 +3682,13 @@ msgid ""
 "cancelling your subscription?"
 msgstr ""
 "Ми завжди дослухаємося до своїх клієнтів. Чи не могли б Ви назвати причину "
-"скасування передплати?"
+"скасування підписки?"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__website_message_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__website_message_ids
 msgid "Website Messages"
-msgstr "Повідомлення з вебсайту"
+msgstr "Повідомлення з веб-сайту"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_path
@@ -3785,12 +3840,12 @@ msgstr "день(дні)"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Discuss proposal"
-msgstr "наприклад: Пропозиція обговорити"
+msgstr "наприклад: Пропозиція обговорення"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "e.g. Monthly Subscription"
-msgstr "напр., місячна підписка"
+msgstr "напр., Місячна підписка"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form

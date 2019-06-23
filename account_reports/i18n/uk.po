@@ -61,7 +61,7 @@ msgstr "(копіювати)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Refresh"
-msgstr ""
+msgstr "-> Оновлення"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
@@ -298,6 +298,8 @@ msgid ""
 "<span class=\"o_form_label\">Tax Return Periodicity</span>\n"
 "                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">Періодичність податкової декларації</span>\n"
+"                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_partner_view_form
@@ -377,7 +379,7 @@ msgstr "Примітка звіту рахунку"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_next_activity_type
 msgid "Account Tax Next Activity Type"
-msgstr ""
+msgstr "Тип наступної дії рахункового податку"
 
 #. module: account_reports
 #. openerp-web
@@ -626,19 +628,19 @@ msgstr "Бухгалтерський баланс"
 #: code:addons/account_reports/models/account_generic_tax_report.py:128
 #, python-format
 msgid "Balance tax advance payment account"
-msgstr ""
+msgstr "Баланс рахунку авансового платежу податку"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:134
 #, python-format
 msgid "Balance tax current account (payable)"
-msgstr ""
+msgstr "Баланс поточного рахунку податку (до сплати)"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:131
 #, python-format
 msgid "Balance tax current account (receivable)"
-msgstr ""
+msgstr "Баланс поточного рахунку податку (дебіторська заборгованість)"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:264
@@ -677,6 +679,8 @@ msgid ""
 "Can't post the move with reference %s as its ending date %s does not "
 "correspond to end date of the period."
 msgstr ""
+"Не вдається опублікувати переміщення з референсом %s оскільки його дата "
+"закінчення %s не відповідає даті закінчення періоду."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_report_export_wizard
@@ -815,7 +819,7 @@ msgstr "Дочірні рядки"
 #: code:addons/account_reports/models/account_generic_tax_report.py:34
 #, python-format
 msgid "Closing Journal Entry"
-msgstr ""
+msgstr "Закриття запису журналу"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_closing_bank_balance0
@@ -869,12 +873,12 @@ msgstr "Налаштування"
 #: code:addons/account_reports/models/account_generic_tax_report.py:204
 #, python-format
 msgid "Configure your TAX accounts"
-msgstr ""
+msgstr "Налаштуйте ваші рахунки податку"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Configure your tax accounts"
-msgstr ""
+msgstr "Налаштуйте ваші рахунки податку"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:31
@@ -1476,7 +1480,7 @@ msgstr "Маржа валового прибутку (валовий прибу�
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_generic_tax_report
 msgid "Group amounts by tax grid"
-msgstr ""
+msgstr "Групувати рахунки за сіткою податку"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__groupby
@@ -1515,7 +1519,7 @@ msgstr "Ієрархія та підсумок"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "How often do Tax returns have to be made?"
-msgstr ""
+msgstr "Як часто потрібно робити податкові декларації?"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_aged_partner__id
@@ -1590,7 +1594,7 @@ msgstr "Внутрішня примітка"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_move__is_tax_closing
 msgid "Is Tax Closing"
-msgstr ""
+msgstr "Податок є закритим"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__green_on_positive
@@ -1604,6 +1608,8 @@ msgid ""
 "It seems that you have no entries to post, are you sure you correctly "
 "configured the accounts on your tax groups?"
 msgstr ""
+"Схоже, у вас немає записів для публікації. Ви впевнені, що правильно "
+"налаштували рахунки в групах податків?"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:21
@@ -1628,7 +1634,7 @@ msgstr "Записи в журналі"
 #: code:addons/account_reports/models/account_report.py:144
 #, python-format
 msgid "Journal Groups"
-msgstr ""
+msgstr "Групи журналів"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_move_line
@@ -1895,6 +1901,8 @@ msgid ""
 "No bank account found. Please set Default Debit and Default Credit accounts "
 "in journal(s): %s."
 msgstr ""
+"Не знайдено банківського рахунку. Встановіть рахунки дебету та кредиту за "
+"замовчуванням у журналі: %s."
 
 #. module: account_reports
 #: model_terms:ir.actions.act_window,help:account_reports.action_view_list_customer_statements
@@ -1932,7 +1940,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_generic_tax_report.py:56
 #, python-format
 msgid "Nothing to process"
-msgstr ""
+msgstr "Немає нічого до обробки"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__days_between_two_followups
@@ -1968,7 +1976,7 @@ msgstr "Відображати лише незмінні записи"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Open TAX report"
-msgstr ""
+msgstr "Звіт відкритого податку"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_income0
@@ -2085,7 +2093,7 @@ msgstr "Кредитор"
 #: code:addons/account_reports/models/account_generic_tax_report.py:139
 #, python-format
 msgid "Payable tax amount"
-msgstr ""
+msgstr "Сума податку, що підлягає оплаті"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_current_liabilities_payable
@@ -2107,7 +2115,7 @@ msgstr "Досягнення"
 #: code:addons/account_reports/models/res_config_settings.py:57
 #, python-format
 msgid "Periodic Tax Return"
-msgstr ""
+msgstr "Періодична податкова декларація"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_config_settings__account_tax_periodicity
@@ -2211,7 +2219,7 @@ msgstr "Прибутковість"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Proposition of tax closing journal entry."
-msgstr ""
+msgstr "Пропозиція запису журналу закриття податку."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:19
@@ -2223,7 +2231,7 @@ msgstr "Дебітор"
 #: code:addons/account_reports/models/account_generic_tax_report.py:139
 #, python-format
 msgid "Receivable tax amount"
-msgstr ""
+msgstr "Сума податку на дебіторську заборгованість"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_debtors0
@@ -2412,12 +2420,12 @@ msgstr "Дата початку :"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_periodicity_reminder_day
 msgid "Start from"
-msgstr ""
+msgstr "Початок з"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_original_periodicity_reminder_day
 msgid "Start from original"
-msgstr ""
+msgstr "Почніть з оригіналу"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__summary
@@ -2435,7 +2443,7 @@ msgstr "ПОДАТОК"
 #: code:addons/account_reports/models/res_config_settings.py:102
 #, python-format
 msgid "TAX Report"
-msgstr ""
+msgstr "Податковий звіт"
 
 #. module: account_reports
 #. openerp-web
@@ -2470,19 +2478,19 @@ msgstr "Податковий звіт"
 #: code:addons/account_reports/models/res_config_settings.py:60
 #, python-format
 msgid "Tax Report for company %s"
-msgstr ""
+msgstr "Податковий звіт для компанії %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_config_settings.py:90
 #: code:addons/account_reports/models/res_config_settings.py:96
 #, python-format
 msgid "Tax Return for %s"
-msgstr ""
+msgstr "Податкова декларація для %s"
 
 #. module: account_reports
 #: selection:mail.activity.type,category:0
 msgid "Tax report"
-msgstr ""
+msgstr "Податковий звіт"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__text
@@ -2546,7 +2554,7 @@ msgstr "Це дозволяє вибрати позицію підсумків �
 #: code:addons/account_reports/models/account_generic_tax_report.py:186
 #, python-format
 msgid "This period is already closed"
-msgstr ""
+msgstr "Цей період вже закрито"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -2641,6 +2649,13 @@ msgid ""
 "  1) Some bank statements not encoded in Odoo yet,\n"
 "  2) Duplicated payments."
 msgstr ""
+"Незрозуміла різниця = Віртуальний GL баланс - Кінцевий баланс останньої банківської виписки\n"
+"\n"
+"%s + Операції з обробкою повинні бути рівними кінцевому балансу останньої банківської виписки.\n"
+"\n"
+"Якщо це не рівнозначно, існує незрозуміла різниця. Це може бути пов'язано з:\n"
+"  1) Кількома банківськими виписками, які ще не закодовані в Odoo,\n"
+"  2) Дубльовані платежі."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -2682,7 +2697,7 @@ msgstr "Завантажити документ"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_generic_tax_report
 msgid "Use Tax Grid"
-msgstr ""
+msgstr "Використовуйте сітку податків"
 
 #. module: account_reports
 #: selection:account.financial.html.report.line,special_date_changer:0
@@ -2699,7 +2714,7 @@ msgstr "Перевірені платежі, не пов'язані з рядк�
 #: code:addons/account_reports/models/account_activity.py:64
 #, python-format
 msgid "Vat closing from %s to %s"
-msgstr ""
+msgstr "Закриття ПДВ з %s до %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_partner.py:73
@@ -2756,6 +2771,9 @@ msgid ""
 "\n"
 "The Virtual GL Balance represents the cash you'll have once all operations to process will be done."
 msgstr ""
+"Віртуальний GL баланс = %s + операції для обробки\n"
+"\n"
+"Віртуальний баланс GL представляє грошові кошти, які ви будете мати, коли будуть виконані всі операції."
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report_line__print_on_new_page
@@ -2810,6 +2828,7 @@ msgstr "Ви завершили з нагадуваннями!<br/>Ви проп
 #, python-format
 msgid "You can only post tax entries for one company at a time"
 msgstr ""
+"Податкові записи для однієї компанії можна опублікувати лише за один раз"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_partner.py:137
@@ -2820,7 +2839,7 @@ msgstr "будь-який"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "days after period"
-msgstr ""
+msgstr "днів після періоду"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -2855,7 +2874,7 @@ msgstr "відобразити розгорнуті всі параметри в
 #. module: account_reports
 #: selection:res.company,account_tax_periodicity:0
 msgid "monthly"
-msgstr ""
+msgstr "щомісяця"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_financial_report.py:977
@@ -2882,12 +2901,16 @@ msgstr "вкажіть, чи використовується звіт date_rang
 #: model:ir.model.fields,help:account_reports.field_account_move__is_tax_closing
 msgid "technical field used to know if this move is the vat closing move"
 msgstr ""
+"технічне поле, яке використовується для того, аби дізнатися, чи це "
+"переміщення закриття ПДВ"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_tax_original_periodicity_reminder_day
 msgid ""
 "technical helper to prevent rewriting activity date when saving settings"
 msgstr ""
+"технічний помічник для запобігання перезапису дати дії при збереженні "
+"налаштувань"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -2897,7 +2920,7 @@ msgstr "до:"
 #. module: account_reports
 #: selection:res.company,account_tax_periodicity:0
 msgid "trimester"
-msgstr ""
+msgstr "триместр"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

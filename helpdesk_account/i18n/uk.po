@@ -36,7 +36,7 @@ msgstr "Сторно"
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_helpdesk_ticket__invoices_count
 msgid "Credit Notes Count"
-msgstr ""
+msgstr "Підрахунок сторно"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_invoice_refund__partner_id
@@ -51,7 +51,7 @@ msgstr "Заявки служби підтримки"
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_invoice_refund__invoice_id
 msgid "Invoice To Refund"
-msgstr ""
+msgstr "Рахунок до відшкодування"
 
 #. module: helpdesk_account
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.helpdesk_ticket_view_form_inherit_helpdesk_invoicing

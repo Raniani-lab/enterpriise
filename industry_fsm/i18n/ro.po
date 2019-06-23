@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Dorin Hongu <dhongu@gmail.com>, 2019
 # Cozmin Candea <office@terrabit.ro>, 2019
+# Dorin Hongu <dhongu@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-03-20 14:36+0000\n"
-"Last-Translator: Cozmin Candea <office@terrabit.ro>, 2019\n"
+"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -301,7 +301,7 @@ msgstr "Cantitate"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__quotation_count
 msgid "Quotation Count"
-msgstr ""
+msgstr "Număr oferte"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm

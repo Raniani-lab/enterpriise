@@ -5,8 +5,8 @@
 # Translators:
 # Bohdan Lisnenko, 2018
 # Анатолій Пономаренко <aponomarenko020@gmail.com>, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,17 +25,17 @@ msgstr ""
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Account used to recognize the revenue"
-msgstr ""
+msgstr "Рахунок використовується для визнання доходу"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Account used to record the deferred income"
-msgstr ""
+msgstr "Рахунок використовується для запису доходів майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
 msgid "Asset Model"
-msgstr ""
+msgstr "Модель активу"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -62,18 +62,18 @@ msgstr "Рахунок доходу майбутніх періодів"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Deferred Revenue Amount"
-msgstr ""
+msgstr "Сума доходів майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Deferred Revenue Model name"
-msgstr ""
+msgstr "Назва моделі доходів майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_account_revenue_model_form
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_revenue_model_recognition
 msgid "Deferred Revenue Models"
-msgstr ""
+msgstr "Моделі доходів майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -90,7 +90,7 @@ msgstr "Доходи майбутніх періодів"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
 msgid "Deferred Revenues Models"
-msgstr ""
+msgstr "Моделі доходів майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_modal
@@ -100,7 +100,7 @@ msgstr "Відмінити"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "First Recognition Date"
-msgstr ""
+msgstr "Дата першого визнання"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
@@ -126,22 +126,22 @@ msgstr "Наступний період доходу"
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Number of Recognitions"
-msgstr ""
+msgstr "Кількість рядків визнання"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
 msgid "Period length"
-msgstr ""
+msgstr "Тривалість періоду"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Related Sales"
-msgstr ""
+msgstr "Пов'язані продажі"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Residual Amount to Recognize"
-msgstr ""
+msgstr "Залишкова сума до визнання"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -153,7 +153,7 @@ msgstr "Дохід"
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
 msgid "Revenue Account"
-msgstr ""
+msgstr "Рахунок доходу"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -184,4 +184,4 @@ msgstr "Визнання доходів"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "e.g. Annual Subscription"
-msgstr ""
+msgstr "напр., Річна підписка"

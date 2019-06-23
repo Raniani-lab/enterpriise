@@ -222,6 +222,7 @@ msgstr "Провайдер"
 #, python-format
 msgid "Return shipment created into bpost <br/> <b>Tracking Number : </b>%s"
 msgstr ""
+"Повернення відправки створено в bpost <br/> <b>Номер відстеження : </b>%s"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
@@ -247,13 +248,13 @@ msgstr "Доставка створена в bpost<br/> <b>Номер відст
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Методи доставки"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:267
 #, python-format
 msgid "The BPost shipping service is unresponsive, please retry later."
-msgstr ""
+msgstr "Послуга доставки BPost не відповідає, повторіть спробу пізніше."
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:52
@@ -407,7 +408,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
 msgid "bpost Shipping Methods"
-msgstr ""
+msgstr "Методи доставки bpost"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:114

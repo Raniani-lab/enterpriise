@@ -28,6 +28,8 @@ msgid ""
 "1. To upgrade the IoT and Manufacturing modules, go in Apps, search for the "
 "App and click on Upgrade"
 msgstr ""
+"1. Щоб оновити модулі IoT і модулі виробництва, перейдіть у Додатки, "
+"виконайте пошук модуля та натисніть кнопку Оновити"
 
 #. module: quality_control_iot
 #. openerp-web
@@ -37,6 +39,8 @@ msgid ""
 "2. To update the image, go on the IoT Box's homepage and click on Update "
 "(you may also need to reload the drivers)"
 msgstr ""
+"2. Щоб оновити зображення, перейдіть на домашню сторінку IoT Box та "
+"натисніть Оновити (може знадобитися перезавантаження драйверів)"
 
 #. module: quality_control_iot
 #. openerp-web
@@ -55,7 +59,7 @@ msgstr "Назва пристрою: "
 #: code:addons/quality_control_iot/static/src/js/iot_measure.js:20
 #, python-format
 msgid "Have a great day!"
-msgstr ""
+msgstr "Гарного дня!"
 
 #. module: quality_control_iot
 #: model:ir.model.fields,field_description:quality_control_iot.field_quality_check__identifier
@@ -80,17 +84,19 @@ msgid ""
 "Some improvements have been made on the IoT App that require some manual "
 "actions from your side:"
 msgstr ""
+"Деякі покращення в модулі IoT, які вимагають деяких ручних дій з вашого "
+"боку:"
 
 #. module: quality_control_iot
 #. openerp-web
 #: code:addons/quality_control_iot/static/src/js/iot_measure.js:19
 #, python-format
 msgid "Thank you for your understanding."
-msgstr ""
+msgstr "Дякуємо за розуміння."
 
 #. module: quality_control_iot
 #. openerp-web
 #: code:addons/quality_control_iot/static/src/js/iot_measure.js:23
 #, python-format
 msgid "Update IoT App."
-msgstr ""
+msgstr "Оновіть модуль IoT."

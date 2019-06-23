@@ -744,7 +744,7 @@ msgstr "Підсумок"
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Tax report"
-msgstr ""
+msgstr "Податковий звіт"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip

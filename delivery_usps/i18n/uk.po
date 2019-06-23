@@ -357,7 +357,7 @@ msgstr "Відвантаження створено в USPS <br/> <b>Номер 
 #. module: delivery_usps
 #: model:ir.model,name:delivery_usps.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Методи доставки"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
@@ -500,7 +500,7 @@ msgstr "Послуга USPS "
 #: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
 msgid "USPS Shipping Methods"
-msgstr ""
+msgstr "Методи доставки USPS"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_username

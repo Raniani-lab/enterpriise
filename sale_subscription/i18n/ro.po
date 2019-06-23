@@ -1624,7 +1624,7 @@ msgstr "Factura se repetă în mod automat la un interval specificat"
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_success
 msgid "Invoice for subscription ${ctx.get('code')}"
-msgstr ""
+msgstr "Factură pentru abonament ${ctx.get('code')}"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
@@ -2586,6 +2586,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Stare bazată pe activități\n"
+"Întârziată: data scadentă este deja trecută\n"
+"Astăzi: activității pentru astăzi\n"
+"Planificate: activități viitoare."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__price_subtotal

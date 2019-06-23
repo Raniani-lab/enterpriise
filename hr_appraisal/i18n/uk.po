@@ -199,7 +199,7 @@ msgstr "Додаткові коментарі"
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Адміністратор"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form

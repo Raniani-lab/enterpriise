@@ -239,6 +239,8 @@ msgid ""
 "No users can edit journal entries related to a tax prior and inclusive of "
 "this date."
 msgstr ""
+"Жоден користувач не може редагувати записи журналу, пов'язані з податком до "
+"цієї дати."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -307,7 +309,7 @@ msgstr "Зберегти"
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date
 msgid "Tax Lock Date"
-msgstr ""
+msgstr "Дата блокування податку"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form

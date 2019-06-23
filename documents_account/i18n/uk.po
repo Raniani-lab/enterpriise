@@ -32,7 +32,7 @@ msgstr ""
 #. module: documents_account
 #: sql_constraint:documents.account.folder.setting:0
 msgid "A setting already exists for this journal"
-msgstr ""
+msgstr "Для цього журналу вже існує параметр"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reconciliation_widget
@@ -42,7 +42,7 @@ msgstr "Віджет узгодження рахунку"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Accounting "
-msgstr ""
+msgstr "Бухоблік"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
@@ -77,12 +77,12 @@ msgstr "Створити"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Credit Note"
-msgstr ""
+msgstr "Створити сторно"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
 msgid "Create Customer Invoice"
-msgstr ""
+msgstr "Створити рахунок клієнта"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule
@@ -92,7 +92,7 @@ msgstr "Створити рахунок постачальника"
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Create signature request"
-msgstr ""
+msgstr "Створити запит на підпис"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_uid
@@ -112,7 +112,7 @@ msgstr "Сторно"
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Customer invoice"
-msgstr ""
+msgstr "Рахунок клієнта"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__display_name
@@ -184,7 +184,7 @@ msgstr "Запис у журналі"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_documents_account_folder_setting
 msgid "Journal and Folder settings"
-msgstr ""
+msgstr "Налаштування журналу та папки"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
@@ -194,7 +194,7 @@ msgstr "Журнали"
 #. module: documents_account
 #: model:ir.actions.act_window,name:documents_account.action_folder_settings_installer
 msgid "Journals to synchronize"
-msgstr ""
+msgstr "Журнали для синхронізації"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting____last_update
@@ -242,17 +242,19 @@ msgstr "Запит на узгодження"
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Select the journals to be synchronized"
-msgstr ""
+msgstr "Виберіть журнали для синхронізації"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Select the workspace to be used for accounting documents"
 msgstr ""
+"Виберіть робочі області, які будуть використовуватися для документів "
+"бухобліку"
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Sign directly"
-msgstr ""
+msgstr "Підписати безпосередньо"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids

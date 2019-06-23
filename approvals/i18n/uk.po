@@ -69,7 +69,7 @@ msgstr "Додаткові елементи, які необхідно вказ�
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Адміністратор"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_all

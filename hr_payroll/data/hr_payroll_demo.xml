@@ -42,6 +42,13 @@
 
         <!-- Salary Rules for Regular Pay-->
 
+        <record id="structure_003" model="hr.payroll.structure">
+            <field name="name">13th month - End of the year bonus</field>
+            <field name="type_id" ref="structure_type_employee"/>
+            <field name="regular_pay" eval="True"/>
+            <field name="rule_ids" eval="[]"/>
+        </record>
+
         <record id="hr_salary_rule_houserentallowance1" model="hr.salary.rule">
             <field name="amount_select">percentage</field>
             <field eval="40.0" name="amount_percentage"/>
@@ -107,6 +114,17 @@
             <field name="partner_id" ref="hr_professional_tax_register"/>
             <field name="name">Professional Tax</field>
             <field name="struct_id" ref="structure_002"/>
+        </record>
+
+        <record id="hr_salary_rule_13th_month_salary" model="hr.salary.rule">
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage" eval="10.0"/>
+            <field name="amount_percentage_base">contract.wage</field>
+            <field name="code">13th pay</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">13th pay salary</field>
+            <field name="sequence" eval="5"/>
+            <field name="struct_id" ref="structure_003"/>
         </record>
 
         <!-- Employee -->

@@ -21,6 +21,7 @@ class HrPayslipEmployees(models.TransientModel):
 
     employee_ids = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
                                     default=lambda self: self._get_employees(), required=True)
+    structure_id = fields.Many2one('hr.payroll.structure', string='Salary Structure')
 
     def _check_undefined_slots(self, work_entries, payslip_run):
         """
@@ -79,7 +80,7 @@ class HrPayslipEmployees(models.TransientModel):
                 'date_from': payslip_run.date_start,
                 'date_to': payslip_run.date_end,
                 'contract_id': contract.id,
-                'struct_id': contract.structure_type_id.default_struct_id.id,
+                'struct_id': self.structure_id.id or contract.structure_type_id.default_struct_id.id,
             })
             payslip = self.env['hr.payslip'].new(values)
             payslip._onchange_employee()

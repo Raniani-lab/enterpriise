@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import os
+import datetime
 
 from odoo.tools import config, test_reports
 from odoo.addons.hr_payroll.tests.common import TestPayslipBase
@@ -62,3 +63,27 @@ class TestPayslipFlow(TestPayslipBase):
 
         # I generate the payslip by clicking on Generat button wizard.
         payslip_employee.with_context(active_id=payslip_run.id).compute_sheet()
+
+    def test_01_batch_with_specific_structure(self):
+        """ Create a batch with a given structure different than the regular pay"""
+
+        self.richard_emp.contract_ids[0].state = 'open'
+
+        # 13th month pay
+        payslip_run = self.env['hr.payslip.run'].create({
+            'date_start': datetime.date(2018, 8, 1),
+            'date_end': datetime.date(2018, 8, 31),
+            'name': 'End of the year bonus'
+        })
+
+        # I create record for generating the payslip for this Payslip run.
+        payslip_employee = self.env['hr.payslip.employees'].create({
+            'employee_ids': [(4, self.richard_emp.id)],
+            'structure_id': self.ref('hr_payroll.structure_003'),
+        })
+
+        # I generate the payslip by clicking on Generat button wizard.
+        payslip_employee.with_context(active_id=payslip_run.id).compute_sheet()
+
+        self.assertEqual(len(payslip_run.slip_ids), 1)
+        self.assertEqual(payslip_run.slip_ids.struct_id.id, self.ref('hr_payroll.structure_003'))

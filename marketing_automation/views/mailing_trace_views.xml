@@ -5,7 +5,7 @@
         <field name="model">mailing.trace</field>
         <field name="inherit_id" ref="mass_mailing.mailing_trace_view_form"/>
         <field name="arch" type="xml">
-        	<xpath expr="//field[@name='mass_mailing_campaign_id']" position="after">
+        	<xpath expr="//field[@name='campaign_id']" position="after">
         		<field name="marketing_trace_id"/>
         	</xpath>
         </field>

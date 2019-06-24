@@ -309,8 +309,8 @@ class ProjectForecast(models.Model):
                 employee = self.env['hr.employee'].browse([employee_id])
                 employee_start, employee_end = employee._get_work_interval(start_datetime, end_datetime).get(employee_id)
                 self.create({
-                    'start_datetime': employee_start,
-                    'end_datetime': employee_end,
+                    'start_datetime': employee_start or start_datetime,
+                    'end_datetime': employee_end or end_datetime,
                     'employee_id': employee_id,
                     'project_id': project_id,
                     'task_id': task_id,

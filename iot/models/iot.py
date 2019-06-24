@@ -38,12 +38,14 @@ class IotDevice(models.Model):
         ('camera', 'Camera'),
         ('device', 'Device'),
         ('payment', 'Payment Terminal'),
+        ('scale', 'Scale'),
         ], readonly=True, default='device', string='Type',
         help="Type of device.")
     connection = fields.Selection([
         ('network', 'Network'),
         ('direct', 'USB'),
-        ('bluetooth', 'Bluetooth')
+        ('bluetooth', 'Bluetooth'),
+        ('serial', 'Serial'),
         ], readonly=True, string="Connection",
         help="Type of connection.")
     report_ids = fields.One2many('ir.actions.report', 'device_id', string='Reports')

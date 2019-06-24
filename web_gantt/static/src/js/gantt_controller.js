@@ -205,7 +205,7 @@ var GanttController = AbstractController.extend({
      */
     _onCreate: function(context){
         if(this.createAction){
-            var fullContext = _.extend({}, this._context, context);
+            var fullContext = _.extend({}, this.context, context);
             this.do_action(this.createAction, {
                 additional_context: fullContext,
                 on_close: this.reload.bind(this, {})

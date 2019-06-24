@@ -234,13 +234,14 @@ QUnit.module('Views', {
         });
         assert.strictEqual($('.o_widget').length, 1,
             "there should be a node with o_widget class");
-        var texts = $('svg text');
-        assert.deepEqual(texts.length, 4,
-            "texts must contain exactly 4 elements");
-        assert.strictEqual(texts.text(), "63%38%FirstSecond",
-            "there should be 4 texts visible");
-        assert.strictEqual($('.o_widget label').text(), "Products sold",
+        assert.strictEqual($('.o_graph_canvas_container label').text(), "Products sold",
             "the title of the graph should be displayed");
+
+        var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
+        var legendText = $(chart.generateLegend()).text().trim();
+        assert.strictEqual(legendText, "FirstSecond",
+            "there should be two legend items");
+
         dashboard.destroy();
         delete widgetRegistry.map.test;
     });

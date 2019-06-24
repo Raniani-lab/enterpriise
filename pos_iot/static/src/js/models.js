@@ -11,6 +11,7 @@ models.load_models([{
     loaded: function(self, iot_devices) {
         var used_devices = {
             'payment': self.config.iface_payment_terminal,
+            'scale': self.config.iface_electronic_scale,
         };
         var iot_device_proxies = {};
         _.each(iot_devices, function(iot_device) {

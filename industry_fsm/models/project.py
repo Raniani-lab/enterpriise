@@ -305,10 +305,13 @@ class Task(models.Model):
                 if existing_line:
                     existing_line.write({'product_uom_qty': existing_line.product_uom_qty + line.quantity})
                 else:
-                    self.env['sale.order.line'].create({
+                    vals = {
                         'order_id': sale_order.id,
                         'product_id': line.product_id.id,
                         'product_uom_qty': line.quantity,
                         'product_uom': line.product_id.uom_id.id
-                    })
+                    }
+                    if line.product_id.invoice_policy == 'delivery' and line.product_id.service_type == 'manual':
+                        vals['qty_delivered'] = line.quantity
+                    self.env['sale.order.line'].create(vals)
         return sale_order

@@ -139,7 +139,7 @@ class AccountReport(models.AbstractModel):
         all_journals = []
         journals = []
         for journal_option in options.get('journals', []):
-            if journal_option['id'] == 'divider':
+            if journal_option['id'] in ('divider', 'group'):
                 continue
             if journal_option['selected']:
                 journals.append(journal_option)

@@ -102,16 +102,44 @@ class Task(models.Model):
 
     @api.depends('planned_date_begin', 'planned_date_end', 'user_id')
     def _compute_planning_overlap(self):
-        for task in self:
-            domain = [('is_fsm', '=', True),
-                      ('user_id', '=', task.user_id.id),
-                      ('planned_date_begin', '<', task.planned_date_end),
-                      ('planned_date_end', '>', task.planned_date_begin)]
-            current_id = task._origin.id
-            if current_id:
-                domain.append(('id', '!=', current_id))
-            overlap = self.env['project.task'].search_count(domain)
-            task.planning_overlap = overlap
+        if self.ids:
+            query = """
+                SELECT
+                    T1.id, COUNT(T2.id)
+                FROM
+                    (
+                        SELECT
+                            T.id as id,
+                            T.user_id as user_id,
+                            T.project_id,
+                            T.planned_date_begin as planned_date_begin,
+                            T.planned_date_end as planned_date_end
+
+                        FROM project_task T
+                        LEFT OUTER JOIN project_project P ON P.id = T.project_id
+                        WHERE T.id IN %s
+                            AND P.is_fsm = 't'
+                            AND T.planned_date_begin IS NOT NULL
+                            AND T.planned_date_end IS NOT NULL
+                            AND T.project_id IS NOT NULL
+                    ) T1
+                INNER JOIN project_task T2
+                    ON T1.id != T2.id
+                        AND T1.user_id = T2.user_id
+                        AND T2.planned_date_begin IS NOT NULL
+                        AND T2.planned_date_end IS NOT NULL
+                        AND T2.project_id IS NOT NULL
+                        AND (T1.planned_date_begin::TIMESTAMP, T1.planned_date_end::TIMESTAMP)
+                            OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.planned_date_end::TIMESTAMP)
+                GROUP BY T1.id
+            """
+            self.env.cr.execute(query, (tuple(self.ids),))
+            raw_data = self.env.cr.dictfetchall()
+            overlap_mapping = dict(map(lambda d: d.values(), raw_data))
+            for task in self:
+                task.planning_overlap = overlap_mapping.get(task.id, 0)
+        else:
+            self.planning_overlap = False
 
     def _compute_quotation_count(self):
         quotation_data = self.env['sale.order'].read_group([('state', '!=', 'cancel'), ('task_id', 'in', self.ids)], ['task_id'], ['task_id'])
@@ -283,6 +311,22 @@ class Task(models.Model):
         action['context'] = context
         return action
 
+    def action_fsm_view_overlapping_tasks(self):
+        fsm_task_form_view = self.env.ref('industry_fsm.project_task_view_form')
+        fsm_task_list_view = self.env.ref('industry_fsm.project_task_view_list_fsm')
+        domain = self._get_fsm_overlap_domain()[self.id]
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Overlapping tasks'),
+            'res_model': 'project.task',
+            'domain': domain,
+            'views': [(fsm_task_list_view.id, 'tree'), (fsm_task_form_view.id, 'form')],
+            'context': {
+                'fsm_mode': True,
+                'task_nameget_with_hours': False,
+            }
+        }
+
     # ---------------------------------------------------------
     # Business Methods
     # ---------------------------------------------------------
@@ -325,3 +369,22 @@ class Task(models.Model):
             'so_line': sale_order_line.id
         })
         return sale_order
+
+    def _get_fsm_overlap_domain(self):
+        domain_mapping = {}
+        for task in self:
+            domain_mapping[task.id] = [
+                '&',
+                    '&',
+                        '&',
+                            ('is_fsm', '=', True),
+                            ('user_id', '=', task.user_id.id),
+                        '&',
+                            ('planned_date_begin', '<', task.planned_date_end),
+                            ('planned_date_end', '>', task.planned_date_begin),
+                    ('project_id', '!=', False)
+            ]
+            current_id = task._origin.id
+            if current_id:
+                domain_mapping[task.id] = expression.AND([domain_mapping[task.id], [('id', '!=', current_id)]])
+        return domain_mapping

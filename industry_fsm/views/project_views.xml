@@ -13,7 +13,10 @@
             <xpath expr="//header" position="after">
                 <div role="alert" class="alert-warning p-3 text-center"
                     attrs="{'invisible': ['|', ('is_fsm', '=', False), ('planning_overlap', '=', 0)]}">
-                    <field name="planning_overlap"/> other task(s) for this employee at the same time.
+                    <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pr-1">
+                        <field name="planning_overlap"/> tasks
+                    </button>
+                    <span class="align-middle">for this employee at the same time.</span>
                 </div>
             </xpath>
             <xpath expr="//field[@name='user_id']" position="after">
@@ -198,6 +201,13 @@
                         <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('invoice_count', '=', 0)]}">
                             <field name="invoice_count" widget="statinfo" string="Invoices"/>
                         </button>
+                    </div>
+                    <div role="alert" class="alert-warning p-3 text-center"
+                        attrs="{'invisible': ['|', ('is_fsm', '=', False), ('planning_overlap', '=', 0)]}">
+                        <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pr-1">
+                            <field name="planning_overlap"/> tasks
+                        </button>
+                        <span class="align-middle">for this employee at the same time.</span>
                     </div>
                     <group>
                         <group>

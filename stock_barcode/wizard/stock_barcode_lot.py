@@ -125,10 +125,15 @@ class StockBarcodeLotLine(models.TransientModel):
     qty_done = fields.Float('Quantity Done')
     stock_barcode_lot_id = fields.Many2one('stock_barcode.lot')
     move_line_id = fields.Many2one('stock.move.line')
-    product_barcode = fields.Char('Barcode', related='lot_name', readonly=False)
+    product_barcode = fields.Char('Barcode', compute='_compute_product_barcode')
 
     @api.onchange('qty_done')
     def onchange_qty_done(self):
         if self.stock_barcode_lot_id.product_id.tracking == 'serial' and self.qty_done > 1:
             raise UserError(_('You cannot scan two times the same serial number'))
         self.stock_barcode_lot_id._update_quantity_done()
+
+    @api.depends('lot_name')
+    def _compute_product_barcode(self):
+        for line in self:
+            line.product_barcode = line.lot_name

@@ -12,7 +12,8 @@ class ValidationWizard(models.TransientModel):
     validation_line_ids = fields.One2many('timesheet.validation.line', 'validation_id')
 
     def action_validate(self):
-        self.validation_line_ids.filtered('validate').mapped('employee_id').write({'timesheet_validated': self.validation_date})
+        if self.env.user.has_group('hr_timesheet.group_hr_timesheet_approver'):
+            self.validation_line_ids.filtered('validate').mapped('employee_id').sudo().write({'timesheet_validated': self.validation_date})
         return {'type': 'ir.actions.act_window_close'}
 
 

@@ -320,10 +320,9 @@ var ReportEditorManager = AbstractEditorManager.extend({
 
         var $container = this.$('.o_web_studio_report_iframe_container');
         $container.css({
-            'padding-bottom': (format.margin_bottom || 0)  + 'px',
-            'padding-top': (format.margin_top || 0) + 'px',
-            'padding-left': (format.margin_left || 0) + 'px',
-            'padding-right': (format.margin_right || 0) + 'px',
+            'padding-top': Math.max(0, (format.margin_top || 0) - (format.header_spacing || 0)) + 'mm',
+            'padding-left': (format.margin_left || 0) + 'mm',
+            'padding-right': (format.margin_right || 0) + 'mm',
             // note: default width/height comes from default A4 size
             'width': (format.print_page_width || 210) + 'mm',
             // avoid a scroll bar with a fixed height

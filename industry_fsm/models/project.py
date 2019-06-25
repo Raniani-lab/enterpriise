@@ -4,7 +4,7 @@ from ast import literal_eval
 from datetime import timedelta, datetime
 
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError, AccessError
+from odoo.exceptions import AccessError
 
 
 class Project(models.Model):

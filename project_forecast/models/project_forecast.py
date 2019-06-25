@@ -147,13 +147,29 @@ class ProjectForecast(models.Model):
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
+        domain = [] if not self.project_id else [('project_id', '=', self.project_id.id)]
+        result = {
+            'domain': {'task_id': domain},
+        }
+        if self.task_id:
+            self.task_id = False
         if self.recurrency_id:
-            return {
-                'warning': {
-                    'title': _("Warning"),
-                    'message': _("This action will remove the current forecast from the recurrency. Are you sure you want to continue?"),
-                }
+            result['warning'] = {
+                'title': _("Warning"),
+                'message': _("This action will remove the current forecast from the recurrency. Are you sure you want to continue?"),
             }
+        return result
+
+    @api.onchange('resource_hours', 'start_datetime', 'end_datetime')
+    def _onchange_warn_if_resource_hours_too_long(self):
+        if self.employee_id and self.start_datetime and self.end_datetime:
+            max_resource_hours = self.employee_id._get_work_days_data(self.start_datetime, self.end_datetime)['hours']
+            if self.resource_hours > max_resource_hours:
+                return {
+                    'warning': {
+                        'title': _('Warning!'),
+                        'message': _('You are allocating more hours than available for this employee')}
+                }
 
     # ----------------------------------------------------
     # ORM overrides

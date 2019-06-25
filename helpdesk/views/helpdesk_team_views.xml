@@ -85,7 +85,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="member_ids"/>
                                 <div class="text-muted">
-                                    Keep empty for everyone to see this team
+                                    Individuals to whom the tickets will be automatically assigned. Keep empty for everyone to be part of the team.
                                 </div>
                                 <div>
                                     <field name="member_ids" widget="many2many_tags" options="{'color_field': 'color'}" class="mt16"/>

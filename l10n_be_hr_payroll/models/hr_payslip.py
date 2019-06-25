@@ -38,6 +38,7 @@ class Payslip(models.Model):
             'compute_special_social_cotisations': compute_special_social_cotisations,
             'compute_double_holiday_withholding_taxes': compute_double_holiday_withholding_taxes,
             'compute_thirteen_month_withholding_taxes': compute_thirteen_month_withholding_taxes,
+            'compute_withholding_reduction': compute_withholding_reduction,
         })
         return res
 
@@ -330,3 +331,8 @@ def compute_thirteen_month_withholding_taxes(payslip, categories, worked_days, i
     else:
         withholding_tax_amount = yearly_revenue * find_rates(yearly_revenue)
     return -withholding_tax_amount / 12.0
+
+def compute_withholding_reduction(payslip, categories, worked_days, inputs):
+    if categories.EmpBonus:
+        return categories.EmpBonus * 0.3314
+    return 0.0

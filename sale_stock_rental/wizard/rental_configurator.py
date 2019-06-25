@@ -27,7 +27,7 @@ class RentalWizard(models.TransientModel):
     tracking = fields.Selection(related='product_id.tracking')
     lot_ids = fields.Many2many(
         'stock.production.lot',
-        string="Serials to reserve", help="Only available serial numbers are suggested",
+        string="Serial Numbers", help="Only available serial numbers are suggested",
         domain="[('id', 'not in', rented_lot_ids), ('id', 'in', rentable_lot_ids)]")
     rentable_lot_ids = fields.Many2many(
         'stock.production.lot',

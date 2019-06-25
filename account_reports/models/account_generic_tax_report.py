@@ -286,7 +286,7 @@ class generic_tax_report(models.AbstractModel):
         """
         tables, where_clause, where_params = self.env['account.move.line']._query_get()
         sql = """SELECT account_tax_report_line_tags_rel.account_tax_report_line_id,
-                        SUM(coalesce(balance, 0) * CASE WHEN acc_tag.tax_negate THEN -1 ELSE 1 END
+                        SUM(coalesce(account_move_line.balance, 0) * CASE WHEN acc_tag.tax_negate THEN -1 ELSE 1 END
                                                  * CASE WHEN account_journal.type = 'sale' THEN -1 ELSE 1 END
                                                  * CASE WHEN account_invoice.type in ('in_refund', 'out_refund') THEN -1 ELSE 1 END)
                         AS balance

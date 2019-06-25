@@ -78,7 +78,7 @@
     has been received and is being reviewed by our ${object.team_id.name or ''} team.
     The reference of your ticket is ${object.id}.<br /><br />
     To add additional comments, reply to this email.<br />
-    Thanks you,<br /><br />
+    Thank you,<br /><br />
     ${object.team_id.name or 'Helpdesk'} Team.
 </div>
         </field>

@@ -82,16 +82,17 @@ class AnalyticLine(models.Model):
             'views': [(False, 'form')],
         }
 
-    @api.model
-    def create(self, vals):
-        # when the name is not provide by the 'Add a line' form from grid view, we set a default one
-        if vals.get('project_id') and not vals.get('name'):
-            vals['name'] = _('/')
-        line = super(AnalyticLine, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # when the name is not provide by the 'Add a line' form from grid view, we set a default one
+            if vals.get('project_id') and not vals.get('name'):
+                vals['name'] = _('/')
+        lines = super(AnalyticLine, self).create(vals_list)
         # A line created before validation limit will be automatically validated
-        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and line.is_timesheet and line.validated:
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and any(line.is_timesheet and line.validated for line in lines):
             raise AccessError(_('Only a Timesheets Approver or Manager is allowed to create an entry older than the validation limit.'))
-        return line
+        return lines
 
     def write(self, vals):
         res = super(AnalyticLine, self).write(vals)

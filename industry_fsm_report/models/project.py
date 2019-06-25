@@ -73,9 +73,6 @@ class Task(models.Model):
 
     def action_send_report(self):
         self.ensure_one()
-        if self.worksheet_template_id and not self.worksheet_count:
-            raise UserError(_("To send the report, you need to set a worksheet template and create a worksheet."))
-
         template_id = self.env.ref('industry_fsm_report.mail_template_data_send_report').id
         return {
             'type': 'ir.actions.act_window',

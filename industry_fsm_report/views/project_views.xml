@@ -118,12 +118,12 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_fsm_validate']" position="before">
                 <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '=', 'draft'), ('worksheet_template_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', True)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', True)]}"/>
             </xpath>
             <xpath expr="//field[@name='timesheet_timer_start']" position="before">
                 <field name="fsm_is_sent" invisible="1"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '=', 'draft'), ('worksheet_template_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', False)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('allow_worksheets', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', ('allow_timesheets', '=', False), ('allow_billable', '=', False), ('fsm_is_sent', '=', False)]}"/>
             </xpath>
             <xpath expr="//button[@name='action_fsm_view_material']" position="before">
                 <field name="allow_worksheets" invisible="1"/>

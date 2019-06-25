@@ -158,11 +158,11 @@
 
                     <field name="invoice_count" invisible="1"/>
                     <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', ('allow_billable', '=', False), '|', ('fsm_state', '=', 'draft'), ('invoice_count', '!=', 0)]}" groups="sales_team.group_sale_salesman"/>
+                        attrs="{'invisible': ['|', ('allow_billable', '=', False), '|', ('fsm_state', '=', 'draft'), '|', ('invoice_count', '!=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="sales_team.group_sale_salesman"/>
                     <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', ('allow_billable', '=', False), '|', ('fsm_state', '=', 'draft'), ('invoice_count', '=', 0)]}" groups="sales_team.group_sale_salesman"/>
+                        attrs="{'invisible': ['|', ('allow_billable', '=', False), '|', ('fsm_state', '=', 'draft'), '&amp;', ('invoice_count', '=', 0), '|', ('material_line_product_count', '!=', 0), ('total_hours_spent', '!=', 0)]}" groups="sales_team.group_sale_salesman"/>
 
-                    <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 mt-2 font-weight-bold"/>
+                    <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 mt-2 font-weight-bold" attrs="{'invisible': [('timesheet_timer_start', '=', False)]}"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

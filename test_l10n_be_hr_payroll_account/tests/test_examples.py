@@ -3,7 +3,6 @@
 
 import datetime
 from collections import OrderedDict
-from pytz import timezone
 
 from odoo.tests import common, tagged
 
@@ -32,6 +31,14 @@ class TestExamples(common.SavepointCase):
             'validity_start': datetime.date(2015, 1, 1),
             'company_id': cls.env.ref('l10n_be_hr_payroll.res_company_be').id,
             'work_entry_type_id': cls.env.ref('hr_payroll.work_entry_type_unpaid_leave').id,
+        })
+        cls.leave_type_small_unemployment = cls.env['hr.leave.type'].create({
+            'name': 'Small Unemployment',
+            'request_unit': 'hour',
+            'allocation_type': 'no',
+            'validity_start': datetime.date(2015, 1, 1),
+            'company_id': cls.env.ref('l10n_be_hr_payroll.res_company_be').id,
+            'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment').id,
         })
 
     def case_test(self, line_values, employee_values, payslip_values=None, contract_values=None, holidays_values=None, car_values=None, car_contract_values=None):
@@ -405,3 +412,221 @@ class TestExamples(common.SavepointCase):
             'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
         }
         self.case_test(values, employee, payslip_values=payslip, contract_values=contract, car_values=car, car_contract_values=car_contract)
+
+    # No IP, with employment bonus and public transportation
+    def test_no_ip_emp_bonus_public_transportation(self):
+        values = OrderedDict([
+            ('BASIC', 2075.44),
+            ('SALARY', 2075.44),
+            ('ONSS', -271.26),
+            ('EmpBonus.1', 106.44),
+            ('P.P', -273.68),
+            ('Tr.E', 105.04),
+            ('M.ONSS', -9.88),
+            ('MEAL_V_EMP', -21.8),
+            ('P.P.DED', 35.27),
+            ('NET', 1745.57),
+        ])
+
+        employee = {
+            'name': 'Roger',
+        }
+
+        contract = {
+            'name': 'Contract For Roger',
+            'date_start': datetime.date(2015, 1, 1),
+            'representation_fees': 0,
+            'others_reimbursed_amount': 105.04,
+            'wage': 2075.44,
+            'internet': False,
+            'mobile': False,
+        }
+
+        payslip = {
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
+            'date_from': datetime.date(2019, 2, 1),
+            'date_to': datetime.date(2019, 2, 28),
+        }
+
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract)
+
+    # Small unemployment leave, spouse without income
+    def test_small_unemployment_leave(self):
+        values = OrderedDict([
+            ('BASIC', 2706.14),
+            ('ATN.INT', 5.0),
+            ('ATN.MOB', 4.0),
+            ('SALARY', 2715.14),
+            ('ONSS', -354.87),
+            ('P.P', 0.0),
+            ('IP.DED', -50.74),
+            ('Tr.E', 200),
+            ('M.ONSS', -24.28),
+            ('MEAL_V_EMP', -19.62),
+            ('ATN.INT.2', -5.0),
+            ('ATN.MOB.2', -4.0),
+            ('IP', 676.54),
+            ('NET', 2606.64),
+        ])
+
+        employee = {
+            'name': 'Roger',
+            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+            'marital': 'married',
+            'children': 1,
+            'spouse_fiscal_status': 'without income',
+        }
+
+        contract = {
+            'name': 'Contract For Roger',
+            'date_start': datetime.date(2015, 1, 1),
+            'wage': 2706.14,
+            'representation_fees': 150,
+            'car_id': self.env.ref('hr_contract_salary.fleet_vehicle_audi_a3_laurie_poiret').id,
+            'others_reimbursed_amount': 200,
+            'internet': True,
+            'mobile': True,
+            'ip': True,
+            'ip_wage_rate': 25,
+            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+        }
+
+        holidays_values = [{
+            'name': 'Small Unemployment - Day 1',
+            'holiday_status_id': self.leave_type_small_unemployment.id,
+            'request_date_from': datetime.date(2019, 2, 27),
+            'request_date_to': datetime.date(2019, 2, 27),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+        }, {
+            'name': 'Small Unemployment - Day 2',
+            'holiday_status_id': self.leave_type_small_unemployment.id,
+            'request_date_from': datetime.date(2019, 2, 28),
+            'request_date_to': datetime.date(2019, 2, 28),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+        }]
+
+        payslip = {
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
+            'date_from': datetime.date(2019, 2, 1),
+            'date_to': datetime.date(2019, 2, 28)
+        }
+
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holidays_values)
+
+    # PFI with public transportation reimbursed
+    def test_pfi_public_transportation_pay(self):
+        values = OrderedDict([
+            ('BASIC', 2264.76),
+            ('SALARY', 2264.76),
+            ('P.P', -452.95),
+            ('Tr.E', 100),
+            ('MEAL_V_EMP', -21.8),
+            ('NET', 1890.01),
+        ])
+
+        employee = {
+            'name': 'Roger'
+        }
+
+        contract = {
+            'name': 'PFI Contract for Roger',
+            'date_start': datetime.date(2015, 1, 1),
+            'wage': 2264.76,
+            'meal_voucher_amount': 7.45,
+            'others_reimbursed_amount': 100,
+            'internet': False,
+            'mobile': False,
+        }
+
+        payslip = {
+            'date_from': datetime.date(2019, 2, 1),
+            'date_to': datetime.date(2019, 2, 28),
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_pfi'),
+        }
+
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract)
+
+    # PFI with company car
+    def test_pfi_company_car_pay(self):
+        values = OrderedDict([
+            ('BASIC', 1653.11),
+            ('SALARY', 1653.11),
+            ('P.P', -360.48),        # 20% of BASIC + ATN.CAR
+            ('ATN.CAR', 149.29),
+            ('ATN.CAR.2', -149.29),
+            ('MEAL_V_EMP', -23.98),
+            ('NET', 1268.65),
+        ])
+
+        employee = {
+            'name': 'Roger'
+        }
+
+        contract = {
+            'name': 'PFI Contract for Roger',
+            'date_start': datetime.date(2015, 1, 1),
+            'wage': 1653.11,
+            'meal_voucher_amount': 7.45,
+            'internet': False,
+            'mobile': False,
+            'transport_mode_car': True,
+            'car_id': self.env.ref('hr_contract_salary.fleet_vehicle_audi_a3_laurie_poiret').id,
+        }
+
+        holidays_values = [{
+            'name': 'Bank Holiday',
+            'holiday_status_id': self.leave_type_bank_holidays.id,
+            'request_date_from': datetime.date(2019, 1, 1),
+            'request_date_to': datetime.date(2019, 1, 1),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+        }]
+
+        payslip = {
+            'date_from': datetime.date(2019, 1, 1),
+            'date_to': datetime.date(2019, 1, 31),
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_pfi'),
+        }
+
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holidays_values)
+
+    # PFI with company car, mobile and internet
+    def test_pfi_with_benefits_pay(self):
+        values = OrderedDict([
+            ('BASIC', 1572.8),
+            ('ATN.INT', 5),
+            ('ATN.MOB', 4),
+            ('SALARY', 1581.8),
+            ('P.P', -344.42),        # 20% of BASIC + ATN.CAR 
+            ('ATN.CAR', 149.29),
+            ('MEAL_V_EMP', -21.8),
+            ('ATN.INT.2', -5),
+            ('ATN.MOB.2', -4),
+            ('ATN.CAR.2', -149.29),
+            ('NET', 1206.58),
+        ])
+
+        employee = {
+            'name': 'Roger'
+        }
+
+        contract = {
+            'name': 'PFI Contract for Roger',
+            'date_start': datetime.date(2015, 1, 1),
+            'wage': 1572.8,
+            'meal_voucher_amount': 7.45,
+            'internet': True,
+            'mobile': True,
+            'transport_mode_car': True,
+            'car_id': self.env.ref('hr_contract_salary.fleet_vehicle_audi_a3_laurie_poiret').id,
+        }
+
+        payslip = {
+            'date_from': datetime.date(2019, 2, 1),
+            'date_to': datetime.date(2019, 2, 28),
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_pfi'),
+        }
+
+        self.case_test(values, employee, payslip_values=payslip, contract_values=contract)

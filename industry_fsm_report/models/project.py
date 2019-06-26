@@ -30,18 +30,15 @@ class Project(models.Model):
 class Task(models.Model):
     _inherit = "project.task"
 
-    @api.model
-    def default_get(self, fields):
-        result = super(Task, self).default_get(fields)
+    def _default_worksheet_template_id(self):
         default_project_id = self.env.context.get('default_project_id')
         if default_project_id:
             project = self.env['project.project'].browse(default_project_id)
-            if 'report_template_id' in fields:
-                result['report_template_id'] = project.report_template_id.id
-        return result
+            return project.worksheet_template_id.id
+        return False
 
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', oldname='allow_reports')
-    worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template", oldname='report_template_id')
+    worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template", default=_default_worksheet_template_id, oldname='report_template_id')
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
 

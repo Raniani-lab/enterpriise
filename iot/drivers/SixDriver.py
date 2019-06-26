@@ -41,7 +41,7 @@ class SixDriver(Driver):
     def action(self, data):
         try:
             if data['messageType'] == 'Transaction':
-                self.open_shift()
+                self.open_shift(data['language'].encode())
                 self.actions.put({
                     'type': b'debit',
                     'amount': data['amount'],
@@ -56,7 +56,7 @@ class SixDriver(Driver):
                     'owner': self.data['owner'],
                 })
             elif data['messageType'] == 'OpenShift':
-                self.open_shift()
+                self.open_shift(data['language'].encode())
             elif data['messageType'] == 'CloseShift':
                 self.close_shift()
             elif data['messageType'] == 'Balance':
@@ -68,7 +68,7 @@ class SixDriver(Driver):
         except:
             pass
 
-    def open_shift(self):
+    def open_shift(self, language):
         """Opens the shift if it was closed (activation_state.value == 0)"""
 
         activation_state = ctypes.c_long()
@@ -76,6 +76,7 @@ class SixDriver(Driver):
         self.call_eftapi('EFT_PutPrinterWidth', 45)
         self.call_eftapi('EFT_PutReceiptOptions', 1089)
         if activation_state.value == 0:
+            self.call_eftapi('EFT_PutLanguage', language)
             self.call_eftapi('EFT_Open')
 
     def close_shift(self):

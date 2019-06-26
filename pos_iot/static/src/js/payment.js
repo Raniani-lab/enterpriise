@@ -242,7 +242,8 @@ screens.PaymentScreenWidget.include({
             messageType: 'Transaction',
             TransactionID: parseInt(this.pos.get_order().selected_paymentline.order.uid.replace(/-/g, '')),
             amount: Math.round(this.pos.get_order().selected_paymentline.amount*100),
-            currency: this.pos.currency.name
+            currency: this.pos.currency.name,
+            language: this.pos.user.lang.split('_')[0],
         };
         this.send_request(data);
     },
@@ -325,7 +326,10 @@ models.PosModel = models.PosModel.extend({
         var res = posmodel_super.after_load_server_data.apply(this, arguments);
         if (this.usePaymentTerminal()) {
             res.then(function () {
-                self.iot_device_proxies.payment.action({ messageType: 'OpenShift' });
+                self.iot_device_proxies.payment.action({ 
+                    messageType: 'OpenShift',
+                    language: self.user.lang.split('_')[0],
+                });
             });
         }
         return res;

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from ast import literal_eval
 from lxml import etree
 import time
 
@@ -54,14 +55,9 @@ class ProjectWorksheetTemplate(models.Model):
                     'on_delete': 'cascade',
                 }),
                 (0, 0, {
-                    'name': 'x_contact_person',
-                    'ttype': 'char',
-                    'field_description': 'Contact Person',
-                }),
-                (0, 0, {
-                    'name': 'x_intervention_type',
+                    'name': 'x_operation_type',
                     'ttype': 'selection',
-                    'field_description': 'Intervention Type',
+                    'field_description': 'Operation Type',
                     'selection': "[('functional','Functional'),('technical','Technical')]"
                 }),
                 (0, 0, {
@@ -126,8 +122,7 @@ class ProjectWorksheetTemplate(models.Model):
                     </group>
                     <group>
                         <group>
-                            <field name="x_contact_person" placeholder="Employee of the Customer"/>
-                            <field name="x_intervention_type"/>
+                            <field name="x_operation_type" widget="radio" options="{'horizontal': true}"/>
                             <field name="x_comments"/>
                             <field name="x_worker_signature" widget="signature"/>
                             <field name="x_customer_signature" widget="signature"/>
@@ -144,6 +139,7 @@ class ProjectWorksheetTemplate(models.Model):
             'res_model': model.model,
             'view_mode': 'tree,form',
             'target': 'current',
+            'context': "{'create': 0}",  # needed when leaving studio edit form view
         })
         template.write({
             'action_id': action.id,
@@ -170,7 +166,12 @@ class ProjectWorksheetTemplate(models.Model):
         return super(ProjectWorksheetTemplate, self).unlink()
 
     def action_view_worksheets(self):
-        return self.action_id.read()[0]
+        action = self.action_id.read()[0]
+        # modify context to force no create/import button
+        context = literal_eval(action.get('context', '{}'))
+        context['create'] = 0
+        action['context'] = context
+        return action
 
     # ---------------------------------------------------------
     # Business Methods

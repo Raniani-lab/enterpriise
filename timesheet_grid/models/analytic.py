@@ -16,7 +16,7 @@ class AnalyticLine(models.Model):
 
     def _domain_employee_id(self):
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
-            return [('timesheet_manager_id', '=', self.env.user.id)]
+            return ['|', ('timesheet_manager_id', '=', self.env.user.id), ('user_id', '=', self.env.user.id)]
         return []
 
     employee_id = fields.Many2one('hr.employee', "Employee", domain=_domain_employee_id)

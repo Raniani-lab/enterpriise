@@ -99,7 +99,7 @@ class Task(models.Model):
                 'default_res_id': self.id,
                 'default_use_template': bool(template_id),
                 'default_template_id': template_id,
-                'model_description': self._name,
+                'force_email': True,
                 'fsm_mark_as_sent': True,
             },
         }

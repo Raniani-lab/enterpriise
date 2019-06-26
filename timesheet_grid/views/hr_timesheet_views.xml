@@ -43,14 +43,18 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="project_id" required="1" class="o_timesheet_tour_project_name"/>
+                                <field name="project_id" required="1" class="o_timesheet_tour_project_name" context="{'form_view_ref': 'project.project_project_view_form_simplified',}"/>
                                 <field name="task_id" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name"/>
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
                                 <field name="employee_id" groups="hr_timesheet.group_hr_timesheet_approver"/>
                             </group>
                             <group>
                                 <field name="date"/>
-                                <field name="unit_amount" string="Time Spent" widget="timesheet_uom"/>
+                                <label for="unit_amount"/>
+                                <div class="o_row">
+                                    <field name="unit_amount" string="Time Spent" widget="timesheet_uom"/>
+                                    <field name="encoding_uom_id" options="{'no_open': true}"/>
+                                </div>
                             </group>
                         </group>
                     </sheet>
@@ -84,6 +88,9 @@
                     <attribute name="create">false</attribute>
                     <attribute name="edit">false</attribute>
                 </xpath>
+                <xpath expr="//field[@name='project_id']" position="replace">
+                    <field name="project_id" type="row"/>
+                </xpath>
                 <!-- group view by employee (only) instead of (project, task) -->
                 <xpath expr="//field[@name='task_id']" position="attributes">
                     <attribute name="name">employee_id</attribute>
@@ -115,9 +122,6 @@
             <field name="mode">primary</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='employee_id']" position="attributes">
-                    <attribute name="section">1</attribute>
-                </xpath>
                 <xpath expr="/grid" position="attributes">
                     <attribute name="create">false</attribute>
                     <attribute name="edit">false</attribute>
@@ -127,15 +131,17 @@
         <record id="timesheet_view_grid_by_employee_editable_manager" model="ir.ui.view">
             <field name="name">account.analytic.line.grid.employee.manager</field>
             <field name="model">account.analytic.line</field>
-            <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee_readonly"/>
+            <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee"/>
             <field name="priority">15</field>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="section">1</attribute>
+                </xpath>
                 <xpath expr="/grid" position="attributes">
                     <attribute name="create">true</attribute>
                     <attribute name="edit">true</attribute>
                 </xpath>
             </field>
-            <field name="groups_id" eval="[(4, ref('hr_timesheet.group_hr_timesheet_approver'))]"/>
         </record>
         <record id="timesheet_view_grid_by_employee_validation" model="ir.ui.view">
             <field name="name">account.analytic.line.grid.employee.validation</field>
@@ -159,7 +165,7 @@
             <field name="inherit_id" eval="False"/>
             <field name="arch" type="xml">
                 <grid string="Timesheets" create="false" edit="false">
-                    <field name="task_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
                     <field name="employee_id" type="row"/>
                     <field name="date" type="col">
                         <range name="week" string="Week" span="week" step="day"/>
@@ -222,7 +228,7 @@
         <record id="timesheet_action_view_all_grid" model="ir.actions.act_window.view">
             <field name="sequence" eval="2"/>
             <field name="view_mode">grid</field>
-            <field name="view_id" ref="timesheet_grid.timesheet_view_grid_by_employee_readonly"/>
+            <field name="view_id" ref="timesheet_grid.timesheet_view_grid_by_employee_editable_manager"/>
             <field name="act_window_id" ref="hr_timesheet.timesheet_action_all"/>
         </record>
 

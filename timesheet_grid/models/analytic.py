@@ -100,6 +100,7 @@ class AnalyticLine(models.Model):
         })
 
         return {
+            'name': _('Validate the timesheets'),
             'type': 'ir.actions.act_window',
             'target': 'new',
             'res_model': 'timesheet.validation',

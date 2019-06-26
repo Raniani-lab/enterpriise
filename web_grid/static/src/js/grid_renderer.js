@@ -128,6 +128,14 @@ return AbstractRenderer.extend({
     },
     /**
      * @private
+     * @returns {boolean}
+     */
+    _hasContent: function () {
+        var state = _.isArray(this.state) ? this.state[0] : this.state;
+        return state.rows[0] !== undefined;
+    },
+    /**
+     * @private
      * @param {Object} cell
      * @param {boolean} cell.readonly
      * @returns {boolean}
@@ -173,6 +181,13 @@ return AbstractRenderer.extend({
     _render: function () {
         var self = this;
         var vnode;
+
+        var displayNoContentHelper = !this._hasContent() && !!this.noContentHelp;
+        if (displayNoContentHelper) {
+            // this.$el.removeClass('table-responsive');
+            this.$el.html(this._renderNoContentHelper());
+            return Promise.resolve();
+        }
 
         if (_.isArray(this.state)) {
             // array of grid groups
@@ -293,6 +308,22 @@ return AbstractRenderer.extend({
                        _.map(this.noContentHelper.children, this._convertToVNode.bind(this))
                    )
                ]);
+    },
+    /**
+     * Renders the nocontent helper.
+     *
+     * This method is a helper for renderers that want to display a help
+     * message when no content is available.
+     *
+     * @private
+     * @returns {jQueryElement}
+     */
+    _renderNoContentHelper: function () {
+        var $noContent =
+            $('<div>').html(this.noContentHelp).addClass('o_nocontent_help');
+        return $('<div>')
+            .addClass('o_view_nocontent')
+            .append($noContent);
     },
     /**
      * @private
@@ -417,7 +448,7 @@ return AbstractRenderer.extend({
                         _.map(columns, function (column, column_index) {
                             var cell_content = !totals ? []
                                 : self._format(totals[column_index]);
-                            return h('td', {class: {
+                            return h(totals && totals[column_index] ? 'td' : 'td.text-muted', {class: {
                                 o_grid_current: column.is_current,
                             }}, cell_content);
                         }),

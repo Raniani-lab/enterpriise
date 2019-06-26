@@ -28,7 +28,7 @@ class AccountChartTemplate(models.Model):
             ('name', '=', 'journal_id')], limit=1)
 
         for company in companies:
-            self.env.context = {'allowed_company_ids': company.ids}
+            self = self.with_context({'allowed_company_ids': company.ids})
 
             journal = self.env['account.journal'].search([
                 ('code', '=', 'SLR'),

@@ -35,6 +35,7 @@
                     <filter string="Date" name="year" invisible="1" date="order_date" default_period="this_year"/>
                     <filter name="Quotations" string="Quotations" domain="[('rental_status','=', 'draft')]"/>
                     <filter name="Rentals" string="Rental Orders" domain="[('rental_status','not in',('draft', 'cancel', 'sent'))]"/>
+                    <filter name="confirmed_orders" string="Confirmed Orders" domain="[('state', '=', 'sale')]"/>
                   <separator/>
                   <field name="user_id"/>
                   <field name="team_id"/>
@@ -70,7 +71,7 @@
           <field name="res_model">sale.rental.report</field>
           <field name="view_mode">graph,pivot</field>
           <field name="search_view_id" ref="view_rental_order_product_search"/>
-          <field name="context">{'search_default_Rentals':1, 'group_by_no_leaf':1,'group_by':[], 'time_ranges': {'field':'confirmation_date', 'range':'last_365_days'}}}</field>
+          <field name="context">{'search_default_confirmed_orders':1, 'group_by_no_leaf':1,'group_by':[], 'time_ranges': {'field':'pickup_date', 'range':'this_year'}}}</field>
       </record>
 
       <menuitem id="menu_rental_reporting" name="Reporting" parent="rental_menu_root" sequence="4" groups="sales_team.group_sale_manager" action="action_rental_report"/>

@@ -19,7 +19,8 @@ class ResourceCalendar(models.Model):
     @api.depends('attendance_ids.hour_from', 'attendance_ids.hour_to')
     def _compute_hours_per_week(self):
         for calendar in self:
-            calendar.hours_per_week = sum((attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids)
+            sum_hours = sum((attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids)
+            calendar.hours_per_week = sum_hours / 2 if calendar.two_weeks_calendar else sum_hours
 
     def _compute_is_fulltime(self):
         for calendar in self:

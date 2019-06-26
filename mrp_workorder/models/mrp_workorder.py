@@ -576,6 +576,11 @@ class MrpProductionWorkcenterLine(models.Model):
         self.record_production()
         action = self.env.ref('mrp_workorder.mrp_workorder_action_tablet').read()[0]
         action['domain'] = [('state', 'not in', ['done', 'cancel', 'pending']), ('workcenter_id', '=', self.workcenter_id.id)]
+        action['context'] = {
+            'form_view_initial_mode': 'edit',
+            'no_breadcrumbs': True,
+            'search_default_workcenter_id': self.workcenter_id.id,
+        }
         return action
 
     def on_barcode_scanned(self, barcode):

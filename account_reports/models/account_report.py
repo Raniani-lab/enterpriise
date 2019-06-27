@@ -1399,28 +1399,19 @@ class AccountReport(models.AbstractModel):
                 col1_style = default_col1_style
 
             #write the first column, with a specific style to manage the indentation
-            cell_name = lines[y]['name']
-            if 'date' in lines[y].get('class', '') and cell_name is not None:
-                #write the dates with a specific format to avoid them being casted as floats in the XLSX
-                if not isinstance(cell_name, (float, datetime.date, datetime.datetime)):
-                    # Convert non-xlsx compatible dates
-                    cell_name = parse_date(cell_name, locale=self._context.get('lang', 'en_US'))
-                sheet.write_datetime(y + y_offset, 0, cell_name, date_default_col1_style)
+            cell_type, cell_value = self._get_cell_type_value(lines[y])
+            if cell_type == 'date':
+                sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
             else:
-                sheet.write(y + y_offset, 0, cell_name, col1_style)
+                sheet.write(y + y_offset, 0, cell_value, col1_style)
 
             #write all the remaining cells
             for x in range(1, len(lines[y]['columns']) + 1):
-                cell = lines[y]['columns'][x - 1]
-                if 'date' in cell.get('class', '') and cell.get('name'):
-                    #write the dates with a specific format to avoid them being casted as floats in the XLSX
-                    cell_name = cell['name']
-                    if not isinstance(cell_name, (float, datetime.date, datetime.datetime)):
-                        # Convert non-xlsx compatible dates
-                        cell_name = parse_date(cell_name, locale=self._context.get('lang', 'en_US'))
-                    sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_name, date_default_style)
+                cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
+                if cell_type == 'date':
+                    sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, date_default_style)
                 else:
-                    sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell.get('name', ''), style)
+                    sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, style)
 
         workbook.close()
         output.seek(0)
@@ -1428,6 +1419,20 @@ class AccountReport(models.AbstractModel):
         output.close()
 
         return generated_file
+
+    def _get_cell_type_value(self, cell):
+        if 'date' not in cell.get('class', '') or not cell.get('name'):
+            # cell is not a date
+            return ('text', cell.get('name', ''))
+        if isinstance(cell['name'], (float, datetime.date, datetime.datetime)):
+            # the date is xlsx compatible
+            return ('date', cell['name'])
+        try:
+            # the date is parsable to a xlsx compatible date
+            return ('date', parse_date(cell['name'], locale=self._context.get('lang', 'en_US')))
+        except:
+            # the date is not parsable thus is returned as text
+            return ('text', cell['name'])
 
     def print_xml(self, options):
         return {

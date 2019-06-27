@@ -256,7 +256,11 @@ class AccountFollowupReport(models.AbstractModel):
                 replaced_msg = body_html[start_index:end_index].replace(b'\n', b'<br />')
                 body_html = body_html[:start_index] + replaced_msg + body_html[end_index:]
             msg = _('Follow-up email sent to %s') % email
-            msg += '<br>' + body_html.decode('utf-8')
+            # Remove some classes to prevent interactions with messages
+            msg += '<br>' + body_html.decode('utf-8')\
+                .replace('o_account_reports_summary', '')\
+                .replace('o_account_reports_edit_summary_pencil', '')\
+                .replace('fa-pencil', '')
             msg_id = partner.message_post(body=msg)
             email = self.env['mail.mail'].create({
                 'mail_message_id': msg_id.id,

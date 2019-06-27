@@ -870,35 +870,46 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
                 '<t t-set="total_amount_total" t-value="' + data.amount_total + '"/>' +
                 '<t t-set="total_amount_untaxed" t-value="' + data.amount_untaxed + '"/>' +
                 '<t t-set="total_amount_by_groups" t-value="' + data.amount_by_groups + '"/>' +
-                '<tr t-if="total_amount_untaxed != total_amount_total">' +
-                '<th>Subtotal</th>' +
-                '<td colspan="2" class="text-right">' +
-                '<span t-esc="total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                '</td>' +
+                '<tr class="border-black o_subtotal">' +
+                    '<td><strong>Subtotal</strong></td>' +
+                    '<td class="text-right">' +
+                        '<span t-esc="total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
+                    '</td>' +
                 '</tr>' +
                 '<t t-foreach="total_amount_by_groups" t-as="total_amount_by_group">' +
-                '<tr>' +
-                '<th><span t-esc="total_amount_by_group[0]"/></th>' +
-                '<td><small t-if="len(total_amount_by_group) > 4 and total_amount_by_group[2] and total_amount_untaxed != total_amount_by_group[2]">on <span t-esc="total_amount_by_group[4]"/></small></td>' +
-                '<td class="text-right">' +
-                '<span t-esc="total_amount_by_group[3]"/>' +
-                '</td>' +
-                '</tr>' +
+                    '<tr>' +
+                        '<t t-if="len(total_amount_by_group) == 1 and total_amount_untaxed == total_amount_by_group[2]">' +
+                            '<td><span t-esc="total_amount_by_group[0]"/></td>' +
+                            '<td class="text-right o_price_total">' +
+                                '<span t-esc="total_amount_by_group[3]"/>' +
+                            '</td>' +
+                        '</t>' +
+                        '<t t-else="">' +
+                            '<td>' +
+                                '<span t-esc="total_amount_by_group[0]"/>' +
+                                '<span><span>on</span>' +
+                                    '<t t-esc="total_amount_by_group[4]"/>' +
+                                '</span>' +
+                            '</td>' +
+                            '<td class="text-right o_price_total">' +
+                                '<span t-esc="total_amount_by_group[3]"/>' +
+                            '</td>' +
+                        '</t>' +
+                    '</tr>' +
                 '</t>' +
-                '<t t-if="total_amount_by_groups is None and total_amount_total != total_amount_untaxed">' +
-                '<tr>' +
-                '<th>Taxes</th>' +
-                '<td></td>' +
-                '<td class="text-right">' +
-                '<span t-esc="total_amount_total - total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                '</td>' +
-                '</tr>' +
+                '<t t-if="total_amount_by_groups is None">' +
+                    '<tr>' +
+                        '<td>Taxes</td>' +
+                        '<td class="text-right">' +
+                            '<span t-esc="total_amount_total - total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
+                        '</td>' +
+                    '</tr>' +
                 '</t>' +
-                '<tr class="border-black">' +
-                '<th>Total</th>' +
-                '<td colspan="2" class="text-right">' +
-                '<span t-esc="total_amount_total" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                '</td>' +
+                '<tr class="border-black o_total">' +
+                    '<td><strong>Total</strong></td>' +
+                    '<td class="text-right">' +
+                        '<span t-esc="total_amount_total" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
+                    '</td>' +
                 '</tr>' +
                 '</table>',
         });

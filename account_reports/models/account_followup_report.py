@@ -255,6 +255,13 @@ class AccountFollowupReport(models.AbstractModel):
             if end_index > -1:
                 replaced_msg = body_html[start_index:end_index].replace(b'\n', b'<br />')
                 body_html = body_html[:start_index] + replaced_msg + body_html[end_index:]
+
+            # Remove some classes to prevent interactions with messages
+            body_html = body_html.decode('utf-8')\
+                .replace('o_account_reports_summary', '')\
+                .replace('o_account_reports_edit_summary_pencil', '')\
+                .replace('fa-pencil', '')
+
             partner.with_context(mail_post_autofollow=True).message_post(
                 partner_ids=[partner.id],
                 body=body_html,

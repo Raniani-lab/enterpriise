@@ -282,7 +282,7 @@
                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                                     <field name="payment_mode" invisible="1"/>
-                                    <field name="payment_token_id" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}"/>
+                                    <field name="payment_token_id" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}" options="{'no_create_edit': True}"/>
                                 </group>
                             </page>
                         </notebook>

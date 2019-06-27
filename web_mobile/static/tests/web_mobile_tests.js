@@ -534,5 +534,47 @@ QUnit.module('web_mobile', {
         testUtils.mock.unpatch(Dialog);
         mobile.methods.overrideBackButton = __overrideBackButton;
     });
+
+    QUnit.test("many2oneDialog clearButton in a mobile environment", async function (assert) {
+        assert.expect(2);
+
+        var mobileDialogCall = 0;
+
+        // override many2oneDialog to simulate a mobile environment
+        var __many2oneDialog = mobile.methods.many2oneDialog;
+
+        mobile.methods.many2oneDialog = function (args) {
+            mobileDialogCall++;
+            if (mobileDialogCall === 1) {
+                assert.strictEqual(args.hideClearButton, false,
+                    "clear button should be displayed for Many2One fields");
+            } else if (mobileDialogCall === 2) {
+                assert.strictEqual(args.hideClearButton, true,
+                    "clear button shouldn't be displayed for Many2Many fields");
+            }
+            return Promise.resolve({'data': {'action': '', 'term': ''}});
+        };
+
+        var form = await createView({
+            View: FormView,
+            arch:
+                '<form>' +
+                    '<sheet>' +
+                        '<field name="parent_id" widget="many2one"/>' +
+                        '<field name="sibling_ids" widget="many2many_tags"/>' +
+                    '</sheet>' +
+                '</form>',
+            data: this.data,
+            model: 'partner',
+            viewOptions: {mode: 'edit'},
+        });
+
+        await testUtils.dom.click(form.$('div[name="parent_id"] input'));
+        await testUtils.dom.click(form.$('div[name="sibling_ids"] input'));
+
+        mobile.methods.many2oneDialog = __many2oneDialog;
+
+        form.destroy();
+    });
 });
 });

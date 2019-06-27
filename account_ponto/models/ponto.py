@@ -247,7 +247,7 @@ class OnlineAccount(models.Model):
                 trans = {
                     'online_identifier': transaction.get('id'),
                     'date': fields.Date.from_string(transaction.get('attributes', {}).get('valueDate')),
-                    'name': transaction.get('attributes', {}).get('remittanceInformation'),
+                    'name': transaction.get('attributes', {}).get('remittanceInformation', '/'),
                     'amount': transaction.get('attributes', {}).get('amount'),
                     'account_number': transaction.get('attributes', {}).get('counterpartReference'),
                     'end_amount': end_amount

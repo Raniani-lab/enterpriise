@@ -18,6 +18,15 @@ from odoo.tools import float_round
 _logger = logging.getLogger(__name__)
 
 
+COUNTRIES_WITHOUT_POSTCODES = [
+    'AO', 'AG', 'AW', 'BS', 'BZ', 'BJ', 'BW', 'BF', 'BI', 'CM', 'CF', 'KM',
+    'CG', 'CD', 'CK', 'CI', 'DJ', 'DM', 'GQ', 'ER', 'FJ', 'TF', 'GM', 'GH',
+    'GD', 'GN', 'GY', 'HK', 'IE', 'JM', 'KE', 'KI', 'MO', 'MW', 'ML', 'MR',
+    'MU', 'MS', 'NR', 'AN', 'NU', 'KP', 'PA', 'QA', 'RW', 'KN', 'LC', 'ST',
+    'SC', 'SL', 'SB', 'SO', 'ZA', 'SR', 'SY', 'TZ', 'TL', 'TK', 'TO', 'TT',
+    'TV', 'UG', 'AE', 'VU', 'YE', 'ZW'
+]
+
 def _grams(kilograms):
     return int(kilograms * 1000)
 
@@ -32,7 +41,9 @@ class BpostRequest():
             self.base_url = 'https://api-parcel.bpost.be/services/shm/'
 
     def check_required_value(self, recipient, delivery_nature, shipper, order=False, picking=False):
-        recipient_required_fields = ['city', 'zip', 'country_id']
+        recipient_required_fields = ['city', 'country_id']
+        if recipient.country_id.code not in COUNTRIES_WITHOUT_POSTCODES:
+            recipient_required_fields.append('zip')
         if not recipient.street and not recipient.street2:
             recipient_required_fields.append('street')
         shipper_required_fields = ['city', 'zip', 'country_id']
@@ -63,22 +74,17 @@ class BpostRequest():
         return False
 
     def _parse_address(self, partner):
-        streetName = None
-        number = None
-        if partner.country_id.code == 'BE':
-            # match the first or the last number of an address
-            # for Belgian "boîte/bus", they should be put in street2
-            # so that if you live "Rue du 40e régiment 12A", 12A is returned
-            # also supports "Rue du 40e régiment 12/3"
-            ex = re.compile(r'^\d+|\d+([a-zA-Z]|/\d)?$')
+        if partner.street and partner.street2:
+            street = '%s %s' % (partner.street1, partner.street2)
         else:
-            # match the first number in street because we don't know other
-            # countries rules
-            ex = re.compile(r'\d+')
-        match = ex.search(partner.street)
-        number = match.group(0) if match else '0'
-        streetName = u'%s %s' % (partner.street.replace(number, ''), partner.street2 if partner.street2 else '')
-        return (streetName, number)
+            street = partner.street or partner.street2
+        match = re.match(r'^(.*?)(\S*\d+\S*)?\s*$', street)
+        street = match.group(1)
+        street_number = match.group(2)  # None if no number found
+        if street_number and len(street_number) > 8:
+            street = match.group(0)
+            street_number = None
+        return (street, street_number)
 
     def rate(self, order, carrier):
         weight = sum([(line.product_id.weight * line.product_qty) for line in order.order_line]) or 0.0
@@ -158,6 +164,21 @@ class BpostRequest():
                 price_unit = line.move_id.sale_line_id.price_reduce_taxinc or line.product_id.list_price
                 shipping_value += price_unit * line.qty_done
             shipping_value = max(min(int(shipping_value*100), 2500000), 100) # according to bpost, 100 <= parcelValue <= 2500000
+
+        # bpsot only allow a zip with a size of 8 characters. In some country
+        # (e.g. brazil) the postalCode could be longer than 8. In this case we
+        # set the zip in the locality.
+        receiver_postal_code = picking.partner_id.zip
+        receiver_locality = picking.partner_id.city
+        if len(receiver_postal_code) > 8:
+            receiver_locality = '%s %s' % (receiver_locality, receiver_postal_code)
+            receiver_postal_code = '/'
+
+        # Some country do not use zip code (Saudi Arabia, Congo, ...). Bpost
+        # always require at least a zip or a PO box.
+        if not receiver_postal_code:
+            receiver_postal_code = '/'
+
         values = {'accountId': carrier.sudo().bpost_account_number,
                   'reference': reference_id,
                   'sender': {'_record': sender_partner_id,
@@ -168,6 +189,8 @@ class BpostRequest():
                                'company': picking.partner_id.commercial_partner_id.name if picking.partner_id.commercial_partner_id != picking.partner_id else '',
                                'streetName': rs,
                                'number': rn,
+                               'locality': receiver_locality,
+                               'postalCode': receiver_postal_code,
                                },
                   'is_domestic': carrier.bpost_delivery_nature == 'Domestic',
                   'weight': str(_grams(shipping_weight_in_kg)),

@@ -42,7 +42,11 @@ relational_fields.FieldMany2One.include({
                     result[i].action_id = i;
                 }
             });
-            mobile.methods.many2oneDialog({'records': result, 'label': self.string})
+            mobile.methods.many2oneDialog({
+                'records': result,
+                'label': self.string,
+                'hideClearButton': self.field.type === 'many2many',
+            })
                 .then(function (response) {
                     if (response.data.action === 'search') {
                         self._invokeMobileDialog(response.data.term);

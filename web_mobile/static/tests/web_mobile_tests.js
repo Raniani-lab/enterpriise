@@ -379,5 +379,47 @@ QUnit.module('web_mobile', {
         // Reset viewport position attribute
         document.querySelector(Q_UNIT_FIXTURE_SELECTOR).style.position = '';
     });
+
+    QUnit.test("many2oneDialog clearButton in a mobile environment", function (assert) {
+        assert.expect(2);
+
+        var mobileDialogCall = 0;
+
+        // override many2oneDialog to simulate a mobile environment
+        var __many2oneDialog = mobile.methods.many2oneDialog;
+
+        mobile.methods.many2oneDialog = function (args) {
+            mobileDialogCall++;
+            if (mobileDialogCall === 1) {
+                assert.strictEqual(args.hideClearButton, false,
+                    "clear button should be displayed for Many2One fields");
+            } else if (mobileDialogCall === 2) {
+                assert.strictEqual(args.hideClearButton, true,
+                    "clear button shouldn't be displayed for Many2Many fields");
+            }
+            return $.when({'data': {'action': '', 'term': ''}});
+        };
+
+        var form = createView({
+            View: FormView,
+            arch:
+                '<form>' +
+                    '<sheet>' +
+                        '<field name="parent_id" widget="many2one"/>' +
+                        '<field name="sibling_ids" widget="many2many_tags"/>' +
+                    '</sheet>' +
+                '</form>',
+            data: this.data,
+            model: 'partner',
+            viewOptions: {mode: 'edit'},
+        });
+
+        form.$('div[name="parent_id"] input').click();
+        form.$('div[name="sibling_ids"] input').click();
+
+        mobile.methods.many2oneDialog = __many2oneDialog;
+
+        form.destroy();
+    });
 });
 });

@@ -63,6 +63,7 @@
             <field name="model">account_followup.followup</field>
             <field name="arch" type="xml">
                 <form string="Follow-up">
+                <sheet>
                     <h1><field name="name"/></h1>
                     <label for="company_id" groups="base.group_multi_company"/>
                     <field name="company_id" options="{'no_create': True}" class="oe_inline" groups="base.group_multi_company"/>
@@ -77,6 +78,7 @@
                         overdue invoice will be executed. 
                     </p>
                     <field name="followup_line_ids"/>
+                </sheet>
                 </form>
             </field>
         </record>

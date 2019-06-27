@@ -252,6 +252,37 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('grouped grid view with no data', async function (assert) {
+        assert.expect(4);
+
+        this.data['analytic.line'].records = [];
+
+        this.arch = '<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">' +
+                '<field name="project_id" type="row" section="1"/>' +
+                '<field name="task_id" type="row"/>' +
+                '<field name="date" type="col">' +
+                    '<range name="week" string="Week" span="week" step="day"/>' +
+                    '<range name="month" string="Month" span="month" step="day"/>' +
+                '</field>' +
+                '<field name="unit_amount" type="measure" widget="float_time"/>' +
+            '</grid>';
+
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2017-01-25",
+        });
+
+        assert.isVisible(grid.$('.o_control_panel .grid_arrow_previous'));
+        assert.isVisible(grid.$('.o_control_panel .grid_arrow_next'));
+        assert.containsOnce(grid, '.o_view_grid .o_grid_section');
+        assert.containsN(grid, '.o_view_grid thead th', 9); // title + 7 days + total
+
+        grid.destroy();
+    });
+
     QUnit.test('load and reload a grid view with favorite search', async function (assert) {
         assert.expect(4);
 
@@ -585,7 +616,7 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
-    QUnit.test('switching active range',async  function (assert) {
+    QUnit.test('switching active range', async function (assert) {
         assert.expect(6);
         var done = assert.async();
         this.data['analytic.line'].fields.date.default = "2017-02-25";
@@ -769,9 +800,6 @@ QUnit.module('Views', {
             data: this.data,
             arch: this.arch,
             currentDate: "2017-01-25",
-            mockRPC: function (route) {
-                return this._super.apply(this, arguments);
-            },
             action: {
                 views: [{viewID: 23, type: 'form'}],
             },

@@ -182,7 +182,7 @@ class HmrcVatObligation(models.Model):
             for sent_key in data:
                 if sent_key != 'periodKey':
                     msg += '<b>' + sent_key + '</b>: ' + str(data[sent_key]) + '<br/>'
-            self.sudo().message_post(msg)
+            self.sudo().message_post(body=msg)
             self.sudo().write({'status': "fulfilled"})
         elif r.status_code == 401:  # auth issue
             _logger.exception(_("HMRC auth issue : %s"), r.content)

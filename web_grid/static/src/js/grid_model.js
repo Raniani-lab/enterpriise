@@ -204,15 +204,14 @@ return AbstractModel.extend({
                 // to fetch an empty grid so we can render the table's
                 // decoration (pagination and columns &etc) otherwise
                 // we get a completely empty grid
-                return self._fetchSectionGrid(groupBy, {
+                return Promise.all([self._fetchSectionGrid(groupBy, {
                     __domain: self.domain || [],
-                });
+                })]);
             }
-            return Promise.all(_(groups).map(function (group) {
+            return Promise.all((groups || []).map(function (group) {
                 return self._fetchSectionGrid(groupBy, group);
             }));
-        }).then(function () {
-            var results = [].slice.apply(arguments[0]);
+        }).then(function (results) {
             self._gridData = results;
             self._gridData.groupBy = groupBy;
             self._gridData.colField = self.colField;

@@ -221,14 +221,7 @@ class MxReportAccountTrial(models.AbstractModel):
             nature = dict(tag.fields_get()['nature']['selection']).get(tag.nature, '')
             cols = [{'name': nature}]
             if not options.get('coa_only'):
-                cols = [initial_balances.get(account, 0.0)]
-                total_periods = 0
-                for period in range(len(comparison_table)):
-                    amount = grouped_accounts[account][period]['balance']
-                    total_periods += amount
-                    cols += [grouped_accounts[account][period]['debit'],
-                             grouped_accounts[account][period]['credit']]
-                cols += [initial_balances.get(account, 0.0) + total_periods]
+                cols = self._get_cols(initial_balances, account, comparison_table, grouped_accounts)
             lines.append({
                 'id': account.id,
                 'parent_id': 'level_two_%s' % tag.id,
@@ -238,6 +231,17 @@ class MxReportAccountTrial(models.AbstractModel):
                 'caret_options': 'account.account',
             })
         return lines
+
+    def _get_cols(self, initial_balances, account, comparison_table, grouped_accounts):
+        cols = [initial_balances.get(account, 0.0)]
+        total_periods = 0
+        for period in range(len(comparison_table)):
+            amount = grouped_accounts[account][period]['balance']
+            total_periods += amount
+            cols += [grouped_accounts[account][period]['debit'],
+                        grouped_accounts[account][period]['credit']]
+        cols += [initial_balances.get(account, 0.0) + total_periods]
+        return cols
 
     def _l10n_mx_edi_add_digital_stamp(self, path_xslt, cfdi):
         """Add digital stamp certificate attributes in XML report"""

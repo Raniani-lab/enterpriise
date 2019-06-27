@@ -17,6 +17,12 @@ class ProviderAccount(models.Model):
     provider_type = fields.Selection(selection_add=[('ponto', 'Ponto')])
     ponto_token = fields.Char(readonly=True, help='Technical field that contains the ponto token')
 
+    @api.multi
+    def _get_available_providers(self):
+        ret = super(ProviderAccount, self)._get_available_providers()
+        ret.append('ponto')
+        return ret
+
     def _build_ponto_headers(self):
         authorization = "Bearer " + self.ponto_token
         return {
@@ -51,6 +57,17 @@ class ProviderAccount(models.Model):
             _logger.exception(e)
             self.log_ponto_message('%s for route %s' % (resp.text, url))
 
+    @api.multi
+    def get_login_form(self, site_id, provider, beta=False):
+        if provider != 'ponto':
+            return super(ProviderAccount, self).get_login_form(site_id, provider, beta)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'ponto_online_sync_widget',
+            'name': _('Link your Ponto account'),
+            'target': 'new',
+            'context': self._context,
+        }
 
     def log_ponto_message(self, message):
         # We need a context check because upon first synchronization the account_online_provider record is created and just after
@@ -143,13 +160,20 @@ class OnlineAccount(models.Model):
 
     ponto_last_synchronization_identifier = fields.Char(readonly=True, help='id of ponto synchronization')
 
-    def _ponto_synchronize(self):
+    def _ponto_synchronize(self, subtype):
         # To fetch the latest transactions and balance of accounts we have to call a special
         # url on ponto to tell him to refresh the data, this ressource is called "synchronization"
         # We have to call it for both "account" and "transactions" as ponto does not have the option
         # to have both in one. Once the "synchronization" are finished, their status will changed to "success"
         # and we know we can now continue and fetch the latest transactions and account balance.
-        subtype = 'accountDetails'
+        # however if we try to refresh both one after another or at the same time, an error is received
+        # An error is also received if we call their synchronization route too quickly. Therefore we
+        # only call this route if it has not been called in the last 5 minutes.
+        last_sync_date = fields.Datetime.now() - self.account_online_provider_id.last_refresh
+        # We can refresh if last refresh was greater than 5min in the past
+        if last_sync_date.days == 0 and (last_sync_date.seconds // 60) % 60 <= 5:
+            _logger.info('Skip refresh of ponto transaction as last refresh was less than 5min ago')
+            return
         data = {
             'data': {
                 'type': 'synchronization',
@@ -161,35 +185,26 @@ class OnlineAccount(models.Model):
             }
         }
         # Synchronization ressource for account
-        resp_json_accounts = self.account_online_provider_id._ponto_fetch('POST', '/synchronizations', {}, data)
-        subtype = 'accountTransactions'
-        # Synchronization ressource for transaction
-        resp_json_transactions = self.account_online_provider_id._ponto_fetch('POST', '/synchronizations', {}, data)
+        resp_json = self.account_online_provider_id._ponto_fetch('POST', '/synchronizations', {}, data)
         # Get id of synchronization ressources
-        sync_account_id = resp_json_accounts.get('data', {}).get('id')
-        sync_account = resp_json_accounts.get('data', {}).get('attributes', {})
-        sync_transaction_id = resp_json_transactions.get('data', {}).get('id')
-        sync_transaction = resp_json_transactions.get('data', {}).get('attributes', {})
+        sync_id = resp_json.get('data', {}).get('id')
+        sync_ressource = resp_json.get('data', {}).get('attributes', {})
         # Fetch synchronization ressources until it has been updated
         count = 0
         while True:
             if count == 180:
                 raise UserError(_('Fetching transactions took too much time.'))
-            if sync_account.get('status') not in ('success', 'error'):
-                resp_json_accounts = self.account_online_provider_id._ponto_fetch('GET', '/synchronizations/' + sync_account_id, {}, {})
-            if sync_transaction.get('status') not in ('success', 'error'):
-                resp_json_transactions = self.account_online_provider_id._ponto_fetch('GET', '/synchronizations/' + sync_transaction_id, {}, {})
-            sync_account = resp_json_accounts.get('data', {}).get('attributes', {})
-            sync_transaction = resp_json_transactions.get('data', {}).get('attributes', {})
-            if sync_account.get('status') in ('success', 'error') and sync_transaction.get('status') in ('success', 'error'):
+            if sync_ressource.get('status') not in ('success', 'error'):
+                resp_json = self.account_online_provider_id._ponto_fetch('GET', '/synchronizations/' + sync_id, {}, {})
+            sync_ressource = resp_json.get('data', {}).get('attributes', {})
+            if sync_ressource.get('status') in ('success', 'error'):
                 # If we are in error, log the error and stop
-                if sync_account.get('status') == 'error':
-                    self.account_online_provider_id.log_ponto_message(json.dumps(sync_account.get('errors')))
-                elif sync_transaction.get('status') == 'error':
-                    self.account_online_provider_id.log_ponto_message(json.dumps(sync_transaction.get('errors')))
+                if sync_ressource.get('status') == 'error':
+                    self.account_online_provider_id.log_ponto_message(json.dumps(sync_ressource.get('errors')))
                 break
             count += 1
             time.sleep(2)
+        self.account_online_provider_id.last_refresh = fields.Datetime.now()
         return
 
     @api.multi
@@ -197,7 +212,13 @@ class OnlineAccount(models.Model):
         if (self.account_online_provider_id.provider_type != 'ponto'):
             return super(OnlineAccount, self).retrieve_transactions()
         # actualize the data in ponto
-        self._ponto_synchronize()
+        # For some reason, ponto has 2 different routes to update the account balance and transactions
+        # however if we try to refresh both one after another or at the same time, an error is received
+        # An error is also received if we call their synchronization route too quickly. Therefore we
+        # only refresh the transactions of the account and don't update the account which means that the
+        # balance of the account won't be up-to-date. However this is not a big problem as the record that
+        # store the balance is hidden for most user.
+        self._ponto_synchronize('accountTransactions')
         transactions = []
         # Update account balance
         url = '/accounts/%s' % (self.online_identifier,)
@@ -226,7 +247,7 @@ class OnlineAccount(models.Model):
                 trans = {
                     'online_identifier': transaction.get('id'),
                     'date': fields.Date.from_string(transaction.get('attributes', {}).get('valueDate')),
-                    'name': transaction.get('attributes', {}).get('remittanceInformation'),
+                    'name': transaction.get('attributes', {}).get('remittanceInformation', '/'),
                     'amount': transaction.get('attributes', {}).get('amount'),
                     'account_number': transaction.get('attributes', {}).get('counterpartReference'),
                     'end_amount': end_amount

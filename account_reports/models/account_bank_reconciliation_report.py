@@ -173,7 +173,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
         lines.append(self._add_line(
             _("Virtual GL Balance"),
             amount=None if self.env.company.totals_below_sections else computed_stmt_balance, level=0,
-            style_class='o_account_reports_totals_below_sections' if self.env.user.company_id.totals_below_sections else '')
+            style_class='o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '')
         )
 
         gl_title = _("Current balance of account %s")

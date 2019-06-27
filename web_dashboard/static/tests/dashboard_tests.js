@@ -194,6 +194,58 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
+    QUnit.test('pie chart mode, groupby, and measure not altered by favorite filters', async function (assert) {
+        // Pie Chart is rendered asynchronously.
+        // concurrency.delay is a fragile way that we use to wait until the
+        // graph is rendered.
+        // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
+        assert.expect(7);
+
+        var self = this;
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            context: {
+                graph_mode: 'line',
+                graph_measure: 'untaxed',
+                graph_groupbys: [],
+            },
+            arch: '<dashboard>' +
+                      '<widget name="pie_chart" title="Products sold" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
+                  '</dashboard>',
+            mockRPC: function (route, args){
+                if (route == '/web/dataset/call_kw/test_report/read_group') {
+                    assert.deepEqual(args.args, []);
+                    assert.deepEqual(args.model,"test_report");
+                    assert.deepEqual(args.method,"read_group");
+                    assert.deepEqual(args.kwargs, {
+                      context: {fill_temporal: true},
+                      domain: [],
+                      fields: ["categ_id", "sold"],
+                      groupby: ["categ_id"],
+                      lazy: false,
+                    });
+                }
+
+                return this._super.apply(this, arguments);
+            }
+
+        });
+        assert.strictEqual($('.o_widget').length, 1,
+            "there should be a node with o_widget class");
+        assert.strictEqual($('.o_graph_canvas_container label').text(), "Products sold",
+            "the title of the graph should be displayed");
+
+        var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
+        var legendText = $(chart.generateLegend()).text().trim();
+        assert.strictEqual(legendText, "FirstSecond",
+            "there should be two legend items");
+
+        dashboard.destroy();
+        delete widgetRegistry.map.test;
+    });
+
     QUnit.test('rendering of a pie chart widget and comparison active', async function (assert) {
         // Pie Chart is rendered asynchronously.
         // concurrency.delay is a fragile way that we use to wait until the

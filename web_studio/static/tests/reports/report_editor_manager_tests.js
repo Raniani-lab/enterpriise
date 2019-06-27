@@ -16,6 +16,10 @@ function getFloatSizeFromPropertyInPixels($element, propertyName) {
     return parseFloat(size);
 }
 
+function mmToPx(size) {
+    return size * 3.7795275591;
+};
+
 /**
  * Some tests need the style assets inside the iframe, mainly to correctly
  * display the hooks (the hooks sizes are taken into account to decide which
@@ -338,6 +342,108 @@ QUnit.module('ReportEditorManager', {
             rem.destroy();
             done();
         });
+    });
+
+    QUnit.test('preview zoomed by paperformat DPI or smart-shrinking', async function (assert) {
+        assert.expect(7);
+
+        this.templates = [{
+            key: 'template0',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template0">' +
+                        '<html>\n' +
+                            '<head/>\n' +
+                            '<body style="margin:0; margin-left: 5px; margin-right: 10px;">' +
+                                '<div id="wrapwrap">' +
+                                    '<main>' +
+                                        '<div class="header"><div style="width:2000px">this is</div></div>' +
+                                        '<div class="article"><div style="width:100px">a test</div></div>' +
+                                        '<div class="footer"><div style="width:3000px">without hello world</div></div>' +
+                                    '</main>' +
+                                '</div>' +
+                            '</body>\n' +
+                        '</html>' +
+                    '</t>' +
+                '</kikou>',
+        }];
+
+        var paperFormat = {
+            print_page_width: 200,
+            print_page_height: 400,
+            margin_top: 10,
+            margin_left: 30,
+            margin_right: 20,
+            header_spacing: 5,
+            dpi: 200,
+        };
+
+        var topMargin = mmToPx(paperFormat.margin_top - paperFormat.header_spacing);
+        var leftMargin = mmToPx(paperFormat.margin_left);
+        var rightMargin = mmToPx(paperFormat.margin_right);
+        var width = mmToPx(paperFormat.print_page_width);
+
+        // paper width minus paperformat margins and content container margins
+        var contentWidth = width - leftMargin - rightMargin - 5 - 10;
+
+        var rem = await studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            paperFormat: paperFormat,
+            report: {
+                report_name: 'awesome_report',
+            },
+            reportHTML: studioTestUtils.getReportHTML(this.templates),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+            reportMainViewID: 55,
+        });
+
+        var containerStyles = rem.editor.$iframe.parent().css([
+            'paddingTop', 'paddingLeft', 'paddingRight', 'width'
+        ]);
+
+        var diffTopMargin = Math.abs(topMargin - parseFloat(containerStyles.paddingTop));
+        assert.ok(diffTopMargin < 1, "preview top margin same than paperformat");
+
+        var diffLeftMargin = Math.abs(leftMargin - parseFloat(containerStyles.paddingLeft));
+        assert.ok(diffLeftMargin < 1, "preview left margin same than paperformat");
+
+        var diffRightMargin = Math.abs(rightMargin - parseFloat(containerStyles.paddingRight));
+        assert.ok(diffRightMargin < 1, "preview right margin same than paperformat");
+
+        var diffWidth = Math.abs(width - parseFloat(containerStyles.width));
+        assert.ok(diffWidth < 1, "preview width same than paperformat");
+
+        // end test if zoom not supported by browser (currently firefox)
+        if ($('<div />').css({zoom: 0.5}).css('zoom') === undefined) {
+            assert.ok(true, "zoom not supported by browser");
+            assert.ok(true, "zoom not supported by browser");
+            assert.ok(true, "zoom not supported by browser");
+            rem.destroy();
+            return;
+        }
+
+        // test that overflowing sections are shrinked and other fit paper DPI
+
+        var headerZoom = rem.editor.$content.find('.header').css('zoom');
+        var diffHeaderZoom = Math.abs(headerZoom - contentWidth / 2000);
+        assert.ok(diffHeaderZoom < 0.01, "zoom value shrink header content to fit");
+
+        var bodyZoom = rem.editor.$content.find('.article').css('zoom');
+        var diffContentZoom = Math.abs(bodyZoom - 96 / paperFormat.dpi);
+        assert.ok(diffContentZoom < 0.01, "zoom value to have body content match DPI");
+
+        var footerZoom = rem.editor.$content.find('.footer').css('zoom');
+        var diffFooterZoom = Math.abs(footerZoom - contentWidth / 3000);
+        assert.ok(diffFooterZoom < 0.01, "zoom value shrink footer content to fit");
+
+        rem.destroy();
     });
 
     QUnit.test('use pager', async function (assert) {
@@ -1403,33 +1509,44 @@ QUnit.module('ReportEditorManager', {
                                         '<t t-set="total_amount_total" t-value="o.amount_total"/>' +
                                         '<t t-set="total_amount_untaxed" t-value="o.amount_untaxed"/>' +
                                         '<t t-set="total_amount_by_groups" t-value="o.amount_by_group"/>' +
-                                        '<tr t-if="total_amount_untaxed != total_amount_total">' +
-                                            '<th>Subtotal</th>' +
-                                            '<td colspan="2" class="text-right">' +
-                                                '<span t-esc="total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                                            '</td>' +
+                                        '<tr class="border-black o_subtotal">' +
+                                        '<td><strong>Subtotal</strong></td>' +
+                                        '<td class="text-right">' +
+                                            '<span t-esc="total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
+                                        '</td>' +
                                         '</tr>' +
                                         '<t t-foreach="total_amount_by_groups" t-as="total_amount_by_group">' +
                                             '<tr>' +
-                                                '<th><span t-esc="total_amount_by_group[0]"/></th>' +
-                                                '<td><small t-if="len(total_amount_by_group) > 4 and total_amount_by_group[2] and total_amount_untaxed != total_amount_by_group[2]">on <span t-esc="total_amount_by_group[4]"/></small></td>' +
-                                                '<td class="text-right">' +
-                                                    '<span t-esc="total_amount_by_group[3]"/>' +
-                                                '</td>' +
+                                                '<t t-if="len(total_amount_by_group) == 1 and total_amount_untaxed == total_amount_by_group[2]">' +
+                                                    '<td><span t-esc="total_amount_by_group[0]"/></td>' +
+                                                    '<td class="text-right o_price_total">' +
+                                                        '<span t-esc="total_amount_by_group[3]"/>' +
+                                                    '</td>' +
+                                                '</t>' +
+                                                '<t t-else="">' +
+                                                    '<td>' +
+                                                        '<span t-esc="total_amount_by_group[0]"/>' +
+                                                        '<span><span>on</span>' +
+                                                            '<t t-esc="total_amount_by_group[4]"/>' +
+                                                        '</span>' +
+                                                    '</td>' +
+                                                    '<td class="text-right o_price_total">' +
+                                                        '<span t-esc="total_amount_by_group[3]"/>' +
+                                                    '</td>' +
+                                                '</t>' +
                                             '</tr>' +
                                         '</t>' +
-                                        '<t t-if="total_amount_by_groups is None and total_amount_total != total_amount_untaxed">' +
+                                        '<t t-if="total_amount_by_groups is None">' +
                                             '<tr>' +
-                                                '<th>Taxes</th>' +
-                                                '<td></td>' +
+                                                '<td>Taxes</td>' +
                                                 '<td class="text-right">' +
                                                     '<span t-esc="total_amount_total - total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
                                                 '</td>' +
                                             '</tr>' +
                                         '</t>' +
-                                        '<tr class="border-black">' +
-                                            '<th>Total</th>' +
-                                            '<td colspan="2" class="text-right">' +
+                                        '<tr class="border-black o_total">' +
+                                            '<td><strong>Total</strong></td>' +
+                                            '<td class="text-right">' +
                                                 '<span t-esc="total_amount_total" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
                                             '</td>' +
                                         '</tr>' +

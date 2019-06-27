@@ -3,14 +3,14 @@
     'name': "account_ponto",
 
     'summary': """
-        Use myponto.com (beta) to retrieve bank statements""",
+        Use myponto.com to retrieve bank statements""",
 
     'description': """
         This module connects to my myponto.com to retrieve bank statements.
 
         Currently, that service allows to connect to belgian banks only
         (BNP Paribas Fortis, KBC, CBC, KBC Brussels, Fintro, Hello Bank, ING Belgium, AXA Belgium)
-        but aims to connect with all European banks when out of its beta version
+        but aims to connect with all European banks later on
     """,
 
     'category': 'Accounting',
@@ -25,5 +25,5 @@
         'views/ponto_template.xml',
     ],
     'license': 'OEEL-1',
-    'auto_install': False,
+    'auto_install': True,
 }

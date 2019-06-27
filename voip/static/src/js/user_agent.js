@@ -205,7 +205,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             remoteStream = peerConnection.getRemoteStream()[0];
         }
         this.$remoteAudio.srcObject = remoteStream;
-        this.$remoteAudio.play();
+        this.$remoteAudio.play().catch(_.noop);
     },
     /**
      * Returns the ua after initialising it.
@@ -496,7 +496,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 content += number;
             }
             self.incomingtone.currentTime = 0;
-            self.incomingtone.play();
+            self.incomingtone.play().catch(_.noop);
 
             self.notification = self._sendNotification('Odoo', content);
             function _rejectInvite () {

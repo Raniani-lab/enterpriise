@@ -20,7 +20,7 @@ class ResConfigSettings(models.TransientModel):
     @api.multi
     def set_values(self):
         super(ResConfigSettings, self).set_values()
-        company = self.company_id or self.env.user.company_id
+        company = self.company_id or self.env.company
         if company.account_tax_original_periodicity_reminder_day and company.account_tax_original_periodicity_reminder_day == self.account_tax_periodicity_reminder_day:
             return True
         else:
@@ -44,7 +44,7 @@ class ResConfigSettings(models.TransientModel):
         # Create/Edit activity type if needed
         if not values:
             values = {}
-        company = values.get('company_id', False) or self.company_id or self.env.user.company_id
+        company = values.get('company_id', False) or self.company_id or self.env.company
         move_res_model_id = self.env['ir.model'].search([('model', '=', 'account.move')], limit=1).id
         activity_type = company.account_tax_next_activity_type or False
         vals = {

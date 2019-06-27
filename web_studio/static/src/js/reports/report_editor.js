@@ -654,6 +654,13 @@ var ReportEditor = Widget.extend(EditorMixin, {
      */
     _resizeIframe: function () {
         var self = this;
+        // zoom content from 96 (default browser DPI) to paperformat DPI
+        var zoom = 96 / this.paperFormat.dpi;
+        // scale each section either to fit DPI or shrinking to fit page (wkhtmltopdf enable-smart-shrinking)
+        self.$content.find('main:first').children().each(function () {
+            var sectionZoom = Math.min(zoom, $(this).width() / this.scrollWidth);
+            $(this).css({zoom: sectionZoom});
+        });
         // WHY --> so that after the load of the iframe, if there are images,
         // the iframe height is recomputed to the height of the content images included
         self.$iframe[0].style.height = self.$iframe[0].contentWindow.document.body.scrollHeight + 'px';

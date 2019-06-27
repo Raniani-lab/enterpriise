@@ -5,7 +5,7 @@ from odoo.tests import tagged
 from odoo.tests.common import Form
 
 
-@tagged('post_install')
+@tagged('post_install', '-at_install')
 class TestBillsPrediction(AccountingTestCase):
 
     def _create_one_line_bill(self, vendor, description, expected_account, account_to_set=None):

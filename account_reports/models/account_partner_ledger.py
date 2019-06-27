@@ -190,7 +190,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 account_move_line.name,
                 account_move_line.ref,
                 account_move_line.company_id,
-                account_move_line.account_id,             
+                account_move_line.account_id,
                 account_move_line.invoice_id,
                 account_move_line.payment_id,
                 account_move_line.partner_id,
@@ -294,7 +294,7 @@ class ReportPartnerLedger(models.AbstractModel):
 
     @api.model
     def _get_report_line_partner(self, options, partner, initial_balance, debit, credit, balance):
-        company_currency = self.env.user.company_id.currency_id
+        company_currency = self.env.company.currency_id
         unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
 
         columns = [

@@ -36,7 +36,7 @@ class ResPartner(models.Model):
             return []
         results = self._get_partners_in_need_of_action(overdue_only=(value == 'with_overdue_invoices'))
         if value in ('in_need_of_action', 'with_overdue_invoices'):
-            return [('id', 'in', results)]
+            return [('id', 'in', self.browse(results).filtered(lambda r:r.followup_status == value).ids)]
         return [('id', 'not in', results)]
 
     def _compute_for_followup(self):

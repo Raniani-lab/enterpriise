@@ -13,3 +13,4 @@ class ProductTemplate(models.Model):
     def _onchange_service_tracking(self):
         if self.service_tracking not in ['task_global_project', 'task_new_project']:
             self.worksheet_template_id = False
+        super(ProductTemplate, self)._onchange_service_tracking()

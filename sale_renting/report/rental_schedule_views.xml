@@ -88,7 +88,7 @@
       <field name="name">Scheduled Rentals</field>
       <field name="res_model">sale.rental.schedule</field>
       <field name="view_mode">gantt</field>
-      <field name="context">{'search_default_Rentals':1, 'group_by_no_leaf':1,'group_by':[], 'time_ranges': {'field':'confirmation_date', 'range':'last_365_days'}}}</field>
+      <field name="context">{'search_default_Rentals':1, 'group_by_no_leaf':1,'group_by':[]}</field>
   </record>
 
   <menuitem id="menu_rental_schedule" name="Schedule" parent="rental_menu_root" sequence="3" groups="sales_team.group_sale_manager" action="action_rental_order_schedule"/>

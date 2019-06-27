@@ -14,14 +14,11 @@
                             <span class ="o_form_label">MapBox</span>
                             <div class ="content-group">
                                 <div class ="text-muted">
-                                    You need to configure this token to fully access the feature of the Mapview.
+                                    Set a MapBox account to activate routes and style.
                                 </div>
-                                <label for="map_box_token" string="token: "/>
+                                <label for="map_box_token" string="Token: "/>
                                 <field name ="map_box_token"/>
-                                <div class ="text-muted">
-                                    Follow this link and create an account to obtain the token
-                                </div>
-                                <div class ="col-sm text-rigth" style="position:relative;">
+                                <div class ="text-rigth" style="position:relative;">
                                     <a class="oe_link"  href="https://www.mapbox.com/pricing/" target="_blank">
                                     <i class="fa fa-arrow-right">
                                     </i>
@@ -33,13 +30,5 @@
                 </div>
             </xpath>
         </field>
-    </record>
-
-    <record id="map_config_settings_action_model" model="ir.actions.act_window">
-        <field name="name">Settings</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">res.config.settings</field>
-        <field name="view_id" ref="web_map.res_config_settings_view_form"/>
-        <field name="view_mode">form</field>
     </record>
 </odoo>

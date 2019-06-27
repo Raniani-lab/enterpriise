@@ -105,8 +105,7 @@ class TestAccountReports(common.TransactionCase):
             self.assertEqual(options['date']['date_to'], expected_date)
 
     def test_05_followup_multicompany(self):
-        year = time.strftime('%Y')
-        date_sale = year + '-06-26'
+        date_sale = fields.Date.today()
 
         # Company 0
         invoice_move = self.env['account.move'].create({

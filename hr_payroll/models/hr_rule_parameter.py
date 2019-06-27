@@ -39,7 +39,7 @@ class HrSalaryRuleParameter(models.Model):
     ]
 
     @api.model
-    @ormcache('code', 'date')
+    @ormcache('code', 'date', 'tuple(self.env.context.get("allowed_company_ids", []))')
     def _get_parameter_from_code(self, code, date=None):
         if not date:
             date = fields.Date.today()

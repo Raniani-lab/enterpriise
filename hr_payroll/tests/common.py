@@ -69,6 +69,7 @@ class TestPayslipBase(TransactionCase):
             'name': 'Unpaid Leaves',
             'time_type': 'leave',
             'allocation_type': 'no',
+            'validity_start': False,
             'work_entry_type_id': self.work_entry_type_unpaid.id
         })
 

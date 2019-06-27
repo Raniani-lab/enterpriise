@@ -33,7 +33,7 @@ class HelpdeskTeam(models.Model):
         help="Stages the team will use. This team's tickets will only be able to be in these stages.")
     assign_method = fields.Selection([
         ('manual', 'Manually'),
-        ('randomly', 'Randomly'),
+        ('randomly', 'Random'),
         ('balanced', 'Balanced')], string='Assignation Method',
         default='manual', required=True,
         help='Automatic assignation method for new tickets:\n'
@@ -283,7 +283,7 @@ class HelpdeskTeam(models.Model):
             activity = tickets.rating_get_grades()
             total_rating = self.compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
-            team_satisfaction = round((total_rating / total_activity_values if total_activity_values else 0), 2)
+            team_satisfaction = round((total_rating / total_activity_values if total_activity_values else 0), 2) *10
             if team_satisfaction:
                 result['today']['rating'] = team_satisfaction
 
@@ -293,7 +293,7 @@ class HelpdeskTeam(models.Model):
             activity = tickets.rating_get_grades()
             total_rating = self.compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
-            team_satisfaction_7days = round((total_rating / total_activity_values if total_activity_values else 0), 2)
+            team_satisfaction_7days = round((total_rating / total_activity_values if total_activity_values else 0), 2) * 10
             if team_satisfaction_7days:
                 result['7days']['rating'] = team_satisfaction_7days
         return result
@@ -382,22 +382,33 @@ class HelpdeskStage(models.Model):
         if team_id:
             return [(4, team_id, 0)]
 
-    name = fields.Char(required=True, translate=True)
+    name = fields.Char('Stage Name', required=True, translate=True)
+    description = fields.Text(translate=True)
     sequence = fields.Integer('Sequence', default=10)
     is_close = fields.Boolean(
-        'Closing Kanban Stage',
+        'Closing Stage',
         help='Tickets in this stage are considered as done. This is used notably when '
              'computing SLAs and KPIs on tickets.')
     fold = fields.Boolean(
-        'Folded', help='Folded in kanban view')
+        'Folded in Kanban',
+        help='This stage is folded in the kanban view when there are no records in that stage to display.')
     team_ids = fields.Many2many(
         'helpdesk.team', relation='team_stage_rel', string='Team',
         default=_get_default_team_ids,
         help='Specific team that uses this stage. Other teams will not be able to see or use this stage.')
     template_id = fields.Many2one(
-        'mail.template', 'Automated Answer Email Template',
+        'mail.template', 'Email Template',
         domain="[('model', '=', 'helpdesk.ticket')]",
         help="Automated email sent to the ticket's customer when the ticket reaches this stage.")
+    legend_blocked = fields.Char(
+        'Red Kanban Label', default=lambda s: _('Blocked'), translate=True, required=True,
+        help='Override the default value displayed for the blocked state for kanban selection, when the task or issue is in that stage.')
+    legend_done = fields.Char(
+        'Green Kanban Label', default=lambda s: _('Ready for Next Stage'), translate=True, required=True,
+        help='Override the default value displayed for the done state for kanban selection, when the task or issue is in that stage.')
+    legend_normal = fields.Char(
+        'Grey Kanban Label', default=lambda s: _('In Progress'), translate=True, required=True,
+        help='Override the default value displayed for the normal state for kanban selection, when the task or issue is in that stage.')
 
     @api.multi
     def unlink(self):

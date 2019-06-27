@@ -72,7 +72,7 @@
         <field name="model">helpdesk.stage</field>
         <field name="arch" type="xml">
             <tree string="Stage">
-                <field name="sequence" widget="handle" groups="base.group_no_one"/>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="is_close"/>
             </tree>
@@ -96,6 +96,30 @@
                             <field name="is_close"/>
                             <field name="fold"/>
                         </group>
+                    </group>
+                    <group string="Stage Description and Tooltips">
+                        <p class="text-muted" colspan="2">
+                            At each stage employees can block or make task/issue ready for next stage.
+                            You can define here labels that will be displayed for the state instead
+                            of the default labels.
+                        </p>
+                        <label for="legend_normal" string=" " class="o_status oe_project_kanban_legend"
+                            title="Task in progress. Click to block or set as done."
+                            aria-label="Task in progress. Click to block or set as done." role="img"/>
+                        <field name="legend_normal" nolabel="1"/>
+                        <label for="legend_blocked" string=" " class="o_status o_status_red oe_project_kanban_legend"
+                            title="Task is blocked. Click to unblock or set as done."
+                            aria-label="Task is blocked. Click to unblock or set as done." role="img"/>
+                        <field name="legend_blocked" nolabel="1"/>
+                        <label for="legend_done" string=" " class="o_status o_status_green oe_project_kanban_legend"
+                            title="This step is done. Click to block or set in progress."
+                            aria-label="This step is done. Click to block or set in progress." role="img"/>
+                        <field name="legend_done" nolabel="1"/>
+
+                        <p class="text-muted" colspan="2">
+                            You can also add a description to help your coworkers understand the meaning and purpose of the stage.
+                        </p>
+                        <field name="description" placeholder="Add a description..." nolabel="1" colspan="2"/>
                     </group>
                 </sheet>
             </form>
@@ -373,7 +397,7 @@
         <field name="priority">10</field>
         <field name="arch" type="xml">
             <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_helpdesk_ticket" quick_create_view="helpdesk.quick_create_ticket_form">
-                <field name="stage_id"/>
+                <field name="stage_id" options='{"group_by_tooltip": {"description": "Stage Description"}}'/>
                 <field name="user_id"/>
                 <field name="color"/>
                 <field name="priority"/>
@@ -389,6 +413,9 @@
                 <!-- sla_id and team_id are necessary to avoid some fields recomputation -->
                 <field name="sla_id"/>
                 <field name="team_id"/>
+                <field name="legend_blocked"/>
+                <field name="legend_normal"/>
+                <field name="legend_done"/>
                 <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
                 <templates>
                     <t t-name="kanban-box">
@@ -421,18 +448,18 @@
                                 <t t-if="new Date(record.deadline.raw_value) &lt; (new Date())" t-set="red">oe_kanban_text_red</t>
                                     <span class="fa fa-clock-o" title="Deadline" role="img" aria-label="Deadline"/> <span t-attf-class="#{red}"><i><field name="deadline"/></i></span>
                                 </div>
-                                <div class="oe_kanban_bottom_left">
-                                    <field name="priority" widget="priority"/>
-                                </div>
-                                <div class="oe_kanban_bottom_right">
-                                    <t t-if="record.message_needaction_counter.raw_value">
-                                        <span class='oe_kanban_mail_new' title='Important Messages'><i class='fa fa-comments' role="img" aria-label="Messages"/><t t-raw="record.message_needaction_counter.raw_value"/></span>
-                                    </t>
-                                    <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" t-att-alt="record.user_id.value" width="24" height="24" class="oe_kanban_avatar float-right"/>
-                                    <span class="o_helpdesk_sla_failed float-right fa fa-times-circle" style="margin: 6px" t-attf-title="Failed SLA: {{record.sla_name.raw_value}}" role="img" t-attf-aria-label="Failed SLA: {{record.sla_name.raw_value}}" t-if="record.sla_fail &amp;&amp; record.sla_fail.raw_value"></span>
-                                    <div class="float-right">
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="priority" widget="priority"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <t t-if="record.message_needaction_counter.raw_value">
+                                            <span class='oe_kanban_mail_new' title='Important Messages'><i class='fa fa-comments' role="img" aria-label="Messages"/><t t-raw="record.message_needaction_counter.raw_value"/></span>
+                                        </t>
                                         <field name="activity_ids" widget="kanban_activity"/>
                                         <field name="kanban_state" widget="state_selection" groups="base.group_user"/>
+                                        <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" t-att-alt="record.user_id.value" width="24" height="24" class="oe_kanban_avatar float-right"/>
+                                        <span class="o_helpdesk_sla_failed float-right fa fa-times-circle" style="margin: 6px" t-attf-title="Failed SLA: {{record.sla_name.raw_value}}" role="img" t-attf-aria-label="Failed SLA: {{record.sla_name.raw_value}}" t-if="record.sla_fail &amp;&amp; record.sla_fail.raw_value"></span>
                                     </div>
                                 </div>
                             </div>
@@ -464,12 +491,16 @@
         <field name="arch" type="xml">
             <form string="Helpdesk Ticket">
                 <header>
-                    <button name="assign_ticket_to_self" string="Assign To Me" type="object" class="oe_highlight" groups="helpdesk.group_helpdesk_user"/>
+                    <button name="assign_ticket_to_self" string="Assign To Me" type="object" class="oe_highlight"
+                        groups="helpdesk.group_helpdesk_user" attrs="{'invisible': &quot;[('user_id', '=', uid)]&quot;}"/>
                     <field name="stage_id" widget="statusbar"
                         options="{'clickable': '1', 'fold_field': 'fold'}"/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="legend_blocked" invisible="1"/>
+                    <field name="legend_normal" invisible="1"/>
+                    <field name="legend_done" invisible="1"/>
                     <field name="sla_active" invisible="1"/>
                     <field name="partner_tickets" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
@@ -527,12 +558,29 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first ticket.
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_action_main_my" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
+        <field name="context">{'search_default_my_ticket': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first ticket.
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
 
     <record id="helpdesk_ticket_action_main_tree" model="ir.actions.act_window">
-        <field name="name">All Tickets</field>
+        <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_mode">tree,kanban,form,activity</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
@@ -540,6 +588,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first ticket.
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -553,6 +603,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new ticket
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -566,6 +618,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new ticket
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -582,6 +636,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No tickets to display
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -597,6 +653,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No tickets to display
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -612,6 +670,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No tickets to display
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -627,6 +687,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No tickets to display
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -642,6 +704,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No tickets to display
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -683,6 +747,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new ticket
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -696,6 +762,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new ticket
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -709,6 +777,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new ticket
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -722,6 +792,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new ticket
+                </p><p>To get things done, use activities and status on tickets.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -748,7 +820,9 @@
                 <group expand="0" string="Group By">
                   <filter string="Assignee" name="assignee" context="{'group_by':'user_id'}"/>
                   <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
-                <filter string="Ticket Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
+                  <filter string="Ticket Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
+                  <filter string="Creation Date" context="{'group_by':'create_date:week'}" name="group_by_create_date"/>
+                  <filter string="First Assignation Date" context="{'group_by': 'assign_date:month'}" name="group_by_assign_date"/>
                 </group>
             </search>
         </field>
@@ -766,6 +840,8 @@
                eval="[(5, 0, 0),
                       (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
                       (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')})]"/>
+        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
+        <field name="context">{'search_default_group_by_create_date': 1}</field>
     </record>
 
     <menuitem id="helpdesk_ticket_report_menu" name="Tickets" action="helpdesk_ticket_analysis_action"
@@ -887,6 +963,12 @@
                       (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_team_view_pivot_analysis')})]"/>
     </record>
 
-    <menuitem id="helpdesk_ticket_menu_main" action="helpdesk_ticket_action_main_tree"
+    <menuitem id="helpdesk_ticket_menu_main" name="Tickets"
         sequence="10" parent="helpdesk.menu_helpdesk_root"/>
+
+    <menuitem id="helpdesk_ticket_menu_my" name="My Tickets" action="helpdesk_ticket_action_main_my"
+        sequence="10" parent="helpdesk.helpdesk_ticket_menu_main"/>
+
+    <menuitem id="helpdesk_ticket_menu_all" name="All Tickets" action="helpdesk_ticket_action_main_tree"
+        sequence="20" parent="helpdesk.helpdesk_ticket_menu_main"/>
 </odoo>

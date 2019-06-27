@@ -95,7 +95,7 @@
                                     How to assign newly created tickets to the right person
                                 </div>
                                 <div>
-                                    <field name="assign_method" class="mt16"/>
+                                    <field name="assign_method" class="mt16 o_light_label" widget="radio"/>
                                 </div>
                             </div>
                         </div>

@@ -7,9 +7,15 @@ from odoo import fields, models
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
-    helpdesk_target_closed = fields.Float(string='Target Tickets to Close')
-    helpdesk_target_rating = fields.Float(string='Target Customer Rating')
-    helpdesk_target_success = fields.Float(string='Target Success Rate')
+    helpdesk_target_closed = fields.Float(string='Target Tickets to Close', default=1)
+    helpdesk_target_rating = fields.Float(string='Target Customer Rating', default=100)
+    helpdesk_target_success = fields.Float(string='Target Success Rate', default=100)
+
+    _sql_constraints = [
+        ('target_closed_not_zero', 'CHECK(helpdesk_target_closed > 0)', 'You cannot have negative targets'),
+        ('target_rating_not_zero', 'CHECK(helpdesk_target_rating > 0)', 'You cannot have negative targets'),
+        ('target_success_not_zero', 'CHECK(helpdesk_target_success > 0)', 'You cannot have negative targets'),
+    ]
 
     def __init__(self, pool, cr):
         """ Override of __init__ to add access rights.

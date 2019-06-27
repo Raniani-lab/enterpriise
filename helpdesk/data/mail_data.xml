@@ -31,7 +31,7 @@
         <field name="res_model">helpdesk.ticket</field>
         <field name="default" eval="False"/>
         <field name="internal" eval="True"/>
-        <field name="description">Status Changed</field>
+        <field name="description">Stage Changed</field>
     </record>
 
     <!-- Team related subtypes for messaging / Chatter -->

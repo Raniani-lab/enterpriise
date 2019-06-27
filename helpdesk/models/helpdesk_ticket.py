@@ -86,14 +86,14 @@ class HelpdeskTicket(models.Model):
     company_id = fields.Many2one(related='team_id.company_id', string='Company', store=True, readonly=True)
     color = fields.Integer(string='Color Index')
     kanban_state = fields.Selection([
-        ('normal', 'Normal'),
-        ('blocked', 'Blocked'),
-        ('done', 'Ready for next stage')], string='Kanban State',
-        default='normal', required=True, tracking=True,
-        help="A ticket's kanban state indicates special situations affecting it:\n"
-             "* Normal is the default situation\n"
-             "* Blocked indicates something is preventing the progress of this issue\n"
-             "* Ready for next stage indicates the issue is ready to be pulled to the next stage")
+        ('normal', 'Grey'),
+        ('done', 'Green'),
+        ('blocked', 'Red')], string='Kanban State',
+        default='normal', required=True)
+    kanban_state_label = fields.Char(compute='_compute_kanban_state_label', string='Column Status', tracking=True)
+    legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked Explanation', readonly=True, related_sudo=False)
+    legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid Explanation', readonly=True, related_sudo=False)
+    legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', readonly=True, related_sudo=False)
     user_id = fields.Many2one('res.users', string='Assigned to', tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
     partner_id = fields.Many2one('res.partner', string='Customer')
     partner_tickets = fields.Integer('Number of tickets from the same partner', compute='_compute_partner_tickets')
@@ -130,6 +130,16 @@ class HelpdeskTicket(models.Model):
 
     # customer portal: include comment and incoming emails in communication history
     website_message_ids = fields.One2many(domain=lambda self: [('model', '=', self._name), ('message_type', 'in', ['email', 'comment'])])
+
+    @api.depends('stage_id', 'kanban_state')
+    def _compute_kanban_state_label(self):
+        for task in self:
+            if task.kanban_state == 'normal':
+                task.kanban_state_label = task.legend_normal
+            elif task.kanban_state == 'blocked':
+                task.kanban_state_label = task.legend_blocked
+            else:
+                task.kanban_state_label = task.legend_done
 
     def _compute_access_url(self):
         super(HelpdeskTicket, self)._compute_access_url()

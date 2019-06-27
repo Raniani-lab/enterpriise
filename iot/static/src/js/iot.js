@@ -619,9 +619,9 @@ var IotRealTimeValue = basic_fields.InputField.extend(IotValueFieldMixin, {
      * @private
      */
     _getDeviceInfo: function() {
-        this.test_type = this.record.data.test_type;
-        if (this.test_type === 'measure') {
-            this.iot_device = new DeviceProxy({ iot_ip: this.record.data.ip, identifier: this.record.data.identifier });            
+        var record_data = this.record.data;
+        if (record_data.test_type === 'measure' && record_data.identifier) {
+            this.iot_device = new DeviceProxy({ iot_ip: record_data.ip, identifier: record_data.identifier });            
         }
         return Promise.resolve();
     },

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 
 PERIOD_RATIO = {
@@ -18,10 +19,10 @@ class RentalPricing(models.Model):
     _description = 'Pricing rule of rentals'
     _order = 'unit, duration'
 
-    duration = fields.Float(
+    duration = fields.Integer(
         string="Duration", required=True,
         help="Minimum duration before this rule is applied. If set to 0, it represents a fixed rental price.")
-    unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks")], string="Unit", required=True, default='day')
+    unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months")], string="Unit", required=True, default='day')
 
     price = fields.Monetary(string="Price", required=True, digits='Product Price', default=1.0)
     currency_id = fields.Many2one(
@@ -60,9 +61,13 @@ class RentalPricing(models.Model):
     def _compute_duration_vals(self, pickup_date, return_date):
         duration = return_date - pickup_date
         vals = dict(hour=(duration.days * 24 + duration.seconds / 3600))
-        vals['day'] = vals['hour'] / 24
-        vals['week'] = vals['day'] / 7
-        # months todo
+        vals['day'] = math.ceil(vals['hour'] / 24)
+        vals['week'] = math.ceil(vals['day'] / 7)
+        duration_diff = relativedelta(return_date, pickup_date)
+        months = 1 if duration_diff.days or duration_diff.hours or duration_diff.minutes else 0
+        months += duration_diff.months
+        months += duration_diff.years * 12
+        vals['month'] = months
         return vals
 
     _sql_constraints = [

@@ -29,10 +29,10 @@ class RentalWizard(models.TransientModel):
         string="Pricing", help="Best Pricing Rule based on duration")
     currency_id = fields.Many2one('res.currency', related='pricing_id.currency_id')
 
-    duration = fields.Float(
+    duration = fields.Integer(
         string="Duration", compute="_compute_duration", default=1.0,
         help="Duration of the rental (in unit of the pricing)")
-    duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks")],
+    duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months")],
                                      string="Unit", required=True, default='day',
                                      compute="_compute_duration")
 

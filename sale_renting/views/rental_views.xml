@@ -54,7 +54,8 @@
                       'company_id': parent.company_id,
                       'default_lst_price': price_unit,
                       'default_description_sale': name,
-                      'default_rent_ok': 1
+                      'default_rent_ok': 1,
+                      'rental_products': True,
                   }
             </attribute>
             <attribute name="domain">['|', ('sale_ok', '=', True), ('rent_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]</attribute>
@@ -72,7 +73,8 @@
                     'company_id': parent.company_id,
                     'default_lst_price': price_unit,
                     'default_description_sale': name,
-                    'default_rent_ok': 1
+                    'default_rent_ok': 1,
+                    'rental_products': True,
                 }
             </attribute>
             <attribute name="domain">['|', ('sale_ok', '=', True), ('rent_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]</attribute>

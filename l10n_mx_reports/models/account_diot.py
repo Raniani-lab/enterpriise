@@ -178,6 +178,11 @@ class MxReportPartnerLedger(models.AbstractModel):
         tax0 = rep_line_obj.search([('tag_ids', 'in', tag_0.ids), ('company_id', '=', company)] + diot_common_domain).mapped('tax_id')
         tax_ret = rep_line_obj.search([('tag_ids', 'in', tag_ret.ids), ('company_id', '=', company)] + diot_common_domain).mapped('tax_id')
         tax_exe = rep_line_obj.search([('tag_ids', 'in', tag_exe.ids), ('company_id', '=', company)] + diot_common_domain).mapped('tax_id')
+        grouped_taxes = self.env['account.tax'].search([
+            ('type_tax_use', '=', 'purchase'),
+            ('company_id', '=', company),
+            ('amount_type', '=', 'group')])
+        taxes_in_groups = grouped_taxes.mapped('children_tax_ids')
         for partner in sorted_partners:
             amls = grouped_partners[partner]['lines']
             if not amls:
@@ -201,8 +206,11 @@ class MxReportPartnerLedger(models.AbstractModel):
             total_tax0 = total_taxnoncre = total_tax8_noncre = 0
             exempt = 0
             withh = 0
-            for tax in tax16.ids:
-                total_tax16 += partner_data.get(tax, 0)
+            for tax in tax16:
+                if tax in taxes_in_groups:
+                    diff = 16 - tax.amount
+                    withh += diff * partner_data.get(tax.id, 0) / 100
+                total_tax16 += partner_data.get(tax.id, 0)
             p_columns.append(total_tax16)
             for tax in taxnoncre.ids:
                 total_taxnoncre += partner_data.get(tax, 0)
@@ -254,9 +262,11 @@ class MxReportPartnerLedger(models.AbstractModel):
                 total_tax0 = total_taxnoncre = total_tax8_noncre = 0
                 exempt = 0
                 withh = 0
-                total_tax16 += sum([
-                    line.debit or line.credit * -1
-                    for tax in tax16.ids if tax in line.tax_ids.ids])
+                for tax in tax16.filtered(lambda t: t in line.tax_ids):
+                    if tax in taxes_in_groups:
+                        diff = 16 - tax.amount
+                        withh += diff / 100 * (line.debit or line.credit * -1)
+                    total_tax16 += line.debit or line.credit * -1
                 columns.append(self.format_value(total_tax16))
                 total_taxnoncre += sum([
                     line.debit or line.credit * -1

@@ -657,7 +657,7 @@ msgstr "Майбутні дії"
 #: code:addons/sign/static/src/js/sign_common.js:1005
 #, python-format
 msgid "Generate PDF"
-msgstr ""
+msgstr "Створити PDF"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -699,7 +699,7 @@ msgstr "Якщо позначено, то повідомлення потреб�
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Якщо відмічено, то нові повідомлення будуть потребувати вашої уваги."
+msgstr "Якщо позначено, то нові повідомлення будуть потребувати вашої уваги."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
@@ -861,7 +861,7 @@ msgstr "Повідомлення"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
 msgid "Missing Password"
-msgstr ""
+msgstr "Відсутній пароль"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -964,14 +964,14 @@ msgstr "Тип наступної дії"
 #: code:addons/sign/static/src/js/sign_common.js:1090
 #, python-format
 msgid "Next signatory (%s)"
-msgstr ""
+msgstr "Наступний підписант (%s)"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:1087
 #, python-format
 msgid "Next signatory is %s"
-msgstr ""
+msgstr "Наступним підписантом є %s"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
@@ -1039,7 +1039,7 @@ msgstr "Опція"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item_option
 msgid "Option of a selection Field"
-msgstr ""
+msgstr "Функція вибраного поля"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
@@ -1083,7 +1083,7 @@ msgstr "Протерміновано"
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
 #, python-format
 msgid "PDF is encrypted"
-msgstr ""
+msgstr "PDF зашифрований"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__partner_id
@@ -1101,7 +1101,7 @@ msgstr "Поле партнера для автоматичного заповн
 #: code:addons/sign/static/src/js/sign_common.js:989
 #, python-format
 msgid "Password is incorrect."
-msgstr ""
+msgstr "Невірний пароль."
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_phone
@@ -1205,7 +1205,7 @@ msgstr "Запитані підписи"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__required
 msgid "Required"
-msgstr "Обов'язкове"
+msgstr "Обов'язково"
 
 #. module: sign
 #. openerp-web
@@ -1303,14 +1303,14 @@ msgstr "Токен безпеки"
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_selection
 msgid "Select an option"
-msgstr ""
+msgstr "Оберіть функцію"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:398
 #, python-format
 msgid "Select available options"
-msgstr ""
+msgstr "Оберіть доступні функції"
 
 #. module: sign
 #. openerp-web
@@ -1328,7 +1328,7 @@ msgstr "Вибір"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__option_ids
 msgid "Selection options"
-msgstr ""
+msgstr "Функції вибору"
 
 #. module: sign
 #. openerp-web
@@ -1453,7 +1453,7 @@ msgstr "Підписати тег шаблону"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Sign directly without sending mail request"
-msgstr ""
+msgstr "Підписуйте особисто без надсилання поштового запиту "
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -1717,7 +1717,7 @@ msgstr "Документ"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
 msgid "The password's PDF is required to generate the final document."
-msgstr ""
+msgstr "PDF-файл пароля потрібен для створення остаточного документа."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -1732,7 +1732,7 @@ msgstr ""
 #: code:addons/sign/models/sign_template.py:82
 #, python-format
 msgid "This file cannot be read. Is it a valid PDF?"
-msgstr ""
+msgstr "Цей файл неможливо прочитати. Це дійсний PDF-файл?"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -1832,7 +1832,7 @@ msgstr "Підтвердити та відправити"
 #: code:addons/sign/static/src/js/sign_common.js:1262
 #, python-format
 msgid "Validate & the next signatory is %s"
-msgstr ""
+msgstr "Перевірте та наступним підписантом є %s"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -1892,7 +1892,7 @@ msgstr "Попередження"
 #: code:addons/sign/static/src/xml/sign_common.xml:82
 #, python-format
 msgid "We will let you know by email once everyone has signed."
-msgstr "Ми дамо вам знати по електронній пошті, коли всі підпишуть."
+msgstr "Ми дамо вам знати через електронну пошту, коли усі підпишуть."
 
 #. module: sign
 #. openerp-web
@@ -1900,6 +1900,7 @@ msgstr "Ми дамо вам знати по електронній пошті, 
 #, python-format
 msgid "We will send you this document by email once everyone has signed."
 msgstr ""
+"Ми надішлемо вам цей документ електронною поштою після його підписання."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__website_message_ids
@@ -1919,13 +1920,13 @@ msgstr "Ширина"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Write email or search contact..."
-msgstr "Напишіть електронного листа або знайдіть контакт..."
+msgstr "Напишіть електронний лист або знайдіть контакт..."
 
 #. module: sign
 #: code:addons/sign/controllers/main.py:151
 #, python-format
 msgid "Wrong password"
-msgstr ""
+msgstr "Невірний пароль"
 
 #. module: sign
 #. openerp-web
@@ -1941,7 +1942,7 @@ msgid ""
 "You can't delete a template for which signature requests exist but you can "
 "archive it instead."
 msgstr ""
-"Ви не можете видалити шаблон, для якого існують запити підпису, але ви "
+"Ви не можете видалити шаблон, для якого існують запити на підпис, але ви "
 "можете архівувати його."
 
 #. module: sign
@@ -1993,6 +1994,8 @@ msgid ""
 "Your file is encrypted, PDF's password is required to generate final "
 "document. The final document will be encrypted with the same password."
 msgstr ""
+"Ваш файл зашифрований, для створення остаточного документа потрібен пароль "
+"PDF. Остаточний документ буде зашифровано з таким самим паролем."
 
 #. module: sign
 #. openerp-web

@@ -34,6 +34,7 @@
 # Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # Carlos Lopez <celm1990@hotmail.com>, 2019
 # Rick Hunter <rick.hunter.ec@gmail.com>, 2019
+# Rick Hunter <rick_hunter_ec@yahoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -41,7 +42,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:35+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
-"Last-Translator: Rick Hunter <rick.hunter.ec@gmail.com>, 2019\n"
+"Last-Translator: Rick Hunter <rick_hunter_ec@yahoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,6 +59,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_empty_report\">\n"
+"                Agregar un nuevo reporte\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:78
@@ -68,6 +73,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Agregar una nueva acción automitazada\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:96
@@ -78,6 +87,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Agregar un nuevo filtro\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/report.py:54
@@ -116,7 +129,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:639
 #, python-format
 msgid "A field with the same name already exists."
-msgstr ""
+msgstr "Un campo con el mismo nombre ya existe."
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_model__abstract
@@ -294,7 +307,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:59
 #, python-format
 msgid "App Icon"
-msgstr ""
+msgstr "Icono de la aplicación"
 
 #. module: web_studio
 #. openerp-web
@@ -308,7 +321,7 @@ msgstr "¿Seguro que desea eliminar este/esta %s de la vista?"
 #: code:addons/web_studio/static/src/js/menu.js:266
 #, python-format
 msgid "Are you sure you want to reset the background image?"
-msgstr ""
+msgstr "¿"
 
 #. module: web_studio
 #. openerp-web
@@ -347,7 +360,7 @@ msgstr "Automatizaciones"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:318
 #, python-format
 msgid "Backward"
-msgstr ""
+msgstr "Hacia atrás"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base
@@ -388,14 +401,14 @@ msgstr "Bordeado"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:285
 #, python-format
 msgid "Borderless"
-msgstr ""
+msgstr "Sin bordes"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:128
 #, python-format
 msgid "Business header/footer"
-msgstr ""
+msgstr "Encabezado/pie de página del negocio"
 
 #. module: web_studio
 #. openerp-web
@@ -816,7 +829,7 @@ msgstr "Valor predeterminado"
 #: code:addons/web_studio/static/src/xml/action_editor.xml:32
 #, python-format
 msgid "Default view"
-msgstr ""
+msgstr "Vista predeterminada"
 
 #. module: web_studio
 #. openerp-web
@@ -910,6 +923,8 @@ msgid ""
 "Do you really want to remove this value? All the records with this value "
 "will be updated accordingly."
 msgstr ""
+"¿Realmente quiere eliminar este valor? Todos los registros con este valor se"
+" actualizarán en consecuencia."
 
 #. module: web_studio
 #. openerp-web
@@ -1001,7 +1016,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:187
 #, python-format
 msgid "Edit Value"
-msgstr ""
+msgstr "Editar valor"
 
 #. module: web_studio
 #. openerp-web
@@ -1015,7 +1030,7 @@ msgstr "Edite el menú"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:32
 #, python-format
 msgid "Edit selection"
-msgstr ""
+msgstr "Editar selección"
 
 #. module: web_studio
 #. openerp-web
@@ -1069,7 +1084,7 @@ msgstr "Error"
 #: code:addons/web_studio/static/src/js/reports/report_editor_action.js:54
 #, python-format
 msgid "Error: Preview not available because there is no existing record."
-msgstr ""
+msgstr "Error: Vista previa no disponible porque no hay registro existente."
 
 #. module: web_studio
 #. openerp-web
@@ -1218,14 +1233,14 @@ msgstr "Filtros"
 #: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:284
 #, python-format
 msgid "First Status"
-msgstr ""
+msgstr "Primer estado"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:226
 #, python-format
 msgid "Font style"
-msgstr ""
+msgstr "Estilo de letra"
 
 #. module: web_studio
 #. openerp-web
@@ -1296,14 +1311,14 @@ msgstr "<b/><i/>"
 #: code:addons/web_studio/static/src/xml/submenu.xml:53
 #, python-format
 msgid "Graph View"
-msgstr ""
+msgstr "Vista gráfica"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:670
 #, python-format
 msgid "Great !"
-msgstr ""
+msgstr "¡Genial!"
 
 #. module: web_studio
 #. openerp-web
@@ -1530,7 +1545,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/action_editor.xml:43
 #, python-format
 msgid "Is default view"
-msgstr ""
+msgstr "Es la vista predeterminada"
 
 #. module: web_studio
 #. openerp-web
@@ -1677,7 +1692,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:6
 #, python-format
 msgid "Minus"
-msgstr ""
+msgstr "Menos"
 
 #. module: web_studio
 #. openerp-web
@@ -1847,7 +1862,7 @@ msgstr "No"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:136
 #, python-format
 msgid "No header/footer"
-msgstr ""
+msgstr "Sin encabezado/pie de página"
 
 #. module: web_studio
 #. openerp-web
@@ -2114,14 +2129,14 @@ msgstr "Informe"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_report
 msgid "Report Action"
-msgstr ""
+msgstr "Reportar la acción"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/reports/report_editor_action.js:27
 #, python-format
 msgid "Report Editor"
-msgstr ""
+msgstr "Reportar al editor"
 
 #. module: web_studio
 #. openerp-web
@@ -2196,14 +2211,14 @@ msgstr "Guardado"
 #: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:122
 #, python-format
 msgid "Saving..."
-msgstr ""
+msgstr "Guardando..."
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:285
 #, python-format
 msgid "Second Status"
-msgstr ""
+msgstr "Segundo estado"
 
 #. module: web_studio
 #. openerp-web
@@ -2294,7 +2309,7 @@ msgstr "Establecer como predeterminado"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:116
 #, python-format
 msgid "Set expression"
-msgstr ""
+msgstr "Establecer expresión"
 
 #. module: web_studio
 #. openerp-web
@@ -2338,7 +2353,7 @@ msgstr "Fuente"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:21
 #, python-format
 msgid "Specify all possible values."
-msgstr ""
+msgstr "Especificar todos los valores posibles"
 
 #. module: web_studio
 #. openerp-web
@@ -2461,7 +2476,7 @@ msgstr "Etiquetas"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:150
 #, python-format
 msgid "Taxes amount by groups"
-msgstr ""
+msgstr "Cantidad de impuesto por grupo"
 
 #. module: web_studio
 #. openerp-web
@@ -2474,7 +2489,7 @@ msgstr "Nombre técnico"
 #: code:addons/web_studio/models/ir_ui_view.py:781
 #, python-format
 msgid "Template '%s' not found"
-msgstr ""
+msgstr "Plantilla '%s' no encontrada"
 
 #. module: web_studio
 #. openerp-web
@@ -2553,6 +2568,8 @@ msgid ""
 "The new name can contain only a to z lower letters, numbers and _, with a "
 "maximum of 53 characters."
 msgstr ""
+"El nuevo nombre puede contener so letras de la a a la z, números y _, con un"
+" máximo de 53 caracteres. "
 
 #. module: web_studio
 #. openerp-web
@@ -2617,14 +2634,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:402
 #, python-format
 msgid "Three Columns"
-msgstr ""
+msgstr "Tres columnas"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:315
 #, python-format
 msgid "Timeline"
-msgstr ""
+msgstr "Línea de Tiempo"
 
 #. module: web_studio
 #. openerp-web
@@ -2673,7 +2690,7 @@ msgstr "Traducciones"
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:379
 #, python-format
 msgid "Two Columns"
-msgstr ""
+msgstr "Dos Columnas"
 
 #. module: web_studio
 #. openerp-web
@@ -2738,14 +2755,14 @@ msgstr "Vistas"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:179
 #, python-format
 msgid "Visible for"
-msgstr ""
+msgstr "Visible para"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:97
 #, python-format
 msgid "Visible if"
-msgstr ""
+msgstr "Visible si"
 
 #. module: web_studio
 #. openerp-web
@@ -2806,7 +2823,7 @@ msgstr "Si este modelo es abstracto"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:120
 #, python-format
 msgid "Which type of report do you want to create?"
-msgstr ""
+msgstr "¿Qué tipo de reporte quiere crear?"
 
 #. module: web_studio
 #. openerp-web
@@ -2871,7 +2888,7 @@ msgstr ""
 #: code:addons/web_studio/controllers/report.py:184
 #, python-format
 msgid "You cannot modify this view, it is part of the generic layout"
-msgstr ""
+msgstr "No puede modificar esta vista, es parte del diseño genérico"
 
 #. module: web_studio
 #. openerp-web
@@ -2957,7 +2974,7 @@ msgstr "por ejemplo: Inmobiliaria"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:201
 #, python-format
 msgid "left"
-msgstr ""
+msgstr "Izquierda"
 
 #. module: web_studio
 #. openerp-web
@@ -2989,14 +3006,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:272
 #, python-format
 msgid "reset color"
-msgstr ""
+msgstr "restablecer color"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:197
 #, python-format
 msgid "right"
-msgstr ""
+msgstr "derecha"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:1188
@@ -3031,7 +3048,7 @@ msgstr "subirlo"
 #: code:addons/web_studio/static/src/xml/icon_creator.xml:9
 #, python-format
 msgid "upload one"
-msgstr ""
+msgstr "subir uno"
 
 #. module: web_studio
 #. openerp-web

@@ -29,6 +29,8 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Feltételek és akciók gyűjteménye, amely a feltételnek megfelelő összes "
+"mellékletnél elérhető"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_ir_attachment
@@ -63,7 +65,7 @@ msgstr ""
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
-msgstr ""
+msgstr "Fizetési emlékeztető"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
@@ -129,7 +131,7 @@ msgstr ""
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "Beszállítói számla"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder

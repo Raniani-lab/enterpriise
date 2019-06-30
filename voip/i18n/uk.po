@@ -34,7 +34,7 @@ msgstr "Будь ласка, перевірте ваші налаштуванн�
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
-msgstr "# випадків"
+msgstr "К-сть випадків"
 
 #. module: voip
 #. openerp-web
@@ -47,7 +47,7 @@ msgstr "Дія"
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
 msgid "Activity Type"
-msgstr "Тип діяльності"
+msgstr "Тип дії"
 
 #. module: voip
 #. openerp-web
@@ -59,12 +59,12 @@ msgstr "Додати до черги дзінків"
 #. module: voip
 #: model:ir.actions.server,name:voip.action_add_to_call_queue
 msgid "Add to call queue"
-msgstr ""
+msgstr "Додати до черги дзінків"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "Add voip queue support to a model"
-msgstr ""
+msgstr "Додайте підтримку черги дзвінків IP-телефонії до моделі"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_always_transfer
@@ -117,7 +117,7 @@ msgstr "Назва дзвінка"
 #: code:addons/voip/models/voip_queue_mixin.py:37
 #, python-format
 msgid "Call activity type is not of category \"phonecall\""
-msgstr ""
+msgstr "Тип дії дзвінка не в категорії \"телефонний дзвінок\""
 
 #. module: voip
 #: code:addons/voip/models/voip_phonecall.py:196
@@ -203,7 +203,7 @@ msgstr "Налаштування"
 #: code:addons/voip/static/src/js/user_agent.js:296
 #, python-format
 msgid "Connecting..."
-msgstr ""
+msgstr "З'єднання..."
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_partner
@@ -245,7 +245,7 @@ msgstr "Клієнт"
 #: code:addons/voip/static/src/js/dialing_panel.js:473
 #, python-format
 msgid "Customer unavailable"
-msgstr "Клієнт не доступний"
+msgstr "Клієнт недоступний"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__call_date
@@ -331,7 +331,7 @@ msgstr "Розширення телефону"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:68
 #, python-format
 msgid "Hang up but keep call in queue"
-msgstr ""
+msgstr "Покладіть трубку, але тримайте виклик у черзі"
 
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
@@ -443,7 +443,7 @@ msgstr "Пов'язане повідомлення чату"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__voip_phonecall_id
 msgid "Linked Voip Phonecall"
-msgstr "Пов'язаний дзвінок Voip"
+msgstr "Пов'язаний дзвінок IP-телефонії"
 
 #. module: voip
 #. openerp-web
@@ -569,6 +569,8 @@ msgstr "Телефон"
 msgid ""
 "Phone call cannot be created. Is it any phone number linked to record %s?"
 msgstr ""
+"Не можливо створити дзвінок. Чи пов'язаний якийсб номер телефону до запису "
+"%s?"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
@@ -669,12 +671,12 @@ msgstr "Пароль SIP"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
 msgid "Schedule &amp; make calls from CRM app"
-msgstr "Плануйте та здійснюйте дзвінки з програми CRM"
+msgstr "Плануйте та здійснюйте дзвінки з модуля CRM"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_option
 msgid "Schedule A New Activity"
-msgstr "Розклад нової дії"
+msgstr "Запланувати нову дію"
 
 #. module: voip
 #. openerp-web
@@ -749,7 +751,7 @@ msgstr "Податковий звіт"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP adress of your PBX Server"
-msgstr "Пдреса IP вашого серверу PBX"
+msgstr "Адреса IP вашого серверу PBX"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -798,9 +800,9 @@ msgid ""
 "When the call is over, the status is set to Held.\n"
 "If the call is not applicable anymore, the status can be set to Cancelled."
 msgstr ""
-"Статус встановлюється на значення Зробити, коли справа створена.\n"
+"Статус встановлюється на значення Зробити, коли дзвінок створено.\n"
 "Коли дзвінок завершується, статус змінюється на Впіймано.\n"
-"Якщо дзвінок більше не підходить, статус може бути встановлений як Скасовано."
+"Якщо дзвінок більше не застосовується, статус може бути встановлений як Скасовано."
 
 #. module: voip
 #. openerp-web

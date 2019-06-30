@@ -42,7 +42,7 @@ msgstr "+ Címke hozzáadása"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr ""
+msgstr ", lejárt ekkor:"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
@@ -63,6 +63,10 @@ msgid ""
 "task or vendor bill,</br> create activities for users, etc.</br> Actions can"
 " be customized through the Configuration menu."
 msgstr ""
+"<b>Az akciók</b> lehetővé teszik a címkék hozzárendelését, olyan akciók "
+"automatizálását, mint a feladatok vagy beszállítói számlák létrehozása,</br>"
+" a felhasználók tevékenységeinek létrehozását, stb .</br> Az akciókat a "
+"Konfiguráció menün keresztül lehet testre szabni."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -75,6 +79,8 @@ msgstr "<b>Byte</b>"
 #, python-format
 msgid "<b>Close the preview</b> to go back to your selection of documents"
 msgstr ""
+"<b>Zárja be az előnézetet</b> a kiválasztott dokumentumokhoz való "
+"visszatéréshez"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -99,11 +105,13 @@ msgid ""
 "<b>Use tags</b> to easily filter documents. Tags are defined according to "
 "the folder."
 msgstr ""
+"<b>Használjon címkéket</b> a dokumentumok könnyű szűréséhez. A címkék a "
+"mappának megfelelően kerülnek meghatározásra."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<br/>Powered by"
-msgstr ""
+msgstr "<br/>Támogatja a(z)"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -156,7 +164,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
-msgstr ""
+msgstr "<span style=\"color:white;\">&amp;nbsp;dokumentumok.</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -171,7 +179,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b>Requested Document</b></span>"
-msgstr ""
+msgstr "<span><b>Kért dokumentum</b></span>"
 
 #. module: documents
 #: model:mail.template,body_html:documents.mail_template_document_request
@@ -297,11 +305,13 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Feltételek és akciók gyűjteménye, amely a feltételnek megfelelő összes "
+"mellékletnél elérhető"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_absences
 msgid "Absences"
-msgstr ""
+msgstr "Távollétek"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__group_ids
@@ -361,7 +371,7 @@ msgstr "Tevékenység"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
 msgid "Activity Note"
-msgstr ""
+msgstr "Tevékenység megjegyzés"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_state
@@ -547,12 +557,12 @@ msgstr "Számla"
 #. module: documents
 #: model:documents.folder,name:documents.documents_marketing_brand1_folder
 msgid "Brand 1"
-msgstr ""
+msgstr "Márka 1"
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_marketing_brand2_folder
 msgid "Brand 2"
-msgstr ""
+msgstr "Márka 2"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
@@ -586,7 +596,7 @@ msgstr "Checksum/SHA1"
 #: code:addons/documents/static/src/js/tour.js:45
 #, python-format
 msgid "Click here to <b>close the discussion board</b>"
-msgstr ""
+msgstr "Kattintson ide a <b>csevegés bezárásához</b>"
 
 #. module: documents
 #. openerp-web
@@ -700,12 +710,12 @@ msgstr "Létrehozva"
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
-msgstr ""
+msgstr "Fizetési emlékeztető"
 
 #. module: documents
 #: selection:documents.workflow.rule,condition_type:0
 msgid "Criteria"
-msgstr ""
+msgstr "Kritériumok"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -773,7 +783,7 @@ msgstr "Megjelenített név"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Doc"
-msgstr ""
+msgstr "Dok."
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -807,12 +817,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
 msgid "Document Workflow Tag Action"
-msgstr ""
+msgstr "Dokumentum munkafolyamat címke akció"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_tag_criteria
 msgid "Document Workflow Tag Criteria"
-msgstr ""
+msgstr "Dokumentum munkafolyamat címke kritériumok"
 
 #. module: documents
 #: selection:documents.share,type:0
@@ -908,7 +918,7 @@ msgstr "Ejtsen ide fájlokat a feltöltésükhöz"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range
 msgid "Due Date In"
-msgstr ""
+msgstr "Határidő"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range_type
@@ -925,7 +935,7 @@ msgstr "Pl. pénzügy"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "E.g. Missing Expense"
-msgstr ""
+msgstr "Pl. hiányzó kiadás"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form_list
@@ -1240,12 +1250,12 @@ msgstr "Betöltés"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:154
 #, python-format
 msgid "Lock"
-msgstr ""
+msgstr "Zárolás"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__lock_uid
 msgid "Locked by"
-msgstr ""
+msgstr "Zárolta"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -1269,7 +1279,7 @@ msgstr "Kilépés"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:69
 #, python-format
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_main_attachment_id
@@ -1605,7 +1615,7 @@ msgstr "Kicserél"
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Replace by"
-msgstr ""
+msgstr "Kicserélés erre"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
@@ -1959,7 +1969,7 @@ msgstr ""
 #. module: documents
 #: sql_constraint:documents.share:0
 msgid "This access token already exists"
-msgstr ""
+msgstr "Ez a hozzáférési token már létezik"
 
 #. module: documents
 #: sql_constraint:documents.document:0
@@ -1982,6 +1992,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "This folder will only be available for the selected user groups"
 msgstr ""
+"Ez a mappa csak a kiválasztott felhasználói csoportok számára lesz elérhető"
 
 #. module: documents
 #. openerp-web
@@ -1995,7 +2006,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.not_available
 msgid "This link has expired"
-msgstr ""
+msgstr "Ez a hivatkozás lejárt"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
@@ -2022,11 +2033,14 @@ msgid ""
 "To delete files, archive them first. </br>Archived documents can still be "
 "accessed using the Archive option in the Filters top menu."
 msgstr ""
+"A fájlok törléséhez először archiválja azokat. </br> Az archivált "
+"dokumentumok továbbra is elérhetőek az oldal tetején lévő Szűrők menü "
+"Archivált opcióját használva."
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr ""
+msgstr "Validálandó"
 
 #. module: documents
 #: selection:documents.document,activity_state:0
@@ -2042,14 +2056,14 @@ msgstr "Mai napi tevékenységek"
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
 msgid "Tooltip"
-msgstr ""
+msgstr "Helyi súgó"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/tour.js:35
 #, python-format
 msgid "Try to <b>post a message</b>"
-msgstr ""
+msgstr "Próbáljon meg <b>üzenetet küldeni</b>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
@@ -2072,7 +2086,7 @@ msgstr "URL"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:162
 #, python-format
 msgid "Un-archive"
-msgstr ""
+msgstr "Aktiválás"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_unread
@@ -2092,7 +2106,7 @@ msgstr "Olvasatlan üzenetek számlálója"
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr ""
+msgstr "Feltöltés"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action
@@ -2100,11 +2114,13 @@ msgid ""
 "Upload <span class=\"font-weight-normal\">a file or</span> drag <span class"
 "=\"font-weight-normal\">it here.</span>"
 msgstr ""
+"Töltsön fel <span class=\"font-weight-normal\">egy fájlt, vagy</span> húzza "
+"<span class=\"font-weight-normal\">ide.</span>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
 msgid "Upload by Email"
-msgstr ""
+msgstr "Feltöltés e-mailen keresztül"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__url
@@ -2119,6 +2135,8 @@ msgid ""
 "Use <b>folders</b> to organize documents by departments, or group of "
 "interests"
 msgstr ""
+"Használjon <b>mappákat</b> a dokumentumok részlegek vagy érdeklődési "
+"csoportok szerinti rendszerezéséhez"
 
 #. module: documents
 #: model:res.groups,name:documents.group_documents_user
@@ -2155,7 +2173,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "Beszállítói számla"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -2165,7 +2183,7 @@ msgstr "Viedeó"
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_Videos
 msgid "Videos"
-msgstr ""
+msgstr "Videók"
 
 #. module: documents
 #. openerp-web
@@ -2173,6 +2191,7 @@ msgstr ""
 #, python-format
 msgid "Want to become a <b>paperless company</b>? Let's discover Odoo DMS."
 msgstr ""
+"Szeretné <b>papírmentessé tenni</b> vállalatát? Fedezze fel az Odoo DMS-t."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
@@ -2201,17 +2220,19 @@ msgid ""
 "When you <b>upload documents</b>, they appear in the selected folder and "
 "tags."
 msgstr ""
+"<b>A dokumentumok feltöltéskor</b> megjelennek a kiválasztott mappában és "
+"címkékben."
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
 msgid "Workflow Actions"
-msgstr ""
+msgstr "Munkafolyamat akciói"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__workflow_rule_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__workflow_rule_id
 msgid "Workflow Rule"
-msgstr ""
+msgstr "Munkafolyamat szabály"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__folder_id
@@ -2232,7 +2253,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Write a tooltip for the action here"
-msgstr ""
+msgstr "Írjon ide egy helyi súgót az akció számára"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__attachment_type
@@ -2248,12 +2269,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:54
 #, python-format
 msgid "documents selected"
-msgstr ""
+msgstr "kiválasztott dokumentumok"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "documents shared by"
-msgstr ""
+msgstr "dokumentumokat megosztotta"
 
 #. module: documents
 #. openerp-web
@@ -2272,9 +2293,9 @@ msgstr "pl. Javaslat megbeszélése"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
 msgid "hover text description"
-msgstr ""
+msgstr "lebegő szöveges leírás"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "shared by"
-msgstr ""
+msgstr "megosztotta"

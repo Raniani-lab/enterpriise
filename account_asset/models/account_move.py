@@ -162,6 +162,7 @@ class AccountMove(models.Model):
             'view_id': False,
             'type': 'ir.actions.act_window',
             'res_id': self.asset_id.id,
+            'context': dict(self._context, create=False)
         }
 
     def action_open_asset_ids(self):

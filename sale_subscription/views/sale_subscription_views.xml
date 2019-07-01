@@ -183,9 +183,12 @@
                         <button class="oe_stat_button"
                             icon="fa-globe"
                             name="open_website_url"
-                            type="object"
-                            string="Online Preview">
-                            </button>
+                            type="object">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Preview</span>
+                                <span class="o_stat_text">on Portal</span>
+                            </div>
+                        </button>
                         <button class="oe_stat_button"
                             icon="fa-book"
                             name="action_subscription_invoice"
@@ -195,7 +198,7 @@
                         <button class="oe_stat_button"
                             icon="fa-credit-card"
                             name="action_open_sales"
-                            type="object">
+                            type="object" attrs="{'invisible': [('sale_order_count','&lt;=',0)]}">
                             <field name="sale_order_count" widget="statinfo" string="Sales"/>
                         </button>
                     </div>
@@ -605,8 +608,8 @@
                         <button class="oe_stat_button"
                             icon="fa-book"
                             name="%(sale_subscription_action)d"
-                            context="{'search_default_template_id': [active_id], 'default_template_id': active_id}"
-                            attrs="{'invisible':[('id','=',False)]}"
+                            context="{'search_default_template_id': [active_id], 'default_template_id': active_id, 'create': False}"
+                            attrs="{'invisible':[('id','=',False),('subscription_count','=',0)]}"
                             type="action">
                             <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
                         </button>

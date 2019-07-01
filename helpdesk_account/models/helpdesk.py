@@ -23,4 +23,5 @@ class HelpdeskTicket(models.Model):
             'res_model': 'account.move',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.invoice_ids.ids)],
+            'context': dict(self._context, default_partner_id=self.partner_id.id, default_type='out_refund')
         }

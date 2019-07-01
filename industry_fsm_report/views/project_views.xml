@@ -12,10 +12,10 @@
                 <sheet>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-archive">
+                        <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-pencil">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="worksheet_count"/></span>
-                                <span class="o_stat_text"> Worksheet(s)</span>
+                                <span class="o_stat_text"> Worksheets</span>
                             </div>
                         </button>
                     </div>

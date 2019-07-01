@@ -16,7 +16,7 @@
                 <button name="open_quality_alert_mo" type="object" class="oe_stat_button" icon="fa-bell" attrs="{'invisible': [('quality_alert_count', '=', 0)]}" context="{'search_default_production_id': active_id}">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value"><field name="quality_alert_count"/></span>
-                        <span class="o_stat_text">Quality Alert</span>
+                        <span class="o_stat_text">Quality Alerts</span>
                     </div>
                 </button>
                 <button name="%(quality_check_action_mo)d" attrs="{'invisible': [('check_ids', '=', [])]}" type="action" class="oe_stat_button" icon="fa-check">

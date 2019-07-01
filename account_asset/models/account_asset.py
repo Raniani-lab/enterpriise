@@ -370,6 +370,7 @@ class AccountAsset(models.Model):
             'view_id': False,
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', self.depreciation_move_ids.ids)],
+            'context': dict(self._context, create=False),
         }
 
     def open_related_entries(self):

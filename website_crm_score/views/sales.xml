@@ -91,64 +91,12 @@
             </field>
         </record>
 
-        <!-- SALESTEAM -->
-
-        <!-- Graph view of leads via SalesTeam -->
-        <record model="ir.ui.view" id="crm_case_graph_view_leads_sales">
-            <field name="name">Unassigned leads</field>
-            <field name="model">crm.lead</field>
-            <field name="arch" type="xml">
-                <graph string="Opportunities" type="line">
-                    <field name="create_date" type="row"/>
-                </graph>
-            </field>
-        </record>
-
-        <record model="ir.actions.act_window" id="crm_score_views_action_graph">
-            <field name="name">Unassigned leads</field>
-            <field name="res_model">crm.lead</field>
-            <field name="view_mode">graph,tree,form</field>
-            <field name="view_id" ref="crm_case_graph_view_leads_sales"/>
-        </record>
-
-        <record model="ir.ui.view" id="crm_case_table_view_leads_sales">
-            <field name="name">Opportunities</field>
-            <field name="model">crm.lead</field>
-            <field name="arch" type="xml">
-                <graph string="Opportunities">
-                    <field name="stage_id" type="col"/>
-                    <field name="user_id" type="row"/>
-                </graph>
-            </field>
-        </record>
-
-        <record model="ir.actions.act_window" id="crm_score_views_action_table">
-            <field name="name">Opportunities</field>
-            <field name="res_model">crm.lead</field>
-            <field name="view_mode">graph,tree,form</field>
-            <field name="view_id" ref="crm_case_table_view_leads_sales"/>
-        </record>
-
         <!-- SalesTeam Form View - Lead information and page Assignation added -->
         <record model="ir.ui.view" id="sales_team_form_view_assign">
             <field name="name">crm.team.form.inherit</field>
             <field name="model">crm.team</field>
             <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
             <field name="arch" type="xml">
-                <div name="button_box" position="inside">
-                    <button class="oe_stat_button" type="action"
-                        name="%(crm_score_views_action_graph)d" icon="fa-tags"
-                        context="{'search_default_team_id': active_id, 'search_default_unassigned': 1 }"
-                        attrs="{'invisible': [('use_leads', '=', False)]}">
-                        <field name="unassigned_leads_count" widget="statinfo"/>
-                    </button>
-                    <button class="oe_stat_button" type="action"
-                        name="%(crm_score_views_action_table)d" icon="fa-tags"
-                        context="{'search_default_team_id': active_id}"
-                        attrs="{'invisible': [('use_opportunities', '=', False)]}">
-                        <field string="Opportunities" name="leads_count" widget="statinfo"/>
-                    </button>
-                </div>
                 <xpath expr="//group[@name='right']" position="inside">
                     <field name="score_team_domain" widget="domain" options="{'model': 'crm.lead', 'in_dialog': True}"/>
                     <label for="assigned_leads_count"/>

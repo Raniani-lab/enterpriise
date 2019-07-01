@@ -281,13 +281,13 @@
                         <button name="action_see_actions" type="object" class="oe_stat_button" icon="fa-gears">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="action_count"/></span>
-                                <span class="o_stat_text">Action(s)</span>
+                                <span class="o_stat_text">Actions</span>
                             </div>
                         </button>
-                        <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file" attrs="{'invisible' : [('document_count', '=', 0)]}">
+                        <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o" attrs="{'invisible' : [('document_count', '=', 0)]}">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="document_count"/></span>
-                                <span class="o_stat_text">Document(s)</span>
+                                <span class="o_stat_text">Documents</span>
                             </div>
                         </button>
                     </div>
@@ -780,7 +780,7 @@
                 <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value"><field name="document_count"/></span>
-                        <span class="o_stat_text">Document(s)</span>
+                        <span class="o_stat_text">Documents</span>
                     </div>
                 </button>
             </div>

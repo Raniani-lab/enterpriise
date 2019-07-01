@@ -69,7 +69,8 @@ class CalendarAppointmentType(models.Model):
         self.ensure_one()
         action = self.env.ref('calendar.action_calendar_event').read()[0]
         action['context'] = {
-            'search_default_appointment_type_id': self.id
+            'search_default_appointment_type_id': self.id,
+            'default_appointment_type_id': self.id
         }
         return action
 

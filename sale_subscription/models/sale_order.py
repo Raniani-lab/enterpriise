@@ -35,6 +35,7 @@ class SaleOrder(models.Model):
             action['res_id'] = subscriptions.ids[0]
         else:
             action = {'type': 'ir.actions.act_window_close'}
+        action['context'] = dict(self._context, create=False)
         return action
 
     def _prepare_subscription_data(self, template):

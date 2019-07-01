@@ -124,7 +124,7 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" icon="fa-calculator" type="action" name="%(action_view_hr_payroll_structure_from_type)d">
-                            <field name="struct_ids" widget="statinfo" />
+                            <field string="Structures" name="struct_type_count" widget="statinfo"/>
                         </button>
                     </div>
                     <group>

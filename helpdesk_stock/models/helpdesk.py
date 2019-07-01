@@ -27,4 +27,5 @@ class HelpdeskTicket(models.Model):
             'res_model': 'stock.picking',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.picking_ids.ids)],
+            'context': dict(self._context, create=False)
         }

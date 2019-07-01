@@ -102,11 +102,16 @@ class HrPayrollStructureType(models.Model):
                                                  default=lambda self: self.env.ref('hr_work_entry.work_entry_type_attendance', raise_if_not_found=False))
     country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
     wage_type = fields.Selection([('monthly', 'Monthly Fixed Wage'), ('hourly', 'Hourly Wage')], default='monthly', required=True)
+    struct_type_count = fields.Integer(compute='_compute_struct_type_count', string='Structure Type Count')
 
     def _compute_default_struct_id(self):
         for structure_type in self:
             sorted_structures = sorted(structure_type.struct_ids, key=lambda struct: struct.regular_pay, reverse=True)
             structure_type.default_struct_id = sorted_structures[0] if sorted_structures else False
+
+    def _compute_struct_type_count(self):
+        for structure_type in self:
+            structure_type.struct_type_count = len(structure_type.struct_ids)
 
 
 class HrSalaryRuleCategory(models.Model):

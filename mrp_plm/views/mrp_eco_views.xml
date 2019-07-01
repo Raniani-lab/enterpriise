@@ -435,8 +435,8 @@
                 <sheet>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_see_attachments" type="object" icon="fa-book" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}">
-                            <field string="Attachments" name="mrp_document_count" widget="statinfo"/>
+                        <button class="oe_stat_button" name="action_see_attachments" type="object" icon="fa-file-text-o" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}">
+                            <field string="Documents" name="mrp_document_count" widget="statinfo"/>
                         </button>
                         <button name="open_new_bom" icon="fa-flask" type="object" attrs="{'invisible': [('new_bom_id', '=', False)]}" class="oe_stat_button">
                         <div class="o_field_widget o_stat_info mr4">

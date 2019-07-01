@@ -164,6 +164,7 @@ class HelpdeskTicket(models.Model):
         attachment_action = self.env.ref('base.action_attachment')
         action = attachment_action.read()[0]
         action['domain'] = str(['&', ('res_model', '=', self._name), ('res_id', 'in', self.ids)])
+        action['context'] = dict(self._context, default_res_id=self.id, default_res_model=self._name, default_res_name=self.name)
         return action
 
     @api.onchange('team_id')
@@ -326,15 +327,6 @@ class HelpdeskTicket(models.Model):
     def assign_ticket_to_self(self):
         self.ensure_one()
         self.user_id = self.env.user
-
-    def open_customer_tickets(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Customer Tickets'),
-            'res_model': 'helpdesk.ticket',
-            'view_mode': 'kanban,tree,form,pivot,graph',
-            'context': {'search_default_is_open': True, 'search_default_partner_id': self.partner_id.id}
-        }
 
     #DVE FIXME: if partner gets created when sending the message it should be set as partner_id of the ticket.
     def _message_get_suggested_recipients(self):

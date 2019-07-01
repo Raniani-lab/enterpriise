@@ -216,6 +216,7 @@ class QualityCheck(models.Model):
         else:
             action = self.env.ref('quality_control.quality_alert_action_check').read()[0]
             action['domain'] = [('id', 'in', self.alert_ids.ids)]
+            action['context'] = dict(self._context, default_check_id=self.id)
             return action
 
     def redirect_after_pass_fail(self):
@@ -328,7 +329,7 @@ class ProductTemplate(models.Model):
     def action_see_quality_checks(self):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_check_action_main').read()[0]
-        action['context'] = dict(self.env.context, default_product_id=self.product_variant_id.id)
+        action['context'] = dict(self.env.context, default_product_id=self.product_variant_id.id, create=False)
         return action
 
 
@@ -364,5 +365,5 @@ class ProductProduct(models.Model):
     def action_see_quality_checks(self):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_check_action_main').read()[0]
-        action['context'] = dict(self.env.context, default_product_id=self.id)
+        action['context'] = dict(self.env.context, default_product_id=self.id, create=False)
         return action

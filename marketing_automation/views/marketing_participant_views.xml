@@ -194,6 +194,7 @@
             'search_default_campaign_id': active_id,
             'default_campaign_id': active_id,
             'default_is_test': True,
+            'create': False,
         }</field>
         <field name="domain">[('is_test', '=', True)]</field>
     </record>

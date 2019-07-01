@@ -29,6 +29,7 @@ class Partner(models.Model):
             'view_mode': 'kanban',
             'context': {
                 "search_default_partner_id": self.id,
+                "default_partner_id": self.id,
                 "searchpanel_default_folder_id": False
             },
         }

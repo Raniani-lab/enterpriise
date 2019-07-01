@@ -647,7 +647,8 @@ class MrpEco(models.Model):
             'view_mode': 'form',
             'res_model': 'mrp.bom',
             'target': 'current',
-            'res_id': self.new_bom_id.id}
+            'res_id': self.new_bom_id.id,
+            'context': dict(default_product_tmpl_id=self.product_tmpl_id.id, default_product_id=self.product_tmpl_id.product_variant_id.id)}
 
     def open_new_routing(self):
         self.ensure_one()

@@ -226,7 +226,7 @@
         <field name="name">Appraisal</field>
         <field name="res_model">hr.appraisal</field>
         <field name="view_mode">kanban,tree,form,activity</field>
-        <field name="context">{"search_default_employee_id": [active_id]}</field>
+        <field name="context">{"search_default_employee_id": [active_id], "default_employee_id": active_id}}</field>
     </record>
 
     <record model="ir.actions.act_window" id="hr_appraisal_action">

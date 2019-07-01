@@ -717,8 +717,10 @@ var DocumentsKanbanController = KanbanController.extend({
     _onRequestFile: function (ev) {
         ev.preventDefault();
         var self = this;
+        var context = this.model.get(this.handle, {raw: true}).getContext();
         this.do_action('documents.action_request_form', {
             additional_context: {
+                default_partner_id: context.default_partner_id || false,
                 default_folder_id: this._searchPanel.getSelectedFolderId(),
                 default_tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
             },
@@ -844,8 +846,10 @@ var DocumentsKanbanController = KanbanController.extend({
     _onUploadFromUrl: function (ev) {
         ev.preventDefault();
         var self = this;
+        var context = this.model.get(this.handle, {raw: true}).getContext();
         this.do_action('documents.action_url_form', {
             additional_context: {
+                default_partner_id: context.default_partner_id || false,
                 default_folder_id: this._searchPanel.getSelectedFolderId(),
                 default_tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
             },

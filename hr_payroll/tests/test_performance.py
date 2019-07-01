@@ -74,7 +74,7 @@ class TestPayrollPerformance(TestPayslipBase):
         self.richard_emp.generate_work_entries(date(2018, 1, 1), date(2018, 1, 2))
         leave = self.create_leave(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 18, 0))
 
-        with self.assertQueryCount(__system__=116, admin=188):
+        with self.assertQueryCount(__system__=113, admin=256):
             leave.action_validate()
         leave.action_refuse()
 
@@ -83,14 +83,14 @@ class TestPayrollPerformance(TestPayslipBase):
     def test_performance_leave_write(self):
         leave = self.create_leave(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 18, 0))
 
-        with self.assertQueryCount(__system__=25, admin=50):
+        with self.assertQueryCount(__system__=22, admin=71):
             leave.date_to = datetime(2018, 1, 1, 19, 0)
         leave.action_refuse()
 
     @users('__system__', 'admin')
     @warmup
     def test_performance_leave_create(self):
-        with self.assertQueryCount(__system__=36, admin=82):
+        with self.assertQueryCount(__system__=29, admin=102):
             leave = self.create_leave(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 18, 0))
         leave.action_refuse()
 
@@ -99,7 +99,7 @@ class TestPayrollPerformance(TestPayslipBase):
     def test_performance_leave_confirm(self):
         leave = self.create_leave(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 18, 0))
         leave.action_draft()
-        with self.assertQueryCount(__system__=33, admin=76):
+        with self.assertQueryCount(__system__=21, admin=88):
             leave.action_confirm()
         leave.state = 'cancel'
 

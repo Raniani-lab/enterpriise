@@ -95,7 +95,7 @@
         <tree decoration-danger="rental_status in ['pickup', 'return'] and has_late_lines">
           <field name="has_late_lines" invisible="1"/>
           <field name="name"/>
-          <field name="confirmation_date"/>
+          <field name="date_order"/>
           <field name="next_action_date"/>
           <field name="partner_id"/>
           <field name="user_id"/>

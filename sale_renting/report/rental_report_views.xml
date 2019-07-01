@@ -58,7 +58,6 @@
                       <filter string="Company" name="company" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
                       <separator/>
                       <filter string="Order Date" name="date" context="{'group_by':'order_date'}"/>
-                      <filter string="Confirmation Date" name="confirm_month" context="{'group_by':'confirmation_date'}"/>
                       <filter string="Deliver Date" name="pickup_date" context="{'group_by':'pickup_date'}"/>
                       <filter string="Return Date" name="return_date" context="{'group_by':'return_date'}"/>
                   </group>

@@ -22,7 +22,6 @@ class RentalReport(models.AbstractModel):
     product_name = fields.Char('Product Reference', readonly=True)
     description = fields.Char('Description', readonly=True)
     order_date = fields.Datetime('Order Date', readonly=True)
-    confirmation_date = fields.Datetime('Confirmation Date', readonly=True)
     pickup_date = fields.Datetime('Pickup Date', readonly=True)
     return_date = fields.Datetime('Return Date', readonly=True)
     product_id = fields.Many2one('product.product', 'Product', readonly=True, group_expand="_read_group_product_ids")
@@ -95,7 +94,6 @@ class RentalReport(models.AbstractModel):
                 WHEN sol.return_date < NOW() then TRUE
                 ELSE FALSE END as late,
             s.date_order as order_date,
-            s.confirmation_date as confirmation_date,
             sol.pickup_date as pickup_date,
             sol.return_date as return_date,
             s.state as state,
@@ -136,7 +134,6 @@ class RentalReport(models.AbstractModel):
             t.name,
             s.name,
             s.date_order,
-            s.confirmation_date,
             sol.pickup_date,
             sol.return_date,
             s.partner_id,

@@ -50,10 +50,12 @@ class Task(models.Model):
             return project.worksheet_template_id
         return False
 
-    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', oldname='allow_reports')
+    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', default=False, oldname='allow_reports')
     worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template", default=_default_worksheet_template_id, oldname='report_template_id')
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
+    worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)
+    worksheet_signed_by = fields.Char('Signed By', help='Name of the person that signed the task.', copy=False)
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
@@ -66,6 +68,9 @@ class Task(models.Model):
     def _compute_worksheet_count(self):
         if self.worksheet_template_id:
             self.worksheet_count = self.env[self.worksheet_template_id.model_id.model].search_count([('x_task_id', '=', self.id)])
+
+    def has_to_be_signed(self):
+        return self.allow_worksheets and not self.worksheet_signature
 
     def action_fsm_worksheet(self):
         timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
@@ -83,6 +88,20 @@ class Task(models.Model):
             },
         })
         return action
+
+    def action_preview_worksheet(self):
+        self.ensure_one()
+        worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
+        if worksheet:
+            return {
+                'type': 'ir.actions.act_url',
+                'target': 'self',
+                'url': self.get_portal_url(suffix='/worksheet')
+            }
+
+    def _get_report_base_filename(self):
+        self.ensure_one()
+        return 'Worksheet %s - %s' % (self.name, self.partner_id.name)
 
     def action_send_report(self):
         self.ensure_one()

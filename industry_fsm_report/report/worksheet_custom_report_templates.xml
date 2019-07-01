@@ -3,45 +3,28 @@
     <data>
 
         <template id="worksheet_custom_page">
-            <t t-call="web.external_layout">
                 <div class="page">
                     <table class="w-100">
                         <tr>
-                            <th class="pr-2"><strong>Contact: </strong></th>
-                            <td class="w-40">
-                                <div t-esc="doc.user_id" t-options='{
+                            <th class="pr-2 align-top"><strong>Contact: </strong></th>
+                            <td class="align-top w-40">
+                                <div class="align-top" t-esc="doc.user_id" t-options='{
                                     "widget": "contact",
                                     "fields": ["name", "address", "phone", "email"]
                                     }'/>
                             </td>
                             <t t-if="doc.partner_id">
-                                <th class="pr-2">Client: </th>
-                                <td><t t-esc="doc.partner_id" t-options='{
-                                        "widget": "contact",
-                                        "fields": ["name", "address", "phone", "email"]
-                                        }'/>
+                                <th class="pr-2 align-top">Customer: </th>
+                                <td class="align-top"><t t-esc="doc.partner_id" t-options='{
+                                                          "widget": "contact",
+                                                          "fields": ["name", "address", "phone", "email"]
+                                                          }'/>
                                 </td>
                             </t>
                         </tr>
                     </table>
 
                     <h1 class="mt-4 mb-4"> Task: <span t-field="doc.name"/></h1>
-                    <table class="w-100 mb-4">
-                        <thead>
-                            <tr>
-                                <th class="w-33">Start Date</th>
-                                <th class="w-33">End Date</th>
-                                <th>Performed Hours</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span t-field="doc.planned_date_begin"/></td>
-                                <td><span t-field="doc.planned_date_end"/></td>
-                                <td><span t-field="doc.total_hours_spent" t-options="{'widget': 'float_time'}"/> hours</td>
-                            </tr>
-                        </tbody>
-                    </table>
                     <t t-if="doc.allow_timesheets and doc.timesheet_ids">
                         <h2>Timesheets</h2>
                         <table class="table table-sm o_main_table">
@@ -49,8 +32,8 @@
                                 <tr>
                                     <th class="text-left">Date</th>
                                     <th class="text-left">Employee</th>
-                                    <th class="text-right">Description</th>
-                                    <th class="text-right">Time Spent</th>
+                                    <th class="text-left">Description</th>
+                                    <th class="text-left">Time Spent</th>
                                 </tr>
                             </thead>
                             <tbody class="sale_tbody">
@@ -62,10 +45,10 @@
                                         <td>
                                             <span t-field="line.employee_id.name"/>
                                         </td>
-                                        <td class="text-right">
+                                        <td class="text-left">
                                             <span t-field="line.display_name"/>
                                         </td>
-                                        <td class="text-right">
+                                        <td class="text-left">
                                             <span t-field="line.unit_amount" t-options="{'widget': 'float_time'}"/> hour(s)
                                         </td>
                                     </tr>
@@ -168,10 +151,33 @@
                     <div t-if="doc.worksheet_template_id.report_view_id and worksheet_map.get(doc.id)" style="page-break-inside: avoid">
                         <t t-set="worksheet" t-value="worksheet_map.get(doc.id)"/>
                         <h2>Summary</h2>
-                        <t t-call="#{doc.worksheet_template_id.report_view_id.xml_id}"/>
+                        <t t-call="#{doc.worksheet_template_id.report_view_id.id}"/>
                         <br/>
                     </div>
                     <div t-if="doc.worksheet_signature" class="row mt-4">
+
+                        <div t-if="report_type == html" class="ribbon" style="
+                            position: absolute;
+                            right: 0px; top: 0px;
+                            z-index: 1;
+                            overflow: hidden;
+                            width: 75px; height: 75px;
+                            text-align: right;">
+                            <span style="
+                                font-size: 10px;
+                                color: #fff;
+                                text-transform: uppercase;
+                                text-align: center;
+                                font-weight: bold; line-height: 20px;
+                                transform: rotate(45deg);
+                                width: 100px; display: block;
+                                background: green;
+                                position: absolute;
+                                top: 19px; right: -21px;">
+                                Signed
+                            </span>
+                        </div>
+
                         <div t-attf-class="#{'col-3' if report_type != 'html' else 'col-sm-7 col-md-4'} ml-auto text-center">
                             <h5>Signature</h5>
                             <img t-att-src="image_data_uri(doc.worksheet_signature)" style="max-height: 6rem; max-width: 100%;"/>
@@ -179,13 +185,14 @@
                         </div>
                     </div>
                 </div>
-            </t>
         </template>
 
         <template id="worksheet_custom">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
-                    <t t-call="industry_fsm_report.worksheet_custom_page" t-lang="doc.partner_id.lang"/>
+                    <t t-call="web.external_layout">
+                        <t t-call="industry_fsm_report.worksheet_custom_page" t-lang="doc.partner_id.lang"/>
+                    </t>
                 </t>
             </t>
         </template>

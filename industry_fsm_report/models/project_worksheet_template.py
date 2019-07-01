@@ -65,16 +65,6 @@ class ProjectWorksheetTemplate(models.Model):
                     'ttype': 'text',
                     'field_description': 'Comments',
                 }),
-                (0, 0, {
-                    'name': 'x_customer_signature',
-                    'ttype': 'binary',
-                    'field_description': 'Customer Signature',
-                }),
-                (0, 0, {
-                    'name': 'x_worker_signature',
-                    'ttype': 'binary',
-                    'field_description': 'Worker Signature',
-                }),
             ]
         })
         self.env['ir.model.access'].sudo().create({
@@ -124,8 +114,6 @@ class ProjectWorksheetTemplate(models.Model):
                         <group>
                             <field name="x_operation_type" widget="radio" options="{'horizontal': true}"/>
                             <field name="x_comments"/>
-                            <field name="x_worker_signature" widget="signature"/>
-                            <field name="x_customer_signature" widget="signature"/>
                         </group>
                         <group>
                         </group>

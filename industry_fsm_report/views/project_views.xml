@@ -60,6 +60,7 @@
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='fsm_options']" position="inside">
+                <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_template_id"/>
             </xpath>
         </field>
@@ -94,10 +95,14 @@
             <xpath expr="//button[@name='action_fsm_validate']" position="before">
                 <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
                     attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('is_fsm', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', True)]}"/>
+                <button name="action_preview_worksheet" type="object" string="Preview Report" class="btn-secondary"
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('is_fsm', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', True)]}"/>
             </xpath>
             <xpath expr="//field[@name='timesheet_timer_start']" position="before">
                 <field name="fsm_is_sent" invisible="1"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
+                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', ('allow_timesheets', '=', False), ('fsm_is_sent', '=', False)]}"/>
+                <button name="action_preview_worksheet" type="object" string="Preview Report" class="btn-secondary"
                     attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', ('allow_timesheets', '=', False), ('fsm_is_sent', '=', False)]}"/>
             </xpath>
             <xpath expr="//button[@name='action_fsm_view_material']" position="before">

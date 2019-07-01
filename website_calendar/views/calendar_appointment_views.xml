@@ -1,6 +1,44 @@
 <?xml version="1.0"?>
 <odoo>
 
+    <record id="calendar_appointment_type_view_kanban" model="ir.ui.view">
+        <field name="name">calendar.appointment.type.kanban</field>
+        <field name="model">calendar.appointment.type</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard">
+                <field name="id" invisible="1" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_manage_button_section">
+                                <t t-if="widget.editable"><a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a></t>
+                            </div>
+                            <div t-attf-class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary"><field name="name" /></div>
+                                    <div class="o_secondary">
+                                        <field name="location" /><br/>
+                                        <field name="appointment_tz" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content">
+                            <div class="col-12">
+                                <div class="row">
+                                    <button class="btn btn-primary" name="action_calendar_meetings" type="object"><field name="appointment_count"/> SCHEDULED</button>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="calendar_appointment_type_view_tree" model="ir.ui.view">
         <field name="name">calendar.appointment.type.tree</field>
         <field name="model">calendar.appointment.type</field>
@@ -8,8 +46,9 @@
             <tree string="Appointment Type">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="location"/>
                 <field name="appointment_tz"/>
-                <field name="employee_ids"/>
+                <field name="employee_ids" widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -143,7 +182,7 @@
         <field name="name">Online Appointments</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">calendar.appointment.type</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new appointment type

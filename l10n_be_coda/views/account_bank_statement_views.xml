@@ -50,7 +50,7 @@
                 </tree>
             </field>
         </record>
-        
+
 		<record id="view_bank_statement_line_coda_filter" model="ir.ui.view">
 			<field name="name">bank.statement.line.coda.filter</field>
 			<field name="model">account.bank.statement.line</field>
@@ -84,12 +84,12 @@
 		</record>
 
         <record id="account_bank_statement_import_coda" model="ir.ui.view">
-            <field name="name">Import Bank Statements CODA</field>
+            <field name="name">Upload Bank Statements CODA</field>
             <field name="model">account.bank.statement.import</field>
             <field name="inherit_id" ref="account_bank_statement_import.account_bank_statement_import_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//ul[@id='statement_format']" position="inside">
-                    <li>Belgium Coded Statement of Account (.CODA) <a href="/l10n_be_coda/static/csv/Ontvangen_CODA.2013-01-11-18.59.15.txt" class="ml4" download="test_be_coda.text"><i class="fa fa-download mr4"></i>Import Sample Template</a> <span class="ml-4"><field name="split_transactions"/>Split Transactions</span></li>
+                    <li>Belgium Coded Statement of Account (CODA) <span class="ml-4"><field name="split_transactions"/>Split collective payments</span></li>
                 </xpath>
             </field>
         </record>

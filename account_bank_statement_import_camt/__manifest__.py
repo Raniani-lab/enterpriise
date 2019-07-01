@@ -15,5 +15,5 @@ Improve the import of bank statement feature to support the SEPA recommanded Cas
         'data/account_bank_statement_import_data.xml'
     ],
     'license': 'OEEL-1',
-    'auto_install': False,
+    'auto_install': True,
 }

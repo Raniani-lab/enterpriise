@@ -1,18 +1,18 @@
 <?xml version="1.0" ?>
 <odoo>
         <record id="account_bank_statement_import_qif" model="ir.ui.view">
-            <field name="name">Import Bank Statements QIF</field>
+            <field name="name">Upload Bank Statements QIF</field>
             <field name="model">account.bank.statement.import</field>
             <field name="inherit_id" ref="account_bank_statement_import.account_bank_statement_import_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//ul[@id='statement_format']" position="inside">
-                    <li>Quicken Interchange Format (.QIF) <a href="/account_bank_statement_import_qif/static/qif/test_qif.qif" class="ml4" download="test_qif.qif"><i class="fa fa-download mr4"></i>Import Sample Template</a></li>
+                    <li>Quicken Interchange Format (QIF)</li>
                 </xpath>
             </field>
         </record>
 
         <record id="account_bank_statement_import_view_inherited" model="ir.ui.view">
-            <field name="name">Import Bank Statements Inherited</field>
+            <field name="name">Upload Bank Statements Inherited</field>
             <field name="model">account.bank.statement.import</field>
             <field name="priority" eval="20"/>
             <field name="inherit_id" ref="account_bank_statement_import.account_bank_statement_import_view" />
@@ -31,12 +31,8 @@
                     </group>
                 </xpath>
                 <xpath expr="//button[@name='import_file']" position="replace">
-                    <div attrs="{'invisible': [('qif_date_format', '=', 'day_first')]}">
-                        <button name="import_file" string="_Import" type="object" class="btn-primary" />
-                    </div>
-                    <div attrs="{'invisible': [('qif_date_format', '!=', 'day_first')]}">
-                        <button name="import_file" string="_Import" type="object" class="btn-primary" context="{'qif_date_format': 'day_first'}"/>
-                    </div>
+                    <button name="import_file" string="Upload" type="object" class="btn-primary" attrs="{'invisible': [('qif_date_format', '=', 'day_first')]}"/>
+                    <button name="import_file" string="Upload" type="object" class="btn-primary" context="{'qif_date_format': 'day_first'}" attrs="{'invisible': [('qif_date_format', '!=', 'day_first')]}"/>
                 </xpath>
             </field>
         </record>

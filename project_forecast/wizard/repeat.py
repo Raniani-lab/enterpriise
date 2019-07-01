@@ -27,8 +27,8 @@ class ProjectForecastRepeatWizard(models.TransientModel):
 
     repeat_interval = fields.Integer(string="Repeat every", required=True, default=1)
     repeat_unit = fields.Selection([
-        ('week', 'Week(s)'),
-        ('month', 'Month(s)'),
+        ('week', 'Weeks'),
+        ('month', 'Months'),
     ], default="week", required=True)
     repeat_until = fields.Date()
     related_forecast_id = fields.Many2one("project.forecast", readonly=True)

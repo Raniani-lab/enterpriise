@@ -28,8 +28,8 @@ class ForecastRecurrency(models.Model):
     forecast_ids = fields.One2many('project.forecast', 'recurrency_id', string="Related forecasts", help="Forecasts that were created using this recurrency")
     repeat_interval = fields.Integer("Repeat every", default=1, required=True)
     repeat_unit = fields.Selection([
-        ('week', 'Week(s)'),
-        ('month', 'Month(s)'),
+        ('week', 'Weeks'),
+        ('month', 'Months'),
     ], default='week', required=True)
     repeat_until = fields.Datetime(string="Repeat until", help="Up to which date should the forecasts be repeated")
     last_generated_end_datetime = fields.Datetime("Last Generated End Date", readonly=False)

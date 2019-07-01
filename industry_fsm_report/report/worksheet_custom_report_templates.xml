@@ -38,7 +38,7 @@
                             <tr>
                                 <td><span t-field="doc.planned_date_begin"/></td>
                                 <td><span t-field="doc.planned_date_end"/></td>
-                                <td><span t-field="doc.total_hours_spent" t-options="{'widget': 'float_time'}"/> hour(s)</td>
+                                <td><span t-field="doc.total_hours_spent" t-options="{'widget': 'float_time'}"/> hours</td>
                             </tr>
                         </tbody>
                     </table>

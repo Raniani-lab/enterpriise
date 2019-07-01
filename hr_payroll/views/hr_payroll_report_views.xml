@@ -20,9 +20,9 @@
                                 <aggregate name="gross_wage" string="Total Gross Wage" field="gross_wage" widget="monetary"/>
                             <group>
                             </group>
-                                <aggregate name="count_work" field="count_work" string="Work Days" value_label="day(s)"/>
-                                <aggregate name="count_leave" field="count_leave" string="Paid Time Off" value_label="day(s)"/>
-                                <aggregate name="count_leave_unpaid" field="count_leave_unpaid" string="Unpaid Time Off" value_label="day(s)"/>
+                                <aggregate name="count_work" field="count_work" string="Work Days" value_label="days"/>
+                                <aggregate name="count_leave" field="count_leave" string="Paid Time Off" value_label="days"/>
+                                <aggregate name="count_leave_unpaid" field="count_leave_unpaid" string="Unpaid Time Off" value_label="days"/>
                                 <aggregate name="leave_basic_wage" field="leave_basic_wage" string="Paid Time Off (Basic Wage)" widget="monetary"/>
                                 <formula name="rate_work_time" string="Attendance Rate" value="100 * record.count_work / (record.count_work + record.count_leave + record.count_leave_unpaid)" value_label="%"/>
                                 <aggregate name="count_unforeseen_absence" field="count_unforeseen_absence" invisible="1"/>

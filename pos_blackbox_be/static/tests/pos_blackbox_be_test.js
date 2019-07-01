@@ -25,13 +25,13 @@ odoo.define_section('pos_blackbox_be.Order', ['point_of_sale.models'], function 
                 {'amount':  0, 'identification_letter': "D"}  // type D
             ],
             'units_by_id': [{
-                "name": "Unit(s)",
+                "name": "Units",
                 "factor_inv": 1,
                 "rounding": 0.001,
                 "active": true,
                 "factor": 1,
                 "uom_type": "reference",
-                "display_name": "Unit(s)",
+                "display_name": "Units",
                 "category_id": [1, "Unit"],
                 "id": 0,
                 "groupable": false,

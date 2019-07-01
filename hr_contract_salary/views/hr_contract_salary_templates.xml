@@ -242,7 +242,7 @@
                                                 <div class="input-group">
                                                     <input class="form-control" name="holidays_input" type="text" t-att-value="contract.holidays" disabled="disabled"/>
                                                     <div class="input-group-append">
-                                                        <div class="input-group-text">day(s)</div>
+                                                        <div class="input-group-text">days</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -566,7 +566,7 @@
                                                 <div class="input-group">
                                                     <input type="text" disabled="disabled" name="holidays_legal" class="form-control" value="20"/>
                                                     <div class="input-group-append">
-                                                        <div class="input-group-text">day(s)</div>
+                                                        <div class="input-group-text">days</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -580,7 +580,7 @@
                                                 <div class="input-group">
                                                     <input type="text" disabled="disabled" name="holidays_input" class="form-control" t-att-value="contract.holidays"/>
                                                     <div class="input-group-append">
-                                                        <div class="input-group-text">day(s)</div>
+                                                        <div class="input-group-text">days</div>
                                                     </div>
                                                 </div>
                                             </div>

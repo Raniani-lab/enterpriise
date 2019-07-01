@@ -539,13 +539,13 @@ QUnit.module('Views', {
             data: data,
             arch: '<dashboard>' +
                 '<group>' +
-                    '<aggregate name="days" field="days" value_label="day(s)"/>' +
+                    '<aggregate name="days" field="days" value_label="days"/>' +
                     '<aggregate name="sold" field="sold"/>' +
                 '</group>' +
             '</dashboard>',
         });
 
-        assert.strictEqual(dashboard.$('.o_value:first').text(), '5.30 day(s)',
+        assert.strictEqual(dashboard.$('.o_value:first').text(), '5.30 days',
         "should have a value label");
         assert.strictEqual(dashboard.$('.o_value:last').text(), '8.00',
         "shouldn't have any value label");

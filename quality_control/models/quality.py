@@ -21,9 +21,9 @@ class QualityPoint(models.Model):
     measure_frequency_value = fields.Float('Percentage')  # TDE RENAME ?
     measure_frequency_unit_value = fields.Integer('Frequency Unit Value')  # TDE RENAME ?
     measure_frequency_unit = fields.Selection([
-        ('day', 'Day(s)'),
-        ('week', 'Week(s)'),
-        ('month', 'Month(s)')], default="day")  # TDE RENAME ?
+        ('day', 'Days'),
+        ('week', 'Weeks'),
+        ('month', 'Months')], default="day")  # TDE RENAME ?
     norm = fields.Float('Norm', digits='Quality Tests')  # TDE RENAME ?
     tolerance_min = fields.Float('Min Tolerance', digits='Quality Tests')
     tolerance_max = fields.Float('Max Tolerance', digits='Quality Tests')

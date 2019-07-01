@@ -36,7 +36,7 @@ class RentalWizard(models.TransientModel):
     pricing_id = fields.Many2one(
         'rental.pricing', compute="_compute_duration_pricing",
         string="Pricing", help="Best Pricing Rule based on duration")
-    duration_unit = fields.Selection([("hour", "Hour(s)"), ("day", "Day(s)"), ("week", "Week(s)")],
+    duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks")],
                                      string="Unit", required=True, default='day',
                                      compute="_compute_duration_pricing")
 

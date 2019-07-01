@@ -11,7 +11,7 @@
                 <field name="notify" class="oe_inline ml8" nolabel="1"/>
                 <span> </span>
                 <field name="appraisal_reminder" class="text-center oe_inline ml8" nolabel="1"/>
-                <span> month(s) </span>
+                <span> months </span>
                 <field name="event" class="oe_inline" nolabel="1"/>
 
                 <group>

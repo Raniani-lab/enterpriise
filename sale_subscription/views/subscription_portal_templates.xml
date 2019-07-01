@@ -84,10 +84,10 @@
                                                 <th class="text-right pb-0">Billing:</th>
                                                 <th class="w-100 pb-0">
                                                     Every: <t t-esc="account.recurring_interval"/>
-                                                    <t t-if="account.recurring_rule_type=='daily'"> day(s) </t>
-                                                    <t t-if="account.recurring_rule_type=='weekly'"> week(s) </t>
-                                                    <t t-if="account.recurring_rule_type=='monthly'"> month(s) </t>
-                                                    <t t-if="account.recurring_rule_type=='yearly'"> year(s) </t>
+                                                    <t t-if="account.recurring_rule_type=='daily'"> days </t>
+                                                    <t t-if="account.recurring_rule_type=='weekly'"> weeks </t>
+                                                    <t t-if="account.recurring_rule_type=='monthly'"> months </t>
+                                                    <t t-if="account.recurring_rule_type=='yearly'"> years </t>
                                                 </th>
                                             </tr>
                                             <tr t-if="account.date">

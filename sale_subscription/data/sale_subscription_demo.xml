@@ -6,12 +6,12 @@
             <field name="name">Time</field>
         </record>
         <record id="subscription_uom_month" model="uom.uom">
-            <field name="name">Month(s)</field>
+            <field name="name">Months</field>
             <field ref="uom_categ_time" name="category_id"/>
             <field name="factor" eval="1.0"/>
         </record>
         <record id="subscription_uom_year" model="uom.uom">
-            <field name="name">Year(s)</field>
+            <field name="name">Years</field>
             <field ref="uom_categ_time" name="category_id"/>
             <field name="factor_inv" eval="12.0"/>
             <field name="uom_type">bigger</field>

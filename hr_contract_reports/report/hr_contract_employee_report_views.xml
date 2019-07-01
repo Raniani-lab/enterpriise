@@ -18,7 +18,7 @@
                             <aggregate name="avg_employee_id" string="Avg Employee" group_operator="avg" field="employee_id" invisible="1"/>
                             <formula name="rate_turnover" string="Turnover Rate" value="100 * record.count_employee_exit / record.avg_employee_id" value_label="%"/>
                             <aggregate name="age_sum" string="Total Contract Length" field="age_sum" invisible="1"/>
-                            <formula name="Mean age" string="Mean Contract Duration" value="record.age_sum / record.employee_id" value_label="month(s)"/>
+                            <formula name="Mean age" string="Mean Contract Duration" value="record.age_sum / record.employee_id" value_label="months"/>
                         </group>
 
                         <group col="1">

@@ -9,7 +9,7 @@
                 <gantt
                        date_start="date_from"
                        date_stop="date_to"
-                       string="Day(s)"
+                       string="Days"
                        default_group_by='employee_id'
                        decoration-warning="state == 'refuse'"
                        decoration-info="state in ['confirm', 'validate1']"

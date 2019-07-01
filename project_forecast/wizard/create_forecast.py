@@ -13,8 +13,8 @@ class ProjectForecastCreateWizard(models.TransientModel):
     repeat = fields.Boolean(string="Repeat")
     repeat_interval = fields.Integer(string="Repeat every", default=1)
     repeat_unit = fields.Selection([
-        ('week', 'Week(s)'),
-        ('month', 'Month(s)'),
+        ('week', 'Weeks'),
+        ('month', 'Months'),
     ], default='week')
     repeat_until = fields.Date("Repeat Until", help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
 

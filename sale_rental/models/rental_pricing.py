@@ -21,7 +21,7 @@ class RentalPricing(models.Model):
     duration = fields.Float(
         string="Duration", required=True,
         help="Minimum duration before this rule is applied. If set to 0, it represents a fixed rental price.")
-    unit = fields.Selection([("hour", "Hour(s)"), ("day", "Day(s)"), ("week", "Week(s)")], string="Unit", required=True, default='day')
+    unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks")], string="Unit", required=True, default='day')
 
     price = fields.Monetary(string="Price", required=True, digits='Product Price', default=1.0)
     currency_id = fields.Many2one(

@@ -15,8 +15,8 @@ class ResConfigSettings(models.TransientModel):
         readonly=False
     )
     forecast_generation_span_uom = fields.Selection([
-        ('week', 'Week(s)'),
-        ('month', 'Month(s)')
+        ('week', 'Weeks'),
+        ('month', 'Months')
     ], related='company_id.forecast_generation_span_uom',
         required=True,
         default="month",

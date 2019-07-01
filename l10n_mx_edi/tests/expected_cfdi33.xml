@@ -33,7 +33,7 @@
             Descripcion='[FURN_7800] Desk Combination Desk combination, black-brown: chair + desk + drawer.'
             Importe="450.00"
             NoIdentificacion="FURN_7800"
-            Unidad="Unit(s)"
+            Unidad="Units"
             ValorUnitario="450.00">
             <cfdi:Impuestos>
                 <cfdi:Traslados>

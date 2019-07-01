@@ -15,8 +15,8 @@ class ResCompany(models.Model):
         default=1,
     )
     forecast_generation_span_uom = fields.Selection([
-        ('week', 'Week(s)'),
-        ('month', 'Month(s)')
+        ('week', 'Weeks'),
+        ('month', 'Months')
     ], required=True,
         help="Unit for the rate at which recurring forecasts should be generated",
         readonly=False,

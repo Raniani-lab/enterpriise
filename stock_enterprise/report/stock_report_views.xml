@@ -75,11 +75,11 @@
                                 <field name="scheduled_date"/>
                                 <label for="cycle_time" string="Cycle Time"/>
                                 <div class="o_row">
-                                    <field name="cycle_time"/> Day(s)
+                                    <field name="cycle_time"/> Days
                                 </div>
                                 <label for="delay" string="Delay"/>
                                 <div class="o_row">
-                                    <field name="delay"/> Day(s)
+                                    <field name="delay"/> Days
                                 </div>
                             </group>
                         </group>
@@ -100,19 +100,19 @@
                             <aggregate name="delivery_time_avg" string="Deliveries Cycle Time" field="cycle_time" group_operator="avg"
                                 domain="[('picking_type_code', '=', 'outgoing')]" domain_label="Done Deliveries"
                                 help="Time needed to deliver an order (in days). Computed by comparing the creation date of the delivery order and its done date."
-                                value_label="day(s)"/>
+                                value_label="days"/>
                             <aggregate name="receipt_time_avg" string="Receipts Cycle Time" field="cycle_time" group_operator="avg"
                                 domain="[('picking_type_code', '=', 'incoming')]" domain_label="Done Receipts"
                                 help="Time needed to receive an order (in days). Computed by comparing the creation date of the receipt and its done date."
-                                value_label="day(s)"/>
+                                value_label="days"/>
                             <aggregate name="delivery_create_date" string="Deliveries Delay" field="delay" group_operator="avg"
                                 domain="[('picking_type_code', '=', 'outgoing')]" domain_label="Done Deliveries"
                                 help="Delay to deliver an order (in days). Computed by comparing the scheduled date of the delivery order and its effective date."
-                                value_label="day(s)"/>
+                                value_label="days"/>
                             <aggregate name="receipt_create_date" string="Receipts Delay" field="delay" group_operator="avg"
                                 domain="[('picking_type_code', '=', 'incoming')]" domain_label="Done Receipts"
                                 help="Delay to receive an order (in days). Computed by comparing the scheduled date of the receipt and its effective date."
-                                value_label="day(s)"/>
+                                value_label="days"/>
                         </group>
                     </group>
                     <view type="pivot" ref="stock_enterprise.stock_report_pivot_view"/>

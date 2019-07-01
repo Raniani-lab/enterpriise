@@ -100,8 +100,8 @@
                             <aggregate name="prorated_revenue_aggregate" field="expected_revenue" invisible="1"/>
                             <formula name="prorated_revenue" string="Prorated Revenue" value="record.prorated_revenue_aggregate" widget="monetary"/>
                             <formula name="deal_size" string="Average Deal Size" value="record.expected_revenue_aggregate / record.opportunities" widget="monetary"/>
-                            <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg" value_label="day(s)"/>
-                            <aggregate name="days_to_close" string="Days to Close" field="day_close" group_operator="avg" value_label="day(s)"/>
+                            <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg" value_label="days"/>
+                            <aggregate name="days_to_close" string="Days to Close" field="day_close" group_operator="avg" value_label="days"/>
                             <aggregate name="days_exceeding_closing" string="Exceeding Close Days" field="days_exceeding_closing" group_operator="avg"/>
                         </group>
                         <group col="1">
@@ -126,12 +126,12 @@
                         <group>
                                 <aggregate name="leads" string="Leads" group_operator="count_distinct" field="id" measure="__count__"/>
                                 <aggregate name="days_to_convert" string="Days To Opportunity" group_operator="avg" field="days_to_convert"/>
-                                <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg" value_label="day(s)"/>
+                                <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg" value_label="days"/>
                                 <formula name="opportunity_percent" string="% Opportunities" value="record.opportunities / record.leads" widget="percentage"/>
                                 <aggregate name="planned_revenue" string="Expected Revenue" field="planned_revenue"
                                 group_operator="sum" widget="monetary"/>
                                 <aggregate name="expected_revenue" string="Prorated Revenue" field="expected_revenue" group_operator="sum" widget="monetary"/>
-                                <aggregate name="day_close" string="Days to Close" field="day_close" group_operator="avg" value_label="day(s)"/>
+                                <aggregate name="day_close" string="Days to Close" field="day_close" group_operator="avg" value_label="days"/>
                                 <aggregate name="opportunities" string="Opportunities" field="id" domain="[('type','=','opportunity')]" group_operator="count" invisible="1"/>
                         </group>
                         <group>

@@ -13,7 +13,7 @@ class HrSalaryRuleParameterValue(models.Model):
     _description = 'Salary Rule Parameter Value'
     _order = 'date_from desc'
 
-    rule_parameter_id = fields.Many2one('hr.rule.parameter', required=True)
+    rule_parameter_id = fields.Many2one('hr.rule.parameter', required=True, ondelete='cascade')
     code = fields.Char(related="rule_parameter_id.code", index=True, store=True, readonly=True)
     date_from = fields.Date(string="From", index=True, required=True)
     parameter_value = fields.Text(help="Python data structure")
@@ -39,7 +39,7 @@ class HrSalaryRuleParameter(models.Model):
     ]
 
     @api.model
-    @ormcache('code', 'date')
+    @ormcache('code', 'date', 'tuple(self.env.context.get("allowed_company_ids", []))')
     def _get_parameter_from_code(self, code, date=None):
         if not date:
             date = fields.Date.today()

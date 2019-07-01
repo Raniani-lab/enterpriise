@@ -6,7 +6,7 @@ from datetime import date
 
 from odoo.fields import Date
 from odoo.exceptions import UserError
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, new_test_user
 
 
 class TestRuleParameter(TransactionCase):
@@ -43,3 +43,37 @@ class TestRuleParameter(TransactionCase):
     def test_wrong_code(self):
         with self.assertRaises(UserError):
             value = self.env['hr.rule.parameter']._get_parameter_from_code('wrong_code')
+
+    def test_multicompany(self):
+        """ Test value is not reused from cache when allowed_company_ids changes """
+
+        be = self.env.ref('base.be')
+        fr = self.env.ref('base.fr')
+        company_1 = self.env['res.company'].create({'name': 'Table', 'country_id': be.id})
+        company_2 = self.env['res.company'].create({'name': 'Tableau', 'country_id': fr.id})
+        user = new_test_user(self.env, login='bub', groups='hr.group_hr_user')
+        user.allowed_company_ids = [(6, 0, (company_1 | company_2).ids)]
+
+        rule_parameter = self.env['hr.rule.parameter'].create({
+            'name': 'Test Parameter',
+            'code': 'test_parameter',
+            'country_id': be.id,
+        })
+        self.env['hr.rule.parameter.value'].create({
+            'rule_parameter_id': rule_parameter.id,
+            'date_from': date(2015, 10, 10),
+            'parameter_value': 100,
+        })
+
+        with self.assertRaises(UserError):
+            # Read a BE parameter from FR company
+            self.env['hr.rule.parameter'].sudo(user).with_context(allowed_company_ids=company_2.ids)._get_parameter_from_code('test_parameter')
+
+        # Read a BE parameter from BE company, value is set in cache
+        be_value = self.env['hr.rule.parameter'].sudo(user).with_context(allowed_company_ids=company_1.ids)._get_parameter_from_code('test_parameter')
+        self.assertEqual(be_value, 100)
+
+        with self.assertRaises(UserError):
+            # Read a BE parameter from FR company
+            # Value should not come from cache, access rights should be checked
+            self.env['hr.rule.parameter'].sudo(user).with_context(allowed_company_ids=company_2.ids)._get_parameter_from_code('test_parameter')

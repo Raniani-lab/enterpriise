@@ -46,6 +46,8 @@ class FleetVehicle(models.Model):
                     car.total_cost += contract.cost_generated / 12.0
 
     def _get_co2_fee(self, co2, fuel_type):
+        if self.company_id.country_id != self.env.ref('base.be'):
+            return 0
         fuel_coefficient = self.env['hr.rule.parameter']._get_parameter_from_code('fuel_coefficient')
         co2_fee_min = self.env['hr.rule.parameter']._get_parameter_from_code('co2_fee_min')
         co2_fee = co2_fee_min
@@ -55,12 +57,12 @@ class FleetVehicle(models.Model):
             co2_fee = ((co2 * 9.0) - fuel_coefficient.get(fuel_type)) * health_indice / health_indice_reference / 12.0
         return max(co2_fee, co2_fee_min)
 
-    @api.depends('co2', 'fuel_type')
+    @api.depends('co2', 'fuel_type', 'company_id.country_id')
     def _compute_co2_fee(self):
         for car in self:
             car.co2_fee = self._get_co2_fee(car.co2, car.fuel_type)
 
-    @api.depends('fuel_type', 'car_value', 'acquisition_date', 'co2')
+    @api.depends('fuel_type', 'car_value', 'acquisition_date', 'co2', 'company_id.country_id')
     def _compute_car_atn(self):
         for car in self:
             car.atn = car._get_car_atn()
@@ -97,6 +99,8 @@ class FleetVehicle(models.Model):
 
     @api.model
     def _get_car_atn_from_values(self, acquisition_date, car_value, fuel_type, co2, date=None):
+        if self.company_id.country_id != self.env.ref('base.be'):
+            return 0
         # Compute the correction coefficient from the age of the car
         date = date or Date.today()
         if acquisition_date:

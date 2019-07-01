@@ -102,3 +102,19 @@ class TestPayrollPerformance(TestPayslipBase):
         with self.assertQueryCount(__system__=33, admin=76):
             leave.action_confirm()
         leave.state = 'cancel'
+
+    @users('__system__', 'admin')
+    @warmup
+    def test_rule_parameter_cache(self):
+        parameter = self.env['hr.rule.parameter'].create({
+            'name': 'Test parameter',
+            'code': 'test_parameter_cache',
+        })
+        self.env['hr.rule.parameter.value'].create({
+            'rule_parameter_id': parameter.id,
+            'date_from': date(2015, 10, 10),
+            'parameter_value': 3
+        })
+        with self.assertQueryCount(__system__=0, admin=0):  # already cached from warmup
+            self.env['hr.rule.parameter']._get_parameter_from_code('test_parameter_cache')
+        parameter.unlink()

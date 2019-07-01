@@ -288,6 +288,7 @@ class TestExamples(common.SavepointCase):
             'car_value': 29235.15,
             'fuel_type': 'diesel',
             'co2': 89,
+            'company_id': self.env.ref('l10n_be_hr_payroll.res_company_be').id,
         }
         car_contract = {
             'recurring_cost_amount_depreciated': 562.52,
@@ -389,6 +390,7 @@ class TestExamples(common.SavepointCase):
             'car_value': 28138.86,
             'fuel_type': 'diesel',
             'co2': 88.00,
+            'company_id': self.env.ref('l10n_be_hr_payroll.res_company_be').id,
         }
         car_contract = {
             'recurring_cost_amount_depreciated': 503.12,

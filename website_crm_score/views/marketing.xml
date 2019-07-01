@@ -64,9 +64,6 @@
                                 >
                                 <field string="Leads" name="leads_count" widget="statinfo"/>
                             </button>
-                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                                <field name="running" widget="boolean_button" options='{"terminology": "active"}'/>
-			                </button>
                         </div>
 
                         <div class="oe_title">
@@ -75,6 +72,7 @@
                             </h1>
                         </div>
                         <group>
+                            <field name="active" invisible="1"/>
                             <field name="rule_type"/>
                             <field name="value" attrs="{'invisible':[('rule_type','!=','score')]}"/>
                             <field name="domain" widget="domain" options="{'model': 'crm.lead'}"/>

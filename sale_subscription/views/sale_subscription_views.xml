@@ -436,9 +436,6 @@
                             type="action">
                             <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
                         </button>
-                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                        </button>
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -461,6 +458,7 @@
                                  <field name="recurring_rule_type_readonly" invisible="1"/>
                                 <span class="mr-1">period(s)</span>
                             </div>
+                            <field name="active" invisible="1"/>
                             <field name="payment_mode" widget="radio"/>
                             <field name="invoice_mail_template_id"
                                    attrs="{'invisible': [('payment_mode', 'not in', ['validate_send', 'validate_send_payment'])],
@@ -600,9 +598,6 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                            <field name="active" widget="boolean_button"/>
-                        </button>
                         <button class="oe_stat_button"
                             icon="fa-book"
                             name="%(sale_subscription_action)d"
@@ -618,6 +613,7 @@
                     </div>
                     <group name="apply_on_panel" string="Apply on">
                         <group name="subscription_details">
+                            <field name="active" invisible="1"/>
                             <field name="subscription_template_ids" widget="many2many_tags"/>
                             <field name="product_ids" string="Products" widget="many2many_tags"/>
                             <field name="customer_ids" widget="many2many_tags"/>

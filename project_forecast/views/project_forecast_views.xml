@@ -41,12 +41,7 @@
                 <button name="%(project_forecast_repeat_forecast_wizard)d" class="btn btn-primary" type="action" string="repeat" attrs="{'invisible': ['|' ,('recurrency_id', '!=', False), ('id', '=', False)]}" />
             </header>
             <sheet string="Project Forecast">
-                <div class="oe_button_box" name="button_box"
-                        invisible="context.get('view_grid_add_line')">
-                    <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                        <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                    </button>
-                </div>
+                <field name="active" invisible="1"/>
                 <field name="recurrency_id" invisible='1'></field>
                 <group>
                     <group>

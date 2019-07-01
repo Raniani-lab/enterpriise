@@ -43,7 +43,7 @@
                     {'invisible': ['|', ('allow_billable', '=', False), ('partner_id', '=', False)]}
                 </attribute>
             </xpath>
-            <xpath expr="//button[@name='toggle_active']" position="before">
+            <div name="button_box" position="inside">
                 <button class="oe_stat_button" name="action_fsm_view_material"
                     type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', '|', ('allow_billable', '=', False), ('billable_type', '!=', 'no'), ('sale_order_id', '!=', False)]}">
                     <div class="o_stat_info">
@@ -54,7 +54,7 @@
                         <field name="currency_id" invisible="True"/>
                     </div>
                 </button>
-            </xpath>
+            </div>
             <xpath expr="//field[@name='planned_date_begin']" position="before">
                 <button class="btn btn-secondary pl-0 pr-0" type="action" name="%(project_enterprise.project_task_action_planning_groupby_user)d" context="{'default_project_id': project_id, 'search_default_user': 1}" attrs="{'invisible': ['|', ('allow_planning', '=', False), '&amp;', ('planned_date_begin', '!=', False), ('planned_date_end', '!=', False)]}">Plan this task</button>
             </xpath>

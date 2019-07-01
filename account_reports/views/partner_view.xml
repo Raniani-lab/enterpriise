@@ -8,7 +8,7 @@
             <field name="priority" eval="13"/>
             <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
             <field name="arch" type="xml">
-                <button name="toggle_active" position="before">
+                <div name="button_box" position="inside">
                     <button type="object"
                         class="oe_stat_button"
                         id="partner_ledger_button"
@@ -17,7 +17,7 @@
                         context="{'default_partner_id': active_id}">
                         <field name="partner_ledger_label"/>
                     </button>
-                </button>
+                </div>
             </field>
         </record>
         
@@ -28,14 +28,14 @@
             <field name="priority" eval="10"/>
             <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
             <field name="arch" type="xml">
-                <button name="toggle_active" position="before">
+                <div name="button_box" position="inside">
                     <button type="object" class="oe_stat_button" name="open_action_followup" icon="fa-list" attrs="{'invisible': [('total_due', '=', 0)]}">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_value"><field name="total_due" widget='monetary' options="{'currency_field': 'currency_id'}"/></span>
                             <span class="o_stat_text">Due</span>
                         </div>
                     </button>
-                </button>
+                </div>
             </field>
         </record>
     </data>

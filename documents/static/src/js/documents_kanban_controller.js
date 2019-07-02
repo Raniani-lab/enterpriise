@@ -340,9 +340,8 @@ var DocumentsKanbanController = KanbanController.extend({
     _onArchiveRecords: function (ev) {
         ev.stopPropagation();
         var self = this;
-        var active = !ev.data.records[0].data.active;
         var recordIDs = _.pluck(ev.data.records, 'id');
-        this.model.toggleActive(recordIDs, active, this.handle).then(function () {
+        this.model.toggleActive(recordIDs, this.handle).then(function () {
             self.update({}, {reload: false}); // the reload is done by toggleActive
         });
     },

@@ -978,7 +978,7 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document inspector: can archive records', async function (assert) {
-        assert.expect(6);
+        assert.expect(5);
 
         var kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -990,9 +990,15 @@ QUnit.module('DocumentsKanbanView', {
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
-                if (args.method === 'write') {
-                    assert.deepEqual(args.args, [[1, 4], {active: false}],
-                        "should archive the selected records");
+                if (route === "/web/dataset/call_kw/documents.document/toggle_active") {
+                    var documentIDS = args.args[0];
+                    var records = this.data['documents.document'].records
+                    _.each(documentIDS, function(documentID) {
+                        _.find(records, function (record) {
+                            return record.id === documentID; 
+                        }).active = false;
+                    })
+                    return Promise.resolve();
                 }
                 return this._super.apply(this, arguments);
             },

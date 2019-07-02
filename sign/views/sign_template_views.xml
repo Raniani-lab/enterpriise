@@ -268,8 +268,9 @@
         <field name="name">sign.item.role.tree</field>
         <field name="model">sign.item.role</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree editable="bottom">
                 <field name="name" string="Role Name"/>
+                <field name="sms_authentification"/>
             </tree>
         </field>
     </record>

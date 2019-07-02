@@ -727,7 +727,7 @@ class MrpEcoTag(models.Model):
     _name = "mrp.eco.tag"
     _description = "ECO Tags"
 
-    name = fields.Char(required=True)
+    name = fields.Char('Tag Name', required=True)
     color = fields.Integer('Color Index')
 
     _sql_constraints = [

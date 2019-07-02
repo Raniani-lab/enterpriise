@@ -20,9 +20,9 @@
         <field name="name">product.tic.category.tree</field>
         <field name="model">product.tic.category</field>
         <field name="arch" type="xml">
-            <tree string="TIC Category">
-                <field name="code"/>
+            <tree string="TIC Category" editable="bottom">
                 <field name="description"/>
+                <field name="code"/>
             </tree>
         </field>
     </record>

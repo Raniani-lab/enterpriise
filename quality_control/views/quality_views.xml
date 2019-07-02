@@ -762,9 +762,11 @@
         <field name="name">quality.alert.stage.tree</field>
         <field name="model">quality.alert.stage</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree editable="bottom">
                 <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="name" string="Stage Name"/>
+                <field name="folded"/>
+                <field name="done"/>
             </tree>
         </field>
     </record>

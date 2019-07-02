@@ -20,7 +20,7 @@ class HelpdeskTag(models.Model):
     _description = 'Helpdesk Tags'
     _order = 'name'
 
-    name = fields.Char(required=True)
+    name = fields.Char('Tag Name', required=True)
     color = fields.Integer('Color')
 
     _sql_constraints = [
@@ -33,7 +33,7 @@ class HelpdeskTicketType(models.Model):
     _description = 'Helpdesk Ticket Type'
     _order = 'sequence'
 
-    name = fields.Char(required=True, translate=True)
+    name = fields.Char('Type', required=True, translate=True)
     sequence = fields.Integer(default=10)
 
     _sql_constraints = [

@@ -119,7 +119,7 @@ class QualityTag(models.Model):
     _name = "quality.tag"
     _description = "Quality Tag"
 
-    name = fields.Char('Name', required=True)
+    name = fields.Char('Tag Name', required=True)
     color = fields.Integer('Color Index', help='Used in the kanban view')  # TDE: should be default value
 
 

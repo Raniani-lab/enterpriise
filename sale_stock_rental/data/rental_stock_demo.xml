@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo noupdate="1">
 
+  <record id="sale_renting.rental_product_1" model="product.product">
+      <field name="preparation_time" eval="0.05"/>
+  </record>
+  <record id="sale_renting.rental_product_2" model="product.product">
+      <field name="preparation_time" eval="0.5"/>
+  </record>
   <record id="rental_stock_product_1" model="product.product">
     <field name="name">Printer</field>
     <field name="categ_id" ref="sale_renting.cat_renting"/>

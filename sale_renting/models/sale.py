@@ -116,11 +116,10 @@ class RentalOrderLine(models.Model):
             # By default, an order line is considered late only if it has one hour of delay
             line.is_late = line.return_date and line.return_date + timedelta(hours=self.company_id.min_extra_hour) < now
 
-    @api.depends('pickup_date', 'product_id.preparation_time')
+    @api.depends('pickup_date')
     def _compute_reservation_begin(self):
         for line in self.filtered(lambda line: line.is_rental):
-            padding_timedelta_before = timedelta(hours=line.product_id.preparation_time)
-            line.reservation_begin = line.pickup_date - padding_timedelta_before
+            line.reservation_begin = line.pickup_date
 
 
     @api.depends('state', 'qty_invoiced', 'qty_delivered')

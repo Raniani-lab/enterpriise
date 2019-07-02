@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -234,3 +235,9 @@ class RentalOrderLine(models.Model):
         """Unavailable lots = reserved_lots U pickedup_lots - returned_lots."""
         for line in self:
             line.unavailable_lot_ids = (line.reserved_lot_ids | line.pickedup_lot_ids) - line.returned_lot_ids
+
+    @api.depends('pickup_date', 'product_id.preparation_time')
+    def _compute_reservation_begin(self):
+        for line in self.filtered(lambda line: line.is_rental):
+            padding_timedelta_before = timedelta(hours=line.product_id.preparation_time)
+            line.reservation_begin = line.pickup_date - padding_timedelta_before

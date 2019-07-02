@@ -16,6 +16,12 @@ class ResCompany(models.Model):
         "This location is internal because products in rental"
         "are still considered as company assets.")
 
+    # Padding Time
+
+    padding_time = fields.Float(
+        string="Padding Time", default=0.0,
+        help="Amount of time (in hours) during which a product is considered unavailable prior to renting (preparation time).")
+
     def _create_rental_location(self):
         for company in self:
             if not company.rental_loc_id:

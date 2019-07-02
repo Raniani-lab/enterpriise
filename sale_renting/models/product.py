@@ -13,9 +13,6 @@ class ProductTemplate(models.Model):
     def _default_extra_daily(self):
         return self.env.company.extra_day or 0.0
 
-    def _default_preparation_time(self):
-        return self.env.company.padding_time or 0.0
-
     rent_ok = fields.Boolean(
         string="Can be Rented",
         help="Allow renting of this product.")
@@ -28,12 +25,6 @@ class ProductTemplate(models.Model):
 
     extra_hourly = fields.Float("Extra Hour", default=_default_extra_hourly, help="Fine by hour overdue", company_dependent=True)
     extra_daily = fields.Float("Extra Day", default=_default_extra_daily, help="Fine by day overdue", company_dependent=True)
-
-    # Padding Time
-
-    preparation_time = fields.Float(
-        string="Before Pickup", default=_default_preparation_time,
-        help="Make the product unavailable between 2 rentals (e.g. admin processing, repair).", company_dependent=True)
 
     def _get_qty_in_rent(self):
         rentable = self.filtered('rent_ok')

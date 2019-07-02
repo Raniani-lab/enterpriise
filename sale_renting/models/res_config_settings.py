@@ -9,13 +9,6 @@ class ResConfigSettings(models.TransientModel):
 
     # RENTAL company defaults :
 
-    # Padding Time
-
-    padding_time = fields.Float(
-        string="Padding Time",
-        related='company_id.padding_time', readonly=False,
-        help="This is the default padding time set on newly created products. You can change it in the product form.")
-
     # Extra Costs
 
     extra_hour = fields.Float(

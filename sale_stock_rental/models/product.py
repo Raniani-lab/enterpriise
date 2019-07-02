@@ -8,6 +8,11 @@ from odoo import api, fields, models, exceptions
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
+    # Padding Time
+
+    preparation_time = fields.Float(string="Before Pickup", company_dependent=True,
+                                    help="Temporarily make this product unavailable before pickup.")
+
     # TODO replace by UI greying of unselectable conflicting choices ?
     @api.constrains('rent_ok', 'tracking')
     def _lot_not_supported_rental(self):

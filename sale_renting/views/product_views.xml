@@ -54,14 +54,6 @@
               <field name="extra_daily" widget="monetary"/>
               <field name="currency_id" invisible="1"/>
             </group>
-            <group string="Padding Time" name="padding">
-              <label for="preparation_time"/>
-              <div>
-                <field name="preparation_time" widget="float_time" class="oe_inline"/>
-                &amp;#032;
-                <label for="preparation_time" string="hours" class="oe_inline"/>
-              </div>
-            </group>
           </group>
         </page>
       </xpath>

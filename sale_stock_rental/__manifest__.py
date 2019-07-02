@@ -22,8 +22,10 @@
         'wizard/rental_configurator_views.xml',
         'wizard/rental_processing_views.xml',
         'report/rental_schedule_views.xml',
+        'views/res_config_settings_views.xml',
         'views/sale_views.xml',
         'views/assets.xml',
+        'views/product_views.xml',
     ],
     'demo': [
         'data/rental_stock_demo.xml',

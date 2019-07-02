@@ -19,7 +19,6 @@
     <field name="rent_ok" eval="True"/>
     <field name="extra_hourly" eval="5.00"/>
     <field name="extra_daily" eval="50.00"/>
-    <field name="preparation_time" eval="0.05"/>
   </record>
 
   <record id="rental_product_2" model="product.product">
@@ -34,7 +33,6 @@
     <field name="rent_ok" eval="True"/>
     <field name="extra_hourly" eval="5.0"/>
     <field name="extra_daily" eval="50.0"/>
-    <field name="preparation_time" eval="0.5"/>
   </record>
 
   <!-- Rental pricings -->

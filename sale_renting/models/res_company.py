@@ -9,12 +9,6 @@ class ResCompany(models.Model):
 
     # RENTAL company defaults :
 
-    # Padding Time
-
-    padding_time = fields.Float(
-        string="Padding Time", default=0.0,
-        help="The product is considered unavailable * hours before its pickup (default value on new products).")
-
     # Extra Costs
 
     extra_hour = fields.Float("Extra Hour", default=0.0)

@@ -51,8 +51,9 @@ class TestRuleParameter(TransactionCase):
         fr = self.env.ref('base.fr')
         company_1 = self.env['res.company'].create({'name': 'Table', 'country_id': be.id})
         company_2 = self.env['res.company'].create({'name': 'Tableau', 'country_id': fr.id})
-        user = new_test_user(self.env, login='bub', groups='hr.group_hr_user')
-        user.allowed_company_ids = [(6, 0, (company_1 | company_2).ids)]
+        user = new_test_user(self.env, login='bub', groups='hr.group_hr_user',
+                             company_id=company_2.id,
+                             company_ids=[(6, 0, (company_1 + company_2).ids)])
 
         rule_parameter = self.env['hr.rule.parameter'].create({
             'name': 'Test Parameter',

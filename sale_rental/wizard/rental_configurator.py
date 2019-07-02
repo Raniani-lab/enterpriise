@@ -40,27 +40,6 @@ class RentalWizard(models.TransientModel):
         string="Unit Price", help="Best unit price for specified duration (less expensive).",
         readonly=False, default=0.0, required=True)
 
-    rented_qty_during_period = fields.Float(
-        string="Quantity reserved", readonly=True,
-        help="Quantity reserved by other Rental lines during the given period",
-        compute='_compute_rented_during_period')
-
-    # TODO as this information isn't shown anymore.
-    # Either remove the field and computation
-    # Or show the information again.
-    @api.depends('pickup_date', 'return_date', 'product_id')
-    def _compute_rented_during_period(self):
-        if not self.product_id or not self.pickup_date or not self.return_date:
-            return
-        else:
-            # When the wizard is used to edit a rental line : the quantity displayed as reserved
-            # shouldn't include the quantity of the edited rental order line (if its SO is confirmed)
-            fro, to = self.product_id._unavailability_period(self.pickup_date, self.return_date)
-            self.rented_qty_during_period = self.product_id._get_rented_qty(
-                fro, to,
-                ignored_soline_id=self.rental_order_line_id and self.rental_order_line_id.id
-            )
-
     @api.multi
     @api.depends('pickup_date', 'return_date')
     def _compute_pricing(self):

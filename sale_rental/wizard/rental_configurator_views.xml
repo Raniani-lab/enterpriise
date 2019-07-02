@@ -28,8 +28,6 @@
                   <field name="pricing_id" invisible="1"/>
                   <field name="unit_price"/>
                   <field name="currency_id" invisible="1"/>
-                  <!-- TODO hide rented_qty_during_period to avoid computing it when stock isn't installed ? -->
-                  <field name="rented_qty_during_period" invisible="1"/>
                 </group>
                 </group>
                 <notebook name="debug" groups="base.group_no_one" invisible="1">

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
 from odoo import api, fields, models
 
 
@@ -120,73 +119,3 @@ class ProductProduct(models.Model):
             'products': self.ids,
         }  # Date domain???
         return action
-
-    def _unavailability_period(self, fro, to):
-        """Give unavailability period given rental period."""
-        return fro - timedelta(hours=self.preparation_time), to
-
-    def _get_rented_qty(self, fro=fields.Datetime.now(), to=None, ignored_soline_id=None):
-        domain_extension = [('id', '!=', ignored_soline_id)] if ignored_soline_id else []
-        return self._get_max_unavailable_qty_in_period(fro, to, domain_extension)
-
-    def _get_max_unavailable_qty_in_period(self, fro, to=None, domain_extension=None):
-        """Return max qty of self (unique) unavailable between fro and to.
-
-        Doesn't count already returned quantities.
-        :param datetime fro:
-        :param datetime to:
-        :param list domain_extension: search domain
-        """
-        def unavailable_qty(so_line):
-            return so_line.product_uom_qty - so_line.qty_delivered
-
-        begins_during_period, ends_during_period, covers_period = self._get_active_rental_lines(fro, to, domain_extension)
-        active_lines_in_period = begins_during_period + ends_during_period
-        max_qty_rented = 0
-
-        # TODO is it more efficient to filter the records active in period
-        # or to make another search on all the sale order lines???
-        if begins_during_period:
-            for date in begins_during_period.mapped('reservation_begin'):
-                active_lines_at_date = active_lines_in_period.filtered(
-                    lambda line: line.reservation_begin <= date and line.return_date >= date)
-                qty_rented_at_date = sum(active_lines_at_date.mapped(unavailable_qty))
-                if qty_rented_at_date > max_qty_rented:
-                    max_qty_rented = qty_rented_at_date
-
-        qty_always_in_rent_during_period = sum(line.product_uom_qty - line.qty_delivered for line in covers_period)
-
-        return max_qty_rented + qty_always_in_rent_during_period
-
-    def _get_active_rental_lines(self, fro, to, domain=None):
-        # TODO what if products are in reparation time (still unavailable)
-        # and sol state = 'done', the unavailability won't be correctly counted?
-        self.ensure_one()
-
-        Reservation = self.env['sale.order.line']
-
-        domain = domain if domain is not None else []
-        domain += [
-            ('is_rental', '=', True),
-            ('product_id', '=', self.id),
-            ('state', 'in', ['sale', 'done']),
-        ]
-
-        if not to or fro == to:
-            active_lines_at_time_fro = Reservation.search(domain + [
-                ('reservation_begin', '<=', fro),
-                ('return_date', '>=', fro)
-            ])
-            return [], [], active_lines_at_time_fro
-        else:
-            begins_during_period = Reservation.search(domain + [
-                ('reservation_begin', '>', fro),
-                ('reservation_begin', '<', to)])
-            ends_during_period = Reservation.search(domain + [
-                ('return_date', '>', fro),
-                ('return_date', '<', to),
-                ('id', 'not in', begins_during_period.ids)])
-            covers_period = Reservation.search(domain + [
-                ('reservation_begin', '<=', fro),
-                ('return_date', '>=', to)])
-            return begins_during_period, ends_during_period, covers_period

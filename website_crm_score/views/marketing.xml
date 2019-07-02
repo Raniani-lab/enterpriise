@@ -72,7 +72,6 @@
                             </h1>
                         </div>
                         <group>
-                            <field name="active" invisible="1"/>
                             <field name="rule_type"/>
                             <field name="value" attrs="{'invisible':[('rule_type','!=','score')]}"/>
                             <field name="domain" widget="domain" options="{'model': 'crm.lead'}"/>
@@ -140,7 +139,7 @@
                     <field name="value"/>
                     <field name="leads_count"/>
                     <field name="domain"/>
-                    <field name="running"/>
+                    <field name="active"/>
                 </tree>
             </field>
         </record>
@@ -206,10 +205,10 @@
             <field name="arch" type="xml">
                 <kanban quick_create="false" create="true">
                     <field name="user_id"/>
-                    <field name="running"/>
+                    <field name="active"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <t t-set="active" t-value="record.running.raw_value"/>
+                            <t t-set="active" t-value="record.active.raw_value"/>
                             <t t-set="button_state">
                                 <t t-if="active">o_assignation_button_active</t>
                                 <t t-if="!active">o_assignation_button_inactive</t>

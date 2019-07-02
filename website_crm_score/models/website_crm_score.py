@@ -56,18 +56,20 @@ class website_crm_score(models.Model):
              'on dynamic events',
         default=False, tracking=True
     )
-    running = fields.Boolean('Active', default=True, tracking=True)
+    active = fields.Boolean(default=True, tracking=True, oldname="active")
     leads_count = fields.Integer(compute='_count_leads')
     last_run = fields.Datetime('Last run', help='Date from the last scoring on all leads.')
 
     @api.model
     def assign_scores_to_leads(self, ids=False, lead_ids=False):
         _logger.info('Start scoring for %s rules and %s leads' % (ids and len(ids) or 'all', lead_ids and len(lead_ids) or 'all'))
-        domain = [('running', '=', True)]
+
         if ids:
-            domain.append(('id', 'in', ids))
+            domain = [('id', 'in', ids)]
         elif self.ids:
-            domain.append(('id', 'in', self.ids))
+            domain = [('id', 'in', self.ids)]
+        else:
+            domain = []
         scores = self.search(domain)
 
         # Sort rule to unlink before scoring
@@ -117,8 +119,3 @@ class website_crm_score(models.Model):
                 score.last_run = now
 
         _logger.info('End scoring')
-
-    @api.multi
-    def toggle_active(self):
-        for record in self:
-            record.running = not record.running

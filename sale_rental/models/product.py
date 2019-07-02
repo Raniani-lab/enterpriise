@@ -43,9 +43,9 @@ class ProductTemplate(models.Model):
             template.qty_in_rent = sum(template.mapped('product_variant_ids.qty_in_rent'))
 
     def action_view_rentals(self):
-        """Access Gantt view of sale_order_line, filtered on variants of current product."""
-        action = self.env.ref('sale_rental.rental_schedule_view_gantt_products').read()[0]
-        action['context'] = {'products': self.mapped('product_variant_ids').ids}
+        """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""
+        action = self.env.ref('sale_rental.action_rental_order_schedule').read()[0]
+        action['domain'] = [('product_id', 'in', self.mapped('product_variant_ids').ids)]
         return action
 
 
@@ -114,8 +114,7 @@ class ProductProduct(models.Model):
         return best_pricing_rule
 
     def action_view_rentals(self):
-        action = self.env.ref('sale_rental.rental_schedule_view_gantt_products').read()[0]
-        action['context'] = {
-            'products': self.ids,
-        }  # Date domain???
+        """Open Gantt view of rentals (sale.rental.schedule), filtered on rentals of the current variant."""
+        action = self.env.ref('sale_rental.action_rental_order_schedule').read()[0]
+        action['domain'] = [('product_id', 'in', self.ids)]
         return action

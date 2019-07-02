@@ -135,14 +135,6 @@
     </field>
   </record>
 
-  <record id="rental_schedule_view_gantt_products" model="ir.actions.act_window">
-    <field name="name">Confirmed Rentals</field>
-    <field name="res_model">sale.rental.schedule</field>
-    <field name="view_mode">gantt</field>
-    <field name="domain">[('product_id', 'in', context.get('products'))]</field>
-    <field name="context">{'search_default_Rentals':1, 'time_ranges': {'field':'pickup_date', 'range':'this_year'}}}</field>
-  </record>
-
   <record id="rental_schedule_view_form" model="ir.ui.view">
     <field name="name">rental.schedule.form</field>
     <field name="model">sale.rental.schedule</field>

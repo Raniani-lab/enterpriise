@@ -402,8 +402,6 @@ class AccountMove(models.Model):
                     country_id = self.env['res.country'].search([('code', '=', response.pop('country_code',''))])
                     values = {field: response.get(field, None) for field in self._get_partner_fields()}
                     values.update({
-                        'supplier': True,
-                        'customer': False,
                         'is_company': True,
                         'country_id': country_id and country_id.id,
                         })

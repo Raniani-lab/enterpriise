@@ -30,7 +30,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
             SELECT turnover_sub.partner_id, turnover_sub.name, turnover_sub.vat, turnover_sub.turnover, refund_vat_sub.refund_base, refund_base_sub.vat_amount, refund_base_sub.refund_vat_amount
               FROM (SELECT l.partner_id, p.name, p.vat, SUM(l.credit - l.debit) as turnover
                   FROM account_move_line l
-                  LEFT JOIN res_partner p ON l.partner_id = p.id AND p.customer = true
+                  LEFT JOIN res_partner p ON l.partner_id = p.id
                   JOIN account_account_tag_account_move_line_rel aml_tag ON l.id = aml_tag.account_move_line_id
                   JOIN account_tax_report_line_tags_rel tag_rep_ln ON tag_rep_ln.account_account_tag_id = aml_tag.account_account_tag_id
                   LEFT JOIN account_move inv ON l.move_id = inv.id
@@ -45,7 +45,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                   GROUP BY l.partner_id, p.name, p.vat) AS turnover_sub
                     FULL JOIN (SELECT l.partner_id, SUM(l.debit-l.credit) AS refund_base
                         FROM account_move_line l
-                        JOIN res_partner p ON l.partner_id = p.id AND p.customer = true
+                        JOIN res_partner p ON l.partner_id = p.id
                         JOIN account_account_tag_account_move_line_rel aml_tag ON l.id = aml_tag.account_move_line_id
                         JOIN account_tax_report_line_tags_rel tag_rep_ln ON tag_rep_ln.account_account_tag_id = aml_tag.account_account_tag_id
                         LEFT JOIN account_move inv ON l.move_id = inv.id

@@ -10,7 +10,7 @@
             <field name="arch" type="xml">
                 <div name="button_box" position="inside">
                     <button class="oe_stat_button" groups="account.group_account_invoice" name="account_sepa_direct_debit.account_sepa_direct_debit_partner_mandates" type="action"
-                        attrs="{'invisible': [('customer', '=', False)]}" icon="fa-pencil-square-o" help="Open this partner's mandates" title="Direct Debit Mandates">
+                        icon="fa-pencil-square-o" help="Open this partner's mandates" title="Direct Debit Mandates">
                         <field string='Direct Debit Mandates' name="sdd_count" widget="statinfo"/>
                     </button>
                 </div>

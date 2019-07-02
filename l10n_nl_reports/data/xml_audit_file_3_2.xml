@@ -36,8 +36,9 @@
                         <taxRegistrationCountry t-if="p.country_id" t-esc="p.country_id.code"/>
                         <taxRegIdent t-esc="p.vat"/>
                         <custSupTp t-esc="cust_sup_tp(p)"/>
-                        <custCreditLimit t-if="p.customer and p.credit_limit" t-esc="p.credit_limit"/>
-                        <supplierLimit t-if="p.supplier and p.credit_limit" t-esc="p.credit_limit"/>
+
+                        <custCreditLimit t-if="p.credit_limit" t-esc="p.credit_limit"/>
+                        <supplierLimit t-if="p.credit_limit" t-esc="p.credit_limit"/>
                         <streetAddress>
                             <streetname t-if="p.street_name" t-esc="p.street_name"/>
                             <number t-if="p.street_number" t-est="p.street_number"/>

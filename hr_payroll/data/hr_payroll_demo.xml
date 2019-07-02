@@ -16,26 +16,18 @@
         <!-- Contribution Register -->
         <record id="hr_houserent_register" model="res.partner">
             <field name="name">House Rent Allowance Register</field>
-            <field name="supplier">1</field>
-            <field eval="0" name="customer"/>
         </record>
 
         <record id="hr_provident_fund_register" model="res.partner">
             <field name="name">Provident Fund Register</field>
-            <field name="supplier">1</field>
-            <field eval="0" name="customer"/>
         </record>
 
         <record id="hr_professional_tax_register" model="res.partner">
             <field name="name">Professional Tax Register</field>
-            <field name="supplier">1</field>
-            <field eval="0" name="customer"/>
         </record>
 
         <record id="hr_meal_voucher_register" model="res.partner">
             <field name="name">Meal Voucher Register</field>
-            <field name="supplier">1</field>
-            <field eval="0" name="customer"/>
         </record>
 
         <!-- Salary Structure -->

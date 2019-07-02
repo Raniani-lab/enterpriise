@@ -193,7 +193,7 @@
                             <label for="name" class="oe_edit_only"/>
                             <field name="name" nolabel="1" class="oe_edit_only"/>
                             <field name="partner_id" required="1"
-                                context="{'search_default_customer':1, 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
+                                context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
                                 options='{"always_reload": True, "no_quick_create": True}'
                                 widget="res_partner_many2one"/>
                             <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>

@@ -18,8 +18,8 @@ class TestSEPACreditTransfer(AccountingTestCase):
         self.env.user.company_id.country_id = self.env.ref('base.be')
 
         # Get some records
-        self.asustek_sup = self.env['res.partner'].search([('name', 'ilike', 'Wood Corner'), ('supplier', '=', True)])
-        self.suppliers = self.env['res.partner'].search([('name', 'not ilike', 'Wood Corner'), ('supplier', '=', True)])
+        self.asustek_sup = self.env['res.partner'].search([('name', 'ilike', 'Wood Corner')])
+        self.suppliers = self.env['res.partner'].search([('name', 'not ilike', 'Wood Corner')])
         self.sepa_ct = self.env.ref('account_sepa.account_payment_method_sepa_ct')
 
         # Create an IBAN bank account and its journal

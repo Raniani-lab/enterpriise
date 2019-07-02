@@ -36,7 +36,7 @@ class ReportL10nNLIntrastat(models.AbstractModel):
                    ROUND(SUM(CASE WHEN product_t.type != 'service' THEN l.credit - l.debit ELSE 0 END)) as amount_product,
                    ROUND(SUM(CASE WHEN product_t.type = 'service' THEN l.credit - l.debit ELSE 0 END)) as amount_service
             FROM account_move_line l
-            LEFT JOIN res_partner p ON l.partner_id = p.id AND p.customer = true
+            LEFT JOIN res_partner p ON l.partner_id = p.id
             LEFT JOIN res_country c ON p.country_id = c.id
             LEFT JOIN account_move_line_account_tax_rel amlt ON l.id = amlt.account_move_line_id
             LEFT JOIN account_account_tag_account_move_line_rel line_tag on line_tag.account_move_line_id = l.id

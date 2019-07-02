@@ -126,8 +126,7 @@ class TestSubscription(TestSubscriptionCommon):
              'email': 'sti@fleetwood.mac',
              'property_account_receivable_id': self.account_receivable.id,
              'property_account_payable_id': self.account_receivable.id,
-             'company_id': self.company.id,
-             'customer': True})
+             'company_id': self.company.id})
 
         self.acquirer = self.env['payment.acquirer'].create(
             {'name': 'The Wire',

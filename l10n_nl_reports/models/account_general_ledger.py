@@ -24,11 +24,13 @@ class ReportAccountGeneralLedger(models.AbstractModel):
 
     def get_xaf(self, options):
         def cust_sup_tp(partner_id):
-            if partner_id.customer and partner_id.supplier:
+            so_count = partner_id.sale_order_count
+            po_count = partner_id.purchase_order_count
+            if so_count and po_count:
                 return 'B'
-            if partner_id.customer:
+            if so_count:
                 return 'C'
-            if partner_id.supplier:
+            if po_count:
                 return 'S'
             return 'O'
 
@@ -78,8 +80,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         date_from = options['date']['date_from']
         date_to = options['date']['date_to']
         partner_ids = self.env['res.partner'].search(
-            ['|', ('customer', '=', True), ('supplier', '=', True),
-             '|', ('company_id', '=', False), ('company_id', '=', company_id.id)])
+            ['|', ('company_id', '=', False), ('company_id', '=', company_id.id)])
         account_ids = self.env['account.account'].search([('company_id', '=', company_id.id)])
         tax_ids = self.env['account.tax'].search([('company_id', '=', company_id.id)])
         journal_ids = self.env['account.journal'].search([('company_id', '=', company_id.id)])

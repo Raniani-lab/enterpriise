@@ -1098,7 +1098,7 @@ class SaleSubscriptionAlert(models.Model):
     ], string='Trigger On', required=True, default='on_create_or_write')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
     subscription_template_ids = fields.Many2many('sale.subscription.template', string='Subscription Templates')
-    customer_ids = fields.Many2many('res.partner', string='Customers', domain=[('customer', '=', True)])
+    customer_ids = fields.Many2many('res.partner', string='Customers')
     company_id = fields.Many2one('res.company', string='Company')
     mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id')
     mrr_max = fields.Monetary('MRR Range Max', currency_field='currency_id')

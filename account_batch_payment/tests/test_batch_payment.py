@@ -14,7 +14,7 @@ class TestBatchPayment(AccountingTestCase):
         super(TestBatchPayment, self).setUp()
 
         # Get some records
-        self.customers = self.env['res.partner'].search([('customer', '=', True)])
+        self.customers = self.env['res.partner'].search([])
         self.batch_deposit = self.env.ref('account_batch_payment.account_payment_method_batch_deposit')
 
         # Create a bank journal

@@ -151,23 +151,39 @@ class SaleOrderLine(models.Model):
         Override to add subscription-specific behaviours.
 
         Display the invoicing period in the invoice line description, link the invoice line to the
-        correct subscription and to the subscription's analytic account if present.
+        correct subscription and to the subscription's analytic account if present, add revenue dates.
         """
-        res = super(SaleOrderLine, self)._prepare_invoice_line(qty)
+        res = super(SaleOrderLine, self)._prepare_invoice_line(qty)  # <-- ensure_one()
         if self.subscription_id:
             res.update(subscription_id=self.subscription_id.id)
-            if self.order_id.subscription_management != 'upsell':
-                next_date = fields.Date.from_string(self.subscription_id.recurring_next_date)
-                periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-                previous_date = next_date - relativedelta(**{periods[self.subscription_id.recurring_rule_type]: self.subscription_id.recurring_interval})
-                lang = self.order_id.partner_invoice_id.lang
-                format_date = self.env['ir.qweb.field.date'].with_context(lang=lang).value_to_html
+            periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
+            next_date = self.subscription_id.recurring_next_date
+            previous_date = next_date - relativedelta(**{periods[self.subscription_id.recurring_rule_type]: self.subscription_id.recurring_interval})
+            if self.order_id.subscription_management != 'upsell':  # renewal or creation: one entire period
+                date_start = previous_date
+                date_end = next_date - relativedelta(days=1)  # the period does not include the next renewal date
+            else:  # upsell: pro-rated period
+                # here we have a slight problem: the date used to compute the pro-rated discount
+                # (that is, the date_from in the upsell wizard) is not stored on the line,
+                # preventing an exact computation of start and end revenue dates
+                # witness me as I try to retroengineer the ~correct dates 🙆‍
+                # (based on `partial_recurring_invoice_ratio` from the sale.subscription model)
+                total_days = (next_date - previous_date).days
+                days = round((1 - self.discount / 100.0) * total_days)
+                date_start = next_date - relativedelta(days=days+1)
+                date_end = next_date - relativedelta(days=1)
 
-                # Ugly workaround to display the description in the correct language
-                if lang:
-                    self = self.with_context(lang=lang)
-                period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(previous_date), {}), format_date(fields.Date.to_string(next_date - relativedelta(days=1)), {}))
-                res.update(name=res['name'] + '\n' + period_msg)
+            lang = self.order_id.partner_invoice_id.lang
+            format_date = self.env['ir.qweb.field.date'].with_context(lang=lang).value_to_html
+            # Ugly workaround to display the description in the correct language
+            if lang:
+                self = self.with_context(lang=lang)
+            period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(date_start), {}), format_date(fields.Date.to_string(date_end), {}))
+            res.update({
+                    'name': res['name'] + '\n' + period_msg,
+                    'subscription_start_date': date_start,
+                    'subscription_end_date': date_end,
+                })
             if self.subscription_id.analytic_account_id:
                 res['account_analytic_id'] = self.subscription_id.analytic_account_id.id
         return res

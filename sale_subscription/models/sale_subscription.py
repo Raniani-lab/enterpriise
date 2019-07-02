@@ -479,7 +479,7 @@ class SaleSubscription(models.Model):
             'user_id': self.user_id.id,
         }
 
-    def _prepare_invoice_line(self, line, fiscal_position):
+    def _prepare_invoice_line(self, line, fiscal_position, date_start=False, date_stop=False):
         if 'force_company' in self.env.context:
             company = self.env['res.company'].browse(self.env.context['force_company'])
         else:
@@ -504,13 +504,18 @@ class SaleSubscription(models.Model):
             'uom_id': line.uom_id.id,
             'product_id': line.product_id.id,
             'invoice_line_tax_ids': [(6, 0, tax.ids)],
-            'analytic_tag_ids': [(6, 0, line.analytic_account_id.tag_ids.ids)]
+            'analytic_tag_ids': [(6, 0, line.analytic_account_id.tag_ids.ids)],
+            'subscription_start_date': date_start,
+            'subscription_end_date': date_stop,
         }
 
     def _prepare_invoice_lines(self, fiscal_position):
         self.ensure_one()
         fiscal_position = self.env['account.fiscal.position'].browse(fiscal_position)
-        return [(0, 0, self._prepare_invoice_line(line, fiscal_position)) for line in self.recurring_invoice_line_ids]
+        revenue_date_start = self.recurring_next_date
+        periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
+        revenue_date_stop = revenue_date_start + relativedelta(**{periods[self.recurring_rule_type]: self.recurring_interval}) - relativedelta(days=1)
+        return [(0, 0, self._prepare_invoice_line(line, fiscal_position, revenue_date_start, revenue_date_stop)) for line in self.recurring_invoice_line_ids]
 
     def _prepare_invoice(self):
         invoice = self._prepare_invoice_data()

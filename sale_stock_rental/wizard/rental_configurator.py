@@ -39,7 +39,7 @@ class RentalWizard(models.TransientModel):
 
     is_product_storable = fields.Boolean(compute="_compute_is_product_storable")
 
-    @api.depends('pickup_date', 'return_date', 'product_id')
+    @api.depends('pickup_date', 'return_date', 'product_id', 'warehouse_id')
     def _compute_rented_during_period(self):
         if self.tracking != 'serial':
             super(RentalWizard, self)._compute_rented_during_period()
@@ -57,7 +57,7 @@ class RentalWizard(models.TransientModel):
             self.rented_qty_during_period = rented_qty
             self.rented_lot_ids = rented_lots
 
-    @api.depends('pickup_date', 'return_date', 'product_id')
+    @api.depends('pickup_date', 'return_date', 'product_id', 'warehouse_id')
     def _compute_rentable_qty(self):
         for rent in self:
             if rent.is_product_storable and rent.pickup_date and rent.return_date:
@@ -72,7 +72,7 @@ class RentalWizard(models.TransientModel):
             else:
                 rent.rentable_qty = 0
 
-    @api.depends('product_id')
+    @api.depends('product_id', 'warehouse_id')
     def _compute_rentable_lots(self):
         for rent in self:
             if rent.product_id and rent.tracking == 'serial':

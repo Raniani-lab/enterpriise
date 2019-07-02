@@ -103,10 +103,9 @@ ProductConfiguratorWidget.include({
 
         /** Sale_stock_rental defaults (to avoid having a very little bit of js in sale_stock_rental) */
 
-        if (this.recordData.warehouse_id) {
-            data.default_warehouse_id = this.recordData.warehouse_id.data.id;
-        }
         if (this.recordData.reserved_lot_ids) {
+            // NEEDS to have the warehouse_id field visible in parent sale_order form view !
+            data.default_warehouse_id = this.record.evalContext.parent.warehouse_id;
             data.default_lot_ids = this._convertFromMany2Many(
                 this.recordData.reserved_lot_ids
             );

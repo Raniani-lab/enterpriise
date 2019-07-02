@@ -137,7 +137,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
                 'payment_method_id': payment_method_id,
                 'journal_id': journal.id,
                 'currency_id': currency_id.id,
-                'communication': invoice.number,
+                'communication': invoice.name,
                 'amount': amount,
         }})
 

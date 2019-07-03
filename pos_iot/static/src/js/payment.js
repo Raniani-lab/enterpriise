@@ -258,10 +258,12 @@ screens.PaymentScreenWidget.include({
             this.order_changes();
             this.terminal.remove_listener();
         } else if (line && data.Error) {
-            this.gui.show_popup('error',{
+            if (line.get_payment_status() !== 'waitingCancel') {
+                this.gui.show_popup('error',{
                     'title': _t('Payment terminal error'),
                     'body':  _t(data.Error),
                 });
+            }
             this.terminal.remove_listener();
             if (line.get_payment_status() === 'reversing') {
                 line.set_payment_status('done');

@@ -30,6 +30,7 @@ class SixDriver(Driver):
         self.actions = Queue()
         self.last_transaction = None
         self.cid = None
+        self.processing = False
 
     @classmethod
     def supported(cls, device):
@@ -68,6 +69,9 @@ class SixDriver(Driver):
                 })
             elif data['messageType'] == 'Cancel':
                 self.call_eftapi('EFT_Abort')
+            elif data['messageType'] == 'QueryStatus':
+                # Resends the last status if case one update got lost
+                event_manager.device_changed(self)
         except:
             pass
 
@@ -138,6 +142,13 @@ class SixDriver(Driver):
         """
 
         try:
+            '''Since the status is queried regularly, we don't want to re-send
+            an update for the previous transaction'''
+            self.data = {
+                'value': False,
+            }
+
+            self.processing = True
             self.cid = transaction['id']
 
             self.call_eftapi('EFT_PutAsync', 1)
@@ -158,7 +169,8 @@ class SixDriver(Driver):
             self.call_eftapi('EFT_Commit', 1)
 
             self.last_transaction = transaction
-
+            self.processing = False
+            
             self.send_status(
                 response="Approved" if transaction['type'] == b'debit' else "Reversed",
                 ticket=self.get_customer_receipt(),
@@ -237,6 +249,7 @@ class SixDriver(Driver):
             'Reversal': True,  # The payments can be reversed
             'owner': owner or self.data['owner'],
             'cid': cid or self.cid,
+            'processing': self.processing,
         }
         event_manager.device_changed(self)
 
@@ -249,6 +262,7 @@ class SixDriver(Driver):
         :type error_code: String
         """
 
+        self.processing = False
         msg = ctypes.create_string_buffer(1000)
         eftapi.EFT_GetExceptionMessage(mpdm.mpd_session, ctypes.byref(msg), ctypes.sizeof(msg))
         error_message = "[%s] %s" % (error_code, msg.value.decode('latin-1'))

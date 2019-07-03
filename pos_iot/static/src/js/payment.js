@@ -99,6 +99,7 @@ screens.PaymentScreenWidget.include({
             self.payment_timer = setTimeout ( function () {
                 line.set_payment_status('timeout');
             }, 8000);
+            self.query_terminal();
         });
         this.$el.find('.send_payment_cancel').click(function () {
             var line = self.pos.get_order().get_paymentline($(this).data('cid'));
@@ -119,7 +120,19 @@ screens.PaymentScreenWidget.include({
             self.send_payment_reverse($(this).data('cid'));
             line.set_payment_status('reversing');
             self.render_paymentlines();
+            self.query_terminal();
         });
+    },
+    /**
+     * Queries the status of the current payment after 3 seconds if no update
+     * has been received. If an update has been received, the time should be
+     * reset.
+     */
+    query_terminal: function () {
+        var self = this;
+        this.payment_update = setTimeout(function () {
+            self.terminal.action({messageType: 'QueryStatus'});
+        }, 3000);
     },
     /**
      * @override
@@ -203,6 +216,7 @@ screens.PaymentScreenWidget.include({
      * @param {Object} data.value
      */
     _onValueChange: function (data) {
+        clearTimeout(this.payment_update);
         var line = this.pos.get_order().get_paymentline(data.cid);
         if (data.owner && data.owner !== this.pos.iot_device_proxies.payment._iot_longpolling._session_id) {
             return;
@@ -236,6 +250,9 @@ screens.PaymentScreenWidget.include({
             if (['timeout', 'waitingCard', 'waitingCancel'].includes(line.get_payment_status())) {
                 line.set_payment_status('retry');
             }
+        }
+        if (line && data.processing) {
+            this.query_terminal();
         }
         if (data.Ticket) {
             line.ticket += data.Ticket.replace(/\n/g, "<br />");

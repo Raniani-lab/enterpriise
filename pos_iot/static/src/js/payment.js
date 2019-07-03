@@ -264,6 +264,7 @@ screens.PaymentScreenWidget.include({
                     'body':  _t(data.Error),
                 });
             }
+            clearTimeout(this.payment_timer);
             this.terminal.remove_listener();
             if (line.get_payment_status() === 'reversing') {
                 line.set_payment_status('done');

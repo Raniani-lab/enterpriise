@@ -155,4 +155,18 @@
         </field>
     </record>
 
+    <record id="fsm_worksheets_action_settings" model="ir.actions.act_window" >
+        <field name="name">Worksheets Templates</field>
+        <field name="res_model">project.worksheet.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- settings menu -->
+    <menuitem id="fsm_settings_worksheets"
+        name="Worksheet Templates"
+        sequence="40"
+        action="fsm_worksheets_action_settings"
+        parent="industry_fsm.fsm_menu_settings"
+        groups="industry_fsm.group_fsm_manager"/>
+
 </odoo>

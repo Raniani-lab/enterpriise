@@ -7,4 +7,5 @@ from odoo import api, fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    module_industry_fsm_report = fields.Boolean(string="Use Worksheets", default=True)
+    module_industry_fsm_report = fields.Boolean("Worksheet Templates")
+    group_industry_fsm_quotations = fields.Boolean(string="Quotations", implied_group="industry_fsm.group_fsm_quotation_from_task")

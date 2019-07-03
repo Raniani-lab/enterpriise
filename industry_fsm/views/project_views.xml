@@ -115,7 +115,7 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <field name="is_fsm" invisible="1"/>
-                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('is_fsm', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('is_fsm', '=', False), ('timesheet_timer_start', '!=', False)]}" groups="industry_fsm.group_fsm_quotation_from_task"/>
             </xpath>
             <div name="button_box" position="inside">
                 <button name="action_fsm_view_quotations"
@@ -126,29 +126,6 @@
                     <field string="Quotation(s)" name="quotation_count" widget="statinfo"/>
                 </button>
             </div>
-        </field>
-        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
-    </record>
-
-    <!-- Quotation and sales order button in Fsm task form -->
-    <record id="project_task_view_form_fsm_quotation" model="ir.ui.view">
-        <field name="name">view.form.fsm.inherit.quotation</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="project_task_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='timesheet_timer_start']" position="after">
-                <field name="is_fsm" invisible="1"/>
-                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('is_fsm', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
-            </xpath>
-            <xpath expr="//button[@name='action_fsm_view_material']" position="after">
-                <button name="action_fsm_view_quotations"
-                    type="object"
-                    class="oe_stat_button"
-                    icon="fa fa-pencil-square-o"
-                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
-                    <field string="Quotation(s)" name="quotation_count" widget="statinfo"/>
-                </button>
-            </xpath>
         </field>
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
     </record>
@@ -736,6 +713,41 @@
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
     </record>
 
+    <!-- Settings actions -->
+    <record id="res_config_settings_action_fsm" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'industry_fsm'}</field>
+    </record>
+
+    <record id="project_project_action_only_fsm" model="ir.actions.act_window" >
+        <field name="name">Projects</field>
+        <field name="res_model">project.project</field>
+        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="view_id" ref="project.view_project"/>
+        <field name="search_view_id" ref="project.view_project_project_filter"/>
+        <field name="target">main</field>
+        <field name="context">{
+            'fsm_mode': True,
+            'default_is_fsm': True,
+            'default_timesheet_product_id': ref('industry_fsm.fsm_time_product'),
+        }</field>
+    </record>
+
+    <record id="product_action_fsm" model="ir.actions.act_window" >
+        <field name="name">Products</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,activity,form</field>
+        <field name="context">{
+            'fsm_mode': True,
+            'search_default_filter_to_sell': True,
+        }</field>
+    </record>
+
     <!-- To invoice batch action -->
     <record id="project_task_server_action_batch_invoice_fsm" model="ir.actions.server">
         <field name="name">Create invoice</field>
@@ -837,5 +849,32 @@
             action="project_task_user_action_report_fsm"
             parent="industry_fsm.fsm_menu_reporting"
             groups="industry_fsm.group_fsm_manager"/>
+
+    <menuitem id="fsm_menu_settings"
+        name="Configuration"
+        sequence="50"
+        parent="industry_fsm.fsm_menu_root"
+        groups="industry_fsm.group_fsm_manager"/>
+
+        <menuitem id="fsm_menu_settings_res_config"
+            name="Settings"
+            parent="fsm_menu_settings"
+            sequence="0"
+            action="industry_fsm.res_config_settings_action_fsm"
+            groups="base.group_system"/>
+
+        <menuitem id="fsm_menu_settings_project"
+            name="Projects"
+            sequence="10"
+            action="project_project_action_only_fsm"
+            parent="fsm_menu_settings"
+            groups="industry_fsm.group_fsm_manager"/>
+
+        <menuitem id="fsm_menu_settings_product"
+            name="Products"
+            sequence="20"
+            action="product_action_fsm"
+            parent="fsm_menu_settings"
+            groups="sales_team.group_sale_salesman"/>
 
 </odoo>

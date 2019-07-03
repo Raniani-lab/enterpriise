@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class HrPayslip(models.Model):
@@ -11,8 +11,20 @@ class HrPayslip(models.Model):
         'hr.expense.sheet', 'payslip_id', string='Expenses',
         help="Expenses to reimburse to employee.",
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+    expenses_count = fields.Integer(compute='_compute_expenses_count')
 
-    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')    
+    @api.depends('expense_sheet_ids.expense_line_ids', 'expense_sheet_ids.payslip_id')
+    def _compute_expenses_count(self):
+        for payslip in self:
+            payslip.expenses_count = len(payslip.mapped('expense_sheet_ids.expense_line_ids'))
+
+    @api.onchange('input_line_ids')
+    def _onchange_input_line_ids(self):
+        expense_type = self.env.ref('hr_payroll_expense.expense_other_input', raise_if_not_found=False)
+        if not self.input_line_ids.filtered(lambda line: line.input_type_id == expense_type):
+            self.expense_sheet_ids.write({'payslip_id': False})
+
+    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
     def _onchange_employee(self):
         res = super()._onchange_employee()
         if self.state == 'draft':
@@ -49,3 +61,13 @@ class HrPayslip(models.Model):
             expense.action_sheet_move_create()
             expense.set_to_paid()
         return res
+
+    def open_expenses(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Reimbursed Expenses'),
+            'res_model': 'hr.expense',
+            'view_mode': 'tree,form',
+            'domain': [('id', 'in', self.mapped('expense_sheet_ids.expense_line_ids').ids)],
+        }

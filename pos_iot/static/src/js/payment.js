@@ -46,6 +46,17 @@ models.Paymentline = models.Paymentline.extend({
  */
 models.Order = models.Order.extend({
     /**
+     * Retrive the paymentline with the specified cid
+     *
+     * @param {String} cid 
+     */
+    get_paymentline: function (cid) {
+        var lines = this.get_paymentlines();
+        return lines.find(function (line) {
+            return line.cid === cid;
+        });
+    },
+    /**
      * @override
      * Only account the payment lines with status `done` to check if the order is fully payd.
      */
@@ -80,34 +91,35 @@ screens.PaymentScreenWidget.include({
         if (!order) {
             return;
         }
-        var line = order.selected_paymentline;
-        if (line && line.get_payment_status()) {
-            this.$el.find('.send_payment_request').click(function () {
-                self.send_payment_request();
-                line.set_payment_status('waiting');
-                self.render_paymentlines();
-                self.payment_timer = setTimeout ( function () {
-                    line.set_payment_status('timeout');
-                }, 8000);
-            });
-            this.$el.find('.send_payment_cancel').click(function () {
-                self.send_payment_cancel();
-                line.set_payment_status('waitingCancel');
-                clearTimeout(self.payment_timer);
-                self.render_paymentlines();
-            });
-            this.$el.find('.send_force_done').click(function () {
-                line.set_payment_status('done');
-                clearTimeout(self.payment_timer);
-                self.order_changes();
-                self.render_paymentlines();
-            });
-            this.$el.find('.send_payment_reverse').click(function () {
-                self.send_payment_reverse();
-                line.set_payment_status('reversing');
-                self.render_paymentlines();
-            });
-        }
+        this.$el.find('.send_payment_request').click(function () {
+            var line = self.pos.get_order().get_paymentline($(this).data('cid'));
+            self.send_payment_request($(this).data('cid'));
+            line.set_payment_status('waiting');
+            self.render_paymentlines();
+            self.payment_timer = setTimeout ( function () {
+                line.set_payment_status('timeout');
+            }, 8000);
+        });
+        this.$el.find('.send_payment_cancel').click(function () {
+            var line = self.pos.get_order().get_paymentline($(this).data('cid'));
+            self.send_payment_cancel();
+            line.set_payment_status('waitingCancel');
+            clearTimeout(self.payment_timer);
+            self.render_paymentlines();
+        });
+        this.$el.find('.send_force_done').click(function () {
+            var line = self.pos.get_order().get_paymentline($(this).data('cid'));
+            line.set_payment_status('done');
+            clearTimeout(self.payment_timer);
+            self.order_changes();
+            self.render_paymentlines();
+        });
+        this.$el.find('.send_payment_reverse').click(function () {
+            var line = self.pos.get_order().get_paymentline($(this).data('cid'));
+            self.send_payment_reverse($(this).data('cid'));
+            line.set_payment_status('reversing');
+            self.render_paymentlines();
+        });
     },
     /**
      * @override
@@ -191,7 +203,7 @@ screens.PaymentScreenWidget.include({
      * @param {Object} data.value
      */
     _onValueChange: function (data) {
-        var line = this.pos.get_order().selected_paymentline;
+        var line = this.pos.get_order().get_paymentline(data.cid);
         if (data.owner && data.owner !== this.pos.iot_device_proxies.payment._iot_longpolling._session_id) {
             return;
         }
@@ -233,15 +245,16 @@ screens.PaymentScreenWidget.include({
         }
         this.render_paymentlines();
     },
-    send_payment_request: function () {
+    send_payment_request: function (cid) {
         this.pos.get_order().get_paymentlines().forEach(function (line) {
             // Other payment lines cannot be reversed anymore
             line.reversal = false;
         });
         var data = {
             messageType: 'Transaction',
-            TransactionID: parseInt(this.pos.get_order().selected_paymentline.order.uid.replace(/-/g, '')),
-            amount: Math.round(this.pos.get_order().selected_paymentline.amount*100),
+            TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),
+            cid: cid,
+            amount: Math.round(this.pos.get_order().get_paymentline(cid).amount*100),
             currency: this.pos.currency.name,
             language: this.pos.user.lang.split('_')[0],
         };
@@ -254,12 +267,13 @@ screens.PaymentScreenWidget.include({
         };
         this.send_request(data);
     },
-    send_payment_reverse: function () {
+    send_payment_reverse: function (cid) {
         this.terminal.add_listener(this._onValueChange.bind(this));
         var data = {
             messageType: 'Reversal',
-            TransactionID: parseInt(this.pos.get_order().selected_paymentline.order.uid.replace(/-/g, '')),
-            amount: Math.round(this.pos.get_order().selected_paymentline.amount*100),
+            TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),
+            cid: cid,
+            amount: Math.round(this.pos.get_order().get_paymentline(cid).amount*100),
             currency: this.pos.currency.name,
         };
         this.send_request(data);
@@ -276,8 +290,12 @@ screens.PaymentScreenWidget.include({
                     'title': _t('Connection to terminal failed'),
                     'body':  _t('Please check if the terminal is still connected.'),
                 });
-            if (this.pos.get_order().selected_paymentline) {
-                this.pos.get_order().selected_paymentline.set_payment_status('force_done');
+            var lines = this.pos.get_order().get_paymentlines();
+            for ( var i = 0; i < lines.length; i++ ) {
+                if (lines[i].payment_status === 'waiting') {
+                    lines[i].set_payment_status('force_done');
+                    break;
+                }
             }
             this.render_paymentlines();
         }
@@ -287,8 +305,12 @@ screens.PaymentScreenWidget.include({
                 'title': _t('Connection to IoT Box failed'),
                 'body':  _t('Please check if the IoT Box is still connected.'),
             });
-        if (this.pos.get_order().selected_paymentline) {
-            this.pos.get_order().selected_paymentline.set_payment_status('force_done');
+        var lines = this.pos.get_order().get_paymentlines();
+        for ( var i = 0; i < lines.length; i++ ) {
+            if (lines[i].payment_status === 'waiting') {
+                lines[i].set_payment_status('force_done');
+                break;
+            }
         }
         this.render_paymentlines();
     },

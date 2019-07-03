@@ -664,6 +664,7 @@ class IngenicoDriver(Driver):
         self._device_type = 'payment'
         self._device_connection = 'network'
         self._device_name = 'Ingenico payment terminal'
+        self.cid = None
 
     @classmethod
     def supported(cls, device): 
@@ -713,6 +714,7 @@ class IngenicoDriver(Driver):
         try:
             self.data["Ticket"] = False
             if data['messageType'] == 'Transaction':
+                self.cid = data['cid']
                 self._outgoingMessage( "TransactionRequest", transactionId=data['TransactionID'], amount=data['amount'])
             elif data['messageType'] == 'Cancel':
                 self._outgoingMessage( "CancelRequest", reason=data['reason'])
@@ -750,6 +752,7 @@ class IngenicoDriver(Driver):
                         self.data["Response"] = msg.getTransactionResult() if msg.getTransactionResult() else self.data["Response"]
                         self.data["Ticket"] = msg.getTransactionTicket() if msg.getTransactionTicket() else self.data["Ticket"]
                     self.data['Stage'] = msg.getTransactionStage() if msg.getTransactionStage() else self.data['Stage']
+                    self.data['cid'] = self.cid
                 event_manager.device_changed(self)
         except Exception:
             self.disconnect()

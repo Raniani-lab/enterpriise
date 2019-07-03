@@ -29,6 +29,7 @@ class SixDriver(Driver):
         self._device_name = "Six Payment Terminal %s" % self.device_identifier
         self.actions = Queue()
         self.last_transaction = None
+        self.cid = None
 
     @classmethod
     def supported(cls, device):
@@ -46,13 +47,15 @@ class SixDriver(Driver):
                     'type': b'debit',
                     'amount': data['amount'],
                     'currency': data['currency'].encode(),
+                    'id': data['cid'],
                     'owner': self.data['owner'],
                 })
-            elif data['messageType'] == 'Reversal' and self.check_reversal(data['TransactionID']):
+            elif data['messageType'] == 'Reversal' and self.check_reversal(data['cid']):
                 self.actions.put({
                     'type': b'reversal',
                     'amount': data['amount'],
                     'currency': data['currency'].encode(),
+                    'id': data['cid'],
                     'owner': self.data['owner'],
                 })
             elif data['messageType'] == 'OpenShift':
@@ -105,9 +108,9 @@ class SixDriver(Driver):
         reader_status = ctypes.c_long()
         self.call_eftapi('EFT_GetDeviceEventCode', ctypes.byref(reader_status))
         if reader_status.value != 0:
-            self.send_status(error=_("A card is still inserted in the Payment Terminal, please remove it then try again."))
+            self.send_status(error=_("A card is still inserted in the Payment Terminal, please remove it then try again."), cid=id)
         elif self.last_transaction['owner'] != self.data['owner'] or self.last_transaction['id'] != id:
-            self.send_status(error=_("Another payment was processed after the one you're trying to reverse, you cannot reverse it anymore."))
+            self.send_status(error=_("Another payment was processed after the one you're trying to reverse, you cannot reverse it anymore."), cid=id)
         else:
             return True
         return False
@@ -135,12 +138,14 @@ class SixDriver(Driver):
         """
 
         try:
+            self.cid = transaction['id']
+
             self.call_eftapi('EFT_PutAsync', 1)
             self.call_eftapi('EFT_PutCurrency', transaction['currency'])
             self.call_eftapi('EFT_Transaction', transaction['type'], transaction['amount'], 0)
 
             if transaction['type'] == b'debit':
-                self.send_status(stage='WaitingForCard', owner=transaction['owner'])
+                self.send_status(stage='WaitingForCard', owner=transaction['owner'], cid=transaction['id'])
 
             completed_command = ctypes.c_long()
             while completed_command.value != 3:
@@ -158,7 +163,7 @@ class SixDriver(Driver):
                 response="Approved" if transaction['type'] == b'debit' else "Reversed",
                 ticket=self.get_customer_receipt(),
                 ticket_merchant=self.get_merchant_receipt(),
-                owner=transaction['owner']
+                owner=transaction['owner'],
             )
 
         except:
@@ -203,7 +208,7 @@ class SixDriver(Driver):
         if res != 0:
             self.send_error(res)
 
-    def send_status(self, response=False, stage=False, ticket=False, ticket_merchant=False, error=False, owner=False):
+    def send_status(self, response=False, stage=False, ticket=False, ticket_merchant=False, error=False, owner=False, cid=False):
         """Triggers a device_changed to notify all listeners of the new status.
 
         :param response: The result of a transaction
@@ -218,6 +223,8 @@ class SixDriver(Driver):
         :type error: String
         :param owner: The session id of the POS that should process the update
         :type owner: String
+        :param cid: The cid of payment line that is being processed
+        :type cid: String
         """
 
         self.data = {
@@ -229,6 +236,7 @@ class SixDriver(Driver):
             'Error': error,
             'Reversal': True,  # The payments can be reversed
             'owner': owner or self.data['owner'],
+            'cid': cid or self.cid,
         }
         event_manager.device_changed(self)
 

@@ -31,7 +31,7 @@
                         <td colspan="3">
                             Payment request pending
                         </td>
-                        <td colspan="2" class='button send_payment_request highlight' title="Send Payment Request">
+                        <td colspan="2" class='button send_payment_request highlight' title="Send Payment Request" t-att-data-cid='line.cid'>
                             Send
                         </td>
                     </t>
@@ -39,7 +39,7 @@
                         <td colspan="3">
                             Retry Electronic payment
                         </td>
-                        <td colspan="2" class='button send_payment_request highlight' title="Send Payment Request">
+                        <td colspan="2" class='button send_payment_request highlight' title="Send Payment Request" t-att-data-cid='line.cid'>
                             Retry
                         </td>
                     </t>
@@ -47,7 +47,7 @@
                         <td colspan="3">
                             Connection error
                         </td>
-                        <td colspan="2" class='button send_force_done' title="Force Done">
+                        <td colspan="2" class='button send_force_done' title="Force Done" t-att-data-cid='line.cid'>
                             Force done
                         </td>
                     </t>
@@ -55,7 +55,7 @@
                         <td colspan="3">
                             Waiting for card
                         </td>
-                        <td colspan="2" class='button send_payment_cancel' title="Cancel Payment Request">
+                        <td colspan="2" class='button send_payment_cancel' title="Cancel Payment Request" t-att-data-cid='line.cid'>
                             Cancel
                         </td>
                     </t>
@@ -80,7 +80,7 @@
                             <td colspan="3">
                                 Payment Successful
                             </td>
-                            <td colspan="2" class='button send_payment_reverse' title="Reverse Payment">
+                            <td colspan="2" class='button send_payment_reverse' title="Reverse Payment" t-att-data-cid='line.cid'>
                                 Reverse
                             </td>
                         </t>

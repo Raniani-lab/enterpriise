@@ -70,6 +70,12 @@ class HrPayslip(models.Model):
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(readonly=True)
 
+    @api.onchange('worked_days_line_ids', 'input_line_ids')
+    def _onchange_worked_days_inputs(self):
+        if self.line_ids and self.state in ['draft', 'verify']:
+            values = [(5, 0, 0)] + [(0, 0, line_vals) for line_vals in self._get_payslip_lines()]
+            self.update({'line_ids': values})
+
     def _compute_basic_net(self):
         for payslip in self:
             payslip.basic_wage = payslip._get_salary_line_total('BASIC')
@@ -240,6 +246,7 @@ class HrPayslip(models.Model):
                     'amount': amount,
                     'quantity': qty,
                     'rate': rate,
+                    'slip_id': self.id,
                 }
         return result.values()
 

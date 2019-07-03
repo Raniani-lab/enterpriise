@@ -69,7 +69,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='duration_group']" position="after">
                    <group string="Accounting" groups="analytic.group_analytic_accounting">
-                        <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                        <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                     </group>
                 </xpath>
             </field>

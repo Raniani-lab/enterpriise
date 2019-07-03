@@ -212,10 +212,10 @@ class AccountMove(models.Model):
             text_to_send["content"] = self.amount_tax
         elif field == "global_taxes":
             text_to_send["content"] = [{
-                'amount': tax.amount,
-                'tax_amount': tax.tax_id.amount,
-                'tax_amount_type': tax.tax_id.amount_type,
-                'tax_price_include': tax.tax_id.price_include} for tax in self.tax_line_ids]
+                'amount': line.debit,
+                'tax_amount': line.tax_line_id.amount,
+                'tax_amount_type': line.tax_line_id.amount_type,
+                'tax_price_include': line.tax_line_id.price_include} for line in self.line_ids.filtered('tax_repartition_line_id')]
         elif field == "date":
             text_to_send["content"] = str(self.invoice_date)
         elif field == "due_date":
@@ -236,11 +236,11 @@ class AccountMove(models.Model):
                     "quantity": il.quantity,
                     "unit_price": il.price_unit,
                     "product": il.product_id.id,
-                    "taxes_amount": il.price_tax,
+                    "taxes_amount": round(il.price_total - il.price_subtotal, 2),
                     "taxes": [{
                         'amount': tax.amount,
                         'type': tax.amount_type,
-                        'price_include': tax.price_include} for tax in il.invoice_line_tax_ids],
+                        'price_include': tax.price_include} for tax in il.tax_ids],
                     "subtotal": il.price_subtotal,
                     "total": il.price_total
                 }
@@ -482,12 +482,11 @@ class AccountMove(models.Model):
                     'name': "\n".join(il['description']) if len(il['description']) > 0 else "/",
                     'price_unit': il['subtotal'],
                     'quantity': 1.0,
+                    'tax_ids': []
                 }
-                tax_ids = []
+
                 for tax in taxes_ids:
-                    tax_ids.append((4, tax))
-                if tax_ids:
-                    vals['tax_ids'] = tax_ids
+                    vals['tax_ids'].append(tax)
 
                 invoice_lines_to_create.append(vals)
         else:
@@ -559,13 +558,6 @@ class AccountMove(models.Model):
 
                 if invoice_lines:
                     vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
-
-                    if total_ocr and len(record.tax_line_ids) > 0:
-                        rounding_error = record.amount_total - total_ocr
-                        threshold = len(vals_invoice_lines) * 0.01
-                        if rounding_error != 0.0 and abs(rounding_error) < threshold:
-                            record.tax_line_ids[0].amount -= rounding_error
-
                 elif subtotal_ocr:
                     vals_invoice_line = {
                         'name': "/",
@@ -580,17 +572,17 @@ class AccountMove(models.Model):
                             vals_invoice_line['price_unit'] = subtotal_ocr
                     vals_invoice_lines = [vals_invoice_line]
 
-
                 with Form(record) as move_form:
                     partner_id = self.find_partner_id_with_name(supplier_ocr)
                     if partner_id != 0:
-                        move_form.partner_id = partner_id
+                        move_form.partner_id = self.env["res.partner"].browse(partner_id)
                     else:
                         partner_vat = self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1)
                         if partner_vat.exists():
                             move_form.partner_id = partner_vat
 
-                    move_form.invoice_date = date_ocr
+                    if date_ocr:
+                        move_form.invoice_date = date_ocr
                     if due_date_ocr:
                         move_form.invoice_date_due = due_date_ocr
                     move_form.ref = invoice_id_ocr
@@ -606,8 +598,20 @@ class AccountMove(models.Model):
                             line.price_unit = line_val['price_unit']
                             line.quantity = line_val['quantity']
                             line.tax_ids.clear()
-                            for tax_id in line_val['tax_ids']:
-                                line.tax_ids.add(tax_id)
+                            for taxes_record in line_val['tax_ids']:
+                                line.tax_ids.add(taxes_record)
+                            if not line.account_id:
+                                line.account_id = move_form.journal_id.default_debit_account_id
+
+                    # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
+                    for i in range(len(move_form.line_ids)):
+                        with move_form.line_ids.edit(i) as line:
+                            if line.tax_repartition_line_id and total_ocr:
+                                rounding_error = move_form.amount_total - total_ocr
+                                threshold = len(vals_invoice_lines) * 0.01
+                                if rounding_error != 0.0 and abs(rounding_error) < threshold:
+                                    line.debit -= rounding_error
+                                break
 
                 fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
                 for field in fields_with_boxes:

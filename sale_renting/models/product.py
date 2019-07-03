@@ -7,12 +7,6 @@ from odoo import api, fields, models
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    def _default_extra_hourly(self):
-        return self.env.company.extra_hour or 0.0
-
-    def _default_extra_daily(self):
-        return self.env.company.extra_day or 0.0
-
     rent_ok = fields.Boolean(
         string="Can be Rented",
         help="Allow renting of this product.")
@@ -23,8 +17,8 @@ class ProductTemplate(models.Model):
 
     # Delays pricing
 
-    extra_hourly = fields.Float("Extra Hour", default=_default_extra_hourly, help="Fine by hour overdue", company_dependent=True)
-    extra_daily = fields.Float("Extra Day", default=_default_extra_daily, help="Fine by day overdue", company_dependent=True)
+    extra_hourly = fields.Float("Extra Hour", help="Fine by hour overdue", company_dependent=True)
+    extra_daily = fields.Float("Extra Day", help="Fine by day overdue", company_dependent=True)
 
     def _get_qty_in_rent(self):
         rentable = self.filtered('rent_ok')

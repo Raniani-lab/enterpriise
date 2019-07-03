@@ -22,6 +22,7 @@
 
     'data': [
         'security/ir.model.access.csv',
+        'data/rental_data.xml',
         'views/product_views.xml',
         'views/sale_views.xml',
         'views/rental_views.xml',

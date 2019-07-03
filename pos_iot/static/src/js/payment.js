@@ -72,6 +72,20 @@ models.Order = models.Order.extend({
             return sum;
         }), 0), this.pos.currency.rounding);
     },
+    /**
+     * Stops a payment on the terminal if one is running
+     */
+    stop_payment: function () {
+        var lines = this.get_paymentlines();
+        var line = lines.find(function (line) {
+            var status = line.get_payment_status();
+            return status && !['done', 'reversed', 'reversing', 'pending', 'retry'].includes(status);
+        });
+        if (line) {
+            line.set_payment_status('waitingCancel');
+            this.pos.gui.screen_instances.payment.send_payment_cancel();
+        }
+    },
 });
 
 /** Paymentscreen Widget
@@ -155,7 +169,6 @@ screens.PaymentScreenWidget.include({
             if (this.pos.payment_methods_by_id[id].use_payment_terminal === true) {
                 if (this.pos.iot_device_proxies['payment']) {
                     this.terminal = this.pos.iot_device_proxies['payment'];
-                    this.terminal.add_listener(this._onValueChange.bind(this));
                     this.pos.get_order().selected_paymentline.set_payment_status('pending');
                 } else {
                     this._showErrorConfig();
@@ -171,10 +184,18 @@ screens.PaymentScreenWidget.include({
      */
     close: function() {
         this._super();
-        if (this.terminal) {
-            this.terminal.remove_listener();
-            clearTimeout(this.payment_timer);
+        clearTimeout(this.payment_timer);
+        this.pos.get_order().stop_payment();
+    },
+    /**
+     *
+     * @override
+     */
+    watch_order_changes: function () {
+        if (this.old_order) {
+            this.old_order.stop_payment();
         }
+        this._super();
     },
     /**
      * @override
@@ -215,9 +236,9 @@ screens.PaymentScreenWidget.include({
      * @param {Object} data.session_id
      * @param {Object} data.value
      */
-    _onValueChange: function (data) {
+    _onValueChange: function (order, data) {
         clearTimeout(this.payment_update);
-        var line = this.pos.get_order().get_paymentline(data.cid);
+        var line = order.get_paymentline(data.cid);
         if (data.owner && data.owner !== this.pos.iot_device_proxies.payment._iot_longpolling._session_id) {
             return;
         }
@@ -241,6 +262,7 @@ screens.PaymentScreenWidget.include({
                     'title': _t('Payment terminal error'),
                     'body':  _t(data.Error),
                 });
+            this.terminal.remove_listener();
             if (line.get_payment_status() === 'reversing') {
                 line.set_payment_status('done');
             } else {
@@ -248,6 +270,7 @@ screens.PaymentScreenWidget.include({
             }
         } else if (line && data.Stage !== 'WaitingForCard') {
             if (['timeout', 'waitingCard', 'waitingCancel'].includes(line.get_payment_status())) {
+                this.terminal.remove_listener();
                 line.set_payment_status('retry');
             }
         }
@@ -263,6 +286,7 @@ screens.PaymentScreenWidget.include({
         this.render_paymentlines();
     },
     send_payment_request: function (cid) {
+        this.terminal.add_listener(this._onValueChange.bind(this, this.pos.get_order()));
         this.pos.get_order().get_paymentlines().forEach(function (line) {
             // Other payment lines cannot be reversed anymore
             line.reversal = false;
@@ -285,7 +309,7 @@ screens.PaymentScreenWidget.include({
         this.send_request(data);
     },
     send_payment_reverse: function (cid) {
-        this.terminal.add_listener(this._onValueChange.bind(this));
+        this.terminal.add_listener(this._onValueChange.bind(this, this.pos.get_order()));
         var data = {
             messageType: 'Reversal',
             TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),

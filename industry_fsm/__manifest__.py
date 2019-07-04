@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': "Field Service",
     'summary': "Schedule and track onsite operations, invoice time and material",

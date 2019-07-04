@@ -6,16 +6,17 @@ const RamStorage = require('web.RamStorage');
 const {createView} = require('web.test_utils');
 
 async function createDocumentsKanbanView(params) {
-    const [templateStart, templateEnd] = params.arch.split('</templates>');
-    params.arch = `
-        ${templateStart}</templates>
+    params.archs = params.archs || {};
+    var searchArch = params.archs[`${params.model},false,search`] || '<search></search>';
+    var searchPanelArch = `
         <searchpanel>
             <field name="folder_id" string="Workspace"/>
             <field name="tag_ids" select="multi" groupby="facet_id"/>
             <field name="res_model" select="multi" string="Attached To"/>
         </searchpanel>
-        ${templateEnd}
     `;
+    searchArch = searchArch.split('</search>')[0] + searchPanelArch + '</search>';
+    params.archs[`${params.model},false,search`] = searchArch;
     if (!params.services || !params.services.local_storage) {
         // the searchPanel uses the localStorage to store/retrieve default
         // active category value

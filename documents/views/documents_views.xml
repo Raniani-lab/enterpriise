@@ -64,6 +64,11 @@
                     <filter string="Creation Date" name="creation_month" domain="[]" context="{'group_by':'create_date'}"/>
                     <filter string="Attached Document Name" name="attached_document_name" domain="[]" context="{'group_by': 'res_name'}"/>
                 </group>
+                <searchpanel>
+                    <field name="folder_id"/>
+                    <field name="tag_ids" select="multi" groupby="facet_id" icon="fa-tag"/>
+                    <field name="res_model" select="multi" string="Attached To" icon="fa-file-text" color="#338FFC"/>
+                </searchpanel>
             </search>
         </field>
     </record>
@@ -153,11 +158,6 @@
                         </div>
                     </t>
                 </templates>
-                <searchpanel>
-                    <field name="folder_id"/>
-                    <field name="tag_ids" select="multi" groupby="facet_id" icon="fa-tag"/>
-                    <field name="res_model" select="multi" string="Attached To" icon="fa-file-text" color="#338FFC"/>
-                </searchpanel>
             </kanban>
         </field>
     </record>

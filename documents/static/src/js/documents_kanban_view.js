@@ -6,7 +6,6 @@ var DocumentsKanbanModel = require('documents.DocumentsKanbanModel');
 var DocumentsKanbanRenderer = require('documents.DocumentsKanbanRenderer');
 var DocumentsSearchPanel = require('documents.DocumentsSearchPanel');
 
-var config = require('web.config');
 var core = require('web.core');
 var KanbanView = require('web.KanbanView');
 var view_registry = require('web.view_registry');
@@ -28,6 +27,9 @@ var DocumentsKanbanView = KanbanView.extend({
      */
     init: function () {
         this._super.apply(this, arguments);
+        // force the presence of a searchpanel in Documents
+        this.withSearchPanel = true;
+        this.rendererParams.withSearchPanel = true;
 
         // add the fields used in the DocumentsInspector to the list of fields to fetch
         var inspectorFields = [

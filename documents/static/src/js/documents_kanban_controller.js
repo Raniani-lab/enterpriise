@@ -87,20 +87,11 @@ var DocumentsKanbanController = KanbanController.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * @override
-     * @param {jQueryElement} $node
-     */
-    renderButtons: function ($node) {
-        this.$buttons = $(qweb.render('DocumentsKanbanView.buttons'));
-        this.$buttons.appendTo($node);
-        this._updateButtons();
-    },
-    /**
      * Override to update the records selection.
      *
      * @override
      */
-    update: function () {
+    reload: function () {
         return this._super.apply(this, arguments).then(() => {
             const state = this.model.get(this.handle, {raw: true});
             const recordIDs = state.data.map(record => record.res_id);
@@ -110,6 +101,15 @@ var DocumentsKanbanController = KanbanController.extend({
             this.selectedRecordIDs = _.intersection(this.selectedRecordIDs, recordIDs);
             this.renderer.updateSelection(this.selectedRecordIDs);
         });
+    },
+    /**
+     * @override
+     * @param {jQueryElement} $node
+     */
+    renderButtons: function ($node) {
+        this.$buttons = $(qweb.render('DocumentsKanbanView.buttons'));
+        this.$buttons.appendTo($node);
+        this._updateButtons();
     },
 
     //--------------------------------------------------------------------------
@@ -741,7 +741,7 @@ var DocumentsKanbanController = KanbanController.extend({
         var callback = ev.data.callback || function () {};
         this.model
             .saveMulti(ev.data.dataPointIDs, ev.data.changes, this.handle)
-            .then(this.update.bind(this, {}, {}))
+            .then(this.reload.bind(this, {}))
             .then(callback).guardedCatch(callback);
     },
     /**

@@ -158,7 +158,7 @@ QUnit.module('Views', {
 
         assert.strictEqual($('.o_widget').length, 1,
             "there should be a node with o_widget class");
-        var chartTitle = $('.o_graph_canvas_container label').text();
+        var chartTitle = dashboard.$('.o_pie_chart .o_graph_renderer label').text();
         assert.strictEqual(chartTitle, "Products sold",
             "the title of the graph should be displayed");
         var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
@@ -234,7 +234,7 @@ QUnit.module('Views', {
         });
         assert.strictEqual($('.o_widget').length, 1,
             "there should be a node with o_widget class");
-        assert.strictEqual($('.o_graph_canvas_container label').text(), "Products sold",
+        assert.strictEqual($('.o_pie_chart .o_graph_renderer label').text(), "Products sold",
             "the title of the graph should be displayed");
 
         var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
@@ -275,7 +275,7 @@ QUnit.module('Views', {
 
         assert.strictEqual($('.o_widget').length, 1,
             "there should be a node with o_widget class");
-        var chartTitle = $('.o_graph_canvas_container label').text();
+        var chartTitle = $('.o_pie_chart .o_graph_renderer label').text();
         assert.strictEqual(chartTitle, "Products sold",
             "the title of the graph should be displayed");
         dashboard.destroy();

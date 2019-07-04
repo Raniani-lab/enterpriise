@@ -147,6 +147,7 @@
                 .o_graph_renderer {
                     display: flex;
                     justify-content: space-between;
+                    flex-flow: column wrap;
 
                     .o_graph_canvas_container {
                         min-width: 200px;
@@ -158,61 +159,6 @@
                     }
                     label {
                         @extend %o-dashboard-label-design;
-                    }
-                }
-
-                // The following code handle inconsistencies in layout
-                // due to different JS engines used to render pie-charts.
-                // Ideally, we should render graphs using the same
-                // HTML structure and let ‘flex’ so its job.
-
-                // Layout for groups containing 1 pie-chart only
-                &.o_nbr_pie_charts_1 {
-                    .o_graph_canvas_container:first-child  {
-                        border-left: $border-separate-width solid $border-color;
-                        padding-left: $padding;
-                    }
-
-                    @include media-breakpoint-down(sm) {
-                        flex: 0 0 100%;
-
-                        .o_graph_canvas_container {
-                            &, &:first-child {
-                                border-left: 0;
-                                padding-left: 0;
-                                border-top: $border-width solid $border-color;
-                                padding-top: $padding;
-                            }
-                        }
-                    }
-
-                }
-
-                // Layout for groups containing 2 pie-charts
-                &.o_nbr_pie_charts_2 {
-                    flex-flow: row wrap;
-                    flex: 0 0 auto;
-
-                    @include media-breakpoint-down(md) {
-                        margin-top: ($spacer * 2);
-                        flex: 0 0 100%;
-                    }
-                    .o_widget {
-                        flex: 1 1 50%;
-                        border-left: $border-separate-width solid $border-color;
-                        padding-left: $padding;
-
-                        @include media-breakpoint-down(md) {
-                            border-left: 0;
-                            padding-left: 0;
-                            border-top: $border-width solid $border-color;
-                            padding-top: $padding;
-                            flex: 0 0 100%;
-                        }
-
-                        .o_graph_renderer {
-                            flex-flow: row wrap;
-                        }
                     }
                 }
             }

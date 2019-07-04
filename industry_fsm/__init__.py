@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from . import models
-from . import wizard
 
 
 def post_install_hook_force_timer(cr, registry):

@@ -20,7 +20,7 @@ Adds the following options:
     """,
     'category': 'Industry/Field Service',
     'version': '1.0',
-    'depends': ['project_enterprise', 'sale_project_timesheet_enterprise'],
+    'depends': ['project_enterprise', 'sale_timesheet_enterprise'],
     'data': [
         'data/fsm_data.xml',
         'security/fsm_security.xml',

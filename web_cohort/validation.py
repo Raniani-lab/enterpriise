@@ -10,8 +10,10 @@ from odoo.tools import misc, view_validation
 _logger = logging.getLogger(__name__)
 
 _dashboard_validator = None
+
+
 @view_validation.validate('cohort')
-def schema_dashboard(arch):
+def schema_dashboard(arch, **kwargs):
     """ Check the cohort view against its schema
 
     :type arch: etree._Element

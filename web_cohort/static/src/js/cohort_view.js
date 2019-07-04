@@ -21,11 +21,11 @@ var intervals = {
 var CohortView = AbstractView.extend({
     display_name: _lt('Cohort'),
     icon: 'fa-signal',
-    config: {
+    config: _.extend({}, AbstractView.prototype.config, {
         Model: CohortModel,
         Controller: CohortController,
         Renderer: CohortRenderer,
-    },
+    }),
     viewType: 'cohort',
     searchMenuTypes: ['filter', 'timeRange', 'favorite'],
 

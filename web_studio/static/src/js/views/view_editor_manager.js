@@ -838,6 +838,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             action: this.action,
             context: this.action.context,
             controllerState: this.controllerState,
+            withSearchPanel: false,
             domain: this.action.domain,
         };
 

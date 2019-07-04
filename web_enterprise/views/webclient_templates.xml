@@ -52,7 +52,7 @@
         <xpath expr="//link[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/home_menu.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/home_menu_layout.scss"/>
-            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/kanban_view_mobile.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/search_panel_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/menu_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/menu_search.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/control_panel_layout.scss"/>

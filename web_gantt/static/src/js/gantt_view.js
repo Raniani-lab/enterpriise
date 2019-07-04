@@ -15,11 +15,11 @@ var _lt = core._lt;
 var GanttView = AbstractView.extend({
     display_name: _lt('Gantt'),
     icon: 'fa-tasks',
-    config: {
+    config: _.extend({}, AbstractView.prototype.config, {
         Model: GanttModel,
         Controller: GanttController,
         Renderer: GanttRenderer,
-    },
+    }),
     viewType: 'gantt',
 
     /**

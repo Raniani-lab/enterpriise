@@ -14,7 +14,7 @@ class Project(models.Model):
             if no other worksheet set.
         """
         result = super(Project, self).default_get(fields)
-        if 'worksheet_template_id' in fields and result.get('allow_worksheets') and not result.get('worksheet_template_id'):
+        if 'worksheet_template_id' in fields and result.get('is_fsm') and not result.get('worksheet_template_id'):
             default_worksheet = self.env.ref('industry_fsm_report.fsm_worksheet_template', False)
             if default_worksheet:
                 result['worksheet_template_id'] = default_worksheet.id
@@ -26,6 +26,19 @@ class Project(models.Model):
         string="Default Worksheet",
         help="Choose a default worksheet template for this project (you can change it individually on each task).")
 
+    @api.onchange('is_fsm')
+    def _onchange_is_fsm(self):
+        super(Project, self)._onchange_is_fsm()
+        if self.is_fsm:
+            self.allow_worksheets = True
+        else:
+            self.worksheet_template_id = False
+
+    @api.onchange('allow_worksheets')
+    def _onchange_allow_worksheets(self):
+        if not self.allow_worksheets:
+            self.worksheet_template_id = False
+
 
 class Task(models.Model):
     _inherit = "project.task"
@@ -34,7 +47,7 @@ class Task(models.Model):
         default_project_id = self.env.context.get('default_project_id')
         if default_project_id:
             project = self.env['project.project'].browse(default_project_id)
-            return project.worksheet_template_id.id
+            return project.worksheet_template_id
         return False
 
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', oldname='allow_reports')
@@ -44,7 +57,7 @@ class Task(models.Model):
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
-        if self.project_id.allow_worksheets:
+        if self.project_id.is_fsm:
             self.worksheet_template_id = self.project_id.worksheet_template_id.id
         else:
             self.worksheet_template_id = False
@@ -56,7 +69,7 @@ class Task(models.Model):
 
     def action_fsm_worksheet(self):
         timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
-        if timesheet_access and self.allow_timesheets and self.allow_planning and not (self.timesheet_ids or self.timesheet_timer_start):
+        if timesheet_access and self.allow_timesheets and self.is_fsm and not (self.timesheet_ids or self.timesheet_timer_start):
             raise UserError(_("Please, start the timer before recording the worksheet."))
         action = self.worksheet_template_id.action_id.read()[0]
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])

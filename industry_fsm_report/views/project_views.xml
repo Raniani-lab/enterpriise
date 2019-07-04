@@ -54,26 +54,13 @@
         sequence="10" parent="project.menu_project_config"
         groups="project.group_project_user"/>
 
-    <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">
-        <field name="name">project.project.view.form.simplified.inherit.industry.fsm.report</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="industry_fsm.project_view_form_simplified_inherit"/>
-        <field name="arch" type="xml">
-            <field name="allow_planning" position="after">
-                <field name="allow_worksheets"/>
-                <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
-            </field>
-        </field>
-    </record>
-
     <record id="project_project_form_inherit_industry_fsm_report" model="ir.ui.view">
         <field name="name">project.project.form.inherit.industry.fsm.report</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='extra_settings']" position="inside">
-                <field name="allow_worksheets"/>
-                <field name="worksheet_template_id"  attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
+            <xpath expr="//group[@name='fsm_options']" position="inside">
+                <field name="worksheet_template_id"/>
             </xpath>
         </field>
     </record>
@@ -95,17 +82,26 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="industry_fsm.project_task_view_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-primary')]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('fsm_is_sent', '=', False), '|','|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'),  ('timesheet_ids', '=', []), ('material_line_product_count', '=', 0), ('worksheet_count', '!=', 0)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-secondary')][1]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('fsm_is_sent', '=', True), '|', ('timesheet_ids', '=', []), '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', '&amp;', ('timesheet_ids', '!=', []), ('material_line_product_count', '!=', 0), ('worksheet_count', '=', 0)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-secondary')][2]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('fsm_is_sent', '=', True), '|', ('timesheet_ids', '!=', []), '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', '&amp;', ('timesheet_ids', '!=', []), ('material_line_product_count', '!=', 0), ('worksheet_count', '=', 0)]}</attribute>
+            </xpath>
             <xpath expr="//button[@name='action_fsm_validate']" position="before">
                 <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', True)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('is_fsm', '=', False), ('worksheet_count', '=', 0), ('fsm_is_sent', '=', True)]}"/>
             </xpath>
             <xpath expr="//field[@name='timesheet_timer_start']" position="before">
                 <field name="fsm_is_sent" invisible="1"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('allow_worksheets', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', ('allow_timesheets', '=', False), ('allow_billable', '=', False), ('fsm_is_sent', '=', False)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', ('allow_timesheets', '=', False), ('fsm_is_sent', '=', False)]}"/>
             </xpath>
             <xpath expr="//button[@name='action_fsm_view_material']" position="before">
-                <field name="allow_worksheets" invisible="1"/>
+                <field name="is_fsm" invisible="1"/>
                 <field name="worksheet_count" invisible="1"/>
                 <field name="worksheet_template_id" invisible="1"/>
                 <button
@@ -114,7 +110,7 @@
                     name="action_fsm_worksheet"
                     icon="fa-pencil" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}"
+                    attrs="{'invisible': ['|', '|', ('is_fsm', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}"
                     help="Worksheet from this task">
                 </button>
                 <button
@@ -123,19 +119,18 @@
                     name="action_fsm_worksheet"
                     icon="fa-check" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}"
+                    attrs="{'invisible': ['|', '|', ('is_fsm', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}"
                     help="Worksheet from this task">
                 </button>
             </xpath>
             <field name="project_id" position="after">
-                <label class="oe_edit_only" for="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
-                <field class="oe_edit_only" name="worksheet_template_id" nolabel="1" attrs="{'invisible': [('allow_worksheets', '=', False)]}" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
+                <label class="oe_edit_only" for="worksheet_template_id" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
+                <field class="oe_edit_only" name="worksheet_template_id" nolabel="1" attrs="{'invisible': [('is_fsm', '=', False)]}" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
             </field>
             <xpath expr="//field[@name='project_id']" position="attributes">
                 <attribute name="context">{
-                    'default_allow_planning': True,
-                    'default_allow_billable': True,
-                    'default_allow_worksheets': True
+                    'default_is_fsm': True,
+                    'default_is_fsm': True
                     }
                 </attribute>
             </xpath>

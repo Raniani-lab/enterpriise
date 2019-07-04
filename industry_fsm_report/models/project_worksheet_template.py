@@ -121,7 +121,7 @@ class ProjectWorksheetTemplate(models.Model):
                 <sheet>
                     <group invisible="context.get('studio') or context.get('default_x_task_id')">
                         <group>
-                            <field name="x_task_id" domain="[('allow_worksheets', '=', True)]"/>
+                            <field name="x_task_id" domain="[('is_fsm', '=', True)]"/>
                         </group>
                     </group>
                     <group>

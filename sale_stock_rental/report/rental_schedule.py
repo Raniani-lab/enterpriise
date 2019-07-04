@@ -7,6 +7,7 @@ class RentalSchedule(models.Model):
     _inherit = "sale.rental.schedule"
 
     lot_id = fields.Many2one('stock.production.lot', 'Serial Number', readonly=True)
+    warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse', readonly=True)
     # TODO color depending on report_line_status
 
     def _get_product_name(self):
@@ -61,7 +62,8 @@ class RentalSchedule(models.Model):
 
     def _select(self):
         return super(RentalSchedule, self)._select() + """,
-            lot_info.lot_id as lot_id
+            lot_info.lot_id as lot_id,
+            s.warehouse_id as warehouse_id
         """
 
     def _from(self):

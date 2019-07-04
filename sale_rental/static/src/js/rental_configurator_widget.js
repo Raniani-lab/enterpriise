@@ -146,7 +146,10 @@ ProductConfiguratorWidget.include({
                     if (!self.recordData.pickup_date || !self.recordData.return_date) {
                         self.trigger_up('field_changed', {
                             dataPointID: dataPointId,
-                            changes: {product_id: false},
+                            changes: {
+                                product_id: false,
+                                name: ''
+                            },
                         });
                     }
                 }

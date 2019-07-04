@@ -105,6 +105,9 @@ class RentalProcessingLine(models.TransientModel):
                     'product_uom_qty': max(order_line.product_uom_qty, order_line.qty_picked_up + wizard_line.qty_picked_up),
                     'qty_picked_up': order_line.qty_picked_up + wizard_line.qty_picked_up
                 })
+                if order_line.pickup_date > fields.Datetime.now():
+                    order_line.pickup_date = fields.Datetime.now()
+
             elif wizard_line.status == 'return' and wizard_line.qty_returned > 0:
                 if wizard_line.is_late:
                     # Delays facturation

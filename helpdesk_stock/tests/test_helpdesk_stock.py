@@ -34,7 +34,7 @@ class TestHelpdeskStock(common.HelpdeskCommon):
         invoice = so.invoice_ids
         invoice.post()
         so.picking_ids[0].move_lines[0].quantity_done = 1
-        so.picking_ids[0].action_done()
+        so.picking_ids[0]._action_done()
         ticket = self.env['helpdesk.ticket'].create({
             'name': 'test',
             'partner_id': partner.id,

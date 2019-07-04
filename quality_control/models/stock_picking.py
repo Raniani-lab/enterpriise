@@ -51,12 +51,12 @@ class StockPicking(models.Model):
         res.mapped('move_lines')._create_quality_checks()
         return res
 
-    def action_done(self):
+    def _action_done(self):
         # Do the check before transferring
         product_to_check = self.mapped('move_line_ids').filtered(lambda x: x.qty_done != 0).mapped('product_id')
         if self.mapped('check_ids').filtered(lambda x: x.quality_state == 'none' and x.product_id in product_to_check):
             raise UserError(_('You still need to do the quality checks!'))
-        return super(StockPicking, self).action_done()
+        return super(StockPicking, self)._action_done()
 
     def action_cancel(self):
         res = super(StockPicking, self).action_cancel()

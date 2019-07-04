@@ -379,7 +379,7 @@ class TestAmazon(TransactionCase):
             order = self.env['sale.order'].search([('amazon_order_ref', '=', '123456789')])
             picking = self.env['stock.picking'].search([('sale_id', '=', order.id)])
             self.assertEqual(len(picking), 1, "FBM orders should generate exactly one picking")
-            picking.action_done()
+            picking._action_done()
             self.assertTrue(picking.amazon_sync_pending)
             picking._sync_pickings(account_ids=(self.account.id,))
             self.assertEqual(mock.call_count, 1, "an order fulfillment feed should be sent to "

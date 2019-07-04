@@ -7,10 +7,10 @@ from odoo import models, api
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    def action_done(self):
+    def _action_done(self):
         results = []
         for rec in self:
-            result = super(StockPicking, self).action_done()
+            result = super(StockPicking, self)._action_done()
             rec._ebay_update_carrier(transfered=True)
             results.append(result)
         return results

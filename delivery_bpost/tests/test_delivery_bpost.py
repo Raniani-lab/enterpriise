@@ -93,7 +93,7 @@ class TestDeliveryBpost(TransactionCase):
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         try:
-            picking.action_done()
+            picking._action_done()
         except UserError as exc:
             if exc.name == "The BPost shipping service is unresponsive, please retry later.":
                 _logger.warning("BPost test aborted, service is unresponsive.")
@@ -135,7 +135,7 @@ class TestDeliveryBpost(TransactionCase):
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         try:
-            picking.action_done()
+            picking._action_done()
         except UserError as exc:
             if exc.name == "The BPost shipping service is unresponsive, please retry later.":
                 _logger.warning("BPost test aborted, service is unresponsive.")
@@ -182,7 +182,7 @@ class TestDeliveryBpost(TransactionCase):
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         try:
-            picking.action_done()
+            picking._action_done()
         except UserError as exc:
             if exc.name == "The BPost shipping service is unresponsive, please retry later.":
                 _logger.warning("BPost test aborted, service is unresponsive.")

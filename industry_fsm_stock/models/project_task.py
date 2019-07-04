@@ -32,4 +32,4 @@ class Task(models.Model):
                     move_line.qty_done = move_line.product_uom_qty
 
         # context key used to not create backorders
-        self.sale_order_id.picking_ids.with_context({'cancel_backorder': True}).action_done()
+        self.sale_order_id.picking_ids.with_context({'cancel_backorder': True})._action_done()

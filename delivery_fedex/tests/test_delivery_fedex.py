@@ -94,7 +94,7 @@ class TestDeliveryFedex(TransactionCase):
             picking.move_lines[0].quantity_done = 1.0
             self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
-            picking.action_done()
+            picking._action_done()
             self.assertIsNot(picking.carrier_tracking_ref, False, "FedEx did not return any tracking number")
             self.assertGreater(picking.carrier_price, 0.0, "FedEx carrying price is probably incorrect")
 
@@ -142,7 +142,7 @@ class TestDeliveryFedex(TransactionCase):
             picking.move_lines[0].quantity_done = 1.0
             self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
-            picking.action_done()
+            picking._action_done()
             self.assertIsNot(picking.carrier_tracking_ref, False, "FedEx did not return any tracking number")
             self.assertGreater(picking.carrier_price, 0.0, "FedEx carrying price is probably incorrect")
 
@@ -201,7 +201,7 @@ class TestDeliveryFedex(TransactionCase):
             self.assertEqual(len(picking.move_line_ids.mapped('result_package_id')), 2, "2 Packages should have been created at this point")
             self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
-            picking.action_done()
+            picking._action_done()
             self.assertIsNot(picking.carrier_tracking_ref, False, "FedEx did not return any tracking number")
             self.assertGreater(picking.carrier_price, 0.0, "FedEx carrying price is probably incorrect")
 

@@ -83,29 +83,8 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_fsm_view_material']" position="before">
-                <field name="allow_worksheets" invisible="1"/>
-                <field name="worksheet_count" invisible="1"/>
-                <button
-                    string="Worksheet"
-                    class="oe_stat_button"
-                    name="action_fsm_worksheet"
-                    icon="fa-pencil" type="object"
-                    groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}"
-                    help="Worksheet from this task">
-                </button>
-                <button
-                    string="Worksheet"
-                    class="oe_stat_button text-success"
-                    name="action_fsm_worksheet"
-                    icon="fa-check" type="object"
-                    groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}"
-                    help="Worksheet from this task">
-                </button>
-            </xpath>
             <field name="sale_line_id" position="after">
+                <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </field>
         </field>

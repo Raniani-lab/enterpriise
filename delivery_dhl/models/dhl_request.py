@@ -150,7 +150,7 @@ class DHLProvider():
         piece.Height = packaging.height
         piece.Depth = packaging.length
         piece.Width = packaging.width
-        piece.Weight = weight
+        piece.Weight = carrier._dhl_convert_weight(weight, carrier.dhl_package_weight_unit)
         bkg_details.Pieces = {'Piece': [piece]}
         bkg_details.PaymentAccountNumber = carrier.dhl_account_number
         if carrier.dhl_dutiable:

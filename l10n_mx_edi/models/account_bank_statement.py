@@ -50,5 +50,12 @@ class AccountBankStatementLine(models.Model):
         result = {
             'l10n_mx_edi_payment_method_id': payment_method,
             'invoice_ids': [(4, inv) for inv in invoice_ids],
+            'l10n_mx_edi_partner_bank_id': self.bank_account_id.id,
         }
         return result
+
+    @api.onchange('partner_id')
+    def _l10n_mx_onchange_partner_bank_id(self):
+        self.bank_account_id = False
+        if len(self.partner_id.bank_ids) == 1:
+            self.bank_account_id = self.partner_id.bank_ids

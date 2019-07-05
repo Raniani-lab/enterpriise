@@ -1,8 +1,8 @@
 from os.path import join
 from lxml import objectify
 from odoo.tools import misc
-from odoo.addons.l10n_mx_edi.tests import common
 from odoo.tests.common import Form
+from . import common
 
 
 class TestL10nMxEdiPayment(common.InvoiceTransactionCase):

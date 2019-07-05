@@ -96,6 +96,10 @@ class AccountPayment(models.Model):
         string='Time payment', readonly=True, copy=False,
         states={'draft': [('readonly', False)]},
         help="Keep empty to use the current Mexico central time")
+    l10n_mx_edi_partner_bank_id = fields.Many2one(
+        'res.partner.bank', 'Partner Bank', help='If the payment was made '
+        'with a financial institution define the bank account used in this '
+        'payment.')
 
     def post(self):
         """Generate CFDI to payment after that invoice is paid"""
@@ -381,6 +385,7 @@ class AccountPayment(models.Model):
         if not self.l10n_mx_edi_time_payment:
             self.l10n_mx_edi_time_payment = date_mx.strftime(
                 DEFAULT_SERVER_TIME_FORMAT)
+
         time_invoice = datetime.strptime(self.l10n_mx_edi_time_payment,
                                          DEFAULT_SERVER_TIME_FORMAT).time()
 
@@ -488,6 +493,16 @@ class AccountPayment(models.Model):
         ctx = dict(company_id=self.company_id.id, date=self.payment_date)
         rate = ('%.6f' % (self.currency_id.with_context(**ctx)._convert(
             1, mxn, self.company_id, self.payment_date))) if self.currency_id.name != 'MXN' else False
+        partner_bank = self.l10n_mx_edi_partner_bank_id.bank_id
+        company_bank = self.journal_id.bank_account_id
+        payment_code = self.l10n_mx_edi_payment_method_id.code
+        acc_emitter_ok = payment_code in [
+            '02', '03', '04', '05', '06', '28', '29', '99']
+        acc_receiver_ok = payment_code in [
+            '02', '03', '04', '05', '28', '29', '99']
+        bank_name_ok = payment_code in ['02', '03', '04', '28', '29', '99']
+        vat = 'XEXX010101000' if partner_bank.country and partner_bank.country != self.env.ref(
+            'base.mx') else partner_bank.l10n_mx_edi_vat
         return {
             'mxn': mxn,
             'payment_date': date,
@@ -501,6 +516,13 @@ class AccountPayment(models.Model):
             'pay_string': False,
             'pay_stamp': False,
             'total_paid': total_paid,
+            'pay_vat_ord': vat if acc_emitter_ok else None,
+            'pay_name_ord': partner_bank.name if bank_name_ok else None,
+            'pay_account_ord': (self.l10n_mx_edi_partner_bank_id.acc_number or '').replace(
+                ' ', '') if acc_emitter_ok else None,
+            'pay_vat_receiver': company_bank.bank_id.l10n_mx_edi_vat if acc_receiver_ok else None,
+            'pay_account_receiver': (company_bank.acc_number or '').replace(
+                ' ', '') if acc_receiver_ok else None,
         }
 
     def _l10n_mx_edi_sign(self):
@@ -833,6 +855,12 @@ class AccountPayment(models.Model):
                               'cancel it in the SAT system.'))
         return super(AccountPayment, self).unlink()
 
+    @api.onchange('partner_id')
+    def _l10n_mx_onchange_partner_bank_id(self):
+        self.l10n_mx_edi_partner_bank_id = False
+        if len(self.partner_id.commercial_partner_id.bank_ids) == 1:
+            self.l10n_mx_edi_partner_bank_id = self.partner_id.commercial_partner_id.bank_ids  # noqa
+
 
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
@@ -841,5 +869,6 @@ class AccountPaymentRegister(models.TransientModel):
         res = super(AccountPaymentRegister, self)._prepare_payment_vals(invoice)
         res.update({
             'l10n_mx_edi_payment_method_id': self.l10n_mx_edi_payment_method_id.id,
+            'l10n_mx_edi_partner_bank_id': self.l10n_mx_edi_partner_bank_id.id,
         })
         return res

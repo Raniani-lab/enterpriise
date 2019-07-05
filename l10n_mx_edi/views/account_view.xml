@@ -35,6 +35,10 @@
                 <xpath expr="//field[@name='bank_account_id']" position="after">
                     <field name="l10n_mx_edi_payment_method_id"/>
                 </xpath>
+                <xpath expr="//field[@name='bank_account_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                    <attribute name="context">{'default_partner_id': partner_id}</attribute>
+                </xpath>
             </field>
         </record>
 

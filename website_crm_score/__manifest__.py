@@ -24,7 +24,6 @@ This module allows you to:
         'views/crm_lead_views.xml',
         'security/ir.model.access.csv',
         'data/website_crm_score_data.xml',
-        'data/crm_lead_prediction_data.xml',
     ],
     'demo': [
         'demo/website_crm_score_demo.xml',

@@ -7,18 +7,6 @@
         <!--
         LEADS
          -->
-        <!-- Crm Lead Search Filter - Language added -->
-        <record model="ir.ui.view" id="view_crm_case_leads_filter_inherit">
-            <field name="name">crm.lead.search.inherit</field>
-            <field name="model">crm.lead</field>
-            <field name="inherit_id" ref="crm.view_crm_case_leads_filter" />
-            <field name="arch" type="xml">
-                <field name="city" position="after">
-                    <field name="lang_id"/>
-                </field>
-            </field>
-        </record>
-
         <!-- Crm Lead Tree View - Score and Salesman added -->
         <record model="ir.ui.view" id="lead_tree_view">
             <field name="name">crm.lead.tree.inherit</field>
@@ -55,7 +43,6 @@
                             context="{'object_name': 'crm.lead'}"
                             readonly="1"
                         />
-                        <field name="lang_id" readonly="1"/>
                     </group>
                 </xpath>
             </field>
@@ -85,7 +72,6 @@
                             context="{'object_name': 'crm.lead'}"
                             readonly="1"
                         />
-                        <field name="lang_id" readonly="1"/>
                     </group>
                 </xpath>
             </field>

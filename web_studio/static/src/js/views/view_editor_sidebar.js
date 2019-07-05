@@ -54,6 +54,10 @@ var OPTIONS_BY_WIDGET = {
         {name: 'full_name', type: 'selection', string: _lt('Auto-complete with'), selection: [[]]},
         // 'selection' will be computed later on for the attribute to be dynamic (based on model fields)
     ],
+    daterange: [
+        {name: 'related_start_date', type: 'selection', string: _lt("Related Start Date"), selection: [[]]},
+        {name: 'related_end_date', type: 'selection', string: _lt("Related End Date"), selection: [[]]},
+    ],
 };
 
 return Widget.extend(StandaloneFieldManagerMixin, {
@@ -104,6 +108,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     init: function (parent, params) {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
+        var self = this;
         this.debug = config.isDebug();
 
         this.view_type = params.view_type;
@@ -166,6 +171,24 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                     })
                     .value();
                 _.findWhere(OPTIONS_BY_WIDGET[this.widgetKey], {name: 'full_name'}).selection = selection.concat(signFields);
+            }
+            // Get dynamic selection for 'related_start_date' and 'related_end_date' node option of daterange widget
+            if (this.widgetKey === 'daterange') {
+                var selection = [[]];
+                var dateFields = _.chain(_.sortBy(_.values(this.fields_in_view), 'string'))
+                    .filter(function (field) {
+                        return _.contains([self.state.field.type], field.type);
+                    })
+                    .map(function (val, key) {
+                        return [val.name, config.isDebug() ? _.str.sprintf('%s (%s)', val.string, val.name) : val.string];
+                    })
+                    .value();
+                selection = selection.concat(dateFields);
+                _.each(OPTIONS_BY_WIDGET[this.widgetKey], function (option) {
+                    if (_.contains(['related_start_date', 'related_end_date'], option.name)) {
+                        option.selection = selection;
+                    }
+                });
             }
             this.OPTIONS_BY_WIDGET = OPTIONS_BY_WIDGET;
 

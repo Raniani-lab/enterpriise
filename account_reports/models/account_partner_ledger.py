@@ -134,7 +134,8 @@ class ReportPartnerLedger(models.AbstractModel):
         for partner_id, result in results.items():
             domain = list(base_domain)  # copying the base domain
             domain.append(('partner_id', '=', partner_id))
-            partner = self.env['res.partner'].browse(partner_id)
+            #browse the partner name and trust field in sudo, as we may not have full access to the record (but we still have to see it in the report)
+            partner = self.env['res.partner'].sudo().browse(partner_id)
             partners[partner] = result
             partners[partner]['initial_bal'] = initial_bal_results.get(partner.id, {'balance': 0, 'debit': 0, 'credit': 0})
             partners[partner]['balance'] += partners[partner]['initial_bal']['balance']
@@ -152,7 +153,8 @@ class ReportPartnerLedger(models.AbstractModel):
         missing_partner_ids = set(initial_bal_results.keys()) - set(results.keys())
         for partner_id in missing_partner_ids:
             if not float_is_zero(initial_bal_results[partner_id]['balance'], precision_rounding=prec):
-                partner = self.env['res.partner'].browse(partner_id)
+                #browse the partner name and trust field in sudo, as we may not have full access to the record (but we still have to see it in the report)
+                partner = self.env['res.partner'].sudo().browse(partner_id)
                 partners[partner] = {'balance': 0, 'debit': 0, 'credit': 0}
                 partners[partner]['initial_bal'] = initial_bal_results[partner_id]
                 partners[partner]['balance'] += partners[partner]['initial_bal']['balance']

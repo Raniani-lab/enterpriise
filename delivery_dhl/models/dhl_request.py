@@ -9,6 +9,7 @@ from zeep import Client, Plugin
 from zeep.wsdl.utils import etree_to_string
 
 from odoo import _
+from odoo import release
 from odoo.exceptions import UserError
 from odoo.tools import float_repr
 
@@ -44,8 +45,8 @@ class DHLProvider():
         service_header.Password = password
         request.ServiceHeader = service_header
         metadata = self.factory.MetaData()
-        metadata.SoftwareName = 'Odoo S.A.'
-        metadata.SoftwareVersion = 'master'
+        metadata.SoftwareName = release.product_name
+        metadata.SoftwareVersion = release.series
         request.MetaData = metadata
         return request
 

@@ -190,7 +190,7 @@ var HomeMenu = Widget.extend({
         if (data.search) {
             var options = {
                 extract: function (el) {
-                    return el.label.split('/').reverse().join('/');
+                    return (el.parents + ' / ' + el.label).split('/').reverse().join('/');
                 }
             };
             var searchResults = fuzzy.filter(data.search, this._menuData, options);

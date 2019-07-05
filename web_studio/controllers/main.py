@@ -106,9 +106,11 @@ class WebStudioController(http.Controller):
             'res_model': 'ir.actions.report',
             'views': [[False, 'kanban'], [False, 'form']],
             'target': 'current',
+            # One can edit only reports backed by persisting models
             'domain': [
-                '|', ("binding_model_id", "=", False),
-                '&', ("binding_model_id", "!=", False), ("binding_model_id.transient", "=", False),
+                '&',
+                ("model_id.transient", "=", False),
+                ("model_id.abstract", "=", False),
             ],
             'context': {
                 'default_model': model.model,

@@ -810,12 +810,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
     _getSubviewXpath: function (x2mEditorPath) {
         var subviewXpath = "";
         _.each(x2mEditorPath, function (x2mPath) {
-            subviewXpath += "//field[@name='" + x2mPath.x2mField + "']";
-            if (x2mPath.x2mViewType === 'list') {
-                subviewXpath += '//tree';
-            } else {
-                subviewXpath += '//' + x2mPath.x2mViewType;
-            }
+            var x2mViewType = x2mPath.x2mViewType === 'list' ? 'tree' : x2mPath.x2mViewType;
+            subviewXpath += "//field[@name='" + x2mPath.x2mField + "']/" + x2mViewType;
         });
         return subviewXpath;
     },

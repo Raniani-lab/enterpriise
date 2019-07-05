@@ -704,8 +704,23 @@ class AccountInvoice(models.Model):
                 else:
                     values['total_withhold'] += amount
         values['transferred'] = [tax for tax in taxes.values() if tax['tax_amount'] >= 0]
-        values['withholding'] = [tax for tax in taxes.values() if tax['tax_amount'] < 0]
+        values['withholding'] = self._l10n_mx_edi_group_withholding(
+            [tax for tax in taxes.values() if tax['tax_amount'] < 0])
         return values
+
+    @api.model
+    def _l10n_mx_edi_group_withholding(self, withholding):
+        """In the Taxes node the withholding must be group by tax type"""
+        if not withholding:
+            return withholding
+        new_withholding = {}
+        for tax in withholding:
+            if tax['name'] not in new_withholding:
+                new_withholding.update({tax['name']: tax})
+                continue
+            new_withholding[tax['name']].update({'amount': new_withholding[
+                tax['name']]['amount'] + tax['amount']})
+        return list(new_withholding.values())
 
     @staticmethod
     def _l10n_mx_get_serie_and_folio(number):

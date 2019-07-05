@@ -221,7 +221,7 @@ class MxReportPartnerLedger(models.AbstractModel):
             p_columns.append(total_tax8_noncre)
             for tax in taximp.ids:
                 total_taximp += partner_data.get(tax, 0)
-            p_columns.append(int(round(total_taximp, 0)))
+            p_columns.append(total_taximp)
             total_tax0 += sum([partner_data.get(tax, 0) for tax in tax0.ids])
             p_columns.append(total_tax0)
             exempt += sum([partner_data.get(exem, 0)
@@ -283,7 +283,7 @@ class MxReportPartnerLedger(models.AbstractModel):
                 total_taximp += sum([
                     line.debit or line.credit * -1
                     for tax in taximp.ids if tax in line.tax_ids.ids])
-                columns.append(self.format_value(int(round(total_taximp, 0))))
+                columns.append(self.format_value(total_taximp))
                 total_tax0 += sum([
                     line.debit or line.credit * -1
                     for tax in tax0.ids if tax in line.tax_ids.ids])

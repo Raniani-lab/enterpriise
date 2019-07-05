@@ -27,7 +27,11 @@ class AccountBankStatementLine(models.Model):
         payments = res.mapped('line_ids.payment_id').filtered(
             lambda x: x.l10n_mx_edi_pac_status != 'signed')
         payment_data = self._l10n_mx_edi_get_payment_extra_data(invoice_ids)
-        payments.write(payment_data)
+        # Avoid overwriting the payment method of the payment
+        pay_no_method = payments.filtered(lambda p: not p.l10n_mx_edi_payment_method_id)
+        pay_no_method.write(payment_data)
+        payment_data.pop('l10n_mx_edi_payment_method_id', None)
+        (payments - pay_no_method).write(payment_data)
         payments._l10n_mx_edi_retry()
         return res
 

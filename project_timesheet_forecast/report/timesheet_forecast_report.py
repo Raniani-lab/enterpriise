@@ -27,7 +27,7 @@ class TimesheetForecastReport(models.Model):
             CREATE or REPLACE VIEW %s as (
                 (
                     SELECT
-                        date::date AS date,
+                        d::date AS date,
                         F.employee_id AS employee_id,
                         F.task_id AS task_id,
                         F.project_id AS project_id,
@@ -38,12 +38,12 @@ class TimesheetForecastReport(models.Model):
                         (SELECT min(start_date) FROM project_forecast WHERE active=true)::date,
                         (SELECT max(end_date) FROM project_forecast WHERE active=true)::date,
                         '1 day'::interval
-                    ) date
-                        LEFT JOIN project_forecast F ON date >= F.start_date AND date <= end_date
+                    ) d
+                        LEFT JOIN project_forecast F ON d.date >= F.start_date AND d.date <= end_date
                         LEFT JOIN hr_employee E ON F.employee_id = E.id
                         LEFT JOIN resource_resource R ON E.resource_id = R.id
                     WHERE
-                        EXTRACT(ISODOW FROM date) IN (
+                        EXTRACT(ISODOW FROM d.date) IN (
                             SELECT A.dayofweek::integer+1 FROM resource_calendar_attendance A WHERE A.calendar_id = R.calendar_id
                         )
                         AND F.active=true

@@ -48,7 +48,7 @@
         <field name="name">marketing.campaign.view.form</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <form string="Campaign">
+            <form string="Campaign" duplicate="false"> <!-- Duplication is disabled until it is fixed -->
                 <header>
                     <button name="action_start_campaign" type="object" states="draft,stopped" class="btn-primary" string="Start" />
                     <button name="%(marketing_campaign_test_action)d" type="action" attrs="{'invisible': ['|', ('marketing_activity_ids', '=', []), ('state', '=', 'stopped') ]}" class="btn-secondary" string="Launch a Test" />

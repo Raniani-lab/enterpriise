@@ -1,9 +1,8 @@
 odoo.define('web_enterprise.home_menu_tests', function (require) {
 "use strict";
 
-var testUtils = require('web.test_utils');
-var Widget = require('web.Widget');
 var HomeMenu = require('web_enterprise.HomeMenu');
+var testUtils = require('web.test_utils');
 
 QUnit.module('web_enterprise', {
     beforeEach: function () {
@@ -135,5 +134,21 @@ QUnit.module('web_enterprise', {
         parent.destroy();
     });
 
+    QUnit.test('search displays matches in parents', function (assert) {
+        assert.expect(2);
+
+        var homeMenu = new HomeMenu(parent, this.data);
+        homeMenu.appendTo($('#qunit-fixture'));
+        homeMenu.on_attach_callback();
+        homeMenu.$('input.o_menu_search_input').focus().click();
+
+        assert.containsN(homeMenu, '.o_menuitem', 10);
+
+        homeMenu.$('input.o_menu_search_input').val("Config").trigger('input');
+
+        assert.containsN(homeMenu, '.o_menuitem', 6);
+
+        homeMenu.destroy();
+    });
 });
 });

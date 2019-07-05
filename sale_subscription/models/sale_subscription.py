@@ -823,7 +823,7 @@ class SaleSubscription(models.Model):
             'date_end': self.date,
         })
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
-        self.template_id.invoice_mail_template_id.with_context(email_context).send_mail(invoice.id)
+        self.template_id.invoice_mail_template_id.with_context(email_context).send_mail(invoice.id, notif_layout="mail.mail_notification_paynow")
 
 
 class SaleSubscriptionLine(models.Model):

@@ -86,7 +86,7 @@ class HrEmployee(models.Model):
     def run_employee_appraisal(self, automatic=False, use_new_cursor=False):  # cronjob
         current_date = datetime.date.today()
         # Set the date of the next appraisal to come if the date is passed:
-        for employee in self.search([('appraisal_date', '<=', current_date)]):
+        for employee in self.search([('appraisal_date', '<', current_date)]):
             months = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_max_period'))
             employee.write({
                 'appraisal_date': fields.Date.to_string(current_date + relativedelta(months=months)),

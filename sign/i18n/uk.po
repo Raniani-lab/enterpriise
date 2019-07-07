@@ -267,7 +267,7 @@ msgstr "Скасовано"
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 #: model:sign.item.type,placeholder:sign.sign_item_type_checkbox
 msgid "Checkbox"
-msgstr "Прапорець"
+msgstr "Позначення"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_template_action

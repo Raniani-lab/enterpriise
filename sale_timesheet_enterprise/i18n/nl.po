@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-06-12 12:38+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +60,7 @@ msgstr "Configuratie instellingen"
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task_create_timesheet
 msgid "Create Timesheet from task"
-msgstr ""
+msgstr "Maak urenstaat vanuit taak"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__create_uid
@@ -120,17 +120,17 @@ msgstr "Registreer gewerkte tijd en factureer op basis van:"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Round timesheets"
-msgstr ""
+msgstr "Urenstaten afronden"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__timesheet_rounding
 msgid "Rounding up"
-msgstr ""
+msgstr "Naar boven afronden"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
 msgid "STOP"
-msgstr ""
+msgstr "STOP"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_sale_order_line
@@ -145,7 +145,7 @@ msgstr "Opslaan"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
 msgid "Save time"
-msgstr ""
+msgstr "Bespaar tijd"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
@@ -171,7 +171,7 @@ msgstr "Tijd"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_start
 msgid "Timesheet Timer Start"
-msgstr ""
+msgstr "Urenstaten timer start"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet
@@ -184,7 +184,7 @@ msgstr "Facturatie urenstaat"
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__use_timesheet_timer
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Use Start and Stop"
-msgstr ""
+msgstr "Gebruik start en stop"
 
 #. module: sale_timesheet_enterprise
 #: code:addons/sale_timesheet_enterprise/wizard/project_task_create_timesheet.py:18

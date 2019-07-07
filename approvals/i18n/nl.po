@@ -4,9 +4,9 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-03-20 14:35+0000\n"
-"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,7 +76,7 @@ msgstr "Beheerder"
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_all
 msgid "All Approvals"
-msgstr "Alle Goedkeuringen"
+msgstr "Alle goedkeuringen"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__amount
@@ -98,7 +98,7 @@ msgstr "Goedkeuring"
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_category
 msgid "Approval Category"
-msgstr "Goedkeuring Categorie"
+msgstr "Goedkeuringscategorie"
 
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_request
@@ -119,13 +119,13 @@ msgstr "Goedkeuringen"
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_approval_menu_to_review
 msgid "Approvals to Review"
-msgstr "Te valideren Goedkeuringen"
+msgstr "Goed te keuren controles"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_to_review
 #: model:ir.actions.act_window,name:approvals.approval_request_action_to_review_category
 msgid "Approvals to review"
-msgstr "Te valideren Goedkeuringen"
+msgstr "Goed te keuren controles"
 
 #. module: approvals
 #. openerp-web
@@ -538,12 +538,12 @@ msgstr "Minimale goedkeuring"
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_approval_menu
 msgid "My Approvals"
-msgstr "Mijn Goedkeuringen"
+msgstr "Mijn goedkeuringen"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_search_view_search
 msgid "My Approvals to Review"
-msgstr "Mijn te valideren Goedkeuringen"
+msgstr "Mijn goed te keuren controles"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_search_view_search
@@ -799,7 +799,7 @@ msgstr "De gebruiker kan goedkeuringen zien die door hemzelf zijn aangemaakt."
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_manager
 msgid "The user will have access to the approvals configuration."
-msgstr "De gebruiker heeft toegang tot de goedkeuringsconfiguratie."
+msgstr "De gebruiker heeft toegang tot de goedkeuringsinstellingen."
 
 #. module: approvals
 #. openerp-web

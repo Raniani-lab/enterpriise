@@ -3,11 +3,11 @@
 # * account_deferred_revenue
 # 
 # Translators:
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2016
 # Cas Vissers <casvissers@brahoo.nl>, 2017
 # Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,13 +68,13 @@ msgstr "Uitgestelde inkomsten bedrag"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Deferred Revenue Model name"
-msgstr "Uitgestelde Omzet Type Naam"
+msgstr "Uitgestelde omzetsoortnaam"
 
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_account_revenue_model_form
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_revenue_model_recognition
 msgid "Deferred Revenue Models"
-msgstr "Uitgestelde Omzet Types"
+msgstr "Uitgestelde omzetsoorten"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -91,7 +91,7 @@ msgstr "Uitgestelde inkomsten"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
 msgid "Deferred Revenues Models"
-msgstr "Uitgestelde Omzet Types"
+msgstr "Uitgestelde omzet soorten"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_modal
@@ -127,7 +127,7 @@ msgstr "Omzet volgende periode"
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Number of Recognitions"
-msgstr "Aantal Afschrijvingen"
+msgstr "Aantal afschrijvingen"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
@@ -137,12 +137,12 @@ msgstr "Periode"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Related Sales"
-msgstr "Gerelateerde Verkoop"
+msgstr "Gerelateerde verkoop"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Residual Amount to Recognize"
-msgstr "Te Boeken Restbedrag"
+msgstr "Te boeken restbedrag"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -154,7 +154,7 @@ msgstr "Opbrengst"
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
 msgid "Revenue Account"
-msgstr "Omzet Rekening"
+msgstr "Omzetrekening"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -185,4 +185,4 @@ msgstr "Inkomsten afschrijving"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "e.g. Annual Subscription"
-msgstr "bijv. Jaarlijks Abonnement"
+msgstr "bijv. Jaarlijks abonnement"

@@ -341,7 +341,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks_registry.js:13
 #, python-format
 msgid "Block"
-msgstr ""
+msgstr "Blokkolás"
 
 #. module: web_studio
 #. openerp-web

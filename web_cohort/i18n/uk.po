@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:35+0000\n"
 "PO-Revision-Date: 2018-08-02 11:37+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -123,7 +123,7 @@ msgstr "Діаграма"
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:36
 #, python-format
 msgid "Download in Excel file"
-msgstr "Завантажити у Excel"
+msgstr "Завантажити в Excel"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0

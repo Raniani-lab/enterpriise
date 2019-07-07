@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-02-15 11:47+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -40,7 +40,7 @@ msgstr "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Attachment(s)"
-msgstr "Долучення"
+msgstr "Прикріплення"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
@@ -76,7 +76,7 @@ msgstr "Дякуємо, за надсилання вашої помилки, н�
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Ticket"
-msgstr "Квиток"
+msgstr "Заявка"
 
 #. module: website_helpdesk_form
 #: model:ir.model.fields,field_description:website_helpdesk_form.field_helpdesk_team__feature_form_url
@@ -97,4 +97,4 @@ msgstr "Ваше ім’я"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
 #: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Your Ticket Number is"
-msgstr "Ваш номер квитка є"
+msgstr "Ваш номер заявки"

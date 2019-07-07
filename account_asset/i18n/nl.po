@@ -5,10 +5,10 @@
 # Translators:
 # Cas Vissers <casvissers@brahoo.nl>, 2016
 # Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Eric Geens <ericgeens@yahoo.com>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
-"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +55,7 @@ msgstr "Versneld"
 #. module: account_asset
 #: selection:account.asset,method:0
 msgid "Accelerated Degressive"
-msgstr "Versneld Degressief"
+msgstr "Versneld degressief"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account
@@ -65,7 +65,7 @@ msgstr "Rekening"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_assets_report
 msgid "Account Assets Report"
-msgstr "Rekening Activa-rapport"
+msgstr "Activa rapport"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__user_type_id
@@ -192,12 +192,12 @@ msgstr "Activa duur aan te passen"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_id
 msgid "Asset Linked"
-msgstr "Gekoppeld Activa"
+msgstr "Gekoppeld activa"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_manually_modified
 msgid "Asset Manually Modified"
-msgstr "Activa Handmatig Aangepast"
+msgstr "Activa handmatig aangepast"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -206,7 +206,7 @@ msgstr "Activa Handmatig Aangepast"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Asset Model"
-msgstr "Activa Type"
+msgstr "Soort activa"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -322,12 +322,12 @@ msgstr "Aantal bijlagen"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__can_create_asset
 msgid "Can Create Asset"
-msgstr "Kan Activa aanmaken"
+msgstr "Kan activa aanmaken"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__can_create_deferred_revenue
 msgid "Can Create Deferred Revenue"
-msgstr "Kan Uitgestelde Inkomsten Aanmaken"
+msgstr "Kan uitgestelde inkomsten aanmaken"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -390,12 +390,12 @@ msgstr "Bevestigen"
 #: model:ir.model.fields,field_description:account_asset.field_account_account__create_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Create Asset"
-msgstr "Creëer Activa"
+msgstr "Creëer activa"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Create Deferred Revenue"
-msgstr "Creëer Uitgestelde omzet"
+msgstr "Uitgestelde omzet aanmaken"
 
 #. module: account_asset
 #: selection:account.account,create_asset:0
@@ -452,7 +452,7 @@ msgstr "Uitgestelde omzet"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Revenue Model"
-msgstr "Uitgestelde Omzet Type"
+msgstr "Uitgestelde omzetsoort"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_invoice_form_asset_inherit
@@ -538,7 +538,7 @@ msgstr "Geef activarekening weer"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_model_choice
 msgid "Display Model Choice"
-msgstr "Geef Type keuze weer"
+msgstr "Geef soort keuze weer"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_name
@@ -589,12 +589,12 @@ msgstr "Concept"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice__draft_asset_ids
 msgid "Draft Asset"
-msgstr "Concept Activa"
+msgstr "Concept activate"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice__draft_deferred_revenue_ids
 msgid "Draft Deferred Revenue"
-msgstr "Draft Uitgestelde omzet"
+msgstr "Concept uitgestelde omzet"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_expense_id
@@ -611,7 +611,7 @@ msgstr "Eerst afschrijvingsdatum"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_asset_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 msgid "Fixed Asset Account"
-msgstr "Vaste Activa Rekening"
+msgstr "Vaste activa rekening"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_follower_ids
@@ -684,7 +684,7 @@ msgid ""
 "Items on this account are posted."
 msgstr ""
 "Als dit is geselecteerd, wordt een activa automatisch aangemaakt wanneer "
-"journaalposten voor dit account worden geboekt."
+"boekingen voor dit dagboek worden geboekt."
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:46
@@ -816,7 +816,7 @@ msgstr "Type"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Modification reason"
-msgstr "Wijziging Reden"
+msgstr "Reden van wijziging"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -846,7 +846,7 @@ msgstr "Maanden"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__need_date
 msgid "Need Date"
-msgstr "Datum Verplicht"
+msgstr "Datum verplicht"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__value_residual
@@ -892,7 +892,7 @@ msgstr "Nummer Activa"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice__number_deferred_revenue_ids
 msgid "Number Deferred Revenue"
-msgstr "Nummer Uitgestelde omzet"
+msgstr "Nummer uitgestelde omzet"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction_counter
@@ -935,7 +935,7 @@ msgstr "Aantal ongelezen berichten"
 #. module: account_asset
 #: selection:account.asset,state:0
 msgid "On Hold"
-msgstr "On Hold"
+msgstr "In wachtstand"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:610
@@ -948,7 +948,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.line_caret_options
 msgid "Open Asset"
-msgstr "Open Activa"
+msgstr "Open activa"
 
 #. module: account_asset
 #: selection:account.asset,activity_state:0
@@ -977,7 +977,7 @@ msgstr "Datum gepauzeerd"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Pause Depreciation"
-msgstr "Pauzeer Afschrijving"
+msgstr "Pauzeer afschrijvingen"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__date
@@ -1060,12 +1060,12 @@ msgstr "Verantwoordelijke gebruiker"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__resume_date
 msgid "Resume Date"
-msgstr "Datum van Hervatting"
+msgstr "Datum van hervatting"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Resume Depreciation"
-msgstr "Hervat Afschrijving"
+msgstr "Hervat afschrijving"
 
 #. module: account_asset
 #: selection:account.asset,state:0
@@ -1128,7 +1128,7 @@ msgstr "Toon alle records welke een actiedatum voor vandaag hebben"
 #: code:addons/account_asset/models/account_move.py:82
 #, python-format
 msgid "Some fields are missing {}"
-msgstr "Sommige velden zijn niet ingevuld"
+msgstr "Sommige velden zijn niet ingevuld {}"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:573
@@ -1160,8 +1160,8 @@ msgid ""
 "The account from the selected Journal Items is not configured to generate "
 "assets."
 msgstr ""
-"De rekening van de geselecteerde journaalposten is niet geconfigureerd om "
-"activa te genereren."
+"De rekening van de geselecteerde boekingen is niet geconfigureerd om activa "
+"te genereren."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1202,8 +1202,8 @@ msgid ""
 "asset/deferred revenue."
 msgstr ""
 "Dit is een technisch veld dat aangeeft dat een afschrijvingsregel handmatig "
-"is aangepast. Het wordt gebruikt om de afschrijvingstabel van een actief / "
-"uitgestelde omzet opnieuw te berekenen."
+"is aangepast. Het wordt gebruikt om de afschrijvingstabel van een "
+"activa/uitgestelde omzet opnieuw te berekenen."
 
 #. module: account_asset
 #. openerp-web
@@ -1246,7 +1246,7 @@ msgstr "Converteer naar een activa"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__user_type_id
 msgid "Type of the account"
-msgstr "Type Rekening"
+msgstr "Type rekening"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_unread

@@ -5,17 +5,17 @@
 # Translators:
 # Yaroslav Molochko <onorua@gmail.com>, 2018
 # ТАрас <tratatuta@i.ua>, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Bohdan Lisnenko, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:35+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Bohdan Lisnenko, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
 msgid "# Page Views"
-msgstr "# Переглядів"
+msgstr "К-сть переглядів"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
@@ -34,12 +34,14 @@ msgid ""
 "<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
 "of leads\" role=\"img\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
+"of leads\" role=\"img\"/>"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_needaction
 msgid "Action Needed"
-msgstr "Дія необхідна"
+msgstr "Необхідна дія"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__running
@@ -128,14 +130,14 @@ msgstr "Оцінка Crm: Застосовувати відмічені резу
 #: model:ir.cron,cron_name:website_crm_score.ir_cron_lead_assign
 #: model:ir.cron,name:website_crm_score.ir_cron_lead_assign
 msgid "Crm Score: lead assignation"
-msgstr "Оцінка Crm: присвоєння ліду"
+msgstr "Оцінка Crm: присвоєння ліда"
 
 #. module: website_crm_score
 #: model:ir.actions.server,name:website_crm_score.ir_cron_lead_scoring_ir_actions_server
 #: model:ir.cron,cron_name:website_crm_score.ir_cron_lead_scoring
 #: model:ir.cron,name:website_crm_score.ir_cron_lead_scoring
 msgid "Crm Score: lead scoring "
-msgstr "Оцінка Crm: очолюваний результат"
+msgstr "Оцінка Crm: оцінювання ліда"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__last_run
@@ -224,7 +226,7 @@ msgstr "Якщо позначено, то повідомленя потребу�
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Якщо відмічено, то нові повідомлення будуть потребувати вашої уваги."
+msgstr "Якщо позначено, то нові повідомлення будуть потребувати вашої уваги."
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error
@@ -272,7 +274,7 @@ msgstr "Останнє оновлення"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__last_run
 msgid "Last run"
-msgstr "Останній запус"
+msgstr "Останній запуск"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__lead_id
@@ -319,7 +321,7 @@ msgid ""
 "and set filters to auto assign your leads."
 msgstr ""
 "Зв'яжіть користувачів з командою продажу, встановіть для кожної з них "
-"тривалість роботи за 30 днів і встановіть фільтри для автоматичного "
+"тривалість роботи на 30 днів і встановіть фільтри для автоматичного "
 "призначення лідів."
 
 #. module: website_crm_score
@@ -332,7 +334,7 @@ msgstr "Список (відстежених) сторінок, переглян
 #: code:addons/website_crm_score/static/src/xml/track_page.xml:9
 #, python-format
 msgid "Log visits on leads"
-msgstr "Журнал відвідувань на потенційних клієнтів"
+msgstr "Журнал відвідувань на лідах"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_main_attachment_id
@@ -470,7 +472,7 @@ msgstr "Продавець"
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Person"
-msgstr ""
+msgstr "Продавець"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
@@ -505,7 +507,7 @@ msgstr "Продавець (Член команди)"
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action
 msgid "Salespersons"
-msgstr ""
+msgstr "Продавці"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
@@ -543,7 +545,7 @@ msgid ""
 "\n"
 "Actions are done in sql and bypass the access rights and orm mechanism (create `score`, write `active`, unlink `crm_lead`)"
 msgstr ""
-"Підрахунок результатів додасть оцінку \"значення\" для цього ліду.\n"
+"Підрахунок результатів додасть оцінку \"значення\" для цього ліда.\n"
 "Архів встановить активний = Помилка на ліді (архівований)\n"
 "Видалити остаточно видаляє лід\n"
 "\n"
@@ -640,7 +642,7 @@ msgstr "Оцінка CRM веб-сайту"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__website_message_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__website_message_ids
 msgid "Website Messages"
-msgstr "Повідомлення з вебсайту"
+msgstr "Повідомлення з веб-сайту"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot

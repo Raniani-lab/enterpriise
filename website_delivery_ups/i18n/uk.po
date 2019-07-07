@@ -30,7 +30,7 @@ msgstr "(Рахунок мого обліку)"
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/>"
 
 #. module: website_delivery_ups
 #: model_terms:payment.acquirer,pending_msg:website_delivery_ups.payment_acquirer_ups_cod
@@ -101,7 +101,7 @@ msgstr "Зв'язок"
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Enter your Carrier Account #"
-msgstr "Введіть рахунок перевізника #"
+msgstr "Введіть № рахунка перевізника"
 
 #. module: website_delivery_ups
 #: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod

@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-06-12 12:37+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,17 +28,19 @@ msgid ""
 "<i class=\"fa fa-check text-success\" aria-label=\"Edit\" title=\"Edit report\" attrs=\"{'invisible': [('report_count', '=', 0)]}\"/>\n"
 "                            <i class=\"fa fa-circle text-danger\" aria-label=\"Create\" title=\"Create report\" attrs=\"{'invisible': [('report_count', '!=', 0)]}\"/>"
 msgstr ""
+"<i class=\"fa fa-check text-success\" aria-label=\"Bewerken\" title=\"Bewerk rapport\" attrs=\"{'invisible': [('report_count', '=', 0)]}\"/>\n"
+"                            <i class=\"fa fa-circle text-danger\" aria-label=\"Anmaken\" title=\"Rapport aanmaken\" attrs=\"{'invisible': [('report_count', '!=', 0)]}\"/>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_view_form_fsm_inherit
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_task_form2_inherit
 msgid "<span class=\"o_stat_info align-self-center\">Report</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_info align-self-center\">Rapport</span>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_report_template_view_form
 msgid "<span class=\"o_stat_text\"> Report(s)</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Rapport(en)</span>"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_report_template__action_id
@@ -54,7 +56,7 @@ msgstr "Actief"
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_project__allow_reports
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__allow_reports
 msgid "Allow Reports"
-msgstr ""
+msgstr "Rapporten toestaan"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_report_template__create_uid
@@ -69,7 +71,7 @@ msgstr "Aangemaakt op"
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_project__report_template_id
 msgid "Default Report"
-msgstr ""
+msgstr "Standaard rapport"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_report_template__display_name
@@ -119,13 +121,13 @@ msgstr "Project"
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_project_report_template
 msgid "Project Report Template"
-msgstr ""
+msgstr "Project rapport sjabloon"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_report_template__report_count
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__report_count
 msgid "Report Count"
-msgstr ""
+msgstr "Aantal rapporten"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_product_product__report_template_id
@@ -137,18 +139,18 @@ msgstr "Rapportsjabloon"
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.action_fsm_reports
 msgid "Report Templates"
-msgstr ""
+msgstr "Rapport sjablonen"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_view_form_fsm_inherit
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_task_form2_inherit
 msgid "Report from this task"
-msgstr ""
+msgstr "Rapporteer vanuit deze taak"
 
 #. module: industry_fsm_report
 #: model:ir.ui.menu,name:industry_fsm_report.project_report_template_menu
 msgid "Report template"
-msgstr ""
+msgstr "Rapportsjabloon"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_report_template_view_list
@@ -173,13 +175,13 @@ msgstr "Taak"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_report_template_view_list
 msgid "Template name"
-msgstr ""
+msgstr "Sjabloonnaam"
 
 #. module: industry_fsm_report
 #: code:addons/industry_fsm_report/models/project.py:60
 #, python-format
 msgid "The report is not filled!."
-msgstr ""
+msgstr "Het rapport is niet ingevuld!"
 
 #. module: industry_fsm_report
 #: code:addons/industry_fsm_report/models/project.py:44

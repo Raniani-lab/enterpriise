@@ -3,7 +3,6 @@
 # * website_helpdesk
 # 
 # Translators:
-# Martin Trigaux, 2018
 # Bohdan Lisnenko, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
@@ -39,7 +38,7 @@ msgstr "Допомога"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk"
-msgstr "Help"
+msgstr "Служба підтримки"
 
 #. module: website_helpdesk
 #: model:website.menu,name:website_helpdesk.menu_helpdesk

@@ -43,7 +43,7 @@ msgstr "<strong>Volgende factuurbedrag:</strong><br/>"
 #. module: sale_subscription_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_subscription_taxcloud.portal_subscription
 msgid "Additional taxes may be charged at payment."
-msgstr ""
+msgstr "Extra belastingen worden mogelijk toegevoegd bij het betalen"
 
 #. module: sale_subscription_taxcloud
 #: model:ir.model,name:sale_subscription_taxcloud.model_sale_subscription

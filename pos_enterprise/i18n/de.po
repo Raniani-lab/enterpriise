@@ -25,6 +25,8 @@ msgstr ""
 msgid ""
 "Connect devices to your PoS (ticket printer, barcode scanner, scale, etc.)"
 msgstr ""
+"Schließen Sie Geräte an Ihren PoS an (Ticketdrucker, Barcodescanner, Waage "
+"usw.)."
 
 #. module: pos_enterprise
 #: model:ir.model.fields,field_description:pos_enterprise.field_pos_config__module_pos_iot

@@ -89,7 +89,7 @@ class HrWorkEntry(models.Model):
             entries_intervals = entries._to_intervals()
             overlapping_entries = self._from_intervals(entries_intervals & calendar_intervals)
             outside_entries |= entries - overlapping_entries
-        outside_entries.write({'display_warning': True})
+        outside_entries.write({'state': 'conflict'})
         return bool(outside_entries)
 
     @api.multi
@@ -113,7 +113,7 @@ class HrWorkEntry(models.Model):
         conflicts = self.env.cr.dictfetchall()
         for res in conflicts:
             self.browse(res.get('work_entry_id')).write({
-                'display_warning': True,
+                'state': 'conflict',
                 'leave_id': res.get('leave_id')
             })
         return bool(conflicts)

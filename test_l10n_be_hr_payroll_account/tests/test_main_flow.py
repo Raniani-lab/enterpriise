@@ -311,7 +311,7 @@ class TestHR(common.TransactionCase):
         work_entries = self.env['hr.work.entry'].with_user(self.hr_payroll_user).search([('employee_id', '=', self.user.employee_id.id)])
         # should not be able to validate
         self.assertFalse(work_entries.with_user(self.hr_payroll_user).action_validate())
-        work_entries_with_error = work_entries.filtered(lambda b: b.display_warning)
+        work_entries_with_error = work_entries.filtered(lambda b: b.state == 'conflict')
 
         self.env['hr.leave'].search([('employee_id', "=", self.user.employee_id.id)])
         # Check work_entries without a type
@@ -328,7 +328,7 @@ class TestHR(common.TransactionCase):
 
         # Some work entries are still conflicting (if not completely included in a leave)
         self.assertFalse(work_entries.with_user(self.hr_payroll_user).action_validate())
-        work_entries.filtered('display_warning').write({'state': 'cancelled'})
+        work_entries.filtered(lambda w: w.state == 'conflict').write({'state': 'cancelled'})
         self.assertTrue(work_entries.with_user(self.hr_payroll_user).action_validate())
 
     def _test_fleet(self):

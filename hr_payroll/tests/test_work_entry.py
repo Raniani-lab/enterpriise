@@ -85,7 +85,7 @@ class TestWorkEntry(TestPayslipBase):
             'date_stop': end,
         })
         self.assertFalse(work_entry1.action_validate(), "It should not validate work_entries conflicting with others")
-        self.assertTrue(work_entry1.display_warning)
+        self.assertEqual(work_entry1.state, 'conflict')
         self.assertNotEqual(work_entry1.state, 'validated')
 
     def test_validate_non_approved_leave_work_entry(self):
@@ -106,7 +106,7 @@ class TestWorkEntry(TestPayslipBase):
             'number_of_days': 2,
         })
         self.assertFalse(work_entry1.action_validate(), "It should not validate work_entries conflicting with non approved leaves")
-        self.assertTrue(work_entry1.display_warning)
+        self.assertEqual(work_entry1.state, 'conflict')
 
     def test_validate_undefined_work_entry(self):
         work_entry1 = self.env['hr.work.entry'].create({
@@ -117,11 +117,9 @@ class TestWorkEntry(TestPayslipBase):
             'date_stop': self.end,
         })
         self.assertFalse(work_entry1.action_validate(), "It should not validate work_entries without a type")
-        self.assertTrue(work_entry1.display_warning, "It should have a warning")
+        self.assertEqual(work_entry1.state, 'conflict', "It should change to conflict state")
         work_entry1.work_entry_type_id = self.work_entry_type
-        self.assertFalse(work_entry1.display_warning, "It should no longer have a warning")
-        work_entry1.work_entry_type_id = False
-        self.assertTrue(work_entry1.display_warning, "It should have a warning")
+        self.assertTrue(work_entry1.action_validate(), "It should validate work_entries")
 
     def test_refuse_leave_work_entry(self):
         start = datetime(2015, 11, 1, 9, 0, 0)
@@ -144,9 +142,9 @@ class TestWorkEntry(TestPayslipBase):
             'leave_id': leave.id
         })
         work_entry.action_validate()
-        self.assertTrue(work_entry.display_warning, "It should have an error (conflicting leave to approve")
+        self.assertEqual(work_entry.state, 'conflict', "It should have an error (conflicting leave to approve")
         leave.action_refuse()
-        self.assertFalse(work_entry.display_warning, "It should not have an error")
+        self.assertNotEqual(work_entry.state, 'conflict', "It should not have an error")
 
     def test_time_normal_work_entry(self):
         # Normal attendances (global to all employees)
@@ -181,15 +179,14 @@ class TestWorkEntry(TestPayslipBase):
         # /!\ this is a week day => it exists an calendar attendance at this time
         start = datetime(2015, 11, 2, 10, 0, 0)
         end = datetime(2015, 11, 2, 17, 0, 0)
-        leave_work_entry = self.env['hr.work.entry'].create({
+        leave = self.env['hr.leave'].create({
             'name': '1leave',
             'employee_id': self.richard_emp.id,
-            'contract_id': self.richard_emp.contract_id.id,
-            'work_entry_type_id': self.work_entry_type_leave.id,
-            'date_start': start,
-            'date_stop': end,
+            'holiday_status_id': self.leave_type.id,
+            'date_from': start,
+            'date_to': end,
         })
-        leave_work_entry.action_validate()
+        leave.action_validate()
 
         work_entries = self.richard_emp.contract_id._generate_work_entries(self.start, self.end)
         work_entries.action_validate()
@@ -239,24 +236,24 @@ class TestWorkEntry(TestPayslipBase):
         # Overlapping and not a leave
         work_entry_4 = self.create_work_entry(datetime(2018, 10, 10, 11, 0), datetime(2018, 10, 10, 13, 0))
         (work_entry_1 | work_entry_2 | work_entry_3 | work_entry_4)._mark_leaves_outside_schedule()
-        self.assertTrue(work_entry_2.display_warning, "It should conflict")
-        self.assertFalse(work_entry_1.display_warning, "It should not conflict")
-        self.assertFalse(work_entry_3.display_warning, "It should not conflict")
-        self.assertFalse(work_entry_4.display_warning, "It should not conflict")
+        self.assertEqual(work_entry_2.state, 'conflict', "It should conflict")
+        self.assertNotEqual(work_entry_1.state, 'conflict', "It should not conflict")
+        self.assertNotEqual(work_entry_3.state, 'conflict', "It should not conflict")
+        self.assertNotEqual(work_entry_4.state, 'conflict', "It should not conflict")
 
     def test_write_conflict(self):
         """ Test updating work entries dates recomputes conflicts """
         work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
         work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 12, 0), datetime(2018, 10, 10, 18, 0))
-        self.assertFalse(work_entry_1.display_warning, "It should not conflict")
-        self.assertFalse(work_entry_2.display_warning, "It should not conflict")
+        self.assertNotEqual(work_entry_1.state, 'conflict', "It should not conflict")
+        self.assertNotEqual(work_entry_2.state, 'conflict', "It should not conflict")
         work_entry_1.date_stop = datetime(2018, 10, 10, 14, 0)
-        self.assertTrue(work_entry_1.display_warning, "It should conflict")
-        self.assertTrue(work_entry_2.display_warning, "It should conflict")
+        self.assertEqual(work_entry_1.state, 'conflict', "It should conflict")
+        self.assertEqual(work_entry_2.state, 'conflict', "It should conflict")
 
         work_entry_1.date_stop = datetime(2018, 10, 10, 12, 0)  # cancel conflict
-        self.assertFalse(work_entry_1.display_warning, "It should no longer conflict")
-        self.assertFalse(work_entry_2.display_warning, "It should no longer conflict")
+        self.assertNotEqual(work_entry_1.state, 'conflict', "It should no longer conflict")
+        self.assertNotEqual(work_entry_2.state, 'conflict', "It should no longer conflict")
 
     def test_write_move(self):
         """ Test completely moving a work entry recomputes conflicts """
@@ -267,34 +264,33 @@ class TestWorkEntry(TestPayslipBase):
             'date_start': datetime(2018, 10, 10, 9, 0),
             'date_stop': datetime(2018, 10, 10, 10, 0),
         })
-        self.assertTrue(work_entry_1.display_warning)
-        self.assertTrue(work_entry_2.display_warning)
-        self.assertFalse(work_entry_3.display_warning)
+        self.assertEqual(work_entry_1.state, 'conflict')
+        self.assertEqual(work_entry_2.state, 'conflict')
+        self.assertNotEqual(work_entry_3.state, 'conflict')
 
     def test_create_conflict(self):
         """ Test creating a work entry recomputes conflicts """
         work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
-        self.assertFalse(work_entry_1.display_warning, "It should not conflict")
+        self.assertNotEqual(work_entry_1.state, 'conflict', "It should not conflict")
         work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 10, 0), datetime(2018, 10, 10, 18, 0))
-        self.assertTrue(work_entry_1.display_warning, "It should conflict")
-        self.assertTrue(work_entry_2.display_warning, "It should conflict")
+        self.assertEqual(work_entry_1.state, 'conflict', "It should conflict")
+        self.assertEqual(work_entry_2.state, 'conflict', "It should conflict")
 
     def test_unarchive_conflict(self):
         """ Test archive/unarchive a work entry recomputes conflicts """
         work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
         work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 10, 0), datetime(2018, 10, 10, 18, 0))
         work_entry_2.active = False
-        self.assertFalse(work_entry_1.display_warning, "It should not conflict")
+        self.assertNotEqual(work_entry_1.state, 'conflict', "It should not conflict")
         self.assertEqual(work_entry_2.state, 'cancelled', "It should be cancelled")
         work_entry_2.active = True
-        self.assertTrue(work_entry_1.display_warning, "It should conflict")
-        self.assertTrue(work_entry_2.display_warning, "It should conflict")
-        self.assertEqual(work_entry_2.state, 'confirmed', "It should no longer be in state cancelled")
+        self.assertEqual(work_entry_1.state, 'conflict', "It should conflict")
+        self.assertEqual(work_entry_2.state, 'conflict', "It should conflict")
 
     def test_validated_no_conflict(self):
         """ Test validating a work entry removes the conflict """
         work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
         work_entry_1.state = 'validated'
         work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 10, 0), datetime(2018, 10, 10, 18, 0))
-        self.assertTrue(work_entry_1.display_warning, "It should not conflict")
-        self.assertTrue(work_entry_2.display_warning, "It should conflict")
+        self.assertEqual(work_entry_1.state, 'conflict', "It should not conflict")
+        self.assertEqual(work_entry_2.state, 'conflict', "It should conflict")

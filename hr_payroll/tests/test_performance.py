@@ -74,7 +74,7 @@ class TestPayrollPerformance(TestPayslipBase):
         self.richard_emp.generate_work_entries(date(2018, 1, 1), date(2018, 1, 2))
         leave = self.create_leave(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 18, 0))
 
-        with self.assertQueryCount(__system__=113, admin=256):
+        with self.assertQueryCount(__system__=116, admin=259):
             leave.action_validate()
         leave.action_refuse()
 

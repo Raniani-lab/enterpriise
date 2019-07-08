@@ -84,8 +84,8 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
             }
 
             var records = this._fetchRecords();
-            var hasConflicts = records.some(function (record) { return record.display_warning; });
-            var allConflicts = records.every(function (record) { return record.display_warning; });
+            var hasConflicts = records.some(function (record) { return record.state === 'conflict'; });
+            var allConflicts = records.every(function (record) { return record.state === 'conflict'; });
             var allValidated = records.every(function (record) { return record.state === 'validated'; });
 
             this.$buttons.find('.btn-work-entry').remove();

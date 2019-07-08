@@ -99,7 +99,7 @@ class TestExamples(common.SavepointCase):
         if 'date_from' in payslip_values and 'date_to' in payslip_values:
             work_entries = employee.contract_id._generate_work_entries(payslip_values['date_from'], payslip_values['date_to'])
             work_entries.action_validate()
-            we_error = work_entries.filtered(lambda r: r.display_warning)
+            we_error = work_entries.filtered(lambda r: r.state == 'conflict')
             we_error.write({'state': 'cancelled'})
             (work_entries - we_error).action_validate()
 

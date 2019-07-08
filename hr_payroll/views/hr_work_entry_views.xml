@@ -35,14 +35,13 @@
                    color="color"
                    default_group_by='employee_id'
                    decoration-secondary="state == 'validated'"
-                   decoration-warning="display_warning"
+                   decoration-warning="state == 'conflict'"
                    progress="name"
                    scales="day,week,month"
                    create="0">
                 <field name="color" invisible="1"/>
                 <field name="state"/>
                 <field name="employee_id"/>
-                <field name="display_warning"/>
                 <field name="name"/>
             </gantt>
         </field>
@@ -54,7 +53,7 @@
         <field name="inherit_id" ref="hr_work_entry.hr_work_entry_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('oe_title')]" position="before">
-                <div attrs="{'invisible': [('display_warning', '=', False)]}">
+                <div attrs="{'invisible': [('state', '!=', 'conflict')]}">
                     <div class="alert alert-warning" role="alert" attrs="{'invisible': ['!', ('work_entry_type_id', '=', False)]}">
                         This work entry cannot be validated. The work entry type is undefined.
                     </div>
@@ -69,9 +68,9 @@
                     </div>
                 </div>
             </xpath>
-            <xpath expr="//field[@name='display_warning']" position="after">
+            <xpath expr="//field[@name='state']" position="before">
                 <field name="leave_id" invisible="1"/>
-                <button string="Go To Conflicting Time Off" name="open_leave" type="object" attrs="{'invisible': ['|', '|', '!',('display_warning', '=', True), ('leave_id', '=', False), ('work_entry_type_id', '=', False)]}"/>
+                <button string="Go To Conflicting Time Off" name="open_leave" type="object" attrs="{'invisible': ['|', '|', ('state', '!=', 'conflict'), ('leave_id', '=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='work_entry_type_id']" position="after">
                 <field name="leave_id" attrs="{'invisible': [('leave_id', '=', False)]}"/>

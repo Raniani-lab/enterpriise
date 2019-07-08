@@ -97,7 +97,6 @@ class HrContract(models.Model):
                     'date_start': start,
                     'date_stop': end,
                     'work_entry_type_id': work_entry_type.id,
-                    'display_warning': not bool(work_entry_type),
                     'employee_id': employee.id,
                     'leave_id': leave.holiday_id and leave.holiday_id.id,
                     'company_id': contract.company_id.id,

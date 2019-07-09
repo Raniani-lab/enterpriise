@@ -63,7 +63,7 @@ class HrPayroll28145Wizard(models.TransientModel):
 
         sequence = 1
         for employee in employees:
-            gross_amount = payslips_by_employees[employee].get_salary_line_total('IP')
+            gross_amount = payslips_by_employees[employee]._get_salary_line_total('IP')
             lump_sum_deduction = min(gross_amount, ip_deduction_bracket_1) * 0.5
             if gross_amount > ip_deduction_bracket_1:
                 lump_sum_deduction += min(gross_amount - lump_sum_deduction, ip_deduction_bracket_2) * 0.25
@@ -74,7 +74,7 @@ class HrPayroll28145Wizard(models.TransientModel):
                 'gross_amout': gross_amount,
                 'real_deduction': 0,
                 'lump_sum_deduction': lump_sum_deduction,
-                'onss_amount': - payslips_by_employees[employee].get_salary_line_total('IP.DED'),
+                'onss_amount': - payslips_by_employees[employee]._get_salary_line_total('IP.DED'),
             }
             sequence += 1
         return data

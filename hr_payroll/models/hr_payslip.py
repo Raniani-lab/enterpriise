@@ -73,8 +73,8 @@ class HrPayslip(models.Model):
     @api.multi
     def _compute_basic_net(self):
         for payslip in self:
-            payslip.basic_wage = payslip.get_salary_line_total('BASIC')
-            payslip.net_wage = payslip.get_salary_line_total('NET')
+            payslip.basic_wage = payslip._get_salary_line_total('BASIC')
+            payslip.net_wage = payslip._get_salary_line_total('NET')
 
     @api.constrains('date_from', 'date_to')
     def _check_dates(self):
@@ -292,7 +292,7 @@ class HrPayslip(models.Model):
             return [(5, False, False)]
 
     @api.multi
-    def get_salary_line_total(self, code):
+    def _get_salary_line_total(self, code):
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.total for line in lines])
 

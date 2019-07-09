@@ -207,18 +207,18 @@ class HrEmployee(models.Model):
                 'F10_2055': employee.contract_id.date_start.strftime('%d%m%Y') if employee.contract_id.date_start.year == datetime.datetime.now().year else '00000000',
                 'F10_2056': F10_2056,
                 'F10_2058': employee.has_bicycle and employee.km_home_work or 0.0,
-                'F10_2060': sum(payslip.get_salary_line_total('NET') for payslip in payslips),
+                'F10_2060': sum(payslip._get_salary_line_total('NET') for payslip in payslips),
                 'F10_2063': employee._get_holiday_remuneration(year),
-                'F10_2074': sum(payslip.get_salary_line_total('P.P') for payslip in payslips),
-                'F10_2075': sum(abs(payslip.get_salary_line_total('M.ONSS')) for payslip in payslips),
+                'F10_2074': sum(payslip._get_salary_line_total('P.P') for payslip in payslips),
+                'F10_2075': sum(abs(payslip._get_salary_line_total('M.ONSS')) for payslip in payslips),
                 'F10_2076': payslips._get_atn_remuneration(),
-                'F10_2078': sum(payslip.get_salary_line_total('REP.FEES') for payslip in payslips),
+                'F10_2078': sum(payslip._get_salary_line_total('REP.FEES') for payslip in payslips),
                 'F10_2086': sum(payslip.contract_id.public_transport_reimbursed_amount for payslip in payslips if payslip.contract_id.transport_mode_public),
-                'F10_2088': sum(payslip.get_salary_line_total('Tr.E') for payslip in payslips),
+                'F10_2088': sum(payslip._get_salary_line_total('Tr.E') for payslip in payslips),
                 'F10_2099': 9 if employee.contract_id.transport_mode_car else 7, # 9 = Vehicle // 7 = Computer,
                 'F10_2100': '200-00', # Joint committee number,
                 'F10_2109': str(employee.identification_id),
-                'F10_2115': sum(payslip.get_salary_line_total('EmpBonus.1') for payslip in payslips),
+                'F10_2115': sum(payslip._get_salary_line_total('EmpBonus.1') for payslip in payslips),
             })
 
             data_dict.update({
@@ -296,7 +296,7 @@ class HrEmployee(models.Model):
         slip_ids = self.mapped('slip_ids').filtered(
             lambda slip: slip.struct_id == self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays') \
                     and slip.date_to.year == int(year))
-        return sum(slip.get_salary_line_total('TAXABLE') for slip in slip_ids)
+        return sum(slip._get_salary_line_total('TAXABLE') for slip in slip_ids)
 
     @api.multi
     def _generate_281_10_form_pdf(self, employee_data):

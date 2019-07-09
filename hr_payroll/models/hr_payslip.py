@@ -291,10 +291,10 @@ class HrPayslip(models.Model):
         else:
             return [(5, False, False)]
 
+    @api.multi
     def get_salary_line_total(self, code):
-        self.ensure_one()
-        line = self.line_ids.filtered(lambda line: line.code == code)
-        return line[0].total if line else 0.0
+        lines = self.line_ids.filtered(lambda line: line.code == code)
+        return sum([line.total for line in lines])
 
     @api.multi
     def action_print_payslip(self):

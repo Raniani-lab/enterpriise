@@ -16,11 +16,6 @@ odoo.define('web_map.MapController', function (require) {
         //Public
         //-----------------------------------------------------------------------------
 
-        init: function () {
-            this._super.apply(this, arguments);
-            this.pagers = [];
-        },
-
         /**
          * @override
          * @param {JqueryElement} $node 
@@ -45,20 +40,52 @@ odoo.define('web_map.MapController', function (require) {
          * @param {JqueryElement} $node
          */
         renderPager: function ($node) {
-            var self = this;
-            var data = this.model.get();
-            var options = {};
-            options.single_page_hidden = true;
-            this.pager = new Pager(this, data.count, data.offset + 1, data.limit, options);
-            this.pager.on('pager_changed', this, function (newState) {
+            const params = this._getPagerParams();
+            this.pager = new Pager(this, params.size, params.current_min, params.limit);
+            this.pager.on('pager_changed', this, newState => {
                 this.pager.disable();
-                data = this.model.get();
                 this.reload({ limit: newState.limit, offset: newState.current_min - 1 })
                     .then(this.pager.enable.bind(this.pager));
             });
-            return this.pager.appendTo($node).then(function () {
-                self.pager.do_toggle(true);
+            return this.pager.appendTo($node);
+        },
+        /**
+         * @override
+         */
+        update: function () {
+            return this._super.apply(this, arguments).then(() => {
+                this._updatePager();
             });
+        },
+
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
+
+        /**
+         * Return the params (current_min, limit and size) to pass to the pager,
+         * according to the current state.
+         *
+         * @private
+         * @returns {Object}
+         */
+        _getPagerParams: function () {
+            const state = this.model.get();
+            return {
+                current_min: state.offset + 1,
+                limit: state.limit,
+                size: state.count,
+            };
+        },
+        /**
+         * Update the pager with the current state.
+         *
+         * @private
+         */
+        _updatePager: function () {
+            if (this.pager) {
+                this.pager.updateState(this._getPagerParams());
+            }
         },
 
         //-------------------------------------------------------------------------------------

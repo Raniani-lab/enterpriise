@@ -10,41 +10,41 @@ odoo.define('web_map.view_view_tests', function (require) {
 
                 'project.task': {
                     fields: {
-                        name: { string: "name", type: "char" },
-                        sequence: { string: "sequence", type: 'integer' },
-                        partner_id: { string: "partner", type: "many2one", relation: 'res.partner' }
+                        name: {string: "name", type: "char"},
+                        sequence: {string: "sequence", type: 'integer'},
+                        partner_id: {string: "partner", type: "many2one", relation: 'res.partner'}
                     },
                     records: [
-                        { id: 1, name: "project", partner_id: [1] }
+                        {id: 1, name: "project", partner_id: [1]}
                     ],
                     oneRecord: {
                         records: [
-                            { id: 1, name: "Foo", partner_id: [1] }
+                            {id: 1, name: "Foo", partner_id: [1]}
                         ],
                         length: 1
                     },
 
                     twoRecords: {
                         records: [
-                            { id: 1, name: "FooProject", sequence: 1, partner_id: [1] },
-                            { id: 2, name: 'BarProject', sequence: 2, partner_id: [2] },
+                            {id: 1, name: "FooProject", sequence: 1, partner_id: [1]},
+                            {id: 2, name: 'BarProject', sequence: 2, partner_id: [2]},
                         ],
                         length: 2
                     },
 
                     threeRecords: {
                         records: [
-                            { id: 1, name: "FooProject", sequence: 1, partner_id: [1] },
-                            { id: 2, name: 'BarProject', sequence: 2, partner_id: [2] },
-                            { id: 1, name: "FooBarProject", sequence: 3, partner_id: [1] }
+                            {id: 1, name: "FooProject", sequence: 1, partner_id: [1]},
+                            {id: 2, name: 'BarProject', sequence: 2, partner_id: [2]},
+                            {id: 1, name: "FooBarProject", sequence: 3, partner_id: [1]}
                         ],
                         length: 3
                     },
 
                     twoRecordOnePartner: {
                         records: [
-                            { id: 1, name: "FooProject", partner_id: [1] },
-                            { id: 2, name: 'BarProject', partner_id: [1] },
+                            {id: 1, name: "FooProject", partner_id: [1]},
+                            {id: 2, name: 'BarProject', partner_id: [1]},
                         ],
                         length: 2
                     },
@@ -54,7 +54,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     },
                     recordWithouthPartner: {
                         records: [
-                            { id: 1, name: "Foo", partner_id: [] }
+                            {id: 1, name: "Foo", partner_id: []}
                         ],
                         length: 1
                     }
@@ -62,12 +62,17 @@ odoo.define('web_map.view_view_tests', function (require) {
 
                 'res.partner': {
                     fields: {
-                        name: { string: "Customer", type: "char" },
-                        'partner_latitude': { string: "Latitude", type: "float" },
-                        'partner_longitude': { string: "Longitude", type: "float" },
-                        'contact_address_complete': { string: 'Address', type: "char" },
-                        'task_ids': { string: 'Task', type: "one2many", relation: "project.task", relation_field: "partner_id" },
-                        sequence: { string: 'sequence', type: 'integer' }
+                        name: {string: "Customer", type: "char"},
+                        'partner_latitude': {string: "Latitude", type: "float"},
+                        'partner_longitude': {string: "Longitude", type: "float"},
+                        'contact_address_complete': {string: 'Address', type: "char"},
+                        'task_ids': {
+                            string: 'Task',
+                            type: "one2many",
+                            relation: "project.task",
+                            relation_field: "partner_id"
+                        },
+                        sequence: {string: 'sequence', type: 'integer'}
                     },
 
                     records: [
@@ -130,7 +135,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                                 'contact_address_complete': 'Chaussée de Namur 40, 1367, Ramillies', sequence: 3
                             },
                             {
-                                id: 1, name: 'Bar','partner_latitude': 10.0, 'partner_longitude': 10.5,
+                                id: 1, name: 'Bar', 'partner_latitude': 10.0, 'partner_longitude': 10.5,
                                 'contact_address_complete': 'Chaussée de Louvain 94, 5310 Éghezée', sequence: 1
                             },
                         ],
@@ -147,7 +152,7 @@ odoo.define('web_map.view_view_tests', function (require) {
 
                     unlocatedRecords:
                         [
-                            { id: 1, name: 'Foo' },
+                            {id: 1, name: 'Foo'},
                         ],
 
                     noCoordinatesWrongAddress:
@@ -160,23 +165,21 @@ odoo.define('web_map.view_view_tests', function (require) {
 
                 }
             };
-            testUtils.mock.patch(MapView, {
-
-            });
+            testUtils.mock.patch(MapView, {});
             testUtils.mock.patch(MapModel, {
 
                 _fetchCoordinatesFromAddressMB: function (record) {
                     if (this.data.mapBoxToken !== 'token') {
-                        return Promise.reject({ status: 401 });
+                        return Promise.reject({status: 401});
                     }
                     var coordinates = [];
                     coordinates[0] = 10.0;
                     coordinates[1] = 10.5;
-                    var geometry = { coordinates: coordinates };
+                    var geometry = {coordinates: coordinates};
                     var features = [];
-                    features[0] = { geometry: geometry };
-                    var successResponse = { features: features };
-                    var failResponse = { features: [] };
+                    features[0] = {geometry: geometry};
+                    var successResponse = {features: features};
+                    var failResponse = {features: []};
                     switch (record.contact_address_complete) {
                         case 'Cfezfezfefes':
                             return Promise.resolve(failResponse);
@@ -188,7 +191,7 @@ odoo.define('web_map.view_view_tests', function (require) {
 
                 _fetchCoordinatesFromAddressOSM: function (record) {
                     var coordinates = [];
-                    coordinates[0] = { lat: 10.0, lon: 10.5 };
+                    coordinates[0] = {lat: 10.0, lon: 10.5};
                     switch (record.contact_address_complete) {
                         case 'Cfezfezfefes':
                             return Promise.resolve([]);
@@ -200,21 +203,21 @@ odoo.define('web_map.view_view_tests', function (require) {
 
                 _fetchRoute: function () {
                     if (this.data.mapBoxToken !== 'token') {
-                        return Promise.reject({ status: 401 });
+                        return Promise.reject({status: 401});
                     }
                     var legs = [];
                     for (var i = 1; i < this.data.records.length; i++) {
                         var coordinates = [];
                         coordinates[0] = [10, 10.5];
                         coordinates[1] = [10, 10.6];
-                        var geometry = { coordinates: coordinates };
+                        var geometry = {coordinates: coordinates};
                         var steps = [];
-                        steps[0] = { geometry: geometry };
-                        legs.push({ steps: steps });
+                        steps[0] = {geometry: geometry};
+                        legs.push({steps: steps});
                     }
                     var routes = [];
-                    routes[0] = { legs: legs };
-                    return Promise.resolve({ routes: routes });
+                    routes[0] = {legs: legs};
+                    return Promise.resolve({routes: routes});
                 }
             });
 
@@ -313,10 +316,10 @@ odoo.define('web_map.view_view_tests', function (require) {
         /**
          * data: one record that has a partner which has coordinates but no address
          * One record
-         * One marker 
+         * One marker
          * no route
          * Map should not be at his minimum zoom level
-         * 
+         *
          */
 
         QUnit.test('Create a view with one record and a partner located by coordinates', async function (assert) {
@@ -683,7 +686,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          * 2 records
          * 1 route
          * different partner object.
-         * 2 caching 
+         * 2 caching
          */
 
         QUnit.test('Create a a view with two located records different partner', async function (assert) {
@@ -719,7 +722,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          * data: 2 valid res.partner records
          * test the case where the model is res.partner and the "res.partner" field is the id
          * should have 2 records,
-         * 2 markers 
+         * 2 markers
          * no route
          */
         QUnit.test('Create a view with res.partner', async function (assert) {
@@ -800,7 +803,7 @@ odoo.define('web_map.view_view_tests', function (require) {
 
 
         //-----------------------------------------
-        //renderer testing 
+        //renderer testing
         //------------------------------------------
 
         QUnit.test('Google Maps redirection', async function (assert) {
@@ -966,7 +969,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          * two located records
          * with default_order
          * numbered icon
-         * test click on them 
+         * test click on them
          * asserts that the rpc receive the right parameters
          */
 
@@ -1145,7 +1148,7 @@ odoo.define('web_map.view_view_tests', function (require) {
 
         /**
          * wrong mapbox token fails at catch at route computing
-         * 
+         *
          */
 
         QUnit.test('create a view with wrong map box setting and located records', async function (assert) {
@@ -1212,7 +1215,7 @@ odoo.define('web_map.view_view_tests', function (require) {
         });
 
         /**
-         * data: two located records 
+         * data: two located records
          */
 
         QUnit.test('Click on pin shows popup, click on another shuts the first and open the other', async function (assert) {
@@ -1255,7 +1258,7 @@ odoo.define('web_map.view_view_tests', function (require) {
 
         /**
          * data: two located records
-         * asserts that all the records are shown on the map 
+         * asserts that all the records are shown on the map
          */
 
         QUnit.test('assert that all the records are shown on the map', async function (assert) {
@@ -1305,7 +1308,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     '</marker-popup>' +
                     '</map>',
                 viewOptions: {
-                    actionViews: [{ type: 'form' }]
+                    actionViews: [{type: 'form'}]
                 },
                 mockRPC: function (route, args) {
                     switch (route) {
@@ -1344,10 +1347,10 @@ odoo.define('web_map.view_view_tests', function (require) {
                 View: MapView,
                 model: 'project.task',
                 data: this.data,
-                arch: '<map res_partner="partner_id"  routing="true">' +                                                                                                                                                                                                    
+                arch: '<map res_partner="partner_id"  routing="true">' +
                     '</map>',
                 viewOptions: {
-                    actionViews: [{ type: 'form' }]
+                    actionViews: [{type: 'form'}]
                 },
                 mockRPC: function (route) {
                     switch (route) {
@@ -1368,11 +1371,51 @@ odoo.define('web_map.view_view_tests', function (require) {
             map.destroy();
         });
 
+        QUnit.test('Pager', async function (assert) {
+            assert.expect(4);
+
+            const map = await createView({
+                View: MapView,
+                model: 'project.task',
+                data: this.data,
+                arch: '<map res_partner="partner_id"/>',
+                mockRPC: route => {
+                    switch (route) {
+                        case '/web/dataset/search_read':
+                            return Promise.resolve({
+                                length: 101,
+                                records: _.range(1, 101).map(i => {return {id: i, name: 'project', partner_id: [i]}})
+                            });
+                        case '/web/dataset/call_kw/res.partner/read':
+                            return Promise.resolve(_.range(1, 101).map(i => {
+                                return {id: i, name: 'Foo', 'partner_latitude': 10.0, 'partner_longitude': 10.5};
+                            }));
+                    }
+                    return Promise.resolve();
+                },
+                session: {
+                    map_box_token: 'token'
+                },
+            });
+
+            assert.isVisible(map.pager);
+            assert.strictEqual(map.pager.$('.o_pager_value').text(), "1-20",
+                "current pager value should be 1-20");
+            assert.strictEqual(map.pager.$('.o_pager_limit').text(), "101",
+                "current pager limit should be 21");
+
+            await testUtils.dom.click(map.pager.$('.o_pager_next'));
+
+            assert.strictEqual(map.pager.$('.o_pager_value').text(), "21-40",
+                "pager value should be 21-40");
+
+            map.destroy();
+        });
 
         QUnit.test('New domain', async function (assert) {
             this.data['project.task'].records = [
-                { id: 1, name: "FooProject", sequence: 1, partner_id: 1 },
-                { id: 2, name: 'BarProject', sequence: 2, partner_id: 2 },
+                {id: 1, name: "FooProject", sequence: 1, partner_id: 1},
+                {id: 2, name: 'BarProject', sequence: 2, partner_id: 2},
             ];
             assert.expect(18);
             var map = await createView({
@@ -1398,7 +1441,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 1, 'There should be one route displayed');
             assert.strictEqual(map.$('div.leaflet-marker-icon').length, 2, 'There should be 2 markers displayed'),
 
-                await map.update({ domain: [['name', '=', 'FooProject']] });
+                await map.update({domain: [['name', '=', 'FooProject']]});
 
             assert.strictEqual(map.model.data.records.length, 1, 'There should be 1 record');
             assert.strictEqual(map.renderer.polylines.length, 0, 'There should be no road computed');
@@ -1406,7 +1449,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.markers.length, 1, 'There should be 1 marker generated');
             assert.strictEqual(map.$('div.leaflet-marker-icon').length, 1, 'There should be 1 marker on the map');
 
-            await map.update({ domain: [['name', '=', 'Foofezfezf']] });
+            await map.update({domain: [['name', '=', 'Foofezfezf']]});
 
             assert.strictEqual(map.model.data.records.length, 0, 'There should be no record');
             assert.strictEqual(map.renderer.polylines.length, 0, 'There should be no road computed');
@@ -1414,7 +1457,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.markers.length, 0, 'There should be no marker generated');
             assert.strictEqual(map.$('div.leaflet-marker-icon').length, 0, 'There should be 0 marker on the map');
 
-            await map.update({ domain: [['name', 'like', 'Project']] });
+            await map.update({domain: [['name', 'like', 'Project']]});
 
             assert.strictEqual(map.model.data.records.length, 2, 'There should be 2 record');
             assert.strictEqual(map.renderer.polylines.length, 1, 'There should be one road computed');
@@ -1438,7 +1481,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 arch: '<map res_partner="partner_id"  routing="true">' +
                     '</map>',
                 viewOptions: {
-                    actionViews: [{ type: 'form' }]
+                    actionViews: [{type: 'form'}]
                 },
                 mockRPC: function (route) {
                     switch (route) {

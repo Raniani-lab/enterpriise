@@ -48,7 +48,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Select Experienced Developer",
-            trigger: ".o_kanban_record:contains('Experienced Developer')",
+            trigger: ".o_kanban_record:contains('Experienced Developer') .oe_kanban_action_button",
             run: 'click',
         },
         {
@@ -68,21 +68,15 @@ Tour.register('hr_contract_salary_tour', {
             run: 'text Mitchell Admin',
         },
         {
-            content: "Applicant Contact",
-            trigger: '.o_field_widget.o_field_many2one[name=partner_id]',
-            run: function (actions) {
-                actions.text("Mitchell", this.$anchor.find("input"));
-            },
-        },
-        {
-            trigger: ".ui-autocomplete > li > a:contains(Mitchell)",
-            auto: true,
-        },
-        {
             content: "Create Employee",
             trigger: ".o_statusbar_buttons > button[name='create_employee_from_applicant']",
             extra_trigger: ".o_statusbar_buttons",
             run: 'click',
+        },
+        {
+            content: "Confirm Employee Creation",
+            trigger: ".btn-primary",
+            run: 'click'
         },
         {
             content: "Add Manager",
@@ -212,6 +206,11 @@ Tour.register('hr_contract_salary_tour', {
             content: "Send Offer",
             trigger: "button[name='send_offer']",
             run: 'click',
+        },
+        {
+            content: "Confirm Partner Creation",
+            trigger: ".modal-dialog .btn-primary span:contains('Save')",
+            run: 'click'
         },
         {
             content: "Send Offer",
@@ -369,6 +368,11 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Click Signature",
             trigger: 'iframe button.o_sign_sign_item',
+            run: 'click',
+        },
+        {
+            content: "Click Auto",
+            trigger: "a.o_web_sign_auto_button:contains('Auto')",
             run: 'click',
         },
         {

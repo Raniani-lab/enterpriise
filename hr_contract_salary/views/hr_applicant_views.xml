@@ -13,8 +13,8 @@
                      </div>
                 </button>
             </div>
-            <button name="reset_applicant" position="after">
-                <button name="%(generate_offer_link_action)d" type="action" string="Generate Offer Link" class="oe_highlight"/>
+            <button name="create_employee_from_applicant" position="before">
+                <button name="%(generate_offer_link_action)d" type="action" string="Generate Offer Link" class="oe_highlight" attrs="{'invisible': [('active', '=', False)]}"/>
             </button>
         </field>
     </record>

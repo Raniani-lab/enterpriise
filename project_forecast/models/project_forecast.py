@@ -182,7 +182,7 @@ class ProjectForecast(models.Model):
                 values.update({'recurrency_id': False})
         if ('published' not in values) and (set(values.keys()) & set(self._get_publish_important_fields())):
             values['published'] = False
-        return super().write(values)
+        return super(ProjectForecast, self).write(values)
 
     # ----------------------------------------------------
     # Actions
@@ -201,7 +201,6 @@ class ProjectForecast(models.Model):
             })
             list_values.append(new_values)
         return self.create(list_values)
-
 
     # ----------------------------------------------------
     # Gantt view
@@ -284,8 +283,8 @@ class ProjectForecast(models.Model):
                 employee = self.env['hr.employee'].browse([employee_id])
                 employee_start, employee_end = employee._get_work_interval(start_datetime, end_datetime).get(employee_id)
                 self.create({
-                    'start_datetime': employee_start,
-                    'end_datetime': employee_end,
+                    'start_datetime': employee_start or start_datetime,
+                    'end_datetime': employee_end or end_datetime,
                     'employee_id': employee_id,
                     'project_id': project_id,
                     'task_id': task_id,
@@ -345,7 +344,6 @@ class ProjectForecast(models.Model):
             if act_forecast.resource_hours == 0:
                 forecasts = forecasts - act_forecast
                 act_forecast.unlink()
-
 
     # ----------------------------------------------------
     #  Mail

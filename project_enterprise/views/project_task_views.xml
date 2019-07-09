@@ -173,6 +173,13 @@
         <field name="act_window_id" ref="project_enterprise.project_task_action_planning_groupby_project"/>
     </record>
 
+    <!-- All Task action with map view -->
+    <record id="project.action_view_task" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity,map</field>
+    </record>
+
     <menuitem id="project_planning_menu" name="Planning" sequence="12" parent="project.menu_main_pm"/>
 
     <menuitem id="project_task_menu_planning_by_user" name="By Employee" sequence="12"

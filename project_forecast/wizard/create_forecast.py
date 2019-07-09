@@ -29,6 +29,14 @@ class ProjectForecastCreateWizard(models.TransientModel):
         ('check_end_date_lower_repeat_until', 'CHECK(repeat_until IS NULL OR end_datetime < repeat_until)', 'Forecast should end before the repeat ends'),
     ]
 
+    @api.onchange('autocomplete_forecast_ids')
+    def _onchange_autocomplete_forecast_ids(self):
+        """This method is needed to get a proper refresh of the domain by the
+           radio button on previous_forecast_id.
+
+        """
+        self.previous_forecast_id = False
+
     @api.depends('employee_id')
     def _compute_autocomplete_forecast_ids(self):
         """Computes a list of forecasts that could be used to complete the creation wizard

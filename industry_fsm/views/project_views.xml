@@ -400,6 +400,13 @@
         <field name="act_window_id" ref="project_task_action_fsm"/>
     </record>
 
+    <record id="project_task_action_fsm_view_map" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">map</field>
+        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="act_window_id" ref="project_task_action_fsm"/>
+    </record>
+
     <record id="project_task_action_fsm_view_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="5"/>
         <field name="view_mode">form</field>

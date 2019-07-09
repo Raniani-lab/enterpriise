@@ -522,15 +522,15 @@
 01|Atlixco--state_mx_pue
 02|Izúcar de Matamoros--state_mx_pue
 01|Querétaro--state_mx_qro
-01|Cancún--state_mx_q roo
+01|Cancún--state_mx_q_roo
 02|San Juan del Rio--state_mx_qro
-02|Cozumel--state_mx_q roo
-03|Felipe Carrillo Puerto--state_mx_q roo
-04|Chetumal--state_mx_q roo
-05|Playa del Carmen--state_mx_q roo
-06|Kantunilkín--state_mx_q roo
-07|Isla Mujeres--state_mx_q roo
-08|Bacalar--state_mx_q roo
+02|Cozumel--state_mx_q_roo
+03|Felipe Carrillo Puerto--state_mx_q_roo
+04|Chetumal--state_mx_q_roo
+05|Playa del Carmen--state_mx_q_roo
+06|Kantunilkín--state_mx_q_roo
+07|Isla Mujeres--state_mx_q_roo
+08|Bacalar--state_mx_q_roo
 01|Los Mochis--state_mx_sin
 02|Culiacán Rosales--state_mx_sin
 03|Escuinapa de Hidalgo--state_mx_sin

@@ -126,6 +126,11 @@ class Task(models.Model):
         invoices = self.mapped('sale_order_id.invoice_ids')
         action = self.env.ref('account.action_invoice_tree1').read()[0]
         action['domain'] = [('id', 'in', invoices.ids)]
+        # prevent view with onboarding banner
+        list_view = self.env.ref('account.invoice_tree')
+        form_view = self.env.ref('account.invoice_form')
+        action['views'] = [[list_view.id, 'list'], [form_view.id, 'form']]
+
         return action
 
     def action_fsm_tasks(self):
@@ -298,12 +303,15 @@ class Task(models.Model):
             for line in self.material_line_ids:
                 existing_line = self.env['sale.order.line'].search([('order_id', '=', sale_order.id), ('product_id', '=', line.product_id.id)], limit=1)
                 if existing_line:
-                    existing_line.write({'product_uom_qty': line.existing_line + line.quantity})
+                    existing_line.write({'product_uom_qty': existing_line.product_uom_qty + line.quantity})
                 else:
-                    self.env['sale.order.line'].create({
+                    vals = {
                         'order_id': sale_order.id,
                         'product_id': line.product_id.id,
                         'product_uom_qty': line.quantity,
                         'product_uom': line.product_id.uom_id.id
-                    })
+                    }
+                    if line.product_id.invoice_policy == 'delivery' and line.product_id.service_type == 'manual':
+                        vals['qty_delivered'] = line.quantity
+                    self.env['sale.order.line'].create(vals)
         return sale_order

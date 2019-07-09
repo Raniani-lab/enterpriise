@@ -46,7 +46,7 @@ class Task(models.Model):
     material_line_ids = fields.One2many('product.task.map', 'task_id')
     product_template_ids = fields.Many2many(related='project_id.product_template_ids')
     material_line_product_count = fields.Integer(compute='_compute_material_line_product_count')
-    material_line_total_price = fields.Integer(compute='_compute_material_line_total_price')
+    material_line_total_price = fields.Float(compute='_compute_material_line_total_price')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     fsm_state = fields.Selection([('draft', 'New'), ('validated', 'Validated'), ('sold', 'Sold')], default='draft', string='Status', readonly=True)
     partner_email = fields.Char(related='partner_id.email', string='Customer Email', readonly=False)

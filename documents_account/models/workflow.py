@@ -40,7 +40,7 @@ class WorkflowActionRuleAccount(models.Model):
                     body = "<p>created from Documents app</p>"
                     # the 'no_document' key in the context indicates that this ir_attachment has already a
                     # documents.document and a new document shouldn't be automatically generated.
-                    new_obj.with_context(no_document=True).message_post(body=body, attachment_ids=[document.attachment_id.id])
+                    new_obj.with_context(no_document=True, default_journal_id=journal.id, default_type=invoice_type).message_post(body=body, attachment_ids=[document.attachment_id.id])
 
                     document.attachment_id.with_context(no_document=True).write({
                         'res_model': 'account.move',

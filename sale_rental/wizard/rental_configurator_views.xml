@@ -19,7 +19,7 @@
                     </div>
                     <label for="duration"/>
                     <div>
-                      <field name="duration_display" class="oe_inline"/>
+                      <field name="duration" class="oe_inline"/>
                       <field name="duration_unit" class="oe_inline col-lg-4" readonly="1"/>
                     </div>
                 </group>

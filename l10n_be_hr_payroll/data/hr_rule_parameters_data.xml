@@ -289,5 +289,37 @@
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_coeff"/>
             <field name="date_from" eval="datetime(2017, 1, 1).date()"/>
         </record>
+
+        <record id="rule_parameter_ip_first_bracket" model="hr.rule.parameter">
+            <field name="name">IP: First deduction bracket</field>
+            <field name="code">ip_deduction_bracket_1</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_ip_first_bracket_2018" model="hr.rule.parameter.value">
+            <field name="parameter_value">15660</field>
+            <field name="rule_parameter_id" ref="rule_parameter_ip_first_bracket"/>
+            <field name="date_from" eval="datetime(2018, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_ip_first_bracket_2019" model="hr.rule.parameter.value">
+            <field name="parameter_value">15990</field>
+            <field name="rule_parameter_id" ref="rule_parameter_ip_first_bracket"/>
+            <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_ip_second_bracket" model="hr.rule.parameter">
+            <field name="name">IP: First deduction bracket</field>
+            <field name="code">ip_deduction_bracket_2</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_ip_second_bracket_2018" model="hr.rule.parameter.value">
+            <field name="parameter_value">31320</field>
+            <field name="rule_parameter_id" ref="rule_parameter_ip_second_bracket"/>
+            <field name="date_from" eval="datetime(2018, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_ip_second_bracket_2019" model="hr.rule.parameter.value">
+            <field name="parameter_value">31990</field>
+            <field name="rule_parameter_id" ref="rule_parameter_ip_second_bracket"/>
+            <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
+        </record>
     </data>
 </odoo>

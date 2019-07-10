@@ -149,6 +149,7 @@
         <field name="arch" type="xml">
             <form string="SLA Policy">
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
@@ -468,6 +469,7 @@
                         options="{'clickable': '1', 'fold_field': 'fold'}"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="sla_active" invisible="1"/>
                     <field name="partner_tickets" invisible="1"/>
                     <div class="oe_button_box" name="button_box">

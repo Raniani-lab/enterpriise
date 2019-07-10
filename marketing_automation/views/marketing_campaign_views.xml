@@ -68,6 +68,7 @@
                     </p>
                 </div>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div name="button_box" class="oe_button_box">
                         <button name="action_view_mailings" type="object" icon="fa-envelope-open-o" class="oe_stat_button">
                             <field name="mass_mailing_count" widget="statinfo" string="Mailings"/>

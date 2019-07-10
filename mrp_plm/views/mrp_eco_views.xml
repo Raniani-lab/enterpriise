@@ -433,6 +433,7 @@
                     <button name="open_new_routing" type="object" attrs="{'invisible': [('new_routing_id', '=', False)]}" string="Update Routing"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="action_see_attachments" type="object" icon="fa-book" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}">
                             <field string="Attachments" name="mrp_document_count" widget="statinfo"/>

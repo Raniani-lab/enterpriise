@@ -41,6 +41,7 @@
                 <button name="%(project_forecast_repeat_forecast_wizard)d" class="btn btn-primary" type="action" string="repeat" attrs="{'invisible': ['|' ,('recurrency_id', '!=', False), ('id', '=', False)]}" />
             </header>
             <sheet string="Project Forecast">
+                <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                 <field name="active" invisible="1"/>
                 <field name="recurrency_id" invisible='1'></field>
                 <group>

@@ -66,6 +66,7 @@
         <field name="arch" type="xml">
             <form string="team search" class="oe_form_configuration">
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box"/>
                     <div class="oe_title" id='title'>
                         <label for="name" class="oe_edit_only"/>

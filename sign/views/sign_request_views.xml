@@ -87,6 +87,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="sent,signed"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
                         <button type="object" name="go_to_document" class="oe_read_only oe_stat_button" icon="fa-pencil">
                             <div class="o_field_widget o_stat_info">

@@ -30,6 +30,7 @@
                     The account from the selected Journal Items is not configured to generate deferred revenues.
                 </div>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '=', 'model')]}">
                         <button class="oe_stat_button" name="open_entries"  type="object" icon="fa-pencil">
                             <field string="Posted Entries" name="depreciation_entries_count" widget="statinfo" />
@@ -51,6 +52,7 @@
                         <group>
                             <field name="first_depreciation_date" attrs="{'invisible': [('state', '=', 'model')]}"/>
                             <field name="asset_type" invisible="1"/>
+                            <field name="active" invisible="1"/>
                             <field name="account_asset_id" attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '=', 'sale')], 'required': [('state', '=', 'model')]}"/>
                             <field name="account_depreciation_id" required="1"/>
                             <field name="account_depreciation_expense_id" required="1"/>

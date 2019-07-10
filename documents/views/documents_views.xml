@@ -169,9 +169,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <group>
                         <group>
                             <field name="name" required="True"/>
+                            <field name="active" invisible="1"/>
                             <field name="folder_id"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="datas" filename="name" attrs="{'invisible':[('type','=','url')]}"/>

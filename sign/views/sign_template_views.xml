@@ -81,6 +81,7 @@
                     <button name="%(sign.action_sign_template_share)d" string="Share" type="action" attrs="{'invisible': [('responsible_count', '&gt;', 1)]}"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
                         <button string="Edit fields" icon="fa-wrench" type="object" name="go_to_custom_template" class="oe_stat_button"/>
                     </div>

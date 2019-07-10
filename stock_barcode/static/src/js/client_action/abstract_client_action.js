@@ -28,6 +28,7 @@ var ClientAction = AbstractAction.extend({
         next_page: '_onNextPage',
         previous_page: '_onPreviousPage',
         reload: '_onReload',
+        listen_to_barcode_scanned: '_onListenToBarcodeScanned',
     },
 
     init: function (parent, action) {
@@ -1602,6 +1603,20 @@ var ClientAction = AbstractAction.extend({
                 clear_breadcrumbs: true,
             });
         });
+    },
+
+    /**
+     * Handles the 'listen_to_barcode_scanned' OdooEvent.
+     *
+     * @private
+     * @param {OdooEvent} ev ev.data.listen
+     */
+    _onListenToBarcodeScanned: function (ev) {
+        if (ev.data.listen) {
+            core.bus.on('barcode_scanned', this, this._onBarcodeScannedHandler);
+        } else {
+            core.bus.off('barcode_scanned', this, this._onBarcodeScannedHandler);
+        }
     },
 
 });

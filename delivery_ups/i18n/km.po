@@ -237,7 +237,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "ផ្ទេរ"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0

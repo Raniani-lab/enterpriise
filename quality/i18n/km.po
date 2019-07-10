@@ -118,7 +118,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__color
 msgid "Color"
-msgstr ""
+msgstr "ព័ណ៍"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_tag__color
@@ -364,7 +364,7 @@ msgstr "ផ្លាស់ប្តូរចុងក្រោយ"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Lot"
-msgstr ""
+msgstr "ច្រើន"
 
 #. module: quality
 #: selection:quality.alert,priority:0
@@ -664,7 +664,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
 msgid "Stage"
-msgstr ""
+msgstr "ដំណាក់កាល"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state

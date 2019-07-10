@@ -381,7 +381,7 @@ msgstr "លំដាប់"
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Skip"
-msgstr ""
+msgstr "រំលងចោល"
 
 #. module: iot
 #. openerp-web

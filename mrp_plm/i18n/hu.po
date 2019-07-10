@@ -115,6 +115,11 @@ msgid ""
 "                        Use this feature to store any files, like drawings or specifications.\n"
 "                    </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                        Töltsön fel fájlokat a termékhez\n"
+"                    </p><p>\n"
+"                        Használja ezt a funkciót bármilyen fájl tárolására, mint pl. rajzok vagy leírások.\n"
+"                    </p>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -360,7 +365,7 @@ msgstr "Anyagjegyzék"
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom_line
 msgid "Bill of Material Line"
-msgstr ""
+msgstr "Anyagjegyzék sor"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:155
@@ -515,12 +520,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__operation_change
 msgid "Consumed in Operation"
-msgstr ""
+msgstr "Felhasználva műveletben"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid "Create a bill of materials"
-msgstr ""
+msgstr "Anyagjegyzék létrehozása"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action

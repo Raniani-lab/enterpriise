@@ -727,7 +727,7 @@ msgstr "ផ្លាស់ប្តូរចុងក្រោយ"
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
 msgid "Logo"
-msgstr ""
+msgstr "រូបសញ្ញា"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common

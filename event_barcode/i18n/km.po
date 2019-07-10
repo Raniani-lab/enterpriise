@@ -40,7 +40,7 @@ msgstr ""
 #: code:addons/event_barcode/controllers/main.py:18
 #, python-format
 msgid "Attendee"
-msgstr ""
+msgstr "ចូលរួម"
 
 #. module: event_barcode
 #. openerp-web
@@ -133,7 +133,7 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:104
 #, python-format
 msgid "View"
-msgstr ""
+msgstr "មើល"
 
 #. module: event_barcode
 #. openerp-web

@@ -198,8 +198,11 @@ class UPSRequest():
                 return _("The estimated price cannot be computed because the weight of your product is missing.")
         if picking:
             phone = ship_to.mobile or ship_to.phone or picking.sale_id.partner_id.mobile or picking.sale_id.partner_id.phone
-            for move in picking.move_lines.filtered(lambda move: not move.product_id.weight):
+            for ml in picking.move_line_ids.filtered(lambda ml: not ml.result_package_id and not ml.product_id.weight):
                 return _("The delivery cannot be done because the weight of your product is missing.")
+            packages_without_weight = picking.move_line_ids.mapped('result_package_id').filtered(lambda p: not p.shipping_weight)
+            if packages_without_weight:
+                return _('Packages %s do not have a positive shipping weight.') % (', '.join(packages_without_weight.mapped('display_name')))
         if not phone:
             res.append('Phone')
         if res:

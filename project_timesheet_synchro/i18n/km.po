@@ -361,7 +361,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:555
 #, python-format
 msgid "Password"
-msgstr ""
+msgstr "លេខសំងាត់"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -438,7 +438,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:116
 #, python-format
 msgid "Run"
-msgstr ""
+msgstr "រត់"
 
 #. module: project_timesheet_synchro
 #. openerp-web

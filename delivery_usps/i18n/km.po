@@ -206,7 +206,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Package"
-msgstr ""
+msgstr "កញ្ជប់"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
@@ -322,7 +322,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_size_container:0
 msgid "Regular"
-msgstr ""
+msgstr "ទៀងទាត់"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_container:0

@@ -113,7 +113,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0
 msgid "Not done"
-msgstr ""
+msgstr "មិនទាន់រួចរាល់ទេ"
 
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0

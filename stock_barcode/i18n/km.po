@@ -260,7 +260,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__lot_name
 msgid "Lot"
-msgstr ""
+msgstr "ច្រើន"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:109
@@ -629,7 +629,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 msgid "To"
-msgstr ""
+msgstr "ទៅ"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -646,7 +646,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "ផ្ទេរ"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
@@ -669,7 +669,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_barcode_lot___barcode_scanned
 msgid "Value of the last barcode scanned."
-msgstr ""
+msgstr "តម្លៃនៃកូដឌីតចុងក្រោយត្រូវបានស្កេន។"
 
 #. module: stock_barcode
 #. openerp-web

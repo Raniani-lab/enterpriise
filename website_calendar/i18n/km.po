@@ -103,7 +103,7 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> hours</span>"
-msgstr ""
+msgstr "<span>ម៉ោង</span>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -276,7 +276,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
 msgid "Calendar"
-msgstr ""
+msgstr "ប្រតិទិន្ន"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
@@ -356,7 +356,7 @@ msgstr "បង្កើតនៅ"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Declined"
-msgstr ""
+msgstr "បដិសេធ"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -410,12 +410,12 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Fri"
-msgstr ""
+msgstr "ថ្ងៃស្រុក"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Friday"
-msgstr ""
+msgstr "ថ្ងៃសុក្រ"
 
 #. module: website_calendar
 #: model_terms:calendar.appointment.type,message_intro:website_calendar.calendar_appointment
@@ -515,7 +515,7 @@ msgstr "ផ្លាស់ប្តូរចុងក្រោយ"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__location
 msgid "Location"
-msgstr ""
+msgstr "តំបន់"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__location
@@ -551,12 +551,12 @@ msgstr "សារ"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Mon"
-msgstr ""
+msgstr "ថ្ងៃចន្ទ័"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Monday"
-msgstr ""
+msgstr "ថ្ងៃចន័័្ទ"
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
@@ -694,7 +694,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__reminder_ids
 msgid "Reminders"
-msgstr ""
+msgstr "ការរំលឹក"
 
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report
@@ -719,12 +719,12 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Sat"
-msgstr ""
+msgstr "សៅរ"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Saturday"
-msgstr ""
+msgstr "ថ្ងៃសៅរ៌"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -800,12 +800,12 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Thu"
-msgstr ""
+msgstr "ប្រហស្បត៌"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Thursday"
-msgstr ""
+msgstr "ថ្ងៃប្រហស្បត៌"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -841,12 +841,12 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Tue"
-msgstr ""
+msgstr "ពុធ"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Tuesday"
-msgstr ""
+msgstr "ថ្ងៃពុធ"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_unread
@@ -913,7 +913,7 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Wed"
-msgstr ""
+msgstr "ពុធ"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
@@ -949,7 +949,7 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Email"
-msgstr ""
+msgstr "អ៊ីម៉ែលរបស់អ្នក"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form

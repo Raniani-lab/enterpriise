@@ -2043,6 +2043,7 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
+        extra_trigger: '.o_barcode_message:contains("Scan products")',
         trigger: '.o_barcode_client_action',
         run: 'scan O-BTN.validate',
     },
@@ -2422,6 +2423,10 @@ tour.register('test_pack_multiple_location', {test: true}, [
         run: function () {
             assertQuantsCount(2);
         },
+    },
+
+    {
+        trigger: '.o_close',
     },
 
     {

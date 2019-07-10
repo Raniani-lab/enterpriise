@@ -514,7 +514,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:425
 #, python-format
 msgid "Template"
-msgstr ""
+msgstr "គំរូ"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -542,7 +542,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:242
 #, python-format
 msgid "Update"
-msgstr ""
+msgstr "ធ្វើបច្ចុប្បន្នភាព"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -586,7 +586,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:33
 #, python-format
 msgid "name"
-msgstr ""
+msgstr "ឈ្មោះ"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

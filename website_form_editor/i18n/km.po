@@ -119,7 +119,7 @@ msgstr ""
 #. module: website_form_editor
 #: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Selection"
-msgstr ""
+msgstr "ជ្រើសរើស"
 
 #. module: website_form_editor
 #: model_terms:ir.ui.view,arch_db:website_form_editor.s_website_form

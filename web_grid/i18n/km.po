@@ -41,13 +41,13 @@ msgstr ""
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_base
 msgid "Base"
-msgstr ""
+msgstr "មូលដ្ឋាន"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Calendar"
-msgstr ""
+msgstr "ប្រតិទិន្ន"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:201
@@ -71,7 +71,7 @@ msgstr ""
 #. module: web_grid
 #: selection:ir.ui.view,type:0
 msgid "Diagram"
-msgstr ""
+msgstr "ដ្យាក្រាម"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -197,13 +197,13 @@ msgstr ""
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "មើល"
 
 #. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_grid.field_ir_ui_view__type
 msgid "View Type"
-msgstr ""
+msgstr "មើលប្រភេទ"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:244

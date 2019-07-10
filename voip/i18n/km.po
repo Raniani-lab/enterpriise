@@ -44,7 +44,7 @@ msgstr "សកម្មភាព"
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
 msgid "Activity Type"
-msgstr ""
+msgstr "ប្រភេទសកម្មភាព"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_always_transfer
@@ -140,7 +140,7 @@ msgstr "បានលុបចោល"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_mail_activity_type__category
 msgid "Categories may trigger specific behavior like opening calendar view"
-msgstr ""
+msgstr "ប្រភេទអាចបង្កឱ្យមានឥរិយាបថជាក់លាក់ដូចជាបើកទិដ្ឋភាពប្រតិទិន"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
@@ -249,7 +249,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__duration
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__duration
 msgid "Duration"
-msgstr ""
+msgstr "អំឡុងពេល"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__duration
@@ -406,7 +406,7 @@ msgstr ""
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Meeting"
-msgstr ""
+msgstr "ប្រជុំ"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__mobile
@@ -475,7 +475,7 @@ msgstr ""
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Other"
-msgstr ""
+msgstr "ផ្សេអទៀត"
 
 #. module: voip
 #: selection:voip.phonecall,type:0
@@ -636,7 +636,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:121
 #, python-format
 msgid "Send mail"
-msgstr ""
+msgstr "ការផ្ងើអ៊ីម៉ែល"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__sequence
@@ -733,7 +733,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "To Do"
-msgstr ""
+msgstr "ដើម្បីធ្វើ"
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
@@ -745,7 +745,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:159
 #, python-format
 msgid "Transfer"
-msgstr ""
+msgstr "ផ្ទេរ"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__transfer_choice

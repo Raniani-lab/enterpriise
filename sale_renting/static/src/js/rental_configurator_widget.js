@@ -108,6 +108,7 @@ ProductConfiguratorWidget.include({
         }
 
         data.default_quantity = this.recordData.product_uom_qty;
+        data.default_pricelist_id = this.record.evalContext.parent.pricelist_id;
 
         /** Default pickup/return dates are based on previous lines dates if some exists */
 

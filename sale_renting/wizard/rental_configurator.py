@@ -39,12 +39,13 @@ class RentalWizard(models.TransientModel):
     unit_price = fields.Monetary(
         string="Unit Price", help="Best unit price for specified duration (less expensive).",
         readonly=False, default=0.0, required=True)
+    pricelist_id = fields.Many2one('product.pricelist', string='Pricelist')
 
     @api.depends('pickup_date', 'return_date')
     def _compute_pricing(self):
         for wizard in self:
             if wizard.product_id:
-                wizard.pricing_id = wizard.product_id._get_best_pricing_rule(pickup_date=wizard.pickup_date, return_date=wizard.return_date)
+                wizard.pricing_id = wizard.product_id._get_best_pricing_rule(pickup_date=wizard.pickup_date, return_date=wizard.return_date, pricelist=wizard.pricelist_id)
 
     @api.depends('pricing_id', 'pickup_date', 'return_date')
     def _compute_duration(self):

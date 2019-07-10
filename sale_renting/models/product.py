@@ -101,6 +101,7 @@ class ProductProduct(models.Model):
             return self.env['rental.pricing']
         pickup_date, return_date = kwargs.get('pickup_date', False), kwargs.get('return_date', False)
         duration, unit = kwargs.get('duration', False), kwargs.get('unit', '')
+        pricelist = kwargs.get('pricelist', False)
         if pickup_date and return_date:
             duration_dict = self.env['rental.pricing']._compute_duration_vals(pickup_date, return_date)
         elif not(duration and unit):
@@ -108,7 +109,7 @@ class ProductProduct(models.Model):
         min_price = float("inf")  # positive infinity
         best_pricing_rule = self.env['rental.pricing']
         for pricing in self.rental_pricing_ids:
-            if pricing.applies_to(self):
+            if pricing.applies_to(self) and (not pricelist or not pricing.pricelist_id or pricing.pricelist_id == pricelist):
                 if duration and unit:
                     price = pricing._compute_price(duration, unit)
                 else:

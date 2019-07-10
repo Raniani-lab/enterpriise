@@ -442,7 +442,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             params: {
                 'public_transport_employee_amount': parseFloat($("input[name='public_transport_employee_amount']")[0].value) || 0.0,
             },
-        }).then(function(data) {
+        }).then(function(amount) {
             $("input[name='public_transport_reimbursed_amount']").val(amount);
         });
     },

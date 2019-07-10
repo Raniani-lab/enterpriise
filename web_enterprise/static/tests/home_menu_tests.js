@@ -138,7 +138,7 @@ QUnit.module('web_enterprise', {
         assert.expect(2);
 
         var homeMenu = new HomeMenu(parent, this.data);
-        homeMenu.appendTo($('#qunit-fixture'));
+        await homeMenu.appendTo($('#qunit-fixture'));
         homeMenu.on_attach_callback();
 
         await testUtils.dom.click(homeMenu.$('input.o_menu_search_input').focus());

@@ -107,8 +107,7 @@ class HmrcService(models.AbstractModel):
 
     @api.model
     def _get_state(self, userlogin):
-        report_id = self.env.ref('l10n_uk_reports.financial_report_l10n_uk').id
-        action = self.env.ref('l10n_uk_reports.account_financial_html_report_action_' + str(report_id))
+        action = self.env.ref('account_reports.action_account_report_gt')
         # Search your own host
         url = request.httprequest.scheme + '://' + request.httprequest.host
         return json.dumps({

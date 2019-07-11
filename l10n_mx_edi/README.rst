@@ -1,11 +1,18 @@
-=======================================================
-Odoo Mexico Localization for Invoice with Custom Number
-=======================================================
+========================
+EDI Mexican Localization
+========================
 
-This module extends the functionality of Mexican localization to support customs numbers when you generate the electronic invoice.
+Allow the user to generate the EDI document for Mexican invoicing.
+
+This module allows the creation of the EDI documents and the communication with the Mexican certification providers (PACs) to sign/cancel them.
 
 Usage
 =====
+
+Odoo Mexico Localization for Invoice with Custom Number
+-------------------------------------------------------
+
+This module extends the functionality of Mexican localization to support customs numbers when you generate the electronic invoice.
 
 To use this module, you need to:
 

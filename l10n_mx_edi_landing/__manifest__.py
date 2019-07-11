@@ -11,7 +11,7 @@
     'depends': [
         'stock_landed_costs',
         'sale_management',
-        'l10n_mx_edi_customs',
+        'l10n_mx_edi',
     ],
     'data': [
         'views/stock_landed_cost.xml',

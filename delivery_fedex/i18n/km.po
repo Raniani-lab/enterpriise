@@ -315,7 +315,7 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_password
 msgid "Password"
-msgstr ""
+msgstr "លេខសំងាត់"
 
 #. module: delivery_fedex
 #: model:ir.model,name:delivery_fedex.model_product_packaging

@@ -2755,7 +2755,7 @@ msgstr "Bekijk betaling"
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:173
 #, python-format
 msgid "Virtual GL Balance"
-msgstr "Virtueel grootboek saldo"
+msgstr "Virtueel grootboeksaldo"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:184

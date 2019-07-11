@@ -79,7 +79,7 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
 msgid "By Employee"
-msgstr ""
+msgstr "ដោយបុគ្គលិក"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_project
@@ -89,7 +89,7 @@ msgstr ""
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
 msgid "By day"
-msgstr ""
+msgstr "តាមថ្ងៃ"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
@@ -104,7 +104,7 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
 msgid "Color"
-msgstr ""
+msgstr "ព័ណ៍"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_company
@@ -306,7 +306,7 @@ msgstr "ខែ"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "My Activities"
-msgstr ""
+msgstr "សកម្មភាពរបស់ខ្ញុំ"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -321,7 +321,7 @@ msgstr "ឈ្មោះ"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Past"
-msgstr ""
+msgstr "អតីតកាល"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__time
@@ -450,7 +450,7 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "day(s)"
-msgstr ""
+msgstr "កាលបរិច្ឆេទ"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:109

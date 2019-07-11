@@ -144,7 +144,7 @@ msgstr ""
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "HTTP ជុំវិញ"
 
 #. module: web_enterprise
 #. openerp-web
@@ -165,7 +165,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:51
 #, python-format
 msgid "Logo"
-msgstr ""
+msgstr "រូបសញ្ញា"
 
 #. module: web_enterprise
 #. openerp-web

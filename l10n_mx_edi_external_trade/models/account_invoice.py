@@ -49,7 +49,7 @@ class AccountMove(models.Model):
         if not self.l10n_mx_edi_external_trade:
             return values
 
-        date = self.date_invoice or fields.Date.today()
+        date = self.invoice_date or fields.Date.today()
         company_id = self.company_id
         ctx = dict(company_id=company_id.id, date=date)
         customer = values['customer']

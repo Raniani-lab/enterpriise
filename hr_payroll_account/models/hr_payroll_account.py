@@ -55,6 +55,8 @@ class HrPayslip(models.Model):
     def action_payslip_done(self):
         res = super(HrPayslip, self).action_payslip_done()
 
+        move_data_list = []
+        self_with_lines = self.env['hr.payslip']
         for slip in self:
             line_ids = []
             debit_sum = 0.0
@@ -134,9 +136,14 @@ class HrPayslip(models.Model):
                 })
                 line_ids.append(adjust_debit)
             move_dict['line_ids'] = line_ids
-            move = self.env['account.move'].create(move_dict)
-            slip.write({'move_id': move.id, 'date': date})
-            move.post()
+            if line_ids:  # It doesn't make sense to create a move without lines
+                move_data_list.append(move_dict)
+                self_with_lines += slip
+
+        moves = self.env['account.move'].create(move_data_list)
+        for move, slip in zip(moves, self_with_lines):
+            slip.write({'move_id': move.id, 'date': move.date})
+        moves.post()
         return res
 
 

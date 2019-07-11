@@ -8,10 +8,10 @@ from dateutil import relativedelta
 
 from odoo import fields, tools
 from odoo.modules.module import get_module_resource
-from odoo.tests import common
+from odoo.addons.hr_payroll.tests.common import TestPayslipContractBase
 
 
-class TestHrPayrollAccount(common.TransactionCase):
+class TestHrPayrollAccount(TestPayslipContractBase):
 
     def _load(self, module, *args):
         tools.convert_file(
@@ -58,6 +58,8 @@ class TestHrPayrollAccount(common.TransactionCase):
             'employee_id': self.hr_employee_john.id,
             'journal_id': self.ref('hr_payroll_account.expenses_journal'),
             'name': 'Test Payslip',
+            'struct_id': self.developer_pay_structure.id,
+            'contract_id': self.hr_contract_john.id,
         })
 
     def test_00_hr_payslip(self):

@@ -17,7 +17,7 @@
               <field name="order_line_id" invisible="1"/>
               <field name="rental_order_wizard_id" invisible="1"/>
               <field name="qty_reserved" readonly="1" attrs="{'column_invisible':[('parent.status', '=', 'return')]}"/>
-              <field name="qty_picked_up" attrs="{'readonly':[('parent.status', '=', 'return')]}" force_save="1"/>
+              <field name="qty_delivered" attrs="{'readonly':[('parent.status', '=', 'return')]}" force_save="1"/>
               <field name="qty_returned" attrs="{'column_invisible':[('parent.status', '=', 'pickup')]}"/> <!-- Should we show the qty returned at pickup if part of the rental has been returned? -->
               <field name="is_late" invisible="1"/>
               <field name="status" invisible="1"/>

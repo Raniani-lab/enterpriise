@@ -11,7 +11,7 @@
         <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='is_product_rentable']" position='after'>
             <field name="tracking" invisible="1"/>
         </xpath>
-        <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='qty_picked_up']" position='attributes'>
+        <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='qty_delivered']" position='attributes'>
           <attribute name="attrs">{
               'column_invisible': ['|', ('parent.state', 'not in', ['sale', 'done']), ('parent.is_rental_order', '=', False)],
               'invisible': ['|', ('is_rental', '=', False), ('is_product_rentable', '=', False)],
@@ -19,7 +19,7 @@
               }
           </attribute>
         </xpath>
-        <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='qty_delivered']" position='attributes'>
+        <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='qty_returned']" position='attributes'>
           <attribute name="attrs">{
               'column_invisible': [('parent.state', 'not in', ['sale', 'done'])],
               'readonly': ['|', ('qty_delivered_method', '!=', 'manual'),

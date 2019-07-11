@@ -13,7 +13,7 @@ class RentalProcessing(models.TransientModel):
     rental_wizard_line_ids = fields.One2many('rental.order.wizard.line', 'rental_order_wizard_id')
     status = fields.Selection(
         selection=[
-            ('pickup', 'Pickup'),
+            ('pickup', 'Delivery'),
             ('return', 'Return'),
         ],
     )
@@ -69,8 +69,8 @@ class RentalProcessingLine(models.TransientModel):
             'order_line_id': line.id,
             'product_id': line.product_id.id,
             'qty_reserved': line.product_uom_qty,
-            'qty_picked_up': line.qty_picked_up if status == 'return' else line.product_uom_qty - line.qty_picked_up,
-            'qty_returned': line.qty_delivered if status == 'pickup' else line.qty_picked_up - line.qty_delivered,
+            'qty_delivered': line.qty_delivered if status == 'return' else line.product_uom_qty - line.qty_delivered,
+            'qty_returned': line.qty_returned if status == 'pickup' else line.qty_delivered - line.qty_returned,
             'is_late': line.is_late and delay_price > 0
         }
 
@@ -80,16 +80,16 @@ class RentalProcessingLine(models.TransientModel):
     order_line_id = fields.Many2one('sale.order.line', required=True, on_delete='cascade')
     product_id = fields.Many2one('product.product', string='Product', required=True, on_delete='cascade')
     qty_reserved = fields.Float("Reserved")
-    qty_picked_up = fields.Float("Picked-up")
+    qty_delivered = fields.Float("Delivered")
     qty_returned = fields.Float("Returned")
 
     is_late = fields.Boolean(default=False)  # make related on sol is_late ?
 
-    @api.constrains('qty_returned', 'qty_picked_up')
+    @api.constrains('qty_returned', 'qty_delivered')
     def _only_pickedup_can_be_returned(self):
         for wizard_line in self:
-            if wizard_line.status == 'return' and wizard_line.qty_returned > wizard_line.qty_picked_up:
-                raise ValidationError(_("You can't return more than what's been picked-up."))
+            if wizard_line.status == 'return' and wizard_line.qty_returned > wizard_line.qty_delivered:
+                raise ValidationError(_("You can't return more than what's been delivered."))
 
     def _apply(self):
         """Apply the wizard modifications to the SaleOrderLine.
@@ -100,10 +100,10 @@ class RentalProcessingLine(models.TransientModel):
         msg = self._generate_log_message()
         for wizard_line in self:
             order_line = wizard_line.order_line_id
-            if wizard_line.status == 'pickup' and wizard_line.qty_picked_up > 0:
+            if wizard_line.status == 'pickup' and wizard_line.qty_delivered > 0:
                 order_line.update({
-                    'product_uom_qty': max(order_line.product_uom_qty, order_line.qty_picked_up + wizard_line.qty_picked_up),
-                    'qty_picked_up': order_line.qty_picked_up + wizard_line.qty_picked_up
+                    'product_uom_qty': max(order_line.product_uom_qty, order_line.qty_delivered + wizard_line.qty_delivered),
+                    'qty_delivered': order_line.qty_delivered + wizard_line.qty_delivered
                 })
                 if order_line.pickup_date > fields.Datetime.now():
                     order_line.pickup_date = fields.Datetime.now()
@@ -114,7 +114,7 @@ class RentalProcessingLine(models.TransientModel):
                     order_line._generate_delay_line(wizard_line.qty_returned)
 
                 order_line.update({
-                    'qty_delivered': order_line.qty_delivered + wizard_line.qty_returned
+                    'qty_returned': order_line.qty_returned + wizard_line.qty_returned
                 })
         return msg
 
@@ -127,9 +127,9 @@ class RentalProcessingLine(models.TransientModel):
         self.ensure_one()
         order_line = self.order_line_id
         if self.status == 'pickup':
-            return self.qty_picked_up, order_line.qty_picked_up, order_line.qty_picked_up + self.qty_picked_up
+            return self.qty_delivered, order_line.qty_delivered, order_line.qty_delivered + self.qty_delivered
         else:
-            return self.qty_returned, order_line.qty_delivered, order_line.qty_delivered + self.qty_returned
+            return self.qty_returned, order_line.qty_returned, order_line.qty_returned + self.qty_returned
 
     def _generate_log_message(self):
         msg = ""

@@ -115,7 +115,7 @@
       <field name="product_uom" ref="uom.product_uom_unit"/>
       <field name="name" eval="'[RENT003] Printer'"/>
       <field name="is_rental" eval="True"/>
-      <!--<field name="qty_picked_up">1</field>-->
+      <!--<field name="qty_delivered">1</field>-->
       <!--<field name="pickedup_lot_ids" eval="[(6,0,[ref('rental_stock_lot_3')])]"/>-->
       <field name="pickup_date" eval="DateTime.today() + relativedelta(days=1)"/>
       <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>

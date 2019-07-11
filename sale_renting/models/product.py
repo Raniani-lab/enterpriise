@@ -72,10 +72,10 @@ class ProductProduct(models.Model):
         """
         active_rental_lines = self.env['sale.order.line'].read_group(
             domain=self._get_qty_in_rent_domain(),
-            fields=['product_id', 'qty_picked_up:sum', 'qty_delivered:sum'],
+            fields=['product_id', 'qty_delivered:sum', 'qty_returned:sum'],
             groupby=['product_id'],
         )
-        res = dict((data['product_id'][0], data['qty_picked_up'] - data['qty_delivered']) for data in active_rental_lines)
+        res = dict((data['product_id'][0], data['qty_delivered'] - data['qty_returned']) for data in active_rental_lines)
         for product in self:
             product.qty_in_rent = res.get(product.id, 0)
 

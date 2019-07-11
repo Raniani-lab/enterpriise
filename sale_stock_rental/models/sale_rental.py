@@ -21,7 +21,7 @@ class RentalOrderLine(models.Model):
     def write(self, vals):
         """Move product quantities on pickup/return in case of rental orders.
 
-        When qty_picked_up or qty_delivered are changed (and/or pickedup_lot_ids/returned_lot_ids),
+        When qty_delivered or qty_returned are changed (and/or pickedup_lot_ids/returned_lot_ids),
         we need to move those quants to make sure they aren't seen as available in the stock.
         For quantities, the quantity is requested in the warehouse (self.order_id.warehouse_id) through stock move generation.
         For serial numbers(lots), lots are found one by one and then a stock move is generated based on the quant location itself.
@@ -31,7 +31,7 @@ class RentalOrderLine(models.Model):
 
         When quantity/lots are decreased/removed, we decrease the quantity in the stock moves made by previous corresponding write call.
         """
-        if not any(key in vals for key in ['qty_picked_up', 'pickedup_lot_ids', 'qty_delivered', 'returned_lot_ids']):
+        if not any(key in vals for key in ['qty_delivered', 'pickedup_lot_ids', 'qty_returned', 'returned_lot_ids']):
             # If nothing to catch for rental: usual write behavior
             return super(RentalOrderLine, self).write(vals)
 
@@ -39,7 +39,7 @@ class RentalOrderLine(models.Model):
         old_vals = dict()
         movable_confirmed_rental_lines = self.filtered(lambda sol: sol.is_rental and sol.state in ['sale', 'done'] and sol.product_id.type in ["product", "consu"])
         for sol in movable_confirmed_rental_lines:
-            old_vals[sol.id] = (sol.pickedup_lot_ids, sol.returned_lot_ids) if sol.product_id.tracking == 'serial' else (sol.qty_picked_up, sol.qty_delivered)
+            old_vals[sol.id] = (sol.pickedup_lot_ids, sol.returned_lot_ids) if sol.product_id.tracking == 'serial' else (sol.qty_delivered, sol.qty_returned)
             if vals.get('pickedup_lot_ids', False) and vals['pickedup_lot_ids'][0][0] == 6:
                 pickedup_lot_ids = vals['pickedup_lot_ids'][0][2]
                 if sol.product_uom_qty == len(pickedup_lot_ids) and pickedup_lot_ids != sol.reserved_lot_ids.ids:
@@ -73,21 +73,21 @@ class RentalOrderLine(models.Model):
                     removed_returned_lots = old_vals[sol.id][1] - sol.returned_lot_ids
                     sol._move_serials(returned_lots, rented_location, stock_location)
                     sol._return_serials(removed_returned_lots, stock_location, rented_location)
-            elif sol.product_id.tracking != 'serial' and (vals.get('qty_picked_up', False) or vals.get('qty_delivered', False)):
+            elif sol.product_id.tracking != 'serial' and (vals.get('qty_delivered', False) or vals.get('qty_returned', False)):
                 # for products not tracked : move quantities
-                qty_picked_up_change = sol.qty_picked_up - old_vals[sol.id][0]
-                qty_delivered_change = sol.qty_delivered - old_vals[sol.id][1]
-                if qty_picked_up_change > 0:
-                    sol._move_qty(qty_picked_up_change, stock_location, rented_location)
-                elif qty_picked_up_change < 0:
-                    sol._return_qty(-qty_picked_up_change, stock_location, rented_location)
+                qty_delivered_change = sol.qty_delivered - old_vals[sol.id][0]
+                qty_returned_change = sol.qty_returned - old_vals[sol.id][1]
+                if qty_delivered_change > 0:
+                    sol._move_qty(qty_delivered_change, stock_location, rented_location)
+                elif qty_delivered_change < 0:
+                    sol._return_qty(-qty_delivered_change, stock_location, rented_location)
 
-                if qty_delivered_change > 0.0:
-                    sol._move_qty(qty_delivered_change, rented_location, stock_location)
-                elif qty_delivered_change < 0.0:
-                    sol._return_qty(-qty_delivered_change, rented_location, stock_location)
+                if qty_returned_change > 0.0:
+                    sol._move_qty(qty_returned_change, rented_location, stock_location)
+                elif qty_returned_change < 0.0:
+                    sol._return_qty(-qty_returned_change, rented_location, stock_location)
 
-        # TODO constraint s.t. qty_returned cannot be > than qty_picked_up (and same for lots)
+        # TODO constraint s.t. qty_returned cannot be > than qty_delivered (and same for lots)
         return res
 
     def _move_serials(self, lot_ids, location_id, location_dest_id):

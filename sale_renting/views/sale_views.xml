@@ -13,7 +13,7 @@
           <field name="rental_status" invisible="1"/>
         </xpath>
         <xpath expr="//button[@name='action_quotation_send']" position="before">
-          <button name="open_pickup" type="object" class="btn-primary" string="PICKUP"
+          <button name="open_pickup" type="object" class="btn-primary" string="DELIVER"
             attrs="{'invisible':['|', ('has_pickable_lines','=',False), ('state', 'not in', ['sale', 'done'])]}"/>
           <button name="open_return" type="object" class="btn-primary" string="RETURN"
             attrs="{'invisible':['|',
@@ -42,11 +42,11 @@
           <div class="badge-pill badge-info float-right"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),
-              '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>
+              '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Delivery</div>
           <div class="badge-pill badge-warning float-right"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),
-              '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-Up</div>
+              '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Delivered</div>
           <div class="badge-pill badge-danger float-right"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),
@@ -58,15 +58,21 @@
         <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_uom_qty']" position='after'>
           <field name="is_rental" invisible="1"/>
           <field name="is_product_rentable" invisible="1"/>
-          <field name="qty_picked_up"
-            attrs="{
-                'column_invisible': ['|', ('parent.state', 'not in', ['sale', 'done']), ('parent.is_rental_order', '=', False)],
-                'invisible': ['|', ('is_rental', '=', False), ('is_product_rentable', '=', False)]
-            }"
-            />
           <field name="pickup_date" invisible="1"/>
           <field name="return_date" invisible="1"/>
           <field name="rental_updatable" invisible="1"/>
+        </xpath>
+        <xpath expr="//field[@name='order_line']//tree//field[@name='qty_delivered']" position="attributes">
+            <attribute name="attrs">{
+                'column_invisible': ['|', ('parent.state', 'not in', ['sale', 'done']), ('parent.is_rental_order', '=', False)],
+                'invisible': ['|', ('is_rental', '=', False), ('is_product_rentable', '=', False)]
+                }
+            </attribute>
+        </xpath>
+        <xpath expr="//field[@name='order_line']//tree//field[@name='qty_delivered']" position="after">
+            <field name="qty_returned" attrs="{'column_invisible': ['|', ('parent.state', 'not in', ['sale', 'done']), ('parent.is_rental_order', '=', False)],
+                'invisible': ['|', ('is_rental', '=', False), ('is_product_rentable', '=', False)]
+            }"/>
         </xpath>
         <xpath expr="//field[@name='order_line']//tree//field[@name='product_id']" position="attributes">
             <attribute name="attrs">{

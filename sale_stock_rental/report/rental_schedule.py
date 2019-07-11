@@ -19,19 +19,19 @@ class RentalSchedule(models.Model):
     def _quantity(self):
         return """
             CASE WHEN lot_info.lot_id IS NULL then sum(sol.product_uom_qty / u.factor * u2.factor) ELSE 1.0 END as product_uom_qty,
-            CASE WHEN lot_info.lot_id IS NULL then sum(sol.qty_picked_up / u.factor * u2.factor)
-                WHEN lot_info.report_line_status = 'reserved' then 0.0
-                ELSE 1.0 END as qty_picked_up,
             CASE WHEN lot_info.lot_id IS NULL then sum(sol.qty_delivered / u.factor * u2.factor)
+                WHEN lot_info.report_line_status = 'reserved' then 0.0
+                ELSE 1.0 END as qty_delivered,
+            CASE WHEN lot_info.lot_id IS NULL then sum(sol.qty_returned / u.factor * u2.factor)
                 WHEN lot_info.report_line_status = 'returned' then 1.0
-                ELSE 0.0 END as qty_delivered,
+                ELSE 0.0 END as qty_returned,
         """
 
     def _report_line_status(self):
         return """
             CASE when lot_info.lot_id is NULL then
-                CASE when sol.qty_delivered = sol.qty_picked_up AND sol.qty_picked_up = sol.product_uom_qty then 'returned'
-                    when sol.qty_picked_up = sol.product_uom_qty then 'pickedup'
+                CASE when sol.qty_returned = sol.qty_delivered AND sol.qty_delivered = sol.product_uom_qty then 'returned'
+                    when sol.qty_delivered = sol.product_uom_qty then 'pickedup'
                     else 'reserved'
                 END
             ELSE lot_info.report_line_status

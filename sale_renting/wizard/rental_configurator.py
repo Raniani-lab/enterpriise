@@ -16,7 +16,7 @@ class RentalWizard(models.TransientModel):
         domain=[('rent_ok', '=', True)], help="Product to rent (has to be rentable)")
 
     pickup_date = fields.Datetime(
-        string="Pickup", required=True, help="Date of Pickup",
+        string="Deliver", required=True, help="Date of Deliver",
         default=lambda s: fields.Datetime.now() + relativedelta(minute=0, second=0, hours=1))
     return_date = fields.Datetime(
         string="Return", required=True, help="Date of Return",

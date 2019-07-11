@@ -175,7 +175,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         """
 
         self.order_line_id1.write({
-            'qty_picked_up': 3
+            'qty_delivered': 3
         })
 
         """ In sale order warehouse """
@@ -215,7 +215,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         """
 
         self.order_line_id1.write({
-            'qty_delivered': 2
+            'qty_returned': 2
         })
 
         """ In sale order warehouse """
@@ -253,7 +253,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         """
 
         self.order_line_id1.write({
-            'qty_delivered': 3
+            'qty_returned': 3
         })
 
         self.assertEquals(

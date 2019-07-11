@@ -14,7 +14,7 @@ class RentalOrder(models.Model):
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
         ('pickup', 'Reserved'),
-        ('return', 'Picked-Up'),
+        ('return', 'Delivered'),
         ('returned', 'Returned'),
         ('cancel', 'Cancelled'),
     ], string="Rental Status", compute='_compute_rental_status', store=True)
@@ -34,14 +34,14 @@ class RentalOrder(models.Model):
                 and order.rental_status in ['pickup', 'return']  # has_pickable_lines or has_returnable_lines
                 and order.next_action_date < fields.Datetime.now())
 
-    @api.depends('state', 'order_line', 'order_line.product_uom_qty', 'order_line.qty_picked_up', 'order_line.qty_delivered')
+    @api.depends('state', 'order_line', 'order_line.product_uom_qty', 'order_line.qty_delivered', 'order_line.qty_returned')
     def _compute_rental_status(self):
         # TODO replace multiple assignations by one write?
         for order in self:
             if order.state in ['sale', 'done'] and order.is_rental_order:
                 rental_order_lines = order.order_line.filtered('is_rental')
-                pickeable_lines = rental_order_lines.filtered(lambda sol: sol.qty_picked_up < sol.product_uom_qty)
-                returnable_lines = rental_order_lines.filtered(lambda sol: sol.qty_delivered < sol.qty_picked_up)
+                pickeable_lines = rental_order_lines.filtered(lambda sol: sol.qty_delivered < sol.product_uom_qty)
+                returnable_lines = rental_order_lines.filtered(lambda sol: sol.qty_returned < sol.qty_delivered)
                 min_pickup_date = min(pickeable_lines.mapped('pickup_date')) if pickeable_lines else 0
                 min_return_date = min(returnable_lines.mapped('return_date')) if returnable_lines else 0
                 if pickeable_lines and (not returnable_lines or min_pickup_date <= min_return_date):
@@ -65,14 +65,14 @@ class RentalOrder(models.Model):
         status = "pickup"
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         lines_to_pickup = self.order_line.filtered(
-            lambda r: r.state in ['sale', 'done'] and r.is_rental and float_compare(r.product_uom_qty, r.qty_picked_up, precision_digits=precision) > 0)
+            lambda r: r.state in ['sale', 'done'] and r.is_rental and float_compare(r.product_uom_qty, r.qty_delivered, precision_digits=precision) > 0)
         return self._open_rental_wizard(status, lines_to_pickup.ids)
 
     def open_return(self):
         status = "return"
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         lines_to_return = self.order_line.filtered(
-            lambda r: r.state in ['sale', 'done'] and r.is_rental and float_compare(r.qty_picked_up, r.qty_delivered, precision_digits=precision) > 0)
+            lambda r: r.state in ['sale', 'done'] and r.is_rental and float_compare(r.qty_delivered, r.qty_returned, precision_digits=precision) > 0)
         return self._open_rental_wizard(status, lines_to_return.ids)
 
     def _open_rental_wizard(self, status, order_line_ids):
@@ -82,7 +82,7 @@ class RentalOrder(models.Model):
             'default_order_id': self.id,
         }
         return {
-            'name': _('Validate a pickup') if status == 'pickup' else _('Validate a return'),
+            'name': _('Validate a deliver') if status == 'pickup' else _('Validate a return'),
             'view_mode': 'form',
             'res_model': 'rental.order.wizard',
             'type': 'ir.actions.act_window',
@@ -96,7 +96,7 @@ class RentalOrderLine(models.Model):
 
     is_rental = fields.Boolean(default=False)  # change to compute if pickup_date and return_date set?
 
-    qty_picked_up = fields.Float("Picked-up", default=0.0, copy=False)
+    qty_returned = fields.Float("Returned", default=0.0, copy=False)
     # returned_quantity = qty_delivered
 
     pickup_date = fields.Datetime(string="Pickup")
@@ -144,11 +144,11 @@ class RentalOrderLine(models.Model):
                 'return_date': False,
             })
 
-    @api.onchange('qty_picked_up')
-    def _onchange_qty_picked_up(self):
+    @api.onchange('qty_delivered')
+    def _onchange_qty_delivered(self):
         """When picking up more than reserved, reserved qty is updated"""
-        if self.qty_picked_up > self.product_uom_qty:
-            self.product_uom_qty = self.qty_picked_up
+        if self.qty_delivered > self.product_uom_qty:
+            self.product_uom_qty = self.qty_delivered
 
     @api.onchange('pickup_date', 'return_date')
     def _onchange_rental_info(self):
@@ -156,11 +156,8 @@ class RentalOrderLine(models.Model):
         self.product_id_change()
 
     _sql_constraints = [
-        ('rental_reservation_coherence',
-            "CHECK(qty_picked_up <= product_uom_qty)",
-            "Please make sure that the ordered quantity is not smaller than the picked-up quantity."),
         ('rental_stock_coherence',
-            "CHECK(NOT is_rental OR qty_delivered <= qty_picked_up)",
+            "CHECK(NOT is_rental OR qty_returned <= qty_delivered)",
             "You cannot return more than what has been picked up."),
         ('rental_period_coherence',
             "CHECK(NOT is_rental OR pickup_date < return_date)",

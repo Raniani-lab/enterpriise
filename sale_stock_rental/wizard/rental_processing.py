@@ -19,10 +19,10 @@ class RentalProcessing(models.TransientModel):
         for wizard in self:
             wizard.has_tracked_lines = any(line.tracking == 'serial' for line in wizard.rental_wizard_line_ids)
 
-    @api.depends('rental_wizard_line_ids.qty_picked_up')
+    @api.depends('rental_wizard_line_ids.qty_delivered')
     def _compute_has_lines_missing_stock(self):
         for wizard in self:
-            wizard.has_lines_missing_stock = any(line.is_product_storable and line.status == 'pickup' and line.qty_picked_up > line.qty_available for line in wizard.rental_wizard_line_ids)
+            wizard.has_lines_missing_stock = any(line.is_product_storable and line.status == 'pickup' and line.qty_delivered > line.qty_available for line in wizard.rental_wizard_line_ids)
 
 
 class RentalProcessingLine(models.TransientModel):
@@ -75,7 +75,7 @@ class RentalProcessingLine(models.TransientModel):
                 # as reserved lots (which will be auto-filled as pickedup_lots).
                 reserved_lots = reserved_lots & pickeable_lots
                 default_line_vals.update({
-                    'qty_picked_up': len(reserved_lots),
+                    'qty_delivered': len(reserved_lots),
                 })
 
             if line.product_id.type == 'product':
@@ -130,17 +130,17 @@ class RentalProcessingLine(models.TransientModel):
 
     @api.onchange('pickedup_lot_ids')
     def _onchange_pickedup_lot_ids(self):
-        self.qty_picked_up = len(self.pickedup_lot_ids)
+        self.qty_delivered = len(self.pickedup_lot_ids)
 
     @api.onchange('returned_lot_ids')
     def _onchange_returned_lot_ids(self):
         self.qty_returned = len(self.returned_lot_ids)
 
-    @api.constrains('pickedup_lot_ids', 'qty_picked_up')
+    @api.constrains('pickedup_lot_ids', 'qty_delivered')
     def _is_pickup_tracking_fulfilled(self):
         for wizard_line in self:
             if wizard_line.status == 'pickup' and wizard_line.tracking == 'serial':
-                if wizard_line.qty_picked_up != len(wizard_line.pickedup_lot_ids):
+                if wizard_line.qty_delivered != len(wizard_line.pickedup_lot_ids):
                     raise ValidationError(_("Please specify the serial numbers picked up for the tracked products."))
 
     @api.constrains('returned_lot_ids', 'qty_returned')

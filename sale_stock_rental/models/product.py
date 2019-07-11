@@ -10,8 +10,8 @@ class ProductTemplate(models.Model):
 
     # Padding Time
 
-    preparation_time = fields.Float(string="Before Pickup", company_dependent=True,
-                                    help="Temporarily make this product unavailable before pickup.")
+    preparation_time = fields.Float(string="Before Deliver", company_dependent=True,
+                                    help="Temporarily make this product unavailable before deliver.")
 
     # TODO replace by UI greying of unselectable conflicting choices ?
     @api.constrains('rent_ok', 'tracking')
@@ -44,7 +44,7 @@ class Product(models.Model):
         :param dict kwargs: search domain restrictions (ignored_soline_id, warehouse_id)
         """
         def unavailable_qty(so_line):
-            return so_line.product_uom_qty - so_line.qty_delivered
+            return so_line.product_uom_qty - so_line.qty_returned
 
         begins_during_period, ends_during_period, covers_period = self._get_active_rental_lines(fro, to, **kwargs)
         active_lines_in_period = begins_during_period + ends_during_period
@@ -118,7 +118,7 @@ class Product(models.Model):
         :return tuple(float, array(stock.production.lot)):
         """
         def unavailable_qty(so_line):
-            return so_line.product_uom_qty - so_line.qty_delivered
+            return so_line.product_uom_qty - so_line.qty_returned
 
         begins_during_period, ends_during_period, covers_period = self._get_active_rental_lines(fro, to, **kwargs)
         active_lines_in_period = begins_during_period + ends_during_period

@@ -22,8 +22,8 @@ class RentalReport(models.AbstractModel):
     product_id = fields.Many2one('product.product', 'Product', readonly=True)
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
     product_uom_qty = fields.Float('Qty Ordered', readonly=True)
-    qty_picked_up = fields.Float('Qty Picked-up', readonly=True)
     qty_delivered = fields.Float('Qty Delivered', readonly=True)
+    qty_returned = fields.Float('Qty Returned', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
     partner_name = fields.Char(string="Customer Name", readonly=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
@@ -64,8 +64,8 @@ class RentalReport(models.AbstractModel):
     def _quantity(self):
         return """
             sum(sol.product_uom_qty / u.factor * u2.factor) as product_uom_qty,
-            sum(sol.qty_picked_up / u.factor * u2.factor) as qty_picked_up,
             sum(sol.qty_delivered / u.factor * u2.factor) as qty_delivered,
+            sum(sol.qty_returned / u.factor * u2.factor) as qty_returned,
         """
 
     def _price(self):

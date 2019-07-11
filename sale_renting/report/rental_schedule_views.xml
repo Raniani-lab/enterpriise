@@ -43,7 +43,7 @@
                   <separator/>
                   <filter string="Order Date" name="date" context="{'group_by':'order_date'}"/>
                   <filter string="Confirmation Date" name="confirm_month" context="{'group_by':'confirmation_date'}"/>
-                  <filter string="Pickup Date" name="pickup_date" context="{'group_by':'pickup_date'}"/>
+                  <filter string="Deliver Date" name="pickup_date" context="{'group_by':'pickup_date'}"/>
                   <filter string="Return Date" name="return_date" context="{'group_by':'return_date'}"/>
               </group>
           </search>
@@ -146,10 +146,10 @@
               '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'reserved'), ('late', '=', True)]}">Reserved</div>
           <div class="badge-pill badge-info float-right"
             attrs="{'invisible': [
-              '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'reserved'), ('late', '=', False)]}">Late Pickup</div>
+              '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'reserved'), ('late', '=', False)]}">Late Delivery</div>
           <div class="badge-pill badge-warning float-right"
             attrs="{'invisible': [
-              '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', True)]}">Picked-Up</div>
+              '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', True)]}">Delivered</div>
           <div class="badge-pill badge-danger float-right"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', False)]}">Late Return</div>
@@ -169,8 +169,8 @@
             </group>
             <group>
               <field name="product_uom_qty"/>
-              <field name="qty_picked_up" attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}"/>
               <field name="qty_delivered" attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}"/>
+              <field name="qty_returned" attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}"/>
             </group>
           </group>
         </sheet>

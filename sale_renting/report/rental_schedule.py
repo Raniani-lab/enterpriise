@@ -17,8 +17,8 @@ class RentalSchedule(models.Model):
 
     def _report_line_status(self):
         return """
-            CASE when sol.qty_delivered = sol.qty_picked_up AND sol.qty_picked_up = sol.product_uom_qty then 'returned'
-                when sol.qty_picked_up = sol.product_uom_qty then 'pickedup'
+            CASE when sol.qty_returned = sol.qty_delivered AND sol.qty_delivered = sol.product_uom_qty then 'returned'
+                when sol.qty_delivered = sol.product_uom_qty then 'pickedup'
                 else 'reserved'
             END as report_line_status
         """

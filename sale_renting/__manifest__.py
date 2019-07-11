@@ -3,7 +3,7 @@
     'name': "Rental",
 
     'summary': """
-            Manage rental contracts, pickups, returns
+            Manage rental contracts, delivers, returns
             """,
 
     'description': """

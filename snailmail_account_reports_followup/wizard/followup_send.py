@@ -21,7 +21,6 @@ class FollowupSend(models.TransientModel):
         res.update({'partner_ids': self._context.get('active_ids')})
         return res
 
-    @api.multi
     @api.depends('partner_ids')
     def _compute_invalid_addresses(self):
         for wizard in self:
@@ -29,19 +28,16 @@ class FollowupSend(models.TransientModel):
             wizard.invalid_partner_ids = invalid_partner_addresses
             wizard.invalid_addresses = len(invalid_partner_addresses)
 
-    @api.multi
     @api.depends('partner_ids')
     def _compute_letters_qty(self):
         for wizard in self:
             wizard.letters_qty = len(wizard.partner_ids)
 
-    @api.multi
     @api.depends('partner_ids')
     def _compute_snailmail_cost(self):
         for wizard in self:
             wizard.snailmail_cost = len(wizard.partner_ids.ids)
 
-    @api.multi
     def snailmail_send_action(self):
         for wizard in self:
             if wizard.invalid_addresses and len(wizard.partner_ids) > 1:
@@ -66,7 +62,6 @@ class FollowupSend(models.TransientModel):
                 letters._snailmail_print(immediate=False)
         return {'type': 'ir.actions.act_window_close'}
 
-    @api.multi
     def notify_invalid_addresses(self):
         self.ensure_one()
         self.env['bus.bus'].sendone(
@@ -75,7 +70,6 @@ class FollowupSend(models.TransientModel):
                 'message': _("%s of the selected partner(s) had an invalid address. The corresponding followups were not sent") % self.invalid_addresses}
         )
 
-    @api.multi
     def invalid_addresses_action(self):
         return {
             'name': _('Invalid Addresses'),

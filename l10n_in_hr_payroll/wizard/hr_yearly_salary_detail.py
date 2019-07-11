@@ -20,7 +20,6 @@ class YearlySalaryDetail(models.TransientModel):
     date_from = fields.Date(string='Start Date', required=True, default=_get_default_date_from)
     date_to = fields.Date(string='End Date', required=True, default=_get_default_date_to)
 
-    @api.multi
     def print_report(self):
         """
          To get the date and print the report

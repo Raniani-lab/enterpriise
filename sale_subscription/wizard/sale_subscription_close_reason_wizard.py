@@ -8,7 +8,6 @@ class SaleSubscriptionCloseReasonWizard(models.TransientModel):
 
     close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", required=True)
 
-    @api.multi
     def set_close(self):
         self.ensure_one()
         subscription = self.env['sale.subscription'].browse(self.env.context.get('active_id'))

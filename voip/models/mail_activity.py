@@ -47,7 +47,6 @@ class MailActivity(models.Model):
                 )
         return super(MailActivity, self).write(values)
 
-    @api.multi
     def _compute_phonenumbers(self):
         self.ensure_one()
         model = self.env[self.res_model]
@@ -68,7 +67,6 @@ class MailActivity(models.Model):
                 numbers['mobile'] = record[partner_field_name[0]].mobile
         return numbers
 
-    @api.multi
     def _action_done(self, feedback=False, attachment_ids=None):
         # extract potential required data to update phonecalls
         phonecall_values_to_keep = {}  # mapping index of self and acitivty value to keep {index: {key1: value1, key2: value2}}

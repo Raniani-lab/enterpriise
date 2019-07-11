@@ -30,7 +30,6 @@ class HmrcVatObligation(models.Model):
     company_id = fields.Many2one('res.company', 'Company', required=True,
         default=lambda self: self.env.company)
 
-    @api.multi
     def name_get(self):
         return [(o.id, "%s (%s - %s)" % (o.date_due, o.date_start, o.date_end)) for o in self]
 

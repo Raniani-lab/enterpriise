@@ -14,7 +14,6 @@ class ResConfigSettings(models.TransientModel):
     taxcloud_api_key = fields.Char(related='company_id.taxcloud_api_key', string='TaxCloud API KEY', readonly=False)
     tic_category_id = fields.Many2one(related='company_id.tic_category_id', string="Default TIC Code", readonly=False)
 
-    @api.multi
     def sync_taxcloud_category(self):
         Category = self.env['product.tic.category']
         request = TaxCloudRequest(self.taxcloud_api_id, self.taxcloud_api_key)

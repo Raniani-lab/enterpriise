@@ -101,7 +101,6 @@ class AccountMove(models.Model):
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
 
-    @api.multi
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
         """When a message is posted on an account.move, send the attachment to iap-ocr if
@@ -186,7 +185,6 @@ class AccountMove(models.Model):
                 self.extract_state = 'error_status'
                 self.extract_status_code = ERROR_NO_CONNECTION
 
-    @api.multi
     def get_validation(self, field):
         """
         return the text or box corresponding to the choice of the user.
@@ -251,7 +249,6 @@ class AccountMove(models.Model):
         return_box.update(text_to_send)
         return return_box
 
-    @api.multi
     def post(self):
         # OVERRIDE
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
@@ -288,7 +285,6 @@ class AccountMove(models.Model):
         self.mapped('extract_word_ids').unlink()
         return res
 
-    @api.multi
     def get_boxes(self):
         return [{
             "id": data.id,
@@ -303,7 +299,6 @@ class AccountMove(models.Model):
             "box_height": data.word_box_height,
             "box_angle": data.word_box_angle} for data in self.extract_word_ids]
 
-    @api.multi
     def remove_user_selected_box(self, id):
         """Set the selected box for a feature. The id of the box indicates the concerned feature.
         The method returns the text that can be set in the view (possibly different of the text in the file)"""
@@ -353,7 +348,6 @@ class AccountMove(models.Model):
             return 0
         return new_word.word_text
 
-    @api.multi
     def set_user_selected_box(self, id):
         """Set the selected box for a feature. The id of the box indicates the concerned feature.
         The method returns the text that can be set in the view (possibly different of the text in the file)"""
@@ -422,7 +416,6 @@ class AccountMove(models.Model):
     def _get_partner_fields(self):
         return ['name', 'vat', 'street', 'city', 'zip']
 
-    @api.multi
     def _set_vat(self, text):
         partner_vat = self.env["res.partner"].search([("vat", "=", text)], limit=1)
         if partner_vat.exists():
@@ -431,7 +424,6 @@ class AccountMove(models.Model):
             return True
         return False
 
-    @api.multi
     def find_partner_id_with_name(self, partner_name):
         partner_names = self.env["res.partner"].search([("name", "ilike", partner_name)])
         if partner_names.exists():
@@ -448,7 +440,6 @@ class AccountMove(models.Model):
                 return key_max
         return 0
 
-    @api.multi
     def _get_invoice_lines(self, invoice_lines, subtotal_ocr):
         """
         Get write values for invoice lines.
@@ -526,7 +517,6 @@ class AccountMove(models.Model):
 
         return invoice_lines_to_create
 
-    @api.multi
     def _set_currency(self, currency_ocr):
         self.ensure_one()
         currency = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr),
@@ -534,7 +524,6 @@ class AccountMove(models.Model):
         if currency:
             self.currency_id = currency
 
-    @api.multi
     def check_status(self):
         """contact iap to get the actual status of the ocr request"""
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
@@ -633,7 +622,6 @@ class AccountMove(models.Model):
             else:
                 record.extract_state = 'error_status'
 
-    @api.multi
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')
         return {

@@ -44,7 +44,6 @@ class AccountMoveLine(models.Model):
         lang = self._context.get('lang') and self._context.get('lang')[:2]
         return {'fr': 'french'}.get(lang, 'english')
 
-    @api.multi
     def _predict_field(self, sql_query, description):
         psql_lang = self._get_predict_postgres_dictionary()
         parsed_description = re.sub("[*&()|!':]+", " ", description)
@@ -67,7 +66,6 @@ class AccountMoveLine(models.Model):
             return False
         return False
 
-    @api.multi
     def _predict_product(self, description):
         if not description:
             return False
@@ -106,7 +104,6 @@ class AccountMoveLine(models.Model):
         """
         return self._predict_field(sql_query, description)
 
-    @api.multi
     def _predict_account(self, description, partner):
         # This method uses postgres tsvector in order to try to deduce the account_id of an invoice line
         # based on the text entered into the name (description) field.

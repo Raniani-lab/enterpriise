@@ -8,7 +8,6 @@ class Task(models.Model):
 
     _inherit = 'project.task'
 
-    @api.multi
     def name_get(self):
         if 'project_task_display_forecast' in self._context:
             result = []

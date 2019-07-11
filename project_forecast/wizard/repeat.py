@@ -38,7 +38,6 @@ class ProjectForecastRepeatWizard(models.TransientModel):
         if self.related_forecast_id.recurrency_id:
             raise ValidationError(_("Cannot repeat an already repeating forecast"))
 
-    @api.multi
     def action_repeat(self):
         self.ensure_one()
         if not (self.repeat_until and self.related_forecast_id.end_datetime >= datetime.combine(self.repeat_until, datetime.min.time())):

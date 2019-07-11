@@ -40,7 +40,6 @@ class AnalyticLine(models.Model):
             else:
                 line.validated = True
 
-    @api.multi
     @api.depends('project_id')
     def _compute_is_timesheet(self):
         for line in self:
@@ -70,7 +69,6 @@ class AnalyticLine(models.Model):
         tasks |= self.env['account.analytic.line'].search(domain).mapped('task_id')
         return tasks
 
-    @api.multi
     def action_validate_timesheet(self):
         if self.env.context.get('grid_anchor'):
             anchor = fields.Date.from_string(self.env.context['grid_anchor'])
@@ -119,7 +117,6 @@ class AnalyticLine(models.Model):
             raise AccessError(_('Only a Timesheets Approver or Manager is allowed to create an entry older than the validation limit.'))
         return line
 
-    @api.multi
     def write(self, vals):
         res = super(AnalyticLine, self).write(vals)
         # Write then check: otherwise, the use can create the timesheet in the future, then change
@@ -128,7 +125,6 @@ class AnalyticLine(models.Model):
             raise AccessError(_('Only a Timesheets Approver or Manager is allowed to modify a validated entry.'))
         return res
 
-    @api.multi
     def unlink(self):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(lambda r: r.is_timesheet and r.validated):
             raise AccessError(_('Only a Timesheets Approver or Manager is allowed to delete a validated entry.'))
@@ -150,7 +146,6 @@ class AnalyticLine(models.Model):
             result['arch'] = etree.tostring(doc, encoding='unicode')
         return result
 
-    @api.multi
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
         if column_field != 'date' or cell_field != 'unit_amount':
             raise ValueError(

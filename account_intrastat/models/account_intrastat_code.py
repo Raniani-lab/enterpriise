@@ -30,7 +30,6 @@ class AccountIntrastatCode(models.Model):
             * region: A sub-part of the country.
         ''')
 
-    @api.multi
     def name_get(self):
         result = []
         for r in self:

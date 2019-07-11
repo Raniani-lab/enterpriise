@@ -36,7 +36,6 @@ class AccountMove(models.Model):
         for record in self:
             record.l10n_es_reports_mod349_available = record.partner_id.country_id in mod349_countries
 
-    @api.multi
     def post(self):
         """ Overridden to require Spanish invoice type to be set if the company
         of the invoice uses a Spanish COA (so other companies using other COA

@@ -10,7 +10,6 @@ class AccountPayment(models.Model):
 
     batch_payment_id = fields.Many2one('account.batch.payment', ondelete='set null', copy=False)
 
-    @api.multi
     def unreconcile(self):
         for payment in self:
             if payment.batch_payment_id and payment.batch_payment_id.state == 'reconciled':
@@ -19,7 +18,6 @@ class AccountPayment(models.Model):
                 payment.batch_payment_id.write({'state': 'sent'})
         return super(AccountPayment, self).unreconcile()
 
-    @api.multi
     def write(self, vals):
         result = super(AccountPayment, self).write(vals)
         # Mark a batch payment as reconciled if all its payments are reconciled

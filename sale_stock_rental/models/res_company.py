@@ -16,7 +16,6 @@ class ResCompany(models.Model):
         "This location is internal because products in rental"
         "are still considered as company assets.")
 
-    @api.multi
     def _create_rental_location(self):
         for company in self:
             if not company.rental_loc_id:

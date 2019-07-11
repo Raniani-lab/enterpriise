@@ -37,18 +37,15 @@ class WebsiteTwitterWall(models.Model):
     access_token = fields.Char()
     last_search = fields.Datetime(default=fields.Datetime.now)
 
-    @api.multi
     def _compute_website_url(self):
         super(WebsiteTwitterWall, self)._compute_website_url()
         for wall in self:
             wall.website_url = "%s/twitter_wall/view/%s" % (self.env['ir.config_parameter'].sudo().get_param('web.base.url'), slug(wall))
 
-    @api.multi
     def toggle_live_mode(self):
         self.env['website.twitter.wall'].clear_caches()
         self.is_live = not self.is_live
 
-    @api.multi
     def fetch_tweets(self):
         self.ensure_one()
         if not self.is_live:
@@ -64,7 +61,6 @@ class WebsiteTwitterWall(models.Model):
         except OperationalError:
             pass
 
-    @api.multi
     def search_tweets(self):
         self.ensure_one()
         website = self.env['website'].search([
@@ -120,7 +116,6 @@ class WebsiteTwitterWall(models.Model):
     def _compute_count_total_tweets(self):
         self.total_tweets = len(self.tweet_ids)
 
-    @api.multi
     @api.depends('name')
     def _website_url(self, name, arg):
         res = super(WebsiteTwitterWall, self)._website_url(name, arg)

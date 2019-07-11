@@ -25,7 +25,6 @@ class HrSalaryEmployeeBymonth(models.TransientModel):
     employee_ids = fields.Many2many('hr.employee', 'payroll_year_rel', 'payroll_year_id', 'employee_id', string='Employees', required=True)
     category_id = fields.Many2one('hr.salary.rule.category', string='Category', required=True, default=_get_default_category)
 
-    @api.multi
     def print_report(self):
         """
          To get the date and print the report

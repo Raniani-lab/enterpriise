@@ -20,7 +20,6 @@ class TestType(models.Model):
 class MrpRouting(models.Model):
     _inherit = "mrp.routing"
 
-    @api.multi
     def action_mrp_workorder_show_steps(self):
         self.ensure_one()
         picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id

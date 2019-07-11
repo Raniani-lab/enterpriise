@@ -8,7 +8,6 @@ class MrpCostStructure(models.AbstractModel):
     _name = 'report.mrp_account_enterprise.mrp_cost_structure'
     _description = 'MRP Cost Structure Report'
 
-    @api.multi
     def get_lines(self, productions):
         ProductProduct = self.env['product.product']
         StockMove = self.env['stock.move']

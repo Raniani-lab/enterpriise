@@ -13,14 +13,12 @@ class HrPayslip(models.Model):
     journal_id = fields.Many2one('account.journal', 'Salary Journal', related="struct_id.journal_id")
     move_id = fields.Many2one('account.move', 'Accounting Entry', readonly=True, copy=False)
 
-    @api.multi
     def action_payslip_cancel(self):
         moves = self.mapped('move_id')
         moves.filtered(lambda x: x.state == 'posted').button_cancel()
         moves.unlink()
         return super(HrPayslip, self).action_payslip_cancel()
 
-    @api.multi
     def action_payslip_done(self):
         """
             Generate the accounting entries related to the selected payslips

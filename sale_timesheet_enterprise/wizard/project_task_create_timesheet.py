@@ -28,7 +28,6 @@ class ProjectTaskCreateTimesheet(models.TransientModel):
     description = fields.Char('Description')
     task_id = fields.Many2one('project.task', "Task", help="Task for which we are creating a sales order", required=True)
 
-    @api.multi
     def save_timesheet(self):
         values = {
             'task_id': self.task_id.id,

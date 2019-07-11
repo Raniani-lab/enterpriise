@@ -43,7 +43,6 @@ class HrPayslip(models.Model):
         }))
         self.update({'input_line_ids': input_lines_vals})
 
-    @api.multi
     def action_payslip_done(self):
         res = super(HrPayslip, self).action_payslip_done()
         for expense in self.expense_sheet_ids:

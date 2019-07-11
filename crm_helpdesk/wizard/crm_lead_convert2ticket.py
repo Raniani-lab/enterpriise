@@ -21,7 +21,6 @@ class CrmLeadConvert2Ticket(models.TransientModel):
     team_id = fields.Many2one('helpdesk.team', string='Team', required=True)
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', "Ticket Type")
 
-    @api.multi
     def action_lead_to_helpdesk_ticket(self):
         self.ensure_one()
         # get the lead to transform

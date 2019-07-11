@@ -98,7 +98,6 @@ class StockPicking(models.Model):
             'picking_type_code',
         ]
 
-    @api.multi
     def get_po_to_split_from_barcode(self, barcode):
         """ Returns the lot wizard's action for the move line matching
         the barcode. This method is intended to be called by the
@@ -361,6 +360,5 @@ class StockPickingType(models.Model):
 
     _inherit = 'stock.picking.type'
 
-    @api.multi
     def get_action_picking_tree_ready_kanban(self):
         return self._get_action('stock_barcode.stock_picking_action_kanban')

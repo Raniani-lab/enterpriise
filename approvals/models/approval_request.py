@@ -162,7 +162,6 @@ class ApprovalRequest(models.Model):
                 'request_id': self.id,
                 'status': 'new'})
 
-    @api.multi
     def _write(self, values):
         # The attribute 'tracking' doesn't work for the
         # field request_status, as it is updated from the client side

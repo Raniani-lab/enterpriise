@@ -22,7 +22,6 @@ class MaintenanceEquipment(models.Model):
     latest_failure_date = fields.Date(compute='_compute_maintenance_request', string='Latest Failure Date')
     workcenter_id = fields.Many2one('mrp.workcenter', string='Work Center')
 
-    @api.multi
     def _compute_maintenance_request(self):
         for equipment in self:
             maintenance_requests = equipment.maintenance_ids.filtered(lambda x: x.maintenance_type == 'corrective' and x.stage_id.done)
@@ -40,7 +39,6 @@ class MaintenanceEquipment(models.Model):
             else:
                 equipment.estimated_next_failure = False
 
-    @api.multi
     def button_mrp_workcenter(self):
         self.ensure_one()
         return {
@@ -66,13 +64,11 @@ class MrpProduction(models.Model):
     maintenance_count = fields.Integer(compute='_compute_maintenance_count', string="Number of maintenance requests")
     request_ids = fields.One2many('maintenance.request', 'production_id')
 
-    @api.multi
     @api.depends('request_ids')
     def _compute_maintenance_count(self):
         for production in self:
             production.maintenance_count = len(production.request_ids)
 
-    @api.multi
     def button_maintenance_req(self):
         self.ensure_one()
         return {
@@ -84,7 +80,6 @@ class MrpProduction(models.Model):
             'domain': [('production_id', '=', self.id)],
         }
 
-    @api.multi
     def open_maintenance_request_mo(self):
         self.ensure_one()
         action = {
@@ -105,7 +100,6 @@ class MrpProduction(models.Model):
 class MrpProductionWorkcenterLine(models.Model):
     _inherit = "mrp.workorder"
 
-    @api.multi
     def button_maintenance_req(self):
         self.ensure_one()
         return {

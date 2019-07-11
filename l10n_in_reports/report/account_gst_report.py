@@ -152,7 +152,6 @@ class L10nInReportAccount(models.AbstractModel):
                     })
         return lines
 
-    @api.multi
     def get_html(self, options, line_id=None, additional_context=None):
         return super(L10nInReportAccount, self.with_context(options or {})).get_html(options, line_id, additional_context)
 

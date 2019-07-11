@@ -21,7 +21,6 @@ class HelpdeskTeam(models.Model):
             }).id
         return super(HelpdeskTeam, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         if 'use_helpdesk_timesheet' in vals and not vals['use_helpdesk_timesheet']:
             vals['project_id'] = False
@@ -81,7 +80,6 @@ class HelpdeskTicket(models.Model):
                 }
             }
 
-    @api.multi
     def write(self, values):
         result = super(HelpdeskTicket, self).write(values)
         if 'task_id' in values:
@@ -95,7 +93,6 @@ class HelpdeskTicket(models.Model):
         result['arch'] = self.env['account.analytic.line']._apply_timesheet_label(result['arch'])
         return result
 
-    @api.multi
     def action_view_ticket_task(self):
         self.ensure_one()
         return {

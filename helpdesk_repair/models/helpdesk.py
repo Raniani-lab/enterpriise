@@ -11,14 +11,12 @@ class HelpdeskTicket(models.Model):
     repair_ids = fields.One2many('repair.order', 'ticket_id', string='Repairs')
 
     @api.depends('repair_ids')
-    @api.multi
     def _compute_repairs_count(self):
         repair_data = self.env['repair.order'].sudo().read_group([('ticket_id', 'in', self.ids)], ['ticket_id'], ['ticket_id'])
         mapped_data = dict([(r['ticket_id'][0], r['ticket_id_count']) for r in repair_data])
         for ticket in self:
             ticket.repairs_count = mapped_data.get(ticket.id, 0)
 
-    @api.multi
     def action_view_repairs(self):
         self.ensure_one()
         return {

@@ -28,7 +28,6 @@ class ResPartner(models.Model):
         'seventh column in DIOT report',
         compute='_compute_nationality', inverse='_inverse_nationality')
 
-    @api.multi
     @api.depends('country_id')
     def _compute_type_of_third(self):
         """Get the type of third to use in DIOT report.
@@ -39,20 +38,17 @@ class ResPartner(models.Model):
             partner_type = '04' if partner.country_id == mexico else '05'
             partner.l10n_mx_type_of_third = partner_type
 
-    @api.multi
     @api.depends('country_id')
     def _compute_nationality(self):
         for partner in self:
             partner.l10n_mx_nationality = partner.country_id.with_context(
                 lang='es_MX').demonym
 
-    @api.multi
     def _inverse_nationality(self):
         for partner in self.filtered('country_id'):
             partner.country_id.with_context(lang='es_MX').demonym = (
                 partner.l10n_mx_nationality)
 
-    @api.multi
     def _get_not_partners_diot(self):
         partners = self.mapped('commercial_partner_id')
         return partners.filtered(lambda r: any([

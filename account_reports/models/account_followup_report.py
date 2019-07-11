@@ -180,7 +180,6 @@ class AccountFollowupReport(models.AbstractModel):
                 'summary': self._get_default_summary(options)})
         return existing_manager
 
-    @api.multi
     def get_html(self, options, line_id=None, additional_context=None):
         """
         Override

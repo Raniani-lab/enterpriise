@@ -61,7 +61,6 @@ class QualityPoint(models.Model):
         if self.tolerance_max == 0.0:
             self.tolerance_max = self.norm
 
-    @api.multi
     def check_execute_now(self):
         self.ensure_one()
         if self.test_type == 'measure':
@@ -96,7 +95,6 @@ class QualityPoint(models.Model):
         action['context'] = {'default_point_id': self.id}
         return action
 
-    @api.multi
     def action_see_spc_control(self):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_check_action_spc').read()[0]
@@ -220,7 +218,6 @@ class QualityCheck(models.Model):
             action['domain'] = [('id', 'in', self.alert_ids.ids)]
             return action
 
-    @api.multi
     def redirect_after_pass_fail(self):
         check = self[0]
         if check.quality_state =='fail' and check.test_type in ['passfail', 'measure']:
@@ -277,7 +274,6 @@ class QualityAlert(models.Model):
         stage_ids = stages._search([], order=order, access_rights_uid=SUPERUSER_ID)
         return stages.browse(stage_ids)
 
-    @api.multi
     @api.depends('name', 'title')
     def name_get(self):
         result = []

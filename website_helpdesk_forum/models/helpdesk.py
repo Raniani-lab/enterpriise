@@ -55,7 +55,6 @@ class HelpdeskTicket(models.Model):
     forum_post_id = fields.Many2one('forum.post', string="Forum Post", copy=False)
     use_website_helpdesk_forum = fields.Boolean(related='team_id.use_website_helpdesk_forum', string='Help Center Active', readonly=True)
 
-    @api.multi
     def forum_post_new(self):
         self.ensure_one()
         if not self.team_id.forum_id:
@@ -76,7 +75,6 @@ class HelpdeskTicket(models.Model):
         self.message_post(body=_('Ticket has been shared on the %s forum.') % (self.forum_post_id.forum_id.name,))
         return self.forum_post_open()
 
-    @api.multi
     def forum_post_open(self):
         self.ensure_one()
         if not self.team_id.forum_id:

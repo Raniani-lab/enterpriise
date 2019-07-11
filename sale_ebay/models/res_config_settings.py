@@ -39,7 +39,6 @@ class ResConfigSettings(models.TransientModel):
                                       config_parameter='ebay_sales_team')
     ebay_gallery_plus = fields.Boolean("Gallery Plus", default='', config_parameter='ebay_gallery_plus')
 
-    @api.multi
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         set_param = self.env['ir.config_parameter'].sudo().set_param

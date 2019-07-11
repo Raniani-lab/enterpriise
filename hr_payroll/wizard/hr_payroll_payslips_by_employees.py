@@ -38,7 +38,6 @@ class HrPayslipEmployees(models.TransientModel):
             if outside:
                 raise UserError(_("Some part of %s's calendar is not covered by any work entry. Please complete the schedule.") % contract.employee_id.name)
 
-    @api.multi
     def compute_sheet(self):
         self.ensure_one()
         if not self.env.context.get('active_id'):

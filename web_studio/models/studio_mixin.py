@@ -23,7 +23,6 @@ class StudioMixin(models.AbstractModel):
 
         return res
 
-    @api.multi
     def write(self, vals):
         res = super(StudioMixin, self).write(vals)
 

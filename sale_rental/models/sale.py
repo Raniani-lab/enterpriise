@@ -183,7 +183,6 @@ class RentalOrderLine(models.Model):
         else:
             return ""
 
-    @api.multi
     def _get_display_price(self, product):
         """Ensure unit price isn't recomputed."""
         if self.is_rental:
@@ -191,7 +190,6 @@ class RentalOrderLine(models.Model):
         else:
             return super(RentalOrderLine, self)._get_display_price(product)
 
-    @api.multi
     def _generate_delay_line(self, qty):
         """Generate a sale order line representing the delay cost due to the late return.
 

@@ -192,7 +192,6 @@ class AccountAsset(models.Model):
                 depreciation_date = depreciation_date + relativedelta(years=1)
         return depreciation_date
 
-    @api.multi
     def unlink(self):
         for asset in self:
             if asset.state in ['open', 'paused', 'close']:
@@ -339,7 +338,6 @@ class AccountAsset(models.Model):
             'res_id': new_wizard.id,
         }
 
-    @api.multi
     def action_save_model(self):
         form_view = self.env.ref('account_deferred_revenue.view_account_asset_revenue_form', False) or self.env.ref('account_asset.view_account_asset_form')
         return {
@@ -364,7 +362,6 @@ class AccountAsset(models.Model):
             }
         }
 
-    @api.multi
     def open_entries(self):
         return {
             'name': _('Journal Entries'),
@@ -375,7 +372,6 @@ class AccountAsset(models.Model):
             'domain': [('id', 'in', self.depreciation_move_ids.ids)],
         }
 
-    @api.multi
     def open_related_entries(self):
         return {
             'name': _('Journal Items'),
@@ -386,7 +382,6 @@ class AccountAsset(models.Model):
             'domain': [('id', 'in', self.original_move_line_ids.ids)],
         }
 
-    @api.multi
     def validate(self):
         fields = [
             'method',
@@ -461,14 +456,12 @@ class AccountAsset(models.Model):
 
         return move_ids
 
-    @api.multi
     def set_to_close(self, disposal_date):
         move_ids = self.with_context(allow_write=True)._get_disposal_moves(disposal_date)
         self.write({'state': 'close', 'disposal_date': disposal_date})
         if move_ids:
             return self._return_disposal_view(move_ids)
 
-    @api.multi
     def set_to_draft(self):
         self.write({'state': 'draft'})
 
@@ -481,7 +474,6 @@ class AccountAsset(models.Model):
         self.ensure_one()
         return self.with_context(resume_after_pause=True).action_asset_modify()
 
-    @api.multi
     def pause(self, pause_date):
         """ Sets an 'open' asset in 'paused' state, generating first a depreciation
         line corresponding to the ratio of time spent within the current depreciation
@@ -546,7 +538,6 @@ class AccountAsset(models.Model):
     def _onchange_company_id(self):
         self.currency_id = self.company_id.currency_id.id
 
-    @api.multi
     @api.depends('depreciation_move_ids.state')
     def _entry_count(self):
         for asset in self:
@@ -554,7 +545,6 @@ class AccountAsset(models.Model):
             asset.depreciation_entries_count = res or 0
             asset.total_depreciation_entries_count = len(asset.depreciation_move_ids)
 
-    @api.multi
     def copy_data(self, default=None):
         if default is None:
             default = {}
@@ -587,13 +577,11 @@ class AccountAsset(models.Model):
             original_asset.model_id = new_recs
         return new_recs
 
-    @api.multi
     def write(self, vals):
         'original_move_line_ids' in vals and self._check_original_move_line_ids(vals['original_move_line_ids'])
         res = super(AccountAsset, self).write(vals)
         return res
 
-    @api.multi
     @api.constrains('depreciation_move_ids')
     def _check_depreciations(self):
         for record in self:

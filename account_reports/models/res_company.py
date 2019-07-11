@@ -24,7 +24,6 @@ class ResCompany(models.Model):
     account_tax_periodicity_journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'general')], default=_get_default_misc_journal)
     account_tax_next_activity_type = fields.Many2one('mail.activity.type')
 
-    @api.multi
     def write(self, values):
         # in case the user want to change the journal or the periodicity without changing the date, we should change the next_activity
         # therefore we set the account_tax_original_periodicity_reminder_day to false so that it will be recomputed

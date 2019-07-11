@@ -16,7 +16,6 @@ class DocumentFolder(models.Model):
 
         return res
 
-    @api.multi
     def name_get(self):
         name_array = []
         hierarchical_naming = self.env.context.get('hierarchical_naming', True)
@@ -49,7 +48,6 @@ class DocumentFolder(models.Model):
     action_count = fields.Integer('Action Count', compute='_compute_action_count')
     document_count = fields.Integer('Document Count', compute='_compute_document_count')
 
-    @api.multi
     def _compute_action_count(self):
         read_group_var = self.env['documents.workflow.rule'].read_group(
             [('domain_folder_id', 'in', self.ids)],
@@ -60,7 +58,6 @@ class DocumentFolder(models.Model):
         for record in self:
             record.action_count = action_count_dict.get(record.id, 0)
 
-    @api.multi
     def action_see_actions(self):
         domain = [('domain_folder_id', '=', self.id)]
         return {
@@ -73,7 +70,6 @@ class DocumentFolder(models.Model):
             'context': "{'default_domain_folder_id': %s}" % self.id
         }
 
-    @api.multi
     def _compute_document_count(self):
         read_group_var = self.env['documents.document'].read_group(
             [('folder_id', 'in', self.ids)],
@@ -84,7 +80,6 @@ class DocumentFolder(models.Model):
         for record in self:
             record.document_count = document_count_dict.get(record.id, 0)
 
-    @api.multi
     def action_see_documents(self):
         domain = [('folder_id', '=', self.id)]
         return {

@@ -36,7 +36,6 @@ class EbayCategory(models.Model):
                 parent_id = parent.category_parent_id if parent.category_parent_id else '0'
             rec.full_name = name
 
-    @api.multi
     def name_get(self):
         result = []
         for cat in self:

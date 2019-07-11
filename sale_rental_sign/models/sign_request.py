@@ -8,7 +8,6 @@ class SignRequest(models.Model):
 
     sale_order_id = fields.Many2one("sale.order", string="Sales Order")
 
-    @api.multi
     def action_signed(self):
         super(SignRequest, self).action_signed()
         for request in self:

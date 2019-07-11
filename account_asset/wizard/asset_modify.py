@@ -33,7 +33,6 @@ class AssetModify(models.TransientModel):
                 vals.update({'value_residual': asset.value_residual})
         return super(AssetModify, self).create(vals)
 
-    @api.multi
     def modify(self):
         """ Modifies the duration of asset for calculating depreciation
         and maintains the history of old values, in the chatter.

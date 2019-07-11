@@ -186,7 +186,6 @@ class ReportAccountFinancialReport(models.Model):
             return self.env['account.journal'].search([('company_id', 'in', self.env.user.company_ids.ids or [self.env.company.id]), ('type', 'in', ['bank', 'cash'])], order="company_id, name")
         return super(ReportAccountFinancialReport, self)._get_filter_journals()
 
-    @api.multi
     def _with_correct_filters(self):
         if self.date_range:
             self.filter_date = {'mode': 'range', 'filter': 'this_year'}
@@ -273,7 +272,6 @@ class ReportAccountFinancialReport(models.Model):
         res._create_action_and_menu(parent_id)
         return res
 
-    @api.multi
     def write(self, vals):
         parent_id = vals.pop('parent_id', False)
         res = super(ReportAccountFinancialReport, self).write(vals)
@@ -283,7 +281,6 @@ class ReportAccountFinancialReport(models.Model):
                 report._create_action_and_menu(parent_id)
         return res
 
-    @api.multi
     def unlink(self):
         for report in self:
             default_parent_id = self.env['ir.model.data'].xmlid_to_res_id('account.menu_finance_reports')
@@ -337,7 +334,6 @@ class ReportAccountFinancialReport(models.Model):
 
         return selected_ir_filter['domain'], selected_ir_filter['groupby']
 
-    @api.multi
     def _get_lines(self, options, line_id=None):
         line_obj = self.line_ids
         if line_id:
@@ -367,7 +363,6 @@ class ReportAccountFinancialReport(models.Model):
     def _get_report_name(self):
         return self.name
 
-    @api.multi
     def _get_copied_name(self):
         '''Return a copied name of the account.financial.html.report record by adding the suffix (copy) at the end
         until the name is unique.
@@ -380,7 +375,6 @@ class ReportAccountFinancialReport(models.Model):
             name += ' ' + _('(copy)')
         return name
 
-    @api.multi
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
         '''Copy the whole financial report hierarchy by duplicating each line recursively.
@@ -441,7 +435,6 @@ class AccountFinancialReportLine(models.Model):
             if rec.code and rec.code.strip().lower() in __builtins__.keys():
                 raise ValidationError('The code "%s" is invalid on line with name "%s"' % (rec.code, rec.name))
 
-    @api.multi
     def _get_copied_code(self):
         '''Look for an unique copied code.
 
@@ -453,7 +446,6 @@ class AccountFinancialReportLine(models.Model):
             code += '_COPY'
         return code
 
-    @api.multi
     def _copy_hierarchy(self, report_id=None, copied_report_id=None, parent_id=None, code_mapping=None):
         ''' Copy the whole hierarchy from this line by copying each line children recursively and adapting the
         formulas with the new copied codes.
@@ -743,7 +735,6 @@ class AccountFinancialReportLine(models.Model):
         results['currency_id'] = self.env.company.currency_id.id
         return results
 
-    @api.multi
     def _compute_date_range(self):
         '''Compute the current report line date range according to the dates passed through the context
         and its specified special_date_changer.
@@ -767,7 +758,6 @@ class AccountFinancialReportLine(models.Model):
             strict_range = True
         return date_from, date_to, strict_range
 
-    @api.multi
     def report_move_lines_action(self):
         domain = ast.literal_eval(self.domain)
         if 'date_from' in self.env.context.get('context', {}):
@@ -1037,7 +1027,6 @@ class AccountFinancialReportLine(models.Model):
         }
         return [line1, line2]
 
-    @api.multi
     def _get_lines(self, financial_report, currency_table, options, linesDicts):
         final_result_table = []
         comparison_table = [options.get('date')]
@@ -1239,7 +1228,6 @@ class FormulaContext(dict):
 class IrModuleModule(models.Model):
     _inherit = "ir.module.module"
 
-    @api.multi
     def _update_translations(self, filter_lang=None):
         """ Create missing translations after loading the one of account.financial.html.report
 

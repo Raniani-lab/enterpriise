@@ -10,13 +10,11 @@ class Project(models.Model):
 
     allow_forecast = fields.Boolean("Allow forecast", default=False, help="Enable forecasting on the project.")
 
-    @api.multi
     def write(self, vals):
         if 'active' in vals:
             self.env['project.forecast'].with_context(active_test=False).search([('project_id', 'in', self.ids)]).write({'active': vals['active']})
         return super(Project, self).write(vals)
 
-    @api.multi
     def unlink(self):
         if self.env['project.forecast'].search([('project_id', 'in', self.ids)]):
             raise UserError(_('You cannot delete a project containing forecasts. You can either delete all the project\'s forecasts and then delete the project or simply deactivate the project.'))
@@ -28,13 +26,11 @@ class Task(models.Model):
 
     allow_forecast = fields.Boolean('Allow Forecast', readonly=True, related='project_id.allow_forecast', store=False)
 
-    @api.multi
     def write(self, vals):
         if 'active' in vals:
             self.env['project.forecast'].with_context(active_test=False).search([('task_id', 'in', self.ids)]).write({'active': vals['active']})
         return super(Task, self).write(vals)
 
-    @api.multi
     def unlink(self):
         if self.env['project.forecast'].search([('task_id', 'in', self.ids)]):
             raise UserError(_('You cannot delete a task containing forecasts. You can either delete all the task\'s forecasts and then delete the task or simply deactivate the task.'))

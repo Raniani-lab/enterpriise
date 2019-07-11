@@ -50,7 +50,6 @@ class IrActionsReport(models.Model):
 
         return report_model
 
-    @api.multi
     def associated_view(self):
         action_data = super(IrActionsReport, self).associated_view()
         domain = expression.normalize_domain(action_data['domain'])

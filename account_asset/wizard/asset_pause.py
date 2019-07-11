@@ -12,7 +12,6 @@ class AssetPause(models.TransientModel):
     asset_id = fields.Many2one('account.asset', required=True)
     action = fields.Selection([('pause', 'Pause'), ('sell', 'Sell or Dispose')], required=True)
 
-    @api.multi
     def do_action(self):
         for record in self:
             if record.action == 'pause':

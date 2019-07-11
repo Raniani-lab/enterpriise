@@ -15,7 +15,6 @@ class VoipPhonecallTransferWizard(models.TransientModel):
         ('extern', 'transfer to another External Phone')
     ], default='physical', required=True)
 
-    @api.multi
     def save(self):
         if self.transfer_choice == 'extern':
             action = {

@@ -30,7 +30,6 @@ class Employee(models.Model):
         if manager and manager.has_group('hr_timesheet.group_timesheet_manager') and (self.timesheet_manager_id == previous_manager or not self.timesheet_manager_id):
             self.timesheet_manager_id = manager
 
-    @api.multi
     def get_timesheet_and_working_hours(self, date_start, date_stop):
         """ Get the difference between the supposed working hour (based on resource calendar) and
             the timesheeted hours, for the given period `date_start` - `date_stop` (inclusives).

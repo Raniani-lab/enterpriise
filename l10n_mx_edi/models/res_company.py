@@ -32,7 +32,6 @@ class ResCompany(models.Model):
     l10n_mx_edi_certificate_ids = fields.Many2many('l10n_mx_edi.certificate',
         string='Certificates')
 
-    @api.multi
     def _compute_l10n_mx_edi_address(self):
         for company in self:
             address_data = company.partner_id.sudo().address_get(adr_pref=['contact'])
@@ -41,12 +40,10 @@ class ResCompany(models.Model):
                 company.l10n_mx_edi_colony = partner.l10n_mx_edi_colony
                 company.l10n_mx_edi_locality = partner.l10n_mx_edi_locality
 
-    @api.multi
     def _inverse_l10n_mx_edi_colony(self):
         for company in self:
             company.partner_id.l10n_mx_edi_colony = company.l10n_mx_edi_colony
 
-    @api.multi
     def _inverse_l10n_mx_edi_locality(self):
         for company in self:
             company.partner_id.l10n_mx_edi_locality = company.l10n_mx_edi_locality

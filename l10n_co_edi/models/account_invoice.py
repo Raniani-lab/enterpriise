@@ -37,7 +37,6 @@ class AccountMove(models.Model):
                                              help='''Will be included in electronic invoice and can point to
                                              e.g. a ZIP containing additional information about the invoice.''', copy=False)
 
-    @api.multi
     def l10n_co_edi_generate_electronic_invoice_xml(self):
         self.ensure_one()
         if self.state != 'posted':
@@ -78,7 +77,6 @@ class AccountMove(models.Model):
                                company.l10n_co_edi_company, company.l10n_co_edi_account,
                                company.l10n_co_edi_test_mode)
 
-    @api.multi
     def l10n_co_edi_upload_electronic_invoice(self):
         '''Main function that prepares the XML, uploads it to Carvajal and
         deals with the output. This output is posted as chatter
@@ -99,7 +97,6 @@ class AccountMove(models.Model):
                 invoice.l10n_co_edi_transaction = response['transactionId']
                 invoice.l10n_co_edi_invoice_status = 'processing'
 
-    @api.multi
     def l10n_co_edi_download_electronic_invoice(self):
         '''Downloads a ZIP containing an official XML and signed PDF
         document. This will only be available for invoices that have
@@ -126,7 +123,6 @@ class AccountMove(models.Model):
         else:
             return _('Electronic invoice download succeeded. Message from Carvajal:<br/>%s') % response['message'], [('%s.zip' % self.number, response['zip_b64'])]
 
-    @api.multi
     def l10n_co_edi_check_status_electronic_invoice(self):
         '''This checks the current status of an uploaded XML with Carvajal. It
         posts the results in the invoice chatter and also attempts to
@@ -329,7 +325,6 @@ class AccountMove(models.Model):
         self.ensure_one()
         return self.type in ('out_invoice', 'out_refund', 'in_refund') and self.company_id.country_id == self.env.ref('base.co')
 
-    @api.multi
     def post(self):
         # OVERRIDE to generate the e-invoice for the Colombian Localization.
         res = super(AccountMove, self).post()

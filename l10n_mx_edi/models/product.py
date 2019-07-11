@@ -57,7 +57,6 @@ class ProductSatCode(models.Model):
         help='If this record is not active, this cannot be selected.',
         default=True)
 
-    @api.multi
     def name_get(self):
         result = []
         for prod in self:

@@ -70,7 +70,6 @@ class HrPayslip(models.Model):
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(readonly=True)
 
-    @api.multi
     def _compute_basic_net(self):
         for payslip in self:
             payslip.basic_wage = payslip._get_salary_line_total('BASIC')
@@ -81,11 +80,9 @@ class HrPayslip(models.Model):
         if any(self.filtered(lambda payslip: payslip.date_from > payslip.date_to)):
             raise ValidationError(_("Payslip 'Date From' must be earlier 'Date To'."))
 
-    @api.multi
     def action_payslip_draft(self):
         return self.write({'state': 'draft'})
 
-    @api.multi
     def action_payslip_done(self):
         if any(slip.state == 'cancel' for slip in self):
             raise ValidationError(_("You can't validate a cancelled payslip."))
@@ -93,14 +90,12 @@ class HrPayslip(models.Model):
         self.write({'state' : 'done'})
         self.mapped('payslip_run_id').action_close()
 
-    @api.multi
     def action_payslip_cancel(self):
         if self.filtered(lambda slip: slip.state == 'done'):
             raise UserError(_("Cannot cancel a payslip that is done."))
         self.write({'state': 'cancel'})
         self.mapped('payslip_run_id').action_close()
 
-    @api.multi
     def refund_sheet(self):
         for payslip in self:
             copied_payslip = payslip.copy({'credit_note': True, 'name': _('Refund: ') + payslip.name})
@@ -128,13 +123,11 @@ class HrPayslip(models.Model):
         res = super(HrPayslip, self).create(vals)
         return res
 
-    @api.multi
     def unlink(self):
         if any(self.filtered(lambda payslip: payslip.state not in ('draft', 'cancel'))):
             raise UserError(_('You cannot delete a payslip which is not draft or cancelled!'))
         return super(HrPayslip, self).unlink()
 
-    @api.multi
     def compute_sheet(self):
         for payslip in self.filtered(lambda slip: slip.state not in ['cancel', 'done']):
             number = payslip.number or self.env['ir.sequence'].next_by_code('salary.slip')
@@ -291,12 +284,10 @@ class HrPayslip(models.Model):
         else:
             return [(5, False, False)]
 
-    @api.multi
     def _get_salary_line_total(self, code):
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.total for line in lines])
 
-    @api.multi
     def action_print_payslip(self):
         return {
             'name': 'Payslip',

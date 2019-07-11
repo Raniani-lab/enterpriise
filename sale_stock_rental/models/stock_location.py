@@ -14,7 +14,6 @@ class StockLocation(models.Model):
         wh = self.get_warehouse()
         return wh and (wh.lot_stock_id == self or self.is_child_of(wh.lot_stock_id))
 
-    @api.multi
     def is_child_of(self, location):
         """Check whether location contains or is self.
 

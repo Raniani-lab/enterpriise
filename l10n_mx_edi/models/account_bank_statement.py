@@ -35,7 +35,6 @@ class AccountBankStatementLine(models.Model):
         payments._l10n_mx_edi_retry()
         return res
 
-    @api.multi
     def l10n_mx_edi_is_required(self):
         self.ensure_one()
         # TODO remove this crappy hack and make a bridge module for l10n_mx_edi and point_of_sale

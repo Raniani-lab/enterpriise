@@ -19,7 +19,6 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.pickings_count = len(ticket.picking_ids)
 
-    @api.multi
     def action_view_pickings(self):
         self.ensure_one()
         return {

@@ -22,7 +22,6 @@ class AccountChangeLockDate(models.TransientModel):
         help='No users can edit journal entries related to a tax prior and inclusive of this date.')
 
 
-    @api.multi
     def change_lock_date(self):
         self.env.company.write({'period_lock_date': self.period_lock_date,
                                         'fiscalyear_lock_date': self.fiscalyear_lock_date,

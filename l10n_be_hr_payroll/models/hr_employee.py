@@ -109,7 +109,6 @@ class HrEmployee(models.Model):
             employee.dependent_seniors = employee.other_senior_dependent + employee.other_disabled_senior_dependent
             employee.dependent_juniors = employee.other_juniors_dependent + employee.other_disabled_juniors_dependent
 
-    @api.multi
     def _generate_281_10_form(self, basic_info, file_types=['xml', 'pdf']):
         """
             This method creates the 281.10 sheet.
@@ -138,7 +137,6 @@ class HrEmployee(models.Model):
                 body=_("The 281.10 sheet has been generated"),
                 attachments=attachments)
 
-    @api.multi
     def _check_valid_281_10_configuration(self):
         if not all(emp.company_id and emp.company_id.street and emp.company_id.zip and emp.company_id.city and emp.company_id.phone and emp.company_id.vat for emp in self):
             raise UserError(_("The company is not correctly configured on your employees. Please be sure that the following pieces of information are set: street, zip, city, phone and vat"))
@@ -152,7 +150,6 @@ class HrEmployee(models.Model):
         if not all(emp.identification_id for emp in self):
             raise UserError(_('Some employee has no identification id.'))
 
-    @api.multi
     def _get_employee_281_10_values(self, basic_info):
         result = {}
         year = basic_info['year']
@@ -232,7 +229,6 @@ class HrEmployee(models.Model):
             result[employee.id] = {**basic_info, **data_dict}
         return result
 
-    @api.multi
     def _get_marital_status(self, file_type='pdf'):
         self.ensure_one()
 
@@ -254,7 +250,6 @@ class HrEmployee(models.Model):
         }
         return marital.get(self.marital, '0')
 
-    @api.multi
     def _get_281_10_family_situation(self):
         """
             This method returns a code that symbolizes the family situation.
@@ -273,20 +268,17 @@ class HrEmployee(models.Model):
             raise UserError(_('The fiscal status for the spouse of the employee %s is not defined.') % (self.name))
         return '0'  # single, widow, ...
 
-    @api.multi
     def _get_dependent_people(self):
         if not self.other_dependent_people:
             return 0
 
         return self.other_senior_dependent + self.other_disabled_senior_dependent + self.other_juniors_dependent + self.other_disabled_juniors_dependent
 
-    @api.multi
     def _get_divers_status(self):
         if self.dependent_children and self._get_marital_status() in ['O', 'W']:
             return 'X'
         return ''
 
-    @api.multi
     def _get_holiday_remuneration(self, year):
         """
             This method returns the sum of the remuneration of the holiday pay.
@@ -298,7 +290,6 @@ class HrEmployee(models.Model):
                     and slip.date_to.year == int(year))
         return sum(slip._get_salary_line_total('TAXABLE') for slip in slip_ids)
 
-    @api.multi
     def _generate_281_10_form_pdf(self, employee_data):
         self.ensure_one()
         file_name = '%s-%s-281_10' % (employee_data['year'], self.name)
@@ -310,7 +301,6 @@ class HrEmployee(models.Model):
 
         return export_281_sheet_filename_pdf, export_281_sheet_pdf
 
-    @api.multi
     def _generate_281_10_form_xml(self, employee_data):
         self.ensure_one()
 
@@ -373,7 +363,6 @@ class HrEmployee(models.Model):
 
         return export_281_sheet_filename_xml, export_281_sheet_xml
 
-    @api.multi
     def _get_fiche_281_10_xml(self, employee_data):
         def add_elements(parent, children, data=employee_data):
             for name, key in children:

@@ -98,7 +98,6 @@ class ProductTemplate(models.Model):
             result.write(related_values)
         return result
 
-    @api.multi
     def _prepare_item_dict(self):
         if self.ebay_sync_stock:
             self.ebay_quantity = max(int(self.virtual_available), 0)
@@ -253,7 +252,6 @@ class ProductTemplate(models.Model):
         else:
             return False
 
-    @api.multi
     def _prepare_non_variant_dict(self):
         item = self._prepare_item_dict()
         # Set default value to UPC
@@ -266,7 +264,6 @@ class ProductTemplate(models.Model):
                 item['Item']['ProductListingDetails']['EAN'] = self.barcode
         return item
 
-    @api.multi
     def _prepare_variant_dict(self):
         if not self.product_variant_ids.filtered('ebay_use'):
             raise UserError(_("Error Encountered.\n No Variant Set To Be Listed On eBay."))
@@ -416,7 +413,6 @@ class ProductTemplate(models.Model):
                                   " Setting the quantity to 0 is the safest method to make a variation unavailable.")
             raise UserError(_("Error Encountered.\n'%s'") % (error_message,))
 
-    @api.multi
     def _create_picture_url(self):
         attachments = self.env['ir.attachment'].search([
             ('res_model', '=', 'product.template'),

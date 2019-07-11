@@ -52,7 +52,6 @@ class Payslip(models.Model):
                 a.date_from <= payslip.date_to and
                 a.date_to >= payslip.date_from for a in payslip.contract_id.attachment_salary_ids)
 
-    @api.multi
     def _get_atn_remuneration(self):
         lines = self.line_ids.filtered(lambda line: 'ATN' in line.code and line.total > 0)
         return sum(line.total for line in lines)

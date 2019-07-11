@@ -53,7 +53,6 @@ class ForecastRecurrency(models.Model):
                 )])
         return result
 
-    @api.multi
     def create_forecast(self, initial_start_dt, initial_end_dt, forecast_values, repeat_limit_dt=False):
         """
             Repeatedly create forecast from an existing recurrency
@@ -96,14 +95,12 @@ class ForecastRecurrency(models.Model):
 
         return fields.Datetime.from_string(max_end_date)
 
-    @api.multi
     def _get_repeat_delta(self):
         deltas = {}
         for recurrency in self:
             deltas[recurrency.id] = repeat_span_to_relativedelta(recurrency.repeat_interval, recurrency.repeat_unit)
         return deltas
 
-    @api.multi
     def _get_repeat_ends(self, initial_start_dt, repeat_limit_dt=False):
         repeat_ends = {}
         repeat_limit_dt = repeat_limit_dt or self._max_repeat_until(initial_start_dt)
@@ -112,7 +109,6 @@ class ForecastRecurrency(models.Model):
             repeat_ends[recurrency.id] = min(recurrency_limit_dt, repeat_limit_dt, self._max_repeat_until(initial_start_dt))
         return repeat_ends
 
-    @api.multi
     def action_remove_after(self, when):
         for recurrency in self:
             forecasts = self.env['project.forecast'].search(['&', ('recurrency_id', '=', recurrency.id), ('start_datetime', '>=', when)])
@@ -122,7 +118,6 @@ class ForecastRecurrency(models.Model):
             else:
                 recurrency.write({'repeat_until': when})
 
-    @api.multi
     def action_remove_all(self):
         for recurrency in self:
             recurrency.forecast_ids.unlink()

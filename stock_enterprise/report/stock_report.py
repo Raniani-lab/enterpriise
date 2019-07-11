@@ -41,7 +41,6 @@ class StockReport(models.Model):
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
     categ_id = fields.Many2one('product.category', 'Product Category', readonly=True)
 
-    @api.multi
     @api.depends('reference', 'product_id.name')
     def name_get(self):
         res = []

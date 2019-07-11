@@ -7,7 +7,6 @@ from odoo import api, models, _
 class Task(models.Model):
     _inherit = 'project.task'
 
-    @api.multi
     def action_make_billable(self):
         return {
             "name": _("Create Sales Order"),

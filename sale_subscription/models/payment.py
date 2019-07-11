@@ -8,7 +8,6 @@ class PaymentToken(models.Model):
     _name = 'payment.token'
     _inherit = 'payment.token'
 
-    @api.multi
     def get_linked_records(self):
         res = super(PaymentToken, self).get_linked_records()
 

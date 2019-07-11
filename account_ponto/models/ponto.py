@@ -17,7 +17,6 @@ class ProviderAccount(models.Model):
     provider_type = fields.Selection(selection_add=[('ponto', 'Ponto')])
     ponto_token = fields.Char(readonly=True, help='Technical field that contains the ponto token')
 
-    @api.multi
     def _get_available_providers(self):
         ret = super(ProviderAccount, self)._get_available_providers()
         ret.append('ponto')
@@ -57,7 +56,6 @@ class ProviderAccount(models.Model):
             _logger.exception(e)
             self.log_ponto_message('%s for route %s' % (resp.text, url))
 
-    @api.multi
     def get_login_form(self, site_id, provider, beta=False):
         if provider != 'ponto':
             return super(ProviderAccount, self).get_login_form(site_id, provider, beta)
@@ -128,7 +126,6 @@ class ProviderAccount(models.Model):
         new_provider_account = self.create(vals)
         return new_provider_account.with_context(no_post_message=True)._update_ponto_accounts()
 
-    @api.multi
     def manual_sync(self):
         if self.provider_type != 'ponto':
             return super(ProviderAccount, self).manual_sync()
@@ -141,7 +138,6 @@ class ProviderAccount(models.Model):
         result = {'status': 'SUCCESS', 'transactions': transactions, 'method': 'refresh', 'added': self.env['account.online.journal']}
         return self.show_result(result)
 
-    @api.multi
     def update_credentials(self):
         if self.provider_type != 'ponto':
             return super(ProviderAccount, self).update_credentials()
@@ -207,7 +203,6 @@ class OnlineAccount(models.Model):
         self.account_online_provider_id.last_refresh = fields.Datetime.now()
         return
 
-    @api.multi
     def retrieve_transactions(self):
         if (self.account_online_provider_id.provider_type != 'ponto'):
             return super(OnlineAccount, self).retrieve_transactions()

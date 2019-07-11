@@ -191,7 +191,6 @@ class RentalOrderLine(models.Model):
 
         return qty <= 0.0
 
-    @api.multi
     @api.depends('product_id')
     def _compute_qty_delivered_method(self):
         """Allow modification of delivered qty without depending on stock moves."""
@@ -219,7 +218,6 @@ class RentalOrderLine(models.Model):
         if not self.is_rental:
             return super(RentalOrderLine, self)._onchange_product_uom_qty()
 
-    @api.multi
     def _action_launch_stock_rule(self, previous_product_uom_qty=False):
         """Disable stock moves for rental order lines.
 

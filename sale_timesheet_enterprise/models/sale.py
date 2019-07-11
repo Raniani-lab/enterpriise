@@ -9,12 +9,10 @@ DEFAULT_INVOICED_TIMESHEET = 'all'
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    @api.multi
     @api.depends('analytic_line_ids.validated')
     def _compute_qty_delivered(self):
         super(SaleOrderLine, self)._compute_qty_delivered()
 
-    @api.multi
     def _timesheet_compute_delivered_quantity_domain(self):
         domain = super(SaleOrderLine, self)._timesheet_compute_delivered_quantity_domain()
         # force to use only the validated timesheet

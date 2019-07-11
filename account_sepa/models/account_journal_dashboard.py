@@ -5,7 +5,6 @@ from odoo import models, api, _
 class account_journal(models.Model):
     _inherit = "account.journal"
 
-    @api.multi
     def get_journal_dashboard_datas(self):
         domain_sepa_ct_to_send = [
             ('journal_id', '=', self.id),
@@ -17,7 +16,6 @@ class account_journal(models.Model):
             num_sepa_ct_to_send=len(self.env['account.payment'].search(domain_sepa_ct_to_send))
         )
 
-    @api.multi
     def action_sepa_ct_to_send(self):
         return {
             'name': _('SEPA Credit Transfers to Send'),

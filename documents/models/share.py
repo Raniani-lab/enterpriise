@@ -55,7 +55,6 @@ class DocumentShare(models.Model):
         ('share_unique', 'unique (access_token)', "This access token already exists"),
     ]
 
-    @api.multi
     def name_get(self):
         name_array = []
         for record in self:
@@ -79,20 +78,17 @@ class DocumentShare(models.Model):
     def get_alias_model_name(self, vals):
         return vals.get('alias_model', 'documents.document')
 
-    @api.multi
     def _compute_alias_domain(self):
         alias_domain = self.env["ir.config_parameter"].sudo().get_param("mail.catchall.domain")
         for record in self:
             record.alias_domain = alias_domain
 
-    @api.multi
     @api.onchange('access_token')
     def _compute_full_url(self):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         for record in self:
             record.full_url = "%s/document/share/%s/%s" % (base_url, record.id, record.access_token)
 
-    @api.multi
     def update_alias_defaults(self):
         for share in self:
             values = {
@@ -103,14 +99,12 @@ class DocumentShare(models.Model):
             }
             share.alias_id.alias_defaults = values
 
-    @api.multi
     def send_share_by_mail(self, template_xmlid):
         self.ensure_one()
         request_template = self.env.ref(template_xmlid, raise_if_not_found=False)
         if request_template:
             request_template.send_mail(self.id)
 
-    @api.multi
     def write(self, vals):
         result = super(DocumentShare, self).write(vals)
         self.update_alias_defaults()

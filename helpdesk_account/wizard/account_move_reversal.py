@@ -26,7 +26,6 @@ class AccountMoveReversal(models.TransientModel):
             domain += [('partner_id', 'child_of', self.helpdesk_ticket_id.partner_id.commercial_partner_id.id)]
         return {'domain': {'move_id': domain}}
 
-    @api.multi
     def reverse_moves(self):
         # OVERRIDE
         res = super(AccountMoveReversal, self).reverse_moves()

@@ -126,7 +126,6 @@ class ResPartner(models.Model):
             'date_auto': date_auto
         }
 
-    @api.multi
     def change_expected_date(self, options=False):
         if not options or 'expected_pay_date' not in options or 'move_line_id' not in options:
             return True
@@ -138,7 +137,6 @@ class ResPartner(models.Model):
             record.message_post(body=msg)
         return True
 
-    @api.multi
     def change_next_action(self, date):
         for record in self:
             msg = _('Next action date: ') + date

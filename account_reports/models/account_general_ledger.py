@@ -40,7 +40,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     def _get_report_name(self):
         return _("General Ledger")
 
-    @api.multi
     def view_all_journal_items(self, options, params):
         if params.get('id'):
             params['id'] = int(params.get('id').split('_')[1])

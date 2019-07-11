@@ -42,7 +42,6 @@ class SignRequest(models.Model):
     _rec_name = 'reference'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    @api.multi
     def _default_access_token(self):
         return str(uuid.uuid4())
 
@@ -109,11 +108,9 @@ class SignRequest(models.Model):
             if rec.state == 'sent' and rec.nb_closed == len(rec.request_item_ids) and len(rec.request_item_ids) > 0: # All signed
                 rec.action_signed()
 
-    @api.multi
     def button_send(self):
         self.action_sent()
 
-    @api.multi
     def go_to_document(self):
         self.ensure_one()
         request_item = self.request_item_ids.filtered(lambda r: r.partner_id and r.partner_id.id == self.env.user.partner_id.id)[:1]
@@ -139,7 +136,6 @@ class SignRequest(models.Model):
             "res_id": self.id,
         }
 
-    @api.multi
     def get_completed_document(self):
         self.ensure_one()
         if not self.completed_document:
@@ -151,29 +147,24 @@ class SignRequest(models.Model):
             'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': self.id, 'access_token': self.access_token},
         }
 
-    @api.multi
     def toggle_favorited(self):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
 
-    @api.multi
     def action_resend(self):
         self.action_draft()
         subject = _("Signature Request - %s") % (self.template_id.attachment_id.name)
         self.action_sent(subject=subject)
 
-    @api.multi
     def action_draft(self):
         self.write({'completed_document': None, 'access_token': self._default_access_token()})
 
-    @api.multi
     def action_sent_without_mail(self):
         self.write({'state': 'sent'})
         for sign_request in self:
             for sign_request_item in sign_request.request_item_ids:
                 sign_request_item.write({'state':'sent'})
 
-    @api.multi
     def action_sent(self, subject=None, message=None):
         # Send accesses by email
         self.write({'state': 'sent'})
@@ -194,7 +185,6 @@ class SignRequest(models.Model):
             else:
                 sign_request.action_draft()
 
-    @api.multi
     def action_signed(self):
         self.write({'state': 'signed'})
         self.env.cr.commit()
@@ -202,7 +192,6 @@ class SignRequest(models.Model):
             #if the file is encrypted, we must wait that the document is decrypted
             self.send_completed_document()
 
-    @api.multi
     def check_is_encrypted(self):
         self.ensure_one()
         if not self.template_id.sign_item_ids:
@@ -211,7 +200,6 @@ class SignRequest(models.Model):
         old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
         return old_pdf.isEncrypted
 
-    @api.multi
     def action_canceled(self):
         self.write({'completed_document': None, 'access_token': self._default_access_token(), 'state': 'canceled'})
         for request_item in self.mapped('request_item_ids'):
@@ -239,7 +227,6 @@ class SignRequest(models.Model):
                     'role_id': signer['role'],
                 })
 
-    @api.multi
     def send_signature_accesses(self, subject=None, message=None, ignored_partners=[]):
         self.ensure_one()
         if len(self.request_item_ids) <= 0 or (set(self.request_item_ids.mapped('role_id')) != set(self.template_id.sign_item_ids.mapped('responsible_id'))):
@@ -272,7 +259,6 @@ class SignRequest(models.Model):
             )
             self.message_subscribe(partner_ids=follower.ids)
 
-    @api.multi
     def send_completed_document(self):
         self.ensure_one()
         if len(self.request_item_ids) <= 0 or self.state != 'signed':
@@ -499,7 +485,6 @@ class SignRequestItem(models.Model):
     _description = "Signature Request Item"
     _rec_name = 'partner_id'
 
-    @api.multi
     def _default_access_token(self):
         return str(uuid.uuid4())
 
@@ -524,7 +509,6 @@ class SignRequestItem(models.Model):
     latitude = fields.Float(digits=(10, 7))
     longitude = fields.Float(digits=(10, 7))
 
-    @api.multi
     def action_draft(self):
         self.write({
             'signature': None,
@@ -537,18 +521,15 @@ class SignRequestItem(models.Model):
             self.env['sign.item.value'].search([('sign_item_id', 'in', itemsToClean.mapped('id')), ('sign_request_id', '=', request_item.sign_request_id.id)]).unlink()
         self.mapped('sign_request_id')._check_after_compute()
 
-    @api.multi
     def action_sent(self):
         self.write({'state': 'sent'})
         self.mapped('sign_request_id')._check_after_compute()
 
-    @api.multi
     def action_completed(self):
         date = fields.Date.context_today(self).strftime(DEFAULT_SERVER_DATE_FORMAT)
         self.write({'signing_date': date, 'state': 'completed'})
         self.mapped('sign_request_id')._check_after_compute()
 
-    @api.multi
     def send_signature_accesses(self, subject=None, message=None):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         for signer in self:
@@ -574,7 +555,6 @@ class SignRequestItem(models.Model):
                  'subject': subject}
             )
 
-    @api.multi
     def sign(self, signature):
         self.ensure_one()
         if not isinstance(signature, dict):
@@ -611,7 +591,6 @@ class SignRequestItem(models.Model):
         subject = _("Signature Request - %s") % (sign_request_item.sign_request_id.template_id.attachment_id.name)
         self.browse(id).send_signature_accesses(subject=subject)
 
-    @api.multi
     def _reset_sms_token(self):
         for record in self:
             record.sms_token = randint(100000, 999999)

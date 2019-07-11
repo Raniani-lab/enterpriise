@@ -7,7 +7,6 @@ from odoo import api, models, _
 class AccountJournalDashboard(models.Model):
     _inherit = "account.journal"
 
-    @api.multi
     def get_journal_dashboard_datas(self):
         domain_aba_ct_to_send = [
             ('journal_id', '=', self.id),
@@ -19,7 +18,6 @@ class AccountJournalDashboard(models.Model):
             num_aba_ct_to_send=len(self.env['account.payment'].search(domain_aba_ct_to_send))
         )
 
-    @api.multi
     def action_aba_ct_to_send(self):
         return {
             'name': _('ABA Credit Transfers to Send'),

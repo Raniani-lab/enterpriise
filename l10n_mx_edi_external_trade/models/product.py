@@ -38,7 +38,6 @@ class L10nMXEdiTariffFraction(models.Model):
         help='If the tariff fraction has expired it could be disabled to '
         'do not allow select the record.', default=True)
 
-    @api.multi
     def name_get(self):
         result = []
         for tariff in self:

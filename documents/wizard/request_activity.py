@@ -45,7 +45,6 @@ class RequestWizard(models.TransientModel):
                 self.owner_id = self.activity_type_id.default_user_id
 
 
-    @api.multi
     def request_document(self):
         self.ensure_one()
         document = self.env['documents.document'].create({

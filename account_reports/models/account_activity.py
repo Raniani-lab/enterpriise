@@ -17,7 +17,6 @@ class AccountMove(models.Model):
         action.update({'options': options, 'ignore_session': 'read'})
         return action
 
-    @api.multi
     def refresh_tax_entry(self):
         for move in self.filtered(lambda m: m.is_tax_closing and m.state == 'draft'):
             options = move._compute_vat_period_date()
@@ -25,7 +24,6 @@ class AccountMove(models.Model):
             ctx['strict_range'] = True
             move.env['account.generic.tax.report'].with_context(ctx)._generate_tax_closing_entry(options, move=move, raise_on_empty=True)
 
-    @api.multi
     def _compute_vat_period_date(self):
         self.ensure_one()
         date_to = self.date
@@ -38,7 +36,6 @@ class AccountMove(models.Model):
         report = self.env['account.generic.tax.report']
         return report._get_options(options)
 
-    @api.multi
     def _close_tax_entry(self):
         # Close the activity if any and create a new move and a new activity
         # also freeze lock date
@@ -73,7 +70,6 @@ class AccountMove(models.Model):
             }
             self.env['res.config.settings']._create_edit_tax_reminder(vals)
 
-    @api.multi
     def post(self):
         # When posting entry, generate the pdf and next activity for the tax moves.
         tax_return_moves = self.filtered(lambda m: m.is_tax_closing)
@@ -89,7 +85,6 @@ class AccountTaxReportActivityType(models.Model):
 class AccountTaxReportActivity(models.Model):
     _inherit = "mail.activity"
 
-    @api.multi
     def action_open_tax_report(self):
         self.ensure_one()
         move = self.env['account.move'].browse(self.res_id)

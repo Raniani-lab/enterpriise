@@ -37,7 +37,6 @@ class HrContract(models.Model):
         if self.structure_type_id.default_resource_calendar_id:
             self.resource_calendar_id = self.structure_type_id.default_resource_calendar_id
 
-    @api.multi
     def _get_leaves(self):
         return self.env['hr.leave'].search([
             ('employee_id', 'in', self.mapped('employee_id.id')),
@@ -153,7 +152,6 @@ class HrContract(models.Model):
         action['context'] = repr(self.env.context)
         return action
 
-    @api.multi
     def _get_work_hours(self, date_from, date_to):
         """
         Returns the amount (expressed in hours) of work

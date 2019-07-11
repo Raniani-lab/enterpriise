@@ -10,7 +10,6 @@ class AccountPayment(models.Model):
     display_qr_code = fields.Boolean(compute="_compute_display_code", store=False)
     qr_code_url = fields.Char(compute="_compute_qr_code_url", store=False)
 
-    @api.multi
     @api.depends('partner_type', 'payment_method_code', 'partner_bank_account_id')
     def _compute_display_code(self):
         for record in self:
@@ -19,7 +18,6 @@ class AccountPayment(models.Model):
                                       self.env.company.country_id in self.env.ref('base.europe').country_ids and
                                       bool(record.partner_bank_account_id))
 
-    @api.multi
     @api.depends('partner_bank_account_id', 'amount', 'communication')
     def _compute_qr_code_url(self):
         for record in self:

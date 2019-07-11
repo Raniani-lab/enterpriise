@@ -12,7 +12,6 @@ class AccountMoveLine(models.Model):
     internal_note = fields.Text('Internal Note', help="Note you can set through the customer statement about a receivable journal item")
     next_action_date = fields.Date('Next Action Date', help="Date where the next action should be taken for a receivable item. Usually, automatically set when sending reminders through the customer statement.")
 
-    @api.multi
     def write_blocked(self, blocked):
         """ This function is used to change the 'blocked' status of an aml.
             You need to be able to change it even if the aml is locked by the lock date

@@ -6,7 +6,6 @@ from odoo import fields, models, api
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
-    @api.multi
     def open_action(self):
         action = super(AccountJournal, self).open_action()
         view = self.env.ref('account.action_move_in_invoice_type')

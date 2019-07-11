@@ -13,13 +13,11 @@ class SaleOrder(models.Model):
     is_taxcloud_configured = fields.Boolean(related='company_id.is_taxcloud_configured', help='Used to determine whether or not to warn the user to configure TaxCloud.')
     is_taxcloud = fields.Boolean(related='fiscal_position_id.is_taxcloud', help='Technical field to determine whether to hide taxes in views or not.')
 
-    @api.multi
     def action_confirm(self):
         if self.fiscal_position_id.is_taxcloud:
             self.validate_taxes_on_sales_order()
         return super(SaleOrder, self).action_confirm()
 
-    @api.multi
     def validate_taxes_on_sales_order(self):
         company = self.company_id
         shipper = company or self.env.company

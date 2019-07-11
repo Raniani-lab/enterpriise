@@ -128,7 +128,6 @@ class SaleOrder(models.Model):
             res[template] = lines
         return res
 
-    @api.multi
     def _action_confirm(self):
         """Update and/or create subscriptions on order confirmation."""
         res = super(SaleOrder, self)._action_confirm()

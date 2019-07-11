@@ -50,7 +50,6 @@ class WorkflowActionRule(models.Model):
     activity_note = fields.Html(string="Activity Note")
     activity_user_id = fields.Many2one('res.users', string='Responsible')
 
-    @api.multi
     def _get_business(self):
         """
         Checks if the workflow rule has available create models to display the option.

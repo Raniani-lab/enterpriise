@@ -13,13 +13,11 @@ class IrModelFields(models.Model):
         self._trigger_project_worksheet_report_regeneration(result.mapped('model_id').ids)
         return result
 
-    @api.multi
     def write(self, values):
         result = super(IrModelFields, self).write(values)
         self._trigger_project_worksheet_report_regeneration(self.mapped('model_id').ids)
         return result
 
-    @api.multi
     def unlink(self):
         model_ids = self.mapped('model_id').ids
         result = super(IrModelFields, self).unlink()

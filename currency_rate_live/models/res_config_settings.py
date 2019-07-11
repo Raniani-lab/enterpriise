@@ -65,7 +65,6 @@ class ResCompany(models.Model):
             else:
                 company.currency_provider = 'ecb'
 
-    @api.multi
     def update_currency_rates(self):
         ''' This method is used to update all currencies given by the provider.
         It calls the parse_function of the selected exchange rates provider automatically.

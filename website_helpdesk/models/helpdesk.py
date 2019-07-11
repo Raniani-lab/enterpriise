@@ -9,7 +9,6 @@ class HelpdeskTeam(models.Model):
     _name = "helpdesk.team"
     _inherit = ['helpdesk.team', 'website.published.mixin']
 
-    @api.multi
     def _compute_website_url(self):
         super(HelpdeskTeam, self)._compute_website_url()
         for team in self:
@@ -20,13 +19,11 @@ class HelpdeskTeam(models.Model):
         if not (self.use_website_helpdesk_form or self.use_website_helpdesk_forum or self.use_website_helpdesk_slides) and self.website_published:
             self.website_published = False
 
-    @api.multi
     def write(self, vals):
         if 'active' in vals and not vals['active']:
             vals['website_published'] = False
         return super(HelpdeskTeam, self).write(vals)
 
-    @api.multi
     def action_view_all_rating(self):
         """ Override this method without calling parent to redirect to rating website team page """
         self.ensure_one()

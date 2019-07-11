@@ -27,7 +27,6 @@ class AccountMove(models.Model):
     def _onchange_amount(self):
         self.asset_manually_modified = True
 
-    @api.multi
     def post(self):
         # OVERRIDE
         res = super(AccountMove, self).post()
@@ -40,7 +39,6 @@ class AccountMove(models.Model):
         self._auto_create_asset()
         return res
 
-    @api.multi
     def button_cancel(self):
         # OVERRIDE
         res = super(AccountMove, self).button_cancel()
@@ -49,14 +47,12 @@ class AccountMove(models.Model):
 
         return res
 
-    @api.multi
     def _log_depreciation_asset(self):
         for move in self.filtered(lambda m: m.asset_id):
             asset = move.asset_id
             msg = _('Depreciation entry %s posted (%s)') % (move.name, formatLang(self.env, move.amount_total, currency_obj=move.company_id.currency_id))
             asset.message_post(body=msg)
 
-    @api.multi
     def _auto_create_asset(self):
         create_list = []
         invoice_list = []
@@ -158,7 +154,6 @@ class AccountMove(models.Model):
         move_vals = self._prepare_move_for_asset_depreciation(vals)
         return self.env['account.move'].create(move_vals)
 
-    @api.multi
     def open_asset_view(self):
         return {
             'name': _('Asset'),
@@ -169,7 +164,6 @@ class AccountMove(models.Model):
             'res_id': self.asset_id.id,
         }
 
-    @api.multi
     def action_open_asset_ids(self):
         return {
             'name': _('Assets'),
@@ -181,7 +175,6 @@ class AccountMove(models.Model):
             'domain': [('id', 'in', self.asset_ids.ids)],
         }
 
-    @api.multi
     def action_open_deferred_revenue_ids(self):
         form_view = self.env.ref('account_deferred_revenue.view_account_asset_revenue_form', False) or self.env.ref('account_asset.view_account_asset_form')
         return {
@@ -198,7 +191,6 @@ class AccountMoveLine(models.Model):
 
     asset_id = fields.Many2one('account.asset', string='Asset Linked', ondelete="set null", help="Asset created from this Journal Item", copy=False)
 
-    @api.multi
     def turn_as_asset(self):
         ctx = self.env.context.copy()
         ctx.update({'default_original_move_line_ids': [(6, False, self.env.context['active_ids'])]})

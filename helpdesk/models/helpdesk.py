@@ -73,7 +73,6 @@ class HelpdeskTeam(models.Model):
             else:
                 team.portal_rating_url = False
 
-    @api.multi
     def _compute_upcoming_sla_fail_tickets(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([
             ('sla_active', '=', True),
@@ -86,7 +85,6 @@ class HelpdeskTeam(models.Model):
         for team in self:
             team.upcoming_sla_fail_tickets = mapped_data.get(team.id, 0)
 
-    @api.multi
     def _compute_unassigned_tickets(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([('user_id', '=', False), ('team_id', 'in', self.ids), ('stage_id.is_close', '!=', True)], ['team_id'], ['team_id'])
         mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
@@ -118,7 +116,6 @@ class HelpdeskTeam(models.Model):
         # If you plan to add something after this, use a new environment. The one above is no longer valid after the modules install.
         return team
 
-    @api.multi
     def write(self, vals):
         result = super(HelpdeskTeam, self).write(vals)
         if 'active' in vals:
@@ -128,13 +125,11 @@ class HelpdeskTeam(models.Model):
         # If you plan to add something after this, use a new environment. The one above is no longer valid after the modules install.
         return result
 
-    @api.multi
     def unlink(self):
         stages = self.mapped('stage_ids').filtered(lambda stage: stage.team_ids <= self)
         stages.unlink()
         return super(HelpdeskTeam, self).unlink()
 
-    @api.multi
     def _check_sla_group(self):
         for team in self:
             if team.use_sla and not self.user_has_groups('helpdesk.group_use_sla'):
@@ -147,7 +142,6 @@ class HelpdeskTeam(models.Model):
                     self.env.ref('helpdesk.group_helpdesk_user').write({'implied_ids': [(3, self.env.ref('helpdesk.group_use_sla').id)]})
                     self.env.ref('helpdesk.group_use_sla').write({'users': [(5, 0, 0)]})
 
-    @api.multi
     def _check_modules_to_install(self):
         module_installed = False
         for team in self:
@@ -298,7 +292,6 @@ class HelpdeskTeam(models.Model):
                 result['7days']['rating'] = team_satisfaction_7days
         return result
 
-    @api.multi
     def action_view_ticket_rating(self):
         """ return the action to see all the rating about the tickets of the Team """
         domain = [('team_id', 'in', self.ids)]
@@ -324,12 +317,10 @@ class HelpdeskTeam(models.Model):
         #  call this method of on click "Customer Rating" button on dashbord for last 7days rating of teams tickets
         return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)]).with_context(helpdesk=True, seven_days=True).action_view_ticket_rating()
 
-    @api.multi
     def action_view_all_rating(self):
         """ return the action to see all the rating about the all sort of activity of the team (tickets) """
         return self.action_view_ticket_rating()
 
-    @api.multi
     def action_unhappy_rating_ticket(self):
         self.ensure_one()
         action = self.env.ref('helpdesk.helpdesk_ticket_action_main').read()[0]
@@ -348,7 +339,6 @@ class HelpdeskTeam(models.Model):
         bad = activity['bad'] * 0.00
         return great + okey + bad
 
-    @api.multi
     def get_new_user(self):
         self.ensure_one()
         new_user = self.env['res.users']
@@ -410,7 +400,6 @@ class HelpdeskStage(models.Model):
         'Grey Kanban Label', default=lambda s: _('In Progress'), translate=True, required=True,
         help='Override the default value displayed for the normal state for kanban selection, when the task or issue is in that stage.')
 
-    @api.multi
     def unlink(self):
         stages = self
         default_team_id = self.env.context.get('default_team_id')

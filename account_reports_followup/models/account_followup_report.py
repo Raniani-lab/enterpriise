@@ -49,7 +49,6 @@ class AccountFollowupReport(models.AbstractModel):
                 infos['next_action']['date_auto'] = format_date(self.env, next_date)
         return infos
 
-    @api.multi
     def get_html(self, options, line_id=None, additional_context=None):
         if additional_context is None:
             additional_context = {}

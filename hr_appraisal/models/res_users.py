@@ -36,7 +36,6 @@ class User(models.Model):
         type(self).SELF_READABLE_FIELDS = appraisal_readable_fields + type(self).SELF_READABLE_FIELDS
         return init_res
 
-    @api.multi
     def action_send_appraisal_request(self):
         return {
             'type': 'ir.actions.act_window',

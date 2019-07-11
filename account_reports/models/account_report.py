@@ -901,7 +901,6 @@ class AccountReport(models.AbstractModel):
         # document == 'account.move' by default.
         return 'view_move_form'
 
-    @api.multi
     def open_document(self, options, params=None):
         if not params:
             params = {}
@@ -991,7 +990,6 @@ class AccountReport(models.AbstractModel):
         action['context'] = ctx
         return action
 
-    @api.multi
     def open_general_ledger(self, options, params=None):
         if not params:
             params = {}
@@ -1163,7 +1161,6 @@ class AccountReport(models.AbstractModel):
                 }
         return info
 
-    @api.multi
     def _check_report_security(self, options):
         '''The security check must be done in this method. It ensures no-one can by-passing some access rules
         (e.g. falsifying the options).
@@ -1179,7 +1176,6 @@ class AccountReport(models.AbstractModel):
             else:
                 options['multi_company'] = [opt for opt in options['multi_company'] if opt['id'] in user_company_ids]
 
-    @api.multi
     def get_html(self, options, line_id=None, additional_context=None):
         '''
         return the html value of report, or html value of unfolded line
@@ -1245,7 +1241,6 @@ class AccountReport(models.AbstractModel):
             html = html.replace(b'<div class="js_account_report_footnotes"></div>', self.get_html_footnotes(footnotes_to_render))
         return html
 
-    @api.multi
     def get_html_footnotes(self, footnotes):
         template = self._get_templates().get('footnotes_template', 'account_reports.footnotes_template')
         rcontext = {'footnotes': footnotes, 'context': self.env.context}

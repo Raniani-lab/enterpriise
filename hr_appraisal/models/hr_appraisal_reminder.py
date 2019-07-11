@@ -27,7 +27,6 @@ class HrAppraisalReminder(models.Model):
         ('positif_number_months', 'CHECK(appraisal_reminder > 0)', "The reminder time must be bigger or equal to 1 month."),
     ]
 
-    @api.multi
     def name_get(self):
         result = []
         event_selection_vals = {elem[0]: elem[1] for elem in self._fields['event']._description_selection(self.env)}

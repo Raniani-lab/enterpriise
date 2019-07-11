@@ -203,7 +203,6 @@ class HrSalaryRule(models.Model):
         help="Eventual third party involved in the salary payment of the employees.")
     note = fields.Text(string='Description')
 
-    @api.multi
     def _compute_rule(self, localdict):
         """
         :param localdict: dictionary containing the current computation environment
@@ -230,7 +229,6 @@ class HrSalaryRule(models.Model):
             except Exception as e:
                 raise UserError(_('Wrong python code defined for salary rule %s (%s).\nError: %s') % (self.name, self.code, e))
 
-    @api.multi
     def _satisfy_condition(self, localdict):
         self.ensure_one()
         if self.condition_select == 'none':

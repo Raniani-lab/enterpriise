@@ -17,7 +17,6 @@ class ResConfigSettings(models.TransientModel):
     account_tax_periodicity_reminder_day = fields.Integer(related='company_id.account_tax_periodicity_reminder_day', string='Reminder', readonly=False, required=True)
     account_tax_periodicity_journal_id = fields.Many2one(related='company_id.account_tax_periodicity_journal_id', string='Journal', readonly=False)
 
-    @api.multi
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         company = self.company_id or self.env.company
@@ -39,7 +38,6 @@ class ResConfigSettings(models.TransientModel):
             # Finally, add the journal visible in the dashboard
             self.account_tax_periodicity_journal_id.show_on_dashboard = True
 
-    @api.multi
     def _create_edit_tax_reminder(self, values=None):
         # Create/Edit activity type if needed
         if not values:

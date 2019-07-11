@@ -55,7 +55,6 @@ class SignTemplate(models.Model):
         for template in self:
             template.responsible_count = len(template.sign_item_ids.mapped('responsible_id'))
 
-    @api.multi
     def go_to_custom_template(self, sign_directly_without_mail=False):
         self.ensure_one()
         return {
@@ -68,12 +67,10 @@ class SignTemplate(models.Model):
             },
         }
 
-    @api.multi
     def toggle_favorited(self):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
 
-    @api.multi
     def unlink(self):
         if self.filtered(lambda template: template.sign_request_ids):
             raise UserError(_("You can't delete a template for which signature requests exist but you can archive it instead."))
@@ -182,7 +179,6 @@ class SignItem(models.Model):
     width = fields.Float(digits=(4, 3), required=True)
     height = fields.Float(digits=(4, 3), required=True)
 
-    @api.multi
     def getByPage(self):
         items = {}
         for item in self:

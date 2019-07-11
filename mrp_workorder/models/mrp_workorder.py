@@ -11,7 +11,6 @@ class MrpProductionWorkorder(models.Model):
     _name = 'mrp.workcenter'
     _inherit = 'mrp.workcenter'
 
-    @api.multi
     def action_work_order(self):
         if not self.env.context.get('desktop_list_view', False):
             action = self.env.ref('mrp_workorder.mrp_workorder_action_tablet').read()[0]

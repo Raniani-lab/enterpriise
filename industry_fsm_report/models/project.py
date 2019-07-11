@@ -74,7 +74,6 @@ class Task(models.Model):
         })
         return action
 
-    @api.multi
     def action_send_report(self):
         self.ensure_one()
         if self.worksheet_template_id and not self.worksheet_count:

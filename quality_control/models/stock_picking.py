@@ -14,7 +14,6 @@ class StockPicking(models.Model):
     quality_alert_ids = fields.One2many('quality.alert', 'picking_id', 'Alerts')
     quality_alert_count = fields.Integer(compute='_compute_quality_alert_count')
 
-    @api.multi
     def _compute_check(self):
         for picking in self:
             todo = False
@@ -29,12 +28,10 @@ class StockPicking(models.Model):
             picking.quality_check_fail = fail
             picking.quality_check_todo = todo
 
-    @api.multi
     def _compute_quality_alert_count(self):
         for picking in self:
             picking.quality_alert_count = len(picking.quality_alert_ids)
 
-    @api.multi
     def check_quality(self):
         self.ensure_one()
         checks = self.check_ids.filtered(lambda check: check.quality_state == 'none')
@@ -45,7 +42,6 @@ class StockPicking(models.Model):
             return action
         return False
 
-    @api.multi
     def _create_backorder(self):
         res = super(StockPicking, self)._create_backorder()
         if self.env.context.get('skip_check'):
@@ -55,7 +51,6 @@ class StockPicking(models.Model):
         res.mapped('move_lines')._create_quality_checks()
         return res
 
-    @api.multi
     def action_done(self):
         # Do the check before transferring
         product_to_check = self.mapped('move_line_ids').filtered(lambda x: x.qty_done != 0).mapped('product_id')
@@ -63,13 +58,11 @@ class StockPicking(models.Model):
             raise UserError(_('You still need to do the quality checks!'))
         return super(StockPicking, self).action_done()
 
-    @api.multi
     def action_cancel(self):
         res = super(StockPicking, self).action_cancel()
         self.sudo().mapped('check_ids').filtered(lambda x: x.quality_state == 'none').unlink()
         return res
 
-    @api.multi
     def button_quality_alert(self):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_alert_action_check').read()[0]
@@ -81,7 +74,6 @@ class StockPicking(models.Model):
         }
         return action
 
-    @api.multi
     def open_quality_alert_picking(self):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_alert_action_check').read()[0]

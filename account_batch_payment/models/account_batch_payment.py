@@ -95,7 +95,6 @@ class AccountBatchPayment(models.Model):
         rec.normalize_payments()
         return rec
 
-    @api.multi
     def write(self, vals):
         if 'batch_type' in vals:
             vals['name'] = self.with_context(default_journal_id=self.journal_id.id)._get_batch_name(vals['batch_type'], self.date, vals)

@@ -17,7 +17,6 @@ class HrLeaveType(models.Model):
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
 
-    @api.multi
     def _create_resource_leave(self):
         """
         Add a resource leave in calendars of contracts running at the same period.
@@ -74,7 +73,6 @@ class HrLeave(models.Model):
             if nbr_contracts > 1:
                 raise ValidationError(_('A leave cannot be set across multiple contracts.'))
 
-    @api.multi
     def _cancel_work_entry_conflict(self):
         """
         Creates a leave work entry for each hr.leave in self.
@@ -154,20 +152,17 @@ class HrLeave(models.Model):
         with self.env['hr.work.entry']._error_checking(start=min(start_dates, default=False), stop=max(stop_dates, default=False)):
             return super().create(vals_list)
 
-    @api.multi
     def action_confirm(self):
         start = min(self.mapped('date_from'), default=False)
         stop = max(self.mapped('date_to'), default=False)
         with self.env['hr.work.entry']._error_checking(start=start, stop=stop):
             return super().action_confirm()
 
-    @api.multi
     def action_validate(self):
         super(HrLeave, self).action_validate()
         self.sudo()._cancel_work_entry_conflict()  # delete preexisting conflicting work_entries
         return True
 
-    @api.multi
     def action_refuse(self):
         """
         Override to archive linked work entries and recreate attendance work entries

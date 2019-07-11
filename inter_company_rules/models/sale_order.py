@@ -10,7 +10,6 @@ class sale_order(models.Model):
     auto_generated = fields.Boolean(string='Auto Generated Sales Order', copy=False)
     auto_purchase_order_id = fields.Many2one('purchase.order', string='Source Purchase Order', readonly=True, copy=False)
 
-    @api.multi
     def _action_confirm(self):
         """ Generate inter company purchase order based on conditions """
         res = super(sale_order, self)._action_confirm()

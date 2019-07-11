@@ -13,7 +13,6 @@ class AccountBankStatementImport(models.TransientModel):
     def _check_csv(self, filename):
         return filename and filename.lower().strip().endswith('.csv')
 
-    @api.multi
     def import_file(self):
         if not self._check_csv(self.filename):
             return super(AccountBankStatementImport, self).import_file()
@@ -72,7 +71,6 @@ class AccountBankStmtImportCSV(models.TransientModel):
     def _convert_to_float(self, value):
         return float(value) if value else 0.0
 
-    @api.multi
     def _parse_import_data(self, data, import_fields, options):
         data = super(AccountBankStmtImportCSV, self)._parse_import_data(data, import_fields, options)
         statement_id = self._context.get('bank_statement_id', False)
@@ -138,13 +136,11 @@ class AccountBankStmtImportCSV(models.TransientModel):
             statement.write(vals)
         return ret_data
 
-    @api.multi
     def parse_preview(self, options, count=10):
         if options.get('bank_stmt_import', False):
             self = self.with_context(bank_stmt_import=True)
         return super(AccountBankStmtImportCSV, self).parse_preview(options, count=count)
 
-    @api.multi
     def do(self, fields, columns, options, dryrun=False):
         if options.get('bank_stmt_import', False):
             self._cr.execute('SAVEPOINT import_bank_stmt')

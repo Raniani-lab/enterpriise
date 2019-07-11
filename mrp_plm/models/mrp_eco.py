@@ -248,7 +248,6 @@ class MrpEco(models.Model):
     current_bom_id = fields.Many2one('mrp.bom', string="New Bom")
     previous_change_ids = fields.One2many('mrp.eco.bom.change', 'eco_rebase_id', string="Previous ECO Changes", compute='_compute_previous_bom_change', store=True)
 
-    @api.multi
     def _compute_attachments(self):
         for p in self:
             p.mrp_document_count = len(p.mrp_document_ids)
@@ -331,7 +330,6 @@ class MrpEco(models.Model):
                     old_line.copy({'bom_id': self.new_bom_id.id})
         return True
 
-    @api.multi
     def apply_rebase(self):
         """ Apply rebase changes in new version of BoM """
         self.ensure_one()
@@ -361,14 +359,12 @@ class MrpEco(models.Model):
         self.message_post(body=_('Successfully Rebased !'))
         return self.write(vals)
 
-    @api.multi
     @api.depends('bom_id.bom_line_ids', 'new_bom_id.bom_line_ids', 'new_bom_id.bom_line_ids.product_qty', 'new_bom_id.bom_line_ids.product_uom_id', 'new_bom_id.bom_line_ids.operation_id')
     def _compute_bom_change_ids(self):
         # Compute difference between old bom and new bom revision.
         for eco in self:
             eco.bom_change_ids = eco._get_difference_bom_lines(eco.bom_id, eco.new_bom_id)
 
-    @api.multi
     @api.depends('bom_id.bom_line_ids', 'current_bom_id.bom_line_ids', 'current_bom_id.bom_line_ids.product_qty', 'current_bom_id.bom_line_ids.product_uom_id', 'current_bom_id.bom_line_ids.operation_id')
     def _compute_previous_bom_change(self):
         for eco in self:
@@ -466,7 +462,6 @@ class MrpEco(models.Model):
         eco._create_approvals()
         return eco
 
-    @api.multi
     def write(self, vals):
         if vals.get('stage_id'):
             newstage = self.env['mrp.eco.stage'].browse(vals['stage_id'])
@@ -503,7 +498,6 @@ class MrpEco(models.Model):
         stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
         return stages.browse(stage_ids)
 
-    @api.multi
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
         message = super(MrpEco, self).message_post(**kwargs)
@@ -517,7 +511,6 @@ class MrpEco(models.Model):
                         })
         return message
 
-    @api.multi
     def _create_approvals(self):
         for eco in self:
             for approval_template in eco.stage_id.approval_template_ids:
@@ -549,15 +542,12 @@ class MrpEco(models.Model):
                     })
                 eco.message_post_with_view('mrp_plm.message_approval', values={'approval': approval})
 
-    @api.multi
     def approve(self):
         self._create_or_update_approval(status='approved')
 
-    @api.multi
     def reject(self):
         self._create_or_update_approval(status='rejected')
 
-    @api.multi
     def conflict_resolve(self):
         self.ensure_one()
         vals = {'state': 'progress'}
@@ -571,7 +561,6 @@ class MrpEco(models.Model):
         rebase_lines.unlink()
         return True
 
-    @api.multi
     def action_new_revision(self):
         IrAttachment = self.env['ir.attachment']  # FORWARDPORT UP TO SAAS-15
         for eco in self:
@@ -606,7 +595,6 @@ class MrpEco(models.Model):
                     attach.copy({'res_model': 'mrp.eco', 'res_id': eco.id})
         self.write({'state': 'progress'})
 
-    @api.multi
     def action_apply(self):
         self.ensure_one()
         self.mapped('new_bom_id').apply_new_version()
@@ -631,7 +619,6 @@ class MrpEco(models.Model):
             vals['stage_id'] = stage_id
         self.write(vals)
 
-    @api.multi
     def action_see_attachments(self):
         domain = ['&', ('res_model', '=', self._name), ('res_id', '=', self.id)]
         attachment_view = self.env.ref('mrp.view_document_file_kanban_mrp')
@@ -652,7 +639,6 @@ class MrpEco(models.Model):
             'context': "{'default_res_model': '%s','default_res_id': %d}" % (self._name, self.id)
         }
 
-    @api.multi
     def open_new_bom(self):
         self.ensure_one()
         return {
@@ -663,7 +649,6 @@ class MrpEco(models.Model):
             'target': 'current',
             'res_id': self.new_bom_id.id}
 
-    @api.multi
     def open_new_routing(self):
         self.ensure_one()
         return {

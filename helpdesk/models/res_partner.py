@@ -26,7 +26,6 @@ class ResPartner(models.Model):
                     partner.ticket_count += group['partner_id_count']
                 partner = partner.parent_id
 
-    @api.multi
     def action_open_helpdesk_ticket(self):
         action = self.env.ref('helpdesk.helpdesk_ticket_action_main_tree').read()[0]
         action['context'] = {}

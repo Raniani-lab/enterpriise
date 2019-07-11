@@ -46,19 +46,16 @@ class LoyaltyReward(models.Model):
     discount = fields.Float(help='The discount percentage')
     point_product_id = fields.Many2one('product.product', string='Point Product', help='The product that represents a point that is sold by the customer')
 
-    @api.multi
     @api.constrains('reward_type', 'gift_product_id')
     def _check_gift_product(self):
         if self.filtered(lambda reward: reward.reward_type == 'gift' and not reward.gift_product_id):
             raise ValidationError(_('The gift product field is mandatory for gift rewards'))
 
-    @api.multi
     @api.constrains('reward_type', 'discount_product_id')
     def _check_discount_product(self):
         if self.filtered(lambda reward: reward.reward_type == 'discount' and not reward.discount_product_id):
             raise ValidationError(_('The discount product field is mandatory for discount rewards'))
 
-    @api.multi
     @api.constrains('reward_type', 'discount_product_id')
     def _check_point_product(self):
         if self.filtered(lambda reward: reward.reward_type == 'resale' and not reward.point_product_id):

@@ -60,14 +60,12 @@ class HrWorkEntry(models.Model):
         attendances = self.filtered(lambda w: not w.work_entry_type_id.is_leave)
         attendances.write({'leave_id': False})
 
-    @api.multi
     def _check_if_error(self):
         res = super()._check_if_error()
         conflict_with_leaves = self._compute_conflicts_leaves_to_approve()
         outside_calendar = self._mark_leaves_outside_schedule()
         return res or conflict_with_leaves or outside_calendar
 
-    @api.multi
     def _mark_leaves_outside_schedule(self):
         """
         Check leave work entries in `self` which are completely outside
@@ -92,7 +90,6 @@ class HrWorkEntry(models.Model):
         outside_entries.write({'state': 'conflict'})
         return bool(outside_entries)
 
-    @api.multi
     def _compute_conflicts_leaves_to_approve(self):
         if not self:
             return False
@@ -128,7 +125,6 @@ class HrWorkEntry(models.Model):
             'views': [[False, 'form']],
         }
 
-    @api.multi
     def _to_intervals(self):
         return WorkIntervals((w.date_start.replace(tzinfo=pytz.utc), w.date_stop.replace(tzinfo=pytz.utc), w) for w in self)
 

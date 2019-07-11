@@ -7,7 +7,6 @@ from odoo import api, models
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    @api.multi
     def post(self):
         # OVERRIDE
         for move in self.filtered(lambda move: move.is_invoice()):

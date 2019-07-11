@@ -28,7 +28,6 @@ class AccountMove(models.Model):
     def _inverse_need_external_trade(self):
         return True
 
-    @api.multi
     def _l10n_mx_edi_create_cfdi(self):
         if not self.l10n_mx_edi_external_trade:
             return super(AccountMove, self)._l10n_mx_edi_create_cfdi()
@@ -40,7 +39,6 @@ class AccountMove(models.Model):
         self.invoice_line_ids._set_price_unit_umt()
         return super(AccountMove, self)._l10n_mx_edi_create_cfdi()
 
-    @api.multi
     def _l10n_mx_edi_create_cfdi_values(self):
         """Create the values to fill the CFDI template with external trade.
         """
@@ -117,7 +115,6 @@ class AccountMoveLine(models.Model):
         'Unit Value UMT', help='Unit value expressed in the UMT from product. '
         'It is used in the attribute "ValorUnitarioAduana" in the CFDI')
 
-    @api.multi
     def _set_price_unit_umt(self):
         for res in self:
             res.l10n_mx_edi_price_unit_umt = round(

@@ -42,13 +42,11 @@ class VoipPhonecall(models.Model):
         ('outgoing', 'Outgoing')
     ], string='Type', default='outgoing', oldname='type')
 
-    @api.multi
     def init_call(self):
         self.ensure_one()
         self.call_date = fields.Datetime.now()
         self.start_time = int(time.time())
 
-    @api.multi
     def hangup_call(self, done=True):
         self.ensure_one()
         stop_time = int(time.time())
@@ -77,12 +75,10 @@ class VoipPhonecall(models.Model):
             })
         return
 
-    @api.multi
     def rejected_call(self):
         self.ensure_one()
         self.state = "pending"
 
-    @api.multi
     def remove_from_queue(self):
         self.ensure_one()
         self.in_queue = False

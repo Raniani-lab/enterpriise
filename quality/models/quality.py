@@ -69,7 +69,6 @@ class QualityPoint(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('quality.point') or _('New')
         return super(QualityPoint, self).create(vals)
 
-    @api.multi
     def check_execute_now(self):
         # TDE FIXME: make true multi
         self.ensure_one()
@@ -93,14 +92,12 @@ class QualityAlertTeam(models.Model):
     color = fields.Integer('Color', default=1)
     alias_id = fields.Many2one('mail.alias', 'Alias', ondelete="restrict", required=True)
 
-    @api.multi
     def _compute_check_count(self):
         check_data = self.env['quality.check'].read_group([('team_id', 'in', self.ids), ('quality_state', '=', 'none')], ['team_id'], ['team_id'])
         check_result = dict((data['team_id'][0], data['team_id_count']) for data in check_data)
         for team in self:
             team.check_count = check_result.get(team.id, 0)
 
-    @api.multi
     def _compute_alert_count(self):
         alert_data = self.env['quality.alert'].read_group([('team_id', 'in', self.ids), ('stage_id.done', '=', False)], ['team_id'], ['team_id'])
         alert_result = dict((data['team_id'][0], data['team_id_count']) for data in alert_data)
@@ -164,7 +161,6 @@ class QualityCheck(models.Model):
     test_type = fields.Char(related='test_type_id.technical_name')
     picture = fields.Binary('Picture', attachment=True)
 
-    @api.multi
     def _compute_alert_count(self):
         alert_data = self.env['quality.alert'].read_group([('check_id', 'in', self.ids)], ['check_id'], ['check_id'])
         alert_result = dict((data['check_id'][0], data['check_id_count']) for data in alert_data)
@@ -185,7 +181,6 @@ class QualityCheck(models.Model):
             vals['test_type_id'] = self.env['quality.point'].browse(vals['point_id']).test_type_id.id
         return super(QualityCheck, self).create(vals)
 
-    @api.multi
     def do_fail(self):
         self.write({
             'quality_state': 'fail',
@@ -193,7 +188,6 @@ class QualityCheck(models.Model):
             'control_date': datetime.now()})
         return self.redirect_after_pass_fail()
 
-    @api.multi
     def do_pass(self):
         self.write({'quality_state': 'pass',
                     'user_id': self.env.user.id,
@@ -248,7 +242,6 @@ class QualityAlert(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('quality.alert') or _('New')
         return super(QualityAlert, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         res = super(QualityAlert, self).write(vals)
         if self.stage_id.done and 'stage_id' in vals:

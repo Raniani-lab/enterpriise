@@ -16,7 +16,6 @@ class SaleSubscriptionWizard(models.TransientModel):
                                  "the full invoicing period of the subscription and the period between this date and the "
                                  "next invoicing date.")
 
-    @api.multi
     def create_sale_order(self):
         fpos_id = self.env['account.fiscal.position'].get_fiscal_position(self.subscription_id.partner_id.id)
         sale_order_obj = self.env['sale.order']
@@ -63,7 +62,6 @@ class SaleSubscriptionWizard(models.TransientModel):
             rec_lines.append(rec_line)
         return rec_lines
 
-    @api.multi
     def add_lines(self):
         for wiz in self:
             rec_lines = wiz._prepare_subscription_lines()

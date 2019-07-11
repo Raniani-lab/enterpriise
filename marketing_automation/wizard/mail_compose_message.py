@@ -9,7 +9,6 @@ class MailComposeMessage(models.TransientModel):
 
     marketing_activity_id = fields.Many2one('marketing.activity', string='Marketing Activity')
 
-    @api.multi
     def get_mail_values(self, res_ids):
         """ Override method to link mail automation activity with mail statistics"""
         res = super(MailComposeMessage, self).get_mail_values(res_ids)

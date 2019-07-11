@@ -254,7 +254,6 @@ class ProjectForecast(models.Model):
     # Grid View Stuffs
     # ----------------------------------------------------
 
-    @api.multi
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
         """
             Grid range when adjusting does not necessarily match the range of any forecast. Or might match many.
@@ -349,7 +348,6 @@ class ProjectForecast(models.Model):
     #  Mail
     # ----------------------------------------------------
 
-    @api.multi
     def action_send(self):
         group_project_user = self.env.ref('project.group_project_user')
         template = self.env.ref('project_forecast.email_template_forecast_single')

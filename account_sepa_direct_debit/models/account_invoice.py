@@ -10,7 +10,6 @@ class AccountMove(models.Model):
 
     sdd_paying_mandate_id = fields.Many2one(comodel_name='sdd.mandate', help="Once this invoice has been paid with Direct Debit, contains the mandate that allowed the payment.", copy=False)
 
-    @api.multi
     def post(self):
         # OVERRIDE to automatically trigger the payment of the invoice if a mandate is available.
         res = super(AccountMove, self).post()
@@ -64,7 +63,6 @@ class AccountMove(models.Model):
         """
         return self.env['sdd.mandate']._sdd_get_usable_mandate(self.company_id.id, self.commercial_partner_id.id, self.invoice_date)
 
-    @api.multi
     def _track_subtype(self, init_values):
         # OVERRIDE to log a different message when an invoice is paid using SDD.
         self.ensure_one()

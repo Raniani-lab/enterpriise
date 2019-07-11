@@ -33,7 +33,6 @@ class AccountBudgetPost(models.Model):
         self._check_account_ids(vals)
         return super(AccountBudgetPost, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         self._check_account_ids(vals)
         return super(AccountBudgetPost, self).write(vals)
@@ -60,23 +59,18 @@ class CrossoveredBudget(models.Model):
     company_id = fields.Many2one('res.company', 'Company', required=True,
         default=lambda self: self.env.company)
 
-    @api.multi
     def action_budget_confirm(self):
         self.write({'state': 'confirm'})
 
-    @api.multi
     def action_budget_draft(self):
         self.write({'state': 'draft'})
 
-    @api.multi
     def action_budget_validate(self):
         self.write({'state': 'validate'})
 
-    @api.multi
     def action_budget_cancel(self):
         self.write({'state': 'cancel'})
 
-    @api.multi
     def action_budget_done(self):
         self.write({'state': 'done'})
 
@@ -148,7 +142,6 @@ class CrossoveredBudgetLines(models.Model):
 
         return result
 
-    @api.multi
     def _is_above_budget(self):
         for line in self:
             if line.theoritical_amount >= 0:
@@ -167,7 +160,6 @@ class CrossoveredBudgetLines(models.Model):
                 computed_name += ' - ' + record.analytic_account_id.name
             record.name = computed_name
 
-    @api.multi
     def _compute_practical_amount(self):
         for line in self:
             acc_ids = line.general_budget_id.account_ids.ids
@@ -202,7 +194,6 @@ class CrossoveredBudgetLines(models.Model):
             self.env.cr.execute(select, where_clause_params)
             line.practical_amount = self.env.cr.fetchone()[0] or 0.0
 
-    @api.multi
     def _compute_theoritical_amount(self):
         # beware: 'today' variable is mocked in the python tests and thus, its implementation matter
         today = fields.Date.today()
@@ -226,7 +217,6 @@ class CrossoveredBudgetLines(models.Model):
                     theo_amt = line.planned_amount
             line.theoritical_amount = theo_amt
 
-    @api.multi
     def _compute_percentage(self):
         for line in self:
             if line.theoritical_amount != 0.00:
@@ -241,7 +231,6 @@ class CrossoveredBudgetLines(models.Model):
                 raise ValidationError(
                     _("You have to enter at least a budgetary position or analytic account on a budget line."))
 
-    @api.multi
     def action_open_budget_entries(self):
         if self.analytic_account_id:
             # if there is an analytic account, then the analytic items are loaded

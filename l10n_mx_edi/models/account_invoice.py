@@ -278,7 +278,6 @@ class AccountMove(models.Model):
                 return True
         return False
 
-    @api.multi
     def l10n_mx_edi_amount_to_text(self):
         """Method to transform a float amount to text words
         E.g. 100 - ONE HUNDRED
@@ -299,12 +298,10 @@ class AccountMove(models.Model):
             words=words, amount_d=amount_d, curr_t=currency_type)
         return invoice_words
 
-    @api.multi
     def l10n_mx_edi_is_required(self):
         self.ensure_one()
         return (self.is_sale_document() and self.company_id.country_id == self.env.ref('base.mx'))
 
-    @api.multi
     def l10n_mx_edi_log_error(self, message):
         self.ensure_one()
         self.message_post(body=_('Error during the process: %s') % message, subtype='account.mt_invoice_validated')
@@ -327,7 +324,6 @@ class AccountMove(models.Model):
             'password': 'timbrado.SF.16672' if test else password,
         }
 
-    @api.multi
     def _l10n_mx_edi_solfact_sign(self, pac_info):
         '''SIGN for Solucion Factible.
         '''
@@ -352,7 +348,6 @@ class AccountMove(models.Model):
             inv._l10n_mx_edi_post_sign_process(
                 xml_signed if xml_signed else None, code, msg)
 
-    @api.multi
     def _l10n_mx_edi_solfact_cancel(self, pac_info):
         '''CANCEL for Solucion Factible.
         '''
@@ -383,7 +378,6 @@ class AccountMove(models.Model):
             code = '' if cancelled else code
             inv._l10n_mx_edi_post_cancel_process(cancelled, code, msg)
 
-    @api.multi
     def _l10n_mx_edi_finkok_info(self, company_id, service_type):
         test = company_id.l10n_mx_edi_pac_test_env
         username = company_id.l10n_mx_edi_pac_username
@@ -401,7 +395,6 @@ class AccountMove(models.Model):
             'password': 'vAux00__' if test else password,
         }
 
-    @api.multi
     def _l10n_mx_edi_finkok_sign(self, pac_info):
         '''SIGN for Finkok.
         '''
@@ -427,7 +420,6 @@ class AccountMove(models.Model):
                 xml_signed = base64.b64encode(xml_signed.encode('utf-8'))
             inv._l10n_mx_edi_post_sign_process(xml_signed, code, msg)
 
-    @api.multi
     def _l10n_mx_edi_finkok_cancel(self, pac_info):
         '''CANCEL for Finkok.
         '''
@@ -476,7 +468,6 @@ class AccountMove(models.Model):
         return version
 
     @run_after_commit
-    @api.multi
     def _l10n_mx_edi_call_service(self, service_type):
         '''Call the right method according to the pac_name, it's info returned by the '_l10n_mx_edi_%s_info' % pac_name'
         method and the service_type passed as parameter.
@@ -503,7 +494,6 @@ class AccountMove(models.Model):
                 for record in records:
                     getattr(record, service_func)(pac_info)
 
-    @api.multi
     def _l10n_mx_edi_post_sign_process(self, xml_signed, code=None, msg=None):
         '''Post process the results of the sign service.
 
@@ -537,7 +527,6 @@ class AccountMove(models.Model):
             body=body_msg + create_list_html(post_msg),
             subtype='account.mt_invoice_validated')
 
-    @api.multi
     def _l10n_mx_edi_sign(self):
         '''Call the sign service with records that can be signed.
         '''
@@ -546,7 +535,6 @@ class AccountMove(models.Model):
             ('id', 'in', self.ids)])
         records._l10n_mx_edi_call_service('sign')
 
-    @api.multi
     def _l10n_mx_edi_post_cancel_process(self, cancelled, code=None, msg=None):
         '''Post process the results of the cancel service.
 
@@ -570,7 +558,6 @@ class AccountMove(models.Model):
             body=body_msg + create_list_html(post_msg),
             subtype='account.mt_invoice_validated')
 
-    @api.multi
     def _l10n_mx_edi_cancel(self):
         '''Call the cancel service with records that can be signed.
         '''
@@ -603,7 +590,6 @@ class AccountMove(models.Model):
             self.l10n_mx_edi_partner_bank_id = self.commercial_partner_id.bank_ids[0].id
         return res
 
-    @api.multi
     def button_draft(self):
         """Reset l10n_mx_edi_time_invoice when invoice state set to draft"""
         # OVERRIDE
@@ -628,7 +614,6 @@ class AccountMove(models.Model):
         else:
             return super(AccountMove, self).button_draft()
 
-    @api.multi
     def _reverse_moves(self, default_values_list, cancel=False):
         """When is created the invoice refund is assigned the reference to
         the invoice that was generate it"""
@@ -638,7 +623,6 @@ class AccountMove(models.Model):
                 default_values_list[i]['l10n_mx_edi_origin'] = '%s|%s' % ('01', move.l10n_mx_edi_cfdi_uuid)
         return super(AccountMove, self)._reverse_moves(default_values_list, cancel=cancel)
 
-    @api.multi
     @api.depends('l10n_mx_edi_cfdi_name')
     def _compute_cfdi_values(self):
         '''Fill the invoice fields from the cfdi values.
@@ -668,7 +652,6 @@ class AccountMove(models.Model):
             inv.l10n_mx_edi_cfdi_certificate_id = self.env['l10n_mx_edi.certificate'].sudo().search(
                 [('serial_number', '=', certificate)], limit=1)
 
-    @api.multi
     def _l10n_mx_edi_create_taxes_cfdi_values(self):
         '''Create the taxes values to fill the CFDI template.
         '''
@@ -749,7 +732,6 @@ class AccountMove(models.Model):
         text = text.replace('|', ' ')
         return text.strip()[:size]
 
-    @api.multi
     def _l10n_mx_edi_get_payment_policy(self):
         self.ensure_one()
         version = self.l10n_mx_edi_get_pac_version()
@@ -771,7 +753,6 @@ class AccountMove(models.Model):
             return 'PUE'
         return ''
 
-    @api.multi
     def _l10n_mx_edi_create_cfdi_values(self):
         '''Create the values to fill the CFDI template.
         '''
@@ -844,7 +825,6 @@ class AccountMove(models.Model):
 
         return values
 
-    @api.multi
     def get_cfdi_related(self):
         """To node CfdiRelacionados get documents related with each invoice
         from l10n_mx_edi_origin, hope the next structure:
@@ -889,7 +869,6 @@ class AccountMove(models.Model):
         })
         return xml_signed
 
-    @api.multi
     def _l10n_mx_edi_create_cfdi(self):
         '''Creates and returns a dictionnary containing 'cfdi' if the cfdi is well created, 'error' otherwise.
         '''
@@ -961,7 +940,6 @@ class AccountMove(models.Model):
 
         return {'cfdi': etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='UTF-8')}
 
-    @api.multi
     def _l10n_mx_edi_retry(self):
         '''Try to generate the cfdi attachment and then, sign it.
         '''
@@ -995,7 +973,6 @@ class AccountMove(models.Model):
                 subtype='account.mt_invoice_validated')
             inv._l10n_mx_edi_sign()
 
-    @api.multi
     def post(self):
         # OVERRIDE
         # Assign time and date coming from a certificate.
@@ -1034,7 +1011,6 @@ class AccountMove(models.Model):
             move._l10n_mx_edi_retry()
         return result
 
-    @api.multi
     def button_cancel(self):
         # OVERRIDE
         result = super(AccountMove, self).button_cancel()
@@ -1045,7 +1021,6 @@ class AccountMove(models.Model):
                 move._l10n_mx_edi_cancel()
         return result
 
-    @api.multi
     def l10n_mx_edi_update_pac_status(self):
         '''Synchronize both systems: Odoo & PAC if the invoices need to be signed or cancelled.
         '''
@@ -1055,7 +1030,6 @@ class AccountMove(models.Model):
             elif record.l10n_mx_edi_pac_status == 'to_cancel':
                 record._l10n_mx_edi_cancel()
 
-    @api.multi
     def l10n_mx_edi_update_sat_status(self):
         '''Synchronize both systems: Odoo & SAT to make sure the invoice is valid.
         '''
@@ -1094,7 +1068,6 @@ class AccountMove(models.Model):
             inv.l10n_mx_edi_sat_status = CFDI_SAT_QR_STATE.get(
                 status[0] if status else '', 'none')
 
-    @api.multi
     def _set_cfdi_origin(self, rtype='', uuids=[]):
         """Try to write the origin in of the CFDI, it is important in order
         to have a centralized way to manage this elements due to the fact

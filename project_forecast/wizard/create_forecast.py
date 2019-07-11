@@ -59,7 +59,6 @@ class ProjectForecastCreateWizard(models.TransientModel):
             forecasts = forecasts.filtered(filter_func)
             self.autocomplete_forecast_ids = forecasts
 
-    @api.multi
     @api.depends('employee_id')
     def _compute_employee_tz_warning(self):
         for forecast in self:
@@ -79,7 +78,6 @@ class ProjectForecastCreateWizard(models.TransientModel):
             self.task_id = self.previous_forecast_id.task_id
             self.resource_hours = self.previous_forecast_id.resource_hours
 
-    @api.multi
     def action_save_and_send(self):
         """
             we have a different send function to use with the save & send button, that's because

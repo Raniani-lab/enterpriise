@@ -9,7 +9,6 @@ class AccountMove(models.Model):
 
     document_request_line_id = fields.Many2one('account.move.line', string='Reconciliation Journal Entry Line')
 
-    @api.multi
     def _get_request_document_actions(self):
         actions = []
         view_id = self.env.ref('documents.documents_request_form_view').id
@@ -34,7 +33,6 @@ class AccountMove(models.Model):
                         })
         return actions
 
-    @api.multi
     def _get_domain_edition_mode_available(self):
         # OVERRIDE to handle the document requests in the suspense accounts domain.
         domain = super(AccountMove, self)._get_domain_edition_mode_available()
@@ -43,7 +41,6 @@ class AccountMove(models.Model):
             [('reconciliation_invoice_id', '=', self.id)]
         ])
 
-    @api.multi
     def action_invoice_reconcile_to_check(self):
         # OVERRIDE to handle the document requests in the suspense accounts mechanism.
         action = super(AccountMove, self).action_invoice_reconcile_to_check()
@@ -55,7 +52,6 @@ class AccountMove(models.Model):
 
         return action
 
-    @api.multi
     def write(self, vals):
         main_attachment_id = vals.get('message_main_attachment_id')
         # We assume that main_attachment_id is written on a single record,

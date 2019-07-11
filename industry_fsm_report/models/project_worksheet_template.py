@@ -155,7 +155,6 @@ class ProjectWorksheetTemplate(models.Model):
 
         return template
 
-    @api.multi
     def unlink(self):
         models_ids = self.mapped('model_id.id')
         self.env['ir.ui.view'].search([('model', 'in', self.mapped('model_id.model'))]).unlink()
@@ -237,7 +236,6 @@ class ProjectWorksheetTemplate(models.Model):
         t_root.append(qweb_arch)
         return etree.tostring(t_root)
 
-    @api.multi
     def _generate_qweb_report_template(self):
         for worksheet_template in self:
             report_name = ('%s_%s') % (worksheet_template.model_id.model.replace('.', '_'), str(time.time()))

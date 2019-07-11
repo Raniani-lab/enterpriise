@@ -11,7 +11,6 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
     program = fields.Many2one('sale.coupon.program', string="Coupon Program", domain=[('program_type', '=', 'coupon_program')])
     ticket_id = fields.Many2one('helpdesk.ticket')
 
-    @api.multi
     def generate_coupon(self):
         """Generates a coupon for the selected program and the partner linked
         to the ticket

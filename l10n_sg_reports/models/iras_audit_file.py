@@ -347,7 +347,6 @@ class IrasAuditFile(models.AbstractModel):
     def _get_report_name(self):
         return _('IRAS Audit File')
 
-    @api.multi
     def l10n_sg_print_iras_audit_file_xml(self, options):
         """
         Print the IAF in xml format
@@ -361,7 +360,6 @@ class IrasAuditFile(models.AbstractModel):
             }
         }
 
-    @api.multi
     def l10n_sg_print_iras_audit_file_txt(self, options):
         """
         Print the IAF in txt format

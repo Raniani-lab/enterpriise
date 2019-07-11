@@ -53,7 +53,6 @@ class AccountJournal(models.Model):
                 'inbound_payment_method_ids': [(4, batch_deposit.id, None)],
         })
 
-    @api.multi
     def open_action_batch_payment(self):
         ctx = self._context.copy()
         ctx.update({'journal_id': self.id, 'default_journal_id': self.id})

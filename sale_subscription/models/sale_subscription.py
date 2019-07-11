@@ -307,7 +307,6 @@ class SaleSubscription(models.Model):
             self._send_subscription_rating_mail(force_send=True)
         return result
 
-    @api.multi
     def unlink(self):
         self.wipe()
         self.env['sale.subscription.snapshot'].sudo().search([
@@ -378,7 +377,6 @@ class SaleSubscription(models.Model):
         subscriptions._take_snapshot(datetime.date.today())
         subscriptions._compute_kpi()
 
-    @api.multi
     def _take_snapshot(self, date):
         for subscription in self:
             self.env['sale.subscription.snapshot'].create({
@@ -409,7 +407,6 @@ class SaleSubscription(models.Model):
             health = 'normal'
         return health
 
-    @api.multi
     def _compute_kpi(self):
         for subscription in self:
             delta_1month = subscription._get_subscription_delta(datetime.date.today() - relativedelta(months=1))
@@ -449,7 +446,6 @@ class SaleSubscription(models.Model):
             sub.write({'stage_id': stage.id, 'to_renew': False, 'date': today})
         return True
 
-    @api.multi
     def set_open(self):
         search = self.env['sale.subscription.stage'].search
         for sub in self:
@@ -624,7 +620,6 @@ class SaleSubscription(models.Model):
         lines.unlink()
         return True
 
-    @api.multi
     def open_website_url(self):
         return {
             'type': 'ir.actions.act_url',
@@ -678,7 +673,6 @@ class SaleSubscription(models.Model):
             results.append(tx)
         return results
 
-    @api.multi
     def reconcile_pending_transaction(self, tx, invoice=False):
         self.ensure_one()
         if not invoice:
@@ -691,7 +685,6 @@ class SaleSubscription(models.Model):
             invoice.action_cancel()
             invoice.unlink()
 
-    @api.multi
     def _recurring_create_invoice(self, automatic=False):
         auto_commit = self.env.context.get('auto_commit', True)
         cr = self.env.cr
@@ -1172,7 +1165,6 @@ class SaleSubscriptionAlert(models.Model):
                 domain += [('stage_id', '=', alert.stage_to_id.id)]
             super(SaleSubscriptionAlert, alert).write({'filter_domain': domain})
 
-    @api.multi
     def unlink(self):
         for record in self:
             record.automation_id.active = False
@@ -1186,7 +1178,6 @@ class SaleSubscriptionAlert(models.Model):
                 domain = []
             super(SaleSubscriptionAlert, alert).write({'filter_pre_domain': domain})
 
-    @api.multi
     def _configure_alert_from_action(self, vals):
         # Unlink the children server actions if not needed anymore
         self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
@@ -1212,7 +1203,6 @@ class SaleSubscriptionAlert(models.Model):
         res._configure_alert_from_action(vals)
         return res
 
-    @api.multi
     def write(self, vals):
         if vals.get('trigger_condition'):
             vals['trigger'] = vals['trigger_condition']
@@ -1222,7 +1212,6 @@ class SaleSubscriptionAlert(models.Model):
         self._configure_alert_from_action(vals)
         return res
 
-    @api.multi
     def set_field_action(self, field_name, value):
         for alert in self:
             tag_field = self.env['ir.model.fields'].search([('model', '=', alert.model_name), ('name', '=', field_name)])
@@ -1233,7 +1222,6 @@ class SaleSubscriptionAlert(models.Model):
                     'value': value})
                 ]})
 
-    @api.multi
     def set_activity_action(self):
         for alert in self:
             alert.child_ids.unlink()

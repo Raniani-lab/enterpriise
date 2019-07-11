@@ -152,7 +152,6 @@ class HelpdeskTicket(models.Model):
             'stage_id': self.env['helpdesk.stage'].search([('team_ids', 'in', team.id)], order='sequence', limit=1).id
         }
 
-    @api.multi
     def _compute_attachment_number(self):
         read_group_res = self.env['ir.attachment'].read_group(
             [('res_model', '=', 'helpdesk.ticket'), ('res_id', 'in', self.ids)],
@@ -161,7 +160,6 @@ class HelpdeskTicket(models.Model):
         for record in self:
             record.attachment_number = attach_data.get(record.id, 0)
 
-    @api.multi
     def action_get_attachment_tree_view(self):
         attachment_action = self.env.ref('base.action_attachment')
         action = attachment_action.read()[0]
@@ -284,7 +282,6 @@ class HelpdeskTicket(models.Model):
 
         return ticket
 
-    @api.multi
     def write(self, vals):
         # we set the assignation date (assign_date) to now for tickets that are being assigned for the first time
         # same thing for the closing date
@@ -312,7 +309,6 @@ class HelpdeskTicket(models.Model):
 
         return res
 
-    @api.multi
     def name_get(self):
         result = []
         for ticket in self:
@@ -327,12 +323,10 @@ class HelpdeskTicket(models.Model):
         tickets._compute_close_hours()
         return True
 
-    @api.multi
     def assign_ticket_to_self(self):
         self.ensure_one()
         self.user_id = self.env.user
 
-    @api.multi
     def open_customer_tickets(self):
         return {
             'type': 'ir.actions.act_window',
@@ -343,7 +337,6 @@ class HelpdeskTicket(models.Model):
         }
 
     #DVE FIXME: if partner gets created when sending the message it should be set as partner_id of the ticket.
-    @api.multi
     def _message_get_suggested_recipients(self):
         recipients = super(HelpdeskTicket, self)._message_get_suggested_recipients()
         try:
@@ -356,7 +349,6 @@ class HelpdeskTicket(models.Model):
             pass
         return recipients
 
-    @api.multi
     def _ticket_email_split(self, msg):
         email_list = tools.email_split((msg.get('to') or '') + ',' + (msg.get('cc') or ''))
         # check left-part is not already an alias
@@ -378,7 +370,6 @@ class HelpdeskTicket(models.Model):
             ticket.message_subscribe(partner_ids)
         return ticket
 
-    @api.multi
     def message_update(self, msg, update_vals=None):
         partner_ids = [x.id for x in self.env['mail.thread']._mail_find_partner_from_emails(self._ticket_email_split(msg), records=self) if x]
         if partner_ids:
@@ -401,7 +392,6 @@ class HelpdeskTicket(models.Model):
                     ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
         return super(HelpdeskTicket, self)._message_post_after_hook(message, msg_vals)
 
-    @api.multi
     def _track_template(self, changes):
         res = super(HelpdeskTicket, self)._track_template(changes)
         ticket = self[0]
@@ -414,18 +404,15 @@ class HelpdeskTicket(models.Model):
         )
         return res
 
-    @api.multi
     def _creation_subtype(self):
         return self.env.ref('helpdesk.mt_ticket_new')
 
-    @api.multi
     def _track_subtype(self, init_values):
         self.ensure_one()
         if 'stage_id' in init_values:
             return self.env.ref('helpdesk.mt_ticket_stage')
         return super(HelpdeskTicket, self)._track_subtype(init_values)
 
-    @api.multi
     def _notify_get_groups(self):
         """ Handle helpdesk users and managers recipients that can assign
         tickets directly from notification emails. Also give access button
@@ -451,7 +438,6 @@ class HelpdeskTicket(models.Model):
         )]
         return new_groups + groups
 
-    @api.multi
     def _notify_get_reply_to(self, default=None, records=None, company=None, doc_names=None):
         """ Override to set alias of tickets to their team if any. """
         aliases = self.mapped('team_id')._notify_get_reply_to(default=default, records=None, company=company, doc_names=None)
@@ -465,7 +451,6 @@ class HelpdeskTicket(models.Model):
     # Rating Mixin
     # ------------------------------------------------------------
 
-    @api.multi
     def rating_apply(self, rate, token=None, feedback=None, subtype=None):
         return super(HelpdeskTicket, self).rating_apply(rate, token=token, feedback=feedback, subtype="helpdesk.mt_ticket_rated")
 

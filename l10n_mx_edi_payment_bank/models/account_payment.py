@@ -17,7 +17,6 @@ class AccountPayment(models.Model):
         if len(self.partner_id.commercial_partner_id.bank_ids) == 1:
             self.l10n_mx_edi_partner_bank_id = self.partner_id.commercial_partner_id.bank_ids  # noqa
 
-    @api.multi
     def l10n_mx_edi_payment_data(self):
         self.ensure_one()
         res = super(AccountPayment, self).l10n_mx_edi_payment_data()
@@ -45,7 +44,6 @@ class AccountPayment(models.Model):
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
-    @api.multi
     def _prepare_payment_vals(self, invoice):
         res = super(AccountPaymentRegister, self)._prepare_payment_vals(invoice)
         res['l10n_mx_edi_partner_bank_id'] = self.l10n_mx_edi_partner_bank_id.id  # noqa

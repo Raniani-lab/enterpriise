@@ -60,7 +60,6 @@ class Slide(models.TransientModel):
                 if self.slide_type in ['video', 'infographic']:
                     raise UserError(_("Invalid slide type. Please select document or presentation type."))
 
-    @api.multi
     def upload_slide(self):
         '''create a new slide if does not exists in slide.slide model.
         set slide link if exists in model and message post in current channel.'''

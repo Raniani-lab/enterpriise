@@ -11,7 +11,6 @@ class VoipQueueMixin(models.AbstractModel):
     _description = 'Add voip queue support to a model'
     has_call_in_queue = fields.Boolean("Is in the Call Queue", compute='_compute_has_call_in_queue')
 
-    @api.multi
     def _compute_has_call_in_queue(self):
         domain = self._linked_phone_call_domain()
         call_per_id = {call.activity_id.res_id: True for call in self.env['voip.phonecall'].search(domain)}
@@ -28,7 +27,6 @@ class VoipQueueMixin(models.AbstractModel):
             ('user_id', '=', self.env.user.id)
         ]
 
-    @api.multi
     def create_call_in_queue(self):
         # creating an activity of type phonecall will automaticaly create a voip.phonecall
         # will only work if _compute_phonenumbers gives a resul
@@ -49,7 +47,6 @@ class VoipQueueMixin(models.AbstractModel):
                 record = self.env[activity.res_model_id.model].browse(activity.res_id)
                 raise UserError(_('Phone call cannot be created. Is it any phone number linked to record %s?' % record.name))
 
-    @api.multi
     def delete_call_in_queue(self):
         domain = self._linked_phone_call_domain()
         phonecalls = self.env['voip.phonecall'].search(domain)

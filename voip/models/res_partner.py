@@ -49,14 +49,12 @@ class Contact(models.Model):
         else:
             return number
 
-    @api.multi
     @api.depends('phone', 'country_id')
     def _compute_sanitized_phone(self):
         for partner in self:
             if partner.phone:
                 partner.sanitized_phone = partner._voip_sanitization(partner.phone)
 
-    @api.multi
     @api.depends('mobile', 'country_id')
     def _compute_sanitized_mobile(self):
         for partner in self:

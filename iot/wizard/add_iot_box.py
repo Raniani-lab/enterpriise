@@ -27,7 +27,6 @@ class AddIotBox(models.TransientModel):
 
     token = fields.Char(string='Token', default=_default_token, store=False)
 
-    @api.multi
     def reload_page(self):
         return self.env['ir.actions.act_window'].for_xml_id('iot', 'iot_box_action')
 

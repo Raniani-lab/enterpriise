@@ -67,7 +67,6 @@ class RequestAppraisal(models.TransientModel):
             self.subject = self.env['mail.template'].with_context(ctx)._render_template(self.template_id.subject, 'res.users', self.env.user.id, post_process=True)
             self.body = self.env['mail.template'].with_context(ctx)._render_template(self.template_id.body_html, 'res.users', self.env.user.id, post_process=False)
 
-    @api.multi
     def action_invite(self):
         """ Process the wizard content and proceed with sending the related
             email(s), rendering any template patterns on the fly if needed """

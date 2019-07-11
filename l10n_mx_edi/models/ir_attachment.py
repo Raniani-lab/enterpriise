@@ -16,7 +16,6 @@ _logger = logging.getLogger(__name__)
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
 
-    @api.multi
     def unlink(self):
         """In order to deny XML attachments deletion from an invoice, because
         the xml attachments are legal documents.
@@ -29,7 +28,6 @@ class IrAttachment(models.Model):
             splitext(r.name)[1].lower() == '.xml').check_valid_uuid()
         return super(IrAttachment, self).unlink()
 
-    @api.multi
     def check_valid_uuid(self):
         for attach in self:
             datas = attach.datas

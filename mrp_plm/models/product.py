@@ -11,12 +11,10 @@ class ProductTemplate(models.Model):
     eco_ids = fields.One2many('mrp.eco', 'product_tmpl_id', 'ECOs')
     template_attachment_count = fields.Integer('# Attachments', compute='_compute_attachments')
 
-    @api.multi
     def _compute_eco_count(self):
         for p in self:
             p.eco_count = len(p.eco_ids)
 
-    @api.multi
     def _compute_attachments(self):
         if not self.user_has_groups('mrp.group_mrp_user'):
             return
@@ -24,7 +22,6 @@ class ProductTemplate(models.Model):
             attachments = self.env['mrp.document'].search(['&', ('res_model', '=', 'product.template'), ('res_id', '=', p.id)])
             p.template_attachment_count = len(attachments)
 
-    @api.multi
     def action_see_attachments(self):
         domain = ['&', ('res_model', '=', 'product.template'), ('res_id', '=', self.id)]
         attachment_view = self.env.ref('mrp.view_document_file_kanban_mrp')
@@ -61,7 +58,6 @@ class ProductProduct(models.Model):
                     ('res_id', '=', self.product_tmpl_id.id)
         ]
 
-    @api.multi
     def _compute_attachments(self):
         if not self.user_has_groups('mrp.group_mrp_user'):
             return
@@ -69,7 +65,6 @@ class ProductProduct(models.Model):
             domain = product._get_documents()
             product.product_attachment_count = self.env['mrp.document'].search_count(domain)
 
-    @api.multi
     def action_see_attachments(self):
         domain = self._get_documents()
         attachment_view = self.env.ref('mrp.view_document_file_kanban_mrp')

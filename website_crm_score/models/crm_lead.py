@@ -57,21 +57,18 @@ class Lead(models.Model):
     def get_score_domain_cookies(self):
         return request.httprequest.host
 
-    @api.multi
     def _merge_pageviews(self, opportunities):
         crmpv = self.env['website.crm.pageview']
         lead_ids = [opp.id for opp in opportunities if opp.id != self.id]
         pv_ids = crmpv.sudo().search([('lead_id', 'in', lead_ids)])
         pv_ids.write({'lead_id': self.id})
 
-    @api.multi
     def _merge_scores(self, opportunities):
         # We needs to delete score from opportunity_id, to be sure that all rules will be re-evaluated.
         self.sudo().write({'score_ids': [(6, 0, [])]})
         if not self.env.context.get('assign_leads_to_salesteams'):
             self.env['website.crm.score'].assign_scores_to_leads(lead_ids=self.ids)
 
-    @api.multi
     def merge_dependences(self, opportunities):
         self._merge_pageviews(opportunities)
         self._merge_scores(opportunities)
@@ -99,7 +96,6 @@ class Lead(models.Model):
             vals['assign_date'] = vals.get('user_id') and fields.datetime.now() or False
         return super(Lead, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         if 'user_id' in vals:
             vals['assign_date'] = vals.get('user_id') and fields.datetime.now() or False

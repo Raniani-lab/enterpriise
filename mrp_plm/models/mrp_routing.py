@@ -26,7 +26,6 @@ class MrpRouting(models.Model):
         for rec in self:
             rec.eco_count = len(rec.eco_ids)
 
-    @api.multi
     def apply_new_version(self):
         """ Put old routing as deprecated - TODO Set to stage that is production_ready """
         self.write({'active': True})

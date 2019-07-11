@@ -54,7 +54,6 @@ class HrPayrollAdvice(models.Model):
         help='Select the Bank from which the salary is going to be paid')
     batch_id = fields.Many2one('hr.payslip.run', string='Batch', readonly=True)
 
-    @api.multi
     def compute_advice(self):
         """
         Advice - Create Advice lines in Payment Advice and
@@ -79,7 +78,6 @@ class HrPayrollAdvice(models.Model):
                     })
                 slip.advice_id = advice.id
 
-    @api.multi
     def confirm_sheet(self):
         """
         confirm Advice - confirmed Advice after computing Advice Lines..
@@ -95,13 +93,11 @@ class HrPayrollAdvice(models.Model):
                 'state': 'confirm',
             })
 
-    @api.multi
     def set_to_draft(self):
         """Resets Advice as draft.
         """
         self.write({'state': 'draft'})
 
-    @api.multi
     def cancel_sheet(self):
         """Marks Advice as cancelled.
         """
@@ -120,12 +116,10 @@ class HrPayslipRun(models.Model):
                                        help='If this box is checked which means that Payment Advice exists for current batch',
                                        readonly=False, copy=False)
 
-    @api.multi
     def action_draft(self):
         super(HrPayslipRun, self).action_draft()
         self.write({'available_advice': False})
 
-    @api.multi
     def create_advice(self):
         for run in self:
             if run.available_advice:

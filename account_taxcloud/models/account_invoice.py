@@ -19,7 +19,6 @@ class AccountMove(models.Model):
     is_taxcloud_configured = fields.Boolean(related='company_id.is_taxcloud_configured', help='Used to determine whether or not to warn the user to configure TaxCloud.')
     is_taxcloud = fields.Boolean(related='fiscal_position_id.is_taxcloud', help='Technical field to determine whether to hide taxes in views or not.')
 
-    @api.multi
     def post(self):
         # OVERRIDE
 
@@ -35,7 +34,6 @@ class AccountMove(models.Model):
                 invoice.validate_taxes_on_invoice()
         return super(AccountMove, self).post()
 
-    @api.multi
     def validate_taxes_on_invoice(self):
         self.ensure_one()
         company = self.company_id
@@ -125,7 +123,6 @@ class AccountMove(models.Model):
         else:
             return True
 
-    @api.multi
     def action_invoice_paid(self):
         for invoice in self:
             company = invoice.company_id

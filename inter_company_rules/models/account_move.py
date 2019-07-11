@@ -8,7 +8,6 @@ class AccountMove(models.Model):
     auto_generated = fields.Boolean(string='Auto Generated Document', copy=False, default=False)
     auto_invoice_id = fields.Many2one('account.move', string='Source Invoice', readonly=True, copy=False)
 
-    @api.multi
     def post(self):
         # OVERRIDE to generate cross invoice based on company rules.
         invoices_map = {}
@@ -21,7 +20,6 @@ class AccountMove(models.Model):
             invoices._inter_company_create_invoices(company)
         return super(AccountMove, self).post()
 
-    @api.multi
     def _inter_company_create_invoices(self, company):
         ''' Create cross company invoices.
         :param company: The targeted new company (res.company record).
@@ -62,7 +60,6 @@ class AccountMove(models.Model):
                 moves = invoices
         return moves
 
-    @api.multi
     def _inter_company_prepare_invoice_data(self, company, invoice_type):
         ''' Get values to create the invoice.
         /!\ Doesn't care about lines, see '_inter_company_prepare_invoice_line_data'.
@@ -86,7 +83,6 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    @api.multi
     def _inter_company_prepare_invoice_line_data(self, company):
         ''' Get values to create the invoice line.
         :param company: The targeted company.

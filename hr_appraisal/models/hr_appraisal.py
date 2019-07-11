@@ -45,7 +45,6 @@ class HrAppraisal(models.Model):
     date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
     is_autorized_to_send = fields.Boolean('Autorized Employee to Start Appraisal', compute='_compute_authorization')
 
-    @api.multi
     def _compute_authorization(self):
         user = self.env.user
         appraisal_user = user.has_group('hr_appraisal.group_hr_appraisal_user')
@@ -79,7 +78,6 @@ class HrAppraisal(models.Model):
         if not self.collaborators_appraisal:
             self.collaborators_ids = False
 
-    @api.multi
     def subscribe_employees(self):
         """
         Subscribes the employee and his manager to the appraisal thread.
@@ -99,7 +97,6 @@ class HrAppraisal(models.Model):
             appraisal.message_subscribe(partner_ids=partner_ids)
         return True
 
-    @api.multi
     def schedule_final_meeting(self, interview_deadline):
         """ Creates event when user enters date manually from the form view.
             If users edit the already entered date, created meeting is updated accordingly.
@@ -176,7 +173,6 @@ class HrAppraisal(models.Model):
             }
         self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
 
-    @api.multi
     def send_appraisal(self):
         for appraisal in self:
             appraisal_data = appraisal._prepare_user_input_receivers()
@@ -209,7 +205,6 @@ class HrAppraisal(models.Model):
             appraisal.message_post(body=_("Appraisal form(s) have been sent"))
         return True
 
-    @api.multi
     def cancel_appraisal(self):
         """ Cancels the appraisal process, removing related calendar events,
         removes sent surveys and generated activities. """
@@ -259,7 +254,6 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
             result.schedule_final_meeting(date_final_interview)
         return result
 
-    @api.multi
     def write(self, vals):
         if vals.get('state'):
             if vals['state'] == 'cancel':
@@ -276,7 +270,6 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
             self.schedule_final_meeting(date_final_interview)
         return result
 
-    @api.multi
     def unlink(self):
         if any(appraisal.state not in ['new', 'cancel'] for appraisal in self):
             raise UserError(_("You cannot delete appraisal which is not in draft or canceled state"))
@@ -309,7 +302,6 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
         else:
             return super(HrAppraisal, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby)
 
-    @api.multi
     def action_calendar_event(self):
         """ Link to open calendar view for creating employee interview/meeting"""
         self.ensure_one()
@@ -324,16 +316,13 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
         }
         return action
 
-    @api.multi
     def button_send_appraisal(self):
         self.write({'state': 'pending'})
 
-    @api.multi
     def button_done_appraisal(self):
         self.write({'state': 'done'})
         self.activity_feedback(['mail.mail_activity_data_meeting', 'hr_appraisal.mail_act_appraisal_form'])
 
-    @api.multi
     def button_cancel_appraisal(self):
         self.write({'state': 'cancel'})
 

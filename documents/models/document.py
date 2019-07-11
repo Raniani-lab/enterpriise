@@ -70,7 +70,6 @@ class Document(models.Model):
             if record.attachment_name:
                 record.name = record.attachment_name
 
-    @api.multi
     def _inverse_name(self):
         for record in self:
             if record.attachment_id:
@@ -84,14 +83,12 @@ class Document(models.Model):
                 record.res_model = attachment.res_model
                 record.res_id = attachment.res_id
 
-    @api.multi
     def _inverse_res_id(self):
         for record in self:
             attachment = record.attachment_id.with_context(no_document=True)
             if attachment:
                 attachment.res_id = record.res_id
 
-    @api.multi
     def _inverse_res_model(self):
         for record in self:
             attachment = record.attachment_id.with_context(no_document=True)
@@ -164,7 +161,6 @@ class Document(models.Model):
                 if model:
                     record.res_model_name = model[0][1]
 
-    @api.multi
     def _compute_available_rules(self):
         """
         loads the rules that can be applied to the attachment.
@@ -245,7 +241,6 @@ class Document(models.Model):
 
         return super(Document, self)._message_post_after_hook(message, msg_vals)
 
-    @api.multi
     def documents_set_activity(self, settings_record=None):
         """
         Generate an activity based on the fields of settings_record.
@@ -280,12 +275,10 @@ class Document(models.Model):
                 activity_vals['user_id'] = user.id
             self.activity_schedule(**activity_vals)
 
-    @api.multi
     def toggle_favorited(self):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
 
-    @api.multi
     def toggle_lock(self):
         """
         sets a lock user, the lock user is the user who locks a file for themselves, preventing data replacement
@@ -321,7 +314,6 @@ class Document(models.Model):
             attachment.with_context(no_document=True).write({'res_model': 'documents.document', 'res_id': new_record.id})
         return new_record
 
-    @api.multi
     def write(self, vals):
         attachment_id = vals.get('attachment_id')
         if attachment_id:
@@ -345,7 +337,6 @@ class Document(models.Model):
 
         return super(Document, self).write(vals)
 
-    @api.multi
     def _process_activities(self, attachment_id):
         self.ensure_one()
         if attachment_id and self.request_activity_id:

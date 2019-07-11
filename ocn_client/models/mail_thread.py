@@ -12,7 +12,6 @@ _logger = logger.getLogger(__name__)
 class MailThread(models.AbstractModel):
     _inherit = 'mail.thread'
 
-    @api.multi
     def _notify_compute_recipients(self, message, msg_vals):
         """ We want to send a Cloud notification for every mentions of a partner
         and every direct message. We have to take into account the risk of

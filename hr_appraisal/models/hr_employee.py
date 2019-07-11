@@ -30,12 +30,10 @@ class HrEmployee(models.Model):
     last_duration_reminder_send = fields.Integer(string='Duration after last appraisal when we send last reminder mail',
         groups="hr.group_hr_user", default=0)
 
-    @api.multi
     def _compute_name(self):
         for employee in self:
             employee.appraisal_employee = employee.name
 
-    @api.multi
     def _compute_appraisal_count(self):
         appraisal = self.env['hr.appraisal'].read_group([('employee_id', 'in', self.ids)], ['employee_id'], ['employee_id'])
         result = dict((data['employee_id'][0], data['employee_id_count']) for data in appraisal)
@@ -67,7 +65,6 @@ class HrEmployee(models.Model):
         else:
             self.appraisal_collaborators_ids = False
 
-    @api.multi
     def write(self, vals):
         if vals.get('appraisal_date') and fields.Date.from_string(vals.get('appraisal_date')) < datetime.date.today():
             raise UserError(_("The date of the next appraisal cannot be in the past"))
@@ -132,7 +129,6 @@ class HrEmployee(models.Model):
 
         self.env['hr.appraisal.reminder']._run_employee_appraisal_reminder()
 
-    @api.multi
     def action_send_appraisal_request(self):
         return {
             'type': 'ir.actions.act_window',

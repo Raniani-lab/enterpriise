@@ -17,7 +17,6 @@ class MrpBom(models.Model):
     eco_inprogress_count = fields.Integer("# ECOs in progress", compute='_compute_eco_data')
     revision_ids = fields.Many2many('mrp.bom', compute='_compute_revision_ids')
 
-    @api.multi
     def _compute_eco_data(self):
         eco_inprogress_data = self.env['mrp.eco'].read_group([
             ('product_tmpl_id', 'in', self.mapped('product_tmpl_id').ids),
@@ -42,7 +41,6 @@ class MrpBom(models.Model):
                 current = current.previous_bom_id
             rec.revision_ids = previous_boms.ids
 
-    @api.multi
     def apply_new_version(self):
         """ Put old BoM as deprecated - TODO: Set to stage that is production_ready """
         MrpEco = self.env['mrp.eco']
@@ -66,7 +64,6 @@ class MrpBom(models.Model):
             new_bom.previous_bom_id.write({'active': False})
         return True
 
-    @api.multi
     def button_mrp_eco(self):
         self.ensure_one()
         action = self.env.ref('mrp_plm.mrp_eco_action_main').read()[0]
@@ -142,7 +139,6 @@ class MrpBomLine(models.Model):
         res.bom_line_change(vals, operation='add')
         return res
 
-    @api.multi
     def write(self, vals):
         operation = 'update'
         if vals.get('product_id'):
@@ -152,7 +148,6 @@ class MrpBomLine(models.Model):
         self.bom_line_change(vals, operation)
         return super(MrpBomLine, self).write(vals)
 
-    @api.multi
     def unlink(self):
         # It will create update rebase line.
         self.bom_line_change({'product_qty': 0.0})

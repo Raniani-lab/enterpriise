@@ -38,7 +38,6 @@ class ProviderAccount(models.Model):
         for rec in self:
             rec.next_refresh = self.env['ir.cron'].sudo().search([('id', '=', self.env.ref('account_online_sync.online_sync_cron').id)], limit=1).nextcall
 
-    @api.multi
     def open_action(self, action_name, number_added):
         action = self.env.ref(action_name).read()[0]
         ctx = self.env.context.copy()
@@ -46,7 +45,6 @@ class ProviderAccount(models.Model):
         action.update({'context': ctx})
         return action
 
-    @api.multi
     def log_message(self, message):
         # Usually when we are performing a call to the third party provider to either refresh/fetch transaction/add user, etc,
         # the call can fail and we raise an error. We also want the error message to be logged in the object in the case the call
@@ -64,7 +62,6 @@ class ProviderAccount(models.Model):
             with self.pool.cursor() as cr:
                 self.with_env(self.env(cr=cr)).message_post(body=message, subject=subject)
 
-    @api.multi
     def _get_favorite_institutions(self, country):
         resp_json = {}
         try:
@@ -76,7 +73,6 @@ class ProviderAccount(models.Model):
             raise UserError(_('Server not reachable, please try again later'))
         return resp_json
 
-    @api.multi
     def get_institutions(self, searchString, country):
         if len(searchString) == 0:
             raise UserError(_('Please enter at least a character for the search'))
@@ -131,11 +127,9 @@ class ProviderAccount(models.Model):
 
     """ Methods that need to be override by sub-module"""
 
-    @api.multi
     def _get_available_providers(self):
         return []
 
-    @api.multi
     def get_login_form(self, site_id, provider, beta=False):
         """ This method is used to fetch and display the login form of the institution choosen in
             get_institutions method. Usually this method should return a client action that will
@@ -143,7 +137,6 @@ class ProviderAccount(models.Model):
         """
         return []
 
-    @api.multi
     def manual_sync(self):
         """ This method is used to ask the third party provider to refresh the account and
             fetch the latest transactions.
@@ -190,7 +183,6 @@ class OnlineAccount(models.Model):
     provider_name = fields.Char(related='account_online_provider_id.name', string="Provider", readonly=True)
     balance = fields.Float(readonly=True, help='balance of the account sent by the third party provider')
 
-    @api.multi
     @api.depends('name', 'account_online_provider_id.name')
     def name_get(self):
         res = []
@@ -201,7 +193,6 @@ class OnlineAccount(models.Model):
             res += [(account_online.id, name)]
         return res
 
-    @api.multi
     def retrieve_transactions(self):
         # This method must be implemented by plaid and yodlee services
         raise UserError(_("Unimplemented"))
@@ -350,7 +341,6 @@ class AccountJournal(models.Model):
         for rec in self:
             rec.next_synchronization = next_sync
 
-    @api.multi
     def action_choose_institution(self):
         sync_error_message = ''
         ctx = self.env.context.copy()
@@ -374,7 +364,6 @@ class AccountJournal(models.Model):
             'context': ctx,
             }
 
-    @api.multi
     def manual_sync(self):
         if self.account_online_journal_id:
             return self.account_online_journal_id.account_online_provider_id.manual_sync()
@@ -401,7 +390,6 @@ class AccountJournal(models.Model):
 class AccountBankStatement(models.Model):
     _inherit = "account.bank.statement"
 
-    @api.multi
     def button_confirm_bank(self):
         super(AccountBankStatement, self).button_confirm_bank()
         for statement in self:

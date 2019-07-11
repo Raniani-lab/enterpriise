@@ -129,7 +129,6 @@ class ResPartner(models.Model):
         }
         return self.env['account.followup.report'].with_context(print_mode=True, lang=self.lang or self.env.user.lang).get_html(options)
 
-    @api.multi
     def get_followup_level(self):
         self.ensure_one()
         current_date = fields.Date.today()
@@ -150,7 +149,6 @@ class ResPartner(models.Model):
                             level = (next_level, delay)
         return level
 
-    @api.multi
     def update_next_action(self, options=False):
         if not options or 'next_action_date' not in options or 'next_action_type' not in options:
             return

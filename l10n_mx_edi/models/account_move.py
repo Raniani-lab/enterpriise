@@ -5,7 +5,6 @@ from odoo import api, models
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
-    @api.multi
     def reconcile(self, writeoff_acc_id=False, writeoff_journal_id=False):
         """Create payment complement with a full reconciliation"""
         res = super(AccountMoveLine, self).reconcile(

@@ -7,7 +7,6 @@ import calendar
 class AccountTaxReportActivity(models.Model):
     _inherit = "mail.activity"
 
-    @api.multi
     def _get_vat_report_action_to_open(self, company_id):
         if company_id.country_id.code == 'BE':
             return self.env.ref('l10n_be_reports.action_account_report_be_vat').read()[0]

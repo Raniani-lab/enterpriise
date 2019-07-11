@@ -91,7 +91,6 @@ class res_users(models.Model):
 
         return super(res_users, self).create(values)
 
-    @api.multi
     def write(self, values):
         log = self.env['pos_blackbox_be.log']
 
@@ -102,7 +101,6 @@ class res_users(models.Model):
 
         return super(res_users, self).write(values)
 
-    @api.multi
     def unlink(self):
         log = self.env['pos_blackbox_be.log']
 
@@ -229,7 +227,6 @@ class pos_session(models.Model):
                 # last order is a normal one, assuming has already made a work in
                 session.work_status = 'valid'
 
-    @api.multi
     def action_pos_session_closing_control(self):
         # The government does not want PS orders that have not been
         # finalized into an NS before we close a session
@@ -401,7 +398,6 @@ POS ID: {pos_id}
 
         return order
 
-    @api.multi
     def unlink(self):
         for order in self:
             if order.config_id.blackbox_pos_production_id:
@@ -409,7 +405,6 @@ POS ID: {pos_id}
 
         return super(pos_order, self).unlink()
 
-    @api.multi
     def write(self, values):
         for order in self:
             if order.config_id.blackbox_pos_production_id:
@@ -422,7 +417,6 @@ POS ID: {pos_id}
 
         return super(pos_order, self).write(values)
 
-    @api.multi
     def refund(self):
         for order in self:
             if order.config_id.blackbox_pos_production_id:
@@ -472,7 +466,6 @@ POS ID: {pos_id}
 class pos_make_payment(models.TransientModel):
     _inherit = 'pos.make.payment'
 
-    @api.multi
     def check(self):
         order = self.env['pos.order'].browse(self.env.context.get('active_id'))
 
@@ -486,7 +479,6 @@ class pos_order_line(models.Model):
 
     vat_letter = fields.Selection([('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')])
 
-    @api.multi
     def write(self, values):
         if values.get('vat_letter'):
             raise UserError(_("Can't modify fields related to the Fiscal Data Module."))
@@ -667,7 +659,6 @@ class product_template(models.Model):
 
         return super(product_template, self).create(values)
 
-    @api.multi
     def write(self, values):
         log = self.env['pos_blackbox_be.log']
         ir_model_data = self.env['ir.model.data']
@@ -684,7 +675,6 @@ class product_template(models.Model):
 
         return super(product_template, self).write(values)
 
-    @api.multi
     def unlink(self):
         log = self.env['pos_blackbox_be.log']
         ir_model_data = self.env['ir.model.data']
@@ -721,7 +711,6 @@ class product_template(models.Model):
 class module(models.Model):
     _inherit = 'ir.module.module'
 
-    @api.multi
     def module_uninstall(self):
         for module_to_remove in self:
             if module_to_remove.name == "pos_blackbox_be":

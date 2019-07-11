@@ -66,7 +66,6 @@ class RentalWizard(models.TransientModel):
                 ignored_soline_id=self.rental_order_line_id and self.rental_order_line_id.id
             )
 
-    @api.multi
     @api.depends('pickup_date', 'return_date')
     def _compute_duration_pricing(self):
         """ Process dates to compute duration and pricing for the selected period. """

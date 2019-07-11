@@ -9,7 +9,6 @@ class Partner(models.Model):
 
     document_count = fields.Integer('Document Count', compute='_compute_document_count')
 
-    @api.multi
     def _compute_document_count(self):
         read_group_var = self.env['documents.document'].read_group(
             [('partner_id', 'in', self.ids)],
@@ -20,7 +19,6 @@ class Partner(models.Model):
         for record in self:
             record.document_count = document_count_dict.get(record.id, 0)
 
-    @api.multi
     def action_see_documents(self):
         self.ensure_one()
         return {

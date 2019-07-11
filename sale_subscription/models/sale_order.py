@@ -179,7 +179,7 @@ class SaleOrderLine(models.Model):
                 period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(previous_date), {}), format_date(fields.Date.to_string(next_date - relativedelta(days=1)), {}))
                 res.update(name=res['name'] + '\n' + period_msg)
             if self.subscription_id.analytic_account_id:
-                res['account_analytic_id'] = self.subscription_id.analytic_account_id.id
+                res['analytic_account_id'] = self.subscription_id.analytic_account_id.id
         return res
 
     @api.model

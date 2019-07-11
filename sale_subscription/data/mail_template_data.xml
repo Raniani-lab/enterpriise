@@ -205,7 +205,7 @@
         <field name="name">Subscription: Payment success</field>
         <field name="model_id" ref="account.model_account_move"/>
         <field name="subject">Invoice for subscription ${ctx.get('code')}</field>
-        <field name="email_from">${(object.user_id.email_formatted or object.company_id.email or user.email_formatted) | safe}</field>
+        <field name="email_from">${(object.invoice_user_id.email_formatted or object.company_id.email or user.email_formatted) | safe}</field>
         <field name="email_to">${object.partner_id.email_formatted | safe}</field>
         <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
@@ -216,7 +216,7 @@
         <td align="center" style="min-width: 590px;">
             <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
                 <tr><td valign="middle">
-                    % set company = object.company_id or object.user_id.company_id or user.company_id
+                    % set company = object.company_id or object.invoice_user_id.company_id or user.company_id
                     <span style="font-size: 10px;">Your Subscription</span><br/>
                     <span style="font-size: 20px; font-weight: bold;">${ctx.get('code') or 'Document'}</span>
                 </td></tr>
@@ -418,9 +418,9 @@
     <record id="mail_template_subscription_invoice" model="mail.template">
         <field name="name">Subscription Invoice: Send by email</field>
         <field name="model_id" ref="account.model_account_move"/>
-        <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) |safe}</field>
+        <field name="email_from">${(object.invoice_user_id.email_formatted or user.email_formatted) |safe}</field>
         <field name="partner_to">${object.partner_id.id}</field>
-        <field name="subject">${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})</field>
+        <field name="subject">${object.company_id.name} Invoice (Ref ${object.name or 'n/a'})</field>
         <field name="body_html" type="xml">
             <div style="background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
                 <table style="width:600px;margin:5px auto;">
@@ -442,17 +442,17 @@
                             </p>
                             <p>
                                 Here is, in attachment, your
-                                % if object.number:
-                                    invoice <strong>${object.number}</strong>
+                                % if object.name:
+                                    invoice <strong>${object.name}</strong>
                                 % else:
                                     invoice
                                 %endif
-                                % if object.origin:
-                                    (with reference: ${object.origin} )
+                                % if object.invoice_origin:
+                                    (with reference: ${object.invoice_origin} )
                                 % endif
                                 amounting in <strong>${format_amount(object.amount_total, object.currency_id)}</strong>
                                 from ${object.company_id.name}.
-                                % if object.state=='paid':
+                                % if object.invoice_payment_state == 'paid':
                                     This invoice is already paid.
                                 % else:
                                     Please remit payment at your earliest convenience.
@@ -460,13 +460,13 @@
                             </p>
                             <p>Do not hesitate to contact us if you have any question.</p>
                         </td></tr>
-                        <tr><td style="padding:15px 20px 10px 20px;">${(object.user_id.signature or '')| safe}</td></tr>
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.invoice_user_id.signature or '')| safe}</td></tr>
                     </tbody>
                 </table>
             </div>
         </field>
         <field name="report_template" ref="account.account_invoices"/>
-        <field name="report_name">Invoice_${(object.number or '').replace('/','_')}${object.state == 'draft' and '_draft' or ''}</field>
+        <field name="report_name">Invoice_${(object.name or '').replace('/','_')}${object.state == 'draft' and '_draft' or ''}</field>
         <field name="lang">${object.partner_id.lang}</field>
         <field name="auto_delete" eval="True"/>
     </record>

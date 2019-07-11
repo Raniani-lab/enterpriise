@@ -669,7 +669,7 @@ class SaleSubscription(models.Model):
         if not invoice:
             invoice = tx.invoice_ids and tx.invoice_ids[0]
         if tx.state in ['done', 'authorized']:
-            invoice.write({'reference': tx.reference, 'name': tx.reference})
+            invoice.write({'ref': tx.reference, 'invoice_payment_ref': tx.reference})
             self.increment_period()
             self.set_open()
         else:

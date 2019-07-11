@@ -10,19 +10,6 @@ class AccountMove(models.Model):
 
     sdd_paying_mandate_id = fields.Many2one(comodel_name='sdd.mandate', help="Once this invoice has been paid with Direct Debit, contains the mandate that allowed the payment.", copy=False)
 
-    def post(self):
-        # OVERRIDE to automatically trigger the payment of the invoice if a mandate is available.
-        res = super(AccountMove, self).post()
-
-        # Automatic payment only for customer's invoice
-        # i.e. credit notes from vendors shouldn't have their payment automated
-        for move in self.filtered(lambda x: x.type == 'out_invoice' and x.amount_residual != 0):
-            usable_mandate = move._sdd_get_usable_mandate()
-            if usable_mandate:
-                move.sdd_paying_mandate_id = usable_mandate
-                move._sdd_pay_with_mandate(usable_mandate)
-        return res
-
     def _sdd_pay_with_mandate(self, mandate):
         """ Uses the mandate passed in parameters to pay this invoice. This function
         updates the state of the mandate accordingly if it was of type 'one-off',

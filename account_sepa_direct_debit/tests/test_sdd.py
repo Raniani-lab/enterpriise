@@ -86,9 +86,15 @@ class SDDTest(AccountingTestCase):
         invoice_agrolait = self.create_invoice(partner_agrolait, user.id, company.currency_id)
         invoice_china_export = self.create_invoice(partner_china_export, user.id, company.currency_id)
 
-        #These invoice should have been paid automatically thanks to the mandate
+        # Pay the invoices with mandates
+        invoice_agrolait._sdd_pay_with_mandate(mandate_agrolait)
+        invoice_china_export._sdd_pay_with_mandate(mandate_china_export)
+
+        # These invoice should have been paid thanks to the mandate
         self.assertEqual(invoice_agrolait.invoice_payment_state, 'paid', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_agrolait.sdd_paying_mandate_id, mandate_agrolait)
         self.assertEqual(invoice_china_export.invoice_payment_state, 'paid', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_china_export.sdd_paying_mandate_id, mandate_china_export)
 
         #The 'one-off' mandate should now be closed
         self.assertEqual(mandate_agrolait.state, 'active', 'A recurrent mandate should stay confirmed after accepting a payment')

@@ -31,7 +31,11 @@ class TestCodaFile(AccountingTestCase):
         self.context = {
             'journal_id': self.ref('account.bank_journal')
         }
-        self.bank_statement = self.statement_import_model.create(dict(data_file=self.coda_file,))
+        self.bank_statement = self.statement_import_model.create({'attachment_ids': [(0, 0, {
+            'name': 'test file',
+            'datas': self.coda_file,
+        })]
+        })
 
     def test_coda_file_import(self):
         self.bank_statement.with_context(self.context).import_file()
@@ -46,7 +50,11 @@ class TestCodaFile(AccountingTestCase):
 
     def test_coda_file_wrong_journal(self):
         """ The demo account used by the CODA file is linked to the demo bank_journal """
-        bank_statement_id = self.statement_import_model.create(dict(data_file=self.coda_file,))
+        bank_statement_id = self.statement_import_model.create({'attachment_ids': [(0, 0, {
+            'name': 'test file',
+            'datas': self.coda_file,
+        })]
+        })
         self.context['journal_id'] = self.ref('account.miscellaneous_journal')
         with self.assertRaises(Exception):
             self.statement_import_model.with_context(self.context).import_file([bank_statement_id])

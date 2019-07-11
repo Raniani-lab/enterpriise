@@ -27,8 +27,10 @@ class TestCamtFile(TransactionCase):
             bank_journal.write({'currency_id': self.env.ref("base.USD").id})
 
         # Use an import wizard to process the file
-        import_wizard = self.env['account.bank.statement.import'].with_context(journal_id=bank_journal_id).create({'data_file': camt_file})
-        import_wizard.import_file()
+        self.env['account.bank.statement.import'].with_context(journal_id=bank_journal.id).create({'attachment_ids': [(0, 0, {
+            'name': 'test file',
+            'datas': camt_file,
+        })]}).import_file()
 
         # Check the imported bank statement
         bank_st_record = self.env['account.bank.statement'].search([('name', '=', '0574908765.2015-12-05')], limit=1)
@@ -63,9 +65,10 @@ class TestCamtFile(TransactionCase):
         )
         with open(camt_file_path, 'rb') as fd:
             camt_file = base64.b64encode(fd.read())
-        self.env['account.bank.statement.import'].with_context(
-            journal_id=bank_journal.id
-        ).create({'data_file': camt_file}).import_file()
+        self.env['account.bank.statement.import'].with_context(journal_id=bank_journal.id).create({'attachment_ids': [(0, 0, {
+            'name': 'test file',
+            'datas': camt_file,
+        })]}).import_file()
 
         # Check the imported bank statement
         bank_st_record = self.env['account.bank.statement'].search(
@@ -105,9 +108,10 @@ class TestCamtFile(TransactionCase):
         with open(camt_file_path, 'rb') as fd:
             camt_file = base64.b64encode(fd.read())
 
-        wizard = self.env['account.bank.statement.import'].with_context(
-            journal_id=bank_journal.id
-        ).create({'data_file': camt_file})
+        wizard = self.env['account.bank.statement.import'].with_context(journal_id=bank_journal.id).create({'attachment_ids': [(0, 0, {
+            'name': 'test file',
+            'datas': camt_file,
+        })]})
 
         with self.assertLogs(level="WARNING") as log_catcher:
             wizard.import_file()
@@ -153,9 +157,10 @@ class TestCamtFile(TransactionCase):
         with open(camt_file_path, 'rb') as fd:
             camt_file = base64.b64encode(fd.read())
 
-        wizard = self.env['account.bank.statement.import'].with_context(
-            journal_id=bank_journal.id
-        ).create({'data_file': camt_file})
+        wizard = self.env['account.bank.statement.import'].with_context(journal_id=bank_journal.id).create({'attachment_ids': [(0, 0, {
+            'name': 'test file',
+            'datas': camt_file,
+        })]})
 
         with self.assertLogs(camt_wizard_logger, level="WARNING") as log_catcher:
             with self.assertRaises(UserError) as error_catcher:
@@ -190,9 +195,10 @@ class TestCamtFile(TransactionCase):
         with open(camt_file_path, 'rb') as fd:
             camt_file = base64.b64encode(fd.read())
 
-        wizard = self.env['account.bank.statement.import'].with_context(
-            journal_id=bank_journal.id
-        ).create({'data_file': camt_file})
+        wizard = self.env['account.bank.statement.import'].with_context(journal_id=bank_journal.id).create({'attachment_ids': [(0, 0, {
+            'name': 'test file',
+            'datas': camt_file,
+        })]})
 
         with self.assertLogs(camt_wizard_logger, level="WARNING") as log_catcher:
             with self.assertRaises(UserError) as error_catcher:

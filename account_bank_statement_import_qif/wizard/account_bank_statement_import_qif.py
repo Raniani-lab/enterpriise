@@ -29,10 +29,10 @@ class AccountBankStatementImport(models.TransientModel):
         help="Although the historic QIF date format is month-first (mm/dd/yy), many financial institutions use the local format."
              "Therefore, it is frequent outside the US to have QIF date formated day-first (dd/mm/yy).")
 
-    @api.onchange('data_file')
+    @api.onchange('attachment_ids')
     def _onchange_data_file(self):
-        file_content = self.data_file and base64.b64decode(self.data_file) or b""
-        self.show_qif_date_format = self._check_qif(file_content)
+        file_contents = self.attachment_ids.mapped('datas')
+        self.show_qif_date_format = any(self._check_qif(content) for content in file_contents)
 
     def _find_additional_data(self, *args):
         """ As .QIF format does not allow us to detect the journal, we need to let the user choose it.

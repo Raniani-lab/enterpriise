@@ -28,6 +28,7 @@ This module allows the creation of the EDI documents and the communication with 
         'security/l10n_mx_edi_certificate.xml',
         'data/3.3/cfdi.xml',
         'data/3.3/payment10.xml',
+        'data/3.3/external_trade.xml',
         'data/account_data.xml',
         'data/action_server_data.xml',
         'data/payment_method_data.xml',

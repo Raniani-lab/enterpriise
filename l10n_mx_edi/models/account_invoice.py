@@ -167,6 +167,18 @@ class AccountMove(models.Model):
         '- 05: Traslados de mercancias facturados previamente\n'
         '- 06: Factura generada por los traslados previos\n'
         u'- 07: CFDI por aplicación de anticipo')
+    l10n_mx_edi_cer_source = fields.Char(
+        'Certificate Source',
+        help='Used in CFDI like attribute derived from the exception of '
+        'certificates of Origin of the Free Trade Agreements that Mexico '
+        'has celebrated with several countries. If it has a value, it will '
+        'indicate that it serves as certificate of origin and this value will '
+        'be set in the CFDI node "NumCertificadoOrigen".')
+    l10n_mx_edi_external_trade = fields.Boolean(
+        'Need external trade?', compute='_compute_need_external_trade',
+        inverse='_inverse_need_external_trade', store=True,
+        help='If this field is active, the CFDI that generates this invoice '
+        'will include the complement "External Trade".')
 
     # -------------------------------------------------------------------------
     # HELPERS
@@ -205,6 +217,19 @@ class AccountMove(models.Model):
         if cfdi is None and self.l10n_mx_edi_cfdi:
             cfdi = base64.decodestring(self.l10n_mx_edi_cfdi)
         return fromstring(cfdi) if cfdi else None
+
+    @api.model
+    def l10n_mx_edi_get_et_etree(self, cfdi):
+        """Get the ComercioExterior node from the cfdi.
+        :param cfdi: The cfdi as etree
+        :return: the ComercioExterior node
+        """
+        if not hasattr(cfdi, 'Complemento'):
+            return None
+        attribute = 'cce11:ComercioExterior[1]'
+        namespace = {'cce11': 'http://www.sat.gob.mx/ComercioExterior11'}
+        node = cfdi.Complemento.xpath(attribute, namespaces=namespace)
+        return node[0] if node else None
 
     @api.model
     def l10n_mx_edi_get_payment_method_cfdi(self):
@@ -652,6 +677,15 @@ class AccountMove(models.Model):
             inv.l10n_mx_edi_cfdi_certificate_id = self.env['l10n_mx_edi.certificate'].sudo().search(
                 [('serial_number', '=', certificate)], limit=1)
 
+    @api.depends('partner_id')
+    def _compute_need_external_trade(self):
+        """Assign the "Need external trade?" value how in the partner"""
+        for record in self.filtered(lambda i: i.type == 'out_invoice'):
+            record.l10n_mx_edi_external_trade = record.partner_id.l10n_mx_edi_external_trade
+
+    def _inverse_need_external_trade(self):
+        return True
+
     def _l10n_mx_edi_create_taxes_cfdi_values(self):
         '''Create the taxes values to fill the CFDI template.
         '''
@@ -823,6 +857,47 @@ class AccountMove(models.Model):
         else:
             values['account_4num'] = None
 
+        values.update(self._get_external_trade_values(values))
+        return values
+
+    def _get_external_trade_values(self, values):
+        """Create the values to fill the CFDI template with external trade.
+        """
+        self.ensure_one()
+        if not self.l10n_mx_edi_external_trade:
+            return values
+
+        date = self.invoice_date or fields.Date.today()
+        company_id = self.company_id
+        ctx = dict(company_id=company_id.id, date=date)
+        customer = values['customer']
+        values.update({
+            'usd': self.env.ref('base.USD').with_context(ctx),
+            'mxn': self.env.ref('base.MXN').with_context(ctx),
+            'europe_group': self.env.ref('base.europe'),
+            'receiver_reg_trib': customer.vat,
+        })
+        values['quantity_aduana'] = lambda p, i: sum([
+            l.l10n_mx_edi_qty_umt for l in i.invoice_line_ids
+            if l.product_id == p])
+        values['unit_value_usd'] = lambda l, c, u: c._convert(
+            l.l10n_mx_edi_price_unit_umt, u, company_id, date)
+        values['amount_usd'] = lambda origin, dest, amount: origin._convert(
+            amount, dest, company_id, date, round=False)
+        # http://omawww.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/Complementoscfdi/GuiaComercioExterior3_3.pdf
+        # ValorDolares : it depends of the currency  (p. 62-63):
+        #   - if currency is MXN: ValorDolares = Importe (subtotal without discounts) / TipoCambioUSD
+        #   - if currency is USD: ValorDolares = Importe
+        #   - if currency is anoter: ValorDolares = Importe x TipoCambio / TipoCambioUSD
+        # There is a common mistake to mutiply the Qty UMT with the unit price UMT. (p. 76)
+        #
+        # TotalUSD : must be the sum of all the Valor Dolares fields (p. 48)
+        values['valor_usd'] = lambda l, u, c: c._convert(
+            l.price_subtotal / (1 - l.discount/100) if l.discount != 100 else
+            l.price_unit * l.quantity, u, company_id, date)
+        values['total_usd'] = lambda i, u, c: sum([values['valor_usd'](l, u, c)
+            for l in i])
+
         return values
 
     def get_cfdi_related(self):
@@ -877,6 +952,12 @@ class AccountMove(models.Model):
         error_log = []
         company_id = self.company_id
         pac_name = company_id.l10n_mx_edi_pac
+        if self.l10n_mx_edi_external_trade:
+            # Call the onchange to obtain the values of l10n_mx_edi_qty_umt
+            # and l10n_mx_edi_price_unit_umt, this is necessary when the
+            # invoice is created from the sales order or from the picking
+            self.invoice_line_ids.onchange_quantity()
+            self.invoice_line_ids._set_price_unit_umt()
         values = self._l10n_mx_edi_create_cfdi_values()
 
         # -----------------------

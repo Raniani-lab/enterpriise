@@ -38,7 +38,23 @@
                 </div>
                 <div class="row mt16 o_settings_container" id="l10n_mx_edi_certificates">
                     <div class="col-12 col-lg-6 o_setting_box" title="The parameters to configure the MX certificate.">
-                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_left_pane">
+                            <div class="col-12 col-lg-6 o_setting_box" title="The parameters to configure the External Trade.">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">External Trade</span>
+                                    <div class="text-muted">
+                                        Configure data to external trade.
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                            <label for="l10n_mx_edi_num_exporter" class="col-lg-3 o_light_label"/>
+                                            <field name="l10n_mx_edi_num_exporter" class="oe_inline"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="o_setting_right_pane">
                             <span class="o_form_label">MX Certificates</span>
                             <div class="text-muted">

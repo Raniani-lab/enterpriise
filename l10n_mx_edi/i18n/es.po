@@ -1868,7 +1868,7 @@ msgid "Default taxes used when selling the product."
 msgstr ""
 
 #. module: l10n_mx_edi
-#: model:ir.model.fields,help:l10n_mx_edi.field_product_template__uom_id
+#: model:ir.model.fields,help:l10n_mx_edi.field_product_template__product_uom_id
 msgid "Default unit of measure used for all stock operations."
 msgstr ""
 
@@ -3034,7 +3034,7 @@ msgid "Invoice"
 msgstr "Factura"
 
 #. module: l10n_mx_edi
-#: model:ir.model.fields,field_description:l10n_mx_edi.field_account_invoice__date_invoice
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_account_invoice__invoice_date
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
 msgid "Invoice Date"
 msgstr "Fecha de la Factura"
@@ -3279,7 +3279,7 @@ msgid "Keep empty to use the current México central time"
 msgstr "Dejar en blanco para utilizar la hora actual de México central"
 
 #. module: l10n_mx_edi
-#: model:ir.model.fields,help:l10n_mx_edi.field_account_invoice__date_invoice
+#: model:ir.model.fields,help:l10n_mx_edi.field_account_invoice__invoice_date
 msgid "Keep empty to use the current date"
 msgstr ""
 
@@ -6564,7 +6564,7 @@ msgid ""
 msgstr ""
 
 #. module: l10n_mx_edi
-#: model:ir.model.fields,field_description:l10n_mx_edi.field_product_template__uom_id
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_product_template__product_uom_id
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_uom_uom__name
 msgid "Unit of Measure"
 msgstr ""
@@ -6929,7 +6929,7 @@ msgid "Weight"
 msgstr ""
 
 #. module: l10n_mx_edi
-#: model:ir.model.fields,field_description:l10n_mx_edi.field_product_template__weight_uom_id
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_product_template__weight_product_uom_id
 msgid "Weight Unit of Measure"
 msgstr ""
 

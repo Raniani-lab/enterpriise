@@ -94,6 +94,45 @@ QUnit.module('web_enterprise', {
 
         form.destroy();
     });
+
+    QUnit.test('statusbar "Action" button not displayed if all buttons inside it are invisible', async function (assert) {
+        assert.expect(4);
+
+        var form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form>' +
+                    '<header>' +
+                        '<button string="Confirm" attrs=\'{"invisible": [["display_name", "=", "first record"]]}\'/>' +
+                    '</header>' +
+                    '<sheet>' +
+                        '<group>' +
+                            '<field name="display_name"/>' +
+                        '</group>' +
+                    '</sheet>' +
+                '</form>',
+            res_id: 1,
+        });
+
+
+        // if all buttons are invisible then action button should also be invisible
+        assert.hasClass(form.$('.o_statusbar_buttons .dropdown-menu button'), 'o_invisible_modifier',
+            "'Confirm' button should have 'o_invisible_modifier' class");
+        assert.hasClass(form.$('.o_statusbar_buttons'), 'o_invisible_modifier',
+            "'Action' button should be invisible");
+
+        // change display_name to update buttons modifiers and make it visible
+        await testUtils.form.clickEdit(form);
+        await testUtils.fields.editInput(form.$('input[name=display_name]'), 'test');
+        await testUtils.form.clickSave(form);
+        assert.doesNotHaveClass(form.$('.o_statusbar_buttons .dropdown-menu button'), 'o_invisible_modifier',
+            "button should be o_invisible_modifier class");
+        assert.doesNotHaveClass(form.$('.o_statusbar_buttons'), 'o_invisible_modifier',
+            "'Action' button should be visible");
+
+        form.destroy();
+    });
 });
 
 });

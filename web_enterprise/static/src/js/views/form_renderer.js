@@ -42,9 +42,33 @@ var MobileFormRenderer = FormRenderer.extend({
             _.each(buttons, function ($button) {
                 $dropdownMenu.append($button.addClass('dropdown-item'));
             });
+            this._toggleStatusbarButtons($headerButtons);
         }
 
         return $headerButtons;
+    },
+
+    /**
+     * Hide action dropdown button if no visible dropdown item button
+     *
+     * @private
+     */
+    _toggleStatusbarButtons: function ($headerButtons) {
+        var $visibleButtons = $headerButtons.find('.dropdown-menu button:not(.o_invisible_modifier)');
+        $headerButtons.toggleClass('o_invisible_modifier', !$visibleButtons.length);
+    },
+
+    /**
+     * Update visibility of action dropdown button.
+     * Useful when invisible modifiers are on dropdown item buttons.
+     *
+     * @override
+     * @private
+     */
+    _updateAllModifiers: function () {
+        var def = this._super.apply(this, arguments);
+        this._toggleStatusbarButtons(this.$('.o_statusbar_buttons'));
+        return def;
     },
 });
 

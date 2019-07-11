@@ -6,10 +6,10 @@ from datetime import timedelta
 from odoo.fields import Date
 from odoo.tools import float_round
 from odoo import api, registry
-from odoo.addons.l10n_mx_edi.tests.common import InvoiceTransactionCase
+from . import common
 
 
-class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
+class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
 
     def setUp(self):
         super(TestL10nMxTaxCashBasis, self).setUp()
@@ -36,7 +36,6 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         self.user_type_id = self.env.ref(
             'account.data_account_type_current_liabilities')
         self.account_model = self.env['account.account']
-        self.account_move_model = self.env['account.move']
         self.account_move_line_model = self.env['account.move.line']
         self.journal_model = self.env['account.journal']
         self.payment_model = self.env['account.payment']
@@ -102,7 +101,8 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         moves = self.env['account.move'].search(
             [('company_id', '=', company.id)])
         moves.write({'state': 'draft'})
-        invoices = self.invoice_model.search([('company_id', '=', company.id)])
+        invoices = self.env['account.move'].search(
+            [('company_id', '=', company.id)])
         invoices.write({'state': 'draft', 'move_name': False})
 
         # 2. Delete related records
@@ -159,7 +159,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
             currency_id=None):
         if currency_id is None:
             currency_id = self.usd.id
-        invoice = self.invoice_model.with_env(
+        invoice = self.env['account.move'].with_env(
             self.env(user=self.user_billing)).create({
                 'partner_id': self.partner_agrolait.id,
                 'type': inv_type,
@@ -1128,7 +1128,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
             })
         result = refund.reverse_moves()
         refund_id = result.get('domain')[1][2]
-        refund = self.invoice_model.browse(refund_id)
+        refund = self.env['account.move'].browse(refund_id)
         refund.refresh()
         refund.post()
         self.assertEqual(refund.state, "open")

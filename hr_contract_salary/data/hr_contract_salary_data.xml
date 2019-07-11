@@ -214,8 +214,6 @@
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="False"/>
-            <field name="binding_type">action</field>
-            <field name="binding_model_id" ref="hr_contract.model_hr_contract"/>
         </record>
     </data>
 </odoo>

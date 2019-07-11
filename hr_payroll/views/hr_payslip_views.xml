@@ -188,13 +188,6 @@
         </field>
     </record>
 
-    <act_window name="Payslip Computation Details"
-        context="{'default_slip_id': active_id,'search_default_slip_id': active_id}"
-        res_model="hr.payslip.line"
-        binding_model="hr.payslip"
-        binding_views="form"
-        id="act_payslip_lines"/>
-
     <record id="view_hr_payslip_form" model="ir.ui.view">
         <field name="name">hr.payslip.form</field>
         <field name="model">hr.payslip</field>
@@ -495,6 +488,7 @@
         <field name="name">Confirm</field>
         <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
         <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">
             if records:

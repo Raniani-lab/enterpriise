@@ -18,6 +18,7 @@
         <field name="arch" type="xml">
             <form string="Walls">
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="website_publish_button"
                             type="object" icon="fa-globe">
@@ -27,10 +28,6 @@
                             <field string="Tweets" name="total_tweets" widget="statinfo"/>
                         </button>
                         <field name="is_live" invisible="1" />
-                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive"
-                                confirm="(Un)archiving a wall. Do you want to proceed?">
-                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                        </button>
                         <button class="oe_stat_button" name="toggle_live_mode" type="object" attrs="{'invisible':[('is_live','!=',True)]}" icon="fa-toggle-on text-success">
                             <div class="o_form_field o_stat_info">
                                 <span class="o_stat_text">Live Mode</span>
@@ -61,6 +58,7 @@
                         </div>
                         <field name="mode" class="oe_inline" widget="radio"/>
                         <field name="description" class="oe_inline" />
+                        <field name="active" invisible="1"/>
                         <field name="website_url" />
                     </group>
                 </sheet>

@@ -68,6 +68,7 @@
                     </p>
                 </div>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div name="button_box" class="oe_button_box">
                         <button name="action_view_mailings" type="object" icon="fa-envelope-open-o" class="oe_stat_button">
                             <field name="mass_mailing_count" widget="statinfo" string="Mailings"/>
@@ -83,9 +84,6 @@
                             icon="fa-code-fork fa-rotate-180 fa-flip-vertical" class="oe_stat_button">
                             <field name="total_participant_count" widget="statinfo" string="Participants" />
                         </button>
-                        <button name="toggle_active" type="object" icon="fa-archive" class="oe_stat_button">
-                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}' />
-                        </button>
                     </div>
                     <div class="oe_title">
                         <span class="oe_edit_only">Name</span>
@@ -98,6 +96,7 @@
                             attrs="{'readonly': [('state', '!=', 'draft')]}"
                             options="{'no_create_edit': True, 'no_open': True}"
                             context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
+                        <field name="active" invisible="1"/>
                         <field name="model_name" invisible="1"/>
                         <field name="unique_field_id" options="{'no_create_edit': True, 'no_open': True}" groups="base.group_no_one" class="oe_inline"/>
                         <field name="domain" widget="domain" options="{'model': 'model_name'}"/>

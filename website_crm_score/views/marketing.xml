@@ -58,15 +58,13 @@
             <field name="arch" type="xml">
                 <form string="Scores">
                     <sheet>
+                        <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                         <div class="oe_button_box" name="button_box">
                             <button class="oe_stat_button" type="action"
                                 name="%(score_leads)d" icon="fa-tags"
                                 >
                                 <field string="Leads" name="leads_count" widget="statinfo"/>
                             </button>
-                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                                <field name="running" widget="boolean_button" options='{"terminology": "active"}'/>
-			                </button>
                         </div>
 
                         <div class="oe_title">
@@ -76,6 +74,7 @@
                         </div>
                         <group>
                             <field name="rule_type"/>
+                            <field name="active" invisible="1"/>
                             <field name="value" attrs="{'invisible':[('rule_type','!=','score')]}"/>
                             <field name="domain" widget="domain" options="{'model': 'crm.lead'}"/>
                             <field name="event_based"/>
@@ -142,7 +141,7 @@
                     <field name="value"/>
                     <field name="leads_count"/>
                     <field name="domain"/>
-                    <field name="running"/>
+                    <field name="active"/>
                 </tree>
             </field>
         </record>
@@ -208,10 +207,10 @@
             <field name="arch" type="xml">
                 <kanban quick_create="false" create="true">
                     <field name="user_id"/>
-                    <field name="running"/>
+                    <field name="active"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <t t-set="active" t-value="record.running.raw_value"/>
+                            <t t-set="active" t-value="record.active.raw_value"/>
                             <t t-set="button_state">
                                 <t t-if="active">o_assignation_button_active</t>
                                 <t t-if="!active">o_assignation_button_inactive</t>

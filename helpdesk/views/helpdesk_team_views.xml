@@ -66,17 +66,13 @@
         <field name="arch" type="xml">
             <form string="team search" class="oe_form_configuration">
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="toggle_active" type="object"
-                                confirm="(Un)archiving a helpdesk team automatically (un)archives its tickets. Do you want to proceed?"
-                                class="oe_stat_button" icon="fa-archive">
-                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                        </button>
-                    </div>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_button_box" name="button_box"/>
                     <div class="oe_title" id='title'>
                         <label for="name" class="oe_edit_only"/>
                         <h1 id="name"><field name="name" placeholder="Helpdesk Team..."/></h1>
                     </div>
+                    <field name="active" invisible="1"/>
                     <field name="description" placeholder="Description for customer portal"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                     <h2>Productivity</h2>

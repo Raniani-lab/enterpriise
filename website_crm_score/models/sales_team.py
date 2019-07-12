@@ -50,16 +50,11 @@ class team_user(models.Model):
     team_id = fields.Many2one('crm.team', string='Sales Team', required=True, oldname='section_id')
     user_id = fields.Many2one('res.users', string='Saleman', required=True)
     name = fields.Char(string="Name", related='user_id.partner_id.display_name', readonly=False)
-    running = fields.Boolean(string='Running', default=True)
+    active = fields.Boolean(string='Running', default=True, oldname="running")
     team_user_domain = fields.Char('Domain', tracking=True)
     maximum_user_leads = fields.Integer('Leads Per Month')
     leads_count = fields.Integer('Assigned Leads', compute='_count_leads', help='Assigned Leads this last month')
     percentage_leads = fields.Float(compute='_get_percentage', string='Percentage leads')
-
-    def toggle_active(self):
-        for rec in self:
-            if isinstance(rec.id, int):  # if already saved
-                rec.running = not rec.running
 
 
 class crm_team(models.Model):
@@ -234,7 +229,7 @@ class crm_team(models.Model):
 
         all_salesteams = self.search_read(fields=['score_team_domain'], domain=[('score_team_domain', '!=', False)])
 
-        all_team_users = self.env['team.user'].search([('running', '=', True)])
+        all_team_users = self.env['team.user'].search([])
 
         _logger.info('Starting assign_scores_to_leads')
 

@@ -16,7 +16,7 @@ class Users(models.Model):
         #  - As the below computed field `sale_team_id` isn't recomputed on
         #    installation as the column is already in the `res_users` table
         res = self._cr.execute("""
-            INSERT INTO team_user(user_id, team_id, running)
+            INSERT INTO team_user(user_id, team_id, active)
             SELECT id, sale_team_id, 't'
             FROM res_users u
             WHERE

@@ -75,7 +75,7 @@ class BpostRequest():
 
     def _parse_address(self, partner):
         if partner.street and partner.street2:
-            street = '%s %s' % (partner.street1, partner.street2)
+            street = '%s %s' % (partner.street, partner.street2)
         else:
             street = partner.street or partner.street2
         match = re.match(r'^(.*?)(\S*\d+\S*)?\s*$', street)

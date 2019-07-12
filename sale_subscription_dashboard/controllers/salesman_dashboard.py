@@ -155,7 +155,7 @@ class SalemanDashboard(http.Controller):
         ])
 
         for invoice_id in current_invoice_ids:
-            invoice_nrr = sum([x.price_subtotal_signed for x in invoice_id.invoice_line_ids if x.subscription_mrr == 0])
+            invoice_nrr = sum([x.price_subtotal for x in invoice_id.invoice_line_ids if x.subscription_mrr == 0])
             if invoice_nrr > 0:
                 total_nrr += invoice_nrr
                 invoice_line = invoice_id.invoice_line_ids[0]

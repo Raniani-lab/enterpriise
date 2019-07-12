@@ -3933,13 +3933,13 @@ QUnit.module('ViewEditorManager', {
                         node: {
                             tag: 'field',
                             attrs: {name: 'coucou_id'},
-                            subview_xpath: "//field[@name='product_ids']//tree",
+                            subview_xpath: "//field[@name='product_ids']/tree",
                         },
                         position: 'before',
                         target: {
                             tag: 'field',
                             attrs: {name: 'm2o'},
-                            subview_xpath: "//field[@name='product_ids']//tree",
+                            subview_xpath: "//field[@name='product_ids']/tree",
                         },
                         type: 'move',
                     }, "the move operation should be correct");

@@ -57,7 +57,7 @@ class HrEmployee(models.Model):
 
         for employee, contracts in mapped_data.items():
             # Approved leaves
-            emp_leaves = employee.resource_calendar_id.leave_ids.filtered(
+            emp_leaves = employee.resource_calendar_id.sudo().leave_ids.filtered(
                 lambda r:
                     r.resource_id == employee.resource_id and
                     r.date_from <= date_stop and

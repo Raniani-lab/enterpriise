@@ -81,8 +81,8 @@ class TestSubscription(TestSubscriptionCommon):
 
     # Mocking for 'test_auto_payment_with_token'
     # Avoid account_id is False when creating the invoice
-    def _mock_prepare_invoice_line(self, line, fiscal_position):
-        line_values = self.original_prepare_invoice_line(line, fiscal_position)
+    def _mock_prepare_invoice_line(self, line, fiscal_position, date_start=False, date_stop=False):
+        line_values = self.original_prepare_invoice_line(line, fiscal_position, date_start, date_stop)
         return line_values
 
     def test_04_auto_payment_with_token(self):

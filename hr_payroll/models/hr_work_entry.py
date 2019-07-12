@@ -20,7 +20,7 @@ class HrWorkEnrty(models.Model):
     active = fields.Boolean(default=True)
     employee_id = fields.Many2one('hr.employee', required=True, domain=[('contract_ids.state', 'in', ('open', 'pending'))])
     date_start = fields.Datetime(required=True, string='From')
-    date_stop = fields.Datetime(string='To')
+    date_stop = fields.Datetime(required=True, string='To')
     duration = fields.Float(compute='_compute_duration', inverse='_inverse_duration', store=True, string="Period")
     contract_id = fields.Many2one('hr.contract', string="Contract", required=True)
     work_entry_type_id = fields.Many2one('hr.work.entry.type')

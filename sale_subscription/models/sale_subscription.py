@@ -516,7 +516,7 @@ class SaleSubscription(models.Model):
         # Return the next day after adding interval
         return recurring_next_date
 
-    def _prepare_invoice_line(self, line, fiscal_position):
+    def _prepare_invoice_line(self, line, fiscal_position, date_start=False, date_stop=False):
         return {
             'name': line.name,
             'subscription_id': line.analytic_account_id.id,
@@ -527,12 +527,16 @@ class SaleSubscription(models.Model):
             'product_id': line.product_id.id,
             'tax_ids': [(6, 0, line.product_id.taxes_id.filtered(lambda t: t.company_id == line.analytic_account_id.company_id).ids)],
             'analytic_account_id': line.analytic_account_id.analytic_account_id.id,
-            'analytic_tag_ids': [(6, 0, line.analytic_account_id.tag_ids.ids)]
+            'subscription_start_date': date_start,
+            'subscription_end_date': date_stop,
         }
 
     def _prepare_invoice_lines(self, fiscal_position):
         self.ensure_one()
-        return [(0, 0, self._prepare_invoice_line(line, None)) for line in self.recurring_invoice_line_ids]
+        revenue_date_start = self.recurring_next_date
+        periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
+        revenue_date_stop = revenue_date_start + relativedelta(**{periods[self.recurring_rule_type]: self.recurring_interval}) - relativedelta(days=1)
+        return [(0, 0, self._prepare_invoice_line(line, fiscal_position, revenue_date_start, revenue_date_stop)) for line in self.recurring_invoice_line_ids]
 
     def _prepare_invoice(self):
         invoice = self._prepare_invoice_data()

@@ -272,5 +272,5 @@ class WebStudioReportController(main.WebStudioController):
             # operation was incorrect
             return [{
                 "error": err,
-                "message": err.message,
+                "message": str(err),
             }]

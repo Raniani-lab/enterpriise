@@ -18,7 +18,7 @@ var FollowupFormRenderer = FormRenderer.extend({
         'change *[name="blocked"]': '_onChangeBlocked',
         'click .o_change_expected_date': '_onChangeExpectedDate',
         'click .o_change_trust': '_onChangeTrust',
-        'click .o_account_reports_summary': '_onEditSummary',
+        'click .o_account_reports_no_print .o_account_reports_summary': '_onEditSummary',
         'click .js_account_report_save_summary': '_onSaveSummary',
         'click [action]': '_onTriggerAction',
         'click .o_account_reports_contact_info_call': '_onClickCall',
@@ -71,7 +71,7 @@ var FollowupFormRenderer = FormRenderer.extend({
     renderEditSummary: function () {
         dom.autoresize(this.$('textarea[name="summary"]'));
         this.$('.o_account_reports_summary_edit').show();
-        this.$('.o_account_reports_summary').hide();
+        this.$('.o_account_reports_no_print .o_account_reports_summary').hide();
         this.$('textarea[name="summary"]').focus();
     },
     /**
@@ -97,11 +97,11 @@ var FollowupFormRenderer = FormRenderer.extend({
      */
     renderSavedSummary: function (text) {
         this.$('.o_account_reports_summary_edit').hide();
-        this.$('.o_account_reports_summary').show();
+        this.$('.o_account_reports_no_print .o_account_reports_summary').show();
         if (!text) {
             text = "<input type='text' class='o_input o_field_widget' name='summary' />";
         }
-        this.$('.o_account_report_summary').html('<span>'+text+'</span');
+        this.$('.o_account_reports_no_print .o_account_report_summary').html('<span>'+text+'</span');
     },
     /**
      * Render the bullet next to the name of customer according to the trust.

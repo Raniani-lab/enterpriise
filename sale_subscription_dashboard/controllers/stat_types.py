@@ -64,7 +64,7 @@ def _build_sql_query(fields, tables, conditions, query_args, filters, groupby=No
 
 
 def compute_net_revenue(start_date, end_date, filters):
-    fields = ['SUM(account_move_line.price_subtotal_signed)']
+    fields = ['SUM(account_move_line.price_subtotal)']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "account_move.invoice_date BETWEEN %(start_date)s AND %(end_date)s",
@@ -114,7 +114,7 @@ def compute_ltv(start_date, end_date, filters):
 
 
 def compute_nrr(start_date, end_date, filters):
-    fields = ['SUM(account_move_line.price_subtotal_signed)']
+    fields = ['SUM(account_move_line.price_subtotal)']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "(account_move.invoice_date BETWEEN %(start_date)s AND %(end_date)s)",

@@ -326,13 +326,6 @@ class FedexRequest():
     def commodities(self, commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
                     commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
                     commodity_quantity_units, commodity_harmonized_code):
-        return self._commodities(commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
-                        commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
-                        commodity_quantity_units, '')
-
-    def _commodities(self, commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
-                    commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
-                    commodity_quantity_units, commodity_harmonized_code):
         self.hasCommodities = True
         commodity = self.factory.Commodity()
         commodity.UnitPrice = self.factory.Money()

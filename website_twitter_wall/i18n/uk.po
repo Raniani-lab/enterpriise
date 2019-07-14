@@ -28,7 +28,7 @@ msgstr "(Роз)архівування стіни. Ви хочете продо�
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<b>Hey! No wall found</b>"
-msgstr "<b>Агов! Не знайдено жодної стіни</b>"
+msgstr "<b>Агов! Не знайдено жодної сторінки</b>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
@@ -38,7 +38,7 @@ msgstr "<i class=\"fa fa-plus-circle\"/> Створити зараз"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "<i class=\"fa fa-twitter\"/> <strong> Join the wall</strong>"
-msgstr "<i class=\"fa fa-twitter\"/> <strong> Вподобайте стіну</strong>"
+msgstr "<i class=\"fa fa-twitter\"/> <strong> Вподобайте сторінку</strong>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -366,4 +366,4 @@ msgstr "URL веб-сайту"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Your wall name"
-msgstr "Назва вашої стіни"
+msgstr "Назва вашої сторінки"

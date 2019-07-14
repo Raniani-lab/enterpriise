@@ -1630,6 +1630,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Status basert på aktiviteter\n"
+"Utgått: Fristen er allerede passert\n"
+"I dag: Aktiviteten skal gjøres i dag\n"
+"Planlagt: Fremtidige aktiviteter."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject

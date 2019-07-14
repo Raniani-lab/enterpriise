@@ -16,6 +16,7 @@
 # Johannes Croe <jcr@odoo.com>, 2019
 # Joshua Streitz <joshua.streitz@streitzgroup.com>, 2019
 # Chris Egal <sodaswed@web.de>, 2019
+# Leon Grill <leg@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -23,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
+"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +50,7 @@ msgstr "Konfiguration "
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__display_qr_code
 msgid "Display Qr Code"
-msgstr ""
+msgstr "Qr-Code anzeigen"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_orgid_issr
@@ -142,7 +143,7 @@ msgstr "Bitte beachten Sie, dass die folgenden Warnungen ausgegeben wurden:"
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__qr_code_url
 msgid "Qr Code Url"
-msgstr ""
+msgstr "Qr-Code Url"
 
 #. module: account_sepa
 #: model:account.payment.method,name:account_sepa.account_payment_method_sepa_ct
@@ -182,7 +183,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_payment.py:27
 #, python-format
 msgid "Scan me with your banking app."
-msgstr ""
+msgstr "Scannen Sie mich mit Ihrer Banking-App."
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
@@ -217,7 +218,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_payment.py:38
 #, python-format
 msgid "The SEPA QR Code information is not set correctly."
-msgstr ""
+msgstr "Die Informationen zum SEPA-QR-Code sind nicht korrekt eingestellt."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:354

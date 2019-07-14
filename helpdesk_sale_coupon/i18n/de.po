@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
+# Leon Grill <leg@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-06-12 12:36+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,7 +45,7 @@ msgstr "Kupons"
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_ticket__coupons_count
 msgid "Coupons Count"
-msgstr ""
+msgstr "Anzahl der Coupons"
 
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_sale_coupon_generate__create_uid
@@ -70,7 +71,7 @@ msgstr "Erzeugen"
 #: model:ir.actions.act_window,name:helpdesk_sale_coupon.helpdesk_sale_coupon_generate_action
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_coupon.helpdesk_sale_coupon_generate_view_form
 msgid "Generate a Coupon"
-msgstr ""
+msgstr "Einen Coupon generieren"
 
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_ticket__coupon_ids
@@ -105,7 +106,7 @@ msgstr "Zuletzt aktualisiert am"
 #. module: helpdesk_sale_coupon
 #: model:ir.model,name:helpdesk_sale_coupon.model_helpdesk_sale_coupon_generate
 msgid "Sales Coupon Generate from Helpdesk"
-msgstr ""
+msgstr "Verkaufscoupon aus dem Helpdesk generieren"
 
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_sale_coupon_generate__ticket_id

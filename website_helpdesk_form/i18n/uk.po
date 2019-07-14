@@ -86,7 +86,7 @@ msgstr "URL-адреса для надсилання помилки"
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Email"
-msgstr "Ваш ел. пошта"
+msgstr "Ваша ел. пошта"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit

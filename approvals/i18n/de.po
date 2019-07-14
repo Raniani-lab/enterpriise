@@ -74,7 +74,7 @@ msgstr "Zusätzliche Elemente, die auf der Anfrage angegeben werden sollten."
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_all

@@ -33,7 +33,7 @@ msgstr ""
 #. module: helpdesk_stock
 #: model:ir.model.fields,help:helpdesk_stock.field_helpdesk_ticket__tracking
 msgid "Ensure the traceability of a storable product in your warehouse."
-msgstr ""
+msgstr "A raktárban tárolható termékek nyomon követésének biztosítása."
 
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_helpdesk_ticket

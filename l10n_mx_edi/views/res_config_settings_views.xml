@@ -7,6 +7,23 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@id='invoicing_settings']" position="after">
                 <h2>Electronic invoicing (MX)</h2>
+                <div class="row mt16 o_settings_container" id="l10n_mx_edi_fields">
+                    <div class="col-12 col-lg-6 o_setting_box" title="Fields required to configure the MX CFDI.">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Fiscal Regime</span>
+                            <div class="text-muted">
+                                Configure your SAT fiscal regime.
+                            </div>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <field name="l10n_mx_edi_fiscal_regime"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row mt16 o_settings_container" id="l10n_mx_edi_settings">
                     <div class="col-12 col-lg-6 o_setting_box" title="The parameters to configure the MX PAC.">
                         <div class="o_setting_left_pane"/>

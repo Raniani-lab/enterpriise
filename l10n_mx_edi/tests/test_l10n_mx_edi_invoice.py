@@ -39,12 +39,12 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         self.company.write({
             'currency_id': self.mxn.id,
             'name': 'YourCompany',
+            'l10n_mx_edi_fiscal_regime': '601',
         })
         self.company.partner_id.write({
             'vat': 'TCM970625MB1',
             'country_id': self.env.ref('base.mx').id,
             'zip': '37200',
-            'property_account_position_id': self.fiscal_position.id,
         })
         certificate = self.env['l10n_mx_edi.certificate'].create({
             'content': base64.encodestring(self.cert),
@@ -300,7 +300,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
     def test_l10n_mx_edi_payment(self):
         journal = self.env['account.journal'].search(
             [('type', '=', 'bank')], limit=1)
-        self.company.partner_id.property_account_position_id = self.fiscal_position.id
+        self.company.l10n_mx_edi_fiscal_regime = '601'
         invoice = self.create_invoice()
         invoice.move_name = 'INV/2017/999'
         today = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()

@@ -61,12 +61,3 @@ class ResPartner(models.Model):
     @api.onchange('l10n_mx_edi_locality_id')
     def _onchange_l10n_mx_edi_locality_id(self):
         self.l10n_mx_edi_locality = self.l10n_mx_edi_locality_id.name
-
-
-class AccountFiscalPosition(models.Model):
-    _inherit = 'account.fiscal.position'
-
-    l10n_mx_edi_code = fields.Char(
-        'Code', help='Code defined to this position. If this record will be '
-        'used as fiscal regime to CFDI, here must be assigned the code '
-        'defined to this fiscal regime in the SAT catalog')

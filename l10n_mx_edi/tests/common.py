@@ -49,11 +49,7 @@ class InvoiceTransactionCase(AccountingTestCase):
         self.payment_term = self.env.ref('account.account_payment_term_net')
         # force PPD
         self.payment_term.line_ids.days = 90
-        self.fiscal_position_model = self.env['account.fiscal.position']
-        self.fiscal_position = self.fiscal_position_model.create({
-            'name': 'Personas morales del régimen general',
-            'l10n_mx_edi_code': '601',
-        })
+        self.company.l10n_mx_edi_fiscal_regime = '601'
         self.payment_method_cash = self.env.ref(
             'l10n_mx_edi.payment_method_efectivo')
         self.account_payment = self.env['res.partner.bank'].create({

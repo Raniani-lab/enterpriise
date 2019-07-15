@@ -425,7 +425,7 @@ class AccountPayment(models.Model):
             'record': self,
             'supplier': self.company_id.partner_id.commercial_partner_id,
             'customer': self.partner_id.commercial_partner_id,
-            'fiscal_position': self.company_id.partner_id.property_account_position_id,
+            'fiscal_regime': self.company_id.l10n_mx_edi_fiscal_regime,
             'invoice': invoice_obj,
         }
 

@@ -806,7 +806,7 @@ class AccountMove(models.Model):
             'supplier': self.company_id.partner_id.commercial_partner_id,
             'issued': self.journal_id.l10n_mx_address_issued_id,
             'customer': partner_id,
-            'fiscal_position': self.company_id.partner_id.property_account_position_id,
+            'fiscal_regime': self.company_id.l10n_mx_edi_fiscal_regime,
             'payment_method': self.l10n_mx_edi_payment_method_id.code,
             'use_cfdi': self.l10n_mx_edi_usage,
             'conditions': self._get_string_cfdi(

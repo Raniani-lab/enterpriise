@@ -31,7 +31,7 @@
             <cfdi:Emisor
                 t-att-Rfc="supplier.vat"
                 t-att-Nombre="invoice._get_string_cfdi(supplier.name, 254)"
-                t-att-RegimenFiscal="fiscal_position.l10n_mx_edi_code"/>
+                t-att-RegimenFiscal="fiscal_regime"/>
             <cfdi:Receptor
                 t-att-Rfc="customer.l10n_mx_edi_get_customer_rfc()"
                 t-att-Nombre="invoice._get_string_cfdi(customer.commercial_partner_id.name, 254)"

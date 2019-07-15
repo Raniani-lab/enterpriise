@@ -24,3 +24,8 @@ class ResConfigSettings(models.TransientModel):
     l10n_mx_edi_num_exporter = fields.Char(
         related='company_id.l10n_mx_edi_num_exporter', readonly=False,
         string='Number of Reliable Exporter')
+    l10n_mx_edi_fiscal_regime = fields.Selection(
+        related='company_id.l10n_mx_edi_fiscal_regime', readonly=False,
+        string="Fiscal Regime",
+        help="It is used to fill Mexican XML CFDI required field "
+        "Comprobante.Emisor.RegimenFiscal.")

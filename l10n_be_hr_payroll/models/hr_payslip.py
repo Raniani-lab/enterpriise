@@ -288,9 +288,11 @@ def compute_ip(payslip, categories, worked_days, inputs):
 def compute_ip_deduction(payslip, categories, worked_days, inputs):
     tax_rate = 0.15
     ip_amount = compute_ip(payslip, categories, worked_days, inputs)
-    if 0.0 <= ip_amount <= 15660:
+    ip_deduction_bracket_1 = payslip.rule_parameter('ip_deduction_bracket_1')
+    ip_deduction_bracket_2 = payslip.rule_parameter('ip_deduction_bracket_2')
+    if 0.0 <= ip_amount <= ip_deduction_bracket_1:
         tax_rate = tax_rate / 2.0
-    elif 15660.0 < ip_amount <= 31320:
+    elif ip_deduction_bracket_1 < ip_amount <= ip_deduction_bracket_2:
         tax_rate = tax_rate * 3.0 / 4.0
     return - min(ip_amount * tax_rate, 11745)
 

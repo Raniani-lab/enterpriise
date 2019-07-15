@@ -123,8 +123,8 @@ class TestExamples(common.SavepointCase):
         error = False
         result = ""
         for code, value in line_values.items():
-            payslip_value = payslip_id.get_salary_line_total(code)
-            if payslip_id.get_salary_line_total(code) != value:
+            payslip_value = payslip_id._get_salary_line_total(code)
+            if payslip_id._get_salary_line_total(code) != value:
                 error = True
                 result += "Code: %s, Expected: %s, Reality: %s\n" % (code, value, payslip_value)
         self.assertEqual(error, False, 'The payslip values are incorrect for the following codes:\n' + result)

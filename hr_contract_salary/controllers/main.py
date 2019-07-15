@@ -422,33 +422,33 @@ class website_hr_contract_salary(http.Controller):
     def get_compute_results(self, new_contract, payslip):
         result = {}
         result.update({
-            'BASIC': round(payslip.get_salary_line_total('BASIC'), 2),
-            'SALARY': round(payslip.get_salary_line_total('SALARY'), 2),
-            'ONSS': round(payslip.get_salary_line_total('ONSS'), 2),
-            'EMP.BONUS': round(payslip.get_salary_line_total('EmpBonus.1'), 2) or round(payslip.get_salary_line_total('EmpBonus.2'), 2),
-            'GROSS': round(payslip.get_salary_line_total('GROSS'), 2),
-            'REP.FEES': round(payslip.get_salary_line_total('REP.FEES'), 2),
-            'P.P': round(payslip.get_salary_line_total('P.P'), 2),
-            'M.ONSS': round(payslip.get_salary_line_total('M.ONSS'), 2),
-            'MEAL_V_EMP': round(payslip.get_salary_line_total('MEAL_V_EMP'), 2),
-            'ATN.CAR.2': round(payslip.get_salary_line_total('ATN.CAR.2'), 2),
-            'CAR.PRIV': round(payslip.get_salary_line_total('CAR.PRIV'), 2),
-            'ATN.INT.2': round(payslip.get_salary_line_total('ATN.INT.2'), 2),
-            'ATN.MOB.2': round(payslip.get_salary_line_total('ATN.MOB.2'), 2),
-            'NET': round(payslip.get_salary_line_total('NET'), 2),
+            'BASIC': round(payslip._get_salary_line_total('BASIC'), 2),
+            'SALARY': round(payslip._get_salary_line_total('SALARY'), 2),
+            'ONSS': round(payslip._get_salary_line_total('ONSS'), 2),
+            'EMP.BONUS': round(payslip._get_salary_line_total('EmpBonus.1'), 2) or round(payslip._get_salary_line_total('EmpBonus.2'), 2),
+            'GROSS': round(payslip._get_salary_line_total('GROSS'), 2),
+            'REP.FEES': round(payslip._get_salary_line_total('REP.FEES'), 2),
+            'P.P': round(payslip._get_salary_line_total('P.P'), 2),
+            'M.ONSS': round(payslip._get_salary_line_total('M.ONSS'), 2),
+            'MEAL_V_EMP': round(payslip._get_salary_line_total('MEAL_V_EMP'), 2),
+            'ATN.CAR.2': round(payslip._get_salary_line_total('ATN.CAR.2'), 2),
+            'CAR.PRIV': round(payslip._get_salary_line_total('CAR.PRIV'), 2),
+            'ATN.INT.2': round(payslip._get_salary_line_total('ATN.INT.2'), 2),
+            'ATN.MOB.2': round(payslip._get_salary_line_total('ATN.MOB.2'), 2),
+            'NET': round(payslip._get_salary_line_total('NET'), 2),
             'wage_with_holidays': round(new_contract.wage_with_holidays, 2),
             'wage': round(new_contract.wage, 2),
             'company_car_total_depreciated_cost': round(new_contract.company_car_total_depreciated_cost, 2),
             'thirteen_month': round(new_contract.wage_with_holidays, 2),
             'double_holidays': round(new_contract.wage_with_holidays * 0.92, 2),
-            'IP': round(payslip.get_salary_line_total('IP'), 2),
-            'IP.DED': round(payslip.get_salary_line_total('IP.DED'), 2),
+            'IP': round(payslip._get_salary_line_total('IP'), 2),
+            'IP.DED': round(payslip._get_salary_line_total('IP.DED'), 2),
             'TAXED': round(
-                payslip.get_salary_line_total('NET') -
-                payslip.get_salary_line_total('IP') -
-                payslip.get_salary_line_total('IP.DED') -
-                payslip.get_salary_line_total('REP.FEES') -
-                payslip.get_salary_line_total('CAR.PRIV'), 2
+                payslip._get_salary_line_total('NET') -
+                payslip._get_salary_line_total('IP') -
+                payslip._get_salary_line_total('IP.DED') -
+                payslip._get_salary_line_total('REP.FEES') -
+                payslip._get_salary_line_total('CAR.PRIV'), 2
             )
         })
 
@@ -460,13 +460,13 @@ class website_hr_contract_salary(http.Controller):
         elif new_contract.transport_mode_car:
             transport_advantage += new_contract.company_car_total_depreciated_cost
 
-        thirteen_month_net = payslip.get_salary_line_total('NET')
-        double_holidays_net = payslip.get_salary_line_total('NET') * 0.92
+        thirteen_month_net = payslip._get_salary_line_total('NET')
+        double_holidays_net = payslip._get_salary_line_total('NET') * 0.92
 
         monthly_nature = round(transport_advantage + new_contract.internet + new_contract.mobile, 2)
         monthly_cash = round(new_contract.warrant_value_employee / 12.0 + new_contract.meal_voucher_amount * 20.0 + new_contract.fuel_card, 2)
         yearly_cash = round(new_contract.eco_checks + thirteen_month_net + double_holidays_net, 2)
-        monthly_total = round(monthly_nature + monthly_cash + yearly_cash / 12.0 + payslip.get_salary_line_total('NET') - new_contract.representation_fees, 2)
+        monthly_total = round(monthly_nature + monthly_cash + yearly_cash / 12.0 + payslip._get_salary_line_total('NET') - new_contract.representation_fees, 2)
 
         result.update({
             'monthly_nature': monthly_nature,

@@ -60,6 +60,16 @@
             menu="False"
         />
 
+        <report
+            id="action_report_employee_281_45"
+            model="hr.employee"
+            string="281.45 PDF"
+            report_type="qweb-pdf"
+            name="l10n_be_hr_payroll.report_281_45"
+            file="l10n_be_hr_payroll.report_281_45"
+            menu="False"
+        />
+
         <record id="action_report_individual_account" model="ir.actions.report">
             <field name="paperformat_id" ref="l10n_be_hr_payroll.paperformat_individual_account"/>
             <field name="binding_model_id" eval="False"/>

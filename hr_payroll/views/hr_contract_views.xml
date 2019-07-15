@@ -9,7 +9,8 @@
             <xpath expr="//field[@name='job_id']" position="before">
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="structure_type_id" required="1"/>
+                <field name="company_country_id" invisible="1"/>
+                <field name="structure_type_id" required="1" domain="['|', ('country_id', '=', False), ('country_id', '=', company_country_id)]"/>
             </xpath>
             <xpath expr="//page[@name='information']" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>

@@ -33,27 +33,28 @@ class ReportL10nNLIntrastat(models.AbstractModel):
 
         query = """
             SELECT l.partner_id, p.name, p.vat, c.code,
-                   ROUND(SUM(CASE WHEN tt.account_account_tag_id = %(product_tag)s THEN l.credit - l.debit ELSE 0 END)) as amount_product,
-                   ROUND(SUM(CASE WHEN tt.account_account_tag_id = %(service_tag)s THEN l.credit - l.debit ELSE 0 END)) as amount_service
+                   ROUND(SUM(CASE WHEN product_t.type != 'service' THEN l.credit - l.debit ELSE 0 END)) as amount_product,
+                   ROUND(SUM(CASE WHEN product_t.type = 'service' THEN l.credit - l.debit ELSE 0 END)) as amount_service
             FROM account_move_line l
             LEFT JOIN res_partner p ON l.partner_id = p.id AND p.customer = true
             LEFT JOIN res_country c ON p.country_id = c.id
             LEFT JOIN account_move_line_account_tax_rel amlt ON l.id = amlt.account_move_line_id
-            LEFT JOIN account_tax_account_tag tt on amlt.account_tax_id = tt.account_tax_id
-            WHERE tt.account_account_tag_id IN (%(product_tag)s, %(service_tag)s)
+            LEFT JOIN account_account_tag_account_move_line_rel line_tag on line_tag.account_move_line_id = l.id
+            LEFT JOIN product_product product on product.id = l.product_id
+            LEFT JOIN product_template product_t on product.product_tmpl_id = product_t.id
+            WHERE line_tag.account_account_tag_id IN %(product_service_tags)s
             AND c.id IN %(country_ids)s
             AND l.date >= %(date_from)s
             AND l.date <= %(date_to)s
             AND l.company_id IN %(company_ids)s
             GROUP BY l.partner_id, p.name, p.vat, c.code
-            HAVING ROUND(SUM(CASE WHEN tt.account_account_tag_id = %(product_tag)s THEN l.credit - l.debit ELSE 0 END)) != 0
-            OR ROUND(SUM(CASE WHEN tt.account_account_tag_id = %(service_tag)s THEN l.credit - l.debit ELSE 0 END)) != 0
+            HAVING ROUND(SUM(CASE WHEN product_t.type != 'service' THEN l.credit - l.debit ELSE 0 END)) != 0
+            OR ROUND(SUM(CASE WHEN product_t.type = 'service' THEN l.credit - l.debit ELSE 0 END)) != 0
             ORDER BY p.name
         """
 
         params = {
-            'product_tag': self.env.ref('l10n_nl.tag_nl_40').id,
-            'service_tag': self.env.ref('l10n_nl.tag_nl_41').id,
+            'product_service_tags': tuple(self.env.ref('l10n_nl.tax_report_rub_3b').tag_ids.ids),
             'country_ids': tuple(country_ids),
             'date_from': self._context['date_from'],
             'date_to': self._context['date_to'],

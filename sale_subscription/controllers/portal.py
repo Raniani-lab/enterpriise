@@ -176,7 +176,6 @@ class sale_subscription(http.Controller):
         if payment_token:
             invoice_values = account.sudo()._prepare_invoice()
             new_invoice = invoice_res.sudo().create(invoice_values)
-            new_invoice.compute_taxes()
             tx = account.sudo()._do_payment(payment_token, new_invoice)[0]
             if tx.html_3ds:
                 return tx.html_3ds

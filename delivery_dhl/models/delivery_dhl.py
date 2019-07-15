@@ -3,7 +3,7 @@
 from .dhl_request import DHLProvider
 
 from odoo import models, fields, _
-
+from odoo.tools import float_repr
 
 class Providerdhl(models.Model):
     _inherit = 'delivery.carrier'
@@ -247,6 +247,7 @@ class Providerdhl(models.Model):
     def _dhl_convert_weight(self, weight, unit):
         weight_uom_id = self.env['product.template']._get_weight_uom_id_from_ir_config_parameter()
         if unit == 'L':
-            return weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_lb'), round=False)
+            weight = weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_lb'), round=False)
         else:
-            return weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_kgm'), round=False)
+            weight = weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_kgm'), round=False)
+        return float_repr(weight, 3)

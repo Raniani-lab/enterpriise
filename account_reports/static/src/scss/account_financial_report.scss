@@ -38,9 +38,6 @@
     .o_account_reports_table {
         white-space: nowrap;
         margin-bottom: 128px;
-        tbody tr:not(.o_account_reports_level0):hover {
-            background-color: #f0f0f0;
-        }
         th.o_account_report_column_header {
             &.sortable::before {
                 content: '\f07d';
@@ -164,7 +161,7 @@
     div.o_account_reports_saved_summary {
         padding-left: 5px;
     }
-    div.o_account_reports_summary, .o_account_reports_web_action, .o_change_trust,
+    .o_account_reports_web_action, .o_change_trust,
     span.o_account_reports_web_action, div.o_account_reports_saved_summary span,
     td.o_account_reports_unfoldable, td.o_account_reports_foldable, span.partner_id, span.move_line_id, input[type=checkbox] {
         cursor: pointer;
@@ -421,8 +418,14 @@
 
 .o_form_view {
     .o_account_reports_no_print {
+        div.o_account_reports_summary {
+            cursor: pointer;
+        }
         .o_account_reports_table {
             margin-bottom: 0px;
+            tbody tr:not(.o_account_reports_level0):hover {
+                background-color: #f0f0f0;
+            }
         }
     }
 }

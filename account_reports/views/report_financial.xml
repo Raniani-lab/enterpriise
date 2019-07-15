@@ -193,18 +193,26 @@
                             </span>
                     </t>
                     <t t-if="line.get('caret_options')">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href='#'>
-                                <span t-att-data-id="line['id']" t-att-class="domainClass" t-att-title="line.get('title_hover')">
-                                    <t t-esc="line.get('name')"/>
-                                </span>
-                            </a>
-                            <span class="js_account_report_line_footnote" t-att-data-id="line['id']"><sup t-if="line.get('footnote')"><b class="o_account_reports_footnote_sup"><a t-att-href="'#footnote'+line['footnote']"></a><t t-esc="line['footnote']"/></b></sup></span>
-                            <div class="dropdown-menu o_account_reports_domain_dropdown" role="menu">
-                                <t t-call="account_reports.line_caret_options"/>
-                                <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" class="dropdown-item js_account_reports_add_footnote">Annotate</a>
+                        <t t-if="not context.get('print_mode')">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href='#'>
+                                    <span t-att-data-id="line['id']" t-att-class="domainClass" t-att-title="line.get('title_hover')">
+                                        <t t-esc="line.get('name')"/>
+                                    </span>
+                                </a>
+                                <span class="js_account_report_line_footnote" t-att-data-id="line['id']"><sup t-if="line.get('footnote')"><b class="o_account_reports_footnote_sup"><a t-att-href="'#footnote'+line['footnote']"></a><t t-esc="line['footnote']"/></b></sup></span>
+                                <div class="dropdown-menu o_account_reports_domain_dropdown" role="menu">
+                                    <t t-call="account_reports.line_caret_options"/>
+                                    <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" class="dropdown-item js_account_reports_add_footnote">Annotate</a>
+                                </div>
                             </div>
-                        </div>
+                        </t>
+                        <t t-else="">
+                            <span t-att-data-id="line['id']" t-att-class="domainClass" t-att-title="line.get('title_hover')">
+                                <t t-esc="line.get('name')"/>
+                            </span>
+                            <span class="js_account_report_line_footnote" t-att-data-id="line['id']"><sup t-if="line.get('footnote')"><b class="o_account_reports_footnote_sup"><a t-att-href="'#footnote'+line['footnote']"></a><t t-esc="line['footnote']"/></b></sup></span>
+                        </t>
                     </t>
             </td>
             <t t-set="column_index" t-value="0"/>

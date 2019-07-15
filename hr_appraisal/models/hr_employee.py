@@ -106,7 +106,7 @@ class HrEmployee(models.Model):
         months = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_max_period'))
 
         # Set periodic_appraisal_created for the next appraisal if the date is passed:
-        for employee in self.search([('appraisal_date', '<=', current_date - relativedelta(months=months))]):
+        for employee in self.search([('appraisal_date', '<', current_date - relativedelta(months=months))]):
             employee.write({
                 'periodic_appraisal_created': False
             })

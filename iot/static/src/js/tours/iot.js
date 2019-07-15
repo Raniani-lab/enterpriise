@@ -1,4 +1,4 @@
-odoo.define('iot.tour', function(require) {
+odoo.define('iot.tour', function (require) {
 'use strict';
 
 var core = require('web.core');

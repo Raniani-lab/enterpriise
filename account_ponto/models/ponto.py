@@ -229,25 +229,25 @@ class OnlineAccount(models.Model):
         # Transactions are paginated so we need to loop to ensure we have every transactions, we keep
         # in memory the id of the last transaction fetched in order to start over from there.
         url = url + '/transactions'
-        first_sync = True
         last_sync = self.last_sync or fields.Datetime.now() - datetime.timedelta(days=15)
-        if self.ponto_last_synchronization_identifier:
-            url += '?after=' + self.ponto_last_synchronization_identifier
-            first_sync = False
-        last_transaction = self.ponto_last_synchronization_identifier
+        first_transaction = False
         while True:
             resp_json = self.account_online_provider_id._ponto_fetch('GET', url, {}, {})
+            # 'next' point to transactions that are in the past compared to current transactions
             url = resp_json.get('links', {}).get('next', False)
             for transaction in resp_json.get('data', []):
-                last_transaction = transaction.get('id')
                 tr_date = fields.Date.from_string(transaction.get('attributes', {}).get('valueDate'))
-                # If we are synchronizing for the first time, ignore transactions older than specified last_sync date.
-                if first_sync and tr_date < last_sync:
-                    continue
+                if transaction.get('id') == self.ponto_last_synchronization_identifier or tr_date < last_sync:
+                    # Stop fetching transactions as we have reached last sync point or
+                    # stop because transactions are older than specified last_sync date.
+                    url = False
+                    break
+                if not first_transaction:
+                    first_transaction = transaction.get('id')
                 trans = {
                     'online_identifier': transaction.get('id'),
                     'date': fields.Date.from_string(transaction.get('attributes', {}).get('valueDate')),
-                    'name': transaction.get('attributes', {}).get('remittanceInformation', '/'),
+                    'name': transaction.get('attributes', {}).get('remittanceInformation') or '/',
                     'amount': transaction.get('attributes', {}).get('amount'),
                     'account_number': transaction.get('attributes', {}).get('counterpartReference'),
                     'end_amount': end_amount
@@ -257,7 +257,9 @@ class OnlineAccount(models.Model):
                     trans['partner_id'] = self._find_partner([('online_partner_vendor_name', '=', transaction['attributes']['counterpartName'])])
                 transactions.append(trans)
             if not url or not transaction:
-                self.ponto_last_synchronization_identifier = last_transaction
+                if first_transaction:
+                    self.ponto_last_synchronization_identifier = first_transaction
+                # Exit loop
                 break
         # Create the bank statement with the transactions
         return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0])

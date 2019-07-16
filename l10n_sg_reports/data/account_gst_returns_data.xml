@@ -3,7 +3,6 @@
     <data>
         <record id="account_financial_report_l10n_sg_gst_returns" model="account.financial.html.report">
             <field name="name">GST Return (F5)</field>
-            <field name="report_type">date_range</field>
             <field name="tax_report" eval="1"/>
             <field name='parent_id' ref='l10n_sg.account_reports_sg_statements_menu'/>
         </record>

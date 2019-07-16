@@ -21,10 +21,6 @@ tour.register('iot_token_tour', {
     content: _t('Copy token to the clipboard.'),
     position: 'right'
 }, {
-    trigger: '.o_iot_detect_button',
-    content: _t('Scan Network.'),
-    position: 'right'
-}, {
     trigger: '.add_scan_range',
     content: _t('Add range to scan.'),
     position: 'right',
@@ -44,10 +40,6 @@ tour.register('iot_token_tour', {
         $("input[name='add_scan_range_ip']").val('10.30.10.');
         actions.auto(".add_scan_range");
     },
-}, {
-    trigger: '.o_iot_detect_button',
-    content: _t('Scan Network.'),
-    position: 'right'
 }]);
 
 });

@@ -18,7 +18,6 @@ This module allows you to:
 """,
     'data': [
         'views/website_crm_score.xml',
-        'views/reporting.xml',
         'views/sales.xml',
         'views/marketing.xml',
         'views/crm_lead_views.xml',

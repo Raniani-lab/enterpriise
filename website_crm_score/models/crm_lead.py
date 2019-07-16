@@ -7,10 +7,6 @@ from hashlib import md5
 class Lead(models.Model):
     _inherit = 'crm.lead'
 
-    def _count_pageviews(self):
-        for rec in self:
-            rec.pageviews_count = len(rec.score_pageview_ids)
-
     @api.depends('score_ids', 'score_ids.value')
     def _compute_score(self):
         self._cr.execute("""
@@ -29,21 +25,13 @@ class Lead(models.Model):
 
     score = fields.Float(compute='_compute_score', store=True, group_operator="avg")
     score_ids = fields.Many2many('website.crm.score', 'crm_lead_score_rel', 'lead_id', 'score_id', string='Scoring Rules')
-    score_pageview_ids = fields.One2many('website.crm.pageview', 'lead_id', string='Page Views', help="List of (tracked) pages seen by the owner of this lead")
     assign_date = fields.Datetime(string='Auto Assign Date', help="Date when the lead has been assigned via the auto-assignation mechanism")
-    pageviews_count = fields.Integer('# Page Views', compute='_count_pageviews')
 
     def _get_key(self):
         return self.env['ir.config_parameter'].sudo().get_param('database.secret')
 
     def get_score_domain_cookies(self):
         return request.httprequest.host
-
-    def _merge_pageviews(self, opportunities):
-        crmpv = self.env['website.crm.pageview']
-        lead_ids = [opp.id for opp in opportunities if opp.id != self.id]
-        pv_ids = crmpv.sudo().search([('lead_id', 'in', lead_ids)])
-        pv_ids.write({'lead_id': self.id})
 
     def _merge_scores(self, opportunities):
         # We needs to delete score from opportunity_id, to be sure that all rules will be re-evaluated.

@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, _
 from odoo.addons.web.controllers.main import clean_action
+from ast import literal_eval
 
 DEFAULT_MONTH_RANGE = 3
 
@@ -164,12 +165,13 @@ class ProjectOverview(models.Model):
         if not any(self.mapped('allow_forecast')):
             return stat_buttons
 
+        action = clean_action(self.env.ref('project_forecast.project_forecast_action_by_project').read()[0])
+        context = literal_eval(action['context'])
+
         if len(self) == 1:
-            action = clean_action(self.env.ref('project_forecast.project_forecast_action_by_project').read()[0])
-            action['context']['default_project_id'] = self.id
-        else:
-            action = clean_action(self.env.ref('project_forecast.project_forecast_action_by_project').read()[0])
-        action.setdefault('context', {})['search_default_future'] = 0
+            context.update({'default_project_id': self.id})
+        context.update({'search_default_future': 0})
+        action['context'] = context
 
         stat_buttons.append({
             'name': _('Forecasts'),

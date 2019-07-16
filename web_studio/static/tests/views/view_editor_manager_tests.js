@@ -96,6 +96,15 @@ QUnit.module('ViewEditorManager', {
                 fields: {},
                 records: [],
             },
+            'res.groups': {
+                fields: {
+                    display_name: {string: "Display Name", type: "char"},
+                },
+                records: [{
+                    id: 4,
+                    display_name: "Admin",
+                }],
+            },
         };
     },
 }, function () {
@@ -379,6 +388,59 @@ QUnit.module('ViewEditorManager', {
             "the label in sidebar should be Display Name");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
             "the widget in sidebar should be set by default");
+
+        vem.destroy();
+    });
+
+    QUnit.test('add group to field', async function (assert) {
+        assert.expect(2);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree><field name='display_name'/></tree>",
+            mockRPC: function(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.deepEqual(args.operations[0], {
+                        node: {
+                            attrs: {name: 'display_name', modifiers: {}},
+                            children: [],
+                            tag: 'field',
+                        },
+                        new_attrs: {groups: [4]},
+                        position: 'attributes',
+                        target: {
+                            tag: 'field',
+                            attrs: {name: 'display_name'},
+                        },
+                        type: 'attributes',
+                    }, "the group operation should be correct");
+                    // the server sends the arch in string but it's post-processed
+                    // by the ViewEditorManager
+                    fieldsView.arch = "<tree>"
+                            + "<field name='display_name' studio_groups='[{&quot;id&quot;:4, &quot;name&quot;: &quot;Admin&quot;}]'/>"
+                        +"</tree>";
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            list: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        var fieldsView = $.extend(true, {}, vem.fields_view);
+
+        // click on the field
+        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]'));
+
+        await testUtils.fields.many2one.clickOpenDropdown('groups');
+        await testUtils.fields.many2one.clickHighlightedItem('groups');
+
+        assert.containsN(vem, '.o_field_many2manytags[name="groups"] .badge.o_tag_color_0', 1,
+        "the groups should be present");
 
         vem.destroy();
     });

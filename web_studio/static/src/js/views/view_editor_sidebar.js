@@ -612,8 +612,10 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      * @private
      */
     _onFieldChanged: function () {
-        StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
-        this._changeFieldGroup();
+        var self = this;
+        return StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments).then(function () {
+            self._changeFieldGroup();
+        });
     },
     /**
      * Renames the field after confirmation from user.

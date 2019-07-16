@@ -21,7 +21,7 @@ class Base(models.AbstractModel):
     _inherit = 'base'
 
     @api.model
-    def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None):
+    def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):
         """
         Current anchor (if sensible for the col_field) can be provided by the
         ``grid_anchor`` value in the context
@@ -52,7 +52,7 @@ class Base(models.AbstractModel):
             expression.AND([domain, column_info.domain]),
             list(grid_select) + [f.partition(':')[0] for f in row_fields],
             [column_info.grouping] + row_fields,
-            lazy=False
+            lazy=False, orderby=orderby
         )
 
         row_key = lambda it, fs=row_fields: tuple(it[f] for f in fs)

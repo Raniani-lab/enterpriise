@@ -19,5 +19,6 @@ that have no counterpart in the general financial accounts.
         'views/account_analytic_view.xml'
     ],
     'installable': True,
-    'auto_install': True
+    'auto_install': True,
+    'license': 'OEEL-1',
 }

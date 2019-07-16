@@ -162,12 +162,12 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:123
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "កែសម្រួល"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 msgid "From"
-msgstr ""
+msgstr "មកពី"
 
 #. module: stock_barcode
 #. openerp-web

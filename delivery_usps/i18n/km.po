@@ -22,48 +22,49 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_intl_non_delivery_option:0
 msgid "Abandon"
-msgstr ""
+msgstr "បោះបង់"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Account Validated"
-msgstr ""
+msgstr "សុពលភាពគណនី"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr ""
+msgstr "ផ្តោតលើច្បាប់"
 
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Check this box if your account is validated by USPS"
-msgstr ""
+msgstr "ធីកប្រអប់នេះប្រសិនបើគណនីរបស់អ្នកត្រូវបានធ្វើឱ្យមានសុពលភាពដោយ USPS"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:64
 #, python-format
 msgid "Company phone number is invalid. Please insert a US phone number."
 msgstr ""
+"លេខទូរស័ព្ទក្រុមហ៊ុនមិនត្រឹមត្រូវ។ សូមបញ្ចូលលេខទូរស័ព្ទនៅសហរដ្ឋអាមេរិក។"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_content_type
 msgid "Content Type"
-msgstr ""
+msgstr "ប្រភេទមាតិកា"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "DHL"
-msgstr ""
+msgstr "DHL"
 
 #. module: delivery_usps
 #: model:ir.model,name:delivery_usps.model_delivery_carrier
 msgid "Delivery Methods"
-msgstr ""
+msgstr "វិធីសាស្ត្រដឹកជញ្ជូន"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_delivery_nature
 msgid "Delivery Nature"
-msgstr ""
+msgstr "ទំលាប់ដឹកជញ្ជូន"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
@@ -73,12 +74,12 @@ msgstr "ឯកសារ"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_delivery_nature:0
 msgid "Domestic"
-msgstr ""
+msgstr "ក្នុងស្រុក"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "Easypost"
-msgstr ""
+msgstr "Easypost"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:104
@@ -87,49 +88,51 @@ msgid ""
 "Error:\n"
 "%s"
 msgstr ""
+"កំហុស:\n"
+"%s"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_service:0
 msgid "Express"
-msgstr ""
+msgstr "ក្រុមហ៊ុនដឹកជញ្ជូន"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "FedEx"
-msgstr ""
+msgstr "FedEx"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_service:0
 msgid "First Class"
-msgstr ""
+msgstr "ថ្នាក់ដំបូង"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "តំលៃថេរ"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
 msgid "Flat"
-msgstr ""
+msgstr "ផ្ទះ"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Flat Rate"
-msgstr ""
+msgstr "អត្រាតំលៃផ្ទះ"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Flat Rate Box"
-msgstr ""
+msgstr "អត្រាតំលៃផ្ទះត្រូវបានកក់ទុក"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Flat Rate Envelope"
-msgstr ""
+msgstr "អត្រាផ្ទះល្វែង"
 
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
@@ -139,27 +142,27 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
 msgid "Gift"
-msgstr ""
+msgstr "អំណេយ"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_delivery_nature:0
 msgid "International"
-msgstr ""
+msgstr "អន្តរជាតិ"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_size_container:0
 msgid "Large"
-msgstr ""
+msgstr "ធំ"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Large Envelope"
-msgstr ""
+msgstr "ស្រោមសំបុត្រធំ"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Large Flat Rate Box"
-msgstr ""
+msgstr "ប្រអប់តម្លៃផ្ទះល្វែងធំ"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
@@ -201,7 +204,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_label_file_type:0
 msgid "PDF"
-msgstr ""
+msgstr "ឯកសារជា PDF"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
@@ -273,7 +276,7 @@ msgstr ""
 #: code:addons/delivery_usps/models/usps_request.py:76
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "សូមផ្ដល់យ៉ាងហោចណាស់ធាតុមួយដើម្បីបញ្ជូន។"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:60
@@ -344,7 +347,7 @@ msgstr ""
 #: code:addons/delivery_usps/models/delivery_usps.py:169
 #, python-format
 msgid "Shipment N° %s has been cancelled"
-msgstr ""
+msgstr "ការដឹកជញ្ជូនN°%sត្រូវបានលុបចោល"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:149
@@ -382,6 +385,7 @@ msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
 msgstr ""
+"តម្លៃដែលប៉ាន់ស្មានមិនអាចគណនាបានទេព្រោះទម្ងន់នៃផលិតផលរបស់អ្នកត្រូវបានបាត់។"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:67
@@ -420,12 +424,12 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
@@ -499,7 +503,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
 #: model:product.template,uom_name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "កំរិត(s)"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_size_container
@@ -515,7 +519,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_usps
 #: model:product.product,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic
@@ -523,4 +527,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "kg"
-msgstr ""
+msgstr "គីឡូ"

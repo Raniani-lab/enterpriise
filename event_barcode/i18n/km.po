@@ -92,7 +92,7 @@ msgstr "កំហុស"
 #. module: event_barcode
 #: model:ir.model,name:event_barcode.model_event_registration
 msgid "Event Registration"
-msgstr ""
+msgstr "ការចុះឈ្មោះព្រឹត្តិការណ៍"
 
 #. module: event_barcode
 #. openerp-web

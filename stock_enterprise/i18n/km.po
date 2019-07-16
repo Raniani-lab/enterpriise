@@ -133,7 +133,7 @@ msgstr "ID"
 #. module: stock_enterprise
 #: selection:stock.report,picking_type_code:0
 msgid "Internal"
-msgstr ""
+msgstr "ផ្ទៃក្នុង"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__inventory_id

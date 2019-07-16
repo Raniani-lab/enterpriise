@@ -15,4 +15,5 @@ and to get the option to send products' attachments to the documents app.
     'data': ['data/data.xml', 'views/documents_views.xml'],
     'installable': True,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

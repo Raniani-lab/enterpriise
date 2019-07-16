@@ -1905,8 +1905,7 @@ msgstr "indien aangevinkt hebben sommige leveringen een fout."
 msgid ""
 "If checked, the user will be able to close his account from the frontend"
 msgstr ""
-"Indien aangevinkt, zal de gebruiker zijn account kunnen sluiten vanuit de "
-"voorkant"
+"Indien aangevinkt, kan de gebruiker zijn account afsluiten vanaf de portal"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__payment_token_id

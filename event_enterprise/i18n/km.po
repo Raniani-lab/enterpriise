@@ -27,9 +27,9 @@ msgstr "ចូលរួម"
 #. module: event_enterprise
 #: model:ir.model,name:event_enterprise.model_event_registration
 msgid "Event Registration"
-msgstr ""
+msgstr "ការចុះឈ្មោះព្រឹត្តិការណ៍"
 
 #. module: event_enterprise
 #: model:ir.model.fields,field_description:event_enterprise.field_event_registration__event_begin_date
 msgid "Event Start Date"
-msgstr ""
+msgstr "កាលបរិច្ឆេទចាប់ផ្តើមព្រឹត្តិការណ៍"

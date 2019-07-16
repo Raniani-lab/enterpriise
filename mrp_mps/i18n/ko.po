@@ -402,7 +402,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:45
 #, python-format
 msgid "To Produce"
-msgstr ""
+msgstr "생산중"
 
 #. module: mrp_mps
 #: code:addons/mrp_mps/models/mrp_mps_report.py:129

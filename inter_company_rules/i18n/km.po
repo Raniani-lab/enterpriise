@@ -175,7 +175,7 @@ msgstr ""
 #: selection:res.company,applicable_on:0
 #: selection:res.config.settings,applicable_on:0
 msgid "Sale Order"
-msgstr ""
+msgstr "លក់តាមការម៉ង់"
 
 #. module: inter_company_rules
 #: selection:res.company,applicable_on:0

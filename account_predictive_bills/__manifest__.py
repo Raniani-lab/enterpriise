@@ -7,4 +7,5 @@
     'description': """Let the system try to select the right account and/or product for your vendor bills""",
     'data': ['views/account_invoice_view.xml'],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

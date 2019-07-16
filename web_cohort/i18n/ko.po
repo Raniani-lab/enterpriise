@@ -176,7 +176,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:201
 #, python-format
 msgid "No data available."
-msgstr ""
+msgstr "사용가능한 데이타가 없음."
 
 #. module: web_cohort
 #. openerp-web

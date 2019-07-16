@@ -185,7 +185,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_close
 msgid "Date Closed"
-msgstr ""
+msgstr "កាលបរិច្ឆេតបានបិទ"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_defaults
@@ -266,7 +266,7 @@ msgstr ""
 #. module: quality
 #: selection:quality.alert,priority:0
 msgid "High"
-msgstr ""
+msgstr "ខ្ពស់"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__id
@@ -369,7 +369,7 @@ msgstr "ច្រើន"
 #. module: quality
 #: selection:quality.alert,priority:0
 msgid "Low"
-msgstr ""
+msgstr "ខាត"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_main_attachment_id
@@ -778,7 +778,7 @@ msgstr ""
 #. module: quality
 #: selection:quality.alert,priority:0
 msgid "Very High"
-msgstr ""
+msgstr "ខ្ពស់​ណាស់"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__website_message_ids

@@ -655,7 +655,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:261
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "ថ្ងៃ"
 
 #. module: web_studio
 #. openerp-web
@@ -899,7 +899,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:566
 #, python-format
 msgid "Email Alias"
-msgstr ""
+msgstr "អ៊ីម៉ែល"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
@@ -1373,7 +1373,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:148
 #, python-format
 msgid "Internal"
-msgstr ""
+msgstr "ផ្ទៃក្នុង"
 
 #. module: web_studio
 #. openerp-web
@@ -1436,7 +1436,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:455
 #, python-format
 msgid "Large"
-msgstr ""
+msgstr "ធំ"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin____last_update
@@ -2496,7 +2496,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:33
 #, python-format
 msgid "Translations"
-msgstr ""
+msgstr "ការបកប្រែ"
 
 #. module: web_studio
 #. openerp-web

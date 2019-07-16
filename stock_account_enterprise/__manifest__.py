@@ -18,4 +18,5 @@ Contains the enterprise views for Stock account
     'installable': True,
     'application': False,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

@@ -37,7 +37,7 @@ msgstr ""
 #: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:9
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "កែសម្រួល"
 
 #. module: quality_mrp_iot
 #: model:ir.model,name:quality_mrp_iot.model_iot_trigger
@@ -77,7 +77,7 @@ msgstr ""
 #: code:addons/quality_mrp_iot/static/src/xml/quality_picture_templates.xml:12
 #, python-format
 msgid "Uploading..."
-msgstr ""
+msgstr "ឯកសារផ្ទុក"
 
 #. module: quality_mrp_iot
 #: model:ir.model,name:quality_mrp_iot.model_mrp_workcenter

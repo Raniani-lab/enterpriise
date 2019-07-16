@@ -13,6 +13,8 @@ class IrActionsReport(models.Model):
     def render_qweb_html(self, docids, data=None):
         if data and data.get('full_branding'):
             self = self.with_context(full_branding=True)
+        if data and data.get('studio') and self.report_type == 'qweb-pdf':
+            data['report_type'] = 'pdf'
         return super(IrActionsReport, self).render_qweb_html(docids, data)
 
     def copy_report_and_template(self):

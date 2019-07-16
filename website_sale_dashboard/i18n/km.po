@@ -108,7 +108,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0
 msgid "Just done"
-msgstr ""
+msgstr "ទើបតែរួចរាល់"
 
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0
@@ -149,7 +149,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0
 msgid "To Invoice"
-msgstr ""
+msgstr "ទៅវិក័យប័ត្រ"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view

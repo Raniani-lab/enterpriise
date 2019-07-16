@@ -171,7 +171,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__rule_type
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rule_type
 msgid "Rule Type"
-msgstr ""
+msgstr "Typ pravidla"
 
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_sale_order

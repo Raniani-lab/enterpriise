@@ -638,7 +638,7 @@ msgstr "받는 이"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
 msgid "To Process"
-msgstr ""
+msgstr "진행중"
 
 #. module: stock_barcode
 #. openerp-web

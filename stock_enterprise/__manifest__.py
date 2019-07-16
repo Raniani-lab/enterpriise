@@ -20,4 +20,5 @@ Contains the enterprise views for Stock management
     'installable': True,
     'application': False,
     'auto_install': ['stock'],
+    'license': 'OEEL-1',
 }

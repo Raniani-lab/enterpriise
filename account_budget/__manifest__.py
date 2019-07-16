@@ -17,4 +17,5 @@ Use budgets to compare actual with expected revenues and costs
         'views/res_config_settings_views.xml',
     ],
     'demo': ['data/account_budget_demo.xml'],
+    'license': 'OEEL-1',
 }

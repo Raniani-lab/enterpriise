@@ -21,4 +21,5 @@ This module provides management of your IoT Boxes inside Odoo.
     'installable': True,
     'application': True,
     'auto_install': False,
+    'license': 'OEEL-1',
 }

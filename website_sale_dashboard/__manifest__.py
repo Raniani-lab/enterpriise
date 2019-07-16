@@ -17,4 +17,5 @@ It also provides new tools to analyse your data.
     ],
     'qweb': ['static/src/xml/*.xml'],
     'auto_install': ['website_sale'],
+    'license': 'OEEL-1',
 }

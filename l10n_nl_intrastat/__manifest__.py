@@ -12,4 +12,5 @@ Generates Netherlands Intrastat report for declaration based on invoices.
         'views/res_company_view.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

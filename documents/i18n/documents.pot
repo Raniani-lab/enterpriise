@@ -616,6 +616,7 @@ msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_res_partner__document_count
+#: model:ir.model.fields,field_description:documents.field_res_users__document_count
 msgid "Document Count"
 msgstr ""
 
@@ -654,19 +655,11 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:6
-#, python-format
-msgid "DocumentViewer.ContentWithPdfSplit"
-msgstr ""
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/models/res_partner.py:27
 #: code:addons/documents/static/src/xml/documents_inspector.xml:64
 #: model:ir.actions.act_window,name:documents.document_action
 #: model:ir.actions.act_window,name:documents.document_debug_action
 #: model:ir.model.fields,field_description:documents.field_documents_folder__document_ids
-#: model:ir.model.fields,field_description:documents.field_res_users__document_count
 #: model:ir.module.category,name:documents.module_category_documents_management
 #: model:ir.ui.menu,name:documents.attachment_list_view_temp
 #: model:ir.ui.menu,name:documents.dashboard

@@ -49,4 +49,4 @@ class AccountMoveLine(models.Model):
                 dt2=line.subscription_start_date,
             )
             months = delta.months + delta.days / 30.0 + delta.years * 12.0
-            line.subscription_mrr = line.price_subtotal / months
+            line.subscription_mrr = line.price_subtotal / months if months else 0

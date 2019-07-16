@@ -978,7 +978,7 @@ class AccountMove(models.Model):
             # cfdi has been successfully generated
             inv.l10n_mx_edi_pac_status = 'to_sign'
             filename = ('%s-%s-MX-Invoice-%s.xml' % (
-                inv.journal_id.code, inv.number, version.replace('.', '-'))).replace('/', '')
+                inv.journal_id.code, inv.name, version.replace('.', '-'))).replace('/', '')
             ctx = self.env.context.copy()
             ctx.pop('default_type', False)
             inv.l10n_mx_edi_cfdi_name = filename

@@ -14,4 +14,5 @@ This module provides the link between quality steps and IoT devices.
         'views/iot_views.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

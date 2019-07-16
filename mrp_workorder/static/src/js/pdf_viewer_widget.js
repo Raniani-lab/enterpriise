@@ -1,4 +1,4 @@
-odoo.define('mrp.pdf_viewer_no_reload', function (require) {
+odoo.define('mrp_workorder.pdf_viewer_no_reload', function (require) {
 "use strict";
 
 var fieldRegistry = require('web.field_registry');

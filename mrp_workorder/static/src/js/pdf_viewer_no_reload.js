@@ -1,4 +1,4 @@
-odoo.define('mrp.PDFViewerNoReload', function (require) {
+odoo.define('mrp_workorder.PDFViewerNoReload', function (require) {
 "use strict";
 
 var FormRenderer = require('web.FormRenderer');
@@ -46,4 +46,8 @@ var TabletPDFViewer = FormView.extend({
 
 viewRegistry.add('tablet_pdf_viewer', TabletPDFViewer);
 
+return {
+    PDFViewerNoReloadRenderer: PDFViewerNoReloadRenderer,
+    TabletPDFViewer: TabletPDFViewer,
+};
 });

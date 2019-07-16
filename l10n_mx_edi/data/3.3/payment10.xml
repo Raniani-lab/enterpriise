@@ -75,8 +75,8 @@
                             <t t-set="amount_insoluto" t-value="invoice.amount_residual"/>
                             <pago10:DoctoRelacionado
                                 t-att-IdDocumento="invoice.l10n_mx_edi_cfdi_uuid"
-                                t-att-Serie="invoice._get_string_cfdi(invoice._l10n_mx_get_serie_and_folio(invoice.number).get('serie', False), 25)"
-                                t-att-Folio="invoice._get_string_cfdi(invoice._l10n_mx_get_serie_and_folio(invoice.number).get('folio', False), 40)"
+                                t-att-Serie="invoice._get_string_cfdi(invoice._l10n_mx_get_serie_and_folio(invoice.name).get('serie', False), 25)"
+                                t-att-Folio="invoice._get_string_cfdi(invoice._l10n_mx_get_serie_and_folio(invoice.name).get('folio', False), 40)"
                                 t-att-MonedaDR="invoice.currency_id.name"
                                 t-att-TipoCambioDR="inv_rate"
                                 t-att-MetodoDePagoDR="invoice.l10n_mx_edi_get_payment_method_cfdi()"

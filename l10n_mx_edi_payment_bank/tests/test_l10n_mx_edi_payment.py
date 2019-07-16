@@ -54,7 +54,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         payment_register.l10n_mx_edi_payment_method_id = self.transfer
         payment_register.payment_method_id = self.payment_method_manual_out
         payment_register.journal_id = journal
-        payment_register.communication = invoice.number
+        payment_register.communication = invoice.name
         payment_register.amount = invoice.amount_total
         payment_register.l10n_mx_edi_partner_bank_id = self.account_payment
         payment_register.save().post()

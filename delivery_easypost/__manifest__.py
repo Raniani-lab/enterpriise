@@ -11,5 +11,6 @@
         'views/delivery_carrier_views.xml',
         'views/res_config_settings_views.xml',
         'wizard/carrier_type_views.xml',
-    ]
+    ],
+    'license': 'OEEL-1',
 }

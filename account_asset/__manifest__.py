@@ -27,4 +27,5 @@ Keeps track of depreciations, and creates corresponding journal entries.
     'qweb': [
         "static/src/xml/account_asset_template.xml",
     ],
+    'license': 'OEEL-1',
 }

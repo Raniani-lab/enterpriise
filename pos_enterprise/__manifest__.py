@@ -14,4 +14,5 @@ for IoT Box config.
     ],
     'depends': ['web_enterprise', 'point_of_sale'],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

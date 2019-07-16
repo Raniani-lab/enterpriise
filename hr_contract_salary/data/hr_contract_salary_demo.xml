@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="employee_max" model="hr.employee">
+        <field name="name">Max Durand</field>
+        <field name="job_id" ref="hr.job_developer"/>
+        <field name="country_id" ref="base.be"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
     <record id="res_partner_laurie_poiret" model="res.partner">
         <field name="name">Laurie Poiret</field>
         <field name="street">58 rue des Wallons</field>
@@ -9,6 +16,17 @@
         <field name="phone">+0032476543210</field>
         <field name="email">laurie.poiret@example.com</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="user_laurie_poiret" model="res.users">
+        <field name="partner_id" ref="hr_contract_salary.res_partner_laurie_poiret"/>
+        <field name="login">laurie</field>
+        <field name="password">lauriepoiret</field>
+        <field name="signature" type="xml"><span>--<br/>+L. Poiret</span></field>
+        <field name="company_ids" eval="[(4, ref('l10n_be_hr_payroll.res_company_be'))]"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="groups_id" eval="[(6,0,[ref('base.group_user')])]"/>
+        <field name="image_1920" type="base64" file="hr_contract_salary/static/img/hr_employe_laurie_poiret.jpg"/>
     </record>
 
     <record id="res_partner_laurie_poiret_work_address" model="res.partner">
@@ -22,6 +40,7 @@
 
     <record id="res_partner_bank_account_laurie_poiret" model="res.partner.bank">
         <field name="acc_number">BE68539007547034</field>
+        <field name="bank_id" ref="base.bank_ing"/>
         <field name="partner_id" ref="hr_contract_salary.res_partner_laurie_poiret"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
@@ -41,13 +60,14 @@
         <field name="certificate">master</field>
         <field name="study_field">Civil Engineering</field>
         <field name="study_school">Université Catholique de Louvain-la-Neuve</field>
-        <field name="country_id" ref="base.be"/>
+        <field name="parent_id" ref="hr_contract_salary.employee_max"/>
         <field name="country_id" ref="base.be"/>
         <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
         <field name="identification_id">91-07-28-458-83</field>
         <field name="bank_account_id" ref="hr_contract_salary.res_partner_bank_account_laurie_poiret"/>
         <field name="image_1920" type="base64" file="hr_contract_salary/static/img/hr_employe_laurie_poiret.jpg"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="user_id" ref="hr_contract_salary.user_laurie_poiret"/>
     </record>
 
     <record id="fleet.model_corsa" model="fleet.vehicle.model">
@@ -223,7 +243,7 @@
         <field name="commission_on_target">0.0</field>
         <field name="transport_mode_car" eval="True"/>
         <field name="new_car" eval="True"/>
-        <field name="new_car_model_id" ref="fleet.model_corsa"/>  
+        <field name="new_car_model_id" ref="fleet.model_corsa"/>
         <field name="ip_wage_rate">25</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
         <field name="sign_template_id" ref="sign_template_cdi_developer"/>

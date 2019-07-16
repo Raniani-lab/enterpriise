@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_enterprise_move_tree_view" model="ir.ui.view">
+        <field name="name">stock.enterprise.move.tree.view</field>
+        <field name="model">stock.move</field>
+        <field name="priority" eval="1000"/>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="date_expected"/>
+                <field name="state" invisible="1"/>
+                <field name="reference" readonly="1"/>
+                <field name="product_id" readonly="1"/>
+                <field name="product_uom_qty" readonly="1" string="Quantity"/>
+                <field name="product_uom" readonly="1" groups="uom.group_uom"/>
+                <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

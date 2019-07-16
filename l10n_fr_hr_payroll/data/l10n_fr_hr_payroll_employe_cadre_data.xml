@@ -9,7 +9,6 @@
     <record id="hr_payroll_salary_structure_employe_cadre" model="hr.payroll.structure">
         <field name="name">Employé cadre</field>
         <field name="country_id" ref="base.fr"/>
-        <field name="structure_type_id" ref="structure_type_employee_fr_cadre"/>
         <field name="regular_pay" eval="True"/>
     </record>
 

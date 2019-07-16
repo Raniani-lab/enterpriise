@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import math
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
-
-from ..models.rental_pricing import PERIOD_RATIO
 
 
 class RentalWizard(models.TransientModel):
@@ -27,72 +24,54 @@ class RentalWizard(models.TransientModel):
 
     quantity = fields.Float("Quantity", default=1, required=True)  # Can be changed on SO line later if needed
 
-    duration = fields.Float(
-        string="Duration in hours", compute="_compute_duration_pricing",
-        help="Duration of the rental (in hours)")
-    duration_display = fields.Float(
-        string="Duration", compute="_compute_duration_pricing",
-        help="Duration of the rental (in unit of the pricing)")
     pricing_id = fields.Many2one(
-        'rental.pricing', compute="_compute_duration_pricing",
+        'rental.pricing', compute="_compute_pricing",
         string="Pricing", help="Best Pricing Rule based on duration")
-    duration_unit = fields.Selection([("hour", "Hour(s)"), ("day", "Day(s)"), ("week", "Week(s)")],
-                                     string="Unit", required=True, default='day',
-                                     compute="_compute_duration_pricing")
-
     currency_id = fields.Many2one('res.currency', related='pricing_id.currency_id')
+
+    duration = fields.Float(
+        string="Duration", compute="_compute_duration", default=1.0,
+        help="Duration of the rental (in unit of the pricing)")
+    duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks")],
+                                     string="Unit", required=True, default='day',
+                                     compute="_compute_duration")
+
     unit_price = fields.Monetary(
         string="Unit Price", help="Best unit price for specified duration (less expensive).",
         readonly=False, default=0.0, required=True)
 
-    rented_qty_during_period = fields.Float(
-        string="Quantity reserved", readonly=True,
-        help="Quantity reserved by other Rental lines during the given period",
-        compute='_compute_rented_during_period')
-
-    # TODO as this information isn't shown anymore.
-    # Either remove the field and computation
-    # Or show the information again.
-    @api.depends('pickup_date', 'return_date', 'product_id')
-    def _compute_rented_during_period(self):
-        if not self.product_id or not self.pickup_date or not self.return_date:
-            return
-        else:
-            # When the wizard is used to edit a rental line : the quantity displayed as reserved
-            # shouldn't include the quantity of the edited rental order line (if its SO is confirmed)
-            fro, to = self.product_id._unavailability_period(self.pickup_date, self.return_date)
-            self.rented_qty_during_period = self.product_id._get_rented_qty(
-                fro, to,
-                ignored_soline_id=self.rental_order_line_id and self.rental_order_line_id.id
-            )
-
     @api.multi
     @api.depends('pickup_date', 'return_date')
-    def _compute_duration_pricing(self):
-        """ Process dates to compute duration and pricing for the selected period. """
+    def _compute_pricing(self):
         for wizard in self:
-            pricing, unit_price, duration, duration_display, duration_unit = False, 0, 0, 0, 'day'
-            if wizard.pickup_date and wizard.return_date:
-                duration = wizard.return_date - wizard.pickup_date
-                hours = duration.days*24 + duration.seconds / 3600
-                duration = hours
-                if duration % 7*24 == 0:
-                    duration_unit = 'week'
-                elif duration % 24 == 0:
-                    duration_unit = 'day'
-                else:
-                    duration_unit = 'hour'
             if wizard.product_id:
-                pricing = wizard.product_id._get_best_pricing_rule(duration)
-                unit_price = pricing and pricing.compute_price(duration) or wizard.product_id.lst_price
-                duration_display = hours / PERIOD_RATIO[duration_unit]
-            wizard.update({
-                'pricing_id': pricing and pricing.id,
-                'unit_price': unit_price,
-                'duration': duration,
-                'duration_display': duration_display,
-                'duration_unit': duration_unit
-            })
+                wizard.pricing_id = wizard.product_id._get_best_pricing_rule(pickup_date=wizard.pickup_date, return_date=wizard.return_date)
+
+    @api.multi
+    @api.depends('pricing_id', 'pickup_date', 'return_date')
+    def _compute_duration(self):
+        for wizard in self:
+            if wizard.pickup_date and wizard.return_date:
+                duration_dict = self.env['rental.pricing']._compute_duration_vals(wizard.pickup_date, wizard.return_date)
+                if wizard.pricing_id:
+                    wizard.update({
+                        'duration_unit': wizard.pricing_id.unit,
+                        'duration': duration_dict[wizard.pricing_id.unit]
+                    })
+                else:
+                    wizard.update({
+                        'duration_unit': 'day',
+                        'duration': duration_dict['day']
+                    })
+
+    @api.multi
+    @api.onchange('pricing_id', 'duration', 'duration_unit')
+    def _compute_unit_price(self):
+        for wizard in self:
+            if wizard.pricing_id and wizard.duration > 0:
+                wizard.unit_price = wizard.pricing_id._compute_price(wizard.duration, wizard.duration_unit)
+            elif wizard.duration > 0:
+                wizard.unit_price = wizard.product_id.lst_price
 
     _sql_constraints = [
         ('rental_period_coherence',

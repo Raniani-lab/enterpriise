@@ -64,6 +64,19 @@
                  decoration-warning="report_line_status=='pickedup' and not late"
                  decoration-success="report_line_status=='returned'"
                  decoration-danger="late and report_line_status != 'returned'">
+                 <templates>
+                     <div t-name="gantt-popover" class="container-fluid">
+                         <div class="row no-gutters">
+                             <div class="col">
+                                 <ul class="pl-1 mb-0">
+                                     <li><strong>Order #: </strong> <t t-esc="name"/></li>
+                                     <li><strong>Pickup : </strong> <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD hh:mm A')"/></li>
+                                     <li><strong>Return : </strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD hh:mm A')"/></li>
+                                 </ul>
+                             </div>
+                         </div>
+                     </div>
+                 </templates>
               <field name="name"/>
               <field name="report_line_status"/>
               <field name="late"/>
@@ -107,7 +120,7 @@
     <field name="inherit_id" ref="sale.product_form_view_sale_order_button"/>
     <field name="arch" type="xml">
       <xpath expr="//button[@name='action_view_sales']" position="before">
-        <field name="rent_ok" invisible="1" />
+        <field name="rent_ok" invisible="1"/>
         <button class="oe_stat_button" name="action_view_rentals"
             type="object" icon="fa-calendar" groups="sales_team.group_sale_salesman" attrs="{'invisible': [('rent_ok', '=', False)]}">
             <div class="o_field_widget o_stat_info">
@@ -120,14 +133,6 @@
         </button>
       </xpath>
     </field>
-  </record>
-
-  <record id="rental_schedule_view_gantt_products" model="ir.actions.act_window">
-    <field name="name">Confirmed Rentals</field>
-    <field name="res_model">sale.rental.schedule</field>
-    <field name="view_mode">gantt</field>
-    <field name="domain">[('product_id', 'in', context.get('products'))]</field>
-    <field name="context">{'search_default_Rentals':1, 'time_ranges': {'field':'pickup_date', 'range':'this_year'}}}</field>
   </record>
 
   <record id="rental_schedule_view_form" model="ir.ui.view">

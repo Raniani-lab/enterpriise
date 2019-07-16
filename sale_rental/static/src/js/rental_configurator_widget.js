@@ -24,14 +24,14 @@ ProductConfiguratorWidget.include({
 
 
     _onProductChange: function (productId, dataPointID) {
-      var self = this;
-      return this._super.apply(this, arguments).then(function (stopPropagation) {
-          if (stopPropagation) {
-              return Promise.resolve(true);
-          } else {
-              return self._checkIfRentable(productId, dataPointID);
-          }
-      });
+        var self = this;
+        return this._super.apply(this, arguments).then(function (stopPropagation) {
+            if (stopPropagation) {
+                return Promise.resolve(true);
+            } else {
+                return self._checkIfRentable(productId, dataPointID);
+            }
+        });
     },
 
     /**
@@ -43,74 +43,72 @@ ProductConfiguratorWidget.include({
     _checkIfRentable: function (productId, dataPointID) {
         var self = this;
         if (productId && this.nodeOptions.rent) {
-          return this._rpc({
-            model: 'product.product',
-            method: 'read',
-            args: [productId, ['rent_ok']],
-          }).then(function (r) {
-              if (r && r[0].rent_ok) {
-                  self._openRentalConfigurator({
-                          default_product_id: productId
-                      },
-                      dataPointID
-                  );
-                  return Promise.resolve(true);
-              }
-              return Promise.resolve(false);
-          });
+            return this._rpc({
+                model: 'product.product',
+                method: 'read',
+                args: [productId, ['rent_ok']],
+            }).then(function (r) {
+                if (r && r[0].rent_ok) {
+                    self._openRentalConfigurator({
+                            default_product_id: productId
+                        },
+                        dataPointID
+                    );
+                    return Promise.resolve(true);
+                }
+                return Promise.resolve(false);
+            });
         }
         return Promise.resolve(false);
     },
 
     _defaultRentalData: function (data) {
-        var self = this;
-        data = data ? data : {};
-        if (self.recordData.pickup_date) {
+        data = data || {};
+        if (this.recordData.pickup_date) {
             data.default_pickup_date = this.recordData.pickup_date;
         }
-        if (self.recordData.return_date) {
+        if (this.recordData.return_date) {
             data.default_return_date = this.recordData.return_date;
         }
         if (!data.default_product_id) {
-            data.default_product_id = self.recordData.product_id.data.id;
+            data.default_product_id = this.recordData.product_id.data.id;
         }
-        if (self.recordData.id) {
+        if (this.recordData.id) {
             // when editing a rental order line, we need its id for some availability computations.
-            data.default_rental_order_line_id = self.recordData.id;
+            data.default_rental_order_line_id = this.recordData.id;
         }
 
-        data.default_quantity = self.recordData.product_uom_qty;
+        data.default_quantity = this.recordData.product_uom_qty;
 
         /** Default pickup/return dates are based on previous lines dates if some exists */
 
         if (!data.default_pickup_date && !data.default_return_date) {
-            var parent = self.getParent();
+            var parent = this.getParent();
             var defaultPickupDate, defaultReturnDate;
             if (parent.state.data.length > 1) {
                 parent.state.data.forEach(function (item) {
-                  if (item.data.is_rental) {
-                    defaultPickupDate = item.data.pickup_date;
-                    defaultReturnDate = item.data.return_date;
-                  }
+                    if (item.data.is_rental) {
+                        defaultPickupDate = item.data.pickup_date;
+                        defaultReturnDate = item.data.return_date;
+                    }
                 });
                 if (defaultPickupDate) {
-                  data.default_pickup_date = defaultPickupDate;
+                    data.default_pickup_date = defaultPickupDate;
                 }
                 if (defaultReturnDate) {
-                  data.default_return_date = defaultReturnDate;
+                    data.default_return_date = defaultReturnDate;
                 }
             }
         }
 
         /** Sale_stock_rental defaults (to avoid having a very little bit of js in sale_stock_rental) */
 
-        if (self.recordData.warehouse_id) {
-           data.default_warehouse_id = self.recordData.warehouse_id.data.id;
-        }
-        if (self.recordData.reserved_lot_ids) {
-          data.default_lot_ids = this._convertFromMany2Many(
-              this.recordData.reserved_lot_ids
-          );
+        if (this.recordData.reserved_lot_ids) {
+            // NEEDS to have the warehouse_id field visible in parent sale_order form view !
+            data.default_warehouse_id = this.record.evalContext.parent.warehouse_id;
+            data.default_lot_ids = this._convertFromMany2Many(
+                this.recordData.reserved_lot_ids
+            );
         }
 
         return data;
@@ -122,7 +120,7 @@ ProductConfiguratorWidget.include({
      * @override
      * @private
      */
-    _onEditProductConfiguration: function () {
+    _onEditLineConfiguration: function () {
         if (this.recordData.is_rental) {// and in rental app ? (this.nodeOptions.rent)
             this._openRentalConfigurator({}, this.dataPointID);
         } else {
@@ -131,25 +129,32 @@ ProductConfiguratorWidget.include({
     },
 
     _openRentalConfigurator: function (data, dataPointId) {
-      var self = this;
-      this.do_action('sale_rental.rental_configurator_action', {
-          additional_context: self._defaultRentalData(data),
-          on_close: function (result) {
-              if (result && result !== 'special') {
-                  self.trigger_up('field_changed', {
-                      dataPointID: dataPointId,
-                      changes: result.rentalConfiguration,
-                  });
-              } else {
-                  if (!self.recordData.pickup_date || !self.recordData.return_date) {
-                      self.trigger_up('field_changed', {
-                          dataPointID: dataPointId,
-                          changes: {product_id: {operation: 'DELETE_ALL'}},
-                      });
-                  }
-              }
-          }
-      });
+        var self = this;
+        this.do_action('sale_rental.rental_configurator_action', {
+            additional_context: self._defaultRentalData(data),
+            on_close: function (result) {
+                if (result && result !== 'special') {
+                    self.trigger_up('field_changed', {
+                        dataPointID: dataPointId,
+                        changes: result.rentalConfiguration,
+                        onSuccess: function () {
+                            // Call post-line init function.
+                            self._onLineConfigured();
+                        }
+                    });
+                } else {
+                    if (!self.recordData.pickup_date || !self.recordData.return_date) {
+                        self.trigger_up('field_changed', {
+                            dataPointID: dataPointId,
+                            changes: {
+                                product_id: false,
+                                name: ''
+                            },
+                        });
+                    }
+                }
+            }
+        });
     },
 });
 

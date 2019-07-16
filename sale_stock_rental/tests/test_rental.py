@@ -163,7 +163,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         })
 
         self.assertEquals(
-            self.product_id._get_rented_qty(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin,
                 self.order_line_id1.return_date,
                 # self.order_line_id1.id,
@@ -265,7 +265,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         self.lots_rental_order.action_confirm()
 
         lots = self.env['stock.production.lot'].search([('product_id', '=', self.tracked_product_id.id)])
-        rentable_lots = lots.filtered(lambda lot: lot._get_available_rental_qty() == 1)
+        rentable_lots = self.env['stock.production.lot']._get_available_lots(self.tracked_product_id)
         self.assertEquals(lots.ids, rentable_lots.ids)
 
         self.order_line_id2.reserved_lot_ids += self.lot_id1

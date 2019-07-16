@@ -12,11 +12,11 @@ var RentalConfiguratorFormController = FormController.extend({
 
     _getRentalInfo: function (state) {
         return {
-          pickup_date: state.pickup_date,
-          return_date: state.return_date,
-          price_unit: state.unit_price,
-          product_uom_qty: state.quantity,
-          is_rental: true
+            pickup_date: state.pickup_date,
+            return_date: state.return_date,
+            price_unit: state.unit_price,
+            product_uom_qty: state.quantity,
+            is_rental: true,
         };
     },
 

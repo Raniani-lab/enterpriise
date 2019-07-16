@@ -15,49 +15,45 @@ tour.register('rental_tour', {
     edition: 'enterprise'
 }, {
     trigger: '.o_menu_header_lvl_1[data-menu-xmlid="sale_rental.menu_rental_products"]',
-    content: _t(""),
+    content: _t("At first, let's create some products to rent."),
     position: 'bottom',
 }, {
     trigger: '.o_menu_entry_lvl_2[data-menu-xmlid="sale_rental.menu_rental_products_tmpl"]',
     content: _t(""),
-    position: 'bottom',
+    position: 'bottom', // TODO remove menuitem
 }, {
     trigger: '.o-kanban-button-new',
     extra_trigger: '.breadcrumb-item:contains(Products)',
-    content: _t("Create a new Rental Product."),
+    content: _t("Click here to set up your first rental product."),
     position: 'bottom',
 }, {
     trigger: "input[name='name']",
-    content: _t("Specify the product name."),
+    content: _t("Enter the product name."),
     position: 'bottom',
 }, {
     trigger: ".nav-item a.nav-link:contains(Rental)",
-    content: _t("Specify rental pricings."),
+    content: _t("The rental configuration is available here."),
     position: 'bottom',
 }, {
-    trigger: "a:contains('Add a pricing')",
-    content: _t("Create a new Pricing Rule."),
-    position: 'bottom',
-}, { //TODO add product name
     trigger: '.o_form_button_save',
     content: _t("Save the product."),
     position: 'bottom',
 }, {
     trigger: '.o_menu_header_lvl_1[data-menu-xmlid="sale_rental.rental_order_menu"]',
     extra_trigger: '.o_form_button_edit',
-    content: _t(""),
+    content: _t("Let's now create an order."),
     position: 'bottom',
 }, {
     trigger: '.o_menu_entry_lvl_2[data-menu-xmlid="sale_rental.rental_orders_all"]',
-    content: _t(""),
+    content: _t("Go to the orders menu."),
     position: 'bottom',
 }, {
     trigger: '.o-kanban-button-new',
-    content: _t("Create a new Rental Quotation."),
+    content: _t("Click here to create a new quotation."),
     position: 'bottom',
 }, {
     trigger: ".o_field_many2one[name=partner_id] input",
-    content: _t("Specify the customer."),
+    content: _t("Create or select a customer here."),
     position: 'bottom',
     run: 'text Agrolait',
 }, {
@@ -66,11 +62,11 @@ tour.register('rental_tour', {
     in_modal: false,
 }, {
     trigger: "a:contains('Add a product')",
-    content: _t("Create a new Rental Order Line."),
+    content: _t("Click here to start filling the quotation."),
     position: 'bottom',
 }, {
     trigger: ".o_field_widget[name=product_id] input, .o_field_widget[name=product_template_id] input",
-    content: _t("Specify your rental product."),
+    content: _t("Select your rental product."),
     position: 'bottom',
 }, {
     trigger: ".ui-menu-item a:contains('Test')",
@@ -78,36 +74,38 @@ tour.register('rental_tour', {
 }, {
     trigger: "button[special=save]",
     extra_trigger: ".o_form_nosheet",
-    content: _t("Specify the rental details. \n When you're done, save the rental line."),
+    content: _t("Enter the requested dates and check the price.\n Then, click here to add the product."),
     position: 'bottom',
 }, {
     trigger: '.o_form_button_save',
     extra_trigger: '.o_sale_order',
-    content: _t("Save the Rental Order."),
+    content: _t("Save the quotation."),
     position: 'bottom',
 }, {
     trigger: 'button[name=action_confirm]',
     extra_trigger: '.o_form_button_edit',
-    content: _t("Confirm the Order."),
+    content: _t("Confirm the order when the customer agrees with the terms."),
     position: 'bottom',
 }, {
     trigger: 'button[name=open_pickup]',
     extra_trigger: '.o_sale_order',
-    content: _t("Pickup the product."),
+    content: _t("Click here to register the delivery."),
     position: 'bottom',
 }, {
     trigger: "button[name='apply']",
-    content: _t("Confirm the pickup. \n Note that by default, the quantity picked-up is set to the remaining quantity to pickup for easy confirmation."),
+    content: _t("Validate the operation after checking the picked-up quantities."),
     position: 'bottom',
 }, {
     trigger: "button[name='open_return']",
     extra_trigger: '.o_sale_order',
-    content: _t("Return the product."),
+    content: _t("Once the rental is done, you can register the return."),
     position: 'bottom',
 }, {
     trigger: "button[name='apply']",
-    content: _t("Confirm the return."),
+    content: _t("Confirm the returned quantities and hit Validate."),
     position: 'bottom',
 }]);
+
+// message to do : You're done with your fist rental. Congratulations !
 
 });

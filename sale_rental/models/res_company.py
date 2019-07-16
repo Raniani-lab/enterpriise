@@ -12,8 +12,8 @@ class ResCompany(models.Model):
     # Padding Time
 
     padding_time = fields.Float(
-        string="Before pickup", default=0.0,
-        help="The product is considered unavailable * hours before its pickup.")
+        string="Padding Time", default=0.0,
+        help="The product is considered unavailable * hours before its pickup (default value on new products).")
 
     # Extra Costs
 

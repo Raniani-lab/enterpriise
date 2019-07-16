@@ -161,6 +161,7 @@ class RentalOrderLine(models.Model):
             'partner_id': self.order_partner_id.id,
             'sale_line_id': self.id,
             'name': _("Rental move :") + " %s" % (self.order_id.name),
+            'state': 'confirmed',
         })
         rental_stock_move._action_assign()
         rental_stock_move._set_quantity_done(qty)
@@ -210,7 +211,7 @@ class RentalOrderLine(models.Model):
 
     def _check_availability(self, product_id):
         """No current stock warning for rental lines."""
-        if not self.is_rental:
+        if not self.order_id.is_rental_order or not product_id.rent_ok:
             return super(RentalOrderLine, self)._check_availability(product_id)
         else:
             return {}  # Rental availability computation?

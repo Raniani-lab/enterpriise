@@ -16,6 +16,12 @@
                 </attribute>
                 <attribute name="adjust_name"/>
             </optional>
+            <optional>
+                <attribute name="class"/>
+            </optional>
+            <optional>
+                <attribute name="js_class"/>
+            </optional>
             <interleave>
                 <oneOrMore><ref name="field"/></oneOrMore>
                 <zeroOrMore><ref name="button"/></zeroOrMore>

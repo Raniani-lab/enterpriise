@@ -16,4 +16,5 @@ Bridge to add contract calendar on automated actions
     'demo': [],
     'installable': True,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

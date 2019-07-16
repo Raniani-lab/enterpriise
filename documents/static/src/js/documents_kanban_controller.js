@@ -157,9 +157,13 @@ var DocumentsKanbanController = KanbanController.extend({
             }));
             $formContainer.appendTo(this.$('.o_content'));
         }
-        var data = new FormData($formContainer.find('.o_form_binary_form')[0]);
 
-        data.delete('ufile');
+        var data = new FormData();
+        $formContainer.find('input').each(function (index, input) {
+            if (input.name !== 'ufile') {
+                data.append(input.name, input.value);
+            }
+        });
         _.each(files, function (file) {
             data.append('ufile', file);
         });

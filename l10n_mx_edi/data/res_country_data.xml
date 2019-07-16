@@ -767,7 +767,7 @@
                         <label for="street_number2" class="oe_edit_only"/>
                         <field name="street_number2" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
                     </div>
-                    <field name="street2" invisible="1"/>
+                    <field name="street2" attrs="{'invisible': [('street2', '=', False)] }"/>
                     <field name="l10n_mx_edi_colony" placeholder="Colony..."/>
                     <field name="l10n_mx_edi_locality" placeholder="Locality..."/>
                     <field name="city" placeholder="City" class="o_address_city"/>

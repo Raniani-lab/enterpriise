@@ -17,4 +17,5 @@
         'views/stock_landed_cost.xml',
     ],
     'installable': True,
+    'license': 'OEEL-1',
 }

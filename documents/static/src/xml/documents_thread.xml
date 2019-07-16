@@ -3,7 +3,7 @@
 
      <t t-name="DocumentsDocumentViewer" t-extend="DocumentViewer">
         <t t-jquery=".o_document_viewer_content_call" t-operation="attributes">
-            <attribute name="t-call">DocumentViewer.ContentWithPdfSplit</attribute>
+            <attribute name="t-call" value="DocumentViewer.ContentWithPdfSplit" />
         </t>
      </t>
 

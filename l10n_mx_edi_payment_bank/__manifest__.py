@@ -20,4 +20,5 @@ Allow the user to select the bank account that was used the customer to paid the
     ],
     'installable': True,
     'auto_install': True,
+    'license': 'OEEL-1',
 }

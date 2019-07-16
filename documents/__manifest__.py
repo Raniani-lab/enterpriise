@@ -38,4 +38,5 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'license': 'OEEL-1',
 }

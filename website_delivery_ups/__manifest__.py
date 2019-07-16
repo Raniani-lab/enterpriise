@@ -14,4 +14,5 @@ This module allows ecommerce users to enter their UPS account number and deliver
         'views/res_config_settings_views.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

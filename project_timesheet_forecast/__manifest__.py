@@ -23,4 +23,5 @@ on old forecasts.
         'views/project_forecast_views.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

@@ -59,4 +59,6 @@ This module allows the creation of the EDI documents and the communication with 
     "post_init_hook": "post_init_hook",
     'installable': True,
     'auto_install': False,
+    'uninstall_hook': 'uninstall_hook',
+    'license': 'OEEL-1',
 }

@@ -18,4 +18,5 @@
         'static/src/xml/invoice_extract_box.xml',
         'static/src/xml/invoice_extract_button.xml',
     ],
+    'license': 'OEEL-1',
 }

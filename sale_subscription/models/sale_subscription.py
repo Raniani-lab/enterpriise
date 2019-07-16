@@ -593,7 +593,7 @@ class SaleSubscription(models.Model):
         self.ensure_one()
         values = self._prepare_renewal_order_values()
         order = self.env['sale.order'].create(values[self.id])
-        order.message_post(body=(_("This sale order has been created from:") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.id, self.display_name)))
+        order.message_post(body=(_("This renewal order has been created from the subscription ") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.id, self.display_name)))
         order.order_line._compute_tax_id()
         return {
             "type": "ir.actions.act_window",

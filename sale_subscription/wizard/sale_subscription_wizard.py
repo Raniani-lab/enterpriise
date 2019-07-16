@@ -35,7 +35,7 @@ class SaleSubscriptionWizard(models.TransientModel):
         if self.subscription_id.partner_id.property_payment_term_id:
             new_order_vals['payment_term_id'] = self.subscription_id.partner_id.property_payment_term_id.id
         order = sale_order_obj.create(new_order_vals)
-        order.message_post(body=(_("This sale order has been created from:") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.subscription_id.id, self.subscription_id.display_name)))
+        order.message_post(body=(_("This upsell order has been created from the subscription ") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.subscription_id.id, self.subscription_id.display_name)))
         for line in self.option_lines:
             self.subscription_id.partial_invoice_line(order, line, date_from=self.date_from)
         order.order_line._compute_tax_id()

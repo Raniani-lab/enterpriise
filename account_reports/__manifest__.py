@@ -14,6 +14,7 @@ Accounting Reports
         'data/account_financial_report_data.xml',
         'views/assets.xml',
         'views/account_report_view.xml',
+        'views/company_view.xml',
         'views/report_financial.xml',
         'views/search_template_view.xml',
         'views/report_followup.xml',

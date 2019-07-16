@@ -17,4 +17,5 @@
         'wizard/aeat_boe_export_wizards.xml',
         'data/mod347.xml',
     ],
+    'license': 'OEEL-1',
 }

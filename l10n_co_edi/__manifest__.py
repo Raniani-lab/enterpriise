@@ -24,4 +24,5 @@
         'views/electronic_invoice.xml',
     ],
     'installable': True,
+    'license': 'OEEL-1',
 }

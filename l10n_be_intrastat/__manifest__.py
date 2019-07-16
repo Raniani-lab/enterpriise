@@ -15,4 +15,5 @@ Based on invoices.
         'views/res_config_settings.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

@@ -57,4 +57,5 @@
         'views/sdd_mandate_views.xml',
         'views/account_batch_payment_views.xml',
     ],
+    'license': 'OEEL-1',
 }

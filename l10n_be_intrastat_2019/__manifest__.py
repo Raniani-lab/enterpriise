@@ -14,4 +14,5 @@ Adds the possibility to specify the origin country of goods and the partner VAT 
         'data/intrastat_export.xml',
     ],
     'auto_install': True,
+    'license': 'OEEL-1',
 }

@@ -25,7 +25,7 @@ msgstr ""
 #, python-format
 msgid " This channel is private. People must be invited to join it."
 msgstr ""
-" Цей канал - приватний. Люди повинні бути запрошені, щоби приєднатися до "
+"Цей канал - приватний. Люди повинні бути запрошені, щоби приєднатися до "
 "нього."
 
 #. module: website_helpdesk_livechat
@@ -38,8 +38,8 @@ msgid ""
 "                    "
 msgstr ""
 "<br><br>\n"
-"                    Ви можете створити новий квиток, натиснувши <b>/helpdesk \"заголовок квитка\"</b>.<br>\n"
-"                    Ви можете знайти квиток, натиснувши <b>/helpdesk_search \"Keywords1 Keywords2 etc\"</b><br>\n"
+"                    Ви можете створити нову заявку, натиснувши <b>/helpdesk \"заголовок заявки\"</b>.<br>\n"
+"                    Ви можете знайти заявку, натиснувши <b>/helpdesk_search \"Keywords1 Keywords2 etc\"</b><br>\n"
 "                    "
 
 #. module: website_helpdesk_livechat
@@ -67,7 +67,7 @@ msgstr "Створити нову заявку служби підтримки"
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:72
 #, python-format
 msgid "Created a new ticket and request: %s"
-msgstr "Створений новий квиток та запит: %s"
+msgstr "Створено нову заявка та запит: %s"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
@@ -101,9 +101,9 @@ msgid ""
 "No tickets found related to the search query. <br> make sure to use the "
 "right format: (/helpdesk_search Keyword1 Keyword2 etc...)"
 msgstr ""
-"Не знайдено жодного квитка, пов'язаного з пошуковим запитом. <br> "
-"обов'язково використовуйте правильний формат: (/helpdesk_search Keyword1 "
-"Keyword2 etc...)"
+"Не знайдено жодної заявки, пов'язаного з пошуковим запитом. <br> обов'язково"
+" використовуйте правильний формат: (/helpdesk_search Keyword1 Keyword2 "
+"etc...)"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:76
@@ -157,7 +157,7 @@ msgstr "Використовуйте попередньо визначені в�
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:99
 #, python-format
 msgid "We found some matched ticket(s) related to the search query: %s"
-msgstr "Ми знайшли відповідні квитки, пов'язані з пошуковим запитом: %s"
+msgstr "Ми знайшли відповідні заявки, пов'язані з пошуковим запитом: %s"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:51
@@ -178,7 +178,7 @@ msgid ""
 "You can search ticket by typing <b>/helpdesk_search \"Keywords1 Keywords2 "
 "etc\"</b><br>"
 msgstr ""
-"Ви можете знайти квиток, натиснувши <b>/helpdesk_search \"Keywords1 "
+"Ви можете знайти заявку, натиснувши <b>/helpdesk_search \"Keywords1 "
 "Keywords2 etc\"</b><br>"
 
 #. module: website_helpdesk_livechat

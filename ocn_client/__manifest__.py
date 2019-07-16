@@ -22,4 +22,5 @@ chatter messages and channel.
         'views/ocn_assets.xml'
     ],
     'installable': True,
+    'license': 'OEEL-1',
 }

@@ -23,4 +23,5 @@ Intrastat Reports
         'views/res_config_settings.xml',
     ],
     'installable': True,
+    'license': 'OEEL-1',
 }

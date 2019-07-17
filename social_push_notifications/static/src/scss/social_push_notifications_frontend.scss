@@ -1,0 +1,56 @@
+.o_social_push_notifications_permission_request {
+    position: fixed;
+    top: 0;
+    left: 100px;
+
+    &.o_social_push_notifications_permission_with_menubar {
+        top: 46px;
+    }
+
+    img {
+        width: 48px;
+        padding-top: 4px;
+    }
+
+    .dropdown-toggle {
+        &::after {
+            display:none;
+        }
+    }
+
+    .dropdown-menu {
+        border: solid 1px #ECECEC;
+        padding: 1rem;
+        z-index: 2001;
+        min-width: 15rem;
+        overflow: hidden;
+
+        .fa-remove {
+            position: absolute;
+            right: 0.7rem;
+            top: 0.7rem;
+            &::before {
+                cursor: pointer;
+            }
+        }
+
+        .o_social_push_notifications_permission_content {
+            min-width: 150px;
+            max-width: 250px;
+            padding-bottom: 1rem;
+
+            .o_social_push_notifications_permission_content_title {
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .o_social_push_notifications_permission_request {
+        top: auto;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+    }
+}

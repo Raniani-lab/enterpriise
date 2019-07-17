@@ -523,13 +523,14 @@ var IoTLongpolling = BusService.extend({
     },
 
     _onSuccess: function (iot_ip, result){
-        var self = this;
         var devices = this._listeners[iot_ip].devices;
         if (devices[result.device_id]) {
             devices[result.device_id].callback(result);
         }
-        self._poll(iot_ip);
-        self._retries = 0;
+        if (!_.isEmpty(devices)) {
+            this._poll(iot_ip);
+        }
+        this._retries = 0;
     },
 
     _onError: function (){

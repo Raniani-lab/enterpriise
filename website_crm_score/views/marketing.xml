@@ -147,11 +147,24 @@
             </field>
         </record>
 
+        <record id="website_crm_score_view_search" model="ir.ui.view">
+            <field name="name">website.crm.score.view.search</field>
+            <field name="model">website.crm.score</field>
+            <field name="arch" type="xml">
+                <search string="Search CRM Score">
+                    <field name="name"/>
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
         <!-- Score Action - tree - form -->
         <record model="ir.actions.act_window" id="score_action">
             <field name="name">Scores</field>
             <field name="res_model">website.crm.score</field>
             <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="website_crm_score_view_search"/>
         </record>
 
         <!-- Score Menu Item -->
@@ -253,8 +266,10 @@
                 <search string="Sales Person">
                     <field name="name"/>
                     <field name="team_id"/>
+                    <separator/>
+                    <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                     <group expand="0" string="Group By">
-                        <filter string="Sales Team" name="groupby_team_id" context="{'group_by':'team_id'}"/>
+                        <filter string="Sales Team" name="groupby_team_id" context="{'group_by': 'team_id'}"/>
                     </group>
                 </search>
             </field>

@@ -228,7 +228,9 @@
                 <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
                     domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter string="Exception Activities" name="activities_exception"
-                        domain="[('activity_exception_decoration', '!=', False)]"/>
+                    domain="[('activity_exception_decoration', '!=', False)]"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By...">
                         <filter string="Date" name="month" domain="[]" context="{'group_by':'first_depreciation_date'}"/>
                         <filter string="Asset Model" name="model" domain="[]" context="{'group_by':'model_id'}"/>

@@ -14,6 +14,11 @@
             <field name="arch" type="xml">
                 <search string="Search PageViews">
                     <field name="lead_id"/>
+                    <field name="url" string="URL"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Viewing Date" name="group_by_viewing_date" context="{'group_by':'view_date'}"/>
+                        <filter string="URL" name="group_by_url" context="{'group_by':'url'}"/>
+                    </group>
                 </search>
             </field>
         </record>

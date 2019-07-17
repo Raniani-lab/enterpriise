@@ -130,7 +130,6 @@
                 <filter name="my_templates" string="My Templates" domain="[('create_uid', '=', uid)]"/>
                 <filter name="favorite" string="My Favorites" domain="[('favorited_ids', '=', uid)]"/>
                 <separator/>
-                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
                 <filter name="archive" string="Archived" domain="[('active', '=', False)]"/>
             </search>
         </field>

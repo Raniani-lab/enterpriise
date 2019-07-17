@@ -44,10 +44,23 @@
         </field>
     </record>
 
+    <record id="project_worksheet_template_view_search" model="ir.ui.view">
+        <field name="name">project.worksheet.template.view.search</field>
+        <field name="model">project.worksheet.template</field>
+        <field name="arch" type="xml">
+            <search string="Project Worksheet Template Search">
+                <field name="name"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="action_fsm_worksheets" model="ir.actions.act_window">
         <field name="name">Worksheet Templates</field>
         <field name="res_model">project.worksheet.template</field>
         <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="search_view_id" ref="project_worksheet_template_view_search"/>
     </record>
 
     <menuitem id="project_worksheet_template_menu" name="Worksheet templates" action="action_fsm_worksheets"

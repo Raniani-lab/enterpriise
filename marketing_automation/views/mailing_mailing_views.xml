@@ -6,7 +6,7 @@
         <field name="model">mailing.mailing</field>
         <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='inactive']" position='after'>
+            <xpath expr="//filter[@name='assigned_to_me']" position='after'>
                 <separator/>
                 <filter name="marketing_automation" string="Used in Marketing Automation" domain="[('use_in_marketing_automation', '=', True)]"/>
             </xpath>

@@ -10,15 +10,4 @@
          }
         </field>
     </record>
-
-    <record id="quality_alert_view_search_inherit_mrp" model="ir.ui.view">
-        <field name="name">quality.alert.view.search.inherit.mrp</field>
-        <field name="model">quality.alert</field>
-        <field name="inherit_id" ref="quality_control.quality_alert_view_search"/>
-        <field name="arch" type="xml">
-            <field name="user_id" position="after">
-                <field name="production_id"/>
-            </field>
-        </field>
-    </record>
 </odoo>

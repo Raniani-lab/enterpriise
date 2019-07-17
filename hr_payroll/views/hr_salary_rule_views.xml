@@ -327,12 +327,14 @@
         <field name="model">hr.salary.rule</field>
         <field name="arch" type="xml">
             <search string="Search Salary Rule">
-                <field name="name" string="Salary Rules" filter_domain="['|',('name','ilike',self),('code','ilike',self)]"/>
+                <field name="name" string="Salary Rules" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
                 <field name="category_id"/>
                 <field name="struct_id"/>
                 <field name="condition_range_min"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group col="8" colspan="4" expand="0" string="Group By">
-                    <filter string="Category" name="head" context="{'group_by':'category_id'}"/>
+                    <filter string="Category" name="head" context="{'group_by': 'category_id'}"/>
                     <filter string="Salary Structure" name="group_by_struct_id" context="{'group_by': 'struct_id'}"/>
                 </group>
             </search>

@@ -63,6 +63,40 @@
         </field>
     </record>
 
+    <record id="quality_alert_view_search" model="ir.ui.view">
+        <field name="name">quality.alert.view.search</field>
+        <field name="model">quality.alert</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Quality Alert" filter_domain="[
+                    '|', '|', '|', ('name', 'ilike', self), ('product_id', 'ilike', self), ('product_tmpl_id', 'ilike', self), ('lot_id', 'ilike', self)]"/>
+                <field name="product_id" string="Product" filter_domain="[
+                    '|', '|', ('product_id', 'ilike', self), ('product_tmpl_id', 'ilike', self), ('lot_id', 'ilike', self)]"/>
+                <field name="tag_ids"/>
+                <field name="user_id"/>
+                <filter string="My Alerts" name="myalerts" domain="[('user_id', '=', uid)]"/>
+                <separator/>
+                <filter string="In Progress" name="inprogress" domain="[('stage_id.done', '=', False)]"/>
+                <filter string="Done" name="done" domain="[('stage_id.done', '=', True)]"/>
+                <separator/>
+                <filter string="Late Activities" name="activities_overdue"
+                    domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has next action date is before today"/>
+                <filter string="Today Activities" name="activities_today"
+                    domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Future Activities" name="activities_upcoming_all"
+                    domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Stage" name="groupby_stage" domain="[]" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Responsible" name="groupby_user" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter string="Root Cause" name="groupby_reason" domain="[]" context="{'group_by': 'reason_id'}"/>
+                    <filter string="Creation Date" name="groupby_createmonth" domain="[]" context="{'group_by': 'create_date'}"/>
+                    <filter string="Quality Team" name="groupby_team_id" domain="[]" context="{'group_by': 'team_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="quality_point_view_tree" model="ir.ui.view">
         <field name="name">quality.point.view.tree</field>
         <field name="model">quality.point</field>

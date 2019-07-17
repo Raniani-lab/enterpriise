@@ -163,6 +163,8 @@
         <field name="arch" type="xml">
             <search string="Search SLA Policies">
                 <field name="team_id"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
             </search>
         </field>
     </record>
@@ -297,20 +299,20 @@
                 <field name="name"/>
                 <field name="id" string="Ticket ID"/>
                 <field name="tag_ids"/>
-                <field name="ticket_type_id"/>
-
                 <field name="team_id"/>
                 <field name="user_id"/>
                 <field name="partner_id"/>
                 <field name="sla_deadline" groups="helpdesk.group_use_sla"/>
 
                 <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>
-                <filter string="Unassigned Tickets" domain="[('user_id','=',False)]" name="unassigned"/>
+                <filter string="Unassigned" domain="[('user_id','=',False)]" name="unassigned"/>
                 <separator/>
-                <filter string="Open Tickets" domain="[('stage_id.is_close','=',False)]" name="is_open"/>
-                <filter string="Closed Tickets" domain="[('stage_id.is_close','=',True)]" name="is_close"/>
+                <filter string="Open" domain="[('stage_id.is_close','=',False)]" name="is_open"/>
+                <filter string="Closed" domain="[('stage_id.is_close','=',True)]" name="is_close"/>
                 <separator/>
                 <filter string="Unread Messages" domain="[('message_needaction','=',True)]" name="message_needaction"/>
+                <separator/>
+                <filter string="Creation Date" date="create_date" name="creation_date"/>
                 <separator/>
                 <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
                 <separator/>
@@ -326,7 +328,7 @@
                 <filter string="Upcoming SLA Fail" domain="[('sla_deadline','!=',False),('sla_deadline', '&lt;=', (datetime.date.today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]" name="upcoming_sla_fail" groups="helpdesk.group_use_sla"/>
                 <filter string="SLA Failed" domain="[('sla_fail','=', True)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
                 <group expand="0" string="Group By">
-                    <filter string="Assignee" name="assignee" context="{'group_by':'user_id'}"/>
+                    <filter string="Assigned to" name="assignee" context="{'group_by':'user_id'}"/>
                     <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
                     <filter string="Ticket Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
                     <filter string="Stage" name="stage" context="{'group_by':'stage_id'}"/>

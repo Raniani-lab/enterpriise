@@ -48,23 +48,25 @@
         <field name="model">sale.subscription.report</field>
         <field name="arch" type="xml">
             <search>
+                <field name="user_id" string="Salesperson"/>
+                <field name="template_id" string="Subscription Template"/>
                 <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
                 <separator/>
-                <filter name="open" string="Running" domain="[('in_progress','=',True)]" help="Running Subscriptions"/>
-                <filter name="pending" string="To Renew" domain="[('to_renew','=',True)]" help="Pending subscriptions"/>
-                <filter name="Expired" string="Expired" domain="[('in_progress','=',False)]" help="Closed subscriptions"/>
+                <filter name="open" string="Running" domain="[('in_progress', '=', True)]" help="Running Subscriptions"/>
+                <filter name="pending" string="To Renew" domain="[('to_renew', '=', True)]" help="Pending subscriptions"/>
+                <filter name="Expired" string="Expired" domain="[('in_progress', '=', False)]" help="Closed subscriptions"/>
                 <separator/>
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
                 <group expand="1" string="Group By">
-                    <filter string="Stage" name="stage" domain="[]" context="{'group_by':'stage_id'}"/>
-                    <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by':'user_id'}"/>
-                    <filter string="Customer" name="customer" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Stage" name="stage" domain="[]" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter string="Customer" name="customer" domain="[]" context="{'group_by': 'partner_id'}"/>
                     <filter string="Country" name="country" domain="[]" context="{'group_by': 'country_id'}"/>
                     <filter string="Industry" name="industry" domain="[]" context="{'group_by': 'industry_id'}"/>
-                    <filter string="Template" name="template" domain="[]" context="{'group_by':'template_id'}"/>
-                    <filter string="Start Date" name="start_month" domain="[]" context="{'group_by' : 'date_start'}" />
-                    <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'date_end'}" />
+                    <filter string="Template" name="template" domain="[]" context="{'group_by': 'template_id'}"/>
+                    <filter string="Start Date" name="start_month" domain="[]" context="{'group_by': 'date_start'}" />
+                    <filter string="End Date" name="end_month" domain="[]" context="{'group_by': 'date_end'}" />
                 </group>
             </search>
         </field>

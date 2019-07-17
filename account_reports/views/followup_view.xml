@@ -41,12 +41,10 @@
             <field name="arch" type="xml">
                 <filter name="inactive" position="before">
                     <separator />
-                    <filter string="Overdue Invoices" 
-                            name="filter_with_overdue_invoices"
-                            domain="[('followup_status', '=', 'with_overdue_invoices')]"/>
-                    <filter string="In need of action"
+                    <filter string="In Need of Action"
                             name="filter_in_need_of_action"
-                            domain="[('followup_status', '=', 'in_need_of_action')]"/>
+                            domain="[('followup_status', '=', 'in_need_of_action')]"
+                            invisible="1"/>
                     <separator/>
                 </filter>
             </field>
@@ -59,7 +57,7 @@
             <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('customer_statements_tree_view')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('customer_statements_form_view')})]"/>
-            <field name="domain">[('parent_id', '=', False)]</field>
+            <field name="domain">[('parent_id', '=', False), ('followup_status', 'in', ['in_need_of_action', 'with_overdue_invoices'])]</field>
             <field name="context">{'search_default_filter_in_need_of_action': 1}</field>
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">

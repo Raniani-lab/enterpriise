@@ -217,7 +217,7 @@
         <field name="model">l10n_be.meal.voucher.report</field>
         <field name="arch" type="xml">
             <search string="Search Meal Voucher Report">
-                <filter name="date_filter" string="Months" date="day" default_period="this_year"/>
+                <filter name="date_filter" string="Date" date="day" default_period="this_year"/>
             </search>
         </field>
     </record>

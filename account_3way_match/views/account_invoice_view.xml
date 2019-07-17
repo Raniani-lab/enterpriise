@@ -30,6 +30,7 @@
                 <separator/>
                 <filter name="bills_to_pay" string="Bills to Pay" domain="['&amp;', ('state', '=', 'posted'), '|', ('invoice_date_due', '&lt;', time.strftime('%%Y-%%m-%%d')), ('release_to_pay','=', 'yes')]"/>
                 <filter name="exception" string="Bills in Exception" domain="[('release_to_pay','=', 'exception')]"/>
+                <separator/>
             </xpath>
         </field>
     </record>

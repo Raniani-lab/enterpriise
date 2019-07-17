@@ -19,6 +19,7 @@
             </field>
         </field>
     </record>
+
     <record id="step_view_form" model="ir.ui.view">
         <field name="name">quality.point.view.form.inherit.mrp</field>
         <field name="model">quality.point</field>
@@ -30,6 +31,7 @@
             </field>
         </field>
     </record>
+
     <record id="quality_alert_view_tree" model="ir.ui.view">
         <field name="name">quality.alert.view.tree.inherit.mrp.workorder</field>
         <field name="model">quality.alert</field>
@@ -53,5 +55,16 @@
                 <field name="operation_id" optional="hide" string="Work Order Operation"/>
             </field>
         </field>
+    </record>
+
+    <record id="quality_alert_view_search_inherit_mrp_workorder" model="ir.ui.view">
+            <field name="name">quality.alert.view.search.inherit.mrp.workorder</field>
+            <field name="model">quality.alert</field>
+            <field name="inherit_id" ref="quality.quality_alert_view_search"/>
+            <field name="arch" type="xml">
+                <field name="tag_ids" position="before">
+                    <field name="workcenter_id" string="Work Center"/>
+                </field>
+            </field>
     </record>
 </odoo>

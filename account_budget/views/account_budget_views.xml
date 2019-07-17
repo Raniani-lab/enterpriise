@@ -223,11 +223,11 @@ Budgets
         <field name="model">crossovered.budget</field>
         <field name="arch" type="xml">
             <search string="Budget">
-                <field name="name" filter_domain="[('name','ilike',self)]" string="Budget"/>
+                <field name="name" filter_domain="[('name', 'ilike', self)]" string="Budget"/>
                 <field name="date_from"/>
                 <field name="date_to"/>
-                <filter string="Draft" name="draft" domain="[('state','=','draft')]" help="Draft Budgets"/>
-                <filter string="To Approve" name="toapprove" domain="[('state','=','confirm')]"
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]" help="Draft Budgets"/>
+                <filter string="To Approve" name="toapprove" domain="[('state', '=', 'confirm')]"
                         help="To Approve Budgets"/>
                 <separator/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
@@ -238,8 +238,7 @@ Budgets
                 <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
                     domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter string="Exception Activities" name="activities_exception"
-                        domain="[('activity_exception_decoration', '!=', False)]"/>
-                <field name="state"/>
+                    domain="[('activity_exception_decoration', '!=', False)]"/>
             </search>
         </field>
     </record>

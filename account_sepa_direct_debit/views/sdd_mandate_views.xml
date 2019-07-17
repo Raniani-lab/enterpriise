@@ -72,9 +72,9 @@
             <field name="model">sdd.mandate</field>
             <field name="arch" type="xml">
                 <search>
-                    <filter string="Draft Mandates" name="account_sdd_mandate_draft_filter" domain="[('state', '=', 'draft')]"/>
-                    <filter string="Active Mandates" name="account_sdd_mandate_active_filter" domain="[('state', '=', 'active')]"/>
-                    <filter string="Closed Mandates" name="account_sdd_mandate_closed_filter" domain="[('state', 'in', ('closed','revoked'))]"/>
+                    <filter string="Draft" name="account_sdd_mandate_draft_filter" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Active" name="account_sdd_mandate_active_filter" domain="[('state', '=', 'active')]"/>
+                    <filter string="Closed" name="account_sdd_mandate_closed_filter" domain="[('state', 'in', ('closed','revoked'))]"/>
                 </search>
             </field>
         </record>

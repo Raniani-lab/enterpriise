@@ -320,21 +320,23 @@
         <field name="arch" type="xml">
             <search string="Search Payslips">
                 <field name="employee_id"/>
-                <field name="name" string="Payslips" filter_domain="['|',('name','ilike',self),('number','ilike',self)]"/>
+                <field name="name" string="Payslips" filter_domain="['|', ('name', 'ilike', self), ('number', 'ilike', self)]"/>
                 <field name="date_from"/>
                 <field name="contract_id"/>
                 <field name="payslip_run_id"/>
-                <filter string="To Compute" name="draft" domain="[('state','=','draft')]" help="Draft Slip"/>
-                <filter string="To Confirm" name="draft" domain="[('state','=','verify')]" help="Slips to Confirm"/>
-                <filter string="Done" name="done" domain="[('state','=','done')]" help="Done Slip"/>
-                <filter name="date_filter" string="Date" date="date_to" default_period="last_month"/>
+                <filter string="To Compute" name="draft" domain="[('state', '=', 'draft')]" help="Draft Slip"/>
+                <filter string="To Confirm" name="draft" domain="[('state', '=', 'verify')]" help="Slips to Confirm"/>
+                <filter string="Done" name="done" domain="[('state', '=', 'done')]" help="Done Slip"/>
+                <separator/>
+                <filter string="Date" name="date_filter" date="date_to" default_period="last_month"/>
                 <separator/>
                 <filter string="Credit Notes" name="credit_note" domain="[('credit_note', '=', True)]"/>
+                <separator/>
                 <group expand="0" string="Group By">
-                    <filter string="Employees" name="employee_id" context="{'group_by':'employee_id'}"/>
-                    <filter string="PaySlip Batch" name="group_by_batch" context="{'group_by':'payslip_run_id'}"/>
-                    <filter string="Companies" name="company_id" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
-                    <filter string="States" name="state" context="{'group_by':'state'}"/>
+                    <filter string="Employee" name="employee_id" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Status" name="state" context="{'group_by': 'state'}"/>
+                    <filter string="Batch" name="group_by_batch" context="{'group_by': 'payslip_run_id'}"/>
+                    <filter string="Company" name="company_id" groups="base.group_multi_company" context="{'group_by': 'company_id'}"/>
                 </group>
             </search>
         </field>
@@ -375,11 +377,12 @@
         <field name="model">hr.payslip.run</field>
         <field name="arch" type="xml">
             <search string="Search Payslip Batches">
-                <field name="name" string="Payslip Batches"/>
-                <field name="date_start"/>
-                <field name="date_end"/>
-                <filter string="Draft" name="draft" domain="[('state','=','draft')]" help="Draft Payslip Batches"/>
-                <filter name="done_filter" string="Done" domain="[('state','=','close')]" help="Done Payslip Batches"/>
+                <field name="name" string="Payslip Batch"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]" help="Draft Payslip Batches"/>
+                <filter string="Done" name="done_filter" domain="[('state', '=', 'close')]" help="Done Payslip Batches"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="state" context="{'group_by': 'state'}"/>
+                </group>
             </search>
         </field>
     </record>

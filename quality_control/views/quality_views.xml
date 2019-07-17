@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- QUALITY.ALERT -->
-    <record id="quality_alert_view_search" model="ir.ui.view">
-        <field name="name">quality.alert.view.search</field>
+    <record id="quality_alert_view_search_inherit_quality_control" model="ir.ui.view">
+        <field name="name">quality.alert.view.search.inherit.quality.control</field>
         <field name="model">quality.alert</field>
+        <field name="inherit_id" ref="quality.quality_alert_view_search"/>
         <field name="arch" type="xml">
-            <search>
-                <field name="tag_ids"/>
-                <field name="product_id"/>
-                <field name="user_id"/>
-                <filter string="My Alerts" name="myalerts" domain="[('user_id', '=', uid)]"/>
-                <separator/>
-                <filter string="In Progress" name="inprogress" domain="[('stage_id.done', '=', False)]"/>
-                <filter string="Done" name="done" domain="[('stage_id.done','=',True)]"/>
-                <group expand="0" string="Group By">
-                    <filter string="Stage" name="groupby_stage" domain="[]" context="{'group_by':'stage_id'}"/>
-                    <filter string="Responsible" name="groupby_user" domain="[]" context="{'group_by':'user_id'}"/>
-                    <filter string="Root Cause" name="groupby_reason" domain="[]" context="{'group_by':'reason_id'}"/>
-                    <filter string="Creation Date" name="groupby_createmonth" domain="[]" context="{'group_by':'create_date'}"/>
-                    <filter string="Quality Team" name="groupby_team_id" domain="[]" context="{'group_by': 'team_id'}"/>
-                    <filter invisible="1" string="Late Activities" name="activities_overdue"
-                        domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
-                        help="Show all records which has next action date is before today"/>
-                    <filter invisible="1" string="Today Activities" name="activities_today"
-                        domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
-                    <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
-                        domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
-                    <filter string="Exception Activities" name="activities_exception"
-                        domain="[('activity_exception_decoration', '!=', False)]"/>
-                </group>
-            </search>
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="title" string="Quality Alert" filter_domain="[
+                    '|', '|', '|', ('title', 'ilike', self), ('product_id', 'ilike', self), ('product_tmpl_id', 'ilike', self), ('lot_id', 'ilike', self)]"/>
+            </xpath>
         </field>
     </record>
 
@@ -441,16 +421,19 @@
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
             <search>
-                <field name="team_id"/>
+                <field name="product_id" string="Product" filter_domain="['|', ('product_id', 'ilike', self), ('lot_id', 'ilike', self)]"/>
                 <field name="picking_id"/>
-                <field name="quality_state"/>
-                <filter string="In Progress" domain="[('quality_state', '=', 'none')]" name="progress"/>
-                <filter string="Passed" domain="[('quality_state', '=', 'pass')]" name="passed"/>
-                <filter string="Failed" domain="[('quality_state', '=', 'fail')]" name="failed"/>
+                <field name="team_id"/>
+                <filter string="In Progress" name="progress" domain="[('quality_state', '=', 'none')]"/>
+                <filter string="Passed" name="passed" domain="[('quality_state', '=', 'pass')]"/>
+                <filter string="Failed" name="failed" domain="[('quality_state', '=', 'fail')]"/>
+                <separator/>
+                <filter string="Checked Date" name="control_date" date="control_date"/>
                 <group expand="0" string="Group By">
-                    <filter string="State" name="state" context="{'group_by': 'quality_state'}"/>
-                    <filter string="Control Points" name="groupby_point_id" context="{'group_by': 'point_id'}"/>
-                    <filter string="Quality Team" name="groupby_team_id" context="{'group_by': 'team_id'}"/>
+                    <filter string="Status" name="state" context="{'group_by': 'quality_state'}"/>
+                    <filter string="Product" name="by_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Control Point" name="groupby_point_id" context="{'group_by': 'point_id'}"/>
+                    <filter string="Team" name="groupby_team_id" context="{'group_by': 'team_id'}"/>
                 </group>
             </search>
         </field>
@@ -830,16 +813,16 @@
         <field name="model">quality.point</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name"/>
-                <field name="title"/>
+                <field name="name" string="Control Point" filter_domain="[
+                    '|', '|', ('name', 'ilike', self), ('title', 'ilike', self), ('product_tmpl_id', 'ilike', self)]"/>
                 <field name="product_tmpl_id"/>
                 <field name="picking_type_id"/>
                 <field name="test_type_id"/>
-                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <group expand="1" string="Group By">
-                    <filter string="Product" name="groupby_product_template" context="{'group_by':'product_tmpl_id'}"/>
-                    <filter string="Operation Type" name="groupby_operation" context="{'group_by':'picking_type_id'}"/>
-                    <filter string="Test Type" name="groupby_test_type" context="{'group_by':'test_type_id'}"/>
+                    <filter string="Product" name="groupby_product_template" context="{'group_by': 'product_tmpl_id'}"/>
+                    <filter string="Operation Type" name="groupby_operation" context="{'group_by': 'picking_type_id'}"/>
+                    <filter string="Test Type" name="groupby_test_type" context="{'group_by': 'test_type_id'}"/>
                     <filter string="Team" name="groupby_team_id" context="{'group_by': 'team_id'}"/>
                     <filter string="Responsible" name="groupby_user_id" context="{'group_by': 'user_id'}"/>
                 </group>

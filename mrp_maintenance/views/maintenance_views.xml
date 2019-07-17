@@ -67,8 +67,7 @@
         <field name="inherit_id" ref="maintenance.hr_equipment_request_view_search"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='maintenance_team_id']" position="after">
-                <field name="production_id"/>
-                <field name="workorder_id"/>
+                <field name="production_id" string="Operation" filter_domain="['|', ('production_id', 'ilike', self), ('workorder_id', 'ilike', self)]"/>
             </xpath>
         </field>
     </record>

@@ -25,11 +25,11 @@
         <field name="model">sale.subscription</field>
         <field name="arch" type="xml">
             <search string="Subscriptions">
-                <field name="name" string="Subscription"/>
+                <field name="name" string="Subscription" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
                 <field name="date"/>
                 <field name="partner_id" operator="child_of"/>
                 <field name="user_id"/>
-                <field name="template_id"/>
+                <field name="template_id" string="Template"/>
                 <field name="code"/>
                 <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
                 <filter string="Unassigned" name="contracts_not_assigned" help="Subscriptions that are not assigned to an account manager." domain="[('user_id', '=', False)]"/>
@@ -52,13 +52,13 @@
                         domain="[('activity_exception_decoration', '!=', False)]"/>
                 <separator/>
                 <group expand="0" string="Group By">
-                    <filter string="Stage" name="stage" domain="[]" context="{'group_by':'stage_id'}"/>
                     <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by':'user_id'}"/>
                     <filter string="Sales Team" name="sales_team" domain="[]" context="{'group_by':'team_id'}"/>
                     <filter string="Customer" name="customer" domain="[]" context="{'group_by':'partner_id'}"/>
                     <filter string="Country" name="country" domain="[]" context="{'group_by': 'country_id'}"/>
                     <filter string="Industry" name="industry" domain="[]" context="{'group_by': 'industry_id'}"/>
                     <filter string="Template" name="template" domain="[]" context="{'group_by':'template_id'}"/>
+                    <filter string="Stage" name="stage" domain="[]" context="{'group_by':'stage_id'}"/>
                     <filter string="Start Date" name="start_month" domain="[]" context="{'group_by' : 'date_start'}" />
                     <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'date'}" />
                 </group>
@@ -80,7 +80,6 @@
         <field name="res_model">sale.subscription</field>
         <field name="view_mode">kanban,tree,form,pivot,graph,cohort,activity</field>
         <field name="context">{
-            "search_default_stage":1,
             "search_default_my_subscriptions":1
         }</field>
         <field name="domain">[]</field>
@@ -419,6 +418,7 @@
         <field name="arch" type="xml">
             <search string="Subscription Templates">
                 <field name="name" filter_domain="['|', ('name','ilike',self),('code','ilike',self)]" string="Template"/>
+                <separator/>
                 <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
             </search>
         </field>

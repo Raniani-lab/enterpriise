@@ -6,8 +6,9 @@
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_search"/>
             <field name="arch" type="xml">
-                <xpath expr="//filter[@name='state_sent']" position="before">
-                    <filter string="SEPA Credit Transfer Payments To Send" domain="[('payment_method_id.code', '=', 'sepa_ct'), ('state','=','posted')]" name="sepa_to_send"/>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <filter string="SCT Payments To Send" domain="[('payment_method_id.code', '=', 'sepa_ct'), ('state', '=', 'posted')]" name="sepa_to_send"/>
+                    <separator/>
                 </xpath>
             </field>
         </record>

@@ -27,8 +27,9 @@
         <field name="model">hr.payslip</field>
         <field name="inherit_id" ref="hr_payroll.view_hr_payslip_filter"/>
         <field name="arch" type="xml">
-            <filter name="done" position="after">
-                <filter string="Has Salary Attachment" name="has_attachment_salary" domain="[('has_attachment_salary', '=', True)]"/>
+            <filter name="credit_note" position="after">
+                <separator/>
+                <filter string="Has Attachment" name="has_attachment_salary" domain="[('has_attachment_salary', '=', True)]"/>
             </filter>
         </field>
     </record>

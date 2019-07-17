@@ -65,12 +65,11 @@ class DHLProvider():
         else:
             return "N"
 
-    def _set_billing(self, shipper_account, payment_type, duty_payment_type):
+    def _set_billing(self, shipper_account, payment_type, duty_payment_type, is_dutiable):
         billing = self.factory.Billing()
         billing.ShipperAccountNumber = shipper_account
         billing.ShippingPaymentType = payment_type
-        if duty_payment_type:
-            # S:Shipper, R:Recipient, T:Third Party.
+        if is_dutiable:
             billing.DutyPaymentType = duty_payment_type
         return billing
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <li t-name="social_twitter.users_autocomplete_element">
+        <div role="menuitem" href="#"
+            t-attf-class="dropdown-item o_social_twitter_users_autocomplete_suggestion clearfix#{suggestion_index == 0 and ' active' or ''}">
+            <img t-att-src="suggestion['profile_image_url_https']" alt="Twiter Profile Image"/>
+            <div class="o_twitter_users_autocomplete_info">
+                <span t-esc="suggestion['name']" class="o_twitter_users_autocomplete_info_name"><strong /></span>
+                <br/>
+                <span><small t-esc="suggestion['description']" /></span>
+            </div>
+        </div>
+    </li>
+</odoo>

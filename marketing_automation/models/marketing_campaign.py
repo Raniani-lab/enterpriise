@@ -603,7 +603,7 @@ class MarketingActivity(models.Model):
         if not self.env.is_superuser() and not self.user_has_groups('marketing_automation.group_marketing_automation_user'):
             raise AccessError(_('To use this feature you should be an administrator or belong to the marketing automation group.'))
         try:
-            mailing.sudo().send_mail(res_ids)
+            mailing.sudo().action_send_mail(res_ids)
         except Exception as e:
             _logger.warning(_('Marketing Automation: activity <%s> encountered mass mailing issue %s'), self.id, str(e), exc_info=True)
             traces.write({

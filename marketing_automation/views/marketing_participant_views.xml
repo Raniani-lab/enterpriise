@@ -216,7 +216,7 @@
                         </group>
                     </group>
                     <group>
-                        <field name="mail_statistics_ids"/>
+                        <field name="mailing_trace_ids"/>
                     </group>
                     <group>
                         <field name="state_msg"/>

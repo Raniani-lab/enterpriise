@@ -132,7 +132,7 @@ class MarketingCampaign(models.Model):
                 elif trigger_type in ['act', 'mail_not_open', 'mail_not_click', 'mail_not_reply'] and trace.parent_id:
                     trace.schedule_date = Datetime.from_string(trace.parent_id.schedule_date) + trace_offset
                 elif trace.parent_id:
-                    process_dt = trace.parent_id.mail_statistics_ids.state_update
+                    process_dt = trace.parent_id.mailing_trace_ids.state_update
                     trace.schedule_date = Datetime.from_string(process_dt) + trace_offset
 
             # Action 2: On activity creation
@@ -306,7 +306,7 @@ class MarketingActivity(models.Model):
         ('email', 'Email'),
         ('action', 'Server Action')
         ], required=True, default='email')
-    mass_mailing_id = fields.Many2one('mail.mass_mailing', string='Email Template')
+    mass_mailing_id = fields.Many2one('mailing.mailing', string='Email Template')
     server_action_id = fields.Many2one('ir.actions.server', string='Server Action')
 
     # Related to parent activity
@@ -424,7 +424,7 @@ class MarketingActivity(models.Model):
             FROM
                 marketing_trace AS trace
             LEFT JOIN
-                mail_mail_statistics AS stat
+                mailing_trace AS stat
                 ON (stat.marketing_trace_id = trace.id)
             JOIN
                 marketing_participant AS part
@@ -612,7 +612,7 @@ class MarketingActivity(models.Model):
                 'state_msg': _('Exception in mass mailing: %s') % str(e),
             })
         else:
-            failed_stats = self.env['mail.mail.statistics'].sudo().search([
+            failed_stats = self.env['mailing.trace'].sudo().search([
                 ('marketing_trace_id', 'in', traces.ids),
                 '|', ('exception', '!=', False), ('ignored', '!=', False)])
             ignored_doc_ids = [stat.res_id for stat in failed_stats if stat.exception]

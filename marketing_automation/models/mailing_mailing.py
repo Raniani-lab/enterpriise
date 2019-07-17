@@ -5,7 +5,7 @@ from odoo import fields, models
 
 
 class MassMailing(models.Model):
-    _inherit = 'mail.mass_mailing'
+    _inherit = 'mailing.mailing'
 
     use_in_marketing_automation = fields.Boolean(
         string='Specific mailing used in marketing campaign', default=False,
@@ -15,7 +15,7 @@ class MassMailing(models.Model):
     def convert_links(self):
         """Override convert_links so we can add marketing automation campaign instead of mass mail campaign"""
         res = {}
-        done = self.env['mail.mass_mailing']
+        done = self.env['mailing.mailing']
         for mass_mailing in self:
             if self.env.context.get('default_marketing_activity_id'):
                 activity = self.env['marketing.activity'].browse(self.env.context['default_marketing_activity_id'])
@@ -35,13 +35,9 @@ class MassMailing(models.Model):
         return res
 
     def _get_convert_links(self):
-        if not self.env.context.get('default_marketing_activity_id'):
-            return super(MassMailing, self)._get_convert_links()
-        self.ensure_one()
-        activity = self.env['marketing.activity'].browse(self.env.context['default_marketing_activity_id'])
-        return {
-            'mass_mailing_id': self.id,
-            'campaign_id': activity.campaign_id.utm_campaign_id.id,
-            'source_id': activity.utm_source_id.id,
-            'medium_id': self.medium_id.id,
-        }
+        res = super(MassMailing, self)._get_convert_links()
+        if self.env.context.get('default_marketing_activity_id'):
+            activity = self.env['marketing.activity'].browse(self.env.context['default_marketing_activity_id'])
+            res['campaign_id'] = activity.campaign_id.utm_campaign_id.id
+            res['source_id'] = activity.utm_source_id.id
+        return res

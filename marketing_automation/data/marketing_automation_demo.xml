@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="mass_mailing_offer_free_trial" model="mail.mass_mailing">
+    <record id="mass_mailing_offer_free_trial" model="mailing.mailing">
         <field name="name">Offer free catalog</field>
         <field name="subject">Welcome!</field>
         <field name="use_in_marketing_automation">True</field>
@@ -67,7 +67,7 @@
         </field>
     </record>
 
-    <record id="mass_mailing_after_7_days" model="mail.mass_mailing">
+    <record id="mass_mailing_after_7_days" model="mailing.mailing">
         <field name="name">After 7 days</field>
         <field name="subject">Join partnership!</field>
         <field name="use_in_marketing_automation">True</field>

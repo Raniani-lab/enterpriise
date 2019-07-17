@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <record id="social_post_view_form" model="ir.ui.view">
+        <field name="name">social.post.view.form.inherit.facebook</field>
+        <field name="model">social.post</field>
+        <field name="inherit_id" ref="social.social_post_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='previews_placeholder']" position="inside">
+                <field name="display_facebook_preview" invisible="1" />
+                <field name="facebook_preview" readonly="1" nolabel="1" colspan="2" widget="social_post_preview"
+                    attrs="{'invisible': [('display_facebook_preview', '=', False)]}"
+                    class="o_social_preview_wrapper m-0 px-4 py-5 bg-200"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="social_stream_post_view_kanban" model="ir.ui.view">
+        <field name="name">social.stream.post.view.kanban.inherit.facebook</field>
+        <field name="model">social.stream.post</field>
+        <field name="inherit_id" ref="social.social_stream_post_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stream_id']" position="after">
+                <field name="facebook_author_id"/>
+                <field name="facebook_likes_count"/>
+                <field name="facebook_user_likes"/>
+                <field name="facebook_comments_count"/>
+                <field name="facebook_shares_count"/>
+                <field name="facebook_reach"/>
+            </xpath>
+            <xpath expr="//span[hasclass('o_social_stream_post_author_image')]" position="inside">
+                <img t-if="record.facebook_author_id.raw_value" t-attf-src="https://graph.facebook.com/v3.3/#{record.facebook_author_id.raw_value}/picture" alt="Author Image"/>
+            </xpath>
+            <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
+                <div class="o_social_stream_post_facebook_stats d-flex justify-content-around"
+                    t-if="record.media_type.raw_value === 'facebook'">
+                    <div t-attf-class="o_social_facebook_likes o_social_subtle_btn pl-2 pr-3 #{record.facebook_user_likes.raw_value ? 'o_social_facebook_user_likes' : ''}"
+                        t-att-data-user-likes="record.facebook_user_likes.raw_value"
+                        t-att-data-post-id="record.id.raw_value">
+                        <i class="fa fa-thumbs-up" title="Likes"/>
+                        <b class="o_social_kanban_likes_count" t-esc="record.facebook_likes_count.raw_value !== 0 ? record.facebook_likes_count.raw_value : ''"/>
+                    </div>
+                    <div class="o_social_facebook_comments o_social_subtle_btn px-3"
+                        t-att-data-post-id="record.id.raw_value"
+                        t-att-data-facebook-page-id="record.account_id.raw_value">
+                        <i class="fa fa-comments" title="Comments"></i>
+                        <b t-esc="record.facebook_comments_count.value !== '0' ? record.facebook_comments_count.value : ''"/>
+                    </div>
+                    <div class="flex-grow-1 d-flex text-muted justify-content-end">
+                        <div>
+                            <t t-esc="record.facebook_shares_count.value"/>
+                            Shares
+                        </div>
+                        <div class="ml-3">
+                            <t t-esc="record.facebook_reach.value"/>
+                            Views
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</data>
+</odoo>

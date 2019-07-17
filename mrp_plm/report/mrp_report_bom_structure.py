@@ -14,10 +14,17 @@ class ReportBomStructure(models.AbstractModel):
 
     def _add_version_and_ecos(self, components):
         for line in components:
-            prod_id = self.env['product.product'].browse(line['prod_id'])
-            child_bom = self.env['mrp.bom'].browse(line['child_bom'])
-            line['version'] = child_bom and child_bom.version or ''
-            line['ecos'] = self.env['mrp.eco'].search_count([('product_tmpl_id', '=', prod_id.product_tmpl_id.id), ('state', '!=', 'done')]) or ''
+            prod_id = line.get('prod_id')
+            child_bom = line.get('child_bom')
+            ecos = version = False
+            if prod_id:
+                prod_id = self.env['product.product'].browse(prod_id)
+                ecos = self.env['mrp.eco'].search_count([('product_tmpl_id', '=', prod_id.product_tmpl_id.id), ('state', '!=', 'done')]) or ''
+            if child_bom:
+                child_bom = self.env['mrp.bom'].browse(child_bom)
+                version = child_bom and child_bom.version or ''
+            line['ecos'] = ecos
+            line['version'] = version
         return True
 
     def _get_bom_lines(self, bom, bom_quantity, product, line_id, level):

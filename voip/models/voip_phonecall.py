@@ -191,7 +191,10 @@ class VoipPhonecall(models.Model):
 
     @api.model
     def create_from_incoming_call(self, number, partner_id=False):
-        name = _('Call from ') + number
+        if partner_id:
+            name = _('Call from ') + self.env['res.partner'].browse([partner_id]).display_name
+        else:
+            name = _('Call from ') + number
         phonecall = self.create({
             'name': name,
             'phone': number,

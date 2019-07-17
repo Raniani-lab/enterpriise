@@ -14,6 +14,7 @@ It links the module
     'data': [
         'views/pos_config_views.xml',
         'views/account_journal_views.xml',
+        'views/point_of_sale_assets.xml',
     ],
     'depends': ['point_of_sale', 'iot'],
     'qweb': ['static/src/xml/pos.xml'],

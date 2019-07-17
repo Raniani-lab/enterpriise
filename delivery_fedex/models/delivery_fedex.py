@@ -84,6 +84,7 @@ class ProviderFedex(models.Model):
                                            ('FEDEX_NEXT_DAY_END_OF_DAY', 'FEDEX_NEXT_DAY_END_OF_DAY'),
                                            ],
                                           default='INTERNATIONAL_PRIORITY')
+    fedex_duty_payment = fields.Selection([('SENDER', 'Sender'), ('RECIPIENT', 'Recipient')], required=True, default="SENDER")
     fedex_weight_unit = fields.Selection([('LB', 'LB'),
                                           ('KG', 'KG')],
                                          default='LB')
@@ -205,7 +206,7 @@ class ProviderFedex(models.Model):
                 commodity_harmonized_code = line.product_id.hs_code or ''
                 srm.commodities(_convert_curr_iso_fdx(order_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units, commodity_harmonized_code)
             srm.customs_value(_convert_curr_iso_fdx(order_currency.name), total_commodities_amount, "NON_DOCUMENTS")
-            srm.duties_payment(order.warehouse_id.partner_id.country_id.code, superself.fedex_account_number)
+            srm.duties_payment(order.warehouse_id.partner_id, superself.fedex_account_number, superself.fedex_duty_payment)
 
         request = srm.rate()
 
@@ -283,7 +284,7 @@ class ProviderFedex(models.Model):
                     commodity_harmonized_code = operation.product_id.hs_code or ''
                     srm.commodities(_convert_curr_iso_fdx(commodity_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units, commodity_harmonized_code)
                 srm.customs_value(_convert_curr_iso_fdx(commodity_currency.name), total_commodities_amount, "NON_DOCUMENTS")
-                srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id.country_id.code, superself.fedex_account_number)
+                srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id, superself.fedex_account_number, superself.fedex_duty_payment)
                 send_etd = self.env['ir.config_parameter'].get_param("delivery_fedex.send_etd")
                 srm.commercial_invoice(self.fedex_document_stock_type, send_etd)
 
@@ -517,7 +518,8 @@ class ProviderFedex(models.Model):
                 commodity_harmonized_code = operation.product_id.hs_code or ''
                 srm.commodities(_convert_curr_iso_fdx(commodity_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units, commodity_harmonized_code)
             srm.customs_value(_convert_curr_iso_fdx(commodity_currency.name), total_commodities_amount, "NON_DOCUMENTS")
-            srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id.country_id.code, superself.fedex_account_number)
+            # We consider that returns are always paid by the company creating the label
+            srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id, superself.fedex_account_number, 'SENDER')
         srm.return_label(tracking_number, origin_date)
         response = srm.process_shipment()
         fedex_labels = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), response['tracking_number'], index, self.fedex_label_file_type), label)

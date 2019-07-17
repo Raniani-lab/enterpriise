@@ -298,15 +298,16 @@ class FedexRequest():
         Payor.ResponsibleParty.AccountNumber = shipping_charges_payment_account
         self.RequestedShipment.ShippingChargesPayment.Payor = Payor
 
-    def duties_payment(self, responsible_party_country_code, responsible_account_number):
+    def duties_payment(self, sender_party, responsible_account_number, payment_type):
         self.RequestedShipment.CustomsClearanceDetail.DutiesPayment = self.factory.Payment()
-        self.RequestedShipment.CustomsClearanceDetail.DutiesPayment.PaymentType = 'SENDER'
-        Payor = self.factory.Payor()
-        Payor.ResponsibleParty = self.factory.Party()
-        Payor.ResponsibleParty.Address = self.factory.Address()
-        Payor.ResponsibleParty.Address.CountryCode = responsible_party_country_code
-        Payor.ResponsibleParty.AccountNumber = responsible_account_number
-        self.RequestedShipment.CustomsClearanceDetail.DutiesPayment.Payor = Payor
+        self.RequestedShipment.CustomsClearanceDetail.DutiesPayment.PaymentType = payment_type
+        if payment_type == 'SENDER':
+            Payor = self.factory.Payor()
+            Payor.ResponsibleParty = self.factory.Party()
+            Payor.ResponsibleParty.Address = self.factory.Address()
+            Payor.ResponsibleParty.Address.CountryCode = sender_party.country_id.code
+            Payor.ResponsibleParty.AccountNumber = responsible_account_number
+            self.RequestedShipment.CustomsClearanceDetail.DutiesPayment.Payor = Payor
 
     def customs_value(self, customs_value_currency, customs_value_amount, document_content):
         self.RequestedShipment.CustomsClearanceDetail = self.factory.CustomsClearanceDetail()

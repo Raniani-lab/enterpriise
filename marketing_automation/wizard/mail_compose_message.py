@@ -21,9 +21,9 @@ class MailComposeMessage(models.TransientModel):
             # update statistics creation done in mass_mailing to include link between stat and trace
             for res_id in res_ids:
                 mail_values = res[res_id]
-                statistics_command = mail_values.get('statistics_ids')  # [(0, 0, stat_vals)]
-                if statistics_command and len(statistics_command[0]) == 3:
-                    statistics_dict = statistics_command[0][2]
+                traces_command = mail_values.get('mailing_trace_ids')  # [(0, 0, stat_vals)]
+                if traces_command and len(traces_command[0]) == 3:
+                    statistics_dict = traces_command[0][2]
                     if traces_mapping.get(res_id):
                         statistics_dict['marketing_trace_id'] = traces_mapping[res_id]
 

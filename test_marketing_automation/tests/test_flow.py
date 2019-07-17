@@ -21,7 +21,7 @@ class MarketingCampaignTest(MarketingCampaignTestBase):
 
         Campaign = self.env['marketing.campaign'].with_user(self.user_market)
         Activity = self.env['marketing.activity'].with_user(self.user_market)
-        MassMail = self.env['mail.mass_mailing'].with_user(self.user_market)
+        MassMail = self.env['mailing.mailing'].with_user(self.user_market)
         ServerAction = self.env['ir.actions.server'].with_user(self.user_market)
 
         # Create campaign
@@ -139,7 +139,7 @@ for record in records:
 
         Campaign = self.env['marketing.campaign'].with_user(self.user_market)
         Activity = self.env['marketing.activity'].with_user(self.user_market)
-        MassMail = self.env['mail.mass_mailing'].with_user(self.user_market)
+        MassMail = self.env['mailing.mailing'].with_user(self.user_market)
 
         partner_field = self.env['ir.model.fields'].search(
             [('model_id', '=', self.test_model.id), ('name', '=', 'partner_id')])
@@ -191,7 +191,7 @@ for record in records:
     def test_unique_field(self):
         Campaign = self.env['marketing.campaign'].with_user(self.user_market)
         Activity = self.env['marketing.activity'].with_user(self.user_market)
-        MassMail = self.env['mail.mass_mailing'].with_user(self.user_market)
+        MassMail = self.env['mailing.mailing'].with_user(self.user_market)
 
         name_field = self.env['ir.model.fields'].search(
             [('model_id', '=', self.test_model.id), ('name', '=', 'display_name')])

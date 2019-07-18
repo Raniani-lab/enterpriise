@@ -7,27 +7,26 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
-class HrEmployeeBase(models.AbstractModel):
-    _inherit = "hr.employee.base"
-
-    appraisal_by_manager = fields.Boolean(string='Managers', default=lambda self: self.env.user.company_id.appraisal_by_manager)
-    appraisal_by_colleagues = fields.Boolean(string='Colleagues', default=lambda self: self.env.user.company_id.appraisal_by_colleagues)
-    appraisal_self = fields.Boolean(string='Employee', default=lambda self: self.env.user.company_id.appraisal_by_employee)
-    appraisal_by_collaborators = fields.Boolean(string='Collaborators', default=lambda self: self.env.user.company_id.appraisal_by_collaborators)
 
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
-    appraisal_date = fields.Date(string='Next Appraisal Date', groups="hr.group_hr_user", 
+    appraisal_date = fields.Date(string='Next Appraisal Date', groups="hr.group_hr_user",
         help="The date of the next appraisal is computed by the appraisal plan's dates (first appraisal + periodicity).")
-    appraisal_manager_ids = fields.Many2many('hr.employee', 'emp_appraisal_manager_rel', 'hr_appraisal_id')
-    appraisal_colleagues_ids = fields.Many2many('hr.employee', 'emp_appraisal_colleagues_rel', 'hr_appraisal_id')
-    appraisal_employee = fields.Char(string='Employee Name', compute='_compute_name')
-    appraisal_collaborators_ids = fields.Many2many('hr.employee', 'emp_appraisal_subordinates_rel', 'hr_appraisal_id')
+    appraisal_by_manager = fields.Boolean(string='Managers', groups="hr.group_hr_user", default=lambda self: self.env.user.company_id.appraisal_by_manager)
+    appraisal_manager_ids = fields.Many2many('hr.employee', 'emp_appraisal_manager_rel', 'hr_appraisal_id', groups="hr.group_hr_user")
+    appraisal_by_colleagues = fields.Boolean(string='Colleagues', groups="hr.group_hr_user", default=lambda self: self.env.user.company_id.appraisal_by_colleagues)
+    appraisal_colleagues_ids = fields.Many2many('hr.employee', 'emp_appraisal_colleagues_rel', 'hr_appraisal_id', groups="hr.group_hr_user")
+    appraisal_self = fields.Boolean(string='Employee', groups="hr.group_hr_user",
+        default=lambda self: self.env.user.company_id.appraisal_by_employee)
+    appraisal_employee = fields.Char(string='Employee Name', compute='_compute_name', groups="hr.group_hr_user")
+    appraisal_by_collaborators = fields.Boolean(string='Collaborators', groups="hr.group_hr_user",
+        default=lambda self: self.env.user.company_id.appraisal_by_collaborators)
+    appraisal_collaborators_ids = fields.Many2many('hr.employee', 'emp_appraisal_subordinates_rel', 'hr_appraisal_id', groups="hr.group_hr_user")
     periodic_appraisal_created = fields.Boolean(string='Periodic Appraisal has been created', groups="hr.group_hr_user", default=False)  # Flag for the cron
-    appraisal_count = fields.Integer(compute='_compute_appraisal_count', string='Appraisals')
-    related_partner_id = fields.Many2one('res.partner', compute='_compute_related_partner')
-    parent_user_id = fields.Many2one(related='parent_id.user_id', string="Zboub")
+    appraisal_count = fields.Integer(compute='_compute_appraisal_count', string='Appraisals', groups="hr.group_hr_user")
+    related_partner_id = fields.Many2one('res.partner', compute='_compute_related_partner', groups="hr.group_hr_user")
+    parent_user_id = fields.Many2one(related='parent_id.user_id', string="Zboub", groups="hr.group_hr_user")
     last_duration_reminder_send = fields.Integer(string='Duration after last appraisal when we send last reminder mail',
         groups="hr.group_hr_user", default=0)
 

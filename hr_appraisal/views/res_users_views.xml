@@ -35,17 +35,17 @@
             <page string="Appraisal">
                 <group string="Appraisals Set Up">
                     <field name="appraisal_by_manager" invisible="1"/>
-                    <label for="appraisal_by_manager" attrs="{'invisible':[('appraisal_by_manager', '=', False)]}"/>
+                    <label for="appraisal_manager_ids" attrs="{'invisible':[('appraisal_by_manager', '=', False)]}"/>
                     <field name="appraisal_manager_ids" nolabel="1" widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_manager', '=', False)]}" readonly="1"/>
 
                     <field name="appraisal_self"/>
 
                     <field name="appraisal_by_collaborators" invisible="1"/>
-                    <label for="appraisal_by_collaborators" attrs="{'invisible':[('appraisal_by_collaborators','=',False)]}"/>
+                    <label for="appraisal_collaborators_ids" attrs="{'invisible':[('appraisal_by_collaborators','=',False)]}"/>
                     <field name="appraisal_collaborators_ids" nolabel="1" widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_collaborators','=',False)]}" readonly="1"/>
 
                     <field name="appraisal_by_colleagues" invisible="1"/>
-                    <label for="appraisal_by_colleagues" attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}"/>
+                    <label for="appraisal_colleagues_ids" attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}"/>
                     <field name="appraisal_colleagues_ids" nolabel="1" widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}" readonly="1"/>
                 </group>
             </page>

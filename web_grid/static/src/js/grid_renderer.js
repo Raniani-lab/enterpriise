@@ -182,14 +182,9 @@ return AbstractRenderer.extend({
         var self = this;
         var vnode;
 
-        var displayNoContentHelper = !this._hasContent() && !!this.noContentHelp;
-        if (displayNoContentHelper) {
-            // this.$el.removeClass('table-responsive');
-            this.$el.html(this._renderNoContentHelper());
-            return Promise.resolve();
-        }
-
-        if (_.isArray(this.state)) {
+        if (!this._hasContent() && !!this.noContentHelp) {
+            vnode = this._renderNoContentHelper();
+        } else if (_.isArray(this.state)) {
             // array of grid groups
             // get columns (check they're the same in all groups)
             if (!(_.isEmpty(this.state) || _.reduce(this.state, function (m, it) {
@@ -316,14 +311,12 @@ return AbstractRenderer.extend({
      * message when no content is available.
      *
      * @private
-     * @returns {jQueryElement}
+     * @returns {snabbdom}
      */
     _renderNoContentHelper: function () {
-        var $noContent =
-            $('<div>').html(this.noContentHelp).addClass('o_nocontent_help');
-        return $('<div>')
-            .addClass('o_view_nocontent')
-            .append($noContent);
+        return h('div.o_view_nocontent', [
+            h('div.o_nocontent_help', {props: {innerHTML: this.noContentHelp}})
+        ]);
     },
     /**
      * @private

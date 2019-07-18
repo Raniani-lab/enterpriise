@@ -50,9 +50,9 @@
                             </group>
                             <group>
                                 <field name="date"/>
-                                <label for="unit_amount"/>
+                                <label for="unit_amount" string="Time Spent"/>
                                 <div class="o_row">
-                                    <field name="unit_amount" string="Time Spent" widget="timesheet_uom"/>
+                                    <field name="unit_amount" widget="timesheet_uom"/>
                                     <field name="encoding_uom_id" options="{'no_open': true}"/>
                                 </div>
                             </group>

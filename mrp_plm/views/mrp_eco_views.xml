@@ -437,8 +437,8 @@
                         <button name="open_new_bom" icon="fa-flask" type="object" attrs="{'invisible': [('new_bom_id', '=', False)]}" class="oe_stat_button">
                         <div class="o_field_widget o_stat_info mr4">
                             <div>
-                                <span>Bill of Materials</span><br/>
-                                <span>Rev :<field name="new_bom_revision" readonly="True"/> </span>
+                                <span>BOM</span><br/>
+                                <span>Revision :<field name="new_bom_revision" readonly="True"/> </span>
                             </div>
                         </div>
                         </button>
@@ -446,7 +446,7 @@
                         <div class="o_field_widget o_stat_info mr4">
                             <div>
                                 <span>Routing</span><br/>
-                                <span>Rev :<field name="new_routing_revision" readonly="True"/> </span>
+                                <span>Revision :<field name="new_routing_revision" readonly="True"/> </span>
                             </div>
                         </div>
                         </button>

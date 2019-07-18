@@ -4,15 +4,38 @@
 from odoo import tools, fields
 from odoo.tests import common
 from odoo.modules.module import get_resource_path
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare
+from odoo.exceptions import UserError, ValidationError, MissingError
+from odoo.tools import float_compare, date_utils
 from odoo.tests.common import Form
+from odoo.addons.account_reports.tests.test_account_reports import _init_options
 
 
+import datetime
 from dateutil.relativedelta import relativedelta
 
 
 class TestAccountAsset(common.TransactionCase):
+
+    def setUp(self):
+        super(TestAccountAsset, self).setUp()
+        self._load('account', 'test', 'account_minimal_test.xml')
+        today = fields.Date.today()
+        self.truck = self.env['account.asset'].create({
+            'account_asset_id': self.env.ref('account_asset.a_expense').id,
+            'account_depreciation_id': self.env.ref('account_asset.a_expense').id,
+            'account_depreciation_expense_id': self.env.ref('account_asset.cas').id,
+            'journal_id': self.env.ref('account_asset.miscellaneous_journal').id,
+            'asset_type': 'purchase',
+            'name': 'truck',
+            'acquisition_date': today + relativedelta(years=-6, month=1, day=1),
+            'original_value': 10000,
+            'salvage_value': 2500,
+            'method_number': 10,
+            'method_period': '12',
+            'method': 'linear',
+        })
+        self.truck.validate()
+        self.env['account.move']._autopost_draft_entries()
 
     def _load(self, module, *args):
         tools.convert_file(self.cr, 'account_asset',
@@ -25,6 +48,7 @@ class TestAccountAsset(common.TransactionCase):
                 line_edit.asset_remaining_value
 
     def test_00_account_asset(self):
+        """Test the lifecycle of an asset"""
         self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
         self._load('account', 'test', 'account_minimal_test.xml')
         self._load('account_asset', 'test', 'account_asset_demo_test.xml')
@@ -54,25 +78,15 @@ class TestAccountAsset(common.TransactionCase):
         self.assertEqual(self.browse_ref("account_asset.account_asset_vehicles_test0").state, 'open',
                          'State of asset should be runing')
 
-        CEO_car.set_to_close(fields.Date.today())
-        self.assertEqual(self.browse_ref("account_asset.account_asset_vehicles_test0").state, 'close',
-                         'State of asset should be close')
+        closing_invoice = self.env['account.move'].create({
+            'type': 'out_invoice',
+            'invoice_line_ids': [(0, 0, {
+                'debit': 100,
+            })]
+        })
 
-        # WIZARD
-        # I create a record to change the duration of asset for calculating depreciation.
-        account_asset_office0 = self.browse_ref('account_asset.account_asset_office_test0')
-        account_asset_office0._onchange_model_id()
-        asset_modify_number_0 = self.env['asset.modify'].create({
-            'asset_id': account_asset_office0.id,
-            'name': 'Test reason',
-            'method_number': 10.0,
-            'value_residual': account_asset_office0.value_residual,
-        }).with_context(active_id=account_asset_office0.id)
-        # I change the duration.
-        asset_modify_number_0.modify()
-
-        # I check the proper depreciation lines created.
-        self.assertEqual(account_asset_office0.method_number, len(account_asset_office0.depreciation_move_ids))
+        with self.assertRaises(UserError, msg="You shouldn't be able to close if there are posted entries in the future"):
+            CEO_car.set_to_close(closing_invoice.invoice_line_ids)
 
     def test_01_account_asset(self):
         """ Test if an an asset is created when an invoice is validated with an
@@ -106,7 +120,7 @@ class TestAccountAsset(common.TransactionCase):
         self.assertTrue(recognition.state == 'open',
                         'Recognition should be in Open state')
         first_invoice_line = invoice.invoice_line_ids[0]
-        self.assertEqual(recognition.value, first_invoice_line.price_subtotal,
+        self.assertEqual(recognition.original_value, first_invoice_line.price_subtotal,
                          'Recognition value is not same as invoice line.')
 
         recognition.depreciation_move_ids.write({'auto_post': False})
@@ -114,7 +128,7 @@ class TestAccountAsset(common.TransactionCase):
 
         # I check data in move line and installment line.
         first_installment_line = recognition.depreciation_move_ids.sorted(lambda r: r.id)[0]
-        self.assertAlmostEqual(first_installment_line.asset_remaining_value, recognition.value - first_installment_line.amount_total,
+        self.assertAlmostEqual(first_installment_line.asset_remaining_value, recognition.original_value - first_installment_line.amount_total,
                                msg='Remaining value is incorrect.')
         self.assertAlmostEqual(first_installment_line.asset_depreciated_value, first_installment_line.amount_total,
                                msg='Depreciated value is incorrect.')
@@ -130,7 +144,7 @@ class TestAccountAsset(common.TransactionCase):
         self._load('account', 'test', 'account_minimal_test.xml')
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
         asset_form.name = "Test Asset"
-        asset_form.value = 10000
+        asset_form.original_value = 10000
         asset_form.account_depreciation_id = self.env.ref('account_asset.xfa')
         asset_form.account_depreciation_expense_id = self.env.ref('account_asset.a_expense')
         asset_form.journal_id = self.env.ref('account_asset.miscellaneous_journal')
@@ -202,10 +216,256 @@ class TestAccountAsset(common.TransactionCase):
         asset_form.account_depreciation_expense_id = self.env.ref('account_asset.cas')
 
         asset = asset_form.save()
-        self.assertEqual(asset.value, 900.0)
+        self.assertEqual(asset.value_residual, 900.0)
         self.assertIn(asset.name, ['Furniture', 'Furniture too'])
         self.assertEqual(asset.journal_id.type, 'general')
         self.assertEqual(asset.asset_type, 'purchase')
         self.assertEqual(asset.account_asset_id, self.env.ref('account_asset.a_expense'))
         self.assertEqual(asset.account_depreciation_id, self.env.ref('account_asset.a_expense'))
         self.assertEqual(asset.account_depreciation_expense_id, self.env.ref('account_asset.cas'))
+
+    def test_asset_modify_depreciation(self):
+        """Test the modification of depreciation parameters"""
+        self.env['asset.modify'].create({
+            'asset_id': self.truck.id,
+            'name': 'Test reason',
+            'method_number': 10.0,
+        }).modify()
+
+        # I check the proper depreciation lines created.
+        self.assertEqual(10, len(self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')))
+
+    def test_asset_modify_value_00(self):
+        """Test the values of the asset and value increase 'assets' after a
+        modification of residual and/or salvage values.
+        Increase the residual value, increase the salvage value"""
+        self.assertEqual(self.truck.value_residual, 3000)
+        self.assertEqual(self.truck.salvage_value, 2500)
+
+        self.env['asset.modify'].create({
+            'name': 'New beautiful sticker :D',
+            'asset_id': self.truck.id,
+            'value_residual': 4000,
+            'salvage_value': 3000,
+        }).modify()
+        self.assertEqual(self.truck.value_residual, 3000)
+        self.assertEqual(self.truck.salvage_value, 2500)
+        self.assertEqual(self.truck.children_ids.value_residual, 1000)
+        self.assertEqual(self.truck.children_ids.salvage_value, 500)
+
+    def test_asset_modify_value_01(self):
+        "Decrease the residual value, decrease the salvage value"
+        self.env['asset.modify'].create({
+            'name': "Accident :'(",
+            'asset_id': self.truck.id,
+            'value_residual': 1000,
+            'salvage_value': 2000,
+        }).modify()
+        self.assertEqual(self.truck.value_residual, 1000)
+        self.assertEqual(self.truck.salvage_value, 2000)
+        self.assertEqual(self.truck.children_ids.value_residual, 0)
+        self.assertEqual(self.truck.children_ids.salvage_value, 0)
+        self.assertEqual(max(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted'), key=lambda m: m.date).amount_total, 2500)
+
+    def test_asset_modify_value_02(self):
+        "Decrease the residual value, increase the salvage value; same book value"
+        self.env['asset.modify'].create({
+            'name': "Don't wanna depreciate all of it",
+            'asset_id': self.truck.id,
+            'value_residual': 1000,
+            'salvage_value': 4500,
+        }).modify()
+        self.assertEqual(self.truck.value_residual, 1000)
+        self.assertEqual(self.truck.salvage_value, 4500)
+        self.assertEqual(self.truck.children_ids.value_residual, 0)
+        self.assertEqual(self.truck.children_ids.salvage_value, 0)
+
+    def test_asset_modify_value_03(self):
+        "Decrease the residual value, increase the salvage value; increase of book value"
+        self.env['asset.modify'].create({
+            'name': "Some aliens did something to my truck",
+            'asset_id': self.truck.id,
+            'value_residual': 1000,
+            'salvage_value': 6000,
+        }).modify()
+        self.assertEqual(self.truck.value_residual, 1000)
+        self.assertEqual(self.truck.salvage_value, 4500)
+        self.assertEqual(self.truck.children_ids.value_residual, 0)
+        self.assertEqual(self.truck.children_ids.salvage_value, 1500)
+
+    def test_asset_modify_value_04(self):
+        "Increase the residual value, decrease the salvage value; increase of book value"
+        self.env['asset.modify'].create({
+            'name': 'GODZILA IS REAL!',
+            'asset_id': self.truck.id,
+            'value_residual': 4000,
+            'salvage_value': 2000,
+        }).modify()
+        self.assertEqual(self.truck.value_residual, 3500)
+        self.assertEqual(self.truck.salvage_value, 2000)
+        self.assertEqual(self.truck.children_ids.value_residual, 500)
+        self.assertEqual(self.truck.children_ids.salvage_value, 0)
+
+    def test_asset_modify_report(self):
+        """Test the asset value modification flows"""
+        #           PY      +   -  Final    PY     +    - Final Bookvalue
+        #   -6       0  10000   0  10000     0   750    0   750      9250
+        #   -5   10000      0   0  10000   750   750    0  1500      8500
+        #   -4   10000      0   0  10000  1500   750    0  2250      7750
+        #   -3   10000      0   0  10000  2250   750    0  3000      7000
+        #   -2   10000      0   0  10000  3000   750    0  3750      6250
+        #   -1   10000      0   0  10000  3750   750    0  4500      5500
+        #    0   10000      0   0  10000  4500   750    0  5250      4750  <-- today
+        #    1   10000      0   0  10000  5250   750    0  6000      4000
+        #    2   10000      0   0  10000  6000   750    0  6750      3250
+        #    3   10000      0   0  10000  6750   750    0  7500      2500
+
+        today = fields.Date.today()
+
+        report = self.env['account.assets.report']
+        # TEST REPORT
+        # look at all period, with unposted entries
+        options = _init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
+        self.assertListEqual([    0.0, 10000.0,     0.0, 10000.0,     0.0,  7500.0,     0.0,  7500.0,  2500.0],
+                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+
+        # look at all period, without unposted entries
+        options = _init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': False}})
+        self.assertListEqual([    0.0, 10000.0,     0.0, 10000.0,     0.0,  4500.0,     0.0,  4500.0,  5500.0],
+                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+
+        # look only at this period
+        options = _init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
+        self.assertListEqual([10000.0,     0.0,     0.0, 10000.0,  4500.0,   750.0,     0.0,  5250.0,  4750.0],
+                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+
+        # test value increase
+        #           PY     +   -  Final    PY     +    - Final Bookvalue
+        #   -6       0 10000   0  10000         750    0   750      9250
+        #   -5   10000     0   0  10000   750   750    0  1500      8500
+        #   -4   10000     0   0  10000  1500   750    0  2250      7750
+        #   -3   10000     0   0  10000  2250   750    0  3000      7000
+        #   -2   10000     0   0  10000  3000   750    0  3750      6250
+        #   -1   10000     0   0  10000  3750   750    0  4500      5500
+        #    0   10000  1500   0  11500  4500  1000    0  5500      6000  <--  today
+        #    1   11500     0   0  11500  5500  1000    0  6500      5000
+        #    2   11500     0   0  11500  6500  1000    0  7500      4000
+        #    3   11500     0   0  11500  7500  1000    0  8500      3000
+        self.assertEqual(self.truck.value_residual, 3000)
+        self.assertEqual(self.truck.salvage_value, 2500)
+        self.env['asset.modify'].create({
+            'name': 'New beautiful sticker :D',
+            'asset_id': self.truck.id,
+            'value_residual': 4000,
+            'salvage_value': 3000,
+        }).modify()
+        self.assertEqual(self.truck.value_residual + sum(self.truck.children_ids.mapped('value_residual')), 4000)
+        self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
+
+        # look at all period, with unposted entries
+        options = _init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
+        self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
+                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+
+        # look only at this period
+        options = _init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
+        self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  1000.0,     0.0,  5500.0,  6000.0],
+                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+
+        # test value decrease
+        self.env['asset.modify'].create({
+            'name': "Huge scratch on beautiful sticker :'( It is ruined",
+            'asset_id': self.truck.children_ids.id,
+            'value_residual': 0,
+            'salvage_value': 500,
+        }).modify()
+        self.env['asset.modify'].create({
+            'name': "Huge scratch on beautiful sticker :'( It went through...",
+            'asset_id': self.truck.id,
+            'value_residual': 1000,
+            'salvage_value': 2500,
+        }).modify()
+        self.assertEqual(self.truck.value_residual + sum(self.truck.children_ids.mapped('value_residual')), 1000)
+        self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
+
+        # look at all period, with unposted entries
+        options = _init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
+        self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
+                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+
+        # look only at this period
+        options = _init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
+        self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  3250.0,     0.0,  7750.0,  3750.0],
+                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+
+    def test_asset_reverse_depreciation(self):
+        """Test the reversal of a depreciation move"""
+        self._load('account', 'test', 'account_minimal_test.xml')
+        today = fields.Date.today()
+
+        report = self.env['account.assets.report']
+
+        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('amount_total')), 4500)
+        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('amount_total')), 3000)
+        self.assertEqual(max(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted'), key=lambda m: m.date).asset_remaining_value, 3000)
+
+        move_to_reverse = self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted')[-1]
+        move_to_reverse._reverse_moves()
+
+        # Check that we removed the depreciation in the table for the reversed move
+        max_date_posted_before = max(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted' and m.date < move_to_reverse.date), key=lambda m: m.date)
+        self.assertEqual(move_to_reverse.asset_remaining_value, max_date_posted_before.asset_remaining_value)
+        self.assertEqual(move_to_reverse.asset_depreciated_value, max_date_posted_before.asset_depreciated_value)
+
+        # Check that the depreciation has been reported on the next move
+        min_date_draft = min(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft' and m.date > move_to_reverse.date), key=lambda m: m.date)
+        self.assertEqual(move_to_reverse.asset_remaining_value - min_date_draft.amount_total, min_date_draft.asset_remaining_value)
+        self.assertEqual(move_to_reverse.asset_depreciated_value + min_date_draft.amount_total, min_date_draft.asset_depreciated_value)
+
+        # The amount is still there, it only has been reversed. But it has been added on the next draft move to complete the depreciation table
+        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('amount_total')), 4500)
+        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('amount_total')), 3750)
+
+        # Check that the table shows fully depreciated at the end
+        self.assertEqual(self.truck.depreciation_move_ids[-1].asset_remaining_value, 0)
+        self.assertEqual(self.truck.depreciation_move_ids[-1].asset_depreciated_value, 7500)
+
+    def test_asset_reverse_original_move(self):
+        """Test the reversal of a move that generated an asset"""
+        self._load('account', 'test', 'account_minimal_test.xml')
+
+        move_id = self.env['account.move'].create({
+            'ref': 'line1',
+            'line_ids': [
+                (0, 0, {
+                    'account_id': self.env.ref('account_asset.a_expense').id,
+                    'debit': 300,
+                    'name': 'Furniture',
+                }),
+                (0, 0, {
+                    'account_id': self.env.ref('account_asset.xfa').id,
+                    'credit': 300,
+                }),
+            ]
+        })
+        move_id.post()
+        move_line_id = move_id.mapped('line_ids').filtered(lambda x: x.debit)
+
+        asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
+        asset_form._values['original_move_line_ids'] = [(6, 0, move_line_id.ids)]
+        asset_form._perform_onchange(['original_move_line_ids'])
+        asset_form.account_depreciation_expense_id = self.env.ref('account_asset.cas')
+
+        asset = asset_form.save()
+
+        self.assertTrue(asset.name, 'An asset should have been created')
+        move_id._reverse_moves()
+        with self.assertRaises(MissingError, msg='The asset should have been deleted'):
+            asset.name

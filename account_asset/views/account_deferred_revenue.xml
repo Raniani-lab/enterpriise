@@ -9,7 +9,7 @@
             <tree string="Deferred Revenues" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')">
                 <field name="name" string="Revenue Name"/>
                 <field name="first_depreciation_date"/>
-                <field name="value"/>
+                <field name="book_value"/>
                 <field name="value_residual" widget="monetary"/>
                 <field name="currency_id" groups="base.group_multi_currency"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -92,7 +92,7 @@
             <xpath expr="//label[@for='method_number']" position="attributes">
                 <attribute name="string">Number of Recognitions</attribute>
             </xpath>
-            <field name="value" position="attributes">
+            <field name="book_value" position="attributes">
                 <attribute name="string">Deferred Revenue Amount</attribute>
             </field>
             <field name="value_residual" position="attributes">
@@ -159,7 +159,7 @@
     <record model="ir.actions.act_window" id="action_account_revenue_form">
         <field name="name">Deferred Revenues</field>
         <field name="res_model">account.asset</field>
-        <field name="domain">[('asset_type', '=', 'sale'), ('state', '!=', 'model')]</field>
+        <field name="domain">[('asset_type', '=', 'sale'), ('state', '!=', 'model'), ('parent_id', '=', False)]</field>
         <field name="context">{'asset_type': 'sale', 'default_asset_type': 'sale'}</field>
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_sale_tree')}),

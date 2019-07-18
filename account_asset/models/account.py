@@ -29,8 +29,8 @@ class AccountAccount(models.Model):
 
             record.form_view_ref = {
                 'purchase': 'account_asset.view_account_asset_form',
-                'sale': 'account_deferred_revenue.view_account_asset_revenue_form',
-                'expense': 'account_deferred_revenue.view_account_asset_expense_form',
+                'sale': 'account_asset.view_account_asset_revenue_form',
+                'expense': 'account_asset.view_account_asset_expense_form',
             }.get(record.asset_type)
 
     @api.onchange('user_type_id', 'create_asset')

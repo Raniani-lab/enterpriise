@@ -37,7 +37,7 @@
             <field eval="'12'" name="method_period"/>
             <field eval="5" name="method_number"/>
             <field name="name">CEO's Car</field>
-            <field eval="12000.0" name="value"/>
+            <field eval="12000.0" name="original_value"/>
             <field name="model_id" ref="account_asset_model_fixedassets_test0"/>
         </record>
 
@@ -49,7 +49,7 @@
             <field eval="3" name="method_number"/>
             <field name="first_depreciation_date" eval="time.strftime('%Y-01-01')"/>
             <field name="name">Office</field>
-            <field eval="500000.0" name="value"/>
+            <field eval="500000.0" name="original_value"/>
             <field name="model_id" ref="account_asset_model_fixedassets_test0"/>
         </record>
 

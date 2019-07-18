@@ -15,15 +15,8 @@
                     attrs="{'invisible': ['|', ('asset_id', '=', False), ('asset_asset_type', '=', 'sale')]}"
                     class="oe_stat_button"
                     icon="fa-cube"
-                    type="object"
-                    string="Asset">
-                </button>
-                <button name="open_asset_view"
-                    attrs="{'invisible': ['|', ('asset_id', '=', False), ('asset_asset_type', '=', 'purchase')]}"
-                    class="oe_stat_button"
-                    icon="fa-dollar"
-                    type="object"
-                    string="Deferred Revenue">
+                    type="object">
+                    <field name="asset_id_display_name" nolabel="1"/>
                 </button>
                 <button name="action_open_asset_ids"
                     type="object"

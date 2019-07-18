@@ -38,7 +38,7 @@
             <field eval="3" name="method_number"/>
             <field name="first_depreciation_date" eval="time.strftime('%Y-01-01')"/>
             <field name="name">Car Maintenance</field>
-            <field eval="30000.0" name="value"/>
+            <field eval="30000.0" name="original_value"/>
             <field name="model_id" ref="account_asset_model_sale_test0"/>
         </record>
 
@@ -53,7 +53,7 @@
             <field name="method_period" eval="'12'"/>
             <field name="first_depreciation_date" eval="time.strftime('%Y-01-01')"/>
             <field name="name">Air Conditioner Maintenance Contract</field>
-            <field eval="1000.0" name="value"/>
+            <field eval="1000.0" name="original_value"/>
             <field name="model_id" ref="account_asset_model_sale1"/>
         </record>
     </data>

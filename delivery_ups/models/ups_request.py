@@ -371,7 +371,7 @@ class UPSRequest():
         except IOError as e:
             return self.get_error_message('0', 'UPS Server Not Found:\n%s' % e)
 
-    def send_shipping(self, shipment_info, packages, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, cod_info=None, label_file_type='GIF', ups_carrier_account=False):
+    def send_shipping(self, shipment_info, packages, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, duty_payment, cod_info=None, label_file_type='GIF', ups_carrier_account=False):
         client = self._set_client(self.ship_wsdl, 'Ship', 'ShipmentRequest')
         request = self.factory_ns3.RequestType()
         request.RequestOption = 'nonvalidate'
@@ -463,7 +463,15 @@ class UPSRequest():
             shipcharge.BillShipper = self.factory_ns2.BillShipperType()
             shipcharge.BillShipper.AccountNumber = self.shipper_number or ''
 
-        payment_info.ShipmentCharge = shipcharge
+        payment_info.ShipmentCharge = [shipcharge]
+
+        if duty_payment == 'SENDER':
+            duty_charge = self.factory_ns2.ShipmentChargeType()
+            duty_charge.Type = '02'
+            duty_charge.BillShipper = self.factory_ns2.BillShipperType()
+            duty_charge.BillShipper.AccountNumber = self.shipper_number or ''
+            payment_info.ShipmentCharge.append(duty_charge)
+
         shipment.PaymentInformation = payment_info
 
         if saturday_delivery:
@@ -482,7 +490,7 @@ class UPSRequest():
         self.shipment.ReturnService = return_service
         for p in self.shipment.Package:
             p.Description = "Return of courtesy"
-        
+
 
     def process_shipment(self):
         client = self._set_client(self.ship_wsdl, 'Ship', 'ShipmentRequest')

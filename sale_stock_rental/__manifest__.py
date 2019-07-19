@@ -23,6 +23,7 @@
         'wizard/rental_configurator_views.xml',
         'wizard/rental_processing_views.xml',
         'report/rental_schedule_views.xml',
+        'report/rental_order_report_templates.xml',
         'views/res_config_settings_views.xml',
         'views/sale_views.xml',
         'views/assets.xml',

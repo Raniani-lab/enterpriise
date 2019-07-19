@@ -8,6 +8,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     intrastat_id = fields.Many2one('account.intrastat.code', string='Commodity Code', domain="[('type', '=', 'commodity')]")
+    intrastat_origin_country_id = fields.Many2one('res.country', string='Country of Origin')
 
     def search_intrastat_code(self):
         self.ensure_one()

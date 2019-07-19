@@ -1,4 +1,4 @@
-odoo.define('sale_rental.tour', function (require) {
+odoo.define('sale_renting.tour', function (require) {
 "use strict";
 
 var core = require('web.core');
@@ -9,16 +9,16 @@ var _t = core._t;
 tour.register('rental_tour', {
     url: "/web",
 }, [tour.STEPS.SHOW_APPS_MENU_ITEM, {
-    trigger: '.o_app[data-menu-xmlid="sale_rental.rental_menu_root"]',
+    trigger: '.o_app[data-menu-xmlid="sale_renting.rental_menu_root"]',
     content: _t("Want to <b>rent products</b>? \n Let's discover Odoo Rental App."),
     position: 'bottom',
     edition: 'enterprise'
 }, {
-    trigger: '.o_menu_header_lvl_1[data-menu-xmlid="sale_rental.menu_rental_products"]',
+    trigger: '.o_menu_header_lvl_1[data-menu-xmlid="sale_renting.menu_rental_products"]',
     content: _t("At first, let's create some products to rent."),
     position: 'bottom',
 }, {
-    trigger: '.o_menu_entry_lvl_2[data-menu-xmlid="sale_rental.menu_rental_products_tmpl"]',
+    trigger: '.o_menu_entry_lvl_2[data-menu-xmlid="sale_renting.menu_rental_products_tmpl"]',
     content: _t(""),
     position: 'bottom', // TODO remove menuitem
 }, {
@@ -39,12 +39,12 @@ tour.register('rental_tour', {
     content: _t("Save the product."),
     position: 'bottom',
 }, {
-    trigger: '.o_menu_header_lvl_1[data-menu-xmlid="sale_rental.rental_order_menu"]',
+    trigger: '.o_menu_header_lvl_1[data-menu-xmlid="sale_renting.rental_order_menu"]',
     extra_trigger: '.o_form_button_edit',
     content: _t("Let's now create an order."),
     position: 'bottom',
 }, {
-    trigger: '.o_menu_entry_lvl_2[data-menu-xmlid="sale_rental.rental_orders_all"]',
+    trigger: '.o_menu_entry_lvl_2[data-menu-xmlid="sale_renting.rental_orders_all"]',
     content: _t("Go to the orders menu."),
     position: 'bottom',
 }, {

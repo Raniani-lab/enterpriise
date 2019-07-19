@@ -10,7 +10,7 @@ class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
     def setUp(self):
         super(TestRentalCommon, self).setUp()
 
-        self.product_id = self.env.ref('sale_rental.rental_product_1')
+        self.product_id = self.env.ref('sale_renting.rental_product_1')
         self.product_template_id = self.product_id.product_tmpl_id
 
         self.product_template_id.rental_pricing_ids.unlink()

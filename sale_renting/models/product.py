@@ -44,7 +44,7 @@ class ProductTemplate(models.Model):
 
     def action_view_rentals(self):
         """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""
-        action = self.env.ref('sale_rental.action_rental_order_schedule').read()[0]
+        action = self.env.ref('sale_renting.action_rental_order_schedule').read()[0]
         action['domain'] = [('product_id', 'in', self.mapped('product_variant_ids').ids)]
         return action
 
@@ -115,6 +115,6 @@ class ProductProduct(models.Model):
 
     def action_view_rentals(self):
         """Open Gantt view of rentals (sale.rental.schedule), filtered on rentals of the current variant."""
-        action = self.env.ref('sale_rental.action_rental_order_schedule').read()[0]
+        action = self.env.ref('sale_renting.action_rental_order_schedule').read()[0]
         action['domain'] = [('product_id', 'in', self.ids)]
         return action

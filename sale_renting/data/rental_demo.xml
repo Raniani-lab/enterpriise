@@ -9,13 +9,13 @@
   <!-- Rentable products -->
   <record id="rental_product_1" model="product.product">
     <field name="name">Projector</field>
-    <field name="categ_id" ref="sale_rental.cat_renting"/>
+    <field name="categ_id" ref="sale_renting.cat_renting"/>
     <field name="type">consu</field>
     <!--<field name="weight">0.01</field>-->
     <field name="uom_id" ref="uom.product_uom_unit"/>
     <field name="uom_po_id" ref="uom.product_uom_unit"/>
     <field name="default_code">RENT001</field>
-    <field name="image_1920" type="base64" file="sale_rental/static/img/projector.jpg"/>
+    <field name="image_1920" type="base64" file="sale_renting/static/img/projector.jpg"/>
     <field name="rent_ok" eval="True"/>
     <field name="extra_hourly" eval="5.00"/>
     <field name="extra_daily" eval="50.00"/>
@@ -24,13 +24,13 @@
 
   <record id="rental_product_2" model="product.product">
     <field name="name">Meeting Room</field>
-    <field name="categ_id" ref="sale_rental.cat_renting"/>
+    <field name="categ_id" ref="sale_renting.cat_renting"/>
     <field name="type">consu</field>
     <!--<field name="weight">100</field>-->
     <field name="uom_id" ref="uom.product_uom_unit"/>
     <field name="uom_po_id" ref="uom.product_uom_unit"/>
     <field name="default_code">RENT002</field>
-    <field name="image_1920" type="base64" file="sale_rental/static/img/meeting_room.jpeg"/>
+    <field name="image_1920" type="base64" file="sale_renting/static/img/meeting_room.jpeg"/>
     <field name="rent_ok" eval="True"/>
     <field name="extra_hourly" eval="5.0"/>
     <field name="extra_daily" eval="50.0"/>

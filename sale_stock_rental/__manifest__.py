@@ -16,7 +16,7 @@
     'category': 'Sales',
     'version': '1.0',
 
-    'depends': ['sale_rental', 'stock'],
+    'depends': ['sale_renting', 'stock'],
 
     'data': [
         'wizard/rental_configurator_views.xml',

@@ -9,7 +9,7 @@
     "website": "https://www.odoo.com",
     "category": "Sales",
     "version": "1.0",
-    "depends": ["sign", "sale_rental"],
+    "depends": ["sign", "sale_renting"],
     "data": [
         "security/rental_sign_security.xml",
         "wizard/rental_sign_views.xml",

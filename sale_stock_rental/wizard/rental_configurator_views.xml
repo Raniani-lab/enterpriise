@@ -3,7 +3,7 @@
   <record id="rental_configurator_view_form" model="ir.ui.view">
     <field name="name">rental.configurator.form.inherit.stock</field>
     <field name="model">rental.wizard</field>
-    <field name="inherit_id" ref="sale_rental.rental_configurator_view_form"/>
+    <field name="inherit_id" ref="sale_renting.rental_configurator_view_form"/>
     <field name="arch" type="xml">
       <field name="quantity" position="replace">
           <label for="quantity"/>

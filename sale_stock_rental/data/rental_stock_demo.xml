@@ -3,7 +3,7 @@
 
   <record id="rental_stock_product_1" model="product.product">
     <field name="name">Printer</field>
-    <field name="categ_id" ref="sale_rental.cat_renting"/>
+    <field name="categ_id" ref="sale_renting.cat_renting"/>
     <field name="type">product</field>
     <!--<field name="weight">0.01</field>-->
     <field name="uom_id" ref="uom.product_uom_unit"/>

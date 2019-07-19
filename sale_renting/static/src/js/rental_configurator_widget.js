@@ -1,4 +1,4 @@
-odoo.define('sale_rental.rental_configurator', function (require) {
+odoo.define('sale_renting.rental_configurator', function (require) {
 var ProductConfiguratorWidget = require('sale.product_configurator');
 
 /**
@@ -130,7 +130,7 @@ ProductConfiguratorWidget.include({
 
     _openRentalConfigurator: function (data, dataPointId) {
         var self = this;
-        this.do_action('sale_rental.rental_configurator_action', {
+        this.do_action('sale_renting.rental_configurator_action', {
             additional_context: self._defaultRentalData(data),
             on_close: function (result) {
                 if (result && result !== 'special') {

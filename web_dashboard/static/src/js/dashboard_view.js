@@ -19,11 +19,11 @@ var DashboardRenderer = require('web_dashboard.DashboardRenderer');
 var _lt = core._lt;
 
 var DashboardView = BasicView.extend({
-    config: {
+    config: _.extend({}, BasicView.prototype.config, {
         Model: DashboardModel,
         Controller: DashboardController,
         Renderer: DashboardRenderer,
-    },
+    }),
     display_name: _lt('Dashboard'),
     searchMenuTypes: ['filter', 'timeRange', 'favorite'],
     icon: 'fa-tachometer',

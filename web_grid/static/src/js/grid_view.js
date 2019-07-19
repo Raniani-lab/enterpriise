@@ -14,11 +14,11 @@ var _lt = core._lt;
 var GridView = AbstractView.extend({
     display_name: _lt('Grid'),
     icon: 'fa-th',
-    config: {
+    config: _.extend({}, AbstractView.prototype.config, {
         Model: GridModel,
         Controller: GridController,
         Renderer: GridRenderer,
-    },
+    }),
     viewType: 'grid',
     init: function (viewInfo, params) {
         var self = this;

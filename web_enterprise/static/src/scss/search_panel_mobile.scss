@@ -21,8 +21,7 @@
 }
 
 @include media-breakpoint-down(sm) {
-
-    .o_kanban_with_searchpanel {
+    .o_controller_with_searchpanel {
         flex-direction: column;
 
         details.o_search_panel {

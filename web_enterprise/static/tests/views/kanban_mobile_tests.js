@@ -64,12 +64,18 @@ QUnit.module('Views', {
                             <field name="foo"/>
                         </div>
                     </t></templates>
-                    <searchpanel>
-                        <field name="product_id"/>
-                        <field name="state" select="multi"/>
-                    </searchpanel>
                 </kanban>
             `,
+            archs: {
+                'partner,false,search': `
+                    <search>
+                        <searchpanel>
+                            <field name="product_id"/>
+                            <field name="state" select="multi"/>
+                        </searchpanel>
+                    </search>
+                `,
+            },
             mockRPC(route, {method}) {
                 assert.step(method || route);
                 return this._super.apply(this, arguments);

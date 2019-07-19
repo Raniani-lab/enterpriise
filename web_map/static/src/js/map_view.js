@@ -11,11 +11,11 @@ odoo.define('web_map.MapView', function (require) {
         jsLibs: [
             '/web_map/static/lib/leaflet/leaflet.js',
         ],
-        config: {
+        config: _.extend({}, AbstractView.prototype.config, {
             Model: MapModel,
             Controller: MapController,
             Renderer: MapRenderer,
-        },
+        }),
         icon: 'fa-map-marker',
         display_name: 'Map',
         viewType: 'map',

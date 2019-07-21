@@ -1295,7 +1295,7 @@ msgstr "Погано"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Bad Health"
-msgstr "Поганий стан здоров'я"
+msgstr "Поганий стан"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__filter_pre_domain
@@ -1864,7 +1864,7 @@ msgstr "Добре"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Good Health"
-msgstr "Хороший стан здоров'я"
+msgstr "Хороший стан"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -1886,12 +1886,12 @@ msgstr "Щасливе обличчя"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__health
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__health
 msgid "Health"
-msgstr "Здоров'я"
+msgstr "Стан"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Health Check"
-msgstr "Перевірка здоров'я"
+msgstr "Перевірка стану"
 
 #. module: sale_subscription
 #: model:ir.module.category,description:sale_subscription.module_category_subscription_management
@@ -2963,7 +2963,7 @@ msgstr "Дії на сервері"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__health
 msgid "Set a health status"
-msgstr "Встановити статуст здоров'я"
+msgstr "Встановити статус стану"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,action:0

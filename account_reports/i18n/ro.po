@@ -70,7 +70,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
 #, python-format
 msgid "31 - 60"
-msgstr ""
+msgstr "31 - 60"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
@@ -82,7 +82,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
 #, python-format
 msgid "91 - 120"
-msgstr ""
+msgstr "91 - 120"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report

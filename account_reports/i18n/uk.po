@@ -979,17 +979,17 @@ msgstr "Короткострокові зобов’язання"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_current_year_earnings_line_2
 msgid "Current Year Allocated Earnings"
-msgstr "Поточний рік виділеного прибутку"
+msgstr "Прибутoк, використаний у звітному пeріоді"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_current_year_earnings_line_1
 msgid "Current Year Earnings"
-msgstr "Доходи поточного періоду"
+msgstr "Прибуток поточного періоду"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_current_year_earnings0
 msgid "Current Year Unallocated Earnings"
-msgstr "Поточний рік невиділеного прибутку"
+msgstr "Нерозподілений прибуток поточного періоду"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_ca_to_l0
@@ -2312,7 +2312,7 @@ msgstr "Звітність"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_retained_earnings0
 msgid "Retained Earnings"
-msgstr "Нерозподілений прибуток"
+msgstr "Збережений прибуток"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_return_investment0

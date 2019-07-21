@@ -1593,7 +1593,7 @@ msgstr "Projekt"
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_quality
 msgid "Quality"
-msgstr ""
+msgstr "Minőség"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id

@@ -10,6 +10,7 @@
     <record id="hr_payroll_salary_structure_employe_non_cadre" model="hr.payroll.structure">
         <field name="name">Employe non-cadre</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="type_id" ref="structure_type_employee_fr_non_cadre"/>
         <field name="regular_pay" eval="True"/>
     </record>
 

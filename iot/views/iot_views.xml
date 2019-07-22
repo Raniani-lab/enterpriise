@@ -137,7 +137,7 @@
                         <div class="oe_kanban_global_click p-0">
                             <div class="row no-gutters">
                                 <div class="col-3 p-2 text-center align-self-center">
-                                    <t t-set="types" t-value="{'camera': 'video-camera', 'printer': 'print', 'device': 'wrench', 'payment': 'credit-card', 'scale': 'balance-scale'}"/>
+                                    <t t-set="types" t-value="{'camera': 'video-camera', 'printer': 'print', 'device': 'wrench', 'payment': 'credit-card', 'scale': 'balance-scale', 'keyboard': 'keyboard-o', 'scanner': 'barcode'}"/>
                                     <i t-attf-class="fa fa-#{types[record.type.raw_value]} fa-3x"></i>
                                 </div>
                                 <div class="col-9 p-2 border-left">

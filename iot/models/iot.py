@@ -37,6 +37,8 @@ class IotDevice(models.Model):
     type = fields.Selection([
         ('printer', 'Printer'),
         ('camera', 'Camera'),
+        ('keyboard', 'Keyboard'),
+        ('scanner', 'Barcode Scanner'),
         ('device', 'Device'),
         ('payment', 'Payment Terminal'),
         ('scale', 'Scale'),

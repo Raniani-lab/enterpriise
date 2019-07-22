@@ -52,7 +52,8 @@ class MrpProductionSchedule(models.Model):
         self.ensure_one()
         domain_confirm, domain_done = self._get_moves_domain(date_start, date_stop, 'outgoing')
         domain = OR([domain_confirm, domain_done])
-        picking_ids = self.env['stock.move'].search_read(domain, ['picking_id'])
+        moves = self.env['stock.move'].search_read(domain, ['picking_id'])
+        picking_ids = [p['picking_id'][0] for p in moves if p['picking_id']]
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'stock.picking',

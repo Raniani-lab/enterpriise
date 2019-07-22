@@ -135,7 +135,7 @@ class TestHrPayrollAccount(common.TransactionCase):
 
         # I verify the payslip run is in draft state.
         self.assertEqual(self.payslip_run.state, 'draft', 'State not changed!')
-        
+
         # I create a payslip employee.
         payslip_employee = self.env['hr.payslip.employees'].create({
             'employee_ids': [(4, self.hr_employee_john.id), (4, self.hr_employee_mark.id)]
@@ -166,10 +166,10 @@ class TestHrPayrollAccount(common.TransactionCase):
         # I verify that the Accounting Entries are created.
         for slip in self.payslip_run.slip_ids:
             self.assertTrue(slip.move_id, 'Accounting Entries has not been created!')
-    
+
     def test_01_hr_payslip_run(self):
         """ Checking the process of payslip run when you create payslip in a payslip run and you validate the payslip(s). """
-        
+
         # I create a payslip employee.
         payslip_employee = self.env['hr.payslip.employees'].create({
             'employee_ids': [(4, self.hr_employee_john.id), (4, self.hr_employee_mark.id)]
@@ -203,7 +203,7 @@ class TestHrPayrollAccount(common.TransactionCase):
 
     def test_02_hr_payslip(self):
         """ Checking the process of payslip run when you create payslip in a payslip run and you cancel the payslip(s). """
-        
+
         # I create a payslip employee.
         payslip_employee = self.env['hr.payslip.employees'].create({
             'employee_ids': [(4, self.hr_employee_john.id), (4, self.hr_employee_mark.id)]
@@ -237,7 +237,7 @@ class TestHrPayrollAccount(common.TransactionCase):
 
     def test_03_hr_payslip(self):
         """ Checking the process of payslip run when you create payslip in a payslip run and you cancel a payslip and confirm another. """
-        
+
         # I create a payslip employee.
         payslip_employee = self.env['hr.payslip.employees'].create({
             'employee_ids': [(4, self.hr_employee_john.id), (4, self.hr_employee_mark.id)]
@@ -274,10 +274,10 @@ class TestHrPayrollAccount(common.TransactionCase):
         # I verify that the Accounting Entries are created or not.
         self.assertFalse(payslip_1.move_id, 'Accounting Entries has been created!')
         self.assertTrue(payslip_2.move_id, 'Accounting Entries has not been created!')
-    
+
     def test_04_hr_payslip(self):
         """ Checking the process of payslip run when you create payslip in a payslip run and you cancel a payslip and after you confirm the payslip run. """
-        
+
         # I create a payslip employee.
         payslip_employee = self.env['hr.payslip.employees'].create({
             'employee_ids': [(4, self.hr_employee_john.id), (4, self.hr_employee_mark.id)]
@@ -295,20 +295,25 @@ class TestHrPayrollAccount(common.TransactionCase):
         # I verify the payslip run is in verify state.
         self.assertEqual(self.payslip_run.state, 'verify', 'State not changed!')
 
+        # Storing the references to slip_ids[0] and slip_ids[1]
+        # for later use, because the order of the One2many is not guaranteed
+        slip0 = self.payslip_run.slip_ids[0]
+        slip1 = self.payslip_run.slip_ids[1]
+
         # I cancel one payslip and after i confirm the payslip run.
-        self.payslip_run.slip_ids[0].action_payslip_cancel()
+        slip0.action_payslip_cancel()
         self.payslip_run.action_validate()
 
         # I verify the payslips' states.
-        self.assertEqual(self.payslip_run.slip_ids[0].state, 'cancel', 'State not changed!')
-        self.assertEqual(self.payslip_run.slip_ids[1].state, 'done', 'State not changed!')
+        self.assertEqual(slip0.state, 'cancel', 'State not changed!')
+        self.assertEqual(slip1.state, 'done', 'State not changed!')
 
         # I verify the payslip run is in close state.
         self.assertEqual(self.payslip_run.state, 'close', 'State not changed!')
 
         # I verify that the Accounting Entries are created or not.
-        self.assertFalse(self.payslip_run.slip_ids[0].move_id, 'Accounting Entries has been created!')
-        self.assertTrue(self.payslip_run.slip_ids[1].move_id, 'Accounting Entries has not been created!')
+        self.assertFalse(slip0.move_id, 'Accounting Entries has been created!')
+        self.assertTrue(slip1.move_id, 'Accounting Entries has not been created!')
 
     def test_05_hr_payslip(self):
         """ Checking the process of payslip run when you create payslip run from a payslip and you validate it. """
@@ -337,7 +342,7 @@ class TestHrPayrollAccount(common.TransactionCase):
 
     def test_06_hr_payslip(self):
         """ Checking the process of payslip run when you create payslip run from a payslip and you validate the payslip run.  """
-        
+
         # I verify if the payslip has not already a payslip run.
         self.assertFalse(self.hr_payslip_john.payslip_run_id, 'There is already a payslip run!')
 

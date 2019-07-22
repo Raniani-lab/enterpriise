@@ -127,7 +127,11 @@ class ProjectWorksheetTemplate(models.Model):
             'res_model': model.model,
             'view_mode': 'tree,form',
             'target': 'current',
-            'context': "{'create': 0}",  # needed when leaving studio edit form view
+            'context': {
+                'edit': False,
+                'create': False,
+                'delete': False,
+            }
         })
         template.write({
             'action_id': action.id,

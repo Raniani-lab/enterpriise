@@ -18,7 +18,7 @@
     'category': 'Sales',
     'version': '1.0',
 
-    'depends': ['sale', 'sales_team'],
+    'depends': ['sale'],
 
     'data': [
         'security/ir.model.access.csv',

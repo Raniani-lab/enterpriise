@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
 from odoo import api, fields, models
 
 
@@ -34,7 +33,7 @@ class ProductTemplate(models.Model):
 
     preparation_time = fields.Float(
         string="Before Pickup", default=_default_preparation_time,
-        help="Temporarily make this product unavailable before pickup.", company_dependent=True)
+        help="Make the product unavailable between 2 rentals (e.g. admin processing, repair).", company_dependent=True)
 
     def _get_qty_in_rent(self):
         rentable = self.filtered('rent_ok')
@@ -44,9 +43,9 @@ class ProductTemplate(models.Model):
             template.qty_in_rent = sum(template.mapped('product_variant_ids.qty_in_rent'))
 
     def action_view_rentals(self):
-        """Access Gantt view of sale_order_line, filtered on variants of current product."""
-        action = self.env.ref('sale_rental.rental_schedule_view_gantt_products').read()[0]
-        action['context'] = {'products': self.mapped('product_variant_ids').ids}
+        """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""
+        action = self.env.ref('sale_rental.action_rental_order_schedule').read()[0]
+        action['domain'] = [('product_id', 'in', self.mapped('product_variant_ids').ids)]
         return action
 
 
@@ -56,13 +55,9 @@ class ProductProduct(models.Model):
     qty_in_rent = fields.Float("Quantity currently in rent", compute='_get_qty_in_rent')
 
     def _get_qty_in_rent_domain(self):
-        # now = fields.Datetime.now()
         return [
             ('is_rental', '=', True),
             ('product_id', 'in', self.ids),
-            # TODO replace dates domain with order_id.rental_status != done ?
-            # ('pickup_date', '<=', now),  # pickup_date or reservation_begin ???
-            # ('return_date', '>=', now),  # return_date or return_date ???
             ('state', 'in', ['sale', 'done'])]
 
     def _get_qty_in_rent(self):
@@ -88,99 +83,38 @@ class ProductProduct(models.Model):
         hours = duration.seconds // 3600
         return days * self.extra_daily + hours * self.extra_hourly
 
-    def _get_best_pricing_rule(self, duration):
+    def _get_best_pricing_rule(self, **kwargs):
         """Return the best pricing rule for the given duration.
 
-        :param float duration: duration in hours
+        :param float duration: duration, in unit uom
+        :param str unit: duration unit (hour, day, week)
         :return: least expensive pricing rule for given duration
         :rtype: rental.pricing
         """
         self.ensure_one()
-        if duration < 0 or not self.rental_pricing_ids:
-            return
+        if not self.rental_pricing_ids:
+            return self.env['rental.pricing']
+        pickup_date, return_date = kwargs.get('pickup_date', False), kwargs.get('return_date', False)
+        duration, unit = kwargs.get('duration', False), kwargs.get('unit', '')
+        if pickup_date and return_date:
+            duration_dict = self.env['rental.pricing']._compute_duration_vals(pickup_date, return_date)
+        elif not(duration and unit):
+            return self.env['rental.pricing']  # no valid input to compute duration.
         min_price = float("inf")  # positive infinity
         best_pricing_rule = self.env['rental.pricing']
         for pricing in self.rental_pricing_ids:
             if pricing.applies_to(self):
-                price = pricing.compute_price(duration)
+                if duration and unit:
+                    price = pricing._compute_price(duration, unit)
+                else:
+                    price = pricing._compute_price(duration_dict[pricing.unit], pricing.unit)
 
                 if price < min_price:
                     min_price, best_pricing_rule = price, pricing
         return best_pricing_rule
 
     def action_view_rentals(self):
-        action = self.env.ref('sale_rental.rental_schedule_view_gantt_products').read()[0]
-        action['context'] = {
-            'products': self.ids,
-        }  # Date domain???
+        """Open Gantt view of rentals (sale.rental.schedule), filtered on rentals of the current variant."""
+        action = self.env.ref('sale_rental.action_rental_order_schedule').read()[0]
+        action['domain'] = [('product_id', 'in', self.ids)]
         return action
-
-    def _unavailability_period(self, fro, to):
-        """Give unavailability period given rental period."""
-        return fro - timedelta(hours=self.preparation_time), to
-
-    def _get_rented_qty(self, fro=fields.Datetime.now(), to=None, ignored_soline_id=None):
-        domain_extension = [('id', '!=', ignored_soline_id)] if ignored_soline_id else []
-        return self._get_max_unavailable_qty_in_period(fro, to, domain_extension)
-
-    def _get_max_unavailable_qty_in_period(self, fro, to=None, domain_extension=None):
-        """Return max qty of self (unique) unavailable between fro and to.
-
-        Doesn't count already returned quantities.
-        :param datetime fro:
-        :param datetime to:
-        :param list domain_extension: search domain
-        """
-        def unavailable_qty(so_line):
-            return so_line.product_uom_qty - so_line.qty_delivered
-
-        begins_during_period, ends_during_period, covers_period = self._get_active_rental_lines(fro, to, domain_extension)
-        active_lines_in_period = begins_during_period + ends_during_period
-        max_qty_rented = 0
-
-        # TODO is it more efficient to filter the records active in period
-        # or to make another search on all the sale order lines???
-        if begins_during_period:
-            for date in begins_during_period.mapped('reservation_begin'):
-                active_lines_at_date = active_lines_in_period.filtered(
-                    lambda line: line.reservation_begin <= date and line.return_date >= date)
-                qty_rented_at_date = sum(active_lines_at_date.mapped(unavailable_qty))
-                if qty_rented_at_date > max_qty_rented:
-                    max_qty_rented = qty_rented_at_date
-
-        qty_always_in_rent_during_period = sum(line.product_uom_qty - line.qty_delivered for line in covers_period)
-
-        return max_qty_rented + qty_always_in_rent_during_period
-
-    def _get_active_rental_lines(self, fro, to, domain=None):
-        # TODO what if products are in reparation time (still unavailable)
-        # and sol state = 'done', the unavailability won't be correctly counted?
-        self.ensure_one()
-
-        Reservation = self.env['sale.order.line']
-
-        domain = domain if domain is not None else []
-        domain += [
-            ('is_rental', '=', True),
-            ('product_id', '=', self.id),
-            ('state', 'in', ['sale', 'done']),
-        ]
-
-        if not to or fro == to:
-            active_lines_at_time_fro = Reservation.search(domain + [
-                ('reservation_begin', '<=', fro),
-                ('return_date', '>=', fro)
-            ])
-            return [], [], active_lines_at_time_fro
-        else:
-            begins_during_period = Reservation.search(domain + [
-                ('reservation_begin', '>', fro),
-                ('reservation_begin', '<', to)])
-            ends_during_period = Reservation.search(domain + [
-                ('return_date', '>', fro),
-                ('return_date', '<', to),
-                ('id', 'not in', begins_during_period.ids)])
-            covers_period = Reservation.search(domain + [
-                ('reservation_begin', '<=', fro),
-                ('return_date', '>=', to)])
-            return begins_during_period, ends_during_period, covers_period

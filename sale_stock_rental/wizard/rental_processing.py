@@ -42,21 +42,21 @@ class RentalProcessingLine(models.TransientModel):
         returned_lots = line.returned_lot_ids
 
         if status == 'pickup':
-            rented_qty = 0.0
             if line.product_id.tracking == 'serial':
                 # If product is tracked by serial numbers
-                lots = self.env['stock.production.lot'].search([('product_id', '=', line.product_id.id)])
-                rentable_lots = lots.filtered(lambda lot: lot._get_available_rental_qty(warehouse=line.order_id.warehouse_id) > 0)
-
-                rented_qty, rented_lots = line.product_id._get_rented_qty_lots(
-                    line.reservation_begin,  # TODO replace by fields.Datetime.now()
+                # Get lots in stock:
+                rentable_lots = self.env['stock.production.lot']._get_available_lots(line.product_id, line.order_id.warehouse_id.lot_stock_id)
+                # Get lots reserved/pickedup and not already returned
+                rented_lots = line.product_id._get_unavailable_lots(
+                    fields.Datetime.now(),
                     line.return_date,
-                    line.id,
-                    line.order_id.warehouse_id.id)
+                    ignored_soline_id=line.id,
+                    warehouse_id=line.order_id.warehouse_id.id)
 
-                # If serial was sold by another app, don't consider it as reserved anymore.
-                reserved_lots = reserved_lots & rentable_lots
+                # Don't show reserved lots if they aren't back (or were moved by another app)
                 if pickedup_lots:
+                    # As we ignored current SaleOrderLine for availability, we need to add
+                    # its pickedup_lots to the rented ones to make sure it cannot be picked-up twice.
                     rented_lots += pickedup_lots
 
                 if returned_lots:
@@ -68,27 +68,26 @@ class RentalProcessingLine(models.TransientModel):
                     rented_lots += returned_lots
 
                 pickeable_lots = rentable_lots - rented_lots
+
+                # Don't count
+                # * unavailable lots
+                # * lots expected to go to another client before
+                # as reserved lots (which will be auto-filled as pickedup_lots).
+                reserved_lots = reserved_lots & pickeable_lots
                 default_line_vals.update({
                     'qty_picked_up': len(reserved_lots),
                 })
-            elif line.product_id.type == 'product':
-                # If product isn't tracked but still managed by stock
-                rented_qty = line.product_id._get_rented_qty(
-                    line.reservation_begin,
-                    line.return_date,
-                    line.id,
-                    line.order_id.warehouse_id.id)
 
             if line.product_id.type == 'product':
-                # VFE NOTE : we consider availability only for storable products?
-                rentable_qty_during_period = line.product_id.with_context(
-                    from_date=max(line.reservation_begin, fields.Datetime.now()),
-                    to_date=line.return_date,
-                    warehouse_id=line.order_id.warehouse_id.id).qty_available
                 default_line_vals.update({
-                    'qty_available': max(rentable_qty_during_period - rented_qty, 0),
+                    'qty_available': line.product_id.with_context(
+                        from_date=max(line.reservation_begin, fields.Datetime.now()),
+                        to_date=line.return_date,
+                        warehouse_id=line.order_id.warehouse_id.id).qty_available,
                     'is_product_storable': True
                 })
+                # On pickup: only show quantity currently available
+                # because the unavailable qty is in company_id.rental_loc_id.
 
             default_line_vals.update({
                 'pickedup_lot_ids': [(6, 0, reserved_lots.ids)],

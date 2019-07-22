@@ -15,9 +15,9 @@
                 <div class="o_setting_left_pane">
                 </div>
                 <div class="o_setting_right_pane">
-                    <span class="o_form_label">Default Padding Times</span>
+                    <span class="o_form_label">Padding Time</span>
                     <div class="text-muted">
-                        Default padding time for new products
+                        Keep products unavailable between 2 rentals
                     </div>
                     <div class="content-group">
                         <div class="row mt16">
@@ -32,7 +32,7 @@
                 <div class="o_setting_left_pane">
                 </div>
                 <div class="o_setting_right_pane">
-                    <span class="o_form_label">Delay Costs</span>
+                    <span class="o_form_label">Default Delay Costs</span>
                     <div class="text-muted" title="Those values are applied to any new rental product and can be changed on product forms.">
                         Default extra costs if products are returned late
                     </div>

@@ -13,7 +13,7 @@ class RentalProcessing(models.TransientModel):
     rental_wizard_line_ids = fields.One2many('rental.order.wizard.line', 'rental_order_wizard_id')
     status = fields.Selection(
         selection=[
-            ('pickup', 'Pick Up'),
+            ('pickup', 'Pickup'),
             ('return', 'Return'),
         ],
     )
@@ -105,6 +105,9 @@ class RentalProcessingLine(models.TransientModel):
                     'product_uom_qty': max(order_line.product_uom_qty, order_line.qty_picked_up + wizard_line.qty_picked_up),
                     'qty_picked_up': order_line.qty_picked_up + wizard_line.qty_picked_up
                 })
+                if order_line.pickup_date > fields.Datetime.now():
+                    order_line.pickup_date = fields.Datetime.now()
+
             elif wizard_line.status == 'return' and wizard_line.qty_returned > 0:
                 if wizard_line.is_late:
                     # Delays facturation

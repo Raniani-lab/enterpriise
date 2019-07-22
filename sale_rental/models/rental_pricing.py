@@ -2,12 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
-from odoo import fields, models
+from odoo import api, fields, models
 
 PERIOD_RATIO = {
     'hour': 1,
     'day': 24,
-    'week': 24*7
+    'week': 24 * 7
 }
 
 
@@ -38,10 +38,11 @@ class RentalPricing(models.Model):
         help="Select Variants of the Product for which this rule applies."
         "\n Leave empty if this rule applies for any variant of this template.")
 
-    def compute_price(self, duration):
+    def _compute_price(self, duration, unit):
         """Compute the price for a specified duration of the current pricing rule.
 
         :param float duration: duration in hours
+        :param str unit: duration unit (hour, day, week)
         :return float: price
         """
         self.ensure_one()
@@ -49,9 +50,20 @@ class RentalPricing(models.Model):
         # and support api.multi ?
         if duration <= 0 or self.duration <= 0:
             return self.price
-        # we want roudning per days -_-
-        pricing_duration_days = self.duration * PERIOD_RATIO[self.unit] / 24.0
-        return self.price * math.ceil((duration / 24.0) / pricing_duration_days)
+        if unit != self.unit:
+            converted_duration = math.ceil((duration * PERIOD_RATIO[unit]) / (self.duration * PERIOD_RATIO[self.unit]))
+        else:
+            converted_duration = math.ceil(duration / self.duration)
+        return self.price * converted_duration
+
+    @api.model
+    def _compute_duration_vals(self, pickup_date, return_date):
+        duration = return_date - pickup_date
+        vals = dict(hour=(duration.days * 24 + duration.seconds / 3600))
+        vals['day'] = vals['hour'] / 24
+        vals['week'] = vals['day'] / 7
+        # months todo
+        return vals
 
     _sql_constraints = [
         ('rental_pricing_duration',

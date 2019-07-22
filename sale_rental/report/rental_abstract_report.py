@@ -10,8 +10,10 @@ class RentalReport(models.AbstractModel):
     _description = "Rental Report"
     _auto = False
     _order = 'order_date desc'
+    _rec_name = 'partner_name'
 
     name = fields.Char('Order Reference', readonly=True)
+    product_name = fields.Char('Product Reference', readonly=True)
     description = fields.Char('Description', readonly=True)
     order_date = fields.Datetime('Order Date', readonly=True)
     confirmation_date = fields.Datetime('Confirmation Date', readonly=True)
@@ -23,6 +25,7 @@ class RentalReport(models.AbstractModel):
     qty_picked_up = fields.Float('Qty Picked-up', readonly=True)
     qty_delivered = fields.Float('Qty Delivered', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
+    partner_name = fields.Char(string="Customer Name", readonly=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
     user_id = fields.Many2one('res.users', 'Salesperson', readonly=True)
     product_tmpl_id = fields.Many2one('product.template', 'Product Template', readonly=True)
@@ -55,8 +58,8 @@ class RentalReport(models.AbstractModel):
     def _id(self):
         return """min(sol.id) as id,"""
 
-    def _get_name(self):
-        return """t.name as name,"""
+    def _get_product_name(self):
+        return """t.name as product_name,"""
 
     def _quantity(self):
         return """
@@ -77,6 +80,7 @@ class RentalReport(models.AbstractModel):
             sol.product_id as product_id,
             t.uom_id as product_uom,
             sol.name as description,
+            s.name as name,
             %s
             %s
             count(*) as nbr,
@@ -101,9 +105,10 @@ class RentalReport(models.AbstractModel):
             p.product_tmpl_id,
             partner.country_id as country_id,
             partner.commercial_partner_id as commercial_partner_id,
+            partner.name as partner_name,
             s.id as order_id,
             sol.id as order_line_id
-        """ % (self._id(), self._get_name(), self._quantity(), self._price())
+        """ % (self._id(), self._get_product_name(), self._quantity(), self._price())
 
     def _from(self):
         return """
@@ -138,6 +143,7 @@ class RentalReport(models.AbstractModel):
             p.product_tmpl_id,
             partner.country_id,
             partner.commercial_partner_id,
+            partner.name,
             s.id,
             sol.id
         """

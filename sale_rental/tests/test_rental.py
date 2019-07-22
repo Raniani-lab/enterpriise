@@ -47,27 +47,27 @@ class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
     def test_pricing(self):
         # check pricing returned = expected
         self.assertEquals(
-            self.product_id._get_best_pricing_rule(9.0).compute_price(9.0),
+            self.product_id._get_best_pricing_rule(duration=9.0, unit='hour')._compute_price(9.0, 'hour'),
             30.0
         )
 
         self.assertEquals(
-            self.product_id._get_best_pricing_rule(11.0).compute_price(11.0),
+            self.product_id._get_best_pricing_rule(duration=11.0, unit='hour')._compute_price(11.0, 'hour'),
             38.5
         )
 
         self.assertEquals(
-            self.product_id._get_best_pricing_rule(16.0).compute_price(16.0),
+            self.product_id._get_best_pricing_rule(duration=16.0, unit='hour')._compute_price(16.0, 'hour'),
             56.0
         )
 
         self.assertEquals(
-            self.product_id._get_best_pricing_rule(20).compute_price(20.0),
+            self.product_id._get_best_pricing_rule(duration=20, unit='hour')._compute_price(20.0, 'hour'),
             60.0
         )
 
         self.assertEquals(
-            self.product_id._get_best_pricing_rule(24.0).compute_price(24.0),
+            self.product_id._get_best_pricing_rule(duration=24.0, unit='hour')._compute_price(24.0, 'hour'),
             60.0
         )
 

@@ -1400,7 +1400,7 @@ msgstr "Elutasított"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__displayed_image_attachment_id
 msgid "Related attachment"
-msgstr ""
+msgstr "Kapcsolódó melléklet"
 
 #. module: mrp_plm
 #: selection:mrp.eco.bom.change,change_type:0

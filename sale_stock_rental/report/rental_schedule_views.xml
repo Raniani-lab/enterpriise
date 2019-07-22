@@ -19,6 +19,9 @@
       <field name="product_id" position="after">
         <field name="lot_id" attrs="{'invisible': [('lot_id', '=', False)]}"/>
       </field>
+      <field name="company_id" position="before">
+        <field name="warehouse_id" groups="stock.group_stock_multi_warehouses"/>
+      </field>
     </field>
   </record>
 </odoo>

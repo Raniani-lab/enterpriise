@@ -160,7 +160,7 @@
       <field name="priority">100</field>
       <field name="arch" type="xml">
         <search>
-          <filter string="My Rental Orders" domain="[('user_id','=',uid)]" name="my_rental_orders"/>
+          <filter string="My Orders" domain="[('user_id','=',uid)]" name="my_rental_orders"/>
           <separator/>
             <filter name="filter_today" string="To Do Today"
               domain="[('next_action_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))),

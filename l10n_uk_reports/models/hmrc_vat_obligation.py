@@ -69,7 +69,7 @@ class HmrcVatObligation(models.Model):
             status = 'O' if status == 'open' else 'F'
             params.update({'status': status})
         resp = requests.get(url, headers=headers, params=params)
-        response = json.loads(resp.content)
+        response = json.loads(resp.content.decode())
         if resp.status_code == 200:
             # Create obligations
             return response.get('obligations')
@@ -119,43 +119,47 @@ class HmrcVatObligation(models.Model):
 
     def _fetch_values_from_report(self, lines):
         translation_table = {
-            'vatDueSales': 'financial_report_line_uk_0101',
-            'vatDueAcquisitions': 'financial_report_line_uk_0102',
-            'totalVatDue': 'financial_report_line_uk_0103',
-            'vatReclaimedCurrPeriod': 'financial_report_line_uk_0104',
-            'netVatDue': 'financial_report_line_uk_0105',
-            'totalValueSalesExVAT': 'financial_report_line_uk_0201',
-            'totalValuePurchasesExVAT': 'financial_report_line_uk_0202',
-            'totalValueGoodsSuppliedExVAT': 'financial_report_line_uk_0301',
-            'totalAcquisitionsExVAT': 'financial_report_line_uk_04',
+            'vatDueSales': 'account_tax_report_line_vat_box1',
+            'vatDueAcquisitions': 'account_tax_report_line_vat_box2',
+            'totalVatDue': 'account_tax_report_line_vat_box3',
+            'vatReclaimedCurrPeriod': 'account_tax_report_line_vat_box4',
+            'netVatDue': 'account_tax_report_line_vat_box5',
+            'totalValueSalesExVAT': 'account_tax_report_line_exd_vat_box6',
+            'totalValuePurchasesExVAT': 'account_tax_report_line_exd_vat_box7',
+            'totalValueGoodsSuppliedExVAT': 'account_tax_report_line_exd_vat_box8',
+            'totalAcquisitionsExVAT': 'account_tax_report_line_exd_vat_box9',
         }
         reverse_table = {}
         for line_xml_id in translation_table:
-            uk_report_id = self.env.ref('l10n_uk_reports.' + translation_table[line_xml_id])
-            reverse_table[uk_report_id.id] = line_xml_id
+            uk_report_id = self.env.ref('l10n_uk.' + translation_table[line_xml_id])
+            if line_xml_id in ('netVatDue', 'totalVatDue'): #Ids of totals are "total_" + id
+                reverse_table['total_' + str(uk_report_id.id)] = line_xml_id
+            else:
+                reverse_table[uk_report_id.id] = line_xml_id
+
         values = {}
         for line in lines:
             if reverse_table.get(line['id']):
                 # Do a get for the no_format_name as for the totals you have twice the line, without and with amount
                 # We cannot pass a negative netVatDue to the API and the amounts of sales/purchases/goodssupplied/ ... must be rounded
                 if reverse_table[line['id']] == 'netVatDue':
-                    values[reverse_table[line['id']]] = abs(round(line['columns'][0].get('no_format_name', 0.0), 2))
+                    values[reverse_table[line['id']]] = abs(round(line['columns'][0].get('balance', 0.0), 2))
                 elif reverse_table[line['id']] in ('totalValueSalesExVAT', 'totalValuePurchasesExVAT', 'totalValueGoodsSuppliedExVAT', 'totalAcquisitionsExVAT'):
-                    values[reverse_table[line['id']]] = round(line['columns'][0].get('no_format_name', 0.0))
+                    values[reverse_table[line['id']]] = round(line['columns'][0].get('balance', 0.0))
                 else:
-                    values[reverse_table[line['id']]] = round(line['columns'][0].get('no_format_name', 0.0), 2)
+                    values[reverse_table[line['id']]] = round(line['columns'][0].get('balance', 0.0), 2)
         return values
 
     def action_submit_vat_return(self):
         self.ensure_one()
-        report = self.env.ref('l10n_uk_reports.financial_report_l10n_uk')[0]
-        report._with_correct_filters()
-        report.filter_date = {'date_from': self.date_start,
-                              'date_to': self.date_end,
-                              'filter': 'custom',
-                              'mode': 'range'}
+        report = self.env['account.generic.tax.report']
         options = report._get_options()
-        report_values = report._get_lines(options)
+        options['date'].update({'date_from': fields.Date.to_string(self.date_start),
+                        'date_to': fields.Date.to_string(self.date_end),
+                        'filter': 'custom',
+                        'mode': 'range'})
+        ctx = report._set_context(options)
+        report_values = report.with_context(ctx)._get_lines(options)
         values = self._fetch_values_from_report(report_values)
         vat = self.env.company.vat
         res = self.env['hmrc.service']._login()
@@ -173,7 +177,7 @@ class HmrcVatObligation(models.Model):
         r = requests.post(url, headers=headers, data=json.dumps(data))
         # Need to do something with the result?
         if r.status_code == 201: #Successful post
-            response = json.loads(r.content)
+            response = json.loads(r.content.decode())
             msg = _('Tax return successfully posted:') + ' <br/>'
             msg += '<b>' + _('Date Processed') + ': </b>' + response['processingDate'] + '<br/>'
             if response.get('paymentIndicator'):
@@ -185,7 +189,7 @@ class HmrcVatObligation(models.Model):
             for sent_key in data:
                 if sent_key != 'periodKey':
                     msg += '<b>' + sent_key + '</b>: ' + str(data[sent_key]) + '<br/>'
-            self.sudo().message_post(msg)
+            self.sudo().message_post(body=msg)
             self.sudo().write({'status': "fulfilled"})
         elif r.status_code == 401:  # auth issue
             _logger.exception(_("HMRC auth issue : %s"), r.content)
@@ -194,7 +198,7 @@ class HmrcVatObligation(models.Model):
         else:  # other issues
             _logger.exception(_("HMRC other issue : %s") % r.content)
             # even 'normal' hmrc errors have a json body. Otherwise will also raise.
-            response = json.loads(r.content)
+            response = json.loads(r.content.decode())
             # Recuperate error message
             if response.get('errors'):
                 msgs = ""

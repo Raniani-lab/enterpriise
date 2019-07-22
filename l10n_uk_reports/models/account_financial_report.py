@@ -2,16 +2,15 @@ from odoo import api, models, _
 import requests
 
 
-class TaxFinancialReport(models.Model):
-    _inherit = 'account.financial.html.report'
+class TaxFinancialReport(models.AbstractModel):
+    _inherit = 'account.generic.tax.report'
 
     def _get_reports_buttons(self):
         """
             Add Buttons to Tax Report
         """
         rslt = super(TaxFinancialReport, self)._get_reports_buttons()
-        self.ensure_one()
-        if self.id == self.env.ref('l10n_uk_reports.financial_report_l10n_uk').id:
+        if self.env.user.company_id.country_id.id == self.env.ref('base.uk').id:
             # If token, but no refresh_token, check if you got the refresh_token on the server first
             # That way, you can see immediately if your login was successful after logging in
             # and the label of the button will be correct

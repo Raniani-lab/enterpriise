@@ -653,7 +653,7 @@ msgstr "Termékváltozat"
 #. module: quality
 #: model:ir.module.category,name:quality.module_category_quality
 msgid "Quality"
-msgstr ""
+msgstr "Minőség"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert

@@ -146,11 +146,6 @@
         <xpath expr="//kanban" position="attributes">
           <attribute name="quick_create">false</attribute>
         </xpath>
-        <xpath expr="//templates" position="after">
-          <searchpanel>
-              <field name="rental_status" select="one" icon="fa-retweet"/>
-          </searchpanel>
-        </xpath>
       </field>
     </record>
 
@@ -177,6 +172,10 @@
               <filter string="Salesperson" name="salesperson" domain="[]" context="{'group_by':'user_id'}"/>
               <filter  string="Customer" name="customer" domain="[]" context="{'group_by':'partner_id'}"/>
           </group>
+          <searchpanel>
+              <field name="rental_status" icon="fa-retweet"/>
+              <field name="invoice_status" icon="fa-retweet"/>
+          </searchpanel>
         </search>
       </field>
     </record>

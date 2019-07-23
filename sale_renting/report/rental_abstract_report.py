@@ -12,6 +12,12 @@ class RentalReport(models.AbstractModel):
     _order = 'order_date desc'
     _rec_name = 'partner_name'
 
+    @api.model
+    def _read_group_product_ids(self, products, domain, order):
+        if self._context.get('restrict_renting_products'):
+            return products
+        return products.search([('rent_ok', '=', True)], order=order)
+
     name = fields.Char('Order Reference', readonly=True)
     product_name = fields.Char('Product Reference', readonly=True)
     description = fields.Char('Description', readonly=True)
@@ -19,7 +25,7 @@ class RentalReport(models.AbstractModel):
     confirmation_date = fields.Datetime('Confirmation Date', readonly=True)
     pickup_date = fields.Datetime('Pickup Date', readonly=True)
     return_date = fields.Datetime('Return Date', readonly=True)
-    product_id = fields.Many2one('product.product', 'Product', readonly=True)
+    product_id = fields.Many2one('product.product', 'Product', readonly=True, group_expand="_read_group_product_ids")
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
     product_uom_qty = fields.Float('Qty Ordered', readonly=True)
     qty_delivered = fields.Float('Qty Delivered', readonly=True)

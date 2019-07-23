@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class ProductTemplate(models.Model):
@@ -29,9 +29,14 @@ class ProductTemplate(models.Model):
 
     def action_view_rentals(self):
         """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""
-        action = self.env.ref('sale_renting.action_rental_order_schedule').read()[0]
-        action['domain'] = [('product_id', 'in', self.mapped('product_variant_ids').ids)]
-        return action
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Scheduled Rentals"),
+            "res_model": "sale.rental.schedule",
+            "views": [[False, "gantt"]],
+            'domain': [('product_id', 'in', self.mapped('product_variant_ids').ids)],
+            'context': {'search_default_Rentals':1, 'group_by_no_leaf':1,'group_by':[], 'restrict_renting_products': True}
+        }
 
     def name_get(self):
         res_names = super(ProductTemplate, self).name_get()
@@ -120,7 +125,12 @@ class ProductProduct(models.Model):
         return best_pricing_rule
 
     def action_view_rentals(self):
-        """Open Gantt view of rentals (sale.rental.schedule), filtered on rentals of the current variant."""
-        action = self.env.ref('sale_renting.action_rental_order_schedule').read()[0]
-        action['domain'] = [('product_id', 'in', self.ids)]
-        return action
+        """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "sale.rental.schedule",
+            "name": _("Scheduled Rentals"),
+            "views": [[False, "gantt"]],
+            'domain': [('product_id', 'in', self.ids)],
+            'context': {'search_default_Rentals':1, 'group_by_no_leaf':1,'group_by':[], 'restrict_renting_products': True}
+        }

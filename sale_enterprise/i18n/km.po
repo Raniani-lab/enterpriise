@@ -49,7 +49,7 @@ msgstr ""
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__invoice_status
 msgid "Invoice Status"
-msgstr ""
+msgstr "ស្ថានភាពវិក័យប័ត្រ"
 
 #. module: sale_enterprise
 #: selection:sale.report,invoice_status:0

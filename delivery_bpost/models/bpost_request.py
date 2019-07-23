@@ -174,6 +174,9 @@ class BpostRequest():
             receiver_locality = '%s %s' % (receiver_locality, receiver_postal_code)
             receiver_postal_code = '/'
 
+        if picking.partner_id.state_id:
+            receiver_locality = '%s, %s' % (receiver_locality, picking.partner_id.state_id.display_name)
+
         # Some country do not use zip code (Saudi Arabia, Congo, ...). Bpost
         # always require at least a zip or a PO box.
         if not receiver_postal_code:

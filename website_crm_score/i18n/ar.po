@@ -436,7 +436,7 @@ msgstr "النسبة"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__rule_type
 msgid "Rule Type"
-msgstr ""
+msgstr "نوع القاعدة"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__running
@@ -477,6 +477,8 @@ msgid ""
 "Sales Team the user is member of. Used to compute the members of a Sales "
 "Team through the inverse one2many"
 msgstr ""
+"فريق المبيعات الذي ينتمي إليه العضو. يستخدم لحساب أعضاء فريق المبيعات من "
+"خلال علاقة واحد إلى متعدد العكسية"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids

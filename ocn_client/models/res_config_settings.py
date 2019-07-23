@@ -56,4 +56,5 @@ class ResConfigSettings(models.TransientModel):
             result = jsonrpc(self._get_endpoint() + '/iap/ocn/register_device', params=values)
             if result:
                 self.env.user.partner_id.ocn_token = result
+                return result
         return False

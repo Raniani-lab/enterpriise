@@ -1402,7 +1402,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "History"
-msgstr ""
+msgstr "ប្រវត្តិ"
 
 #. module: sale_subscription
 #: model:sale.subscription.close.reason,name:sale_subscription.close_reason_4
@@ -1568,7 +1568,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_invoice_line_ids
 msgid "Invoice Lines"
-msgstr ""
+msgstr "វិកយបត្រខែ្ស"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__recurring_rule_type
@@ -1592,7 +1592,7 @@ msgstr ""
 msgid ""
 "Invoice_${(object.number or '').replace('/','_')}${object.state == 'draft' "
 "and '_draft' or ''}"
-msgstr ""
+msgstr "វិកយបត្រ_${(គោលបំណងលេខវិកយបត្រ'')ជំនួយ('/','_')}$"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success
@@ -1738,7 +1738,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Log a note..."
-msgstr ""
+msgstr "កត់ចំណំា"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -2373,7 +2373,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__team_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Sales Team"
-msgstr ""
+msgstr "ក្រុមលក់"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__user_id
@@ -2466,7 +2466,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Show all records which has next action date is before today"
-msgstr ""
+msgstr "បង្ហាញកំណត់ត្រាទាំងអស់ដែលមានកាលបរិច្ឆេទសកម្មភាពបន្ទាប់នៅមុនថ្ងៃនេះ"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__product_ids
@@ -2738,7 +2738,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Subtotal"
-msgstr ""
+msgstr "សរុប"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

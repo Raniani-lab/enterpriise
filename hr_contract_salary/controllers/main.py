@@ -251,23 +251,8 @@ class website_hr_contract_salary(http.Controller):
             'countries': request.env['res.country'].search([]),
         }
 
-    def create_new_contract(self, contract, advantages, no_write=False, **kw):
-        # Generate a new contract with the current modifications
-        personal_info = advantages['personal_info']
-
-        if kw.get('employee'):
-            employee = kw.get('employee')
-        elif contract.employee_id:
-            employee = contract.employee_id
-        else:
-            employee = request.env['hr.employee'].sudo().create({
-                'name': 'Simulation Employee',
-                'active': False,
-                'company_id': contract.company_id.id,
-            })
-        if personal_info:
-            employee.with_context(lang=None).update_personal_info(personal_info, no_name_write=bool(kw.get('employee')))
-        new_contract = request.env['hr.contract'].sudo().new({
+    def _get_new_contract_values(self, contract, employee, advantages):
+        return {
             'active': False,
             'name': contract.name if contract.state == 'draft' else "Package Simulation",
             'job_id': contract.job_id.id,
@@ -298,7 +283,24 @@ class website_hr_contract_salary(http.Controller):
             'contract_type': advantages['contract_type'],
             'internet': advantages['internet'],
             'date_start': fields.Date.today().replace(day=1),
-        })
+        }
+
+    def create_new_contract(self, contract, advantages, no_write=False, **kw):
+        # Generate a new contract with the current modifications
+        personal_info = advantages['personal_info']
+
+        if kw.get('employee'):
+            employee = kw.get('employee')
+        elif contract.employee_id:
+            employee = contract.employee_id
+        else:
+            employee = request.env['hr.employee'].sudo().create({
+                'name': 'Simulation Employee',
+                'active': False,
+            })
+        if personal_info:
+            employee.with_context(lang=None).update_personal_info(personal_info, no_name_write=bool(kw.get('employee')))
+        new_contract = request.env['hr.contract'].sudo().new(self._get_new_contract_values(contract, employee, advantages))
 
         if advantages['has_mobile']:
             new_contract.mobile = request.env['ir.default'].sudo().get('hr.contract', 'mobile')
@@ -353,6 +355,7 @@ class website_hr_contract_salary(http.Controller):
                 'co2': model.default_co2,
                 'fuel_type': model.default_fuel_type,
                 'active': False,
+                'company_id': contract.company_id.id,
             })
             vehicle_contract = contract.car_id.log_contracts[0]
             vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated

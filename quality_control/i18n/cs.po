@@ -252,7 +252,7 @@ msgstr "Emailový alias"
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 #: selection:quality.check,measure_success:0
 msgid "Fail"
-msgstr ""
+msgstr "Selhalo"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search

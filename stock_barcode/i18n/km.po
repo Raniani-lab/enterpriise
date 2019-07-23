@@ -271,7 +271,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__move_line_id
 msgid "Move Line"
-msgstr ""
+msgstr "ផ្លាស់ទីបន្ទាត់"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_inventory_action_new_inventory
@@ -324,7 +324,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_type_action_kanban
 #, python-format
 msgid "Operations"
-msgstr ""
+msgstr "ប្រតិបត្តិការ"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form

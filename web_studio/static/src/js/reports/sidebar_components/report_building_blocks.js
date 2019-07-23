@@ -563,9 +563,14 @@ var TableColumnField = AbstractFieldBlock.extend({
         }
         var fieldHTML = $field.prop('outerHTML');
         if (this.node.tag === 'td' || this.node.tag === 'th') {
+            // add content either in looped cells, or if no loop in normal cells
+            var targetInLoop = _.find(this.targets, function (target) {
+                return this._findParentWithTForeach(target.node);
+            }.bind(this)) ? true : false;
             return this._createReportTableColumn({
                 head: $('<span/>').text(values.string).prop('outerHTML'),
-                bodyLoop: fieldHTML,
+                body: targetInLoop ? undefined : fieldHTML,
+                bodyLoop: targetInLoop ? fieldHTML : undefined,
             });
         } else {
             return this._createContent({

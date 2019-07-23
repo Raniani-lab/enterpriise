@@ -64,6 +64,8 @@ msgid ""
 "Could not fetch data from url. Document or access right not available:\n"
 "%s"
 msgstr ""
+"تعذّر الحصول على البيانات من الرابطـ،. قد يكون المستند أو صلاحية الوصول غير متاحين:\n"
+"%s"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__create_uid
@@ -103,7 +105,7 @@ msgstr "معرف المستند"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__url
 msgid "Document URL"
-msgstr ""
+msgstr "رابط المستند"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__file_name
@@ -123,13 +125,13 @@ msgstr "المعرف"
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Infographic"
-msgstr ""
+msgstr "مخطط المعلومات الرسومي"
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:53
 #, python-format
 msgid "Invalid file type. Please select pdf or image file"
-msgstr ""
+msgstr "نوع الملف غير صالح. برجاء اختيار ملف pdf أو صورة"
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:61
@@ -155,7 +157,7 @@ msgstr "آخر تحديث في"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__mime_type
 msgid "Mime-type"
-msgstr ""
+msgstr "Mime-type"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
@@ -171,7 +173,7 @@ msgstr ""
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:41
 #, python-format
 msgid "Please enter valid Youtube or Google Doc URL"
-msgstr ""
+msgstr "برجاء إدخال رابط صالح من يوتيوب أو من مستندات جوجل"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
@@ -181,7 +183,7 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Presentation"
-msgstr ""
+msgstr "عرض"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_url
@@ -196,7 +198,7 @@ msgstr "حفظ"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Slide"
-msgstr ""
+msgstr "شريحة"
 
 #. module: website_helpdesk_slides
 #: model:ir.actions.act_window,name:website_helpdesk_slides.slide_upload_action
@@ -211,7 +213,7 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Slide image"
-msgstr ""
+msgstr "صورة شريحة"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__tag_ids
@@ -229,6 +231,8 @@ msgid ""
 "The document type will be set automatically based on the document URL and "
 "properties (e.g. height and width for presentation and document)."
 msgstr ""
+"سيتم تحديد نوع المستند تلقائيًا حسب رابط وخصائص المستند (مثل طول وعرض العرض "
+"والمستند)."
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_helpdesk_team__elearning_url
@@ -274,12 +278,12 @@ msgstr "الآراء"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__document_id
 msgid "Youtube or Google Document ID"
-msgstr ""
+msgstr "معرف يوتيوب أو من مستندات جوجل"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__url
 msgid "Youtube or Google Document URL"
-msgstr ""
+msgstr "رابط يوتيوب أو من مستندات جوجل"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_id

@@ -45,7 +45,7 @@ msgstr ""
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
 msgid "Archive"
-msgstr ""
+msgstr "សម្រេចគោលដៅ"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
@@ -443,7 +443,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.model,name:website_crm_score.model_crm_team
 msgid "Sales Channels"
-msgstr ""
+msgstr "លក់"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action

@@ -814,7 +814,7 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "Duplicate"
-msgstr ""
+msgstr "ត្រួត"
 
 #. module: web_studio
 #. openerp-web
@@ -1860,7 +1860,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:33
 #, python-format
 msgid "Properties"
-msgstr ""
+msgstr "ទ្រព្យសម្បត្តិ"
 
 #. module: web_studio
 #. openerp-web

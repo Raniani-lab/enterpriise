@@ -18,6 +18,10 @@ if (mobile.methods.getFCMKey) {
                     method: 'register_device',
                     args: [response.data.subscription_id, response.data.device_name],
                     kwargs: {},
+                }).then(function (ocn_token) {
+                    if (mobile.methods.setOCNToken) {
+                        mobile.methods.setOCNToken({ocn_token: ocn_token});
+                    }
                 });
             }
         });

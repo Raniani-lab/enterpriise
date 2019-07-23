@@ -2942,6 +2942,11 @@ msgid ""
 "on the next invoice date. If you use a quotation, the products will be added"
 " at the order confirmation."
 msgstr ""
+"Chcete-li do tohoto spuštěného předplatného přidat nové produkty, můžete buď"
+" vytvořit novou nabídku a požádat o schválení zákazníka (diskontováno pro "
+"aktuální fakturační období), nebo je přímo vložit do předplatného, aby byla "
+"fakturována v následujícím datu faktury. Pokud použijete cenovou nabídku, "
+"budou produkty přidány při potvrzení objednávky."
 
 #. module: sale_subscription
 #: selection:sale.subscription,activity_state:0

@@ -121,11 +121,13 @@ class AccountInvoiceLine(models.Model):
     l10n_mx_edi_tariff_fraction_id = fields.Many2one(
         'l10n_mx_edi.tariff.fraction', 'Tariff Fraction', store=True,
         related='product_id.l10n_mx_edi_tariff_fraction_id', readonly=True,
+        compute_sudo=True,
         help='It is used to express the key of the tariff fraction '
         'corresponding to the description of the product to export.')
     l10n_mx_edi_umt_aduana_id = fields.Many2one(
         'uom.uom', 'UMT Aduana', store=True,
         related='product_id.l10n_mx_edi_umt_aduana_id', readonly=True,
+        compute_sudo=True,
         help='Used in complement "Comercio Exterior" to indicate in the '
         'products the TIGIE Units of Measurement. It is based in the SAT '
         'catalog.')

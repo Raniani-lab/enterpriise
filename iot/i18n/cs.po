@@ -153,7 +153,7 @@ msgstr "Zobrazovaný název"
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Fail"
-msgstr ""
+msgstr "Selhalo"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -411,7 +411,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__type

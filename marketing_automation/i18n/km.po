@@ -861,7 +861,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Recipients"
-msgstr ""
+msgstr "អ្នកទទួល"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__resource_ref

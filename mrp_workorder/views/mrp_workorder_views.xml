@@ -221,7 +221,9 @@
                     </div>
                 </div>
                 <div class="workorder_pdf">
-                    <field name="worksheet" widget="mrp_pdf_viewer_no_reload" attrs="{'invisible': [('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
+                        <field name="worksheet_type" invisible="1"/>
+                        <field name="worksheet" widget="mrp_pdf_viewer_no_reload" attrs="{'invisible': ['|', ('worksheet_type', '=', 'google_slide'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
+                        <field name="worksheet_google_slide" widget="mrp_embed_viewer_no_reload" attrs="{'invisible': ['|', ('worksheet_type', '=', 'pdf'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
                 </div>
                 <field name="_barcode_scanned" widget="barcode_handler"/>
             </form>
@@ -280,13 +282,16 @@
             <link rel="stylesheet" type="text/scss" href="/mrp_workorder/static/src/scss/tablet_view.scss"/>
             <script type="text/javascript" src="/mrp_workorder/static/src/js/mrp_workorder.js"></script>
             <script type="text/javascript" src="/mrp_workorder/static/src/js/pdf_viewer_no_reload.js"></script>
+            <script type="text/javascript" src="/mrp_workorder/static/src/js/viewer_common.js"></script>
             <script type="text/javascript" src="/mrp_workorder/static/src/js/pdf_viewer_widget.js"></script>
+            <script type="text/javascript" src="/mrp_workorder/static/src/js/embed_viewer_widget.js"></script>
         </xpath>
     </template>
 
     <template id="qunit_suite" inherit_id="web.qunit_suite">
         <xpath expr="//script[last()]" position="after">
             <script type="text/javascript" src="/mrp_workorder/static/tests/pdf_viewer_widget_tests.js"/>
+            <script type="text/javascript" src="/mrp_workorder/static/tests/embed_viewer_widget_tests.js"/>
         </xpath>
     </template>
 

@@ -3,6 +3,7 @@ odoo.define('mrp_workorder.pdf_viewer_no_reload', function (require) {
 
 var fieldRegistry = require('web.field_registry');
 var basicFields = require('web.basic_fields');
+var mrpViewerCommon = require('mrp.viewer_common');
 
 var FieldPdfViewer = basicFields.FieldPdfViewer;
 
@@ -15,20 +16,10 @@ var FieldPdfViewer = basicFields.FieldPdfViewer;
  * on any action (typically, click on a button)
  */
 
-var FieldPdfViewerNoReload = FieldPdfViewer.extend({
+var FieldPdfViewerNoReload = FieldPdfViewer.extend(mrpViewerCommon, {
     description: "",
     supportedFieldTypes: ['binary'],
     template: 'FieldPdfViewer',
-    formFixedHeight: '250px',
-
-    /**
-     * @override
-     */
-    init: function (parent, name, record, options) {
-        this._super.apply(this, arguments);
-        this.iFrameId = (record.id + '.' + name).replace(/\./g, "_");
-        this.invisible = this._isInvisible(parent);
-    },
 
     /**
      * Do not start the widget in the normal lifecycle
@@ -44,7 +35,7 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
         if ($existing.length) {
             if (!this.invisible){
                 this.pdfViewer = $existing.data('pdfViewer');
-                this._goToPage(this.recordData[this.name + '_page'] || 1);
+                this._goToPage(this.page);
             }
             $existing.toggleClass('o_invisible_modifier', this.invisible);
         }
@@ -52,62 +43,6 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
         this._fixFormHeight();
 
         return Promise.resolve();
-    },
-
-    /**
-     * Gets called when parent is attached to DOM
-     *
-     * @override
-     */
-    on_attach_callback: function (){
-        this._fixFormHeight();
-        this._moveAndInitIFrame();
-    },
-
-
-    /**
-     * Don't destroy this widget.
-     *
-     * @override
-     */
-    destroy: function () {},
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-    /**
-     * After Goto page, it's possible that the PDFViewerApp will
-     * still reset the page to last viewed. So this function will
-     * check after a longer time if the page is still set to what
-     * we want.
-     *
-     * @param {string} page
-     * @private
-     */
-    _checkCorrectPage: function (page){
-        var self = this;
-        setTimeout(function (){
-            if (self.pdfViewer && page !== self.pdfViewer.currentPageNumber){
-                self._goToPage(page);
-            }
-        }, 500);
-    },
-
-    /**
-     * Set Form top part to be fixed height to avoid flickers
-     * If iFrame is hidden, show full height of form
-     *
-     * @private
-     */
-    _fixFormHeight: function (){
-        var $form = $('.o_form_view.o_workorder_tablet');
-        if ($form.length) {
-            if (this.invisible) {
-                $form.css('min-height', '100%');
-            } else {
-                $form.css('min-height', this.formFixedHeight);
-            }
-        }
     },
 
     /**
@@ -134,55 +69,21 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
     },
 
     /**
-     * We have to re_compute the value of the modifier because
-     * it is not update yet by the rendered. So the state is the state
-     * of the previous Widget. Usually, it's ok because the modifiers are applied
-     * after the start(), but since we detached this widget from the framework, it's broken.
+     * After Goto page, it's possible that the PDFViewerApp will
+     * still reset the page to last viewed. So this function will
+     * check after a longer time if the page is still set to what
+     * we want.
      *
-     * @param {Object} parent
+     * @param {string} page
      * @private
      */
-    _isInvisible: function (parent){
+    _checkCorrectPage: function (page) {
         var self = this;
-        var invisible = false;
-        _.forEach(parent.allModifiersData, function (item){
-            if (item.node.attrs.name === self.name && item.node.attrs.widget === "mrp_pdf_viewer_no_reload") {
-                invisible = item.evaluatedModifiers[self.record.id].invisible;
-                return;
+        setTimeout(function () {
+            if (self.pdfViewer && page !== self.pdfViewer.currentPageNumber) {
+                self._goToPage(page);
             }
-        });
-        return invisible;
-    },
-
-    /**
-     * Move the iFrame out of the Odoo Form rendered
-     * So that it will not be destroyed along the Form DOM
-     * Also call _super.start after the DOM is moved to avoid double loading
-     *
-     * @private
-     */
-    _moveAndInitIFrame: function (){
-        var $el = this.$el;
-        var $iFrame = $el.find('iframe');
-        var $container = $el.closest('.o_content');
-
-        // Save the PDFViewerApp on the DOM element since this widget will be destroyed on any action
-        $iFrame.on('load', function () {
-            if (this.contentWindow.window.PDFViewerApplication){
-                $el.data('pdfViewer', this.contentWindow.window.PDFViewerApplication.pdfViewer);
-            }
-        });
-
-        // Appended to the container and adjust CSS rules
-        $el.closest('.workorder_pdf').appendTo($container);
-        $container.css('display', 'flex');
-        $container.css('flex-direction', 'column');
-
-        // Add unique ID to get it back after the next destroy/start cycle
-        $el.attr('id', this.iFrameId);
-
-        // Initialize the Widget only when it has been moved in the DOM
-        this._superStart.apply(this, arguments);
+        }, 500);
     },
 });
 

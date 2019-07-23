@@ -688,8 +688,7 @@ class AccountInvoice(models.Model):
                 rate = round(abs(tax.amount), 2)
                 if tax.id not in taxes:
                     taxes.update({tax.id: {
-                        'name': (tax.tag_ids[0].name
-                                 if tax.tag_ids else tax.name).upper(),
+                        'name': (tax_dict['tag_ids'][0][2] and self.env['account.account.tag'].browse(tax_dict['tag_ids'][0][2]).name or tax.name).upper(),
                         'amount': amount,
                         'rate': rate if tax.amount_type == 'fixed' else rate / 100.0,
                         'type': tax.l10n_mx_cfdi_tax_type,
@@ -829,8 +828,7 @@ class AccountInvoice(models.Model):
             float(values['amount_untaxed']) - float(values['amount_discount'] or 0) + (
                 values['taxes']['total_transferred'] or 0) - (values['taxes']['total_withhold'] or 0))
 
-        values['tax_name'] = lambda t: {'ISR': '001', 'IVA': '002', 'IEPS': '003'}.get(
-            t, False)
+        values['tax_name'] = lambda t: {'ISR': '001', 'IVA': '002', 'IEPS': '003'}.get(t, False)
 
         if self.l10n_mx_edi_partner_bank_id:
             digits = [s for s in self.l10n_mx_edi_partner_bank_id.acc_number if s.isdigit()]

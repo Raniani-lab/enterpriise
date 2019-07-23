@@ -33,7 +33,8 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         self.xml_expected = objectify.fromstring(self.xml_expected_str)
         isr_tag = self.env['account.account.tag'].search(
             [('name', '=', 'ISR')])
-        self.tax_negative.tag_ids |= isr_tag
+        for rep_line in self.tax_negative.invoice_repartition_line_ids:
+            rep_line.tag_ids |= isr_tag
         self.payment_method_manual_out = self.env.ref(
             "account.account_payment_method_manual_out")
 

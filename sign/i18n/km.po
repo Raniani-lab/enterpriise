@@ -187,7 +187,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Archive"
-msgstr ""
+msgstr "សម្រេចគោលដៅ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -513,7 +513,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:45
 #, python-format
 msgid "Duplicate"
-msgstr ""
+msgstr "ត្រួត"
 
 #. module: sign
 #. openerp-web
@@ -576,7 +576,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__favorited_ids
 #: model:ir.model.fields,field_description:sign.field_sign_template__favorited_ids
 msgid "Favorite of"
-msgstr ""
+msgstr "ចំណូលចិត្ត"
 
 #. module: sign
 #. openerp-web
@@ -894,7 +894,7 @@ msgstr "ឯកសាររបស់ខ្ញុំ"
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Favorites"
-msgstr ""
+msgstr "ចំណូលចិត្តរបស់ខ្ថុំ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
@@ -1096,7 +1096,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Preview"
-msgstr ""
+msgstr "ពីមុន"
 
 #. module: sign
 #. openerp-web
@@ -1325,7 +1325,7 @@ msgstr "ចែករំលែកតំណភ្ជាប់"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Show all records which has next action date is before today"
-msgstr ""
+msgstr "បង្ហាញកំណត់ត្រាទាំងអស់ដែលមានកាលបរិច្ឆេទសកម្មភាពបន្ទាប់នៅមុនថ្ងៃនេះ"
 
 #. module: sign
 #. openerp-web

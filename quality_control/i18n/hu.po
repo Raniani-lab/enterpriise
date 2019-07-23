@@ -498,7 +498,7 @@ msgstr "Projekt neve"
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_root
 msgid "Quality"
-msgstr ""
+msgstr "Minőség"
 
 #. module: quality_control
 #: code:addons/quality_control/models/quality.py:200

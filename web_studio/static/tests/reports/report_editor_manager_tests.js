@@ -1452,6 +1452,136 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
+    QUnit.test('drag & drop field in table without loop', loadIframeCss(function (assert, done) {
+        assert.expect(4);
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                        '<table class="table table-sm" style="width: 600px">' +
+                            '<thead>' +
+                                '<tr>' +
+                                    '<th colspan="2"><span>Titre 1</span></th>' +
+                                    '<th><span>Titre 2</span></th>' +
+                                    '<th colspan="2"><span>Titre 3</span></th>' +
+                                    '<th><span>Titre 4</span></th>' +
+                                '</tr>' +
+                            '</thead>' +
+                            '<tbody>' +
+                                '<tr>' +
+                                    '<td/>' +
+                                    '<td/>' +
+                                    '<td/>' +
+                                    '<td class="text-right" colspan="2"><span class="o_bold">Total</span></td>' +
+                                    '<td class="text-right"><span class="o_bold"><t t-esc="sum(docs.mapped(\'total\'))"/></span></td>' +
+                                '</tr>' +
+                            '</tbody>' +
+                        '</table>' +
+                    '</t>' +
+                '</kikou>',
+        });
+        var templateData = {
+            docs: [
+                {firstname: 'firstname 1', name: 'name 1', product: 'product 1', price: 10, quantity: 1000, total: 10000},
+                {firstname: 'firstname 2', name: 'name 2', product: 'product 2', price: 20, quantity: 2000, total: 40000},
+                {firstname: 'firstname 3', name: 'name 3', product: 'product 3', price: 30, quantity: 3000, total: 90000}
+            ],
+            sum: function (list) {
+                return list.reduce(function (a, b) {
+                    return a + b;
+                }, 0);
+            },
+            dataOeContext: '{"o": "model.test"}'
+        };
+        templateData.docs.mapped = function (fieldName) {return _.pluck(this, fieldName);};
+
+        var def = studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {
+                report_name: 'awesome_report',
+            },
+            reportHTML: studioTestUtils.getReportHTML(this.templates, templateData),
+            reportViews: studioTestUtils.getReportViews(this.templates, templateData),
+            reportMainViewID: 42,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_report_view') {
+                    var operation = _.last(args.operations);
+                    if (!operation) {
+                        return $.Deferred().reject();
+                    }
+                    assert.deepEqual(operation.inheritance, tests[testIndex].inheritance, tests[testIndex].text);
+                    return $.Deferred().reject();
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        var testIndex = 0;
+        var tests = [
+            {
+                text: "Should select the column (1)",
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Field Column)',
+                selector: 'tbody tr:eq(0) td:first',
+                position: {left: 20, top: 0},
+                nearestHookNumber: 2,
+                inheritance: [{
+                    content: "<th><span>Name</span></th>",
+                    position: "before",
+                    view_id: 55,
+                    xpath: "/t/table/thead/tr/th"
+                }, {
+                    content: "<td><span t-field=\"o.child.name\"></span></td>",
+                    position: "before",
+                    view_id: 55,
+                    xpath: "/t/table/tbody/tr/td"
+                }],
+                onDragAndDrop: function ($table) {
+                    assert.strictEqual($table.find('tr th:first-child.o_web_studio_nearest_hook').length, 1,
+                            "Should select the first title cell");
+                    assert.strictEqual($table.find('tr td:first-child.o_web_studio_nearest_hook').length, 1,
+                            "Should select the first cell of each line");
+                },
+            }
+        ];
+
+
+        def.then(function (rem) {
+            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+
+            // drag and drop a Text component, which should trigger a view edition
+            var $table = rem.$('iframe').contents().find('table');
+
+            for (testIndex; testIndex < tests.length; testIndex++) {
+                var test = tests[testIndex];
+                var $buildingBlock = rem.$(test.buildingBlockSelector);
+                var $target = $table.find(test.selector);
+                $target.css('border','1px solid black'); // makes debugging easier
+                testUtils.dragAndDrop($buildingBlock, $target, {position: test.position});
+                var $nearestHook = $table.find('.o_web_studio_nearest_hook');
+                assert.strictEqual($nearestHook.length, test.nearestHookNumber, test.text + ' (nearestHook number)');
+                if (test.onDragAndDrop) {
+                    test.onDragAndDrop($table);
+                }
+                $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
+                $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
+                $('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]').trigger('click');
+                $('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]').trigger('click');
+                $('.o_web_studio_field_modal .btn-primary').trigger('click');
+            }
+            rem.destroy();
+            done();
+        });
+    }));
+
     QUnit.test('drag & drop block "Accounting Total"', loadIframeCss(function (assert, done) {
         assert.expect(1);
 

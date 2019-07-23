@@ -73,7 +73,7 @@ class BpostRequest():
 
     def _parse_address(self, partner):
         if partner.street and partner.street2:
-            street = '%s %s' % (partner.street1, partner.street2)
+            street = '%s %s' % (partner.street, partner.street2)
         else:
             street = partner.street or partner.street2
         match = re.match(r'^(.*?)(\S*\d+\S*)?\s*$', street)
@@ -166,6 +166,9 @@ class BpostRequest():
         if len(receiver_postal_code) > 8:
             receiver_locality = '%s %s' % (receiver_locality, receiver_postal_code)
             receiver_postal_code = '/'
+
+        if picking.partner_id.state_id:
+            receiver_locality = '%s, %s' % (receiver_locality, picking.partner_id.state_id.display_name)
 
         # Some country do not use zip code (Saudi Arabia, Congo, ...). Bpost
         # always require at least a zip or a PO box.

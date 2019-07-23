@@ -235,7 +235,7 @@ class EasypostRequest():
             if line.product_id.type not in ['product', 'consu']:
                 continue
             unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')
-            hs_code = getattr(line.product_id, 'hs_code', False) or ''
+            hs_code = line.product_id.hs_code or ''
             customs_info.update({
                 'order[shipments][%d][customs_info][customs_items][%d][description]' % (shipment_id, customs_item_id): line.product_id.name,
                 'order[shipments][%d][customs_info][customs_items][%d][quantity]' % (shipment_id, customs_item_id): unit_quantity,

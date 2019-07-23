@@ -9,7 +9,7 @@ class Digest(models.Model):
     _inherit = 'digest.digest'
 
     kpi_helpdesk_tickets_closed = fields.Boolean('Tickets Closed')
-    kpi_helpdesk_tickets_closed_value = fields.Monetary(compute='_compute_kpi_helpdesk_tickets_closed_value')
+    kpi_helpdesk_tickets_closed_value = fields.Integer(compute='_compute_kpi_helpdesk_tickets_closed_value')
 
     def _compute_kpi_helpdesk_tickets_closed_value(self):
         if not self.env.user.has_group('helpdesk.group_helpdesk_user'):

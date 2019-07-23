@@ -322,12 +322,12 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "ការទំនាក់ទំនងដោយប្រុងប្រយ័ត្ន"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "ឈ្មោះក្លែក្លាយ"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_domain
@@ -337,7 +337,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "គំរូឈ្មោះក្លែងក្លាយ"
 
 #. module: helpdesk
 #: selection:helpdesk.sla,priority:0 selection:helpdesk.ticket,priority:0
@@ -366,7 +366,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Archive"
-msgstr ""
+msgstr "សម្រេចគោលដៅ"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_search
@@ -690,7 +690,7 @@ msgstr "ឈ្មោះអតិថិជន"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__access_url
 msgid "Customer Portal URL"
-msgstr ""
+msgstr "អាសយដ្ឋានវិបផតថលរបស់អតិថិជន"
 
 #. module: helpdesk
 #. openerp-web
@@ -1070,7 +1070,7 @@ msgstr "ID"
 msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
-msgstr ""
+msgstr "អត្ថសញ្ញាឯកសារអាណព្យាបាលដំកល់ដោយមិនមានភាពច្បាស់លាស់"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_unread
@@ -1426,6 +1426,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"លេខសម្គាល់ស្រេចចិត្តនៃខ្សែស្រឡាយ (កំណត់ត្រា) "
+"ដែលសារទាំងអស់នឹងត្រូវបានភ្ជាប់ទោះបីជាពួកគេមិនឆ្លើយតបទៅវាក៏ដោយ។ "
+"ប្រសិនបើបានកំណត់វានឹងបិទការបង្កើតកំណត់ត្រាថ្មីទាំងស្រុង។"
 
 #. module: helpdesk
 #: selection:helpdesk.ticket,activity_state:0
@@ -1496,7 +1499,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__access_url
 msgid "Portal Access URL"
-msgstr ""
+msgstr "URL ចូលដំណើរការវិបផតថល"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__priority
@@ -1797,7 +1800,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Show all records which has next action date is before today"
-msgstr ""
+msgstr "បង្ហាញកំណត់ត្រាទាំងអស់ដែលមានកាលបរិច្ឆេទសកម្មភាពបន្ទាប់នៅមុនថ្ងៃនេះ"
 
 #. module: helpdesk
 #: model:helpdesk.stage,name:helpdesk.stage_solved
@@ -1883,7 +1886,7 @@ msgstr "ចំណងជើង"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "Subject..."
-msgstr ""
+msgstr "ប្រធានបទ ..."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

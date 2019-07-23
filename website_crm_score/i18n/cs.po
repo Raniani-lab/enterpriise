@@ -476,7 +476,7 @@ msgstr "Pokladník"
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_team_user
 msgid "Salesperson (Team Member)"
-msgstr ""
+msgstr "Prodejce (člen týmu)"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score

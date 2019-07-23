@@ -6,7 +6,7 @@
             <field name="tax_report" eval="1"/>
             <field name='parent_id' ref='l10n_sg.account_reports_sg_statements_menu'/>
         </record>
-        
+
         <record id="account_financial_report_l10n_sg_gst_returns_supplies" model="account.financial.html.report.line">
             <field name="name">Supplies</field>
             <field name="financial_report_id" ref="account_financial_report_l10n_sg_gst_returns"/>

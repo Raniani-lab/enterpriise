@@ -517,4 +517,149 @@ tour.register('web_studio_new_report_tour', {
     trigger: '.o_web_studio_leave',
 }]);
 
+tour.register('web_studio_new_report_basic_layout_tour', {
+    url: "/web",
+    test: true,
+}, [{
+    // open studio
+    trigger: '.o_main_navbar .o_web_studio_navbar_item',
+}, {
+    // click on the created app
+    trigger: '.o_app[data-menu-xmlid*="studio"]:first',
+    extra_trigger: 'body.o_in_studio',
+}, {
+    // edit reports
+    trigger: '.o_web_studio_menu a[data-name="reports"]',
+}, {
+    // create a new report
+    trigger: '.o_control_panel .o-kanban-button-new',
+}, {
+    // select external layout
+    trigger: '.o_web_studio_report_layout_dialog div[data-layout="web.basic_layout"]',
+}, {
+    // sidebar should display add tab
+    extra_trigger: '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div.active[name="new"]',
+    // switch to 'Report' tab
+    trigger: '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div[name="report"]',
+}, {
+    // edit report name
+    trigger: '.o_web_studio_sidebar input[name="name"]',
+    run: 'text My Awesome basic layout Report',
+}, {
+    // switch to 'Add' in Sidebar
+    extra_trigger: '.o_web_studio_sidebar input[name="name"][value="My Awesome basic layout Report"]',
+    trigger: '.o_web_studio_sidebar div[name="new"]',
+}, {
+    // wait for the iframe to be loaded
+    extra_trigger: '.o_web_studio_report_editor iframe #wrapwrap',
+    // add a 'title' building block
+    trigger: '.o_web_studio_sidebar .o_web_studio_component:contains(Title Block)',
+    run: 'drag_and_drop .o_web_studio_report_editor iframe .article > .page',
+    auto: true,
+}, {
+    // click on the newly added field
+    trigger: '.o_web_studio_report_editor iframe .h2 > span:contains(New Title)',
+}, {
+    // change the text of the H2 to 'test'
+    trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
+    run: function () {
+        this.$anchor.mousedown();
+        this.$anchor[0].firstChild.textContent = 'Test';
+        this.$anchor.trigger($.Event("keydown", {keyCode: 116, key: 't'}));
+    }
+}, {
+    // click outside to blur the field
+    trigger: '.o_web_studio_report_editor',
+    extra_trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable:contains(Test)',
+}, {
+    extra_trigger: '.o_web_studio_report_editor iframe .h2:contains(Test)',
+    // add a new group on the node
+    trigger: '.o_web_studio_sidebar .o_field_many2manytags[name="groups"] input',
+    run: function () {
+        this.$anchor.click();
+    },
+}, {
+    trigger: '.ui-autocomplete:visible li:contains(Access Rights)',
+}, {
+    // wait for the group to appear
+    extra_trigger: '.o_web_studio_sidebar .o_field_many2manytags[name="groups"] .o_badge_text:contains(Access Rights)',
+    // switch to 'Add' in Sidebar
+    trigger: '.o_web_studio_sidebar div[name="new"]',
+}, {
+    // add a 'title' building block Data Table
+    trigger: '.o_web_studio_sidebar .o_web_studio_component:contains(Data table)',
+    run: 'drag_and_drop .o_web_studio_report_editor iframe .article > .page',
+}, {
+    // expand the model selector in the popup
+    trigger: 'div.o_field_selector_value',
+    run: function () {
+        $('div.o_field_selector_value').focusin();
+    }
+}, {
+    // select the first element of the model (doc)
+    trigger: '.o_field_selector_popover:not(.hidden) .o_field_selector_popover_body > ul > li:first()'
+}, {
+    // select the second element of the model (followers)
+    trigger: '.o_field_selector_popover_body > ul > li:contains(Followers)'
+}, {
+    trigger:'.modal-content button>span:contains(Confirm)', // button
+    extra_trigger:'.o_field_selector_chain_part:contains(Followers)', //content of the field is set
+}, {
+    // select the content of the first field of the newly added table
+    trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.display_name"]'
+}, {
+    // change the bound field
+    trigger: '.o_web_studio_sidebar .card:last() div.o_field_selector_value',
+    run: function () {
+        $('.o_web_studio_sidebar .card:last() div.o_field_selector_value').focusin();
+    }
+}, {
+    trigger: 'ul.o_field_selector_page li:contains(ID)'
+}, {
+    // update the title of the column
+    trigger: '.o_web_studio_report_editor iframe table thead span:contains(Name) ', // the name title
+    //extra_trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.display_name"]:not(:contains(YourCompany, Administrator))', // the id has been updated in the iframe
+}, {
+    // update column title 'name' into another title
+    trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
+    run: function () {
+        this.$anchor.mousedown();
+        this.$anchor[0].firstChild.textContent = 'new column title';
+        this.$anchor.trigger($.Event("keydown", {keyCode: 101, key: 'e'}));
+    }
+}, {
+    // click outside to blur the field
+    trigger: '.o_web_studio_report_editor',
+    extra_trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable:contains(new column title)',
+}, {
+    // wait to be sure the modification has been correctly applied
+    extra_trigger: '.o_web_studio_report_editor iframe table thead span:contains(new column title) ',
+    // leave the report
+    trigger: '.o_web_studio_breadcrumb .o_back_button:contains(Reports)',
+}, {
+    // a invisible element cannot be used as a trigger so this small hack is
+    // mandatory for the next step
+    run: function () {
+        $('.o_kanban_record:contains(My Awesome basic layout Report) .o_dropdown_kanban').css('visibility', 'visible');
+    },
+    trigger: '.o_kanban_view',
+}, {
+    // open the dropdown
+    trigger: '.o_kanban_record:contains(My Awesome basic layout Report) .dropdown-toggle',
+}, {
+    // duplicate the report
+    trigger: '.o_kanban_record:contains(My Awesome basic layout Report) .dropdown-menu a:contains(Duplicate)',
+}, {
+    // open the duplicate report
+    trigger: '.o_kanban_record:contains(My Awesome basic layout Report copy(1))',
+}, {
+    // switch to 'Report' tab
+    trigger: '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div[name="report"]',
+}, {
+    // wait for the duplicated report to be correctly loaded
+    extra_trigger: '.o_web_studio_sidebar input[name="name"][value="My Awesome basic layout Report copy(1)"]',
+    // leave Studio
+    trigger: '.o_web_studio_leave',
+}]);
+
 });

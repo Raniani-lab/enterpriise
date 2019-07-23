@@ -28,12 +28,12 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "# Customers"
-msgstr ""
+msgstr "عدد العملاء"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "# Lines"
-msgstr ""
+msgstr "عدد البنود"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
@@ -44,17 +44,17 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_sale_report__is_abandoned_cart
 msgid "Abandoned Cart"
-msgstr ""
+msgstr "عربة التسوق المتروكة"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
 msgid "Abandoned Carts"
-msgstr ""
+msgstr "عربات التسوق المتروكة"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Average Order"
-msgstr ""
+msgstr "متوسط الأمر"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
@@ -94,7 +94,7 @@ msgstr "تم"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "Follow your website traffic in Odoo."
-msgstr ""
+msgstr "متابعة زيارات موقعك في أودو."
 
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0
@@ -104,7 +104,7 @@ msgstr "مفوتر بالكامل"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "How to get my Client ID"
-msgstr ""
+msgstr "كيفية الحصول على مُعرف عميلي"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_sale_report__invoice_status
@@ -160,17 +160,17 @@ msgstr "في انتظار الفوترة"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Total Sales"
-msgstr ""
+msgstr "إجمالي المبيعات"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Total, Tax Included"
-msgstr ""
+msgstr "المجموع شامل الضريبة"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
 msgid "Unpaid Orders"
-msgstr ""
+msgstr "الأوامر غير المدفوعة"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
@@ -195,7 +195,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.actions.act_window,name:website_sale_dashboard.sale_dashboard
 msgid "eCommerce Dashboard"
-msgstr ""
+msgstr "لوحة معلومات المتجر الإلكتروني"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel

@@ -154,12 +154,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "ការទំនាក់ទំនងដោយប្រុងប្រយ័ត្ន"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "ឈ្មោះក្លែក្លាយ"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_domain
@@ -169,7 +169,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "គំរូឈ្មោះក្លែងក្លាយ"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -849,7 +849,7 @@ msgstr "ID"
 msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
-msgstr ""
+msgstr "អត្ថសញ្ញាឯកសារអាណព្យាបាលដំកល់ដោយមិនមានភាពច្បាស់លាស់"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_unread
@@ -1156,6 +1156,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"លេខសម្គាល់ស្រេចចិត្តនៃខ្សែស្រឡាយ (កំណត់ត្រា) "
+"ដែលសារទាំងអស់នឹងត្រូវបានភ្ជាប់ទោះបីជាពួកគេមិនឆ្លើយតបទៅវាក៏ដោយ។ "
+"ប្រសិនបើបានកំណត់វានឹងបិទការបង្កើតកំណត់ត្រាថ្មីទាំងស្រុង។"
 
 #. module: mrp_plm
 #: selection:mrp.eco,activity_state:0
@@ -1442,7 +1445,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Show all records which has next action date is before today"
-msgstr ""
+msgstr "បង្ហាញកំណត់ត្រាទាំងអស់ដែលមានកាលបរិច្ឆេទសកម្មភាពបន្ទាប់នៅមុនថ្ងៃនេះ"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__image_small

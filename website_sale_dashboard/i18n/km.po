@@ -103,7 +103,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_sale_report__invoice_status
 msgid "Invoice Status"
-msgstr ""
+msgstr "ស្ថានភាពវិក័យប័ត្រ"
 
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0

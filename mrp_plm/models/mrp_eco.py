@@ -562,7 +562,7 @@ class MrpEco(models.Model):
         return True
 
     def action_new_revision(self):
-        IrAttachment = self.env['ir.attachment']  # FORWARDPORT UP TO SAAS-15
+        IrAttachment = self.env['ir.attachment']
         for eco in self:
             if eco.type in ('bom', 'both'):
                 eco.new_bom_id = eco.bom_id.copy(default={

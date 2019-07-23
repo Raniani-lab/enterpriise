@@ -915,7 +915,7 @@ class SaleSubscriptionLine(models.Model):
         if not self.uom_id:
             self.price_unit = 0.0
         else:
-            return self.onchange_product_quantity()  # don't forward port
+            return self.onchange_product_quantity()
 
     def get_template_option_line(self):
         """ Return the account.analytic.invoice.line.option which has the same product_id as

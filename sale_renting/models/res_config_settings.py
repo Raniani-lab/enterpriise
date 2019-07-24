@@ -12,10 +12,10 @@ class ResConfigSettings(models.TransientModel):
     # Extra Costs
 
     extra_hour = fields.Float(
-        "Extra Hour", related="company_id.extra_hour", readonly=False,
+        "Per Hour", related="company_id.extra_hour", readonly=False,
         help="This is the default extra cost per hour set on newly created products. You can change this value for existing products directly on the product itself.")
     extra_day = fields.Float(
-        "Extra Day", related="company_id.extra_day", readonly=False,
+        "Per Day", related="company_id.extra_day", readonly=False,
         help="This is the default extra cost per day set on newly created products. You can change this value for existing products directly on the product itself.")
     # extra_week = fields.Monetary("Extra Week")
     min_extra_hour = fields.Integer("Minimum delay time before applying fines.", related="company_id.min_extra_hour", readonly=False)
@@ -25,7 +25,7 @@ class ResConfigSettings(models.TransientModel):
         help="This product will be used to add fines in the Rental Order.", related="company_id.extra_product",
         readonly=False, domain="[('type', '=', 'service')]")
 
-    module_sale_rental_sign = fields.Boolean(string="Sign Documents")
+    module_sale_rental_sign = fields.Boolean(string="Digital Documents")
 
     @api.onchange('extra_hour')
     def _onchange_extra_day(self):

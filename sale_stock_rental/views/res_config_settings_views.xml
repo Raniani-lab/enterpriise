@@ -10,9 +10,9 @@
                     <div class="o_setting_left_pane">
                     </div>
                     <div class="o_setting_right_pane">
-                        <span class="o_form_label">Default Padding Times</span>
+                        <span class="o_form_label">Default Padding Time</span>
                         <div class="text-muted">
-                            Default padding time for new products
+                            Minimum amount of time between two rentals
                         </div>
                         <div class="content-group">
                             <div class="row mt16 o_light_label">

@@ -17,15 +17,15 @@
                 <div class="o_setting_right_pane">
                     <span class="o_form_label">Default Delay Costs</span>
                     <div class="text-muted" title="Those values are applied to any new rental product and can be changed on product forms.">
-                        Default extra costs if products are returned late
+                        Additional costs for late returns
                     </div>
                     <div class="content-group">
                       <div class="row mt16">
-                          <label string="Extra Hour" for="extra_hour" class="col-lg-3 o_light_label"/>
+                          <label for="extra_hour" class="col-lg-3 o_light_label"/>
                           <field name="extra_hour" widget="monetary" class="col-lg-2"/>
                       </div>
                       <div class="row mt16">
-                          <label string="Extra Day" for="extra_day" class="col-lg-3 o_light_label"/>
+                          <label for="extra_day" class="col-lg-3 o_light_label"/>
                           <field name="extra_day" widget="monetary" class="col-lg-2"/>
                       </div>
                       <div class="row mt16 o_light_label">
@@ -48,7 +48,7 @@
                 <div class="o_setting_right_pane" name="rental_sign">
                     <label for="module_sale_rental_sign"/>
                     <div class="text-muted">
-                        Fill and sign digital documents from rental orders
+                        Fill and sign digital documents.
                     </div>
                 </div>
               </div>

@@ -214,8 +214,9 @@ class RentalOrderLine(models.Model):
                     "type": 'service',
                     "default_code": "RENTAL",
                     "purchase_ok": False,
-                    # set active to False to only use and show it for Rental?
                 })
+                # Not set to inactive to allow users to put it back in the settings
+                # In case they removed it.
             self.company_id.extra_product = delay_product
 
         if not delay_product.active:

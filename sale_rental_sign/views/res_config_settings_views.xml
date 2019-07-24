@@ -11,7 +11,7 @@
               <label for="rental_sign_tmpl_id" class="col-lg-4 o_light_label"/>
               <field name="rental_sign_tmpl_id" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
             </div>
-            <button name="%(sign.sign_template_action)d" string="Upload a template"
+            <button name="%(sign.sign_template_action)d" string="Upload Template"
               type="action" class="btn-primary" context="{'default_privacy': 'employee'}" />
         </div>
       </xpath>

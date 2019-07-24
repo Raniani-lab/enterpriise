@@ -11,8 +11,8 @@ class ResCompany(models.Model):
 
     # Extra Costs
 
-    extra_hour = fields.Float("Extra Hour", default=0.0)
-    extra_day = fields.Float("Extra Day", default=0.0)
+    extra_hour = fields.Float("Per Hour", default=0.0)
+    extra_day = fields.Float("Per Day", default=0.0)
     min_extra_hour = fields.Integer("Minimum delay time before applying fines.", default=1)
 
     extra_product = fields.Many2one(

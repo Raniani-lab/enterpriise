@@ -23,6 +23,7 @@ Accounting Reports
         'views/account_journal_dashboard_view.xml',
         'views/res_config_settings_views.xml',
         'wizard/report_export_wizard.xml',
+        'wizard/fiscal_year.xml',
         'views/account_activity.xml',
     ],
     'qweb': [

@@ -8,7 +8,7 @@ var round_pr = require('web.utils').round_precision;
 
 var _t = core._t;
 
-models.load_fields('account.journal', 'use_payment_terminal');
+models.load_fields('pos.payment.method', 'use_payment_terminal');
 
 /** Payment Line
  *
@@ -115,10 +115,7 @@ screens.PaymentScreenWidget.include({
             });
         } else {
             this._super(id);
-            var cashregister = _.find(this.pos.cashregisters, function(cr) {
-                return cr.journal_id[0] === id;
-            });
-            if (cashregister.journal.use_payment_terminal === true) {
+            if (this.pos.payment_methods_by_id[id].use_payment_terminal === true) {
                 if (this.pos.iot_device_proxies['payment']) {
                     this.terminal = this.pos.iot_device_proxies['payment'];
                     this.terminal.add_listener(this._onValueChange.bind(this));

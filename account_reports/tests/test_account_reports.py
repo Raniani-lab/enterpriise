@@ -502,7 +502,7 @@ class TestAccountReports(SavepointCase):
     def test_general_ledger_load_more(self):
         ''' Test the load more feature. '''
         receivable_account = self.env['account.account'].search(
-            [('company_id', '=', self.company_parent.id), ('internal_type', '=', 'receivable')])
+            [('company_id', '=', self.company_parent.id), ('internal_type', '=', 'receivable')], limit=1)
         line_id = 'account_%s' % receivable_account.id
 
         # Mark the '101200 Account Receivable' line to be unfolded.

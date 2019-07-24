@@ -33,7 +33,7 @@ screens.ScaleScreenWidget.include({
                 }
             } else { self._error = false; }
         });
-        this.pos.proxy_queue.schedule(function () { self.scale.action('start_reading'); });
+        this.pos.proxy_queue.schedule(function () { self.scale.action({ action: 'start_reading' }); });
         this._read_scale();
         this._super();
     },
@@ -46,7 +46,7 @@ screens.ScaleScreenWidget.include({
         var self = this;
         self.pos.proxy_queue.schedule(function () {
             self.scale.add_listener(self._on_value_change.bind(self))
-                .then(function () { self.scale.action('read_once'); });
+                .then(function () { self.scale.action({ action: 'read_once' }); });
         });
     },
 
@@ -71,7 +71,7 @@ screens.ScaleScreenWidget.include({
     close: function () {
         var self = this;
         this._super();
-        this.pos.proxy_queue.schedule(function () { self.scale.action('stop_reading'); });
+        this.pos.proxy_queue.schedule(function () { self.scale.action({ action: 'stop_reading' }); });
         if (this.scale) this.scale.remove_listener();
     }
 });

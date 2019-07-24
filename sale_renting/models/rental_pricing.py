@@ -3,7 +3,8 @@
 
 import math
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 PERIOD_RATIO = {
     'hour': 1,
@@ -48,11 +49,11 @@ class RentalPricing(models.Model):
         :return float: price
         """
         self.ensure_one()
-        # or move product._get_best_pricing_rule code here
-        # and support api.multi ?
         if duration <= 0 or self.duration <= 0:
             return self.price
         if unit != self.unit:
+            if unit == 'month' or self.unit == 'month':
+                raise ValidationError(_("Conversion between Months and another duration unit are not supported!"))
             converted_duration = math.ceil((duration * PERIOD_RATIO[unit]) / (self.duration * PERIOD_RATIO[self.unit]))
         else:
             converted_duration = math.ceil(duration / self.duration)

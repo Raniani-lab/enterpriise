@@ -98,6 +98,8 @@ class ProductProduct(models.Model):
 
         :param float duration: duration, in unit uom
         :param str unit: duration unit (hour, day, week)
+        :param datetime pickup_date:
+        :param datetime return_date:
         :return: least expensive pricing rule for given duration
         :rtype: rental.pricing
         """

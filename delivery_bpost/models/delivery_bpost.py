@@ -94,7 +94,9 @@ class ProviderBpost(models.Model):
         return 'http://track.bpost.be/btr/web/#/search?itemCode=%s&lang=en' % picking.carrier_tracking_ref
 
     def bpost_cancel_shipment(self, picking):
-        raise UserError(_("You can not cancel a bpost shipment when a shipping label has already been generated."))
+        picking.message_post(body=_(u'Shipment N° %s has been cancelled' % picking.carrier_tracking_ref))
+        picking.write({'carrier_tracking_ref': '',
+                       'carrier_price': 0.0})
 
     def _bpost_passphrase(self):
         self.ensure_one()

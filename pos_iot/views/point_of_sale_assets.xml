@@ -2,7 +2,6 @@
 <odoo>
     <template id="assets_tests" name="Point Of Sale Assets Tests" inherit_id="web.assets_tests">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/pos_iot/static/src/js/scale.js"></script>
             <script type="text/javascript" src="/pos_iot/static/tests/tours/scale.js"></script>
         </xpath>
     </template>

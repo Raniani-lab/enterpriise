@@ -77,12 +77,12 @@ class MrpProductionSchedule(models.Model):
         move_ids = self.env['stock.move'].search(OR([domain_confirm, domain_done])).ids
 
         rfq_domain = self._get_rfq_domain(date_start, date_stop)
-        pruchase_order_ids = self.env['purchase.order.line'].search_read(rfq_domain)
+        purchase_order_line_ids = self.env['purchase.order.line'].search(rfq_domain).ids
         name = _('Actual Replenishment %s %s (%s - %s)') % (self.product_id.display_name, date_str, date_start, date_stop)
 
         context = {
             'default_move_ids': move_ids,
-            'default_purchase_order_line_ids': pruchase_order_ids,
+            'default_purchase_order_line_ids': purchase_order_line_ids,
             'action_name': name,
         }
         return {

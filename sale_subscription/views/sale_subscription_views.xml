@@ -251,7 +251,7 @@
                                             <field name="product_uom_category_id" invisible="1"/>
                                             <field name="uom_id" string="UoM" groups="uom.group_uom" optional="show"/>
                                             <field name="price_unit"/>
-                                            <field name="discount" string="Disc.%" groups="sale.group_discount_per_so_line" optional="show"/>
+                                            <field name="discount" string="Disc.%" groups="product.group_discount_per_so_line" optional="show"/>
                                             <field name="price_subtotal"/>
                                         </tree>
                                         <form string="Subscription Lines">
@@ -266,7 +266,7 @@
                                                         <field name="uom_id"/>
                                                     </div>
                                                     <field name="price_unit"/>
-                                                    <field name="discount" groups="sale.group_discount_per_so_line"/>
+                                                    <field name="discount" groups="product.group_discount_per_so_line"/>
                                                 </group>
                                             </group>
                                         </form>

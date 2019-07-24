@@ -607,7 +607,7 @@ class AccountMove(models.Model):
     def button_draft(self):
         """Reset l10n_mx_edi_time_invoice when invoice state set to draft"""
         # OVERRIDE
-        if self.is_invoice():
+        if self.l10n_mx_edi_is_required():
             signed = self.filtered(lambda r: r.l10n_mx_edi_is_required() and
                                    not r.company_id.l10n_mx_edi_pac_test_env and
                                    r.l10n_mx_edi_cfdi_uuid)
@@ -634,7 +634,7 @@ class AccountMove(models.Model):
         the invoice that was generate it"""
         # OVERRIDE
         for i, move in enumerate(self):
-            if move.is_invoice() and move.l10n_mx_edi_cfdi_uuid:
+            if move.l10n_mx_edi_is_required() and move.l10n_mx_edi_cfdi_uuid:
                 default_values_list[i]['l10n_mx_edi_origin'] = '%s|%s' % ('01', move.l10n_mx_edi_cfdi_uuid)
         return super(AccountMove, self)._reverse_moves(default_values_list, cancel=cancel)
 
@@ -999,7 +999,7 @@ class AccountMove(models.Model):
     def post(self):
         # OVERRIDE
         # Assign time and date coming from a certificate.
-        for move in self.filtered(lambda move: move.is_invoice()):
+        for move in self.filtered(lambda move: move.l10n_mx_edi_is_required()):
 
             # Line having a negative amount is not allowed.
             for line in move.invoice_line_ids:
@@ -1018,7 +1018,7 @@ class AccountMove(models.Model):
         # Generates the cfdi attachments for mexican companies when validated.
         version = self.l10n_mx_edi_get_pac_version().replace('.', '-')
         trans_field = 'transaction_ids' in self._fields
-        for move in self.filtered(lambda move: move.is_invoice()):
+        for move in self.filtered(lambda move: move.l10n_mx_edi_is_required()):
             if move.type == 'out_refund' and move.reversed_entry_id and not move.reversed_entry_id.l10n_mx_edi_cfdi_uuid:
                 move.message_post(
                     body='<p style="color:red">' + _(
@@ -1040,7 +1040,7 @@ class AccountMove(models.Model):
         result = super(AccountMove, self).button_cancel()
 
         # Cancel the cfdi attachments for mexican companies when cancelled.
-        for move in self.filtered(lambda move: move.is_invoice()):
+        for move in self.filtered(lambda move: move.l10n_mx_edi_is_required()):
             if move.l10n_mx_edi_is_required():
                 move._l10n_mx_edi_cancel()
         return result

@@ -355,6 +355,17 @@
             <field name="green_on_positive" eval="False"/>
             <field name="level" eval="0" />
         </record>
+        <record id="account_financial_report_off_sheet" model="account.financial.html.report.line">
+            <field name="name">OFF BALANCE SHEET ACCOUNTS</field>
+            <field name="code">OS</field>
+            <field name="financial_report_id" ref="account_financial_report_balancesheet0"/>
+            <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
+            <field name="groupby">account_id</field>
+            <field name="formulas">balance = -sum.balance</field>
+            <field name="sequence" eval="5"/>
+            <field name="level" eval="0"/>
+            <field name="hide_if_empty" eval="1"/>
+        </record>
 
 
         <!-- CASH SUMMARY -->

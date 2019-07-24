@@ -86,6 +86,8 @@
                         <field name="figure_type"/>
                         <field name="show_domain"/>
                         <field name="print_on_new_page"/>
+                        <field name="hide_if_zero"/>
+                        <field name="hide_if_empty"/>
                       </group>
                       <group string="Children Lines">
                         <field name="children_ids" nolabel="1"/>

@@ -423,6 +423,7 @@ class AccountFinancialReportLine(models.Model):
     ], default='normal')
     show_domain = fields.Selection([('always', 'Always'), ('never', 'Never'), ('foldable', 'Foldable')], default='foldable')
     hide_if_zero = fields.Boolean(default=False)
+    hide_if_empty = fields.Boolean(default=False)
     action_id = fields.Many2one('ir.actions.actions')
 
     _sql_constraints = [
@@ -1150,6 +1151,8 @@ class AccountFinancialReportLine(models.Model):
                     else:
                         result = [lines[0]] + new_lines
                 else:
+                    if not new_lines and not lines[0]['unfoldable'] and line.hide_if_empty:
+                        lines = []
                     result = lines + new_lines
             else:
                 result = lines

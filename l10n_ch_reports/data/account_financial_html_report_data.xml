@@ -323,6 +323,18 @@
         <field name="formulas">balance = CH_R.balance - sum.balance</field>
     </record>
 
+    <record id="account_financial_report_be_off_sheet" model="account.financial.html.report.line">
+        <field name="name">COMPTES HORS BILAN</field>
+        <field name="code">CH_OS</field>
+        <field name="financial_report_id" ref="account_financial_report_l10n_ch_bilan"/>
+        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
+        <field name="groupby">account_id</field>
+        <field name="formulas">balance = -sum.balance</field>
+        <field name="sequence" eval="3"/>
+        <field name="level" eval="0"/>
+        <field name="hide_if_empty" eval="1"/>
+    </record>
+
 
 
    <!-- P&L REPORT  -->

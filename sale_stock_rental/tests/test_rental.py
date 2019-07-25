@@ -266,7 +266,7 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         lots = self.env['stock.production.lot'].search([('product_id', '=', self.tracked_product_id.id)])
         rentable_lots = self.env['stock.production.lot']._get_available_lots(self.tracked_product_id)
-        self.assertEquals(lots.ids, rentable_lots.ids)
+        self.assertEquals(set(lots.ids), set(rentable_lots.ids))  # set is here to ensure that order wont break test
 
         self.order_line_id2.reserved_lot_ids += self.lot_id1
         self.order_line_id2.product_uom_qty = 1.0

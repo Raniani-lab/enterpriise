@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="marketing_activity_view_form" model="ir.ui.view">
+        <field name="name">marketing.activity.view.form</field>
+        <field name="model">marketing.activity</field>
+        <field name="inherit_id" ref="marketing_automation.marketing_activity_view_form"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='mass_mailing_id']" position="after">
+        		<field name="sms_mailing_id"
+                    domain="[('mailing_type', '=', 'sms'), ('mailing_model_id', '=', model_id), ('use_in_marketing_automation', '=', True)]"
+                    readonly="False"
+                    context="{
+                        'default_state': 'done',
+                        'default_mailing_model_id': model_id,
+                        'default_use_in_marketing_automation': True,
+                        'default_campaign_id': utm_campaign_id,
+                        'default_mailing_type': 'sms',
+                        'form_view_ref': 'marketing_automation.mailing_mailing_view_form_marketing_activity'}"
+                    attrs="{
+                        'required': [('activity_type', '=', 'sms')],
+                        'invisible': [('activity_type', '!=', 'sms')]}"/>
+        	</xpath>
+        </field>
+    </record>
+</odoo>

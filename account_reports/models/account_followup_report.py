@@ -269,7 +269,7 @@ class AccountFollowupReport(models.AbstractModel):
                 model_description=_('payment reminder'),
                 email_layout_xmlid='mail.mail_notification_light')
             return True
-        raise UserError(_('Could not send mail to partner because it does not have any email address defined'))
+        raise UserError(_('Could not send mail to partner %s because it does not have any email address defined') % partner.display_name)
 
     @api.model
     def print_followups(self, records):

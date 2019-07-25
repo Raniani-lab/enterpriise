@@ -752,7 +752,7 @@ msgstr ""
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:269
 #, python-format
-msgid "Could not send mail to partner because it does not have any email address defined"
+msgid "Could not send mail to partner %s because it does not have any email address defined"
 msgstr ""
 
 #. module: account_reports

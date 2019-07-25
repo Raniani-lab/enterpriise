@@ -1025,7 +1025,7 @@ var Table = AbstractEditComponent.extend({
     blacklist: 'thead, tbody, tfoot, tr, td[colspan="99"]',
 });
 
-var TextSelectorTags = 'span, p, h1, h2, h3, h4, h5, h6, blockquote, pre, small, u, i, b, font, strong, ul, li, dl, dt, ol';
+var TextSelectorTags = 'span, p, h1, h2, h3, h4, h5, h6, blockquote, pre, small, u, i, b, font, strong, ul, li, dl, dt, ol, th, td';
 var filter = ':not([t-field]):not(:has(t, [t-' + QWeb2.ACTIONS_PRECEDENCE.join('], [t-field], [t-') + ']))';
 var Text = AbstractEditComponent.extend({
     name: 'text',

@@ -8,8 +8,8 @@
                     <h3 t-field="o.name"/>
 
                     <h4 class="text-center">
-                        Holiday exercise <span t-esc="o.date_to.year"/>
-                        /Holiday year <span t-esc="o.date_to.year + 1"/>
+                        <span>Holiday exercise </span><span t-esc="o.date_to.year"/>
+                        <span>/Holiday year </span><span t-esc="o.date_to.year + 1"/>
                     </h4>
 
                     <table class="table table-sm table-bordered">
@@ -64,8 +64,8 @@
                     <t t-set="total_annual" t-value="0" />
                     <t t-set="total" t-value="0" />
                     <h6>
-                        Actual and similar remuneration for the period from <span t-field="o.date_from"/>
-                        to <span t-field="o.date_to"/> included:
+                        <span>Actual and similar remuneration for the period from </span><span t-field="o.date_from"/>
+                        <span>to </span><span t-field="o.date_to"/> <span>included:</span>
                     </h6>
 
                     <table class="table table-sm table-bordered">
@@ -123,12 +123,12 @@
                     <span>
                         To the attention of the worker
                         <ul>
-                            <li>You must return this certificate to your next employer, or failing that, to your allowance payment agency.
-                            Social security contributions on holiday pay have already been retained.</li>
-                            <li>The amount covered by this certificate pre-emptively compensates the vacation days you will take in the
-                            near future in <span t-esc="o.date_to.year + 1"/>.
-                            Your next employer or payment agency will not pay for these days off. So you are advised to keep this amount
-                            until you take these days off.</li>
+                            <li><span>You must return this certificate to your next employer, or failing that, to your allowance payment agency.
+                            Social security contributions on holiday pay have already been retained.</span></li>
+                            <li><span>The amount covered by this certificate pre-emptively compensates the vacation days you will take in the
+                            near future in </span><span t-esc="o.date_to.year + 1"/>.
+                            <span>Your next employer or payment agency will not pay for these days off. So you are advised to keep this amount
+                            until you take these days off.</span></li>
                         </ul>
                     </span>
                 </div>
@@ -146,8 +146,8 @@
                     <h3 t-field="o.name"/>
 
                     <h4 class="text-center">
-                        Holiday exercise <span t-esc="o.date_to.year - 1"/>
-                        /Holiday year <span t-esc="o.date_to.year"/>
+                        <span>Holiday exercise </span><span t-esc="o.date_to.year - 1"/>
+                        <span>/Holiday year </span><span t-esc="o.date_to.year"/>
                     </h4>
 
                     <table class="table table-sm table-bordered">
@@ -202,8 +202,8 @@
                     <t t-set="total_annual" t-value="0" />
                     <t t-set="total" t-value="0" />
                     <h6>
-                        Actual and similar remuneration for the period from <span t-field="o.date_from"/>
-                        to <span t-field="o.date_to"/> included:
+                        <span>Actual and similar remuneration for the period from </span><span t-field="o.date_from"/>
+                        <span>to </span><span t-field="o.date_to"/><span> included:</span>
                     </h6>
 
                     <table class="table table-sm table-bordered">
@@ -266,12 +266,12 @@
                     <span>
                         To the attention of the worker
                         <ul>
-                            <li>You must return this certificate to your next employer, or failing that, to your allowance payment agency.
-                            Social security contributions on holiday pay have already been retained.</li>
-                            <li>The amount covered by this certificate pre-emptively compensates the vacation days you will take in the near
-                            future in <span t-esc="o.date_to.year"/>.
-                            Your next employer or payment agency will not pay for these days off. So you are advised to keep this amount
-                            until you take these days off.</li>
+                            <li><span>You must return this certificate to your next employer, or failing that, to your allowance payment agency.
+                            Social security contributions on holiday pay have already been retained.</span></li>
+                            <li><span>The amount covered by this certificate pre-emptively compensates the vacation days you will take in the near
+                            future in </span><span t-esc="o.date_to.year"/>.
+                            <span>Your next employer or payment agency will not pay for these days off. So you are advised to keep this amount
+                            until you take these days off.</span></li>
                         </ul>
                     </span>
                 </div>

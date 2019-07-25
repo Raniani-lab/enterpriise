@@ -16,7 +16,7 @@
         </xpath>
         <xpath expr="//div[hasclass('row')]/div[1]" position="after">
             <div class="col-6" t-if="o.l10n_mx_edi_cfdi_uuid and o.l10n_mx_edi_cfdi_supplier_rfc">
-                <span t-if="o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc">XML VAT: <span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"></span></span>
+                <span t-if="o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc"><span>XML VAT: </span><span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"></span></span>
             </div>
             <div class="col-6" t-if="o.l10n_mx_edi_cfdi_uuid and o.l10n_mx_edi_payment_method_id">
                 <strong>Payment Way CFDI:</strong>
@@ -90,10 +90,10 @@
                 <table class="table table-sm" t-if="acc_em or acc_re">
                     <thead>
                         <tr>
-                            <th t-if="vat_em"><t t-esc="o.company_id.country_id.vat_label or 'VAT'"/> Emitter Acc. Ord.</th>
+                            <th t-if="vat_em"><t t-esc="o.company_id.country_id.vat_label or 'VAT'"/><span> Emitter Acc. Ord.</span></th>
                             <th t-if="bank_em">Bank Name Acc. Ord.</th>
                             <th t-if="acc_em">Account Ord.</th>
-                            <th t-if="vat_re"><t t-esc="o.company_id.country_id.vat_label or 'VAT'"/> Emitter Acc. Ben.</th>
+                            <th t-if="vat_re"><t t-esc="o.company_id.country_id.vat_label or 'VAT'"/> <span>Emitter Acc. Ben.</span></th>
                             <th t-if="acc_re">Account Ben.</th>
                         </tr>
                     </thead>

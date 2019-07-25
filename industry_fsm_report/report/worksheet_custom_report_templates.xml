@@ -51,7 +51,7 @@
                                             <span t-field="line.display_name"/>
                                         </td>
                                         <td class="text-left">
-                                            <span t-field="line.unit_amount" t-options="{'widget': 'float_time'}"/> hour(s)
+                                            <span t-field="line.unit_amount" t-options="{'widget': 'float_time'}"/><span> hour(s)</span>
                                         </td>
                                     </tr>
                                 </t>
@@ -75,8 +75,8 @@
                                             <span>Disc.%</span>
                                         </th>
                                         <th class="text-right">
-                                            <t t-if="order.amount_total != 0" groups="account.group_show_line_subtotals_tax_excluded">Amount</t>
-                                            <t  t-if="order.amount_total != 0" groups="account.group_show_line_subtotals_tax_included">Total Price</t>
+                                            <span t-if="order.amount_total != 0" groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
+                                            <span  t-if="order.amount_total != 0" groups="account.group_show_line_subtotals_tax_included">Total Price</span>
                                         </th>
                                     </tr>
                                 </thead>

@@ -31,9 +31,8 @@
       </field>
     </record>
 
-    <menuitem id="menu_rental_products" name="Products" parent="rental_menu_root" sequence="3"/>
-    <menuitem id="menu_rental_products_tmpl" name="Rental Products" parent="menu_rental_products"
-      action="rental_product_template_action" sequence="1"/>
+    <menuitem id="menu_rental_products" name="Products" parent="rental_menu_root" sequence="3" action="rental_product_template_action"/>
+
 
     <!-- Rental orders access -->
 

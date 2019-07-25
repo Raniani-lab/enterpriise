@@ -14,13 +14,9 @@ tour.register('rental_tour', {
     position: 'bottom',
     edition: 'enterprise'
 }, {
-    trigger: '.o_menu_header_lvl_1[data-menu-xmlid="sale_renting.menu_rental_products"]',
+    trigger: '.o_menu_entry_lvl_1[data-menu-xmlid="sale_renting.menu_rental_products"]',
     content: _t("At first, let's create some products to rent."),
     position: 'bottom',
-}, {
-    trigger: '.o_menu_entry_lvl_2[data-menu-xmlid="sale_renting.menu_rental_products_tmpl"]',
-    content: _t(""),
-    position: 'bottom', // TODO remove menuitem
 }, {
     trigger: '.o-kanban-button-new',
     extra_trigger: '.breadcrumb-item:contains(Products)',

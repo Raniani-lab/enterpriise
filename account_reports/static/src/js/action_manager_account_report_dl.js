@@ -7,7 +7,6 @@ odoo.define('account_reports.ActionManager', function (require) {
  */
 
 var ActionManager = require('web.ActionManager');
-var crash_manager = require('web.crash_manager');
 var framework = require('web.framework');
 var session = require('web.session');
 
@@ -31,8 +30,8 @@ ActionManager.include({
                 url: '/account_reports',
                 data: action.data,
                 success: resolve,
-                error: function () {
-                    crash_manager.rpc_error.apply(crash_manager, arguments);
+                error: () => {
+                    this.call('crash_manager', 'rpc_error', ...arguments);
                     reject();
                 },
                 complete: framework.unblockUI,

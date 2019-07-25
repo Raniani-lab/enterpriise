@@ -46,6 +46,7 @@
         <field name="sequence" eval="2"/>
         <field name="code">JPTAXDuty_free</field>
         <field name="show_domain">never</field>
+        <field name="formulas">balance=sum.balance</field>
         <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_jp.tag_jp_04')])]" />
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -56,6 +57,7 @@
         <field name="sequence" eval="3"/>
         <field name="code">JPTAXNon_taxation</field>
         <field name="show_domain">never</field>
+        <field name="formulas">balance=sum.balance</field>
         <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_jp.tag_jp_09')])]" />
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -88,6 +90,7 @@
         <field name="sequence" eval="2"/>
         <field name="code">JPTAXImport</field>
         <field name="show_domain">never</field>
+        <field name="formulas">balance=sum.balance</field>
         <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_jp.tag_jp_08')])]" />
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -98,6 +101,7 @@
         <field name="sequence" eval="3"/>
         <field name="code">JPTAXNon_taxation2</field>
         <field name="show_domain">never</field>
+        <field name="formulas">balance=sum.balance</field>
         <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_jp.tag_jp_09')])]" />
         <field name="special_date_changer">strict_range</field>
     </record>

@@ -88,7 +88,7 @@ var InvoiceExtractField = Class.extend(Mixins.EventDispatcherMixin, {
                 changes = { reference: fieldChangedInfo };
                 break;
             case 'currency':
-                changes = { currency_id: fieldChangedInfo };
+                changes = { currency_id: { id: fieldChangedInfo } };
                 break;
         }
         return changes;

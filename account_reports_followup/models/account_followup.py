@@ -3,7 +3,7 @@
 
 import datetime
 from odoo import api, fields, models, _
-from odoo.exceptions import Warning
+from odoo.exceptions import Warning, UserError
 from odoo.osv import expression
 
 class Followup(models.Model):
@@ -157,6 +157,8 @@ class ResPartner(models.Model):
         next_action_date = options['next_action_date'][0:10]
         today = datetime.date.today()
         fups = self._compute_followup_lines()
+        if not fups:
+            raise UserError(_('You have to define at least one line in the followup levels of %s') % self.env.user.company_id.name)
         for partner in self:
             if options['next_action_type'] == 'manual':
                 partner.change_next_action(next_action_date)

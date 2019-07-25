@@ -103,8 +103,9 @@ class AccountInvoice(models.Model):
                         endpoint = self.env['ir.config_parameter'].sudo().get_param(
                             'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/parse'
                         user_infos = {
-                            'user_company_VAT': self.env.user.company_id.vat,
-                            'user_company_name': self.env.user.company_id.name,
+                            'user_company_VAT': record.company_id.vat,
+                            'user_company_name': record.company_id.name,
+                            'user_company_country_code': record.company_id.country_id.code,
                             'user_lang': self.env.user.lang,
                             'user_email': self.env.user.email,
                         }
@@ -140,8 +141,9 @@ class AccountInvoice(models.Model):
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                 'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/parse'
             user_infos = {
-                'user_company_VAT': self.env.user.company_id.vat,
-                'user_company_name': self.env.user.company_id.name,
+                'user_company_VAT': self.company_id.vat,
+                'user_company_name': self.company_id.name,
+                'user_company_country_code': self.company_id.country_id.code,
                 'user_lang': self.env.user.lang,
                 'user_email': self.env.user.email,
             }
@@ -367,7 +369,7 @@ class AccountInvoice(models.Model):
                     currency = curr
             if currency:
                 return currency.id
-            return ""
+            return self.currency_id.id
         if word.field == "VAT_Number":
             partner_vat = self.env["res.partner"].search([("vat", "=", word.word_text)], limit=1)
             if partner_vat.exists():
@@ -456,31 +458,32 @@ class AccountInvoice(models.Model):
                 taxes = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
                 taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in il['taxes']['selected_values']] if 'taxes' in il else []
                 keys = []
-                for taxe, taxe_type in zip(taxes, taxes_type_ocr):
-                    if (taxe, taxe_type) not in taxes_found:
-                        taxes_record = self.env['account.tax'].search([('amount', '=', taxe), ('amount_type', '=', taxe_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                        if taxes_record:
-                            taxes_found[(taxe, taxe_type)] = taxes_record.id
-                            keys.append(taxes_found[(taxe, taxe_type)])
-                    else:
-                        keys.append(taxes_found[(taxe, taxe_type)])
+                for taxes, taxes_type in zip(taxes, taxes_type_ocr):
+                    if taxes != 0.0:
+                        if (taxes, taxes_type) not in taxes_found:
+                            taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
+                            if taxes_record:
+                                taxes_found[(taxes, taxes_type)] = taxes_record.id
+                                keys.append(taxes_found[(taxes, taxes_type)])
+                        else:
+                            keys.append(taxes_found[(taxes, taxes_type)])
 
                 if tuple(keys) not in aggregated_lines:
-                    aggregated_lines[tuple(keys)] = {'total': subtotal, 'description': [description] if description is not None else []}
+                    aggregated_lines[tuple(keys)] = {'subtotal': subtotal, 'description': [description] if description is not None else []}
                 else:
-                    aggregated_lines[tuple(keys)]['total'] += subtotal
+                    aggregated_lines[tuple(keys)]['subtotal'] += subtotal
                     if description is not None:
                         aggregated_lines[tuple(keys)]['description'].append(description)
 
             # if there is only one line after aggregating the lines, use the total found by the ocr as it is less error-prone
             if len(aggregated_lines) == 1:
-                aggregated_lines[list(aggregated_lines.keys())[0]]['total'] = subtotal_ocr
+                aggregated_lines[list(aggregated_lines.keys())[0]]['subtotal'] = subtotal_ocr
 
             for taxes_ids, il in aggregated_lines.items():
                 vals = {
-                    'name': " + ".join(il['description']) if len(il['description']) > 0 else "/",
+                    'name': "\n".join(il['description']) if len(il['description']) > 0 else "/",
                     'invoice_id': self.id,
-                    'price_unit': il['total'],
+                    'price_unit': il['subtotal'],
                     'quantity': 1.0,
                 }
                 tax_ids = []
@@ -494,7 +497,8 @@ class AccountInvoice(models.Model):
             for il in invoice_lines:
                 description = il['description']['selected_value']['content'] if 'description' in il else "/"
                 total = il['total']['selected_value']['content'] if 'total' in il else 0.0
-                unit_price = il['unit_price']['selected_value']['content'] if 'unit_price' in il else total
+                subtotal = il['subtotal']['selected_value']['content'] if 'subtotal' in il else total
+                unit_price = il['unit_price']['selected_value']['content'] if 'unit_price' in il else subtotal
                 quantity = il['quantity']['selected_value']['content'] if 'quantity' in il else 1.0
                 taxes = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
                 taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in il['taxes']['selected_values']] if 'taxes' in il else []
@@ -505,20 +509,21 @@ class AccountInvoice(models.Model):
                     'price_unit': unit_price,
                     'quantity': quantity,
                 }
-                for (taxe, taxe_type) in zip(taxes, taxes_type_ocr):
-                    if (taxe, taxe_type) in taxes_found:
-                        if 'invoice_line_tax_ids' not in vals:
-                            vals['invoice_line_tax_ids'] = [(4, taxes_found[(taxe, taxe_type)])]
-                        else:
-                            vals['invoice_line_tax_ids'].append((4, taxes_found[(taxe, taxe_type)]))
-                    else:
-                        taxes_record = self.env['account.tax'].search([('amount', '=', taxe), ('amount_type', '=', taxe_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                        if taxes_record:
-                            taxes_found[(taxe, taxe_type)] = taxes_record.id
+                for (taxes, taxes_type) in zip(taxes, taxes_type_ocr):
+                    if taxes != 0.0:
+                        if (taxes, taxes_type) in taxes_found:
                             if 'invoice_line_tax_ids' not in vals:
-                                vals['invoice_line_tax_ids'] = [(4, taxes_record.id)]
+                                vals['invoice_line_tax_ids'] = [(4, taxes_found[(taxes, taxes_type)])]
                             else:
-                                vals['invoice_line_tax_ids'].append((4, taxes_record.id))
+                                vals['invoice_line_tax_ids'].append((4, taxes_found[(taxes, taxes_type)]))
+                        else:
+                            taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
+                            if taxes_record:
+                                taxes_found[(taxes, taxes_type)] = taxes_record.id
+                                if 'invoice_line_tax_ids' not in vals:
+                                    vals['invoice_line_tax_ids'] = [(4, taxes_record.id)]
+                                else:
+                                    vals['invoice_line_tax_ids'].append((4, taxes_record.id))
 
                 invoice_lines_to_create.append(vals)
 
@@ -533,6 +538,13 @@ class AccountInvoice(models.Model):
                     invoice_line.account_id = predicted_account_id
 
         self.compute_taxes()
+
+        total_ocr = self._context.get('total_ocr')  # this should be passed as an argument of the function but we can't change function signature in stable
+        if total_ocr and len(self.tax_line_ids) > 0:
+            rounding_error = self.amount_total - total_ocr
+            threshold = len(invoice_lines) * 0.01
+            if rounding_error != 0.0 and abs(rounding_error) < threshold:
+                self.tax_line_ids[0].amount -= rounding_error
 
     @api.multi
     def _set_currency(self, currency_ocr):
@@ -564,25 +576,25 @@ class AccountInvoice(models.Model):
                 date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
                 due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
                 total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
-                subtotal_ocr = ocr_results['total']['selected_value']['content'] if 'subtotal' in ocr_results else ""
+                subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
                 invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
                 currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
                 taxes_ocr = [value['content'] for value in ocr_results['global_taxes']['selected_values']] if 'global_taxes' in ocr_results else []
                 taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in ocr_results['global_taxes']['selected_values']] if 'global_taxes' in ocr_results else []
-                vat_number_ocr = ocr_results['recipient']['VAT_Number']['selected_value']['content'] if 'recipient' in ocr_results and 'VAT_Number' in ocr_results['recipient'] else ""
+                vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
                 invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
                 if invoice_lines:
-                    record._set_invoice_lines(invoice_lines, subtotal_ocr)
-                elif total_ocr:
+                    record.with_context(total_ocr=total_ocr)._set_invoice_lines(invoice_lines, subtotal_ocr)
+                elif subtotal_ocr:
                     vals_invoice_line = {
                         'name': "/",
                         'invoice_id': self.id,
-                        'price_unit': total_ocr,
+                        'price_unit': subtotal_ocr,
                         'quantity': 1.0,
                     }
-                    for taxe, taxe_type in zip(taxes_ocr, taxes_type_ocr):
-                        taxes_record = self.env['account.tax'].search([('amount', '=', taxe), ('amount_type', '=', taxe_type), ('type_tax_use', '=', 'purchase')], limit=1)
+                    for taxes, taxes_type in zip(taxes_ocr, taxes_type_ocr):
+                        taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
                         if taxes_record and subtotal_ocr:
                             if 'invoice_line_tax_ids' not in vals_invoice_line:
                                 vals_invoice_line['invoice_line_tax_ids'] = [(4, taxes_record.id)]

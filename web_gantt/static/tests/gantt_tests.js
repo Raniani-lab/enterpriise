@@ -433,6 +433,73 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('gantt rendering, thumbnails', async function (assert) {
+        assert.expect(3);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt string="Tasks" date_start="start" date_stop="stop" thumbnails="{\'user_id\': \'image\'}" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id'],
+            mockRPC: function (route, args) {
+                console.log(route)
+                if (route.endsWith('search_read')) {
+                    return Promise.resolve({
+                        records: [
+                            {
+                                display_name: "Task 1",
+                                id: 1,
+                                start: "2018-11-30 18:30:00",
+                                stop: "2018-12-31 18:29:59",
+                                user_id: [1, "User 2"],
+                            },{
+                                display_name: "FALSE",
+                                id: 1,
+                                start: "2018-12-01 18:30:00",
+                                stop: "2018-12-02 18:29:59",
+                                user_id: false,
+                            }
+                        ]
+                    })
+                }
+                if(route.endsWith('read_group')) {
+                    return Promise.resolve([
+                        {
+                            user_id: [1, "User 1"],
+                            user_id_count: 3,
+                            __domain: [
+                                ["user_id", "=", 1],
+                                ["start", "<=", "2018-12-31 23:59:59"],
+                                ["stop", ">=", "2018-12-01 00:00:00"],
+                            ]
+                        },{
+                            user_id: false,
+                            user_id_count: 3,
+                            __domain: [
+                                ["user_id", "=", false],
+                                ["start", "<=", "2018-12-31 23:59:59"],
+                                ["stop", ">=", "2018-12-01 00:00:00"],
+                            ]
+                        }
+                    ])
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+
+        assert.containsN(gantt, '.o_gantt_row_thumbnail', 1, 'There should be a thumbnail per row where user_id is defined');
+        assert.containsN(gantt, '.o_gantt_row_thumbnail_wrapper', 2, 'There should be a on each row, for spacing');
+
+        assert.ok(gantt.$('.o_gantt_row_thumbnail:nth(0)')[0].dataset.src.endsWith('web/image?model=users&id=1&field=image'));
+
+        gantt.destroy();
+    });
+
     QUnit.test('scale switching', async function (assert) {
         assert.expect(17);
 

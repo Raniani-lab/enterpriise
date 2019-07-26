@@ -64,6 +64,11 @@
     <div t-name="GanttView.Row" t-attf-class="row no-gutters o_gantt_row #{widget.isTotal ? 'o_gantt_row_total' : ''} #{widget.isGroup ? 'o_gantt_row_group' : ''} #{widget.isOpen ? 'open' : ''}" t-att-data-group-id="widget.groupId">
         <div t-if="!widget.options.hideSidebar" class="col-2 o_gantt_row_sidebar" t-attf-style="padding-left: #{widget.leftPadding}px;">
             <div class="o_gantt_row_title text-truncate" t-att-title="widget.name or ''">
+                <div class="o_gantt_row_thumbnail_wrapper">
+                    <t t-if="widget.thumbnailUrl and widget.resId">
+                        <img t-att-src="widget.thumbnailUrl" class="rounded-circle o_gantt_row_thumbnail"/>
+                    </t>
+                </div>
                 <t t-esc="widget.name"/>
             </div>
         </div>

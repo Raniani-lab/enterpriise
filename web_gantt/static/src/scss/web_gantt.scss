@@ -68,6 +68,17 @@ $gantt-unavailability: #CCCCCC;
             font-weight: bold;
             line-height: $gantt-pill-height;
             margin-left: 25px;
+            .o_gantt_row_thumbnail_wrapper {
+                display: inline-block;
+                vertical-align: middle;
+                width: 30px;
+                height: 30px;
+            }
+            .o_gantt_row_thumbnail {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+            }
         }
     }
     // generic to both containers

@@ -51,6 +51,7 @@ var GanttRenderer = AbstractRenderer.extend({
         this.string = params.string;
         this.totalRow = params.totalRow;
         this.collapseFirstLevel = params.collapseFirstLevel;
+        this.thumbnails = params.thumbnails;
         this.rowWidgets = {};
         // Pill decoration colors, By default display primary color for pill
         this.pillDecorations = _.chain(this.arch.attrs)
@@ -270,6 +271,9 @@ var GanttRenderer = AbstractRenderer.extend({
                 scales: self.SCALES,
                 unavailabilities: row.unavailabilities,
             };
+            if (self.thumbnails && row.groupedByField && (!params.consolidate) && row.groupedByField in self.thumbnails){
+                params.thumbnail = {model: self.fieldsInfo[row.groupedByField].relation, field: self.thumbnails[row.groupedByField],};
+            }
             rowWidgets.push(self._renderRow(pillsInfo, params));
             if (row.isGroup && row.isOpen) {
                 var subRowWidgets = self._renderRows(row.rows, groupedBy.slice(1));

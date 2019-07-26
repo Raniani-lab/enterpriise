@@ -317,7 +317,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         payment_register.amount = invoice.amount_total
         payment_register.save().post()
 
-        payment = invoice.payment_ids
+        payment = invoice._get_reconciled_payments()
         self.assertEqual(
             payment.l10n_mx_edi_pac_status, 'signed',
             payment.message_ids.mapped('body'))

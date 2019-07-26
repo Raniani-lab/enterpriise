@@ -70,7 +70,7 @@
                         t-att-SelloPago="pay_stamp">
                         <t t-set="writeoff_vals" t-value="record._l10n_mx_edi_get_payment_write_off()"/>
                         <t t-foreach="record.invoice_ids" t-as="invoice">
-                            <t t-set="amount" t-value="[p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == record.id or not p.get('account_payment_id') and (not p.get('invoice_id') or p.get('invoice_id') == invoice.id))]"/>
+                            <t t-set="amount" t-value="[p for p in invoice._get_reconciled_info_JSON_values() if (p.get('account_payment_id', False) == record.id or not p.get('account_payment_id') and (not p.get('invoice_id') or p.get('invoice_id') == invoice.id))]"/>
                             <t t-set="amount_payment" t-value="sum([data.get('amount', 0.0) for data in amount])"/>
                             <t t-set="amount_insoluto" t-value="invoice.amount_residual"/>
                             <pago10:DoctoRelacionado
@@ -80,7 +80,7 @@
                                 t-att-MonedaDR="invoice.currency_id.name"
                                 t-att-TipoCambioDR="inv_rate"
                                 t-att-MetodoDePagoDR="invoice.l10n_mx_edi_get_payment_method_cfdi()"
-                                t-att-NumParcialidad="len(invoice.payment_ids.filtered(lambda p: p.state not in ('draft', 'cancelled') and not p.move_line_ids.mapped('move_id.reverse_entry_id')).ids)"
+                                t-att-NumParcialidad="len(invoice._get_reconciled_payments().filtered(lambda p: p.state not in ('draft', 'cancelled') and not p.move_line_ids.mapped('move_id.reversed_entry_id')).ids)"
                                 t-att-ImpSaldoAnt="'%0.*f' % (decimal_precision, invoice.amount_residual + amount_payment)"
                                 t-att-ImpPagado="'%0.*f' % (decimal_precision, amount_payment - writeoff_vals.get(invoice.id, 0))"
                                 t-att-ImpSaldoInsoluto="'%0.*f' % (decimal_precision, amount_insoluto + writeoff_vals.get(invoice.id, 0))"/>

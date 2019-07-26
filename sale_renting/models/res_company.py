@@ -13,7 +13,7 @@ class ResCompany(models.Model):
 
     extra_hour = fields.Float("Per Hour", default=0.0)
     extra_day = fields.Float("Per Day", default=0.0)
-    min_extra_hour = fields.Integer("Minimum delay time before applying fines.", default=1)
+    min_extra_hour = fields.Integer("Minimum delay time before applying fines.", default=2)
 
     extra_product = fields.Many2one(
         'product.product', string="Product",

@@ -112,6 +112,11 @@ async function createFieldsAndBoxLayer(params) {
     var parent = createParent({
         invoiceExtractWrapper: wrapper,
         debug: params.debug || false,
+        session: {
+            user_has_group: function () {
+                return Promise.resolve();
+            }
+        },
     });
 
     var fields = wrapper.fields = new InvoiceExtractFields(parent);
@@ -143,8 +148,8 @@ QUnit.module('Fields & BoxLayer integration', {
 
         assert.strictEqual(fields.getActiveField().getName(), 'VAT_Number',
             "by default, VAT should be the default active field");
-        assert.strictEqual($('.o_invoice_extract_button').length, 6,
-            "should render all 7 fields buttons");
+        assert.strictEqual($('.o_invoice_extract_button').length, 5,
+            "should render all 5 fields buttons");
 
         // box 1
         assert.strictEqual($('.o_invoice_extract_box[data-id=1]').length, 1,

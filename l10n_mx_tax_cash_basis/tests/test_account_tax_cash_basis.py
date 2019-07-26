@@ -67,24 +67,24 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
             'cash_basis_transition_account_id': self.cash_tax_account.id,
             'cash_basis_base_account_id': self.account_tax_cash_basis.id,
             'invoice_repartition_line_ids': [
-                (0,0, {
+                (0, 0, {
                     'factor_percent': 100,
                     'repartition_type': 'base',
                 }),
 
-                (0,0, {
+                (0, 0, {
                     'factor_percent': 100,
                     'repartition_type': 'tax',
                     'account_id': self.tax_account.id,
                 }),
             ],
             'refund_repartition_line_ids': [
-                (0,0, {
+                (0, 0, {
                     'factor_percent': 100,
                     'repartition_type': 'base',
                 }),
 
-                (0,0, {
+                (0, 0, {
                     'factor_percent': 100,
                     'repartition_type': 'tax',
                     'account_id': self.tax_account.id,

@@ -44,7 +44,7 @@
         <field name="name">Quality check company rule</field>
         <field name="model_id" ref="model_quality_check"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        <field name="domain_force">['|', '|', ('company_id','=',False),('company_id', 'in', company_ids), ('point_id.company_id', 'in', company_ids)]</field>
     </record>
 
    	<record model="ir.rule" id="control_point_comp_rule">

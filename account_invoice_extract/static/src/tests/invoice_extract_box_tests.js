@@ -32,6 +32,11 @@ function createBox(params) {
         if ('intercepts' in params) {
             parentParams.intercepts = params.intercepts;
         }
+        _.extend(parentParams.session, {}, {
+            user_has_group: function () {
+                return Promise.resolve();
+            }
+        });
         params.parent = testUtils.createParent(parentParams);
     }
 

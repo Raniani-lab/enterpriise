@@ -1588,7 +1588,7 @@ msgstr "Đối tượng"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_access
 msgid "Model Access"
-msgstr ""
+msgstr "Truy cập đối tượng"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_data

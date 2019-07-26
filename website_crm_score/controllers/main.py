@@ -57,10 +57,26 @@ class ContactController(WebsiteForm):
             changed_values = {}
             for fieldname, fieldvalue in values.items():
                 if fieldname in lead and fieldvalue:
-                    if lead[fieldname] and lead[fieldname] != fieldvalue:
-                        changed_values[fieldname] = fieldvalue
+                    ftype = lead_model._fields[fieldname].type
+                    fvalue = lead[fieldname]
+                    compareFieldValue = newFieldValue = newStringValue = fieldvalue
+
+                    if ftype == 'many2one' and fvalue:
+                        compareFieldValue = newFieldValue = int(fieldvalue)
+                        newStringValue = fvalue.browse(newFieldValue).display_name
+                        fvalue = fvalue.id
+                    elif ftype in ('many2many') and fvalue:
+                        compareFieldValue = set([int(v) for v in fieldvalue.split(',')])
+                        newFieldValue = [(6, False, list(compareFieldValue))]
+                        newStringValue = ', '.join(fvalue.browse(list(compareFieldValue)).mapped('display_name'))
+                        fvalue = set(fvalue.ids)
+                    elif ftype in ('one2many'):
+                        continue
+
+                    if fvalue and fvalue != compareFieldValue:
+                        changed_values[fieldname] = newStringValue  # Just tracking what should be done. Don't write anything
                     else:
-                        lead[fieldname] = fieldvalue
+                        lead[fieldname] = newFieldValue
             # Post a message to indicate the updated field (if any)
             if changed_values:
                 body = 'Other value given for field '

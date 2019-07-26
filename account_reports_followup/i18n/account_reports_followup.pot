@@ -442,6 +442,12 @@ msgid "Write here the introduction in the letter,\n"
 msgstr ""
 
 #. module: account_reports_followup
+#: code:addons/account_reports_followup/models/account_followup.py:161
+#, python-format
+msgid "You have to define at least one line in the followup levels of %s"
+msgstr ""
+
+#. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup.py:57
 #, python-format
 msgid "Your description is invalid, use the right legend or %% if you want to use the percent character."

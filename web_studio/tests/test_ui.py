@@ -12,6 +12,7 @@ class TestUi(odoo.tests.HttpCase):
 
         # the report tour is based on the result of the former tour
         self.start_tour("/web", 'web_studio_new_report_tour', login="admin")
+        self.start_tour("/web", "web_studio_new_report_basic_layout_tour", login="admin")
 
     def test_rename(self):
         self.start_tour("/web?studio=app_creator", 'web_studio_tests_tour', login="admin", timeout=120)

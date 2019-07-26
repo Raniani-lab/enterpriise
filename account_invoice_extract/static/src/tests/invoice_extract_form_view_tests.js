@@ -141,8 +141,8 @@ QUnit.module('FormView', {
             "should display attachment preview");
         assert.containsOnce($attachmentPreview, '.o_invoice_extract_buttons',
             "should display the field extract buttons on attachment preview");
-        assert.strictEqual($('.o_invoice_extract_button').length, 6,
-            "should display 6 invoice extract buttons");
+        assert.strictEqual($('.o_invoice_extract_button').length, 5,
+            "should display 5 invoice extract buttons");
         assert.strictEqual($('.o_invoice_extract_button.active').length, 1,
             "should have one field extract button that is active");
         assert.strictEqual($('.o_invoice_extract_button.active').data('field-name'),
@@ -267,8 +267,8 @@ QUnit.module('FormView', {
             "should still display an attachment preview in edit mode");
         assert.strictEqual($attachmentPreview.find('.o_invoice_extract_buttons').length, 1,
             "should now display field extract buttons on attachment preview in edit mode");
-        assert.strictEqual($('.o_invoice_extract_button').length, 6,
-            "should now display invoice extract buttons in edit mode");
+        assert.strictEqual($('.o_invoice_extract_button').length, 5,
+            "should now display 5 invoice extract buttons in edit mode");
         assert.strictEqual($('.boxLayer').length, 1,
             "should now display box layer in edit mode");
         assert.strictEqual($('.o_invoice_extract_box').length, 5,

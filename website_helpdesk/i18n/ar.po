@@ -39,12 +39,12 @@ msgstr "المساعدة"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk"
-msgstr "المساعدة"
+msgstr "مكتب المساعدة"
 
 #. module: website_helpdesk
 #: model:website.menu,name:website_helpdesk.menu_helpdesk
 msgid "Helpdesk Customer Satisfaction"
-msgstr ""
+msgstr "رضا عميل مكتب المساعدة"
 
 #. module: website_helpdesk
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
@@ -55,22 +55,22 @@ msgstr ""
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
 msgid "Is published"
-msgstr ""
+msgstr "منشور"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.not_published_any_team
 msgid "No teams have been published."
-msgstr ""
+msgstr "لم يُعلن عن أي فريق."
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Submit a Ticket"
-msgstr ""
+msgstr "إرسال تذكرة"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Team Settings"
-msgstr ""
+msgstr "إعدادات الفريق"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,help:website_helpdesk.field_helpdesk_team__website_url
@@ -80,12 +80,12 @@ msgstr "الرابط الكامل للوصول إلى المستند من خلا
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "View my Tickets"
-msgstr ""
+msgstr "عرض تذاكري"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
 msgid "Visible on current website"
-msgstr ""
+msgstr "ظاهرة في الموقع الحالي"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url

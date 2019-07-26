@@ -99,6 +99,7 @@
             <field name="perm_unlink" eval="False"/>
         </record>
 
+        <!-- TODO: remove in master -->
         <!-- Salesman -->
         <record id="payment_transaction_salesman_rule" model="ir.rule">
             <field name="name">Access every payment transaction</field>

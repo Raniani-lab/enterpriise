@@ -332,7 +332,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Miscellaneous"
-msgstr ""
+msgstr "ផ្សេងៗ"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_unit:0

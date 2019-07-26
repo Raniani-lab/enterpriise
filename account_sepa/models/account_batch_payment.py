@@ -247,16 +247,7 @@ class AccountBatchPayment(models.Model):
         ret.append(Nm)
 
         if postal_address and company.partner_id.city and company.partner_id.country_id.code:
-            PstlAdr = etree.Element("PstlAdr")
-            Ctry = etree.SubElement(PstlAdr, "Ctry")
-            Ctry.text = company.partner_id.country_id.code
-            if company.partner_id.street:
-                AdrLine = etree.SubElement(PstlAdr, "AdrLine")
-                AdrLine.text = self._sanitize_communication(company.partner_id.street)
-            if company.partner_id.zip and company.partner_id.city:
-                AdrLine = etree.SubElement(PstlAdr, "AdrLine")
-                AdrLine.text = self._sanitize_communication(company.partner_id.zip) + " " + self._sanitize_communication(company.partner_id.city)
-            ret.append(PstlAdr)
+            ret.append(self._get_PstlAdr(company.partner_id))
 
         if org_id and company.sepa_orgid_id:
             Id = etree.Element("Id")
@@ -303,6 +294,18 @@ class AccountBatchPayment(models.Model):
 
         return DbtrAcct
 
+    def _get_PstlAdr(self, partner_id):
+        PstlAdr = etree.Element("PstlAdr")
+        Ctry = etree.SubElement(PstlAdr, "Ctry")
+        Ctry.text = partner_id.country_id.code
+        if partner_id.street:
+            AdrLine = etree.SubElement(PstlAdr, "AdrLine")
+            AdrLine.text = self._sanitize_communication(partner_id.street[:70])
+        if partner_id.zip and partner_id.city:
+            AdrLine = etree.SubElement(PstlAdr, "AdrLine")
+            AdrLine.text = self._sanitize_communication((partner_id.zip + " " + partner_id.city)[:70])
+        return PstlAdr
+
     def _get_CdtTrfTxInf(self, PmtInfId, payment):
         CdtTrfTxInf = etree.Element("CdtTrfTxInf")
         PmtId = etree.SubElement(CdtTrfTxInf, "PmtId")
@@ -323,6 +326,8 @@ class AccountBatchPayment(models.Model):
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
         Nm = etree.SubElement(Cdtr, "Nm")
         Nm.text = self._sanitize_communication((payment.partner_bank_account_id.acc_holder_name or payment.partner_id.name)[:70])
+        if payment.partner_id.city and payment.partner_id.country_id.code:
+            Cdtr.append(self._get_PstlAdr(payment.partner_id))
         if payment.payment_type == 'transfer':
             CdtTrfTxInf.append(self._get_CdtrAcct(payment.destination_journal_id.bank_account_id))
         else:

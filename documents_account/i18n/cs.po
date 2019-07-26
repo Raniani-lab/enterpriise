@@ -120,7 +120,7 @@ msgstr "Úloha"
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
 msgid "Tax Statement"
-msgstr ""
+msgstr "Daňové prohlášení"
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0

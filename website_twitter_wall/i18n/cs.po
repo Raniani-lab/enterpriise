@@ -349,7 +349,7 @@ msgstr ""
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_wall
 msgid "Website Twitter"
-msgstr ""
+msgstr "Webové stránky Twitter"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_url

@@ -60,6 +60,9 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
      */
     _displayInvoiceExtractBoxes: function () {
         var field = this._invoiceExtractFields.getActiveField();
+        if (!field) {
+            return;
+        }
         _.each(this._invoiceExtractBoxLayers, function (boxLayer) {
             boxLayer.displayBoxes({ fieldName: field.getName() });
         });
@@ -77,6 +80,9 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
     _handleInvoiceExtractFieldChanged: function (params) {
         var fieldChangedInfo = params.fieldChangedInfo;
         var field = this._invoiceExtractFields.getActiveField();
+        if (!field) {
+            return;
+        }
         var changes = field.handleFieldChanged({
             fieldChangedInfo: fieldChangedInfo,
             state: this.state,
@@ -226,7 +232,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
             $document.find('head').append('<link rel="stylesheet" type="text/css" href="/account_invoice_extract/static/src/css/account_invoice_extract_box_layer.css"></link>');
             if (this._invoiceExtractBoxLayers.length > 0) {
                 var $textLayers = $document.find('.textLayer');
-                for (var index = 0; index < $textLayers.length; index++) {
+                for (var index = 0; index < $textLayers.length && index < this._invoiceExtractBoxLayers.length; index++) {
                     var $textLayer = $textLayers.eq(index);
                     this._invoiceExtractBoxLayers[index].insertAfter($textLayer)
                 }
@@ -311,6 +317,9 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         var self = this;
         var box = ev.data.box;
         var field = this._invoiceExtractFields.getActiveField();
+        if (!field) {
+            return;
+        }
         this._rpc({
             model: 'account.move',
             method: 'set_user_selected_box',
@@ -333,6 +342,9 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         ev.stopPropagation();
         var self = this;
         var field = this._invoiceExtractFields.getActiveField();
+        if (!field) {
+            return;
+        }
         var box = field.getSelectedBox();
         if (!box) {
             return;

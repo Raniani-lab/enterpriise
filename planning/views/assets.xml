@@ -3,6 +3,7 @@
     <template id="assets_backend" name="planning_backend_assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="planning/static/src/js/planning_gantt_controller.js"/>
+            <script type="text/javascript" src="planning/static/src/js/planning_gantt_model.js"/>
             <script type="text/javascript" src="planning/static/src/js/planning_gantt_view.js"/>
 
             <link rel="stylesheet" type="text/scss" href="/planning/static/src/scss/field_colorpicker.scss"/>

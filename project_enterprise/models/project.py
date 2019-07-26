@@ -19,7 +19,6 @@ class Task(models.Model):
     partner_phone = fields.Char(related='partner_id.phone', readonly=False)
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)
-    partner_city = fields.Char(related='partner_id.city', readonly=False)
     partner_street = fields.Char(related='partner_id.street', readonly=False)
 
     _sql_constraints = [

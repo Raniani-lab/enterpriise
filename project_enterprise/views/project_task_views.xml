@@ -82,4 +82,23 @@
         <field name="view_mode">kanban,tree,form,calendar,pivot,graph,gantt,activity,map</field>
     </record>
 
+    <!-- Show the planned_date_begin instead of the deadline on tasks which have one -->
+    <record id="project_task_view_kanban" model="ir.ui.view">
+        <field name="name">project.task.kanban.planning</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                <field name="planned_date_begin" />
+            </xpath>
+            <xpath expr="//span[@name='date']" position="before">
+                <t t-if="record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().startOf('day')" t-set="deadline_class">oe_kanban_text_red</t>
+                <t t-elif="record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().endOf('day')" t-set="deadline_class">text-warning font-weight-bold</t>
+                <t t-if="record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().startOf('day')" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format('MMMM D, YYYY')" />
+                <t t-elif="record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().endOf('day')" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format('h:MM A')" />
+                <t t-elif="record.planned_date_begin.raw_value" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format('MMMM D, YYYY')" />
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

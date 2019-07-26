@@ -1581,7 +1581,7 @@ QUnit.module('DocumentsKanbanView', {
 
             assert.containsN(kanban, '.o_inspector_tag', 2,
                 "should display two tags");
-            assert.ok($('.o_inspector_tag_add').is(':focus'), "the tag input should be focused");
+            assert.strictEqual($('.o_inspector_tag_add')[0], document.activeElement, "the tag input should be focused");
             kanban.destroy();
             done();
         });

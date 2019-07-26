@@ -168,37 +168,58 @@
         <field name="model">documents.document</field>
         <field name="priority" eval="1"/>
         <field name="arch" type="xml">
-            <form>
+            <form create="false">
+                <header>
+                    <button type="object" name="access_content" string="Access" class="oe_highlight" attrs="{'invisible': [('url', '=', False)]}"/>
+                    <button type="object" name="access_content" string="Download" class="oe_highlight" attrs="{'invisible': [('type', '!=', 'binary')]}"/>
+                    <button type="object" name="create_share" string="Share"/>
+                    <button type="object" name="toggle_lock" string="Lock" attrs="{'invisible': [('lock_uid', '!=', False)]}"/>
+                    <button type="object" name="toggle_lock" string="Unlock" attrs="{'invisible': [('lock_uid', '=', False)]}"/>
+                    <button type="object" name="toggle_active" string="Archive" attrs="{'invisible': [('active', '=', False)]}"/>
+                    <button type="object" name="toggle_active" string="Restore" attrs="{'invisible': [('active', '=', True)]}"/>
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="open_resource" type="object" class="oe_stat_button" icon="fa-external-link" attrs="{'invisible': ['|', ('res_id', '=', False), ('res_model', 'in', [False, 'documents.document'])]}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Related <br/> Record</span>
+                            </div>
+                        </button>
+                    </div>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="thumbnail" nolabel="1" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;thumbnail&quot;}" attrs="{ 'invisible' : [('thumbnail', '=', False)]}"/>
+                    <div class="oe_title" aria-label="Name">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" class="oe_inline" attrs="{'readonly': [('is_locked', '=', True)]}" required="True"/>&amp;nbsp;
+                            <i class="fa fa-lock oe_inline" title="Locked" attrs="{'invisible': [('lock_uid', '=', False)]}"/>
+                        </h1>
+                    </div>
+                    <field name="is_locked" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <field name="res_id" invisible="1"/>
+                    <field name="res_model" invisible="1"/>
                     <group>
                         <group>
-                            <field name="name" required="True"/>
-                            <field name="active" invisible="1"/>
-                            <field name="folder_id"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="datas" filename="name" attrs="{'invisible':[('type','=','url')]}"/>
-                            <field name="owner_id"/>
+                            <field name="datas" string="File" filename="name" attrs="{'invisible':[('type','=','url')], 'readonly': [('is_locked', '=', True)]}"/>
+                            <field name="url" attrs="{ 'invisible' : [('type', '!=', 'url')], 'readonly': [('is_locked', '=', True)]}"/>
+                            <field name="folder_id" attrs="{'readonly': [('is_locked', '=', True)]}"/>
+                            <field name="owner_id" attrs="{'readonly': [('is_locked', '=', True)]}"/>
                             <field name="partner_id"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
-                            <field name="group_ids" widget="many2many_tags"/>
-                            <field name="file_size" attrs="{ 'invisible' : [('type', '!=', 'binary')]}"/>
-                            <field name="type" readonly="1"/>
-                            <field name="url" attrs="{ 'invisible' : [('type', '!=', 'url')]}"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                         </group>
                         <group>
-                            <group attrs="{ 'invisible' : [('thumbnail', '=', False)]}">
-                                <field name="thumbnail" nolabel="1" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;thumbnail&quot;}"/>
-                            </group>
+                            <field name="type"/>
+                            <field name="create_date"/>
+                            <field name="create_uid"/>
+                            <field name="lock_uid" readonly="1" attrs="{'invisible': [('lock_uid', '=', False)]}"/>
                         </group>
                     </group>
-                    <group>
-                        <field name="res_model" readonly="1" attrs="{'invisible':[('res_model','=', False)]}"/>
-                        <field name="res_model_name" readonly="1" attrs="{ 'invisible' : [('res_model_name', '=', False)]}"/>
-                        <field name="create_date" readonly="1"/>
-                        <field name="create_uid" readonly="1"/>
-                        <field name="company_id" readonly="1"/>
-                        <field name="mimetype" readonly="1"/>
+                    <group groups="base.group_no_one">
+                        <field name="group_ids" widget="many2many_tags"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="file_size" attrs="{ 'invisible' : [('type', '!=', 'binary')]}"/>
+                        <field name="mimetype"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -236,11 +257,16 @@
         <field name="name">documents list</field>
         <field name="model">documents.document</field>
         <field name="arch" type="xml">
-            <tree class="o_documents_list_view" create="false" edit="false">
-                <field name="name" required="True"/>
-                <field name="res_model"/>
-                <field name="create_date"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+            <tree class="o_documents_list_view"
+                  create="false" edit="false"
+                  decoration-info="type == 'empty'">
+                <field name="type" invisible="1"/>
+                <field name="name" string="Document" required="True"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="partner_id"/>
+                <field name="owner_id"/>
+                <field name="type"/>
+                <field name="create_date" widget="date"/>
             </tree>
         </field>
     </record>
@@ -809,15 +835,6 @@
 
     <!-- actions -->
 
-    <record id="document_debug_action" model="ir.actions.act_window">
-      <field name="name">Documents</field>
-      <field name="res_model">documents.document</field>
-      <field name="view_mode">tree,form</field>
-      <field name="view_ids" eval="[(5, 0, 0),
-        (0, 0, {'view_mode': 'tree', 'view_id': False}),
-        (0, 0, {'view_mode': 'form', 'view_id': ref('documents.document_view_form')})]"/>
-    </record>
-
     <record id="action_url_form" model="ir.actions.act_window">
         <field name="name">Add Url</field>
         <field name="res_model">documents.document</field>
@@ -829,11 +846,14 @@
     <record id="document_action" model="ir.actions.act_window">
       <field name="name">Documents</field>
       <field name="res_model">documents.document</field>
-      <field name="view_mode">kanban</field>
-      <field name="view_id" ref="documents.document_view_kanban"/>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0, {'view_mode': 'kanban', 'view_id': ref('documents.document_view_kanban')}),
+        (0, 0, {'view_mode': 'tree', 'view_id': False}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('documents.document_view_form')})]"/>
       <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">Upload <span class="font-weight-normal">a file or</span> drag <span class="font-weight-normal">it here.</span></p>
-        </field>
+        <p class="o_view_nocontent_smiling_face">Upload <span class="font-weight-normal">a file or</span> drag <span class="font-weight-normal">it here.</span></p>
+      </field>
     </record>
 
     <record id="workflow_rule_action" model="ir.actions.act_window">
@@ -905,6 +925,5 @@
             <menuitem name="Tags" id="documents.category_menu" parent="documents.Config" action="facet_action" groups="base.group_no_one" sequence="2"/>
             <menuitem name="Actions" id="documents.workflow_rules_menu" parent="documents.Config" groups="base.group_no_one" action="workflow_rule_action" sequence="3"/>
             <menuitem name="Shared Links" id="documents.share_menu" parent="documents.Config" action="share_action" sequence="4"/>
-            <menuitem name="Documents" id="documents.attachment_list_view_temp" parent="documents.Config" action="document_debug_action" groups="base.group_no_one" sequence="5"/>
 
 </odoo>

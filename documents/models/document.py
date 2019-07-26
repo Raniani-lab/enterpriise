@@ -32,9 +32,9 @@ class Document(models.Model):
     name = fields.Char('Name', copy=True, store=True, compute='_compute_name', inverse='_inverse_name')
     active = fields.Boolean(default=True, string="Active")
     thumbnail = fields.Binary(readonly=1, store=True, attachment=True, compute='_compute_thumbnail')
-    url = fields.Char('Url', index=True, size=1024, tracking=True)
+    url = fields.Char('URL', index=True, size=1024, tracking=True)
     res_model_name = fields.Char(compute='_compute_res_model_name', index=True)
-    type = fields.Selection([('url', 'URL'), ('binary', 'File'), ('empty', 'Empty')],
+    type = fields.Selection([('url', 'URL'), ('binary', 'File'), ('empty', 'Request')],
                             string='Type', required=True, store=True, default='empty', change_default=True,
                             compute='_compute_type')
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
@@ -45,6 +45,7 @@ class Document(models.Model):
     available_rule_ids = fields.Many2many('documents.workflow.rule', compute='_compute_available_rules',
                                           string='Available Rules')
     lock_uid = fields.Many2one('res.users', string="Locked by")
+    is_locked = fields.Boolean(compute="_compute_is_locked", string="Locked")
     create_share_id = fields.Many2one('documents.share', help='Share used to create this document')
     request_activity_id = fields.Many2one('mail.activity')
 
@@ -279,6 +280,38 @@ class Document(models.Model):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
 
+    def access_content(self):
+        self.ensure_one()
+        action = {
+            'type': "ir.actions.act_url",
+            'target': "new",
+        }
+        if self.url:
+            action['url'] = self.url
+        elif self.type == 'binary':
+            action['url'] = '/documents/content/%s' % self.id
+        return action
+
+    def create_share(self):
+        self.ensure_one()
+        vals = {
+            'type': 'ids',
+            'document_ids': [(6, 0, self.ids)],
+            'folder_id': self.folder_id.id,
+        }
+        return self.env['documents.share'].create_share(vals)
+
+    def open_resource(self):
+        self.ensure_one()
+        if self.res_model and self.res_id:
+            view_id = self.env[self.res_model].get_formview_id(self.res_id)
+            return {
+                'res_id': self.res_id,
+                'res_model': self.res_model,
+                'type': 'ir.actions.act_window',
+                'views': [[view_id, 'form']],
+            }
+
     def toggle_lock(self):
         """
         sets a lock user, the lock user is the user who locks a file for themselves, preventing data replacement
@@ -293,6 +326,14 @@ class Document(models.Model):
                 self.lock_uid = False
         else:
             self.lock_uid = self.env.uid
+
+    def _compute_is_locked(self):
+        for record in self:
+            record.is_locked = record.lock_uid and not (
+                    self.env.user == record.lock_uid or
+                    self.env.is_admin() or
+                    self.user_has_groups('documents.group_document_manager'))
+
 
     @api.model
     def create(self, vals):

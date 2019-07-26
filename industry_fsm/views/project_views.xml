@@ -42,7 +42,6 @@
             <xpath expr="//group[@name='extra_settings']" position="after">
                 <group name="fsm_options" attrs="{'invisible': [('is_fsm', '=', False)]}">
                     <field name="timesheet_product_id" attrs="{'invisible': [('is_fsm', '=', False)], 'required': [('is_fsm', '=', True)]}"/>
-                    <field name="product_template_ids" widget="many2many_tags" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
                 </group>
             </xpath>
             <xpath expr="//group[@name='extra_settings']" position="attributes">

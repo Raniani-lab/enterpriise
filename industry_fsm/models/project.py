@@ -5,6 +5,8 @@ from datetime import timedelta, datetime
 
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, AccessError
+from odoo.osv import expression
+
 
 class Project(models.Model):
     _inherit = "project.project"
@@ -20,7 +22,6 @@ class Project(models.Model):
         return result
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
-    product_template_ids = fields.Many2many('product.template', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", string="Allowed Products", help="Products allowed to be added on this Task's Material.")
     timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain="[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", help='Select a Service product with which you would like to bill your time spent on tasks.')
 
     _sql_constraints = [
@@ -65,7 +66,6 @@ class Task(models.Model):
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     quotation_count = fields.Integer(compute='_compute_quotation_count')
-    product_template_ids = fields.Many2many(related='project_id.product_template_ids')
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
@@ -190,8 +190,14 @@ class Task(models.Model):
     def action_fsm_view_material(self):
         self._fsm_ensure_sale_order()
 
+        domain = []
+        if self.project_id and self.project_id.timesheet_product_id:
+            domain = expression.AND([domain, [('id', '!=', self.project_id.timesheet_product_id.id)]])
+        deposit_product = self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
+        if deposit_product:
+            domain = expression.AND([domain, [('id', '!=', deposit_product.id)]])
+
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
-        domain = [('product_tmpl_id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
         return {
             'type': 'ir.actions.act_window',
             'name': _('Products'),

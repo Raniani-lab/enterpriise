@@ -78,6 +78,7 @@ class Company(models.Model):
             users = self.env['account.analytic.line'].search([
                 ('date', '>=', fields.Date.to_string(date.today() - relativedelta(months=3))),
                 ('date', '<=', fields.Date.today()),
+                ('is_timesheet', '=', True),
                 ('company_id', '=', company.id),
             ]).mapped('user_id')
 

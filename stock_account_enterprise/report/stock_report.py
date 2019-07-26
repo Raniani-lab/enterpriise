@@ -82,8 +82,8 @@ class StockReport(models.Model):
                 FROM (
                     SELECT
                         CASE property.value_text -- cost method
-                            WHEN 'fifo' THEN move.value
-                            WHEN 'average' THEN move.value
+                            WHEN 'fifo' THEN abs(move.value)
+                            WHEN 'average' THEN abs(move.value)
                             ELSE move.product_qty * product_property.value_float -- standard price
                         END as valuation
                     FROM
@@ -91,7 +91,7 @@ class StockReport(models.Model):
                         INNER JOIN product_product product ON move.product_id = product.id
                         INNER JOIN product_template ON product.product_tmpl_id = product_template.id
                         INNER JOIN product_category category ON product_template.categ_id = category.id
-                        LEFT JOIN ir_property property ON property.res_id = CONCAT('product.category,', category.id)
+                        LEFT JOIN ir_property property ON property.res_id = CONCAT('product.category,', category.id) AND property.name = 'property_cost_method'
                         INNER JOIN ir_property product_property ON product_property.res_id = CONCAT('product.product,', product.id)
                     WHERE
                         move.id IN (

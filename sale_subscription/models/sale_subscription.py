@@ -436,7 +436,8 @@ class SaleSubscription(models.Model):
             stage = search([('in_progress', '=', True), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
             if not stage:
                 stage = search([('in_progress', '=', True)], limit=1)
-            sub.write({'stage_id': stage.id, 'to_renew': False, 'date': False})
+            date = sub.date if sub.date_start and sub.template_id.recurring_rule_boundary == 'limited' else False
+            sub.write({'stage_id': stage.id, 'to_renew': False, 'date': date})
 
     def _prepare_invoice_data(self):
         self.ensure_one()

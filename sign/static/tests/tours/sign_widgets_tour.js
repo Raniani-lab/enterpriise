@@ -18,7 +18,7 @@ odoo.define('sign_widgets_tour', function (require) {
             },
             {
                 content: "Users",
-                trigger: 'div.o_web_settings_dashboard_invitations i.o_web_settings_dashboard_access_rights',
+                trigger: 'div#invite_users a.o_web_settings_access_rights',
                 run: 'click',
             },
             {

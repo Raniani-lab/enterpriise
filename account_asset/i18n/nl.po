@@ -7,8 +7,8 @@
 # Martin Trigaux, 2019
 # Eric Geens <ericgeens@yahoo.com>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -551,18 +551,18 @@ msgstr "Schermnaam"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_warning_account_type
 msgid "Display Warning Account Type"
-msgstr ""
+msgstr "Toon waarschuwing soort rekening"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:452
 #, python-format
 msgid "Disposal"
-msgstr ""
+msgstr "Afschrijving"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__disposal_date
 msgid "Disposal Date"
-msgstr ""
+msgstr "Afschrijvingsdatum"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:420
@@ -693,6 +693,9 @@ msgid ""
 "In percent.<br>For a linear method, the depreciation rate is computed per "
 "year.<br>For a degressive method, it is the degressive factor"
 msgstr ""
+"In percent. <br>Voor een linaire methode wordt de afschrijvingswaarde "
+"jaarlijks berekend.<br>Voor een degressieve methode is dit de degressie "
+"factor"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__prorata

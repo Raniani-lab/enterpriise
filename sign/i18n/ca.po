@@ -8,6 +8,7 @@
 # Quim - eccit <quim@eccit.com>, 2019
 # Manel Fernandez <manelfera@outlook.com>, 2019
 # Martin Trigaux, 2019
+# Arnau Ros, 2019
 # M Palau <mpalau@tda.ad>, 2019
 # 
 msgid ""
@@ -465,7 +466,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__template_id
 msgid "Document Template"
-msgstr ""
+msgstr "Plantilla del document"
 
 #. module: sign
 #. openerp-web
@@ -908,7 +909,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Name or email..."
-msgstr ""
+msgstr "Nom o correu electrònic"
 
 #. module: sign
 #. openerp-web
@@ -1689,7 +1690,7 @@ msgstr "Text"
 #: code:addons/sign/static/src/js/sign_common.js:1086
 #, python-format
 msgid "Thank You !"
-msgstr ""
+msgstr "Gràcies!"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed

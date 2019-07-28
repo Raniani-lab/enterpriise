@@ -311,7 +311,7 @@ msgstr "Kalender"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__can_publish
 msgid "Can publish"
-msgstr ""
+msgstr "Kann veröffentlichen"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours

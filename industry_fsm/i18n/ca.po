@@ -7,14 +7,15 @@
 # Quim - eccit <quim@eccit.com>, 2019
 # Sandra Franch <sandra.franch@upc.edu>, 2019
 # Manel Fernandez <manelfera@outlook.com>, 2019
+# M Palau <mpalau@tda.ad>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2019-03-20 14:36+0000\n"
-"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2019\n"
+"Last-Translator: M Palau <mpalau@tda.ad>, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +86,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Configuració"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task_create_sale_order

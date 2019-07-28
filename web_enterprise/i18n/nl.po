@@ -265,6 +265,8 @@ msgstr "Upgrade uw abonnement"
 msgid ""
 "You have more users or more apps installed than your subscription allows."
 msgstr ""
+"U heeft meer gebruikers of meer applicaties geïnstalleerd dan uw abonnement "
+"toestaat."
 
 #. module: web_enterprise
 #. openerp-web

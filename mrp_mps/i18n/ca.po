@@ -7,14 +7,15 @@
 # Martin Trigaux, 2019
 # RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
+# M Palau <mpalau@tda.ad>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Quim - eccit <quim@eccit.com>, 2019\n"
+"Last-Translator: M Palau <mpalau@tda.ad>, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +69,7 @@ msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:185
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:181
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Add a Product"
@@ -108,7 +109,7 @@ msgstr "Companyia"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Configuració"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__create_uid
@@ -186,7 +187,7 @@ msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:212
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:208
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 #, python-format
 msgid "Forecast Product"
@@ -439,8 +440,8 @@ msgstr "Setmanalment"
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:83
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:74
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:224
 #, python-format
 msgid "Wrong value entered!"
 msgstr "Valor introduït incorrecte!"

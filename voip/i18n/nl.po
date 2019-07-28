@@ -119,7 +119,7 @@ msgstr "Roepnaam"
 #: code:addons/voip/models/voip_queue_mixin.py:37
 #, python-format
 msgid "Call activity type is not of category \"phonecall\""
-msgstr ""
+msgstr "Activiteitssoort bellen is niet van de categorie \"telefoongesprek\""
 
 #. module: voip
 #: code:addons/voip/models/voip_phonecall.py:196
@@ -572,6 +572,8 @@ msgstr "Telefoon"
 msgid ""
 "Phone call cannot be created. Is it any phone number linked to record %s?"
 msgstr ""
+"Telefoongesprek kan niet aangemaakt worden. Is het een telefoonnummer "
+"gekoppeld aan het record %s?"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone

@@ -15,11 +15,11 @@
 # Martin Trigaux, 2019
 # Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2019
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2019
-# Umur Akın <umura@projetgrup.com>, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
 # Ediz Duman <neps1192@gmail.com>, 2019
 # Abdullah Onur Uğur <aonurugur@outlook.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
-"Last-Translator: Abdullah Onur Uğur <aonurugur@outlook.com>, 2019\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -732,7 +732,7 @@ msgstr "Aktivite Türleri"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_type
 msgid "Activity User Type"
-msgstr ""
+msgstr "Faaliyet Kullanıcı Türü"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__channel_ids
@@ -1320,12 +1320,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_date_deadline_range
 msgid "Due Date In"
-msgstr ""
+msgstr "Vade Tarihi"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_date_deadline_range_type
 msgid "Due type"
-msgstr ""
+msgstr "Vade türü"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_rule_boundary
@@ -2900,7 +2900,7 @@ msgstr "Satış Ekip Lideri"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__activity_user_field_name
 msgid "Technical name of the user on the record"
-msgstr ""
+msgstr "Kaydın üzerindeki kullanıcının teknik adı"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2993,6 +2993,7 @@ msgstr "Kullanıcı, abonelik için yazma erişimine sahip olacak."
 msgid ""
 "This bar allows to filter the opportunities based on scheduled activities."
 msgstr ""
+"Bu bar planlanmış eylemler üzerinden fırsatları planlamanıza izin verir."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:478
@@ -3163,6 +3164,9 @@ msgid ""
 " 'Generic User From Record' to specify the field name of the user to choose "
 "on the record."
 msgstr ""
+"Gelecek eyleme aynı kullanıcıyı atamak için her zaman 'Özel Kullanıcı'yı "
+"kullanın. Kayıtta seçilecek kullanıcının alan adını belirlemek için "
+"'Kayıttan Genel Kullanıcı' seçeneğini kullanın."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trg_date_calendar_id
@@ -3309,6 +3313,8 @@ msgid ""
 "Write Python code that the action will execute. Some variables are available"
 " for use; help about python expression is given in the help tab."
 msgstr ""
+"Python kod yazmak eylemi çalıştırır. Bazı değişkenler kullanılabilir; python"
+" ifade ile ilgili yardım yardım sekmesinde verilir."
 
 #. module: sale_subscription
 #: model:product.product,uom_name:sale_subscription.product_office_cleaning_yearly

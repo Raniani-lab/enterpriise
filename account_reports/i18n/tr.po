@@ -365,17 +365,17 @@ msgstr "Hesap Raporu"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_html_report_line
 msgid "Account Report (HTML Line)"
-msgstr ""
+msgstr "Hesap Raporu (HTML Satırı)"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_html_report
 msgid "Account Report (HTML)"
-msgstr ""
+msgstr "Hesap Raporu (HTML)"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_footnote
 msgid "Account Report Footnote"
-msgstr ""
+msgstr "Hesap Raporu Dip Notu"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_next_activity_type
@@ -393,7 +393,7 @@ msgstr "Hesaplar"
 #: code:addons/account_reports/models/account_analytic_report.py:79
 #, python-format
 msgid "Accounts without a group"
-msgstr ""
+msgstr "Bir grubu olmayan hesaplar"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -486,7 +486,7 @@ msgstr "Tümü"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__analytic
 msgid "Allow analytic filters"
-msgstr ""
+msgstr "Analitik filtrelere izin ver"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__cash_basis
@@ -757,7 +757,7 @@ msgstr "Nakit Çıkışı"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_cash_spent0
 msgid "Cash paid for operating activities"
-msgstr ""
+msgstr "İşletme faaliyetleri için ödenen nakit."
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_cash_received0
@@ -767,7 +767,7 @@ msgstr "Nakit Girişi"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_cash_received0
 msgid "Cash received from operating activities"
-msgstr ""
+msgstr "İşletme faaliyetlerinden alınan nakit."
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_cash_spent0
@@ -794,7 +794,7 @@ msgstr "Kategori"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_followup_report
 msgid "Change expected payment date"
-msgstr ""
+msgstr "Beklenen ödeme tarihini değiştir."
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_coa_report
@@ -858,7 +858,7 @@ msgstr "Hesaplama"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_regulator0
 msgid "Computation Error: unexplained difference"
-msgstr ""
+msgstr "Hesaplama Hatası: açıklanamayan fark"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_config_settings
@@ -996,13 +996,13 @@ msgstr "Cari Oran (Dönen Varlıklar / Kısa Vadeli Yabancı Kaynaklar)"
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:178
 #, python-format
 msgid "Current balance of account %s"
-msgstr ""
+msgstr "Cari hesap bakiyesi %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:180
 #, python-format
 msgid "Current balance of accounts %s"
-msgstr ""
+msgstr "Cari hesap bakiyesi %s"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1046,6 +1046,8 @@ msgid ""
 "Date at which Odoo will remind you to take care of that follow-up if you "
 "choose \"remind me later\" button."
 msgstr ""
+"Eğer 'daha sonra hatırlat' butonunu seçerseniz, Odoo'nun, takip etmeniz için"
+" size hatırlatacağı tarih."
 
 #. module: account_reports
 #. openerp-web
@@ -1074,7 +1076,7 @@ msgstr "Tarih:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_config_settings__days_between_two_followups
 msgid "Days between two follow-ups"
-msgstr ""
+msgstr "İki takip arasındaki günler"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:34
@@ -1103,7 +1105,7 @@ msgstr "Amortisman"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_detailed_net_profit0
 msgid "Detailed Net Profit"
-msgstr ""
+msgstr "Detaylı Net Kâr"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:87
@@ -1234,7 +1236,7 @@ msgstr "Beklenen Ödeme Tarihi"
 #: code:addons/account_reports/models/res_partner.py:137
 #, python-format
 msgid "Expected pay date has been changed from %s to %s for invoice %s"
-msgstr ""
+msgstr "Beklenen ödeme tarihi %s den dolayı %s fatura için değiştirildi%s"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_move_line__expected_pay_date
@@ -1324,35 +1326,35 @@ msgstr "Katlanmış"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_followup_report
 msgid "Follow-up Report"
-msgstr ""
+msgstr "Rapor İzleme"
 
 #. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_view_list_customer_statements
 #: model:ir.ui.menu,name:account_reports.customer_statements_menu
 msgid "Follow-up Reports"
-msgstr ""
+msgstr "Takip Raporları"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_tree_view
 msgid "Follow-up Reports Tree View"
-msgstr ""
+msgstr "Takip Raporları Ağaç Görünümü"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:258
 #, python-format
 msgid "Follow-up email sent to %s"
-msgstr ""
+msgstr "Takip e-postası adresine gönderildi %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:280
 #, python-format
 msgid "Follow-up letter printed"
-msgstr ""
+msgstr "Takip mektubu yazdırıldı"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Follow-up reports"
-msgstr ""
+msgstr "Takip raporları"
 
 #. module: account_reports
 #. openerp-web
@@ -1371,7 +1373,7 @@ msgstr "Takip Raporu"
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__followup_status
 #: model:ir.model.fields,field_description:account_reports.field_res_users__followup_status
 msgid "Followup status"
-msgstr ""
+msgstr "Takip durumu"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__footnotes_ids
@@ -1542,7 +1544,7 @@ msgstr "Aksiyon Bekleyenler"
 #: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_search_view
 #: selection:res.partner,followup_status:0
 msgid "In need of action"
-msgstr ""
+msgstr "Eylem gerektiriyor"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1638,7 +1640,7 @@ msgstr "Yevmiye Kalemleri"
 #: code:addons/account_reports/models/account_report.py:884
 #, python-format
 msgid "Journal Items (%s)"
-msgstr ""
+msgstr "Yevmiye Kalemleri (%s)"
 
 #. module: account_reports
 #: model:ir.actions.server,name:account_reports.action_journal_items
@@ -1676,7 +1678,7 @@ msgstr "PASİF + ÖZKAYNAK"
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:230
 #, python-format
 msgid "Last Bank Statement Ending Balance"
-msgstr ""
+msgstr "Banka Hesap Kapanış Bakiyesi "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -1755,7 +1757,7 @@ msgstr "Satırlar"
 #: code:addons/account_reports/models/account_partner_ledger.py:270
 #, python-format
 msgid "Load more... (%s remaining)"
-msgstr ""
+msgstr "Daha fazla yükle.. (%s kalan)"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_form
@@ -1765,7 +1767,7 @@ msgstr "Ana Bilgi"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_manager
 msgid "Manage Summary and Footnotes of Reports"
-msgstr ""
+msgstr "Raporların Özetini ve Dipnotları Yönetin"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__manager_id
@@ -1826,7 +1828,7 @@ msgstr ""
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_net_assets0
 msgid "Net Assets"
-msgstr ""
+msgstr "Net Varlıklar"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_profit0
@@ -1880,7 +1882,7 @@ msgstr "Birim Yok"
 #. module: account_reports
 #: selection:res.partner,followup_status:0
 msgid "No action needed"
-msgstr ""
+msgstr "Eylem gerekmiyor"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_financial_report.py:584
@@ -1893,19 +1895,19 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.actions.act_window,help:account_reports.action_view_list_customer_statements
 msgid "No follow-up to send!"
-msgstr ""
+msgstr "Gönderilecek tahsilat takibi yok!"
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:23
 #, python-format
 msgid "No followup to send!"
-msgstr ""
+msgstr "Gönderilecek tahsilat takibi yok!"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Normal debtor"
-msgstr ""
+msgstr "Normal borçlu"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:21
@@ -1946,6 +1948,8 @@ msgid ""
 "Odoo will remind you to take care of this follow-up on the next reminder "
 "date."
 msgstr ""
+"Odoo, bir sonraki hatırlatma tarihinde bu takibe dikkat etmenizi "
+"hatırlatacaktır."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
@@ -2177,7 +2181,7 @@ msgstr "Çıktı Önizleme"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:7
 #, python-format
 msgid "Print letter"
-msgstr ""
+msgstr "Mektubu yazdır"
 
 #. module: account_reports
 #: model:ir.actions.server,name:account_reports.action_account_reports_customer_statements_do_followup
@@ -2255,7 +2259,7 @@ msgstr "Referans"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:13
 #, python-format
 msgid "Remind me later"
-msgstr ""
+msgstr "Daha sonra hatırlat"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_config_settings__account_tax_periodicity_reminder_day

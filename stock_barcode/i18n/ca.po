@@ -86,7 +86,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 #, python-format
 msgid "Cancel"
-msgstr "Cancel·lar"
+msgstr "Cancel·la"
 
 #. module: stock_barcode
 #. openerp-web
@@ -98,7 +98,7 @@ msgstr "Tancar"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Configuració"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form

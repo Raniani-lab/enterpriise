@@ -3427,6 +3427,8 @@ msgid ""
 "You must define a product for everything you sell or purchase,\n"
 "            whether it's a storable product, a consumable or a service."
 msgstr ""
+"Sie müssen ein Produkt für alles definieren, was Sie verkaufen oder kaufen,\n"
+"            sei es ein Lagerprodukt, ein Verbrauchsmaterial oder eine Dienstleistung."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:445

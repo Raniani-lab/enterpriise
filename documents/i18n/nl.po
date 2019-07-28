@@ -484,7 +484,7 @@ msgstr "Beoordeling"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Apps and workspaces to be synchronized"
-msgstr ""
+msgstr "Apps en werkplaatsen om te synchroniseren"
 
 #. module: documents
 #. openerp-web

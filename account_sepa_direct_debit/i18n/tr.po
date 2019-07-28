@@ -6,9 +6,9 @@
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2017
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2017
 # Martin Trigaux, 2017
-# Umur Akın <umura@projetgrup.com>, 2018
 # Buket Şeker <buket_skr@hotmail.com>, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-12-13 15:20+0000\n"
-"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2019\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,12 +27,12 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "(if applicable)"
-msgstr ""
+msgstr "(uygunsa)"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "(optional)"
-msgstr ""
+msgstr "(opsiyonel)"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
@@ -42,26 +42,30 @@ msgid ""
 "('state', '!=', 'draft')]}\" role=\"status\">Direct Debit collecting method "
 "available</span>"
 msgstr ""
+"<span class=\"alert alert-info\" attrs=\"{'invisible': ['|', '|', "
+"('sdd_mandate_usable', '!=', True), ('payment_type', '!=', 'inbound'), "
+"('state', '!=', 'draft')]}\" role=\"status\">Doğrudan Borç Toplama yöntemi "
+"mevcut</span>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Address:</strong>"
-msgstr ""
+msgstr "<strong>Adres:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>City:</strong>"
-msgstr ""
+msgstr "<strong>Şehir:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Country:</strong>"
-msgstr ""
+msgstr "<strong>Ülke:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Creditor identifier:</strong>"
-msgstr ""
+msgstr "<strong>Alacaklı Kimliği:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
@@ -69,21 +73,22 @@ msgid ""
 "<strong>Date and place of signature:</strong> "
 "......................................"
 msgstr ""
+"<strong>İmza tarihi ve yeri:</strong> ......................................"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>IBAN account number:</strong>"
-msgstr ""
+msgstr "<strong>IBAN hesap numarası:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Mail address:</strong>"
-msgstr ""
+msgstr "<strong>Mail adresi:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Mandate identifier:</strong>"
-msgstr ""
+msgstr "<strong>Yetki Tanımlayıcı:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
@@ -91,6 +96,8 @@ msgid ""
 "<strong>Name of the reference party:</strong> "
 "......................................"
 msgstr ""
+"<strong>Referans partinin adı:</strong> "
+"......................................"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
@@ -100,27 +107,27 @@ msgstr "<strong>Adı</strong>"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Phone number:</strong>"
-msgstr ""
+msgstr "<strong>Telefon numarası:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Signature:</strong>"
-msgstr ""
+msgstr "<strong>İmza:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Start date:</strong>"
-msgstr ""
+msgstr "<strong>Başlangıç tarihi:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Transaction type:</strong> recurrent"
-msgstr ""
+msgstr "<strong>İşlem türü:</strong> tekrarlayan"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Zip:</strong>"
-msgstr ""
+msgstr "<strong>Zip:</strong>"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:80
@@ -165,7 +172,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_batch_payment
 msgid "Batch Payment"
-msgstr ""
+msgstr "Toplu Ödeme"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form

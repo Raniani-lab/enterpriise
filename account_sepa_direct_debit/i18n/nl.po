@@ -7,10 +7,10 @@
 # Pol Van Dingenen <pol.vandingenen@vanroey.be>, 2017
 # Thomas Pot <thomas@open2bizz.nl>, 2019
 # Cas Vissers <casvissers@brahoo.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2017-12-13 15:20+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -663,6 +663,7 @@ msgstr "Afdrukken"
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_account_batch_payment__sdd_batch_booking
 msgid "Request batch booking from the bank for the related bank statements."
 msgstr ""
+"Vraag batch boekingen van de bank voor de gerelateerde bankafschriften."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment__sdd_required_collection_date
@@ -951,6 +952,8 @@ msgid ""
 "You cannot do direct debit on a customer to pay a refund to him, or on a "
 "supplier to pay an invoice from him."
 msgstr ""
+"U kan geen directe debet doen op een klant om een terugbetaling te doen aan "
+"hem, of op een leverancier om een factuur te betalen voor hem."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:33

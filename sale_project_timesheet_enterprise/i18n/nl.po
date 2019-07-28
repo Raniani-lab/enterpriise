@@ -101,6 +101,9 @@ msgid ""
 "Product of the sales order item. Must be a service invoiced based on "
 "timesheets on tasks. The existing timesheet will be linked to this product."
 msgstr ""
+"Product van het verkooporder item. Moet een gefactureerde dienst zijn "
+"gebaseerd op urenstaten op taken. De bestaande urenstaat wordt gekoppeld aan"
+" dit product."
 
 #. module: sale_project_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_project_timesheet_enterprise.field_project_task_create_sale_order__product_id

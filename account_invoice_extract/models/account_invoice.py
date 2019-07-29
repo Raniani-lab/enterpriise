@@ -4,6 +4,7 @@ from odoo.addons.iap import jsonrpc
 from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import AccessError
 from odoo.tests.common import Form
+from odoo.tools.misc import clean_context
 import logging
 import re
 
@@ -387,31 +388,35 @@ class AccountMove(models.Model):
                 return partner_vat.id
             else:
                 vat = word.word_text
-                url = '%s/check_vat' % PARTNER_REMOTE_URL
-                params = {
-                    'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
-                    'vat': vat,
-                }
-                try:
-                    response = jsonrpc(url=url, params=params)
-                except Exception as exception:
-                    _logger.error('Check VAT error: %s' % str(exception))
-                    return 0
-
-                if response and response.get('name'):
-                    country_id = self.env['res.country'].search([('code', '=', response.pop('country_code',''))])
-                    values = {field: response.get(field, None) for field in self._get_partner_fields()}
-                    values.update({
-                        'is_company': True,
-                        'country_id': country_id and country_id.id,
-                        })
-                    new_partner = self.env["res.partner"].create(values)
-                    return new_partner.id
-            return 0
+                partner = self._create_supplier_from_vat(vat)
+                return partner.id if partner else False
 
         if word.field == "supplier":
             return self.find_partner_id_with_name(word.word_text)
         return word.word_text
+
+    def _create_supplier_from_vat(self, vat_number_ocr):
+        url = '%s/check_vat' % PARTNER_REMOTE_URL
+        params = {
+            'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
+            'vat': vat_number_ocr,
+        }
+        try:
+            response = jsonrpc(url=url, params=params)
+        except Exception as exception:
+            _logger.error('Check VAT error: %s' % str(exception))
+            return False
+
+        if response and response.get('name'):
+            country_id = self.env['res.country'].search([('code', '=', response.pop('country_code', ''))])
+            values = {field: response.get(field, None) for field in self._get_partner_fields()}
+            values.update({
+                'is_company': True,
+                'country_id': country_id and country_id.id,
+            })
+            new_partner = self.env["res.partner"].with_context(clean_context(self.env.context)).create(values)
+            return new_partner
+        return False
 
     def _get_partner_fields(self):
         return ['name', 'vat', 'street', 'city', 'zip']
@@ -573,13 +578,16 @@ class AccountMove(models.Model):
                     vals_invoice_lines = [vals_invoice_line]
 
                 with Form(record) as move_form:
-                    partner_id = self.find_partner_id_with_name(supplier_ocr)
-                    if partner_id != 0:
-                        move_form.partner_id = self.env["res.partner"].browse(partner_id)
-                    else:
-                        partner_vat = self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1)
-                        if partner_vat.exists():
-                            move_form.partner_id = partner_vat
+                    if not move_form.partner_id:
+                        partner_id = self.find_partner_id_with_name(supplier_ocr)
+                        if partner_id != 0:
+                            move_form.partner_id = self.env["res.partner"].browse(partner_id)
+                        else:
+                            partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)
+                            if partner_vat.exists():
+                                move_form.partner_id = partner_vat
+                            elif vat_number_ocr:
+                                move_form.partner_id = self._create_supplier_from_vat(vat_number_ocr)
 
                     if date_ocr:
                         move_form.invoice_date = date_ocr

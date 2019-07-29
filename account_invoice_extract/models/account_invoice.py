@@ -520,7 +520,7 @@ class AccountMove(models.Model):
                 for (taxes, taxes_type) in zip(taxes, taxes_type_ocr):
                     if taxes != 0.0:
                         if (taxes, taxes_type) in taxes_found:
-                            vals['tax_ids'].append(taxes_found[(taxe, taxe_type)])
+                            vals['tax_ids'].append(taxes_found[(taxes, taxes_type)])
                         else:
                             taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
                             if taxes_record:
@@ -530,13 +530,6 @@ class AccountMove(models.Model):
                 invoice_lines_to_create.append(vals)
 
         return invoice_lines_to_create
-
-        total_ocr = self._context.get('total_ocr')  # this should be passed as an argument of the function but we can't change function signature in stable
-        if total_ocr and len(self.tax_line_ids) > 0:
-            rounding_error = self.amount_total - total_ocr
-            threshold = len(invoice_lines) * 0.01
-            if rounding_error != 0.0 and abs(rounding_error) < threshold:
-                self.tax_line_ids[0].amount -= rounding_error
 
     @api.multi
     def _set_currency(self, currency_ocr):
@@ -578,7 +571,14 @@ class AccountMove(models.Model):
                 invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
                 if invoice_lines:
-                    vals_invoice_lines = self.with_context(total_ocr=total_ocr)._get_invoice_lines(invoice_lines, subtotal_ocr)
+                    vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
+
+                    if total_ocr and len(record.tax_line_ids) > 0:
+                        rounding_error = record.amount_total - total_ocr
+                        threshold = len(vals_invoice_lines) * 0.01
+                        if rounding_error != 0.0 and abs(rounding_error) < threshold:
+                            record.tax_line_ids[0].amount -= rounding_error
+
                 elif subtotal_ocr:
                     vals_invoice_line = {
                         'name': "/",

@@ -7,7 +7,7 @@
     </record>
 
     <record id="approval_category_action" model="ir.actions.act_window">
-        <field name="name">Category</field>
+        <field name="name">Approvals Types</field>
         <field name="res_model">approval.category</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -41,7 +41,7 @@
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="Category Name"/>
+                            <field name="name" placeholder="Approvals Type Name"/>
                         </h1>
                     </div>
                     <group>
@@ -50,17 +50,17 @@
                     <notebook>
                         <page string="Options" name="options">
                             <group>
-                                <group string="Option Settings" name="option_settings">
-                                    <field name="requirer_document" string="Document"/>
-                                    <field name="has_partner" string="Contact"/>
-                                    <field name="has_date" string="Date"/>
-                                    <field name="has_period" string="Period"/>
-                                    <field name="has_item" string="Items"/>
-                                    <field name="has_quantity" string="Quantity"/>
-                                    <field name="has_amount" string="Amount"/>
-                                    <field name="has_reference" string="Reference"/>
-                                    <field name="has_payment_method" string="Payment"/>
-                                    <field name="has_location" string="Location"/>
+                                <group string="Fields" name="option_settings">
+                                    <field name="requirer_document" string="Document" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_partner" string="Contact" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_date" string="Date" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_period" string="Period" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_item" string="Items" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_quantity" string="Quantity" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_amount" string="Amount" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_reference" string="Reference" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_payment_method" string="Payment" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="has_location" string="Location" widget="radio" options="{'horizontal': true}"/>
                                 </group>
                                 <group string="Approvers" name="approvers">
                                     <field name="is_manager_approver"/>
@@ -88,7 +88,7 @@
                     <t t-name="kanban-box">
                         <div class="oe_module_vignette">
                             <t t-if="record.id">
-                                <img t-att-src="kanban_image('approval.category', 'image', record.id.raw_value)" alt="Category Image"
+                                <img t-att-src="kanban_image('approval.category', 'image', record.id.raw_value)" alt="Approvals Types Image"
                                     class="oe_kanban_avatar float-left mr-3" width="64" height="64"/>
                             </t>
                             <div class="oe_module_desc">

@@ -3,6 +3,8 @@
 
 from odoo import fields
 from odoo.tests import common
+from odoo.exceptions import UserError
+
 
 class TestRequest(common.TransactionCase):
     def test_compute_request_status(self):
@@ -68,13 +70,6 @@ class TestRequest(common.TransactionCase):
 
         # Test case 5: Set min approval to an impossible value to reach
         category_test.approval_minimum = 3
-        record.action_confirm()
-        self.assertEqual(record.request_status, 'pending')
-        record.action_approve(first_approver)
-        self.assertEqual(record.request_status, 'pending')
-        record.action_refuse(second_approver)
-        self.assertEqual(record.request_status, 'refused')
-        record.action_withdraw(second_approver)
-        self.assertEqual(record.request_status, 'pending')
-        record.action_approve(second_approver)
-        self.assertEqual(record.request_status, 'approved')
+        with self.assertRaises(UserError):
+            record.action_confirm()
+        self.assertEqual(record.request_status, 'new')

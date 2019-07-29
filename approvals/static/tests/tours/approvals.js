@@ -46,6 +46,11 @@ odoo.define('approvals_tour', function(require) {
             run: 'text We need to go, because reason (and also for beer))',
         },
         {
+            trigger: 'a:contains("Approver(s)"):first',
+            content: 'open approvers page',
+            run: 'click',
+        },
+        {
             trigger: ".o_field_x2many_list_row_add > a",
             content: 'add an approver',
             run: 'click',

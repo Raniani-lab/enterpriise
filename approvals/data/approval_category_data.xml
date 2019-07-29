@@ -18,7 +18,7 @@
             <field name="has_partner">no</field>
             <field name="has_payment_method">no</field>
             <field name="has_location">required</field>
-            <field name="requirer_document">False</field>
+            <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
             <field name="is_manager_approver">True</field>
         </record>
@@ -35,7 +35,7 @@
             <field name="has_partner">no</field>
             <field name="has_payment_method">no</field>
             <field name="has_location">no</field>
-            <field name="requirer_document">False</field>
+            <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
             <field name="is_manager_approver">False</field>
         </record>
@@ -52,7 +52,7 @@
             <field name="has_partner">optional</field>
             <field name="has_payment_method">optional</field>
             <field name="has_location">optional</field>
-            <field name="requirer_document">True</field>
+            <field name="requirer_document">required</field>
             <field name="approval_minimum">1</field>
             <field name="is_manager_approver">True</field>
         </record>
@@ -69,7 +69,7 @@
             <field name="has_partner">required</field>
             <field name="has_payment_method">no</field>
             <field name="has_location">no</field>
-            <field name="requirer_document">False</field>
+            <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
             <field name="is_manager_approver">False</field>
         </record>
@@ -86,7 +86,7 @@
             <field name="has_partner">required</field>
             <field name="has_payment_method">required</field>
             <field name="has_location">no</field>
-            <field name="requirer_document">False</field>
+            <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
             <field name="is_manager_approver">False</field>
         </record>
@@ -103,7 +103,7 @@
             <field name="has_partner">no</field>
             <field name="has_payment_method">no</field>
             <field name="has_location">no</field>
-            <field name="requirer_document">False</field>
+            <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
             <field name="is_manager_approver">False</field>
         </record>
@@ -120,7 +120,7 @@
             <field name="has_partner">required</field>
             <field name="has_payment_method">no</field>
             <field name="has_location">no</field>
-            <field name="requirer_document">False</field>
+            <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
             <field name="is_manager_approver">False</field>
         </record>
@@ -137,7 +137,7 @@
             <field name="has_partner">no</field>
             <field name="has_payment_method">no</field>
             <field name="has_location">no</field>
-            <field name="requirer_document">False</field>
+            <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
             <field name="is_manager_approver">False</field>
         </record>

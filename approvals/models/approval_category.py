@@ -8,9 +8,9 @@ from odoo.modules.module import get_module_resource
 
 
 CATEGORY_SELECTION = [
-    ('no', 'No'),
     ('required', 'Required'),
-    ('optional', 'Optional')]
+    ('optional', 'Optional'),
+    ('no', 'None')]
 
 
 class ApprovalCategory(models.Model):
@@ -39,7 +39,7 @@ class ApprovalCategory(models.Model):
     has_partner = fields.Selection(CATEGORY_SELECTION, string="Has Contact", default="no", required=True)
     has_payment_method = fields.Selection(CATEGORY_SELECTION, string="Has Payment", default="no", required=True)
     has_location = fields.Selection(CATEGORY_SELECTION, string="Has Location", default="no", required=True)
-    requirer_document = fields.Boolean(string="Documents")
+    requirer_document = fields.Selection([('required', 'Required'), ('optional', 'Optional')], string="Documents", default="optional", required=True)
     approval_minimum = fields.Integer(string="Minimum Approval", default="1", required=True)
     is_manager_approver = fields.Boolean(
         string="Employee's Manager",

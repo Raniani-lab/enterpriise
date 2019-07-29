@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class ApprovalRequest(models.Model):
@@ -30,8 +31,8 @@ class ApprovalRequest(models.Model):
     amount = fields.Float(string="Amount")
     reason = fields.Text(string="Description")
     request_status = fields.Selection([
-        ('new', 'New'),
-        ('pending', 'Confirmed'),
+        ('new', 'To Submit'),
+        ('pending', 'Submitted'),
         ('approved', 'Approved'),
         ('refused', 'Refused'),
         ('cancel', 'Cancel')], default="new", compute="_compute_request_status", store=True, compute_sudo=True, group_expand='_read_group_request_status')
@@ -54,7 +55,7 @@ class ApprovalRequest(models.Model):
     has_partner = fields.Selection(related="category_id.has_partner")
     has_payment_method = fields.Selection(related="category_id.has_payment_method")
     has_location = fields.Selection(related="category_id.has_location")
-    requirer_document = fields.Boolean(related="category_id.requirer_document")
+    requirer_document = fields.Selection(related="category_id.requirer_document")
     approval_minimum = fields.Integer(related="category_id.approval_minimum")
     is_manager_approver = fields.Boolean(related="category_id.is_manager_approver")
 
@@ -78,6 +79,10 @@ class ApprovalRequest(models.Model):
         return res
 
     def action_confirm(self):
+        if len(self.approver_ids) < self.approval_minimum:
+            raise UserError(_("You have to add at least %s approvers to confirm your request.") % self.approval_minimum)
+        if self.requirer_document == 'required' and not self.attachment_number:
+            raise UserError(_("You have to attach at lease one document."))
         approvers = self.mapped('approver_ids').filtered(lambda approver: approver.status == 'new')
         approvers._create_activity()
         approvers.write({'status': 'pending'})

@@ -52,7 +52,7 @@ class TestHelpdeskAccount(common.HelpdeskTransactionCase):
 
         self.assertEqual(len(refund), 1, "No refund created")
         self.assertEqual(refund.state, 'draft', "Wrong status of the refund")
-        self.assertEqual(refund.invoice_payment_ref, 'test', "The reference is wrong")
+        self.assertEqual(refund.ref, 'Reversal of: %s, %s' % (invoice.name, credit_note_form.reason), "The reference is wrong")
         self.assertEqual(len(ticket.invoice_ids), 1,
             "The ticket should be linked to a credit note")
         self.assertEqual(ticket.invoices_count, 1,

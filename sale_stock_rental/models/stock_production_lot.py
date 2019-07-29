@@ -19,11 +19,11 @@ class ProductionLot(models.Model):
             ('location_id.usage', '=', 'internal')
         ]
         if location:
-            quant_domain = expression.AND(quant_domain, [
+            quant_domain = expression.AND([quant_domain, [
                 '|',
                 ('location_id', '=', location.id),
                 ('location_id', 'child_of', location.id)
-            ])
+            ]])
 
         return self.env['stock.quant'].search(quant_domain).lot_id
 

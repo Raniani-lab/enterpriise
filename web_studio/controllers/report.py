@@ -16,38 +16,60 @@ class WebStudioReportController(main.WebStudioController):
     def create_new_report(self, model_name, layout):
 
         if layout == 'web.basic_layout':
+            arch_document = etree.fromstring("""
+                <t t-name="studio_report_document">
+                    <div class="page"/>
+                </t>
+                """)
+        else:
+            arch_document = etree.fromstring("""
+                <t t-name="studio_report_document">
+                    <t t-call="%(layout)s">
+                        <div class="page"/>
+                    </t>
+                </t>
+                """ % {'layout': layout})
+
+        view_document = request.env['ir.ui.view'].create({
+            'name': 'studio_report_document',
+            'type': 'qweb',
+            'arch': etree.tostring(arch_document, encoding='utf-8', pretty_print=True),
+        })
+
+        new_view_document_xml_id = view_document.get_external_id()[view_document.id]
+        view_document.name = '%s_document' % new_view_document_xml_id
+        view_document.key = '%s_document' % new_view_document_xml_id
+
+        if layout == 'web.basic_layout':
             arch = etree.fromstring("""
-                <t t-name="studio_report">
+                <t t-name="studio_main_report">
                     <t t-call="%(layout)s">
                         <t t-foreach="docs" t-as="doc">
-                            <div class="page"/>
+                            <t t-call="%(document)s_document"/>
                         </t>
                     </t>
                 </t>
-            """ % { 'layout': layout })
+            """ % {'layout': layout, 'document': new_view_document_xml_id})
         else:
             arch = etree.fromstring("""
-                <t t-name="studio_report">
+                <t t-name="studio_main_report">
                     <t t-call="web.html_container">
                         <t t-foreach="docs" t-as="doc">
-                            <t t-call="%(layout)s">
-                                <div class="page"/>
-                            </t>
+                            <t t-call="%(document)s_document"/>
                         </t>
                     </t>
                 </t>
-            """ % { 'layout': layout })
+            """ % {'document': new_view_document_xml_id})
 
         view = request.env['ir.ui.view'].create({
-            'name': 'report',
+            'name': 'studio_main_report',
             'type': 'qweb',
             'arch': etree.tostring(arch, encoding='utf-8', pretty_print=True),
         })
         # FIXME: When website is installed, we need to set key as xmlid to search on a valid domain
         # See '_view_obj' in 'website/model/ir.ui.view'
-        new_view_xml_id = view.get_external_id()[view.id]
-        view.name = new_view_xml_id
-        view.key = new_view_xml_id
+        view.name = new_view_document_xml_id
+        view.key = new_view_document_xml_id
 
         model = request.env['ir.model'].search([('model', '=', model_name)])
         report = request.env['ir.actions.report'].create({

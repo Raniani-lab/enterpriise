@@ -9,15 +9,15 @@ QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('Fields', {}, function () {
 
     QUnit.test('render buttons', async function (assert) {
-        assert.expect(7);
+        assert.expect(6);
         var parent = testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
         await fields.renderButtons({ $container: $('#qunit-fixture') });
 
         var $buttons = $('.o_invoice_extract_button');
-        assert.strictEqual($buttons.length, 6,
-            "should display 6 field buttons");
+        assert.strictEqual($buttons.length, 5,
+            "should display 5 field buttons");
         // check each button label
         assert.strictEqual($buttons.eq(0).text().trim(),
             'VAT',
@@ -26,23 +26,20 @@ QUnit.module('Fields', {}, function () {
             'Vendor',
             "2nd button should have correct text");
         assert.strictEqual($buttons.eq(2).text().trim(),
-            'Currency',
-            "3rd button should have correct text");
-        assert.strictEqual($buttons.eq(3).text().trim(),
             'Date',
+            "3th button should have correct text");
+        assert.strictEqual($buttons.eq(3).text().trim(),
+            'Due Date',
             "4th button should have correct text");
         assert.strictEqual($buttons.eq(4).text().trim(),
-            'Due Date',
-            "5th button should have correct text");
-        assert.strictEqual($buttons.eq(5).text().trim(),
             'Vendor Reference',
-            "6th button should have correct text");
+            "5th button should have correct text");
 
         parent.destroy();
     });
 
     QUnit.test('get button', async function (assert) {
-        assert.expect(6);
+        assert.expect(5);
         var parent = testUtils.createParent({});
         var fields = new InvoiceExtractFields(parent);
 
@@ -54,7 +51,6 @@ QUnit.module('Fields', {}, function () {
         assert.doesNotHaveClass($buttons.eq(2), 'active', "3rd button should be inactive by default");
         assert.doesNotHaveClass($buttons.eq(3), 'active', "4th button should be inactive by default");
         assert.doesNotHaveClass($buttons.eq(4), 'active', "5th button should be inactive by default");
-        assert.doesNotHaveClass($buttons.eq(5), 'active', "6th button should be inactive by default");
 
         parent.destroy();
     });

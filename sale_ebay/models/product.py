@@ -418,6 +418,10 @@ class ProductTemplate(models.Model):
             ('res_model', '=', 'product.template'),
             ('res_id', '=', self.id),
             ('mimetype', 'ilike', 'image'),
+            # images need to be at least 500 on their longest side
+            # https://developer.ebay.com/devzone/xml/docs/reference/ebay/additem.html > PictureDetails.PictureURL
+            # https://www.ebay.com/help/selling/listings/adding-pictures-listings?id=4148
+            ('res_field', '=', 'image'),
         ], order="create_date")
 
         urls = []

@@ -74,7 +74,7 @@ class AccountFollowupReport(models.AbstractModel):
             total = 0
             total_issued = 0
             for aml in aml_recs:
-                amount = aml.currency_id and aml.amount_residual_currency or aml.amount_residual
+                amount = aml.amount_residual_currency if aml.currency_id else aml.amount_residual
                 date_due = format_date(self.env, aml.date_maturity or aml.date, lang_code=lang_code)
                 total += not aml.blocked and amount or 0
                 is_overdue = today > aml.date_maturity if aml.date_maturity else today > aml.date

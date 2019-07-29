@@ -3,23 +3,23 @@
 # * website_twitter_wall
 # 
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2018
 # Mustafa J. Kadhem <safi2266@gmail.com>, 2018
 # amrnegm <amrnegm.01@gmail.com>, 2018
 # Martin Trigaux, 2018
 # hoxhe Aits <hoxhe0@gmail.com>, 2018
-# Osoul <baruni@osoul.ly>, 2018
 # Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
 # Osama Ahmaro <osamaahmaro@gmail.com>, 2018
 # Zuhair Hammadi <zuhair12@gmail.com>, 2018
 # Shaima Safar <shaima.safar@open-inside.com>, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-09-21 14:07+0000\n"
-"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:50+0000\n"
+"Last-Translator: Mustafa Rawi <mustafa@cubexco.com>, 2019\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,22 +30,22 @@ msgstr ""
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "(Un)archiving a wall. Do you want to proceed?"
-msgstr ""
+msgstr "تقوم بأرشفة (أو إلغاء أرشفة) حائط. هل تريد الاستمرار؟"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<b>Hey! No wall found</b>"
-msgstr ""
+msgstr "مهلًا! لا توجد حوائط</b>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<i class=\"fa fa-plus-circle\"/> Create Now"
-msgstr ""
+msgstr "<i class=\"fa fa-plus-circle\"/> أنشأه الآن"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "<i class=\"fa fa-twitter\"/> <strong> Join the wall</strong>"
-msgstr ""
+msgstr "<i class=\"fa fa-twitter\"/> <strong> انضم للحائط</strong>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -53,6 +53,8 @@ msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-danger\"> Off </strong></span>"
 msgstr ""
+"<span class=\"o_stat_text\">الوضع الحي</span>\n"
+"                                <span class=\"o_stat_text\"><strong class=\"text-success\">مطفئ</strong></span>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -60,6 +62,8 @@ msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-success\"> On </strong></span>"
 msgstr ""
+"<span class=\"o_stat_text\">الوضع الحي</span>\n"
+"                                <span class=\"o_stat_text\"><strong class=\"text-success\">مشغل</strong></span>"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__access_token
@@ -84,12 +88,12 @@ msgstr "أنشئ في"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Decrease zoom level"
-msgstr ""
+msgstr "تصغير"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Delete this tweet"
-msgstr ""
+msgstr "حذف هذه التغريدة"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__description
@@ -99,17 +103,17 @@ msgstr "الوصف"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__display_name
 msgid "Display Name"
-msgstr "اسم العرض"
+msgstr "الاسم المعروض"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Exit full screen"
-msgstr ""
+msgstr "مغادرة وضع الشاشة الكاملة"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Hey! No tweet found"
-msgstr ""
+msgstr "مهلًا! لا توجد تغريدات"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__id
@@ -124,22 +128,22 @@ msgstr "الصورة"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Increase zoom level"
-msgstr ""
+msgstr "تكبير"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is Live"
-msgstr ""
+msgstr "حي"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is live mode on/off"
-msgstr ""
+msgstr "هل الوضع الحي مشغل أم مطفئ"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_published
 msgid "Is published"
-msgstr ""
+msgstr "منشور"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall____last_update
@@ -149,7 +153,7 @@ msgstr "آخر تعديل في"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__last_search
 msgid "Last Search"
-msgstr ""
+msgstr "البحث الأخير"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__write_uid
@@ -164,22 +168,22 @@ msgstr "آخر تحديث في"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "List view"
-msgstr ""
+msgstr "عرض القائمة"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Live mode"
-msgstr ""
+msgstr "الوضع الحي"
 
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Mixed"
-msgstr ""
+msgstr "مختلط"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Most recent tweets, most popular tweets, or both"
-msgstr ""
+msgstr "أحدث التغريدات، أو أشهر التغريدات، أو كلاهما"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__name
@@ -190,17 +194,17 @@ msgstr "الاسم"
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Popular"
-msgstr ""
+msgstr "شائع"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Query operators"
-msgstr ""
+msgstr "مشغلات الاستعلام"
 
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Recent"
-msgstr ""
+msgstr "حديث"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -210,37 +214,37 @@ msgstr "تكرار"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__search_pattern
 msgid "Search string"
-msgstr ""
+msgstr "البحث في التعبيرات"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on facebook"
-msgstr ""
+msgstr "مشاركة #{wall.name} على فيسبوك"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on google+"
-msgstr ""
+msgstr "مشاركة #{wall.name} على جوجل بلاس"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on linkedin"
-msgstr ""
+msgstr "مشاركة #{wall.name} على linkedin"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on twitter"
-msgstr ""
+msgstr "مشاركة #{wall.name} على تويتر"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Shuffle"
-msgstr ""
+msgstr "خلط"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Single view"
-msgstr ""
+msgstr "واجهة عرض فردية"
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:83
@@ -248,6 +252,7 @@ msgstr ""
 msgid ""
 "The Twitter authentication failed. Please check your API key and secret."
 msgstr ""
+"فشلت المصادقة مع تويتر. برجاء مراجعة مفتاح واجهة برمجة تطبيقك ورمزه السري."
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url
@@ -260,33 +265,35 @@ msgid ""
 "The search criteria to get the tweets you want. You can use the Twitter "
 "query operators."
 msgstr ""
+"معايير البحث للحصول علي التغريدات التي تريدها. يمكنك استخدام مشغلات استعلام "
+"تويتر."
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:94
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
-msgstr ""
+msgstr "فشل البحث عن تغريدات. راجع بيانات اعتمادك ورمزك السري"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Three columns view"
-msgstr ""
+msgstr "عرض ثلاثة أعمدة"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__total_tweets
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Total Tweets"
-msgstr ""
+msgstr "كافة التغريدات"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__tweet_ids
 msgid "Tweet"
-msgstr ""
+msgstr "تغريدة"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__tweet_html
 msgid "Tweet Html"
-msgstr ""
+msgstr "تغريدة Html"
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:134
@@ -302,43 +309,43 @@ msgstr "تغريدات"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__api_key
 msgid "Twitter API Key"
-msgstr "واجهة برمجة التطبيق لتويتر"
+msgstr "واجهة برمجة تطبيق تويتر"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__api_secret
 msgid "Twitter API Secret"
-msgstr "سر واجهة برمجة التطبيق لتويتر"
+msgstr "الرمز السري لواجهة برمجة تطبيق تويتر"
 
 #. module: website_twitter_wall
 #: model:ir.ui.menu,name:website_twitter_wall.menu_website_twitter_wall_root
 msgid "Twitter Wall"
-msgstr ""
+msgstr "حائط تويتر"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_footer_custom
 msgid "Twitter wall"
-msgstr ""
+msgstr "حائط تويتر"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Two columns view"
-msgstr ""
+msgstr "عرض عمودين"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Type of tweets"
-msgstr ""
+msgstr "نوع التغريدات"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_published
 msgid "Visible on current website"
-msgstr ""
+msgstr "ظاهرة في الموقع الحالي"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__wall_ids
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
 msgid "Wall"
-msgstr ""
+msgstr "حائط"
 
 #. module: website_twitter_wall
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_wall_action
@@ -346,13 +353,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_tree
 msgid "Walls"
-msgstr ""
+msgstr "حوائط"
 
 #. module: website_twitter_wall
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_wall
 msgid "Website Twitter"
-msgstr ""
+msgstr "موقع تويتر"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_url
@@ -362,4 +369,4 @@ msgstr "رابط الموقع"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Your wall name"
-msgstr ""
+msgstr "اسم حائطك"

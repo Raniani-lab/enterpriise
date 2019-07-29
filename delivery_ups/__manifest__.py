@@ -11,7 +11,7 @@
         'views/delivery_ups_view.xml',
         'views/res_config_settings_views.xml',
         'views/sale_views.xml',
-        'views/stock_picking_views.xml'
+        'views/res_partner_views.xml',
     ],
     'license': 'OEEL-1',
     'uninstall_hook': 'uninstall_hook',

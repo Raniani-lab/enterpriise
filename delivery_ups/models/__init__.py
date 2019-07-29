@@ -3,5 +3,5 @@
 
 from . import delivery_ups
 from . import product_packaging
-from . import stock_picking
 from . import sale
+from . import res_partner

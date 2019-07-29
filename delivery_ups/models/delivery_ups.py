@@ -43,8 +43,9 @@ class ProviderUPS(models.Model):
                                             ('EPL', 'EPL'),
                                             ('SPL', 'SPL')],
                                            string="UPS Label File Type", default='GIF')
-    ups_bill_my_account = fields.Boolean(string='Bill My Account', help="If checked, ecommerce users will be prompted their UPS account number\n"
-                                                                        "and delivery fees will be charged on it.")
+    ups_bill_my_account = fields.Boolean(string='Bill My Account',
+                                         help="If checked, ecommerce users will be prompted their UPS account number\n"
+                                              "and delivery fees will be charged on it.")
     ups_cod = fields.Boolean(string='Collect on Delivery',
         help='This value added service enables UPS to collect the payment of the shipment from your customer.')
     ups_saturday_delivery = fields.Boolean(string='UPS Saturday Delivery',
@@ -108,7 +109,7 @@ class ProviderUPS(models.Model):
                     'error_message': check_value,
                     'warning_message': False}
 
-        ups_service_type = order.ups_service_type or self.ups_default_service_type
+        ups_service_type = self.ups_default_service_type
         result = srm.get_shipping_price(
             shipment_info=shipment_info, packages=packages, shipper=order.company_id.partner_id, ship_from=order.warehouse_id.partner_id,
             ship_to=order.partner_shipping_id, packaging_type=self.ups_default_packaging_id.shipper_package_code, service_type=ups_service_type,
@@ -127,7 +128,7 @@ class ProviderUPS(models.Model):
             price = quote_currency._convert(
                 float(result['price']), order.currency_id, order.company_id, order.date_order or fields.Date.today())
 
-        if self.ups_bill_my_account and order.ups_carrier_account:
+        if self.ups_bill_my_account and order.partner_ups_carrier_account:
             # Don't show delivery amount, if ups bill my account option is true
             price = 0.0
 
@@ -165,10 +166,12 @@ class ProviderUPS(models.Model):
                 'phone': picking.partner_id.mobile or picking.partner_id.phone or picking.sale_id.partner_id.mobile or picking.sale_id.partner_id.phone,
             }
             if picking.sale_id and picking.sale_id.carrier_id != picking.carrier_id:
-                ups_service_type = picking.carrier_id.ups_default_service_type or picking.ups_service_type or self.ups_default_service_type
+                ups_service_type = picking.carrier_id.ups_default_service_type or self.ups_default_service_type
             else:
-                ups_service_type = picking.ups_service_type or self.ups_default_service_type
-            ups_carrier_account = picking.ups_carrier_account
+                ups_service_type = self.ups_default_service_type
+            ups_carrier_account = False
+            if self.ups_bill_my_account:
+                ups_carrier_account = picking.partner_id.with_context(force_company=picking.company_id.id).property_ups_carrier_account
 
             if picking.carrier_id.ups_cod:
                 cod_info = {
@@ -259,10 +262,12 @@ class ProviderUPS(models.Model):
             'phone': picking.partner_id.mobile or picking.partner_id.phone or picking.sale_id.partner_id.mobile or picking.sale_id.partner_id.phone,
         }
         if picking.sale_id and picking.sale_id.carrier_id != picking.carrier_id:
-            ups_service_type = picking.carrier_id.ups_default_service_type or picking.ups_service_type or self.ups_default_service_type
+            ups_service_type = picking.carrier_id.ups_default_service_type or self.ups_default_service_type
         else:
-            ups_service_type = picking.ups_service_type or self.ups_default_service_type
-        ups_carrier_account = picking.ups_carrier_account
+            ups_service_type = self.ups_default_service_type
+        ups_carrier_account = False
+        if self.ups_bill_my_account:
+            ups_carrier_account = picking.partner_id.with_context(force_company=picking.company_id.id).property_ups_carrier_account
 
         if picking.carrier_id.ups_cod:
             cod_info = {

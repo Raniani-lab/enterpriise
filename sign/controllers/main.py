@@ -7,9 +7,10 @@ import logging
 import mimetypes
 import re
 
-from PyPDF2 import PdfFileReader
+from PyPDF2 import  PdfFileReader, PdfFileWriter
 
 from odoo import http, _
+from odoo.http import request
 from odoo.addons.web.controllers.main import content_disposition
 from odoo.addons.iap.models.iap import InsufficientCreditError
 
@@ -65,6 +66,14 @@ class Sign(http.Controller):
         for value in sr_values:
             item_values[value.sign_item_id.id] = value.value
 
+        Log = request.env['sign.log'].sudo()
+        vals = Log._prepare_vals_from_item(current_request_item) if current_request_item else Log._prepare_vals_from_request(sign_request)
+        vals.update({
+            'action': 'open',
+        })
+        vals = Log._update_vals_with_http_request(vals)
+        Log.create(vals)
+
         return {
             'sign_request': sign_request,
             'current_request_item': current_request_item,
@@ -101,16 +110,32 @@ class Sign(http.Controller):
         sign_request = http.request.env['sign.request'].sudo().browse(id)
         if sign_request.access_token != token or not sign_request:
             return http.request.not_found()
-
         document = None
-        if download_type == "origin":
+        if download_type == "log":
+            pdf_writer = PdfFileWriter()
+            report_action = http.request.env.ref('sign.action_sign_request_print_logs').sudo()
+            pdf_content, _ = report_action.render_qweb_pdf(sign_request.id)
+            reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
+            for page in range(reader.getNumPages()):
+                pdf_writer.addPage(reader.getPage(page))
+            _buffer = io.BytesIO()
+            pdf_writer.write(_buffer)
+            merged_pdf = _buffer.getvalue()
+            _buffer.close()
+            pdfhttpheaders = [
+                ('Content-Type', 'application/pdf'),
+                ('Content-Length', len(merged_pdf)),
+                ('Content-Disposition', 'attachment; filename=' + "Access Logs.pdf;")
+            ]
+            return request.make_response(merged_pdf, headers=pdfhttpheaders)
+        elif download_type == "origin":
             document = sign_request.template_id.attachment_id.datas
         elif download_type == "completed":
             document = sign_request.completed_document
             if not document: # if the document is completed but the document is encrypted
                 return http.redirect_with_hash('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
-
         if not document:
+            # Shouldn't it fall back on 'origin' download type?
             return http.redirect_with_hash("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})
 
         extension = "".join(['.', sign_request.template_id.extension])
@@ -264,6 +289,13 @@ class Sign(http.Controller):
             request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
 
         request_item.action_completed()
+        Log = request.env['sign.log'].sudo()
+        vals = Log._prepare_vals_from_item(request_item)
+        vals.update({
+            'action': 'sign',
+        })
+        vals = Log._update_vals_with_http_request(vals)
+        Log.create(vals)
         return True
 
     @http.route(['/sign/password/<int:sign_request_id>'], type='json', auth='public')

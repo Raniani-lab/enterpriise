@@ -16,7 +16,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from werkzeug.urls import url_join
 from random import randint
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, http, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 def _fix_image_transparency(image):
@@ -74,6 +74,8 @@ class SignRequest(models.Model):
     color = fields.Integer()
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
+
+    sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Technical: for reporting purposes")
 
     @api.depends('request_item_ids.state')
     def _compute_count(self):
@@ -144,6 +146,16 @@ class SignRequest(models.Model):
             'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': self.id, 'access_token': self.access_token},
         }
 
+    def open_logs(self):
+        self.ensure_one()
+        return {
+            "name": _("Access History"),
+            "type": "ir.actions.act_window",
+            "res_model": "sign.log",
+            'view_mode': 'tree,form',
+            'domain': [('sign_request_id', '=', self.id)],
+        }
+
     def toggle_favorited(self):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
@@ -173,6 +185,13 @@ class SignRequest(models.Model):
             included_request_items = sign_request.request_item_ids.filtered(lambda r: not r.partner_id or r.partner_id.id not in ignored_partners)
 
             if sign_request.send_signature_accesses(subject, message, ignored_partners=ignored_partners):
+                Log = http.request.env['sign.log'].sudo()
+                vals = Log._prepare_vals_from_request(sign_request)
+                vals.update({
+                    'action': 'create',
+                })
+                vals = Log._update_vals_with_http_request(vals)
+                Log.create(vals)
                 followers = sign_request.message_follower_ids.mapped('partner_id')
                 followers -= sign_request.create_uid.partner_id
                 followers -= sign_request.request_item_ids.mapped('partner_id')
@@ -615,7 +634,7 @@ def mail_sender(instance, mails):
     :return: None
     """
     """
-    
+
     :param mail: the mail to be sent
     :type mail: mail object
     :return: None

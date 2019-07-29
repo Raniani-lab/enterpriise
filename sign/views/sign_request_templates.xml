@@ -60,8 +60,8 @@
                     <div class="o_sign_request_from">
                         <h4 class="o_sign_request_reference_title"><t t-esc="sign_request.reference"/></h4>
                     </div>
-
                     <a role="button" t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/completed" class="btn btn-primary o_sign_download_document_button">Download Document</a>
+                    <a role="button" t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/log" class="btn btn-secondary o_sign_download_log_button">Download Access Logs</a>
                 </div>
 
                 <div class="col-lg-4">

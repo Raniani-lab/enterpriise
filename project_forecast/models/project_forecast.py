@@ -52,9 +52,6 @@ class ProjectForecast(models.Model):
     start_datetime = fields.Datetime(required=True, default=_default_start_datetime)
     end_datetime = fields.Datetime(required=True, default=_default_end_datetime)
 
-    # email
-    published = fields.Boolean(default=False)
-
     color = fields.Integer(string="Color", compute='_compute_color')
 
     # resource
@@ -146,15 +143,6 @@ class ProjectForecast(models.Model):
                         'title': _('Warning!'),
                         'message': _('You are allocating more hours than available for this employee')}
                 }
-
-    # ----------------------------------------------------
-    # ORM overrides
-    # ----------------------------------------------------
-
-    def write(self, values):
-        if ('published' not in values) and (set(values.keys()) & set(self._get_publish_important_fields())):
-            values['published'] = False
-        return super(ProjectForecast, self).write(values)
 
     # ----------------------------------------------------
     # Actions
@@ -265,14 +253,3 @@ class ProjectForecast(models.Model):
                 [('project_id', '=', self.env.context['default_project_id'])]
             ])
         return tasks.sudo().search(tasks_domain, order=order)
-
-    @api.model
-    def _get_publish_important_fields(self):
-        return [
-            'employee_id',
-            'project_id',
-            'task_id',
-            'resource_hours',
-            'start_datetime',
-            'end_datetime'
-        ]

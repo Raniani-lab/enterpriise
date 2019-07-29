@@ -166,6 +166,22 @@ class ProjectWorksheetTemplate(models.Model):
         return action
 
     # ---------------------------------------------------------
+    # Actions
+    # ---------------------------------------------------------
+
+    def action_fsm_report(self):
+        self.ensure_one()
+        return {
+            'name': _('Analysis'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'graph,pivot,list,form',
+            'res_model': self.model_id.model,
+            'context': {
+                'fsm_mode': True,
+            }
+        }
+
+    # ---------------------------------------------------------
     # Business Methods
     # ---------------------------------------------------------
 

@@ -265,8 +265,8 @@ class AccountJournal(models.Model):
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
         Nm = etree.SubElement(Cdtr, "Nm")
         Nm.text = sanitize_communication((bank_id.acc_holder_name or partner_id.name)[:70])
-        if payment.partner_id.city and payment.partner_id.country_id.code:
-            Cdtr.append(self._get_PstlAdr(payment.partner_id))
+        if partner_id.city and partner_id.country_id.code:
+            Cdtr.append(self._get_PstlAdr(partner_id))
         if payment['payment_type'] == 'transfer':
             CdtTrfTxInf.append(self._get_CdtrAcct(payment['destination_bank_account_id']))
         else:

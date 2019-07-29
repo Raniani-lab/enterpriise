@@ -227,10 +227,10 @@ class AccountJournal(models.Model):
         Ctry.text = partner_id.country_id.code
         if partner_id.street:
             AdrLine = etree.SubElement(PstlAdr, "AdrLine")
-            AdrLine.text = self._sanitize_communication(partner_id.street[:70])
+            AdrLine.text = sanitize_communication(partner_id.street[:70])
         if partner_id.zip and partner_id.city:
             AdrLine = etree.SubElement(PstlAdr, "AdrLine")
-            AdrLine.text = self._sanitize_communication((partner_id.zip + " " + partner_id.city)[:70])
+            AdrLine.text = sanitize_communication((partner_id.zip + " " + partner_id.city)[:70])
         return PstlAdr
 
     def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic):

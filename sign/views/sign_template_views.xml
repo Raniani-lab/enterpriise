@@ -77,7 +77,6 @@
             <form create="false">
                 <header>
                     <button name="%(sign.action_sign_send_request)d" string="Send" type="action" class="oe_highlight" context="{'sign_directly_without_mail': 0}"/>
-                    <button name="%(sign.action_sign_send_request)d" string="Sign Now" type="action" class="oe_highlight" context="{'sign_directly_without_mail': 1}"/>
                     <button name="%(sign.action_sign_template_share)d" string="Share" type="action" attrs="{'invisible': [('responsible_count', '&gt;', 1)]}"/>
                 </header>
                 <sheet>

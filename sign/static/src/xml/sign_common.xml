@@ -74,8 +74,7 @@
     </div>
 
     <div t-name="sign.thank_you_dialog">
-        <div class="o_thankyou_message">We will let you know by email once everyone has signed.<br/>
-        You can close the window and come back later.</div>
+        <div class="o_thankyou_message">We will let you know by email once everyone has signed.</div>
     </div>
     <div t-name="sign.no_pub_thank_you_dialog" t-extend="sign.thank_you_dialog">
         <t t-jquery=".o_promote_esign" t-operation="replace"/>

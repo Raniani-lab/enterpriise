@@ -9,7 +9,7 @@
                 <group attrs="{'invisible': [('url', '=', False)]}">
                     <field name="url" widget="CopyClipboardChar" readonly="1"/>
                 </group>
-                <span attrs="{'invisible': [('url', '!=', False)]}">To be able to share, there must be either no fields to fill or only one responsible for all the fields!</span>
+                <span attrs="{'invisible': [('url', '!=', False)]}">To be able to share, there should be only one responsible for all the fields.</span>
                 <footer>
                     <button string="Close" class="btn-primary" special="cancel"/>
                     <button string="Sign Now" name="open" type="object" attrs="{'invisible': [('url', '=', False)]}"/>

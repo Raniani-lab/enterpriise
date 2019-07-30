@@ -28,6 +28,15 @@
             'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
             'graph_groupbys': ['date:day', 'state'],
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Forecasted Stock
+            </p><p>
+                This analysis gives you an overview of the forecasted stock level of your products.
+                <br/>
+                Plan transfers in order to see their impacts on the forecasted stock level.
+            </p>
+        </field>
     </record>
 
     <record id="stock.report_stock_quantity_action" model="ir.actions.act_window">
@@ -38,6 +47,15 @@
             'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
             'graph_groupbys': ['date:day', 'state', 'product_id'],
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Forecasted Stock
+            </p><p>
+                This analysis gives you an overview of the forecasted stock level of your products.
+                <br/>
+                Plan transfers in order to see their impacts on the forecasted stock level.
+            </p>
+        </field>
     </record>
 </odoo>
 

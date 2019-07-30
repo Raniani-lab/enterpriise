@@ -72,7 +72,7 @@ class SylvacSCalProDriver(SerialDriver):
                 return ""
 
     @classmethod
-    def supported(cls, device=None):
+    def supported(cls, device):
         """Checks whether the device at path `device` is supported by the driver.
 
         :param device: path to the device
@@ -84,7 +84,7 @@ class SylvacSCalProDriver(SerialDriver):
         protocol = cls._protocol
 
         try:
-            with serial_connection(device.device, protocol, is_probing=True) as connection:
+            with serial_connection(device['identifier'], protocol, is_probing=True) as connection:
                 connection.write(protocol.measureCommand + protocol.commandTerminator)
                 time.sleep(protocol.commandDelay)
                 measure = cls._get_raw_response(connection)

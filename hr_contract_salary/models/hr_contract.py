@@ -17,17 +17,18 @@ _logger = logging.getLogger(__name__)
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
-    origin_contract_id = fields.Many2one('hr.contract', string="Origin Contract", help="The contract from which this contract has been duplicated.")
+    origin_contract_id = fields.Many2one('hr.contract', string="Origin Contract", domain="[('company_id', '=', company_id)]", help="The contract from which this contract has been duplicated.")
     access_token = fields.Char('Security Token', copy=False)
     access_token_consumed = fields.Boolean('Consumed Access Token')
     access_token_end_date = fields.Date('Access Token Validity Date', copy=False)
-    applicant_id = fields.Many2one('hr.applicant')
+    applicant_id = fields.Many2one('hr.applicant', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     contract_reviews_count = fields.Integer(compute="_compute_contract_reviews_count", string="Proposed Contracts Count")
     contract_type = fields.Selection([
         ('PFI', 'PFI'),
         ('CDI', 'CDI'),
         ('CDD', 'CDD')], string="Contract Type", default="PFI")
     default_contract_id = fields.Many2one('hr.contract', string="Contract Template",
+        domain="[('company_id', '=', company_id)]",
         help="Default contract used when making an offer to an applicant.")
     sign_template_id = fields.Many2one('sign.template', string="New Contract Document Template",
         help="Default document that the applicant will have to sign to accept a contract offer.")

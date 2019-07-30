@@ -74,7 +74,7 @@
                     </div>
                     <field name="active" invisible="1"/>
                     <field name="description" placeholder="Description for customer portal"/>
-                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="company_id" groups="base.group_multi_company" required="1"/>
                     <h2>Productivity</h2>
                     <div class="row mt16 o_settings_container" id="productivity">
                         <div class="col-lg-6 o_setting_box">

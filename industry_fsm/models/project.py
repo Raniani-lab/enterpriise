@@ -21,8 +21,8 @@ class Project(models.Model):
         return result
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
-    product_template_ids = fields.Many2many('product.template', string="Allowed Products", help="Products allowed to be added on this Task's Material.")
-    timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain=[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet')], help='Select a Service product with which you would like to bill your time spent on tasks.')
+    product_template_ids = fields.Many2many('product.template', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", string="Allowed Products", help="Products allowed to be added on this Task's Material.")
+    timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain="[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", help='Select a Service product with which you would like to bill your time spent on tasks.')
 
     _sql_constraints = [
         ('timesheet_product_required_if_fsm', "CHECK((is_fsm = 't' AND timesheet_product_id IS NOT NULL) OR (is_fsm = 'f'))", 'The timesheet product is required when the task can be billed.'),

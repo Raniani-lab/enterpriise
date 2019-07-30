@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 class HelpdeskTeam(models.Model):
     _inherit = 'helpdesk.team'
 
-    project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain=[('allow_timesheets', '=', True)],
+    project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]",
         help="Project to which the tickets (and the timesheets) will be linked by default.")
 
     @api.model
@@ -57,8 +57,8 @@ class HelpdeskTicket(models.Model):
             result['project_id'] = self.env['helpdesk.team'].browse(result['team_id']).project_id.id
         return result
 
-    project_id = fields.Many2one("project.project", string="Project", domain=[('allow_timesheets', '=', True)])
-    task_id = fields.Many2one("project.task", string="Task", domain="[('project_id', '=', project_id)]", tracking=True, help="The task must have the same customer as this ticket.")
+    project_id = fields.Many2one("project.project", string="Project", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]")
+    task_id = fields.Many2one("project.task", string="Task", domain="[('project_id', '=', project_id), ('company_id', '=', company_id)]", tracking=True, help="The task must have the same customer as this ticket.")
     timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
     is_closed = fields.Boolean(related="task_id.stage_id.is_closed", string="Is Closed", readonly=True)
     is_task_active = fields.Boolean(related="task_id.active", string='Is Task Active', readonly=True)

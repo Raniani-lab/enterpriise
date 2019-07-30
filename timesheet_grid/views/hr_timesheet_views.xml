@@ -43,6 +43,7 @@
                     <sheet>
                         <group>
                             <group>
+                                <field name="company_id" invisible="1"/>
                                 <field name="project_id" required="1" class="o_timesheet_tour_project_name" context="{'form_view_ref': 'project.project_project_view_form_simplified',}"/>
                                 <field name="task_id" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name"/>
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>

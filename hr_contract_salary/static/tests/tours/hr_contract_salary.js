@@ -132,11 +132,11 @@ Tour.register('hr_contract_salary_tour', {
             content: "HR Responsible",
             trigger: '.o_field_widget.o_field_many2one[name=hr_responsible_id]',
             run: function (actions) {
-                actions.text("Marc Demo", this.$anchor.find("input"));
+                actions.text("Laurie Poiret", this.$anchor.find("input"));
             },
         },
         {
-            trigger: ".ui-autocomplete > li > a:contains('Marc Demo')",
+            trigger: ".ui-autocomplete > li > a:contains('Laurie Poiret')",
             auto: true,
         },
         {

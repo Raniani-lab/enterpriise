@@ -25,6 +25,7 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         self.env['account.chart.template'].browse(1).with_context(allowed_company_ids=self.company_b.ids).try_loading()
 
         # Create customer invoice for company A. (No need to call onchange as all the needed values are specified)
+        self.res_users_company_a.company_ids = [(4, self.company_b.id)]
         customer_invoice = self.env['account.move'].with_user(self.res_users_company_a).create({
             'type': 'out_invoice',
             'partner_id': self.company_b.partner_id.id,

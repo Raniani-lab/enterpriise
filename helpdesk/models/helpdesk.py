@@ -67,7 +67,7 @@ class HelpdeskTeam(models.Model):
     upcoming_sla_fail_tickets = fields.Integer(string='Upcoming SLA Fail Tickets', compute='_compute_upcoming_sla_fail_tickets')
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
-        default=lambda self: self.env.company.resource_calendar_id)
+        default=lambda self: self.env.company.resource_calendar_id, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     @api.depends('name', 'portal_show_rating')
     def _compute_portal_rating_url(self):

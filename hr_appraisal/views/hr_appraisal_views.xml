@@ -36,6 +36,7 @@
                         <field name="collaborators_ids" string="Subordinates" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <field name="colleagues_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <field name="date_close" attrs="{'readonly':[('state','in', ('pending','done'))]}"/>
+                        <field name="company_id" groups="base.group_multi_company" required="1"/>
                     </group>
                     <group>
                         <field name="employee_appraisal" string="Mail To Employee"/>

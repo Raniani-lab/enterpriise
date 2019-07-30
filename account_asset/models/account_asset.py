@@ -49,8 +49,8 @@ class AccountAsset(models.Model):
         help="It is the amount you plan to have that you cannot depreciate.")
     original_move_line_ids = fields.One2many('account.move.line', 'asset_id', string='Journal Items', readonly=True, states={'draft': [('readonly', False)]}, copy=False)
     asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], index=True, readonly=False, states={'draft': [('readonly', False)]})
-    account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account')
-    analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tag')
+    account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tag', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     first_depreciation_date = fields.Date(
         string='First Depreciation Date',
         readonly=True, states={'draft': [('readonly', False)]}, required=True,
@@ -58,14 +58,14 @@ class AccountAsset(models.Model):
     )
     disposal_date = fields.Date()
 
-    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_value', help="Account used to record the purchase of the asset at its original price.", store=True, readonly=False)
-    account_depreciation_id = fields.Many2one('account.account', string='Depreciation Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain=[('internal_type', '=', 'other'), ('deprecated', '=', False)], help="Account used in the depreciation entries, to decrease the asset value.")
-    account_depreciation_expense_id = fields.Many2one('account.account', string='Expense Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain=[('internal_type', '=', 'other'), ('deprecated', '=', False)], help="Account used in the periodical entries, to record a part of the asset as expense.")
+    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_value', help="Account used to record the purchase of the asset at its original price.", store=True, readonly=False, domain="[('company_id', '=', company_id)]")
+    account_depreciation_id = fields.Many2one('account.account', string='Depreciation Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('internal_type', '=', 'other'), ('deprecated', '=', False), ('company_id', '=', company_id)]", help="Account used in the depreciation entries, to decrease the asset value.")
+    account_depreciation_expense_id = fields.Many2one('account.account', string='Expense Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('internal_type', '=', 'other'), ('deprecated', '=', False), ('company_id', '=', company_id)]", help="Account used in the periodical entries, to record a part of the asset as expense.")
 
-    journal_id = fields.Many2one('account.journal', string='Journal', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain=[('type', '=', 'general')])
+    journal_id = fields.Many2one('account.journal', string='Journal', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('type', '=', 'general'), ('company_id', '=', company_id)]")
 
     # model-related fields
-    model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]})
+    model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
     user_type_id = fields.Many2one('account.account.type', related="account_asset_id.user_type_id", string="Type of the account")
     display_model_choice = fields.Boolean(compute="_compute_value")
     display_account_asset_id = fields.Boolean(compute="_compute_value")

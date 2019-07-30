@@ -14,7 +14,7 @@ class AccountBudgetPost(models.Model):
 
     name = fields.Char('Name', required=True)
     account_ids = fields.Many2many('account.account', 'account_budget_rel', 'budget_id', 'account_id', 'Accounts',
-        domain=[('deprecated', '=', False)])
+        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]")
     company_id = fields.Many2one('res.company', 'Company', required=True,
         default=lambda self: self.env.company)
 

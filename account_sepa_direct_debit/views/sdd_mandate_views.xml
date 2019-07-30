@@ -26,7 +26,6 @@
                             </button>
                         </div>
 
-                        <field name="company_id" invisible="1"/>
                         <field name="original_doc_filename" invisible="1"/>
 
                         <h1>
@@ -45,6 +44,7 @@
                                 <field name="start_date"/>
                                 <field name="end_date"/>
                                 <field name="original_doc" filename="original_doc_filename"/>
+                                <field name="company_id" groups="base.group_multi_company" required="1"/>
                             </group>
                         </group>
                     </sheet>

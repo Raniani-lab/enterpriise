@@ -32,6 +32,7 @@ class HrContract(models.Model):
 
     car_id = fields.Many2one('fleet.vehicle', string='Company Car',
         tracking=True,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="Employee's company car.",
         groups='fleet.fleet_group_manager')
     car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='ATN Company Car', store=True, compute_sudo=True)

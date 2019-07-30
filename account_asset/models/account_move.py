@@ -10,7 +10,7 @@ from odoo.tools.misc import formatLang
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    asset_id = fields.Many2one('account.asset', string='Asset', index=True, ondelete='cascade', copy=False)
+    asset_id = fields.Many2one('account.asset', string='Asset', index=True, ondelete='cascade', copy=False, domain="[('company_id', '=', company_id)]")
     asset_asset_type = fields.Selection(related='asset_id.asset_type')
     asset_remaining_value = fields.Monetary(string='Remaining Value', copy=False)
     asset_depreciated_value = fields.Monetary(string='Cumulative Depreciation', copy=False)

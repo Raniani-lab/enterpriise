@@ -7,7 +7,7 @@ from odoo import api, fields, models, _
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
-    product_id = fields.Many2one('product.product', string='Product', help="Product concerned by the ticket")
+    product_id = fields.Many2one('product.product', string='Product', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", help="Product concerned by the ticket")
     tracking = fields.Selection(related='product_id.tracking')
     lot_id = fields.Many2one('stock.production.lot', string='Lot/Serial Number', help="Lot/Serial number concerned by the ticket", domain="[('product_id', '=', product_id)]")
 

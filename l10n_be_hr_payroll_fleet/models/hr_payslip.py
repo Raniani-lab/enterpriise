@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    vehicle_id = fields.Many2one('fleet.vehicle', string='Company Car', help="Employee's company car.")
+    vehicle_id = fields.Many2one('fleet.vehicle', string='Company Car', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", help="Employee's company car.")
 
     @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
     def _onchange_employee(self):

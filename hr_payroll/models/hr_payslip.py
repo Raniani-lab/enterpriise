@@ -27,7 +27,7 @@ class HrPayslip(models.Model):
     number = fields.Char(string='Reference', readonly=True, copy=False,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     employee_id = fields.Many2one('hr.employee', string='Employee', required=True, readonly=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     date_from = fields.Date(string='From', readonly=True, required=True,
         default=lambda self: fields.Date.to_string(date.today().replace(day=1)), states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     date_to = fields.Date(string='To', readonly=True, required=True,
@@ -58,12 +58,13 @@ class HrPayslip(models.Model):
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     note = fields.Text(string='Internal Note', readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     contract_id = fields.Many2one('hr.contract', string='Contract', readonly=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
     credit_note = fields.Boolean(string='Credit Note', readonly=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
         help="Indicates this payslip has a refund of another")
-    payslip_run_id = fields.Many2one('hr.payslip.run', string='Batche Name', readonly=True,
-        copy=False, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, ondelete='cascade')
+    payslip_run_id = fields.Many2one('hr.payslip.run', string='Batch Name', readonly=True,
+        copy=False, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, ondelete='cascade',
+        domain="[('company_id', '=', company_id)]")
     compute_date = fields.Date('Computed On')
     basic_wage = fields.Monetary(compute='_compute_basic_net')
     net_wage = fields.Monetary(compute='_compute_basic_net')

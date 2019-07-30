@@ -81,6 +81,7 @@
                             <field name="date"/>
                             <field name="unit_amount" string="Time Spent" widget="timesheet_uom"/>
                             <field name="name" widget="text"/>
+                            <field name="company_id" invisible="1"/>
                         </group>
                     </group>
                 </sheet>

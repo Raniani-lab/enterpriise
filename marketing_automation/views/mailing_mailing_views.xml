@@ -60,8 +60,8 @@
         </field>
     </record>
 
-    <record id="mass_mailing.action_view_mass_mailings" model="ir.actions.act_window">
-        <field name="domain">[('use_in_marketing_automation', '=', False)]</field>
+    <record id="mass_mailing.mailing_mailing_action_mail" model="ir.actions.act_window">
+        <field name="domain">['&amp;', ('mailing_type', '=', 'mail'), ('use_in_marketing_automation', '=', False)]</field>
     </record>
 
     <record id="mail_mass_mailing_action_marketing_automation" model="ir.actions.act_window">

@@ -34,8 +34,8 @@ class MassMailing(models.Model):
         res.update(super(MassMailing, self - done).convert_links())
         return res
 
-    def _get_convert_links(self):
-        res = super(MassMailing, self)._get_convert_links()
+    def _get_link_tracker_values(self):
+        res = super(MassMailing, self)._get_link_tracker_values()
         if self.env.context.get('default_marketing_activity_id'):
             activity = self.env['marketing.activity'].browse(self.env.context['default_marketing_activity_id'])
             res['campaign_id'] = activity.campaign_id.utm_campaign_id.id

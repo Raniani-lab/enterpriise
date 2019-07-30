@@ -177,7 +177,7 @@
             <div class="container text-center">
                 <h3>Missing Password</h3>
                 <p>
-                    The password's PDF is required to generate the final document.
+                    The PDF's password is required to generate the final document.
                 </p>
                 <form string="PDF is encrypted" role="form" method="post" onsubmit="this.action = this.action + location.hash">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>

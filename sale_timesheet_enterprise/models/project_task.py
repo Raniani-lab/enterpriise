@@ -3,6 +3,30 @@ from datetime import datetime
 from math import ceil
 
 
+class Project(models.Model):
+    _inherit = 'project.project'
+
+    allow_timesheet_timer = fields.Boolean('Timesheet Timer', default=False, help="Use a timer to record timesheets on tasks")
+
+    _sql_constraints = [
+        ('timer_only_when_timesheet', "CHECK((allow_timesheets = 'f' AND allow_timesheet_timer = 'f') OR (allow_timesheets = 't'))", 'The timesheet timer can only be activated on project allowing timesheet.'),
+    ]
+
+    @api.onchange('allow_timesheets')
+    def _onchange_allow_timesheets(self):
+        if not self.allow_timesheets:
+            self.allow_timesheet_timer = False
+
+    def write(self, values):
+        result = super(Project, self).write(values)
+        if 'allow_timesheet_timer' in values and not values.get('allow_timesheet_timer'):
+            self.env['project.task'].with_context(ative_test=False).search([('project_id', 'in', self.ids)]).write({
+                'timesheet_timer_start': False,
+                'timesheet_timer_pause': False,
+            })
+        return result
+
+
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
@@ -10,10 +34,10 @@ class ProjectTask(models.Model):
     timesheet_timer_pause = fields.Datetime("Timesheet Timer Last Pause")
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
 
-    @api.depends('allow_timesheets', 'company_id', 'analytic_account_active')
+    @api.depends('allow_timesheets', 'project_id.allow_timesheet_timer', 'analytic_account_active')
     def _compute_display_timesheet_timer(self):
         for task in self:
-            task.display_timesheet_timer = task.allow_timesheets and task.company_id.use_timesheet_timer and task.analytic_account_active
+            task.display_timesheet_timer = task.allow_timesheets and task.project_id.allow_timesheet_timer and task.analytic_account_active
 
     # ---------------------------------------------------------
     # Timer Methods

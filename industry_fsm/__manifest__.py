@@ -32,5 +32,4 @@ Adds the following options:
     ],
     'application': True,
     'demo': ['data/fsm_demo.xml'],
-    'post_init_hook': 'post_install_hook_force_timer',
 }

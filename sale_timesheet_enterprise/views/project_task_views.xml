@@ -1,4 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="project_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.view.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="hr_timesheet.project_invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='allow_timesheets']" position="after">
+                <field name="allow_timesheet_timer" attrs="{'invisible': [('allow_timesheets', '=', False)]}" />
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_task_view_form" model="ir.ui.view">
         <field name="name">project.task.view.form.inherit.sale.timesheet.enterprise</field>
         <field name="model">project.task</field>
@@ -23,4 +36,23 @@
         </field>
     </record>
 
+    <!-- Improve the task kanban in Project -->
+    <record id="project_task_view_kanban" model="ir.ui.view">
+        <field name="name">project.task.kanban.timer</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">
+                <field name="display_timesheet_timer" invisible="1"/>
+                <field name="timesheet_timer_start" invisible="1"/>
+                <field name="timesheet_timer_pause" invisible="1"/>
+                <t t-if="record.display_timesheet_timer &amp;&amp; record.timesheet_timer_pause.raw_value">
+                    <i class="fa fa-pause text-warning"></i>
+                </t>
+                <t t-elif="record.display_timesheet_timer &amp;&amp; record.timesheet_timer_start.raw_value">
+                    <i class="fa fa-play text-success"></i>
+                </t>
+            </xpath>
+        </field>
+    </record>
 </odoo>

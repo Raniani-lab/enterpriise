@@ -56,7 +56,7 @@ class Task(models.Model):
 
     def action_fsm_worksheet(self):
         timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
-        if timesheet_access and self.company_id.use_timesheet_timer and (self.allow_timesheets and self.allow_planning) and not (self.timesheet_ids or self.timesheet_timer_start):
+        if timesheet_access and self.allow_timesheets and self.allow_planning and not (self.timesheet_ids or self.timesheet_timer_start):
             raise UserError(_("Please, start the timer before recording the worksheet."))
         action = self.worksheet_template_id.action_id.read()[0]
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])

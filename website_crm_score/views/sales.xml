@@ -25,11 +25,8 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_tree_view_leads" />
             <field name="arch" type="xml">
-                <field name="phone" position="after">
-                    <field name="score" />
-                </field>
-                <field name="team_id" position="after">
-                    <field name="user_id" />
+                <field name="priority" position="after">
+                    <field name="score" optional="hide"/>
                 </field>
             </field>
         </record>
@@ -69,8 +66,8 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_tree_view_oppor" />
             <field name="arch" type="xml">
-                <field name="team_id" position="after">
-                    <field name="score" />
+                <field name="company_id" position="after">
+                    <field name="score" optional="hide"/>
                 </field>
             </field>
         </record>

@@ -23,12 +23,12 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,open" attrs="{'invisible': [('state', '=', 'model')]}"/>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '=', 'model')]}">
                         <button class="oe_stat_button" name="open_entries"  type="object" icon="fa-bars">
                             <field string="Posted Entries" name="depreciation_entries_count" widget="statinfo" />
                         </button>
                     </div>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box oe_edit_only text-left" name="model_box" attrs="{'invisible': [('display_model_choice', '!=', True)]}">
                         <div class="o_radio_hide_bullet">
                             <field name="model_id" string="Asset Model" help="Category of asset" nolabel="1" widget="radio" options="{'horizontal': true}" domain="[('state', '=', 'model'), ('account_asset_id.user_type_id', '=?', user_type_id), ('asset_type', '=', 'purchase')]"/>

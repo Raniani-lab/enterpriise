@@ -18,7 +18,6 @@
         <field name="arch" type="xml">
             <form string="Walls">
                 <sheet>
-                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
                         <field name="is_published" widget="website_redirect_button"/>
                         <button class="oe_stat_button" name="open_tweets" type="object" icon="fa-twitter" attrs="{'invisible': [('total_tweets', '=', 0)]}">
@@ -38,6 +37,7 @@
                             </div>
                         </button>
                     </div>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="image" class="oe_avatar" widget="image" />
                     <div class="oe_title">
                         <div class="oe_edit_only">

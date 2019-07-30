@@ -430,7 +430,6 @@
         <field name="arch" type="xml">
             <form string="Subscription">
                 <sheet string="Subscription">
-                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button"
                             icon="fa-book"
@@ -446,6 +445,7 @@
                             <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
                         </button>
                     </div>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="e.g. Monthly Subscription" class="oe_edit_only"/>
@@ -607,7 +607,6 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button"
                             icon="fa-book"
@@ -618,6 +617,7 @@
                             <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
                         </button>
                     </div>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only" string="Alert Name"/>
                         <h1><field name="name" placeholder="e.g. Update order quantity"/></h1>

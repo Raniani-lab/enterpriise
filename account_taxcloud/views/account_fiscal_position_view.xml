@@ -6,7 +6,7 @@
         <field name="model">account.fiscal.position</field>
         <field name="inherit_id" ref="account.view_account_position_form"/>
         <field name="arch" type="xml">
-            <div name="button_box" position="after">
+            <xpath expr="//widget[@name='web_ribbon']" position="after">
                 <field name="is_taxcloud_configured" invisible="1"/>
                 <div class="alert alert-info" role="alert"
                     attrs="{'invisible': ['|', ('is_taxcloud_configured', '=', True), ('is_taxcloud', '=', False)]}">
@@ -17,7 +17,7 @@
                     attrs="{'invisible': ['|', ('auto_apply', '=', True), ('is_taxcloud', '=', False)]}">
                     Enable <b>Detect Automatically</b> to automatically use TaxCloud when selling to American customers.
                 </div>
-            </div>
+            </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <field name="is_taxcloud"/>
             </xpath>

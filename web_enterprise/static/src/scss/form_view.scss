@@ -20,6 +20,7 @@
             border: 1px solid gray('400');
             box-shadow: 0 5px 20px -15px black;
             margin: $o-sheet-vpadding*0.2 auto;
+            overflow: hidden;
             @include media-breakpoint-up(md) {
                 margin: $o-sheet-vpadding*0.5 auto;
             }

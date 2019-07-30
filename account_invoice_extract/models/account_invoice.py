@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 PARTNER_REMOTE_URL = 'https://partner-autocomplete.odoo.com/iap/partner_autocomplete'
 CLIENT_OCR_VERSION = 120
 
-#List of result id that can be sent by iap-extract
+# list of result id that can be sent by iap-extract
 SUCCESS = 0
 NOT_READY = 1
 ERROR_INTERNAL = 2
@@ -35,14 +35,13 @@ ERROR_MESSAGES = {
 
 
 class AccountInvoiceExtractionWords(models.Model):
-
     _name = "account.invoice_extract.words"
     _description = "Extracted words from invoice scan"
 
     invoice_id = fields.Many2one("account.move", help="Invoice id")
     field = fields.Char()
     selected_status = fields.Integer("Invoice extract selected status.",
-        help="0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for 'ocr selected with user selection (user may have selected the same box)")
+                                     help="0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for 'ocr selected with user selection (user may have selected the same box)")
     user_selected = fields.Boolean()
     word_text = fields.Char()
     word_page = fields.Integer()
@@ -87,16 +86,16 @@ class AccountMove(models.Model):
                 record.extract_can_show_send_button = False
 
     extract_state = fields.Selection([('no_extract_requested', 'No extract requested'),
-                            ('not_enough_credit', 'Not enough credit'),
-                            ('error_status', 'An error occured'),
-                            ('waiting_extraction', 'Waiting extraction'),
-                            ('extract_not_ready', 'waiting extraction, but it is not ready'),
-                            ('waiting_validation', 'Waiting validation'),
-                            ('done', 'Completed flow')],
-                            'Extract state', default='no_extract_requested', required=True, copy=False)
+                                      ('not_enough_credit', 'Not enough credit'),
+                                      ('error_status', 'An error occurred'),
+                                      ('waiting_extraction', 'Waiting extraction'),
+                                      ('extract_not_ready', 'waiting extraction, but it is not ready'),
+                                      ('waiting_validation', 'Waiting validation'),
+                                      ('done', 'Completed flow')],
+                                     'Extract state', default='no_extract_requested', required=True, copy=False)
     extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
-    extract_remoteid = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False)
+    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False)
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
@@ -138,7 +137,7 @@ class AccountMove(models.Model):
                             record.extract_status_code = result['status_code']
                             if result['status_code'] == SUCCESS:
                                 record.extract_state = 'waiting_extraction'
-                                record.extract_remoteid = result['document_id']
+                                record.extract_remote_id = result['document_id']
                             elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                                 record.extract_state = 'not_enough_credit'
                             else:
@@ -156,7 +155,7 @@ class AccountMove(models.Model):
         if attachments and attachments.exists() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/parse'
+                'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/parse'
             user_infos = {
                 'user_company_VAT': self.company_id.vat,
                 'user_company_name': self.company_id.name,
@@ -177,7 +176,7 @@ class AccountMove(models.Model):
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
                     self.extract_state = 'waiting_extraction'
-                    self.extract_remoteid = result['document_id']
+                    self.extract_remote_id = result['document_id']
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.extract_state = 'not_enough_credit'
                 else:
@@ -201,8 +200,8 @@ class AccountMove(models.Model):
         return_box = {}
         if selected.exists():
             return_box["box"] = [selected.word_text, selected.word_page, selected.word_box_midX,
-                selected.word_box_midY, selected.word_box_width, selected.word_box_height, selected.word_box_angle]
-        #now we have the user or ocr selection, check if there was manual changes
+                                 selected.word_box_midY, selected.word_box_width, selected.word_box_height, selected.word_box_angle]
+        # now we have the user or ocr selection, check if there was manual changes
 
         text_to_send = {}
         if field == "total":
@@ -275,7 +274,7 @@ class AccountMove(models.Model):
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
                 params = {
-                    'document_id': record.extract_remoteid,
+                    'document_id': record.extract_remote_id,
                     'version': CLIENT_OCR_VERSION,
                     'values': values
                 }
@@ -284,7 +283,7 @@ class AccountMove(models.Model):
                     record.extract_state = 'done'
                 except AccessError:
                     pass
-        #we don't need word data anymore, we can delete them
+        # we don't need word data anymore, we can delete them
         self.mapped('extract_word_ids').unlink()
         return res
 
@@ -327,8 +326,6 @@ class AccountMove(models.Model):
             if word.field in ["VAT_Number", "supplier", "currency"]:
                 return 0
             return ""
-        if new_word.field in ["date", "due_date", "invoice_id", "currency"]:
-            pass
         if new_word.field == "VAT_Number":
             partner_vat = self.env["res.partner"].search([("vat", "=", new_word.word_text)], limit=1)
             if partner_vat.exists():
@@ -364,12 +361,6 @@ class AccountMove(models.Model):
             if box.selected_status != 0:
                 box.selected_status = 2
         word.user_selected = True
-        if word.field == "date":
-            pass
-        if word.field == "due_date":
-            pass
-        if word.field == "invoice_id":
-            pass
         if word.field == "currency":
             text = word.word_text
             currency = None
@@ -409,7 +400,7 @@ class AccountMove(models.Model):
 
         if response and response.get('name'):
             country_id = self.env['res.country'].search([('code', '=', response.pop('country_code', ''))])
-            values = {field: response.get(field, None) for field in self._get_partner_fields()}
+            values = {field: response.get(field, None) for field in ['name', 'vat', 'street', 'city', 'zip']}
             values.update({
                 'is_company': True,
                 'country_id': country_id and country_id.id,
@@ -417,9 +408,6 @@ class AccountMove(models.Model):
             new_partner = self.env["res.partner"].with_context(clean_context(self.env.context)).create(values)
             return new_partner
         return False
-
-    def _get_partner_fields(self):
-        return ['name', 'vat', 'street', 'city', 'zip']
 
     def _set_vat(self, text):
         partner_vat = self.env["res.partner"].search([("vat", "=", text)], limit=1)
@@ -453,7 +441,7 @@ class AccountMove(models.Model):
         invoice_lines_to_create = []
         taxes_found = {}
         if self.env.company.extract_single_line_per_tax:
-            aggregated_lines = {}
+            merged_lines = {}
             for il in invoice_lines:
                 description = il['description']['selected_value']['content'] if 'description' in il else None
                 total = il['total']['selected_value']['content'] if 'total' in il else 0.0
@@ -471,18 +459,18 @@ class AccountMove(models.Model):
                         else:
                             keys.append(taxes_found[(taxes, taxes_type)])
 
-                if tuple(keys) not in aggregated_lines:
-                    aggregated_lines[tuple(keys)] = {'subtotal': subtotal, 'description': [description] if description is not None else []}
+                if tuple(keys) not in merged_lines:
+                    merged_lines[tuple(keys)] = {'subtotal': subtotal, 'description': [description] if description is not None else []}
                 else:
-                    aggregated_lines[tuple(keys)]['subtotal'] += subtotal
+                    merged_lines[tuple(keys)]['subtotal'] += subtotal
                     if description is not None:
-                        aggregated_lines[tuple(keys)]['description'].append(description)
+                        merged_lines[tuple(keys)]['description'].append(description)
 
             # if there is only one line after aggregating the lines, use the total found by the ocr as it is less error-prone
-            if len(aggregated_lines) == 1:
-                aggregated_lines[list(aggregated_lines.keys())[0]]['subtotal'] = subtotal_ocr
+            if len(merged_lines) == 1:
+                merged_lines[list(merged_lines.keys())[0]]['subtotal'] = subtotal_ocr
 
-            for taxes_ids, il in aggregated_lines.items():
+            for taxes_ids, il in merged_lines.items():
                 vals = {
                     'name': "\n".join(il['description']) if len(il['description']) > 0 else "/",
                     'price_unit': il['subtotal'],
@@ -527,20 +515,20 @@ class AccountMove(models.Model):
     def _set_currency(self, currency_ocr):
         self.ensure_one()
         currency = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr),
-            ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+                                                    ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
         if currency:
             self.currency_id = currency
 
     def check_status(self):
         """contact iap to get the actual status of the ocr request"""
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/get_result'
+            'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/get_result'
         for record in self:
             if record.extract_state not in ["waiting_extraction", "extract_not_ready"]:
                 continue
             params = {
                 'version': CLIENT_OCR_VERSION,
-                'document_id': record.extract_remoteid
+                'document_id': record.extract_remote_id
             }
             result = jsonrpc(endpoint, params=params)
             record.extract_status_code = result['status_code']
@@ -556,26 +544,10 @@ class AccountMove(models.Model):
                 subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
                 invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
                 currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
-                taxes_ocr = [value['content'] for value in ocr_results['global_taxes']['selected_values']] if 'global_taxes' in ocr_results else []
-                taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in ocr_results['global_taxes']['selected_values']] if 'global_taxes' in ocr_results else []
                 vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
                 invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
-                if invoice_lines:
-                    vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
-                elif subtotal_ocr:
-                    vals_invoice_line = {
-                        'name': "/",
-                        'price_unit': subtotal_ocr,
-                        'quantity': 1.0,
-                        'tax_ids': []
-                    }
-                    for taxes, taxes_type in zip(taxes_ocr, taxes_type_ocr):
-                        taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                        if taxes_record and subtotal_ocr:
-                            vals_invoice_line['tax_ids'].append(taxes_record)
-                            vals_invoice_line['price_unit'] = subtotal_ocr
-                    vals_invoice_lines = [vals_invoice_line]
+                vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
 
                 with Form(record) as move_form:
                     if not move_form.partner_id:
@@ -597,8 +569,8 @@ class AccountMove(models.Model):
 
                     if self.user_has_groups('base.group_multi_currency'):
                         move_form.currency_id = self.env["res.currency"].search([
-                                '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
-                                ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+                            '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
+                            ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
 
                     for line_val in vals_invoice_lines:
                         with move_form.invoice_line_ids.new() as line:

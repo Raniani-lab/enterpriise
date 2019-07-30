@@ -27,11 +27,12 @@ odoo.define('account_consolidation.GridRenderer', function (require) {
          * in the footer total in case the total is != 0.
          * @private
          * @param {String} node node cell
-         * @param {String} value the value to put in the cell
+         * @param {number} value the value to put in the cell
          * @return {snabbdom[]}
          */
         _renderGridColumnTotalCell: function (node, value) {
             var self = this;
+            value = typeof value === 'number' ? this._format(value) : value;
             if (node === 'td') {
                 if (value.length === 0) {
                     return [h(node, self._format(0.0))];

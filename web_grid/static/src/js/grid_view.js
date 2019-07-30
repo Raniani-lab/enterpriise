@@ -78,6 +78,8 @@ var GridView = AbstractView.extend({
         this.rendererParams.editableCells = this.controllerParams.activeActions.edit && arch.attrs.adjustment;
         this.rendererParams.cellWidget = cellWidget;
         this.rendererParams.cellWidgetOptions = cellWidgetOptions;
+        this.rendererParams.hideLineTotal = !!JSON.parse(arch.attrs.hide_line_total || '0');
+        this.rendererParams.hideColumnTotal = !!JSON.parse(arch.attrs.hide_column_total || '0');
 
         // controller
         this.controllerParams.formViewID = false;

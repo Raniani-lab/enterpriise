@@ -54,6 +54,13 @@ view architecture is:
         the difference between the old value of the cell and the adjusted one,
         may be possitive or negative
 
+    * optional ``hide_line_total`` and ``hide_column_total`` attributes
+
+      ``hide_line_total``
+        set to true to hide total line (default false)
+      ``hide_column_total``
+        set to true to hide total column (default false)
+
 ``<button>`` (0+)
     Regular Odoo action buttons, displayed in the view header
     

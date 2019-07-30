@@ -23,7 +23,7 @@ QUnit.module('Views', {
                     {id: 2, project_id: 31, task_id: 1, date: "2017-01-25", unit_amount: 2},
                     {id: 3, project_id: 31, task_id: 1, date: "2017-01-25", unit_amount: 5.5},
                     {id: 4, project_id: 31, task_id: 1, date: "2017-01-30", unit_amount: 10},
-                    {id: 5, project_id: 142, task_id: 12, date: "2017-01-31", unit_amount: 3.5},
+                    {id: 5, project_id: 142, task_id: 12, date: "2017-01-31", unit_amount: -3.5},
                 ]
             },
             project: {
@@ -78,7 +78,7 @@ QUnit.module('Views', {
     QUnit.module('GridView');
 
     QUnit.test('basic grid view', async function (assert) {
-        assert.expect(17);
+        assert.expect(20);
 
         var grid = await createView({
             View: GridView,
@@ -127,6 +127,12 @@ QUnit.module('Views', {
             "should have rendered a cell with task name");
         assert.notOk(grid.$('.o_grid_nocontent_container p:contains(Add projects and tasks)').length,
             "should not have rendered a no content helper");
+        assert.hasClass(grid.$('tbody tr:eq(0) td:eq(1) .o_grid_input'), 'text-danger',
+            "should have text-danger class on negative value cell");
+        assert.hasClass(grid.$('tbody tr:eq(0) td.o_grid_total'), 'text-danger',
+            "should have text-danger class on total column");
+        assert.hasClass(grid.$('tfoot tr:eq(0) td:eq(2)'), 'text-danger',
+            "should have text-danger class on footer total");
 
         assert.notOk(grid.$('td.o_grid_current').length, "should not have any cell marked current");
         await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
@@ -817,6 +823,35 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('basic grid view, hide column/row total', async function (assert) {
+        assert.expect(3);
+
+        this.data['analytic.line'].records.push({ id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4, employee_id: 101, });
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `<grid string="Timesheet" hide_line_total="true" hide_column_total="true">
+                    <field name="project_id" type="row"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>`,
+            currentDate: "2017-01-25",
+        });
+
+        await testUtils.nextTick();
+        assert.containsNone(grid, 'tfoot', "should have no footer");
+        assert.containsN(grid, 'thead th', 8,
+            "header should have 8 cells, 1 for description and 7 for week days, total cell should not be there");
+        assert.doesNotHaveClass(grid.$('tbody'), '.o_grid_total', "body grid total should not be there");
+
+        grid.destroy();
+    });
+
     QUnit.test('grid view with type="readonly" field', async function (assert) {
         assert.expect(4);
         var done = assert.async();
@@ -940,7 +975,7 @@ QUnit.module('Views', {
     QUnit.module('GridViewWidgets');
 
     QUnit.test('float_toggle widget', async function (assert) {
-        assert.expect(13);
+        assert.expect(15);
 
         var grid = await createView({
             View: GridView,
@@ -982,12 +1017,16 @@ QUnit.module('Views', {
         // second section
         assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle').length, 7,
             "first section should be for project Webocalypse Now");
-        assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle:contains(0.44)').length, 1,
-            "one button contains the value 1.25 (timesheet line #5)");
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle:contains(-0.44)').length, 1,
+            "one button contains the value -0.44 (timesheet line #5)");
         assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle:contains(0.00)').length, 6,
             "Other button are filled with 0.00");
-        assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.1"] button').text(), '0.44',
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.1"] button').text(), '-0.44',
             "the second cell of the second section is the timesheet #5");
+        assert.hasClass(grid.$('.o_grid_section:eq(1) tr:eq(0) td:eq(1)'), 'text-danger',
+            "the second cell of the second section has text-danger class as it has negative value");
+        assert.hasClass(grid.$('.o_grid_section:eq(1) tr:eq(1) td:eq(1) button.o_grid_float_toggle'), 'text-danger',
+            "the second cell with float_togggle widget of the second section has text-danger class as it has negative value");
 
         // clicking on empty cell button
         var $button = grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button');

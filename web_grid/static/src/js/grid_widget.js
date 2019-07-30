@@ -57,18 +57,21 @@ var BaseGridWidget = Class.extend(mixins.EventDispatcherMixin, {
         var self = this;
 
         return function(value) {
+            const extraClassNames = value < 0 ? '.text-danger' : '';
+            const formattedValue = self.format(value);
             if (isReadonly) {
-                return self._renderReadonly(self.format(value), path);
+                return self._renderReadonly(formattedValue, path, extraClassNames);
             } else {
-                return self._renderEdit(self.format(value), path);
+                return self._renderEdit(formattedValue, path, extraClassNames);
             }
-        }
+        };
     },
-    _renderEdit: function (formattedValue, path) {
-        return h('div.o_grid_input', {attrs: {contentEditable: "true"}}, formattedValue);
+    _renderEdit: function (formattedValue, path, extraClassNames) {
+        const data = { attrs: { contentEditable: "true" } };
+        return h('div.o_grid_input' + (extraClassNames || ''), data, formattedValue);
     },
-    _renderReadonly: function (formattedValue, path) {
-        return h('div.o_grid_show', formattedValue);
+    _renderReadonly: function (formattedValue, path, extraClassNames) {
+        return h('div.o_grid_show' + (extraClassNames || ''), formattedValue);
     },
 });
 
@@ -96,7 +99,7 @@ var FloatToggleWidget = BaseGridWidget.extend({
         }
         this.range = range;
     },
-    _renderEdit: function (formattedValue, path) {
+    _renderEdit: function (formattedValue, path, extraClassNames) {
         var self = this;
 
         var range = this.range;
@@ -126,8 +129,7 @@ var FloatToggleWidget = BaseGridWidget.extend({
         }
 
         // add 'disabled' class in readonly mode
-        var classes = '.o_grid_float_toggle.btn.btn-default.btn-block';
-
+        var classes = `.o_grid_float_toggle.btn.btn-default.btn-block${extraClassNames || ''}`;
         return h('button' + classes, {
             on: {
                 'click': onClick,
@@ -139,10 +141,10 @@ var FloatToggleWidget = BaseGridWidget.extend({
             }
         }, formattedValue);
     },
-    _renderReadonly: function (formattedValue, path) {
+    _renderReadonly: function (formattedValue, path, extraClassNames) {
         // add 'disabled' class in readonly mode
-        var classes = '.o_grid_float_toggle.btn.btn-default.btn-block.disabled';
-        return h('button' + classes, {
+        var cls = `.o_grid_float_toggle.btn.btn-default.btn-block.disabled${extraClassNames || ''}`;
+        return h('button' + cls, {
             attrs: {
                 'type': 'button',
                 'data-value': parseFloat(formattedValue),

@@ -42,6 +42,8 @@ return AbstractRenderer.extend({
         this.editableCells = params.editableCells;
         this.measureLabel = params.measureLabel;
         this.cellWidget = params.cellWidget;
+        this.hideLineTotal = params.hideLineTotal;
+        this.hideColumnTotal = params.hideColumnTotal;
         this.cellWidgetOptions = params.cellWidgetOptions || {};
 
         // Here, we create a grid widget, responsible for formatting, parsing and rendering
@@ -312,12 +314,21 @@ return AbstractRenderer.extend({
      * If the range is day this column is not rendered
      * @private
      * @param {String} node node cell
-     * @param {String} value the value to put in the cell
+     * @param {number} value the value to put in the cell
      * @return {snabbdom[]}
      */
-    _renderGridColumnTotalCell: function (node, value) {
+    _renderGridColumnTotalCell(node, value, isHidden) {
+        if (isHidden) {
+            return [];
+        }
         if (this.state.range === 'day') {
             return [];
+        }
+        if (typeof value === 'number') {
+            if (value < 0) {
+                node += '.text-danger';
+            }
+            value = this._format(value);
         }
         return [h(node, value)];
     },
@@ -377,7 +388,7 @@ return AbstractRenderer.extend({
                 ])
             ].concat(_.map(row, function (cell, cell_index) {
                 return self._renderCell(cell, path.concat([rowIndex, cell_index]).join('.'));
-            }), self._renderGridColumnTotalCell('td.o_grid_total', self._format(totals[rowIndex]))));
+            }), self._renderGridColumnTotalCell('td.o_grid_total', totals[rowIndex], self.hideLineTotal)));
         });
     },
     /**
@@ -412,9 +423,10 @@ return AbstractRenderer.extend({
                         _(columns).map(function (column, column_index) {
                             return h('td', {class: {
                                 o_grid_current: column.is_current,
+                                'text-danger': (totals && totals.columns[column_index] < 0),
                             }}, self._format(totals.columns[column_index]));
                         }),
-                        self._renderGridColumnTotalCell('td.o_grid_total', self._format(totals.super))
+                        self._renderGridColumnTotalCell('td.o_grid_total', totals.super, self.hideLineTotal)
                     ))
                 ].concat(rows)
             ));
@@ -444,35 +456,40 @@ return AbstractRenderer.extend({
             total_label= _t("Total");
         }
 
+        const thead = h('thead', [
+            h('tr', [
+                h('th.o_grid_title_header'),
+            ].concat(
+                _.map(columns, function (column) {
+                    return h('th', {class: {o_grid_current: column.is_current}},
+                        column.values[col_field][1]
+                    );
+                }),
+                self._renderGridColumnTotalCell('th.o_grid_total', total_label, self.hideLineTotal)
+            ))
+        ]);
+        let tfoot;
+        if (!this.hideColumnTotal) {
+            tfoot = h('tfoot', [
+                h('tr', [
+                    h('td', totals ? total_label : [])
+                ].concat(
+                    _.map(columns, function (column, column_index) {
+                        var cell_content = !totals ? []
+                            : self._format(totals[column_index]);
+                        return h('td', {class: {
+                            'o_grid_current': column.is_current,
+                            'text-muted': !(totals && totals[column_index]),
+                            'text-danger': (totals && totals[column_index] && totals[column_index] < 0),
+                        }}, cell_content);
+                    }),
+                    self._renderGridColumnTotalCell('td', !super_total ? [] : super_total, (this.hideColumnTotal || this.hideLineTotal))
+                ))
+            ]);
+        }
+
         return h('div.o_view_grid.table-responsive', [
-            h('table.table.table-sm.table-striped', [
-                h('thead', [
-                    h('tr', [
-                        h('th.o_grid_title_header'),
-                    ].concat(
-                        _.map(columns, function (column) {
-                            return h('th', {class: {o_grid_current: column.is_current}},
-                                column.values[col_field][1]
-                            );
-                        }),
-                        self._renderGridColumnTotalCell('th.o_grid_total', total_label)
-                    ))
-                ]),
-                h('tfoot', [
-                    h('tr', [
-                        h('td', totals ? total_label : [])
-                    ].concat(
-                        _.map(columns, function (column, column_index) {
-                            var cell_content = !totals ? []
-                                : self._format(totals[column_index]);
-                            return h(totals && totals[column_index] ? 'td' : 'td.text-muted', {class: {
-                                o_grid_current: column.is_current,
-                            }}, cell_content);
-                        }),
-                        self._renderGridColumnTotalCell('td', !super_total ? [] : self._format(super_total))
-                    ))
-                ]),
-            ])
+            h('table.table.table-sm.table-striped', tfoot ? [thead, tfoot] : [thead])
         ].concat(this._renderEmptyWarning(empty)));
     },
     /**
@@ -503,7 +520,7 @@ return AbstractRenderer.extend({
                         _.map(columns, function (column) {
                             return h('td', {class: {o_grid_current: column.is_current}}, []);
                         }),
-                        self._renderGridColumnTotalCell('td.o_grid_total', [])
+                        self._renderGridColumnTotalCell('td.o_grid_total', [], (self.hideLineTotal || self.hideGridTotal))
                     ));
                 }))
             )

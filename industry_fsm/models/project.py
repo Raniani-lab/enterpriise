@@ -124,11 +124,11 @@ class Task(models.Model):
 
     def action_view_invoices(self):
         invoices = self.mapped('sale_order_id.invoice_ids')
-        action = self.env.ref('account.action_invoice_tree1').read()[0]
+        action = self.env.ref('account.action_move_out_invoice_type').read()[0]
         action['domain'] = [('id', 'in', invoices.ids)]
         # prevent view with onboarding banner
-        list_view = self.env.ref('account.invoice_tree')
-        form_view = self.env.ref('account.invoice_form')
+        list_view = self.env.ref('account.view_move_tree')
+        form_view = self.env.ref('account.view_move_form')
         action['views'] = [[list_view.id, 'list'], [form_view.id, 'form']]
 
         return action

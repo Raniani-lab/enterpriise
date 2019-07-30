@@ -31,6 +31,8 @@
         }
         .o_burger_menu_avatar {
             height: 26px;
+            width: 26px;
+            object-fit: cover;
         }
         .o_burger_menu_username, .o_burger_menu_caret {
             vertical-align: middle;

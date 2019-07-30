@@ -108,7 +108,8 @@ class YodleeProviderAccount(models.Model):
             resp.raise_for_status()
         except (requests.HTTPError, ValueError):
             message = ('%s\n\n' + _('(Diagnostic: %r for URL %s)')) % (resp.text.strip(), resp.status_code, resp.url)
-            self.log_message(message)
+            if self and self.id:
+                self.log_message(message)
             raise UserError(message)
 
     @api.multi

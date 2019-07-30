@@ -48,6 +48,18 @@ class Sign(http.Controller):
                             break
                     item_type['auto_field'] = auto_field
 
+            if current_request_item.state != 'completed':
+                """ When signer attempts to sign the request again,
+                its localisation should be reset.
+                We prefer having no/approximative (from geoip) information
+                than having wrong old information (from geoip/browser)
+                on the signer localisation.
+                """
+                current_request_item.write({
+                    'latitude': request.session['geoip'].get('latitude') if 'geoip' in request.session else 0,
+                    'longitude': request.session['geoip'].get('longitude') if 'geoip' in request.session else 0,
+                })
+
         sr_values = http.request.env['sign.item.value'].sudo().search([('sign_request_id', '=', sign_request.id)])
         item_values = {}
         for value in sr_values:

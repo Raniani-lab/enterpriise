@@ -66,10 +66,9 @@ class Task(models.Model):
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     quotation_count = fields.Integer(compute='_compute_quotation_count')
-    material_line_ids = fields.One2many('product.task.map', 'task_id')
     product_template_ids = fields.Many2many(related='project_id.product_template_ids')
-    material_line_product_count = fields.Integer(compute='_compute_material_line_product_count')
-    material_line_total_price = fields.Float(compute='_compute_material_line_total_price')
+    material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
+    material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     fsm_state = fields.Selection([('draft', 'New'), ('validated', 'Validated'), ('sold', 'Sold')], default='draft', string='Status', readonly=True)
     partner_email = fields.Char(related='partner_id.email', string='Customer Email', readonly=False)
@@ -118,16 +117,11 @@ class Task(models.Model):
         for task in self:
             task.quotation_count = mapped_data.get(task.id, 0)
 
-    def _compute_material_line_product_count(self):
-        material_data = self.env['product.task.map'].read_group([('task_id', 'in', self.ids)], ['quantity', 'task_id'], ['task_id'])
-        mapped_quantities = dict([(m['task_id'][0], m['quantity']) for m in material_data])
+    def _compute_material_line_totals(self):
         for task in self:
-            task.material_line_product_count = mapped_quantities.get(task.id, 0)
-
-    def _compute_material_line_total_price(self):
-        for task in self:
-            total_price = sum(task.material_line_ids.mapped(lambda line: line.quantity * line.product_id.lst_price))
-            task.material_line_total_price = total_price
+            material_sale_lines = task.sale_order_id.order_line.filtered(lambda sol: sol.product_id != task.project_id.timesheet_product_id)
+            task.material_line_total_price = sum(material_sale_lines.mapped('price_subtotal'))
+            task.material_line_product_count = len(material_sale_lines.mapped('product_id'))
 
     # ---------------------------------------------------------
     # Actions
@@ -195,6 +189,8 @@ class Task(models.Model):
         return action
 
     def action_fsm_view_material(self):
+        self._fsm_ensure_sale_order()
+
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         domain = [('product_tmpl_id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
         return {
@@ -205,7 +201,7 @@ class Task(models.Model):
             'domain': domain,
             'context': {
                 'fsm_mode': True,
-                'default_task_id': self.id,
+                'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
                 'partner': self.partner_id.id if self.partner_id else False,
             }
@@ -241,11 +237,15 @@ class Task(models.Model):
     def action_fsm_create_invoice(self):
         if not self.is_fsm:
             raise UserError(_('This action is only allowed on FSM project.'))
-        # update sales order with material lines
-        if self.sale_line_id:
-            self._fsm_add_material_to_sale_order()
-        else:
-            self._fsm_create_sale_order()
+
+        # ensure the SO exists before invoicing, then confirm it
+        self._fsm_ensure_sale_order()
+        if self.sale_order_id.state in ['draft', 'sent']:
+            self.sale_order_id.action_confirm()
+
+        # as before, mark the task as 'sold' on SO confirmation
+        self.write({'fsm_state': 'sold'})
+
         # redirect create invoice wizard (of the Sales Order)
         action = self.env.ref('sale.action_view_sale_advance_payment_inv').read()[0]
         context = literal_eval(action.get('context', "{}"))
@@ -261,8 +261,14 @@ class Task(models.Model):
     # Business Methods
     # ---------------------------------------------------------
 
+    def _fsm_ensure_sale_order(self):
+        """ get the SO of the task. If no one, create it and return it """
+        if self.sale_order_id:
+            return self.sale_order_id
+        return self._fsm_create_sale_order()
+
     def _fsm_create_sale_order(self):
-        """ Create the SO from the task, sell the timesheet with the 'service product' of the SO, and add the material lines """
+        """ Create the SO from the task, with the 'service product' sales line and link all timesheet to that line it """
         if not self.partner_id:
             raise UserError(_('The FSM task must have a customer set to be sold.'))
 
@@ -270,6 +276,8 @@ class Task(models.Model):
             'partner_id': self.partner_id.id,
             'analytic_account_id': self.project_id.analytic_account_id.id,
         })
+        sale_order.onchange_partner_id()
+
         sale_order_line = self.env['sale.order.line'].create({
             'order_id': sale_order.id,
             'product_id': self.project_id.timesheet_product_id.id,
@@ -278,10 +286,8 @@ class Task(models.Model):
             'product_uom_qty': self.total_hours_spent,
             'product_uom': self.project_id.timesheet_product_id.uom_id.id,
         })
-
         self.write({
             'sale_line_id': sale_order_line.id,
-            'fsm_state': 'sold',
         })
 
         # assign SOL to timesheets
@@ -292,26 +298,4 @@ class Task(models.Model):
         ]).write({
             'so_line': sale_order_line.id
         })
-
-        self._fsm_add_material_to_sale_order()
-        sale_order.action_confirm()
-        return sale_order
-
-    def _fsm_add_material_to_sale_order(self):
-        sale_order = self.sale_order_id
-        if sale_order:
-            for line in self.material_line_ids:
-                existing_line = self.env['sale.order.line'].search([('order_id', '=', sale_order.id), ('product_id', '=', line.product_id.id)], limit=1)
-                if existing_line:
-                    existing_line.write({'product_uom_qty': existing_line.product_uom_qty + line.quantity})
-                else:
-                    vals = {
-                        'order_id': sale_order.id,
-                        'product_id': line.product_id.id,
-                        'product_uom_qty': line.quantity,
-                        'product_uom': line.product_id.uom_id.id
-                    }
-                    if line.product_id.invoice_policy == 'delivery' and line.product_id.service_type == 'manual':
-                        vals['qty_delivered'] = line.quantity
-                    self.env['sale.order.line'].create(vals)
         return sale_order

@@ -76,6 +76,11 @@ class Task(models.Model):
         timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
         if timesheet_access and self.allow_timesheets and self.is_fsm and not (self.timesheet_ids or self.timesheet_timer_start):
             raise UserError(_("Please, start the timer before recording the worksheet."))
+
+        # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
+        # time should be sold on SO)
+        self._fsm_ensure_sale_order()
+
         action = self.worksheet_template_id.action_id.read()[0]
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
         action.update({
@@ -91,6 +96,11 @@ class Task(models.Model):
 
     def action_preview_worksheet(self):
         self.ensure_one()
+
+        # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
+        # time should be sold on SO)
+        self._fsm_ensure_sale_order()
+
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
         if worksheet:
             return {
@@ -105,6 +115,13 @@ class Task(models.Model):
 
     def action_send_report(self):
         self.ensure_one()
+        if self.worksheet_template_id and not self.worksheet_count:
+            raise UserError(_("To send the report, you need to set a worksheet template and create a worksheet."))
+
+        # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
+        # time should be sold on SO)
+        self._fsm_ensure_sale_order()
+
         template_id = self.env.ref('industry_fsm_report.mail_template_data_send_report').id
         return {
             'type': 'ir.actions.act_window',

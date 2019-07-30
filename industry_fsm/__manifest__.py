@@ -24,7 +24,6 @@ Adds the following options:
     'data': [
         'data/fsm_data.xml',
         'security/fsm_security.xml',
-        'security/ir.model.access.csv',
         'views/res_config_settings_views.xml',
         'views/product_product_views.xml',
         'views/project_views.xml',

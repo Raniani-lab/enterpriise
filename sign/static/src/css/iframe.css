@@ -37,6 +37,11 @@
     cursor: pointer;
 }
 
+.o_sign_sign_item .o_placeholder {
+    font-size: 12pt !important;
+    vertical-align: middle;
+}
+
 textarea.o_sign_sign_item {
     white-space: pre;
     font-size: 12pt !important;

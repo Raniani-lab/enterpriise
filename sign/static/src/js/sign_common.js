@@ -1218,9 +1218,7 @@ odoo.define('sign.document_signing', function (require) {
             this.fullyLoaded.then(function() {
                 self.signatureItemNav = new SignItemNavigator(self, self.types);
                 return self.signatureItemNav.prependTo(self.$('#viewerContainer')).then(function () {
-
                     self.checkSignItemsCompletion();
-
                     self.$('#viewerContainer').on('scroll', function(e) {
                         if(!self.signatureItemNav.isScrolling && self.signatureItemNav.started) {
                             self.signatureItemNav.setTip(_t('next'));

@@ -888,6 +888,16 @@ class AccountPayment(models.Model):
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
+    l10n_mx_edi_payment_method_id = fields.Many2one(
+        'l10n_mx_edi.payment.method',
+        string='Payment Way',
+        help='Indicates the way the payment was/will be received, where the '
+        'options could be: Cash, Nominal Check, Credit Card, etc.')
+    l10n_mx_edi_partner_bank_id = fields.Many2one(
+        'res.partner.bank', 'Partner Bank', help='If the payment was made '
+        'with a financial institution define the bank account used in this '
+        'payment.')
+
     def _prepare_payment_vals(self, invoice):
         res = super(AccountPaymentRegister, self)._prepare_payment_vals(invoice)
         res.update({

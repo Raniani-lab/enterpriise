@@ -31,4 +31,17 @@
             </data>
         </field>
     </record>
+    <record model="ir.ui.view" id="view_account_reg_payment_form_inh_l10n_mx">
+        <field name="name">view.account.reg.payment.form.inh.l10n.mx</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_form_multi"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="l10n_mx_edi_payment_method_id"/>
+                    <field name="l10n_mx_edi_partner_bank_id"/>
+                </xpath>
+            </data>
+        </field>
+    </record>
 </odoo>

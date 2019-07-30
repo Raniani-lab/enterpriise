@@ -133,11 +133,19 @@ class ProjectWorksheetTemplate(models.Model):
                 'delete': False,
             }
         })
+        # generate an xmlid for the action, studio requires it to activate the studio
+        # systray item
+        self.env['ir.model.data'].sudo().create({
+            'name': 'template_action_' + "_".join(template.name.split(' ')),
+            'model': 'ir.actions.act_window',
+            'module': 'industry_fsm_report',
+            'res_id': action.id,
+            'noupdate': True,
+        })
         template.write({
             'action_id': action.id,
             'model_id': model.id,
         })
-
         # this must be done after form view creation and filling the 'model_id' field
         template.sudo()._generate_qweb_report_template()
 

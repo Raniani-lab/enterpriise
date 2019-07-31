@@ -68,7 +68,12 @@ class IoTController(http.Controller):
         else:
             iot_token = request.env['ir.config_parameter'].sudo().search([('key', '=', 'iot_token')], limit=1)
             if iot_token.value.strip('\n') == iot_box['token']:
-                box = request.env['iot.box'].sudo().create({'name': iot_box['name'], 'identifier': iot_box['identifier'], 'ip': iot_box['ip'], })
+                box = request.env['iot.box'].sudo().create({
+                    'name': iot_box['name'],
+                    'identifier': iot_box['identifier'],
+                    'ip': iot_box['ip'],
+                    'version': iot_box['version'],
+                })
 
         # Update or create devices
         if box:

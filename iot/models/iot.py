@@ -16,6 +16,7 @@ class IotBox(models.Model):
     ip = fields.Char('IP Address', readonly=True)
     ip_url = fields.Char('IoT Box Home Page', readonly=True, compute='_compute_ip_url')
     screen_url = fields.Char('Screen URL', help="Url of the page that will be displayed by hdmi port of the box.")
+    version = fields.Char('IoT Version')
 
     def _compute_ip_url(self):
         for box in self:

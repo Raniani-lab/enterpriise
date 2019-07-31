@@ -25,6 +25,7 @@
                             <field name="identifier" readonly="True"/>
                             <field name="ip"/>
                             <field name="ip_url" widget="url"/>
+                            <field name="version"/>
                             <field name="screen_url"/>
                         </group>
                     </group>

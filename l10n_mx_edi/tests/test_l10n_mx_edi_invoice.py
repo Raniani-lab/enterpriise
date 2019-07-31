@@ -66,7 +66,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice.sudo().journal_id.l10n_mx_address_issued_id = self.company_partner.id
         invoice.move_name = 'INV/2017/999'
         invoice.post()
-        self.assertEqual(invoice.state, "open")
+        self.assertEqual(invoice.state, "posted")
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
 
@@ -100,7 +100,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
             line.price_unit = 500
         invoice_disc.compute_taxes()
         invoice_disc.post()
-        self.assertEqual(invoice_disc.state, "open")
+        self.assertEqual(invoice_disc.state, "posted")
         self.assertEqual(invoice_disc.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         xml = invoice_disc.l10n_mx_edi_get_xml_etree()
@@ -190,7 +190,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice.sudo().invoice_user_id.partner_id.ref = '8765'
         invoice.message_ids.unlink()
         invoice.post()
-        self.assertEqual(invoice.state, "open")
+        self.assertEqual(invoice.state, "posted")
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         xml_str = base64.decodestring(invoice.message_ids[-2].attachment_ids.datas)
@@ -239,7 +239,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice.invoice_line_ids[0].product_id = False
         invoice.compute_taxes()
         invoice.post()
-        self.assertEqual(invoice.state, "open")
+        self.assertEqual(invoice.state, "posted")
 
         # -----------------------
         # Testing case with include base amount

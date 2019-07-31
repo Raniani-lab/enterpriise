@@ -60,7 +60,12 @@
             <map res_partner="partner_id"  default_order="planned_date_begin" routing="true">
                 <marker-popup>
                     <field name="name" string="Task"/>
-                    <field name="user_id" string="Assigned to"/>
+                    <field name="partner_id" string="Customer" />
+                    <field name="partner_email" string=""/>
+                    <field name="partner_phone" string=""/>
+                    <field name="partner_street" string="Address" />
+                    <field name="partner_zip" string=""/>
+                    <field name="partner_city" string=""/>
                 </marker-popup>
             </map>
         </field>

@@ -90,7 +90,7 @@ class SignTemplate(models.Model):
         except Exception as e:
             raise UserError(_("This file cannot be read. Is it a valid PDF?"))
         if file_pdf.isEncrypted:
-            raise UserError(_("Your PDF file shouldn't be encrypted with a password in order to be used as a signature template"))
+            raise UserError(_("Password-protected PDF files cannot be used for signature templates."))
         attachment = self.env['ir.attachment'].create({'name': name, 'datas': datas, 'mimetype': mimetype})
         template = self.create({'attachment_id': attachment.id, 'favorited_ids': [(4, self.env.user.id)], 'active': active})
         return {'template': template.id, 'attachment': attachment.id}

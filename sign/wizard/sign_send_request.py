@@ -13,7 +13,7 @@ class SignSendRequest(models.TransientModel):
         res = super(SignSendRequest, self).default_get(fields)
         res['template_id'] = self.env.context.get('active_id')
         template = self.env['sign.template'].browse(res['template_id'])
-        res['filename'] = template.attachment_id.name
+        res['filename'] = template.display_name
         res['subject'] = _("Signature Request - %s") % (template.attachment_id.name)
         roles = template.mapped('sign_item_ids.responsible_id')
         res['signers_count'] = len(roles)
@@ -30,20 +30,12 @@ class SignSendRequest(models.TransientModel):
     signer_id = fields.Many2one('res.partner', string="Send To")
     signers_count = fields.Integer()
     follower_ids = fields.Many2many('res.partner', string="Copy to")
-    extension = fields.Char(related="template_id.extension", readonly=False)
+    extension = fields.Char(related="template_id.extension", readonly=True)
     is_user_signer = fields.Boolean(compute='_compute_is_user_signer')
 
     subject = fields.Char(string="Subject", required=True)
     message = fields.Html("Message")
     filename = fields.Char("Filename", required=True)
-
-    @api.depends('template_id.attachment_id.name')
-    def _compute_extension(self):
-        for wizard in self.filtered(lambda w: w.template_id):
-            if wizard.template_id.attachment_id.name:
-                wizard.extension = '.' + wizard.template_id.attachment_id.name.split('.')[-1]
-            else:
-                wizard.extension = ''
 
     @api.depends('signer_ids.partner_id', 'signer_id', 'signers_count')
     def _compute_is_user_signer(self):

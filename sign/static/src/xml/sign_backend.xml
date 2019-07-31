@@ -65,8 +65,8 @@
         <div t-att-class="!(widget.has_sign_requests &amp;&amp; widget.isPDF) ? 'text-center' : 'd-none text-center'">
             <div class="o_sign_template_saved_info alert alert-success float-right" role="status"><span class="fa fa-check"/>Saved</div>
             <span t-if="!widget.has_sign_requests" class="fa fa-pencil" title="Edit template name" role="img" aria-label="Edit template name"/>
-            <input type="text" class="o_sign_template_name_input o_input" t-att-value="widget.sign_template.attachment_id.name"/>
-            <span><t t-esc="widget.sign_template.extension"/></span>
+            <input type="text" class="o_sign_template_name_input o_input" t-att-value="widget.sign_template.display_name"/>
+            <span>.<t t-esc="widget.sign_template.extension"/></span>
         </div>
 
         <div t-if="!widget.isPDF" class="o_sign_image_document">

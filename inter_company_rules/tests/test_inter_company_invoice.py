@@ -55,5 +55,5 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         self.assertTrue(supplier_invoice.invoice_line_ids[0].price_unit == 450, "Unit Price in invoice line is incorrect.")
         self.assertTrue(supplier_invoice.invoice_line_ids[0].account_id.company_id.id == self.company_b.id, "Applied account in created invoice line is not relevant to company.")
         self.assertTrue(supplier_invoice.state == "draft", "invoice should be in draft state.")
-        self.assertTrue(supplier_invoice.amount_total == 517.5, "Total amount is incorrect.")
+        self.assertTrue(supplier_invoice.amount_total == 450, "Total amount is incorrect.") #There is no tax!
         self.assertTrue(supplier_invoice.company_id.id == self.company_b.id, "Applied company in created invoice is incorrect.")

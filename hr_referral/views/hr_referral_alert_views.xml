@@ -8,18 +8,18 @@
                 <sheet>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <group>
-                        <group>
+                        <group name="duration_details">
                             <field name="date_from"/>
                             <field name="active" invisible="1"/>
                             <field name="date_to"/>
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                         </group>
-                        <group>
+                        <group name="alert_type">
                             <field name="onclick" widget="radio"/>
                             <field name="url" attrs="{'invisible': [('onclick', '!=', 'url')], 'required': [('onclick', '=', 'url')]}" placeholder="https://www.google.com"/>
                         </group>
                     </group>
-                    <group>
+                    <group name="name_details">
                         <field name="name"/>
                     </group>
 

@@ -8,11 +8,11 @@
             <form>
                 <sheet>
                     <group>
-                        <group>
+                        <group name="name_details">
                             <field name="name"/>
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                         </group>
-                        <group>
+                        <group name="requirements">
                             <label for="points" string="Requirements"/>
                             <div>
                                 <field name="points" nolabel="1" class="oe_inline"/>
@@ -20,8 +20,8 @@
                             </div>
                         </group>
                     </group>
-                    <group>
-                        <field name="image"/>
+                    <group name="image">
+                        <field name="image" widget="image" nolabel="0"/>
                     </group>
                 </sheet>
             </form>

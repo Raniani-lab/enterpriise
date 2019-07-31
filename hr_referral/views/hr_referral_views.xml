@@ -51,11 +51,11 @@
             <form>
                 <sheet>
                     <group>
-                        <group>
+                        <group name="main_details">
                             <field name="ref_employee_id"/>
                             <field name="points"/>
                         </group>
-                        <group>
+                        <group name="configuration_details">
                             <field name="hr_referral_reward_id" attrs="{'invisible': [('hr_referral_reward_id', '=', False)]}"/>
                             <field name="applicant_id" attrs="{'invisible': [('applicant_id', '=', False)]}"/>
                             <field name="stage_id" attrs="{'invisible': [('applicant_id', '=', False)]}"/>

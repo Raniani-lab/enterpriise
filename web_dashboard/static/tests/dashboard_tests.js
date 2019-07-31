@@ -19,7 +19,7 @@ QUnit.module('Views', {
         this.data = {
             test_report: {
                 fields: {
-                    categ_id: {string: "categ_id", type: 'many2one', relation: 'test_report'},
+                    categ_id: {string: "categ_id", type: 'many2one', relation: 'test_report', store: true},
                     sold: {string: "Sold", type: 'float', store: true, group_operator: 'sum'},
                     untaxed: {string: "Untaxed", type: 'float', group_operator: 'sum', store: true},
                 },
@@ -2154,15 +2154,7 @@ QUnit.module('Views', {
 
         var nbReadGroup = 0;
 
-        var RealDate = window.Date;
-
-        window.Date = function TestDate() {
-            // month are indexed from 0!
-            return new RealDate(2017, 2, 22);
-        };
-        window.Date.now = function Test() {
-            return new Date(2017, 2, 22);
-        };
+        const unpatchDate = patchDate(2017, 2, 22, 1, 0, 0);
 
         var dashboard = await createView({
             View: DashboardView,
@@ -2235,7 +2227,7 @@ QUnit.module('Views', {
 
         dashboard.destroy();
         delete fieldRegistry.map.test;
-        window.Date = RealDate;
+        unpatchDate();
     });
 
     QUnit.test('rendering of a cohort tag with comparison active', async function (assert) {
@@ -2271,15 +2263,7 @@ QUnit.module('Views', {
 
         var nbReadGroup = 0;
 
-        var RealDate = window.Date;
-
-        window.Date = function TestDate() {
-            // month are indexed from 0!
-            return new RealDate(2017, 2, 22);
-        };
-        window.Date.now = function Test() {
-            return new Date(2017, 2, 22);
-        };
+        const unpatchDate = patchDate(2017, 2, 22, 1, 0, 0);
 
         var dashboard = await createView({
             View: DashboardView,
@@ -2355,7 +2339,7 @@ QUnit.module('Views', {
         assert.strictEqual(dashboard.$('.o_aggregate .o_comparison').text(), "4.00 vs 16.00");
 
         dashboard.destroy();
-        window.Date = RealDate;
+        unpatchDate();
     });
 
     QUnit.test('basic rendering of aggregates with big values', async function (assert) {

@@ -135,7 +135,7 @@ odoo.define('sign.views_custo', function(require) {
                         self.do_action({
                             type: "ir.actions.client",
                             tag: 'sign.Template',
-                            name: _t("New Template"),
+                            name: f.name,
                             context: {
                                 sign_edit_call: sign_edit_context,
                                 id: data.template,
@@ -857,13 +857,15 @@ odoo.define('sign.template', function(require) {
         do_show: function() {
             this._super();
 
-            var self = this; // The iFrame cannot be detached, so we 'restart' the widget
+            // the iframe cannot be detached normally
+            // we have to reload it entirely and re-apply the sign items on it
+            var self = this;
             return this.perform_rpc().then(function() {
                 if(self.iframeWidget) {
                     self.iframeWidget.destroy();
                     self.iframeWidget = undefined;
                 }
-                self.$el.empty();
+                self.$('iframe').remove();
                 self.initialize_content();
             });
         },

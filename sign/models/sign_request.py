@@ -261,11 +261,10 @@ class SignRequest(models.Model):
             'subject': subject,
             'body': message,
         }, engine='ir.qweb', minimal_qcontext=True)
-        mails = self.env['mail.mail']
         for follower in followers:
             if not follower.email:
                 continue
-            mails |= self.env['sign.request']._message_send_mail(
+            self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
@@ -275,7 +274,6 @@ class SignRequest(models.Model):
                  'subject': subject or _('%s : Signature request') % self.reference}
             )
             self.message_subscribe(partner_ids=follower.ids)
-        mail_sender(instance=self, mails=mails)
 
     def send_completed_document(self):
         self.ensure_one()
@@ -286,7 +284,6 @@ class SignRequest(models.Model):
             self.generate_completed_document()
 
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        mails = self.env['mail.mail']
         for signer in self.request_item_ids:
             if not signer.partner_id or not signer.partner_id.email:
                 continue
@@ -307,7 +304,7 @@ class SignRequest(models.Model):
                 'res_id': self.id,
             })
 
-            mails |= self.env['sign.request']._message_send_mail(
+            self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
@@ -315,9 +312,9 @@ class SignRequest(models.Model):
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
                  'subject': _('%s has been signed') % self.reference,
-                 'attachment_ids': [(4, attachment.id)]}
+                 'attachment_ids': [(4, attachment.id)]},
+                force_send=True
             )
-        mail_sender(instance=self, mails=mails)
 
         tpl = self.env.ref('sign.sign_template_mail_completed')
         body = tpl.render({
@@ -326,11 +323,10 @@ class SignRequest(models.Model):
             'subject': '%s signed' % self.reference,
             'body': '',
         }, engine='ir.qweb', minimal_qcontext=True)
-        mails = self.env['mail.mail']
         for follower in self.mapped('message_follower_ids.partner_id') - self.request_item_ids.mapped('partner_id'):
             if not follower.email:
                 continue
-            mails |= self.env['sign.request']._message_send_mail(
+            self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
@@ -339,7 +335,6 @@ class SignRequest(models.Model):
                  'email_to': formataddr((follower.name, follower.email)),
                  'subject': _('%s has been signed') % self.reference}
             )
-        mail_sender(instance=self, mails=mails)
         return True
 
     def _get_font(self):
@@ -457,15 +452,21 @@ class SignRequest(models.Model):
         output.close()
 
     @api.model
-    def _message_send_mail(self, body, notif_template_xmlid, message_values, notif_values, mail_values, **kwargs):
+    def _message_send_mail(self, body, notif_template_xmlid, message_values, notif_values, mail_values, force_send=False, **kwargs):
         """ Shortcut to send an email. """
+        # the notif layout wrapping expects a mail.message record, but we don't want
+        # to actually create the record
+        # See @tde-banana-odoo for details
         msg = self.env['mail.message'].sudo().new(dict(body=body, **message_values))
 
         notif_layout = self.env.ref(notif_template_xmlid)
         body_html = notif_layout.render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
         body_html = self.env['mail.thread']._replace_local_links(body_html)
 
-        return self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
+        mail = self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
+        if force_send:
+            mail.send()
+        return mail
 
     @api.model
     def initialize_new(self, id, signers, followers, reference, subject, message, send=True, without_mail=False):
@@ -552,7 +553,6 @@ class SignRequestItem(models.Model):
 
     def send_signature_accesses(self, subject=None, message=None):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        mails = self.env['mail.mail']
         for signer in self:
             if not signer.partner_id or not signer.partner_id.email:
                 continue
@@ -566,17 +566,16 @@ class SignRequestItem(models.Model):
                 'body': message if message != '<p><br></p>' else False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
-            mails |= self.env['sign.request']._message_send_mail(
+            self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': signer.sign_request_id.reference},
                 {'model_description': 'signature', 'company': signer.create_uid.company_id},
                 {'email_from': formataddr((signer.create_uid.name, signer.create_uid.email)),
                  'author_id': signer.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
-                 'subject': subject}
+                 'subject': subject},
+                force_send=True
             )
-
-        mail_sender(instance=self, mails=mails)
 
     def sign(self, signature):
         self.ensure_one()
@@ -622,23 +621,3 @@ class SignRequestItem(models.Model):
         for rec in self:
             rec._reset_sms_token()
             self.env['sms.api']._send_sms([rec.sms_number], _('Your confirmation code is %s') % rec.sms_token)
-
-def mail_sender(instance, mails):
-    """
-    Sending mail may take a while. if the number of recipient is larger than a threshold,
-    it must be processed in the queue.
-    The threshold is the same than in mail_threads.py:  recipients_max = 50
-    :param instance:  model instance. This function is called by sign.request and sign.request.item
-    :param mails: list of mails
-    :type mail: mail object
-    :return: None
-    """
-    """
-
-    :param mail: the mail to be sent
-    :type mail: mail object
-    :return: None
-    :rtype:
-    """
-    if len(mails) < 50:
-        instance.env['mail.mail'].process_email_queue(mails.ids)

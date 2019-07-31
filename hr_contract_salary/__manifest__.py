@@ -3,7 +3,7 @@
 
 {
     'name': 'HR Contract Salary (Belgium)',
-    'category': 'Human Resource',
+    'category': 'Human Resources',
     'summary': 'Salary Package Configurator',
     'depends': [
         'hr',

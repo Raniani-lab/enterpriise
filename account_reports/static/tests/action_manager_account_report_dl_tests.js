@@ -124,13 +124,14 @@ QUnit.module('Account Reports', {
         await actionManager.doAction(9);
         assert.containsOnce(actionManager, '.o_control_panel .o_field_many2manytags[name="partner_ids"]',
             "partner_ids m2m field added to filter");
-        assert.containsOnce(actionManager, '.o_control_panel .o_field_many2manytags[name="partner_categories"]',
-            "partner_categories m2m field added to filter");
 
         // search on partners m2m
         await testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
         await testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_ids"] input'));
         await testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Genda Swami)'));
+
+        assert.containsOnce(actionManager, '.o_control_panel .o_field_many2manytags[name="partner_categories"]',
+            "partner_categories m2m field added to filter");
 
         // search on partner categories m2m
         await testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));

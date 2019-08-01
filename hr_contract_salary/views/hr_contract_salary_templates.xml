@@ -896,12 +896,12 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="form-group col-md-6">
-                                                    <label class="col-form-label" for="image">Employee Photo</label>
-                                                    <input type="file" name="image" class="form-control document"/>
+                                                    <label class="col-form-label" for="image_1920">Employee Photo</label>
+                                                    <input type="file" name="image_1920" class="form-control document"/>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <img id="image_img" t-att-src="image" alt="Employee Photo" width="256" t-att-class="'d-none' if not image or image[:28] == 'data:application/pdf;base64,' else ''"/>
-                                                    <iframe id="image_pdf" t-att-src="image" height="256" width="256" t-att-class="'d-none' if not image or image[:28] != 'data:application/pdf;base64,' else ''"/>
+                                                    <img id="image_img" t-att-src="image_1920" alt="Employee Photo" width="256" t-att-class="'d-none' if not image_1920 or image_1920[:28] == 'data:application/pdf;base64,' else ''"/>
+                                                    <iframe id="image_pdf" t-att-src="image_1920" height="256" width="256" t-att-class="'d-none' if not image_1920 or image_1920[:28] != 'data:application/pdf;base64,' else ''"/>
                                                 </div>
                                             </div>
                                         </div>

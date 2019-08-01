@@ -47,7 +47,7 @@
                     <ul class="list-inline mt8 float-right">
                         <li class="dropdown hidden-sm hidden-xs" t-ignore="true" t-if="not user_id._is_public()">
                             <a href="#" class="dropdown-toggle o_docs_btn" data-toggle="dropdown">
-                                <img class="rounded-circle" height="13" t-attf-src="/web/image?model=res.users&amp;field=image_small&amp;id=#{json.dumps(request.env.user.id)}" alt=""/>
+                                <img class="rounded-circle" height="13" t-attf-src="/web/image?model=res.users&amp;field=image_64&amp;id=#{json.dumps(request.env.user.id)}" alt=""/>
                                 <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/><span class="caret"/>
                             </a>
                             <ul class="dropdown-menu js_usermenu" role="menu">

@@ -48,7 +48,7 @@ QUnit.module('DialingPanel',{
                 activity_res_model: "res.model",
                 activity_model_name: "A model",
                 partner_name: "Partner "+ (100+id),
-                partner_image_small: "",
+                partner_image_64: "",
                 partner_email: "partner" + (100+id) + "@example.com",
                 activity_id: 50+id,
                 activity_summary: false,

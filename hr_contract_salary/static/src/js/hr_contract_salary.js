@@ -87,7 +87,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     get_personal_documents: function() {
-        var document_names = ['id_card', 'image', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice'];
+        var document_names = ['id_card', 'image_1920', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice'];
         var document_srcs = {};
         var promises_list = _.map(document_names, function(document_name) {
             var file = $("input[name='" + document_name + "']");
@@ -109,7 +109,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         return Promise.all(promises_list).then(function() {
             var personal_documents = {
                 'id_card': document_srcs.id_card,
-                'image': document_srcs.image,
+                'image_1920': document_srcs.image_1920,
                 'driving_license': document_srcs.driving_license,
                 'mobile_invoice': document_srcs.mobile_invoice,
                 'sim_card': document_srcs.sim_card,

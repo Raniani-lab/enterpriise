@@ -19,7 +19,7 @@ QUnit.module('web_mobile', {
             partner: {
                 fields: {
                     name: {string: "name", type: "char"},
-                    image: {},
+                    image_1920: {},
                     parent_id: {string: "Parent", type: "many2one", relation: 'partner'},
                     sibling_ids: {string: "Sibling", type: "many2many", relation: 'partner'},
                     phone: {},
@@ -44,7 +44,7 @@ QUnit.module('web_mobile', {
                 }, {
                     id: 11,
                     name: 'coucou3',
-                    image: 'image',
+                    image_1920: 'image',
                     parent_id: 1,
                     phone: 'phone',
                     mobile: 'mobile',
@@ -148,7 +148,7 @@ QUnit.module('web_mobile', {
             email: "email",
             function: "function",
             id: 11,
-            image: "image",
+            image_1920: "image",
             mobile: "mobile",
             name: "coucou3",
             parent_id: [

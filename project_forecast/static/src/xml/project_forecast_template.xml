@@ -35,7 +35,7 @@
     <t t-name="ForecastGanttView.Row" t-extend="GanttView.Row">
         <t t-jquery=".o_gantt_row_title" t-operation="prepend">
             <t t-if="widget.groupedByField == 'employee_id'">
-                <img t-att-src="'/web/image?model=hr.employee&amp;field=image_small&amp;id='+widget.resId+'&amp;unique='" style="height: 30px;width: 30px;" class="rounded-circle"/>
+                <img t-att-src="'/web/image?model=hr.employee&amp;field=image_64&amp;id='+widget.resId+'&amp;unique='" style="height: 30px;width: 30px;" class="rounded-circle"/>
             </t>
         </t>
     </t>

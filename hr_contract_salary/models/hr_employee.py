@@ -39,7 +39,7 @@ class HrEmployee(models.Model):
             'km_home_work', 'job_title',
         ]
         result = {field: personal_info[field] for field in fields_list}
-        for field in ['image', 'id_card', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice']:
+        for field in ['image_1920', 'id_card', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice']:
             if personal_info.get(field, False):
                 result[field] = personal_info.get(field)
         return result

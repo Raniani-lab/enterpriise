@@ -235,7 +235,7 @@ class website_hr_contract_salary(http.Controller):
 
     def _get_documents_src(self, employee):
         res = {}
-        for field in ['id_card', 'image', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice']:
+        for field in ['id_card', 'image_1920', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice']:
             if employee[field]:
                 if employee[field][:7] == b'JVBERi0':
                     img_src = "data:application/pdf;base64,%s" % (employee[field].decode())

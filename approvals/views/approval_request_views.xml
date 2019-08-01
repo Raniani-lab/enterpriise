@@ -232,7 +232,7 @@
                                         <field name="activity_ids" widget="kanban_activity"/>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
-                                        <img t-att-src="kanban_image('res.users', 'image_small', record.request_owner_id.raw_value)" t-att-title="record.request_owner_id.value" t-att-alt="record.request_owner_id.value" width="24" height="24" class="oe_kanban_avatar"/>
+                                        <img t-att-src="kanban_image('res.users', 'image_64', record.request_owner_id.raw_value)" t-att-title="record.request_owner_id.value" t-att-alt="record.request_owner_id.value" width="24" height="24" class="oe_kanban_avatar"/>
                                     </div>
                                 </div>
                             </div>

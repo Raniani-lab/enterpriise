@@ -22,7 +22,6 @@
         <field name="arch" type="xml">
             <kanban>
                 <field name="id"/>
-                <field name="image_small"/>
                 <field name="display_name"/>
                 <field name="type"/>
                 <field name="eco_inprogress_count"/>
@@ -30,7 +29,7 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div class="o_kanban_image">
-                                <img t-att-src="kanban_image('product.template', 'image_small', record.id.raw_value)" alt="Product"/>
+                                <img t-att-src="kanban_image('product.template', 'image_64', record.id.raw_value)" alt="Product"/>
                             </div>
                             <div class="oe_kanban_details">
                                 <strong>

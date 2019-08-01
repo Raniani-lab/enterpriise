@@ -675,7 +675,7 @@ var ContactsTab = PhonecallTab.extend({
         return this._rpc({
             model: 'res.partner',
             method: 'search_read',
-            fields: ['id', 'display_name', 'phone', 'mobile', 'email', 'image_small'],
+            fields: ['id', 'display_name', 'phone', 'mobile', 'email', 'image_64'],
             limit: this.limit,
         }).then(_.bind(this._parseContacts, this));
     },
@@ -696,7 +696,7 @@ var ContactsTab = PhonecallTab.extend({
                 model: 'res.partner',
                 method: 'search_read',
                 domain: this.searchDomain,
-                fields: ['id', 'display_name', 'phone', 'mobile', 'email', 'image_small'],
+                fields: ['id', 'display_name', 'phone', 'mobile', 'email', 'image_64'],
                 limit: this.limit,
                 offset: this.offset,
             }).then(function (contacts) {
@@ -725,7 +725,7 @@ var ContactsTab = PhonecallTab.extend({
             phonecallsData.push({
                 partner_id: contact.id,
                 partner_name: contact.display_name,
-                partner_image_small: contact.image_small,
+                partner_image_64: contact.image_64,
                 partner_email: contact.email,
                 phone: contact.phone,
                 mobile: contact.mobile,
@@ -746,7 +746,7 @@ var ContactsTab = PhonecallTab.extend({
             model: 'res.partner',
             method: 'search_read',
             domain: this.searchDomain ? this.searchDomain : false,
-            fields: ['id', 'display_name', 'phone', 'mobile', 'email', 'image_small'],
+            fields: ['id', 'display_name', 'phone', 'mobile', 'email', 'image_64'],
             limit: this.limit,
             offset: this.offset
         }).then(function (contacts) {

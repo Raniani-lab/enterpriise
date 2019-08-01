@@ -30,7 +30,7 @@ class TestViewNormalization(TransactionCase):
             """
             <form string="Partners">
                 <sheet>
-                    <field name="image" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_medium&quot;, &quot;size&quot;: [90, 90]}"/>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_128&quot;, &quot;size&quot;: [90, 90]}"/>
                     <div class="oe_title">
                         <field name="is_company" invisible="1"/>
                         <field name="company_type" widget="radio" class="oe_edit_only" on_change="on_change_company_type(company_type)" options="{'horizontal': true}"/>
@@ -95,7 +95,7 @@ class TestViewNormalization(TransactionCase):
                                     <field name="country_id"/>
                                     <field name="mobile"/>
                                     <field name="state_id"/>
-                                    <field name="image"/>
+                                    <field name="image_1920"/>
                                     <templates>
                                         <t t-name="kanban-box">
                                             <div class="oe_kanban_details">
@@ -734,7 +734,7 @@ class TestViewNormalization(TransactionCase):
             </data>
         """, """
             <data>
-              <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='child_ids']/kanban[1]/field[@name='image']" position="after">
+              <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='child_ids']/kanban[1]/field[@name='image_1920']" position="after">
                 <field name="lang"/>
               </xpath>
               <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='child_ids']/kanban[1]/templates[1]/t[1]/div[1]" position="attributes">

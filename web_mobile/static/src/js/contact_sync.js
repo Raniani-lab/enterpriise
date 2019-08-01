@@ -29,7 +29,7 @@ var ContactSync = Widget.extend({
      */
     _onClick: function () {
         var fieldNames = [
-            'name', 'image', 'parent_id', 'phone', 'mobile', 'email',
+            'name', 'image_1920', 'parent_id', 'phone', 'mobile', 'email',
             'street', 'street2', 'city', 'state_id', 'zip', 'country_id',
             'website', 'function', 'title',
         ];

@@ -36,7 +36,7 @@ class HrContract(models.Model):
     signatures_count = fields.Integer(compute='_compute_signatures_count', string='# Signatures',
         help="The number of signatures on the pdf contract with the most signatures.")
     id_card = fields.Binary(related='employee_id.id_card', groups="hr_contract.group_hr_contract_manager")
-    image = fields.Binary(related='employee_id.image', groups="hr_contract.group_hr_contract_manager")
+    image_1920 = fields.Image(related='employee_id.image_1920', groups="hr_contract.group_hr_contract_manager")
     driving_license = fields.Binary(related='employee_id.driving_license', groups="hr_contract.group_hr_contract_manager")
     mobile_invoice = fields.Binary(related='employee_id.mobile_invoice', groups="hr_contract.group_hr_contract_manager")
     sim_card = fields.Binary(related='employee_id.sim_card', groups="hr_contract.group_hr_contract_manager")

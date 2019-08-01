@@ -25,7 +25,7 @@ class WorkflowActionRuleProduct(models.Model):
                     'res_id': product.id,
                 })
                 if 'image' in this_document.mimetype and not image_is_set:
-                    product.write({'image_original': this_document.datas})
+                    product.write({'image_1920': this_document.datas})
                     image_is_set = True
 
             view_id = product.get_formview_id()

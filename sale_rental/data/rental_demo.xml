@@ -15,7 +15,7 @@
     <field name="uom_id" ref="uom.product_uom_unit"/>
     <field name="uom_po_id" ref="uom.product_uom_unit"/>
     <field name="default_code">RENT001</field>
-    <field name="image" type="base64" file="sale_rental/static/img/projector.jpg"/>
+    <field name="image_1920" type="base64" file="sale_rental/static/img/projector.jpg"/>
     <field name="rent_ok" eval="True"/>
     <field name="extra_hourly" eval="5.00"/>
     <field name="extra_daily" eval="50.00"/>
@@ -30,7 +30,7 @@
     <field name="uom_id" ref="uom.product_uom_unit"/>
     <field name="uom_po_id" ref="uom.product_uom_unit"/>
     <field name="default_code">RENT002</field>
-    <field name="image" type="base64" file="sale_rental/static/img/meeting_room.jpeg"/>
+    <field name="image_1920" type="base64" file="sale_rental/static/img/meeting_room.jpeg"/>
     <field name="rent_ok" eval="True"/>
     <field name="extra_hourly" eval="5.0"/>
     <field name="extra_daily" eval="50.0"/>

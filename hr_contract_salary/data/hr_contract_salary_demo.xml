@@ -46,7 +46,7 @@
         <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
         <field name="identification_id">91-07-28-458-83</field>
         <field name="bank_account_id" ref="hr_contract_salary.res_partner_bank_account_laurie_poiret"/>
-        <field name="image" type="base64" file="hr_contract_salary/static/img/hr_employe_laurie_poiret.jpg"/>
+        <field name="image_1920" type="base64" file="hr_contract_salary/static/img/hr_employe_laurie_poiret.jpg"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
 

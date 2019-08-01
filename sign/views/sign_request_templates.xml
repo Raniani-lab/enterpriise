@@ -65,7 +65,7 @@
 
                 <div class="col-lg-4">
                     <div class="clearfix">
-                        <img class="float-left mr8" t-attf-src="/web/image/res.partner/#{sign_request.create_uid.partner_id.id}/image_small/32x32" alt="Signature" style="max-width: 32px;"/>
+                        <img class="float-left mr8" t-attf-src="/web/image/res.partner/#{sign_request.create_uid.partner_id.id}/image_64/32x32" alt="Signature" style="max-width: 32px;"/>
                         <t t-if="sign_request.create_uid.partner_id.name">From: <t t-esc="sign_request.create_uid.partner_id.name"/><br/></t>
                         <t t-if="sign_request.create_uid.partner_id.email"><a t-attf-href="mailto:{{sign_request.create_uid.partner_id.email}}"><t t-esc="sign_request.create_uid.partner_id.email"/></a><br/></t>
                     </div>

@@ -109,7 +109,7 @@ class VoipPhonecall(models.Model):
                     activity_res_model='res.partner',
                     activity_model_name=ir_model.display_name,
                     partner_name=rec.partner_id.name,
-                    partner_image_small=rec.partner_id.image_small,
+                    partner_image_64=rec.partner_id.image_64,
                     partner_email=rec.partner_id.email
                 )
             if rec.activity_id:

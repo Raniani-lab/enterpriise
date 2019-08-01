@@ -197,7 +197,7 @@ class ShareRoute(http.Controller):
             env = request.env
             share = env['documents.share'].sudo().browse(share_id)
             if consteq(access_token, share.access_token):
-                return base64.b64decode(env['res.users'].sudo().browse(share.create_uid.id).image_small)
+                return base64.b64decode(env['res.users'].sudo().browse(share.create_uid.id).image_64)
             else:
                 return request.not_found()
         except Exception:

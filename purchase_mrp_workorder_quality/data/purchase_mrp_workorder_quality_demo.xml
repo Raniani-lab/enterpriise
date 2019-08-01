@@ -129,7 +129,7 @@
 
         <function model="quality.check" name="write">
             <value model="mrp.production" eval="obj().env.ref('purchase_mrp_workorder_quality.mrp_production').workorder_ids.check_ids[3].id"/>
-            <value model="mrp.production" eval="{'picture': obj().env.ref('mrp.product_product_computer_desk').image_medium}"/>
+            <value model="mrp.production" eval="{'picture': obj().env.ref('mrp.product_product_computer_desk').image_128}"/>
         </function>
 
         <function model="quality.check" name="do_pass">

@@ -95,4 +95,4 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
 
         self.assertEqual(document_gif.res_model, 'product.template')
         self.assertEqual(document_gif.res_id, new_product.id)
-        self.assertEqual(new_product.image_original, document_gif.datas)
+        self.assertEqual(new_product.image_1920, document_gif.datas)

@@ -17,4 +17,7 @@ Bridge module for project and enterprise
     ],
     'auto_install': True,
     'license': 'OEEL-1',
+    'qweb': [
+        'static/src/xml/task_gantt.xml',
+    ],
 }

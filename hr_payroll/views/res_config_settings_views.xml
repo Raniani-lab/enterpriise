@@ -27,7 +27,7 @@
                                     <div class="text-muted">
                                         Payroll rules that apply to your country
                                     </div>
-                                    <div class="mt16" id="localization_text">
+                                    <div class="mt8" id="localization_text">
                                         <button name="%(open_payroll_modules)d" icon="fa-arrow-right" type="action" string="Choose a Payroll Localization" class="btn-link"/>
                                     </div>
                                 </div>

@@ -12,7 +12,7 @@
                 </div>
             </xpath>
             <xpath expr="//div[@id='use_product_barcode']" position="replace">
-                <div class="mt16" attrs="{'invisible': [('module_stock_barcode', '=', False)]}">
+                <div class="mt8" attrs="{'invisible': [('module_stock_barcode', '=', False)]}">
                     <button class="btn-link" type="action" string="Configure Product Barcodes" name="%(stock_barcode.product_action_barcodes)d" icon="fa-arrow-right"/>
                 </div>
             </xpath>

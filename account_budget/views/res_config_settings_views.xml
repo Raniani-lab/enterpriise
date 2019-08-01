@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <div id="budget_management" position="inside">
                 <div class="content-group" attrs="{'invisible': [('module_account_budget', '=', False)]}">
-                    <div class="mt16">
+                    <div class="mt8">
                         <button name="%(account_budget.open_budget_post_form)d" icon="fa-arrow-right" type="action" string="Budgetary Positions" class="btn-link"/>
                     </div>
                 </div>

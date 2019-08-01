@@ -16,7 +16,7 @@
                         <label string="Interval" for="currency_interval_unit" class="col-lg-3 o_light_label"/>
                         <field name="currency_interval_unit"/>
                     </div>
-                    <div class="row">
+                    <div class="mt8 row">
                         <label string="Next Run" for="currency_next_execution_date" class="col-lg-3 o_light_label"/>
                         <field name="currency_next_execution_date"/>
                         <button name="update_currency_rates_manually" type="object" class="btn-link">

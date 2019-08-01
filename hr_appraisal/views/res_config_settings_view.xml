@@ -7,23 +7,21 @@
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('settings')]" position="inside">
                 <div class="app_settings_block" data-string="Appraisal" string="Appraisal" data-key="hr_appraisal" groups="hr.group_hr_manager">
-                    <h2>Appraisal Frequencies</h2>
+                    <h2>Appraisal</h2>
                     <div class="row mt16 o_settings_container">
                         <div class="col-12 col-lg-6 o_setting_box">
                             <div class="o_setting_right_pane">
                                 <label for="appraisal_min_period"/>
                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
-                                <div class="row">
-                                    <div class="text-muted col-lg-8">
-                                        An appraisal can be requested by the employee or manager.
-                                    </div>
+                                <div class="text-muted">
+                                    An appraisal can be requested by the employee or manager
                                 </div>
                                 <div class="content-group">
                                     <div class="mt16">
                                         <field name="appraisal_min_period"
                                             class="o_light_label"
                                             domain="[('company_id', '=', company_id)]"
-                                            context="{'default_company_id': company_id}"/> Months
+                                            context="{'default_company_id': company_id}"/> months
                                     </div>
                                 </div>
                             </div>
@@ -33,17 +31,15 @@
                             <div class="o_setting_right_pane">
                                 <label for="appraisal_max_period"/>
                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
-                                <div class="row">
-                                    <div class="text-muted col-lg-8">
-                                        An appraisal will be automatically created.
-                                    </div>
+                                <div class="text-muted">
+                                    Automatic appraisal after the maximum number of months
                                 </div>
                                 <div class="content-group">
                                     <div class="mt16">
                                         <field name="appraisal_max_period"
                                             class="o_light_label"
                                             domain="[('company_id', '=', company_id)]"
-                                            context="{'default_company_id': company_id}"/> Months
+                                            context="{'default_company_id': company_id}"/> months
                                     </div>
                                 </div>
                             </div>
@@ -54,66 +50,103 @@
                                 <field name="appraisal_send_reminder"/>
                             </div>
                             <div class="o_setting_right_pane">
-                                <span class="o_form_label">Appraisal Reminder </span>
+                                <span class="o_form_label">Reminders</span>
                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
-                                <div class="row">
-                                    <div class="text-muted col-lg-8">
-                                        Automate email reminders.
-                                    </div>
+                                <div class="text-muted">
+                                    Automatically send appraisal reminders by email
                                 </div>
                                 <div class="content-group">
-                                    <div class="mt16">
-                                        <button name="%(hr_appraisal.appraisal_reminderlist_action)d" icon="fa-arrow-right" type="action" string="Appraisal Reminders"
-                                            class="btn-link" attrs="{'invisible': [('appraisal_send_reminder','=',False)]}"/>
+                                    <div class="mt8">
+                                        <button name="%(hr_appraisal.appraisal_reminderlist_action)d" icon="fa-arrow-right" type="action" string="Appraisal Reminders" class="btn-link" attrs="{'invisible': [('appraisal_send_reminder','=',False)]}"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <h2>Appraisal Invitations</h2>
-                    <div class="row mt16 o_settings_container">
-
-                        <div class="col-12 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="appraisal_by_manager"/>
-                            </div>
+                        <div class="col-12 col-lg-12 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <span class="o_form_label">Manager</span>
+                                <span class="o_form_label">Default Appraisal Participants </span>
                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
-                                <field class="mt8" name="appraisal_by_manager_body_html" attrs="{'invisible': [('appraisal_by_manager', '=', False)]}" style="width: 100%;"/>
+                                <div class="text-muted">
+                                    Appraisal plan for new employees
+                                </div>
+                                <div class="row mt8">
+                                    <div class="col-3">
+                                        <field name="appraisal_by_manager" class="col-lg-1 ml16 w-25"/>
+                                        <label for="appraisal_by_manager"/>
+                                        <span class="fa fa-lg" title="Values set here are company-specific."/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <field name="appraisal_by_employee" class="col-lg-1 ml16"/>
+                                        <label for="appraisal_by_employee"/>
+                                        <span class="fa fa-lg" title="Values set here are company-specific."/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <field name="appraisal_by_collaborators" class="col-lg-1 ml16"/>
+                                        <label for="appraisal_by_collaborators"/>
+                                        <span class="fa fa-lg" title="Values set here are company-specific."/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <field name="appraisal_by_colleagues" class="col-lg-1 ml16"/>
+                                        <label for="appraisal_by_colleagues"/>
+                                        <span class="fa fa-lg" title="Values set here are company-specific."/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="col-12 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="appraisal_by_employee"/>
-                            </div>
+                        <div class="col-12 col-lg-12 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <span class="o_form_label">Employee</span>
-                                <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
-                                <field class="mt8" name="appraisal_by_employee_body_html" attrs="{'invisible': [('appraisal_by_employee', '=', False)]}" style="width: 100%;"/>
-                            </div>
-                        </div>
+                                <div class="mt8">
+                                    <span class="o_form_label">Default Appraisal Invitations </span>
+                                    <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
+                                </div>
+                                <div class="text-muted">
+                                    Default messages for appraisal invitation
+                                </div>
 
-                        <div class="col-12 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="appraisal_by_collaborators"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <span class="o_form_label">Subordinates</span>
-                                <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
-                                <field class="mt8" name="appraisal_by_collaborators_body_html" attrs="{'invisible': [('appraisal_by_collaborators', '=', False)]}" style="width: 100%;"/>
-                            </div>
-                        </div>
-
-                        <div class="col-12 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="appraisal_by_colleagues"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <span class="o_form_label">Colleagues</span>
-                                <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
-                                <field class="mt8" name="appraisal_by_colleagues_body_html" attrs="{'invisible': [('appraisal_by_colleagues', '=', False)]}" style="width: 100%;"/>
+                                <div class="content-group mt8">
+                                    <div class="row mt8">
+                                        <div class="col-2">
+                                            <label for="appraisal_by_manager"/>
+                                            <span class="fa fa-lg" title="Values set here are company-specific."/>
+                                        </div>
+                                        <div class="col-10" attrs="{'invisible': [('appraisal_by_manager', '=', False)]}">
+                                            <field name="appraisal_by_manager_body_html" class="w-100"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt8">
+                                        <div class="col-2">
+                                            <label for="appraisal_by_employee"/>
+                                            <span class="fa fa-lg" title="Values set here are company-specific."/>
+                                        </div>
+                                        <div class="col-10" attrs="{'invisible': [('appraisal_by_employee', '=', False)]}">
+                                            <field name="appraisal_by_employee_body_html" class="w-100"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt8">
+                                        <div class="col-2">
+                                            <label for="appraisal_by_collaborators"/>
+                                            <span class="fa fa-lg" title="Values set here are company-specific."/>
+                                        </div>
+                                        <div class="col-10" attrs="{'invisible': [('appraisal_by_collaborators', '=', False)]}">
+                                            <field name="appraisal_by_collaborators_body_html" class="w-100"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt8">
+                                        <div class="col-2">
+                                            <label for="appraisal_by_colleagues"/>
+                                            <span class="fa fa-lg" title="Values set here are company-specific."/>
+                                        </div>
+                                        <div class="col-10" attrs="{'invisible': [('appraisal_by_colleagues', '=', False)]}">
+                                            <field name="appraisal_by_colleagues_body_html" class="w-100"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -137,4 +170,11 @@
         sequence="0"
         action="hr_appraisal_config_settings_action"
         groups="base.group_system"/>
+
+    <menuitem id="hr_appraisal_menu_employee"
+        name="Employees"
+        parent="menu_hr_appraisal_configuration"
+        sequence="1"
+        action="hr.open_view_employee_list_my"
+        groups="hr.group_hr_user,base.group_no_one"/>
 </odoo>

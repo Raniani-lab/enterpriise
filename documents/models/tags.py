@@ -41,6 +41,8 @@ class Tags(models.Model):
 
     def name_get(self):
         names = []
+        if self._context.get('simple_name'):
+            return super(Tags, self).name_get()
         for record in self:
             names.append((record.id, "%s > %s" % (record.facet_id.name, record.name)))
         return names

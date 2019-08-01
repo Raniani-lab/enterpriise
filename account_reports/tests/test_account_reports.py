@@ -575,7 +575,7 @@ class TestAccountReports(SavepointCase):
     def test_general_ledger_tax_declaration(self):
         ''' Test the tax declaration. '''
         journal = self.env['account.journal'].search(
-            [('company_id', '=', self.company_parent.id), ('type', '=', 'sale')])
+            [('company_id', '=', self.company_parent.id), ('type', '=', 'sale')], limit=1)
 
         # Select only the 'Customer Invoices' journal.
         report = self.env['account.general.ledger']

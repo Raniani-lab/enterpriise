@@ -107,13 +107,62 @@
         </field>
     </record>
 
-    <!-- fsm task form view -->
+    <!-- Quotation button in Project task form -->
+    <record id="project_task_view_form_quotation" model="ir.ui.view">
+        <field name="name">view.form.fsm.inherit.quotation</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="is_fsm" invisible="1"/>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('is_fsm', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button name="action_fsm_view_quotations"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-pencil-square-o"
+                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
+                    <field string="Quotation(s)" name="quotation_count" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+    </record>
+
+    <!-- Quotation and sales order button in Fsm task form -->
+    <record id="project_task_view_form_fsm_quotation" model="ir.ui.view">
+        <field name="name">view.form.fsm.inherit.quotation</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_task_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='timesheet_timer_start']" position="after">
+                <field name="is_fsm" invisible="1"/>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('is_fsm', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_view_material']" position="after">
+                <button name="action_fsm_view_quotations"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa fa-pencil-square-o"
+                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
+                    <field string="Quotation(s)" name="quotation_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+    </record>
+
+    <!--
+        FSM Task views
+    -->
+
     <record id="project_task_view_form" model="ir.ui.view">
-        <field name="name">project.task.view.form.fsm</field>
+        <field name="name">project.task.form.fsm</field>
         <field name="model">project.task</field>
         <field name="arch" type="xml">
             <form>
-                <header>
+                <header attrs="{'invisible': [('id', '=', False)]}">
                     <field name="display_timesheet_timer" invisible="1"/>
                     <field name="is_fsm" invisible="1"/>
                     <field name="allow_timesheets" invisible="1"/>
@@ -209,30 +258,7 @@
         </field>
     </record>
 
-    <!-- Quotation button in Project task form -->
-    <record id="project_task_view_form_quotation" model="ir.ui.view">
-        <field name="name">view.form.fsm.inherit.quotation</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_form2"/>
-        <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
-                <field name="is_fsm" invisible="1"/>
-                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('is_fsm', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
-            </xpath>
-            <div name="button_box" position="inside">
-                <button name="action_fsm_view_quotations"
-                    type="object"
-                    class="oe_stat_button"
-                    icon="fa-pencil-square-o"
-                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
-                    <field string="Quotation(s)" name="quotation_count" widget="statinfo"/>
-                </button>
-            </div>
-        </field>
-        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
-    </record>
-
-    <!-- Quotation and sales order button in Fsm task form -->
+    <!-- Extends FSM form view to add "New Quotation" button -->
     <record id="project_task_view_form_fsm_quotation" model="ir.ui.view">
         <field name="name">view.form.fsm.inherit.quotation</field>
         <field name="model">project.task</field>
@@ -255,27 +281,23 @@
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
     </record>
 
-    <!-- Improve the task kanban in Project -->
-    <record id="view_task_kanban_inherit" model="ir.ui.view">
-        <field name="name">view.task.kanban.inherit</field>
+    <record id="project_task_view_list_fsm" model="ir.ui.view">
+        <field name="name">project.task.tree.fsm</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_kanban"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">
-                <field name="planned_date_begin" invisible="True"/>
-                <field name="planned_date_end" invisible="True"/>
-                <t t-if="record.planned_date_begin.raw_value and record.planned_date_end.raw_value">
-                    <div t-if="moment(record.planned_date_begin.raw_value.toISOString()).isAfter(moment().add(-1, 'days').endOf('day')) and moment().endOf('day').isAfter(moment(record.planned_date_begin.raw_value.toISOString()))"
-                        role="status" class="alert-warning" t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format('LT')"/>
-                    <div t-else="" role="status" t-attf-class="#{moment().startOf('day').isAfter(moment(record.planned_date_begin.raw_value.toISOString())) ? 'alert-danger' : ''}"
-                        t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format('ll')"/>
-                </t>
-            </xpath>
+            <tree string="Tasks">
+                <field name="name"/>
+                <field name="project_id" invisible="context.get('user_invisible', False)"/>
+                <field name="user_id" invisible="context.get('user_invisible', False)"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="planned_date_begin"/>
+                <field name="planned_date_end"/>
+            </tree>
         </field>
     </record>
 
     <record id="project_task_view_search_fsm" model="ir.ui.view">
-        <field name="name">project.task.view.search.fsm</field>
+        <field name="name">project.task.search.fsm</field>
         <field name="model">project.task</field>
         <field name="arch" type="xml">
             <search string="Search planning">
@@ -284,14 +306,14 @@
                 <field name="user_id"/>
                 <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
                 <separator />
-                <filter string="To Do" name="todo" domain="[('fsm_state', '=', 'draft')]"/>
+                <filter string="To Do" name="todo" domain="[('fsm_state', '=', 'draft'), ('user_id', '!=', False)]"/>
                 <separator />
                 <filter name="planned_today" string="Planned for Today" domain="[
                     ('planned_date_begin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
                     ('planned_date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
                 <filter name="planned_future" string="Future" domain="[('planned_date_begin', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
                 <group expand="0" string="Group By">
-                    <filter string="Start Date" name="groupby_planned_date_begin" context="{'group_by': 'planned_date_begin'}"/>
+                    <filter string="Start Date" name="groupby_planned_date_begin" context="{'group_by': 'planned_date_begin:day'}"/>
                     <filter string="Responsible" name="groupby_user" context="{'group_by':'user_id'}"/>
                     <filter string="Stage" name="groupby_stage" context="{'group_by':'stage_id'}"/>
                     <filter string="Company" name="groupby_company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
@@ -300,9 +322,20 @@
         </field>
     </record>
 
-    <!-- Kanban for the app -->
+    <record id="project_task_view_calendar_fsm" model="ir.ui.view">
+        <field name="name">project.task.calendar.fsm</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <calendar date_start="planned_date_begin" date_stop="planned_date_end" string="Tasks" mode="month" color="user_id" form_view_id="%(industry_fsm.project_task_view_form)d" event_open_popup="1">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="partner_zip"/>
+            </calendar>
+        </field>
+    </record>
+
     <record id="project_task_view_kanban" model="ir.ui.view">
-        <field name="name">project.task.view.kanban</field>
+        <field name="name">project.task.kanban.fsm</field>
         <field name="model">project.task</field>
         <field name="priority">100</field>
         <field name="arch" type="xml">
@@ -355,16 +388,22 @@
         </field>
     </record>
 
+    <!--
+        FSM Actions
+    -->
+
+    <!-- My Tasks: kanban action -->
     <record id="project_task_action_fsm" model="ir.actions.act_window">
         <field name="name">My Tasks</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">kanban,form</field>
+        <field name="view_mode">map,kanban,gantt,calendar,tree,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True)]</field>
         <field name="context">{
             'fsm_mode': True,
             'search_default_my_tasks': True,
             'search_default_planned_future': True,
+            'search_default_planned_today': True,
             'search_default_todo': True,
         }</field>
         <field name="help" type="html">
@@ -374,24 +413,88 @@
     </record>
 
     <record id="project_task_action_fsm_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="1"/>
+        <field name="sequence" eval="5"/>
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="project_task_view_kanban"/>
         <field name="act_window_id" ref="project_task_action_fsm"/>
     </record>
 
     <record id="project_task_action_fsm_view_map" model="ir.actions.act_window.view">
-        <field name="sequence" eval="2"/>
+        <field name="sequence" eval="10"/>
         <field name="view_mode">map</field>
         <field name="view_id" ref="project_enterprise.project_task_map_view"/>
         <field name="act_window_id" ref="project_task_action_fsm"/>
     </record>
 
+    <record id="project_task_action_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="industry_fsm.project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm"/>
+    </record>
+
+     <record id="project_task_action_fsm_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm"/>
+    </record>
+
     <record id="project_task_action_fsm_view_form" model="ir.actions.act_window.view">
-        <field name="sequence" eval="5"/>
+        <field name="sequence" eval="30"/>
         <field name="view_mode">form</field>
         <field name="view_id" ref="project_task_view_form"/>
         <field name="act_window_id" ref="project_task_action_fsm"/>
+    </record>
+
+    <!-- My Tasks: map action -->
+    <record id="project_task_action_fsm_map" model="ir.actions.act_window">
+        <field name="name">Map</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">map,kanban,gantt,calendar,tree,form,activity</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="context">{
+            'search_default_my_tasks': True,
+            'search_default_planned_future': True,
+            'search_default_planned_today': True,
+            'search_default_todo': True,
+        }</field>
+    </record>
+
+    <record id="project_task_action_fsm_map_view_map" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">map</field>
+        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="act_window_id" ref="project_task_action_fsm_map"/>
+    </record>
+
+    <record id="project_task_action_fsm_map_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="act_window_id" ref="project_task_action_fsm_map"/>
+    </record>
+
+    <record id="project_task_action_fsm_map_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="industry_fsm.project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_map"/>
+    </record>
+
+    <record id="project_task_action_fsm_map_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_map"/>
+    </record>
+
+    <record id="project_task_action_fsm_map_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="30"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form"/>
+        <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 
     <!-- Panning actions -->
@@ -402,7 +505,12 @@
         <field name="context" eval="{'search_default_group_by_user': 1}"/>
     </record>
 
-    <menuitem id="menu_fsm_root"
+
+    <!--
+        FSM Menus
+    -->
+
+    <menuitem id="fsm_menu_root"
         name="Field Service"
         sequence="25"
         web_icon="industry_fsm,static/description/icon.png"
@@ -410,10 +518,24 @@
 
     <menuitem id="fsm_tasks_menu"
         name="My Tasks"
-        action="project_task_action_fsm"
         sequence="10"
         parent="industry_fsm.menu_fsm_root"
         groups="industry_fsm.group_fsm_user"/>
+
+        <menuitem id="fsm_menu_tasks_kanban"
+            name="Tasks"
+            action="project_task_action_fsm"
+            sequence="10"
+            parent="industry_fsm.fsm_menu_tasks"
+            groups="industry_fsm.group_fsm_user"/>
+
+         <menuitem id="fsm_menu_tasks_map"
+            name="Map"
+            action="project_task_action_fsm_map"
+            sequence="20"
+            parent="fsm_menu_tasks"
+            groups="industry_fsm.group_fsm_user"/>
+
 
     <menuitem id="fsm_planning_menu"
         name="Planning"

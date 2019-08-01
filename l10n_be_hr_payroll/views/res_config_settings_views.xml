@@ -78,6 +78,7 @@
                                 <field name="onss_registration_number"/>
                                 <field name="dmfa_employer_class"/>
                             </group>
+                            <button name="%(l10n_be_hr_payroll.l10n_be_hr_payroll_action_work_address_codes)d" icon="fa-arrow-right" type="action" string="Work address DMFA codes" class="btn-link"/>
                         </div>
                     </div>
                 </div>

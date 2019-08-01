@@ -61,7 +61,7 @@ class sale_order(models.Model):
                 rec.client_order_ref = purchase_order.name
 
             # auto-validate the purchase order if needed
-            if company.auto_validation == 'validated':
+            if company.auto_validation:
                 purchase_order.with_user(intercompany_uid).button_confirm()
 
     def _prepare_purchase_order_data(self, company, company_partner):

@@ -341,9 +341,10 @@ class HrDMFAReport(models.Model):
 class HrDMFALocationUnit(models.Model):
     _name = 'l10n_be.dmfa.location.unit'
     _description = 'Work Place defined by ONSS'
+    _rec_name = 'code'
 
     code = fields.Integer(required=True)
-    company_id = fields.Many2one('res.company', required=True)
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     partner_id = fields.Many2one('res.partner', string="Working Address", required=True)
 
     _sql_constraints = [

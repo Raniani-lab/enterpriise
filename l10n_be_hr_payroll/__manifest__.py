@@ -38,7 +38,6 @@ Belgian Payroll Rules.
         'views/report_termination_holidays.xml',
         'views/hr_dmfa_template.xml',
         'views/hr_dmfa_views.xml',
-        'views/res_company_views.xml',
         'data/l10n_be_hr_payroll_data.xml',
         'data/cp200/work_entry_data.xml',
         'data/hr_rule_parameters_data.xml',

@@ -72,7 +72,7 @@ class purchase_order(models.Model):
                 rec.partner_ref = sale_order.name
 
             #Validation of sales order
-            if company.auto_validation == 'validated':
+            if company.auto_validation:
                 sale_order.with_user(intercompany_uid).action_confirm()
 
     def _prepare_sale_order_data(self, name, partner, company, direct_delivery_address):

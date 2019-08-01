@@ -65,7 +65,9 @@
                     <field name="employee_id" filter_domain="[('employee_id', 'ilike', self)]"/>
                     <field name="department_id" filter_domain="[('department_id', 'ilike', self)]"/>
                     <field name="date"/>
-                    <filter string="Date" name="year" date="date" default_period="last_365_days"/>
+                    <filter string="Last 365 Days" name="year" domain="[
+                        ('date', '>=', (context_today() + relativedelta(days=-365)).strftime('%Y-%m-%d')),
+                        ('date', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
                     <group expand="1" string="Group By">
                         <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
                         <filter string="Department" name="department_id" context="{'group_by':'department_id'}"/>

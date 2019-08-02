@@ -155,6 +155,8 @@
                         </div>
                     </div>
                 </div>
+                <div class="fa fa-refresh o_restart o_hr_referral_start" completed="false" aria-label="Restart Onboarding" t-if="widget.debug">
+                </div>
             </t>
         </div>
     </t>

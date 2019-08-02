@@ -1,6 +1,7 @@
 odoo.define('hr_referral.welcome', function (require) {
 "use strict";
 
+var config = require('web.config');
 var AbstractAction = require('web.AbstractAction');
 var core = require('web.core');
 var _t = core._t;
@@ -10,7 +11,7 @@ var pyUtils = require('web.py_utils');
 var MyReferral = AbstractAction.extend({
     contentTemplate: 'HrReferralWelcome',
     events: {
-        'click .o_hr_referral_start': '_skipOnboarding',
+        'click .o_hr_referral_start': '_completeOnboarding',
         'click .o_level_up': '_upgradeLevel',
         'click .o_referral_action': '_onActionClicked',
         'click .o_choose_friend_available': '_chooseFriend',
@@ -33,6 +34,7 @@ var MyReferral = AbstractAction.extend({
                 self.dashboardData = res;
                 self.onboardingLength = res.onboarding && res.onboarding.length;
                 self.applicantId = res.new_friend_id;
+                self.debug = config.isDebug();
             });
 
         return Promise.all([def, this._super.apply(this, arguments)]);
@@ -72,12 +74,14 @@ var MyReferral = AbstractAction.extend({
      * @private
      * @param {MouseEvent} e
      */
-    _skipOnboarding: function (e) {
+    _completeOnboarding: function (e) {
         var self = this;
         e.preventDefault();
+        var completed = ($(e.currentTarget).attr('completed') === 'true');
         this._rpc({
                 model: 'hr.employee',
-                method: 'action_skip_onboarding',
+                method: 'action_complete_onboarding',
+                args: [completed],
             })
             .then(function (res) {
                 self.do_action({

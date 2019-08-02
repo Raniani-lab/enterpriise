@@ -33,7 +33,7 @@
         <field name="model">hr.referral.level</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="image" widget='image' class="oe_avatar"/>
+                <field name="image" widget='image' class="oe_avatar o_referral_img"/>
                 <field name="name"/>
                 <field name="points"/>
             </tree>

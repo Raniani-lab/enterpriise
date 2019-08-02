@@ -18,10 +18,10 @@ class HrEmployee(models.Model):
     utm_source_id = fields.Many2one('utm.source', 'Source', ondelete='cascade', required=True, groups="hr.group_hr_user")
 
     @api.model
-    def action_skip_onboarding(self):
+    def action_complete_onboarding(self, complete):
         if not self.env.user.employee_id:
             return
-        self.env.user.employee_id.hr_referral_onboarding_page = True
+        self.env.user.employee_id.hr_referral_onboarding_page = bool(complete)
 
     @api.model
     def create(self, vals):

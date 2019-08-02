@@ -17,6 +17,7 @@
         'views/stock_barcode_views.xml',
         'views/res_config_settings_views.xml',
         'views/stock_scrap_views.xml',
+        'views/stock_location_views.xml',
         'wizard/stock_barcode_lot_view.xml',
         'data/data.xml',
     ],

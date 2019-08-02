@@ -23,6 +23,7 @@ ERROR_NO_DOCUMENT_NAME = 5
 ERROR_UNSUPPORTED_IMAGE_FORMAT = 6
 ERROR_FILE_NAMES_NOT_MATCHING = 7
 ERROR_NO_CONNECTION = 8
+ERROR_SERVER_IN_MAINTENANCE = 9
 
 ERROR_MESSAGES = {
     ERROR_INTERNAL: _("An error occurred"),
@@ -30,7 +31,8 @@ ERROR_MESSAGES = {
     ERROR_NO_DOCUMENT_NAME: _("No document name provided"),
     ERROR_UNSUPPORTED_IMAGE_FORMAT: _("Unsupported image format"),
     ERROR_FILE_NAMES_NOT_MATCHING: _("You must send the same quantity of documents and file names"),
-    ERROR_NO_CONNECTION: _("Server not available. Please retry later")
+    ERROR_NO_CONNECTION: _("Server not available. Please retry later"),
+    ERROR_SERVER_IN_MAINTENANCE: _("Server is currently under maintenance. Please retry later"),
 }
 
 
@@ -59,7 +61,7 @@ class AccountMove(models.Model):
     def _compute_error_message(self):
         for record in self:
             if record.extract_status_code != SUCCESS and record.extract_status_code != NOT_READY:
-                self.extract_error_message = ERROR_MESSAGES[self.extract_status_code]
+                record.extract_error_message = ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL])
 
     def _compute_can_show_send_resend(self, record):
         can_show = True

@@ -4,7 +4,7 @@ odoo.define('posiot.scale.tour', function (require) {
 var Tour = require('web_tour.tour');
 var DeviceProxy = require('iot.widgets').DeviceProxy;
 
-DeviceProxy.include({
+var PosScaleDummy = DeviceProxy.extend({
     action: function () { },
     remove_listener: function () { },
     add_listener: function (callback) {
@@ -28,6 +28,9 @@ Tour.register('pos_iot_scale_tour', {
         trigger: ".js-category-switch",
     }, {
         trigger: 'body:has(.loader:hidden)',
+        run: function () {
+            posmodel.iot_device_proxies.scale = new PosScaleDummy({ iot_ip: '', identifier: '' });
+        }
     }, {
         trigger: '.product:contains("Whiteboard Pen")',
     }, {

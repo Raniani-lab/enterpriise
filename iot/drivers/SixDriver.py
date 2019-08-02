@@ -39,15 +39,38 @@ class SixDriver(Driver):
     def action(self, data):
         try:
             if data['messageType'] == 'Transaction':
+                self.open_shift()
                 self.actions.put({
                     'type': b'debit',
                     'amount': data['amount'],
                     'currency': data['currency'].encode(),
                 })
+            elif data['messageType'] == 'OpenShift':
+                self.open_shift()
+            elif data['messageType'] == 'CloseShift':
+                self.close_shift()
             elif data['messageType'] == 'Cancel':
                 self.call_eftapi('EFT_Abort')
         except:
             pass
+
+    def open_shift(self):
+        """Opens the shift if it was closed (activation_state.value == 0)"""
+
+        activation_state = ctypes.c_long()
+        self.call_eftapi('EFT_GetActivationState', ctypes.byref(activation_state))
+        self.call_eftapi('EFT_PutPrinterWidth', 45)
+        self.call_eftapi('EFT_PutReceiptOptions', 1089)
+        if activation_state.value == 0:
+            self.call_eftapi('EFT_Open')
+
+    def close_shift(self):
+        """Closes the shift if it was open (activation_state.value == 1)"""
+
+        activation_state = ctypes.c_long()
+        self.call_eftapi('EFT_GetActivationState', ctypes.byref(activation_state))
+        if activation_state.value == 1:
+            self.call_eftapi('EFT_Close')
 
     def run(self):
         """Transactions need to be async to be aborted. Therefore, they cannot

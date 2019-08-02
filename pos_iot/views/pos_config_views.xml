@@ -4,6 +4,7 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/pos_iot/static/src/js/chrome.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/devices.js"></script>
+            <script type="text/javascript" src="/pos_iot/static/src/js/gui.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/iot.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/models.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/payment.js"></script>

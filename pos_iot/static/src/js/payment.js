@@ -254,4 +254,35 @@ screens.PaymentScreenWidget.include({
             });
     },
 });
+
+var posmodel_super = models.PosModel.prototype;
+models.PosModel = models.PosModel.extend({
+    /**
+     * Opens the shift on the payment terminal
+     * 
+     * @override
+     */
+    after_load_server_data: function () {
+        var self = this;
+        var res = posmodel_super.after_load_server_data.apply(this, arguments);
+        if (this.usePaymentTerminal()) {
+            res.then(function () {
+                self.iot_device_proxies.payment.action({ messageType: 'OpenShift' });
+            });
+        }
+        return res;
+    },
+    /**
+     * Checks if a payment terminal should be used (A terminal has been selected
+     * in the config and a payment method needs a terminal)
+     * @returns {boolean}
+     */
+    usePaymentTerminal: function () {
+        return this.config && this.config.use_proxy
+            && this.iot_device_proxies && this.iot_device_proxies.payment
+            && this.payment_methods.some(function (payment_method) {
+                return payment_method.use_payment_terminal;
+            });
+    },
+});
 });

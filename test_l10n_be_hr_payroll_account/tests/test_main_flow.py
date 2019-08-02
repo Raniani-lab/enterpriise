@@ -53,12 +53,13 @@ class TestHR(common.TransactionCase):
         user.tz = employee.tz
         return user
 
-    def create_leave_type(self, user, name='Leave Type', allocation='no', request_unit='day', validation='no_validation'):
+    def create_leave_type(self, user, name='Leave Type', allocation='no', request_unit='day', validation='no_validation', allocation_validation='hr'):
         leave_type_form = Form(self.env['hr.leave.type'].with_user(user))
         leave_type_form.name = name
         leave_type_form.allocation_type = allocation
         leave_type_form.request_unit = request_unit
-        leave_type_form.validation_type = validation
+        leave_type_form.leave_validation_type = validation
+        leave_type_form.allocation_validation_type = allocation_validation
         leave_type_form.responsible_id = user
         leave_type_form.validity_start = False
         return leave_type_form.save()
@@ -104,6 +105,7 @@ class TestHR(common.TransactionCase):
             allocation='fixed_allocation',
             request_unit='hour',
             validation='both',
+            allocation_validation='both',
         )
 
         # --------------------------------------------------
@@ -124,7 +126,7 @@ class TestHR(common.TransactionCase):
         self.assertEqual(allocation_no_validation.state, 'draft')
 
         # Holiday user approve allocation
-        allocation_no_validation.with_user(self.user).action_confirm()
+        allocation_no_validation.action_confirm()
         allocation_no_validation.action_approve()
         self.assertEqual(allocation_no_validation.state, 'validate')
         self.assertEqual(allocation_no_validation.first_approver_id, self.hr_holidays_user.employee_id)
@@ -141,10 +143,10 @@ class TestHR(common.TransactionCase):
         )
         self.assertEqual(allocation.state, 'confirm')
 
-        # Holyday User approves
-        allocation.with_user(self.hr_holidays_user).action_approve()
+        # Employee's manager approves
+        allocation.with_user(self.user_leave_team_leader).action_approve()
         self.assertEqual(allocation.state, 'validate1')
-        self.assertEqual(allocation.first_approver_id, self.hr_holidays_user.employee_id)
+        self.assertEqual(allocation.first_approver_id, self.user_leave_team_leader.employee_id)
 
         # Holiday Manager validates
         allocation.with_user(self.hr_holidays_manager).action_validate()

@@ -433,38 +433,49 @@ class AccountMove(models.Model):
                 return key_max
         return 0
 
+    def _get_taxes_record(self, taxes_ocr, taxes_type_ocr):
+        """
+        Find taxes records to use from the taxes detected for an invoice line.
+        """
+        taxes_found = self.env['account.tax']
+        for (taxes, taxes_type) in zip(taxes_ocr, taxes_type_ocr):
+            if taxes != 0.0:
+                taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')])
+                if taxes_records:
+                    # prioritize taxes that are not included in the price
+                    taxes_records_not_included = taxes_records.filtered(lambda r: not r.price_include)
+                    if taxes_records_not_included:
+                        taxes_record = taxes_records_not_included[0]
+                    else:
+                        taxes_record = taxes_records[0]
+                    taxes_found |= taxes_record
+        return taxes_found
+
     def _get_invoice_lines(self, invoice_lines, subtotal_ocr):
         """
         Get write values for invoice lines.
         """
         self.ensure_one()
         invoice_lines_to_create = []
-        taxes_found = {}
         if self.env.company.extract_single_line_per_tax:
             merged_lines = {}
             for il in invoice_lines:
                 description = il['description']['selected_value']['content'] if 'description' in il else None
                 total = il['total']['selected_value']['content'] if 'total' in il else 0.0
                 subtotal = il['subtotal']['selected_value']['content'] if 'subtotal' in il else total
-                taxes = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
+                taxes_ocr = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
                 taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in il['taxes']['selected_values']] if 'taxes' in il else []
-                keys = []
-                for taxes, taxes_type in zip(taxes, taxes_type_ocr):
-                    if taxes != 0.0:
-                        if (taxes, taxes_type) not in taxes_found:
-                            taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                            if taxes_record:
-                                taxes_found[(taxes, taxes_type)] = taxes_record.id
-                                keys.append(taxes_found[(taxes, taxes_type)])
-                        else:
-                            keys.append(taxes_found[(taxes, taxes_type)])
 
-                if tuple(keys) not in merged_lines:
-                    merged_lines[tuple(keys)] = {'subtotal': subtotal, 'description': [description] if description is not None else []}
+                taxes_records = self._get_taxes_record(taxes_ocr, taxes_type_ocr)
+
+                taxes_ids = tuple(sorted(taxes_records.ids))
+                if taxes_ids not in merged_lines:
+                    merged_lines[taxes_ids] = {'subtotal': subtotal, 'description': [description] if description is not None else []}
                 else:
-                    merged_lines[tuple(keys)]['subtotal'] += subtotal
+                    merged_lines[taxes_ids]['subtotal'] += subtotal
                     if description is not None:
-                        merged_lines[tuple(keys)]['description'].append(description)
+                        merged_lines[taxes_ids]['description'].append(description)
+                merged_lines[taxes_ids]['taxes_records'] = taxes_records
 
             # if there is only one line after aggregating the lines, use the total found by the ocr as it is less error-prone
             if len(merged_lines) == 1:
@@ -475,11 +486,8 @@ class AccountMove(models.Model):
                     'name': "\n".join(il['description']) if len(il['description']) > 0 else "/",
                     'price_unit': il['subtotal'],
                     'quantity': 1.0,
-                    'tax_ids': []
+                    'tax_ids': il['taxes_records']
                 }
-
-                for tax in taxes_ids:
-                    vals['tax_ids'].append(tax)
 
                 invoice_lines_to_create.append(vals)
         else:
@@ -489,24 +497,15 @@ class AccountMove(models.Model):
                 subtotal = il['subtotal']['selected_value']['content'] if 'subtotal' in il else total
                 unit_price = il['unit_price']['selected_value']['content'] if 'unit_price' in il else subtotal
                 quantity = il['quantity']['selected_value']['content'] if 'quantity' in il else 1.0
-                taxes = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
+                taxes_ocr = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
                 taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in il['taxes']['selected_values']] if 'taxes' in il else []
 
                 vals = {
                     'name': description,
                     'price_unit': unit_price,
                     'quantity': quantity,
-                    'tax_ids': []
+                    'tax_ids': self._get_taxes_record(taxes_ocr, taxes_type_ocr)
                 }
-                for (taxes, taxes_type) in zip(taxes, taxes_type_ocr):
-                    if taxes != 0.0:
-                        if (taxes, taxes_type) in taxes_found:
-                            vals['tax_ids'].append(taxes_found[(taxes, taxes_type)])
-                        else:
-                            taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                            if taxes_record:
-                                taxes_found[(taxes, taxes_type)] = taxes_record
-                                vals['tax_ids'].append(taxes_record)
 
                 invoice_lines_to_create.append(vals)
 

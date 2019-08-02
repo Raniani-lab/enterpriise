@@ -49,6 +49,10 @@ class SixDriver(Driver):
                 self.open_shift()
             elif data['messageType'] == 'CloseShift':
                 self.close_shift()
+            elif data['messageType'] == 'Balance':
+                self.actions.put({
+                    'type': 'balance',
+                })
             elif data['messageType'] == 'Cancel':
                 self.call_eftapi('EFT_Abort')
         except:
@@ -72,6 +76,14 @@ class SixDriver(Driver):
         if activation_state.value == 1:
             self.call_eftapi('EFT_Close')
 
+    def balance(self):
+        """Sends a "Balance" operation then triggers an update with a the ticket
+        for the merchant
+        """
+
+        self.call_eftapi('EFT_Balance')
+        self.send_status(ticket_merchant=self.get_merchant_receipt())
+
     def run(self):
         """Transactions need to be async to be aborted. Therefore, they cannot
         be executed directly in 'action' so we process them in a queue.
@@ -79,7 +91,11 @@ class SixDriver(Driver):
 
         while True:
             action = self.actions.get()
-            self.process_transaction(action)
+            if action['type'] == 'balance':
+                self.close_shift()  # Shift must be closed
+                self.balance()
+            else:
+                self.process_transaction(action)
             time.sleep(2)  # If the delay between transactions is too small, the second one will fail
 
     def process_transaction(self, transaction):

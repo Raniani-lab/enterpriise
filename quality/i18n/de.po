@@ -277,7 +277,7 @@ msgstr "Anzeigename"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "E-Mail cc"
 
 #. module: quality
 #: selection:quality.check,quality_state:0
@@ -422,7 +422,7 @@ msgstr "Zuletzt aktualisiert am"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Liste der cc aus eingehenden E-Mails."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id

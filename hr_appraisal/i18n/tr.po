@@ -13,13 +13,13 @@
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2018
 # UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2018
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2019
-# Umur Akın <umura@projetgrup.com>, 2019
 # Martin Trigaux, 2019
 # Levent Karakaş <levent@mektup.at>, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
 # Buket Şeker <buket_skr@hotmail.com>, 2019
 # Ediz Duman <neps1192@gmail.com>, 2019
 # Abdullah Onur Uğur <aonurugur@outlook.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Abdullah Onur Uğur <aonurugur@outlook.com>, 2019\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,6 +54,9 @@ msgid ""
 "<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Meeting</a> for <a "
 "href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s's</a> appraisal"
 msgstr ""
+"<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Dğerlendirme "
+"toplantısı</a> <a href=\"#\" data-oe-model=\"%s\" data-oe-"
+"id=\"%s\">%s'nın</a>"
 
 #. module: hr_appraisal
 #: model:mail.template,body_html:hr_appraisal.mail_template_user_input_appraisal
@@ -250,7 +253,7 @@ msgstr "Değerlendirme ZamanSınırı"
 #. module: hr_appraisal
 #: model:mail.activity.type,name:hr_appraisal.mail_act_appraisal_form
 msgid "Appraisal Form to Fill"
-msgstr ""
+msgstr "Doldurulacak Değerlendirme Formu"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
@@ -308,7 +311,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
 msgid "Appraisal by Manager"
-msgstr ""
+msgstr "Yöneticinin Değerlendirmesi"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_1_3
@@ -320,7 +323,7 @@ msgstr "Dönem"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:196
 #, python-format
 msgid "Appraisal form(s) have been sent"
-msgstr ""
+msgstr "Değerlendirme formu gönderildi"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_from_department
@@ -446,7 +449,7 @@ msgstr "Çalışma Arkadaşları"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_appraisal
 msgid "Colleagues Appraisal"
-msgstr ""
+msgstr "Çalışma Arkadaşı Değerlendirmesi"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__color
@@ -502,7 +505,7 @@ msgstr "Oluşturma Tarihi"
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
 msgid "Create a new appraisal"
-msgstr ""
+msgstr "Yeni bir değerlendirme oluştur"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__create_uid
@@ -723,6 +726,8 @@ msgid ""
 "Fill form <a href=\"%s\">%s</a> for <a href=\"#\" data-oe-model=\"%s\" data-"
 "oe-id=\"%s\">%s's</a> appraisal"
 msgstr ""
+"Değerlendirme <a href=\"%s\">%s</a> için <a href=\"#\" data-oe-model=\"%s\" "
+"data-oe-id=\"%s\">%s's</a> formu doldurun"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -942,7 +947,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "#{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -1755,7 +1760,7 @@ msgstr "İş planı"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:258
 #, python-format
 msgid "You cannot delete appraisal which is in %s state"
-msgstr ""
+msgstr "Aşaması %s olan değerlendirmeleri silemezsiniz"
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree

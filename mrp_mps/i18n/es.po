@@ -3,7 +3,6 @@
 # * mrp_mps
 # 
 # Translators:
-# Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2016
 # Leonardo Chianea <noamixcontenidos@gmail.com>, 2016
 # Ivan Nieto <ivan.n.s@tuta.io>, 2016
 # Pedro M. Baeza <pedro.baeza@gmail.com>, 2016
@@ -23,14 +22,15 @@
 # Rick Hunter <rick.hunter.ec@gmail.com>, 2019
 # Miquel Torner <miq@odoo.com>, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
+# Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-06-12 12:34+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Cristopher Cravioto <ccr@odoo.com>, 2019\n"
+"Last-Translator: Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,6 +68,8 @@ msgid ""
 "<span class=\"fa fa-map-marker text-muted fa-fw\" role=\"img\" aria-"
 "label=\"Forecasted\" title=\"Forecasted\"/>"
 msgstr ""
+"<span class=\"fa fa-map-marker text-muted fa-fw\" role=\"img\" aria-"
+"label=\"Forecasted\" title=\"Forecasted\"/>"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -77,7 +79,7 @@ msgstr "<span class=\"text-muted\"> por</span>"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_active
 msgid "Active in MPS"
-msgstr ""
+msgstr "Activo en PMP"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
@@ -86,7 +88,7 @@ msgstr "Añadir producto"
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:185
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:181
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Add a Product"
@@ -207,7 +209,7 @@ msgstr "Inventario previsto"
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:212
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:208
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 #, python-format
 msgid "Forecast Product"
@@ -245,7 +247,7 @@ msgstr "Cantidad indirecta"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
 msgid "Indirect Sales Forecast"
-msgstr ""
+msgstr "Pronóstico de Ventas Indirecto"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report____last_update
@@ -293,7 +295,7 @@ msgstr "CPE (Calendario de Producción Estandar)"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_mps_report
 msgid "MPS Report"
-msgstr ""
+msgstr "Reporte MPS"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -345,7 +347,7 @@ msgstr "Mensual"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_origin_id
 msgid "Origin Product"
-msgstr ""
+msgstr "Orígen del Producto"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__period
@@ -394,7 +396,7 @@ msgstr "Fila4"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast
 msgid "Sales Forecast"
-msgstr ""
+msgstr "Pronóstico de Ventas"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
@@ -460,8 +462,8 @@ msgstr "Semanalmente"
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:83
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:74
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:224
 #, python-format
 msgid "Wrong value entered!"
 msgstr "Valor introducido no válido"

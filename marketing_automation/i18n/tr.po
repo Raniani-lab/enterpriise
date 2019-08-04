@@ -1349,7 +1349,7 @@ msgstr "Hafta"
 #. module: marketing_automation
 #: model:mail.mass_mailing,subject:marketing_automation.mass_mailing_offer_free_trial
 msgid "Welcome!"
-msgstr ""
+msgstr "Hoşgeldiniz!"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form

@@ -32,12 +32,12 @@ msgstr "A4"
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
 msgid "A6"
-msgstr ""
+msgstr "A6"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,help:delivery_bpost.field_delivery_carrier__bpost_saturday
 msgid "Allow deliveries on Saturday (extra charges apply)"
-msgstr ""
+msgstr "Cumartesi günleri teslimata izin verir (ekstra ücret uygulanır)"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:100
@@ -46,6 +46,8 @@ msgid ""
 "Authentication error -- wrong credentials\n"
 "(Detailed error: %s)"
 msgstr ""
+"Yetkilendirme hatası -- yanlış kimlik bilgileri\n"
+"(Hata detayı: %s)"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -55,17 +57,17 @@ msgstr "Bu kurallara göre"
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_account_number
 msgid "Bpost Account Number"
-msgstr ""
+msgstr "Bpost Hesap Numarası"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_delivery_nature
 msgid "Bpost Delivery Nature"
-msgstr ""
+msgstr "Bpost Teslimat Niteliği"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_domestic_deliver_type
 msgid "Bpost Domestic Deliver Type"
-msgstr ""
+msgstr "Bpost Yurtiçi Teslimat Türü"
 
 #. module: delivery_bpost
 #: model:delivery.carrier,name:delivery_bpost.delivery_carrier_bpost_domestic
@@ -77,17 +79,17 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_international_deliver_type
 msgid "Bpost International Deliver Type"
-msgstr ""
+msgstr "Bpost Uluslararası Teslimat Türü"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_label_format
 msgid "Bpost Label Format"
-msgstr ""
+msgstr "Bpost Etiket Formatı"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_label_stock_type
 msgid "Bpost Label Stock Type"
-msgstr ""
+msgstr "Bpost Stok Etiket Türü"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_parcel_return_instructions
@@ -97,7 +99,7 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_shipment_type
 msgid "Bpost Shipment Type"
-msgstr ""
+msgstr "Bpost Nakliye Türü"
 
 #. module: delivery_bpost
 #: model:delivery.carrier,name:delivery_bpost.delivery_carrier_bpost_inter
@@ -120,17 +122,17 @@ msgstr "DHL"
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "DOCUMENTS"
-msgstr ""
+msgstr "BELGELER"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_saturday
 msgid "Delivery on Saturday"
-msgstr ""
+msgstr "Cumartesi Teslimatı"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
 msgid "Destroy"
-msgstr ""
+msgstr "Yıkmak"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_delivery_nature:0
@@ -157,12 +159,12 @@ msgstr "Sabit Fiyat"
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "GIFT"
-msgstr ""
+msgstr "HEDİYE"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "GOODS"
-msgstr ""
+msgstr "MALZEMELER"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_delivery_nature:0
@@ -177,7 +179,7 @@ msgstr "Taşıyıcı entegrasyonu yok"
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "OTHER"
-msgstr ""
+msgstr "DİĞER"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_format:0
@@ -193,12 +195,12 @@ msgstr "PNG"
 #: code:addons/delivery_bpost/models/bpost_request.py:136
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
-msgstr ""
+msgstr "Bpost için 30 Kg daha fazla olan paketler kabul edilmez."
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_developer_password
 msgid "Passphrase"
-msgstr ""
+msgstr "Parola"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:60
@@ -226,23 +228,23 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
 msgid "Return to sender by air"
-msgstr ""
+msgstr "Hava yolu ile göndericiye dönüş."
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
 msgid "Return to sender by road"
-msgstr ""
+msgstr "Kara yolu ile göndericiye iade"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "SAMPLE"
-msgstr ""
+msgstr "NUMUNE"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:80
 #, python-format
 msgid "Shipment created into bpost <br/> <b>Tracking Number : </b>%s"
-msgstr ""
+msgstr "Gönderim bpost için oluştu <br/> <b>Takip Numarası: </b>%s"
 
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_delivery_carrier
@@ -262,6 +264,8 @@ msgid ""
 "The address of your company/warehouse is incomplete or wrong (Missing field(s):  \n"
 " %s)"
 msgstr ""
+"Şirket/depo adres bilgileriniz eksik yada yanlış (Eşleşmeyen alan(lar):  \n"
+" %s)"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:62
@@ -270,6 +274,7 @@ msgid ""
 "The estimated shipping cannot be computed because the weight of your product"
 " is missing."
 msgstr ""
+"Tahmin edilen teslimat hesaplanamadı, çünkü ürününüzün ağırlığı eksik."
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:58
@@ -278,6 +283,7 @@ msgid ""
 "The estimated shipping price cannot be computed because all your products "
 "are service/digital."
 msgstr ""
+"Tüm ürünleriniz hizmet/dijital olduğu için, teslimat ücreti hesaplanamadı."
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:44
@@ -286,6 +292,8 @@ msgid ""
 "The recipient address is incomplete or wrong (Missing field(s):  \n"
 " %s)"
 msgstr ""
+"Alıcı adresi eksik yada yanlış (Eksik alan(lar):  \n"
+" %s)"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -313,18 +321,21 @@ msgid ""
 "You can not cancel a bpost shipment when a shipping label has already been "
 "generated."
 msgstr ""
+"Bir teslimat etiketi çoktan oluşturulduğunda, bpost gönderimini iptal "
+"edemezsiniz "
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:102
 #, python-format
 msgid "You cannot compute a passphrase for non-bpost carriers."
-msgstr ""
+msgstr "Bpost olmayan taşıyıcılar için bir parola hesaplayamazsınız."
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:54
 #, python-format
 msgid "Your company/warehouse address must be in Belgium to ship with bpost"
 msgstr ""
+"Bpost ile gönderim olması için şirket/depo adresiniz Belçika'da olmalıdır."
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_domestic_deliver_type:0
@@ -365,12 +376,12 @@ msgstr "bpost"
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "bpost Configuration"
-msgstr ""
+msgstr "bpost Yapılandırması"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_default_packaging_id
 msgid "bpost Default Packaging Type"
-msgstr ""
+msgstr "bpost Varsayılan Paketleme Türü"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:48

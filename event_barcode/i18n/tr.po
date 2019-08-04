@@ -49,6 +49,8 @@ msgid ""
 "<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
 "label=\"Barcode\"/>"
 msgstr ""
+"<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
+"label=\"Barcode\"/>"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:18

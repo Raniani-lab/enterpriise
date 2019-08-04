@@ -477,7 +477,7 @@ msgstr "Ermöglicht das Verwalten Ihrer Dokumente."
 #: code:addons/documents/static/src/js/documents_kanban_controller.js:180
 #, python-format
 msgid "An error occurred during the upload"
-msgstr ""
+msgstr "Beim Hochladen ist ein Fehler aufgetreten"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_appraisal
@@ -682,7 +682,7 @@ msgstr "Erstelle neues Stichwort"
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Create signature request"
-msgstr ""
+msgstr "Signaturanforderung erstellen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_uid
@@ -729,7 +729,7 @@ msgstr "Kriterien "
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Customer invoice"
-msgstr ""
+msgstr "Kundenrechnung"
 
 #. module: documents
 #: selection:documents.request_wizard,activity_date_deadline_range_type:0
@@ -977,7 +977,7 @@ msgstr "FEHLER: Die Datei muss eine PDF-Datei sein"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "E-Mail cc"
 
 #. module: documents
 #: selection:documents.document,type:0
@@ -1243,7 +1243,7 @@ msgstr "Verspätete Aktivitäten"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Liste der cc aus eingehenden E-Mails."
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -1484,12 +1484,12 @@ msgstr "Odoo Webseite"
 #: code:addons/documents/static/src/js/documents_kanban_controller.js:434
 #, python-format
 msgid "One or more files failed to upload"
-msgstr ""
+msgstr "Eine oder mehrere Dateien konnten nicht hochgeladen werden."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__limited_to_single_record
 msgid "One record limit"
-msgstr ""
+msgstr "Ein Datensatzlimit"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
@@ -1837,7 +1837,7 @@ msgstr "Alle Datensätze mit vor heute geplanten Aktionen anzeigen"
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Sign directly"
-msgstr ""
+msgstr "Direkt unterschreiben"
 
 #. module: documents
 #. openerp-web
@@ -1997,6 +1997,8 @@ msgid ""
 "This document has been requested.\n"
 "                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
 msgstr ""
+"Dieses Dokument wurde angefordert.\n"
+"                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Hochladen</b>."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids

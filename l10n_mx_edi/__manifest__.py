@@ -21,7 +21,7 @@ This module allows the creation of the EDI documents and the communication with 
         'base_address_city',
     ],
     'external_dependencies' : {
-        'python' : ['OpenSSL'],
+        'python' : ['pyOpenSSL'],
     },
     'data': [
         'security/ir.model.access.csv',

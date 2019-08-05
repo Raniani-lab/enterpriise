@@ -53,17 +53,6 @@ var DocumentsKanbanRecord = KanbanRecord.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * @override
-     * @private
-     */
-    _render: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            var $selectIcon = $('<i>').addClass('fa fa-circle-thin o_record_selector');
-            self.$el.append($selectIcon);
-        });
-    },
-    /**
      * @private
      * @param {boolean} clear if true, will ask to unselect other records
      * @param {jQueryEvent} ev

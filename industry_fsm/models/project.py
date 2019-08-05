@@ -196,6 +196,15 @@ class Task(models.Model):
         # prevent view with onboarding banner
         list_view = self.env.ref('account.view_move_tree')
         form_view = self.env.ref('account.view_move_form')
+        if len(invoices) == 1:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _('Invoice'),
+                'res_model': 'account.move',
+                'view_mode': 'form',
+                'views': [[form_view.id, 'form']],
+                'res_id': invoices.id,
+            }
         return {
             'type': 'ir.actions.act_window',
             'name': _('Invoices'),

@@ -29,5 +29,6 @@
     'license': 'OEEL-1',
     'qweb': [
         'static/src/xml/planning_gantt.xml',
+        'static/src/xml/field_colorpicker.xml',
     ]
 }

@@ -207,7 +207,7 @@
         <field name="arch" type="xml">
             <tree string="Planning Role List" editable="top">
                 <field name="name"/>
-                <field name="color"/>
+                <field name="color" widget="color_picker"/>
             </tree>
         </field>
     </record>
@@ -218,7 +218,7 @@
         <field name="arch" type="xml">
             <form string="Planning Role">
                 <field name="name"/>
-                <field name="color"/>
+                <field name="color" widget="color_picker"/>
             </form>
         </field>
     </record>

@@ -60,7 +60,7 @@ class AccountAsset(models.Model):
 
     account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_value', help="Account used to record the purchase of the asset at its original price.", store=True, readonly=False)
     account_depreciation_id = fields.Many2one('account.account', string='Depreciation Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain=[('internal_type', '=', 'other'), ('deprecated', '=', False)], help="Account used in the depreciation entries, to decrease the asset value.")
-    account_depreciation_expense_id = fields.Many2one('account.account', string='Expense Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain=[('internal_type', '=', 'other'), ('deprecated', '=', False)], oldname='account_income_recognition_id', help="Account used in the periodical entries, to record a part of the asset as expense.")
+    account_depreciation_expense_id = fields.Many2one('account.account', string='Expense Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain=[('internal_type', '=', 'other'), ('deprecated', '=', False)], help="Account used in the periodical entries, to record a part of the asset as expense.")
 
     journal_id = fields.Many2one('account.journal', string='Journal', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain=[('type', '=', 'general')])
 

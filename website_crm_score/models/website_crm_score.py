@@ -56,7 +56,7 @@ class website_crm_score(models.Model):
              'on dynamic events',
         default=False, tracking=True
     )
-    active = fields.Boolean(default=True, tracking=True, oldname="active")
+    active = fields.Boolean(default=True, tracking=True)
     leads_count = fields.Integer(compute='_count_leads')
     last_run = fields.Datetime('Last run', help='Date from the last scoring on all leads.')
 

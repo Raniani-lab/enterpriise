@@ -40,7 +40,7 @@ class VoipPhonecall(models.Model):
     phonecall_type = fields.Selection([
         ('incoming', 'Incoming'),
         ('outgoing', 'Outgoing')
-    ], string='Type', default='outgoing', oldname='type')
+    ], string='Type', default='outgoing')
 
     def init_call(self):
         self.ensure_one()

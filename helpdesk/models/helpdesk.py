@@ -57,7 +57,7 @@ class HelpdeskTeam(models.Model):
     use_twitter = fields.Boolean('Twitter')
     use_api = fields.Boolean('API')
     use_rating = fields.Boolean('Ratings on tickets')
-    portal_show_rating = fields.Boolean('Display Rating on Customer Portal', oldname='use_website_helpdesk_rating')
+    portal_show_rating = fields.Boolean('Display Rating on Customer Portal')
     portal_rating_url = fields.Char('URL to Submit an Issue', readonly=True, compute='_compute_portal_rating_url')
     use_sla = fields.Boolean('SLA Policies')
     upcoming_sla_fail_tickets = fields.Integer(string='Upcoming SLA Fail Tickets', compute='_compute_upcoming_sla_fail_tickets')

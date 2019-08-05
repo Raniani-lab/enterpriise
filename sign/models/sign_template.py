@@ -22,7 +22,7 @@ class SignTemplate(models.Model):
     sign_item_ids = fields.One2many('sign.item', 'template_id', string="Signature Items", copy=True)
     responsible_count = fields.Integer(compute='_compute_responsible_count', string="Responsible Count")
 
-    active = fields.Boolean(default=True, string="Active", oldname='archived')
+    active = fields.Boolean(default=True, string="Active")
     privacy = fields.Selection([('employee', 'All Users'), ('invite', 'On Invitation')],
                                string="Privacy", default="invite",
                                help="Set who can use this template:\n"
@@ -200,7 +200,7 @@ class SignItemType(models.Model):
         ('textarea', "Multiline Text"),
         ('checkbox', "Checkbox"),
         ('selection', "Selection"),
-    ], required=True, string='Type', default='text', oldname='type')
+    ], required=True, string='Type', default='text')
 
     tip = fields.Char(required=True, default="fill in", translate=True)
     placeholder = fields.Char(translate=True)

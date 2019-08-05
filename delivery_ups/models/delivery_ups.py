@@ -41,7 +41,7 @@ class ProviderUPS(models.Model):
                                             ('ZPL', 'ZPL'),
                                             ('EPL', 'EPL'),
                                             ('SPL', 'SPL')],
-                                           string="UPS Label File Type", default='GIF', oldname='x_label_file_type')
+                                           string="UPS Label File Type", default='GIF')
     ups_bill_my_account = fields.Boolean(string='Bill My Account', help="If checked, ecommerce users will be prompted their UPS account number\n"
                                                                         "and delivery fees will be charged on it.")
     ups_cod = fields.Boolean(string='Collect on Delivery',

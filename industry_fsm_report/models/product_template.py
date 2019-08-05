@@ -7,7 +7,7 @@ from odoo import fields, models, api
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template", oldname="report_template_id")
+    worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template")
 
     @api.onchange('service_tracking')
     def _onchange_service_tracking(self):

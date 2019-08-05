@@ -11,7 +11,7 @@ class Followup(models.Model):
     _description = 'Account Follow-up'
     _rec_name = 'name'
 
-    followup_line_ids = fields.One2many('account_followup.followup.line', 'followup_id', 'Follow-up', copy=True, oldname="followup_line")
+    followup_line_ids = fields.One2many('account_followup.followup.line', 'followup_id', 'Follow-up', copy=True)
     company_id = fields.Many2one('res.company', 'Company', required=True,
                                  default=lambda self: self.env.company)
     name = fields.Char(related='company_id.name', readonly=True)

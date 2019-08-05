@@ -18,7 +18,7 @@ class TimesheetForecastReport(models.Model):
     task_id = fields.Many2one('project.task', string='Task', readonly=True)
     project_id = fields.Many2one('project.project', string='Project', readonly=True)
     number_hours = fields.Float('Number of hours', readonly=True)
-    line_type = fields.Selection([('forecast', 'Forecast'), ('timesheet', 'Timesheet')], string='Type', readonly=True, oldname='type')
+    line_type = fields.Selection([('forecast', 'Forecast'), ('timesheet', 'Timesheet')], string='Type', readonly=True)
 
     def init(self):
         tools.drop_view_if_exists(self.env.cr, self._table)

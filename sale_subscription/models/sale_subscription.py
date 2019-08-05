@@ -64,7 +64,7 @@ class SaleSubscription(models.Model):
     # customer portal
     uuid = fields.Char('Account UUID', default=lambda self: str(uuid4()), copy=False, required=True)
     website_url = fields.Char('Website URL', compute='_website_url', help='The full URL to access the document through the website.')
-    payment_token_id = fields.Many2one('payment.token', 'Payment Token', help='If not set, the default payment token of the partner will be used.', domain="[('partner_id','=',partner_id)]", oldname='payment_method_id')
+    payment_token_id = fields.Many2one('payment.token', 'Payment Token', help='If not set, the default payment token of the partner will be used.', domain="[('partner_id','=',partner_id)]")
     # add tax calculation
     recurring_amount_tax = fields.Float('Taxes', compute="_amount_all")
     recurring_amount_total = fields.Float('Total', compute="_amount_all")

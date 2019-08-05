@@ -11,7 +11,7 @@ class pageview(models.Model):
 
     view_date = fields.Datetime(string='Viewing Date')
     lead_id = fields.Many2one('crm.lead', string='Lead')
-    user_id = fields.Many2one('res.users', string='User', oldname='partner_id')
+    user_id = fields.Many2one('res.users', string='User')
     url = fields.Char(string='Url')
 
     @api.model

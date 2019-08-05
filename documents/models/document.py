@@ -30,7 +30,7 @@ class Document(models.Model):
 
     # Document
     name = fields.Char('Name', copy=True, store=True, compute='_compute_name', inverse='_inverse_name')
-    active = fields.Boolean(default=True, string="Active", oldname='archived')
+    active = fields.Boolean(default=True, string="Active")
     thumbnail = fields.Binary(readonly=1, store=True, attachment=True, compute='_compute_thumbnail')
     url = fields.Char('Url', index=True, size=1024)
     res_model_name = fields.Char(compute='_compute_res_model_name', index=True)

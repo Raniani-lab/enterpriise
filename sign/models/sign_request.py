@@ -68,7 +68,7 @@ class SignRequest(models.Model):
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
     progress = fields.Integer(string="Progress", compute="_compute_count")
 
-    active = fields.Boolean(default=True, string="Active", oldname='archived')
+    active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
 
     color = fields.Integer()

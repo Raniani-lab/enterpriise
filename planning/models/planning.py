@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from collections import defaultdict
+
 from datetime import datetime, timedelta
 
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-import base64
 import logging
 import pytz
 
@@ -38,6 +38,7 @@ class Planning(models.Model):
     company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
     role_id = fields.Many2one('planning.role', string="Role")
     color = fields.Integer("Color", related='role_id.color')
+    was_copied = fields.Boolean("This shift was copied from previous week", default=False, readonly=True)
 
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, copy=False)
 
@@ -182,6 +183,34 @@ class Planning(models.Model):
             return new_row
 
         return [traverse(inject_unavailability, row) for row in rows]
+
+    # ----------------------------------------------------
+    # Period Duplication
+    # ----------------------------------------------------
+
+    @api.model
+    def action_copy_previous_week(self, date_start_week):
+        date_end_copy = datetime.combine(fields.Date.from_string(date_start_week), datetime.max.time())
+        date_start_copy = datetime.combine(date_end_copy.date(), datetime.min.time()) - relativedelta(days=7)
+        domain = [
+            ('start_datetime', '>=', date_start_copy),
+            ('end_datetime', '<=', date_end_copy),
+            ('recurrency_id', '=', False),
+            ('was_copied', '=', False)
+        ]
+        slots_to_copy = self.search(domain)
+
+        new_slot_values = []
+        for slot in slots_to_copy:
+            if not slot.was_copied:
+                values = slot.copy_data()[0]
+                if values.get('start_datetime'):
+                    values['start_datetime'] += relativedelta(days=7)
+                if values.get('end_datetime'):
+                    values['end_datetime'] += relativedelta(days=7)
+                new_slot_values.append(values)
+        slots_to_copy.write({'was_copied': True})
+        return self.create(new_slot_values)
 
     # ----------------------------------------------------
     # Business Methods

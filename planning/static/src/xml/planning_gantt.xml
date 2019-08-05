@@ -27,6 +27,9 @@
                 <i class="fa fa-compress"/>
             </button>
         </div>
+        <button t-if="activeActions.create &amp;&amp; activateScale == 'week'" class="o_gantt_button_copy_previous_week btn btn-secondary mr-3" title="Copy previous week">
+            Copy previous week
+        </button>
     </div>
 
     <t t-name="PlanningGanttView.Row" t-extend="GanttView.Row">

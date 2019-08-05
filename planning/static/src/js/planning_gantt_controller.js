@@ -10,6 +10,9 @@ var dialogs = require('web.view_dialogs');
 var QWeb = core.qweb;
 
 var PlanningGanttController = GanttController.extend({
+    events: _.extend({}, GanttController.prototype.events, {
+        'click .o_gantt_button_copy_previous_week': '_onCopyWeekClicked',
+    }),
 
     //--------------------------------------------------------------------------
     // Public
@@ -71,6 +74,45 @@ var PlanningGanttController = GanttController.extend({
         return dialog.open();
     },
 
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onCopyWeekClicked: function (ev) {
+        ev.preventDefault();
+        var state = this.model.get();
+        var self = this;
+        self._rpc({
+            model: self.modelName,
+            method: 'action_copy_previous_week',
+            args: [
+                self.model.convertToServerTime(state.startDate),
+            ],
+            context: _.extend({}, self.context || {}),
+        })
+        .then(function(){
+            self.reload();
+        });
+    },
+    /**
+     * @private
+     * @override
+     * @param {MouseEvent} ev
+     */
+    _onScaleClicked: function (ev) {
+        this._super.apply(this, arguments);
+        var $button = $(ev.currentTarget);
+        var scale = $button.data('value');
+        if (scale !== 'week') {
+            this.$('.o_gantt_button_copy_previous_week').hide();
+        } else {
+            this.$('.o_gantt_button_copy_previous_week').show();
+        }
+    },
 });
 
 return PlanningGanttController;

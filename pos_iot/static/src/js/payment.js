@@ -196,7 +196,7 @@ screens.PaymentScreenWidget.include({
                     'body':  _t(data.Error),
                 });
             line.set_payment_status('retry');
-        } else if (line && data.Stage !== 'WaitingForCard') {
+        } else if (line && ['Finished', 'None'].includes(data.Stage)) {
             if (['timeout', 'waitingCard', 'waitingCancel'].includes(line.get_payment_status())) {
                 line.set_payment_status('retry');
             }

@@ -90,7 +90,7 @@ class Task(models.Model):
             WHERE P.active = 't' AND P.is_fsm
         """
         operator_new = operator == "=" and "inselect" or "not inselect"
-        return [('id', operator_new, (query, ()))]
+        return [('project_id', operator_new, (query, ()))]
 
     @api.model
     def _read_group_user_ids(self, users, domain, order):

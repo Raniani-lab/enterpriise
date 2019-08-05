@@ -20,7 +20,7 @@ Adds the following options:
     """,
     'category': 'Industry/Field Service',
     'version': '1.0',
-    'depends': ['project_enterprise', 'sale_project_timesheet_enterprise'],
+    'depends': ['project_enterprise', 'sale_timesheet_enterprise'],
     'data': [
         'data/fsm_data.xml',
         'security/fsm_security.xml',
@@ -32,5 +32,4 @@ Adds the following options:
     ],
     'application': True,
     'demo': ['data/fsm_demo.xml'],
-    'post_init_hook': 'post_install_hook_force_timer',
 }

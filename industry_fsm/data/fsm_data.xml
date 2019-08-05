@@ -24,8 +24,9 @@
 
         <record id="fsm_project" model="project.project">
             <field name="name">Field Service</field>
-            <field name="allow_planning" eval="True"/>
-            <field name="allow_billable" eval="True"/>
+            <field name="is_fsm" eval="True"/>
+            <field name="allow_timesheets" eval="True"/>
+            <field name="allow_timesheet_timer" eval="True"/>
             <field name="timesheet_product_id" ref="fsm_time_product"/>
             <field name="type_ids" eval="[(4, ref('planning_project_stage_0')), (4, ref('planning_project_stage_1'))]"/>
         </record>

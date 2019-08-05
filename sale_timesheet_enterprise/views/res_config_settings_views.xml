@@ -24,16 +24,7 @@
             </xpath>
             <xpath expr="//div[@id='timesheets']/div" position="inside">
                 <div class="col-12 col-lg-6 o_setting_box">
-                    <div class="o_setting_left_pane">
-                        <field name="use_timesheet_timer"/>
-                    </div>
                     <div class="o_setting_right_pane">
-                        <label for="use_timesheet_timer"/>
-                        <div class="text-muted">
-                            Measure time spent on tasks
-                        </div>
-                    </div>
-                    <div class="o_setting_right_pane pt-4" attrs="{'invisible': [('use_timesheet_timer', '=', False)]}">
                         <strong>Round timesheets</strong>
                         <div class="o_row w-30">
                             <span class="o_light_label"><label for="timesheet_min_duration"/><field name="timesheet_min_duration" class="col-lg-2"/> minutes</span>

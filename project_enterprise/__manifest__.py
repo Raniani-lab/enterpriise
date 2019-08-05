@@ -13,7 +13,6 @@ Bridge module for project and enterprise
     'data': [
         'views/res_config_settings_views.xml',
         'views/project_task_views.xml',
-        'views/project_project_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

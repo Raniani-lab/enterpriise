@@ -81,7 +81,6 @@
             <script type="text/javascript" src="/account_invoice_extract/static/src/js/invoice_extract_fields.js"></script>
             <script type="text/javascript" src="/account_invoice_extract/static/src/js/invoice_extract_form_renderer.js"></script>
             <script type="text/javascript" src="/account_invoice_extract/static/src/js/invoice_extract_form_view.js"></script>
-            <script type="text/javascript" src="/account_invoice_extract/static/src/js/thread_field.js"></script>
 
             <link rel="stylesheet" type="text/scss" href="/account_invoice_extract/static/src/scss/account_invoice_extract.scss"/>
 

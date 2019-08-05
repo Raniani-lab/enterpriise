@@ -106,7 +106,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
      */
     _makeInvoiceExtract: function ($page) {
         var self = this;
-        if (this._$invoiceExtractButtons.length > 0) {
+        if (this.$('.o_invoice_extract_buttons').length > 0) {
             this._invoiceExtractFields.resetFieldsSelections();
             this._renderExistingInvoiceExtractBoxLayers({
                 $page: $page,

@@ -50,10 +50,12 @@ class Task(models.Model):
             return project.worksheet_template_id
         return False
 
-    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', oldname='allow_reports')
+    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', default=False, oldname='allow_reports')
     worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template", default=_default_worksheet_template_id, oldname='report_template_id')
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
+    worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)
+    worksheet_signed_by = fields.Char('Signed By', help='Name of the person that signed the task.', copy=False)
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
@@ -67,10 +69,18 @@ class Task(models.Model):
         if self.worksheet_template_id:
             self.worksheet_count = self.env[self.worksheet_template_id.model_id.model].search_count([('x_task_id', '=', self.id)])
 
+    def has_to_be_signed(self):
+        return self.allow_worksheets and not self.worksheet_signature
+
     def action_fsm_worksheet(self):
         timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
         if timesheet_access and self.allow_timesheets and self.is_fsm and not (self.timesheet_ids or self.timesheet_timer_start):
             raise UserError(_("Please, start the timer before recording the worksheet."))
+
+        # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
+        # time should be sold on SO)
+        self._fsm_ensure_sale_order()
+
         action = self.worksheet_template_id.action_id.read()[0]
         worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
         action.update({
@@ -84,8 +94,34 @@ class Task(models.Model):
         })
         return action
 
+    def action_preview_worksheet(self):
+        self.ensure_one()
+
+        # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
+        # time should be sold on SO)
+        self._fsm_ensure_sale_order()
+
+        worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
+        if worksheet:
+            return {
+                'type': 'ir.actions.act_url',
+                'target': 'self',
+                'url': self.get_portal_url(suffix='/worksheet')
+            }
+
+    def _get_report_base_filename(self):
+        self.ensure_one()
+        return 'Worksheet %s - %s' % (self.name, self.partner_id.name)
+
     def action_send_report(self):
         self.ensure_one()
+        if self.worksheet_template_id and not self.worksheet_count:
+            raise UserError(_("To send the report, you need to set a worksheet template and create a worksheet."))
+
+        # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
+        # time should be sold on SO)
+        self._fsm_ensure_sale_order()
+
         template_id = self.env.ref('industry_fsm_report.mail_template_data_send_report').id
         return {
             'type': 'ir.actions.act_window',
@@ -99,7 +135,7 @@ class Task(models.Model):
                 'default_res_id': self.id,
                 'default_use_template': bool(template_id),
                 'default_template_id': template_id,
-                'model_description': self._name,
+                'force_email': True,
                 'fsm_mark_as_sent': True,
             },
         }

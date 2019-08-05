@@ -178,7 +178,7 @@
                             <field name="name" nolabel="1" class="oe_edit_only"/>
                             <field name="partner_id" required="1"
                                 context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
-                                options='{"always_reload": True, "no_quick_create": True}'
+                                options='{"always_reload": True}'
                                 widget="res_partner_many2one"/>
                             <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>
                             <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_mobile', '=', False)]}" class="oe_edit_only"/>

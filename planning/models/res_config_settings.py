@@ -15,6 +15,9 @@ class ResConfigSettings(models.TransientModel):
         ('month', 'Month(s)')
     ], related='company_id.planning_generation_uom', required=True, default="month", readonly=False, help="Unit for the rate at which recurring shifts should be generated")
 
+    planning_allow_self_unassign = fields.Boolean("Allow unassignment", default=False, readonly=False,
+        related="company_id.planning_allow_self_unassign", help="Let your employees un-assign themselves from shifts when unavailable")
+
     @api.constrains('planning_generation_uom', 'planning_generation_interval')
     def _check_planning_generation_interval(self):
         # interval should stay clipped between 1 and 6 months

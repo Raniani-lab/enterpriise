@@ -12,3 +12,6 @@ class Company(models.Model):
         ('week', 'Week(s)'),
         ('month', 'Month(s)')
     ], required=True, default='month', readonly=False, help="Unit for the rate at which recurring shift should be generated")
+
+    planning_allow_self_unassign = fields.Boolean("Can employee un-assign themselves?", default=False,
+        help="Let your employees un-assign themselves from shifts when unavailable")

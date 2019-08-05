@@ -8,8 +8,8 @@ from dateutil.relativedelta import relativedelta
 import logging
 import pytz
 
-from odoo import api, exceptions, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools import format_time
@@ -45,6 +45,10 @@ class Planning(models.Model):
     start_datetime = fields.Datetime("Start Date", required=True, default=_default_start_datetime)
     end_datetime = fields.Datetime("End Date", required=True, default=_default_end_datetime)
 
+    # UI fields and warnings
+    allow_self_unassign = fields.Boolean('Let employee unassign themselves', related='company_id.planning_allow_self_unassign')
+    is_assigned_to_me = fields.Boolean('Is this shift assigned to the current user', compute='_compute_is_assigned_to_me')
+
     # forecast allocation
     allocated_hours = fields.Float("Allocated hours", default=0)
     allocated_percentage = fields.Float("Allocated Time (%)", compute='_compute_allocated_percentage', compute_sudo=True, store=True, help="Expressed in the Unit of Measure of the project company")
@@ -53,6 +57,11 @@ class Planning(models.Model):
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
     ]
+
+    @api.depends('user_id')
+    def _compute_is_assigned_to_me(self):
+        for slot in self:
+            slot.is_assigned_to_me = slot.user_id == self.env.user
 
     @api.depends('allocated_hours', 'start_datetime', 'end_datetime', 'employee_id.resource_calendar_id')
     def _compute_allocated_percentage(self):
@@ -134,6 +143,32 @@ class Planning(models.Model):
             if fieldname in values and not values.get('recurrency_id'):
                 values.update({'recurrency_id': False})
         return super(Planning, self).write(values)
+
+    # ----------------------------------------------------
+    # Actions
+    # ----------------------------------------------------
+
+    def action_self_assign(self):
+        """ Allow planning user to self assign open shift. """
+        self.ensure_one()
+        # user must at least 'read' the shift to self assign (Prevent any user in the system (portal, ...) to assign themselves)
+        if not self.check_access_rights('read', raise_exception=False):
+            raise AccessError(_("You don't the right to self assign."))
+        if self.employee_id:
+            raise UserError(_("You can not assign yourself to an already assigned shift."))
+        return self.sudo().write({'employee_id': self.env.user.employee_id.id if self.env.user.employee_id else False})
+
+    def action_self_unassign(self):
+        """ Allow planning user to self unassign from a shift, if the feature is activated """
+        self.ensure_one()
+        # user must at least 'read' the shift to self unassign. (Prevent any user in the system (portal, ...) to unassign any shift)
+        if not self.check_access_rights('read', raise_exception=False):
+            raise AccessError(_("You don't the right to self unassign."))
+        if not self.allow_self_unassign:
+            raise UserError(_("The company does not allow you to self unassign."))
+        if self.employee_id != self.env.user.employee_id:
+            raise UserError(_("You can not unassign another employee than yourself."))
+        return self.sudo().write({'employee_id': False})
 
     # ----------------------------------------------------
     # Gantt view

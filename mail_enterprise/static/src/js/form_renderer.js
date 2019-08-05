@@ -158,10 +158,12 @@ FormRenderer.include({
                         this.attachmentViewer.updateContents(attachments, options.order);
                     }
                 }
+                this.trigger_up('preview_attachment_validation');
             } else {
                 this.attachmentPreviewResID = this.state.res_id;
                 this.attachmentViewer = new AttachmentViewer(this, attachments);
                 this.attachmentViewer.appendTo(this.$attachmentPreview).then(function() {
+                    self.trigger_up('preview_attachment_validation');
                     self.$attachmentPreview.resizable({
                         handles: 'w',
                         minWidth: 400,

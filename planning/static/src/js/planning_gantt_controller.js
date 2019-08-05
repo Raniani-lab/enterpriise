@@ -8,10 +8,10 @@ var confirmDialog = require('web.Dialog').confirm;
 var dialogs = require('web.view_dialogs');
 
 var QWeb = core.qweb;
-
 var PlanningGanttController = GanttController.extend({
     events: _.extend({}, GanttController.prototype.events, {
         'click .o_gantt_button_copy_previous_week': '_onCopyWeekClicked',
+        'click .o_gantt_button_send_all': '_onSendAllClicked',
     }),
 
     //--------------------------------------------------------------------------
@@ -95,6 +95,25 @@ var PlanningGanttController = GanttController.extend({
             context: _.extend({}, self.context || {}),
         })
         .then(function(){
+            self.reload();
+        });
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onSendAllClicked: function (ev) {
+        ev.preventDefault();
+        var self = this;
+        var state = this.model.get();
+        var additional_context = _.extend({}, this.context, {
+           'default_start_datetime': this.model.convertToServerTime(state.startDate),
+           'default_end_datetime': this.model.convertToServerTime(state.stopDate),
+           'scale': state.scale,
+           'active_domain': this.model.domain,
+           'active_ids': this.model.get().records
+        });
+        return this.do_action('planning.planning_send_action', {additional_context: additional_context}).then(function(){
             self.reload();
         });
     },

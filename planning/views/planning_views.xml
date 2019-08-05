@@ -57,7 +57,10 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="after">
                 <footer>
+                    <field name="publication_warning" invisible="1"/>
                     <button string="Save" special="save" class="btn btn-primary" close="1"/>
+                    <button string="Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': ['|', ('publication_warning', '=', False), ('employee_id', '=', False)]}" groups="planning.group_planning_manager"/>
+                    <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1" attrs="{'invisible': ['|', ('publication_warning', '=', True), ('employee_id', '=', False)]}" groups="planning.group_planning_manager"/>
                     <button string="Cancel" special="cancel" class="btn-secondary" close="1"/>
 
                     <button name="action_self_assign" class="btn btn-primary float-right" type="object" string="I take it" attrs="{'invisible': [('employee_id', '!=', False)]}" groups="!planning.group_planning_manager" close="1"/>
@@ -132,10 +135,18 @@
                 plan="false"
                 scales="day,week,month"
                 precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                decoration-info="not is_published"
+                decoration-warning="publication_warning"
+                decoration-danger="overlap_slot_count > 0"
                 display_unavailability="1">
 
                 <field name="allocated_hours"/>
                 <field name="recurrency_id" />
+                <field name="is_published"/>
+                <field name="publication_warning"/>
+                <field name="recurrency_id" />
+                <field name="employee_id"/>
+                <field name="overlap_slot_count"/>
                 <templates>
                     <div t-name="gantt-popover" class="container-fluid">
                         <div class="row no-gutters">
@@ -145,6 +156,10 @@
                                     <li><strong>Stop Date: </strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD hh:mm:ss A')"/></li>
                                     <li><strong>Allocated Hours: </strong> <t t-esc="'' + Math.floor(allocated_hours) + ':' + ((allocated_hours % 1) * 60 >= 10 ? (allocated_hours % 1) * 60 : '0'+(allocated_hours % 1) * 60)"/></li>
                                 </ul>
+                                <t t-if="publication_warning">
+                                    <br/>
+                                    <span>Some changes were made since this shift was published</span>
+                                </t>
                             </div>
                         </div>
                     </div>

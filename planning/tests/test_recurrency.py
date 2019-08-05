@@ -342,6 +342,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             recurrency.action_remove_all()
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 0, 'calling remove after on any slot from the recurrency remove all slots linked to the recurrency')
 
+
     def test_recurrency_has_the_right_company_id(self):
         with self._patch_now('2019-06-01 08:00:00'):
             initial_start_dt = datetime(2019, 6, 1, 8, 0, 0)

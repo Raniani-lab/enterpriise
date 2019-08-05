@@ -36,3 +36,12 @@ class Employee(models.Model):
             self.env.cr.commit()
         else:
             super(Employee, self)._init_column(column_name)
+
+    def _planning_get_url(self, planning):
+        result = {}
+        for employee in self:
+            if employee.user_id and employee.user_id.has_group('planning.group_planning_user'):
+                result[employee.id] = '/web?#action=planning.planning_action_my'
+            else:
+                result[employee.id] = '/planning/%s/%s' % (planning.access_token, employee.employee_token)
+        return result

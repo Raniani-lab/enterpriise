@@ -5,3 +5,4 @@ access_planning_role_user,planning.role.user,planning.model_planning_role,planni
 access_planning_role_manager,planning.role.manager,planning.model_planning_role,planning.group_planning_manager,1,1,1,1
 access_planning_recurrency_user,planning.recurrency.user,planning.model_planning_recurrency,planning.group_planning_user,1,0,0,0
 access_planning_recurrency_manager,planning.recurrency.manager,planning.model_planning_recurrency,planning.group_planning_manager,1,1,1,1
+access_planning_planning,access_planning_planning,model_planning_planning,planning.group_planning_manager,1,1,1,1

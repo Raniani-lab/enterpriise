@@ -15,7 +15,7 @@
             <field name="color">2</field>
         </record>
         <record id="planning_role_3" model="planning.role">
-            <field name="name">Cooker</field>
+            <field name="name">Cook</field>
             <field name="color">3</field>
         </record>
 

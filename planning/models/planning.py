@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-from datetime import datetime, timedelta
-
+from ast import literal_eval
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+import json
 import logging
 import pytz
+import uuid
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, AccessError
@@ -52,6 +52,10 @@ class Planning(models.Model):
     # forecast allocation
     allocated_hours = fields.Float("Allocated hours", default=0)
     allocated_percentage = fields.Float("Allocated Time (%)", compute='_compute_allocated_percentage', compute_sudo=True, store=True, help="Expressed in the Unit of Measure of the project company")
+
+    # publication and sending
+    is_published = fields.Boolean("Is the shift sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
+    publication_warning = fields.Boolean("Modified since last publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
 
     _sql_constraints = [
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
@@ -99,6 +103,11 @@ class Planning(models.Model):
         if self.employee_id and self.start_datetime and self.end_datetime:
             self.allocated_hours = self.employee_id._get_work_days_data(self.start_datetime, self.end_datetime, compute_leaves=True)['hours']
 
+    @api.onchange('start_datetime', 'end_datetime', 'employee_id')
+    def _onchange_dates(self):
+        if self.employee_id:
+            self.publication_warning = True
+
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------
@@ -142,6 +151,9 @@ class Planning(models.Model):
         for fieldname in breaking_fields:
             if fieldname in values and not values.get('recurrency_id'):
                 values.update({'recurrency_id': False})
+        # warning on published shifts
+        if 'publication_warning' not in values and (set(values.keys()) & set(self._get_fields_breaking_publication())):
+            values['publication_warning'] = True
         return super(Planning, self).write(values)
 
     # ----------------------------------------------------
@@ -248,12 +260,55 @@ class Planning(models.Model):
         return self.create(new_slot_values)
 
     # ----------------------------------------------------
+    # Sending Shifts
+    # ----------------------------------------------------
+
+    def action_send(self):
+        group_planning_user = self.env.ref('planning.group_planning_user')
+        template = self.env.ref('planning.email_template_slot_single')
+        # update context to build a link for view in the slot
+        view_context = dict(self._context)
+        view_context.update({
+            'menu_id': str(self.env.ref('planning.planning_menu_root').id),
+            'action_id': str(self.env.ref('planning.planning_action_my').id),
+            'dbname': self.env.cr.dbname,
+            'render_link': self.employee_id.user_id and self.employee_id.user_id in group_planning_user.users,
+            'unavailable_path': '/planning/myshifts/',
+        })
+        slot_template = template.with_context(view_context)
+
+        mails_to_send = self.env['mail.mail']
+        for slot in self:
+            if slot.employee_id and slot.employee_id.work_email:
+                mail_id = slot_template.with_context(view_context).send_mail(slot.id, notif_layout='mail.mail_notification_light')
+                current_mail = self.env['mail.mail'].browse(mail_id)
+                mails_to_send |= current_mail
+
+        if mails_to_send:
+            mails_to_send.send()
+
+        self.write({
+            'is_published': True,
+            'publication_warning': False,
+        })
+        return mails_to_send
+
+    # ----------------------------------------------------
     # Business Methods
     # ----------------------------------------------------
     @api.model
     def _name_get_fields(self):
         """ List of fields that can be displayed in the name_get """
         return ['employee_id', 'role_id']
+
+    @api.model
+    def _get_fields_breaking_publication(self):
+        """ Fields list triggering the `publication_warning` to True when updating shifts """
+        return [
+            'employee_id',
+            'start_datetime',
+            'end_datetime'
+        ]
 
     @api.model
     def _get_fields_breaking_recurrency(self):
@@ -274,3 +329,80 @@ class PlanningRole(models.Model):
 
     name = fields.Char('Name', required=True)
     color = fields.Integer("Color", default=0)
+
+
+class PlanningPlanning(models.Model):
+    _name = 'planning.planning'
+    _description = 'Planning sent by email'
+
+    @api.model
+    def _default_access_token(self):
+        return str(uuid.uuid4())
+
+    name = fields.Char("Name")
+    start_datetime = fields.Datetime("Start Date", required=True)
+    end_datetime = fields.Datetime("Stop Date", required=True)
+    include_unassigned = fields.Boolean("Includes Open shifts", default=True)
+    access_token = fields.Char("Security Token", default=_default_access_token, required=True, copy=False, readonly=True)
+    last_sent_date = fields.Datetime("Last sent date")
+    slot_ids = fields.Many2many('planning.slot', "Shifts", compute='_compute_slot_ids')
+    company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.user.company_id)
+
+    _sql_constraints = [
+        ('check_start_date_lower_stop_date', 'CHECK(end_datetime > start_datetime)', 'Planning end date should be greater than its start date'),
+    ]
+
+    @api.depends('start_datetime', 'end_datetime', 'include_unassigned')
+    def _compute_slot_ids(self):
+        domain_map = self._get_domain_slots()
+        for planning in self:
+            domain = domain_map[planning.id]
+            if not planning.include_unassigned:
+                domain = expression.AND([domain, [('employee_id', '!=', False)]])
+            planning.slot_ids = self.env['planning.slot'].search(domain)
+
+    # ----------------------------------------------------
+    # Business Methods
+    # ----------------------------------------------------
+
+    def _get_domain_slots(self):
+        result = {}
+        for planning in self:
+            domain = ['&', '&', ('start_datetime', '<=', planning.end_datetime), ('end_datetime', '>', planning.start_datetime), ('company_id', '=', planning.company_id.id)]
+            result[planning.id] = domain
+        return result
+
+    def send_planning(self, message=None):
+        email_from = self.env.user.email or self.env.user.company_id.email or ''
+        sent_slots = self.env['planning.slot']
+        for planning in self:
+            # prepare planning urls, recipient employees, ...
+            slots = planning.slot_ids
+            slots_open = slots.filtered(lambda slot: not slot.employee_id)
+
+            # extract planning URLs
+            employees = slots.mapped('employee_id')
+            employee_url_map = employees._planning_get_url(planning)
+
+            # send planning email template with custom domain per employee
+            template = self.env.ref('planning.email_template_planning_planning', raise_if_not_found=False)
+            template_context = {
+                'slot_unassigned_count': len(slots_open),
+                'slot_total_count': len(slots),
+                'message': message,
+            }
+            if template:
+                # /!\ For security reason, we only given the public employee to render mail template
+                for employee in self.env['hr.employee.public'].browse(employees.ids):
+                    if employee.work_email:
+                        template_context['employee'] = employee
+                        template_context['planning_url'] = employee_url_map[employee.id]
+                        template.with_context(**template_context).send_mail(planning.id, email_values={'email_to': employee.work_email, 'email_from': email_from}, notif_layout='mail.mail_notification_light')
+            sent_slots |= slots
+        # mark as sent
+        self.write({'last_sent_date': fields.Datetime.now()})
+        sent_slots.write({
+            'is_published': True,
+            'publication_warning': False
+        })
+        return True

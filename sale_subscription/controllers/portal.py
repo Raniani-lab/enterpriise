@@ -99,7 +99,7 @@ class sale_subscription(http.Controller):
             account = account_res.browse(account_id)
 
         acquirers = request.env['payment.acquirer'].search([
-            ('website_published', '=', True),
+            ('state', 'in', ['enabled', 'test']),
             ('registration_view_template_id', '!=', False),
             ('token_implemented', '=', True),
             ('company_id', '=', account.company_id.id)])

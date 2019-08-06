@@ -210,7 +210,7 @@
                                                     <t t-set="mode" t-value="'payment'"/>
                                                     <t t-set="s2s_acquirers" t-value="acquirers"/>
                                                     <t t-set="verify_validity" t-value="True"/>
-                                                    <t t-set="show_manage_btn" t-value="request.env['payment.acquirer'].search([('website_published', '=', True), ('registration_view_template_id', '!=', False)])"/>
+                                                    <t t-set="show_manage_btn" t-value="request.env['payment.acquirer'].search([('state', 'in', ['enabled', 'test']), ('registration_view_template_id', '!=', False)])"/>
                                                 </t>
                                             </div>
                                         </main>

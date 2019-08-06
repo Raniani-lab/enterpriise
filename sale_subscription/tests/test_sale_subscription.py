@@ -132,7 +132,7 @@ class TestSubscription(TestSubscriptionCommon):
             {'name': 'The Wire',
              'provider': 'transfer',
              'company_id': self.company.id,
-             'environment': 'test',
+             'state': 'test',
              'view_template_id': self.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})
 
         self.payment_method = self.env['payment.token'].create(

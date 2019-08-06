@@ -256,6 +256,7 @@
         <field name="res_model">hr.appraisal</field>
         <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="domain">[('employee_id.user_id', '=', uid)]</field>
     </record>
 
     <record model="ir.actions.act_window" id="hr_appraisal_action_request">

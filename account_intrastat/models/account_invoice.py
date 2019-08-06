@@ -22,6 +22,17 @@ class AccountInvoice(models.Model):
             self.intrastat_country_id = False
         return res
 
+    @api.model
+    def _prepare_refund(self, invoice, date_invoice=None, date=None, description=None, journal_id=None):
+        """
+        Correctly set intrastat_country_id
+        @override
+        """
+        values = super(AccountInvoice, self)._prepare_refund(invoice, date_invoice, date, description, journal_id)
+        if 'intrastat_country_id' not in values:
+            values['intrastat_country_id'] = invoice.intrastat_country_id.id
+        return values
+
 
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'

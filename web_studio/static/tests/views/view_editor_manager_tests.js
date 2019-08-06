@@ -61,6 +61,13 @@ QUnit.module('ViewEditorManager', {
                     m2o: {string: "M2O", type: "many2one", relation: 'partner', searchable: true},
                     partner_ids: {string: "Partners", type: "one2many", relation: "partner", searchable: true},
                     coucou_id: {string: "coucou", type: "many2one", relation: "coucou"},
+                    m2m: {string: "M2M", type: "many2many", relation: "product", searchable: true},
+                    toughness: {
+                        manual: true,
+                        string: "toughness",
+                        type: 'selection',
+                        selection: [['0', "Hard"], ['1', "Harder"]],
+                    },
                 },
                 records: [{
                     id: 37,
@@ -165,7 +172,53 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('invisible list editor', async function (assert) {
+    QUnit.test('editing selection field of list of form view', async function(assert) {
+        assert.expect(3);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: '<form>' +
+                      '<group>' +
+                          '<field name="product_ids"><tree>' +
+                              '<field name="toughness"/>' +
+                          '</tree></field>' +
+                      '</group>' +
+                  '</form>',
+            mockRPC: function(route, args) {
+                if (route === '/web_studio/edit_field') {
+                    assert.strictEqual(args.model_name, "product");
+                    assert.strictEqual(args.field_name, "toughness");
+                    assert.deepEqual(args.values, {
+                        selection: '[["0","Hard"],["1","Harder"],["Hardest","Hardest"]]',
+                    });
+                    return Promise.resolve({});
+                }
+                if (route === '/web_studio/edit_view') {
+                    return Promise.resolve({});
+                }
+                if (route === '/web_studio/get_default_value') {
+                    return Promise.resolve({});
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // open list view
+        await testUtils.dom.click(vem.$('.o_field_one2many'));
+        await testUtils.dom.click(vem.$('.o_web_studio_editX2Many'));
+
+        // add value to "toughness" selection field
+        await testUtils.dom.click(vem.$('th[data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_edit_selection_values'));
+        $('.modal .o_web_studio_selection_new_value input').val('Hardest');
+        await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button'));
+        await testUtils.dom.click($('.modal.o_web_studio_field_modal .btn-primary'));
+
+        vem.destroy();
+    });
+
+    QUnit.test('invisible list editor', async function(assert) {
         assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
@@ -2196,7 +2249,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a related field', async function (assert) {
-        assert.expect(19);
+        assert.expect(24);
 
 
         this.data.coucou.fields.related_field = {
@@ -2234,10 +2287,19 @@ QUnit.module('ViewEditorManager', {
                             'm2o.partner_ids', "related arg should be correct");
                         assert.strictEqual(args.operations[2].node.field_description.relational_model,
                             'product', "relational model arg should be correct for o2m");
+                        assert.strictEqual(args.operations[2].node.field_description.store,
+                            false, "store arg should be correct");
                         assert.strictEqual(args.operations[0].node.field_description.copy,
                             false, "copy arg should be correct");
                         assert.strictEqual(args.operations[0].node.field_description.readonly,
                             true, "readonly arg should be correct");
+                    } else if (nbEdit === 3) {
+                        assert.strictEqual(args.operations[3].node.field_description.related,
+                            'm2o.m2m', "related arg should be correct");
+                        assert.strictEqual(args.operations[3].node.field_description.relation,
+                            'product', "relational model arg should be correct for m2m");
+                        assert.strictEqual(args.operations[3].node.field_description.store,
+                            false, "store arg should be correct");
                     }
                     nbEdit++;
                     return Promise.resolve({
@@ -2289,7 +2351,16 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click($('.modal .o_field_selector .o_field_selector_close'));
         await testUtils.dom.click($('.modal-footer .btn-primary:first'));
 
-        assert.strictEqual(nbEdit, 3, "should have edited the view");
+        // create a new many2many related field
+        await testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
+        assert.strictEqual($('.modal').length, 1, "a modal should be displayed");
+        $('.modal .o_field_selector').focusin(); // open the selector popover
+        await testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));
+        await testUtils.dom.click($('.o_field_selector_popover li[data-name=m2m]'));
+        await testUtils.dom.click($('.modal .o_field_selector .o_field_selector_close')); // close the selector popover
+        await testUtils.dom.click($('.modal-footer .btn-primary:first')); // confirm
+
+        assert.strictEqual(nbEdit, 4, "should have edited the view");
         assert.verifySteps([], "should have triggered only one warning");
 
         vem.destroy();

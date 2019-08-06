@@ -279,6 +279,10 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                     values._currency = chain.join('.');
                 }
             }
+
+            if (_.contains(['one2many', 'many2many'], selectedField.type)) {
+                values.store = false;
+            }
         }
         this.trigger('field_default_values_saved', values);
     },

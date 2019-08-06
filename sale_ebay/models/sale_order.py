@@ -110,7 +110,23 @@ class SaleOrder(models.Model):
         return (partner, shipping_partner)
 
     @api.model
-    def _handle_taxes(self, amount, rate):
+    def _process_all_taxes(self, tax_dict, price_unit):
+        tax_commands = []
+        for tax in tax_dict.get('TaxDetails', []):
+            tax_amount = float(tax['TaxAmount']['value'])
+            tax_rate = 100 * tax_amount / (price_unit - tax_amount) if price_unit > tax_amount > 0 else 0
+            tax_description = tax.get('TaxDescription', '')
+            tax_id = self._handle_taxes(tax_amount, tax_rate, description=tax_description)
+            if tax_id:
+                tax_commands.append((4, tax_id.id))
+        return tax_commands or False
+
+    @api.model
+    def _handle_taxes(self, amount, rate, description=''):
+        """eBay use price-included taxes.
+           We ignore 0% taxes to avoid useless clutter,
+           but that could be changed if their presence is required.
+        """
         company = self.env.user.company_id
         tax = False
         if amount > 0 and rate > 0:
@@ -118,6 +134,7 @@ class SaleOrder(models.Model):
                 ('amount', '=', rate),
                 ('amount_type', '=', 'percent'),
                 ('company_id', '=', company.id),
+                ('price_include', '=', True),
                 ('type_tax_use', '=', 'sale')], limit=1)
             if not tax:
                 tax = self.env['account.tax'].sudo().create({
@@ -125,8 +142,9 @@ class SaleOrder(models.Model):
                     'amount': rate,
                     'amount_type': 'percent',
                     'type_tax_use': 'sale',
-                    'description': 'Sales Tax (eBay)',
+                    'description': '%s (eBay)' % description,
                     'company_id': company.id,
+                    'price_include': True,
                     'active': False,
                 })
         return tax
@@ -150,10 +168,21 @@ class SaleOrder(models.Model):
                 })
             tax_dict = order['ShippingDetails']['SalesTax']
             tax_amount = float(tax_dict.get('SalesTaxAmount', {}).get('value', 0))
-            tax_rate = float(tax_dict.get('SalesTaxPercent', 0))
-            tax_id = self._handle_taxes(tax_amount, tax_rate)
+            # the rate on the tax amount is actually on the product unit price, not on the shipping
+            # and it's a tax not included in the price, contrarily to the product tax
+            tax_rate = tax_dict.get('SalesTaxPercent', '0')
+            tax_id = False
+            if tax_amount:
+                tax_id = self.env['account.tax'].sudo().create({
+                    'name': tax_rate + '% Sales tax (eBay)',
+                    'amount': tax_amount,
+                    'amount_type': 'fixed',
+                    'type_tax_use': 'sale',
+                    'company_id': self.env.user.company_id.id,
+                    'active': False,
+                })
 
-            price_unit = shipping_currency._convert(shipping_amount - tax_amount,
+            price_unit = shipping_currency._convert(shipping_amount,
                 self.currency_id, self.company_id, self.date_order or datetime.now())
 
             so_line = self.env['sale.order.line'].create({
@@ -228,11 +257,10 @@ class SaleOrder(models.Model):
         transaction_currency = self.env['res.currency'].with_context(active_test=False).search(
             [('name', '=', transaction['TransactionPrice']['_currencyID'])], limit=1)
         price_unit = float(transaction['TransactionPrice']['value'])
-        tax_amount = float(transaction['Taxes']['TotalTaxAmount']['value'])
-        tax_rate = tax_amount / price_unit if price_unit > 0 else 0
-        tax_id = self._handle_taxes(tax_amount, tax_rate)
         price_unit = transaction_currency._convert(price_unit,
             self.currency_id, self.company_id, self.date_order or datetime.now())
+
+        tax_commands = self._process_all_taxes(transaction['Taxes'], price_unit)
 
         sol = self.env['sale.order.line'].create({
             'product_id': variant.id,
@@ -241,7 +269,7 @@ class SaleOrder(models.Model):
             'product_uom_qty': float(transaction['QuantityPurchased']),
             'product_uom': variant.uom_id.id,
             'price_unit': price_unit,
-            'tax_id': [(4, tax_id.id)] if tax_id else False,
+            'tax_id': tax_commands,
         })
 
         if 'BuyerCheckoutMessage' in transaction:
@@ -266,7 +294,7 @@ class SaleOrder(models.Model):
                 self.action_invoice_create()
             shipping_name = order['ShippingServiceSelected']['ShippingService']
             if self.picking_ids and shipping_name:
-                self.picking_ids.message_post(
+                self.picking_ids[-1].message_post(
                     body=_('The Buyer Chose The Following Delivery Method :\n') + shipping_name)
         except UserError as e:
             self.message_post(body=

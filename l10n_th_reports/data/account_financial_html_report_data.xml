@@ -53,7 +53,7 @@
         <field name="level" eval="3"/>
         <field name="parent_id" ref="account_financial_report_l10n_th_01"/>
         <field name="show_domain">never</field>
-        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', ref('l10n_th.tag_th_05'))]"/>
+        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_th.tag_th_05')])]"/>
         <field name="formulas">balance=-sum.balance</field>
         <field name="special_date_changer">strict_range</field>
     </record>

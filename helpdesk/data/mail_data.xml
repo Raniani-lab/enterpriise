@@ -73,7 +73,7 @@
 <div>
     Dear ${object.sudo().partner_id.name or 'Madam/Sir'},<br /><br />
     Your request
-    % if object.access_token:
+    % if object.get_portal_url():
     <a href="/helpdesk/ticket/${object.id}/${object.access_token}">${object.name}</a>
     % endif
     has been received and is being reviewed by our ${object.team_id.name or ''} team.

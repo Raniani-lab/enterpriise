@@ -261,7 +261,7 @@ class AccountFollowupReport(models.AbstractModel):
                 .replace('o_account_reports_summary', '')\
                 .replace('o_account_reports_edit_summary_pencil', '')\
                 .replace('fa-pencil', '')
-            msg_id = partner.message_post(body=msg)
+            msg_id = partner.message_post(body=msg, message_type='email')
             email = self.env['mail.mail'].create({
                 'mail_message_id': msg_id.id,
                 'subject': _('%s Payment Reminder') % (self.env.user.company_id.name) + ' - ' + partner.name,
@@ -281,7 +281,8 @@ class AccountFollowupReport(models.AbstractModel):
         records contains either a list of records (come from an server.action) or a field 'ids' which contains a list of one id (come from JS)
         """
         res_ids = records['ids'] if 'ids' in records else records.ids  # records come from either JS or server.action
-        self.env['res.partner'].browse(res_ids).message_post(body=_('Follow-up letter printed'))
+        for partner in self.env['res.partner'].browse(res_ids):
+            partner.message_post(body=_('Follow-up letter printed'))
         return self.env.ref('account_reports.action_report_followup').report_action(res_ids)
 
     def _execute_followup_partner(self, partner):

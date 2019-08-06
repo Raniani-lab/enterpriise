@@ -34,6 +34,7 @@
         'data/mod303.xml',
         'data/mod347.xml',
         'data/mod349.xml',
+        'data/pymes_profit_and_loss_report_data.xml',
         'wizard/aeat_tax_reports_wizards.xml',
         'wizard/aeat_boe_export_wizards.xml',
     ],

@@ -41,7 +41,7 @@
         <field name="name">[1] Standard Rate (Excluding Capital goods and/or services and accomodation)</field>
         <field name="code">VAT1</field>
         <field name="formulas">balance = -sum.balance</field>
-        <field name="domain" eval="['|',('tax_ids.tag_ids','in',ref('l10n_za.tag_ST1')), ('tax_line_id.tag_ids','in',[ref('l10n_za.tag_ST1')])]"/>
+        <field name="domain" eval="['|',('tax_ids.tag_ids','in',[ref('l10n_za.tag_ST1')]), ('tax_line_id.tag_ids','in',[ref('l10n_za.tag_ST1')])]"/>
         <field name="sequence" eval="1"/>
         <field name="level" eval="3" />
         <field name="parent_id" ref='za_vat_financial_report_line_20'/>
@@ -62,7 +62,7 @@
         <field name="name">[1A] Standard Rate (Only Capital goods and/or services)</field>
         <field name="code">VAT1A</field>
         <field name="formulas">balance = -sum.balance</field>
-        <field name="domain" eval="['|', ('tax_ids.tag_ids','in',ref('l10n_za.tag_ST1A')), ('tax_line_id.tag_ids','in',[ref('l10n_za.tag_ST1A')])]"/>
+        <field name="domain" eval="['|', ('tax_ids.tag_ids','in',[ref('l10n_za.tag_ST1A')]), ('tax_line_id.tag_ids','in',[ref('l10n_za.tag_ST1A')])]"/>
         <field name="sequence" eval="3"/>
         <field name="level" eval="3" />
         <field name="parent_id" ref='za_vat_financial_report_line_20'/>
@@ -85,7 +85,7 @@
         <field name="sequence" eval="6"/>
         <field name="level" eval="3"/>
         <field name="formulas"> balance = -sum.balance</field>
-        <field name="domain" eval="[('tax_ids.tag_ids','in',ref('l10n_za.tag_ST2'))]"/>
+        <field name="domain" eval="[('tax_ids.tag_ids','in',[ref('l10n_za.tag_ST2')])]"/>
         <field name="special_date_changer">strict_range</field>
         <field name="parent_id" ref='za_vat_financial_report_line_20'/>
     </record>
@@ -96,7 +96,7 @@
         <field name="sequence" eval="7"/>
         <field name="level" eval="3"/>
         <field name="formulas"> balance = -sum.balance</field>
-        <field name="domain" eval="[('tax_ids.tag_ids','in',ref('l10n_za.tag_ST2A'))]"/>
+        <field name="domain" eval="[('tax_ids.tag_ids','in',[ref('l10n_za.tag_ST2A')])]"/>
         <field name="special_date_changer">strict_range</field>
         <field name="parent_id" ref='za_vat_financial_report_line_20'/>
     </record>
@@ -107,7 +107,7 @@
         <field name="sequence" eval="8"/>
         <field name="level" eval="3"/>
         <field name="formulas"> balance = -sum.balance</field>
-        <field name="domain" eval="[('tax_ids.tag_ids','in',ref('l10n_za.tag_ST3'))]"/>
+        <field name="domain" eval="[('tax_ids.tag_ids','in',[ref('l10n_za.tag_ST3')])]"/>
         <field name="special_date_changer">strict_range</field>
         <field name="parent_id" ref='za_vat_financial_report_line_20'/>
     </record>
@@ -118,7 +118,7 @@
         <field name="sequence" eval="9"/>
         <field name="level" eval="3"/>
         <field name="formulas"> balance = -sum.balance</field>
-        <field name="domain" eval="[('tax_ids.tag_ids','in',ref('l10n_za.tag_ST5'))]"/>
+        <field name="domain" eval="[('tax_ids.tag_ids','in',[ref('l10n_za.tag_ST5')])]"/>
         <field name="special_date_changer">strict_range</field>
         <field name="parent_id" ref='za_vat_financial_report_line_20'/>
     </record>
@@ -149,7 +149,7 @@
         <field name="sequence" eval="12"/>
         <field name="level" eval="3"/>
         <field name="formulas"> balance = -sum.balance</field>
-        <field name="domain" eval="[('tax_ids.tag_ids','in',ref('l10n_za.tag_ST7'))]"/>
+        <field name="domain" eval="[('tax_ids.tag_ids','in',[ref('l10n_za.tag_ST7')])]"/>
         <field name="special_date_changer">strict_range</field>
         <field name="parent_id" ref='za_vat_financial_report_line_20'/>
     </record>
@@ -190,7 +190,7 @@
         <field name="sequence" eval="17"/>
         <field name="level" eval="3"/>
         <field name="formulas"> balance = -sum.balance + VAT11.balance</field>
-        <field name="domain" eval="[('tax_ids.tag_ids','in',ref('l10n_za.tag_ST10'))]"/>
+        <field name="domain" eval="[('tax_ids.tag_ids','in',[ref('l10n_za.tag_ST10')])]"/>
         <field name="special_date_changer">strict_range</field>
         <field name="parent_id" ref='za_vat_financial_report_line_20'/>
     </record>

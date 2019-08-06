@@ -10,7 +10,7 @@
         <field name="name">ÁFA alap</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="0"/>
-        <field name="formulas">balance = HUTAX_01.balance + HUTAX_02.balance + HUTAX_04.balance + HUTAX_04_1.balance + HUTAX_05.balance + HUTAX_06.balance + HUTAX_07.balance + HUTAX_11.balance + HUTAX_23.balance + HUTAX_23_1.balance + HUTAX_29.balance + HUTAX_63.balance + HUTAX_63_1.balance + HUTAX_64.balance + HUTAX_65.balance + HUTAX_66.balance</field>
+        <field name="formulas">balance = HUTAX_01.balance + HUTAX_02.balance + HUTAX_04.balance + HUTAX_04_1.balance + HUTAX_05.balance + HUTAX_06.balance + HUTAX_07.balance + HUTAX_11.balance + HUTAX_23_1.balance + HUTAX_29.balance + HUTAX_63.balance + HUTAX_63_1.balance + HUTAX_64.balance + HUTAX_65.balance + HUTAX_66.balance</field>
         <field name="financial_report_id" ref="financial_report_l10n_hu"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -102,17 +102,6 @@
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
     </record>
-    <record id="financial_report_line_hu_01_09" model="account.financial.html.report.line">
-        <field name="code">HUTAX_23</field>
-        <field name="name">Adóalap – Fordított ÁFA</field>
-        <field name="sequence" eval="9"/>
-        <field name="level" eval="1"/>
-        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_hu.tag_hu_12')])]"/>
-        <field name="formulas">balance = sum.balance</field>
-        <field name="parent_id" ref="financial_report_line_hu_01"/>
-        <field name="show_domain">never</field>
-        <field name="special_date_changer">strict_range</field>
-    </record>
     <record id="financial_report_line_hu_01_10" model="account.financial.html.report.line">
         <field name="code">HUTAX_23_1</field>
         <field name="name">Adóalap – Import ÁFA</field>
@@ -129,7 +118,7 @@
         <field name="name">Adóalap – Fordított ÁFA</field>
         <field name="sequence" eval="11"/>
         <field name="level" eval="1"/>
-        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_hu.tag_hu_10')])]"/>
+        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_hu.tag_hu_10'), ref('l10n_hu.tag_hu_12')])]"/>
         <field name="formulas">balance = - sum.balance</field>
         <field name="parent_id" ref="financial_report_line_hu_01"/>
         <field name="show_domain">never</field>

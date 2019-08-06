@@ -22,7 +22,3 @@ class ResCompany(models.Model):
         readonly=False,
         default='month',
     )
-    forecast_default_view = fields.Selection([
-        ('gantt', 'Gantt'),
-        ('grid', 'Grid')
-    ], default="gantt", required=True, help="Which view should be seen by default for forecasts")

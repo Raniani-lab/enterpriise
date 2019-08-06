@@ -30,9 +30,9 @@
         <div t-attf-class="o_document_preview
             {{ nbPreviews === 1 ? 'o_documents_single_preview' : '' }}
             {{ ((recordData.isImage or recordData.isYouTubeVideo) and 'o_documents_preview_image') or 'o_documents_preview_mimetype' }}
-            {{ recordData.isYouTubeVideo and 'o_non_image_preview' or '' }}">
+            {{ (recordData.isYouTubeVideo or recordData.isGif) and 'o_non_image_preview' or '' }}">
             <t t-set="mimetype" t-value="record.data.mimetype"/>
-            <t t-if="recordData.isImage or recordData.isYouTubeVideo">
+            <t t-if="recordData.isImage or recordData.isGif or recordData.isYouTubeVideo">
                 <t t-set="size" t-value="nbPreviews === 1 ? '268x130' : nbPreviews === 2 ? '120x130' : '120x75'"/>
                 <img t-if="recordData.isYouTubeVideo"
                      t-att-data-id="record.res_id"

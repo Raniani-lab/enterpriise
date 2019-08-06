@@ -73,7 +73,8 @@ var DocumentsInspector = Widget.extend({
                      youtubeToken = youtubeUrlMatch[1];
                 }
                 this.recordsData[record.id] = {
-                    isImage: new RegExp('image.*(gif|jpeg|jpg|png)').test(record.data.mimetype),
+                    isGif: new RegExp('image.*(gif)').test(record.data.mimetype),
+                    isImage: new RegExp('image.*(jpeg|jpg|png)').test(record.data.mimetype),
                     isYouTubeVideo: !!youtubeToken,
                     youtubeToken,
                 };

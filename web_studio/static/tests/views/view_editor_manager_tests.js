@@ -206,14 +206,14 @@ QUnit.module('ViewEditorManager', {
 
         // open list view
         await testUtils.dom.click(vem.$('.o_field_one2many'));
-        await testUtils.dom.click(vem.$('.o_web_studio_editX2Many'));
+        await testUtils.dom.click(vem.$('button.o_web_studio_editX2Many[data-type="list"]'));
 
         // add value to "toughness" selection field
         await testUtils.dom.click(vem.$('th[data-node-id]'));
         await testUtils.dom.click(vem.$('.o_web_studio_edit_selection_values'));
         $('.modal .o_web_studio_selection_new_value input').val('Hardest');
         await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button'));
-        await testUtils.dom.click($('.modal.o_web_studio_field_modal .btn-primary'));
+        await testUtils.dom.click($('.modal.o_web_studio_field_modal footer .btn-primary'));
 
         vem.destroy();
     });

@@ -11,6 +11,7 @@
             <script type="text/javascript" src="/mail_enterprise/static/src/js/discuss.js"></script>
             <script type="text/javascript" src="/mail_enterprise/static/src/js/thread_field.js" />
             <script type="text/javascript" src="/mail_enterprise/static/src/js/thread_window_mobile.js" />
+            <script type="text/javascript" src="/mail_enterprise/static/src/js/thread_widget_mobile.js" />
         </xpath>
     </template>
 

@@ -262,10 +262,10 @@
 
 <template id="main_template">
     <div class='o_account_reports_body'>
-        <div class="container o_account_reports_page o_account_reports_no_print">
-            <div class="alert alert-info text-center no_print" t-if="not options.get('all_entries') and options.get('unposted_in_period')">
-                <span>There are <a action="open_unposted_moves">unposted Journal Entries</a> prior or included in this period</span>
-            </div>
+        <div class="alert alert-info text-center mb-0 no_print" t-if="not options.get('all_entries') and options.get('unposted_in_period')">
+            <span>There are <a action="open_unposted_moves">unposted Journal Entries</a> prior or included in this period</span>
+        </div>
+        <div class="o_account_reports_page o_account_reports_no_print">
 
             <div class="o_account_reports_header">
                 <div class="print_only"><h2><t t-esc="report.get('name')"></t></h2></div>

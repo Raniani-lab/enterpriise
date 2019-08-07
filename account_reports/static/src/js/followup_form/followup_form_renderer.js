@@ -140,7 +140,6 @@ var FollowupFormRenderer = FormRenderer.extend({
         var $element = $('<div>');
         $element.html(this.state.data.followup_html);
         $element.find('.o_account_reports_summary_edit').hide();
-        $element.find('.o_account_reports_no_print').removeClass('container');
         this.nextActionDatePicker.appendTo($element.find('div.o_account_reports_next_action_date_picker')).then(function() {
             self.nextActionDatePicker.setValue(moment());
             if (self.state.data.next_action === 'auto'){

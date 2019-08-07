@@ -44,7 +44,7 @@ QUnit.module('FollowupViews', {
                             type: 'auto',
                             date_auto: '09/10/2017'
                         },
-                        html: '<div class="o_account_reports_body"><div class="container o_account_reports_page o_account_reports_no_print"></div></div>'
+                        html: '<div class="o_account_reports_body"><div class="o_account_reports_page o_account_reports_no_print"></div></div>'
                     });
                 }
                 return this._super.apply(this, arguments);
@@ -78,7 +78,7 @@ QUnit.module('FollowupViews', {
                             type: 'auto',
                             date_auto: '09/10/2017'
                         },
-                        html: '<div class="o_account_reports_body"><div class="container o_account_reports_page o_account_reports_no_print"></div></div>'
+                        html: '<div class="o_account_reports_body"><div class="o_account_reports_page o_account_reports_no_print"></div></div>'
                     });
                 }
                 return this._super.apply(this, arguments);
@@ -122,7 +122,7 @@ QUnit.module('FollowupViews', {
                             type: 'auto',
                             date_auto: '09/10/2017'
                         },
-                        html: '<div class="o_account_reports_body"><div class="container o_account_reports_page o_account_reports_no_print"></div></div>'
+                        html: '<div class="o_account_reports_body"><div class="o_account_reports_page o_account_reports_no_print"></div></div>'
                     });
                 }
                 if (args.method === 'print_followups') {
@@ -186,7 +186,7 @@ QUnit.module('FollowupViews', {
                             type: 'auto',
                             date_auto: '09/10/2017'
                         },
-                        html: '<div class="o_account_reports_body"><div class="container o_account_reports_page o_account_reports_no_print"></div></div>'
+                        html: '<div class="o_account_reports_body"><div class="o_account_reports_page o_account_reports_no_print"></div></div>'
                     });
                 }
                 return this._super.apply(this, arguments);

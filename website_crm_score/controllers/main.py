@@ -89,7 +89,7 @@ class ContactController(WebsiteForm):
         else:
             # either no lead_id cookie OR the lead_id doesn't exist in db OR the current one is closed -> a lead is created
             lang = request.context.get('lang', False)
-            lang_id = request.env["res.lang"].sudo().search([('code', '=', lang)], limit=1).id
+            lang_id = request.env["res.lang"]._lang_get_id(lang)
             values['lang_id'] = lang_id
             body = None
 

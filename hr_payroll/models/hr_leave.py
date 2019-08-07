@@ -140,8 +140,8 @@ class HrLeave(models.Model):
             return True
         skip_check = not bool({'employee_id', 'state', 'date_from', 'date_to'} & vals.keys())
 
-        start = min(self.mapped('date_from') + [vals.get('date_from') or datetime.max])
-        stop = max(self.mapped('date_to') + [vals.get('date_to') or datetime.min])
+        start = min(self.mapped('date_from') + [fields.Datetime.from_string(vals.get('date_from', False)) or datetime.max])
+        stop = max(self.mapped('date_to') + [fields.Datetime.from_string(vals.get('date_to', False)) or datetime.min])
         with self.env['hr.work.entry']._error_checking(start=start, stop=stop, skip=skip_check):
             return super().write(vals)
 

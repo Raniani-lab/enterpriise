@@ -13,7 +13,7 @@ class TestStockReport(common.TransactionCase):
         super(TestStockReport, self).setUp()
 
         products = self.env['product.product'].search([('product_tmpl_id.type', '=', 'product')])
-        moves = self.env['stock.move'].search([])
+        moves = self.env['stock.move'].search([('company_id', '=', self.env.company.id)])
         for move in moves:
             if move._is_in():
                 move._create_in_svl()

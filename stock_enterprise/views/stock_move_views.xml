@@ -5,7 +5,7 @@
         <field name="model">stock.move</field>
         <field name="priority" eval="1000"/>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <tree editable="bottom" create="0">
                 <field name="date_expected"/>
                 <field name="state" invisible="1"/>
                 <field name="reference" readonly="1"/>

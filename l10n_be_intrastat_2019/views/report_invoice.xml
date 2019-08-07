@@ -4,7 +4,7 @@
     <xpath expr="//th[3]" position="before">
       <th class="text-right">Origin Country</th>
     </xpath>
-    <xpath expr="//td[3]" position="before">
+    <xpath expr="//td[2]" position="before">
       <td class="text-right">
         <span t-field="line.intrastat_product_origin_country_id"/>
       </td>

@@ -2352,7 +2352,7 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click($('.modal-footer .btn-primary:first'));
 
         // create a new many2many related field
-        await testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
         assert.strictEqual($('.modal').length, 1, "a modal should be displayed");
         $('.modal .o_field_selector').focusin(); // open the selector popover
         await testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));

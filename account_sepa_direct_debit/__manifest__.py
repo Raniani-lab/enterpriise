@@ -49,7 +49,6 @@
         'data/set_sdd_on_bank_journals.xml',
         'data/sdd_mandate_state_cron.xml',
         'views/account_payment_view.xml',
-        'views/account_invoice_view.xml',
         'views/account_journal_dashboard_view.xml',
         'views/report_invoice.xml',
         'views/res_config_settings_views.xml',

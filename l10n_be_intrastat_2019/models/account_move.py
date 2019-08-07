@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    intrastat_product_origin_country_id = fields.Many2one('res.country', string='Origin Country of Product')
+    intrastat_product_origin_country_id = fields.Many2one('res.country', string='Product Country')
 
     @api.onchange('product_id')
     def _onchange_product_id(self):

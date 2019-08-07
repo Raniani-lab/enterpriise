@@ -69,6 +69,13 @@
             <xpath expr="//div[hasclass('o_attachment_preview')]" position="replace">
                 <div class="o_attachment_preview" options="{'preview_priority_type': 'pdf'}"/>
             </xpath>
+            <xpath expr="//page[@id='other_tab']//group[@name='payments_info_group']" position="after">
+                <group string="Extraction Information"
+                       name="extraction_info_group"
+                       attrs="{'invisible': ['|', ('type', '!=', 'in_invoice'), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}">
+                    <field name="extract_remote_id"/>
+                </group>
+            </xpath>
         </field>
     </record>
 

@@ -53,6 +53,12 @@ class ProviderUPS(models.Model):
         ('8', "Cashier's Check or MoneyOrder"),
         ], string='COD Funding Option', default='0')
 
+    def _compute_can_generate_return(self):
+        super(ProviderUPS, self)._compute_can_generate_return()
+        for carrier in self:
+            if carrier.delivery_type == 'ups':
+                carrier.can_generate_return = True
+
     @api.onchange('ups_default_service_type')
     def on_change_service_type(self):
         self.ups_cod = False

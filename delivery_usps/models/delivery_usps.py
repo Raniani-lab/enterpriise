@@ -86,6 +86,15 @@ class ProviderUSPS(models.Model):
     usps_redirect_partner_id = fields.Many2one('res.partner', string="Redirect Partner")
     usps_machinable = fields.Boolean(string="Machinable", help="Please check on USPS website to ensure that your package is machinable.")
 
+    def _compute_can_generate_return(self):
+        super(ProviderUSPS, self)._compute_can_generate_return()
+        for carrier in self:
+            if carrier.delivery_type == 'usps':
+                if carrier.usps_delivery_nature == 'international':
+                    carrier.can_generate_return = False
+                else:
+                    carrier.can_generate_return = True
+
     def usps_rate_shipment(self, order):
         srm = USPSRequest(self.prod_environment, self.log_xml)
 

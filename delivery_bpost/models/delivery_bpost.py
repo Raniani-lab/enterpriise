@@ -36,6 +36,15 @@ class ProviderBpost(models.Model):
     bpost_saturday = fields.Boolean(string="Delivery on Saturday", help="Allow deliveries on Saturday (extra charges apply)")
     bpost_default_packaging_id = fields.Many2one('product.packaging', string='bpost Default Packaging Type')
 
+    def _compute_can_generate_return(self):
+        super(ProviderBpost, self)._compute_can_generate_return()
+        for carrier in self:
+            if carrier.delivery_type == 'bpost':
+                if carrier.bpost_delivery_nature == 'International':
+                    carrier.can_generate_return = False
+                else:
+                    carrier.can_generate_return = True
+
     def bpost_rate_shipment(self, order):
         bpost = BpostRequest(self.prod_environment, self.log_xml)
         check_value = bpost.check_required_value(order.partner_shipping_id, order.carrier_id.bpost_delivery_nature, order.warehouse_id.partner_id, order=order)

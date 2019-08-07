@@ -86,6 +86,12 @@ class Providerdhl(models.Model):
         ('8X4_PDF', '8X4_PDF')
     ], string="Label Template", default='8X4_A4_PDF')
 
+    def _compute_can_generate_return(self):
+        super(Providerdhl, self)._compute_can_generate_return()
+        for carrier in self:
+            if carrier.delivery_type == 'dhl':
+                carrier.can_generate_return = True
+
     def dhl_rate_shipment(self, order):
         res = self._rate_shipment_vals(order=order)
         return res

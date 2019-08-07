@@ -102,6 +102,13 @@ class ProviderFedex(models.Model):
                                                                                  Thursday:\n1.FEDEX_2_DAY.\nFriday:\n1.PRIORITY_OVERNIGHT.\n2.FIRST_OVERNIGHT.
                                                                                  3.INTERNATIONAL_PRIORITY.\n(To Select Countries)""")
 
+    def _compute_can_generate_return(self):
+        super(ProviderFedex, self)._compute_can_generate_return()
+        for carrier in self:
+            if not carrier.can_generate_return:
+                if carrier.delivery_type == 'fedex':
+                    carrier.can_generate_return = True
+
     @api.onchange('fedex_service_type')
     def on_change_fedex_service_type(self):
         self.fedex_saturday_delivery = False

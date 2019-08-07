@@ -24,6 +24,12 @@ class DeliverCarrier(models.Model):
         ('PNG', 'PNG'), ('PDF', 'PDF'),
         ('ZPL', 'ZPL'), ('EPL2', 'EPL2')],
         string="Easypost Label File Type", default='PDF')
+    
+    def _compute_can_generate_return(self):
+        super(DeliverCarrier, self)._compute_can_generate_return()
+        for carrier in self:
+            if carrier.delivery_type == 'easypost':
+                carrier.can_generate_return = True
 
     def action_get_carrier_type(self):
         """ Return the list of carriers configured by the customer

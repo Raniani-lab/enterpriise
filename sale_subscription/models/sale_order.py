@@ -105,7 +105,7 @@ class SaleOrder(models.Model):
             to_create = self._split_subscription_lines()
             # create a subscription for each template with all the necessary lines
             for template in to_create:
-                values = self._prepare_subscription_data(template)
+                values = order._prepare_subscription_data(template)
                 values['recurring_invoice_line_ids'] = to_create[template]._prepare_subscription_line_data()
                 subscription = self.env['sale.subscription'].sudo().create(values)
                 subscription.onchange_date_start()

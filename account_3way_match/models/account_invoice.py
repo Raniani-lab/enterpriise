@@ -15,7 +15,6 @@ class AccountMove(models.Model):
         compute='_compute_release_to_pay',
         copy=False,
         store=True,
-        string='Should be paid',
         help="This field can take the following values :\n"
              "  * Yes: you should pay the bill, you have received the products\n"
              "  * No, you should not pay the bill, you have not received the products\n"
@@ -23,18 +22,19 @@ class AccountMove(models.Model):
              "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox.")
     release_to_pay_manual = fields.Selection(
         _release_to_pay_status_list,
-        string='Should be paid Manual',
+        string='Should Be Paid',
         help="  * Yes: you should pay the bill, you have received the products\n"
              "  * No, you should not pay the bill, you have not received the products\n"
-             "  * Exception, there is a difference between received and billed quantities.")
+             "  * Exception, there is a difference between received and billed quantities\n"
+             "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox.")
     force_release_to_pay = fields.Boolean(
-        string="Force status",
-        help="Indicates whether the 'Can be paid' status is defined automatically or manually.")
+        string="Force Status",
+        help="Indicates whether the 'Should Be Paid' status is defined automatically or manually.")
 
-    @api.depends('invoice_line_ids.can_be_paid', 'release_to_pay_manual', 'force_release_to_pay')
+    @api.depends('invoice_line_ids.can_be_paid', 'force_release_to_pay')
     def _compute_release_to_pay(self):
         for invoice in self:
-            if invoice.force_release_to_pay and invoice.release_to_pay_manual:
+            if invoice.force_release_to_pay:
                 #we must use the manual value contained in release_to_pay_manual
                 invoice.release_to_pay = invoice.release_to_pay_manual
             else:
@@ -56,7 +56,12 @@ class AccountMove(models.Model):
                     #Otherwise, its status will be the one all its lines share.
 
                 #'result' can be None if the bill was entirely empty.
-                invoice.release_to_pay = result or 'no'
+                invoice.release_to_pay = invoice.release_to_pay_manual = result or 'no'
+
+    @api.onchange('release_to_pay_manual')
+    def _onchange_release_to_pay_manual(self):
+        if self.release_to_pay and self.release_to_pay_manual != self.release_to_pay:
+            self.force_release_to_pay = True
 
 
 class AccountMoveLine(models.Model):

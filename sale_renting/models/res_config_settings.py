@@ -25,7 +25,7 @@ class ResConfigSettings(models.TransientModel):
         help="This product will be used to add fines in the Rental Order.", related="company_id.extra_product",
         readonly=False, domain="[('type', '=', 'service')]")
 
-    module_sale_rental_sign = fields.Boolean(string="Digital Documents")
+    module_sale_renting_sign = fields.Boolean(string="Digital Documents")
 
     @api.onchange('extra_hour')
     def _onchange_extra_day(self):

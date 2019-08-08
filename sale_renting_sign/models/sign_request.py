@@ -13,7 +13,7 @@ class SignRequest(models.Model):
         for request in self:
             if request.sale_order_id:
                 request.sale_order_id.message_post_with_view(
-                    "sale_rental_sign.message_signature_link",
+                    "sale_renting_sign.message_signature_link",
                     values={"request": request, "salesman": self.env.user.partner_id},
                     subtype_id=self.env.ref("mail.mt_note").id,
                     author_id=self.env.user.partner_id.id,

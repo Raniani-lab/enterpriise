@@ -2,7 +2,7 @@
 <odoo>
     <record id="attachment_rental_sign" model="ir.attachment">
         <field name="name">Rental Agreement</field>
-        <field name="datas" type="base64" file="sale_rental_sign/static/demo/rental.pdf"/>
+        <field name="datas" type="base64" file="sale_renting_sign/static/demo/rental.pdf"/>
         <field name="mimetype">application/pdf</field>
     </record>
 

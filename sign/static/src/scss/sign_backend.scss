@@ -54,7 +54,6 @@
                 padding: 0 42px 0 0;
                 border-collapse: collapse;
                 border: none;
-
             }
             thead {
                 display: none;
@@ -69,7 +68,6 @@
                 border: none;
                 border-bottom: none
             }
-
             tbody > tr:not(.o_data_row) {
                 display: none;
             }
@@ -100,8 +98,6 @@
                     border-top-style: none;
                     border-right-style: none;
                     border-left-style: none;
-                    // don't uncomment this one because it will hide the lines.
-                    //border-bottom: none
                 }
             }
         }
@@ -194,5 +190,4 @@
         top: 159px !important;
         left: 4px !important;
     }
-
 }

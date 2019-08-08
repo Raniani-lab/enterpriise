@@ -13,6 +13,7 @@
                 <field name="favorited_ids"/>
                 <field name="responsible_count"/>
                 <field name="create_uid"/>
+
                 <templates>
                     <div t-name="kanban-box" t-attf-class="oe_kanban_global_click {{kanban_color(record.color.raw_value)}}">
                         <div class="o_kanban_record_top">
@@ -127,7 +128,7 @@
         <field name="model">sign.template</field>
         <field name="arch" type="xml">
             <search>
-                <field name="attachment_id"/>
+                <field name="attachment_id" string="Document Name"/>
                 <field name="tag_ids"/>
                 <filter name="my_templates" string="My Templates" domain="[('create_uid', '=', uid)]"/>
                 <filter name="favorite" string="My Favorites" domain="[('favorited_ids', '=', uid)]"/>

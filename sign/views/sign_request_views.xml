@@ -68,7 +68,7 @@
                 <field name="reference"/>
                 <field name="template_id"/>
                 <field name="state"/>
-                <field name="progress" widget="progressbar"/>
+                <field name="progress"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
         </field>
@@ -135,6 +135,7 @@
                 <field name="reference" string="Document/Signer" filter_domain="['|', ('reference', 'ilike', self), ('request_item_ids.partner_id.email', 'ilike', self)]"/>
                 <field name="template_id" string="Template or Tag" filter_domain="['|', ('template_id.attachment_id.name', 'ilike', self), ('template_id.tag_ids.name', 'ilike', self)]"/>
                 <filter name="my_docs" string="My Documents" domain="[('create_uid', '=', uid)]"/>
+                <filter name="my_sign_request" string="My Requests" domain="[('request_item_ids.partner_id.user_ids', 'like', uid)]"/>
                 <filter name="favorite" string="My Favorites" domain="[('favorited_ids', '=', uid)]"/>
                 <separator/>
                 <filter name="in_progress" string="To Sign" domain="[('state', '=', 'sent')]"/>
@@ -163,6 +164,7 @@
         <field name="res_model">sign.request</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="search_view_id" ref="sign_request_view_search"/>
+        <field name="context">{'search_default_my_sign_request': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No documents to sign

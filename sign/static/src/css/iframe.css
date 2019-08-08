@@ -14,6 +14,7 @@
 
 .o_sign_sign_item {
     position: absolute;
+
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -309,6 +310,12 @@ textarea.o_sign_sign_item {
 
 .o_sign_item_option {
     padding: 5px;
+    font-size: 12pt;
+}
+
+.o_sign_option_separator {
+    padding: 5px;
+    font-size: 12pt;
 }
 
 .o_sign_selected_option {
@@ -416,7 +423,6 @@ textarea.o_sign_sign_item {
     height: 30px;
     padding: 0px 20px 0px 20px;
 }
-
 
 .o_sign_close_button {
     padding: 0;

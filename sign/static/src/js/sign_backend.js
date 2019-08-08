@@ -90,7 +90,7 @@ odoo.define('sign.views_custo', function(require) {
                     .on('click', function (e) {
                         e.preventDefault();
                         e.stopImmediatePropagation();
-                        _sign_upload_file.call(self, false, true, 'sign_sign_now');
+                        _sign_upload_file.call(self, true, true, 'sign_sign_now');
                     }));
                     this.$buttons.find(selector_button+'.o-direct').after(
                     $('<button class="btn btn-link o-kanban-button-new ml8" type="button">'+ _t('UPLOAD A PDF TEMPLATE') +'</button>')
@@ -186,7 +186,7 @@ odoo.define('sign.template', function(require) {
             },
             'click .o_sign_validate_field_button': function (e) {
                 this.hide();
-            },   
+            }
         },
 
         init: function(parent, parties, options, select_options) {
@@ -203,6 +203,7 @@ odoo.define('sign.template', function(require) {
             this.$optionsSelect = this.$('.o_sign_options_select');
             sign_utils.resetResponsibleSelectConfiguration();
             sign_utils.resetOptionsSelectConfiguration();
+
             var self = this;
             return this._super().then(function() {
                 sign_utils.setAsResponsibleSelect(self.$responsibleSelect.find('select'), self.$currentTarget.data('responsible'), self.parties);
@@ -231,7 +232,7 @@ odoo.define('sign.template', function(require) {
                     },
                     html: true,
                     placement: 'right',
-                    trigger: 'focus',
+                    trigger:'focus',
                 };
                 self.$currentTarget.popover(options).one('inserted.bs.popover', function (e) {
                     $('.popover').addClass('o_popover_offset');
@@ -240,7 +241,6 @@ odoo.define('sign.template', function(require) {
                     });
                 });
                 self.$currentTarget.popover("toggle");
-                
 
             });
         },
@@ -250,9 +250,6 @@ odoo.define('sign.template', function(require) {
             var selected_options = this.$optionsSelect.find('#o_sign_options_select_input').data('item_options');
             var required = this.$('input[type="checkbox"]').prop('checked');
             var name = this.$('#o_sign_name').val();
-
-            this.$currentTarget.popover("hide");
-
             this.getParent().currentRole = resp;
             if (! name) {
                 name = self.$currentTarget.prop('field-name');
@@ -264,7 +261,9 @@ odoo.define('sign.template', function(require) {
                     outputDict[key] = inputDict[key];
                 }
             }
-            this.$currentTarget.find(".o_placeholder").text(name);
+            if (self.$currentTarget.prop('field-type') !== "checkbox") {
+                this.$currentTarget.find(".o_placeholder").text(name);
+            }
             this.$currentTarget.data(outputDict).trigger('itemChange');
             this.$currentTarget.popover("hide");
         }
@@ -341,6 +340,7 @@ odoo.define('sign.template', function(require) {
                     page_loop:
                     for (var i = 1; i <= this.nbPages; i++) {
                         for (var j = 0; j < this.configuration[i].length; j++) {
+                            // Add initials only if there is no Signature on the page.
                             if (this.types[this.configuration[i][j].data('type')].item_type === 'signature') {
                                 continue page_loop;
                             }
@@ -471,8 +471,7 @@ odoo.define('sign.template', function(require) {
                                 // delete the associated popovers. At this point, there should only be one popover
                                 var popovers = window.document.querySelectorAll('[id^="popover"]');
                                 for (let i = 0; i < popovers.length; i += 1) {
-                                    var tmp = popovers[i];
-                                     document.getElementById(tmp.id).remove();
+                                     document.getElementById(popovers[i].id).remove();
                                 }
                             });
                             self.$iframe.trigger('templateChange');
@@ -640,9 +639,7 @@ odoo.define('sign.template', function(require) {
             },
 
             'keydown .o_sign_template_name_input': function (e) {
-                if (e.keyCode === 107) {
-                // Old behavior: event when 'Enter' key is pressed
-                // Test: '+' key is pressed
+                if (e.keyCode === 13) {
                     this.$templateNameInput.blur();
                 }
             },
@@ -693,7 +690,7 @@ odoo.define('sign.template', function(require) {
                     self.do_action('sign.action_sign_send_request', {
                         additional_context: {
                             'active_id': self.templateID,
-                            'sign_directly_without_mail': self.sign_directly_without_mail,
+                            'sign_directly_without_mail': false,
                         },
                     });
                 });
@@ -719,7 +716,6 @@ odoo.define('sign.template', function(require) {
                 this.cp_content = {$buttons: $sendButton.add($shareButton).add($closeButton)};
             }
         },
-
 
         willStart: function() {
             if(this.templateID === undefined) {
@@ -848,9 +844,11 @@ odoo.define('sign.template', function(require) {
             this.$('.o_content').append(core.qweb.render('sign.template', {widget: this}));
 
             this.$('iframe,.o_sign_template_name_input').prop('disabled', this.has_sign_requests);
+
             this.$templateNameInput = this.$('.o_sign_template_name_input').first();
             this.$templateNameInput.trigger('input');
             this.initialTemplateName = this.$templateNameInput.val();
+
             this.refresh_cp();
         },
 
@@ -997,6 +995,7 @@ odoo.define('sign.DocumentBackend', function (require) {
 
                 var $cols = self.$('.col-lg-4').toggleClass('col-lg-6 col-lg-4');
                 var $buttonsContainer = $cols.first().remove();
+
                 var url = $buttonsContainer.find('.o_sign_download_document_button').attr('href');
                 self.$downloadButton.attr('href', url).toggleClass('o_hidden', !url);
                 var logUrl = $buttonsContainer.find('.o_sign_download_log_button').attr('href');

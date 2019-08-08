@@ -36,7 +36,6 @@ def _fix_image_transparency(image):
             if pixels[x, y] == (0, 0, 0, 0):
                 pixels[x, y] = (255, 255, 255, 0)
 
-
 class SignRequest(models.Model):
     _name = "sign.request"
     _description = "Signature Request"
@@ -323,6 +322,7 @@ class SignRequest(models.Model):
             'subject': '%s signed' % self.reference,
             'body': '',
         }, engine='ir.qweb', minimal_qcontext=True)
+
         for follower in self.mapped('message_follower_ids.partner_id') - self.request_item_ids.mapped('partner_id'):
             if not follower.email:
                 continue
@@ -335,6 +335,7 @@ class SignRequest(models.Model):
                  'email_to': formataddr((follower.name, follower.email)),
                  'subject': _('%s has been signed') % self.reference}
             )
+
         return True
 
     def _get_font(self):

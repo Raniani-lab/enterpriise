@@ -110,6 +110,7 @@ class Sign(http.Controller):
         sign_request = http.request.env['sign.request'].sudo().browse(id)
         if sign_request.access_token != token or not sign_request:
             return http.request.not_found()
+
         document = None
         if download_type == "log":
             pdf_writer = PdfFileWriter()
@@ -134,6 +135,7 @@ class Sign(http.Controller):
             document = sign_request.completed_document
             if not document: # if the document is completed but the document is encrypted
                 return http.redirect_with_hash('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
+
         if not document:
             # Shouldn't it fall back on 'origin' download type?
             return http.redirect_with_hash("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})

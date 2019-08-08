@@ -18,7 +18,6 @@ class SignTemplate(models.Model):
 
     attachment_id = fields.Many2one('ir.attachment', string="Attachment", required=True, ondelete='cascade')
     name = fields.Char(related='attachment_id.name', readonly=False)
-    display_name = fields.Char(compute='_compute_extension')
     datas = fields.Binary(related='attachment_id.datas', readonly=False)
     sign_item_ids = fields.One2many('sign.item', 'template_id', string="Signature Items", copy=True)
     responsible_count = fields.Integer(compute='_compute_responsible_count', string="Responsible Count")
@@ -45,6 +44,14 @@ class SignTemplate(models.Model):
     redirect_url_text = fields.Char(string="Link Label", default="Open Link",
         help="Optional text to display on the button link")
 
+    def name_get(self):
+        res = []
+        for template in self:
+            if template.attachment_id.name:
+                # For now, we only support PDF file in the app
+                res.append((template.id, template.attachment_id.name.replace('.pdf', '')))
+        return res
+
     @api.depends('attachment_id.name')
     def _compute_extension(self):
         for template in self:
@@ -52,8 +59,6 @@ class SignTemplate(models.Model):
                 template.extension = template.attachment_id.mimetype.replace('application/', '').replace(';base64', '')
             else:
                 template.extension = ''
-            if template.attachment_id.name:
-                template.display_name = template.attachment_id.name.replace('.pdf', '')
 
     @api.depends('sign_item_ids.responsible_id')
     def _compute_responsible_count(self):
@@ -256,6 +261,3 @@ class SignItemParty(models.Model):
             'target': 'current',
             'url': url
         }
-
-
-

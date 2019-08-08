@@ -135,7 +135,7 @@ odoo.define('sign.PDFIframe', function (require) {
                         parseFloat(el.height),
                         el.value,
                         el.option_ids,
-                        el.name,
+                        el.name
                     );
                     $signatureItem.data({itemId: el.id, order: i});
 
@@ -237,13 +237,6 @@ odoo.define('sign.PDFIframe', function (require) {
         createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name) {
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
             var selected_options = option_ids || [];
-            var placeholder = '';
-            if (name) {
-                placeholder = name;
-            } else {
-                placeholder = type['placeholder'];
-            }
-
 
             var $signatureItem = $(core.qweb.render('sign.sign_item', {
                 editMode: this.editMode,
@@ -251,7 +244,7 @@ odoo.define('sign.PDFIframe', function (require) {
                 type: type['item_type'],
                 value: value || "",
                 options: selected_options,
-                placeholder: placeholder
+                placeholder: (name) ? name : type['placeholder']
             }));
 
             if (type['item_type'] === 'selection') {
@@ -657,10 +650,10 @@ odoo.define('sign.document_signing', function (require) {
 
             if (!options.buttons) {
                 options.buttons = [];
+                options.buttons.push({text: _t("Cancel"), close: true});
                 options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", disabled: true, click: function (e) {
                     this.confirmFunction();
                 }});
-                options.buttons.push({text: _t("Cancel"), close: true});
             }
 
             this._super(parent, options);
@@ -762,6 +755,14 @@ odoo.define('sign.document_signing', function (require) {
             var isEmpty = this.nameAndSignature.isSignatureEmpty();
             this.$primaryButton.prop('disabled', isEmpty);
         },
+        /**
+         * @override
+         */
+        renderElement: function () {
+            this._super.apply(this, arguments);
+             // this trigger the adding of a custom css
+             this.$modal.addClass('o_sign_signature_dialog');
+         },
     });
 
     var SignItemNavigator = Widget.extend({
@@ -1056,6 +1057,7 @@ odoo.define('sign.document_signing', function (require) {
         events: {
             'click .o_go_to_document': 'on_closed',
         },
+
         get_passworddialog_class: function () {
             return EncryptedDialog;
         },
@@ -1080,7 +1082,6 @@ odoo.define('sign.document_signing', function (require) {
 
             // If sign now: do_action to return to templates
             // If request sent by mail: reload the document
-            var url = window.location.href;
             var ButtonName = "";
             if (! session.uid) {
                 ButtonName = "View Signed Document";
@@ -1091,8 +1092,8 @@ odoo.define('sign.document_signing', function (require) {
                     ButtonName = "Return to templates";
                     var NextAction = function() {
                         return self.do_action('sign.sign_template_action', {
-                         clear_breadcrumbs: true
-                        })
+                            clear_breadcrumbs: true
+                            });
                         };
                 }
 
@@ -1102,6 +1103,7 @@ odoo.define('sign.document_signing', function (require) {
             this.RedirectURL = RedirectURL;
             this.requestID = requestID;
             this._super(parent, options);
+
             this.on('closed', this, this.on_closed);
 
             var self = this;
@@ -1112,7 +1114,6 @@ odoo.define('sign.document_signing', function (require) {
                     (new (self.get_passworddialog_class())(self, requestID)).open();
                 }
             });
-        
         },
 
         /**
@@ -1129,7 +1130,6 @@ odoo.define('sign.document_signing', function (require) {
         on_closed: function () {
             window.location.reload();
         },
-
     });
 
     var NextDirectSignDialog = Dialog.extend({
@@ -1178,7 +1178,6 @@ odoo.define('sign.document_signing', function (require) {
                 type: "ir.actions.client",
                 tag: 'sign.SignableDocument',
                 name: _t("Sign"),
-                
             }, {
                 additional_context: {
                     id: this.requestID,
@@ -1204,7 +1203,6 @@ odoo.define('sign.document_signing', function (require) {
             this.events = _.extend(this.events || {}, {
                 'keydown .page .ui-selected': function(e) {
                     if((e.keyCode || e.which) !== 13) {
-                    // tab pressed
                         return true;
                     }
                     e.preventDefault();
@@ -1218,7 +1216,9 @@ odoo.define('sign.document_signing', function (require) {
             this.fullyLoaded.then(function() {
                 self.signatureItemNav = new SignItemNavigator(self, self.types);
                 return self.signatureItemNav.prependTo(self.$('#viewerContainer')).then(function () {
+
                     self.checkSignItemsCompletion();
+
                     self.$('#viewerContainer').on('scroll', function(e) {
                         if(!self.signatureItemNav.isScrolling && self.signatureItemNav.started) {
                             self.signatureItemNav.setTip(_t('next'));
@@ -1396,12 +1396,13 @@ odoo.define('sign.document_signing', function (require) {
                             value = $elem.data('signature');
                         }
                         if($elem[0].type === 'checkbox') {
+                            value = false ;
                             if ($elem[0].checked) {
                                 value = 'on';
                             } else {
-                                value = 'off';
+                                if (!$elem.data('required')) value = 'off';
+                                }
                             }
-                        }
                         if(!value) {
                             if($elem.data('required')) {
                                 this.iframeWidget.checkSignItemsCompletion();

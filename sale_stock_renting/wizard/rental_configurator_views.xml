@@ -36,8 +36,8 @@
         <page string="Serials Tracking" attrs="{'invisible': [('tracking', '!=', 'serial')]}">
           <field name="tracking" invisible="1"/>
           <group>
-            <field name="rented_lot_ids"/>
-            <field name="rentable_lot_ids"/>
+            <field name="rented_lot_ids" widget="many2many_tags"/>
+            <field name="rentable_lot_ids" widget="many2many_tags"/>
           </group>
         </page>
       </xpath>

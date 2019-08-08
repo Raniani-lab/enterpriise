@@ -12,7 +12,7 @@ var _t = core._t;
  * - is_rental
  * - pickup_date
  * - return_date
- * - reserved_lot_ids (if sale_stock_rental installed)
+ * - reserved_lot_ids (if sale_stock_renting installed)
  *
  */
 ProductConfiguratorWidget.include({
@@ -131,7 +131,7 @@ ProductConfiguratorWidget.include({
             }
         }
 
-        /** Sale_stock_rental defaults (to avoid having a very little bit of js in sale_stock_rental) */
+        /** Sale_stock_renting defaults (to avoid having a very little bit of js in sale_stock_renting) */
 
         if (this.recordData.reserved_lot_ids) {
             // NEEDS to have the warehouse_id field visible in parent sale_order form view !

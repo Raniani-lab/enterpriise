@@ -1,4 +1,4 @@
-odoo.define('sale_stock_rental.RentalConfiguratorFormController', function (require) {
+odoo.define('sale_stock_renting.RentalConfiguratorFormController', function (require) {
 "use strict";
 
 var RentalConfiguratorFormController = require('sale_renting.RentalConfiguratorFormController');

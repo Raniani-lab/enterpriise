@@ -18,7 +18,7 @@
                         <field name="appraisal_date" readonly="1"/>
                     </span>
                     <span class="o_stat_text">
-                        Appraisal
+                        Next Appraisal
                     </span>
                 </div>
             </button>

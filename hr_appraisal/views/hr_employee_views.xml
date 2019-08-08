@@ -22,7 +22,7 @@
                         <field name="appraisal_date" readonly="1"/>
                     </span>
                     <span class="o_stat_text">
-                        Appraisal
+                        <span attrs="{'invisible': [('appraisal_date', '=', False)]}">Next</span> Appraisal
                     </span>
                 </div>
             </button>

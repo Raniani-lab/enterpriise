@@ -19,7 +19,7 @@ class HrEmployee(models.Model):
     appraisal_colleagues_ids = fields.Many2many('hr.employee', 'emp_appraisal_colleagues_rel', 'hr_appraisal_id', groups="hr.group_hr_user")
     appraisal_self = fields.Boolean(string='Employee', groups="hr.group_hr_user",
         default=lambda self: self.env.user.company_id.appraisal_by_employee)
-    appraisal_employee = fields.Char(string='Employee Name', compute='_compute_name', groups="hr.group_hr_user")
+    appraisal_employee = fields.Char(string='Name', compute='_compute_name', groups="hr.group_hr_user")
     appraisal_by_collaborators = fields.Boolean(string='Collaborators', groups="hr.group_hr_user",
         default=lambda self: self.env.user.company_id.appraisal_by_collaborators)
     appraisal_collaborators_ids = fields.Many2many('hr.employee', 'emp_appraisal_subordinates_rel', 'hr_appraisal_id', groups="hr.group_hr_user")

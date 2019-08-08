@@ -46,9 +46,10 @@ class AccountGenericTaxReport(models.AbstractModel):
         if self.env.user.company_id.country_id.code != 'BE':
             return super(AccountGenericTaxReport, self).get_xml(options)
         company = self.env.company
-        vat_no = company.partner_id.vat
-        if not vat_no:
+        if not company.partner_id.vat:
             raise UserError(_('No VAT number associated with your company.'))
+        vat_no, country_from_vat = self._check_vat_number(company.partner_id.vat)
+
         default_address = company.partner_id.address_get()
         address = self.env['res.partner'].browse(default_address.get("default")) or company.partner_id
         if not address.email:
@@ -57,12 +58,11 @@ class AccountGenericTaxReport(models.AbstractModel):
             raise UserError(_('No phone associated with the company.'))
 
         # Compute xml
-        vat_no = vat_no.replace(' ', '').upper()
 
         default_address = company.partner_id.address_get()
         address = self.env['res.partner'].browse(default_address.get("default", company.partner_id.id))
 
-        issued_by = vat_no[:2]
+        issued_by = vat_no
         dt_from = options['date'].get('date_from')
         dt_to = options['date'].get('date_to')
         send_ref = str(company.partner_id.id) + str(dt_from[5:7]) + str(dt_to[:4])
@@ -75,10 +75,11 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         data = {'client_nihil': options.get('client_nihil'), 'ask_restitution': options.get('ask_restitution', False), 'ask_payment': options.get('ask_payment', False)}
 
+        complete_vat = (country_from_vat or (address.country_id and address.country_id.code or "")) + vat_no
         file_data = {
                         'issued_by': issued_by,
-                        'vat_no': vat_no,
-                        'only_vat': vat_no[2:],
+                        'vat_no': complete_vat,
+                        'only_vat': vat_no,
                         'cmpny_name': company.name,
                         'address': "%s %s" % (address.street or "", address.street2 or ""),
                         'post_code': address.zip or "",
@@ -160,3 +161,20 @@ class AccountGenericTaxReport(models.AbstractModel):
         rslt += '\n\t</ns2:VATDeclaration> \n</ns2:VATConsignment>'
 
         return rslt.encode()
+
+    def _check_vat_number(self, vat_number):
+        """
+        Even with base_vat, the vat number doesn't necessarily starts
+        with the country code
+        We should make sure the vat is set with the country code
+        to avoid submitting this declaration with a wrong vat number
+        """
+        vat_number = vat_number.replace(' ', '').upper()
+        try:
+            int(vat_number[:2])
+            country_code = None
+        except ValueError:
+            country_code = vat_number[:2]
+            vat_number = vat_number[2:]
+
+        return vat_number, country_code

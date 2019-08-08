@@ -14,20 +14,16 @@ $o-mm-bold-font: Georgia, "Times New Roman", Times, serif;
 .o_bold_theme {
     font-family: $o-mm-bold-font;
 
+    @include bg-variant(".bg-beta", $o-mm-bold-color-gamma);
+    @include text-emphasis-variant(".text-beta", $o-mm-bold-color-gamma);
+    @include bg-variant(".bg-delta", $o-mm-bold-color-zeta);
+
     // ===== Colors =====
     .bg-beta {
-        background-color: $o-mm-bold-color-gamma;
-
         .btn.btn-primary {
             color: $o-mm-bold-color-alpha;
             background-color: $o-mm-bold-color-beta;
         }
-    }
-    .text-beta {
-        color: $o-mm-bold-color-gamma;
-    }
-    .bg-delta {
-        background-color: $o-mm-bold-color-zeta;
     }
 
     // ===== Layout =====
@@ -135,7 +131,7 @@ $o-mm-bold-font: Georgia, "Times New Roman", Times, serif;
             border-top: 3px solid $o-mm-bold-color-beta;
             border-bottom: 3px solid $o-mm-bold-color-beta;
         }
-        
+
         .o_mail_full_width_padding {
             padding-left: 0;
             padding-right: 0;

@@ -604,11 +604,19 @@ class AccountFinancialReportLine(models.Model):
 
             # Only consider accounts related to a bank/cash journal, not all liquidity accounts
             if self.code in ('CASHEND', 'CASHSTART'):
+                journal_ids_filter = ''
+                journal_ids_params = []
+                journal_ids = self.env.context.get('journal_ids')
+                if journal_ids:
+                    journal_ids_filter = ' AND journal_id in %s'
+                    journal_ids_params = [tuple(journal_ids)]
                 return '''
                 WITH account_move_line AS (
                     SELECT ''' + select_clause_1 + '''
                     FROM account_move_line
-                    WHERE account_id in %s)''', [tuple(bank_accounts.ids)]
+                    WHERE account_id in %s
+                    ''' + journal_ids_filter + ''')''', \
+                    [tuple(bank_accounts.ids)] + journal_ids_params
 
             # Avoid crash if there's no bank moves to consider
             if not bank_move_ids:
@@ -708,7 +716,13 @@ class AccountFinancialReportLine(models.Model):
                 new_condition = (condition[0].partition('.')[2], condition[1], condition[2])
                 taxes = self.env['account.tax'].with_context(active_test=False).search([new_condition])
                 domain[index] = ('tax_ids', 'in', taxes.ids)
-        tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=self._get_aml_domain())
+        aml_obj = self.env['account.move.line']
+        if financial_report == self.env.ref('account_reports.account_financial_report_cashsummary0'):
+            # Cash Flow statement has already applied the journal_ids filters in the WITH statements
+            # For lines which are not CASHSTART and CASHEND, we want to include reconcilied move lines
+            # even if they are linked to a different journal.
+            aml_obj = aml_obj.with_context(journal_ids=False)
+        tables, where_clause, where_params = aml_obj._query_get(domain=self._get_aml_domain())
         if financial_report.tax_report:
             where_clause += ''' AND "account_move_line".tax_exigible = 't' '''
 
@@ -953,6 +967,11 @@ class AccountFinancialReportLine(models.Model):
             groupby = ', '.join(['"account_move_line".%s' % field for field in groupby])
 
             aml_obj = self.env['account.move.line']
+            if financial_report == self.env.ref('account_reports.account_financial_report_cashsummary0'):
+                # Cash Flow statement has already applied the journal_ids filters in the WITH statements
+                # For lines which are not CASHSTART and CASHEND, we want to include reconcilied move lines
+                # even if they are linked to a different journal.
+                aml_obj = aml_obj.with_context(journal_ids=False)
             tables, where_clause, where_params = aml_obj._query_get(domain=self._get_aml_domain())
             sql, params = self._get_with_statement(financial_report)
             if financial_report.tax_report:

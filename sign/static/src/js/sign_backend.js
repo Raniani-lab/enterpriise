@@ -531,6 +531,12 @@ odoo.define('sign.template', function(require) {
             var self = this;
 
             $item.on('dragstart resizestart', function(e, ui) {
+                var $target = $(e.target);
+                if (!$target.hasClass('ui-draggable') && !$target.hasClass('ui-resizable')) {
+                    // The element itself is not draggable or resizable
+                    // Let the event propagate to its parents
+                    return;
+                }
                 start.call(self, ui.helper);
             });
             $item.find('.o_sign_config_area .fa.fa-arrows').on('mousedown', function(e) {
@@ -538,6 +544,12 @@ odoo.define('sign.template', function(require) {
                 process.call(self, $item, $item.position());
             });
             $item.on('drag resize', function(e, ui) {
+                var $target = $(e.target);
+                if (!$target.hasClass('ui-draggable') && !$target.hasClass('ui-resizable')) {
+                    // The element itself is not draggable or resizable
+                    // Let the event propagate to its parents
+                    return;
+                }
                 process.call(self, ui.helper, ui.position);
             });
             $item.on('dragstop resizestop', function(e, ui) {

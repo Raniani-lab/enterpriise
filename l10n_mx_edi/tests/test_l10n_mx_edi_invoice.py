@@ -31,7 +31,8 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         self.xml_expected = objectify.fromstring(self.xml_expected_str)
         isr_tag = self.env['account.account.tag'].search(
             [('name', '=', 'ISR')])
-        self.tax_negative.tag_ids |= isr_tag
+        for rep_line in self.tax_negative.invoice_repartition_line_ids:
+            rep_line.tag_ids |= isr_tag
         self.payment_method_manual_out = self.env.ref(
             "account.account_payment_method_manual_out")
 
@@ -145,7 +146,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # Testing cancel PAC process
         # -----------------------
         invoice.sudo().journal_id.update_posted = True
-        invoice.action_invoice_cancel()
+        invoice.with_context(called_from_cron=True).action_invoice_cancel()
         self.assertEqual(invoice.state, "cancel")
         self.assertTrue(
             invoice.l10n_mx_edi_pac_status in ['cancelled', 'to_cancel'],

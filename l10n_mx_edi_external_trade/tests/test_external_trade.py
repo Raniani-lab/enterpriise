@@ -13,7 +13,8 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
         super(TestL10nMxEdiExternalTrade, self).setUp()
         isr_tag = self.env['account.account.tag'].search(
             [('name', '=', 'ISR')])
-        self.tax_negative.tag_ids |= isr_tag
+        for rep_line in self.tax_negative.invoice_repartition_line_ids:
+            rep_line.tag_ids |= isr_tag
         unit = self.env.ref('uom.product_uom_unit')
         self.tariff = self.ref(
             'l10n_mx_edi_external_trade.tariff_fraction_84289099')

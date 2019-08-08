@@ -56,7 +56,8 @@ def create_list_html(array):
 
 
 class AccountMove(models.Model):
-    _inherit = 'account.move'
+    _name = 'account.move'
+    _inherit = ['account.move', 'l10n_mx_edi.pac.sw.mixin']
 
     l10n_mx_edi_pac_status = fields.Selection(
         selection=[
@@ -530,9 +531,9 @@ class AccountMove(models.Model):
             body_msg = _('The sign service requested failed')
             post_msg = []
         if code:
-            post_msg.extend([_('Code: ') + str(code)])
+            post_msg.extend([_('Code: %s') % code])
         if msg:
-            post_msg.extend([_('Message: ') + msg])
+            post_msg.extend([_('Message: %s') % msg])
         self.message_post(
             body=body_msg + create_list_html(post_msg),
             subtype='account.mt_invoice_validated')
@@ -563,9 +564,9 @@ class AccountMove(models.Model):
             body_msg = _('The cancel service requested failed')
         post_msg = []
         if code:
-            post_msg.extend([_('Code: ') + str(code)])
+            post_msg.extend([_('Code: %s') % code])
         if msg:
-            post_msg.extend([_('Message: ') + msg])
+            post_msg.extend([_('Message: %s') % msg])
         self.message_post(
             body=body_msg + create_list_html(post_msg),
             subtype='account.mt_invoice_validated')
@@ -832,8 +833,7 @@ class AccountMove(models.Model):
             float(values['amount_untaxed']) - float(values['amount_discount'] or 0) + (
                 values['taxes']['total_transferred'] or 0) - (values['taxes']['total_withhold'] or 0))
 
-        values['tax_name'] = lambda t: {'ISR': '001', 'IVA': '002', 'IEPS': '003'}.get(
-            t, False)
+        values['tax_name'] = lambda t: {'ISR': '001', 'IVA': '002', 'IEPS': '003'}.get(t, False)
 
         if self.l10n_mx_edi_partner_bank_id:
             digits = [s for s in self.l10n_mx_edi_partner_bank_id.acc_number if s.isdigit()]
@@ -912,9 +912,8 @@ class AccountMove(models.Model):
         # -Check PAC
         if pac_name:
             pac_test_env = company_id.l10n_mx_edi_pac_test_env
-            pac_username = company_id.l10n_mx_edi_pac_username
             pac_password = company_id.l10n_mx_edi_pac_password
-            if not pac_test_env and not (pac_username and pac_password):
+            if not pac_test_env and not pac_password:
                 error_log.append(_('No PAC credentials specified.'))
         else:
             error_log.append(_('No PAC specified.'))

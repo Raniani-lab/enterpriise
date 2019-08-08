@@ -310,12 +310,12 @@ textarea.o_sign_sign_item {
 
 .o_sign_item_option {
     padding: 5px;
-    font-size: 12pt;
+    /* font-size: 12pt; */
 }
 
 .o_sign_option_separator {
     padding: 5px;
-    font-size: 12pt;
+    /* font-size: 12pt; */
 }
 
 .o_sign_selected_option {

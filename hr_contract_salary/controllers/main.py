@@ -646,10 +646,15 @@ class website_hr_contract_salary(http.Controller):
             if isinstance(new_value, float):
                 new_value = round(new_value, 2)
             if new_value or (new_value == 0.0):
+                sign_request_item_id = http.request.env['sign.request.item'].sudo().search([
+                    ('sign_request_id', '=', res['id']),
+                    ('role_id', '=', item.responsible_id.id)
+                ])
                 request.env['sign.item.value'].sudo().create({
                     'sign_item_id': item.id,
                     'sign_request_id': res['id'],
                     'value': new_value,
+                    'sign_request_item_id': sign_request_item_id.id
                 })
 
         sign_request = request.env['sign.request'].browse(res['id']).sudo()

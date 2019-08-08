@@ -143,11 +143,11 @@ Tour.register('hr_contract_salary_tour', {
             content: "Contract Update Template",
             trigger: '.o_field_widget.o_field_many2one[name=contract_update_template_id]',
             run: function (actions) {
-                actions.text("employee_contract.pdf", this.$anchor.find("input"));
+                actions.text("employee_contract", this.$anchor.find("input"));
             },
         },
         {
-            trigger: ".ui-autocomplete > li > a:contains('employee_contract.pdf')",
+            trigger: ".ui-autocomplete > li > a:contains('employee_contract')",
             auto: true,
         },
         {

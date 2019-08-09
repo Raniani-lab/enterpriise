@@ -133,7 +133,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
         })
 
         if options.get('hierarchy'):
-            lines = self._create_hierarchy(lines)
+            lines = self._create_hierarchy(lines, options)
 
         return lines
 

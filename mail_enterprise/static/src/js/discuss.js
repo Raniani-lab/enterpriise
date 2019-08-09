@@ -11,16 +11,24 @@ var Discuss = require('mail.Discuss');
 
 var QWeb = core.qweb;
 
+const SwipeItemMixin = require('web_enterprise.SwipeItemMixin');
+const SnackBar = require('web_enterprise.SnackBar');
+
+const _t = core._t;
+
 /**
  * Overrides Discuss module in mobile
  */
 Discuss.include({
+    ...SwipeItemMixin,
     contentTemplate: 'mail.discuss_mobile',
-    events: _.extend(Discuss.prototype.events, {
+    events: {
+        ...Discuss.prototype.events,
+        ...SwipeItemMixin.events,
         'click .o_mail_mobile_tab': '_onMobileTabClicked',
         'click .o_mailbox_inbox_item': '_onMobileInboxButtonClicked',
         'click .o_mail_preview': '_onMobileThreadClicked',
-    }),
+    },
 
     /**
      * @override
@@ -28,6 +36,35 @@ Discuss.include({
     init: function () {
         this._super.apply(this, arguments);
         this._currentState = this._defaultThreadID;
+        SwipeItemMixin.init.call(this, {
+            allowSwipe: (ev, action) => {
+                return action === 'right' && this._allowRightSwipe(ev);
+            },
+            onRightSwipe: ev => {
+                const thread = this._getThreadFromSwipe(ev);
+                this._toggleUnReadPreviewDisplay(ev);
+                let params = {
+                    message: _t('Marked as read'),
+                    delay: 3000,
+                    onComplete: () => this._processPreviewMarkAsRead(ev),
+                    actionText: _t('UNDO'),
+                    onActionClick: () => {
+                        this._toggleUnReadPreviewDisplay(ev);
+                    }
+                };
+                if (thread && thread.getType() !== 'mailbox') {
+                    new SnackBar(this, params).show();
+                } else {
+                    const $target = $(ev.currentTarget);
+                    params.onActionClick = () => {
+                        this._toggleUnReadPreviewDisplay(ev);
+                        $target.slideDown('fast');
+                    };
+                    $target.slideUp('fast', () => new SnackBar(this, params).show());
+                }
+            },
+            selectorTarget: '.o_mail_preview',
+        });
     },
     /**
      * @override
@@ -59,6 +96,39 @@ Discuss.include({
     //--------------------------------------------------------------------------
 
     /**
+     *
+     * @param ev
+     * @returns {boolean}
+     * @private
+     */
+    _allowRightSwipe(ev) {
+        // allow mark as read inside the inbox
+        if (this._thread._id === 'mailbox_inbox') {
+            return true;
+        }
+        // check if item is unread
+        return this._getPreviewFromSwipe(ev).data('unread-counter') > 0;
+    },
+    /**
+     *
+     * @param ev
+     * @returns {*|jQuery}
+     * @private
+     */
+    _getPreviewFromSwipe(ev) {
+        return $(ev.currentTarget);
+    },
+    /**
+     *
+     * @param ev
+     * @returns {*}
+     * @private
+     */
+    _getThreadFromSwipe(ev) {
+        const previewID = this._getPreviewFromSwipe(ev).data('preview-id');
+        return this.call('mail_service', 'getThread', previewID);
+    },
+    /**
      * @override
      * @private
      */
@@ -71,6 +141,26 @@ Discuss.include({
      */
     _isInInboxTab: function () {
         return _.contains(['mailbox_inbox', 'mailbox_starred', 'mailbox_history'], this._currentState);
+    },
+    /**
+     *
+     * @param ev
+     * @private
+     */
+    _processPreviewMarkAsRead(ev) {
+        const thread = this._getThreadFromSwipe(ev);
+        if (thread) {
+            thread.markAsRead();
+        }
+    },
+    /**
+     *
+     * @param ev
+     * @private
+     */
+    _processToggleStar(ev) {
+        const messageId = $(ev.currentTarget).find('.o_thread_message').data('message-id');
+        this.trigger('toggle_star_status', messageId);
     },
     /**
      * @override
@@ -132,6 +222,26 @@ Discuss.include({
             this._super.apply(this, arguments);
         }
     },
+    /**
+     *
+     * @param ev
+     * @private
+     */
+    _toggleStarDisplay(ev) {
+        $(ev.currentTarget).find('.o_thread_message_star')
+            .toggleClass('fa-star-o')
+            .toggleClass('fa-star');
+    },
+    /**
+     *
+     * @param ev
+     * @private
+     */
+    _toggleUnReadPreviewDisplay(ev) {
+        this._getPreviewFromSwipe(ev)
+            .toggleClass('o_preview_unread');
+    },
+
     /**
      * Overrides to toggle the visibility of the tabs when a message is
      * unselected
@@ -232,6 +342,9 @@ Discuss.include({
             // mailbox_inbox, mailbox_starred and mailbox_history share the same tab
             type = _.contains(['mailbox_inbox', 'mailbox_starred', 'mailbox_history'], type) ? 'mailbox_inbox' : type;
             self.$('.o_mail_mobile_tab[data-type=' + type + ']').addClass('active');
+        }).then(() => {
+            SwipeItemMixin.addClassesToTarget.call(this);
+            return Promise.resolve();
         });
     },
 

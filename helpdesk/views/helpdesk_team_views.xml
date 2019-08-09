@@ -405,18 +405,18 @@
                 <field name="unassigned_tickets"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="#{kanban_color(record.color.raw_value)}">
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div t-attf-class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary"><field name="name"/></div>
                                     <small t-if="record.use_alias.value and record.alias_name.value and record.alias_domain.value"><i class="fa fa-envelope-o" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-esc="record.alias_id.value"/></small>
                                 </div>
-                                <div class="o_kanban_manage_button_section">
+                                <div class="o_kanban_manage_button_section" t-if="!selection_mode">
                                     <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
                                 </div>
                             </div>
-                            <div class="container o_kanban_card_content">
+                            <div class="container o_kanban_card_content" t-if="!selection_mode">
                                 <div class="row">
                                     <div class="col-6 o_kanban_primary_left">
                                         <button class="btn btn-primary" name="%(helpdesk.helpdesk_ticket_action_team)d" type="action">Tickets</button>

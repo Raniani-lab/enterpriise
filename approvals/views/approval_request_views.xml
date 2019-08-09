@@ -193,7 +193,7 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click container">
-                            <div class="o_dropdown_kanban dropdown">
+                            <div class="o_dropdown_kanban dropdown" t-if="!selection_mode">
 
                                 <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>

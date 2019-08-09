@@ -15,6 +15,14 @@ odoo.define('web_mobile.barcode.tests', function (require) {
     var PRODUCT_PRODUCT = 'product.product';
     var SALE_ORDER_LINE = 'sale_order_line';
     var PRODUCT_FIELD_NAME = 'product_id';
+    var ARCHS = {
+        'product.product,false,kanban': '<kanban>' +
+            '<templates><t t-name="kanban-box">' +
+                '<div class="oe_kanban_global_click"><field name="display_name"/></div>' +
+            '</t></templates>' +
+        '</kanban>',
+        'product.product,false,search': '<search></search>',
+    };
 
     QUnit.module('web_mobile', {
         beforeEach: function () {
@@ -49,23 +57,13 @@ odoo.define('web_mobile.barcode.tests', function (require) {
         QUnit.test("web_mobile: barcode button in a mobile environment", async function (assert) {
             var self = this;
 
-            assert.expect(2);
+            assert.expect(3);
 
             // simulate a mobile environment
             field_registry.add('many2one_barcode', barcode_fields);
-            var __many2oneDialog = mobile.methods.many2oneDialog;
             var __scanBarcode = mobile.methods.scanBarcode;
             var __showToast = mobile.methods.showToast;
             var __vibrate = mobile.methods.vibrate;
-
-            mobile.methods.many2oneDialog = function (args) {
-                // Check if we have one result minimum (1 result + create + create and edit)
-                if (args.records.length >= 3) {
-                    return Promise.resolve({'data': {'action': 'select', 'value': {'id': args.records[0].id}}});
-                } else {
-                    return Promise.resolve({'data': {'action': 'cancel'}});
-                }
-            };
 
             mobile.methods.scanBarcode = function () {
                 return Promise.resolve({
@@ -90,6 +88,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
                     '</form>',
                 data: this.data,
                 model: SALE_ORDER_LINE,
+                archs: ARCHS,
                 mockRPC: function (route, args) {
                     if (args.method === NAME_SEARCH && args.model === PRODUCT_PRODUCT) {
                         return this._super.apply(this, arguments).then(function (result) {
@@ -116,6 +115,11 @@ odoo.define('web_mobile.barcode.tests', function (require) {
 
             await testUtils.dom.click($scanButton);
 
+            var $modal = $('.o_modal_full .modal-lg');
+            assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
+
+            await testUtils.dom.click($modal.find('.o_kanban_view .o_kanban_record:first'));
+
             var selectedId = form.renderer.state.data[PRODUCT_FIELD_NAME].res_id;
             assert.equal(selectedId, self.data[PRODUCT_PRODUCT].records[0].id,
                 "product found and selected (" +
@@ -124,7 +128,6 @@ odoo.define('web_mobile.barcode.tests', function (require) {
             mobile.methods.vibrate = __vibrate;
             mobile.methods.showToast = __showToast;
             mobile.methods.scanBarcode = __scanBarcode;
-            mobile.methods.many2oneDialog = __many2oneDialog;
             field_registry.add('many2one_barcode', relational_fields.FieldMany2One);
 
             form.destroy();

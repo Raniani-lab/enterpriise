@@ -111,8 +111,8 @@
                             <field name="connection"/>
                             <field name="connected"/>
                             <field name="keyboard_layout" attrs="{'invisible': [('type', 'not in', ['keyboard', 'scanner'])]}"/>
-                            <div class='font-weight-bold'>Value</div>
-                            <widget name="iot_device_value_display"/>
+                            <div class='font-weight-bold' groups="base.group_no_one">Last Sent Value</div>
+                            <widget name="iot_device_value_display" groups="base.group_no_one"/>
                         </group>
                     </group>
                     <notebook>

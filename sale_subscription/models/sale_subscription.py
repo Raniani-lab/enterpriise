@@ -51,7 +51,10 @@ class SaleSubscription(models.Model):
     recurring_total = fields.Float(compute='_compute_recurring_total', string="Recurring Price", store=True, tracking=True)
     recurring_monthly = fields.Float(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue", store=True)
     close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", tracking=True)
-    template_id = fields.Many2one('sale.subscription.template', string='Subscription Template', required=True, tracking=True)
+    template_id = fields.Many2one(
+        'sale.subscription.template', string='Subscription Template',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        required=True, tracking=True)
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
     user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
@@ -1010,6 +1013,7 @@ class SaleSubscriptionTemplate(models.Model):
     bad_health_domain = fields.Char(string='Bad Health', default='[]',
                                     help="Domain used to change subscription's Kanban state with a 'Bad' rating")
     invoice_mail_template_id = fields.Many2one('mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')])
+    company_id = fields.Many2one('res.company')
 
     @api.constrains('recurring_interval')
     def _check_recurring_interval(self):
@@ -1098,7 +1102,9 @@ class SaleSubscriptionAlert(models.Model):
         ('on_time', 'Timed Condition'),
     ], string='Trigger On', required=True, default='on_create_or_write')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
-    subscription_template_ids = fields.Many2many('sale.subscription.template', string='Subscription Templates')
+    subscription_template_ids = fields.Many2many(
+        'sale.subscription.template', string='Subscription Templates',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     customer_ids = fields.Many2many('res.partner', string='Customers')
     company_id = fields.Many2one('res.company', string='Company')
     mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id')

@@ -115,7 +115,7 @@ class Sign(http.Controller):
         if download_type == "log":
             pdf_writer = PdfFileWriter()
             report_action = http.request.env.ref('sign.action_sign_request_print_logs').sudo()
-            pdf_content, _ = report_action.render_qweb_pdf(sign_request.id)
+            pdf_content, __ = report_action.render_qweb_pdf(sign_request.id)
             reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
             for page in range(reader.getNumPages()):
                 pdf_writer.addPage(reader.getPage(page))
@@ -126,7 +126,7 @@ class Sign(http.Controller):
             pdfhttpheaders = [
                 ('Content-Type', 'application/pdf'),
                 ('Content-Length', len(merged_pdf)),
-                ('Content-Disposition', 'attachment; filename=' + "Access Logs.pdf;")
+                ('Content-Disposition', 'attachment; filename=' + "Activity Logs.pdf;")
             ]
             return request.make_response(merged_pdf, headers=pdfhttpheaders)
         elif download_type == "origin":

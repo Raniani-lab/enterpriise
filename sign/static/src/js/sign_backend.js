@@ -943,7 +943,6 @@ odoo.define('sign.template', function(require) {
 
 odoo.define('sign.DocumentBackend', function (require) {
     'use strict';
-
     var AbstractAction = require('web.AbstractAction');
     var core = require('web.core');
     var Document = require('sign.Document');
@@ -977,7 +976,7 @@ odoo.define('sign.DocumentBackend', function (require) {
             this.name_list = context.name_list;
 
             this.$downloadButton = $('<a/>', {html: _t("Download Document")}).addClass('btn btn-primary o_hidden');
-            this.$downloadLogButton = $('<a/>', {html: _t("Download Access Logs")}).addClass('btn btn-secondary o_hidden');
+            this.$downloadLogButton = $('<a/>', {html: _t("Activity Logs")}).addClass('btn btn-secondary o_hidden');
             this.cp_content = {$buttons: this.$downloadButton.add(this.$downloadLogButton)};
         },
 

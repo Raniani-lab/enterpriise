@@ -66,6 +66,7 @@ class SignRequest(models.Model):
     nb_closed = fields.Integer(string="Completed Signatures", compute="_compute_count", store=True)
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
     progress = fields.Char(string="Progress", compute="_compute_count")
+    start_sign = fields.Boolean(string="", help="At least one signer has signed the document.", compute="_compute_count")
 
     active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
@@ -172,6 +173,13 @@ class SignRequest(models.Model):
         for sign_request in self:
             for sign_request_item in sign_request.request_item_ids:
                 sign_request_item.write({'state':'sent'})
+                Log = http.request.env['sign.log'].sudo()
+                vals = Log._prepare_vals_from_request(sign_request)
+                vals.update({
+                    'action': 'create',
+                })
+                vals = Log._update_vals_with_http_request(vals)
+                Log.create(vals)
 
     def action_sent(self, subject=None, message=None):
         # Send accesses by email

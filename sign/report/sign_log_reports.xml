@@ -3,16 +3,13 @@
 
     <template id="sign_request_logs_user">
         <t t-call="web.html_container">
-            <t t-set="print_date" t-value="datetime.datetime.now()"/>
+            <t t-set="print_date" t-value="time.strftime('%Y-%m-%d - %H:%M:%S')"/>
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
                     <br/>
                     <h3>
-                        Access history of:
+                        Access history of <span t-field="o.reference"/>
                     </h3>
-                    <h4 class="text-right">
-                        <span t-field="o.reference"/>
-                    </h4>
                     <div class="text-right text-muted">(Sign Request # <t t-esc="o.id"/>)</div>
                     <div class="text-right text-muted">Printed on <t t-esc="print_date"/></div>
                     <br/>
@@ -32,7 +29,7 @@
                             <tr t-foreach="o.sign_log_ids" t-as="log">
                                 <td> <span t-field="log.log_date"/> </td>
                                 <td> <span t-field="log.action"/> </td>
-                                <td> <span t-field="log.partner_id"/> </td>
+                                <td> <span t-field="log.partner_id"/> <span t-field="log.partner_id.email"/></td>
                                 <td> <span t-field="log.request_state"/> </td>
                                 <td groups="sign.group_sign_manager"> <span t-if="log.latitude" t-field="log.latitude"/> </td>
                                 <td groups="sign.group_sign_manager"> <span t-if="log.longitude" t-field="log.longitude"/> </td>
@@ -46,7 +43,7 @@
     </template>
 
     <report id="action_sign_request_print_logs"
-        string="Access Logs"
+        string="Activity Logs"
         model="sign.request"
         name="sign.sign_request_logs_user"
         file="sign.sign_request_logs_user"

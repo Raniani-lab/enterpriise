@@ -37,7 +37,7 @@
         <field name="name">Subscription line multi-company</field>
         <field name="model_id" ref="model_sale_subscription_line"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|',('analytic_account_id.company_id','=',False),('analytic_account_id.company_id','in', company_ids)]</field>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
     <!-- Reporting -->

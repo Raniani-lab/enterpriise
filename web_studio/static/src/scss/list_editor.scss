@@ -1,11 +1,15 @@
-.o_web_studio_list_view_editor .o_list_view .table {
+.o_web_studio_list_view_editor .o_list_table.table {
     // Define transparent borders to prevent flickering on hover
     border-collapse: separate;
-    th, td {
-        border-left: 1px solid transparent;
-        border-right: 1px solid transparent;
-        &.o_web_studio_hook {
-            border-left: 2px solid transparent;
+    thead {
+        tr {
+            th, td {
+                border-left: 1px solid transparent;
+                border-right: 1px solid transparent;
+                &.o_web_studio_hook {
+                    border-left: 2px solid transparent;
+                }
+            }
         }
     }
 

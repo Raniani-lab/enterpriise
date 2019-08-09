@@ -2063,6 +2063,32 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+
+    QUnit.test('form_view_id attribute', async function (assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt string="Tasks" date_start="start" date_stop="stop" form_view_id="42"/>',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['project_id'],
+        });
+
+        testUtils.mock.intercept(gantt, 'load_views', function (event) {
+            assert.strictEqual(event.data.views[0][0], 42, "should do a do_action with view id 42");
+        });
+
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_add'));
+        await testUtils.nextTick();
+
+        gantt.destroy();
+    });
+
+
     QUnit.test('decoration attribute', async function (assert) {
         assert.expect(2);
 

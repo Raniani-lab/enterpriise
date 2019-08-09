@@ -87,11 +87,10 @@ var GanttView = AbstractView.extend({
         };
 
         // form view which is opened by gantt
-        var formViewId = false;
-        if (params.action) {
-            var contextID = params.action.context.form_view_id;
+        var formViewId = arch.attrs.form_view_id ? parseInt(arch.attrs.form_view_id, 10) : false;
+        if (params.action && !formViewId) { // fallback on form view action, or 'false'
             var result = _.findWhere(params.action.views, { type: 'form' });
-            formViewId = contextID || (result ? result.viewID : false);
+            formViewId = result ? result.viewID : false;
         }
         var dialogViews = [[formViewId, 'form']];
 

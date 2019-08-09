@@ -1,16 +1,15 @@
 odoo.define('mail_enterprise.Discuss', function (require) {
 "use strict";
 
-var Discuss = require('mail.Discuss');
-
 var config = require('web.config');
-var core = require('web.core');
-
-var QWeb = core.qweb;
-
 if (!config.device.isMobile) {
     return;
 }
+
+var core = require('web.core');
+var Discuss = require('mail.Discuss');
+
+var QWeb = core.qweb;
 
 /**
  * Overrides Discuss module in mobile

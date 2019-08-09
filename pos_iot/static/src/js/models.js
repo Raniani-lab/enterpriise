@@ -1,11 +1,13 @@
 odoo.define('pos_iot.models', function (require) {
-    "use strict";
+"use strict";
 
 var models = require('point_of_sale.models');
+var PaymentIOT = require('pos_iot.payment');
 var DeviceProxy = require('iot.widgets').DeviceProxy;
 var PrinterProxy = require('pos_iot.Printer');
 
 models.load_fields("res.users", "lang");
+models.register_payment_method('iot_box', PaymentIOT);
 
 models.load_models([{
     model: 'iot.device',
@@ -33,4 +35,35 @@ models.load_models([{
         }
     },
 }]);
+
+var posmodel_super = models.PosModel.prototype;
+models.PosModel = models.PosModel.extend({
+    /**
+     * Opens the shift on the payment terminal
+     *
+     * @override
+     */
+    after_load_server_data: function () {
+        var self = this;
+        var res = posmodel_super.after_load_server_data.apply(this, arguments);
+        if (this.useIoTPaymentTerminal()) {
+            res.then(function () {
+                self.iot_device_proxies.payment.action({
+                    messageType: 'OpenShift',
+                    language: self.user.lang.split('_')[0],
+                });
+            });
+        }
+        return res;
+    },
+
+    useIoTPaymentTerminal: function () {
+        return this.config && this.config.use_proxy
+            && this.iot_device_proxies && this.iot_device_proxies.payment
+            && this.payment_methods.some(function (payment_method) {
+                return payment_method.use_payment_terminal == 'iot_box';
+            });
+    }
+});
+
 });

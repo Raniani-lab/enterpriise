@@ -12,7 +12,7 @@ gui.Gui.include({
     close: function () {
         var self = this;
         var terminal = this.pos.iot_device_proxies.payment;
-        if (this.pos.usePaymentTerminal()) {
+        if (this.pos.useIoTPaymentTerminal()) {
             terminal.action({ messageType: 'CloseShift' })
                 .finally(self._super.bind(self));
         } else {

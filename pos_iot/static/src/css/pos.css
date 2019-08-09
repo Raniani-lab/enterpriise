@@ -1,17 +1,3 @@
-.paymentmethods .button,
-.paymentlines .button {
-    position: relative;
-}
-.paymentlines .button {
-    cursor: pointer;
-    border: 1px solid #cacaca;
-}
-.paymentlines .electronic_payment {
-    background: #e2e2e2;
-    border-collapse: unset;
-    text-align: center;
-    font-size: 16px;
-}
 .terminal_ticket {
     line-height: 100%;
     font-size: 10px;

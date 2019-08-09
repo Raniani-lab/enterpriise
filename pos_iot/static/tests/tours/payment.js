@@ -38,7 +38,7 @@ var TerminalProxy = DeviceProxy.extend({
                 this.transaction = false;
                 setTimeout(function () {
                     self.listener({
-                        Stage: "Finished",
+                        Stage: 'Finished',
                         cid: self.cid,
                     });
                 });
@@ -125,7 +125,7 @@ tour.register('payment_terminals_tour', {
         run: function () {}, // it's a check
     }, {
         content: "Reverse payment",
-        trigger: '.button.send_payment_reverse',
+        trigger: '.button.send_payment_reversal',
     }, {
         content: "Check that the payment is reversed",
         trigger: '.button.next:not(.highlight)',

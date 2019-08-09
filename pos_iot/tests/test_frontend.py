@@ -34,7 +34,7 @@ class TestUi(odoo.tests.HttpCase):
             'payment_method_ids': [(0, 0, {
                 'name': 'Terminal',
                 'is_cash_count': False,
-                'use_payment_terminal': True
+                'use_payment_terminal': 'iot_box'
             })],
         })
 

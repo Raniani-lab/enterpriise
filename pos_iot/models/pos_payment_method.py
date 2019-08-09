@@ -5,4 +5,4 @@ from odoo import fields, models
 class PoSPaymentMethod(models.Model):
     _inherit = 'pos.payment.method'
 
-    use_payment_terminal = fields.Boolean('Use a Payment Terminal', help='Record payments using a payment terminal')
+    use_payment_terminal = fields.Selection(selection_add=[('iot_box', 'Connected to IOTBox')])

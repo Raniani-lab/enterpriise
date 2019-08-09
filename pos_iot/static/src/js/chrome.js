@@ -32,7 +32,7 @@ chrome.Chrome.include({
      * @override
      */
     build_widgets: function () {
-        if (this.pos.usePaymentTerminal()) {
+        if (this.pos.useIoTPaymentTerminal()) {
             // Place it left to the Close button
             var close_button_index = _.findIndex(this.widgets, function (widget) {
                 return widget.name === "close_button";

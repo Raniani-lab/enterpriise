@@ -998,7 +998,7 @@ msgstr "Завантажити усі файли"
 #: selection:documents.share,action:0
 #, python-format
 msgid "Download"
-msgstr "Завантажити"
+msgstr "Скачати"
 
 #. module: documents
 #: selection:documents.share,action:0

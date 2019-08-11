@@ -773,27 +773,28 @@ msgstr "Розсилки автоматизація маркетингу"
 #: code:addons/marketing_automation/models/marketing_campaign.py:588
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
-msgstr "Автоматичне позначення: дія <%s> encountered mass mailing issue %s"
+msgstr ""
+"Автоматизація маркетингу: дія <%s> виникла проблема із масовою розсилкою %s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:558
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
-msgstr "Автоматичне позначення: дія <%s> виникла проблема із сервером %s"
+msgstr "Автоматизація маркетингу: дія <%s> виникла проблема із сервером %s"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_execute_activities_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_execute_activities
 #: model:ir.cron,name:marketing_automation.ir_cron_campaign_execute_activities
 msgid "Marketing Automation: execute activities"
-msgstr "Автоматичне позначення: виконані дії"
+msgstr "Автоматизація маркетингу: виконані дії"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_sync_participants_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_sync_participants
 #: model:ir.cron,name:marketing_automation.ir_cron_campaign_sync_participants
 msgid "Marketing Automation: sync participants"
-msgstr "Автоматичне позначення: синхронізувати учасників"
+msgstr "Автоматизація маркетингу: синхронізувати учасників"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_campaign

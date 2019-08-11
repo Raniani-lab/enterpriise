@@ -365,7 +365,7 @@ msgstr "Negrito"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:284
 #, python-format
 msgid "Bordered"
-msgstr ""
+msgstr "Com Bordas"
 
 #. module: web_studio
 #. openerp-web
@@ -541,7 +541,7 @@ msgstr "Cor"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:258
 #, python-format
 msgid "Colors"
-msgstr ""
+msgstr "Cores"
 
 #. module: web_studio
 #. openerp-web
@@ -937,7 +937,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Menu dropdown"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
@@ -1960,7 +1960,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:10
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Anterior"
 
 #. module: web_studio
 #. openerp-web
@@ -2431,7 +2431,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:47
 #, python-format
 msgid "Tabs"
-msgstr ""
+msgstr "Abas"
 
 #. module: web_studio
 #. openerp-web
@@ -2604,7 +2604,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:315
 #, python-format
 msgid "Timeline"
-msgstr ""
+msgstr "Linha do Tempo"
 
 #. module: web_studio
 #. openerp-web
@@ -2959,7 +2959,7 @@ msgstr "ou"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:207
 #, python-format
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #. module: web_studio
 #. openerp-web

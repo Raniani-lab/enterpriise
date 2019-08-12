@@ -138,7 +138,6 @@ odoo.define('sign.PDFIframe', function (require) {
                         el.name
                     );
                     $signatureItem.data({itemId: el.id, order: i});
-
                     self.configuration[parseInt(el.page)].push($signatureItem);
                 });
 
@@ -1234,9 +1233,13 @@ odoo.define('sign.document_signing', function (require) {
             var self = this;
             var $signatureItem = this._super.apply(this, arguments);
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
-
             if(!readonly) {
-                if(type['item_type'] === "signature" || type['item_type'] === "initial") {
+                // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.
+                if ( type['name'].includes('Text') && type['placeholder'] === $signatureItem.prop('placeholder')) {
+                    $signatureItem.attr('placeholder', ' ');
+                    $signatureItem.find(".o_placeholder").text(" ");
+                 }
+                if (type['item_type'] === "signature" || type['item_type'] === "initial") {
                     $signatureItem.on('click', function(e) {
                         self.refreshSignItems();
                         var $signedItems = self.$('.o_sign_sign_item').filter(function(i) {
@@ -1295,7 +1298,6 @@ odoo.define('sign.document_signing', function (require) {
             } else {
                 $signatureItem.val(value);
             }
-
             return $signatureItem;
         },
 

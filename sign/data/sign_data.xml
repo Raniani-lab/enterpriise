@@ -27,7 +27,8 @@
     <tr><td valign="top">
         <div style="opacity: 0.7;">
             <strong>Warning</strong> do not forward this email to other people!<br/>
-            They will be able to access this document and sign it as yourself.
+            They will be able to access this document and sign it as yourself.<br/>
+            <span>Your IP address and localization are associated to your signature to ensure traceability.</span>
         </div>
     </td></tr>
 </table>

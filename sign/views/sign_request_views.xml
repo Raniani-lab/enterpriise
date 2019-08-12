@@ -101,6 +101,11 @@
                                 <span class="o_stat_text">Activity Logs</span>
                             </div>
                         </button>
+                        <button type="object" name="_compute_hashes" class="oe_read_only oe_stat_button" icon="fa-shield" groups="sign.group_sign_manager">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Activity Check</span>
+                            </div>
+                        </button>
                     </div>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">

@@ -3,20 +3,21 @@
 
     <template id="sign_request_logs_user">
         <t t-call="web.html_container">
-            <t t-set="print_date" t-value="time.strftime('%Y-%m-%d - %H:%M:%S')"/>
+            <t t-set="print_date" t-value="datetime.datetime.utcnow().strftime('%Y-%m-%d - %H:%M:%S')"/>
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
                     <br/>
                     <h3>
-                        Access history of <span t-field="o.reference"/>
+                        Access history of <strong t-field="o.reference"/>
                     </h3>
                     <div class="text-right text-muted">(Sign Request # <t t-esc="o.id"/>)</div>
-                    <div class="text-right text-muted">Printed on <t t-esc="print_date"/></div>
+                    <div class="text-right text-muted">Printed on <t t-esc="print_date"/> UTC</div>
                     <br/>
                     <table class="table table-sm o_main_table table-bordered">
                         <thead>
                             <tr>
-                                <th class="text-left">Access Date</th>
+                                <th class="text-left">Hash</th>
+                                <th class="text-left">Access Date (UTC)</th>
                                 <th class="text-left">Action</th>
                                 <th class="text-left">By</th>
                                 <th class="text-left">Document state</th>
@@ -27,13 +28,14 @@
                         </thead>
                         <tbody>
                             <tr t-foreach="o.sign_log_ids" t-as="log">
+                                <td> <span t-field="log.log_hash"/></td>
                                 <td> <span t-field="log.log_date"/> </td>
                                 <td> <span t-field="log.action"/> </td>
                                 <td> <span t-field="log.partner_id"/> <span t-field="log.partner_id.email"/></td>
                                 <td> <span t-field="log.request_state"/> </td>
                                 <td groups="sign.group_sign_manager"> <span t-if="log.latitude" t-field="log.latitude"/> </td>
                                 <td groups="sign.group_sign_manager"> <span t-if="log.longitude" t-field="log.longitude"/> </td>
-                                <td groups="sign.group_sign_manager"> <span t-field="log.IP"/> </td>
+                                <td> <span t-field="log.IP"/> </td>
                             </tr>
                         </tbody>
                     </table>

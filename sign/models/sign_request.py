@@ -67,6 +67,7 @@ class SignRequest(models.Model):
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
     progress = fields.Char(string="Progress", compute="_compute_count")
     start_sign = fields.Boolean(string="", help="At least one signer has signed the document.", compute="_compute_count")
+    integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes')
 
     active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
@@ -76,6 +77,7 @@ class SignRequest(models.Model):
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Technical: for reporting purposes")
+
 
     @api.depends('request_item_ids.state')
     def _compute_count(self):
@@ -89,6 +91,7 @@ class SignRequest(models.Model):
             rec.nb_wait = wait
             rec.nb_closed = closed
             rec.nb_total = wait + closed
+            rec.start_sign = bool(closed)
             rec.progress = "{} / {}".format(wait, wait + closed)
 
     @api.depends('request_item_ids.state', 'request_item_ids.partner_id.name')
@@ -155,6 +158,11 @@ class SignRequest(models.Model):
             'view_mode': 'tree,form',
             'domain': [('sign_request_id', '=', self.id)],
         }
+
+    @api.onchange("progress", "start_sign")
+    def _compute_hashes(self):
+        logs = self.env['sign.log'].sudo().search([('sign_request_id', '=', self.id)], order='id asc')
+        logs._check_document_integrity()
 
     def toggle_favorited(self):
         self.ensure_one()
@@ -520,6 +528,7 @@ class SignRequestItem(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Contact", ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
+    sign_item_value_ids = fields.One2many('sign.item.value', 'sign_request_item_id', string="Value")
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
     role_id = fields.Many2one('sign.item.role', string="Role")
@@ -606,7 +615,8 @@ class SignRequestItem(models.Model):
             for itemId in signature:
                 item_value = SignItemValue.search([('sign_item_id', '=', int(itemId)), ('sign_request_id', '=', request.id)])
                 if not item_value:
-                    item_value = SignItemValue.create({'sign_item_id': int(itemId), 'sign_request_id': request.id, 'value': signature[itemId]})
+                    item_value = SignItemValue.create({'sign_item_id': int(itemId), 'sign_request_id': request.id,
+                                                       'value': signature[itemId], 'sign_request_item_id': self.id})
                     if item_value.sign_item_id.type_id.item_type == 'signature':
                         self.signature = signature[itemId][signature[itemId].find(',')+1:]
                         if user:

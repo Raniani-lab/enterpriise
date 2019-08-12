@@ -234,6 +234,8 @@ class SignItemValue(models.Model):
 
     sign_item_id = fields.Many2one('sign.item', string="Signature Item", required=True, ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", required=True, ondelete='cascade')
+    sign_request_item_id = fields.Many2one('sign.request.item', string="Signature Request item", required=True,
+                                           ondelete='cascade')
 
     value = fields.Text()
 

@@ -668,7 +668,6 @@ odoo.define('sign.template', function(require) {
 
             this.templateID = options.context.id;
             this.rolesToChoose = {};
-            this.sign_directly_without_mail = options["context"].sign_directly_without_mail || false;
 
             var self = this;
             
@@ -680,13 +679,19 @@ odoo.define('sign.template', function(require) {
                        });
 
                 });
-            var button_name_sign = _t("Send");
-            if(self.sign_directly_without_mail) {
-                button_name_sign = _t("Sign Now");
-            }
-            var $sendButton = $('<button/>', {html: button_name_sign, type: "button"})
+            var $sendButton = $('<button/>', {html: _t("Send"), type: "button"})
                 .addClass('btn btn-secondary')
-                .on('click', function() {
+                .on('click', function () {
+                    self.do_action('sign.action_sign_send_request', {
+                        additional_context: {
+                            'active_id': self.templateID,
+                            'sign_directly_without_mail': false,
+                        },
+                    });
+                });
+            var $signNowButton = $('<button/>', {html: _t("Sign Now"), type: "button"})
+                .addClass('btn btn-secondary')
+                .on('click', function () {
                     self.do_action('sign.action_sign_send_request', {
                         additional_context: {
                             'active_id': self.templateID,
@@ -710,10 +715,13 @@ odoo.define('sign.template', function(require) {
 
             if (! options.context.sign_edit_call || options.context.sign_edit_call === 'sign_template_edit') {
                 $closeButton.switchClass('btn-secondary', 'btn-primary');
-                this.cp_content = {$buttons: $closeButton.add($sendButton).add($shareButton)};
-            } else if (options.context.sign_edit_call === 'sign_sign_now' || options.context.sign_edit_call === 'sign_send_request') {
+                this.cp_content = {$buttons: $closeButton.add($sendButton).add($signNowButton).add($shareButton)};
+            } else if (options.context.sign_edit_call === 'sign_sign_now') {
+                $signNowButton.switchClass('btn-secondary', 'btn-primary');
+                this.cp_content = {$buttons: $signNowButton.add($sendButton).add($shareButton).add($closeButton)};
+            } else if (options.context.sign_edit_call === 'sign_send_request') {
                 $sendButton.switchClass('btn-secondary', 'btn-primary');
-                this.cp_content = {$buttons: $sendButton.add($shareButton).add($closeButton)};
+                this.cp_content = {$buttons: $sendButton.add($signNowButton).add($shareButton).add($closeButton)};
             }
         },
 

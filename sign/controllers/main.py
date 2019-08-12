@@ -297,6 +297,7 @@ class Sign(http.Controller):
             'action': 'sign',
         })
         vals = Log._update_vals_with_http_request(vals)
+        vals['token'] = token
         Log.create(vals)
         return True
 

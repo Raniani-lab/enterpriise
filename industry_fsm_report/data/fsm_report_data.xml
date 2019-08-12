@@ -8,6 +8,7 @@
 
         <record id="industry_fsm.fsm_project" model="project.project">
             <field name="worksheet_template_id" ref="fsm_worksheet_template"/>
+            <field name="allow_worksheets" eval="True" />
         </record>
 
         <record id="mail_template_data_send_report" model="mail.template">

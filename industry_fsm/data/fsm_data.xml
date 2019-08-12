@@ -16,10 +16,11 @@
         </record>
 
         <record id="fsm_time_product" model="product.product">
-            <field name="name">Time</field>
+            <field name="name">Service on Timesheet</field>
             <field name="type">service</field>
             <field name="list_price">40</field>
             <field name="service_policy">delivered_timesheet</field>
+            <field name="image_1920" type="base64" file="industry_fsm/static/img/product_product_fsm_time_product.png"/>
         </record>
 
         <record id="fsm_project" model="project.project">

@@ -168,6 +168,11 @@ class SixDriver(Driver):
             self.call_eftapi('EFT_PutAsync', 0)
             self.call_eftapi('EFT_Commit', 1)
 
+            applicationName = ctypes.create_string_buffer(64)
+            self.call_eftapi('EFT_GetApplicationName', ctypes.byref(applicationName), ctypes.sizeof(applicationName))
+            refNumber = ctypes.create_string_buffer(11)
+            self.call_eftapi('EFT_GetRefNumber', ctypes.byref(refNumber), ctypes.sizeof(refNumber))
+
             self.last_transaction = transaction
             self.processing = False
             
@@ -176,6 +181,8 @@ class SixDriver(Driver):
                 ticket=self.get_customer_receipt(),
                 ticket_merchant=self.get_merchant_receipt(),
                 owner=transaction['owner'],
+                card=applicationName.value,
+                payment_transaction_id=refNumber.value,
             )
 
         except:
@@ -220,7 +227,7 @@ class SixDriver(Driver):
         if res != 0:
             self.send_error(res)
 
-    def send_status(self, response=False, stage=False, ticket=False, ticket_merchant=False, error=False, owner=False, cid=False):
+    def send_status(self, response=False, stage=False, ticket=False, ticket_merchant=False, error=False, owner=False, cid=False, card=False, payment_transaction_id=False):
         """Triggers a device_changed to notify all listeners of the new status.
 
         :param response: The result of a transaction
@@ -237,6 +244,10 @@ class SixDriver(Driver):
         :type owner: String
         :param cid: The cid of payment line that is being processed
         :type cid: String
+        :param card: The type of card that was used
+        :type card: String
+        :param payment_transaction_id: The transaction ID given by the terminal
+        :type payment_transaction_id: Integer
         """
 
         self.data = {
@@ -245,6 +256,8 @@ class SixDriver(Driver):
             'Response': response,
             'Ticket': ticket,
             'TicketMerchant': ticket_merchant,
+            'Card': card,
+            'PaymentTransactionID': payment_transaction_id,
             'Error': error,
             'Reversal': True,  # The payments can be reversed
             'owner': owner or self.data['owner'],

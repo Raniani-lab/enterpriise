@@ -38,6 +38,16 @@ models.Paymentline = models.Paymentline.extend({
     set_payment_status: function(value) {
         this.payment_status = value;
     },
+
+    /**
+     * @override
+     */
+    export_as_JSON: function(){
+        var data = _pl_proto.export_as_JSON.apply(this, arguments);
+        data.card_type = this.card_type;
+        data.transaction_id = this.transaction_id;
+        return data;
+    },
 });
 
 /** PoS Order
@@ -247,6 +257,10 @@ screens.PaymentScreenWidget.include({
             clearTimeout(this.payment_timer);
             this.order_changes();
             this.terminal.remove_listener();
+            if (data.Card) {
+                line.card_type = data.Card;
+                line.transaction_id = data.PaymentTransactionID;
+            }
             if (line && data.Reversal) {
                 line.reversal = true;
             }

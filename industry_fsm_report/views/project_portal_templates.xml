@@ -39,6 +39,9 @@
                                         <span t-field="task.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
                                     </div>
                                 </div>
+                                <div class="d-flex justify-content-center m-3">
+                                    <img t-att-src="'/web/image?model=res.users&amp;id='+str(task.user_id.id)+'&amp;field=image_64'" alt="contact avatar" class="rounded-circle" />
+                                </div>
                             </li>
                         </ul>
                     </t>

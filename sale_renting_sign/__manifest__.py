@@ -20,5 +20,5 @@
     "demo": [
         "data/demo.xml",
     ],
-    "auto_install": True,
+    "auto_install": False,
 }

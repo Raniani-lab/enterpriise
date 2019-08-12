@@ -174,7 +174,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div t-if="record.activity_type.raw_value == 'email'" class="row o_ma_email_details text-center">
+                                                    <div t-if="record.activity_type.raw_value == 'email'" name="mail_details" class="row o_ma_email_details text-center">
                                                         <div class="col text-uppercase">
                                                             <i class="fa fa-pie-chart" /> Details
                                                         </div>
@@ -207,15 +207,27 @@
                                                     </div>
                                                     <div t-if="record.id.raw_value" class="o_ma_child_activity_buttons">
                                                         <i data-type="act" class="fa fa-code-fork fa-rotate-180 fa-flip-vertical o_ma_text_processed o_add_child" title="Add Another Activity" role="img" aria-label="Add Another Activity" />
-                                                        <t t-if="record.activity_type.raw_value == 'email'">
-                                                            <i data-type="mail_open" class="fa fa-envelope-open-o o_ma_text_processed o_add_child" title="Mail Opened" role="img" aria-label="Mail Opened" />
-                                                            <i data-type="mail_not_open" class="fa fa-envelope-open-o o_ma_text_rejected o_add_child" title="Mail not Opened" role="img" aria-label="Mail not Opened" />
-                                                            <i data-type="mail_reply" class="fa fa-reply o_ma_text_processed o_add_child" title="Mail Replied" role="img" aria-label="Mail Replied" />
-                                                            <i data-type="mail_not_reply" class="fa fa-reply o_ma_text_rejected o_add_child" title="Mail not Replied" role="img" aria-label="Mail not Replied" />
-                                                            <i data-type="mail_click" class="fa fa-hand-pointer-o o_ma_text_processed o_add_child" title="Mail Clicked" role="img" aria-label="Mail Clicked" />
-                                                            <i data-type="mail_not_click" class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child" title="Mail not Clicked" role="img" aria-label="Mail not Clicked" />
-                                                            <i data-type="mail_bounce" class="fa fa fa-exclamation-circle o_ma_text_rejected o_add_child" title="Mail Bounced" role="img" aria-label="Mail Bounced" />
-                                                        </t>
+                                                        <i t-if="record.activity_type.raw_value == 'email'"
+                                                            data-type="mail_open" class="fa fa-envelope-open-o o_ma_text_processed o_add_child"
+                                                            title="Opened" role="img" aria-label="Opened" />
+                                                        <i t-if="record.activity_type.raw_value == 'email'"
+                                                            data-type="mail_not_open" class="fa fa-envelope-open-o o_ma_text_rejected o_add_child"
+                                                            title="Not Opened" role="img" aria-label="Not Opened" />
+                                                        <i t-if="record.activity_type.raw_value == 'email'"
+                                                            data-type="mail_reply" class="fa fa-reply o_ma_text_processed o_add_child"
+                                                            title="Replied" role="img" aria-label="Replied" />
+                                                        <i t-if="record.activity_type.raw_value == 'email'"
+                                                            data-type="mail_not_reply" class="fa fa-reply o_ma_text_rejected o_add_child"
+                                                            title="Not Replied" role="img" aria-label="Not Replied" />
+                                                        <i t-if="record.activity_type.raw_value == 'email'"
+                                                            data-type="mail_click" class="fa fa-hand-pointer-o o_ma_text_processed o_add_child"
+                                                            title="Clicked" role="img" aria-label="Clicked" />
+                                                        <i t-if="record.activity_type.raw_value == 'email'"
+                                                            data-type="mail_not_click" class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child"
+                                                            title="Not Clicked" role="img" aria-label="Not Clicked" />
+                                                        <i t-if="record.activity_type.raw_value == 'email'"
+                                                            data-type="mail_bounce" class="fa fa fa-exclamation-circle o_ma_text_rejected o_add_child"
+                                                            title="Bounced" role="img" aria-label="Bounced" />
                                                     </div>
                                                     <div t-else="" class="o_ma_child_activity_buttons">
                                                         <div class="mt4"> Please save the campaign to add child activity </div>
@@ -270,71 +282,6 @@
                                     </t>
                                 </templates>
                             </kanban>
-                            <form>
-                                <sheet>
-                                    <div class="oe_title">
-                                        <label for="name" class="oe_edit_only" string="Name" />
-                                        <h1><field name="name" required="1" placeholder="e.g. eCommerce Offers" /></h1>
-                                    </div>
-                                    <group>
-                                        <group>
-                                            <field name="activity_type" widget="radio" options="{'horizontal': true}" />
-                                            <field name="mass_mailing_id"
-                                                domain="[('mailing_model_id', '=', model_id), ('use_in_marketing_automation', '=', True)]"
-                                                context="{
-                                                    'default_state': 'done',
-                                                    'default_mailing_model_id': model_id,
-                                                    'default_use_in_marketing_automation': True,
-                                                    'default_campaign_id': utm_campaign_id,
-                                                    'form_view_ref': 'marketing_automation.mailing_mailing_view_form_marketing_activity'}"
-                                                attrs="{
-                                                    'required': [('activity_type', '=', 'email')],
-                                                    'invisible': [('activity_type', '!=', 'email')]}"/>
-                                            <field name="server_action_id" domain="[('model_id', '=', model_id)]" attrs="{'required': [('activity_type', '=', 'action')], 'invisible': [('activity_type', '!=', 'action')]}" context="{'default_model_id': model_id}" />
-                                            <field name="statistics_graph_data" invisible="1" />
-                                        </group>
-                                        <group>
-                                            <label for="interval_number" string="Perform"/>
-                                            <div class="container">
-                                                <div class="row">
-                                                    <field name="interval_number" nolabel="1" class="col-md-6"/>
-                                                    <field name="interval_type" nolabel="1" class="col-md-6"/>
-                                                </div>
-                                                <div class="row">
-                                                    <span class="oe_inline">after</span>
-                                                    <field name="trigger_type" class="oe_inline ml4"/>
-                                                </div>
-                                            </div>
-                                            <label for="parent_id" attrs="{'invisible': [('trigger_type', '=', 'begin')]}"/>
-                                            <div>
-                                                <field name="parent_id" domain="[('id', 'in', parent.marketing_activity_ids), ('id', '!=', id)]" attrs="{'required': [('trigger_type', '!=', 'begin')], 'invisible': [('trigger_type', '=', 'begin')]}" options="{'no_create_edit': True}"/>
-                                            </div>
-                                            <span class="o_form_label" invisible="1">Warning</span>
-                                            <div>
-                                                <small class="oe_edit_only text-muted" attrs="{'invisible': [('trigger_type', '=', 'begin')]}">(save the campaign to make its activities selectable)</small>
-                                            </div>
-                                            <label for="validity_duration"/>
-                                            <div>
-                                                <field name="validity_duration"/>
-                                            </div>
-                                            <label for="validity_duration_number" string="Valid during" attrs="{'invisible': [('validity_duration', '=', False)]}"/>
-                                            <div attrs="{'invisible': [('validity_duration', '=', False)]}" class="container">
-                                                <div class="row">
-                                                    <field name="validity_duration_number" nolabel="1" class="col-md-6"/>
-                                                    <field name="validity_duration_type" nolabel="1" class="col-md-6"/>
-                                                </div>
-                                            </div>
-                                            <field name="model_id" invisible="1"/>
-                                            <field name="model_name" invisible="1"/>
-                                            <field name="utm_campaign_id" invisible="1"/>
-                                        </group>
-                                    </group>
-                                    <group string="Domain">
-                                        <field name="activity_domain" widget="domain" options="{'in_dialog': True, 'model': 'model_name'}" />
-                                        <field name="domain" widget="domain" options="{'in_dialog': True, 'model': 'model_name'}" />
-                                    </group>
-                                </sheet>
-                            </form>
                         </field>
                     </div>
                 </sheet>

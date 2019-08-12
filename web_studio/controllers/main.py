@@ -332,9 +332,8 @@ class WebStudioController(http.Controller):
         if default_value:
             if new_field.ttype == 'selection':
                 if default_value is True:
-                    selection_values = literal_eval(new_field.selection)
                     # take the first selection value as default one in this case
-                    default_value = len(selection_values) and selection_values[0][0]
+                    default_value = new_field.selection_ids[:1].value
             self.set_default_value(new_field.model, new_field.name, default_value)
 
         return new_field

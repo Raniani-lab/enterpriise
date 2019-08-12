@@ -170,8 +170,8 @@ class RentalOrderLine(models.Model):
 
     def get_rental_order_line_description(self):
         if (self.is_rental):
-            return "\n%s %s\n%s %s" % (
-                _("Rental from"),
+            return "\n%s %s %s %s" % (
+                _("From"),
                 format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format='short'),
                 _("to"),
                 format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short'),

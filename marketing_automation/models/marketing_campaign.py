@@ -364,11 +364,11 @@ class MarketingActivity(models.Model):
                 'rejected': 0, 'total_click': 0, 'processed': 0, 'total_open': 0,
             })
         else:
-            activity_data = {activity.id: {} for activity in self}
+            activity_data = {activity._origin.id: {} for activity in self}
             for stat in self._get_full_statistics():
                 activity_data[stat.pop('activity_id')].update(stat)
             for activity in self:
-                activity.update(activity_data[activity.id])
+                activity.update(activity_data[activity._origin.id])
 
     @api.depends('activity_type', 'trace_ids')
     def _compute_statistics_graph_data(self):
@@ -380,11 +380,11 @@ class MarketingActivity(models.Model):
                 {'points': default_values, 'label': _('Success'), 'color': '#21B799'},
                 {'points': default_values, 'label': _('Rejected'), 'color': '#d9534f'}])
         else:
-            activity_data = {activity.id: {} for activity in self}
+            activity_data = {activity._origin.id: {} for activity in self}
             for act_id, graph_data in self._get_graph_statistics().items():
                 activity_data[act_id]['statistics_graph_data'] = json.dumps(graph_data)
             for activity in self:
-                activity.update(activity_data[activity.id])
+                activity.update(activity_data[activity._origin.id])
 
     @api.constrains('parent_id')
     def _check_parent_id(self):
@@ -473,13 +473,13 @@ class MarketingActivity(models.Model):
                 x = i.strftime('%d %b')
                 success.append({
                     'x': x,
-                    'y': stat_map.get((activity.id, i, 'processed'), 0)
+                    'y': stat_map.get((activity._origin.id, i, 'processed'), 0)
                 })
                 rejected.append({
                     'x': x,
-                    'y': stat_map.get((activity.id, i, 'rejected'), 0)
+                    'y': stat_map.get((activity._origin.id, i, 'rejected'), 0)
                 })
-            graph_data[activity.id] = [
+            graph_data[activity._origin.id] = [
                 {'points': success, 'label': _('Success'), 'color': '#21B799'},
                 {'points': rejected, 'label': _('Rejected'), 'color': '#d9534f'}
             ]

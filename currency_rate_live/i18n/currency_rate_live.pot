@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* currency_rate_live
+# 	* currency_rate_live
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2019-01-16 08:13+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-12 11:29+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,7 +17,9 @@ msgstr ""
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
-msgid "<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa fa-fw fa-refresh\"/>"
+msgid ""
+"<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa "
+"fa-fw fa-refresh\"/>"
 msgstr ""
 
 #. module: currency_rate_live
@@ -113,21 +115,19 @@ msgid "Service Provider"
 msgstr ""
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:387
+#: code:addons/currency_rate_live/models/res_config_settings.py:98
 #, python-format
-msgid "The Yahoo currency rate web service has been discontinued. Please select another currency rate provider."
+msgid ""
+"Unable to connect to the online exchange rate platform %s. The web service "
+"may be temporary down."
 msgstr ""
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:103
+#: code:addons/currency_rate_live/models/res_config_settings.py:382
 #, python-format
-msgid "Unable to connect to the online exchange rate platform %s. The web service may be temporary down."
-msgstr ""
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:390
-#, python-format
-msgid "Unable to connect to the online exchange rate platform. The web service may be temporary down. Please try again in a moment."
+msgid ""
+"Unable to connect to the online exchange rate platform. The web service may "
+"be temporary down. Please try again in a moment."
 msgstr ""
 
 #. module: currency_rate_live
@@ -136,18 +136,14 @@ msgid "Weekly"
 msgstr ""
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
-msgid "Yahoo (DISCONTINUED)"
-msgstr ""
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:143
+#: code:addons/currency_rate_live/models/res_config_settings.py:137
 #, python-format
-msgid "Your main currency (%s) is not supported by this exchange rate provider. Please choose another one."
+msgid ""
+"Your main currency (%s) is not supported by this exchange rate provider. "
+"Please choose another one."
 msgstr ""
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "xe.com"
 msgstr ""
-

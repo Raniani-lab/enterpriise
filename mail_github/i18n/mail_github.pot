@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* mail_github
+# 	* mail_github
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-12 11:29+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,7 +47,11 @@ msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
-msgid "After that you can choose the events you want to follow in the channels. Be careful, only <i>Commit comment, Issues, Issue comment, Gollum, Pull request, Pull request review, Pull request review comment</i> and <i>Push</i> events are supported."
+msgid ""
+"After that you can choose the events you want to follow in the channels. Be "
+"careful, only <i>Commit comment, Issues, Issue comment, Gollum, Pull "
+"request, Pull request review, Pull request review comment</i> and "
+"<i>Push</i> events are supported."
 msgstr ""
 
 #. module: mail_github
@@ -72,7 +76,8 @@ msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__name
-msgid "Complete name of the github repository. e.i.: my-username/my-public-repo"
+msgid ""
+"Complete name of the github repository. e.i.: my-username/my-public-repo"
 msgstr ""
 
 #. module: mail_github
@@ -87,7 +92,7 @@ msgstr ""
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel
-msgid "Discussion channel"
+msgid "Discussion Channel"
 msgstr ""
 
 #. module: mail_github
@@ -223,7 +228,9 @@ msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
-msgid "Once the repository is created in Odoo, create it on Github. Then, copy 'Payload URL' and 'Secret' in Github interface."
+msgid ""
+"Once the repository is created in Odoo, create it on Github. Then, copy "
+"'Payload URL' and 'Secret' in Github interface."
 msgstr ""
 
 #. module: mail_github
@@ -273,7 +280,9 @@ msgstr ""
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
-msgid "The webhook 'Content Type' should be set to <b>application/x-www-form-urlencoded</b>."
+msgid ""
+"The webhook 'Content Type' should be set to <b>application/x-www-form-"
+"urlencoded</b>."
 msgstr ""
 
 #. module: mail_github
@@ -319,6 +328,7 @@ msgstr ""
 
 #. module: mail_github
 #: code:addons/mail_github/controllers/main.py:197
+#: code:addons/mail_github/controllers/main.py:205
 #, python-format
 msgid "issue"
 msgstr ""
@@ -339,8 +349,8 @@ msgid "on repository"
 msgstr ""
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:211
-#: code:addons/mail_github/controllers/main.py:218
+#: code:addons/mail_github/controllers/main.py:212
+#: code:addons/mail_github/controllers/main.py:219
 #, python-format
 msgid "pull request"
 msgstr ""
@@ -354,4 +364,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "remove the following"
 msgstr ""
-

@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* project_timesheet_forecast
+# 	* project_timesheet_forecast
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
-"PO-Revision-Date: 2019-03-20 14:07+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
+"PO-Revision-Date: 2019-08-12 11:28+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -91,7 +91,11 @@ msgstr ""
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
-msgid "This report performs analysis on your timesheet and forecast. This allow to have a global view of past forecast and what was really done. Comparing old estimation and effective work amount will help you to better plan your futur project."
+msgid ""
+"This report performs analysis on your timesheet and forecast. This allow to "
+"have a global view of past forecast and what was really done. Comparing old "
+"estimation and effective work amount will help you to better plan your futur"
+" project."
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -126,4 +130,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__line_type
 msgid "Type"
 msgstr ""
-

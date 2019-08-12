@@ -7,13 +7,13 @@
                 <a t-attf-href="/forum/#{ slug(forum) }/question/#{ slug(question) }">
                     <span t-field="question.name"/>
                 </a>
-                <span t-if="question.has_validated_answer" title="Question has accepted answer"><i class="fa fa-check-circle oe_answer_true" role="img" aria-label="Question has accepted answer"/></span>
+                <span t-if="question.has_validated_answer" title="Question has accepted answer"><i class="far fa-check-circle oe_answer_true" role="img" aria-label="Question has accepted answer"/></span>
             </div>
             <div>
                 <t t-raw="post_content"/>
             </div>
             <small class="text-muted">
-                <i t-attf-class="fa fa-question-circle" title="Question" role="img" aria-label="Question"/>
+                <i t-attf-class="far fa-question-circle" title="Question" role="img" aria-label="Question"/>
                 <span>By </span><span t-field="question.create_uid" t-options='{"widget": "contact", "country_image": true, "fields": ["name", "country_id"]}' style="display: inline-block;"/>
                 <span> • </span><span t-field="question.write_date" t-options='{"format":"short"}'/>
                 <span> • </span><span t-field="question.views" /> View<t t-if="question.views > 1">s</t>

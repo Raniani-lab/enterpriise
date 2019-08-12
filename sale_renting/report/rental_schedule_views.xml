@@ -124,7 +124,7 @@
     <field name="arch" type="xml">
       <xpath expr="//button[@name='action_view_sales']" position="after">
         <button class="oe_stat_button" name="action_view_rentals"
-            type="object" icon="fa-calendar" groups="sales_team.group_sale_salesman" attrs="{'invisible': [('rent_ok', '=', False)]}">
+            type="object" icon="far fa-calendar-alt" groups="sales_team.group_sale_salesman" attrs="{'invisible': [('rent_ok', '=', False)]}">
             <div class="o_field_widget o_stat_info">
                 <span class="o_stat_value">
                     <field name="qty_in_rent" widget="statinfo" nolabel="1" class="mr4"/>
@@ -146,7 +146,7 @@
         <field name="rent_ok" invisible="1" />
         <field name="qty_in_rent" invisible="1" />
         <button class="oe_stat_button" name="action_view_rentals"
-            type="object" icon="fa-calendar" groups="sales_team.group_sale_salesman" attrs="{'invisible': [('rent_ok', '=', False)]}">
+            type="object" icon="far fa-calendar-alt" groups="sales_team.group_sale_salesman" attrs="{'invisible': [('rent_ok', '=', False)]}">
             <div class="o_field_widget o_stat_info">
                 <span class="o_stat_value">
                     <field name="qty_in_rent" widget="statinfo" nolabel="1" class="mr4"/>

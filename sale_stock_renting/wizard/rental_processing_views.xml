@@ -58,7 +58,7 @@
           <group class="text-center" attrs="{'invisible': [('has_lines_missing_stock', '=', False)]}">
               <div class="card text-white bg-warning">
                 <div class="card-header bg-transparent">
-                  <span class="fa fa-warning" t-translation="off">&amp;nbsp;</span>
+                  <span class="fas fa-exclamation-triangle" t-translation="off">&amp;nbsp;</span>
                   <span>
                     Some products don't have the requested qty available for pickup
                   </span>

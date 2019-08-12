@@ -11,7 +11,7 @@
                     <div class="col-sm">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <div class="input-group-text"><i class="fa fa-fw fa-bank"/></div>
+                                <div class="input-group-text"><i class="fas fa-fw fa-university"/></div>
                             </div>
                             <input name="iban" type="text" class="form-control"/>
                         </div>
@@ -22,7 +22,7 @@
                     <div class="col-sm">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <div class="input-group-text"><i class="fa fa-fw fa-mobile"/></div>
+                                <div class="input-group-text"><i class="fa fa-fw fa-mobile-alt"/></div>
                             </div>
                             <input name="phone" type="tel" class="form-control" placeholder="+331234567890" />
                             <div class="input-group-append">

@@ -2,6 +2,7 @@
     .o_content {
         .favorite_sign_button {
             color: $o-brand-secondary;
+            font-size: 14px; 
             &:hover {
                 color: orange;
             }
@@ -111,12 +112,12 @@
 
     /* Template edit view */
     .o_sign_template {
-        .fa-pencil {
+        .fa-pencil-alt {
             cursor: pointer;
             opacity: 0.5;
             transition: opacity ease 250ms;
         }
-        :hover > .fa-pencil {
+        :hover > .fa-pencil-alt {
             opacity: 1.0; 
         }
 
@@ -164,8 +165,9 @@
     .o_sign_delete_field_button {
         float: right;
         &:before {
-            font-family: FontAwesome;
-            content: "";
+            font-family: 'Font Awesome 5 Free';
+            content: "\f1f8";
+            font-weight: 900;
         }
     }
 

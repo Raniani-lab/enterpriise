@@ -87,12 +87,12 @@
                             </t>
                             <t t-if="dbexpiration_reason == 'renewal'">
                                 <a class="oe_instance_renew" href="#">Renew your subscription</a>
-                                <a class="check_enterprise_status" href="#" title="Refresh subscription status" aria-label="Refresh subscription status"><i class="fa fa-refresh"></i></a>
+                                <a class="check_enterprise_status" href="#" title="Refresh subscription status" aria-label="Refresh subscription status"><i class="fas fa-sync"></i></a>
                             </t>
                             <t t-if="dbexpiration_reason == 'upsell'">
                                 You have more users or more apps installed than your subscription allows.<br/>
                                 <a class="oe_instance_upsell" href="#">Upgrade your subscription</a>
-                                <a class="check_enterprise_status" href="#" title="Refresh subscription status" aria-label="Refresh subscription status"><i class="fa fa-refresh"></i></a>
+                                <a class="check_enterprise_status" href="#" title="Refresh subscription status" aria-label="Refresh subscription status"><i class="fas fa-sync"></i></a>
                             </t>
                         </t>
                         <t t-if="warning=='user'">

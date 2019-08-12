@@ -551,7 +551,7 @@ var InlineField = AbstractFieldBlock.extend({
 var TableColumnField = AbstractFieldBlock.extend({
     label: _lt('Field Column'),
     className: 'o_web_studio_field_fa',
-    fa: ' fa-plus-square',
+    fa: 'fa-plus-square',
     hookAutoHeight: true,
     hookClass: 'o_web_studio_hook_table_column',
     dropIn: 'tr',
@@ -832,7 +832,7 @@ var BlockTable = AbstractNewBuildingBlock.extend({
 var TableBlockTotal = AbstractNewBuildingBlock.extend({
     type: 'block_total',
     label: _lt('Subtotal & Total'),
-    fa: 'fa-money',
+    fa: 'fa-money-bill-alt',
     className: 'o_web_studio_field_fa',
     dropIn: '.page',
     hookClass: 'o_web_studio_hook_total',

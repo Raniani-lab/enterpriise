@@ -20,7 +20,7 @@
     </t>
 
     <div t-name="sign.sign_item_configuration" class="o_sign_config_area">
-         <span class="fa fa-arrows" role="img" aria-label="Signature configuration" title="Signature configuration"/>
+         <span class="fas fa-expand-arrows-alt" role="img" aria-label="Signature configuration" title="Signature configuration"/>
         <div class="o_sign_item_display">
 <!--            Don't display role for checkbox. We don't have place-->
             <t t-if="type != 'checkbox'"><span class="o_sign_responsible_display"/></t>

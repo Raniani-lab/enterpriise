@@ -251,7 +251,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -320,7 +320,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -515,7 +515,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                         '<button name="some_method" type="object"/>' +
                     '</div>' +
@@ -559,7 +559,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                         '<button name="some_method" type="object"/>' +
                     '</div>' +
@@ -727,7 +727,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -763,7 +763,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -929,7 +929,7 @@ QUnit.module('DocumentsKanbanView', {
             domain: [['active', '=', false]],
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -970,7 +970,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1022,7 +1022,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1241,7 +1241,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1288,7 +1288,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                         '<field name="owner_id"/>' +
                     '</div>' +
@@ -1440,7 +1440,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1498,7 +1498,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1542,7 +1542,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1644,7 +1644,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1668,7 +1668,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1708,7 +1708,7 @@ QUnit.module('DocumentsKanbanView', {
             },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1794,7 +1794,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -2207,7 +2207,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -2567,7 +2567,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
+                        '<i class="far fa-circle o_record_selector"/>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -2653,7 +2653,7 @@ QUnit.module('DocumentsKanbanView', {
             arch: `
             <kanban><templates><t t-name="kanban-box">
                 <div draggable="true" class="oe_kanban_global_area">
-                    <i class="fa fa-circle-thin o_record_selector"/>
+                    <i class="far fa-circle o_record_selector"/>
                     <field name="name"/>
                 </div>
             </t></templates></kanban>`,
@@ -2866,7 +2866,7 @@ QUnit.module('DocumentsKanbanView', {
             arch: `
                 <kanban><templates><t t-name="kanban-box">
                     <div>
-                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <i class="far fa-circle o_record_selector"/>
                         <field name="name"/>
                     </div>
                 </t></templates></kanban>`,

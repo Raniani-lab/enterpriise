@@ -3,7 +3,7 @@
 
 <t t-name="web_studio.EditMenu.MenuItem">
     <li>
-        <a href="#" class="o_web_edit_menu" role="button"><i class="fa fa-fw fa-pencil"/> Edit Menu</a>
+        <a href="#" class="o_web_edit_menu" role="button"><i class="fas fa-fw fa-pencil-alt"/> Edit Menu</a>
     </li>
 </t>
 
@@ -23,8 +23,8 @@
                 <i t-if="_.contains(widget.roots, submenu)" class="float-right fa fa-home" style="margin-top: 3px" role="img" aria-label="Home" title="Home"/>
             </span>
             <div class="input-group-append">
-                <button type="button" class="btn btn-primary js_edit_menu fa fa-pencil-square-o" aria-label="Edit Menu Item" title="Edit Menu Item"/>
-                <button type="button" class="btn btn-danger js_delete_menu fa fa-trash-o" aria-label="Delete Menu Item" title="Delete Menu Item"/>
+                <button type="button" class="btn btn-primary js_edit_menu fas fa-edit" aria-label="Edit Menu Item" title="Edit Menu Item"/>
+                <button type="button" class="btn btn-danger js_delete_menu far fa-trash-alt" aria-label="Delete Menu Item" title="Delete Menu Item"/>
             </div>
         </div>
         <t t-set="children" t-value="submenu.children"/>

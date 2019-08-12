@@ -16,7 +16,7 @@
                 </t>
                 <t t-else="">
                     <a t-if="activity.approver_status === 'pending'" class="text-warning">
-                        <i class="fa fa-pencil"/> To Approve
+                        <i class="fas fa-pencil-alt"/> To Approve
                     </a>
                 </t>
             </t>

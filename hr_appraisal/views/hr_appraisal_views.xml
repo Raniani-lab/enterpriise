@@ -20,7 +20,7 @@
             </header>
             <sheet>
                 <div class="oe_button_box" name="button_box">
-                    <button class="oe_stat_button" name="action_calendar_event" icon="fa-calendar" type="object">
+                    <button class="oe_stat_button" name="action_calendar_event" icon="far fa-calendar-alt" type="object">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_value" attrs="{'invisible': [('meeting_id', '=', False)]}">1 Meeting</span>
                             <span class="o_stat_value" attrs="{'invisible': [('meeting_id', '!=', False)]}">No Meeting</span>
@@ -108,7 +108,7 @@
                 <separator/>
                 <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
                 <group expand='0' string='Group by...'>
-                    <filter string='Employee' name="employee" icon="fa-user" domain="[]" context="{'group_by': 'employee_id'}"/>
+                    <filter string='Employee' name="employee" icon="fas fa-user" domain="[]" context="{'group_by': 'employee_id'}"/>
                </group>
            </search>
         </field>

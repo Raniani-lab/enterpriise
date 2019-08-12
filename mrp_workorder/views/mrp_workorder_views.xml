@@ -108,7 +108,7 @@
                             <label for="finished_lot_id" string="Lot Number:" attrs="{'invisible': [('product_tracking', '!=', 'lot')]}"/>
                             <label for="finished_lot_id" string="Serial Number:" attrs="{'invisible': [('product_tracking', '!=', 'serial')]}"/>
                             <field name="finished_lot_id" context="{'default_product_id': product_id, 'default_company_id': company_id}" domain="[('id', 'in', allowed_lots_domain)]"/>
-                            <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus-square-o" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('finished_lot_id', '!=', False)]}"/>
+                            <button name="action_generate_serial" type="object" class="btn btn-secondary far fa-plus-square" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('finished_lot_id', '!=', False)]}"/>
                         </div>
                     </div>
                     <div class="workorder_bar_right o_workorder_bar_content o_workorder_bar_content_right">
@@ -130,8 +130,8 @@
                         <div class="o_actions" attrs="{'invisible': [('working_state', '=', 'blocked')]}">
                             <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3 my-3 text-center">
                                 <field name="duration" widget="mrp_time_counter" class="mr-3"/>
-                                <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}" title="User is not working"/>
-                                <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}" title="User is working"/>
+                                <i class="far fa-clock" attrs="{'invisible': [('is_user_working', '=', False)]}" title="User is not working"/>
+                                <i class="far fa-clock text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}" title="User is working"/>
                             </span>
                             <button
                                 name="action_next"

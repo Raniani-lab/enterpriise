@@ -61,9 +61,9 @@
                                                 <t t-else="">Share Now</t>
                                             </span>
                                         </a>
-                                        <t t-foreach="[{'lower': 'facebook', 'name': 'Facebook', 'clicks': record.facebook_clicks.raw_value}, {'lower': 'twitter', 'name': 'Twitter', 'clicks': record.twitter_clicks.raw_value}, {'lower': 'linkedin', 'name': 'Linkedin', 'clicks': record.linkedin_clicks.raw_value}]" t-as="source">
+                                        <t t-foreach="[{'lower': 'facebook', 'icon': 'fa-facebook-f', 'name': 'Facebook', 'clicks': record.facebook_clicks.raw_value}, {'lower': 'twitter', 'icon': 'fa-twitter', 'name': 'Twitter', 'clicks': record.twitter_clicks.raw_value}, {'lower': 'linkedin', 'icon': 'fa-linkedin-in', 'name': 'Linkedin', 'clicks': record.linkedin_clicks.raw_value}]" t-as="source">
                                             <a role="button" name="action_share_external" type="object" class="btn btn-sm p-2 btn-secondary" t-attf-data-context="{'default_channel': '{{source.lower}}'}">
-                                                <span t-attf-title="Share on {{ source.name }}"><i t-attf-class="fa fa-lg fa-{{source.lower}} text-secondary" role="img" t-attf-aria-label="Share on {{source.name}}"/></span>
+                                                <span t-attf-title="Share on {{ source.name }}"><i t-attf-class="fab fa-lg {{source.icon}} text-secondary" role="img" t-attf-aria-label="Share on {{source.name}}"/></span>
                                                 <span class="d-block mt-2 text-primary">
                                                     <t t-if="source.clicks &gt; 0"><t t-esc="source['clicks']"/> click(s)</t>
                                                     <t t-else="">Share Now</t>

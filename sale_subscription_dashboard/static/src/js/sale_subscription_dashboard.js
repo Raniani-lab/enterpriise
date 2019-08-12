@@ -1086,7 +1086,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 
             // 1. Subscriptions modifcations
             var ICON_BY_TYPE = {
-                'churn': 'o_red fa fa-remove',
+                'churn': 'o_red fas fa-times',
                 'new': 'o_green fa fa-plus',
                 'down': 'o_red fa fa-arrow-down',
                 'up': 'o_green fa fa-arrow-up',

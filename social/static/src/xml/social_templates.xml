@@ -258,7 +258,7 @@
             aria-haspopup="true"
             aria-expanded="false"
             title="Add an emoji">
-            <i class="fa fa-smile-o"></i>
+            <i class="far fa-smile"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-right border-0 p-2" t-att-aria-labelledby="emojisDropdownId" style="width: 406px">
             <t t-call="mail.Composer.emojis">

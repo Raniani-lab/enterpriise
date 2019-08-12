@@ -115,11 +115,12 @@
                 cursor: pointer;
 
                 &:after {
-                    font: $font-size-base/1 "FontAwesome";
+                    font: $font-size-base/1 "Font Awesome 5 Free";
                     content: '\f002';
                     vertical-align: middle;
                     margin-left: $padding-small;
                     opacity: 0;
+                    font-weight: 600;
                 }
 
                 &:hover:after {

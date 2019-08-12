@@ -104,7 +104,7 @@
                                     <td>
                                         <t t-if="stage.done"><i class="text-success fa fa-check" title="Done"></i></t>
                                         <t t-elif="record.referral_state.raw_value == 'closed'"><i class="text-danger fa fa-times" title="Closed"></i></t>
-                                        <t t-else=""><i class="fa fa-square-o" title="Open"></i></t>
+                                        <t t-else=""><i class="far fa-square" title="Open"></i></t>
                                     </td>
                                     <td><t t-esc="stage.name"/></td>
                                     <td t-if="stage.done">+<t t-esc="stage.points"/> Points</td>

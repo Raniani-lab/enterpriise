@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="project_task_view_list_fsm" model="ir.ui.view">
         <field name="name">project.task.tree.fsm</field>
         <field name="model">project.task</field>

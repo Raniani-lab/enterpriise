@@ -46,7 +46,8 @@
 
     &:after, &:before {
         color: $o-web-studio-text-inactive;
-        font-family: 'FontAwesome';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
         font-size: 8px;
         content: "\f077";
         @include o-position-absolute($top, 8px);

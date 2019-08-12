@@ -213,6 +213,7 @@ $o-dms-progress-bar-height: 15px;
                 &:before{
                     color: $o-brand-primary;
                     content:"\f058";
+                    font-weight: 900;
                 }
             }
         }
@@ -429,7 +430,7 @@ $o-dms-progress-bar-height: 15px;
                 label {
                     margin-bottom: 0;
 
-                    i.fa {
+                    i.fa, i.far, i.fas {
                         font-size: $font-size-sm;
                     }
                 }
@@ -448,11 +449,12 @@ $o-dms-progress-bar-height: 15px;
                     right: 18px;
                     top: -2px;
                     font-size: 10px;
-                    font-family: 'FontAwesome';
+                    font-family: 'Font Awesome 5 Free';
                     color: inherit;
                     &:after {
                         border: none;
-                        content: "\f0d7"
+                        content: "\f0d7";
+                        font-weight: 900;
                     }
                 }
 

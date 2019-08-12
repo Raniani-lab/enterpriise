@@ -23,7 +23,7 @@ var HrReferralDashboardView = KanbanView.extend({
         Controller: HrReferralDashboardController,
     }),
     display_name: _lt('Dashboard'),
-    icon: 'fa-dashboard',
+    icon: 'fa-tachometer-alt',
 });
 
 view_registry.add('employee_referral_dashboard', HrReferralDashboardView);

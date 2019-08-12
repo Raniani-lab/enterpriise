@@ -353,7 +353,7 @@ var accountReportsWidget = AbstractAction.extend({
             locale : moment.locale(),
             format : 'L',
             icons: {
-                date: "fa fa-calendar",
+                date: "far fa-calendar-alt",
             },
         };
         // attach datepicker

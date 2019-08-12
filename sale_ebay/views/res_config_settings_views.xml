@@ -112,18 +112,18 @@
                             <div class="content-group">
                                 <div class="row mt8">
                                     <div class="col-lg-6" title="Sync now"> 
-                                        <button name="sync_ebay_details" icon="fa-lg fa-refresh" type="object" string="Countries &amp; Currencies" class="btn-link"></button>
+                                        <button name="sync_ebay_details" icon="fa-lg fa-sync" type="object" string="Countries &amp; Currencies" class="btn-link"></button>
                                     </div>
                                     <div class="col-lg-6" title="Sync now">
-                                        <button name="button_sync_categories" icon="fa-lg fa-refresh" type="object" string="Product Categories" class="btn-link"></button>
+                                        <button name="button_sync_categories" icon="fa-lg fa-sync" type="object" string="Product Categories" class="btn-link"></button>
                                     </div>
                                 </div>
                                 <div class="row mt8">
                                     <div class="col-lg-6" title="Sync now">
-                                        <button name="sync_policies" icon="fa-lg fa-refresh" type="object" string="Policies" class="btn-link"></button>
+                                        <button name="sync_policies" icon="fa-lg fa-sync" type="object" string="Policies" class="btn-link"></button>
                                     </div>
                                     <div class="col-lg-6" title="Sync now">
-                                        <button name="button_sync_product_status" icon="fa-lg fa-refresh" type="object" string="Products &amp; Transactions" class="btn-link"></button>
+                                        <button name="button_sync_product_status" icon="fa-lg fa-sync" type="object" string="Products &amp; Transactions" class="btn-link"></button>
                                     </div>
                                 </div>
                             </div>

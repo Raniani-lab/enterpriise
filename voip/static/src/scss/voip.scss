@@ -54,7 +54,7 @@
             margin-left: auto;
         }
 
-        .fa {
+        .fa, .fas, .far {
             margin-top: 1%;
         }
 
@@ -72,6 +72,12 @@
 
             .o_dial_text {
                 font-size: 12px;
+            }
+
+            .fa-phone {
+                font-size: 10px;
+                height: 12px;
+                width: 12px;
             }
         }
 
@@ -106,7 +112,7 @@
             border: none;
             width: 85%;
         }
-        .fa {
+        .fa, .far, .fas {
             cursor: pointer;
             font-size: 20px;
             position: absolute;
@@ -291,20 +297,26 @@
         border-top: 1px solid $o-mid-gray;
         display: flex;
 
-        .fa {
+        .fa, .far, .fas {
             font-size: xx-large;
             color: $o-mid-gray;
         }
         .o_dial_postpone_button {
             visibility: hidden;
         }
-        .o_dial_buttons .fa {
+        .o_dial_buttons .fa,
+        .o_dial_buttons .far,
+        .o_dial_buttons .fas {
             font-size: 50px;
         }
-        .o_dial_call_button .fa {
+        .o_dial_call_button .fa,
+        .o_dial_call_button .far,
+        .o_dial_call_button .fas {
             color: $o-brand-primary;
         }
-        .o_dial_hangup_button .fa{
+        .o_dial_hangup_button .fa,
+        .o_dial_hangup_button .far,
+        .o_dial_hangup_button .fas {
             color: LightCoral;
         }
     }
@@ -316,14 +328,18 @@
         bottom: 0;
         width: inherit;
 
-        .fa {
+        .fa, .far, .fas {
             font-size: xx-large;
             color: $o-mid-gray;
         }
-        .o_dial_accept_button .fa {
+        .o_dial_accept_button .fa,
+        .o_dial_accept_button .far,
+        .o_dial_accept_button .fas {
             color: $o-brand-primary;
         }
-        .o_dial_reject_button .fa{
+        .o_dial_reject_button .fa,
+        .o_dial_reject_button .far,
+        .o_dial_reject_button .fas {
             color: LightCoral;
         }
     }

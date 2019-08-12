@@ -22,7 +22,7 @@
                             <a href="#" class="o_mrp_mps_record_url" t-att-data-res-id="productionSchedule.product_id[0]" t-att-data-model="'product.product'"><t t-esc="productionSchedule.product_id[1]"/></a>
                             <span t-if="'product_uom_id' in productionSchedule" class="text-muted"> by <t t-esc="productionSchedule.product_uom_id[1]"/></span>
                             <span t-if="'warehouse_id' in productionSchedule"> - <t t-esc="productionSchedule.warehouse_id[1]"/></span>
-                            <a href="#" class="fa fa-trash-o text-black o_mrp_mps_unlink" role="img" aria-label="Delete" title="Delete"/>
+                            <a href="#" class="far fa-trash-alt text-black o_mrp_mps_unlink" role="img" aria-label="Delete" title="Delete"/>
                         </th>
                         <th/>
                         <th class="text-right" scope="col" t-foreach="manufacturingPeriods" t-as="period">

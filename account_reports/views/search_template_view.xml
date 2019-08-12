@@ -4,7 +4,7 @@
 
     <template id="search_template_date_filter">
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-calendar" title="Dates" role="img" aria-label="Dates"/>
+            <span class="far fa-calendar-alt" title="Dates" role="img" aria-label="Dates"/>
             <t t-if="options['date'].get('string') and options['date'].get('filter') != 'custom'"><t t-esc="options['date']['string']"/></t>
             <t t-if="options['date'].get('filter') == 'custom'">
                 <t t-if="options['date']['mode'] == 'single'">Date: <span class="js_format_date"><t t-esc="options['date']['date_to']"/></span></t>
@@ -54,7 +54,7 @@
 
     <template id="search_template_comparison">
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-bar-chart"/> Comparison:
+            <span class="far fa-chart-bar"/> Comparison:
             <t t-if="options['comparison'].get('string') and options['comparison'].get('filter') != 'custom'"><t t-esc="options['comparison']['string']"/></t>
             <t t-if="options['comparison'].get('filter') == 'custom'">
                 <t t-if="options['date']['mode'] == 'range'"><span class="o_reports_date_to"><span class="js_format_date"><t t-esc="options['comparison']['date_from']"/></span></span> <span class="o_reports_date_to"> - <span class="js_format_date"><t t-esc="options['comparison']['date_to']"/></span></span></t>
@@ -159,7 +159,7 @@
 
     <template id="search_template_account_type">
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-user"/>
+            <span class="fas fa-user"/>
             Account:
             <t t-set="account_value" t-value="'Both'"/>
             <t t-foreach="options['account_type']" t-as="a">
@@ -179,7 +179,7 @@
 
     <template id="search_template_analytic">
         <a t-if="options.get('analytic')" type="button" class="dropdown-toggle account_analytic_filter" data-toggle="dropdown">
-            <span class="fa fa-folder-open"/> Analytic
+            <span class="fas fa-folder-open"/> Analytic
         </a>
         <ul class="dropdown-menu o_filters_menu" role="menu">
             <li class="o_account_report_search js_account_analytic_m2m"/>
@@ -214,7 +214,7 @@
 
     <template id="search_template_partner">
         <a t-if="options.get('partner')" type="button" class="dropdown-toggle account_partner_filter" data-toggle="dropdown">
-            <span class="fa fa-folder-open"/> Partners
+            <span class="fas fa-folder-open"/> Partners
         </a>
         <ul class="dropdown-menu o_filters_menu" role="menu">
             <li class="o_account_report_search js_account_partner_m2m"/>

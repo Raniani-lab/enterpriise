@@ -61,8 +61,8 @@
                                 </div>
                                 <div class="col-12 col-lg flex-grow-0 text-lg-right mb-1 mb-lg-0">
                                     <span t-if="account.in_progress and not account.to_renew" class="badge badge-pill badge-success"><i class="fa fa-fw fa-check"/> In Progress</span>
-                                    <span t-if="account.to_renew" class="badge badge-pill badge-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
-                                    <span t-if="not account.in_progress" class="badge badge-pill badge-default"><i class="fa fa-fw fa-remove"/> Closed</span>
+                                    <span t-if="account.to_renew" class="badge badge-pill badge-warning"><i class="fas fa-fw fa-sync"/> To Renew</span>
+                                    <span t-if="not account.in_progress" class="badge badge-pill badge-default"><i class="fas fa-fw fa-times"/> Closed</span>
                                 </div>
                             </div>
                         </div>
@@ -316,10 +316,10 @@
                                 <span class="badge badge-pill badge-success"><i class="fa fa-fw fa-check"/> In Progress</span>
                             </t>
                             <t t-if="account.to_renew">
-                                <span class="badge badge-pill badge-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
+                                <span class="badge badge-pill badge-warning"><i class="fas fa-fw fa-sync"/> To Renew</span>
                             </t>
                             <t t-if="not account.in_progress">
-                                <span class="badge badge-pill badge-danger"><i class="fa fa-fw fa-remove"/> Closed</span>
+                                <span class="badge badge-pill badge-danger"><i class="fas fa-fw fa-times"/> Closed</span>
                             </t>
                         </td>
                         <td class="text-right"><span t-esc="account.recurring_total" t-options="{'widget': 'monetary', 'display_currency': account.currency_id}"/></td>

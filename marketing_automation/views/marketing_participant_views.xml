@@ -82,10 +82,10 @@
                                                     </div>
                                                     <div t-if="record.activity_type.raw_value == 'email' and record.state.raw_value == 'processed'" class="col-12">
                                                         <div class="o_ma_actions text-uppercase text-center">
-                                                            <span t-att-class="record.opened.raw_value ? 'active' : None"><i class="fa fa-check-circle" /> Opened</span>
-                                                            <span t-att-class="record.clicked.raw_value ? 'active' : None"><i class="fa fa-check-circle" /> Clicked</span>
-                                                            <span t-att-class="record.replied.raw_value ? 'active' : None"><i class="fa fa-check-circle" /> Replied</span>
-                                                            <span t-att-class="record.bounced.raw_value ? 'active' : None"><i class="fa fa-check-circle" /> Bounced</span>
+                                                            <span t-att-class="record.opened.raw_value ? 'active' : None"><i class="far fa-check-circle" /> Opened</span>
+                                                            <span t-att-class="record.clicked.raw_value ? 'active' : None"><i class="far fa-check-circle" /> Clicked</span>
+                                                            <span t-att-class="record.replied.raw_value ? 'active' : None"><i class="far fa-check-circle" /> Replied</span>
+                                                            <span t-att-class="record.bounced.raw_value ? 'active' : None"><i class="far fa-check-circle" /> Bounced</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -109,7 +109,7 @@
                                             <t t-else="">
                                                 <t t-if="record.trigger_type.raw_value == 'mail_open'">
                                                     <span class="o_ma_text_scheduled">
-                                                        <i t-attf-class="fa fa-envelope-open-o" /> Not opened yet
+                                                        <i t-attf-class="far fa-envelope" /> Not opened yet
                                                     </span>
                                                 </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_reply'">
@@ -119,7 +119,7 @@
                                                 </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_click'">
                                                     <span class="o_ma_text_scheduled">
-                                                        <i t-attf-class="fa fa-hand-pointer-o" /> Not clicked yet
+                                                        <i t-attf-class="far fa-hand-pointer" /> Not clicked yet
                                                     </span>
                                                 </t>
                                             </t>

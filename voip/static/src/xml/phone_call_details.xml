@@ -111,9 +111,9 @@
                         <i
                             aria-label="Send mail"
                             class="
-                                fa
+                                far
                                 fa-2x
-                                fa-send-o"/>
+                                fa-paper-plane"/>
                     </a>
                 </div>
                 <div
@@ -146,7 +146,7 @@
                         <i
                             aria-label="Activity"
                             class="
-                                fa
+                                fab
                                 fa-2x
                                 fa-wpforms"
                             role="img"/>
@@ -164,9 +164,9 @@
                         <i
                             aria-label="Schedule Next"
                             class="
-                                fa
+                                far
                                 fa-2x
-                                fa-calendar"/>
+                                fa-calendar-alt"/>
                     </a>
                 </div>
             </div>
@@ -194,7 +194,7 @@
                             class="
                                 fa
                                 fa-2x
-                                fa-close"/>
+                                fa-times"/>
                     </a>
                 </div>
                 <div
@@ -228,7 +228,7 @@
                         href="#">
                         <i
                             aria-label="Log"
-                            class="fa fa-pencil fa-2x"
+                            class="fa fa-pencil-alt fa-2x"
                             title="Log"/>
                     </a>
                 </div>
@@ -251,7 +251,7 @@
                                 class="
                                     fa
                                     fa-2x
-                                    fa-arrows-h"/>
+                                    fa-arrows-alt-h"/>
                         </button>
                     </div>
                     <div

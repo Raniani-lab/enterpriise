@@ -12,7 +12,7 @@
                     <button type="object"
                         class="oe_stat_button"
                         id="partner_ledger_button"
-                        icon="fa-pencil-square-o"
+                        icon="fas fa-edit"
                         name="open_partner_ledger"
                         string="Partner Ledger"
                         context="{'default_partner_id': active_id}">

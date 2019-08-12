@@ -61,7 +61,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box">
-                        <button name="action_see_check" type="object" attrs="{'invisible': [('check_id', '=', False)]}" class="oe_stat_button" icon="fa-check-square-o">
+                        <button name="action_see_check" type="object" attrs="{'invisible': [('check_id', '=', False)]}" class="oe_stat_button" icon="fa-check-square">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="check_id" readonly="1"/></span>
                                 <span class="o_stat_text">Quality Check</span>
@@ -237,7 +237,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_see_alerts" icon="fa-bell" type="object" class="oe_stat_button" attrs="{'invisible': [('alert_count', '=', 0)]}">
+                        <button name="action_see_alerts" icon="far fa-bell" type="object" class="oe_stat_button" attrs="{'invisible': [('alert_count', '=', 0)]}">
                             <field name="alert_count" string="Alerts" widget="statinfo"/>
                         </button>
                     </div>
@@ -586,7 +586,7 @@
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary"><field name="name"/></div>
                                     <div t-if="record.alias_name.value and record.alias_domain.value">
-                                        <small><i class="fa fa-envelope-o" role="img" aria-label="Domain alias" title="Domain alias"></i>&amp;nbsp; <field name="alias_id"/></small>
+                                        <small><i class="far fa-envelope" role="img" aria-label="Domain alias" title="Domain alias"></i>&amp;nbsp; <field name="alias_id"/></small>
                                     </div>
                                 </div>
                                 <div class="o_kanban_manage_button_section">

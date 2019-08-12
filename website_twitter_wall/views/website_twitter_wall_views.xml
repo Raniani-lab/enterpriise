@@ -22,7 +22,7 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <field name="is_published" widget="website_redirect_button"/>
-                        <button class="oe_stat_button" name="open_tweets" type="object" icon="fa-twitter" attrs="{'invisible': [('total_tweets', '=', 0)]}">
+                        <button class="oe_stat_button" name="open_tweets" type="object" icon="fab fa-twitter" attrs="{'invisible': [('total_tweets', '=', 0)]}">
                             <field string="Tweets" name="total_tweets" widget="statinfo"/>
                         </button>
                         <field name="is_live" invisible="1" />

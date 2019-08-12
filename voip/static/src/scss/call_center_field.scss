@@ -9,8 +9,11 @@
 
 .o_dial_stack_icon {
     width: 20%;
-    left: 13px;
-    font-size: 10px;
+    left: 16px;
+    font-size: 8px !important;
+}
+.o_dial_phone_icon {
+    font-size: 15px;
 }
 
 .o_kanban_record:hover .o_dial_hidden_button {

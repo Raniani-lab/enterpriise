@@ -78,7 +78,7 @@ HomeMenu.include({
         if (this._inStudioMode) {
             this.$('.o_app').append(
                 $('<i>', {
-                    class: "o_web_studio_edit_icon fa fa-pencil-square",
+                    class: "o_web_studio_edit_icon fas fa-pen-square",
                 })
             );
             this._renderNewApp();

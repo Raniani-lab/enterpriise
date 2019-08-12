@@ -5,7 +5,7 @@
             <t t-if="widget.mode !== 'readonly'">
                 <div>
                     <div class="o_form_image_controls">
-                        <button class="fa fa-trash-o fa-lg o_clear_file_button" title="Clear" aria-label="Clear"/>
+                        <button class="far fa-trash-alt fa-lg o_clear_file_button" title="Clear" aria-label="Clear"/>
 
                         <span class="o_form_binary_progress">Uploading...</span>
                         <t t-call="HiddenInputFile">

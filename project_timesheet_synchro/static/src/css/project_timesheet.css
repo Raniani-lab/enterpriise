@@ -8238,7 +8238,7 @@ body .pt_screen .pt_content .pt_activities_list .pt_duration.pt_btn_interrupt_ac
 }
 body .pt_screen .pt_content .pt_activities_list .pt_duration.pt_btn_interrupt_activity:hover .fa-play:before {
   content: "\f04d";
-  font-family: FontAwesome;
+  font-family: 'Font Awesome 5 Free';
 }
 body .pt_screen .pt_content .pt_stats_row {
   text-align: center;

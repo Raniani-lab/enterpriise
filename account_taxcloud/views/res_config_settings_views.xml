@@ -20,7 +20,7 @@
                         <label string="Default Category" for="tic_category_id" class="col-lg-3 o_light_label"/>
                         <field name="tic_category_id"/>
                         <button name="sync_taxcloud_category" type="object" class="btn-link">
-                            <i title="Import/update TICs from TaxCloud" role="img" aria-label="Import/update TICs from TaxCloud" class="fa fa-refresh fa-fw"></i>
+                            <i title="Import/update TICs from TaxCloud" role="img" aria-label="Import/update TICs from TaxCloud" class="fas fa-sync fa-fw"></i>
                         </button>
                     </div>
                     <div class="mt16" attrs="{'invisible': [('taxcloud_api_id', '!=', False), ('taxcloud_api_key', '!=', False)]}">

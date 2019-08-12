@@ -22,7 +22,7 @@
 
     <t t-name="LoyaltyButton">
         <div class='control-button'>
-            <i class='fa fa-star' /> Rewards
+            <i class='fas fa-star' /> Rewards
         </div>
     </t>
 

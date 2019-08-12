@@ -510,7 +510,7 @@ odoo.define('sign.template', function(require) {
                 }
             });
 
-            $configArea.find('.fa.fa-arrows').off('mouseup').on('mouseup', function(e) {
+            $configArea.find('.fas.fa-expand-arrows-alt').off('mouseup').on('mouseup', function(e) {
                 if(!e.ctrlKey) {
                     self.$('.o_sign_sign_item').filter(function(i) {
                         return (this !== $signatureItem[0]);
@@ -519,7 +519,7 @@ odoo.define('sign.template', function(require) {
                 $signatureItem.toggleClass('ui-selected');
             });
 
-            $signatureItem.draggable({containment: "parent", handle: ".fa-arrows"}).resizable({containment: "parent"}).css('position', 'absolute');
+            $signatureItem.draggable({containment: "parent", handle: ".fa-expand-arrows-alt"}).resizable({containment: "parent"}).css('position', 'absolute');
 
             $signatureItem.off('dragstart resizestart').on('dragstart resizestart', function(e, ui) {
                 if(!e.ctrlKey) {
@@ -563,7 +563,7 @@ odoo.define('sign.template', function(require) {
                 }
                 start.call(self, ui.helper);
             });
-            $item.find('.o_sign_config_area .fa.fa-arrows').on('mousedown', function(e) {
+            $item.find('.o_sign_config_area .fas.fa-expand-arrows-alt').on('mousedown', function(e) {
                 start.call(self, $item);
                 process.call(self, $item, $item.position());
             });
@@ -579,7 +579,7 @@ odoo.define('sign.template', function(require) {
             $item.on('dragstop resizestop', function(e, ui) {
                 end.call(self);
             });
-            $item.find('.o_sign_config_area .fa.fa-arrows').on('mouseup', function(e) {
+            $item.find('.o_sign_config_area .fas.fa-expand-arrows-alt').on('mouseup', function(e) {
                 end.call(self);
             });
 
@@ -619,7 +619,7 @@ odoo.define('sign.template', function(require) {
     var Template = AbstractAction.extend({
         hasControlPanel: true,
         events: {
-            'click .fa-pencil': function(e) {
+            'click .fa-pencil-alt': function(e) {
                 this.$templateNameInput.focus().select();
             },
 

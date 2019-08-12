@@ -84,7 +84,7 @@ QUnit.module('Views', {
         await testUtils.nextTick();
         assert.equal(grid.$('table').length, 1, "should have rendered one table");
 
-        let btnCal = grid.$buttons.find('.btn-group.o_grid_range > button.btn.fa-calendar');
+        let btnCal = grid.$buttons.find('.btn-group.o_grid_range > button.btn.fa-calendar-alt');
         assert.equal(btnCal.length, 1, "should have a calendar button for range");
         await testUtils.dom.click(btnCal);
 

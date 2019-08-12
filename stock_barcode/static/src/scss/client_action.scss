@@ -47,7 +47,7 @@
                 span, .o_stock_mobile_barcode {
                     display: none;
                 }
-                .fa {
+                .fa, .far, .fas {
                     display: block;
                 }
             }
@@ -214,7 +214,9 @@
             }
             .o_field_widget {
                 font-size: 1.2em;
-                .btn.fa {
+                .btn.fa,
+                .btn.far,
+                .btn.fas {
                     font-size: 1em;
                 }
             }

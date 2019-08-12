@@ -144,13 +144,13 @@
 
     <t t-name="WorkInButton">
         <div class='control-button'>
-            <i class='fa fa-clock-o' /> Clock in
+            <i class='far fa-clock' /> Clock in
         </div>
     </t>
 
     <t t-name="WorkOutButton">
         <div class='control-button'>
-            <i class='fa fa-clock-o' /> Clock out
+            <i class='far fa-clock' /> Clock out
         </div>
     </t>
 

@@ -15,7 +15,7 @@
                 <button name="action_view_online"
                         type="object"
                         string="View on Seller Central"
-                        icon="fa-external-link"
+                        icon="fa-external-link-alt"
                         attrs="{'invisible': ['|', ('domain', 'not in', ['Amazon.com', 'Amazon.ca', 'Amazon.com.mx']),
                         ('id', '=', False)]}"/>
             </tree>

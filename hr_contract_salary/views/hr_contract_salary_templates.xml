@@ -167,7 +167,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="col-md-3 col-form-label">
-                                                <i class="fa fa-1x fa-globe fa-fw fa-lg"/> Internet Subscription
+                                                <i class="fa fa-1x fa-globe-americas fa-fw fa-lg"/> Internet Subscription
                                             </label>
                                             <div class="col-md-7">
                                                 <input class="form-control form-control-primary mb8 advantage_input" type="number" t-att-value="contract.internet or '0'" name="internet"/>
@@ -188,7 +188,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <span class="col-md-3 o_form_label col-form-label">
-                                                <i class="fa fa-1x fa-mobile fa-fw fa-lg"/> Phone Subscription
+                                                <i class="fas fa-1x fa-mobile-alt fa-fw fa-lg"/> Phone Subscription
                                             </span>
                                             <div class="col-md-7">
                                                 <div>
@@ -378,7 +378,7 @@
                                         <div class="form-group">
                                             <div class="row">
                                                 <label class="col-md-3 col-form-label" for="meal_voucher_amount">
-                                                    <i class="fa fa-1x fa-cutlery fa-fw"/> Meal Vouchers
+                                                    <i class="fas fa-1x fa-utensils fa-fw"/> Meal Vouchers
                                                 </label>
                                                 <div class="col-md-7">
                                                     <span class="form-text">Every month, you'll get 7.45€ per worked day on your meal voucher card.
@@ -499,7 +499,7 @@
                                             <label class="col-md-2 col-form-label" for="NET">Net</label>
                                             <div class="col-md-5 mt8">
                                                 <a role="button" data-toggle="modal" data-target="#hr_cs_modal" name="details">Details</a>
-                                                <a role="button" name="recompute" title="Recompute" aria-label="Recompute"><i class="fa fa-refresh fa-spin"/></a>
+                                                <a role="button" name="recompute" title="Recompute" aria-label="Recompute"><i class="fas fa-sync fa-spin"/></a>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="input-group">
@@ -1487,7 +1487,7 @@
             <div class="wrap">
                 <div class="container">
                     <div class="text-center mt48 mb48">
-                        <h1 class="hr_cs_brand_optional"><i class="fa fa-check-circle-o mr8"/>Congratulations</h1>
+                        <h1 class="hr_cs_brand_optional"><i class="far fa-check-circle mr8"/>Congratulations</h1>
                         <p class="lead mb24">Your contract has been sent to:</p>
                         <p class="lead mb4"> <b><t t-if="responsible_name" t-esc="responsible_name"/></b></p>
                         <p class="mb24">

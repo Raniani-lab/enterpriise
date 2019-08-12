@@ -138,7 +138,7 @@
                 aria-label="Backspace"
                 class="
                     fa
-                    fa-long-arrow-left
+                    fa-long-arrow-alt-left
                     o_dial_keypad_backspace"
                 role="img"
                 title="Backspace"/>
@@ -224,8 +224,8 @@
                 text-gray-light"
             title="Keypad"><i
                 class="
-                    fa
-                    fa-keyboard-o"/></button>
+                    far
+                    fa-keyboard"/></button>
         <button
             aria-label="Hang up but keep call in queue"
             class="
@@ -289,7 +289,7 @@
         aria-label="Close"
         class="
             fa
-            fa-close
+            fa-times
             o_dial_window_close"
         href="#"
         title="Close"/>

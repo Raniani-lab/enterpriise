@@ -21,10 +21,10 @@
         </button>
         <div class="btn-group">
             <button class="o_gantt_button_expand_rows btn btn-secondary" title="Expand rows">
-                <i class="fa fa-expand"/>
+                <i class="fa fa-expand-arrows-alt"/>
             </button>
             <button class="o_gantt_button_collapse_rows btn btn-secondary" title="Collapse rows">
-                <i class="fa fa-compress"/>
+                <i class="fa fa-compress-arrows-alt"/>
             </button>
         </div>
         <button t-if="activeActions.create &amp;&amp; activateScale == 'week'" class="o_gantt_button_copy_previous_week btn btn-secondary mr-3" title="Copy previous week">

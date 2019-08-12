@@ -243,7 +243,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                     .append($('<span>', {
                         text: _t('Add Chatter Widget'),
                     }).prepend($('<i>', {
-                        class: 'fa fa-comments',
+                        class: 'fas fa-comments',
                         style: 'margin-right:10px',
                     })))
                 );

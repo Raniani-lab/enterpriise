@@ -103,7 +103,7 @@
                 <t groups="sign.group_sign_user">
                     <t t-if="record.sign_request_ids.raw_value.length">
                         <div class="oe_kanban_bottom_left">
-                            <i class="fa fa-pencil"> <field name="signatures_count"/></i>
+                            <i class="fas fa-pencil-alt"> <field name="signatures_count"/></i>
                         </div>
                     </t>
                 </t>

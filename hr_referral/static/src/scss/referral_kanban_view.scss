@@ -107,7 +107,10 @@
         .btn span{
             font-size: 0.9rem;
         }
-        .btn .fa{
+        .btn .fa,
+        .btn .fab,
+        .btn .far,
+        .btn .fas {
             font-size: 3rem;
             @include media-breakpoint-up(sm) {
                 font-size: 2rem

@@ -7,10 +7,12 @@
     }
 }
 @mixin o-account-reports-i-fa-toggle {
-    i.fa {
+    i.fa, i.far, i.fas {
         visibility: hidden;
     }
-    &:hover i.fa {
+    &:hover i.fa,
+    &:hover i.far,
+    &:hover i.fas {
         visibility: visible;
     }
 }
@@ -40,16 +42,16 @@
         margin-bottom: 128px;
         th.o_account_report_column_header {
             &.sortable::before {
-                content: '\f07d';
-                font-family: 'FontAwesome';
+                content: '\f338';
+                font-family: 'Font Awesome 5 Free';
                 color: lightgray;
             }
             &.up::before {
-                content: '\f176';
+                content: '\f30c';
                 color: black;
             }
             &.down::before {
-                content: '\f175';
+                content: '\f309';
                 color: black;
             }
         }

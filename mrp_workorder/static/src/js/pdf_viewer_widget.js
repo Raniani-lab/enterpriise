@@ -18,7 +18,6 @@ var FieldPdfViewer = basicFields.FieldPdfViewer;
 
 var FieldPdfViewerNoReload = FieldPdfViewer.extend(mrpViewerCommon, {
     description: "",
-    supportedFieldTypes: ['binary'],
     template: 'FieldPdfViewer',
 
     /**

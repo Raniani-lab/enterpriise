@@ -3,6 +3,7 @@ odoo.define('mrp.viewer_common', function (require) {
 
 var mrpViewerCommon = {
     formFixedHeight: '250px',
+    supportedFieldTypes: [],
 
     /**
      * @override

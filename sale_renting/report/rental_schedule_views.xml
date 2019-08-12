@@ -96,6 +96,10 @@
     <field name="name">product.template.form.inherit.rental</field>
     <field name="model">product.template</field>
     <field name="inherit_id" ref="sale.product_template_form_view_sale_order_button"/>
+    <field name="priority">15</field>
+    <!-- HIGH priority to ensure it is applied before sale_stock product hack views.
+    If it isn't, installing sale_renting after sale_stock crashes !
+    -->
     <field name="arch" type="xml">
       <xpath expr="//button[@name='action_view_sales']" position="after">
         <button class="oe_stat_button" name="action_view_rentals"

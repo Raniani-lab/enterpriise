@@ -23,5 +23,5 @@ class HrExpenseSheet(models.Model):
 
     def reset_expense_sheets(self):
         res = super().reset_expense_sheets()
-        self.write({'refund_in_payslip': False})
+        self.sudo().write({'refund_in_payslip': False})
         return res

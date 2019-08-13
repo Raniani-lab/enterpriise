@@ -24,7 +24,7 @@
     <record id="sales_team.group_sale_salesman" model="res.groups">
         <field name="implied_ids" eval="[(4, ref('sale_subscription.group_sale_subscription_view'))]"/>
     </record>
-    
+
     <!-- Multi-company -->
     <record model="ir.rule" id="sale_subscription_multicompany">
         <field name="name">Subscription multi-company</field>
@@ -33,11 +33,18 @@
         <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
     </record>
 
+    <record model="ir.rule" id="sale_subscription_template_multicompany">
+        <field name="name">Subscription template multi-company</field>
+        <field name="model_id" ref="model_sale_subscription_template"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
     <record model="ir.rule" id="sale_subscription_line_multicompany">
         <field name="name">Subscription line multi-company</field>
         <field name="model_id" ref="model_sale_subscription_line"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|',('analytic_account_id.company_id','=',False),('analytic_account_id.company_id','in', company_ids)]</field>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
     <!-- Reporting -->

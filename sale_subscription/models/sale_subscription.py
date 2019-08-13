@@ -51,7 +51,10 @@ class SaleSubscription(models.Model):
     recurring_total = fields.Float(compute='_compute_recurring_total', string="Recurring Price", store=True, tracking=True)
     recurring_monthly = fields.Float(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue", store=True)
     close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", tracking=True)
-    template_id = fields.Many2one('sale.subscription.template', string='Subscription Template', required=True, tracking=True)
+    template_id = fields.Many2one(
+        'sale.subscription.template', string='Subscription Template',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        required=True, tracking=True)
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
     user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
@@ -332,7 +335,7 @@ class SaleSubscription(models.Model):
     def name_get(self):
         res = []
         for sub in self:
-            name = '%s - %s' % (sub.code, sub.partner_id.sudo().display_name) if sub.code else sub.partner_id.display_name
+            name = '%s - %s' % (sub.code, sub.partner_id.sudo().display_name) if sub.code else sub.partner_id.sudo().display_name
             res.append((sub.id, '%s/%s' % (sub.template_id.sudo().code, name) if sub.template_id.sudo().code else name))
         return res
 
@@ -863,6 +866,7 @@ class SaleSubscriptionLine(models.Model):
 
     product_id = fields.Many2one('product.product', string='Product', domain="[('recurring_invoice','=',True)]", required=True)
     analytic_account_id = fields.Many2one('sale.subscription', string='Subscription')
+    company_id = fields.Many2one('res.company', related='analytic_account_id.company_id', stored=True)
     name = fields.Text(string='Description', required=True)
     quantity = fields.Float(string='Quantity', help="Quantity that will be invoiced.", default=1.0)
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure', required=True, domain="[('category_id', '=', product_uom_category_id)]")
@@ -1009,6 +1013,7 @@ class SaleSubscriptionTemplate(models.Model):
     bad_health_domain = fields.Char(string='Bad Health', default='[]',
                                     help="Domain used to change subscription's Kanban state with a 'Bad' rating")
     invoice_mail_template_id = fields.Many2one('mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')])
+    company_id = fields.Many2one('res.company')
 
     @api.constrains('recurring_interval')
     def _check_recurring_interval(self):
@@ -1097,7 +1102,9 @@ class SaleSubscriptionAlert(models.Model):
         ('on_time', 'Timed Condition'),
     ], string='Trigger On', required=True, default='on_create_or_write')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
-    subscription_template_ids = fields.Many2many('sale.subscription.template', string='Subscription Templates')
+    subscription_template_ids = fields.Many2many(
+        'sale.subscription.template', string='Subscription Templates',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     customer_ids = fields.Many2many('res.partner', string='Customers')
     company_id = fields.Many2one('res.company', string='Company')
     mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id')

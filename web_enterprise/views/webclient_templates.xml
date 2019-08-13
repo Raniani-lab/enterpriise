@@ -76,6 +76,7 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/home_menu.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/menu_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/search_panel_mobile.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/views/calendar/calendar_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_view.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/relational_fields.js"></script>
@@ -104,6 +105,7 @@
             <script type="text/javascript" src="/web_enterprise/static/tests/form_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/mobile_menu_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/relational_fields_mobile_tests.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/tests/views/calendar_mobile_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/views/kanban_mobile_tests.js"></script>
         </xpath>
     </template>

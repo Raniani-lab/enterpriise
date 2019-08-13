@@ -24,15 +24,14 @@ class ReportL10nDePartnerVatIntra(models.AbstractModel):
             'l10n_de.tag_de_intracom_ABC']]
         query = """
             SELECT p.name As partner_name, l.partner_id AS partner_id, p.vat AS vat,
-                      tt.account_account_tag_id AS intra_code, SUM(-l.balance) AS amount,
+                      at.account_account_tag_id AS intra_code, SUM(-l.balance) AS amount,
                       c.code AS partner_country
                       FROM account_move_line l
                       LEFT JOIN account_move m ON m.id = l.move_id
                       LEFT JOIN res_partner p ON l.partner_id = p.id
-                      LEFT JOIN account_move_line_account_tax_rel amlt ON l.id = amlt.account_move_line_id
-                      LEFT JOIN account_tax_account_tag tt on amlt.account_tax_id = tt.account_tax_id
+                      LEFT JOIN account_account_tag_account_move_line_rel at on l.id = at.account_move_line_id
                       LEFT JOIN res_country c ON p.country_id = c.id
-                      WHERE tt.account_account_tag_id IN %s
+                      WHERE at.account_account_tag_id IN %s
                        AND l.date >= %s
                        AND l.date <= %s
                        AND l.company_id IN %s

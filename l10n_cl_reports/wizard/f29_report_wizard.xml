@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="f29_report_wizard_form" model="ir.ui.view">
+            <field name="name">f29.report.wizard.form</field>
+            <field name="model">f29.report.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="tasa_ppm"/>
+                    </group>
+
+                    <footer>
+                        <button string="Cancel" special="cancel"/>
+                        <button string="Show Report" class="oe_highlight" type="object" name="show_report"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

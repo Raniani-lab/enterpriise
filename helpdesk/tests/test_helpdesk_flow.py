@@ -3,12 +3,12 @@
 
 from dateutil.relativedelta import relativedelta
 
-from .common import HelpdeskTransactionCase
+from .common import HelpdeskCommon
 from odoo import fields
 from odoo.exceptions import AccessError
 
 
-class TestHelpdeskFlow(HelpdeskTransactionCase):
+class TestHelpdeskFlow(HelpdeskCommon):
     """ Test used to check that the base functionalities of Helpdesk function as expected.
         - test_access_rights: tests a few access rights constraints
         - test_assign_close_dates: tests the assignation and closing time get computed correctly
@@ -104,20 +104,18 @@ class TestHelpdeskFlow(HelpdeskTransactionCase):
             'name': 'test ticket 1',
             'team_id': self.test_team.id,
         })
-        # we rewind its creation date and set it to 2 days ago (we have to bypass the ORM as it doesn't let you write on create_date)
-        ticket1._cr.execute(
-            "UPDATE helpdesk_ticket set create_date=%s where id=%s",
-            ["'" + fields.Datetime.to_string(fields.Datetime.from_string(fields.Datetime.now()) - relativedelta(days=2)) + "'", ticket1.id])
-        # invalidate the cache and manually run the compute as our cr.execute() bypassed the ORM
-        ticket1.invalidate_cache()
-        # the helpdesk user takes the ticket
-        ticket1.assign_ticket_to_self()
-        # we verify the ticket is correctly assigned
-        self.assertTrue(ticket1.user_id.id == ticket1._uid, "Assignation for ticket not correct")
-        self.assertTrue(ticket1.assign_hours == 48, "Assignation time for ticket not correct")
-        # we close the ticket and verify its closing time
-        ticket1.write({'stage_id': self.stage_done.id})
-        self.assertTrue(ticket1.close_hours == 48, "Close time for ticket not correct")
+        self._utils_set_create_date(ticket1, '2019-01-08 12:00:00')
+
+        with self._ticket_patch_now('2019-01-10 13:00:00'):
+            # the helpdesk user takes the ticket
+            ticket1.assign_ticket_to_self()
+            # we verify the ticket is correctly assigned
+            self.assertEqual(ticket1.user_id.id, ticket1._uid, "Assignation for ticket not correct")
+            self.assertEqual(ticket1.assign_hours, 17, "Assignation time for ticket not correct")
+        with self._ticket_patch_now('2019-01-10 15:00:00'):
+            # we close the ticket and verify its closing time
+            ticket1.write({'stage_id': self.stage_done.id})
+            self.assertEqual(ticket1.close_hours, 19, "Close time for ticket not correct")
 
     def test_ticket_partners(self):
         # we create a partner
@@ -135,7 +133,7 @@ class TestHelpdeskFlow(HelpdeskTransactionCase):
             'team_id': self.test_team.id,
             'partner_id': partner.id,
         })
-        self.assertTrue(ticket1.partner_tickets == 2, "Incorrect number of tickets from the same partner.")
+        self.assertTrue(ticket1.partner_ticket_count == 2, "Incorrect number of tickets from the same partner.")
 
     def test_team_assignation_randomly(self):
         # we put the helpdesk user and manager in the test_team's members

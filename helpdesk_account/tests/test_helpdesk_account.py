@@ -5,7 +5,7 @@ from odoo.addons.helpdesk.tests import common
 from odoo.tests.common import Form
 
 
-class TestHelpdeskAccount(common.HelpdeskTransactionCase):
+class TestHelpdeskAccount(common.HelpdeskCommon):
     """ Test used to check that the functionalities of After sale in Helpdesk (credit note).
     """
 

@@ -83,7 +83,7 @@
                             </a>
                         </td>
                         <td t-if="rating_enable" title="Customer satisfaction analysis" t-att-class="(values and values['helpdesk_target_rating'] and values['helpdesk_target_rating'] &lt;= values['today']['rating'])?'o_main':'o_secondary'">
-                            <a href="#" class="o_dashboard_action" name="helpdesk_rating_today" type="object">
+                            <a href="#" class="o_dashboard_action" name="action_view_rating_today" type="object">
                                 <span class="o_highlight">
                                     <t t-esc="values['today']['rating']"/> %
                                 </span><br/>
@@ -108,7 +108,7 @@
                             </a>
                         </td>
                         <td t-if="rating_enable" class="o_secondary">
-                            <a href="#" class="o_dashboard_action" name="helpdesk_rating_7days">
+                            <a href="#" class="o_dashboard_action" name="action_view_rating_7days">
                                 <t t-esc="values['7days']['rating']"/> %
                             </a>
                         </td>

@@ -7,6 +7,7 @@ from odoo import api, fields, models, _
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
 from odoo.addons.http_routing.models.ir_http import slug
 from odoo.exceptions import UserError, ValidationError
+from odoo.osv import expression
 
 
 class HelpdeskTeam(models.Model):
@@ -19,13 +20,14 @@ class HelpdeskTeam(models.Model):
     def _default_stage_ids(self):
         return [(0, 0, {'name': 'New', 'sequence': 0, 'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False) or None})]
 
+    def _default_domain_member_ids(self):
+        return [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]
+
     name = fields.Char('Helpdesk Team', required=True, translate=True)
     description = fields.Text('About Team', translate=True)
     active = fields.Boolean(default=True)
-    company_id = fields.Many2one(
-        'res.company', string='Company',
-        default=lambda self: self.env.company)
-    sequence = fields.Integer(default=10)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    sequence = fields.Integer("Sequence", default=10)
     color = fields.Integer('Color Index', default=1)
     stage_ids = fields.Many2many(
         'helpdesk.stage', relation='team_stage_rel', string='Stages',
@@ -40,7 +42,7 @@ class HelpdeskTeam(models.Model):
              '\tManually: manual\n'
              '\tRandomly: randomly but everyone gets the same amount\n'
              '\tBalanced: to the person with the least amount of open tickets')
-    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
+    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids())
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email alias', default=True)
@@ -77,11 +79,9 @@ class HelpdeskTeam(models.Model):
 
     def _compute_upcoming_sla_fail_tickets(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([
-            ('sla_active', '=', True),
-            ('sla_fail', '=', False),
             ('team_id', 'in', self.ids),
-            ('deadline', '!=', False),
-            ('deadline', '<=', fields.Datetime.to_string((datetime.date.today() + relativedelta.relativedelta(days=1)))),
+            ('sla_deadline', '!=', False),
+            ('sla_deadline', '<=', fields.Datetime.to_string((datetime.date.today() + relativedelta.relativedelta(days=1)))),
         ], ['team_id'], ['team_id'])
         mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
         for team in self:
@@ -98,11 +98,6 @@ class HelpdeskTeam(models.Model):
         if not self.member_ids:
             self.assign_method = 'manual'
 
-    @api.constrains('assign_method', 'member_ids')
-    def _check_member_assignation(self):
-        if not self.member_ids and self.assign_method != 'manual':
-            raise ValidationError(_("You must have team members assigned to change the assignation method."))
-
     @api.onchange('use_alias', 'name')
     def _onchange_use_alias(self):
         if not self.alias_name and self.name and self.use_alias:
@@ -114,6 +109,15 @@ class HelpdeskTeam(models.Model):
     def _onchange_use_helpdesk_timesheet(self):
         if not self.use_helpdesk_timesheet:
             self.use_helpdesk_sale_timesheet = False
+
+    @api.constrains('assign_method', 'member_ids')
+    def _check_member_assignation(self):
+        if not self.member_ids and self.assign_method != 'manual':
+            raise ValidationError(_("You must have team members assigned to change the assignation method."))
+
+    # ------------------------------------------------------------
+    # ORM overrides
+    # ------------------------------------------------------------
 
     @api.model
     def create(self, vals):
@@ -133,7 +137,7 @@ class HelpdeskTeam(models.Model):
         return result
 
     def unlink(self):
-        stages = self.mapped('stage_ids').filtered(lambda stage: stage.team_ids <= self)
+        stages = self.mapped('stage_ids').filtered(lambda stage: stage.team_ids <= self)  # remove stages that only belong to team in self
         stages.unlink()
         return super(HelpdeskTeam, self).unlink()
 
@@ -210,6 +214,10 @@ class HelpdeskTeam(models.Model):
         # just in case we want to do something if we install a module. (like a refresh ...)
         return module_installed
 
+    # ------------------------------------------------------------
+    # Mail Alias Mixin
+    # ------------------------------------------------------------
+
     def get_alias_model_name(self, vals):
         return vals.get('alias_model', 'helpdesk.ticket')
 
@@ -218,18 +226,28 @@ class HelpdeskTeam(models.Model):
         values['alias_defaults'] = {'team_id': self.id}
         return values
 
+    # ------------------------------------------------------------
+    # Business Methods
+    # ------------------------------------------------------------
+
     @api.model
     def retrieve_dashboard(self):
         domain = [('user_id', '=', self.env.uid)]
         group_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
+        list_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
         #TODO: remove SLA calculations if user_uses_sla is false.
         user_uses_sla = self.user_has_groups('helpdesk.group_use_sla') and\
             bool(self.env['helpdesk.team'].search([('use_sla', '=', True), '|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)]))
+
         if user_uses_sla:
-            group_fields.insert(1, 'sla_fail')
+            group_fields.insert(1, 'sla_deadline:year')
+            group_fields.insert(2, 'sla_deadline:hour')
+            group_fields.insert(3, 'sla_reached_late')
+            list_fields.insert(1, 'sla_deadline')
+            list_fields.insert(2, 'sla_reached_late')
+
         HelpdeskTicket = self.env['helpdesk.ticket']
-        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', False)], group_fields, group_fields, lazy=False)
-        team = self.env['helpdesk.team'].search([], limit=1, order='id asc')
+        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', False)], list_fields, group_fields, lazy=False)
         result = {
             'helpdesk_target_closed': self.env.user.helpdesk_target_closed,
             'helpdesk_target_rating': self.env.user.helpdesk_target_rating,
@@ -241,16 +259,22 @@ class HelpdeskTeam(models.Model):
             'my_urgent': {'count': 0, 'hours': 0, 'failed': 0},
             'show_demo': not bool(HelpdeskTicket.search([], limit=1)),
             'rating_enable': False,
-            'success_rate_enable': user_uses_sla,
-            'alias_name': team.alias_name,
-            'alias_domain': team.alias_domain,
-            'use_alias': team.use_alias
+            'success_rate_enable': user_uses_sla
         }
+
+        def _is_sla_failed(data):
+            deadline_hour = data.get('sla_deadline:hour')
+            deadline = False
+            if deadline_hour:
+                    deadline_year = datetime.datetime.strptime(data['sla_deadline:year'], '%Y')
+                    deadline = datetime.datetime.strptime(deadline_hour, '%I:%M %d %b').replace(year=deadline_year.year)
+            sla_deadline = fields.Datetime.now() > deadline if deadline else False
+            return sla_deadline or data.get('sla_reached_late')
 
         def add_to(ticket, key="my_all"):
             result[key]['count'] += ticket['__count']
             result[key]['hours'] += ticket['close_hours']
-            if ticket.get('sla_fail'):
+            if _is_sla_failed(ticket):
                 result[key]['failed'] += ticket['__count']
 
         for ticket in tickets:
@@ -261,21 +285,21 @@ class HelpdeskTeam(models.Model):
                 add_to(ticket, 'my_urgent')
 
         dt = fields.Date.today()
-        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)], group_fields, group_fields, lazy=False)
+        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
         for ticket in tickets:
             result['today']['count'] += ticket['__count']
-            if not ticket.get('sla_fail'):
+            if not _is_sla_failed(ticket):
                 result['today']['success'] += ticket['__count']
 
         dt = fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6)))
-        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)], group_fields, group_fields, lazy=False)
+        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
         for ticket in tickets:
             result['7days']['count'] += ticket['__count']
-            if not ticket.get('sla_fail'):
+            if not _is_sla_failed(ticket):
                 result['7days']['success'] += ticket['__count']
 
-        result['today']['success'] = round((result['today']['success'] * 100) / (result['today']['count'] or 1), 2)
-        result['7days']['success'] = round((result['7days']['success'] * 100) / (result['7days']['count'] or 1), 2)
+        result['today']['success'] = (result['today']['success'] * 100) / (result['today']['count'] or 1)
+        result['7days']['success'] = (result['7days']['success'] * 100) / (result['7days']['count'] or 1)
         result['my_all']['hours'] = round(result['my_all']['hours'] / (result['my_all']['count'] or 1), 2)
         result['my_high']['hours'] = round(result['my_high']['hours'] / (result['my_high']['count'] or 1), 2)
         result['my_urgent']['hours'] = round(result['my_urgent']['hours'] / (result['my_urgent']['count'] or 1), 2)
@@ -304,34 +328,39 @@ class HelpdeskTeam(models.Model):
                 result['7days']['rating'] = team_satisfaction_7days
         return result
 
-    def action_view_ticket_rating(self):
-        """ return the action to see all the rating about the tickets of the Team """
+    def _action_view_rating(self, period=False, only_my_closed=False):
+        """ return the action to see all the rating about the tickets of the Team
+            :param period: either 'today' or 'seven_days' to include (or not) the tickets closed in this period
+            :param only_my_closed: True will include only the ticket of the current user in a closed stage
+        """
         domain = [('team_id', 'in', self.ids)]
-        if self.env.context.get('seven_days'):
+
+        if period == 'seven_days':
             domain += [('close_date', '>=', fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6))))]
-        elif self.env.context.get('today'):
+        elif period == 'today':
             domain += [('close_date', '>=', fields.Datetime.to_string(datetime.date.today()))]
-        if self.env.context.get('helpdesk'):
+
+        if only_my_closed:
             domain += [('user_id', '=', self._uid), ('stage_id.is_close', '=', True)]
+
         ticket_ids = self.env['helpdesk.ticket'].search(domain).ids
-        domain = [('res_id', 'in', ticket_ids), ('rating', '!=', -1), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)]
         action = self.env.ref('rating.action_view_rating').read()[0]
-        action['domain'] = domain
+        action['domain'] = [('res_id', 'in', ticket_ids), ('rating', '!=', -1), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)]
         return action
 
     @api.model
-    def helpdesk_rating_today(self):
+    def action_view_rating_today(self):
         #  call this method of on click "Customer Rating" button on dashbord for today rating of teams tickets
-        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)]).with_context(helpdesk=True, today=True).action_view_ticket_rating()
+        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)])._action_view_rating(period='today', only_my_closed=True)
 
     @api.model
-    def helpdesk_rating_7days(self):
+    def action_view_rating_7days(self):
         #  call this method of on click "Customer Rating" button on dashbord for last 7days rating of teams tickets
-        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)]).with_context(helpdesk=True, seven_days=True).action_view_ticket_rating()
+        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)])._action_view_rating(period='seven_days', only_my_closed=True)
 
     def action_view_all_rating(self):
         """ return the action to see all the rating about the all sort of activity of the team (tickets) """
-        return self.action_view_ticket_rating()
+        return self._action_view_rating()
 
     def action_unhappy_rating_ticket(self):
         self.ensure_one()
@@ -341,7 +370,7 @@ class HelpdeskTeam(models.Model):
         return action
 
     @api.model
-    def compute_activity_avg(self, activity):
+    def _compute_activity_avg(self, activity):
         # compute average base on all rating value
         # like: 5 great, 2 okey, 1 bad
         # great = 10, okey = 5, bad = 0
@@ -351,27 +380,38 @@ class HelpdeskTeam(models.Model):
         bad = activity['bad'] * 0.00
         return great + okey + bad
 
-    def get_new_user(self):
-        self.ensure_one()
-        new_user = self.env['res.users']
-        member_ids = sorted(self.member_ids.ids)
-        if member_ids:
-            if self.assign_method == 'randomly':
-                # randomly means new ticketss get uniformly distributed
-                previous_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', self.id)], order='create_date desc, id desc', limit=1).user_id
-                # handle the case where the previous_assigned_user has left the team (or there is none).
-                if previous_assigned_user and previous_assigned_user.id in member_ids:
-                    previous_index = member_ids.index(previous_assigned_user.id)
-                    new_user = new_user.browse(member_ids[(previous_index + 1) % len(member_ids)])
-                else:
-                    new_user = new_user.browse(member_ids[0])
-            elif self.assign_method == 'balanced':
-                read_group_res = self.env['helpdesk.ticket'].read_group([('stage_id.is_close', '=', False), ('user_id', 'in', member_ids)], ['user_id'], ['user_id'])
-                # add all the members in case a member has no more open tickets (and thus doesn't appear in the previous read_group)
-                count_dict = dict((m_id, 0) for m_id in member_ids)
-                count_dict.update((data['user_id'][0], data['user_id_count']) for data in read_group_res)
-                new_user = new_user.browse(min(count_dict, key=count_dict.get))
-        return new_user
+    def _determine_user_to_assign(self):
+        """ Get a dict with the user (per team) that should be assign to the nearly created ticket according to the team policy
+            :returns a mapping of team identifier with the "to assign" user (maybe an empty record).
+            :rtype : dict (key=team_id, value=record of res.users)
+        """
+        result = dict.fromkeys(self.ids, self.env['res.users'])
+        for team in self:
+            member_ids = sorted(team.member_ids.ids)
+            if member_ids:
+                if team.assign_method == 'randomly':  # randomly means new tickets get uniformly distributed
+                    last_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', team.id)], order='create_date desc, id desc', limit=1).user_id
+                    index = 0
+                    if last_assigned_user and last_assigned_user.id in member_ids:
+                        previous_index = member_ids.index(last_assigned_user.id)
+                        index = (previous_index + 1) % len(member_ids)
+                    result[team.id] = self.env['res.users'].browse(member_ids[index])
+                elif team.assign_method == 'balanced':  # find the member with the least open ticket
+                    ticket_count_data = self.env['helpdesk.ticket'].read_group([('stage_id.is_close', '=', False), ('user_id', 'in', member_ids)], ['user_id'], ['user_id'])
+                    open_ticket_per_user_map = dict.fromkeys(member_ids, 0)  # dict: user_id -> open ticket count
+                    open_ticket_per_user_map.update((item['user_id'][0], item['user_id_count']) for item in ticket_count_data)
+                    result[team.id] = self.env['res.users'].browse(min(open_ticket_per_user_map, key=open_ticket_per_user_map.get))
+        return result
+
+    def _determine_stage(self):
+        """ Get a dict with the stage (per team) that should be set as first to a created ticket
+            :returns a mapping of team identifier with the stage (maybe an empty record).
+            :rtype : dict (key=team_id, value=record of helpdesk.stage)
+        """
+        result = dict.fromkeys(self.ids, self.env['helpdesk.stage'])
+        for team in self:
+            result[team.id] = self.env['helpdesk.stage'].search([('team_ids', 'in', team.id)], order='sequence', limit=1)
+        return result
 
     def _get_closing_stage(self):
         """
@@ -389,7 +429,7 @@ class HelpdeskStage(models.Model):
     _description = 'Helpdesk Stage'
     _order = 'sequence, id'
 
-    def _get_default_team_ids(self):
+    def _default_team_ids(self):
         team_id = self.env.context.get('default_team_id')
         if team_id:
             return [(4, team_id, 0)]
@@ -406,7 +446,7 @@ class HelpdeskStage(models.Model):
         help='This stage is folded in the kanban view when there are no records in that stage to display.')
     team_ids = fields.Many2many(
         'helpdesk.team', relation='team_stage_rel', string='Team',
-        default=_get_default_team_ids,
+        default=_default_team_ids,
         help='Specific team that uses this stage. Other teams will not be able to see or use this stage.')
     template_id = fields.Many2one(
         'mail.template', 'Email Template',

@@ -20,7 +20,13 @@ odoo.define('sign.PDFIframe', function (require) {
             this.role = role || 0;
             this.configuration = {};
 
-            this.fullyLoaded = new $.Deferred();
+            var _res, _rej;
+            this.fullyLoaded = new Promise(function(resolve, reject) {
+                _res = resolve;
+                _rej = reject;
+            });
+            this.fullyLoaded.resolve = _res;
+            this.fullyLoaded.reject = _rej;
         },
 
         _set_data: function(dataName, data) {
@@ -870,7 +876,7 @@ odoo.define('sign.document_signing', function (require) {
                         mail: mail,
                     }).then(function() {
                         self.close();
-                        self.sent.resolve();
+                        self.sentResolve();
                     });
                 }});
                 options.buttons.push({text: _t("Cancel"), close: true});
@@ -880,7 +886,10 @@ odoo.define('sign.document_signing', function (require) {
 
             this.requestID = requestID;
             this.requestToken = requestToken;
-            this.sent = new Promise(function() { });
+            this.sentResolve;
+            this.sent = new Promise(function(resolve) {
+                self.sentResolve = resolve;
+            });
         },
 
         open: function(name, mail) {
@@ -1151,17 +1160,16 @@ odoo.define('sign.document_signing', function (require) {
             var self = this;
             this.fullyLoaded.then(function() {
                 self.signatureItemNav = new SignItemNavigator(self, self.types);
-                var def = self.signatureItemNav.prependTo(self.$('#viewerContainer'));
+                return self.signatureItemNav.prependTo(self.$('#viewerContainer')).then(function () {
 
-                self.checkSignItemsCompletion();
+                    self.checkSignItemsCompletion();
 
-                self.$('#viewerContainer').on('scroll', function(e) {
-                    if(!self.signatureItemNav.isScrolling && self.signatureItemNav.started) {
-                        self.signatureItemNav.setTip(_t('next'));
-                    }
+                    self.$('#viewerContainer').on('scroll', function(e) {
+                        if(!self.signatureItemNav.isScrolling && self.signatureItemNav.started) {
+                            self.signatureItemNav.setTip(_t('next'));
+                        }
+                    });
                 });
-
-                return def;
             });
 
             this._super.apply(this, arguments);

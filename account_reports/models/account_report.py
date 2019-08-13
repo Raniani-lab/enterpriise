@@ -111,12 +111,12 @@ class AccountReport(models.AbstractModel):
 
     @api.model
     def _get_filter_journal_groups(self):
-        journals = self._get_filter_journals().ids
+        journals = self._get_filter_journals()
         groups = self.env['account.journal.group'].search([], order='sequence')
         ret = self.env['account.journal.group']
         for journal_group in groups:
-            # Only display the group if all journals are visible
-            if set(journal_group.account_journal_ids.ids).issubset(journals):
+            # Only display the group if it doesn't exclude every journal
+            if journals - journal_group.excluded_journal_ids:
                 ret += journal_group
         return ret
 
@@ -135,7 +135,7 @@ class AccountReport(models.AbstractModel):
         group_header_displayed = False
         default_group_ids = []
         for group in self._get_filter_journal_groups():
-            journal_ids = [journal.id for journal in group.account_journal_ids]
+            journal_ids = (self._get_filter_journals() - group.excluded_journal_ids).ids
             if len(journal_ids):
                 if not group_header_displayed:
                     group_header_displayed = True
@@ -1146,7 +1146,7 @@ class AccountReport(models.AbstractModel):
         if options.get('journals'):
             journals_selected = set(journal['id'] for journal in options['journals'] if journal.get('selected'))
             for journal_group in self.env['account.journal.group'].search([('company_id', '=', self.env.company.id)]):
-                if journals_selected == set(journal_group.account_journal_ids.ids):
+                if journals_selected and journals_selected == set(self._get_filter_journals().ids) - set(journal_group.excluded_journal_ids.ids):
                     options['name_journal_group'] = journal_group.name
                     break
 

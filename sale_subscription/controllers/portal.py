@@ -179,8 +179,8 @@ class sale_subscription(http.Controller):
             tx = account.sudo()._do_payment(payment_token, new_invoice)[0]
             if tx.html_3ds:
                 return tx.html_3ds
-            get_param = self.payment_succes_msg if tx.state in ['done', 'authorized'] else self.payment_fail_msg
-            if tx.state in ['done', 'authorized']:
+            get_param = self.payment_succes_msg if tx.renewal_allowed else self.payment_fail_msg
+            if tx.renewal_allowed:
                 account.send_success_mail(tx, new_invoice)
                 msg_body = 'Manual payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, new_invoice.id)
                 account.message_post(body=msg_body)
@@ -203,7 +203,7 @@ class sale_subscription(http.Controller):
 
         tx.form_feedback(kw, tx.acquirer_id.provider)
 
-        get_param = self.payment_succes_msg if tx.state in ['done', 'authorized'] else self.payment_fail_msg
+        get_param = self.payment_succes_msg if tx.renewal_allowed else self.payment_fail_msg
 
         return request.redirect('/my/subscription/%s/%s?%s' % (subscription.id, sub_uuid, get_param))
 

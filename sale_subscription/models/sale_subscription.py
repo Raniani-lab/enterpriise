@@ -728,7 +728,7 @@ class SaleSubscription(models.Model):
                                 # commit change as soon as we try the payment so we have a trace somewhere
                                 if auto_commit:
                                     cr.commit()
-                                if tx.state in ['done', 'authorized']:
+                                if tx.renewal_allowed:
                                     subscription.send_success_mail(tx, new_invoice)
                                     msg_body = _('Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.') % (tx.id, tx.reference, tx.amount, new_invoice.id)
                                     subscription.message_post(body=msg_body)
@@ -741,7 +741,7 @@ class SaleSubscription(models.Model):
                                     if auto_commit:
                                         cr.rollback()
                                     new_invoice.unlink()
-                            if tx is None or tx.state != 'done':
+                            if tx is None or not tx.renewal_allowed:
                                 amount = subscription.recurring_total
                                 date_close = (
                                     subscription.recurring_next_date +

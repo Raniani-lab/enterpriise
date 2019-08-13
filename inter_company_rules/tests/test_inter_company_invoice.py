@@ -18,11 +18,11 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
 
         # Configure Chart of Account for company_a.
         self.env.user.company_id = self.company_a
-        self.env['account.chart.template'].browse(1).with_context(allowed_company_ids=self.company_a.ids).load_for_current_company(15.0, 15.0)
+        self.env['account.chart.template'].browse(1).with_context(allowed_company_ids=self.company_a.ids).try_loading()
 
         # Configure Chart of Account for company_b.
         self.env.user.company_id = self.company_b
-        self.env['account.chart.template'].browse(1).with_context(allowed_company_ids=self.company_b.ids).load_for_current_company(15.0, 15.0)
+        self.env['account.chart.template'].browse(1).with_context(allowed_company_ids=self.company_b.ids).try_loading()
 
         # Create customer invoice for company A. (No need to call onchange as all the needed values are specified)
         customer_invoice = self.env['account.move'].with_user(self.res_users_company_a).create({

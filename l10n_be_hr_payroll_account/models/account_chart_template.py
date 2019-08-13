@@ -8,16 +8,11 @@ from odoo.http import request
 class AccountChartTemplate(models.Model):
     _inherit = "account.chart.template"
 
-    def load_for_current_company(self, sale_tax_rate, purchase_tax_rate):
+    def _load(self, sale_tax_rate, purchase_tax_rate, company):
         """
         Override to configure payroll accounting data as well as accounting data.
         """
-        res = super().load_for_current_company(sale_tax_rate, purchase_tax_rate)
-        # do not use `request.env` here, it can cause deadlocks
-        if request and hasattr(request, 'allowed_company_ids'):
-            company = self.env['res.company'].browse(request.allowed_company_ids[0])
-        else:
-            company = self.env.company
+        res = super()._load(sale_tax_rate, purchase_tax_rate, company)
         self._configure_payroll_account_data(company)
         return res
 

@@ -7,17 +7,17 @@
         <field name="arch" type="xml">
             <form string="Appraisal Reminder">
             <sheet>
-                <span>Notify </span>
-                <field name="notify" class="oe_inline ml8" nolabel="1"/>
-                <span> </span>
-                <field name="appraisal_reminder" class="text-center oe_inline ml8" nolabel="1"/>
-                <span> months </span>
-                <field name="event" class="oe_inline" nolabel="1"/>
-
                 <group>
-                    <group>
-                        <field name="subject"/>
-                    </group>
+                    <field name="notify"/>
+                    <label for="appraisal_reminder" string="When"/>
+                    <div class="o_row" name="appraisal_reminder">
+                        <field name="appraisal_reminder" nolabel="1"/>
+                        <span> months</span>
+                        <field name="event" class="o_inline" nolabel="1"/>
+                    </div>
+                </group>
+                <group>
+                    <field name="subject" required="1" placeholder="e.g. Need an appraisal with your manager? You can schedule it."/>
                 </group>
                 <field name="body_html" type="html" widget="html" options="{'style-inline': true}"/>
           </sheet>
@@ -39,13 +39,13 @@
     </record>
 
     <record id="appraisal_reminderlist_action" model="ir.actions.act_window">
-        <field name="name">Appraisal Reminder</field>
+        <field name="name">Appraisal Reminders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.appraisal.reminder</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_appraisal_reminder" name="Appraisal Reminder"
+    <menuitem id="menu_appraisal_reminder" name="Appraisal Reminders"
         action="hr_appraisal.appraisal_reminderlist_action"
         parent="menu_hr_appraisal_configuration" sequence="4"
         groups="hr_appraisal.group_hr_appraisal_manager"/>

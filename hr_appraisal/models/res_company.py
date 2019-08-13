@@ -8,9 +8,18 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     def _get_default_appraisal_body_html(self):
+        # hardcoded link: FP and PO request.
         return """
-        <p>Please fill out the appraisal survey you received.<br/><br/>
-        Thank you for your participation.</p>"""
+        <p>An appraisal was requested.</p>
+        <p>Please schedule an appraisal date together.</p>
+        <p>Hereunder, you will find the link towards the Performance appraisal form:<br/>
+        [link]<br/>
+        The employee copy the document and complete his part, then share the document with the manager with edition right in order for him to complete his part.
+        </p>
+        <br/>
+        Thank you!<br/>
+        The HR department
+        """
 
     appraisal_send_reminder = fields.Boolean(string='Send Automatic Appraisals Reminder', default=True)
     appraisal_reminder = fields.One2many('hr.appraisal.reminder', 'company_id', string='Appraisal Reminder',

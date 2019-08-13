@@ -6,8 +6,8 @@ from odoo import fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    appraisal_min_period = fields.Integer(string="Minimum Number of Months Between Appraisals", default=6, config_parameter='hr_appraisal.appraisal_min_period')
-    appraisal_max_period = fields.Integer(string="Maximum Number of Months Between Appraisals", default=18, config_parameter='hr_appraisal.appraisal_max_period')
+    appraisal_min_period = fields.Integer(string="Minimum Time Between Appraisals", default=6, config_parameter='hr_appraisal.appraisal_min_period')
+    appraisal_max_period = fields.Integer(string="Maximum Time Between Appraisals", default=18, config_parameter='hr_appraisal.appraisal_max_period')
     appraisal_send_reminder = fields.Boolean(string="Send Automatic Appraisals Reminder", related='company_id.appraisal_send_reminder', readonly=False)
 
     appraisal_by_manager = fields.Boolean(string="Manager", related='company_id.appraisal_by_manager', readonly=False)

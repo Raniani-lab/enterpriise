@@ -5,11 +5,18 @@ from odoo import api, fields, models, tools
 
 from odoo.addons.hr_appraisal.models.hr_appraisal import HrAppraisal
 
+COLORS_BY_STATE = {
+    'new': 0,
+    'cancel': 1,
+    'pending': 2,
+    'done': 3,
+}
 
 class HrAppraisalReport(models.Model):
     _name = "hr.appraisal.report"
     _description = "Appraisal Statistics"
     _auto = False
+    _rec_name = 'employee_id'
 
     create_date = fields.Date(string='Create Date', readonly=True)
     department_id = fields.Many2one('hr.department', string='Department', readonly=True)
@@ -22,6 +29,11 @@ class HrAppraisalReport(models.Model):
         ('done', 'Done'),
         ('cancel', "Cancelled"),
     ], 'Status', readonly=True)
+    color = fields.Integer(compute='_compute_color')
+
+    def _compute_color(self):
+        for record in self:
+            record.color = COLORS_BY_STATE[record.state]
 
     _order = 'create_date desc'
 

@@ -8,7 +8,7 @@
     'sequence': 31,
     'summary': 'Assess your employees',
     'website': 'https://www.odoo.com/page/appraisal',
-    'depends': ['hr', 'calendar'],
+    'depends': ['hr', 'calendar', 'web_gantt'],
     'description': """
 Periodical Employees appraisal
 ==============================

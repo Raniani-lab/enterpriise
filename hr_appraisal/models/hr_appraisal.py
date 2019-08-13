@@ -32,15 +32,15 @@ class HrAppraisal(models.Model):
     ], string='Status', tracking=True, required=True, copy=False, default='new', index=True)
     manager_appraisal = fields.Boolean(string='Appraisal by Manager', help="This employee will be appraised by his managers")
     manager_ids = fields.Many2many('hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id')
-    manager_body_html = fields.Html(string="Manager's Appraisal Invite Body Email")
+    manager_body_html = fields.Html(string="Manager's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_manager_body_html)
     collaborators_appraisal = fields.Boolean(string='Collaborator Appraisal', help="This employee will be appraised by his collaborators")
     collaborators_ids = fields.Many2many('hr.employee', 'appraisal_subordinates_rel', 'hr_appraisal_id')
-    collaborators_body_html = fields.Html(string="Collaborator's Appraisal Invite Body Email")
+    collaborators_body_html = fields.Html(string="Collaborator's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_collaborators_body_html)
     colleagues_appraisal = fields.Boolean(string='Colleagues Appraisal', help="This employee will be appraised by his colleagues")
     colleagues_ids = fields.Many2many('hr.employee', 'appraisal_colleagues_rel', 'hr_appraisal_id', string="Colleagues")
-    colleagues_body_html = fields.Html(string="Colleague's Appraisal Invite Body Email")
+    colleagues_body_html = fields.Html(string="Colleague's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_colleagues_body_html)
     employee_appraisal = fields.Boolean(help="This employee will do a self-appraisal")
-    employee_body_html = fields.Html(string="Employee's Appraisal Invite Body Email")
+    employee_body_html = fields.Html(string="Employee's Appraisal Invite Body Email", default=lambda self: self.env.company.appraisal_by_employee_body_html)
     meeting_id = fields.Many2one('calendar.event', string='Meeting')
     date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
     is_autorized_to_send = fields.Boolean('Autorized Employee to Start Appraisal', compute='_compute_authorization')
@@ -54,6 +54,8 @@ class HrAppraisal(models.Model):
 
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
+        self = self.sudo()  # fields are not on the employee public
+        self.company_id = self.employee_id.company_id
         self.manager_appraisal = self.employee_id.appraisal_by_manager
         self.manager_ids = self.employee_id.appraisal_manager_ids
         self.colleagues_appraisal = self.employee_id.appraisal_by_colleagues

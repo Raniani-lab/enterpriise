@@ -129,9 +129,6 @@ class AccountChartOfAccountReport(models.AbstractModel):
              'level': 1,
         })
 
-        if options.get('hierarchy'):
-            lines = self._create_hierarchy(lines)
-
         return lines
 
     @api.model

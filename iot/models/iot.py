@@ -1,6 +1,7 @@
 import base64
+import requests
 
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, _
 from odoo.models import AbstractModel
 
 # ----------------------------------------------------------
@@ -37,6 +38,8 @@ class IotDevice(models.Model):
     type = fields.Selection([
         ('printer', 'Printer'),
         ('camera', 'Camera'),
+        ('keyboard', 'Keyboard'),
+        ('scanner', 'Barcode Scanner'),
         ('device', 'Device'),
         ('payment', 'Payment Terminal'),
         ('scale', 'Scale'),
@@ -52,6 +55,7 @@ class IotDevice(models.Model):
     report_ids = fields.One2many('ir.actions.report', 'device_id', string='Reports')
     iot_ip = fields.Char(related="iot_id.ip")
     connected = fields.Boolean(string='Status', help='If device is connected to the IoT Box', readonly=True)
+    keyboard_layout = fields.Many2one('iot.keyboard.layout', string='Keyboard Layout')
 
     def name_get(self):
         return [(i.id, "[" + i.iot_id.name +"] " + i.name) for i in self]
@@ -82,3 +86,27 @@ class PublisherWarrantyContract(models.AbstractModel):
         msg = super(PublisherWarrantyContract, self)._get_message()
         msg['IoTBox'] = self.env['iot.box'].search_count([])
         return msg
+
+class KeyboardLayout(models.Model):
+    _name = 'iot.keyboard.layout'
+    _description = 'Keyboard Layout'
+
+    name = fields.Char('Name')
+    layout = fields.Char('Layout')
+    variant = fields.Char('Variant')
+
+    @api.model
+    def load_keyboard_layouts(self, iot_url):
+        if not self.search([]):
+            url = iot_url + '/hw_proxy/load_keyboard_layouts'
+            try:
+                response = requests.post(url, json={
+                    'jsonrpc': '2.0',
+                    'method': 'call',
+                })
+                response.raise_for_status()
+                layouts = response.json()['result']
+                for layout in layouts:
+                    self.create(layout)
+            except Exception as e:
+                raise exceptions.UserError(_('Could not load the list of keyboard layouts : %s') % e)

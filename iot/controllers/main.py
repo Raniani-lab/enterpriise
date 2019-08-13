@@ -74,6 +74,7 @@ class IoTController(http.Controller):
                     'ip': iot_box['ip'],
                     'version': iot_box['version'],
                 })
+                request.env['iot.keyboard.layout'].sudo().load_keyboard_layouts(box.ip_url)
 
         # Update or create devices
         if box:

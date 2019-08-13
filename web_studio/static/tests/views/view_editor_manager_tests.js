@@ -266,7 +266,7 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('th[data-node-id]'));
         await testUtils.dom.click(vem.$('.o_web_studio_edit_selection_values'));
         $('.modal .o_web_studio_selection_new_value input').val('Hardest');
-        await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button'));
+        await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button.o_web_studio_add_selection_value'));
         await testUtils.dom.click($('.modal.o_web_studio_field_modal footer .btn-primary'));
 
         vem.destroy();

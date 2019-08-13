@@ -6,7 +6,7 @@
     <field name="model">product.product</field>
     <field name="priority">999</field>
     <field name="arch" type="xml">
-        <kanban create="0" edit="0" class="o_kanban_mobile">
+        <kanban edit="0" class="o_kanban_mobile">
             <field name="id"/>
             <field name="name"/>
             <templates>
@@ -24,7 +24,7 @@
                                         </div>
                                     </strong>
                                     <ul>
-                                        <li><strong>Price: <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id'}"></field></strong></li>
+                                        <li><strong>Price: <field name="price" widget="monetary" options="{'currency_field': 'currency_id'}"></field></strong></li>
                                         <field name="currency_id" invisible="True"/>
                                     </ul>
                                 </div>

@@ -142,15 +142,15 @@ class Task(models.Model):
             self.planning_overlap = False
 
     def _compute_quotation_count(self):
-        quotation_data = self.env['sale.order'].read_group([('state', '!=', 'cancel'), ('task_id', 'in', self.ids)], ['task_id'], ['task_id'])
+        quotation_data = self.sudo().env['sale.order'].read_group([('state', '!=', 'cancel'), ('task_id', 'in', self.ids)], ['task_id'], ['task_id'])
         mapped_data = dict([(q['task_id'][0], q['task_id_count']) for q in quotation_data])
         for task in self:
             task.quotation_count = mapped_data.get(task.id, 0)
 
     def _compute_material_line_totals(self):
         for task in self:
-            material_sale_lines = task.sale_order_id.order_line.filtered(lambda sol: sol.product_id != task.project_id.timesheet_product_id)
-            task.material_line_total_price = sum(material_sale_lines.mapped('price_subtotal'))
+            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: sol.product_id != task.project_id.timesheet_product_id)
+            task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
             task.material_line_product_count = len(material_sale_lines.mapped('product_id'))
 
     def _compute_fsm_to_invoice(self):
@@ -245,21 +245,28 @@ class Task(models.Model):
             domain = expression.AND([domain, [('id', '!=', self.project_id.timesheet_product_id.id)]])
         deposit_product = self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
         if deposit_product:
-            domain = expression.AND([domain, [('id', '!=', deposit_product.id)]])
+            domain = expression.AND([domain, [('id', '!=', deposit_product)]])
 
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         return {
             'type': 'ir.actions.act_window',
             'name': _('Products'),
             'res_model': 'product.product',
-            'views': [(kanban_view.id, 'kanban')],
+            'views': [(kanban_view.id, 'kanban'), (False, 'form')],
             'domain': domain,
             'context': {
                 'fsm_mode': True,
+                'create': self.env['product.template'].check_access_rights('create', raise_exception=False),
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
                 'partner': self.partner_id.id if self.partner_id else False,
-            }
+            },
+            'help': _("""<p class="o_view_nocontent_smiling_face">
+                            Create a new product
+                        </p><p>
+                            You must define a product for everything you sell or purchase,
+                            whether it's a storable product, a consumable or a service.
+                        </p>""")
         }
 
     def action_make_billable(self):
@@ -342,13 +349,22 @@ class Task(models.Model):
         if not self.partner_id:
             raise UserError(_('The FSM task must have a customer set to be sold.'))
 
-        sale_order = self.env['sale.order'].create({
+        SaleOrder = self.env['sale.order']
+        if self.user_has_groups('industry_fsm.group_fsm_user'):
+            SaleOrder = SaleOrder.sudo()
+
+        sale_order = SaleOrder.create({
             'partner_id': self.partner_id.id,
             'analytic_account_id': self.project_id.analytic_account_id.id,
         })
         sale_order.onchange_partner_id()
 
-        sale_order_line = self.env['sale.order.line'].create({
+        assign_current_user = self.env['sale.order'].check_access_rights('create', raise_exception=False)
+        if(not assign_current_user):
+            # write after creation since onchange_partner_id sets the current user
+            sale_order.write({'user_id': False})
+
+        sale_order_line = self.env['sale.order.line'].sudo().create({
             'order_id': sale_order.id,
             'product_id': self.project_id.timesheet_product_id.id,
             'project_id': self.project_id.id,

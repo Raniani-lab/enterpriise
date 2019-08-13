@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
                 <form>
                     <group>
-                        <field name="tasa_ppm"/>
+                        <field name="l10n_cl_report_tasa_ppm"/>
+                        <field name="l10n_cl_report_fpp_value"/>
                     </group>
 
                     <footer>
@@ -18,6 +19,19 @@
                 </form>
             </field>
         </record>
+
+        <record id="action_f29_report" model="ir.actions.act_window">
+            <field name="name">Propuesta F29</field>
+            <field name="res_model">f29.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_f29_report"
+            name="Propuesta F29"
+            action="action_f29_report"
+            parent="l10n_cl.account_reports_cl_statements_menu"/>
+
 
     </data>
 </odoo>

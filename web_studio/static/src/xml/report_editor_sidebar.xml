@@ -259,18 +259,22 @@
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-font"/></button>
                 <div class="dropdown-menu" role="menu">
-                    <div role="menuitem" class="dropdown-item o_web_studio_font_colorpicker note-color">
+                    <div role="menuitem" class="dropdown-item o_web_studio_font_colorpicker">
                         <button data-target="font" class="btn btn-block o_web_studio_reset_color">reset color</button>
-                        <div class="note-color-palette"/>
+                        <div class="o_web_studio_color_palette"/>
+                        <button data-target="font" class="btn btn-block o_web_studio_custom_color">Custom color</button>
+                        <div class="o_web_studio_custom_colors"/>
                     </div>
                 </div>
             </div>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-paint-brush"/></button>
                 <div class="dropdown-menu" role="menu">
-                    <div role="menuitem" class="dropdown-item o_web_studio_background_colorpicker note-color">
+                    <div role="menuitem" class="dropdown-item o_web_studio_background_colorpicker">
                         <button data-target="background" class="btn btn-block o_web_studio_reset_color">reset color</button>
-                        <div class="note-color-palette"/>
+                        <div class="o_web_studio_color_palette"/>
+                        <button data-target="background" class="btn btn-block o_web_studio_custom_color">Custom color</button>
+                        <div class="o_web_studio_custom_colors"/>
                     </div>
                 </div>
             </div>

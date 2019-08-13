@@ -9,7 +9,7 @@ var ModelFieldSelector = require('web.ModelFieldSelector');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 
 var Wysiwyg = require('web_editor.wysiwyg');
-var FontPlugin = require('web_editor.wysiwyg.plugin.font');
+var SummernoteManager = require('web_editor.rte.summernote');
 
 var Abstract = require('web_studio.AbstractReportComponent');
 var DomainSelectorDialog = require('web.DomainSelectorDialog');
@@ -344,7 +344,7 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
 });
 
 
-var assetsLoaded;
+var loadColors;
 var LayoutEditable = AbstractEditComponent.extend({
     name: 'layout',
     template : 'web_studio.ReportLayoutEditable',
@@ -357,6 +357,7 @@ var LayoutEditable = AbstractEditComponent.extend({
         "click .o_web_studio_text_alignment button": "_onTextAlignmentChange",
         "change .o_web_studio_classes>input": "_onClassesChange",
         "click .o_web_studio_colors .o_web_studio_reset_color": "_onResetColor",
+        "click .o_web_studio_colors .o_web_studio_custom_color": "_onCustomColor",
     }),
     /**
      * @override
@@ -419,25 +420,15 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.displayAlignment = !_.contains(['inline', 'float'], this.node.$nodes.css('display'));
 
         this.allClasses = params.node.attrs.class || "";
+
+        new SummernoteManager(this);
     },
     /**
      * @override
      */
-    willStart: function () {
-        var self = this;
-        return this._super().then(function () {
-            if (assetsLoaded) {
-                return assetsLoaded;
-            }
-            assetsLoaded = new Promise(function (resolve, reject) {
-                var wysiwyg = new Wysiwyg(self, {});
-                wysiwyg.attachTo($('<textarea>')).then(function () {
-                    wysiwyg.destroy();
-                    resolve();
-                });
-            });
-            return assetsLoaded;
-        });
+    willStart: async function () {
+        await this._super();
+        this._groupColors = await this._getColors();
     },
     /**
      * Override to re-render the color picker on each component rendering.
@@ -447,29 +438,52 @@ var LayoutEditable = AbstractEditComponent.extend({
     renderElement: function() {
         var self = this;
         this._super.apply(this, arguments);
-        var fontPlugin = new FontPlugin({
-            layoutInfo: {
-                editable: $('<div/>'),
-                editingArea: $('<div/>'),
-            },
-            options: {},
+        this.$('.o_web_studio_background_colorpicker .o_web_studio_color_palette').append(this._createPalette());
+        this.$('.o_web_studio_background_colorpicker').on("mousedown", 'button[data-color]', function (e) {
+            self._onColorChange($(e.currentTarget).data('value').replace('text-', 'bg-'), "background");
         });
-
-        this.$('.o_web_studio_background_colorpicker .note-color-palette').append(fontPlugin.createPalette('backColor'));
-        this.$('.o_web_studio_font_colorpicker .note-color-palette').append(fontPlugin.createPalette('foreColor'));
-
-        this.$el.find(".o_web_studio_background_colorpicker .note-color-palette button").on("mousedown", function(e) {
-            self._onColorChange(e.currentTarget, "background");
-        });
-        this.$el.find(".o_web_studio_font_colorpicker .note-color-palette button").on("mousedown", function(e) {
-            self._onColorChange(e.currentTarget, "font");
+        this.$('.o_web_studio_font_colorpicker .o_web_studio_color_palette').append(this._createPalette());
+        this.$('.o_web_studio_font_colorpicker').on("mousedown", 'button[data-color]', function (e) {
+            self._onColorChange($(e.currentTarget).data('value'), "font");
         });
      },
+
+
 
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * @private
+     * @returns {JQuery Node}
+     */
+    _createPalette: function () {
+        var self = this;
+        var $fontPlugin = $('<div/>');
+        this._groupColors.forEach(function (color) {
+            var $row;
+            if (typeof color === 'string') {
+                $row = $('<h6/>').text(color);
+            } else {
+                $row = $('<div class="o_web_studio_color_row"/>');
+                color.forEach(function (color) {
+                    var $button = $('<button/>').appendTo($row);
+                    $button.attr('data-color', color);
+                    if (color.startsWith('#')) {
+                        $button.css('background-color', color);
+                        $button.attr('data-value', color);
+                    } else {
+                        $button.addClass('bg-' + color);
+                        $button.attr('data-value', 'text-' + color);
+                    }
+                    $row.append($button);
+                });
+            }
+            $fontPlugin.append($row);
+        });
+        return $fontPlugin;
+    },
     /**
      * @private
      * @param {String} marginName the short name of the margin property (mt for
@@ -488,6 +502,49 @@ var LayoutEditable = AbstractEditComponent.extend({
             }
         }
     },
+    /**
+     * @private
+     * @returns {Array}
+     */
+    _getColors: async function () {
+        if (!('web_editor.colorpicker' in qweb.templates)) {
+            await this._rpc({
+                model: 'ir.ui.view',
+                method: 'read_template',
+                args: ['web_editor.colorpicker'],
+            }).then(function (template) {
+                return qweb.add_template('<templates>' + template + '</templates>');
+            });
+        }
+
+        var groupColors = [];
+        var $clpicker = $(qweb.render('web_editor.colorpicker'));
+        $clpicker.children('.o_colorpicker_section').each(function () {
+            groupColors.push($(this).attr('data-display'));
+            var colors = [];
+            $(this.children).each(function () {
+                if ($(this).hasClass('clearfix')) {
+                    groupColors.push(colors);
+                    colors = [];
+                } else {
+                    colors.push($(this).attr('data-color') || '');
+                }
+            });
+            groupColors.push(colors);
+        });
+
+        groupColors = groupColors.concat([
+            ['#FF0000', '#FF9C00', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#9C00FF', '#FF00FF'],
+            ['#F7C6CE', '#FFE7CE', '#FFEFC6', '#D6EFD6', '#CEDEE7', '#CEE7F7', '#D6D6E7', '#E7D6DE'],
+            ['#E79C9C', '#FFC69C', '#FFE79C', '#B5D6A5', '#A5C6CE', '#9CC6EF', '#B5A5D6', '#D6A5BD'],
+            ['#E76363', '#F7AD6B', '#FFD663', '#94BD7B', '#73A5AD', '#6BADDE', '#8C7BC6', '#C67BA5'],
+            ['#CE0000', '#E79439', '#EFC631', '#6BA54A', '#4A7B8C', '#3984C6', '#634AA5', '#A54A7B'],
+            ['#9C0000', '#B56308', '#BD9400', '#397B21', '#104A5A', '#085294', '#311873', '#731842'],
+            ['#630000', '#7B3900', '#846300', '#295218', '#083139', '#003163', '#21104A', '#4A1031']
+        ]);
+
+        return groupColors;
+    },
 
     //--------------------------------------------------------------------------
     // Handlers
@@ -498,9 +555,7 @@ var LayoutEditable = AbstractEditComponent.extend({
      * @param {JQelement} $elem
      * @param {String} type either font or background
      */
-    _onColorChange: function (elem, type) {
-        var $elem = $(elem);
-        var value = $elem.data('value');
+    _onColorChange: function (value, type) {
         var isClass = /^(text|bg)-/ .test(value);
         if (isClass) {
             this._editDomAttribute("class", value, type === "background" ? this["background-color-class"] : this["font-color-class"]);
@@ -522,6 +577,24 @@ var LayoutEditable = AbstractEditComponent.extend({
                 type: 'attributes',
                 new_attrs: newAttrs,
             },
+        });
+    },
+    /**
+     * @private
+     * @param {JQEvent} e
+     */
+    _onCustomColor: function (e) {
+        e.preventDefault();
+        core.bus.trigger('color_picker_dialog_demand', {
+            color: 'rgb(255, 0, 0)',
+            onSave: function (color) {
+                var $button = $('<button/>');
+                $button.attr('data-color', color);
+                $button.attr('data-value', color);
+                $button.css('background-color', color);
+                $(e.target).closest('.dropdown-item').find('.o_web_studio_custom_colors').append($button);
+                $button.mousedown();
+            }
         });
     },
     /**
@@ -1007,6 +1080,7 @@ var Text = AbstractEditComponent.extend({
         });
     },
     _startWysiwygEditor: function () {
+        var self = this;
         this.wysiwyg = new Wysiwyg(this, {
             focus: false,
             height: 180,
@@ -1014,7 +1088,7 @@ var Text = AbstractEditComponent.extend({
                 // ['style', ['style']],
                 ['font', ['bold', 'italic', 'underline']],
                 ['fontsize', ['fontsize']],
-                ['color', ['colorpicker']],
+                ['color', ['color']],
                 ['clear', ['clear']],
             ],
             prettifyHtml: false,
@@ -1030,8 +1104,8 @@ var Text = AbstractEditComponent.extend({
         this.$textarea.off().on('input', function (e) { // to test simple
             e.preventDefault();
             e.stopImmediatePropagation();
-            $(this).data('wysiwyg').setValue($(this).val());
-            $(this).data('wysiwyg').trigger_up('wysiwyg_blur');
+            self.wysiwyg.setValue($(this).val());
+            self.wysiwyg.trigger_up('wysiwyg_blur');
         });
 
         return this.wysiwyg.attachTo(this.$textarea);

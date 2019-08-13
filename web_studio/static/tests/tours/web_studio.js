@@ -322,9 +322,10 @@ tour.register('web_studio_new_report_tour', {
     // change the text of the H2 to 'test'
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
     run: function () {
-        this.$anchor.mousedown();
+        this.$anchor.focusIn();
         this.$anchor[0].firstChild.textContent = 'Test';
-        this.$anchor.trigger($.Event("keydown", {keyCode: 116, key: 't'}));
+        this.$anchor.keydown();
+        this.$anchor.blur();
     }
 }, {
     // click outside to blur the field
@@ -383,9 +384,10 @@ tour.register('web_studio_new_report_tour', {
     // update column title 'name' into another title
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
         run: function () {
-        this.$anchor.mousedown();
+        this.$anchor.focusIn();
         this.$anchor[0].firstChild.textContent = 'new column title';
-        this.$anchor.trigger($.Event("keydown", {keyCode: 101, key: 'e'}));
+        this.$anchor.keydown();
+        this.$anchor.blur();
     }
 }, {
     // click outside to blur the field
@@ -468,9 +470,10 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     // change the text of the H2 to 'test'
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
     run: function () {
-        this.$anchor.mousedown();
+        this.$anchor.focusIn();
         this.$anchor[0].firstChild.textContent = 'Test';
-        this.$anchor.trigger($.Event("keydown", {keyCode: 116, key: 't'}));
+        this.$anchor.keydown();
+        this.$anchor.blur();
     }
 }, {
     // click outside to blur the field
@@ -528,9 +531,10 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     // update column title 'name' into another title
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
     run: function () {
-        this.$anchor.mousedown();
+        this.$anchor.focusIn();
         this.$anchor[0].firstChild.textContent = 'new column title';
-        this.$anchor.trigger($.Event("keydown", {keyCode: 101, key: 'e'}));
+        this.$anchor.keydown();
+        this.$anchor.blur();
     }
 }, {
     // click outside to blur the field

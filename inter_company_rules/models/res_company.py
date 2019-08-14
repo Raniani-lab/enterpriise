@@ -11,7 +11,7 @@ class res_company(models.Model):
         ('so_and_po', 'Synchronize sales/purchase orders')], string="Rule",
         help='Select the type to setup inter company rules in selected company.', default='not_synchronize')
     applicable_on = fields.Selection([('sale', 'Sales Order'), ('purchase', 'Purchase Order'),
-          ('sale_purchase', 'Sale and Purchase Order')], string="Apply on")
+          ('sale_purchase', 'Sales and Purchase Order')], string="Apply on")
     auto_validation = fields.Boolean(string="Automatic Validation")
     intercompany_user_id = fields.Many2one("res.users", string="Assign to", default=SUPERUSER_ID,
         help="Responsible user for creation of documents triggered by intercompany rules.")

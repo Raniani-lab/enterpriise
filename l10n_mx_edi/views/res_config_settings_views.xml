@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@id='invoicing_settings']" position="after">
-                <h2>Electronic invoicing (MX)</h2>
-                <div class="row mt16 o_settings_container" id="l10n_mx_edi_settings">
+                <h2 attrs="{'invisible': [('country_code', '!=', 'MX')]}">Electronic invoicing (MX)</h2>
+                <div class="row mt16 o_settings_container" id="l10n_mx_edi_settings" attrs="{'invisible': [('country_code', '!=', 'MX')]}">
                     <div class="col-12 col-lg-6 o_setting_box" title="Fields required to configure the MX CFDI.">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">

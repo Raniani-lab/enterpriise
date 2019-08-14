@@ -196,7 +196,7 @@
             <field name="arch" type="xml">
             <data>
                  <xpath expr="//notebook" position="inside">
-                    <page name="indian_payroll" string="Indian Payroll">
+                    <page name="indian_payroll" string="Indian Payroll" attrs="{'invisible': [('country_code', '!=', 'IN')]}">
                         <group>
                             <field name="dearness_allowance"/>
                         </group>

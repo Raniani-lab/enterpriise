@@ -14,8 +14,8 @@
             <field name="arch" type="xml">
             <data>
                  <xpath expr="//field[@name='company_registry']" position="after">
-                    <field name="l10n_de_datev_consultant_number"/>
-                    <field name="l10n_de_datev_client_number"/>
+                    <field name="l10n_de_datev_consultant_number" attrs="{'invisible': [('country_code', '!=', 'DE')]}"/>
+                    <field name="l10n_de_datev_client_number" attrs="{'invisible': [('country_code', '!=', 'DE')]}"/>
                  </xpath>
             </data>
             </field>

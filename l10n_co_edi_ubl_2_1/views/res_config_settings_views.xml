@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="l10n_co_edi.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@id='l10n_mx_co_settings']/div[2]/div[hasclass('o_setting_right_pane')]/div[2]" position="inside">
-                    <div class="row">
+                    <div class="row" attrs="{'invisible': [('country_code', '!=', 'CO')]}">
                         <label for="l10n_co_edi_template_code" class="col-lg-4 o_light_label"/>
                         <field name="l10n_co_edi_template_code"/>
                     </div>

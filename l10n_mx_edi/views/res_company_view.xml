@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="base.view_company_form"/>
             <field name="arch" type="xml">
                 <xpath expr=".//field[@name='street2']" position="after">
-                    <div>
+                    <div attrs="{'invisible': [('country_code', '!=', 'MX')]}">
                         <div class="o_row">
                             <field name="l10n_mx_edi_colony" placeholder="Colony..."/>
                             <field name="l10n_mx_edi_colony_code" placeholder="Colony Code"/>

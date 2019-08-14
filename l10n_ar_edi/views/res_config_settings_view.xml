@@ -7,9 +7,8 @@
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@data-key='account']/div" position="after">
-                <field name="l10n_ar_country_code" invisible="1"/>
-                <h2 attrs="{'invisible':[('l10n_ar_country_code', '!=', 'AR')]}">Argentina Localization</h2>
-                <div class="row mt16 o_settings_container" name="argentina_localization">
+                <h2 attrs="{'invisible':[('country_code', '!=', 'AR')]}">Argentina Localization</h2>
+                <div class="row mt16 o_settings_container" name="argentina_localization" attrs="{'invisible':[('country_code', '!=', 'AR')]}">
                     <div class="col-xs-12 col-md-6 o_setting_box">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">
@@ -44,10 +43,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible':[('l10n_ar_country_code', '!=', 'AR')]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible':[('country_code', '!=', 'AR')]}">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">
-                            <label for="l10n_ar_country_code" string="Verify Vendor Bills validity in AFIP"/>
+                            <label for="country_code" string="Verify Vendor Bills validity in AFIP"/>
                             <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." groups="base.group_multi_company"/>
                             <div class="text-muted">
                                 Allow or Require to do vendor bill verify in AFIP for documents with CAE, CAI or CAEA numbers

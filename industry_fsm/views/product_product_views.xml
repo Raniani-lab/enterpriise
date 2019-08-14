@@ -31,9 +31,9 @@
                                 <button type="object" class="col-12 h-100" name="fsm_add_quantity" style="position: absolute;top: 0;left: 0;opacity: 0;"/>
                                 <div class="pull-right h-100 pt-2 flex-shrink-0" attrs="{'invisible': [('fsm_quantity', '=', 0)]}"
                                     style="z-index:2;">
-                                    <button class="btn btn-primary p-0" type="object" name="fsm_remove_quantity" style="width:40px;height:40px;"><span style="font-size:2rem;">-</span></button>
+                                    <button class="btn btn-primary p-0" type="object" name="fsm_remove_quantity" style="width:30px;height:30px;"><span style="font-size:1.5rem;">-</span></button>
                                     <span  class="align-middle p-0 pr-2 pl-2" style="font-size:2.5rem"><field name="fsm_quantity"/></span>
-                                    <button class="btn btn-primary p-0" type="object" name="fsm_add_quantity" style="width:40px;height:40px;"><span style="font-size:2rem;">+</span></button>
+                                    <button class="btn btn-primary p-0" type="object" name="fsm_add_quantity" style="width:30px;height:30px;"><span style="font-size:1.5rem;">+</span></button>
                                 </div>
                             </div>
                         </div>

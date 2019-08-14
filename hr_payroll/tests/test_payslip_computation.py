@@ -85,8 +85,9 @@ class TestPayslipComputation(TestPayslipContractBase):
 
         # Call _onchange_employee to compute worked_days_line_ids and get the updated unpaid amount
         self.richard_payslip._onchange_employee()
-
-        self.assertAlmostEqual(self.richard_payslip._get_unpaid_amount(), 238.09, delta=0.01, msg="It should be paid 238.09 less")
+        # TBE: In master the Monetary field were not rounded because the currency_id wasn't computed yet.
+        # The test was incorrect using the value 238.09, with 238.10 it is ok
+        self.assertAlmostEqual(self.richard_payslip._get_unpaid_amount(), 238.10, delta=0.01, msg="It should be paid 238.10 less")
 
     def test_worked_days_amount_with_unpaid(self):
         leave = self.env['hr.leave'].create({
@@ -123,7 +124,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         self.assertAlmostEqual(extra_attendance_line.amount, 0.0, places=2, msg="His unpaid time off must be paid 0.")
 
         attendance_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_work_entry.work_entry_type_attendance').code)
-        self.assertAlmostEqual(attendance_line.amount, 4523.80, delta=0.01, msg="His attendance must be paid 4523.80")
+        self.assertAlmostEqual(attendance_line.amount, 4523.81, delta=0.01, msg="His attendance must be paid 4523.81")
 
     def test_worked_days_with_unpaid(self):
         self.contract_cdi.resource_calendar_id = self.env.ref('resource.resource_calendar_std_38h')

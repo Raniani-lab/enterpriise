@@ -29,7 +29,7 @@ class TestHrAppraisal(TransactionCase):
             appraisal_by_manager=True,
             appraisal_manager_ids=[self.env.ref('hr.employee_al').id],
             appraisal_by_colleagues=True,
-            appraisal_colleagues_ids=[self.env.ref('hr.employee_stw')],
+            appraisal_colleagues_ids=[self.env.ref('hr.employee_stw').id],
             appraisal_self=True,
             appraisal_date=date.today() + relativedelta(months=-12, days=5)
         ))
@@ -82,6 +82,7 @@ class TestHrAppraisal(TransactionCase):
             WHERE id=%s;
         """
         self.env.cr.execute(query, (date.today() + relativedelta(months=11), self.hr_employee.id))
+        self.HrEmployee.invalidate_cache(['appraisal_date'])
 
         self.hr_employee.periodic_appraisal_created = True
 

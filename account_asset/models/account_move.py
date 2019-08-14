@@ -154,6 +154,8 @@ class AccountMove(models.Model):
                     'expense': _('Deferred Expense(s)')
                 }
                 record.asset_ids_display_name = '%s %s' % (len(record.asset_ids), asset_type.get(record.asset_ids[0].asset_type))
+            else:
+                record.asset_ids_display_name = ''
             record.draft_asset_ids = bool(record.asset_ids.filtered(lambda x: x.state == "draft"))
 
     @api.model

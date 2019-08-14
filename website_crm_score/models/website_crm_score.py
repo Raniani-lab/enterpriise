@@ -111,7 +111,10 @@ class website_crm_score(models.Model):
                 leads.modified(['score_ids'])
                 leads.recompute()
             elif score.rule_type == 'unlink':
-                self._cr.execute("DELETE FROM crm_lead WHERE %s" % where_clause, where_params)
+                self.env['crm.lead'].flush()
+                self._cr.execute("DELETE FROM crm_lead WHERE %s RETURNING id" % where_clause, where_params)
+                deleted_ids = [row[0] for row in self._cr.fetchall()]
+                deleted_leads = self.env['crm.lead'].browse(deleted_ids)
             elif score.rule_type == 'active':
                 self._cr.execute("UPDATE crm_lead set active = 'f' WHERE %s" % where_clause, where_params)
 

@@ -238,6 +238,8 @@ class RentalOrderLine(models.Model):
 
     @api.depends('pickup_date', 'product_id.preparation_time')
     def _compute_reservation_begin(self):
-        for line in self.filtered(lambda line: line.is_rental):
+        lines = self.filtered(lambda line: line.is_rental)
+        for line in lines:
             padding_timedelta_before = timedelta(hours=line.product_id.preparation_time)
             line.reservation_begin = line.pickup_date - padding_timedelta_before
+        (self - lines).reservation_begin = None

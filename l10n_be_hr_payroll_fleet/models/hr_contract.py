@@ -55,6 +55,8 @@ class HrContract(models.Model):
     @api.depends('car_id', 'new_car', 'new_car_model_id', 'car_id.total_depreciated_cost',
         'car_id.atn', 'new_car_model_id.default_atn', 'new_car_model_id.default_total_depreciated_cost')
     def _compute_car_atn_and_costs(self):
+        self.car_atn = False
+        self.company_car_total_depreciated_cost = False
         for contract in self:
             if not contract.new_car and contract.car_id:
                 contract.car_atn = contract.car_id.atn

@@ -356,6 +356,8 @@ class HelpdeskTicket(models.Model):
                 else:
                     time_difference = fields.Datetime.now() - fields.Datetime.from_string(ticket.create_date)
                 ticket.open_hours = (time_difference.seconds) / 3600 + time_difference.days * 24
+            else:
+                ticket.open_hours = 0
 
     @api.model
     def _search_open_hours(self, operator, value):

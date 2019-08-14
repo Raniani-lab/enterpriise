@@ -147,7 +147,7 @@ class TestAccountReports(common.TransactionCase):
         # For company 1
         self.env.user.company_id = company1
         currency = company1.currency_id
-        self.env.cache.invalidate()
+        self.partner_timmy_thomas.invalidate_cache(['credit'])
         self.assertEqual(self.partner_timmy_thomas.credit, 60.0)
 
         lines = self.env['account.followup.report']._get_lines(options)

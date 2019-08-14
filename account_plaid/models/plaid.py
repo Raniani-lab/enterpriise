@@ -42,11 +42,13 @@ class PlaidProviderAccount(models.Model):
                     resp_json.get('error_code', ''), resp_json.get('error_type', ''), resp_json.get('request_id', ''))
                 if self and self.id:
                     self._update_status('FAILED', resp_json)
+                    self.flush(['status'])
                     self.log_message(message)
                 raise UserError(message)
             elif resp.status_code in (400, 403):
                 if self and self.id:
                     self._update_status('FAILED', {})
+                    self.flush(['status'])
                     self.log_message(resp.text)
                 raise UserError(resp.text)
             resp.raise_for_status()

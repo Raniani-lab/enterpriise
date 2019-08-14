@@ -17,6 +17,8 @@ class ProductProduct(models.Model):
 
             for product in self:
                 product.fsm_quantity = product_map.get(product.id, 0)
+        else:
+            self.fsm_quantity = False
 
     def fsm_add_quantity(self):
         task_id = self.env.context.get('fsm_task_id')

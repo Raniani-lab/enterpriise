@@ -66,8 +66,7 @@ class Task(models.Model):
 
     @api.depends('worksheet_template_id')
     def _compute_worksheet_count(self):
-        if self.worksheet_template_id:
-            self.worksheet_count = self.env[self.worksheet_template_id.model_id.model].search_count([('x_task_id', '=', self.id)])
+        self.worksheet_count = self.worksheet_template_id and self.env[self.worksheet_template_id.model_id.model].search_count([('x_task_id', '=', self.id)]) or 0
 
     def has_to_be_signed(self):
         return self.allow_worksheets and not self.worksheet_signature

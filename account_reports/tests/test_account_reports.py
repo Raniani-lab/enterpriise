@@ -2238,6 +2238,7 @@ class TestAccountReports(SavepointCase):
 
             # Try closing vat entries for february
             options = self._init_options(report, self.february_date, self.february_end_date)
+            move.flush()
             move = self._close_vat_entries(report, options)
             # assert element on move
             self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
@@ -2471,6 +2472,7 @@ class TestAccountReports(SavepointCase):
         new_context = report._set_context(report_opt)
 
         # We check the taxes on invoice have impacted the report properly
+        report.flush()
         inv_report_lines = report.with_context(new_context)._get_lines(report_opt)
         self.assertLinesValues(
             inv_report_lines,

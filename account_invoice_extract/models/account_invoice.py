@@ -62,6 +62,8 @@ class AccountMove(models.Model):
         for record in self:
             if record.extract_status_code != SUCCESS and record.extract_status_code != NOT_READY:
                 record.extract_error_message = ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL])
+            else:
+                record.extract_error_message = ''
 
     def _compute_can_show_send_resend(self, record):
         can_show = True

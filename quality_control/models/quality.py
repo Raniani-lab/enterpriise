@@ -304,7 +304,12 @@ class ProductTemplate(models.Model):
     quality_pass_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
     quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
 
+    @api.depends('product_variant_ids')
     def _compute_quality_check_qty(self):
+        self.quality_fail_qty = 0
+        self.quality_pass_qty = 0
+        self.quality_control_point_qty = 0
+
         for product_tmpl in self:
             quality_checks_by_state = self.env['quality.check'].read_group(
                 [('product_id', 'in', product_tmpl.product_variant_ids.ids), ('company_id', '=', self.env.company.id)],
@@ -341,6 +346,9 @@ class ProductProduct(models.Model):
     quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty', groups='quality.group_quality_user')
 
     def _compute_quality_check_qty(self):
+        self.quality_fail_qty = 0
+        self.quality_pass_qty = 0
+        self.quality_control_point_qty = 0
         for product in self:
             quality_checks_by_state = self.env['quality.check'].read_group(
                 [('product_id', '=', product.id), ('company_id', '=', self.env.company.id)],

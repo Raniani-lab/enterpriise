@@ -101,6 +101,8 @@ class ProjectForecast(models.Model):
                 forecast.resource_time = 100 * forecast.resource_hours
                 if available_work_hours:  # avoid division by zero
                     forecast.resource_time = int(forecast.resource_time / available_work_hours)
+            else:
+                forecast.resource_time = 0.0
 
     @api.constrains('resource_hours')
     def _check_time_positive(self):

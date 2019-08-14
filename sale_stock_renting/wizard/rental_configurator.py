@@ -48,6 +48,7 @@ class RentalWizard(models.TransientModel):
         for rent in self:
             if not rent.product_id or not rent.pickup_date or not rent.return_date:
                 rent.rented_qty_during_period = 0.0
+                rent.rented_lot_ids = False
                 return
             fro, to = rent.product_id._unavailability_period(rent.pickup_date, rent.return_date)
             if rent.tracking != 'serial':
@@ -56,6 +57,7 @@ class RentalWizard(models.TransientModel):
                     ignored_soline_id=rent.rental_order_line_id and rent.rental_order_line_id.id,
                     warehouse_id=rent.warehouse_id.id,
                 )
+                rent.rented_lot_ids = False
             else:
                 rented_qty, rented_lots = rent.product_id._get_unavailable_qty_and_lots(
                     fro, to,

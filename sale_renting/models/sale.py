@@ -52,12 +52,14 @@ class RentalOrder(models.Model):
                     order.next_action_date = min_return_date
                 else:
                     order.rental_status = 'returned'
+                    order.next_action_date = False
                 order.has_pickable_lines = bool(pickeable_lines)
                 order.has_returnable_lines = bool(returnable_lines)
             else:
                 order.has_pickable_lines = False
                 order.has_returnable_lines = False
                 order.rental_status = order.state if order.is_rental_order else False
+                order.next_action_date = False
 
     # PICKUP / RETURN : rental.processing wizard
 
@@ -118,9 +120,10 @@ class RentalOrderLine(models.Model):
 
     @api.depends('pickup_date')
     def _compute_reservation_begin(self):
-        for line in self.filtered(lambda line: line.is_rental):
+        lines = self.filtered(lambda line: line.is_rental)
+        for line in lines:
             line.reservation_begin = line.pickup_date
-
+        (self - lines).reservation_begin = None
 
     @api.depends('state', 'qty_invoiced', 'qty_delivered')
     def _compute_rental_updatable(self):

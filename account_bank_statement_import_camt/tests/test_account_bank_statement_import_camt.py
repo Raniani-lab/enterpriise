@@ -35,7 +35,7 @@ class TestCamtFile(TransactionCase):
         # Check the imported bank statement
         bank_st_record = self.env['account.bank.statement'].search([('name', '=', '0574908765.2015-12-05')], limit=1)
         self.assertEqual(bank_st_record.balance_start, 8998.20, "Start balance not matched.")
-        self.assertEqual(bank_st_record.balance_end_real, 2661.49, "End balance not matched.")
+        self.assertAlmostEqual(bank_st_record.balance_end_real, 2661.49, 2, "End balance not matched.")
 
         # Check an imported bank statement line
         line = bank_st_record.line_ids.filtered(lambda r: r.ref == 'INNDNL2U20150105000217200000708')

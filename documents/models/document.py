@@ -162,11 +162,13 @@ class Document(models.Model):
                 if model:
                     record.res_model_name = model[0][1]
 
+    @api.depends('folder_id')
     def _compute_available_rules(self):
         """
         loads the rules that can be applied to the attachment.
 
         """
+        self.available_rule_ids = False
         folder_ids = self.mapped('folder_id.id')
         rule_domain = [('domain_folder_id', 'parent_of', folder_ids)] if folder_ids else []
         # searching rules with sudo as rules are inherited from parent folders and should be available even

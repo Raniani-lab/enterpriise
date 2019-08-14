@@ -46,8 +46,7 @@ class HrContract(models.Model):
     @api.depends('sign_request_ids.nb_closed')
     def _compute_signatures_count(self):
         for contract in self:
-            if contract.sign_request_ids:
-                contract.signatures_count = max(contract.sign_request_ids.mapped('nb_closed'))
+            contract.signatures_count = max(contract.sign_request_ids.mapped('nb_closed') or [0])
 
     @api.depends('origin_contract_id')
     def _compute_contract_reviews_count(self):

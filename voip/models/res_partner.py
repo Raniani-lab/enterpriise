@@ -52,11 +52,9 @@ class Contact(models.Model):
     @api.depends('phone', 'country_id')
     def _compute_sanitized_phone(self):
         for partner in self:
-            if partner.phone:
-                partner.sanitized_phone = partner._voip_sanitization(partner.phone)
+            partner.sanitized_phone = partner.phone and partner._voip_sanitization(partner.phone) or ''
 
     @api.depends('mobile', 'country_id')
     def _compute_sanitized_mobile(self):
         for partner in self:
-            if partner.mobile:
-                partner.sanitized_mobile = partner._voip_sanitization(partner.mobile)
+            partner.sanitized_mobile = partner.mobile and partner._voip_sanitization(partner.mobile) or ''

@@ -142,7 +142,7 @@ class HelpdeskCommon(SavepointCase):
 
         if records._name == 'helpdesk.ticket':
             field = self.env['helpdesk.sla.status']._fields['deadline']
-            records.mapped('sla_status_ids')._recompute_todo(field)
+            self.env.add_to_compute(field, records.sla_status_ids)
             records.recompute()
 
     @contextmanager

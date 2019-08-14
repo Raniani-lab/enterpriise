@@ -93,6 +93,8 @@ class MrpProductionWorkcenterLine(models.Model):
                  'move_raw_ids.state', 'move_raw_ids.product_id',
                  )
     def _compute_component_data(self):
+        self.component_remaining_qty = False
+        self.component_uom_id = False
         for wo in self.filtered(lambda w: w.state not in ('done', 'cancel')):
             if wo.test_type in ('register_byproducts', 'register_consumed_materials') and wo.quality_state == 'none':
                 move = wo.current_quality_check_id.workorder_line_id.move_id
@@ -394,7 +396,7 @@ class MrpProductionWorkcenterLine(models.Model):
         else:
             available_workorder_lines = self.raw_workorder_line_ids.filtered(lambda wl: not wl.qty_done and wl.move_id == move)
         if available_workorder_lines:
-            workorder_line = available_workorder_lines[0]
+            workorder_line = available_workorder_lines.sorted()[0]
             return {
                 'workorder_line_id': workorder_line.id,
                 'lot_id': workorder_line.lot_id.id,

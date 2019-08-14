@@ -23,8 +23,7 @@ class ProjectWorksheetTemplate(models.Model):
 
     def _compute_worksheet_count(self):
         for record in self:
-            if record.model_id:
-                record.worksheet_count = self.env[record.model_id.model].search_count([])
+            record.worksheet_count = record.model_id and self.env[record.model_id.model].search_count([]) or 0
 
     @api.constrains('report_view_id', 'model_id')
     def _check_report_view_type(self):

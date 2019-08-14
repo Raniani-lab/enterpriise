@@ -16,7 +16,7 @@ class StockMoveLine(models.Model):
     dummy_id = fields.Char(compute='_compute_dummy_id', inverse='_inverse_dummy_id')
 
     def _compute_dummy_id(self):
-        pass
+        self.dummy_id = ''
 
     def _inverse_dummy_id(self):
         pass

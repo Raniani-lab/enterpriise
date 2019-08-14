@@ -15,8 +15,8 @@ class Job(models.Model):
     _order = 'job_open_date'
     _inherits = {'utm.campaign': 'utm_campaign_id'}
 
-    utm_campaign_id = fields.Many2one('utm.campaign', 'Campaign', ondelete='cascade', required=True)
     job_open_date = fields.Date('Job Start Recruitment Date', default=fields.Date.today())
+    utm_campaign_id = fields.Many2one('utm.campaign', 'Campaign', ondelete='cascade', required=True)
     max_points = fields.Integer(compute='_compute_max_points')
     direct_clicks = fields.Integer(compute='_compute_clicks')
     facebook_clicks = fields.Integer(compute='_compute_clicks')

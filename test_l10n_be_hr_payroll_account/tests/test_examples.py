@@ -4,6 +4,7 @@
 import datetime
 from collections import OrderedDict
 
+from odoo.tools.float_utils import float_compare
 from odoo.tests import common, tagged
 
 
@@ -124,7 +125,7 @@ class TestExamples(common.SavepointCase):
         result = ""
         for code, value in line_values.items():
             payslip_value = payslip_id._get_salary_line_total(code)
-            if payslip_id._get_salary_line_total(code) != value:
+            if float_compare(payslip_value, value, precision_rounding=payslip_id.currency_id.rounding):
                 error = True
                 result += "Code: %s, Expected: %s, Reality: %s\n" % (code, value, payslip_value)
         self.assertEqual(error, False, 'The payslip values are incorrect for the following codes:\n' + result)

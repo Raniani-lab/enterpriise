@@ -39,6 +39,9 @@ class generic_tax_report(models.AbstractModel):
         a dictionnary that will help balance the different accounts set per tax group.
         """
         # first, for each tax group, gather the tax entries per tax and account
+        self.env['account.tax'].flush(['name', 'tax_group_id'])
+        self.env['account.move.line'].flush(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'tax_exigible', 'company_id', 'display_type'])
+        self.env['account.move'].flush(['state'])
         sql = """SELECT "account_move_line".tax_line_id as tax_id,
                     tax.tax_group_id as tax_group_id,
                     tax.name as tax_name,

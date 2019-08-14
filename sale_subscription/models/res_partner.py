@@ -19,6 +19,7 @@ class ResPartner(models.Model):
             fields=['partner_id'], groupby=['partner_id']
         )
 
+        self.subscription_count = 0
         for group in subscription_data:
             partner = self.browse(group['partner_id'][0])
             while partner:

@@ -94,6 +94,9 @@ class HrWorkEntry(models.Model):
         if not self:
             return False
 
+        self.flush(['date_start', 'date_stop', 'employee_id'])
+        self.env['hr.leave'].flush(['date_from', 'date_to', 'state', 'employee_id'])
+
         query = """
             SELECT
                 b.id AS work_entry_id,

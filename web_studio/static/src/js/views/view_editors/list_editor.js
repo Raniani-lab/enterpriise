@@ -18,17 +18,30 @@ return ListRenderer.extend(EditorMixin, {
      */
     init: function (parent, state, params) {
         this._super.apply(this, arguments);
-        if (params.show_invisible) {
-            var validChildren = _.filter(this.arch.children, function(child) {
-                // Editing controls is not supported in studio
-                return child.tag !== 'control';
-            });
-            this.invisible_columns = _.difference(validChildren, this.columns);
-            this.columns = validChildren;
-        } else {
-            this.invisible_columns = [];
-        }
+        this.show_invisible = params.show_invisible;
         this.node_id = 1;
+    },
+    /**
+     * Columns visibility is computed in the willStart of the list renderer.
+     * Here, we override the result of this computation to force the visibility
+     * of otherwise invisible columns so that they can be properly edited.
+     *
+     * @override
+     */
+    willStart: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function () {
+            if (self.show_invisible) {
+                var validChildren = _.filter(self.arch.children, function (child) {
+                    // Editing controls is not supported in studio
+                    return child.tag !== 'control';
+                });
+                self.invisible_columns = _.difference(validChildren, self.columns);
+                self.columns = validChildren;
+            } else {
+                self.invisible_columns = [];
+            }
+        });
     },
 
     //--------------------------------------------------------------------------

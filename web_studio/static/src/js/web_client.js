@@ -119,13 +119,17 @@ WebClient.include({
      */
     show_application: function () {
         var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            var qs = $.deparam.querystring();
-            self.studioMode = _.contains(['main', 'app_creator'], qs.studio) ? qs.studio : false;
-            if (self.studioMode) {
-                self._updateContext();
-                return self._openStudio();
-            }
+        var qs = $.deparam.querystring();
+        self.studioMode = _.contains(['main', 'app_creator'], qs.studio) ? qs.studio : false;
+        var def = self.studioMode ? ajax.loadLibs({assetLibs: this._studioAssets}) : Promise.resolve();
+        var _super = this._super;
+        return def.then(function () {
+            return _super.apply(self, arguments).then(function () {
+                if (self.studioMode) {
+                    self._updateContext();
+                    return self._openStudio();
+                }
+            });
         });
     },
     /**

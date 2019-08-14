@@ -15,12 +15,6 @@ class L10nInReportAccount(models.AbstractModel):
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_partner = True
 
-    def _get_templates(self):
-        templates = super(L10nInReportAccount, self)._get_templates()
-        templates['main_template'] = 'l10n_in_reports.l10n_in_template_report'
-        templates['line_template'] = 'l10n_in_reports.l10n_in_template_line_report'
-        return templates
-
     def _get_options(self, previous_options=None):
         options = super(L10nInReportAccount, self)._get_options(previous_options)
         options['gst_return_type'] = 'gstr1'
@@ -175,7 +169,7 @@ class L10nInReportAccount(models.AbstractModel):
                 for fields_value in fields_values:
                     gst_section_lines.append({
                         'id': fields_value.get('id'),
-                        'caret_options': 'account.invoice.out' if fields_value.get('invoice_id') else 'account.move',
+                        'caret_options': 'account.invoice.out',
                         'name': fields_value.get('account_move_id')[1],
                         'class': 'top-vertical-align o_account_reports_level2',
                         'level': 1,
@@ -290,31 +284,31 @@ class L10nInReportAccount(models.AbstractModel):
                 domain += [
                     ('partner_vat', '!=', False),
                     ('l10n_in_export_type', 'in', ['regular', 'deemed', 'sale_from_bonded_wh', 'sez_with_igst', 'sez_without_igst']),
-                    ('invoice_type', 'not in', ('out_refund', 'in_refund'))]
+                    ('move_type', 'not in', ('out_refund', 'in_refund'))]
             elif gst_section == 'b2cl':
                 domain += [
                     ('partner_vat', '=', False),
                     ('total', '>', '250000'),
                     ('supply_type', '=', 'Inter State'),
                     ('journal_id.l10n_in_import_export', '!=', True),
-                     ('invoice_type', 'not in', ('out_refund', 'in_refund'))]
+                    ('move_type', 'not in', ('out_refund', 'in_refund'))]
             elif gst_section == 'b2cs':
                 domain += [
-                    '&', '&', '&', ('partner_vat', '=', False), ('journal_id.l10n_in_import_export', '!=', True), ('invoice_type', 'not in', ('out_refund', 'in_refund')),
+                    '&', '&', '&', ('partner_vat', '=', False), ('journal_id.l10n_in_import_export', '!=', True), ('move_type', 'not in', ('out_refund', 'in_refund')),
                     '|', ('supply_type', '=', 'Intra State'),
                     '&', ('total', '<=', '250000'), ('supply_type', '=', 'Inter State')]
             elif gst_section == 'cdnr':
                 domain += [
                     ('partner_vat', '!=', False),
-                    ('invoice_type', 'in', ['out_refund', 'in_refund'])]
+                    ('move_type', 'in', ['out_refund', 'in_refund'])]
             elif gst_section == 'cdnur':
                 domain += [
                     ('partner_vat', '=', False),
-                    ('invoice_type', 'in', ['out_refund', 'in_refund'])]
+                    ('move_type', 'in', ['out_refund', 'in_refund'])]
             elif gst_section == 'exp':
                 domain += [
                     ('journal_id.l10n_in_import_export', '=', True),
-                    ('invoice_type', 'not in', ('out_refund', 'in_refund'))]
+                    ('move_type', 'not in', ('out_refund', 'in_refund'))]
             elif gst_section == 'at':
                 model = 'l10n_in.advances.payment.report'
                 domain = [

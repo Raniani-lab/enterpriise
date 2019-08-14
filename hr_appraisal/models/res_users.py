@@ -34,7 +34,7 @@ class User(models.Model):
     @api.depends('employee_ids.appraisal_by_collaborators')
     def _compute_appraisal_by_collaborators(self):
         for user in self:
-            user.appraisal_self = user.employee_ids[:1].appraisal_by_collaborators
+            user.appraisal_by_collaborators = user.employee_ids[:1].appraisal_by_collaborators
 
     @api.depends('employee_ids.appraisal_collaborators_ids')
     def _compute_appraisal_collaborators_ids(self):

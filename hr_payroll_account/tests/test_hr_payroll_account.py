@@ -9,11 +9,11 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, tools
 from odoo.modules.module import get_module_resource
-from odoo.tests import common
+from odoo.addons.hr_payroll.tests.common import TestPayslipContractBase
 
 
 @odoo.tests.tagged('post_install', '-at_install')
-class TestHrPayrollAccount(common.TransactionCase):
+class TestHrPayrollAccount(TestPayslipContractBase):
 
     def _load(self, module, *args):
         tools.convert_file(

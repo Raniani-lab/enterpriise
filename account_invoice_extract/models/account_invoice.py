@@ -520,13 +520,19 @@ class AccountMove(models.Model):
         if currency:
             self.currency_id = currency
 
+    @api.model
+    def check_all_status(self):
+        self.search([('extract_state', 'in', ['waiting_extraction', 'extract_not_ready'])]).check_status()
+
     def check_status(self):
-        """contact iap to get the actual status of the ocr request"""
+        """contact iap to get the actual status of the ocr requests"""
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
             'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/get_result'
-        for record in self:
-            if record.extract_state not in ["waiting_extraction", "extract_not_ready"]:
-                continue
+        records_to_update = self.filtered(lambda inv: inv.extract_state in ['waiting_extraction', 'extract_not_ready'])
+        limit = max(0, 20 - len(records_to_update))
+        if limit > 0:
+            records_to_update |= self.search([('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']), ('id', 'not in', records_to_update.ids)], limit=limit)
+        for record in records_to_update:
             params = {
                 'version': CLIENT_OCR_VERSION,
                 'document_id': record.extract_remote_id

@@ -10,10 +10,7 @@ $o-mm-solar-color-epsilon: black;
 $o-mm-solar-color-zeta: #262b36;
 
 
-@mixin o-mm-solar-bg-variant($bg, $text) {
-    background-color: $bg;
-    color: $text;
-
+@mixin o-mm-solar-bg-variant-extra($bg, $text) {
     .o_mail_snippet_general {
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
             color: $text;
@@ -25,16 +22,15 @@ $o-mm-solar-color-zeta: #262b36;
 }
 
 .o_solar_theme {
+    @include bg-variant(".bg-beta", $o-mm-solar-color-gamma);
+    @include text-emphasis-variant(".text-beta", $o-mm-solar-color-gamma);
+    @include bg-variant(".bg-delta", $o-mm-solar-color-zeta);
 
-    // ===== Colors =====
     .bg-beta {
-        @include o-mm-solar-bg-variant($o-mm-solar-color-gamma, $o-mm-solar-color-beta);
-    }
-    .text-beta {
-        color: $o-mm-solar-color-gamma;
+        @include o-mm-solar-bg-variant-extra($o-mm-solar-color-gamma, $o-mm-solar-color-beta);
     }
     .bg-delta {
-        @include o-mm-solar-bg-variant($o-mm-solar-color-zeta, $o-mm-solar-color-beta);
+        @include o-mm-solar-bg-variant-extra($o-mm-solar-color-zeta, $o-mm-solar-color-beta);
 
         .btn.btn-primary {
             color: $o-mm-solar-color-gamma;
@@ -42,7 +38,6 @@ $o-mm-solar-color-zeta: #262b36;
             font-weight: bold;
         }
     }
-
 
     // ===== Layout =====
     &.o_layout {
@@ -78,7 +73,7 @@ $o-mm-solar-color-zeta: #262b36;
         color: $o-mm-solar-color-epsilon;
 
         &.o_mail_block_header_social, &.o_mail_block_header_text_social, &.o_mail_block_header_logo {
-            @include o-mm-solar-bg-variant($o-mm-solar-color-gamma, $o-mm-solar-color-beta);
+            @extend .bg-beta;
             .o_mail_snippet_general {
                 background: rgba(0,0,0,0);
                 background: transparent;
@@ -93,7 +88,7 @@ $o-mm-solar-color-zeta: #262b36;
             }
         }
         &.o_mail_block_footer_social {
-            @include o-mm-solar-bg-variant($o-mm-solar-color-gamma, $o-mm-solar-color-beta);
+            @extend .bg-beta;
         }
     }
 

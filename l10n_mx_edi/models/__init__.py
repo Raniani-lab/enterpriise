@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from . import pac_sw_mixin
 from . import account
 from . import account_bank_statement
 from . import account_payment

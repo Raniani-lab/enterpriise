@@ -48,10 +48,10 @@
                             You can schedule another appointment from here.
                         </p>
                     </div>
-                    <form class="o_website_appoinment_form col-lg-6" t-attf-action="/website/calendar/#{ slug(appointment_type) }/appointment" type="post">
+                    <form class="o_website_appoinment_form w-md-50" t-attf-action="/website/calendar/#{ slug(appointment_type) }/appointment" type="post">
                       <div id="appointment" class="form-group row">
-                        <label for="calendarType" class="col-md-4 col-form-label">Appointment</label>
-                        <div class="col-md-7">
+                        <label for="calendarType" class="col-md-3 col-form-label">Appointment</label>
+                        <div class="col-md-9">
                           <select class="form-control" id="calendarType" t-att-disabled="len(suggested_appointment_types)==1 and '1' or None">
                             <t t-foreach="suggested_appointment_types" t-as="cal">
                                 <option t-att-value="cal.id" t-att-selected="cal.id == appointment_type.id and 'selected'">
@@ -63,12 +63,12 @@
                       </div>
                       <t t-call="website_calendar.employee_select"/>
                       <div class="form-group row">
-                        <div class="offset-md-4 col-md-8">
+                        <div class="offset-md-8 col-md-4">
                             <button type="submit" class="btn btn-primary">View Availabilities <span class="fa fa-arrow-right"/></button>
                         </div>
                       </div>
                     </form>
-                    <div t-raw="appointment_type.message_intro" class="o_calendar_intro col-lg-6 mb32"/>
+                    <div t-raw="appointment_type.message_intro" class="o_calendar_intro mb32"/>
                 </div>
             </div>
         </t>
@@ -92,9 +92,9 @@
 
     <template id="appointment_select_timezone" inherit_id="website_calendar.index" active="False" customize_show="True" name="Website Appointment: Timezone Selection">
         <xpath expr="//div[@id='appointment']" position="after">
-          <div class="form-group">
-            <label for="calendarTimezone" class="col-md-4 col-form-label">Time zone:</label>
-            <div class="col-md-7">
+          <div class="form-group row">
+            <label for="calendarTimezone" class="col-md-3 col-form-label">Time zone:</label>
+            <div class="col-md-9">
               <select class="form-control" name="timezone">
                 <t t-foreach="appointment_type._fields['appointment_tz'].selection(appointment_type)" t-as="timezone">
                     <option t-att-value="timezone[0]" t-esc="timezone[1]" t-att-selected="(timezone[1] == request.session.timezone) and 1 or None"/>

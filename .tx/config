@@ -72,6 +72,11 @@ file_filter = account_plaid/i18n/<lang>.po
 source_file = account_plaid/i18n/account_plaid.pot
 source_lang = en
 
+[odoo-master.account_ponto]
+file_filter = account_ponto/i18n/<lang>.po
+source_file = account_ponto/i18n/account_ponto.pot
+source_lang = en
+
 [odoo-master.account_predictive_bills]
 file_filter = account_predictive_bills/i18n/<lang>.po
 source_file = account_predictive_bills/i18n/account_predictive_bills.pot
@@ -257,6 +262,11 @@ file_filter = hr_appraisal/i18n/<lang>.po
 source_file = hr_appraisal/i18n/hr_appraisal.pot
 source_lang = en
 
+[odoo-master.hr_contract_reports]
+file_filter = hr_contract_reports/i18n/<lang>.po
+source_file = hr_contract_reports/i18n/hr_contract_reports.pot
+source_lang = en
+
 [odoo-master.hr_contract_salary]
 file_filter = hr_contract_salary/i18n/<lang>.po
 source_file = hr_contract_salary/i18n/hr_contract_salary.pot
@@ -282,11 +292,6 @@ file_filter = hr_payroll_account/i18n/<lang>.po
 source_file = hr_payroll_account/i18n/hr_payroll_account.pot
 source_lang = en
 
-[odoo-master.hr_payroll_gantt]
-file_filter = hr_payroll_gantt/i18n/<lang>.po
-source_file = hr_payroll_gantt/i18n/hr_payroll_gantt.pot
-source_lang = en
-
 [odoo-master.im_livechat_enterprise]
 file_filter = im_livechat_enterprise/i18n/<lang>.po
 source_file = im_livechat_enterprise/i18n/im_livechat_enterprise.pot
@@ -302,6 +307,11 @@ file_filter = industry_fsm_report/i18n/<lang>.po
 source_file = industry_fsm_report/i18n/industry_fsm_report.pot
 source_lang = en
 
+[odoo-master.industry_fsm_stock]
+file_filter = industry_fsm_stock/i18n/<lang>.po
+source_file = industry_fsm_stock/i18n/industry_fsm_stock.pot
+source_lang = en
+
 [odoo-master.inter_company_rules]
 file_filter = inter_company_rules/i18n/<lang>.po
 source_file = inter_company_rules/i18n/inter_company_rules.pot
@@ -312,14 +322,14 @@ file_filter = iot/i18n/<lang>.po
 source_file = iot/i18n/iot.pot
 source_lang = en
 
-[odoo-master.mail_enterprise]
-file_filter = mail_enterprise/i18n/<lang>.po
-source_file = mail_enterprise/i18n/mail_enterprise.pot
-source_lang = en
-
 [odoo-master.mail_github]
 file_filter = mail_github/i18n/<lang>.po
 source_file = mail_github/i18n/mail_github.pot
+source_lang = en
+
+[odoo-master.map_view_contact]
+file_filter = map_view_contact/i18n/<lang>.po
+source_file = map_view_contact/i18n/map_view_contact.pot
 source_lang = en
 
 [odoo-master.marketing_automation]
@@ -412,6 +422,11 @@ file_filter = project_timesheet_synchro/i18n/<lang>.po
 source_file = project_timesheet_synchro/i18n/project_timesheet_synchro.pot
 source_lang = en
 
+[odoo-master.purchase_enterprise]
+file_filter = purchase_enterprise/i18n/<lang>.po
+source_file = purchase_enterprise/i18n/purchase_enterprise.pot
+source_lang = en
+
 [odoo-master.quality]
 file_filter = quality/i18n/<lang>.po
 source_file = quality/i18n/quality.pot
@@ -470,6 +485,21 @@ source_lang = en
 [odoo-master.sale_project_timesheet_enterprise]
 file_filter = sale_project_timesheet_enterprise/i18n/<lang>.po
 source_file = sale_project_timesheet_enterprise/i18n/sale_project_timesheet_enterprise.pot
+source_lang = en
+
+[odoo-master.sale_rental]
+file_filter = sale_rental/i18n/<lang>.po
+source_file = sale_rental/i18n/sale_rental.pot
+source_lang = en
+
+[odoo-master.sale_rental_sign]
+file_filter = sale_rental_sign/i18n/<lang>.po
+source_file = sale_rental_sign/i18n/sale_rental_sign.pot
+source_lang = en
+
+[odoo-master.sale_stock_rental]
+file_filter = sale_stock_rental/i18n/<lang>.po
+source_file = sale_stock_rental/i18n/sale_stock_rental.pot
 source_lang = en
 
 [odoo-master.sale_subscription]
@@ -577,6 +607,11 @@ file_filter = web_grid/i18n/<lang>.po
 source_file = web_grid/i18n/web_grid.pot
 source_lang = en
 
+[odoo-master.web_map]
+file_filter = web_map/i18n/<lang>.po
+source_file = web_map/i18n/web_map.pot
+source_lang = en
+
 [odoo-master.web_mobile]
 file_filter = web_mobile/i18n/<lang>.po
 source_file = web_mobile/i18n/web_mobile.pot
@@ -605,11 +640,6 @@ source_lang = en
 [odoo-master.website_enterprise]
 file_filter = website_enterprise/i18n/<lang>.po
 source_file = website_enterprise/i18n/website_enterprise.pot
-source_lang = en
-
-[odoo-master.website_form_editor]
-file_filter = website_form_editor/i18n/<lang>.po
-source_file = website_form_editor/i18n/website_form_editor.pot
 source_lang = en
 
 [odoo-master.website_helpdesk]

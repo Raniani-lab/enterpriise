@@ -17,7 +17,8 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         self.tax_negative.l10n_mx_cfdi_tax_type = 'Tasa'
         isr_tag = self.env['account.account.tag'].search(
             [('name', '=', 'ISR')])
-        self.tax_negative.tag_ids |= isr_tag
+        for rep_line in self.tax_negative.invoice_repartition_line_ids:
+            rep_line.tag_ids |= isr_tag
         self.product.l10n_mx_edi_code_sat_id = self.ref(
             'l10n_mx_edi.prod_code_sat_01010101')
         self.payment_method_manual_out = self.env.ref(

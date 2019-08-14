@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* project_timesheet_forecast_sale
+# 	* project_timesheet_forecast_sale
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2019-01-16 08:13+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-12 11:29+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,20 +22,14 @@ msgid "%s (%s remaining hours)"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:50
 #, python-format
 msgid "After"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
-#, python-format
-msgid "Forecasted"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:163
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:182
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:175
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
 #, python-format
 msgid "Forecasts"
 msgstr ""
@@ -51,9 +45,10 @@ msgid "Project Forecast"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:25
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:28
 #, python-format
-msgid "Remaining \n"
+msgid ""
+"Remaining \n"
 " (Forecasts incl.)"
 msgstr ""
 
@@ -65,7 +60,11 @@ msgstr ""
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_forecast__order_line_id
-msgid "Sales order item to which the task is linked. If an employee timesheets on a this task, and if this employee is not in the 'Employee/Sales Order Item Mapping' of the project, the timesheet entry will be linked to this sales order item."
+msgid ""
+"Sales order item to which the task is linked. If an employee timesheets on a"
+" this task, and if this employee is not in the 'Employee/Sales Order Item "
+"Mapping' of the project, the timesheet entry will be linked to this sales "
+"order item."
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
@@ -74,13 +73,25 @@ msgid "Task"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan
-msgid "Timesheets/Forecasts"
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
+msgid "Timesheets"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:26
-#, python-format
-msgid "What is still to deliver based on sold hours, hours already done and forecasted hours. Equals to sold hours - done hours - forecasted hours."
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
+msgid "Timesheets and Forecasts"
 msgstr ""
 
+#. module: project_timesheet_forecast_sale
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:50
+#, python-format
+msgid "Total"
+msgstr ""
+
+#. module: project_timesheet_forecast_sale
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:29
+#, python-format
+msgid ""
+"What is still to deliver based on sold hours, hours already done and "
+"forecasted hours. Equals to sold hours - done hours - forecasted hours."
+msgstr ""

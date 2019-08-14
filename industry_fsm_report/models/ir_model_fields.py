@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, api
+from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 
 
 class IrModelFields(models.Model):
@@ -21,7 +22,8 @@ class IrModelFields(models.Model):
     def unlink(self):
         model_ids = self.mapped('model_id').ids
         result = super(IrModelFields, self).unlink()
-        self._trigger_project_worksheet_report_regeneration(model_ids)
+        if not self.env.context.get(MODULE_UNINSTALL_FLAG):
+            self._trigger_project_worksheet_report_regeneration(model_ids)
         return result
 
     @api.model

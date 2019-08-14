@@ -15,7 +15,8 @@ class ResCompany(models.Model):
         inverse='_inverse_l10n_mx_edi_locality')
 
     l10n_mx_edi_pac = fields.Selection(
-        selection=[('finkok', 'Finkok'), ('solfact', 'Solucion Factible')],
+        selection=[('finkok', 'Quadrum (formerly finkok)'), ('solfact', 'Solucion Factible'),
+                   ('sw', 'SW sapien-SmarterWEB')],
         string='PAC',
         help='The PAC that will sign/cancel the invoices',
         default='finkok')
@@ -78,7 +79,7 @@ class ResCompany(models.Model):
         for company in self:
             address_data = company.partner_id.sudo().address_get(adr_pref=['contact'])
             if address_data['contact']:
-                partner = company.partner_id.browse(address_data['contact'])
+                partner = company.partner_id.sudo().browse(address_data['contact'])
                 company.l10n_mx_edi_colony = partner.l10n_mx_edi_colony
                 company.l10n_mx_edi_locality = partner.l10n_mx_edi_locality
 

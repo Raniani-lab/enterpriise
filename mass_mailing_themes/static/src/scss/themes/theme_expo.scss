@@ -9,41 +9,28 @@ $o-mm-expo-color-delta: darken($o-mm-expo-color-gamma, 5%);
 $o-mm-expo-color-epsilon: black;
 $o-mm-expo-color-zeta: #f4f0e7;
 
-@mixin o-mm-expo-bg-beta {
-    background-color: $o-mm-expo-color-alpha;
-    color: $o-mm-expo-color-beta;
-
-    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-        color: $o-mm-expo-color-beta;
-    }
-}
-
 .o_expo_theme {
     // ===== Colors =====
-     color: $o-mm-expo-color-epsilon;
+    color: $o-mm-expo-color-epsilon;
 
-    .bg-beta {
-        @include o-mm-expo-bg-beta;
-    }
-
-    .text-beta {
-        color: $o-mm-expo-color-alpha;
-    }
-
-    .bg-delta {
-        background-color: $o-mm-expo-color-gamma;
-        color: $o-mm-expo-color-beta;
-    }
+    @include bg-variant(".bg-beta", $o-mm-expo-color-alpha);
+    @include text-emphasis-variant(".text-beta", $o-mm-expo-color-alpha);
+    @include bg-variant(".bg-delta", $o-mm-expo-color-gamma);
 
     h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         color: $o-mm-expo-color-epsilon;
+    }
+
+    .bg-beta {
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+            color: $o-mm-expo-color-beta;
+        }
     }
 
     .btn.btn-primary {
         color: $o-mm-expo-color-beta;
         background-color: $o-mm-expo-color-gamma;
     }
-
 
     // ===== Layout =====
     &.o_layout {
@@ -76,7 +63,7 @@ $o-mm-expo-color-zeta: #f4f0e7;
     .o_mail_block_event {
         margin: 0;
         .o_mail_snippet_general {
-           @include o-mm-expo-bg-beta;
+           @extend .bg-beta;
        }
     }
     .o_mail_block_image {
@@ -92,12 +79,10 @@ $o-mm-expo-color-zeta: #f4f0e7;
         tfoot, tbody {
             // Exceptionally overwrite this color class for this location.
             // Not a problem since these elements are not editable by the user.
-            .bg-gray-lighter {
-                background-color: $o-mm-expo-color-beta;
-            }
+            @include bg-variant(".bg-gray-lighter", $o-mm-expo-color-beta);
         }
     }
     .o_mail_block_steps .o_mail_snippet_general{
-        @include o-mm-expo-bg-beta;
+        @extend .bg-beta;
     }
 }

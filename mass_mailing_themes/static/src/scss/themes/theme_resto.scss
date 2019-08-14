@@ -15,21 +15,10 @@ $o-mm-resto-color-zeta: #795745;
         background-color: $o-mm-resto-color-alpha;
     }
 
-    // ===== Colors =====
-    .bg-beta {
-        background-color: $o-mm-resto-color-zeta;
-        color: $o-mm-resto-color-beta;
-    }
-    .text-beta {
-        color: $o-mm-resto-color-zeta;
-    }
-    .bg-delta {
-        background-color: $o-mm-resto-color-gamma;
-        color: $o-mm-resto-color-beta;
-    }
-    .text-delta {
-        color: $o-mm-resto-color-epsilon;
-    }
+    @include bg-variant(".bg-beta", $o-mm-resto-color-zeta);
+    @include text-emphasis-variant(".text-beta", $o-mm-resto-color-zeta);
+    @include bg-variant(".bg-delta", $o-mm-resto-color-gamma);
+    @include text-emphasis-variant(".text-delta", $o-mm-resto-color-epsilon);
 
     // ===== Layout =====
     &.o_layout {
@@ -68,9 +57,6 @@ $o-mm-resto-color-zeta: #795745;
         }
 
         .bg-delta {
-            background-color: $o-mm-resto-color-gamma;
-            color: $o-mm-resto-color-beta;
-
             a, .btn.btn-link {
                 color: $o-mm-resto-color-zeta;
             }

@@ -15,7 +15,8 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         super(TestL10nMxEdiCancelTest, self).setUp()
         isr_tag = self.env['account.account.tag'].search(
             [('name', '=', 'ISR')])
-        self.tax_negative.tag_ids |= isr_tag
+        for rep_line in self.tax_negative.invoice_repartition_line_ids:
+            rep_line.tag_ids |= isr_tag
         self.company.partner_id.write({
             'property_account_position_id': self.fiscal_position.id,
         })

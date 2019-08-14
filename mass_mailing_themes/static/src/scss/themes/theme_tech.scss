@@ -10,20 +10,15 @@ $o-mm-tech-color-epsilon: black;
 $o-mm-tech-color-zeta: #a17e92;
 
 .o_tech_theme {
-    // ===== Colors =====
-    .bg-beta {
-        background-color: $o-mm-tech-color-gamma;
+    @include bg-variant(".bg-beta", $o-mm-tech-color-gamma);
+    @include text-emphasis-variant(".text-beta", $o-mm-tech-color-gamma);
+    @include bg-variant(".bg-delta", $o-mm-tech-color-zeta);
 
+    .bg-beta {
         .btn.btn-primary {
             color: $o-mm-tech-color-gamma;
             background-color: $o-mm-tech-color-beta;
         }
-    }
-    .text-beta {
-        color: $o-mm-tech-color-gamma;
-    }
-    .bg-delta {
-        background-color: $o-mm-tech-color-zeta;
     }
 
     // ===== Layout =====

@@ -278,7 +278,8 @@ class AccountFollowupReport(models.AbstractModel):
         records contains either a list of records (come from an server.action) or a field 'ids' which contains a list of one id (come from JS)
         """
         res_ids = records['ids'] if 'ids' in records else records.ids  # records come from either JS or server.action
-        self.env['res.partner'].browse(res_ids).message_post(body=_('Follow-up letter printed'))
+        for partner in self.env['res.partner'].browse(res_ids):
+            partner.message_post(body=_('Follow-up letter printed'))
         return self.env.ref('account_reports.action_report_followup').report_action(res_ids)
 
     def _execute_followup_partner(self, partner):

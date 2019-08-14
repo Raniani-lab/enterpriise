@@ -117,7 +117,6 @@ class ProjectForecastCreateWizard(models.TransientModel):
 
     def _prepare_recurrency_values(self):
         return {
-            'repeat': self.repeat,
             'repeat_interval': self.repeat_interval,
             'repeat_unit': self.repeat_unit,
             'repeat_until': self.repeat_until,

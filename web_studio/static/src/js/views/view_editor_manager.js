@@ -1306,11 +1306,12 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var node = event.data.node;
         var field = this.fields[node.attrs.name];
         var dialog = new NewFieldDialog(this, this.model_name, field, this.fields).open();
+        var modelName = this.x2mModel ? this.x2mModel : this.model_name;
         dialog.on('field_default_values_saved', this, function (values) {
             self._rpc({
                 route: '/web_studio/edit_field',
                 params: {
-                    model_name: self.model_name,
+                    model_name: modelName,
                     field_name: field.name,
                     values: values,
                 }

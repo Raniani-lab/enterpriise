@@ -53,7 +53,7 @@
                             <bankIdCd t-esc="b.bank_bic or b.bank_id.bic"/>
                         </bankAccount>
                         <changeInfo t-if="p.write_uid">
-                            <userID t-esc="p.write_uid.login"/>
+                            <userID t-esc="p.write_uid.l10n_nl_report_xaf_userid"/>
                             <changeDateTime t-esc="change_date_time(p)"/>
                             <changeDescription>Last write</changeDescription>
                         </changeInfo>
@@ -65,7 +65,7 @@
                         <accDesc t-esc="a.name"/>
                         <accTp t-esc="acc_tp(a)"/>
                         <changeInfo t-if="a.write_uid">
-                            <userID t-esc="a.write_uid.login"/>
+                            <userID t-esc="a.write_uid.l10n_nl_report_xaf_userid"/>
                             <changeDateTime t-esc="change_date_time(a)"/>
                             <changeDescription>Last write</changeDescription>
                         </changeInfo>

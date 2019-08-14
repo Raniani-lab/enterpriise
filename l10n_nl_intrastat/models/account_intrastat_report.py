@@ -106,7 +106,7 @@ class IntrastatReport(models.AbstractModel):
             # [...]
             # The actual value of the goods must be given
             value = line.price_subtotal or line.product_id.lst_price
-            transaction_period = str(inv.date_invoice.year) + str(inv.date_invoice.month).rjust(2, '0')
+            transaction_period = str(inv.invoice_date.year) + str(inv.invoice_date.month).rjust(2, '0')
             file_content += ''.join([
                 transaction_period,                                             # Transaction period    length=6
                 '6' if res['type'] == 'Arrival' else '7',                       # Commodity flow        length=1

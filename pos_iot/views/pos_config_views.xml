@@ -5,12 +5,12 @@
             <script type="text/javascript" src="/pos_iot/static/src/js/barcode_reader.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/chrome.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/devices.js"></script>
+            <script type="text/javascript" src="/pos_iot/static/src/js/gui.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/iot.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/models.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/payment.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/popups.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/scale.js"></script>
-            <script type="text/javascript" src="/pos_iot/static/src/js/printers.js"></script>
             <link rel="stylesheet" href="/pos_iot/static/src/css/pos.css"/>
         </xpath>
     </template>

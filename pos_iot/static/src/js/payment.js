@@ -17,6 +17,13 @@ models.load_fields('pos.payment.method', 'use_payment_terminal');
 var _pl_proto = models.Paymentline.prototype;
 models.Paymentline = models.Paymentline.extend({
     /**
+     * @override
+     */
+    initialize: function() {
+        _pl_proto.initialize.apply(this, arguments);
+        this.ticket = '';
+    },
+    /**
      * returns {string} payment status.
      */
     get_payment_status: function() {
@@ -31,6 +38,16 @@ models.Paymentline = models.Paymentline.extend({
     set_payment_status: function(value) {
         this.payment_status = value;
     },
+
+    /**
+     * @override
+     */
+    export_as_JSON: function(){
+        var data = _pl_proto.export_as_JSON.apply(this, arguments);
+        data.card_type = this.card_type;
+        data.transaction_id = this.transaction_id;
+        return data;
+    },
 });
 
 /** PoS Order
@@ -38,6 +55,17 @@ models.Paymentline = models.Paymentline.extend({
  * @include
  */
 models.Order = models.Order.extend({
+    /**
+     * Retrive the paymentline with the specified cid
+     *
+     * @param {String} cid 
+     */
+    get_paymentline: function (cid) {
+        var lines = this.get_paymentlines();
+        return lines.find(function (line) {
+            return line.cid === cid;
+        });
+    },
     /**
      * @override
      * Only account the payment lines with status `done` to check if the order is fully payd.
@@ -53,6 +81,20 @@ models.Order = models.Order.extend({
             }
             return sum;
         }), 0), this.pos.currency.rounding);
+    },
+    /**
+     * Stops a payment on the terminal if one is running
+     */
+    stop_payment: function () {
+        var lines = this.get_paymentlines();
+        var line = lines.find(function (line) {
+            var status = line.get_payment_status();
+            return status && !['done', 'reversed', 'reversing', 'pending', 'retry'].includes(status);
+        });
+        if (line) {
+            line.set_payment_status('waitingCancel');
+            this.pos.gui.screen_instances.payment.send_payment_cancel();
+        }
     },
 });
 
@@ -73,29 +115,48 @@ screens.PaymentScreenWidget.include({
         if (!order) {
             return;
         }
-        var line = order.selected_paymentline;
-        if (line && line.get_payment_status()) {
-            this.$el.find('.send_payment_request').click(function () {
-                self.send_payment_request();
-                line.set_payment_status('waiting');
-                self.render_paymentlines();
-                self.payment_timer = setTimeout ( function () {
-                    line.set_payment_status('timeout');
-                }, 8000);
-            });
-            this.$el.find('.send_payment_cancel').click(function () {
-                self.send_payment_cancel();
-                line.set_payment_status('waitingCancel');
-                clearTimeout(self.payment_timer);
-                self.render_paymentlines();
-            });
-            this.$el.find('.send_force_done').click(function () {
-                line.set_payment_status('done');
-                clearTimeout(self.payment_timer);
-                self.order_changes();
-                self.render_paymentlines();
-            });
-        }
+        this.$el.find('.send_payment_request').click(function () {
+            var line = self.pos.get_order().get_paymentline($(this).data('cid'));
+            self.send_payment_request($(this).data('cid'));
+            line.set_payment_status('waiting');
+            self.render_paymentlines();
+            self.payment_timer = setTimeout ( function () {
+                line.set_payment_status('timeout');
+            }, 8000);
+            self.query_terminal();
+        });
+        this.$el.find('.send_payment_cancel').click(function () {
+            var line = self.pos.get_order().get_paymentline($(this).data('cid'));
+            self.send_payment_cancel();
+            line.set_payment_status('waitingCancel');
+            clearTimeout(self.payment_timer);
+            self.render_paymentlines();
+        });
+        this.$el.find('.send_force_done').click(function () {
+            var line = self.pos.get_order().get_paymentline($(this).data('cid'));
+            line.set_payment_status('done');
+            clearTimeout(self.payment_timer);
+            self.order_changes();
+            self.render_paymentlines();
+        });
+        this.$el.find('.send_payment_reverse').click(function () {
+            var line = self.pos.get_order().get_paymentline($(this).data('cid'));
+            self.send_payment_reverse($(this).data('cid'));
+            line.set_payment_status('reversing');
+            self.render_paymentlines();
+            self.query_terminal();
+        });
+    },
+    /**
+     * Queries the status of the current payment after 3 seconds if no update
+     * has been received. If an update has been received, the time should be
+     * reset.
+     */
+    query_terminal: function () {
+        var self = this;
+        this.payment_update = setTimeout(function () {
+            self.terminal.action({messageType: 'QueryStatus'});
+        }, 3000);
     },
     /**
      * @override
@@ -106,7 +167,7 @@ screens.PaymentScreenWidget.include({
         if (this.pos.get_order().get_paymentlines()
                 .some(function(pl) {
                     if (pl.payment_status) {
-                        return !['done'].includes(pl.payment_status);
+                        return !['done', 'reversed'].includes(pl.payment_status);
                     }
                 })) {
             this.gui.show_popup('error',{
@@ -118,7 +179,6 @@ screens.PaymentScreenWidget.include({
             if (this.pos.payment_methods_by_id[id].use_payment_terminal === true) {
                 if (this.pos.iot_device_proxies['payment']) {
                     this.terminal = this.pos.iot_device_proxies['payment'];
-                    this.terminal.add_listener(this._onValueChange.bind(this));
                     this.pos.get_order().selected_paymentline.set_payment_status('pending');
                 } else {
                     this._showErrorConfig();
@@ -134,10 +194,18 @@ screens.PaymentScreenWidget.include({
      */
     close: function() {
         this._super();
-        if (this.terminal) {
-            this.terminal.remove_listener();
-            clearTimeout(this.payment_timer);
+        clearTimeout(this.payment_timer);
+        this.pos.get_order().stop_payment();
+    },
+    /**
+     *
+     * @override
+     */
+    watch_order_changes: function () {
+        if (this.old_order) {
+            this.old_order.stop_payment();
         }
+        this._super();
     },
     /**
      * @override
@@ -145,7 +213,7 @@ screens.PaymentScreenWidget.include({
      */
     payment_input: function(input) {
         if (!this.terminal || 
-            !['done', 'force_done', 'waitingCard', 'waiting'].includes(this.pos.get_order().selected_paymentline.get_payment_status())) {
+            !['done', 'force_done', 'waitingCard', 'waiting', 'reversing', 'reversed'].includes(this.pos.get_order().selected_paymentline.get_payment_status())) {
             this._super(input);
         }
     },
@@ -157,7 +225,10 @@ screens.PaymentScreenWidget.include({
     click_delete_paymentline: function(cid) {
         var lines = this.pos.get_order().get_paymentlines();
         for ( var i = 0; i < lines.length; i++ ) {
-            if (lines[i].cid === cid && lines[i].get_payment_status()) {
+            if (lines[i].cid === cid && ['waitingCard', 'timeout'].includes(lines[i].get_payment_status())) {
+                // When a user deletes a payment line that wasn't started, we
+                // don't need to send the cancel command. If other payments are
+                // being processed, they won't be canceled.
                 this.send_payment_cancel();
                 clearTimeout(this.payment_timer);
             }
@@ -175,37 +246,75 @@ screens.PaymentScreenWidget.include({
      * @param {Object} data.session_id
      * @param {Object} data.value
      */
-    _onValueChange: function (data) {
-        var line = this.pos.get_order().selected_paymentline;
+    _onValueChange: function (order, data) {
+        clearTimeout(this.payment_update);
+        var line = order.get_paymentline(data.cid);
+        if (data.owner && data.owner !== this.pos.iot_device_proxies.payment._iot_longpolling._session_id) {
+            return;
+        }
         if (line && data.Response === 'Approved') {
             line.set_payment_status('done');
             clearTimeout(this.payment_timer);
-            if (data.Ticket !== false) {
-                line.ticket = data.Ticket.replace(/\n/g, "<br />");
-            }
             this.order_changes();
             this.terminal.remove_listener();
+            if (data.Card) {
+                line.card_type = data.Card;
+                line.transaction_id = data.PaymentTransactionID;
+            }
+            if (line && data.Reversal) {
+                line.reversal = true;
+            }
         } else if (line && data.Stage === 'WaitingForCard' && line.get_payment_status() !== 'waitingCancel') {
             line.set_payment_status('waitingCard');
+        } else if (line && data.Response === 'Reversed') {
+            line.set_payment_status('reversed');
+            line.set_amount(0);
+            this.order_changes();
+            this.terminal.remove_listener();
         } else if (line && data.Error) {
-            this.gui.show_popup('error',{
+            if (line.get_payment_status() !== 'waitingCancel') {
+                this.gui.show_popup('error',{
                     'title': _t('Payment terminal error'),
                     'body':  _t(data.Error),
                 });
-            line.set_payment_status('retry');
+            }
+            clearTimeout(this.payment_timer);
+            this.terminal.remove_listener();
+            if (line.get_payment_status() === 'reversing') {
+                line.set_payment_status('done');
+            } else {
+                line.set_payment_status('retry');
+            }
         } else if (line && data.Stage !== 'WaitingForCard') {
             if (['timeout', 'waitingCard', 'waitingCancel'].includes(line.get_payment_status())) {
+                this.terminal.remove_listener();
                 line.set_payment_status('retry');
             }
         }
+        if (line && data.processing) {
+            this.query_terminal();
+        }
+        if (data.Ticket) {
+            line.ticket += data.Ticket.replace(/\n/g, "<br />");
+        }
+        if (data.TicketMerchant && this.pos.proxy.receipt) {
+            this.pos.proxy.printer.print_receipt("<div class='pos-receipt'><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
+        }
         this.render_paymentlines();
     },
-    send_payment_request: function () {
+    send_payment_request: function (cid) {
+        this.terminal.add_listener(this._onValueChange.bind(this, this.pos.get_order()));
+        this.pos.get_order().get_paymentlines().forEach(function (line) {
+            // Other payment lines cannot be reversed anymore
+            line.reversal = false;
+        });
         var data = {
             messageType: 'Transaction',
-            TransactionID: parseInt(this.pos.get_order().selected_paymentline.order.uid.replace(/-/g, '')),
-            amount: Math.round(this.pos.get_order().selected_paymentline.amount*100),
-            currency: this.pos.currency.name
+            TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),
+            cid: cid,
+            amount: Math.round(this.pos.get_order().get_paymentline(cid).amount*100),
+            currency: this.pos.currency.name,
+            language: this.pos.user.lang.split('_')[0],
         };
         this.send_request(data);
     },
@@ -213,6 +322,17 @@ screens.PaymentScreenWidget.include({
         var data = {
             messageType: 'Cancel',
             reason: 'manual'
+        };
+        this.send_request(data);
+    },
+    send_payment_reverse: function (cid) {
+        this.terminal.add_listener(this._onValueChange.bind(this, this.pos.get_order()));
+        var data = {
+            messageType: 'Reversal',
+            TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),
+            cid: cid,
+            amount: Math.round(this.pos.get_order().get_paymentline(cid).amount*100),
+            currency: this.pos.currency.name,
         };
         this.send_request(data);
     },
@@ -228,8 +348,12 @@ screens.PaymentScreenWidget.include({
                     'title': _t('Connection to terminal failed'),
                     'body':  _t('Please check if the terminal is still connected.'),
                 });
-            if (this.pos.get_order().selected_paymentline) {
-                this.pos.get_order().selected_paymentline.set_payment_status('force_done');
+            var lines = this.pos.get_order().get_paymentlines();
+            for ( var i = 0; i < lines.length; i++ ) {
+                if (lines[i].payment_status === 'waiting') {
+                    lines[i].set_payment_status('force_done');
+                    break;
+                }
             }
             this.render_paymentlines();
         }
@@ -239,8 +363,12 @@ screens.PaymentScreenWidget.include({
                 'title': _t('Connection to IoT Box failed'),
                 'body':  _t('Please check if the IoT Box is still connected.'),
             });
-        if (this.pos.get_order().selected_paymentline) {
-            this.pos.get_order().selected_paymentline.set_payment_status('force_done');
+        var lines = this.pos.get_order().get_paymentlines();
+        for ( var i = 0; i < lines.length; i++ ) {
+            if (lines[i].payment_status === 'waiting') {
+                lines[i].set_payment_status('force_done');
+                break;
+            }
         }
         this.render_paymentlines();
     },
@@ -248,6 +376,54 @@ screens.PaymentScreenWidget.include({
         this.gui.show_popup('error',{
                 'title': _t('Configuration of payment terminal failed'),
                 'body':  _t('You must select a payment terminal in your POS config.'),
+            });
+    },
+    /**
+     * @override
+     */
+    compute_extradue: function (order) {
+        var lines = order.get_paymentlines();
+        var due   = order.get_due();
+        if (due && lines.length && lines[lines.length - 1].payment_status === 'reversed') {
+            // If the last line has status 'reversed' we always need to show the
+            // remaining amount to pay
+            return due;
+        } else {
+            this._super(order);
+        }
+    }
+});
+
+var posmodel_super = models.PosModel.prototype;
+models.PosModel = models.PosModel.extend({
+    /**
+     * Opens the shift on the payment terminal
+     * 
+     * @override
+     */
+    after_load_server_data: function () {
+        var self = this;
+        var res = posmodel_super.after_load_server_data.apply(this, arguments);
+        if (this.usePaymentTerminal()) {
+            res.then(function () {
+                self.iot_device_proxies.payment.action({ 
+                    messageType: 'OpenShift',
+                    language: self.user.lang.split('_')[0],
+                });
+            });
+        }
+        return res;
+    },
+    /**
+     * Checks if a payment terminal should be used (A terminal has been selected
+     * in the config and a payment method needs a terminal)
+     * @returns {boolean}
+     */
+    usePaymentTerminal: function () {
+        return this.config && this.config.use_proxy
+            && this.iot_device_proxies && this.iot_device_proxies.payment
+            && this.payment_methods.some(function (payment_method) {
+                return payment_method.use_payment_terminal;
             });
     },
 });

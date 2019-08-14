@@ -5,6 +5,8 @@ var models = require('point_of_sale.models');
 var DeviceProxy = require('iot.widgets').DeviceProxy;
 var PrinterProxy = require('pos_iot.Printer');
 
+models.load_fields("res.users", "lang");
+
 models.load_models([{
     model: 'iot.device',
     fields: ['iot_ip', 'identifier', 'type'],

@@ -39,7 +39,7 @@ class AccountMoveLine(models.Model):
     l10n_mx_edi_qty_umt = fields.Float(
         'Qty UMT', help='Quantity expressed in the UMT from product. It is '
         'used in the attribute "CantidadAduana" in the CFDI',
-        digits=dp.get_precision('Product Unit of Measure'))
+        digits='Product Unit of Measure')
     l10n_mx_edi_price_unit_umt = fields.Float(
         'Unit Value UMT', help='Unit value expressed in the UMT from product. '
         'It is used in the attribute "ValorUnitarioAduana" in the CFDI')

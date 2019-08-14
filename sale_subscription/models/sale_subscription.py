@@ -1094,6 +1094,7 @@ class SaleSubscriptionAlert(models.Model):
         ('set_stage', 'Set a stage on the subscription'),
         ('set_to_renew', 'Mark as To Renew'),
         ('email', 'Send an email to the customer'),
+        ('sms', 'Send an SMS Text Message to the customer'),
     ], string='Action', required=True, default=None)
     trigger_condition = fields.Selection([
         ('on_create_or_write', 'Modification'),
@@ -1188,8 +1189,8 @@ class SaleSubscriptionAlert(models.Model):
                 alert.set_field_action('to_renew', True)
             elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
                 alert.set_activity_action()
-            elif vals.get('action') == 'email':
-                super(SaleSubscriptionAlert, alert).write({'state': 'email'})
+            elif vals.get('action') in ('email', 'sms'):
+                super(SaleSubscriptionAlert, alert).write({'state': vals.get('action')})
 
     @api.model
     def create(self, vals):

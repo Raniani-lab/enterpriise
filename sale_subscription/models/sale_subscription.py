@@ -93,7 +93,7 @@ class SaleSubscription(models.Model):
     kpi_3months_mrr_delta = fields.Float('KPI 3 months MRR Delta')
     kpi_3months_mrr_percentage = fields.Float('KPI 3 Months MRR Percentage')
     percentage_satisfaction = fields.Integer(
-        compute="_compute_percentage_satisfaction", string="% Happy", store=True, default=-1,
+        compute="_compute_percentage_satisfaction", string="% Happy", store=True, compute_sudo=True, default=-1,
         help="Calculate the ratio between the number of the best ('great') ratings and the total number of ratings")
     health = fields.Selection([
         ('normal', 'Neutral'),

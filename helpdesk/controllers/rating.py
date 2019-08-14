@@ -28,7 +28,7 @@ class WebsiteHelpdesk(http.Controller):
                 ('res_model', '=', 'helpdesk.ticket'), ('res_id', 'in', tickets.ids),
                 ('consumed', '=', True), ('rating', '>=', 1),
             ]
-            ratings = request.env['rating.rating'].search(domain, order="id desc", limit=100)
+            ratings = request.env['rating.rating'].sudo().search(domain, order="id desc", limit=100)
 
             yesterday = (datetime.date.today()-datetime.timedelta(days=-1)).strftime('%Y-%m-%d 23:59:59')
             stats = {}
@@ -37,7 +37,7 @@ class WebsiteHelpdesk(http.Controller):
                 todate = (datetime.date.today()-datetime.timedelta(days=x)).strftime('%Y-%m-%d 00:00:00')
                 domdate = domain + [('create_date', '<=', yesterday), ('create_date', '>=', todate)]
                 stats[x] = {1: 0, 5: 0, 10: 0}
-                rating_stats = request.env['rating.rating'].read_group(domdate, [], ['rating'])
+                rating_stats = request.env['rating.rating'].sudo().read_group(domdate, [], ['rating'])
                 total = sum(st['rating_count'] for st in rating_stats)
                 for rate in rating_stats:
                     any_rating = True

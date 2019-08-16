@@ -828,6 +828,23 @@ class AccountPayment(models.Model):
         '''
         self.with_context(force_ref=True)._l10n_mx_edi_retry()
 
+    def _l10n_mx_edi_sat_synchronously(self, batch_size=10):
+        """Update the SAT status synchronously
+
+        This method Calls :meth:`~.l10n_mx_edi_update_sat_status` by batches,
+        ensuring changes are committed after processing each batch. This is
+        intended to be able to process a lot of records on a safely manner,
+        avoiding a possible sistematic failure withoud any payment updated.
+
+        This is especially useful when running crons.
+
+        :param batch_size: the number of payments to process by batch
+        :type batch_size: int
+        """
+        for idx in range(0, len(self), batch_size):
+            with self.env.cr.savepoint():
+                self[idx:idx+batch_size].l10n_mx_edi_update_sat_status()
+
     def _set_cfdi_origin(self, uuid):
         """Try to write the origin in of the CFDI, it is important in order
         to have a centralized way to manage this elements due to the fact

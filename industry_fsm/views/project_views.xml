@@ -645,15 +645,96 @@
         <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
     </record>
 
-
-    <!-- Panning actions -->
-    <record id="project_task_action_fsm_planning" model="ir.actions.act_window">
-        <field name="name">Planning</field>
+    <!-- Planning : by users -->
+    <record id="project_task_action_fsm_planning_groupby_user" model="ir.actions.act_window">
+        <field name="name">Planning by User</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">gantt,kanban,tree,calendar,pivot,graph,activity</field>
-        <field name="context" eval="{'search_default_group_by_user': 1}"/>
+        <field name="view_mode">gantt,kanban,tree,calendar,form,activity</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="context" eval="{'search_default_group_by_user_id': 1, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
     </record>
 
+    <record id="project_task_action_planning_groupby_user_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_enterprise.project_task_view_gantt"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
+    </record>
+
+    <record id="project_task_action_to_invoice_fsm_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
+    </record>
+
+    <record id="project_task_action_to_invoice_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_user_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="35"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
+    </record>
+
+    <!-- Planning : by project -->
+    <record id="project_task_action_fsm_planning_groupby_project" model="ir.actions.act_window">
+        <field name="name">Planning by Project</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="context" eval="{'search_default_group_by_project': 1, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_user_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_enterprise.project_task_view_gantt"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
+    </record>
+
+    <record id="project_task_action_to_invoice_fsm_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
+    </record>
+
+    <record id="project_task_action_to_invoice_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_user_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="35"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
+    </record>
 
     <!-- To invoice batch action -->
     <record id="project_task_server_action_batch_invoice_fsm" model="ir.actions.server">
@@ -724,12 +805,24 @@
             parent="industry_fsm.fsm_menu_all_tasks_root"
             groups="sales_team.group_sale_salesman"/>
 
-
-    <menuitem id="fsm_planning_menu"
+    <menuitem id="fsm_menu_planning"
         name="Planning"
-        sequence="15"
-        parent="industry_fsm.menu_fsm_root"
-        action="project_task_action_fsm_planning"
+        sequence="20"
+        parent="fsm_menu_root"
         groups="industry_fsm.group_fsm_manager"/>
+
+        <menuitem id="project_task_menu_planning_by_user_fsm"
+            name="By User"
+            sequence="10"
+            action="industry_fsm.project_task_action_fsm_planning_groupby_user"
+            parent="fsm_menu_planning"
+            groups="industry_fsm.group_fsm_manager"/>
+
+        <menuitem id="project_task_menu_planning_by_project_fsm"
+            name="By Project"
+            sequence="15"
+            action="industry_fsm.project_task_action_fsm_planning_groupby_project"
+            parent="fsm_menu_planning"
+            groups="industry_fsm.group_fsm_manager"/>
 
 </odoo>

@@ -297,7 +297,7 @@ screens.PaymentScreenWidget.include({
         if (data.Ticket) {
             line.ticket += data.Ticket.replace(/\n/g, "<br />");
         }
-        if (data.TicketMerchant && this.pos.proxy.receipt) {
+        if (data.TicketMerchant && this.pos.proxy.printer) {
             this.pos.proxy.printer.print_receipt("<div class='pos-receipt'><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
         }
         this.render_paymentlines();

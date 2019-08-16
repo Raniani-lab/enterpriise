@@ -189,11 +189,11 @@
                     <button class="btn-secondary" name="action_fsm_validate" type="object" string="Validate"
                         attrs="{'invisible': ['|', ('timesheet_ids', '!=', []), '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('timesheet_ids', '!=', []), ('material_line_product_count', '!=', 0)]}"/>
 
-                    <field name="invoice_count" invisible="1"/>
+                    <field name="fsm_to_invoice" invisible="1"/>
                     <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', ('is_fsm', '=', False), '|', ('fsm_state', '=', 'draft'), '|', ('invoice_count', '!=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="sales_team.group_sale_salesman"/>
+                        attrs="{'invisible': ['|', ('is_fsm', '=', False), '|', ('fsm_state', '=', 'draft'), '|', ('fsm_to_invoice', '=', True), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="sales_team.group_sale_salesman"/>
                     <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', ('is_fsm', '=', False), '|', ('fsm_state', '=', 'draft'), '&amp;', ('invoice_count', '=', 0), '|', ('material_line_product_count', '!=', 0), ('total_hours_spent', '!=', 0)]}" groups="sales_team.group_sale_salesman"/>
+                        attrs="{'invisible': ['|', ('is_fsm', '=', False), '|', ('fsm_state', '=', 'draft'), '&amp;', ('fsm_to_invoice', '=', False), '|', ('material_line_product_count', '!=', 0), ('total_hours_spent', '!=', 0)]}" groups="sales_team.group_sale_salesman"/>
 
                     <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 mt-2 font-weight-bold" attrs="{'invisible': [('timesheet_timer_start', '=', False)]}"/>
                 </header>
@@ -306,7 +306,15 @@
                 <field name="user_id"/>
                 <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
                 <separator />
+                <filter string="To schedule" name="schedule" domain="[
+                    '|',
+                    ('user_id', '=', False),
+                    '&amp;',
+                        ('planned_date_begin', '=', False),
+                        ('planned_date_end', '=', False)
+                ]" groups="industry_fsm.group_fsm_manager"/>
                 <filter string="To Do" name="todo" domain="[('fsm_state', '=', 'draft'), ('user_id', '!=', False)]"/>
+                <filter string="To Invoice" name="to_invoice" domain="[('fsm_to_invoice', '=', True), ('fsm_state', 'in', ['validated', 'sold']), ('is_fsm', '=', True )]" groups="sales_team.group_sale_salesman" />
                 <separator />
                 <filter name="planned_today" string="Planned for Today" domain="[
                     ('planned_date_begin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
@@ -497,6 +505,147 @@
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 
+    <!-- All Tasks: main action -->
+    <record id="project_task_action_all_fsm" model="ir.actions.act_window">
+        <field name="name">To Do</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,gantt,calendar,map,pivot,graph,tree,form,activity</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="context">{
+            'fsm_mode': True,
+            'search_default_groupby_stage': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new task
+            </p><p>
+                There are currently no tasks, click on create to create one
+            </p>
+        </field>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="act_window_id" ref="project_task_action_all_fsm"/>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_all_fsm"/>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="35"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_task_action_all_fsm"/>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="40"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form"/>
+        <field name="act_window_id" ref="project_task_action_all_fsm"/>
+    </record>
+
+    <!-- All Tasks: to schedule action -->
+    <record id="project_task_action_to_schedule_fsm" model="ir.actions.act_window">
+        <field name="name">To Schedule</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">tree,kanban,gantt,calendar,map,pivot,graph,form,activity</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="context">{
+            'fsm_mode': True,
+            'search_default_schedule': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No task to schedule
+            </p><p>All tasks are scheduled</p>
+        </field>
+    </record>
+
+    <record id="project_task_action_to_schedule_fsm_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
+    </record>
+
+    <record id="project_task_action_to_schedule_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
+    </record>
+
+    <record id="project_task_action_to_schedule_fsm_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="45"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form"/>
+        <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
+    </record>
+
+    <!-- All Tasks: to invoice action -->
+    <record id="project_task_action_to_invoice_fsm" model="ir.actions.act_window">
+        <field name="name">To Invoice</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">tree,kanban,gantt,calendar,map,pivot,graph,form,activity</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="context">{
+            'fsm_mode': True,
+            'search_default_to_invoice': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No task to Invoice
+            </p><p>All tasks were invoiced</p>
+        </field>
+    </record>
+
+    <record id="project_task_action_to_invoice_fsm_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
+    </record>
+
+    <record id="project_task_action_all_fsm_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
+    </record>
+
+    <record id="project_task_action_to_invoice_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
+    </record>
+
+    <record id="project_task_action_to_invoice_fsm_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="45"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_task_view_form"/>
+        <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
+    </record>
+
+
     <!-- Panning actions -->
     <record id="project_task_action_fsm_planning" model="ir.actions.act_window">
         <field name="name">Planning</field>
@@ -505,6 +654,18 @@
         <field name="context" eval="{'search_default_group_by_user': 1}"/>
     </record>
 
+
+    <!-- To invoice batch action -->
+    <record id="project_task_server_action_batch_invoice_fsm" model="ir.actions.server">
+        <field name="name">Create invoice</field>
+        <field name="model_id" ref="industry_fsm.model_project_task"/>
+        <field name="binding_model_id" ref="project.model_project_task"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_fsm_create_invoice()
+        </field>
+    </record>
 
     <!--
         FSM Menus
@@ -519,22 +680,49 @@
     <menuitem id="fsm_tasks_menu"
         name="My Tasks"
         sequence="10"
-        parent="industry_fsm.menu_fsm_root"
+        parent="fsm_menu_root"
         groups="industry_fsm.group_fsm_user"/>
 
         <menuitem id="fsm_menu_tasks_kanban"
             name="Tasks"
             action="project_task_action_fsm"
             sequence="10"
-            parent="industry_fsm.fsm_menu_tasks"
+            parent="fsm_tasks_menu"
             groups="industry_fsm.group_fsm_user"/>
 
-         <menuitem id="fsm_menu_tasks_map"
+        <menuitem id="fsm_menu_tasks_map"
             name="Map"
             action="project_task_action_fsm_map"
             sequence="20"
-            parent="fsm_menu_tasks"
+            parent="fsm_tasks_menu"
             groups="industry_fsm.group_fsm_user"/>
+
+    <menuitem id="fsm_menu_all_tasks_root"
+        name="All Tasks"
+        sequence="15"
+        parent="fsm_menu_root"
+        groups="industry_fsm.group_fsm_manager" />
+
+        <menuitem id="fsm_menu_all_tasks_todo"
+            name="All Tasks"
+            action="project_task_action_all_fsm"
+            sequence="10"
+            parent="industry_fsm.fsm_menu_all_tasks_root"
+            groups="industry_fsm.group_fsm_manager" />
+
+        <menuitem id="fsm_menu_all_tasks_schedule"
+            name="To Schedule"
+            action="project_task_action_to_schedule_fsm"
+            sequence="20"
+            parent="industry_fsm.fsm_menu_all_tasks_root"
+            groups="industry_fsm.group_fsm_manager" />
+
+        <menuitem id="fsm_menu_all_tasks_invoice"
+            name="To Invoice"
+            action="project_task_action_to_invoice_fsm"
+            sequence="30"
+            parent="industry_fsm.fsm_menu_all_tasks_root"
+            groups="sales_team.group_sale_salesman"/>
 
 
     <menuitem id="fsm_planning_menu"

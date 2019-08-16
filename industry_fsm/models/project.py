@@ -79,6 +79,7 @@ class Task(models.Model):
     planned_date_end = fields.Datetime(default=_default_planned_date_end)
     user_id = fields.Many2one(group_expand='_read_group_user_ids')
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
+    fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice')
 
     @api.model
     def _search_is_fsm(self, operator, value):
@@ -121,6 +122,22 @@ class Task(models.Model):
             material_sale_lines = task.sale_order_id.order_line.filtered(lambda sol: sol.product_id != task.project_id.timesheet_product_id)
             task.material_line_total_price = sum(material_sale_lines.mapped('price_subtotal'))
             task.material_line_product_count = len(material_sale_lines.mapped('product_id'))
+
+    def _compute_fsm_to_invoice(self):
+        for task in self:
+            task.fsm_to_invoice = bool(task.sale_order_id.invoice_status == 'to invoice')
+
+    @api.model
+    def _search_fsm_to_invoice(self, operator, value):
+        query = """
+            SELECT so.id
+            FROM sale_order so
+            WHERE so.invoice_status = 'to invoice'
+        """
+        operator_new = 'not inselect'
+        if(bool(operator == '=') ^ bool(value)):
+            operator_new = 'inselect'
+        return [('sale_order_id', operator_new, (query, ()))]
 
     # ---------------------------------------------------------
     # Actions
@@ -256,8 +273,7 @@ class Task(models.Model):
         context = literal_eval(action.get('context', "{}"))
         context.update({
             'active_model': 'sale.order',
-            'active_id': self.sale_order_id.id,
-            'active_ids': self.sale_order_id.ids,
+            'active_ids': self.mapped('sale_order_id').ids,
         })
         action['context'] = context
         return action

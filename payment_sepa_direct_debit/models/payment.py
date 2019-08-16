@@ -222,8 +222,8 @@ class PaymentTxSepaDirectDebit(models.Model):
         if mandate.partner_id != self.partner_id:
             raise ValidationError(_('Mandate owner and customer do not match'))
 
-        if not mandate.verified:
-            raise ValidationError(_('Mandate is not verified'))
+        if not mandate.verified or not mandate.state == 'active' or (mandate.end_date and mandate.end_date > fields.Datetime.now()):
+            raise ValidationError(_('Invalid mandate'))
         # the transaction should be pending as long as the account moves aren't reconciled.
         self._set_transaction_pending()
         self._notify_debit(mandate)

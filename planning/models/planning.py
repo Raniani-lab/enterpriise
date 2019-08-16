@@ -48,6 +48,7 @@ class Planning(models.Model):
     # UI fields and warnings
     allow_self_unassign = fields.Boolean('Let employee unassign themselves', related='company_id.planning_allow_self_unassign')
     is_assigned_to_me = fields.Boolean('Is this shift assigned to the current user', compute='_compute_is_assigned_to_me')
+    overlap_slot_count = fields.Integer('Overlapping slots', compute='_compute_overlap_slot_count')
 
     # forecast allocation
     allocated_hours = fields.Float("Allocated hours", default=0)
@@ -78,6 +79,37 @@ class Planning(models.Model):
                     planning.allocated_percentage = 0  # allow to create a forecast for a day you are not supposed to work
             else:
                 planning.allocated_percentage = 0
+
+    @api.depends('start_datetime', 'end_datetime', 'employee_id')
+    def _compute_overlap_slot_count(self):
+        if self.ids:
+            query = """
+                SELECT
+                    S1.id, COUNT(S2.id)
+                FROM
+                    (
+                        SELECT
+                            S.id as id,
+                            S.employee_id as employee_id,
+                            S.start_datetime as start_datetime,
+                            S.end_datetime as end_datetime
+                        FROM planning_slot S
+                        WHERE employee_id IS NOT NULL
+                    ) S1
+                INNER JOIN planning_slot S2
+                    ON S1.id != S2.id
+                        AND S1.employee_id = S2.employee_id
+                        AND (S1.start_datetime::TIMESTAMP, S1.end_datetime::TIMESTAMP)
+                            OVERLAPS (S2.start_datetime::TIMESTAMP, S2.end_datetime::TIMESTAMP)
+                GROUP BY S1.id
+            """
+            self.env.cr.execute(query, (tuple(self.ids),))
+            raw_data = self.env.cr.dictfetchall()
+            overlap_mapping = dict(map(lambda d: d.values(), raw_data))
+            for slot in self:
+                slot.overlap_slot_count = overlap_mapping.get(slot.id, 0)
+        else:
+            self.overlap_slot_count = 0
 
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
@@ -159,6 +191,16 @@ class Planning(models.Model):
     # ----------------------------------------------------
     # Actions
     # ----------------------------------------------------
+
+    def action_see_overlaping_slots(self):
+        domain_map = self._get_overlap_domain()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'planning.slot',
+            'name': _('Shifts in conflict'),
+            'view_mode': 'gantt,list,form',
+            'domain': domain_map[self.id],
+        }
 
     def action_self_assign(self):
         """ Allow planning user to self assign open shift. """
@@ -320,6 +362,25 @@ class Planning(models.Model):
             'role_id',
         ]
 
+    def _get_overlap_domain(self):
+        """ get overlapping domain for current shifts
+            :returns dict : map with slot id as key and domain as value
+        """
+        domain_mapping = {}
+        for slot in self:
+            domain_mapping[slot.id] = [
+                '&',
+                    '&',
+                        ('employee_id', '!=', False),
+                        ('employee_id', '=', slot.employee_id.id),
+                    '&',
+                        ('start_datetime', '<', slot.end_datetime),
+                        ('end_datetime', '>', slot.start_datetime)
+            ]
+            current_id = slot.id
+            if current_id:
+                domain_mapping[slot.id] = expression.AND([domain_mapping[slot.id], [('id', '!=', current_id)]])
+        return domain_mapping
 
 class PlanningRole(models.Model):
     _name = 'planning.role'

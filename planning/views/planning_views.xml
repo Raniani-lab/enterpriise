@@ -25,6 +25,14 @@
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I take it" attrs="{'invisible': [('employee_id', '!=', False)]}" groups="!planning.group_planning_manager"/>
                     <button name="action_self_unassign" class="btn btn-secondary" type="object" string="I am unavailable" attrs="{'invisible': ['|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False)]}" groups="!planning.group_planning_manager"/>
                 </header>
+
+                <div role="alert" class="alert-warning p-3 text-center" attrs="{'invisible': [('overlap_slot_count', '=', 0)]}">
+                    <button name="action_see_overlaping_slots" type="object" class="btn-link">
+                        <field name="overlap_slot_count"/> other shift(s)
+                    </button>
+                    <span class="align-middle">for this employee at the same time.</span>
+                </div>
+
                 <sheet string="Shift">
                     <field name="is_assigned_to_me" invisible="1"/>
                     <field name="allow_self_unassign" invisible="1"/>
@@ -144,7 +152,6 @@
                 <field name="recurrency_id" />
                 <field name="is_published"/>
                 <field name="publication_warning"/>
-                <field name="recurrency_id" />
                 <field name="employee_id"/>
                 <field name="overlap_slot_count"/>
                 <templates>

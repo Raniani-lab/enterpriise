@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class PaymentToken(models.Model):
@@ -21,3 +21,13 @@ class PaymentToken(models.Model):
                     'url': '/my/subscription/' + str(sub.id) + '/' + str(sub.uuid)})
 
         return res
+
+
+class PaymentTransaction(models.Model):
+    _inherit = 'payment.transaction'
+
+    renewal_allowed = fields.Boolean(compute="_compute_renewal_allowed", store=False, help="Technical field used to control the renewal flow based on the transaction's state.")
+
+    def _compute_renewal_allowed(self):
+        for tx in self:
+            tx.renewal_allowed = self.state in ['done', 'authorized']

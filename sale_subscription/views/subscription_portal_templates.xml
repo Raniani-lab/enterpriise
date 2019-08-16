@@ -175,6 +175,7 @@
                                         <h5 class="mb-1">Pay with</h5>
                                         <hr class="my-0"/>
                                         <t t-call="payment.payment_tokens_list">
+                                            <t t-set="partner_id" t-value="account.partner_id.id"/>
                                             <t t-set="s2s_acquirers" t-value="acquirers"/>
                                             <t t-set="show_submit" t-value="True"/>
                                             <t t-set="form_action" t-value="'/my/subscription/payment/' + str(account.id) + '/' + str(account.uuid)"/>

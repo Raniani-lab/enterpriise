@@ -233,7 +233,6 @@ class ProjectForecast(models.Model):
             return func(new_row)
 
         cell_dt = timedelta(hours=1) if scale == 'day' else timedelta(days=1)
-
         # for a single row, inject unavailability data
         def inject_unvailabilty(row):
             new_row = dict(row)

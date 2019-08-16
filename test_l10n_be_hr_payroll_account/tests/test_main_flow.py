@@ -68,6 +68,7 @@ class TestHR(common.TransactionCase):
         allocation_form.number_of_days = number_of_days
         allocation_form.employee_id = employee
         allocation_form.holiday_status_id = leave_type
+        allocation_form.name = 'New Request'
         return allocation_form.save()
 
     def create_leave(self, user, leave_type, start, end, employee=None):

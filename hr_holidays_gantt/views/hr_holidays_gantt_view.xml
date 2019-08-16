@@ -10,10 +10,13 @@
                        date_start="date_from"
                        date_stop="date_to"
                        string="Days"
+                       color="holiday_status_id"
                        default_group_by='employee_id'
                        decoration-warning="state == 'refuse'"
                        decoration-info="state in ['confirm', 'validate1']"
+                       precision="{'week': 'day:full', 'month': 'day:full'}"
                        plan="0"
+                       display_unavailability="1"
                 >
                     <field name="state" invisible="1"/>
                 </gantt>

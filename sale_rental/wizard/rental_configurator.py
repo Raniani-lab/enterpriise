@@ -9,10 +9,10 @@ class RentalWizard(models.TransientModel):
     _name = 'rental.wizard'
     _description = 'Configure the rental of a product'
 
-    rental_order_line_id = fields.Many2one('sale.order.line', on_delete='cascade')  # When wizard used to edit a Rental SO line
+    rental_order_line_id = fields.Many2one('sale.order.line', ondelete='cascade')  # When wizard used to edit a Rental SO line
 
     product_id = fields.Many2one(
-        'product.product', "Product", required=True, on_delete='cascade',
+        'product.product', "Product", required=True, ondelete='cascade',
         domain=[('rent_ok', '=', True)], help="Product to rent (has to be rentable)")
 
     pickup_date = fields.Datetime(

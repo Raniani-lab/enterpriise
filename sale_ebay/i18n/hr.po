@@ -1,25 +1,25 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_ebay
+# 	* sale_ebay
 # 
 # Translators:
 # Filip Cuk <filipcuk2@gmail.com>, 2017
-# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2017
 # Vladimir Olujić <olujic.vladimir@storm.hr>, 2017
 # Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2017
 # Marko Carević <marko.carevic@live.com>, 2017
 # Tina Milas, 2017
-# Martin Trigaux, 2017
 # Karolina Tonković <karolina.tonkovic@storm.hr>, 2019
 # Bole <bole@dajmi5.com>, 2019
+# Martin Trigaux, 2019
+# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Bole <bole@dajmi5.com>, 2019\n"
+"Last-Translator: Đurđica Žarković <durdica.zarkovic@storm.hr>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,17 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: sale_ebay
-#: model:mail.template,body_html:sale_ebay.ebay_desciption_default
-msgid ""
-"\n"
-"                  \n"
-"          ${object.ebay_description | safe}\n"
-"        \n"
-"      "
-msgstr ""
-
-#. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:395
+#: code:addons/sale_ebay/models/product.py:410
 #, python-format
 msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
@@ -48,7 +38,7 @@ msgstr ""
 "trajanje popisa treba postaviti na dobro do otkaza"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:398
+#: code:addons/sale_ebay/models/product.py:413
 #, python-format
 msgid ""
 " You need to have at least 2 variations selected for a multi-variations listing.\n"
@@ -84,7 +74,7 @@ msgstr "7 dana"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "<span class=\"o_form_label\">Sales Channel</span>"
+msgid "<span class=\"o_form_label\">Sales Team</span>"
 msgstr ""
 
 #. module: sale_ebay
@@ -108,7 +98,7 @@ msgid "<span class=\"o_form_label\">eBay Options</span>"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:271
+#: code:addons/sale_ebay/models/product.py:286
 #, python-format
 msgid ""
 "All the quantities must be greater than 0 or you need to enable the Out Of "
@@ -181,7 +171,7 @@ msgid "Config Settings"
 msgstr "Postavke"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:364
+#: code:addons/sale_ebay/models/product.py:379
 #, python-format
 msgid "Configure The eBay Integrator Now"
 msgstr "Konfigurirajte eBay integrator sada"
@@ -263,6 +253,22 @@ msgid "Duration"
 msgstr "Trajanje"
 
 #. module: sale_ebay
+#: code:addons/sale_ebay/models/sale_order.py:301
+#, python-format
+msgid ""
+"Ebay Synchronisation could not confirm because of the following error:\n"
+"%s"
+msgstr ""
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/sale_order.py:26
+#, python-format
+msgid ""
+"Ebay could not synchronize order:\n"
+"%s"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
 msgid "Ebay: End Product Templates Listings on eBay"
 msgstr ""
@@ -288,6 +294,18 @@ msgid "Ebay: Unlink eBay Product Templates Listings"
 msgstr ""
 
 #. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_sync_ir_actions_server
+#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_orders_sync
+#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_orders_sync
+msgid "Ebay: get new orders"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_recovery
+msgid "Ebay: orders recovery"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_categories
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_categories
@@ -310,7 +328,7 @@ msgid "End Item's Listing"
 msgstr "Kraj popisa artikla"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:257
+#: code:addons/sale_ebay/models/product.py:272
 #, python-format
 msgid ""
 "Error Encountered.\n"
@@ -320,7 +338,7 @@ msgstr ""
 "Ne postoji varijanta na eBayu."
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:401
+#: code:addons/sale_ebay/models/product.py:416
 #, python-format
 msgid ""
 "Error Encountered.\n"
@@ -369,7 +387,7 @@ msgid "Import eBay config data and sync transactions"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:393
+#: code:addons/sale_ebay/models/product.py:408
 #, python-format
 msgid ""
 "Impossible to revise a listing into a multi-variations listing.\n"
@@ -488,13 +506,13 @@ msgid "Official eBay Category"
 msgstr "Službena eBay kategorija"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:363
+#: code:addons/sale_ebay/models/product.py:378
 #, python-format
 msgid "One parameter is missing."
 msgstr "Nedostaje jedan parametar."
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:389
+#: code:addons/sale_ebay/models/product.py:404
 #, python-format
 msgid "Or the condition is not compatible with the category."
 msgstr "Ili uvjet nije u skladu sa kategorijom."
@@ -540,6 +558,12 @@ msgstr "Kategorije proizvoda"
 #: model:ir.model,name:sale_ebay.model_product_template
 msgid "Product Template"
 msgstr "Predložak proizvoda"
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/sale_order.py:210
+#, python-format
+msgid "Product created from eBay transaction %s"
+msgstr ""
 
 #. module: sale_ebay
 #: selection:res.config.settings,ebay_domain:0
@@ -600,13 +624,18 @@ msgid "Revise Item"
 msgstr "Revizija artikla"
 
 #. module: sale_ebay
-#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Sales Channel"
-msgstr ""
+#: model:ir.model,name:sale_ebay.model_sale_order
+msgid "Sales Order"
+msgstr "Prodajni nalog"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Sales channel to manage eBay sales"
+msgid "Sales Team"
+msgstr "Prodajni tim"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Sales Team to manage eBay sales"
 msgstr ""
 
 #. module: sale_ebay
@@ -686,14 +715,16 @@ msgid "Sync now"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:746
+#: code:addons/sale_ebay/models/product.py:927
+#: code:addons/sale_ebay/models/sale_order.py:298
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
 msgstr "Kupac je odabrao sljedeći način isporuke:\n"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:742
-#: code:addons/sale_ebay/models/product.py:743
+#: code:addons/sale_ebay/models/product.py:923
+#: code:addons/sale_ebay/models/product.py:924
+#: code:addons/sale_ebay/models/sale_order.py:276
 #, python-format
 msgid "The Buyer Posted :\n"
 msgstr "Kupac objavljuje:\n"
@@ -723,6 +754,16 @@ msgid ""
 msgstr ""
 "Korištenje varijanti nije dozvoljeno na svakoj eBay stranici. eBay može "
 "zahtjevati naknadu za ovu značajku"
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/product.py:665
+#, python-format
+msgid ""
+"There is no last synchronization date in your System Parameters. Create a "
+"System Parameter record with the key \"ebay_last_sync\" and the value set to"
+" the date of the oldest order you wish to synchronize in the format \"YYYY-"
+"MM-DD\"."
+msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
@@ -870,8 +911,8 @@ msgstr ""
 "'%s'"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:495
-#: code:addons/sale_ebay/models/product.py:568
+#: code:addons/sale_ebay/models/product.py:527
+#: code:addons/sale_ebay/models/product.py:623
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the products. \n"
@@ -881,7 +922,7 @@ msgstr ""
 "'%s'"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:391
+#: code:addons/sale_ebay/models/product.py:406
 #, python-format
 msgid "eBay is unreachable. Please try again later."
 msgstr "eBay je nedostupan. Molimo pokušajte kasnije."
@@ -904,5 +945,5 @@ msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
-msgid "ebay Sales Channel"
+msgid "ebay Sales Team"
 msgstr ""

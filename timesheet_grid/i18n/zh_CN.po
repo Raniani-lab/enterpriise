@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * timesheet_grid
+# 	* timesheet_grid
 # 
 # Translators:
 # Liping Wang <lynn.config@gmail.com>, 2016
@@ -9,7 +9,6 @@
 # Yaorong Li <55yaorong.li@gmail.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # snow wang <147156565@qq.com>, 2018
-# keecome <7017511@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
@@ -17,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -380,10 +379,18 @@ msgid "Add a Task"
 msgstr "添加任务"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:81
+#: code:addons/timesheet_grid/models/analytic.py:88
 #, python-format
 msgid "All selected timesheets are already validated"
 msgstr "所有选择的工时表已经被确认了"
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:93
+#, python-format
+msgid ""
+"All selected timesheets are already validated. You are not indicated as "
+"responsible for your timesheet so you can't validate your own timesheet."
+msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -402,7 +409,7 @@ msgstr "取消"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:21
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:21
 #, python-format
 msgid "Choose a <b>project name</b>. (e.g. name of a customer, or product)"
 msgstr "<b/>"
@@ -452,6 +459,7 @@ msgstr "显示名称"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
+#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__employee_id
 msgid "Employee"
 msgstr "员工"
@@ -575,23 +583,32 @@ msgid "Non Validated"
 msgstr "非验证"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:106
+#: code:addons/timesheet_grid/models/analytic.py:118
 #, python-format
 msgid ""
-"Only a Timesheets Manager is allowed to create an entry older than the "
-"validation limit."
-msgstr "只允许时间表管理员创建早于验证限制的条目。"
-
-#. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:121
-#, python-format
-msgid "Only a Timesheets Manager is allowed to delete a validated entry."
+"Only a Timesheets Approver or Manager is allowed to create an entry older "
+"than the validation limit."
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:115
+#: code:addons/timesheet_grid/models/analytic.py:133
 #, python-format
-msgid "Only a Timesheets Manager is allowed to modify a validated entry."
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to delete a validated "
+"entry."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:127
+#, python-format
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to modify a validated "
+"entry."
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_hr_employee_public
+msgid "Public Employee"
 msgstr ""
 
 #. module: timesheet_grid
@@ -611,7 +628,7 @@ msgstr "如果解析线代表时间表轴的话。"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:35
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:35
 #, python-format
 msgid ""
 "Set the number of hours done on this task, for every day of the week. (e.g. "
@@ -624,7 +641,7 @@ msgid "Task"
 msgstr "任务"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:76
+#: code:addons/timesheet_grid/models/analytic.py:83
 #, python-format
 msgid "There aren't any timesheet to validate"
 msgstr "这并没有任何需要验证的时间表"
@@ -635,8 +652,8 @@ msgid "Time Spent"
 msgstr "花费的时间"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:157
-#: code:addons/timesheet_grid/models/analytic.py:167
+#: code:addons/timesheet_grid/models/analytic.py:169
+#: code:addons/timesheet_grid/models/analytic.py:179
 #, python-format
 msgid "Timesheet Adjustment"
 msgstr "工时表调整"
@@ -653,6 +670,7 @@ msgstr "计工单明细"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "Timesheet Responsible"
 msgstr "时间表主管"
@@ -695,7 +713,7 @@ msgstr "时间表验证日期"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:17
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:17
 #, python-format
 msgid "Timesheets are done on tasks, click here to create your first one."
 msgstr "时间表是在任务上完成的，点击这里创建你的第一个任务。"
@@ -707,14 +725,14 @@ msgstr "待验证"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:13
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:13
 #, python-format
 msgid "Track the time spent on your projects. <i>It starts here.</i>"
 msgstr "跟踪跟踪花费在项目上的时间。<i>它从这里开始。</i>"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:28
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:28
 #, python-format
 msgid ""
 "Use tasks to track the different type of activities. (e.g. Graphic Design, "
@@ -728,6 +746,7 @@ msgstr "用户提醒频率"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,help:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 #: model:ir.model.fields,help:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
 msgstr "时间表验证的用户主管。应为时间表管理员。"
@@ -800,14 +819,14 @@ msgstr "周"
 #. module: timesheet_grid
 #: selection:res.company,timesheet_mail_employee_interval:0
 #: selection:res.company,timesheet_mail_manager_interval:0
-msgid "after end of month"
-msgstr "月底之后"
+msgid "after the end of the month"
+msgstr ""
 
 #. module: timesheet_grid
 #: selection:res.company,timesheet_mail_employee_interval:0
 #: selection:res.company,timesheet_mail_manager_interval:0
-msgid "after end of week"
-msgstr "周末之后"
+msgid "after the end of the week"
+msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form

@@ -1,10 +1,10 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_taxcloud
+# 	* account_taxcloud
 # 
 # Translators:
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2016
 # Ted Wang <feiyuwang2012@gmail.com>, 2016
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
 # Jeff Yu - Elico Corp <jeff.yu@elico-corp.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
@@ -12,14 +12,15 @@
 # neter ji <jifuyi@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
+# 张宏奎 <zhanghongkui@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
+"Last-Translator: 张宏奎 <zhanghongkui@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,9 +117,9 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_taxcloud
-#: model:ir.model,name:account_taxcloud.model_account_invoice
-msgid "Invoice"
-msgstr "发票"
+#: model:ir.model,name:account_taxcloud.model_account_move
+msgid "Journal Entries"
+msgstr "凭证录入"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update
@@ -182,11 +183,13 @@ msgid "TaxCloud"
 msgstr "TaxCloud"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_id
 msgid "TaxCloud API ID"
 msgstr "TaxCloud API ID"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_key
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_key
 msgid "TaxCloud API KEY"
 msgstr "TaxCloud API KEY"
@@ -227,14 +230,15 @@ msgid "Template for Fiscal Position"
 msgstr "替换规则模板"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:43
-#: code:addons/account_taxcloud/models/res_config_settings.py:23
+#: code:addons/account_taxcloud/models/account_invoice.py:55
+#: code:addons/account_taxcloud/models/res_config_settings.py:27
 #, python-format
 msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
 msgstr "TaxCloud 的配置位于“会计”应用的“设置”菜单中。"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:115
+#: code:addons/account_taxcloud/models/account_invoice.py:119
+#: code:addons/account_taxcloud/models/account_invoice.py:152
 #, python-format
 msgid ""
 "The source document on the refund is not valid and thus the refunded cart "
@@ -242,23 +246,18 @@ msgid ""
 msgstr "有关退款的源单据无效，因此已退款的购物车将不会记录在您的 taxcloud 账户中"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:85
+#: code:addons/account_taxcloud/models/account_invoice.py:122
 #, python-format
 msgid ""
 "The tax rates have been updated, you may want to check it before validation"
 msgstr "税率已被更新，你可能需要先验证检查"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:43
-#: code:addons/account_taxcloud/models/res_config_settings.py:23
+#: code:addons/account_taxcloud/models/account_invoice.py:53
+#: code:addons/account_taxcloud/models/res_config_settings.py:25
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
 msgstr "无法从 TaxCloud 检索税款："
-
-#. module: account_taxcloud
-#: model:ir.actions.server,name:account_taxcloud.action_account_invoice_update_taxes
-msgid "Update taxes with Taxcloud"
-msgstr "使用 Taxcloud 更新税款"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_fiscal_position__is_taxcloud
@@ -267,7 +266,7 @@ msgid "Use TaxCloud API"
 msgstr "使用TaxCloud API"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/product.py:28
+#: code:addons/account_taxcloud/models/product.py:30
 #, python-format
 msgid "[%s] %s"
 msgstr "[%s] %s"

@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * voip
+# 	* voip
 # 
 # Translators:
 # Ákos Nagy <akos.nagy@oregional.hu>, 2017
 # Martin Trigaux, 2019
-# gezza <geza.nagy@oregional.hu>, 2019
+# krnkris, 2019
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # Tamás Dombos, 2019
-# krnkris, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: krnkris, 2019\n"
+"Last-Translator: gezza <geza.nagy@oregional.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:314
+#: code:addons/voip/static/src/js/user_agent.js:315
 #, python-format
 msgid " Please check your configuration."
 msgstr ""
@@ -35,6 +35,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
 msgstr "Esetek száma"
+
+#. module: voip
+#: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
+msgid "Action to Perform"
+msgstr ""
+
+#. module: voip
+#: model:ir.model.fields,help:voip.field_mail_activity_type__category
+msgid ""
+"Actions may trigger specific behavior like opening calendar view or "
+"automatically mark as done when a document is uploaded"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -134,7 +146,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/dialing_panel.js:674
 #, python-format
 msgid "Calling "
 msgstr "Hívás folyamatban"
@@ -165,20 +177,8 @@ msgid "Cancelled"
 msgstr "Törölve"
 
 #. module: voip
-#: model:ir.model.fields,help:voip.field_mail_activity_type__category
-msgid ""
-"Categories may trigger specific behavior like opening calendar view or "
-"automatically mark as done when a document is uploaded"
-msgstr ""
-
-#. module: voip
-#: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
-msgid "Category"
-msgstr "Kategória"
-
-#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:498
+#: code:addons/voip/static/src/js/dialing_panel.js:493
 #, python-format
 msgid "Click to unblock"
 msgstr "Blokkolás megszüntetéséhez kattintson"
@@ -197,7 +197,7 @@ msgstr "Konfigurációs beállítások"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:295
+#: code:addons/voip/static/src/js/user_agent.js:296
 #, python-format
 msgid "Connecting..."
 msgstr ""
@@ -239,7 +239,7 @@ msgstr "Vásárló"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:478
+#: code:addons/voip/static/src/js/dialing_panel.js:473
 #, python-format
 msgid "Customer unavailable"
 msgstr "Vásárló nem elérhető"
@@ -378,7 +378,7 @@ msgstr "Beérkező munka"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:485
+#: code:addons/voip/static/src/js/user_agent.js:492
 #, python-format
 msgid "Incoming call from "
 msgstr "Beérkező hívás innen"
@@ -500,6 +500,11 @@ msgid "NEXT ACTIVITIES"
 msgstr ""
 
 #. module: voip
+#: selection:mail.activity.type,category:0
+msgid "None"
+msgstr "Egyik sem"
+
+#. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Not Held"
 msgstr "Nem tartott"
@@ -520,8 +525,8 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:219
-#: code:addons/voip/static/src/js/user_agent.js:224
+#: code:addons/voip/static/src/js/user_agent.js:220
+#: code:addons/voip/static/src/js/user_agent.js:225
 #, python-format
 msgid "One or more parameter is missing. Please check your configuration."
 msgstr "Egy vagy több paraméter hiányzik. Kérem ellenőrizze a beállításait."
@@ -589,7 +594,7 @@ msgstr "Telefonhívások"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:177
+#: code:addons/voip/static/src/js/dialing_panel.js:172
 #, python-format
 msgid "Please check if a phone number is given for the current phonecall"
 msgstr ""
@@ -597,7 +602,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:341
+#: code:addons/voip/static/src/js/user_agent.js:342
 #, python-format
 msgid "Please check your configuration.</br> (Reason receives :"
 msgstr "Kérem ellenőrizze a beállításait.</br> (Beérkezett okok :"
@@ -705,13 +710,8 @@ msgid "Specific Date"
 msgstr "Adott dátumon"
 
 #. module: voip
-#: selection:mail.activity.type,category:0
-msgid "Standard"
-msgstr "Általános"
-
-#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/dialing_panel.js:674
 #, python-format
 msgid "Start Calling"
 msgstr "Hívás elkezdése"
@@ -733,6 +733,11 @@ msgid "Summary"
 msgstr "Összegzés"
 
 #. module: voip
+#: selection:mail.activity.type,category:0
+msgid "Tax report"
+msgstr ""
+
+#. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP adress of your PBX Server"
 msgstr "Az PBX szervere IP címe"
@@ -744,14 +749,14 @@ msgstr "A WebSoccet  URL webcíme"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:479
+#: code:addons/voip/static/src/js/dialing_panel.js:474
 #, python-format
 msgid "The customer is temporary unavailable. Please try later."
 msgstr "A vásárló ideiglenesen nem elérhető. Kérem próbálja meg később."
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:570
+#: code:addons/voip/static/src/js/user_agent.js:577
 #, python-format
 msgid ""
 "The number is incorrect, the user credentials could be wrong or the "
@@ -761,14 +766,14 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:176
+#: code:addons/voip/static/src/js/dialing_panel.js:171
 #, python-format
 msgid "The phonecall has no number"
 msgstr "A telefonhívásnak nincs telefonszáma"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:244
+#: code:addons/voip/static/src/js/user_agent.js:245
 #, python-format
 msgid ""
 "The server configuration could be wrong. Please check your configuration."
@@ -784,7 +789,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:313
+#: code:addons/voip/static/src/js/user_agent.js:314
 #, python-format
 msgid "The websocket uri could be wrong."
 msgstr ""
@@ -902,16 +907,16 @@ msgstr "Nem megfelelő beállítás a híváshoz. Nincs Külső telefonszám be�
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:187
-#: code:addons/voip/static/src/js/dialing_panel.js:289
-#: code:addons/voip/static/src/js/dialing_panel.js:310
+#: code:addons/voip/static/src/js/dialing_panel.js:182
+#: code:addons/voip/static/src/js/dialing_panel.js:284
+#: code:addons/voip/static/src/js/dialing_panel.js:305
 #, python-format
 msgid "You are already in a call"
 msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:298
+#: code:addons/voip/static/src/js/user_agent.js:299
 #, python-format
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
@@ -936,7 +941,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:340
+#: code:addons/voip/static/src/js/user_agent.js:341
 #, python-format
 msgid "the connection cannot be made. "
 msgstr "csatlakozás nem hozható létre."

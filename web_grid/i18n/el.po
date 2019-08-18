@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * web_grid
+# 	* web_grid
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
 "Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
@@ -33,7 +33,7 @@ msgstr "Δραστηριότητα"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:148
+#: code:addons/web_grid/static/src/js/grid_controller.js:147
 #: code:addons/web_grid/static/src/xml/grid_view.xml:5
 #, python-format
 msgid "Add a Line"
@@ -51,8 +51,8 @@ msgid "Calendar"
 msgstr "Ημερολόγιο"
 
 #. module: web_grid
-#: code:addons/web_grid/models/models.py:201
-#: code:addons/web_grid/models/models.py:233
+#: code:addons/web_grid/models/models.py:246
+#: code:addons/web_grid/models/models.py:293
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
 msgstr ""
@@ -108,6 +108,12 @@ msgid "Kanban"
 msgstr "Kanban"
 
 #. module: web_grid
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Map"
+msgstr ""
+
+#. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:24
 #, python-format
@@ -128,6 +134,7 @@ msgid "Previous"
 msgstr "Προηγούμενο"
 
 #. module: web_grid
+#: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
 msgstr "QWeb"
@@ -142,6 +149,12 @@ msgstr "Αναζήτηση"
 #: code:addons/web_grid/static/src/js/grid_renderer.js:244
 #, python-format
 msgid "See all the records aggregated in this cell"
+msgstr ""
+
+#. module: web_grid
+#: code:addons/web_grid/models/models.py:48
+#, python-format
+msgid "The field used as readonly type must have a group_operator attribute."
 msgstr ""
 
 #. module: web_grid
@@ -161,14 +174,14 @@ msgstr "Σήμερα"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:395
+#: code:addons/web_grid/static/src/js/grid_renderer.js:396
 #, python-format
 msgid "Total"
 msgstr "Σύνολο"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:393
+#: code:addons/web_grid/static/src/js/grid_renderer.js:394
 #, python-format
 msgid "Total (%s)"
 msgstr ""
@@ -181,7 +194,7 @@ msgstr "Δέντρο"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:204
+#: code:addons/web_grid/static/src/js/grid_controller.js:203
 #, python-format
 msgid "Undefined"
 msgstr "Μη ορισμένο"
@@ -189,8 +202,8 @@ msgstr "Μη ορισμένο"
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:160
-#: code:addons/web_grid/static/src/js/grid_renderer.js:323
-#: code:addons/web_grid/static/src/js/grid_renderer.js:358
+#: code:addons/web_grid/static/src/js/grid_renderer.js:324
+#: code:addons/web_grid/static/src/js/grid_renderer.js:359
 #, python-format
 msgid "Unknown"
 msgstr "Άγνωστο"
@@ -207,7 +220,7 @@ msgid "View Type"
 msgstr "Τύπος Προβολής"
 
 #. module: web_grid
-#: code:addons/web_grid/models/models.py:244
+#: code:addons/web_grid/models/models.py:326
 #, python-format
 msgid ""
 "Week %(weeknumber)s\n"

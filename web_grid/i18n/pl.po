@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * web_grid
+# 	* web_grid
 # 
 # Translators:
 # Monika Motyczyńska <m.monia@op.pl>, 2019
@@ -16,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
 "Last-Translator: Net Voodooman <mirek@reallife.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
@@ -41,7 +41,7 @@ msgstr "Czynność"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:148
+#: code:addons/web_grid/static/src/js/grid_controller.js:147
 #: code:addons/web_grid/static/src/xml/grid_view.xml:5
 #, python-format
 msgid "Add a Line"
@@ -59,8 +59,8 @@ msgid "Calendar"
 msgstr "Kalendarz"
 
 #. module: web_grid
-#: code:addons/web_grid/models/models.py:201
-#: code:addons/web_grid/models/models.py:233
+#: code:addons/web_grid/models/models.py:246
+#: code:addons/web_grid/models/models.py:293
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
 msgstr "Nie można użyć pól typu %s jako kolumn siatki"
@@ -116,6 +116,12 @@ msgid "Kanban"
 msgstr "Kanban"
 
 #. module: web_grid
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Map"
+msgstr ""
+
+#. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:24
 #, python-format
@@ -136,6 +142,7 @@ msgid "Previous"
 msgstr "Poprzedni"
 
 #. module: web_grid
+#: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
 msgstr "Qweb"
@@ -151,6 +158,12 @@ msgstr "Szukaj"
 #, python-format
 msgid "See all the records aggregated in this cell"
 msgstr "Zobacz wszystkie rekordy zagregowane w tej komórce"
+
+#. module: web_grid
+#: code:addons/web_grid/models/models.py:48
+#, python-format
+msgid "The field used as readonly type must have a group_operator attribute."
+msgstr ""
 
 #. module: web_grid
 #. openerp-web
@@ -169,14 +182,14 @@ msgstr "Dzisiaj"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:395
+#: code:addons/web_grid/static/src/js/grid_renderer.js:396
 #, python-format
 msgid "Total"
 msgstr "Suma"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:393
+#: code:addons/web_grid/static/src/js/grid_renderer.js:394
 #, python-format
 msgid "Total (%s)"
 msgstr ""
@@ -189,7 +202,7 @@ msgstr "Drzewo"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:204
+#: code:addons/web_grid/static/src/js/grid_controller.js:203
 #, python-format
 msgid "Undefined"
 msgstr "Niezdefiniowane"
@@ -197,8 +210,8 @@ msgstr "Niezdefiniowane"
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:160
-#: code:addons/web_grid/static/src/js/grid_renderer.js:323
-#: code:addons/web_grid/static/src/js/grid_renderer.js:358
+#: code:addons/web_grid/static/src/js/grid_renderer.js:324
+#: code:addons/web_grid/static/src/js/grid_renderer.js:359
 #, python-format
 msgid "Unknown"
 msgstr "Nieznany"
@@ -215,7 +228,7 @@ msgid "View Type"
 msgstr "Typ widoku"
 
 #. module: web_grid
-#: code:addons/web_grid/models/models.py:244
+#: code:addons/web_grid/models/models.py:326
 #, python-format
 msgid ""
 "Week %(weeknumber)s\n"

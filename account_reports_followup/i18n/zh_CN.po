@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_reports_followup
+# 	* account_reports_followup
 # 
 # Translators:
 # hman tsao <herman.tsao@gmail.com>, 2017
@@ -13,9 +13,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-08-12 12:55+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -27,8 +27,6 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -328,7 +326,7 @@ msgid "Manual Action Type"
 msgstr "手动操作类型"
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:86
+#: code:addons/account_reports_followup/models/account_followup_report.py:88
 #, python-format
 msgid "Manual action done"
 msgstr "手动操作已完成"
@@ -464,16 +462,6 @@ msgid "Total debit"
 msgstr "借方总计"
 
 #. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
-msgid "Urging reminder email"
-msgstr "提醒邮件催促"
-
-#. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
-msgid "Urging reminder letter"
-msgstr "提醒信函催促"
-
-#. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "When processing, it will print a PDF"
 msgstr "正在处理，将会打印一个PDF文件"
@@ -504,6 +492,12 @@ msgstr ""
 "                            使用下列关键字，不要\n"
 "                            忘记使用右上方的图标\n"
 "                            翻译成各种语言 ."
+
+#. module: account_reports_followup
+#: code:addons/account_reports_followup/models/account_followup.py:161
+#, python-format
+msgid "You have to define at least one line in the followup levels of %s"
+msgstr ""
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup.py:57

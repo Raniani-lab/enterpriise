@@ -1,20 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * timesheet_grid
+# 	* timesheet_grid
 # 
 # Translators:
 # Bohdan Lisnenko, 2018
 # ТАрас <tratatuta@i.ua>, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -376,10 +376,20 @@ msgid "Add a Task"
 msgstr "Додати завдання"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:81
+#: code:addons/timesheet_grid/models/analytic.py:88
 #, python-format
 msgid "All selected timesheets are already validated"
 msgstr "Всі вибрані розклади вже підтверджені"
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:93
+#, python-format
+msgid ""
+"All selected timesheets are already validated. You are not indicated as "
+"responsible for your timesheet so you can't validate your own timesheet."
+msgstr ""
+"Всі вибрані табелі вже перевірені. Ви не вказані як відповідальні за свій "
+"табель, тому не можете перевірити власний табель."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -398,7 +408,7 @@ msgstr "Скасувати"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:21
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:21
 #, python-format
 msgid "Choose a <b>project name</b>. (e.g. name of a customer, or product)"
 msgstr "Оберіть <b>назву проекту</b>. (наприклад, ім'я клієнта або товар)"
@@ -448,6 +458,7 @@ msgstr "Назва для відображення"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
+#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__employee_id
 msgid "Employee"
 msgstr "Співробітник"
@@ -490,8 +501,8 @@ msgid ""
 "If checked, send an email to all managers who have not validated their "
 "timesheet"
 msgstr ""
-"Якщо цей прапорець встановлено, надішліть електронний лист усім менеджерам, "
-"які не підтвердили свій табель"
+"Якщо позначено, надішліть електронний лист усім менеджерам, які не "
+"підтвердили свій табель"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_company__timesheet_mail_employee_allow
@@ -499,8 +510,8 @@ msgstr ""
 msgid ""
 "If checked, send an email to all users who have not recorded their timesheet"
 msgstr ""
-"Якщо цей прапорець встановлено, надішліть електронний лист усім "
-"користувачам, які не записали свій список часу"
+"Якщо позначено, надішліть електронний лист усім користувачам, які не "
+"заповнили табель"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation____last_update
@@ -562,12 +573,12 @@ msgstr "Моя команда"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_nextdate
 msgid "Next scheduled date for employee reminder"
-msgstr "Наступна запланована дата для нагадування співробітника"
+msgstr "Наступна запланована дата для нагадування співробітнику"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_nextdate
 msgid "Next scheduled date for manager reminder"
-msgstr "Наступна запланована дата нагадування менеджера"
+msgstr "Наступна запланована дата нагадування менеджеру"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
@@ -575,25 +586,39 @@ msgid "Non Validated"
 msgstr "Не перевірено"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:106
+#: code:addons/timesheet_grid/models/analytic.py:118
 #, python-format
 msgid ""
-"Only a Timesheets Manager is allowed to create an entry older than the "
-"validation limit."
+"Only a Timesheets Approver or Manager is allowed to create an entry older "
+"than the validation limit."
 msgstr ""
-"Лише менеджер розписок може створити запис, що перевищує ліміт перевірки."
+"Дозволяється створювати запис, що перевищує ліміт перевірки, лише "
+"затверджувачу табеля або менеджеру."
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:121
+#: code:addons/timesheet_grid/models/analytic.py:133
 #, python-format
-msgid "Only a Timesheets Manager is allowed to delete a validated entry."
-msgstr "Лише менеджер табелів може видаляти перевірений запис."
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to delete a validated "
+"entry."
+msgstr ""
+"Дозволено видаляти підтверджений запис лише тим, хто затверджує табель або "
+"менеджеру."
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:115
+#: code:addons/timesheet_grid/models/analytic.py:127
 #, python-format
-msgid "Only a Timesheets Manager is allowed to modify a validated entry."
-msgstr "Лише менеджер табелів може змінювати перевірений запис."
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to modify a validated "
+"entry."
+msgstr ""
+"Дозволено змінювати затверджений запис лише тому, схвалює або менеджеру "
+"табеля."
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_hr_employee_public
+msgid "Public Employee"
+msgstr "Державний працівник"
 
 #. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_user
@@ -612,7 +637,7 @@ msgstr "Встановіть, якщо цей аналітичний рядок 
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:35
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:35
 #, python-format
 msgid ""
 "Set the number of hours done on this task, for every day of the week. (e.g. "
@@ -627,7 +652,7 @@ msgid "Task"
 msgstr "Завдання"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:76
+#: code:addons/timesheet_grid/models/analytic.py:83
 #, python-format
 msgid "There aren't any timesheet to validate"
 msgstr "Немає жодного розкладу для перевірки"
@@ -638,8 +663,8 @@ msgid "Time Spent"
 msgstr "Витрачений час"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:157
-#: code:addons/timesheet_grid/models/analytic.py:167
+#: code:addons/timesheet_grid/models/analytic.py:169
+#: code:addons/timesheet_grid/models/analytic.py:179
 #, python-format
 msgid "Timesheet Adjustment"
 msgstr "Коригування табелю"
@@ -656,6 +681,7 @@ msgstr "Рядок табелю"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "Timesheet Responsible"
 msgstr "Відповідальний за табель"
@@ -698,7 +724,7 @@ msgstr "Дата перевірки табелів"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:17
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:17
 #, python-format
 msgid "Timesheets are done on tasks, click here to create your first one."
 msgstr ""
@@ -712,14 +738,14 @@ msgstr "Перевірити"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:13
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:13
 #, python-format
 msgid "Track the time spent on your projects. <i>It starts here.</i>"
 msgstr "Відстежуйте час, витрачений на проекти. <i>Це розпочинається тут.</i>"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:28
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:28
 #, python-format
 msgid ""
 "Use tasks to track the different type of activities. (e.g. Graphic Design, "
@@ -735,6 +761,7 @@ msgstr "Частота нагадування користувача"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,help:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 #: model:ir.model.fields,help:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
 msgstr ""
@@ -808,14 +835,14 @@ msgstr "Тиждень"
 #. module: timesheet_grid
 #: selection:res.company,timesheet_mail_employee_interval:0
 #: selection:res.company,timesheet_mail_manager_interval:0
-msgid "after end of month"
-msgstr "після кінця місяця"
+msgid "after the end of the month"
+msgstr ""
 
 #. module: timesheet_grid
 #: selection:res.company,timesheet_mail_employee_interval:0
 #: selection:res.company,timesheet_mail_manager_interval:0
-msgid "after end of week"
-msgstr "після кінця тижня"
+msgid "after the end of the week"
+msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form

@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_online_sync
+# 	* account_online_sync
 # 
 # Translators:
 # Артур Чеботарь <artcha.chebotar@gmail.com>, 2017
@@ -17,9 +17,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Андрей Гусев <gaussgss@gmail.com>, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
@@ -116,7 +116,7 @@ msgid "Action Required"
 msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:360
+#: code:addons/account_online_sync/models/online_sync.py:367
 #, python-format
 msgid "Add a Bank Account"
 msgstr ""
@@ -138,7 +138,7 @@ msgid "Attachment Count"
 msgstr "Количество вложений"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:317
+#: code:addons/account_online_sync/models/online_sync.py:324
 #, python-format
 msgid "Automated Bank Synchronization"
 msgstr ""
@@ -190,7 +190,6 @@ msgid "Company"
 msgstr "Компания"
 
 #. module: account_online_sync
-#: model_terms:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
 msgstr "Настроить"
@@ -201,7 +200,7 @@ msgid "Contact"
 msgstr "Контакт"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:161
+#: code:addons/account_online_sync/models/online_sync.py:167
 #, python-format
 msgid "Create a Bank Account"
 msgstr ""
@@ -453,7 +452,7 @@ msgid "Next synchronization"
 msgstr "Следующая синхронизация"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/company.py:21
+#: code:addons/account_online_sync/models/company.py:23
 #, python-format
 msgid ""
 "No bank journal could be found! Please install a chart of accounts first, in"
@@ -528,7 +527,7 @@ msgid "Online Partner Vendor Name"
 msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:375
+#: code:addons/account_online_sync/models/online_sync.py:382
 #: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
@@ -538,7 +537,7 @@ msgid "Online Synchronization"
 msgstr "Онлайн Синхронизация"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:461
+#: code:addons/account_online_sync/models/online_sync.py:468
 #, python-format
 msgid "Opening statement: first synchronization"
 msgstr ""
@@ -555,11 +554,16 @@ msgid "Please enter at least a character for the search"
 msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:285
+#: code:addons/account_online_sync/models/online_sync.py:292
 #, python-format
 msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
 "to do"
+msgstr ""
+
+#. module: account_online_sync
+#: selection:account.online.provider,provider_type:0
+msgid "Ponto"
 msgstr ""
 
 #. module: account_online_sync
@@ -701,7 +705,7 @@ msgstr ""
 "Истина, если пользователю необходимо принять меры, обновив учетную запись"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:201
+#: code:addons/account_online_sync/models/online_sync.py:208
 #, python-format
 msgid "Unimplemented"
 msgstr "Невыполненными"
@@ -766,7 +770,7 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:287
+#: code:addons/account_online_sync/models/online_sync.py:294
 #, python-format
 msgid "You can not link two accounts to the same journal"
 msgstr ""
@@ -799,7 +803,7 @@ msgid "name of the banking institution"
 msgstr "имя банковского учреждения"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:507
+#: code:addons/account_online_sync/models/online_sync.py:514
 #, python-format
 msgid "online sync"
 msgstr ""

@@ -1,17 +1,16 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_account_taxcloud
+# 	* sale_account_taxcloud
 # 
 # Translators:
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 12:56+0000\n"
 "PO-Revision-Date: 2017-04-28 13:57+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -22,23 +21,18 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: sale_account_taxcloud
-#: model:ir.model,name:sale_account_taxcloud.model_account_invoice
-msgid "Invoice"
-msgstr "发票"
-
-#. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order
 msgid "Sales Order"
 msgstr "销售订单"
 
 #. module: sale_account_taxcloud
-#: code:addons/sale_account_taxcloud/models/sale_order.py:34
+#: code:addons/sale_account_taxcloud/models/sale_order.py:38
 #, python-format
 msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
 msgstr "TaxCloud 的配置位于“会计”应用的“设置”菜单中。"
 
 #. module: sale_account_taxcloud
-#: code:addons/sale_account_taxcloud/models/sale_order.py:34
+#: code:addons/sale_account_taxcloud/models/sale_order.py:36
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
 msgstr "无法从 TaxCloud 检索税款："

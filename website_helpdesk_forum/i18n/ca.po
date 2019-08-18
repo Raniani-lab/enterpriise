@@ -1,18 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_forum
+# 	* website_helpdesk_forum
 # 
 # Translators:
 # Martin Trigaux, 2018
 # Quim - eccit <quim@eccit.com>, 2019
+# Arnau Ros, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2017-02-15 11:47+0000\n"
-"Last-Translator: Quim - eccit <quim@eccit.com>, 2019\n"
+"Last-Translator: Arnau Ros, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,15 +30,8 @@ msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid ""
-"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
-"label=\"Redirect to external link\"/>"
-msgstr ""
-
-#. module: website_helpdesk_forum
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<span>By </span>"
-msgstr ""
+msgstr "<span>Per </span>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -79,7 +73,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr ""
+msgstr "Tiquet de Helpdesk"
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:86
@@ -104,12 +98,12 @@ msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Question has accepted answer"
-msgstr ""
+msgid "Question"
+msgstr "Qüestió"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Redirect to external link"
+msgid "Question has accepted answer"
 msgstr ""
 
 #. module: website_helpdesk_forum

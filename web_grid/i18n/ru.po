@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * web_grid
+# 	* web_grid
 # 
 # Translators:
 # Gennady Marchenko <gennadym@gmail.com>, 2017
@@ -16,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
 "Last-Translator: Vasiliy Korobatov <korobatov@gmail.com>, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
@@ -59,8 +59,8 @@ msgid "Calendar"
 msgstr "Календарь"
 
 #. module: web_grid
-#: code:addons/web_grid/models/models.py:201
-#: code:addons/web_grid/models/models.py:233
+#: code:addons/web_grid/models/models.py:246
+#: code:addons/web_grid/models/models.py:293
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
 msgstr "Нельзя использовать поля типа %s в качестве колонок"
@@ -116,6 +116,12 @@ msgid "Kanban"
 msgstr "Канбан"
 
 #. module: web_grid
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Map"
+msgstr ""
+
+#. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:24
 #, python-format
@@ -152,6 +158,12 @@ msgstr "Поиск"
 #, python-format
 msgid "See all the records aggregated in this cell"
 msgstr "Просмотреть все записи, агрегированные в этой ячейке"
+
+#. module: web_grid
+#: code:addons/web_grid/models/models.py:48
+#, python-format
+msgid "The field used as readonly type must have a group_operator attribute."
+msgstr ""
 
 #. module: web_grid
 #. openerp-web
@@ -217,7 +229,7 @@ msgid "View Type"
 msgstr "Тип представления"
 
 #. module: web_grid
-#: code:addons/web_grid/models/models.py:244
+#: code:addons/web_grid/models/models.py:326
 #, python-format
 msgid ""
 "Week %(weeknumber)s\n"

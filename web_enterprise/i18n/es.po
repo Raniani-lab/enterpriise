@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * web_enterprise
+# 	* web_enterprise
 # 
 # Translators:
 # Antonio Trueba, 2016
@@ -10,14 +10,15 @@
 # David Arnold <blaggacao@users.noreply.github.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2019
+# Rick Hunter <rick.hunter.ec@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 13:13+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Rick Hunter <rick.hunter.ec@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,14 +74,14 @@ msgstr "Compañías"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:34
 #, python-format
 msgid "Close menu"
-msgstr ""
+msgstr "Cerrar menú"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:42
 #, python-format
 msgid "Company menu"
-msgstr ""
+msgstr "Menú de la compañía"
 
 #. module: web_enterprise
 #. openerp-web
@@ -95,6 +96,14 @@ msgstr "Control"
 #, python-format
 msgid "Database expiration:"
 msgstr "Expiración de la base de datos:"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:75
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:90
+#, python-format
+msgid "Filters..."
+msgstr ""
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
@@ -195,6 +204,13 @@ msgstr "Buscar…"
 
 #. module: web_enterprise
 #. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:108
+#, python-format
+msgid "See result"
+msgstr ""
+
+#. module: web_enterprise
+#. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:110
 #, python-format
 msgid ""
@@ -266,8 +282,9 @@ msgstr "Renova su suscripción"
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:92
 #, python-format
-msgid "You have more users than your subscription allows."
-msgstr "Tiene más usuarios que están previstos en su suscripción."
+msgid ""
+"You have more users or more apps installed than your subscription allows."
+msgstr ""
 
 #. module: web_enterprise
 #. openerp-web

@@ -1,28 +1,26 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * marketing_automation
+# 	* marketing_automation
 # 
 # Translators:
 # Xu Lei <xulei8@qq.com>, 2017
-# 苏州远鼎 <tiexinliu@126.com>, 2017
 # waveyeung <waveyeung@qq.com>, 2017
 # Gary Wei <Gary.wei@elico-corp.com>, 2017
 # v2exerer <9010446@qq.com>, 2017
 # xiaobin wu <bd5dml@gmail.com>, 2017
 # Jeff Yu - Elico Corp <jeff.yu@elico-corp.com>, 2017
 # 老窦 北京 <2662059195@qq.com>, 2018
-# e2f <projects@e2f.com>, 2019
-# Martin Trigaux, 2019
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
-# snow wang <147156565@qq.com>, 2019
+# e2f <projects@e2f.com>, 2018
 # Allen Xie <xfz@forisen.com>, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# Martin Trigaux, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 12:56+0000\n"
 "PO-Revision-Date: 2017-12-13 15:21+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -31,6 +29,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__link_tracker_click_count
+msgid "# Clicks"
+msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
@@ -113,8 +116,8 @@ msgstr "<i class=\"fa fa-hand-pointer-o\"/>"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "<i class=\"fa fa-pie-chart\"/> Email Details"
-msgstr "<i class=\"fa fa-pie-chart\"/>"
+msgid "<i class=\"fa fa-pie-chart\"/> Details"
+msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -271,18 +274,6 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_after_7_days
-#: model:utm.source,name:marketing_automation.mass_mailing_after_7_days_utm_source
-msgid "After 7 days"
-msgstr "7 天后"
-
-#. module: marketing_automation
-#: model:marketing.activity,name:marketing_automation.marketing_activity_2
-#: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
-msgid "After 7 days (if not yet customers)"
-msgstr "7天后（如果还不是客户）"
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
 msgid "Applied Filter"
 msgstr ""
@@ -306,6 +297,7 @@ msgstr "请注意，没有更多活动的参与者可重新进入营销活动，
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__bounced
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Bounced"
 msgstr "被退回"
 
@@ -359,10 +351,9 @@ msgid "Clicked"
 msgstr "点击率"
 
 #. module: marketing_automation
-#: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
-#: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
-msgid "Commercial prospection"
-msgstr "商业勘探"
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Clicks"
+msgstr "点击"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
@@ -453,14 +444,14 @@ msgstr "刪除"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:181
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:199
 #, python-format
 msgid "Delete Activity"
 msgstr "删除活动"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:183
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:201
 #, python-format
 msgid "Delete All"
 msgstr "全部删除"
@@ -472,10 +463,10 @@ msgstr "直系子痕迹"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:188
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:206
 #, python-format
 msgid "Discard"
-msgstr "放弃"
+msgstr "丢弃"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
@@ -534,6 +525,18 @@ msgid "Email composition wizard"
 msgstr "邮件撰写向导"
 
 #. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:636
+#, python-format
+msgid "Email failed"
+msgstr ""
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:629
+#, python-format
+msgid "Email ignored"
+msgstr ""
+
+#. module: marketing_automation
 #: selection:marketing.trace,state:0
 msgid "Error"
 msgstr "错误"
@@ -544,13 +547,13 @@ msgid "Error message"
 msgstr "错误消息"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:372
+#: code:addons/marketing_automation/models/marketing_campaign.py:392
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr "出错了！您不能创建活动的递归层次结构。"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:378
+#: code:addons/marketing_automation/models/marketing_campaign.py:398
 #, python-format
 msgid ""
 "Error! You can't define a child activity with a trigger of type \"beginning "
@@ -563,13 +566,13 @@ msgid "Exception"
 msgstr "异常"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:593
+#: code:addons/marketing_automation/models/marketing_campaign.py:612
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr "邮件群发异常：%s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:563
+#: code:addons/marketing_automation/models/marketing_campaign.py:582
 #, python-format
 msgid "Exception in server action: %s"
 msgstr "服务器操作异常：%s"
@@ -664,6 +667,16 @@ msgstr "启动一项测试"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Launch a test"
 msgstr "启动一项测试"
+
+#. module: marketing_automation
+#: model:ir.actions.act_window,name:marketing_automation.link_tracker_action_marketing_campaign
+msgid "Link Statistics"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.link_tracker_menu_reporting_marketing_automation
+msgid "Link Tracker"
+msgstr "统计"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
@@ -761,13 +774,13 @@ msgid "Marketing Automation Mailings"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:589
+#: code:addons/marketing_automation/models/marketing_campaign.py:608
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
 msgstr "<%s>"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:559
+#: code:addons/marketing_automation/models/marketing_campaign.py:578
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
 msgstr "<%s>"
@@ -823,13 +836,6 @@ msgstr "群发邮件"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mail_statistics_ids
 msgid "Mass mailing statistics"
 msgstr "群发邮件阶段"
-
-#. module: marketing_automation
-#: model:ir.actions.server,name:marketing_automation.ir_action_server_action_message_sales_person
-#: model:marketing.activity,name:marketing_automation.marketing_activity_3
-#: model:utm.source,name:marketing_automation.marketing_activity_3_utm_source
-msgid "Message for sales person"
-msgstr "销售人员消息"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
@@ -901,14 +907,6 @@ msgstr "尚未回复"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_id
 msgid "Object"
 msgstr "对象"
-
-#. module: marketing_automation
-#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_offer_free_trial
-#: model:marketing.activity,name:marketing_automation.marketing_activity_1
-#: model:utm.source,name:marketing_automation.marketing_activity_1_utm_source
-#: model:utm.source,name:marketing_automation.mass_mailing_offer_free_trial_utm_source
-msgid "Offer free catalog"
-msgstr "提供免费试用"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened
@@ -984,7 +982,7 @@ msgstr "执行"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:204
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:222
 #, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr "请保存营销活动以添加子活动"
@@ -1035,8 +1033,8 @@ msgid "Record model"
 msgstr "记录模型"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:361
-#: code:addons/marketing_automation/models/marketing_campaign.py:465
+#: code:addons/marketing_automation/models/marketing_campaign.py:381
+#: code:addons/marketing_automation/models/marketing_campaign.py:484
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
 #: selection:marketing.trace,state:0
 #, python-format
@@ -1044,7 +1042,7 @@ msgid "Rejected"
 msgstr "已拒绝"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:538
+#: code:addons/marketing_automation/models/marketing_campaign.py:557
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
 msgstr "已被活动过滤器拒绝或记录已删除/归档"
@@ -1064,6 +1062,11 @@ msgstr "已删除表示相关记录不再存在。"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Replied"
 msgstr "已回复"
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.marketing_automation_reporting_menu
+msgid "Reporting"
+msgstr "报表"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__require_sync
@@ -1204,8 +1207,8 @@ msgid "Subject"
 msgstr "主题"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:360
-#: code:addons/marketing_automation/models/marketing_campaign.py:464
+#: code:addons/marketing_automation/models/marketing_campaign.py:380
+#: code:addons/marketing_automation/models/marketing_campaign.py:483
 #, python-format
 msgid "Success"
 msgstr "成功"
@@ -1249,7 +1252,7 @@ msgstr "测试"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:192
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:210
 #, python-format
 msgid ""
 "This Activity has a dependant child activity. 'DELETE ALL' will delete all "
@@ -1257,7 +1260,7 @@ msgid ""
 msgstr "此活动具有相关子活动。'DELETE ALL' 将删除所有子活动。"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:585
+#: code:addons/marketing_automation/models/marketing_campaign.py:604
 #, python-format
 msgid ""
 "To use this feature you should be an administrator or belong to the "
@@ -1375,7 +1378,7 @@ msgid "Workflow Started On"
 msgstr "工作流启动时间"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:173
+#: code:addons/marketing_automation/models/marketing_campaign.py:186
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
 msgstr "您必须设置至少一个活动才能启动此营销活动。"

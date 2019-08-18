@@ -1,12 +1,11 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_accountant
+# 	* account_accountant
 # 
 # Translators:
 # Gary Wei <Gary.wei@elico-corp.com>, 2017
 # Connie Xiao <connie.xiao@elico-corp.com>, 2017
 # 苏州远鼎 <tiexinliu@126.com>, 2017
-# Martin Trigaux, 2017
 # 老窦 北京 <2662059195@qq.com>, 2018
 # e2f <projects@e2f.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
@@ -16,14 +15,17 @@
 # neter ji <jifuyi@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 演奏王 <wangwhai@qq.com>, 2019
+# 黎伟杰 <674416404@qq.com>, 2019
+# Martin Trigaux, 2019
+# 张宏奎 <zhanghongkui@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
-"Last-Translator: 演奏王 <wangwhai@qq.com>, 2019\n"
+"Last-Translator: 张宏奎 <zhanghongkui@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,6 +91,12 @@ msgid "Anglo-Saxon Accounting"
 msgstr "Anglo-Saxon Accounting"
 
 #. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_move__attachment_ids
+#: model:ir.model.fields,field_description:account_accountant.field_account_move_line__move_attachment_ids
+msgid "Attachments"
+msgstr "附件"
+
+#. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
 msgid "Bank & Cash Moves"
 msgstr "银行&现金凭证"
@@ -102,6 +110,13 @@ msgstr "取消"
 #: model:ir.model,name:account_accountant.model_account_change_lock_date
 msgid "Change Lock Date"
 msgstr "修改锁定日期"
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:78
+#, python-format
+msgid "Choose a line to preview its attachments."
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_res_config_settings
@@ -161,7 +176,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/res_config_settings.py:36
+#: code:addons/account_accountant/models/res_config_settings.py:37
 #, python-format
 msgid ""
 "Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
@@ -176,6 +191,16 @@ msgid ""
 "Intermediary account used when moving money from a liquidity account to "
 "another"
 msgstr "中间科目，用于从一个流动性科目到另外一个科目转账"
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_move
+msgid "Journal Entries"
+msgstr "凭证录入"
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_move_line
+msgid "Journal Item"
+msgstr "日记账项目"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
@@ -205,11 +230,11 @@ msgstr "最后更新时间"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last day of your fiscal year"
-msgstr ""
+msgstr "您会计年度的最后一天"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:110
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:18
 #, python-format
 msgid "Let's start with a new customer invoice."
 msgstr "从新建客户发票开始."
@@ -235,6 +260,14 @@ msgstr "锁定日期"
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
 msgstr "锁定会计期间"
+
+#. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
+#: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
+msgid ""
+"No users can edit journal entries related to a tax prior and inclusive of "
+"this date."
+msgstr "没有用户可以编辑与此日期之前和之前相关的税收相关的日记帐分录。"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -272,7 +305,7 @@ msgstr "产品类别"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:105
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:13
 #, python-format
 msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
@@ -290,11 +323,24 @@ msgid "Save"
 msgstr "保存"
 
 #. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date
+msgid "Tax Lock Date"
+msgstr "税收锁定日期"
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
 "The system will try to predict vendor bill accounts based on history of "
 "previous bills."
 msgstr "依据以前账单的历史记录系统将尝试对供应商账单进行预付"
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:130
+#, python-format
+msgid "There is no attachment linked to this move."
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__transfer_account_id
@@ -303,7 +349,7 @@ msgstr "转账科目"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:115
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:23
 #, python-format
 msgid ""
 "Use the path to quickly click back to <b>previous screens</b>, without "
@@ -312,7 +358,7 @@ msgstr "使用路径快速回到<b>前一窗口</b>, 不需要重新加载页面
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:119
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:27
 #, python-format
 msgid ""
 "Your reports are available in real time. <i>No need to close a fiscal year "

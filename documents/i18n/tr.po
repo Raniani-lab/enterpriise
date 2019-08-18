@@ -1,32 +1,33 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents
+# 	* documents
 # 
 # Translators:
 # checkyoursix <batuhan.akpinar@gmail.com>, 2019
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2019
 # Mehmet Demirel <mdemirell@gmail.com>, 2019
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2019
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
 # Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2019
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2019
-# Martin Trigaux, 2019
 # Levent Karakaş <levent@mektup.at>, 2019
 # UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2019
 # Buket Şeker <buket_skr@hotmail.com>, 2019
 # Metin Akın <aknmetin@gmail.com>, 2019
-# Umur Akın <umura@projetgrup.com>, 2019
 # Ediz Duman <neps1192@gmail.com>, 2019
-# Murat Kaplan <muratk@projetgrup.com>, 2019
 # Gökhan Yüksel <yg_yuksel@hotmail.com>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# Abdullah Onur Uğur <aonurugur@outlook.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
+# Martin Trigaux, 2019
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 12:55+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Gökhan Yüksel <yg_yuksel@hotmail.com>, 2019\n"
+"Last-Translator: Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,35 +37,39 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:272
+#: code:addons/documents/static/src/js/documents_inspector.js:280
 #, python-format
 msgid "+ Add a tag "
-msgstr ""
+msgstr "+ Bir etiket ekleyin"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr ""
+msgstr ", kullanım süresi doldu"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
 msgid "2018"
-msgstr ""
+msgstr "2018"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
 msgid "2019"
-msgstr ""
+msgstr "2019"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:50
+#: code:addons/documents/static/src/js/tours/documents.js:50
 #, python-format
 msgid ""
 "<b>Actions</b> allows you to assign tags, automate actions like creating a "
 "task or vendor bill,</br> create activities for users, etc.</br> Actions can"
 " be customized through the Configuration menu."
 msgstr ""
+"<b>Eylemler</b> etiketler atamanıza, görev oluşturma yada tedarikçi faturası"
+" gibi otomatik eylemler tanımlamanıza izin verir,</br> kullanıcılar için "
+"etkinlikler oluşturmak gibi.</br> Eylemler, Yapılandırma menüsü üzerinden "
+"özelleştirilebilir."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -73,39 +78,41 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:26
+#: code:addons/documents/static/src/js/tours/documents.js:26
 #, python-format
 msgid "<b>Close the preview</b> to go back to your selection of documents"
-msgstr ""
+msgstr "<b>Belge seçimine geri dönmek için</b> ön izlemeyi kapatın"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Gb</b>"
-msgstr ""
+msgstr "<b>Gb</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Kb</b>"
-msgstr ""
+msgstr "<b>Kb</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Mb</b>"
-msgstr ""
+msgstr "<b>Mb</b>"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:60
+#: code:addons/documents/static/src/js/tours/documents.js:60
 #, python-format
 msgid ""
 "<b>Use tags</b> to easily filter documents. Tags are defined according to "
 "the folder."
 msgstr ""
+"<b>Belgeleri kolayca filtrelemek için</b> etiketleri kullanın. Etiketler "
+"dosyalara göre tanımlanmıştır."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<br/>Powered by"
-msgstr ""
+msgstr "<br/>Hazırlayan"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -113,11 +120,13 @@ msgid ""
 "<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
 "aria-label=\"Loading\" title=\"Loading\"/>"
 msgstr ""
+"<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
+"aria-label=\"Loading\" title=\"Loading\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
-msgstr ""
+msgstr "<i class=\"fa fa-download fa-fw\"/>  Tümünü indir"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -134,7 +143,7 @@ msgstr "E-posta Sunucusunu Ayarla"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-link\"/> Go to URL"
-msgstr ""
+msgstr "<i class=\"fa fa-link\"/> URL'e Git"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -148,13 +157,14 @@ msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_document_res_partner_view
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "<span class=\"o_stat_text\">Document(s)</span>"
 msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
-msgstr ""
+msgstr "<span style=\"color:white;\">&amp;nbsp;Belgeler.</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -169,6 +179,115 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b>Requested Document</b></span>"
+msgstr "<span><b>İstenilen Belge</b></span>"
+
+#. module: documents
+#: model:mail.template,body_html:documents.mail_template_document_request
+msgid ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;\"><tr><td align=\"center\">\n"
+"                    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: white; color: #454748; border-collapse:separate;\">\n"
+"                    <tbody>\n"
+"                        <!-- HEADER -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"middle\">\n"
+"                                        <span style=\"font-size: 10px;\">\n"
+"                                            Document Request: <br/>\n"
+"                                            % if object.name:\n"
+"                                                <span style=\"font-size: 20px; font-weight: bold;\">\n"
+"                                                    ${object.name | safe}\n"
+"                                                </span>\n"
+"                                            % endif\n"
+"                                        </span><br/>\n"
+"                                    </td><td valign=\"middle\" align=\"right\">\n"
+"                                        <img src=\"/logo.png?company=${object.create_uid.company_id.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${object.create_uid.company_id.name}\"/>\n"
+"                                    </td></tr>\n"
+"                                    <tr><td colspan=\"2\" style=\"text-align:center;\">\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                        <!-- CONTENT -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                                        <div>\n"
+"                                            Hello ${object.owner_id.name},\n"
+"                                            <br/><br/>\n"
+"                                            ${object.create_uid.name} (${object.create_uid.email}) asks you to provide the following document:\n"
+"                                            <br/><br/>\n"
+"                                            <center>\n"
+"                                                <div>\n"
+"                                                    % if object.name:\n"
+"                                                        <b>${object.name | safe}</b>\n"
+"                                                    % endif\n"
+"                                                </div>\n"
+"                                                <div>\n"
+"                                                    % if object.activity_note:\n"
+"                                                        <i>${object.activity_note | safe}</i>\n"
+"                                                    % endif\n"
+"                                                </div>\n"
+"                                                <br/>\n"
+"                                                <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"                                                    <a href=\"${object.full_url}\" style=\"background-color: #875A7B; padding: 20px 30px 20px 30px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                                                        Upload the requested document\n"
+"                                                    </a>\n"
+"                                                </div>\n"
+"                                            </center><br/>\n"
+"                                            Please provide us with the missing document before the link expires (planned on ${object.date_deadline}).\n"
+"                                            <br/>\n"
+"                                            % if user and user.signature:\n"
+"                                                ${user.signature | safe}\n"
+"                                            % endif\n"
+"                                            <br/>\n"
+"                                        </div>\n"
+"                                    </td></tr>\n"
+"                                    <tr><td style=\"text-align:center;\">\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                        <!-- FOOTER -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"middle\" align=\"left\">\n"
+"                                        ${object.create_uid.company_id.name}\n"
+"                                    </td></tr>\n"
+"                                    <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
+"                                        ${object.create_uid.company_id.phone}\n"
+"                                        % if object.create_uid.company_id.email\n"
+"                                            | <a href=\"'mailto:%s' % ${object.create_uid.company_id.email}\" style=\"text-decoration:none; color: #454748;\">${object.create_uid.company_id.email}</a>\n"
+"                                        % endif\n"
+"                                        % if object.create_uid.company_id.website\n"
+"                                            | <a href=\"'%s' % ${object.create_uid.company_id.website}\" style=\"text-decoration:none; color: #454748;\">\n"
+"                                            ${object.create_uid.company_id.website}\n"
+"                                        </a>\n"
+"                                        % endif\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                    </tbody>\n"
+"                    </table>\n"
+"                    </td></tr>\n"
+"                    <!-- POWERED BY -->\n"
+"                    <tr><td align=\"center\" style=\"min-width: 590px;\">\n"
+"                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
+"                          <tr><td style=\"text-align: center; font-size: 13px;\">\n"
+"                            % if object.date_deadline:\n"
+"                                This link expires on <b>${object.date_deadline}.</b><br/>\n"
+"                            % endif\n"
+"                            Powered by <a target=\"_blank\" href=\"https://www.odoo.com/page/documents\" style=\"color: #875A7B;\">Odoo Documents</a>\n"
+"                          </td></tr>\n"
+"                        </table>\n"
+"                    </td></tr>\n"
+"                </table>\n"
+"            "
 msgstr ""
 
 #. module: documents
@@ -185,12 +304,17 @@ msgstr ""
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
+msgstr "Koşullara uyan tüm eklerde kullanılabilecek bir koşul ve eylem dizisi"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
+msgid "A workspace will inherit the tags of its parent workspace"
 msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_absences
 msgid "Absences"
-msgstr ""
+msgstr "Eksiklik"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__group_ids
@@ -204,7 +328,10 @@ msgid "Access Token"
 msgstr "Erişim Token'ı"
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_kanban.xml:34
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
+#, python-format
 msgid "Action"
 msgstr "Aksiyon"
 
@@ -221,7 +348,7 @@ msgstr "Eylem Gerekiyor"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/models/folder.py:64
+#: code:addons/documents/models/folder.py:67
 #: code:addons/documents/static/src/xml/documents_inspector.xml:103
 #: model:ir.ui.menu,name:documents.workflow_rules_menu
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -236,6 +363,7 @@ msgstr "Etkin"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_ids
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Activities"
 msgstr "Aktiviteler"
 
@@ -243,7 +371,6 @@ msgstr "Aktiviteler"
 #: model:ir.model,name:documents.model_mail_activity
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Activity"
 msgstr "Aktivite"
 
@@ -280,17 +407,22 @@ msgstr "Ekle"
 #: code:addons/documents/static/src/xml/documents_kanban.xml:8
 #, python-format
 msgid "Add URL"
-msgstr ""
+msgstr "URL Ekle"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
 msgid "Add Url"
+msgstr "Url Ekle"
+
+#. module: documents
+#: model:res.groups,name:documents.group_documents_manager
+msgid "Administrator"
 msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_ads
 msgid "Ads"
-msgstr ""
+msgstr "Reklamlar"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
@@ -320,7 +452,7 @@ msgstr "Rumuzlanan Model"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "All locked files"
-msgstr ""
+msgstr "Tüm kilitli dosyalar"
 
 #. module: documents
 #. openerp-web
@@ -332,17 +464,29 @@ msgstr "Tüm sayfalar:&nbsp;"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
 msgid "Allows to"
-msgstr ""
+msgstr "İzin verir"
 
 #. module: documents
 #: model:ir.module.category,description:documents.module_category_documents_management
 msgid "Allows you to manage your documents."
+msgstr "Belgeleri yönetmek için size izin verir."
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:189
+#, python-format
+msgid "An error occurred during the upload"
 msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_appraisal
 msgid "Appraisal"
 msgstr "Değerlendirme"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
+msgid "Apps and workspaces to be synchronized"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -401,15 +545,15 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_view.js:29
+#: code:addons/documents/static/src/js/documents_kanban_view.js:23
 #, python-format
 msgid "Attachments Kanban"
-msgstr ""
+msgstr "Kanban Ekleri"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
 msgid "Available Rules"
-msgstr ""
+msgstr "Mevcut Kurallar"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_bill
@@ -417,19 +561,9 @@ msgid "Bill"
 msgstr "Fatura"
 
 #. module: documents
-#: model:documents.folder,name:documents.documents_marketing_brand1_folder
-msgid "Brand 1"
-msgstr ""
-
-#. module: documents
-#: model:documents.folder,name:documents.documents_marketing_brand2_folder
-msgid "Brand 2"
-msgstr ""
-
-#. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
 msgid "Brochures"
-msgstr ""
+msgstr "Broşürler"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_mail_activity_type__folder_id
@@ -443,8 +577,12 @@ msgid "Cancel"
 msgstr "İptal"
 
 #. module: documents
+#: model:ir.model,name:documents.model_documents_facet
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__facet_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_tree
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "Category"
 msgstr "Kategori"
 
@@ -455,17 +593,17 @@ msgstr "Checksum/SHA1"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:45
+#: code:addons/documents/static/src/js/tours/documents.js:45
 #, python-format
 msgid "Click here to <b>close the discussion board</b>"
-msgstr ""
+msgstr "Tartışma alanını kapatmak için <b>buraya tıklayınız</b>"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:17
+#: code:addons/documents/static/src/js/tours/documents.js:17
 #, python-format
 msgid "Click on a card to <b>view the document</b>."
-msgstr ""
+msgstr "Belgeyi görüntülemek için <b>bir kartın üstüne tıklayınız</b>."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__company_id
@@ -477,7 +615,7 @@ msgstr "Şirket"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
 msgid "Condition type"
-msgstr ""
+msgstr "Koşul türü"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -492,6 +630,7 @@ msgstr "Yapılandırma"
 #. module: documents
 #: model:ir.model,name:documents.model_res_partner
 #: model:ir.model.fields,field_description:documents.field_documents_document__partner_id
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -522,13 +661,17 @@ msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Create a new activity"
-msgstr ""
+msgstr "Yeni bir aktivite oluştur"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
 msgid "Create a tag"
+msgstr "Bir etiket oluştur"
+
+#. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Create signature request"
 msgstr ""
 
 #. module: documents
@@ -571,6 +714,11 @@ msgstr "Kredi notu"
 #. module: documents
 #: selection:documents.workflow.rule,condition_type:0
 msgid "Criteria"
+msgstr "Kriter"
+
+#. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Customer invoice"
 msgstr ""
 
 #. module: documents
@@ -591,15 +739,10 @@ msgid "Default Values"
 msgstr "Öntanımlı Değerler"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
-msgid "Default Workspaces"
-msgstr ""
-
-#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Default values for uploaded documents"
-msgstr ""
+msgstr "Yüklenen belgeler için varsayılan değerler"
 
 #. module: documents
 #. openerp-web
@@ -620,6 +763,7 @@ msgstr "Süresi Dolmuş"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__description
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "Description"
 msgstr "Açıklama"
 
@@ -639,7 +783,7 @@ msgstr "Görünüm Adı"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Doc"
-msgstr ""
+msgstr "Doc"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -648,6 +792,7 @@ msgid "Document"
 msgstr "Doküman"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__document_count
 #: model:ir.model.fields,field_description:documents.field_res_partner__document_count
 msgid "Document Count"
 msgstr ""
@@ -655,16 +800,21 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
 msgid "Document Owner"
-msgstr ""
+msgstr "Belge Sahibi"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_request_wizard
 msgid "Document Request"
+msgstr "Belge isteği"
+
+#. module: documents
+#: model:mail.template,subject:documents.mail_template_document_request
+msgid "Document Request ${object.name != False and ': '+ object.name or ''}"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/document.py:334
-#: code:addons/documents/models/document.py:354
+#: code:addons/documents/models/document.py:332
+#: code:addons/documents/models/document.py:352
 #: code:addons/documents/models/mail_activity.py:25
 #, python-format
 msgid "Document Request: %s Uploaded by: %s"
@@ -673,27 +823,21 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
 msgid "Document Workflow Tag Action"
-msgstr ""
+msgstr "Belge İş Akışı Etiketi Eylemi"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_tag_criteria
 msgid "Document Workflow Tag Criteria"
-msgstr ""
+msgstr "Belge İş Akışı Etiketi Kriterleri"
 
 #. module: documents
 #: selection:documents.share,type:0
 msgid "Document list"
-msgstr ""
+msgstr "Belge listesi"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:6
-#, python-format
-msgid "DocumentViewer.ContentWithPdfSplit"
-msgstr ""
-
-#. module: documents
-#. openerp-web
+#: code:addons/documents/models/folder.py:92
 #: code:addons/documents/models/res_partner.py:27
 #: code:addons/documents/static/src/xml/documents_inspector.xml:64
 #: model:ir.actions.act_window,name:documents.document_action
@@ -713,17 +857,17 @@ msgstr "Belgeler"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Folder"
-msgstr ""
+msgstr "Belgeler Dosyası"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
 msgid "Documents Share"
-msgstr ""
+msgstr "Belgeleri Paylaş"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
 msgid "Does not contain"
-msgstr ""
+msgstr "İçermez"
 
 #. module: documents
 #: selection:documents.share,type:0
@@ -742,7 +886,7 @@ msgstr "Tamamlandı"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Downlaod all files"
-msgstr ""
+msgstr "Tüm dosyaları indirin "
 
 #. module: documents
 #. openerp-web
@@ -755,7 +899,7 @@ msgstr "İndir"
 #. module: documents
 #: selection:documents.share,action:0
 msgid "Download and Upload"
-msgstr ""
+msgstr "İndir ve Yükle"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_status_draft
@@ -764,67 +908,80 @@ msgstr "Taslak"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:405
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:468
 #, python-format
 msgid "Drop files here to upload"
-msgstr ""
+msgstr "Yüklemek için dosyayı buraya bırakın"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range
 msgid "Due Date In"
-msgstr ""
+msgstr "Vade Tarihi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range_type
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range_type
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range_type
 msgid "Due type"
-msgstr ""
+msgstr "Vade türü"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "E.g. Finance"
-msgstr ""
+msgstr "Örn. Finans"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "E.g. Missing Expense"
-msgstr ""
+msgstr "Örn. Eksik Gider"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form_list
 msgid "E.g. Status"
-msgstr ""
+msgstr "Örn. Durum"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "E.g. Validate document"
-msgstr ""
+msgstr "Örn. Belgeyi onayla"
 
 #. module: documents
-#: code:addons/documents/models/ir_attachment.py:43
+#: code:addons/documents/models/ir_attachment.py:42
 #, python-format
 msgid "ERROR: Invalid PDF file!"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/ir_attachment.py:90
+#: code:addons/documents/models/ir_attachment.py:86
 #, python-format
 msgid "ERROR: Invalid list of pages to split. Example: 1,5-9,10"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/ir_attachment.py:85
+#: code:addons/documents/models/ir_attachment.py:81
 #, python-format
 msgid "ERROR: the file must be a PDF"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__email_cc
+msgid "Email cc"
+msgstr ""
+
+#. module: documents
 #: selection:documents.document,type:0
 msgid "Empty"
-msgstr ""
+msgstr "Boş"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:189
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:445
+#, python-format
+msgid "Error"
+msgstr "Hata"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_expense
@@ -844,7 +1001,6 @@ msgid "Extract pages:&nbsp;"
 msgstr ""
 
 #. module: documents
-#: model:ir.model,name:documents.model_documents_facet
 #: model:ir.model.fields,field_description:documents.field_documents_tag__facet_id
 msgid "Facet"
 msgstr ""
@@ -870,11 +1026,6 @@ msgid "File Content"
 msgstr "Dosya İçeriği"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_document__datas_fname
-msgid "File Name"
-msgstr "Dosya Adı"
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__file_size
 msgid "File Size"
 msgstr "Dosya Boyutu"
@@ -882,7 +1033,7 @@ msgstr "Dosya Boyutu"
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
 msgid "Finance"
-msgstr ""
+msgstr "Finans"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_financial
@@ -895,10 +1046,9 @@ msgid "Fiscal"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__folder_id
 msgid "Folder"
-msgstr ""
+msgstr "Dosya"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_follower_ids
@@ -925,12 +1075,14 @@ msgstr "Yapılacaklar"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:21
+#: code:addons/documents/static/src/js/tours/documents.js:21
 #, python-format
 msgid ""
 "Go to the <b>images, videos & PDF viewer</b> by clicking on the preview "
 "area."
 msgstr ""
+"Ön izleme alanına tıklayarak <b>görsellere, videolara & PDF "
+"görüntülyiciye</b> gidin."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -941,12 +1093,12 @@ msgstr "Grupla"
 #: model:documents.folder,name:documents.documents_hr_folder
 #: model:documents.tag,name:documents.documents_internal_knowledge_hr
 msgid "HR"
-msgstr ""
+msgstr "İK"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
-msgstr ""
+msgstr "İşletme Seçeneği Mevcut"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__id
@@ -985,7 +1137,7 @@ msgstr "İşaretliyse, yeni mesajlar dikkatinize sunulacak."
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "İşaretliyse,bazı mesajlar gönderi hatası içermektedir."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1021,10 +1173,10 @@ msgstr "Takipçi mi"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:40
+#: code:addons/documents/static/src/js/tours/documents.js:40
 #, python-format
 msgid "It will be sent to the followers of this document"
-msgstr ""
+msgstr "Bu belgenin takipçilerine gönderilecektir"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document____last_update
@@ -1071,9 +1223,14 @@ msgid "Late Activities"
 msgstr "Geciken Aktiviteler"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
+
+#. module: documents
 #: selection:documents.share,state:0
 msgid "Live"
-msgstr ""
+msgstr "Canlı"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -1090,7 +1247,7 @@ msgstr "Kilitle"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__lock_uid
 msgid "Locked by"
-msgstr ""
+msgstr "Tarafından kilitlendi"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -1124,19 +1281,14 @@ msgstr "Ana Ek"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.facet_action
-msgid "Manage Tag Categories"
+msgid "Manage Tags by Category"
 msgstr ""
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.tag_action
 #: model:ir.actions.act_window,name:documents.tree_tag_action
 msgid "Manage document tags"
-msgstr ""
-
-#. module: documents
-#: model:res.groups,name:documents.group_documents_manager
-msgid "Manager"
-msgstr "Yönetici"
+msgstr "Belge etiketlerini yönetin"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
@@ -1145,7 +1297,7 @@ msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
-msgid "Mark all Activities as done"
+msgid "Mark all as Done"
 msgstr ""
 
 #. module: documents
@@ -1194,10 +1346,10 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:140
+#: code:addons/documents/static/src/js/documents_inspector.js:145
 #, python-format
 msgid "Multiple values"
-msgstr ""
+msgstr "Birden çok değer"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1207,7 +1359,7 @@ msgstr "Aktivitelerim"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Documents"
-msgstr ""
+msgstr "Belgelerim"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1217,7 +1369,7 @@ msgstr "Favorilerim"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My locked files"
-msgstr ""
+msgstr "Kilitli Dosyalarım"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__name
@@ -1234,7 +1386,7 @@ msgstr "Adı"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Name of the share link"
-msgstr ""
+msgstr "Paylaşılan bağlantının adı"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
@@ -1252,13 +1404,13 @@ msgid "Next Activity Type"
 msgstr "Sonraki Faaliyet Türü"
 
 #. module: documents
-#: code:addons/documents/models/document.py:148
+#: code:addons/documents/models/document.py:142
 #, python-format
 msgid "Not a file"
 msgstr ""
 
 #. module: documents
-#: code:addons/documents/models/document.py:154
+#: code:addons/documents/models/document.py:148
 #, python-format
 msgid "Not attached"
 msgstr ""
@@ -1307,6 +1459,18 @@ msgstr "Odoo Logo"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Website"
+msgstr "Odoo Website"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:445
+#, python-format
+msgid "One or more files failed to upload"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__limited_to_single_record
+msgid "One record limit"
 msgstr ""
 
 #. module: documents
@@ -1354,11 +1518,6 @@ msgid "PDF"
 msgstr "PDF"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.folder_view_search
-msgid "Parent Folder"
-msgstr ""
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
 msgstr "Üst Model"
@@ -1370,6 +1529,7 @@ msgstr "Üst Kayıt Mesaj Dizisi ID"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Parent Workspace"
 msgstr ""
 
@@ -1410,7 +1570,7 @@ msgstr "Sunumlar"
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
-msgstr ""
+msgstr "Ürün Şablonu"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
@@ -1437,12 +1597,12 @@ msgstr "Kaldır"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:153
 #, python-format
 msgid "Replace"
-msgstr ""
+msgstr "Yerleştirme"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Replace by"
-msgstr ""
+msgstr "Tarafından yerleştirildi"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
@@ -1459,19 +1619,19 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_kanban.xml:11
 #, python-format
 msgid "Request Document"
-msgstr ""
+msgstr "İstenilen Belge"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/systray.xml:7
 #, python-format
 msgid "Request a Document"
-msgstr ""
+msgstr "Bir Belge İste"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_request_form
 msgid "Request a file"
-msgstr ""
+msgstr "Bir Dosya İste"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -1481,12 +1641,12 @@ msgstr ""
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
 msgid "Requested Document"
-msgstr ""
+msgstr "İstenilen Dosya"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Requested files"
-msgstr ""
+msgstr "İstenilen Dosyalar"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model_name
@@ -1531,7 +1691,7 @@ msgstr "Geriyükle"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
 msgid "Rule name"
-msgstr ""
+msgstr "Kural Adı"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_sales
@@ -1539,9 +1699,9 @@ msgid "Sales"
 msgstr "Satış"
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
-msgid "Select the tag categories to be used"
-msgstr ""
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
+msgid "Schedule Activity"
+msgstr "Etkinlik Planla"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -1559,17 +1719,17 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
 msgid "Set Contact"
-msgstr ""
+msgstr "Bağlantı Ayarla"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__user_id
 msgid "Set Owner"
-msgstr ""
+msgstr "Sahibini Ayarla"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__tag_action_ids
 msgid "Set Tags"
-msgstr ""
+msgstr "Etiketleri Ayarla"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.configuration_action
@@ -1588,10 +1748,10 @@ msgstr "Paylaş"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
 msgid "Share Links"
-msgstr ""
+msgstr "Bağlantıları Paylaş"
 
 #. module: documents
-#: code:addons/documents/models/share.py:133
+#: code:addons/documents/models/share.py:140
 #, python-format
 msgid "Share domain"
 msgstr ""
@@ -1599,10 +1759,10 @@ msgstr ""
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
 msgid "Share links"
-msgstr ""
+msgstr "Bağlantıları Paylaş"
 
 #. module: documents
-#: code:addons/documents/models/share.py:133
+#: code:addons/documents/models/share.py:140
 #, python-format
 msgid "Share selected records"
 msgstr ""
@@ -1624,7 +1784,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__type
 msgid "Share type"
-msgstr ""
+msgstr "Türü paylaş"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__create_share_id
@@ -1639,12 +1799,12 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
 msgid "Shared Links"
-msgstr ""
+msgstr "Paylaşılan Bağlantılar"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
 msgid "Shared Tags"
-msgstr ""
+msgstr "Paylaşılan Etiketler"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1653,8 +1813,8 @@ msgstr "Bir sonraki eylem tarihi bugünden önce olan tüm kayıtları göster"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr "İmza Şablonu"
+msgid "Sign directly"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -1716,8 +1876,9 @@ msgstr "Etiket"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Tag Categories"
-msgstr ""
+msgstr "Etiket Kategorileri"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form
@@ -1730,9 +1891,8 @@ msgid "Tag already exists for this facet"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
-msgid ""
-"Tag categories from parent workspaces will be shared to their sub workspaces"
+#: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
+msgid "Tag categories defined for this workspace"
 msgstr ""
 
 #. module: documents
@@ -1742,6 +1902,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__tag_ids
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_tag_ids
 #: model:ir.ui.menu,name:documents.category_menu
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form_list
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
 #, python-format
 msgid "Tags"
@@ -1756,6 +1918,11 @@ msgstr "Görev"
 #: model:documents.tag,name:documents.documents_internal_template_text
 msgid "Text"
 msgstr "Metin"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_facet__tooltip
+msgid "Text shown when hovering on this tag category or its tags"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -1793,7 +1960,7 @@ msgstr ""
 #. module: documents
 #: sql_constraint:documents.share:0
 msgid "This access token already exists"
-msgstr ""
+msgstr "Bu erişim tokeni zaten mevcut"
 
 #. module: documents
 #: sql_constraint:documents.document:0
@@ -1808,33 +1975,35 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid ""
-"This file has been requested.\n"
+"This document has been requested.\n"
 "                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_documents_folder__group_ids
-msgid "This folder will only be available for the selected user groups"
-msgstr ""
-
-#. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:30
+#: code:addons/documents/static/src/js/tours/documents.js:30
 #, python-format
 msgid ""
 "This icons gets you to the <b>discussion board</b>, to chat with followers "
 "of this document"
 msgstr ""
+"Bu ikonlar sizi <b>tartışma panosuna götürür</b> ve bu belgenin takipçileri "
+"ile konuşmanızı sağlar"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.not_available
 msgid "This link has expired"
-msgstr ""
+msgstr "Bu bağlantının süresi dolmuş"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
-msgid "This workspace will only be available for the selected company"
+msgid "This workspace will only be available to the selected company"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_folder__group_ids
+msgid "This workspace will only be available to the selected user groups"
 msgstr ""
 
 #. module: documents
@@ -1850,17 +2019,19 @@ msgstr "Onaylanacak"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:69
+#: code:addons/documents/static/src/js/tours/documents.js:69
 #, python-format
 msgid ""
 "To delete files, archive them first. </br>Archived documents can still be "
 "accessed using the Archive option in the Filters top menu."
 msgstr ""
+"Dosyaları silmeden önce onları arşivleyin</br>Arşivlenmiş belgelere üst "
+"menüdeki Filtrelerden, Arşiv seçeneği yardımı ile hala ulaşılabilinir. "
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr ""
+msgstr "Onaylanacak"
 
 #. module: documents
 #: selection:documents.document,activity_state:0
@@ -1875,15 +2046,16 @@ msgstr "Bugünkü Aktiviteler"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form_list
 msgid "Tooltip"
 msgstr "Bilgi Çubuğu"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:35
+#: code:addons/documents/static/src/js/tours/documents.js:35
 #, python-format
 msgid "Try to <b>post a message</b>"
-msgstr ""
+msgstr "Bir mesaj <b>göndermeyi deneyin</b>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
@@ -1906,7 +2078,7 @@ msgstr "URL"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:162
 #, python-format
 msgid "Un-archive"
-msgstr ""
+msgstr "Arşivlenmemiş"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_unread
@@ -1926,7 +2098,7 @@ msgstr "Okunmamış Mesaj Sayacı"
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr ""
+msgstr "Yükle"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action
@@ -1934,11 +2106,13 @@ msgid ""
 "Upload <span class=\"font-weight-normal\">a file or</span> drag <span class"
 "=\"font-weight-normal\">it here.</span>"
 msgstr ""
+"Buraya <span class=\"font-weight-normal\">bir dosya </span>yükleyin yada "
+"<span class=\"font-weight-normal\">sürükleyin.</span>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
 msgid "Upload by Email"
-msgstr ""
+msgstr "E-Posta ile Yükleyin"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__url
@@ -1947,22 +2121,19 @@ msgstr "Url"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:55
+#: code:addons/documents/static/src/js/tours/documents.js:55
 #, python-format
 msgid ""
 "Use <b>folders</b> to organize documents by departments, or group of "
 "interests"
 msgstr ""
+"Departmanlara yada grupların ilgilerine göre belgeleri organize etmek "
+"için<b>kullanın</b>"
 
 #. module: documents
 #: model:res.groups,name:documents.group_documents_user
 msgid "User"
 msgstr "Kullanıcı"
-
-#. module: documents
-#: model:ir.model,name:documents.model_res_users
-msgid "Users"
-msgstr "Kullanıcılar"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_vat
@@ -2008,10 +2179,12 @@ msgstr "Videolar"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:13
+#: code:addons/documents/static/src/js/tours/documents.js:13
 #, python-format
 msgid "Want to become a <b>paperless company</b>? Let's discover Odoo DMS."
 msgstr ""
+"Kağıt kullanmayan bir şirket mi olmak <b>istiyorsun</b>?Haydi Odoo DMS'i "
+"keşfedin."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
@@ -2034,43 +2207,49 @@ msgstr "Hafta"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/tour.js:64
+#: code:addons/documents/static/src/js/tours/documents.js:64
 #, python-format
 msgid ""
 "When you <b>upload documents</b>, they appear in the selected folder and "
 "tags."
 msgstr ""
+"Belgeleri <b>yüklediğinizde</b>,seçilen dosya ve etiketlerin içinde "
+"görünecekler."
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
 msgid "Workflow Actions"
-msgstr ""
+msgstr "İş Akışı Eylemleri"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__workflow_rule_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__workflow_rule_id
 msgid "Workflow Rule"
-msgstr ""
+msgstr "İş Akışı Kuralı"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__folder_id
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
-#: model:ir.ui.menu,name:documents.folder_menu
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_search
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_tree
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspace"
 msgstr ""
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action
+#: model:ir.ui.menu,name:documents.folder_menu
 msgid "Workspaces"
 msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Write a tooltip for the action here"
-msgstr ""
+msgstr "Eylem için buraya bir ipucu yazın"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__attachment_type
@@ -2083,15 +2262,29 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:175
+#, python-format
+msgid "document"
+msgstr "belge"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:174
+#, python-format
+msgid "documents"
+msgstr ""
+
+#. module: documents
+#. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:54
 #, python-format
 msgid "documents selected"
-msgstr ""
+msgstr "seçilen belgeler"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "documents shared by"
-msgstr ""
+msgstr "tarafından paylaşılan belgeler"
 
 #. module: documents
 #. openerp-web
@@ -2108,11 +2301,13 @@ msgid "e.g. Discuss proposal"
 msgstr "ör. Teklifi tartış"
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_documents_facet__tooltip
-msgid "hover text description"
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:175
+#, python-format
+msgid "selected"
 msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "shared by"
-msgstr ""
+msgstr "tarafından paylaşıldı"

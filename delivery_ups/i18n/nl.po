@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_ups
+# 	* delivery_ups
 # 
 # Translators:
 # Cas Vissers <casvissers@brahoo.nl>, 2017
@@ -8,14 +8,15 @@
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,11 +76,6 @@ msgstr "Rembours"
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
 msgstr "DHL"
-
-#. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Verzendwijzes"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -144,7 +140,13 @@ msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:209
+#: code:addons/delivery_ups/models/ups_request.py:208
+#, python-format
+msgid "Packages %s do not have a positive shipping weight."
+msgstr ""
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/ups_request.py:200
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Voorzie minimaal één item om te verzend aub."
@@ -165,6 +167,16 @@ msgid "Provider"
 msgstr "Provider"
 
 #. module: delivery_ups
+#: code:addons/delivery_ups/models/delivery_ups.py:300
+#, python-format
+msgid ""
+"Return label generated<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> "
+"%s"
+msgstr ""
+"Retour label aangemaakt<br/><b>Traceernummers:</b> "
+"%s<br/><b>Verpakkingen:</b> %s"
+
+#. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "SPL"
 msgstr "SPL"
@@ -180,13 +192,13 @@ msgid "Saturday Delivery"
 msgstr "Levering op zaterdag"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:231
+#: code:addons/delivery_ups/models/delivery_ups.py:330
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Levering N° %s werd geannuleerd"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:202
+#: code:addons/delivery_ups/models/delivery_ups.py:206
 #, python-format
 msgid ""
 "Shipment created into UPS<br/><b>Tracking Numbers:</b> "
@@ -196,7 +208,12 @@ msgstr ""
 "</b>%s<br/><b>Verpakkingen:</b>%s"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:187
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Verzendmethoden"
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/ups_request.py:174
 #, python-format
 msgid ""
 "The address of your company is missing or wrong.\n"
@@ -206,7 +223,7 @@ msgstr ""
 "(Mist veld(en): %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:197
+#: code:addons/delivery_ups/models/ups_request.py:184
 #, python-format
 msgid ""
 "The address of your warehouse is missing or wrong.\n"
@@ -216,7 +233,7 @@ msgstr ""
 "(Mist veld(en): %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:215
+#: code:addons/delivery_ups/models/ups_request.py:205
 #, python-format
 msgid ""
 "The delivery cannot be done because the weight of your product is missing."
@@ -225,7 +242,7 @@ msgstr ""
 "ontbreekt."
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:211
+#: code:addons/delivery_ups/models/ups_request.py:202
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -235,7 +252,7 @@ msgstr ""
 "ontbreekt."
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:219
+#: code:addons/delivery_ups/models/ups_request.py:212
 #, python-format
 msgid ""
 "The recipient address is missing or wrong.\n"
@@ -295,12 +312,6 @@ msgid "UPS Default Packaging Type"
 msgstr "UPS standaard verpakkingstype"
 
 #. module: delivery_ups
-#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
-msgid "UPS Delivery Methods"
-msgstr "UPS leveringsmethodes"
-
-#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_file_type
 msgid "UPS Label File Type"
 msgstr "UPS label bestand soort"
@@ -326,6 +337,12 @@ msgstr "UPS dienst soort"
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_shipper_number
 msgid "UPS Shipper Number"
 msgstr "UPS verzender nummer"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+msgid "UPS Shipping Methods"
+msgstr "UPS verzendmethodes"
 
 #. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us

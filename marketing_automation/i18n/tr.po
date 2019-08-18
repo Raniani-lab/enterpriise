@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * marketing_automation
+# 	* marketing_automation
 # 
 # Translators:
 # Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
@@ -8,15 +8,16 @@
 # Levent Karakaş <levent@mektup.at>, 2017
 # Ediz Duman <neps1192@gmail.com>, 2017
 # Martin Trigaux, 2019
-# Murat Kaplan <muratk@projetgrup.com>, 2019
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2019
+# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
 # Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 12:56+0000\n"
 "PO-Revision-Date: 2017-12-13 15:21+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
@@ -25,6 +26,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__link_tracker_click_count
+msgid "# Clicks"
+msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
@@ -105,8 +111,8 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "<i class=\"fa fa-pie-chart\"/> Email Details"
-msgstr "<i class=\"fa fa-pie-chart\"></i>E-posta ayrıntıları"
+msgid "<i class=\"fa fa-pie-chart\"/> Details"
+msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -250,18 +256,6 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_after_7_days
-#: model:utm.source,name:marketing_automation.mass_mailing_after_7_days_utm_source
-msgid "After 7 days"
-msgstr "7 gün sonra"
-
-#. module: marketing_automation
-#: model:marketing.activity,name:marketing_automation.marketing_activity_2
-#: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
-msgid "After 7 days (if not yet customers)"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
 msgid "Applied Filter"
 msgstr ""
@@ -285,6 +279,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__bounced
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Bounced"
 msgstr "Karşılıksız çıktı"
 
@@ -338,10 +333,9 @@ msgid "Clicked"
 msgstr "Tıklandı"
 
 #. module: marketing_automation
-#: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
-#: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
-msgid "Commercial prospection"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Clicks"
+msgstr "Tıklama"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
@@ -432,14 +426,14 @@ msgstr "Sil"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:181
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:199
 #, python-format
 msgid "Delete Activity"
 msgstr "Aktiviteyi Sil"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:183
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:201
 #, python-format
 msgid "Delete All"
 msgstr "Hepsini Sil"
@@ -451,7 +445,7 @@ msgstr ""
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:188
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:206
 #, python-format
 msgid "Discard"
 msgstr "Vazgeç"
@@ -513,6 +507,18 @@ msgid "Email composition wizard"
 msgstr "E-posta yazma sihirbazı"
 
 #. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:636
+#, python-format
+msgid "Email failed"
+msgstr ""
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:629
+#, python-format
+msgid "Email ignored"
+msgstr ""
+
+#. module: marketing_automation
 #: selection:marketing.trace,state:0
 msgid "Error"
 msgstr "Hata"
@@ -523,13 +529,13 @@ msgid "Error message"
 msgstr "Hata mesajı"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:372
+#: code:addons/marketing_automation/models/marketing_campaign.py:392
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:378
+#: code:addons/marketing_automation/models/marketing_campaign.py:398
 #, python-format
 msgid ""
 "Error! You can't define a child activity with a trigger of type \"beginning "
@@ -542,13 +548,13 @@ msgid "Exception"
 msgstr "İstisna"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:593
+#: code:addons/marketing_automation/models/marketing_campaign.py:612
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:563
+#: code:addons/marketing_automation/models/marketing_campaign.py:582
 #, python-format
 msgid "Exception in server action: %s"
 msgstr ""
@@ -643,6 +649,16 @@ msgstr "Test Başlat"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Launch a test"
 msgstr "Test Başlat"
+
+#. module: marketing_automation
+#: model:ir.actions.act_window,name:marketing_automation.link_tracker_action_marketing_campaign
+msgid "Link Statistics"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.link_tracker_menu_reporting_marketing_automation
+msgid "Link Tracker"
+msgstr "Bağlantı İzleyici"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
@@ -740,13 +756,13 @@ msgid "Marketing Automation Mailings"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:589
+#: code:addons/marketing_automation/models/marketing_campaign.py:608
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:559
+#: code:addons/marketing_automation/models/marketing_campaign.py:578
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
 msgstr ""
@@ -802,13 +818,6 @@ msgstr "Toplu E-Posta"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mail_statistics_ids
 msgid "Mass mailing statistics"
 msgstr "Toplu e-posta istatistikleri"
-
-#. module: marketing_automation
-#: model:ir.actions.server,name:marketing_automation.ir_action_server_action_message_sales_person
-#: model:marketing.activity,name:marketing_automation.marketing_activity_3
-#: model:utm.source,name:marketing_automation.marketing_activity_3_utm_source
-msgid "Message for sales person"
-msgstr "Satış temsilcisi için mesaj"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
@@ -880,14 +889,6 @@ msgstr "Henüz cevaplanmadı"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_id
 msgid "Object"
 msgstr "Nesne"
-
-#. module: marketing_automation
-#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_offer_free_trial
-#: model:marketing.activity,name:marketing_automation.marketing_activity_1
-#: model:utm.source,name:marketing_automation.marketing_activity_1_utm_source
-#: model:utm.source,name:marketing_automation.mass_mailing_offer_free_trial_utm_source
-msgid "Offer free catalog"
-msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened
@@ -963,7 +964,7 @@ msgstr "Uygula"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:204
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:222
 #, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr "Lütfen kampanyanızı bir alt aktivite ekleyerek kaydedin."
@@ -1014,8 +1015,8 @@ msgid "Record model"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:361
-#: code:addons/marketing_automation/models/marketing_campaign.py:465
+#: code:addons/marketing_automation/models/marketing_campaign.py:381
+#: code:addons/marketing_automation/models/marketing_campaign.py:484
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
 #: selection:marketing.trace,state:0
 #, python-format
@@ -1023,7 +1024,7 @@ msgid "Rejected"
 msgstr "Reddedildi"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:538
+#: code:addons/marketing_automation/models/marketing_campaign.py:557
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
 msgstr ""
@@ -1043,6 +1044,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Replied"
 msgstr "Cevaplandı"
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.marketing_automation_reporting_menu
+msgid "Reporting"
+msgstr "Raporlama"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__require_sync
@@ -1183,8 +1189,8 @@ msgid "Subject"
 msgstr "Konu"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:360
-#: code:addons/marketing_automation/models/marketing_campaign.py:464
+#: code:addons/marketing_automation/models/marketing_campaign.py:380
+#: code:addons/marketing_automation/models/marketing_campaign.py:483
 #, python-format
 msgid "Success"
 msgstr "Başarı"
@@ -1228,7 +1234,7 @@ msgstr "Testler"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:192
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:210
 #, python-format
 msgid ""
 "This Activity has a dependant child activity. 'DELETE ALL' will delete all "
@@ -1238,7 +1244,7 @@ msgstr ""
 "silecektir."
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:585
+#: code:addons/marketing_automation/models/marketing_campaign.py:604
 #, python-format
 msgid ""
 "To use this feature you should be an administrator or belong to the "
@@ -1353,7 +1359,7 @@ msgid "Workflow Started On"
 msgstr "Kampanya Akışı Başladı :"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:173
+#: code:addons/marketing_automation/models/marketing_campaign.py:186
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
 msgstr ""

@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_crm_score
+# 	* website_crm_score
 # 
 # Translators:
 # Anja Funk <anja.funk@afimage.de>, 2017
@@ -11,7 +11,6 @@
 # Andi, 2017
 # Tina Rittmüller <tr@ife.de>, 2017
 # Niki Waibel, 2017
-# brokemeister <work@maltejansen.de>, 2017
 # e2f <projects@e2f.com>, 2018
 # Wolfgang Taferner, 2018
 # Ermin Trevisan <trevi@twanda.com>, 2018
@@ -20,14 +19,15 @@
 # Marco Tarsia <marco.y.tarsia@gmail.com>, 2019
 # Martin Trigaux, 2019
 # JackTheHunter <Maximilian.N98@gmail.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: JackTheHunter <Maximilian.N98@gmail.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,7 +99,7 @@ msgstr "# Anhänge"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
 msgid "Auto Assign Date"
-msgstr ""
+msgstr "Datum automatisch zuweisen"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
@@ -115,7 +115,7 @@ msgstr "Kapazität"
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid "Create a new salesman"
-msgstr ""
+msgstr "Erstellen Sie einen neuen Verkäufer"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_uid
@@ -165,7 +165,7 @@ msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
-msgid "Define a new sales channel"
+msgid "Define a new sales team"
 msgstr ""
 
 #. module: website_crm_score
@@ -254,6 +254,7 @@ msgid "Is Follower"
 msgstr "Ist ein Abonnent"
 
 #. module: website_crm_score
+#: model:crm.lead.scoring.frequency.field,name:website_crm_score.frequency_field_lang_id
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
 msgid "Language"
 msgstr "Sprache"
@@ -472,12 +473,6 @@ msgid "Saleman"
 msgstr "Verkäufer"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_action
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channels"
-msgstr "Vertriebskänale"
-
-#. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -494,6 +489,7 @@ msgid "Sales Records"
 msgstr "Verkaufsdaten"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Team"
@@ -505,6 +501,8 @@ msgid ""
 "Sales Team the user is member of. Used to compute the members of a Sales "
 "Team through the inverse one2many"
 msgstr ""
+"Verkaufsteam, in dem der Benutzer Mitglied ist. Wird verwendet, um die "
+"Mitglieder eines Verkaufsteams über das inverse one2many zu berechnen"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids
@@ -514,7 +512,7 @@ msgstr "Verkäufer"
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_team_user
 msgid "Salesperson (Team Member)"
-msgstr ""
+msgstr "Verkäufer (Teammitglied)"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action
@@ -569,6 +567,7 @@ msgid "Search PageViews"
 msgstr "Seitenansichten durchsuchen"
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
 msgid "Teams Assignation"
 msgstr "Zuweisung der Teams"
@@ -604,11 +603,9 @@ msgstr "URL"
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
-"Use sales channels to organize your sales departments.\n"
-"                    Each channel will work with a separate pipeline."
+"Use sales teams to organize your sales departments.\n"
+"                    Each team will work with a separate pipeline."
 msgstr ""
-"Mit Verkaufskanälen können Sie Ihre Vertriebsabteilungen organisieren.\n"
-" Jeder Kanal stellt dabei eine separate Pipeline dar."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
@@ -617,7 +614,7 @@ msgstr "Benutzer"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
-msgid "User Sales Channel"
+msgid "User Sales Team"
 msgstr ""
 
 #. module: website_crm_score

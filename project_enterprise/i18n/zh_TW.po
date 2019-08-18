@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * project_enterprise
+# 	* project_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-03-20 14:43+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -26,15 +26,47 @@ msgid "<span class=\"o_label\">Planning</span>"
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Customer: </strong>"
+msgstr "<strong>客戶: </strong>"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Start Date: </strong>"
+msgstr ""
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Stop Date: </strong>"
+msgstr ""
+
+#. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_project__allow_planning
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__allow_planning
 msgid "Allow Planning"
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "Assigned To"
+msgid "Assigned to"
 msgstr "分派給"
+
+#. module: project_enterprise
+#: model:ir.ui.menu,name:project_enterprise.project_task_menu_planning_by_user
+msgid "By Employee"
+msgstr "按員工"
+
+#. module: project_enterprise
+#: model:ir.ui.menu,name:project_enterprise.project_task_menu_planning_by_project
+msgid "By Project"
+msgstr "按專案"
+
+#. module: project_enterprise
+#: model:ir.model.fields,help:project_enterprise.field_project_project__allow_planning
+#: model:ir.model.fields,help:project_enterprise.field_project_task__allow_planning
+msgid "Enables planning of Task with a Start and End date."
+msgstr ""
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_end
@@ -47,16 +79,31 @@ msgid "Group By"
 msgstr "分組按"
 
 #. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task_type__is_closed
+msgid "Is a close stage"
+msgstr ""
+
+#. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
 msgid "My Project"
 msgstr "我的專案"
 
 #. module: project_enterprise
-#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning
 #: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning_by_project
-#: model:ir.ui.menu,name:project_enterprise.project_task_menu_planning
+#: model:ir.ui.menu,name:project_enterprise.project_planning_menu
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "Planning"
 msgstr "規劃"
+
+#. module: project_enterprise
+#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning_groupby_user
+msgid "Planning by Employee"
+msgstr ""
+
+#. module: project_enterprise
+#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning_groupby_project
+msgid "Planning by Project"
+msgstr ""
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_project
@@ -71,13 +118,19 @@ msgstr "開始日期"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 msgid "Task"
 msgstr "任務"
 
 #. module: project_enterprise
-#: model:ir.ui.menu,name:project_enterprise.project_task_menu
-msgid "Tasks"
-msgstr "任務"
+#: model:ir.model,name:project_enterprise.model_project_task_type
+msgid "Task Stage"
+msgstr "任務階段"
+
+#. module: project_enterprise
+#: model:ir.model.fields,help:project_enterprise.field_project_task_type__is_closed
+msgid "Tasks in this stage are considered as closed."
+msgstr ""
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form

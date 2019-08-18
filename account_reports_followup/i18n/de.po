@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_reports_followup
+# 	* account_reports_followup
 # 
 # Translators:
 # Henry Mineehen <info@mineehen.de>, 2017
@@ -11,19 +11,20 @@
 # Denis Ledoux <dle@odoo.com>, 2017
 # Niki Waibel, 2017
 # Tina Rittmüller <tr@ife.de>, 2017
+# Rudolf Schnapka <rs@techno-flex.de>, 2017
 # Bülent Tiknas <btiknas@googlemail.com>, 2017
 # Martin Trigaux, 2017
 # e2f <projects@e2f.com>, 2018
-# Rudolf Schnapka <rs@techno-flex.de>, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-08-12 12:55+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,8 +34,6 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -137,7 +136,7 @@ msgstr ": Unternehmen des Benutzers"
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_kanban
 msgid "<i class=\"fa fa-building\" role=\"img\" aria-label=\"Enterprise\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-building\" role=\"img\" aria-label=\"Enterprise\"/>"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup
@@ -341,7 +340,7 @@ msgid "Manual Action Type"
 msgstr ""
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:86
+#: code:addons/account_reports_followup/models/account_followup_report.py:88
 #, python-format
 msgid "Manual action done"
 msgstr "Manuelle Handlung erledigt"
@@ -354,6 +353,8 @@ msgid ""
 "Odoo will remind you to take care of this follow-up on the next reminder "
 "date."
 msgstr ""
+"Odoo wird Sie daran erinnern, sich beim nächsten Erinnerungstermin um dieses"
+" Follow-up zu kümmern."
 
 #. module: account_reports_followup
 #: sql_constraint:account_followup.followup:0
@@ -383,14 +384,14 @@ msgstr "Mahnwesen"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "Print a Letter"
-msgstr ""
+msgstr "Einen Brief drucken"
 
 #. module: account_reports_followup
 #. openerp-web
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
 #, python-format
 msgid "Print letter"
-msgstr ""
+msgstr "Brief drucken"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__description
@@ -402,7 +403,7 @@ msgstr "Gedruckte Mitteilung"
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:16
 #, python-format
 msgid "Remind me later"
-msgstr ""
+msgstr "Erinnere mich später"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_filter
@@ -484,19 +485,9 @@ msgid "Total debit"
 msgstr "Summe Soll"
 
 #. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
-msgid "Urging reminder email"
-msgstr "Nachdrückliche E-Mail zur Erinnerung"
-
-#. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
-msgid "Urging reminder letter"
-msgstr "Nachdrücklicher Erinnerungs-Brief"
-
-#. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "When processing, it will print a PDF"
-msgstr ""
+msgstr "Bei der Verarbeitung wird ein PDF gedruckt"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_email
@@ -526,6 +517,12 @@ msgstr ""
 "                            die folgenden Schlüsselwörter verwenden. Vergessen Sie\n"
 "                            allerdings dann nicht alle Sprachen, die Sie verwenden, mit Hilfe\n"
 "                            des oberen rechten Button zu installieren."
+
+#. module: account_reports_followup
+#: code:addons/account_reports_followup/models/account_followup.py:161
+#, python-format
+msgid "You have to define at least one line in the followup levels of %s"
+msgstr ""
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup.py:57

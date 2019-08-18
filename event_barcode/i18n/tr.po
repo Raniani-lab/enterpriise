@@ -1,24 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * event_barcode
+# 	* event_barcode
 # 
 # Translators:
 # Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
 # Ediz Duman <neps1192@gmail.com>, 2017
 # Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2017
 # Murat Kaplan <muratk@projetgrup.com>, 2018
-# Umur Akın <umura@projetgrup.com>, 2018
 # Martin Trigaux, 2019
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2019
 # Buket Şeker <buket_skr@hotmail.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,6 +49,8 @@ msgid ""
 "<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
 "label=\"Barcode\"/>"
 msgstr ""
+"<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
+"label=\"Barcode\"/>"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:18
@@ -128,7 +130,7 @@ msgstr "Geçersiz kullanıcı girişi"
 #. module: event_barcode
 #: model:ir.model.fields,field_description:event_barcode.field_res_config_settings__barcode_nomenclature_id
 msgid "Nomenclature"
-msgstr ""
+msgstr "Sınıflandırma"
 
 #. module: event_barcode
 #. openerp-web

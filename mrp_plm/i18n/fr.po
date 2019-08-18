@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mrp_plm
+# 	* mrp_plm
 # 
 # Translators:
 # Agathe Mollé <molleagathe@gmail.com>, 2016
@@ -34,19 +34,20 @@
 # Xavier Belmere <Info@cartmeleon.com>, 2018
 # Jérémy Donas <LeDistordu@users.noreply.github.com>, 2018
 # e2f <projects@e2f.com>, 2018
-# LEONARD Jean-Christophe <jeanchristophe.leonard@gmail.com>, 2018
+# LEONARD Jean-Christophe <jean-christophe.leonard@myceliandre.fr>, 2018
 # Jérôme Tanché <jerome.tanche@ouest-dsi.fr>, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Laura Piraux <lap@odoo.com>, 2019
 # Thomas Dobbelsteyn <tdo@odoo.com>, 2019
 # Marie Willemyns <mwi@odoo.com>, 2019
+# Rémi CAZENAVE <remi@le-filament.com>, 2019
 # Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -106,7 +107,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -215,6 +216,11 @@ msgstr "Ajouter"
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
 msgid "Add a new tag"
 msgstr "Ajouter une nouvelle étiquette"
+
+#. module: mrp_plm
+#: model:res.groups,name:mrp_plm.group_plm_manager
+msgid "Administrator"
+msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_id
@@ -413,13 +419,10 @@ msgstr "Nomenclature"
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid ""
-"Bills of materials allow you to define the list of required raw\n"
-"              materials used to make a finished product; through a manufacturing\n"
+"Bills of materials allow you to define the list of required components\n"
+"              used to make a finished product; through a manufacturing\n"
 "              order or a pack of products."
 msgstr ""
-"La nomenclature permet de définir la liste de matières premières pour "
-"fabriquer un produit fini, par un ordre de manufacture ou un ensemble de "
-"produits."
 
 #. module: mrp_plm
 #: selection:mrp.eco,kanban_state:0
@@ -842,6 +845,12 @@ msgid "Email Alias"
 msgstr "Alias d'email"
 
 #. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__email_cc
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+msgid "Email cc"
+msgstr ""
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__eco_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__eco_id
 msgid "Engineering Change"
@@ -869,6 +878,11 @@ msgstr "Ordres de modification technique"
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "Engineering Changes"
 msgstr "Modifications techniques"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+msgid "Extra Info"
+msgstr "Info supplémentaires"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1081,15 +1095,15 @@ msgid "Late Activities"
 msgstr "Activités en retard"
 
 #. module: mrp_plm
+#: model:ir.model.fields,help:mrp_plm.field_mrp_eco__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_main_attachment_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Pièce jointe principale"
-
-#. module: mrp_plm
-#: model:res.groups,name:mrp_plm.group_plm_manager
-msgid "Manager"
-msgstr "Gestionnaire"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__upd_time_cycle_manual

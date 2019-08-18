@@ -1,24 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_taxcloud
+# 	* account_taxcloud
 # 
 # Translators:
 # Xavier Belmere <Info@cartmeleon.com>, 2016
 # Nancy Bolognesi <nb@microcom.ca>, 2016
-# Martin Trigaux, 2017
 # Olivier Lenoir <olivier.lenoir@free.fr>, 2017
 # e2f <projects@e2f.com>, 2018
 # Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2018
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Marie Willemyns <mwi@odoo.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,9 +115,9 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_taxcloud
-#: model:ir.model,name:account_taxcloud.model_account_invoice
-msgid "Invoice"
-msgstr "Facture"
+#: model:ir.model,name:account_taxcloud.model_account_move
+msgid "Journal Entries"
+msgstr "Pièces comptables"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update
@@ -181,11 +181,13 @@ msgid "TaxCloud"
 msgstr "TaxCloud"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_id
 msgid "TaxCloud API ID"
 msgstr "ID d'API TaxCloud"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_key
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_key
 msgid "TaxCloud API KEY"
 msgstr "CLÉ API TaxCloud"
@@ -232,8 +234,8 @@ msgid "Template for Fiscal Position"
 msgstr "Modèle de position fiscale"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:43
-#: code:addons/account_taxcloud/models/res_config_settings.py:23
+#: code:addons/account_taxcloud/models/account_invoice.py:55
+#: code:addons/account_taxcloud/models/res_config_settings.py:27
 #, python-format
 msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
 msgstr ""
@@ -241,7 +243,8 @@ msgstr ""
 "menu Paramètres."
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:115
+#: code:addons/account_taxcloud/models/account_invoice.py:119
+#: code:addons/account_taxcloud/models/account_invoice.py:152
 #, python-format
 msgid ""
 "The source document on the refund is not valid and thus the refunded cart "
@@ -251,7 +254,7 @@ msgstr ""
 "remboursé ne peut pas de ce fait être enregistré sur votre compte TaxCloud"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:85
+#: code:addons/account_taxcloud/models/account_invoice.py:122
 #, python-format
 msgid ""
 "The tax rates have been updated, you may want to check it before validation"
@@ -260,16 +263,11 @@ msgstr ""
 "vérifier avant la validation"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:43
-#: code:addons/account_taxcloud/models/res_config_settings.py:23
+#: code:addons/account_taxcloud/models/account_invoice.py:53
+#: code:addons/account_taxcloud/models/res_config_settings.py:25
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
 msgstr "Impossible de récupérer les taxes à partir de TaxCloud :"
-
-#. module: account_taxcloud
-#: model:ir.actions.server,name:account_taxcloud.action_account_invoice_update_taxes
-msgid "Update taxes with Taxcloud"
-msgstr "Mettre à jour les taxes avec TaxCloud"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_fiscal_position__is_taxcloud
@@ -278,7 +276,7 @@ msgid "Use TaxCloud API"
 msgstr "Utiliser l'API TaxCloud"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/product.py:28
+#: code:addons/account_taxcloud/models/product.py:30
 #, python-format
 msgid "[%s] %s"
 msgstr "[%s] %s"

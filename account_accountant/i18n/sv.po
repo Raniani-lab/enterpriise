@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_accountant
+# 	* account_accountant
 # 
 # Translators:
 # Kristoffer Grundström <hamnisdude@gmail.com>, 2018
-# Martin Trigaux, 2018
 # Haojun Zou <apollo_zhj@msn.com>, 2018
 # Frida E, 2018
 # Egils Verkstad <egils@riseup.net>, 2018
-# Anders Wallenquist <anders.wallenquist@vertel.se>, 2018
 # Kim Asplund <kim.asplund@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2019
 # Daniel Osser <danielosser@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2016-08-05 12:55+0000\n"
 "Last-Translator: Daniel Osser <danielosser@gmail.com>, 2019\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
@@ -62,7 +62,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.account_tag_menu
 msgid "Account Tags"
-msgstr ""
+msgstr "Kontotaggar"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -82,6 +82,12 @@ msgid "Anglo-Saxon Accounting"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_move__attachment_ids
+#: model:ir.model.fields,field_description:account_accountant.field_account_move_line__move_attachment_ids
+msgid "Attachments"
+msgstr "Bilagor"
+
+#. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
 msgid "Bank & Cash Moves"
 msgstr ""
@@ -94,6 +100,13 @@ msgstr "Avbryt"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_change_lock_date
 msgid "Change Lock Date"
+msgstr ""
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:78
+#, python-format
+msgid "Choose a line to preview its attachments."
 msgstr ""
 
 #. module: account_accountant
@@ -154,7 +167,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/res_config_settings.py:36
+#: code:addons/account_accountant/models/res_config_settings.py:37
 #, python-format
 msgid ""
 "Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
@@ -167,6 +180,16 @@ msgid ""
 "Intermediary account used when moving money from a liquidity account to "
 "another"
 msgstr ""
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_move
+msgid "Journal Entries"
+msgstr "Verifikat"
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_move_line
+msgid "Journal Item"
+msgstr "Transaktion"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
@@ -200,7 +223,7 @@ msgstr ""
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:110
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:18
 #, python-format
 msgid "Let's start with a new customer invoice."
 msgstr "Låt oss börja med en ny kundfaktura.,"
@@ -225,6 +248,14 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
+#: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
+msgid ""
+"No users can edit journal entries related to a tax prior and inclusive of "
+"this date."
 msgstr ""
 
 #. module: account_accountant
@@ -268,7 +299,7 @@ msgstr "Produktkategorier"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:105
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:13
 #, python-format
 msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
@@ -288,10 +319,23 @@ msgid "Save"
 msgstr "Spara"
 
 #. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date
+msgid "Tax Lock Date"
+msgstr ""
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
 "The system will try to predict vendor bill accounts based on history of "
 "previous bills."
+msgstr ""
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:130
+#, python-format
+msgid "There is no attachment linked to this move."
 msgstr ""
 
 #. module: account_accountant
@@ -301,7 +345,7 @@ msgstr "Överför konto"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:115
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:23
 #, python-format
 msgid ""
 "Use the path to quickly click back to <b>previous screens</b>, without "
@@ -312,7 +356,7 @@ msgstr ""
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:119
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:27
 #, python-format
 msgid ""
 "Your reports are available in real time. <i>No need to close a fiscal year "

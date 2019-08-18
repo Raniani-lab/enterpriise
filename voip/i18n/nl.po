@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * voip
+# 	* voip
 # 
 # Translators:
 # Melroy van den Berg <webmaster1989@gmail.com>, 2017
 # e2f_nl_c4 <e2f_nl_c4@hotmail.com>, 2017
+# Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Eric Geens <ericgeens@yahoo.com>, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
 # Cas Vissers <casvissers@brahoo.nl>, 2019
-# Martin Trigaux, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -28,7 +28,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:314
+#: code:addons/voip/static/src/js/user_agent.js:315
 #, python-format
 msgid " Please check your configuration."
 msgstr "Gelieve uw configuratie te controleren."
@@ -37,6 +37,18 @@ msgstr "Gelieve uw configuratie te controleren."
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
 msgstr "# Dossiers"
+
+#. module: voip
+#: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
+msgid "Action to Perform"
+msgstr "Actie om uit te voeren"
+
+#. module: voip
+#: model:ir.model.fields,help:voip.field_mail_activity_type__category
+msgid ""
+"Actions may trigger specific behavior like opening calendar view or "
+"automatically mark as done when a document is uploaded"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -119,7 +131,7 @@ msgstr "Roepnaam"
 #: code:addons/voip/models/voip_queue_mixin.py:37
 #, python-format
 msgid "Call activity type is not of category \"phonecall\""
-msgstr ""
+msgstr "Activiteitssoort bellen is niet van de categorie \"telefoongesprek\""
 
 #. module: voip
 #: code:addons/voip/models/voip_phonecall.py:196
@@ -136,7 +148,7 @@ msgstr "Bellen naar"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/dialing_panel.js:674
 #, python-format
 msgid "Calling "
 msgstr "Wordt gebeld"
@@ -167,23 +179,8 @@ msgid "Cancelled"
 msgstr "Geannuleerd"
 
 #. module: voip
-#: model:ir.model.fields,help:voip.field_mail_activity_type__category
-msgid ""
-"Categories may trigger specific behavior like opening calendar view or "
-"automatically mark as done when a document is uploaded"
-msgstr ""
-"Categorieeën kunnen specifiek gedrag doen afgaan zoals het openen van de "
-"kalender weergave of automatisch als gereed markeren wanneer een bestand "
-"geüpload is"
-
-#. module: voip
-#: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
-msgid "Category"
-msgstr "Categorie"
-
-#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:498
+#: code:addons/voip/static/src/js/dialing_panel.js:493
 #, python-format
 msgid "Click to unblock"
 msgstr "Klik om te ontgrendelen"
@@ -202,7 +199,7 @@ msgstr "Configuratie instellingen"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:295
+#: code:addons/voip/static/src/js/user_agent.js:296
 #, python-format
 msgid "Connecting..."
 msgstr "Verbinden..."
@@ -244,7 +241,7 @@ msgstr "Klant"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:478
+#: code:addons/voip/static/src/js/dialing_panel.js:473
 #, python-format
 msgid "Customer unavailable"
 msgstr "Klant is onbereikbaar"
@@ -386,7 +383,7 @@ msgstr "Inkomend"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:485
+#: code:addons/voip/static/src/js/user_agent.js:492
 #, python-format
 msgid "Incoming call from "
 msgstr "Inkomende oproep van"
@@ -508,6 +505,11 @@ msgid "NEXT ACTIVITIES"
 msgstr "VOLGENDE ACTIVITEITEN"
 
 #. module: voip
+#: selection:mail.activity.type,category:0
+msgid "None"
+msgstr "Geen"
+
+#. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Not Held"
 msgstr "Nog niet beëindigd"
@@ -531,8 +533,8 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:219
-#: code:addons/voip/static/src/js/user_agent.js:224
+#: code:addons/voip/static/src/js/user_agent.js:220
+#: code:addons/voip/static/src/js/user_agent.js:225
 #, python-format
 msgid "One or more parameter is missing. Please check your configuration."
 msgstr ""
@@ -572,6 +574,8 @@ msgstr "Telefoon"
 msgid ""
 "Phone call cannot be created. Is it any phone number linked to record %s?"
 msgstr ""
+"Telefoongesprek kan niet aangemaakt worden. Is het een telefoonnummer "
+"gekoppeld aan het record %s?"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
@@ -601,7 +605,7 @@ msgstr "Telefoongesprekken"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:177
+#: code:addons/voip/static/src/js/dialing_panel.js:172
 #, python-format
 msgid "Please check if a phone number is given for the current phonecall"
 msgstr ""
@@ -610,7 +614,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:341
+#: code:addons/voip/static/src/js/user_agent.js:342
 #, python-format
 msgid "Please check your configuration.</br> (Reason receives :"
 msgstr "Controleer uw instellingen.</br> (Reden ontvangen:"
@@ -718,13 +722,8 @@ msgid "Specific Date"
 msgstr "Specifieke datum"
 
 #. module: voip
-#: selection:mail.activity.type,category:0
-msgid "Standard"
-msgstr "Standaard"
-
-#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/dialing_panel.js:674
 #, python-format
 msgid "Start Calling"
 msgstr "Gesprekken beginnen"
@@ -746,6 +745,11 @@ msgid "Summary"
 msgstr "Samenvatting"
 
 #. module: voip
+#: selection:mail.activity.type,category:0
+msgid "Tax report"
+msgstr "BTW rapport"
+
+#. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP adress of your PBX Server"
 msgstr "Het IP-adres van uw telefooncentrale (PBX server)"
@@ -757,14 +761,14 @@ msgstr "De URL van uw websocket"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:479
+#: code:addons/voip/static/src/js/dialing_panel.js:474
 #, python-format
 msgid "The customer is temporary unavailable. Please try later."
 msgstr "De klant is tijdelijk onbereikbaar. Probeer het later nog eens."
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:570
+#: code:addons/voip/static/src/js/user_agent.js:577
 #, python-format
 msgid ""
 "The number is incorrect, the user credentials could be wrong or the "
@@ -777,14 +781,14 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:176
+#: code:addons/voip/static/src/js/dialing_panel.js:171
 #, python-format
 msgid "The phonecall has no number"
 msgstr "Dit gesprek heeft geen nummer"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:244
+#: code:addons/voip/static/src/js/user_agent.js:245
 #, python-format
 msgid ""
 "The server configuration could be wrong. Please check your configuration."
@@ -805,7 +809,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:313
+#: code:addons/voip/static/src/js/user_agent.js:314
 #, python-format
 msgid "The websocket uri could be wrong."
 msgstr "De websocket url is mogelijk fout."
@@ -925,16 +929,16 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:187
-#: code:addons/voip/static/src/js/dialing_panel.js:289
-#: code:addons/voip/static/src/js/dialing_panel.js:310
+#: code:addons/voip/static/src/js/dialing_panel.js:182
+#: code:addons/voip/static/src/js/dialing_panel.js:284
+#: code:addons/voip/static/src/js/dialing_panel.js:305
 #, python-format
 msgid "You are already in a call"
 msgstr "U bent reeds in een telefoongesprek."
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:298
+#: code:addons/voip/static/src/js/user_agent.js:299
 #, python-format
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
@@ -958,7 +962,7 @@ msgstr "sec"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:340
+#: code:addons/voip/static/src/js/user_agent.js:341
 #, python-format
 msgid "the connection cannot be made. "
 msgstr "de connectie kan niet worden gemaakt."

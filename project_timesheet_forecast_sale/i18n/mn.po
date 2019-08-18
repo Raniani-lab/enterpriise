@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * project_timesheet_forecast_sale
+# 	* project_timesheet_forecast_sale
 # 
 # Translators:
 # nasaaskii <nasaaskii@gmail.com>, 2018
@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2017-12-13 15:25+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
@@ -29,20 +29,14 @@ msgid "%s (%s remaining hours)"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:50
 #, python-format
 msgid "After"
 msgstr "Дараа"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
-#, python-format
-msgid "Forecasted"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:163
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:182
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:175
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
 #, python-format
 msgid "Forecasts"
 msgstr "Урьдчилсан таамаг"
@@ -58,7 +52,7 @@ msgid "Project Forecast"
 msgstr "Төслийн Урьдчилсан таамаг"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:25
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:28
 #, python-format
 msgid ""
 "Remaining \n"
@@ -86,12 +80,23 @@ msgid "Task"
 msgstr "Даалгавар"
 
 #. module: project_timesheet_forecast_sale
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan
-msgid "Timesheets/Forecasts"
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
+msgid "Timesheets"
+msgstr "Цагийн хуудас"
+
+#. module: project_timesheet_forecast_sale
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
+msgid "Timesheets and Forecasts"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:26
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:50
+#, python-format
+msgid "Total"
+msgstr "Нийт"
+
+#. module: project_timesheet_forecast_sale
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:29
 #, python-format
 msgid ""
 "What is still to deliver based on sold hours, hours already done and "

@@ -1,20 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_plaid
+# 	* account_plaid
 # 
 # Translators:
 # Ted Wang <feiyuwang2012@gmail.com>, 2017
 # hman tsao <herman.tsao@gmail.com>, 2017
 # e2f <projects@e2f.com>, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
+# bf2549c5415a9287249cba2b8a5823c7, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: neter ji <jifuyi@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -60,6 +60,11 @@ msgstr "Plaid错误类型"
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_item_id
 msgid "Plaid Item"
 msgstr "Plaid项"
+
+#. module: account_plaid
+#: selection:account.online.provider,provider_type:0
+msgid "Ponto"
+msgstr ""
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type

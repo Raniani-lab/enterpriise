@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_online_sync
+# 	* account_online_sync
 # 
 # Translators:
 # Michael Yeung, 2018
@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -110,7 +110,7 @@ msgid "Action Required"
 msgstr "必須採取行動的"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:360
+#: code:addons/account_online_sync/models/online_sync.py:367
 #, python-format
 msgid "Add a Bank Account"
 msgstr "添加銀行帳戶"
@@ -132,7 +132,7 @@ msgid "Attachment Count"
 msgstr "附件數"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:317
+#: code:addons/account_online_sync/models/online_sync.py:324
 #, python-format
 msgid "Automated Bank Synchronization"
 msgstr "自動同步銀行"
@@ -184,7 +184,6 @@ msgid "Company"
 msgstr "公司"
 
 #. module: account_online_sync
-#: model_terms:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
 msgstr "配置"
@@ -195,7 +194,7 @@ msgid "Contact"
 msgstr "聯繫人"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:161
+#: code:addons/account_online_sync/models/online_sync.py:167
 #, python-format
 msgid "Create a Bank Account"
 msgstr "創建銀行帳戶"
@@ -446,7 +445,7 @@ msgid "Next synchronization"
 msgstr "下一個同步"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/company.py:21
+#: code:addons/account_online_sync/models/company.py:23
 #, python-format
 msgid ""
 "No bank journal could be found! Please install a chart of accounts first, in"
@@ -521,7 +520,7 @@ msgid "Online Partner Vendor Name"
 msgstr "線上業務夥伴的供應商名稱"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:375
+#: code:addons/account_online_sync/models/online_sync.py:382
 #: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
@@ -531,7 +530,7 @@ msgid "Online Synchronization"
 msgstr "線上同步"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:461
+#: code:addons/account_online_sync/models/online_sync.py:468
 #, python-format
 msgid "Opening statement: first synchronization"
 msgstr "開場陳述：首次同步"
@@ -548,12 +547,17 @@ msgid "Please enter at least a character for the search"
 msgstr "請輸入至少一個字元方能搜尋呀"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:285
+#: code:addons/account_online_sync/models/online_sync.py:292
 #, python-format
 msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
 "to do"
 msgstr "請勾稽您的帳戶與日記帳，或選擇「不勾稽」"
+
+#. module: account_online_sync
+#: selection:account.online.provider,provider_type:0
+msgid "Ponto"
+msgstr ""
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
@@ -691,7 +695,7 @@ msgid "True if user needs to take action by updating account"
 msgstr "如果使用者需要通過更新帳戶採取操作，則為true"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:201
+#: code:addons/account_online_sync/models/online_sync.py:208
 #, python-format
 msgid "Unimplemented"
 msgstr "未實現"
@@ -756,7 +760,7 @@ msgid ""
 msgstr "您需要關聯銀行帳戶到日記帳，以便系統自動檢索銀行對帳單。"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:287
+#: code:addons/account_online_sync/models/online_sync.py:294
 #, python-format
 msgid "You can not link two accounts to the same journal"
 msgstr "無法勾稽兩個帳戶到同一個日記帳。"
@@ -789,7 +793,7 @@ msgid "name of the banking institution"
 msgstr "銀行機構名稱"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:507
+#: code:addons/account_online_sync/models/online_sync.py:514
 #, python-format
 msgid "online sync"
 msgstr "線上同步"

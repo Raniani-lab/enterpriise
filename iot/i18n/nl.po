@@ -1,19 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * iot
+# 	* iot
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Cas Vissers <casvissers@brahoo.nl>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Martin Trigaux, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -67,23 +67,21 @@ msgstr "Camera"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:368
+#: code:addons/iot/static/src/js/iot.js:534
 #, python-format
 msgid "Click here to open your IoT Homepage"
 msgstr "Klik hier om uw IoT homepagina te openen"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:245
-#: code:addons/iot/static/src/js/iot.js:369
+#: code:addons/iot/static/src/js/iot.js:536
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
 msgstr "Klik op Geavanceerd/Toon details/Details/Meer informati"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:246
-#: code:addons/iot/static/src/js/iot.js:370
+#: code:addons/iot/static/src/js/iot.js:537
 #, python-format
 msgid ""
 "Click on Proceed to .../Add Exception/Visit this website/Go on to the "
@@ -93,27 +91,28 @@ msgstr ""
 " de webpagina"
 
 #. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/tours/iot.js:13
+#, python-format
+msgid "Click on iot App."
+msgstr "Klik op IoT app."
+
+#. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "Click on the"
 msgstr "Klik op de"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:244
-#, python-format
-msgid "Click on the link above to open your IoT Homepage"
-msgstr "Klik op de bovenstaande link om uw IoT homepagina te openen"
-
-#. module: iot
-#. openerp-web
-#: code:addons/iot/static/src/js/iot.js:383
+#: code:addons/iot/static/src/js/iot.js:130
+#: code:addons/iot/static/src/js/iot.js:546
 #, python-format
 msgid "Close"
 msgstr "Afsluiten"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:372
+#: code:addons/iot/static/src/js/iot.js:539
 #, python-format
 msgid "Close this window and try again"
 msgstr "Sluit dit venster en probeer het opnieuw"
@@ -131,35 +130,38 @@ msgstr "Connectie"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:297
+#: code:addons/iot/static/src/js/iot.js:300
 #, python-format
 msgid "Connection failed"
 msgstr "Verbinding mislukt"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:242
+#: code:addons/iot/static/src/js/iot.js:542
 #, python-format
-msgid ""
-"Connection refused, please accept the certificate and restart the scan:"
-msgstr ""
-"Connectie geweigerd, gelieve het certificaat te accepteren en de scan "
-"opnieuw te starten:"
+msgid "Connection to IoT Box failed"
+msgstr "Verbinding met de IOT Box mislukt"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:353
-#: code:addons/iot/static/src/js/iot.js:379
+#: code:addons/iot/static/src/js/iot.js:42
+#, python-format
+msgid "Connection to Printer failed"
+msgstr "Verbinding met de printer mislukt"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:599
 #, python-format
 msgid "Connection to device failed"
 msgstr "Verbinden met apparaat mislukt"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:41
+#: code:addons/iot/static/src/js/tours/iot.js:23
 #, python-format
-msgid "Connection with the IoT Box failed!"
-msgstr "Verbinding met IoT box mislukt!"
+msgid "Copy token to the clipboard."
+msgstr "Kopieer token naar het klembord."
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_uid
@@ -207,16 +209,9 @@ msgstr "Weergave naam"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:371
+#: code:addons/iot/static/src/js/iot.js:538
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr "Alleen Firefox: klik op bevestig beveiligingsuitzondering"
-
-#. module: iot
-#. openerp-web
-#: code:addons/iot/static/src/js/iot.js:247
-#, python-format
-msgid "Firefox only: Click on Confirm Security Exception"
 msgstr "Alleen Firefox: klik op bevestig beveiligingsuitzondering"
 
 #. module: iot
@@ -243,6 +238,7 @@ msgstr "IoT toestel"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
+#: model:ir.model.fields,field_description:iot.field_iot_device__iot_ip
 msgid "IP Address"
 msgstr "IP-adres"
 
@@ -255,6 +251,16 @@ msgstr "Identificatie "
 #: model:ir.model.fields,field_description:iot.field_iot_box__identifier
 msgid "Identifier (Mac Address)"
 msgstr "Identificator (Mac adres)"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:533
+#, python-format
+msgid ""
+"If you are on a secure server (HTTPS) check if you accepted the certificate:"
+msgstr ""
+"Indien u zich op een beveiligde server bevind (HTTPS) controleert u of u het"
+" certificaat geaccepteerd heeft:"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -284,6 +290,13 @@ msgstr "IoT boxen"
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
 msgstr "IoT Apparaat"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:294
+#, python-format
+msgid "IoTBox connected"
+msgstr "IoTBox verbonden"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
@@ -329,14 +342,26 @@ msgstr "OK"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:282
+#: code:addons/iot/static/src/js/iot.js:531
 #, python-format
-msgid "Pairing with IoT..."
-msgstr "Verbinding maken met IoT..."
+msgid "Odoo cannot reach the IoT Box."
+msgstr "Odoo kan niet met de IoT box verbinden"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:375
+#: code:addons/iot/static/src/js/tours/iot.js:18
+#, python-format
+msgid "Open wizard to scan range."
+msgstr ""
+
+#. module: iot
+#: selection:iot.device,type:0
+msgid "Payment Terminal"
+msgstr "Betaal terminal"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:535
 #, python-format
 msgid ""
 "Please accept the certificate of your IoT Box (procedure depends on your "
@@ -347,11 +372,24 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:351
-#: code:addons/iot/static/src/js/iot.js:359
+#: code:addons/iot/static/src/js/iot.js:532
+#, python-format
+msgid "Please check if the IoT Box is still connected."
+msgstr "Gelieve te controleren of de IoT box nog steeds verbonden is."
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:597
 #, python-format
 msgid "Please check if the device is still connected."
 msgstr "Gelieve te controleren of het toestel nog steeds verbonden is."
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:42
+#, python-format
+msgid "Please check if the printer is still connected."
+msgstr "Gelieve te controleren of de printer nog steeds verbonden is."
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -385,17 +423,17 @@ msgstr "Rapportages"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:248
-#, python-format
-msgid "Restart SCAN"
-msgstr "SCAN herstarten"
-
-#. module: iot
-#. openerp-web
-#: code:addons/iot/static/src/js/iot.js:69
+#: code:addons/iot/static/src/js/iot.js:68
 #, python-format
 msgid "SCAN"
 msgstr "SCAN"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:126
+#, python-format
+msgid "Scan Function Not Allowed"
+msgstr "Scan functie niet toegestaan"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -409,22 +447,31 @@ msgstr "Scherm URL"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:37
+#: code:addons/iot/static/src/js/iot.js:40
 #, python-format
 msgid "Successfully sent to printer!"
 msgstr "Succesvol verzonden aan printer!"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:361
+#: code:addons/iot/static/src/js/iot.js:122
 #, python-format
-msgid "The device is not responding"
-msgstr "Het toestel reageer niet"
+msgid ""
+"The scan function doesn't work with your browser. <br>\n"
+"                Please use another browser (e.g. Firefox, Chrome) or use the token to connect to your IoT BoX. <br>"
+msgstr ""
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
 msgid "There is no device connected to your IoT Boxes"
 msgstr "Er is geen apparaat verbonden aan uw IoT boxen"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/js/iot.js:296
+#, python-format
+msgid "This IoTBox has already connected"
+msgstr "De IoTBox is al verbonden"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token
@@ -452,10 +499,27 @@ msgid "USB"
 msgstr "USB"
 
 #. module: iot
+#: code:addons/iot/drivers/SylvacUSBDriver.py:34
+#, python-format
+msgid "Unknow device"
+msgstr "Onbekend toestel"
+
+#. module: iot
+#: code:addons/iot/drivers/KeyboardUSBDriver.py:39
+#, python-format
+msgid "Unknow keyboard"
+msgstr "Onbekend toetsenbord"
+
+#. module: iot
 #: model:ir.model.fields,help:iot.field_iot_box__screen_url
 msgid "Url of the page that will be displayed by hdmi port of the box."
 msgstr ""
 "Url van de pagina die wordt weergegeven door de hdmi poort van de box."
+
+#. module: iot
+#: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
+msgid "Value"
+msgstr "Waarde"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_ir_actions_report__device_id

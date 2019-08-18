@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_crm_score
+# 	* website_crm_score
 # 
 # Translators:
 # Leonardo Chianea <noamixcontenidos@gmail.com>, 2016
@@ -10,7 +10,6 @@
 # Antonio Trueba, 2016
 # David Sanchez <david.sanchez@jarsa.com.mx>, 2016
 # Lina Maria Avendaño Carvajal <lina8823@gmail.com>, 2017
-# Christopher Ormaza <chris.ormaza@gmail.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # Pedro M. Baeza <pedro.baeza@gmail.com>, 2018
 # Ana Juaristi <ajuaristio@gmail.com>, 2018
@@ -26,9 +25,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: José Vicente <txusev@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -169,7 +168,7 @@ msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
-msgid "Define a new sales channel"
+msgid "Define a new sales team"
 msgstr ""
 
 #. module: website_crm_score
@@ -256,6 +255,7 @@ msgid "Is Follower"
 msgstr "Es un seguidor"
 
 #. module: website_crm_score
+#: model:crm.lead.scoring.frequency.field,name:website_crm_score.frequency_field_lang_id
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
 msgid "Language"
 msgstr "Idioma"
@@ -475,12 +475,6 @@ msgid "Saleman"
 msgstr "Vendedor"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_action
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channels"
-msgstr "Canales de Ventas"
-
-#. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -497,6 +491,7 @@ msgid "Sales Records"
 msgstr "registros de ventas"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Team"
@@ -572,6 +567,7 @@ msgid "Search PageViews"
 msgstr "Buscar visitas"
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
 msgid "Teams Assignation"
 msgstr "Asignación de equipos"
@@ -607,11 +603,9 @@ msgstr "URL"
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
-"Use sales channels to organize your sales departments.\n"
-"                    Each channel will work with a separate pipeline."
+"Use sales teams to organize your sales departments.\n"
+"                    Each team will work with a separate pipeline."
 msgstr ""
-"Use canales de ventas para organizar sus departamentos de ventas. \n"
-" Cada canal funcionará de manera independiente."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
@@ -620,7 +614,7 @@ msgstr "Usuario"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
-msgid "User Sales Channel"
+msgid "User Sales Team"
 msgstr ""
 
 #. module: website_crm_score

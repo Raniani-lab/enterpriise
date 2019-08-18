@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality
+# 	* quality
 # 
 # Translators:
 # Leonardo Chianea <noamixcontenidos@gmail.com>, 2016
@@ -24,14 +24,15 @@
 # Katerina Katapodi <katerinakatapodi@gmail.com>, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # Martin Trigaux, 2019
+# Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -86,6 +87,11 @@ msgstr "Actividades"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
 msgid "Activity State"
 msgstr "Estado de la actividad"
+
+#. module: quality
+#: model:res.groups,name:quality.group_quality_manager
+msgid "Administrator"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -240,7 +246,7 @@ msgstr "Valores por defecto"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "Define el tipo de punto de control de calidad."
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -268,6 +274,11 @@ msgstr "Descripción"
 #: model:ir.model.fields,field_description:quality.field_quality_tag__display_name
 msgid "Display Name"
 msgstr "Nombre a mostrar"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
+msgid "Email cc"
+msgstr ""
 
 #. module: quality
 #: selection:quality.check,quality_state:0
@@ -409,6 +420,11 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Lot"
@@ -426,11 +442,6 @@ msgstr "Baja"
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Adjuntos principales"
-
-#. module: quality
-#: model:res.groups,name:quality.group_quality_manager
-msgid "Manager"
-msgstr "Responsable"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error
@@ -460,15 +471,15 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:32
+#: code:addons/quality/models/quality.py:31
+#: code:addons/quality/models/quality.py:68
 #: code:addons/quality/models/quality.py:69
-#: code:addons/quality/models/quality.py:70
-#: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:181
+#: code:addons/quality/models/quality.py:143
 #: code:addons/quality/models/quality.py:182
-#: code:addons/quality/models/quality.py:209
-#: code:addons/quality/models/quality.py:244
-#: code:addons/quality/models/quality.py:245
+#: code:addons/quality/models/quality.py:183
+#: code:addons/quality/models/quality.py:212
+#: code:addons/quality/models/quality.py:247
+#: code:addons/quality/models/quality.py:248
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
@@ -698,12 +709,12 @@ msgstr "Control de calidad"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Punto de Control de Calidad"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr ""
+msgstr "Tipo de Prueba de Control de Calidad"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_tag
@@ -804,6 +815,7 @@ msgid "Technical name"
 msgstr "Nombre técnico"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__test_type_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "Tipo de prueba"
@@ -922,7 +934,7 @@ msgstr "Muy alta"
 #: code:addons/quality/static/src/xml/widget_template.xml:32
 #, python-format
 msgid "Viewer"
-msgstr ""
+msgstr "Visor"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__website_message_ids

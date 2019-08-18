@@ -1,20 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_reports_followup
+# 	* account_reports_followup
 # 
 # Translators:
 # Lluís Dalmau <lluis.dalmau@guifi.net>, 2019
 # Martin Trigaux, 2019
 # RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
+# M Palau <mpalau@tda.ad>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-08-12 12:55+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Quim - eccit <quim@eccit.com>, 2019\n"
+"Last-Translator: M Palau <mpalau@tda.ad>, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,8 +25,6 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -165,7 +164,7 @@ msgstr "Nom d'empresa"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Configuració"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner
@@ -334,7 +333,7 @@ msgid "Manual Action Type"
 msgstr ""
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:86
+#: code:addons/account_reports_followup/models/account_followup_report.py:88
 #, python-format
 msgid "Manual action done"
 msgstr ""
@@ -475,16 +474,6 @@ msgid "Total debit"
 msgstr "Total deure"
 
 #. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
-msgid "Urging reminder email"
-msgstr "Correu urgent de recordatori"
-
-#. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
-msgid "Urging reminder letter"
-msgstr "Carta urgent de recordatori"
-
-#. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "When processing, it will print a PDF"
 msgstr ""
@@ -516,6 +505,12 @@ msgstr ""
 "seguiment. Pot utilitzar paraules clau al text. No s'oblidi de traduir-la en"
 " tots els idiomes que té instal·lat utilitzant la icona de la part superior "
 "dreta."
+
+#. module: account_reports_followup
+#: code:addons/account_reports_followup/models/account_followup.py:161
+#, python-format
+msgid "You have to define at least one line in the followup levels of %s"
+msgstr ""
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup.py:57

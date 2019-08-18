@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_taxcloud
+# 	* account_taxcloud
 # 
 # Translators:
 # Martin Trigaux, 2018
@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
@@ -116,9 +116,9 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_taxcloud
-#: model:ir.model,name:account_taxcloud.model_account_invoice
-msgid "Invoice"
-msgstr "Нэхэмжлэл"
+#: model:ir.model,name:account_taxcloud.model_account_move
+msgid "Journal Entries"
+msgstr "Ажил гүйлгээ"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update
@@ -182,11 +182,13 @@ msgid "TaxCloud"
 msgstr "TaxCloud"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_id
 msgid "TaxCloud API ID"
 msgstr "TaxCloud API ID"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_key
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_key
 msgid "TaxCloud API KEY"
 msgstr "TaxCloud API KEY"
@@ -232,15 +234,16 @@ msgid "Template for Fiscal Position"
 msgstr "Санхүүгийн харгалзааны үлгэр"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:43
-#: code:addons/account_taxcloud/models/res_config_settings.py:23
+#: code:addons/account_taxcloud/models/account_invoice.py:55
+#: code:addons/account_taxcloud/models/res_config_settings.py:27
 #, python-format
 msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
 msgstr ""
 "TaxCloud -ын тохируулга нь Санхүүгийн app-ын Тохиргоо цэсэнд байрлана."
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:115
+#: code:addons/account_taxcloud/models/account_invoice.py:119
+#: code:addons/account_taxcloud/models/account_invoice.py:152
 #, python-format
 msgid ""
 "The source document on the refund is not valid and thus the refunded cart "
@@ -250,7 +253,7 @@ msgstr ""
 "taxcloud системд холбогдох боломжгүй"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:85
+#: code:addons/account_taxcloud/models/account_invoice.py:122
 #, python-format
 msgid ""
 "The tax rates have been updated, you may want to check it before validation"
@@ -259,16 +262,11 @@ msgstr ""
 "байх"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:43
-#: code:addons/account_taxcloud/models/res_config_settings.py:23
+#: code:addons/account_taxcloud/models/account_invoice.py:53
+#: code:addons/account_taxcloud/models/res_config_settings.py:25
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
 msgstr "TaxCloud-с татвар хүлээн авах боломжгүй байна:"
-
-#. module: account_taxcloud
-#: model:ir.actions.server,name:account_taxcloud.action_account_invoice_update_taxes
-msgid "Update taxes with Taxcloud"
-msgstr "Taxcloud-р татвар шинэчлэх"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_fiscal_position__is_taxcloud
@@ -277,7 +275,7 @@ msgid "Use TaxCloud API"
 msgstr "TaxCloud API ашиглах"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/product.py:28
+#: code:addons/account_taxcloud/models/product.py:30
 #, python-format
 msgid "[%s] %s"
 msgstr "[%s] %s"

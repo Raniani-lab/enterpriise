@@ -1,0 +1,232 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* web_map
+# 
+# Translators:
+# Martin Trigaux, 2019
+# Marius Stedjan <marius@stedjan.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
+"PO-Revision-Date: 2019-08-12 13:23+0000\n"
+"Last-Translator: Marius Stedjan <marius@stedjan.com>, 2019\n"
+"Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: nb\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: web_map
+#: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
+msgid ""
+"<i class=\"fa fa-arrow-right\">\n"
+"                                        </i>\n"
+"                                        Get token"
+msgstr ""
+
+#. module: web_map
+#: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">MapBox</span>"
+msgstr ""
+
+#. module: web_map
+#: model:ir.model,name:web_map.model_ir_actions_act_window_view
+msgid "Action Window View"
+msgstr ""
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Activity"
+msgstr "Aktivitet"
+
+#. module: web_map
+#: model:ir.model,name:web_map.model_base
+msgid "Base"
+msgstr "Base"
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Calendar"
+msgstr "Kalender"
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Cohort"
+msgstr ""
+
+#. module: web_map
+#: model:ir.model,name:web_map.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfigurasjonsinnstillinger"
+
+#. module: web_map
+#: model:ir.model,name:web_map.model_res_partner
+msgid "Contact"
+msgstr "Kontakt"
+
+#. module: web_map
+#: model:ir.model.fields,field_description:web_map.field_res_partner__contact_address_complete
+#: model:ir.model.fields,field_description:web_map.field_res_users__contact_address_complete
+msgid "Contact Address Complete"
+msgstr ""
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Dashboard"
+msgstr "Dashbord"
+
+#. module: web_map
+#: selection:ir.ui.view,type:0
+msgid "Diagram"
+msgstr "Diagram"
+
+#. module: web_map
+#: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
+msgid "Follow this link and create an account to obtain the token"
+msgstr ""
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Form"
+msgstr "Skjema"
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Gantt"
+msgstr "Gantt"
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Graph"
+msgstr "Graf"
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Grid"
+msgstr "Rutenett"
+
+#. module: web_map
+#: model:ir.model,name:web_map.model_ir_http
+msgid "HTTP Routing"
+msgstr "HTTP-ruting"
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Kanban"
+msgstr "Kanban"
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Map"
+msgstr ""
+
+#. module: web_map
+#: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
+msgid "Map View"
+msgstr ""
+
+#. module: web_map
+#. openerp-web
+#: code:addons/web_map/static/src/js/map_model.js:141
+#, python-format
+msgid "MapBox servers unreachable"
+msgstr ""
+
+#. module: web_map
+#: model:ir.model.fields,help:web_map.field_res_config_settings__map_box_token
+msgid "Necessary for some functionnality in the map view"
+msgstr ""
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Pivot"
+msgstr "Pivot"
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "QWeb"
+msgstr "QWeb"
+
+#. module: web_map
+#: selection:ir.ui.view,type:0
+msgid "Search"
+msgstr "Søk"
+
+#. module: web_map
+#: model:ir.actions.act_window,name:web_map.map_config_settings_action_model
+msgid "Settings"
+msgstr "Innstillinger"
+
+#. module: web_map
+#. openerp-web
+#: code:addons/web_map/static/src/js/map_model.js:135
+#: code:addons/web_map/static/src/js/map_model.js:138
+#: code:addons/web_map/static/src/js/map_model.js:141
+#, python-format
+msgid ""
+"The view has switched to another provider but functionalities will be "
+"limited"
+msgstr ""
+
+#. module: web_map
+#: model:ir.model.fields,field_description:web_map.field_res_config_settings__map_box_token
+msgid "Token Map Box"
+msgstr ""
+
+#. module: web_map
+#. openerp-web
+#: code:addons/web_map/static/src/js/map_model.js:135
+#, python-format
+msgid "Token invalid"
+msgstr ""
+
+#. module: web_map
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Tree"
+msgstr "Tre"
+
+#. module: web_map
+#. openerp-web
+#: code:addons/web_map/static/src/js/map_model.js:138
+#, python-format
+msgid "Unauthorized connection"
+msgstr ""
+
+#. module: web_map
+#: model:ir.model,name:web_map.model_ir_ui_view
+msgid "View"
+msgstr "Visning"
+
+#. module: web_map
+#: model:ir.model.fields,field_description:web_map.field_ir_actions_act_window_view__view_mode
+#: model:ir.model.fields,field_description:web_map.field_ir_ui_view__type
+msgid "View Type"
+msgstr "Se type"
+
+#. module: web_map
+#: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
+msgid ""
+"You need to configure this token to fully access the feature of the Mapview."
+msgstr ""
+
+#. module: web_map
+#: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
+msgid "token:"
+msgstr ""

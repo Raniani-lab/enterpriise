@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * currency_rate_live
+# 	* currency_rate_live
 # 
 # Translators:
 # Martin Trigaux, 2017
 # Ediz Duman <neps1192@gmail.com>, 2017
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
 # Murat Kaplan <muratk@projetgrup.com>, 2017
-# Umur Akın <umura@projetgrup.com>, 2018
 # Buket Şeker <buket_skr@hotmail.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,11 +30,13 @@ msgid ""
 "<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa "
 "fa-fw fa-refresh\"/>"
 msgstr ""
+"<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa "
+"fa-fw fa-refresh\"/>"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "Bank Of Canada"
-msgstr ""
+msgstr "Kanada Bankası"
 
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_company
@@ -124,23 +126,17 @@ msgid "Service Provider"
 msgstr "Servis Sağlayıcı"
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:387
-#, python-format
-msgid ""
-"The Yahoo currency rate web service has been discontinued. Please select "
-"another currency rate provider."
-msgstr "Yahoo geçerli kur sağlayamıyor. Lütfen başka bir sağlayıcı seçin."
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:103
+#: code:addons/currency_rate_live/models/res_config_settings.py:98
 #, python-format
 msgid ""
 "Unable to connect to the online exchange rate platform %s. The web service "
 "may be temporary down."
 msgstr ""
+"Çevrim içi döviz kuru platformuna erişim devre dışı  %s. Belki web servis "
+"geçici olarak çökmüştür.."
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:390
+#: code:addons/currency_rate_live/models/res_config_settings.py:382
 #, python-format
 msgid ""
 "Unable to connect to the online exchange rate platform. The web service may "
@@ -155,19 +151,16 @@ msgid "Weekly"
 msgstr "Haftalık"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
-msgid "Yahoo (DISCONTINUED)"
-msgstr "Yahoo (DEVAM ETMİYOR)"
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:143
+#: code:addons/currency_rate_live/models/res_config_settings.py:137
 #, python-format
 msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "
 "Please choose another one."
 msgstr ""
+"Ana para biriminiz (%s) bu döviz kuru sağlayan platform tarafından "
+"desteklenmiyor. Lütfen başka bir tane seçiniz."
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "xe.com"
-msgstr ""
+msgstr "xe.com"

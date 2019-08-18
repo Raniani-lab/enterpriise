@@ -1,21 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * crm_enterprise
+# 	* crm_enterprise
 # 
 # Translators:
 # Christophe CHAUVET <christophe.chauvet@gmail.com>, 2019
-# Lucas Deliege <lud@odoo.com>, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Olivier ANDRE <frsw194@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Lucas Deliege <lud@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-01-16 08:37+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Lucas Deliege <lud@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,8 +205,8 @@ msgstr "Revenu au prorata"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
-msgid "Sales Channel"
-msgstr "Equipe de vente"
+msgid "Sales Team"
+msgstr "Équipe commerciale"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view

@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_crm_score
+# 	* website_crm_score
 # 
 # Translators:
 # Xavier Symons <xsy@openerp.com>, 2016
@@ -9,16 +9,15 @@
 # Florian Hatat, 2016
 # Lionel Sausin <ls@numerigraphe.com>, 2016
 # Clo <clo@odoo.com>, 2016
-# Lucas Deliege <lud@openerp.com>, 2017
 # Richard Mathot <rim@odoo.com>, 2017
 # Félix Desjardins <felixinx@gmail.com>, 2017
+# 6534c450c77b2549e41c52e2051f5839, 2018
 # Olivier Dony <odo@odoo.com>, 2018
 # Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2018
 # Olivier Lenoir <olivier.lenoir@free.fr>, 2018
 # Nancy Bolognesi <nb@microcom.ca>, 2018
 # Micky Jault <micky037@hotmail.fr>, 2018
 # Xavier Belmere <Info@cartmeleon.com>, 2018
-# 6534c450c77b2549e41c52e2051f5839, 2018
 # Fabien Bourgeois <fabien@yaltik.com>, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Laura Piraux <lap@odoo.com>, 2019
@@ -29,9 +28,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Lucas Deliege <lud@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -169,8 +168,8 @@ msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
-msgid "Define a new sales channel"
-msgstr "Définissez une nouveau canal de ventes"
+msgid "Define a new sales team"
+msgstr ""
 
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
@@ -256,6 +255,7 @@ msgid "Is Follower"
 msgstr "Est un abonné"
 
 #. module: website_crm_score
+#: model:crm.lead.scoring.frequency.field,name:website_crm_score.frequency_field_lang_id
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
 msgid "Language"
 msgstr "Langue"
@@ -472,12 +472,6 @@ msgid "Saleman"
 msgstr "Commercial"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_action
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channels"
-msgstr "Equipes de vente"
-
-#. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -494,6 +488,7 @@ msgid "Sales Records"
 msgstr "Records de ventes"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Team"
@@ -571,6 +566,7 @@ msgid "Search PageViews"
 msgstr "Recherche des pages vues"
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
 msgid "Teams Assignation"
 msgstr "Attribution d'équipes"
@@ -606,11 +602,9 @@ msgstr "Url"
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
-"Use sales channels to organize your sales departments.\n"
-"                    Each channel will work with a separate pipeline."
+"Use sales teams to organize your sales departments.\n"
+"                    Each team will work with a separate pipeline."
 msgstr ""
-"Utilisez des canaux de vente pour organiser vos services commerciaux.\n"
-"                    Chaque canal travaillera avec un pipeline distinct."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
@@ -619,7 +613,7 @@ msgstr "Utilisateur"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
-msgid "User Sales Channel"
+msgid "User Sales Team"
 msgstr ""
 
 #. module: website_crm_score

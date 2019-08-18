@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_reports_followup
+# 	* account_reports_followup
 # 
 # Translators:
 # Leonardo Chianea <noamixcontenidos@gmail.com>, 2016
@@ -19,15 +19,14 @@
 # Alejandro Santana <alejandrosantana@anubia.es>, 2017
 # Christopher Ormaza <chris.ormaza@gmail.com>, 2017
 # Martin Trigaux, 2017
-# Nicolás Broggi <rnbroggi@gmail.com>, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # Edilianny Sánchez <esanchez@vauxoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-08-12 12:55+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Edilianny Sánchez <esanchez@vauxoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -39,8 +38,6 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -347,7 +344,7 @@ msgid "Manual Action Type"
 msgstr "Tipo de acción manual"
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:86
+#: code:addons/account_reports_followup/models/account_followup_report.py:88
 #, python-format
 msgid "Manual action done"
 msgstr "Acción de realizado manual"
@@ -490,16 +487,6 @@ msgid "Total debit"
 msgstr "Total debe"
 
 #. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
-msgid "Urging reminder email"
-msgstr "Email urgente de recordatorio"
-
-#. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
-msgid "Urging reminder letter"
-msgstr "Carta urgente de recordatorio"
-
-#. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "When processing, it will print a PDF"
 msgstr "Al procesar, se imprimirá un PDF."
@@ -531,6 +518,12 @@ msgstr ""
 "seguimiento. Puede usar palabras clave en el texto. No se olvide de "
 "traducirla en todos los idiomas que tiene instalado usando en icono de la "
 "parte superior derecha."
+
+#. module: account_reports_followup
+#: code:addons/account_reports_followup/models/account_followup.py:161
+#, python-format
+msgid "You have to define at least one line in the followup levels of %s"
+msgstr ""
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup.py:57

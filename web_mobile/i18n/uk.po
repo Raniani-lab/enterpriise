@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * web_mobile
+# 	* web_mobile
 # 
 # Translators:
 # Bohdan Lisnenko, 2018
@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -43,6 +43,16 @@ msgid "Add to Home Screen"
 msgstr "Додати до головного екрана"
 
 #. module: web_mobile
+#: model:ir.model,name:web_mobile.model_res_config_settings
+msgid "Config Settings"
+msgstr "Налаштування"
+
+#. module: web_mobile
+#: model_terms:ir.ui.view,arch_db:web_mobile.res_config_settings_view_form
+msgid "Get notifications on Android and iOS application"
+msgstr "Отримуйте сповіщення на додатку Android та iOS"
+
+#. module: web_mobile
 #. openerp-web
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:9
 #, python-format
@@ -55,6 +65,11 @@ msgstr "Мобільний"
 #, python-format
 msgid "No shortcut for Home Menu"
 msgstr "Немає ярликів для Домашнього Меню"
+
+#. module: web_mobile
+#: model_terms:ir.ui.view,arch_db:web_mobile.res_config_settings_view_form
+msgid "Odoo Cloud Notification (OCN)"
+msgstr "Сповіщення Odoo Cloud (OCN)"
 
 #. module: web_mobile
 #. openerp-web
@@ -71,11 +86,16 @@ msgid "On Google Play"
 msgstr "На Google Play"
 
 #. module: web_mobile
+#: model:ir.model.fields,field_description:web_mobile.field_res_config_settings__module_ocn_client
+msgid "Push Notifications"
+msgstr "Push-сповіщення"
+
+#. module: web_mobile
 #. openerp-web
 #: code:addons/web_mobile/static/src/xml/barcode_fields.xml:13
 #, python-format
 msgid "Scan barcode"
-msgstr ""
+msgstr "Сканувати штрих-код"
 
 #. module: web_mobile
 #. openerp-web

@@ -1,17 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_3way_match
+# 	* account_3way_match
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Katharina Moritz <kmo@e2f.com>, 2017
+# AppleMentalist <felix.schnatbaum@gmail.com>, 2017
+# b4d8887ced18b222d41dc1101b082e15, 2017
+# Ermin Trevisan <trevi@twanda.com>, 2017
 # Johannes Croe <jcr@odoo.com>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2017-12-13 15:19+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_3way_match
-#: model:ir.model.fields,help:account_3way_match.field_account_invoice__release_to_pay_manual
+#: model:ir.model.fields,help:account_3way_match.field_account_move__release_to_pay_manual
 msgid ""
 "  * Yes: you should pay the bill, you have received the products\n"
 "  * No, you should not pay the bill, you have not received the products\n"
@@ -41,19 +46,19 @@ msgid "Bills to Pay"
 msgstr "Ausstehende Rechnungen"
 
 #. module: account_3way_match
-#: selection:account.invoice,release_to_pay:0
-#: selection:account.invoice,release_to_pay_manual:0
-#: selection:account.invoice.line,can_be_paid:0
+#: selection:account.move,release_to_pay:0
+#: selection:account.move,release_to_pay_manual:0
+#: selection:account.move.line,can_be_paid:0
 msgid "Exception"
 msgstr "Fehlermeldung"
 
 #. module: account_3way_match
-#: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__force_release_to_pay
+#: model:ir.model.fields,field_description:account_3way_match.field_account_move__force_release_to_pay
 msgid "Force status"
 msgstr "Erzwinge Status"
 
 #. module: account_3way_match
-#: model:ir.model.fields,help:account_3way_match.field_account_invoice__force_release_to_pay
+#: model:ir.model.fields,help:account_3way_match.field_account_move__force_release_to_pay
 msgid ""
 "Indicates whether the 'Can be paid' status is defined automatically or "
 "manually."
@@ -62,44 +67,44 @@ msgstr ""
 "definiert wird."
 
 #. module: account_3way_match
-#: model:ir.model,name:account_3way_match.model_account_invoice
-msgid "Invoice"
-msgstr "Rechnung"
-
-#. module: account_3way_match
-#: model:ir.model,name:account_3way_match.model_account_invoice_line
-msgid "Invoice Line"
-msgstr "Rechungsposition"
-
-#. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_journal
 msgid "Journal"
 msgstr "Journal"
 
 #. module: account_3way_match
-#: selection:account.invoice,release_to_pay:0
-#: selection:account.invoice,release_to_pay_manual:0
-#: selection:account.invoice.line,can_be_paid:0
+#: model:ir.model,name:account_3way_match.model_account_move
+msgid "Journal Entries"
+msgstr "Buchungssätze"
+
+#. module: account_3way_match
+#: model:ir.model,name:account_3way_match.model_account_move_line
+msgid "Journal Item"
+msgstr "Buchungszeile"
+
+#. module: account_3way_match
+#: selection:account.move,release_to_pay:0
+#: selection:account.move,release_to_pay_manual:0
+#: selection:account.move.line,can_be_paid:0
 msgid "No"
 msgstr "Nein"
 
 #. module: account_3way_match
-#: model:ir.model.fields,field_description:account_3way_match.field_account_invoice_line__can_be_paid
+#: model:ir.model.fields,field_description:account_3way_match.field_account_move_line__can_be_paid
 msgid "Release to Pay"
 msgstr "Freigegeben zu zahlen"
 
 #. module: account_3way_match
-#: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay
+#: model:ir.model.fields,field_description:account_3way_match.field_account_move__release_to_pay
 msgid "Should be paid"
 msgstr "Sollte bezahlt werden"
 
 #. module: account_3way_match
-#: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay_manual
+#: model:ir.model.fields,field_description:account_3way_match.field_account_move__release_to_pay_manual
 msgid "Should be paid Manual"
 msgstr "Sollte händig bezahlt werden"
 
 #. module: account_3way_match
-#: model:ir.model.fields,help:account_3way_match.field_account_invoice__release_to_pay
+#: model:ir.model.fields,help:account_3way_match.field_account_move__release_to_pay
 msgid ""
 "This field can take the following values :\n"
 "  * Yes: you should pay the bill, you have received the products\n"
@@ -114,8 +119,8 @@ msgstr ""
 "Dieser Status wird automatisch definiert, Sie können dies jedoch durch Aktivieren des Kontrollkästchens „Status erzwingen“ erzwingen."
 
 #. module: account_3way_match
-#: selection:account.invoice,release_to_pay:0
-#: selection:account.invoice,release_to_pay_manual:0
-#: selection:account.invoice.line,can_be_paid:0
+#: selection:account.move,release_to_pay:0
+#: selection:account.move,release_to_pay_manual:0
+#: selection:account.move.line,can_be_paid:0
 msgid "Yes"
 msgstr "Ja."

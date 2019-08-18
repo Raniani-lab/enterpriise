@@ -1,20 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * inter_company_rules
+# 	* inter_company_rules
 # 
 # Translators:
 # gezza <geza.nagy@oregional.hu>, 2017
-# Martin Trigaux, 2018
-# krnkris, 2019
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
+# Martin Trigaux, 2019
+# krnkris, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2019\n"
+"Last-Translator: krnkris, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,10 +23,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/account_invoice.py:89
+#: code:addons/inter_company_rules/models/account_move.py:82
 #, python-format
-msgid " Invoice: "
-msgstr "Számla:"
+msgid "%s Invoice: %s"
+msgstr ""
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
@@ -61,7 +61,7 @@ msgid "Applicable On"
 msgstr "Ezen alkalmazandó"
 
 #. module: inter_company_rules
-#: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice__auto_generated
+#: model:ir.model.fields,field_description:inter_company_rules.field_account_move__auto_generated
 msgid "Auto Generated Document"
 msgstr "Automatikusan létrehozott dokumentum"
 
@@ -92,7 +92,7 @@ msgid "Config Settings"
 msgstr "Konfigurációs beállítások"
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/purchase_order.py:82
+#: code:addons/inter_company_rules/models/purchase_order.py:91
 #: code:addons/inter_company_rules/models/sale_order.py:77
 #, python-format
 msgid ""
@@ -139,15 +139,26 @@ msgid "Inter-Company Rules"
 msgstr "Belső vállalati szabályok"
 
 #. module: inter_company_rules
-#: model:ir.model,name:inter_company_rules.model_account_invoice
-msgid "Invoice"
-msgstr "Számla"
+#: model:ir.model,name:inter_company_rules.model_account_move
+msgid "Journal Entries"
+msgstr "Könyvelési tételek"
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/account_invoice.py:81
+#: model:ir.model,name:inter_company_rules.model_account_move_line
+msgid "Journal Item"
+msgstr "Könyvelési napló tételsor"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:54
 #, python-format
-msgid "Please define %s journal for this company: \"%s\" (id:%d)."
-msgstr "Kérem határozzon meg %s naplót ehhez a vállalthoz: \"%s\" (id:%d)."
+msgid "Partner:"
+msgstr ""
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:53
+#, python-format
+msgid "Pricelist:"
+msgstr ""
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:39
@@ -158,7 +169,6 @@ msgstr ""
 "hozzátartozik ehhez % "
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/account_invoice.py:44
 #: code:addons/inter_company_rules/models/sale_order.py:43
 #, python-format
 msgid "Provide one user for intercompany relation for % "
@@ -185,6 +195,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__rule_type
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rule_type
 msgid "Rule Type"
+msgstr ""
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:52
+#, python-format
+msgid "SO currency:"
 msgstr ""
 
 #. module: inter_company_rules
@@ -223,7 +239,7 @@ msgstr ""
 "válasszon típust."
 
 #. module: inter_company_rules
-#: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice__auto_invoice_id
+#: model:ir.model.fields,field_description:inter_company_rules.field_account_move__auto_invoice_id
 msgid "Source Invoice"
 msgstr "Forrás számla"
 
@@ -248,6 +264,14 @@ msgid "Synchronize Sales & Purchase Orders"
 msgstr ""
 
 #. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:50
+#, python-format
+msgid ""
+"The currency of the SO is obtained from the pricelist of the company "
+"partner."
+msgstr ""
+
+#. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__warehouse_id
 msgid "Warehouse"
 msgstr "Raktár"
@@ -264,7 +288,7 @@ msgid "When a company validates a"
 msgstr ""
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/purchase_order.py:47
+#: code:addons/inter_company_rules/models/purchase_order.py:48
 #, python-format
 msgid ""
 "You cannot create SO from PO because sale price list currency is different "

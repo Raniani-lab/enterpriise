@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_crm_score
+# 	* website_crm_score
 # 
 # Translators:
 # Martin Trigaux, 2018
@@ -8,17 +8,16 @@
 # Robert Frykelius <robert.frykelius@linserv.se>, 2018
 # Kristoffer Grundström <hamnisdude@gmail.com>, 2019
 # Christelle Wehbe <libanon_cristelle@hotmail.com>, 2019
-# Kim Asplund <kim.asplund@gmail.com>, 2019
-# Anders Wallenquist <anders.wallenquist@vertel.se>, 2019
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2019
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Chrille Hedberg <hedberg.chrille@gmail.com>, 2019\n"
+"Last-Translator: Anders Wallenquist <anders.wallenquist@vertel.se>, 2019\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,7 +83,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_attachment_count
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Antal bilagor"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
@@ -153,7 +152,7 @@ msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
-msgid "Define a new sales channel"
+msgid "Define a new sales team"
 msgstr ""
 
 #. module: website_crm_score
@@ -241,6 +240,7 @@ msgid "Is Follower"
 msgstr "Är följare"
 
 #. module: website_crm_score
+#: model:crm.lead.scoring.frequency.field,name:website_crm_score.frequency_field_lang_id
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
 msgid "Language"
 msgstr "Språk"
@@ -455,12 +455,6 @@ msgid "Saleman"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_action
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channels"
-msgstr "Försäljnings Kanal"
-
-#. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -477,6 +471,7 @@ msgid "Sales Records"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Team"
@@ -547,6 +542,7 @@ msgid "Search PageViews"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
 msgid "Teams Assignation"
 msgstr ""
@@ -582,8 +578,8 @@ msgstr "Url"
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
-"Use sales channels to organize your sales departments.\n"
-"                    Each channel will work with a separate pipeline."
+"Use sales teams to organize your sales departments.\n"
+"                    Each team will work with a separate pipeline."
 msgstr ""
 
 #. module: website_crm_score
@@ -593,7 +589,7 @@ msgstr "Användare"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
-msgid "User Sales Channel"
+msgid "User Sales Team"
 msgstr ""
 
 #. module: website_crm_score

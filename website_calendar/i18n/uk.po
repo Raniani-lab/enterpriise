@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_calendar
+# 	* website_calendar
 # 
 # Translators:
 # Zoriana Zaiats, 2018
@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 12:56+0000\n"
 "PO-Revision-Date: 2017-12-13 15:26+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -32,12 +32,12 @@ msgstr " (копія)"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_count
 msgid "# Appointments"
-msgstr "# Призначення"
+msgstr "К-сть призначення"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "#{day['today_cls'] and 'Today' or ''}"
-msgstr "#{day['today_cls'] та 'Today' or ''}"
+msgstr "#{day['today_cls'] and 'Today' or ''}"
 
 #. module: website_calendar
 #: code:addons/website_calendar/controllers/main.py:142
@@ -48,7 +48,7 @@ msgstr "%s з %s"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "(timezone:"
-msgstr "(timezone:"
+msgstr "(часовий пояс:"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -98,7 +98,7 @@ msgstr "<span> дні</span>"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> hours before</span>"
-msgstr "<span> години до</span>"
+msgstr "<span> годин до</span>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -167,12 +167,17 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__access_token
 msgid "Access Token"
-msgstr "Доступ Токена"
+msgstr "Токен доступу"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "Action Needed"
-msgstr "Дія необхідна"
+msgstr "Необхідна дія"
+
+#. module: website_calendar
+#: model:res.groups,name:website_calendar.group_calendar_manager
+msgid "Administrator"
+msgstr "Адміністратор"
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.website_calendar_report
@@ -292,7 +297,7 @@ msgstr "Календар"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__can_publish
 msgid "Can publish"
-msgstr ""
+msgstr "Можна публікувати"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
@@ -434,15 +439,6 @@ msgid "Friday"
 msgstr "П’ятниця"
 
 #. module: website_calendar
-#: model_terms:calendar.appointment.type,message_intro:website_calendar.calendar_appointment
-msgid ""
-"Get a <strong>customized demo</strong> and an <strong>analysis of your "
-"needs</strong>."
-msgstr ""
-"Отримайте <strong>налаштовану демоверсію</strong> та <strong>аналіз ваших "
-"потреб</strong>."
-
-#. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__assignation_method
 msgid ""
 "How employees will be assigned to meetings customers book on your website."
@@ -466,7 +462,7 @@ msgstr "Якщо позначено, то повідомленя потребу�
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Якщо відмічено, то нові повідомлення будуть потребувати вашої уваги."
+msgstr "Якщо позначено, то нові повідомлення будуть потребувати вашої уваги."
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error
@@ -556,11 +552,6 @@ msgstr "Місцезнаходження:"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Основне прикріплення"
-
-#. module: website_calendar
-#: model:res.groups,name:website_calendar.group_calendar_manager
-msgid "Manager"
-msgstr "Керівник"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error
@@ -715,7 +706,7 @@ msgstr "Перемикач (одна відповідь)"
 #. module: website_calendar
 #: selection:calendar.appointment.type,assignation_method:0
 msgid "Random"
-msgstr "Random"
+msgstr "Випадково"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__reminder_ids
@@ -745,7 +736,7 @@ msgstr "Оптимізовано SEO"
 #. module: website_calendar
 #: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
 msgid "SMS Text Message - 1 Hour(s)"
-msgstr ""
+msgstr "Текстове SMS-повідомлення - 1 година"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -761,11 +752,6 @@ msgstr "Субота"
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Schedule Appointment"
 msgstr "Запланувати подію"
-
-#. module: website_calendar
-#: model:calendar.appointment.type,name:website_calendar.calendar_appointment
-msgid "Schedule a Demo"
-msgstr "Запланувати демо"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
@@ -831,7 +817,7 @@ msgstr "URL-адреса повністю, для доступу до докум
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Thu"
-msgstr "по"
+msgstr "Чт"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
@@ -900,18 +886,9 @@ msgid "Visible on current website"
 msgstr "Видимий на поточному веб-сайті"
 
 #. module: website_calendar
-#: model_terms:calendar.appointment.type,message_confirmation:website_calendar.calendar_appointment
-msgid ""
-"We thank you for your interest in our products!<br>\n"
-"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
-msgstr ""
-"Дякуємо за інтерес до наших товарів!<br>\n"
-"               Будь ласка, обов'язково приїдьте за <strong>10 хвилин</strong> до вашої зустрічі."
-
-#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids
 msgid "Website Messages"
-msgstr "Повідомлення з вебсайту"
+msgstr "Повідомлення з веб-сайту"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_url
@@ -982,7 +959,7 @@ msgstr "Ваша країна"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Email"
-msgstr "Ваш ел. пошта"
+msgstr "Ваша ел. пошта"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form

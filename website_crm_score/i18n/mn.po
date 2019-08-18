@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_crm_score
+# 	* website_crm_score
 # 
 # Translators:
 # Batzul B <batzul.active@gmail.com>, 2018
@@ -10,14 +10,15 @@
 # Martin Trigaux, 2019
 # Otgonbayar.A <gobi.mn@gmail.com>, 2019
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
+# Baasansuren Sharavsuren <baasansuren@bumanit.mn>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
+"Last-Translator: Baasansuren Sharavsuren <baasansuren@bumanit.mn>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -152,7 +153,7 @@ msgstr "Сэжмийг авто-оноолтын механизмаар оноо
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
-msgid "Define a new sales channel"
+msgid "Define a new sales team"
 msgstr ""
 
 #. module: website_crm_score
@@ -241,6 +242,7 @@ msgid "Is Follower"
 msgstr "Дагагч эсэх"
 
 #. module: website_crm_score
+#: model:crm.lead.scoring.frequency.field,name:website_crm_score.frequency_field_lang_id
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
 msgid "Language"
 msgstr "Хэл"
@@ -445,7 +447,7 @@ msgstr "Харьцаа"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__rule_type
 msgid "Rule Type"
-msgstr ""
+msgstr "Дүрмийн төрөл"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__running
@@ -456,12 +458,6 @@ msgstr "Ажиллаж буй"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__user_id
 msgid "Saleman"
 msgstr "Борлуулагч"
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_action
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channels"
-msgstr "Борлуулалтын Сувгууд"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
@@ -480,6 +476,7 @@ msgid "Sales Records"
 msgstr "Борлуулалтын бичлэгүүд"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Team"
@@ -555,6 +552,7 @@ msgid "Search PageViews"
 msgstr "Хуудсын харагдцуудыг хайх"
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
 msgid "Teams Assignation"
 msgstr "Багийн Оноолт"
@@ -590,8 +588,8 @@ msgstr "Url"
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
-"Use sales channels to organize your sales departments.\n"
-"                    Each channel will work with a separate pipeline."
+"Use sales teams to organize your sales departments.\n"
+"                    Each team will work with a separate pipeline."
 msgstr ""
 
 #. module: website_crm_score
@@ -601,7 +599,7 @@ msgstr "Хэрэглэгч"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
-msgid "User Sales Channel"
+msgid "User Sales Team"
 msgstr ""
 
 #. module: website_crm_score

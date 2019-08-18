@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_iot
+# 	* pos_iot
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -21,9 +21,134 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:114
+#, python-format
+msgid "Access your"
+msgstr "Доступ до вашого"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:58
+#, python-format
+msgid "Cancel"
+msgstr "Скасувати"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:58
+#, python-format
+msgid "Cancel Payment Request"
+msgstr "Скасувати запит на оплату"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:115
+#, python-format
+msgid "Click on Advanced/Show Details/Details/More information"
+msgstr "Натисніть на Розширені/Показати деталі/Деталі/Більше інформації"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:116
+#, python-format
+msgid ""
+"Click on Proceed to .../Add Exception/Visit this website/Go on to the "
+"webpage"
+msgstr ""
+"Натисніть Перейти до .../Додати виняток/Відвідати цей веб-сайт/Перейти на "
+"веб-сторінку"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:118
+#, python-format
+msgid "Close this window and try again"
+msgstr "Закрийте це вікно та спробуйте ще раз"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:252
+#, python-format
+msgid "Configuration of payment terminal failed"
+msgstr "Не вдалося налаштування терміналу оплати"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:47
+#, python-format
+msgid "Connection error"
+msgstr "Помилка з'єднання"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/iot.js:12
+#: code:addons/pos_iot/static/src/js/payment.js:242
+#, python-format
+msgid "Connection to IoT Box failed"
+msgstr "З'єднання з IoT Box не вдалося"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:231
+#, python-format
+msgid "Connection to terminal failed"
+msgstr "З'єднання з терміналом не вдалося"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:9
+#, python-format
+msgid "Delete"
+msgstr "Видалити"
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_payment_terminal
+msgid "Enables Payment Terminal integration."
+msgstr "Дозволяє інтегрувати платіжний термінал"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:113
+#, python-format
+msgid "Error"
+msgstr "Помилка"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:117
+#, python-format
+msgid "Firefox only : Click on Confirm Security Exception"
+msgstr "Тільки Firefox : Натисніть кнопку Підтвердити виключення безпеки"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:50
+#, python-format
+msgid "Force Done"
+msgstr "Запуск виконано"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:50
+#, python-format
+msgid "Force done"
+msgstr "Запуск виконано"
+
+#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__proxy_ip
 msgid "IP Address"
 msgstr "IP адреса"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:112
+#, python-format
+msgid ""
+"If you are on a secure server (HTTPS) check if you accepted the certificate:"
+msgstr ""
+"Якщо ви перебуваєте на захищеному сервері (HTTPS) перевірити, чи ви прийняли"
+" сертифікат:"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
@@ -31,9 +156,84 @@ msgid "IoT Box"
 msgstr "IoT Box"
 
 #. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:114
+#, python-format
+msgid "IoT Box Homepage"
+msgstr "Головна сторінка IoT Box "
+
+#. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "IoT Boxes"
+msgstr "IoT Box"
+
+#. module: pos_iot
+#: model:ir.model,name:pos_iot.model_account_journal
+msgid "Journal"
+msgstr "Журнал"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:122
+#, python-format
+msgid "Ok"
+msgstr "Гаразд"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:71
+#, python-format
+msgid "Payment Successful"
+msgstr "Успішна оплата"
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_payment_terminal
+msgid "Payment Terminal"
+msgstr "Платіжний термінал"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:31
+#, python-format
+msgid "Payment request pending"
+msgstr "Запит на оплату в очікуванні"
+
+#. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Payment terminal"
+msgstr "Термінал оплати"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:195
+#, python-format
+msgid "Payment terminal error"
+msgstr "Помилка терміналу оплати"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:243
+#: code:addons/pos_iot/static/src/xml/pos.xml:111
+#, python-format
+msgid "Please check if the IoT Box is still connected."
+msgstr "Перевірте, чи IoT Box досі підключено."
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:232
+#, python-format
+msgid "Please check if the terminal is still connected."
+msgstr "Перевірте, чи термінал досі підключений."
+
+#. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_config
 msgid "Point of Sale Configuration"
 msgstr "Налаштування точки продажу"
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_account_journal__use_payment_terminal
+msgid "Record payments using a payment terminal"
+msgstr "Записуйте оплати, використовуючи термінал оплати"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iotbox_id
@@ -41,10 +241,73 @@ msgid "Related Box"
 msgstr "Пов'язаний Box"
 
 #. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:63
+#, python-format
+msgid "Request send to terminal"
+msgstr "Запит надіслано до терміналу"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:42
+#, python-format
+msgid "Retry"
+msgstr "Повторити"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:39
+#, python-format
+msgid "Retry Electronic payment"
+msgstr "Повторити електронний платіж"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:34
+#, python-format
+msgid "Send"
+msgstr "Надіслати"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:34
+#: code:addons/pos_iot/static/src/xml/pos.xml:42
+#, python-format
+msgid "Send Payment Request"
+msgstr "Надіслати запит на оплату"
+
+#. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__proxy_ip
 msgid ""
 "The hostname or ip address of the hardware proxy, Will be autodetected if "
 "left empty."
 msgstr ""
-"Ім'я комп'ютера або IP-адресу апаратного проксі, буде автоматично виявлено, "
-"якщо воно залишиться порожньою."
+"Ім'я комп'ютера або IP-адресу апаратного проксі буде автоматично виявлено, "
+"якщо воно залишиться порожнім."
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:114
+#, python-format
+msgid "There is already an electronic payment in progress."
+msgstr "Електронна оплата вже триває."
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_account_journal__use_payment_terminal
+msgid "Use a Payment Terminal"
+msgstr "Використовувати термінал оплати"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:55
+#, python-format
+msgid "Waiting for card"
+msgstr "Очікування картки"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:253
+#, python-format
+msgid "You must select a payment terminal in your POS config."
+msgstr ""
+"Вам необхідно обрати термінал оплати у ваших налаштуваннях точки продажу."

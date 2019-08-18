@@ -1,20 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * project_enterprise
+# 	* project_enterprise
 # 
 # Translators:
+# Vladimir Olujić <olujic.vladimir@storm.hr>, 2019
 # Martin Trigaux, 2019
 # Bole <bole@dajmi5.com>, 2019
-# Vladimir Olujić <olujic.vladimir@storm.hr>, 2019
 # Karolina Tonković <karolina.tonkovic@storm.hr>, 2019
+# Tina Milas, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-03-20 14:43+0000\n"
-"Last-Translator: Karolina Tonković <karolina.tonkovic@storm.hr>, 2019\n"
+"Last-Translator: Tina Milas, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,15 +29,47 @@ msgid "<span class=\"o_label\">Planning</span>"
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Customer: </strong>"
+msgstr "<strong>Kupac</strong>"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Start Date: </strong>"
+msgstr ""
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Stop Date: </strong>"
+msgstr ""
+
+#. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_project__allow_planning
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__allow_planning
 msgid "Allow Planning"
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "Assigned To"
-msgstr "Dodijeljeno"
+msgid "Assigned to"
+msgstr "Dodjeljen"
+
+#. module: project_enterprise
+#: model:ir.ui.menu,name:project_enterprise.project_task_menu_planning_by_user
+msgid "By Employee"
+msgstr "Po djelatniku"
+
+#. module: project_enterprise
+#: model:ir.ui.menu,name:project_enterprise.project_task_menu_planning_by_project
+msgid "By Project"
+msgstr "Po projektu"
+
+#. module: project_enterprise
+#: model:ir.model.fields,help:project_enterprise.field_project_project__allow_planning
+#: model:ir.model.fields,help:project_enterprise.field_project_task__allow_planning
+msgid "Enables planning of Task with a Start and End date."
+msgstr ""
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_end
@@ -49,16 +82,31 @@ msgid "Group By"
 msgstr "Grupiraj po"
 
 #. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task_type__is_closed
+msgid "Is a close stage"
+msgstr "U završnoj fazi"
+
+#. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
 msgid "My Project"
 msgstr ""
 
 #. module: project_enterprise
-#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning
 #: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning_by_project
-#: model:ir.ui.menu,name:project_enterprise.project_task_menu_planning
+#: model:ir.ui.menu,name:project_enterprise.project_planning_menu
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "Planning"
 msgstr "Planiranje"
+
+#. module: project_enterprise
+#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning_groupby_user
+msgid "Planning by Employee"
+msgstr ""
+
+#. module: project_enterprise
+#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning_groupby_project
+msgid "Planning by Project"
+msgstr ""
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_project
@@ -73,13 +121,19 @@ msgstr "Početni datum"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 msgid "Task"
 msgstr "Zadatak"
 
 #. module: project_enterprise
-#: model:ir.ui.menu,name:project_enterprise.project_task_menu
-msgid "Tasks"
-msgstr "Zadaci"
+#: model:ir.model,name:project_enterprise.model_project_task_type
+msgid "Task Stage"
+msgstr "Faza zadatka"
+
+#. module: project_enterprise
+#: model:ir.model.fields,help:project_enterprise.field_project_task_type__is_closed
+msgid "Tasks in this stage are considered as closed."
+msgstr "Zadaci se u ovoj fazi smatraju zatvorenima."
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form

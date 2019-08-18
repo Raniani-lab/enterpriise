@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * marketing_automation
+# 	* marketing_automation
 # 
 # Translators:
 # Pol Van Dingenen <pol.vandingenen@vanroey.be>, 2017
@@ -13,9 +13,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 12:56+0000\n"
 "PO-Revision-Date: 2017-12-13 15:21+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -24,6 +24,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__link_tracker_click_count
+msgid "# Clicks"
+msgstr "# Klikken"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
@@ -106,8 +111,8 @@ msgstr "<i class=\"fa fa-hand-pointer-o\"/>Niet geklikt binnen"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "<i class=\"fa fa-pie-chart\"/> Email Details"
-msgstr "<i class=\"fa fa-pie-chart\"/> E-mailgegevens"
+msgid "<i class=\"fa fa-pie-chart\"/> Details"
+msgstr "<i class=\"fa fa-pie-chart\"/> Details"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -265,18 +270,9 @@ msgid ""
 "Activity will only be performed if record satisfies this domain, obtained "
 "from the combination of the activity filter and its inherited filter"
 msgstr ""
-
-#. module: marketing_automation
-#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_after_7_days
-#: model:utm.source,name:marketing_automation.mass_mailing_after_7_days_utm_source
-msgid "After 7 days"
-msgstr "Na 7 dagen"
-
-#. module: marketing_automation
-#: model:marketing.activity,name:marketing_automation.marketing_activity_2
-#: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
-msgid "After 7 days (if not yet customers)"
-msgstr "Na 7 dagen (indien het nog geen klant is)"
+"Activiteit wordt alleen uitgevoegd als het record voldoet aan het domein, "
+"opgehaald vanuit de combinatie van de activiteitsfilter en de overgeërfde "
+"filter"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
@@ -304,6 +300,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__bounced
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Bounced"
 msgstr "Niet verzonden"
 
@@ -359,10 +356,9 @@ msgid "Clicked"
 msgstr "Geklikt"
 
 #. module: marketing_automation
-#: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
-#: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
-msgid "Commercial prospection"
-msgstr "Commercieel voorstel"
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Clicks"
+msgstr "Klikken"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
@@ -453,14 +449,14 @@ msgstr "Verwijderen"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:181
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:199
 #, python-format
 msgid "Delete Activity"
 msgstr "Activiteit verwijderen"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:183
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:201
 #, python-format
 msgid "Delete All"
 msgstr "Alles verwijderen"
@@ -472,7 +468,7 @@ msgstr "Onderliggende traceringen sturen"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:188
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:206
 #, python-format
 msgid "Discard"
 msgstr "Negeren"
@@ -500,6 +496,8 @@ msgstr "Domein"
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__activity_domain
 msgid "Domain that applies to this activity and its child activities"
 msgstr ""
+"Domein waarop deze activiteit en onderliggende activiteiten van toepassing "
+"zijn"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -534,6 +532,18 @@ msgid "Email composition wizard"
 msgstr "Wizard e-mail opstellen"
 
 #. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:636
+#, python-format
+msgid "Email failed"
+msgstr "E-mail mislukt"
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:629
+#, python-format
+msgid "Email ignored"
+msgstr "E-mail genegeerd"
+
+#. module: marketing_automation
 #: selection:marketing.trace,state:0
 msgid "Error"
 msgstr "Fout"
@@ -544,7 +554,7 @@ msgid "Error message"
 msgstr "Foutmelding"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:372
+#: code:addons/marketing_automation/models/marketing_campaign.py:392
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr ""
@@ -552,7 +562,7 @@ msgstr ""
 "activiteit."
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:378
+#: code:addons/marketing_automation/models/marketing_campaign.py:398
 #, python-format
 msgid ""
 "Error! You can't define a child activity with a trigger of type \"beginning "
@@ -567,13 +577,13 @@ msgid "Exception"
 msgstr "Fout"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:593
+#: code:addons/marketing_automation/models/marketing_campaign.py:612
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr "Fout bij bulkmailing: %s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:563
+#: code:addons/marketing_automation/models/marketing_campaign.py:582
 #, python-format
 msgid "Exception in server action: %s"
 msgstr "Fout bij serveractie: %s"
@@ -668,6 +678,16 @@ msgstr "Test starten"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Launch a test"
 msgstr "Test starten"
+
+#. module: marketing_automation
+#: model:ir.actions.act_window,name:marketing_automation.link_tracker_action_marketing_campaign
+msgid "Link Statistics"
+msgstr "Link statistieken"
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.link_tracker_menu_reporting_marketing_automation
+msgid "Link Tracker"
+msgstr "Opvolging links"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
@@ -765,7 +785,7 @@ msgid "Marketing Automation Mailings"
 msgstr "Marketing automatisering mailings"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:589
+#: code:addons/marketing_automation/models/marketing_campaign.py:608
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
 msgstr ""
@@ -773,7 +793,7 @@ msgstr ""
 "bulkmailing opgetreden %s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:559
+#: code:addons/marketing_automation/models/marketing_campaign.py:578
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
 msgstr ""
@@ -834,13 +854,6 @@ msgstr "Bulkmailing"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mail_statistics_ids
 msgid "Mass mailing statistics"
 msgstr "Bulkmailstatistieken"
-
-#. module: marketing_automation
-#: model:ir.actions.server,name:marketing_automation.ir_action_server_action_message_sales_person
-#: model:marketing.activity,name:marketing_automation.marketing_activity_3
-#: model:utm.source,name:marketing_automation.marketing_activity_3_utm_source
-msgid "Message for sales person"
-msgstr "Bericht voor verkoper"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
@@ -912,14 +925,6 @@ msgstr "Nog niet gereageerd"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_id
 msgid "Object"
 msgstr "Object"
-
-#. module: marketing_automation
-#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_offer_free_trial
-#: model:marketing.activity,name:marketing_automation.marketing_activity_1
-#: model:utm.source,name:marketing_automation.marketing_activity_1_utm_source
-#: model:utm.source,name:marketing_automation.mass_mailing_offer_free_trial_utm_source
-msgid "Offer free catalog"
-msgstr "Gratis catalogus aanbieden"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened
@@ -995,7 +1000,7 @@ msgstr "Uitvoeren"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:204
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:222
 #, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr ""
@@ -1048,8 +1053,8 @@ msgid "Record model"
 msgstr "Recordmodel"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:361
-#: code:addons/marketing_automation/models/marketing_campaign.py:465
+#: code:addons/marketing_automation/models/marketing_campaign.py:381
+#: code:addons/marketing_automation/models/marketing_campaign.py:484
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
 #: selection:marketing.trace,state:0
 #, python-format
@@ -1057,7 +1062,7 @@ msgid "Rejected"
 msgstr "Afgewezen"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:538
+#: code:addons/marketing_automation/models/marketing_campaign.py:557
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
 msgstr "Afgewezen door activiteitsfilter of record verwijderd / gearchiveerd"
@@ -1077,6 +1082,11 @@ msgstr "Verwijderd houdt in dat het gerelateerde record niet meer bestaat."
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Replied"
 msgstr "Beantwoord"
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.marketing_automation_reporting_menu
+msgid "Reporting"
+msgstr "Rapportages"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__require_sync
@@ -1219,8 +1229,8 @@ msgid "Subject"
 msgstr "Onderwerp"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:360
-#: code:addons/marketing_automation/models/marketing_campaign.py:464
+#: code:addons/marketing_automation/models/marketing_campaign.py:380
+#: code:addons/marketing_automation/models/marketing_campaign.py:483
 #, python-format
 msgid "Success"
 msgstr "Succes"
@@ -1264,7 +1274,7 @@ msgstr "Testen"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:192
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:210
 #, python-format
 msgid ""
 "This Activity has a dependant child activity. 'DELETE ALL' will delete all "
@@ -1274,7 +1284,7 @@ msgstr ""
 "VERWIJDEREN'  zal alle onderliggende activiteiten verwijderen."
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:585
+#: code:addons/marketing_automation/models/marketing_campaign.py:604
 #, python-format
 msgid ""
 "To use this feature you should be an administrator or belong to the "
@@ -1395,7 +1405,7 @@ msgid "Workflow Started On"
 msgstr "Workflow gestart op"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:173
+#: code:addons/marketing_automation/models/marketing_campaign.py:186
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
 msgstr ""

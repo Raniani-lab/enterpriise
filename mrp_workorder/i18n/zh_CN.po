@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mrp_workorder
+# 	* mrp_workorder
 # 
 # Translators:
 # leo zhang elico corp <leo.zhang@elico-corp.com>, 2017
@@ -13,15 +13,15 @@
 # 老窦 北京 <2662059195@qq.com>, 2019
 # bower Guo <124358678@qq.com>, 2019
 # xu xiaohu <xu.xiaohu@gmail.com>, 2019
-# Martin Trigaux, 2019
 # KWOKYUK CHEUNG <cheungkwokyuk@gmail.com>, 2019
+# Martin Trigaux, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
 "Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -54,6 +54,11 @@ msgid "And barcode"
 msgstr "及条码"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_line__check_ids
+msgid "Associated step"
+msgstr ""
+
+#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Availability"
 msgstr "可用性"
@@ -62,6 +67,16 @@ msgstr "可用性"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Block"
 msgstr "阻塞"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+msgid "By-product"
+msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+msgid "CONTINUE CONSUMPTION"
+msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
@@ -76,15 +91,24 @@ msgstr "支票"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_id
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Component"
 msgstr "零件"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_qty_to_do
+msgid "Component Qty To Do"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_uom_id
 msgid "Component UoM"
 msgstr "组件单位"
+
+#. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设置"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -123,7 +147,7 @@ msgid "Do not update page"
 msgstr "不要更新页面"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:111
+#: code:addons/mrp_workorder/models/quality.py:127
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__qty_done
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
@@ -164,7 +188,7 @@ msgid "Finished Product Check"
 msgstr "成品检查"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__final_lot_id
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__finished_lot_id
 msgid "Finished Product Lot"
 msgstr ""
 
@@ -194,6 +218,11 @@ msgid "Is Last Step"
 msgstr "是末道工序"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_unfinished_wo
+msgid "Is Last Work Order To Process"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_lot
 msgid "Is Last lot"
 msgstr "是最后一批"
@@ -214,6 +243,11 @@ msgid "Lot Number:"
 msgstr "批次号码:"
 
 #. module: mrp_workorder
+#: model:res.groups,name:mrp_workorder.group_mrp_wo_tablet_timer
+msgid "Manage Work Order timer on Tablet View"
+msgstr ""
+
+#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Manufacturing Orders"
 msgstr "制造订单"
@@ -229,7 +263,7 @@ msgid "Mark as Done and Close MO"
 msgstr "标记为完成并关闭MO"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:367
+#: code:addons/mrp_workorder/models/mrp_workorder.py:413
 #, python-format
 msgid "Menu"
 msgstr "菜单"
@@ -302,8 +336,8 @@ msgid "Planning by Workcenter"
 msgstr "按工作中心规划"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:242
-#: code:addons/mrp_workorder/models/mrp_workorder.py:268
+#: code:addons/mrp_workorder/models/mrp_workorder.py:264
+#: code:addons/mrp_workorder/models/mrp_workorder.py:302
 #, python-format
 msgid ""
 "Please ensure the quantity to produce is nonnegative and does not exceed the"
@@ -311,19 +345,19 @@ msgid ""
 msgstr "请确保生产的数量是非负的，不超过剩余数量。"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:246
+#: code:addons/mrp_workorder/models/mrp_workorder.py:270
 #, python-format
 msgid "Please enter a Lot/SN."
 msgstr "请输入批号/序号。"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:248
+#: code:addons/mrp_workorder/models/mrp_workorder.py:272
 #, python-format
 msgid "Please enter a positive quantity."
 msgstr "请输入正数。"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:255
+#: code:addons/mrp_workorder/models/mrp_workorder.py:287
 #, python-format
 msgid "Please upload a picture."
 msgstr "请上传图片。"
@@ -342,6 +376,11 @@ msgstr "标签打印"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Process"
 msgstr "处理"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
+msgid "Product To Register"
+msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_production
@@ -413,17 +452,6 @@ msgid "Record production"
 msgstr "生产记录"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_is_byproduct
-msgid "Register a by product"
-msgstr "登记副产品"
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:105
-#, python-format
-msgid "Register component(s)"
-msgstr "寄存器组件"
-
-#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_remaining_qty
 msgid "Remaining Quantity for Component"
 msgstr "组件的剩余数量"
@@ -474,6 +502,16 @@ msgid "Serial Number:"
 msgstr "序列号码:"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_res_config_settings__group_mrp_wo_tablet_timer
+msgid "Show Timer on Work Orders"
+msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
+msgid "Show the timer on the work order screen"
+msgstr ""
+
+#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Skip"
 msgstr "跳过"
@@ -516,6 +554,11 @@ msgstr "步骤"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type
+msgid "Technical name"
+msgstr "技术名称"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "测试类型"
@@ -534,7 +577,7 @@ msgid "Title"
 msgstr "称谓"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:111
+#: code:addons/mrp_workorder/models/quality.py:127
 #, python-format
 msgid "To Do"
 msgstr "待办"
@@ -563,16 +606,17 @@ msgstr "计量单位"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
-msgid "Validate"
-msgstr "审核"
+msgid "VALIDATE"
+msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:554
+#: code:addons/mrp_workorder/models/mrp_workorder.py:597
 #, python-format
 msgid "Warning"
 msgstr "警告"
 
 #. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_mrp_workcenter
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__workcenter_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__workcenter_id
 msgid "Work Center"
@@ -605,9 +649,14 @@ msgid "Workorder Actions"
 msgstr "工单行为"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
-#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__workorder_line_id
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__workorder_line_id
 msgid "Workorder Line"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_mrp_workorder_line
+msgid "Workorder move line"
 msgstr ""
 
 #. module: mrp_workorder
@@ -626,7 +675,7 @@ msgid "Worksheet page"
 msgstr "工作记录表页面"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:555
+#: code:addons/mrp_workorder/models/mrp_workorder.py:598
 #, python-format
 msgid ""
 "You are using components from another lot. \n"
@@ -636,19 +685,27 @@ msgstr ""
 "请在使用另一批之前验证第一批中的组件。"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:121
+#: code:addons/mrp_workorder/models/mrp_workorder.py:144
 #, python-format
 msgid "You did not set a lot/serial number for the final product"
 msgstr "请提供产品的批号/序列号"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:478
+#: code:addons/mrp_workorder/models/mrp_workorder.py:284
+#, python-format
+msgid ""
+"You should consume the quantity of %s defined in the BoM. If you want to "
+"consume more or less components, change the consumption setting on the BoM."
+msgstr ""
+
+#. module: mrp_workorder
+#: code:addons/mrp_workorder/models/mrp_workorder.py:511
 #, python-format
 msgid "You should provide a lot for the final product"
 msgstr "你需要提供完工产品的批次／序列号"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:476
+#: code:addons/mrp_workorder/models/mrp_workorder.py:509
 #, python-format
 msgid "You still need to do the quality checks!"
 msgstr "你还是需要做质量检查!"

@@ -1,23 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_ebay
+# 	* sale_ebay
 # 
 # Translators:
-# Otgonbayar.A <gobi.mn@gmail.com>, 2018
 # nasaaskii <nasaaskii@gmail.com>, 2018
 # Batzul B <batzul.active@gmail.com>, 2018
 # Tsogjav <Tsogjav2007@yahoo.com>, 2018
 # Onii Onii <onii0223@yahoo.com>, 2018
 # Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2019
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
+# Otgonbayar.A <gobi.mn@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
+"Last-Translator: Otgonbayar.A <gobi.mn@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,22 +26,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_ebay
-#: model:mail.template,body_html:sale_ebay.ebay_desciption_default
-msgid ""
-"\n"
-"                  \n"
-"          ${object.ebay_description | safe}\n"
-"        \n"
-"      "
-msgstr ""
-"\n"
-"                  \n"
-"          ${object.ebay_description | safe}\n"
-"        \n"
-"      "
-
-#. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:395
+#: code:addons/sale_ebay/models/product.py:410
 #, python-format
 msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
@@ -51,7 +36,7 @@ msgstr ""
 "жагсаах хугацааг Цуцлах хүртэл зүгээр гэдгээр тохируулсан байх шаардлагатай"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:398
+#: code:addons/sale_ebay/models/product.py:413
 #, python-format
 msgid ""
 " You need to have at least 2 variations selected for a multi-variations listing.\n"
@@ -87,7 +72,7 @@ msgstr "7 өдөр"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "<span class=\"o_form_label\">Sales Channel</span>"
+msgid "<span class=\"o_form_label\">Sales Team</span>"
 msgstr ""
 
 #. module: sale_ebay
@@ -111,7 +96,7 @@ msgid "<span class=\"o_form_label\">eBay Options</span>"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:271
+#: code:addons/sale_ebay/models/product.py:286
 #, python-format
 msgid ""
 "All the quantities must be greater than 0 or you need to enable the Out Of "
@@ -186,7 +171,7 @@ msgid "Config Settings"
 msgstr "Тохируулга"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:364
+#: code:addons/sale_ebay/models/product.py:379
 #, python-format
 msgid "Configure The eBay Integrator Now"
 msgstr "eBay уялдуулагчийг одоо тохируулах"
@@ -268,6 +253,22 @@ msgid "Duration"
 msgstr "Үргэлжлэх хугацаа"
 
 #. module: sale_ebay
+#: code:addons/sale_ebay/models/sale_order.py:301
+#, python-format
+msgid ""
+"Ebay Synchronisation could not confirm because of the following error:\n"
+"%s"
+msgstr ""
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/sale_order.py:26
+#, python-format
+msgid ""
+"Ebay could not synchronize order:\n"
+"%s"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
 msgid "Ebay: End Product Templates Listings on eBay"
 msgstr ""
@@ -293,6 +294,18 @@ msgid "Ebay: Unlink eBay Product Templates Listings"
 msgstr ""
 
 #. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_sync_ir_actions_server
+#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_orders_sync
+#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_orders_sync
+msgid "Ebay: get new orders"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_recovery
+msgid "Ebay: orders recovery"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_categories
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_categories
@@ -315,7 +328,7 @@ msgid "End Item's Listing"
 msgstr "Эцсийн зүйлийн жагсаалт"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:257
+#: code:addons/sale_ebay/models/product.py:272
 #, python-format
 msgid ""
 "Error Encountered.\n"
@@ -325,7 +338,7 @@ msgstr ""
 "eBay дээр жагсаах хувилбар тохируулагдаагүй."
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:401
+#: code:addons/sale_ebay/models/product.py:416
 #, python-format
 msgid ""
 "Error Encountered.\n"
@@ -374,7 +387,7 @@ msgid "Import eBay config data and sync transactions"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:393
+#: code:addons/sale_ebay/models/product.py:408
 #, python-format
 msgid ""
 "Impossible to revise a listing into a multi-variations listing.\n"
@@ -493,13 +506,13 @@ msgid "Official eBay Category"
 msgstr "Албан ёсны eBay ангилал"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:363
+#: code:addons/sale_ebay/models/product.py:378
 #, python-format
 msgid "One parameter is missing."
 msgstr "Нэг параметр алга."
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:389
+#: code:addons/sale_ebay/models/product.py:404
 #, python-format
 msgid "Or the condition is not compatible with the category."
 msgstr "Эсвэл нөхцөл нь ангилалтай нийцэхгүй байна."
@@ -545,6 +558,12 @@ msgstr "Барааны Ангилалууд"
 #: model:ir.model,name:sale_ebay.model_product_template
 msgid "Product Template"
 msgstr "Барааны үлгэр"
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/sale_order.py:210
+#, python-format
+msgid "Product created from eBay transaction %s"
+msgstr ""
 
 #. module: sale_ebay
 #: selection:res.config.settings,ebay_domain:0
@@ -605,13 +624,18 @@ msgid "Revise Item"
 msgstr "Зүйлийг шалгах"
 
 #. module: sale_ebay
-#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Sales Channel"
-msgstr "Борлуулалтын Суваг"
+#: model:ir.model,name:sale_ebay.model_sale_order
+msgid "Sales Order"
+msgstr "Борлуулалтын захиалга"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Sales channel to manage eBay sales"
+msgid "Sales Team"
+msgstr "Борлуулалтын баг"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Sales Team to manage eBay sales"
 msgstr ""
 
 #. module: sale_ebay
@@ -691,14 +715,16 @@ msgid "Sync now"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:746
+#: code:addons/sale_ebay/models/product.py:927
+#: code:addons/sale_ebay/models/sale_order.py:298
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
 msgstr "Худалдан авагч дараах хүргэлтийн аргыг сонгосон байна :\n"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:742
-#: code:addons/sale_ebay/models/product.py:743
+#: code:addons/sale_ebay/models/product.py:923
+#: code:addons/sale_ebay/models/product.py:924
+#: code:addons/sale_ebay/models/sale_order.py:276
 #, python-format
 msgid "The Buyer Posted :\n"
 msgstr "Худалдан авагч илгээсэн :\n"
@@ -728,6 +754,16 @@ msgid ""
 msgstr ""
 "Хоёрдогч ангилалын хэрэглээ бүх eBay сайтууд дээр зөвшөөрөгдөөгүй. Энэ "
 "боломжийн төлбөрийг eBay шаардаж магадгүй"
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/product.py:665
+#, python-format
+msgid ""
+"There is no last synchronization date in your System Parameters. Create a "
+"System Parameter record with the key \"ebay_last_sync\" and the value set to"
+" the date of the oldest order you wish to synchronize in the format \"YYYY-"
+"MM-DD\"."
+msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
@@ -875,8 +911,8 @@ msgstr ""
 "'%s'"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:495
-#: code:addons/sale_ebay/models/product.py:568
+#: code:addons/sale_ebay/models/product.py:527
+#: code:addons/sale_ebay/models/product.py:623
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the products. \n"
@@ -886,7 +922,7 @@ msgstr ""
 "'%s'"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:391
+#: code:addons/sale_ebay/models/product.py:406
 #, python-format
 msgid "eBay is unreachable. Please try again later."
 msgstr "eBay - тэй холбогдох боломжгүй байна. Дараа дахин оролдоно уу."
@@ -909,5 +945,5 @@ msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
-msgid "ebay Sales Channel"
+msgid "ebay Sales Team"
 msgstr ""

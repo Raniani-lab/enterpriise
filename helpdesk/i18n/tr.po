@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * helpdesk
+# 	* helpdesk
 # 
 # Translators:
 # Esin Kandemir <esaykandemir@gmail.com>, 2017
@@ -8,26 +8,27 @@
 # gezgin biri <gezginbiri@hotmail.com>, 2017
 # Saban Yildiz <sabany@projetgrup.com>, 2017
 # Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2017
-# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2018
 # Mehmet Demirel <mdemirell@gmail.com>, 2018
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2018
 # UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2018
 # Martin Trigaux, 2019
-# Murat Kaplan <muratk@projetgrup.com>, 2019
 # Buket Şeker <buket_skr@hotmail.com>, 2019
-# Umur Akın <umura@projetgrup.com>, 2019
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
 # Gökhan Yüksel <yg_yuksel@hotmail.com>, 2019
 # Ediz Duman <neps1192@gmail.com>, 2019
+# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# Abdullah Onur Uğur <aonurugur@outlook.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2017-02-15 11:45+0000\n"
-"Last-Translator: Ediz Duman <neps1192@gmail.com>, 2019\n"
+"Last-Translator: Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +54,7 @@ msgstr "${object.display_name}"
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "% endif"
-msgstr ""
+msgstr "% endif"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -62,6 +63,9 @@ msgid ""
 "    % if email_alias\n"
 "    <strong style=\"font-size: 16px;\">Try the mail gateway</strong>"
 msgstr ""
+"% set email_alias = object.env['helpdesk.team'].search([('alias_name','!=', False)],limit=1).alias_id.display_name\n"
+"    % if email_alias\n"
+"    <strong style=\"font-size: 16px;\">Posta ağ geçidini deneyin</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -126,6 +130,58 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div>\n"
+"    % set access_token = object.rating_get_access_token()\n"
+"    % set partner = object.rating_get_partner_id()\n"
+"    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0;\">\n"
+"    <tbody>\n"
+"        <tr><td valign=\"top\" style=\"font-size: 14px;\">\n"
+"            Merhaba ${partner.name},<br/>\n"
+"            Birkaç saniyenizi ayırarak \"<strong>${object.name}</strong>talebinize yardımcı olan \"\n"
+"            % if object.rating_get_rated_partner_id().name:\n"
+"                için geri bildiriminizi yapar mısınız?<strong>${object.rating_get_rated_partner_id().name}</strong>.<br/>\n"
+"            % else:\n"
+"                .<br/>\n"
+"            % endif\n"
+"        </td></tr>\n"
+"        <tr><td style=\"text-align: center;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" summary=\"o_mail_notification\" style=\"width:100%; margin: 32px 0px 32px 0px;\">\n"
+"                <tr><td style=\"font-size: 14px;\">\n"
+"                    <strong>Hizmetimiz hakkında nasıl hissettiğinizi söyleyin</strong><br/>\n"
+"                    <span style=\"text-color: #888888\">(bu ifadelerden birine tıklayınız)</span>\n"
+"                </td></tr>\n"
+"                <tr><td style=\"font-size: 14px;\">\n"
+"                    <table style=\"width:100%;text-align:center;\">\n"
+"                        <tr>\n"
+"                            <td>\n"
+"                                <a href=\"/rating/${access_token}/10\">\n"
+"                                    <img alt=\"Satisfied\" src=\"/rating/static/src/img/rating_10.png\" title=\"Satisfied\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                            <td>\n"
+"                                <a href=\"/rating/${access_token}/5\">\n"
+"                                    <img alt=\"Not satisfied\" src=\"/rating/static/src/img/rating_5.png\" title=\"Not satisfied\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                            <td>\n"
+"                                <a href=\"/rating/${access_token}/1\">\n"
+"                                    <img alt=\"Highly Dissatisfied\" src=\"/rating/static/src/img/rating_1.png\" title=\"Highly Dissatisfied\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                    </table>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td></tr>\n"
+"        <tr><td valign=\"top\" style=\"font-size: 14px;\">\n"
+"            Geri bildiriminiz için çok teşekkür ederiz. Bu bizim sürekli olarak gelişmemize yardımcı olacaktır.\n"
+"            <br/><span style=\"margin: 0px 0px 0px 0px; font-size: 12px; opacity: 0.5; color: #454748;\">Bu müşteri anketi, talebinizin aşaması <b>${object.stage_id.name}</b>olduğu için gönderildi</span>\n"
+"        </td></tr>\n"
+"    </tbody>\n"
+"    </table>\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.solved_ticket_request_email_template
@@ -142,6 +198,17 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div>\n"
+"    Sayın ${object.sudo().partner_id.name or 'Madam/Sir'},<br/><br/>\n"
+"    Bu otomatik mesaj, talebinizin kapandığı bilgisini size vermek için gönderilmiştir. (referans ${object.id}).\n"
+"    Umarız, hizmetimiz beklentilerinizi karşılamıştır.\n"
+"    Eğerherhangi bir sorunuz yada yorumunuz var ise, bu e-postayı yanıtlamaktan ve talebinizin tekrar açılmasını istemekten çekinmeyin..<br/>\n"
+"    İş birliğiniz için teşekkür ederiz.<br/>\n"
+"    Saygılarımızla,<br/><br/>\n"
+"    ${object.team_id.name yada 'Helpdesk'} Ekibi.\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.new_ticket_request_email_template
@@ -150,7 +217,7 @@ msgid ""
 "<div>\n"
 "    Dear ${object.sudo().partner_id.name or 'Madam/Sir'},<br/><br/>\n"
 "    Your request\n"
-"    % if object.access_token:\n"
+"    % if object.get_portal_url():\n"
 "    <a href=\"/helpdesk/ticket/${object.id}/${object.access_token}\">${object.name}</a>\n"
 "    % endif\n"
 "    has been received and is being reviewed by our ${object.team_id.name or ''} team.\n"
@@ -164,7 +231,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:59
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:59
 #, python-format
 msgid ""
 "<b>Stars</b> mark the <b>ticket priority</b>. You can change it directly "
@@ -176,7 +243,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<em class=\"text-muted\"><small>No description</small></em>"
-msgstr ""
+msgstr "<em class=\"text-muted\"><small>Açıklama yok</small></em>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
@@ -196,7 +263,7 @@ msgstr "<i class=\"fa fa-arrow-right\"/> Dokümantasyonu İncele"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"Messages\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"Messages\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -214,6 +281,8 @@ msgid ""
 "<i class=\"fa fa-envelope-o\" title=\"Domain alias\" role=\"img\" aria-"
 "label=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
+"<i class=\"fa fa-envelope-o\" title=\"Domain alias\" role=\"img\" aria-"
+"label=\"Domain alias\"/>&amp;nbsp;"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -221,6 +290,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-arrow-right\" role=\"img\" aria-label=\"Rating URL\" "
 "title=\"Rating URL\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-arrow-right\" role=\"img\" aria-label=\"Rating URL\" "
+"title=\"Rating URL\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
@@ -243,6 +314,8 @@ msgid ""
 "<span class=\"fa fa-clock-o\" title=\"Deadline\" role=\"img\" aria-"
 "label=\"Deadline\"/>"
 msgstr ""
+"<span class=\"fa fa-clock-o\" title=\"Deadline\" role=\"img\" aria-"
+"label=\"Deadline\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_partner_form_inherit_helpdesk
@@ -252,27 +325,27 @@ msgstr "<span class=\"o_stat_text\"> Talepler</span>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Assigned to</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Atanacak</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Description</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">AçıklamaT</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Managed by</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Yöneten</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Reported by</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Raporlayan</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Reported on</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Raporlandı</strong>"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_defaults
@@ -354,7 +427,7 @@ msgstr "Aktivite Türleri"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:64
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:64
 #, python-format
 msgid ""
 "Add columns to configure <b>stages for your tickets</b>.<br/><i>e.g. "
@@ -362,6 +435,16 @@ msgid ""
 msgstr ""
 "Taleplerinizin aşamalarını <b>yapılandırmak için kolonlar ekleyin "
 "</b>.<br/><i>Örn: Müşteri geri Bildirimi, Müşteri Takibi gibi..</i>"
+
+#. module: helpdesk
+#: model:res.groups,name:helpdesk.group_helpdesk_manager
+msgid "Administrator"
+msgstr ""
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "After Sales"
+msgstr ""
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_id
@@ -402,10 +485,18 @@ msgstr "Tüm Talepler"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "Allow product returns from tickets"
+msgstr ""
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid ""
 "Allow your customers to easily rate your services. Activate this option will"
 " add a default email template on non folded closing stages"
 msgstr ""
+"Müşterilerinizin, hizmetinizi kolayca puanlamasına izin verin. Bu seçeneği "
+"etkinleştirmek, katlanmamış, kapanan aşamalarına varsayılan bir e-posta "
+"şablonu eklenir"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -432,13 +523,13 @@ msgstr "Bana Ata"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:40
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:40
 #, python-format
 msgid "Assign the ticket to someone."
 msgstr "Talepleri birisine ata."
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:429
+#: code:addons/helpdesk/models/helpdesk_ticket.py:435
 #, python-format
 msgid "Assign to me"
 msgstr "Bana Ata"
@@ -548,23 +639,14 @@ msgstr "Eposta Seçiniz:"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:68
-#, python-format
-msgid "Click here and select \"Helpdesk Teams\" for further configuration."
-msgstr ""
-"Buraya tıklayın ve daha iyi bir yapılandırma için 'Yardım Masası Ekipleri' "
-"ni seçin."
-
-#. module: helpdesk
-#. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:18
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:18
 #, python-format
 msgid "Click here to view this team's tickets."
 msgstr "Bu takımın taleplerini görmek için tıklayın."
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:53
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:53
 #, python-format
 msgid ""
 "Click these cards to open their form view, or <b>drag &amp; drop</b> them "
@@ -652,20 +734,25 @@ msgid "Contact"
 msgstr "Kontak"
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_coupons
+msgid "Coupons"
+msgstr "Kuponlar"
+
+#. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action_main
 msgid "Create a new Service Level Agreement (SLA) policy"
-msgstr ""
+msgstr "Yeni bir Servis Seviyesi Sözleşmesi (SLA) politikası oluşturun"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_stage_action
 msgid "Create a new stage in your helpdesk pipeline"
-msgstr ""
+msgstr "Helpdesk hunisi için yeni bir aşama oluşturun"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.email_template_action_helpdesk
 msgid "Create a new template"
-msgstr ""
+msgstr "Yeni bir şablon oluşturur"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.action_upcoming_sla_fail_all_tickets
@@ -680,23 +767,23 @@ msgstr "Yeni talep oluştur"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
 msgid "Create a new ticket tag"
-msgstr ""
+msgstr "Yeni bir talep etiketi oluştur"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_action
 msgid "Create a new ticket team"
-msgstr ""
+msgstr "Yeni bir destek ekibi oluştur"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_type_action
 msgid "Create a new ticket type"
-msgstr ""
+msgstr "Yeni bir talep türü oluştur"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_main
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_main_tree
 msgid "Create your first ticket."
-msgstr ""
+msgstr "İlk talebinizi oluşturun."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__create_uid
@@ -724,7 +811,7 @@ msgid "Current stage of this ticket"
 msgstr "Talebin mevcut aşaması"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:334
+#: code:addons/helpdesk/models/helpdesk_ticket.py:342
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_id
 #, python-format
 msgid "Customer"
@@ -733,10 +820,10 @@ msgstr "Müşteri"
 #. module: helpdesk
 #: model:helpdesk.team,name:helpdesk.helpdesk_team1
 msgid "Customer Care"
-msgstr ""
+msgstr "Müşteri Hizmetleri"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:336
+#: code:addons/helpdesk/models/helpdesk_ticket.py:344
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_email
 #, python-format
 msgid "Customer Email"
@@ -765,7 +852,7 @@ msgid "Customer Satisfaction"
 msgstr "Müşteri Memnuniyeti"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:321
+#: code:addons/helpdesk/models/helpdesk_ticket.py:329
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 #, python-format
 msgid "Customer Tickets"
@@ -787,7 +874,7 @@ msgstr "Günlük Hedef"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:227
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:229
 #, python-format
 msgid "Dashboard"
 msgstr "Panel"
@@ -863,7 +950,7 @@ msgstr "Müşteri Portalı Gösterme Oranları"
 #: code:addons/helpdesk/models/digest.py:16
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
-msgstr ""
+msgstr "Erişiminiz yok, kullanıcı e-mail özeti için bu veriyi atlayın"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
@@ -886,9 +973,14 @@ msgid "Email alias"
 msgstr "Eposta rumuzu"
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email_cc
+msgid "Email cc"
+msgstr ""
+
+#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email
 msgid "Email on Customer"
-msgstr ""
+msgstr "Müşteri E-Postası"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -896,15 +988,17 @@ msgid ""
 "Emails sent to <strong>${email_alias}</strong> generate new tickets in your "
 "Helpdesk funnel.<br>"
 msgstr ""
+"<strong>${email_alias}</strong>gönderilen e-postalar Helpdesk hunisinde yeni"
+" talepler oluşturur.<br>"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_slides
 msgid "Enable eLearning"
-msgstr ""
+msgstr "E-Öğrenmeyi Etkinleştir"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:30
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:30
 #, python-format
 msgid ""
 "Enter a subject or title for this ticket.<br/><i>(e.g. Problem with "
@@ -915,7 +1009,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:35
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:35
 #, python-format
 msgid "Enter the customer. Feel free to create it on the fly."
 msgstr "Müşteri girin. Anında yaratmanın rahatlığını hissedin."
@@ -928,7 +1022,7 @@ msgstr "Başarısız SLA Politikası"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Failed SLA: {{record.sla_name.raw_value}}"
-msgstr ""
+msgstr "Başarısız SLA: {{record.sla_name.raw_value}}"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__assign_date
@@ -989,7 +1083,17 @@ msgstr "Sonraki Aktiviteler"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "Generate credit notes from tickets"
+msgstr ""
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Get in touch with your website visitors"
+msgstr "Müşterilerinize web sitenizden canlı destek verin"
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "Grant coupons from Tickets"
 msgstr ""
 
 #. module: helpdesk
@@ -1023,7 +1127,7 @@ msgstr "Yardım Masası"
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_team_dashboard_action_main
 msgid "Helpdesk Overview"
-msgstr ""
+msgstr "Yardım Masasına Genel Bakış"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_sla
@@ -1033,12 +1137,12 @@ msgstr "Yardım Masası SLA Politikaları"
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_stage
 msgid "Helpdesk Stage"
-msgstr ""
+msgstr "Yardım Masası Aşaması"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_tag
 msgid "Helpdesk Tags"
-msgstr ""
+msgstr "Yardım Masası Etiketleri"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_team
@@ -1080,7 +1184,7 @@ msgstr "Yardım Masası Talep Analizi"
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_ticket_type
 msgid "Helpdesk Ticket Type"
-msgstr ""
+msgstr "Yardım Masası Talep Türü"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_main
@@ -1156,7 +1260,7 @@ msgstr "İşaretliyse, yeni mesajlar dikkatinize sunulacak."
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "İşaretliyse,bazı mesajlar gönderi hatası içermektedir."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -1167,7 +1271,7 @@ msgstr "Önemli Mesajlar"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "#{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
@@ -1213,7 +1317,7 @@ msgstr "Herkesin bu ekibi görebilmesini istiyorsanız seçimi boş bırakın"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed_value
 msgid "Kpi Helpdesk Tickets Closed Value"
-msgstr ""
+msgstr "Yardım Masası Kapanış Değerleri KPI"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data
@@ -1272,10 +1376,15 @@ msgstr "Son Geri Bildirimler"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:24
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:24
 #, python-format
 msgid "Let's create your first ticket."
 msgstr "Hadi ilk talebinizi oluşturun"
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
@@ -1292,11 +1401,6 @@ msgstr "Düşük öncelik"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Ana Ek"
-
-#. module: helpdesk
-#: model:res.groups,name:helpdesk.group_helpdesk_manager
-msgid "Manager"
-msgstr "Yönetici"
 
 #. module: helpdesk
 #: selection:helpdesk.team,assign_method:0
@@ -1317,7 +1421,7 @@ msgstr "Mesaj İletilme Hatası"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Message and communication history"
-msgstr ""
+msgstr "Mesaj ve iletişim geçmişi"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_ids
@@ -1418,7 +1522,7 @@ msgstr "Sonraki Faaliyet Türü"
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_sla_urgent
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_urgent
 msgid "No tickets to display"
-msgstr ""
+msgstr "Gösterilecek talep yok"
 
 #. module: helpdesk
 #: selection:helpdesk.ticket,kanban_state:0
@@ -1467,7 +1571,7 @@ msgstr "Okunmamış mesaj sayısı"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:190
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:192
 #, python-format
 msgid "Only Integer Value should be valid."
 msgstr "Sadece tamsayı değeri geçerli olmalıdır."
@@ -1698,11 +1802,28 @@ msgid ""
 "Record timesheets on your tickets and reinvoice time to you customer through"
 " tasks."
 msgstr ""
+"Taleplerinize zaman çizelgesi ekleyin ve görevler üzerinden zaman bazlı "
+"faturalama yapın."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_helpdesk_ticket
 msgid "Ref"
 msgstr "Ref"
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_credit_notes
+msgid "Refunds"
+msgstr "İadeler"
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "Repair broken products"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_product_repairs
+msgid "Repairs"
+msgstr "Onarımlar"
 
 #. module: helpdesk
 #: model:ir.ui.menu,name:helpdesk.helpdesk_ticket_report_menu_main
@@ -1718,6 +1839,11 @@ msgstr "Sorumlu Kullanıcı"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Restore"
 msgstr "Geriyükle"
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_product_returns
+msgid "Returns"
+msgstr ""
 
 #. module: helpdesk
 #. openerp-web
@@ -1787,7 +1913,7 @@ msgstr "Özelliği aktifleştirmek için bu sayfayı kaydedin ve yenileyin."
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:44
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:44
 #, python-format
 msgid "Save this ticket and the modifications you've made to it."
 msgstr "Yaptığınız değişiklikleri ve bu talebi kaydet."
@@ -1868,7 +1994,7 @@ msgstr "Sıra"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Set the calendar used to compute SLA target"
-msgstr ""
+msgstr "SLA hedefini hesaplamak için kullanılan takvimi ayarlayın"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2080,7 +2206,7 @@ msgstr "Satış Ekip Üyeleri"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_search
 msgid "Team Search"
-msgstr ""
+msgstr "Ekip Araması"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
@@ -2137,7 +2263,7 @@ msgstr ""
 msgid ""
 "The success rate is based on the tickets which passed the SLA policies "
 "successfully."
-msgstr ""
+msgstr "SLA politikasını başarıyla geçen taleplere göre başarı oranı."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_helpdesk_ticket
@@ -2184,7 +2310,12 @@ msgstr "Proje modülünün yüklenmiş olması gerekiyor."
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:30
 #, python-format
 msgid "Three stars, maximum score"
-msgstr ""
+msgstr "Üç yıldız, maksimum skor"
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_activity
+msgid "Ticket"
+msgstr "Talep"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_action_dashboard
@@ -2203,7 +2334,7 @@ msgstr "Talep Oluşturuldu"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Ticket ID"
-msgstr ""
+msgstr "Talep ID"
 
 #. module: helpdesk
 #: model:mail.message.subtype,name:helpdesk.mt_team_ticket_rated
@@ -2272,7 +2403,7 @@ msgstr "Talepler"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed
 msgid "Tickets Closed"
-msgstr ""
+msgstr "Kapanan Talepler"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
@@ -2338,7 +2469,7 @@ msgstr "Twitter"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:24
 #, python-format
 msgid "Two stars, with a maximum of three"
-msgstr ""
+msgstr "İki yıldız, en fazla üç yıldızdan"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_type_action
@@ -2358,7 +2489,7 @@ msgstr "Talep Gönderilecek URL"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__portal_rating_url
 msgid "URL to Submit an Issue"
-msgstr ""
+msgstr "Sorun Gönderilecek URL"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__unassigned_tickets
@@ -2405,8 +2536,28 @@ msgid "Urgent ("
 msgstr "Acil ("
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__use_coupons
+msgid "Use Coupons"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__use_credit_notes
+msgid "Use Credit Notes"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__use_product_repairs
+msgid "Use Repairs"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__use_product_returns
+msgid "Use Returns"
+msgstr ""
+
+#. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:49
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:49
 #, python-format
 msgid "Use the breadcrumbs to go back to the Kanban view."
 msgstr "Kanban görünümüne dönmek için gezinti bölmesini kullanın."
@@ -2438,7 +2589,7 @@ msgstr "Yüksek öncelikli başarısız talepleri görüntüle"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "View this teams ratings on this page:<br/>"
-msgstr ""
+msgstr "Bu sayfada, bu ekibin değerlendirilmesini görüntüleyin:<br/>"
 
 #. module: helpdesk
 #. openerp-web
@@ -2449,7 +2600,7 @@ msgstr "Acil başarısız talepleri görüntüle"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:13
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:13
 #, python-format
 msgid ""
 "Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to "
@@ -2499,13 +2650,13 @@ msgstr "Çalışma Saatleri"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:190
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:192
 #, python-format
 msgid "Wrong value entered!"
 msgstr "Yanlış değer girildi!"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk.py:100
+#: code:addons/helpdesk/models/helpdesk.py:104
 #, python-format
 msgid "You must have team members assigned to change the assignation method."
 msgstr ""
@@ -2515,7 +2666,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_dashboard_action_main
 msgid "Your teams will appear here"
-msgstr ""
+msgstr "Ekip üyeleriniz burada görünecek."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form

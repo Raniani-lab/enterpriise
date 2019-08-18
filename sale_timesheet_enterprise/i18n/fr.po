@@ -1,22 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * timesheet_grid_sale
+# 	* sale_timesheet_enterprise
 # 
 # Translators:
-# Frédéric LIETART <stuff@tifred.fr>, 2017
-# fr rev <e2ffr02@hotmail.com>, 2017
-# fr trans <e2ftrans1@yahoo.com>, 2017
-# Martin Trigaux, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Marie Willemyns <mwi@odoo.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2019\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-06-12 12:38+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,47 +21,211 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#. module: timesheet_grid_sale
-#: model_terms:ir.ui.view,arch_db:timesheet_grid_sale.res_config_settings_view_form
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Invoicing Policy</span>"
 msgstr "<span class=\"o_form_label\">Politique de Facturation</span>"
 
-#. module: timesheet_grid_sale
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
+msgid "<strong>Round timesheets</strong>"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
 #: selection:res.config.settings,invoiced_timesheet:0
 msgid "All recorded timesheets"
 msgstr "Toutes les feuilles de temps enregistrées"
 
-#. module: timesheet_grid_sale
-#: model:ir.model,name:timesheet_grid_sale.model_account_analytic_line
+#. module: sale_timesheet_enterprise
+#: model:ir.model,name:sale_timesheet_enterprise.model_account_analytic_line
 msgid "Analytic Line"
 msgstr "Ligne analytique"
 
-#. module: timesheet_grid_sale
+#. module: sale_timesheet_enterprise
 #: selection:res.config.settings,invoiced_timesheet:0
 msgid "Approved timesheets only"
 msgstr "Feuilles de temps approuvées uniquement"
 
-#. module: timesheet_grid_sale
-#: model:ir.model,name:timesheet_grid_sale.model_res_config_settings
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model,name:sale_timesheet_enterprise.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model,name:sale_timesheet_enterprise.model_res_config_settings
 msgid "Config Settings"
 msgstr "Paramètres de config"
 
-#. module: timesheet_grid_sale
-#: model:ir.model,name:timesheet_grid_sale.model_account_invoice_line
-msgid "Invoice Line"
-msgstr "Ligne de facture"
+#. module: sale_timesheet_enterprise
+#: code:addons/sale_timesheet_enterprise/models/project_task.py:64
+#, python-format
+msgid "Confirm Time Spent"
+msgstr ""
 
-#. module: timesheet_grid_sale
-#: model_terms:ir.ui.view,arch_db:timesheet_grid_sale.res_config_settings_view_form
+#. module: sale_timesheet_enterprise
+#: model:ir.model,name:sale_timesheet_enterprise.model_project_task_create_timesheet
+msgid "Create Timesheet from task"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__description
+msgid "Description"
+msgstr "Description"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__display_timesheet_timer
+msgid "Display Timesheet Time"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__id
+msgid "ID"
+msgstr "ID"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model,name:sale_timesheet_enterprise.model_account_move_line
+msgid "Journal Item"
+msgstr "Écriture comptable"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
+msgid "Measure time spent on tasks"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__timesheet_min_duration
+msgid "Minimal duration"
+msgstr "Durée minimale"
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
+msgid "Pause"
+msgstr "Mettre en attente"
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Record time spent and invoice it based on:"
 msgstr "Enregistrer le temps passé et le facturer selon :"
 
-#. module: timesheet_grid_sale
-#: model:ir.model,name:timesheet_grid_sale.model_sale_order_line
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
+msgid "Resume"
+msgstr "Reprendre"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__timesheet_rounding
+msgid "Rounding up"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model,name:sale_timesheet_enterprise.model_sale_order_line
 msgid "Sales Order Line"
 msgstr "Ligne de bons de commande"
 
-#. module: timesheet_grid_sale
-#: model:ir.model.fields,field_description:timesheet_grid_sale.field_res_config_settings__invoiced_timesheet
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
+msgid "Save"
+msgstr "Sauvegarder"
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
+msgid "Save time"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
+msgid "Start"
+msgstr "Démarrer"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_company__use_timesheet_timer
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__use_timesheet_timer
+msgid "Start and Stop"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
+msgid "Stop"
+msgstr "Arrêter"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model,name:sale_timesheet_enterprise.model_project_task
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__task_id
+msgid "Task"
+msgstr "Tâche"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task_create_timesheet__task_id
+msgid "Task for which we are creating a sales order"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__time_spent
+msgid "Time"
+msgstr "Heure"
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_pause
+msgid "Timesheet Timer Last Pause"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_start
+msgid "Timesheet Timer Start"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet
 msgid "Timesheets Invoicing"
 msgstr "Feuille de temps à facturer"
+
+#. module: sale_timesheet_enterprise
+#: code:addons/sale_timesheet_enterprise/wizard/project_task_create_timesheet.py:18
+#, python-format
+msgid "You can only apply this action from a task."
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_create_timesheet_view_form
+msgid "hours"
+msgstr "heures"
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
+msgid "minutes"
+msgstr "minutes"

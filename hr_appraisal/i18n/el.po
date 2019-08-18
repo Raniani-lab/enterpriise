@@ -1,20 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * hr_appraisal
+# 	* hr_appraisal
 # 
 # Translators:
-# Kostas Goutoudis <goutoudis@gmail.com>, 2019
-# Giota Dandidou <giotadandidou@gmail.com>, 2019
 # George Tarasidis <george_tarasidis@yahoo.com>, 2019
 # Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,19 +22,42 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr_appraisal
-#: model:mail.template,subject:hr_appraisal.mail_template_user_input_appraisal
-msgid ""
-"${object.appraisal_id.employee_id.name} Appraisal: ${object.survey_id.title}"
+#: model:mail.template,report_name:hr_appraisal.mail_template_appraisal_request
+#: model:mail.template,report_name:hr_appraisal.mail_template_appraisal_request_from_employee
+msgid "${(object.name or '').replace('/','_')}"
 msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:175
+#: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:44
 #, python-format
-msgid "%s appraisal: %s"
+msgid "${(object.name)} appraisal reminder"
 msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:128
+#: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:47
+#, python-format
+msgid "${(object.name)}'s appraisal reminder"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request_from_employee
+msgid "${object.name} requests an Appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:188
+#, python-format
+msgid "%s appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:38
+#, python-format
+msgid "%s: %s months %s"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:129
 #, python-format
 msgid ""
 "<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Meeting</a> for <a "
@@ -43,35 +65,73 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
-#: model:mail.template,body_html:hr_appraisal.mail_template_user_input_appraisal
+#: model:mail.template,body_html:hr_appraisal.mail_template_appraisal_request_from_employee
 msgid ""
-"<div style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"        Dear ${object.partner_id.name or 'participant'}<br/><br/>\n"
-"        % if object.appraisal_id.employee_id.name:\n"
-"            Please fill out the following survey related to ${object.appraisal_id.employee_id.name}'s appraisal.\n"
-"        % else:\n"
-"            Please fill out the following appraisal survey.\n"
-"        % endif\n"
-"        <div style=\"margin: 16px 0px 16px 0px;\">\n"
-"            <a href=\"${('%s?answer_token=%s' % (object.survey_id.public_url, object.token)) | safe}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
-"                Start Survey\n"
-"            </a>\n"
-"        </div>\n"
-"        % if object.deadline\n"
-"            Please answer the appraisal for ${format_date(object.deadline)}.<br/><br/>\n"
-"        % endif\n"
-"        Thank you for your participation.\n"
-"    </p>\n"
-"</div>"
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Dear ${ctx['partner_to_name']},\n"
+"                        <br/><br/>\n"
+"                        I wish to request an appraisal.<br/>\n"
+"                        Here is the link of my appraisal:\n"
+"                        <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a href=\"${ctx['url']}\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
+"                                View Appraisal\n"
+"                            </a>\n"
+"                        </p>\n"
+"                        <br/><br/>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.employee_id.user_id.signature or '')| safe}</td></tr>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+#: model:mail.template,body_html:hr_appraisal.mail_template_appraisal_request
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Dear ${ctx['partner_to_name']},\n"
+"                        <br/><br/>\n"
+"                        I would like to start an Appraisal for you.\n"
+"                        <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a href=\"${ctx['url']}\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
+"                                View Appraisal\n"
+"                            </a>\n"
+"                        </p>\n"
+"                        <br/><br/>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.signature or '')| safe}</td></tr>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" role=\"img\" aria-label=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\"/>"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
+msgid ""
+"<span class=\"o_form_label\">Appraisal Reminder </span>\n"
+"                                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
+msgid ""
+"<span class=\"o_form_label\">Default Appraisal Setup </span>\n"
+"                                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
 
 #. module: hr_appraisal
@@ -84,23 +144,26 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+msgid ""
+"<span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '=', False)]}\">1</span>\n"
+"                            <span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '!=', False)]}\">0</span>\n"
+"                            <span class=\"o_stat_text\">Meeting</span>"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
+msgid "<span> month(s) </span>"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
+msgid "<span>Notify </span>"
+msgstr ""
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "<strong><span>Final Interview: </span></strong>"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_1
-msgid "Ability to cope with multidisciplinarity of team"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_6
-msgid "Ability to follow and complete work as instructed"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_2_5
-msgid "Ability to manage planning resources, risks, budgets and deadlines"
 msgstr ""
 
 #. module: hr_appraisal
@@ -111,13 +174,6 @@ msgstr "Απαιτείται ενέργεια"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__action_plan
 msgid "Action Plan"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_6_1
-msgid ""
-"Actions by Executive management show genuine interest in the well-being of "
-"employees"
 msgstr ""
 
 #. module: hr_appraisal
@@ -142,56 +198,36 @@ msgid "Activity Types"
 msgstr "Τύποι Δραστηριότητας"
 
 #. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_13
-msgid ""
-"Adaptability: Ability to adapt oneself to organizational changes while "
-"keeping efficiency"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
+msgid "Add existing contacts..."
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_2_3
-#: model:survey.question,title:hr_appraisal.appraisal_2_3
-msgid "Additional Comments"
+#: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
+msgid "Administrator"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_2_7
-#: model:survey.question,title:hr_appraisal.opinion_2_7
-msgid "Additional comments"
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__event
+msgid "After event"
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "An appraisal will be automatically created."
 msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_11
-msgid "Analytical and synthetic mind"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_completed_ids
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
-msgid "Answers"
-msgstr "Απαντήσεις"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree2
-#: model:ir.model.fields,field_description:hr_appraisal.field_survey_invite__appraisal_id
-#: model:ir.model.fields,field_description:hr_appraisal.field_survey_user_input__appraisal_id
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_root
 #: model:ir.ui.menu,name:hr_appraisal.menu_open_view_hr_appraisal_tree
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.survey_user_input_view_search
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
-#: selection:survey.survey,category:0
 msgid "Appraisal"
 msgstr ""
 
@@ -201,6 +237,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_pivot
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Appraisal Analysis"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_collaborators
+msgid "Appraisal By Collaborators"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_colleagues
+msgid "Appraisal By Colleagues"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_manager
+msgid "Appraisal By Manager"
 msgstr ""
 
 #. module: hr_appraisal
@@ -216,20 +267,23 @@ msgid "Appraisal Colleagues"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_date
+msgid "Appraisal Date"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_close
 msgid "Appraisal Deadline"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:mail.activity.type,name:hr_appraisal.mail_act_appraisal_form
-msgid "Appraisal Form to Fill"
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__employee_id
+msgid "Appraisal Employee"
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
-msgid "Appraisal Form..."
+#: model:mail.activity.type,name:hr_appraisal.mail_act_appraisal_form
+msgid "Appraisal Form to Fill"
 msgstr ""
 
 #. module: hr_appraisal
@@ -239,29 +293,34 @@ msgid "Appraisal Manager"
 msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:119
+#: code:addons/hr_appraisal/models/hr_appraisal.py:120
 #, python-format
 msgid "Appraisal Meeting For %s"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_1
-#: model:survey.question,title:hr_appraisal.opinion_1
-msgid "Appraisal Process"
+#: model:ir.actions.act_window,name:hr_appraisal.appraisal_reminderlist_action
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_reminder
+#: model:ir.ui.menu,name:hr_appraisal.menu_appraisal_reminder
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_tree
+msgid "Appraisal Reminder"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_request
-msgid "Appraisal Request by Employee"
+#: code:addons/hr_appraisal/wizard/request_appraisal.py:109
+#, python-format
+msgid "Appraisal Request"
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
-msgid "Appraisal Scheduling"
+#: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request
+msgid "Appraisal Requested"
 msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:265
+#: code:addons/hr_appraisal/models/hr_appraisal.py:289
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
@@ -274,23 +333,12 @@ msgid "Appraisal Statistics"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_template_id
-msgid "Appraisal Survey Invite Email"
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
 msgid "Appraisal by Manager"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_1_3
-#: model:survey.question,title:hr_appraisal.appraisal_1_3
-msgid "Appraisal for Period"
-msgstr ""
-
-#. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:196
+#: code:addons/hr_appraisal/models/hr_appraisal.py:209
 #, python-format
 msgid "Appraisal form(s) have been sent"
 msgstr ""
@@ -309,7 +357,7 @@ msgstr ""
 #: model:ir.actions.server,name:hr_appraisal.ir_cron_scheduler_appraisal_ir_actions_server
 #: model:ir.cron,cron_name:hr_appraisal.ir_cron_scheduler_appraisal
 #: model:ir.cron,name:hr_appraisal.ir_cron_scheduler_appraisal
-msgid "Appraisal: run employee appraisal"
+msgid "Appraisal: Run employee appraisal"
 msgstr ""
 
 #. module: hr_appraisal
@@ -319,14 +367,13 @@ msgid "Appraisals"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_department__appraisals_to_process_count
-msgid "Appraisals to Process"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
+msgid "Appraisals Sent To"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_1_5
-#: model:survey.question,title:hr_appraisal.appraisal_1_5
-msgid "Appraiser"
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_department__appraisals_to_process_count
+msgid "Appraisals to Process"
 msgstr ""
 
 #. module: hr_appraisal
@@ -335,84 +382,88 @@ msgid "Archived"
 msgstr "Αρχειοθετημένα"
 
 #. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid "At the conclusion of the appraisal time period"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid "At the outset of the appraisal time period"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid "At the supervisor's appraisal date"
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_attachment_count
 msgid "Attachment Count"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_self
-msgid "By Employee"
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__attachment_ids
+msgid "Attachments"
+msgstr "Συνημμένα"
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__author_id
+msgid "Author"
+msgstr "Συντάκτης"
+
+#. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__author_id
+msgid "Author of the message."
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__is_autorized_to_send
+msgid "Autorized Employee to Start Appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__body_html
+msgid "Body"
+msgstr "Κυρίως θέμα"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Cancel"
 msgstr "Ακύρωση"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:265
+#: code:addons/hr_appraisal/models/hr_appraisal.py:289
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #, python-format
 msgid "Cancelled"
 msgstr "Ακυρώθηκε"
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_survey_survey__category
-msgid "Category"
-msgstr "Κατηγορία"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,help:hr_appraisal.field_survey_survey__category
-msgid ""
-"Category is used to know in which context the survey is used. Various apps "
-"may define their own categories when they use survey like jobs recruitment "
-"or employee appraisal surveys."
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_appraisal
-msgid "Collaborator"
+msgid "Collaborator Appraisal"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_survey_id
-msgid "Collaborator's Appraisal"
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_collaborators_body_html
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_collaborators_body_html
+msgid "Collaborator Mail Content"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_body_html
+msgid "Collaborator's Appraisal Invite Body Email"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_collaborators
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_collaborators
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_collaborators
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_collaborators
 msgid "Collaborators"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_survey_id
-msgid "Colleague's Appraisal"
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_colleagues_body_html
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_colleagues_body_html
+msgid "Colleague Mail Content"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_body_html
+msgid "Colleague's Appraisal Invite Body Email"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_colleagues
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_colleagues
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_colleagues
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_colleagues
 msgid "Colleagues"
 msgstr ""
 
@@ -427,28 +478,20 @@ msgid "Color Index"
 msgstr "Χρωματισμός Ευρετήριου"
 
 #. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_9
-msgid ""
-"Communication skills (written & verbally): clearness, concision, exactitude"
-msgstr ""
+#: model:ir.model,name:hr_appraisal.model_res_company
+msgid "Companies"
+msgstr "Εταιρίες"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__company_id
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__company_id
 msgid "Company"
 msgstr "Εταιρία"
 
 #. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_6_3
-msgid ""
-"Compared to similar jobs in other companies where I could work, my total "
-"compensation..."
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_3
-msgid ""
-"Compliance to internal rules and processes (timesheets completion, etc.)"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
+msgid "Compose Email"
+msgstr "Σύνταξη Email"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_res_config_settings
@@ -461,10 +504,9 @@ msgid "Configuration"
 msgstr "Διαμόρφωση"
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_2_4
-#: model:survey.question,title:hr_appraisal.opinion_2_4
-msgid "Continuous Improvement"
-msgstr ""
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__body
+msgid "Contents"
+msgstr "Περιεχόμενα"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__create_date
@@ -478,11 +520,15 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__create_uid
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__create_uid
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__create_uid
 msgid "Created by"
 msgstr "Δημιουργήθηκε από"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__create_date
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__create_date
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__create_date
 msgid "Created on"
 msgstr "Δημιουργήθηκε στις"
 
@@ -492,34 +538,9 @@ msgid "Creation Date"
 msgstr "Ημερομηνία Δημιουργίας"
 
 #. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_14
-msgid "Creativity and forward looking aptitude"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid ""
-"Critical or key elements of performance and professional development needs "
-"(if any), should also be noted at this time"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_8
-msgid "Customer commitment"
-msgstr ""
-
-#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
-#: model:survey.question,question:hr_appraisal.opinion_1_2
-#: model:survey.question,title:hr_appraisal.opinion_1_2
 msgid "Date"
 msgstr "Ημερομηνία"
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_1_4
-#: model:survey.question,title:hr_appraisal.appraisal_1_4
-msgid "Date of review"
-msgstr "Ημερομηνία της Αναθεώρησης"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__deadline
@@ -528,28 +549,15 @@ msgstr "Προθεσμία"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
 msgid "Deadline:"
 msgstr "Προθεσμία:"
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_7
-msgid "Decision making"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_2_2
-msgid "Delegation: Ability to efficiently assign tasks to other people"
-msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Delete"
 msgstr "Διαγραφή"
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_2_1
-msgid "Demonstrates genuine concern for me as a person"
-msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__department_id
@@ -558,19 +566,20 @@ msgid "Department"
 msgstr "Τμήμα"
 
 #. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_3
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid "Did not meet standards and expectations"
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__deadline
+msgid "Desired Deadline"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__display_name
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__display_name
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__display_name
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__display_name
 msgid "Display Name"
 msgstr "Εμφάνιση Ονόματος"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:265
+#: code:addons/hr_appraisal/models/hr_appraisal.py:289
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -584,14 +593,18 @@ msgid "Dropdown menu"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__last_duration_reminder_send
+msgid "Duration after last appraisal when we send last reminder mail"
+msgstr ""
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Edit"
 msgstr "Επεξεργασία"
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_2_3
-#: model:survey.question,title:hr_appraisal.opinion_2_3
-msgid "Effectiveness"
+#: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__email_from
+msgid "Email address of the sender"
 msgstr ""
 
 #. module: hr_appraisal
@@ -599,10 +612,10 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__employee_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_self
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_employee
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_employee
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Employee"
 msgstr "Υπάλληλος"
 
@@ -613,39 +626,39 @@ msgid "Employee Appraisal"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_1
-#: model:survey.question,title:hr_appraisal.appraisal_1
-#: model:survey.survey,title:hr_appraisal.appraisal_form
-msgid "Employee Appraisal Form"
+#: model:ir.model,name:hr_appraisal.model_hr_appraisal_reminder
+msgid "Employee Appraisal Reminder Setting"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_5
-#: model:survey.question,title:hr_appraisal.appraisal_5
-msgid "Employee Comments"
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_self
+msgid "Employee Himself"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_employee_body_html
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_employee_body_html
+msgid "Employee Mail Content"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_employee
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_employee
 msgid "Employee Name"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.survey,title:hr_appraisal.opinion_form
-msgid "Employee Opinion Form"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
+msgid "Employee name:"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_3
-#: model:survey.question,title:hr_appraisal.appraisal_3
-msgid "Employee Performance in Key Areas"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
+msgid "Employee profile creation:"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_survey_id
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_colleagues_survey_id
-msgid "Employee's Appraisal"
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_body_html
+msgid "Employee's Appraisal Invite Body Email"
 msgstr ""
 
 #. module: hr_appraisal
@@ -654,32 +667,9 @@ msgid "Employee's Name"
 msgstr "Όνομα Εργαζόμενου"
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_2_1
-#: model:survey.question,title:hr_appraisal.opinion_2_1
-msgid "Engagement"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_2
-msgid "Enthusiasm & implication toward projects/assignments"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_2
-#: model:survey.question,title:hr_appraisal.opinion_2
-msgid "Evaluation"
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_calendar_event
 msgid "Event"
 msgstr "Συμβάν"
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_3
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid "Exceeds standards and expectations"
-msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -687,11 +677,9 @@ msgid "Extended Filters..."
 msgstr "Εκτεταμένα Φίλτρα..."
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:192
+#: code:addons/hr_appraisal/models/hr_appraisal.py:206
 #, python-format
-msgid ""
-"Fill form <a href=\"%s\">%s</a> for <a href=\"#\" data-oe-model=\"%s\" data-"
-"oe-id=\"%s\">%s's</a> appraisal"
+msgid "Fill appraisal for <a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s</a>"
 msgstr ""
 
 #. module: hr_appraisal
@@ -725,14 +713,14 @@ msgid "Followers (Partners)"
 msgstr "Ακόλουθοι (Συνεργάτες)"
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__email_from
+msgid "From"
+msgstr "Από"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Future Activities"
 msgstr "Μελλοντικές Δραστηριότητες"
-
-#. module: hr_appraisal
-#: selection:survey.survey,category:0
-msgid "Generic Survey"
-msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -750,93 +738,17 @@ msgid "HR Department"
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid ""
-"His direct reports will be invited through Odoo to express a feedback on "
-"their supervisor's leadership and to give their opinion about their own "
-"engagement and effectiveness, the continuous improvement and openness in "
-"action in thecompany..."
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_1_1
-msgid "I am proud to tell others I work here"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_1_5
-msgid ""
-"I am willing to put in a great deal of effort beyond what is expected to "
-"help my workgroup succeed"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_2_4
-msgid "I believe the information that I get from the person I report to."
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_2_2
-msgid ""
-"I consistently acquire new knowledge, skills or understanding through "
-"contact with my supervisor. He helps me growing my compete"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_3_2
-msgid "I have enough work"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_6_2
-msgid ""
-"I have the same opportunity to succeed as others with similar experiences, "
-"performance and educational background"
-msgstr ""
-"Έχω την ίδια ευκαιρία να επιτύχω όπως και άλλοι με παρόμοιες εμπειρίες, "
-"επιδόσεις και εκπαιδευτικό υπόβαθρο"
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_5_1
-msgid "I know the company's values and live them"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_3_3
-msgid ""
-"I mostly work on value-added tasks for the company, the products or the "
-"services"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_6_4
-msgid "I understand the company strategy and how my workgroup supports it"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_1_3
-msgid ""
-"I would prefer to remain with this company even if a comparable job were "
-"available in another company"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_3_1
-msgid "I'm efficient at work and my achievements are successful"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
+msgid "Hello"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__id
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__id
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__id
 msgid "ID"
 msgstr "Κωδικός"
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_4
-msgid ""
-"Identify professional, performance, or project objectives you recommend for employee’s continued career development\n"
-"over the coming year."
-msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread
@@ -851,40 +763,6 @@ msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζοντ�
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.question,comments_message:hr_appraisal.appraisal_1
-#: model:survey.question,comments_message:hr_appraisal.appraisal_1_1
-#: model:survey.question,comments_message:hr_appraisal.appraisal_1_2
-#: model:survey.question,comments_message:hr_appraisal.appraisal_1_3
-#: model:survey.question,comments_message:hr_appraisal.appraisal_1_4
-#: model:survey.question,comments_message:hr_appraisal.appraisal_1_5
-#: model:survey.question,comments_message:hr_appraisal.appraisal_2
-#: model:survey.question,comments_message:hr_appraisal.appraisal_2_1
-#: model:survey.question,comments_message:hr_appraisal.appraisal_2_2
-#: model:survey.question,comments_message:hr_appraisal.appraisal_2_3
-#: model:survey.question,comments_message:hr_appraisal.appraisal_3
-#: model:survey.question,comments_message:hr_appraisal.appraisal_3_1
-#: model:survey.question,comments_message:hr_appraisal.appraisal_3_2
-#: model:survey.question,comments_message:hr_appraisal.appraisal_4
-#: model:survey.question,comments_message:hr_appraisal.appraisal_4_1
-#: model:survey.question,comments_message:hr_appraisal.appraisal_4_2
-#: model:survey.question,comments_message:hr_appraisal.appraisal_4_3
-#: model:survey.question,comments_message:hr_appraisal.appraisal_5
-#: model:survey.question,comments_message:hr_appraisal.appraisal_5_1
-#: model:survey.question,comments_message:hr_appraisal.opinion_1
-#: model:survey.question,comments_message:hr_appraisal.opinion_1_1
-#: model:survey.question,comments_message:hr_appraisal.opinion_1_2
-#: model:survey.question,comments_message:hr_appraisal.opinion_2
-#: model:survey.question,comments_message:hr_appraisal.opinion_2_1
-#: model:survey.question,comments_message:hr_appraisal.opinion_2_2
-#: model:survey.question,comments_message:hr_appraisal.opinion_2_3
-#: model:survey.question,comments_message:hr_appraisal.opinion_2_4
-#: model:survey.question,comments_message:hr_appraisal.opinion_2_5
-#: model:survey.question,comments_message:hr_appraisal.opinion_2_6
-#: model:survey.question,comments_message:hr_appraisal.opinion_2_7
-msgid "If other, please specify:"
 msgstr ""
 
 #. module: hr_appraisal
@@ -905,19 +783,9 @@ msgid "In progress Evaluations"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_5
-msgid "Initiative and self autonomy"
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__final_interview
 msgid "Interview"
 msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
-msgid "Invitations"
-msgstr "Προσκλήσεις"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_is_follower
@@ -925,36 +793,47 @@ msgid "Is Follower"
 msgstr "Είναι Ακόλουθος"
 
 #. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
+#: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:45
+#, python-format
 msgid ""
-"It is the joint responsibility of the employee and the supervisor (appraiser) to establish a feasible work plan for the\n"
-"coming year, including major employee responsibilities and corresponding benchmarks against which results will be\n"
-"evaluated."
+"It has been a while since the last appraisal of one of your employee, go to "
+"his employee profile to request an appraisal."
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
+#: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:48
+#, python-format
 msgid ""
-"It is the primary responsibility of the supervisor to gather the necessary input from the appropriate sources of feedback\n"
-"(internal and/or external customers, peers). In case of collaboration with Odoo SA Belgium, the supervisor must\n"
-"receive completed evaluation form from the employee's Belgian project manager."
+"It has been a while since your last appraisal, go to your employee profile "
+"to request an appraisal to your manager."
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal____last_update
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report____last_update
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal____last_update
 msgid "Last Modified on"
 msgstr "Τελευταία τροποποίηση στις"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__write_uid
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__write_uid
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__write_uid
 msgid "Last Updated by"
 msgstr "Τελευταία Ενημέρωση από"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__write_date
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__write_date
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__write_date
 msgid "Last Updated on"
 msgstr "Τελευταία Ενημέρωση στις"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
+msgid "Last appraisal:"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
@@ -962,28 +841,8 @@ msgid "Late Activities"
 msgstr "Καθυστερημένες Δραστηριότητες"
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_2_2
-#: model:survey.question,title:hr_appraisal.opinion_2_2
-msgid "Leadership"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_2_3
-msgid ""
-"Leadership: create a challenging and motivating work environment aligned "
-"with the company's strategy"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_2_4
-msgid "Leadership: sustain subordinates in their professional growth"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_2_3
-msgid ""
-"Listens and takes into account all ideas and do his best to put in place the"
-" best of these"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+msgid "Mail To Send"
 msgstr ""
 
 #. module: hr_appraisal
@@ -993,34 +852,30 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_ids
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
-#: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_manager
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_manager
 msgid "Manager"
 msgstr "Διευθυντής"
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_survey_id
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_manager_survey_id
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_manager_survey_id
-msgid "Manager's Appraisal"
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_manager_body_html
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_manager_body_html
+msgid "Manager Mail Content"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_body_html
+msgid "Manager's Appraisal Invite Body Email"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_manager
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_manager
 msgid "Managers"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_max_period
-msgid "Maximum number of months between appraisals"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_3
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid "Meet standards and expectations"
+msgid "Maximum Number of Months Between Appraisals"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1040,17 +895,11 @@ msgstr "Μηνύματα"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_min_period
-msgid "Minimum number of months between appraisals"
+msgid "Minimum Number of Months Between Appraisals"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_2_6
-#: model:survey.question,title:hr_appraisal.opinion_2_6
-msgid "Miscellaneous"
-msgstr "Διάφορα"
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Months"
 msgstr "Μήνες"
 
@@ -1060,36 +909,15 @@ msgid "My Activities"
 msgstr "Οι Δραστηριότητες μου"
 
 #. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_5_2
-msgid ""
-"My best achievements have been communicated to the community, internally or "
-"to customers"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_1_2
-msgid "My job provides me with a sense of personal accomplishment"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_4_1
-msgid ""
-"My work contributes towards the continuous improvement of the company, our "
-"services or products"
+#: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_my
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+msgid "My Appraisals"
 msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
-#: model:survey.question,question:hr_appraisal.appraisal_1_1
-#: model:survey.question,title:hr_appraisal.appraisal_1_1
 msgid "Name"
 msgstr "Περιγραφή"
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_1_1
-#: model:survey.question,title:hr_appraisal.opinion_1_1
-msgid "Name of your direct supervisor"
-msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_date_deadline
@@ -1108,24 +936,18 @@ msgstr "Επόμενος Τύπος Δραστηριότητας"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_date
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_date
 msgid "Next Appraisal Date"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__notify
+msgid "Notify"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Πλήθος ενεργειών"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__count_completed_survey
-msgid "Number of Answers"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__count_sent_survey
-msgid "Number of Sent Forms"
-msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error_counter
@@ -1148,42 +970,6 @@ msgid "Number of unread messages"
 msgstr "Πλήθος μη αναγνωσμένων μηνυμάτων"
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_2_1
-#: model:survey.question,title:hr_appraisal.appraisal_2_1
-msgid "Objectives"
-msgstr "Στόχοι"
-
-#. module: hr_appraisal
-#: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
-msgid "Officer"
-msgstr "Προιστάμενος"
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.opinion_2_5
-#: model:survey.question,title:hr_appraisal.opinion_2_5
-msgid "Openness"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_4_4
-msgid ""
-"Our workgroup identifies and reduces waste of time in our activities and "
-"processes"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid "Overall Purpose Of Employee Appraisal"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_4_3
-msgid ""
-"Overall, I believe the quality of products and/or services my workgroup "
-"delivers is improving"
-msgstr ""
-
-#. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
 msgid "Overdue"
 msgstr "Εκπρόθεσμο"
@@ -1194,55 +980,14 @@ msgid "Periodic Appraisal has been created"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_4_2
-#: model:survey.question,title:hr_appraisal.appraisal_4_2
-msgid "Personal Performance Objectives"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
-msgid "Plan"
-msgstr "Σχεδίασε"
-
-#. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
 msgid "Planned"
 msgstr "Προγραμματισμένη"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:176
-#, python-format
-msgid "Please fill out appraisal survey."
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_1_2
-#: model:survey.question,title:hr_appraisal.appraisal_1_2
-msgid "Position Title"
-msgstr "Τίτλος Θέσης"
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_4_1
-#: model:survey.question,title:hr_appraisal.appraisal_4_1
-msgid "Professional Development Objectives"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_4
-#: model:survey.question,title:hr_appraisal.appraisal_4
-msgid "Professional Development and Performance Plan"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_4_3
-#: model:survey.question,title:hr_appraisal.appraisal_4_3
-msgid "Project Objectives"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_12
-msgid "Promptness and attendance record"
-msgstr ""
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__recipient_id
+msgid "Recipient"
+msgstr "Παραλήπτης"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__related_partner_id
@@ -1250,32 +995,30 @@ msgid "Related Partner"
 msgstr "Σχετικός Συνεργάτης"
 
 #. module: hr_appraisal
+#: model:ir.model.fields,help:hr_appraisal.field_hr_employee__parent_user_id
+msgid "Related user name for the resource to manage its access."
+msgstr "Σχετιζόμενο όνομα χρήστη του πόρου για τη διαχείριση της πρόσβασης."
+
+#. module: hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_report
 msgid "Reporting"
 msgstr "Αναφορές"
 
 #. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 msgid "Request Appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model,name:hr_appraisal.model_request_appraisal
+msgid "Request an Appraisal"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
 msgid "Responsible User"
 msgstr "Υπεύθυνος Χρήστης"
-
-#. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_2_2
-#: model:survey.question,title:hr_appraisal.appraisal_2_2
-msgid "Results"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_2_1
-msgid ""
-"Results of the bottom-up survey and mitigation actions to face technical, "
-"organizational, structural and/or relational issues"
-msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -1289,26 +1032,8 @@ msgstr "Αναζήτηση Βαθμολόγησης"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Select Appraisal Reviewer..."
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_survey_id
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_self_survey_id
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_self_survey_id
-msgid "Self Appraisal"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
-msgid "Send Appraisal Form To"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_form_request
-msgid "Send Appraisal to"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1317,12 +1042,30 @@ msgid "Send Appraisals Form To"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_sent_ids
-msgid "Sent Forms"
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_send_reminder
+#: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_send_reminder
+msgid "Send Automatic Appraisals Reminder"
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_form
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__appraisal_reminder
+msgid "Send Reminder (in months)"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
+msgid "Send Request"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
+msgid ""
+"Send an email to managers or employees to remind them they should request an"
+" appraisal."
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Set the minimum number of months between appraisal."
 msgstr ""
 
@@ -1338,19 +1081,6 @@ msgid "Show all records which has next action date is before today"
 msgstr ""
 "Εμφάνιση όλων των εγγραφών όπου η ημερομηνία επόμενης δράσης είναι πριν από "
 "σήμερα"
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_3
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid "Significantly below standards and expectations"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_3
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid ""
-"Significantly exceeds standards and expectations required of the position"
-msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -1378,97 +1108,15 @@ msgstr ""
 "Προγραμματισμένες: Μελλοντικές δραστηριότητες."
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_3_1
-#: model:survey.question,title:hr_appraisal.appraisal_3_1
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__subject
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__subject
 msgid "Subject"
 msgstr "Θέμα"
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_3_2
-#: model:survey.question,title:hr_appraisal.appraisal_3_2
-msgid "Supervisors only"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model,name:hr_appraisal.model_survey_survey
-msgid "Survey"
-msgstr "Έρευνα"
-
-#. module: hr_appraisal
-#: model:ir.model,name:hr_appraisal.model_survey_invite
-msgid "Survey Invitation Wizard"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model,name:hr_appraisal.model_survey_user_input
-msgid "Survey User Input"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_1_4
-msgid ""
-"Taking everything into account, how satisfied are you with your current job?"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_4
-msgid ""
-"Team spirit: ability to work efficiently with peers, manage the conflicts "
-"with diplomacy"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_10
-msgid "Technical skills regarding to the job requirements"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_1
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_2
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_3
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_4
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_5
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_1
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_2
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_3
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3_1
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3_2
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_1
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_2
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_3
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_5
-#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_5_1
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_1
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_1_1
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_1_2
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_1
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_2
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_3
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_4
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_5
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_6
-#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_7
-msgid "The answer you entered is not valid."
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid ""
-"The appraiser should rate the employee's major work accomplishments and "
-"performance according to the metric provided below"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_3
-msgid ""
-"The appraiser should rate the employee’s major work accomplishments and performance according to the metric provided\n"
-"below:"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
+msgid "Subject..."
+msgstr "Θέμα..."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_employee.py:73
@@ -1478,46 +1126,14 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee__appraisal_date
-#: model:ir.model.fields,help:hr_appraisal.field_res_users__appraisal_date
 msgid ""
 "The date of the next appraisal is computed by the appraisal plan's dates "
 "(first appraisal + periodicity)."
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid ""
-"The employee may choose to offer comments or explanation regarding the "
-"completed review."
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid ""
-"The employee will be responsible for completing a draft of the Appraisal Form as a tool for self-appraisal and a starting\n"
-"point for the supervisor’s evaluation. The employee can add examples of achievements for each criterion.\n"
-"Once the form had been filled, the employee send it to his supervisor."
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.opinion_1
-msgid ""
-"The employees will send back their anonymous answers to Odoo. The data will "
-"be handled by the HR manager and a brief summary of the data will be sent to"
-" the concerned supervisor, to his team and to the supervisor's supervisor."
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid ""
-"The supervisor send the form to the HR department in India and in Belgium"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid ""
-"The supervisor synthesizes and integrates all input into the completed appraisal. The motivation of the evaluation\n"
-"is explained in the ad hoc fields."
+#: sql_constraint:hr.appraisal.reminder:0
+msgid "The reminder time must be bigger or equal to 1 month."
 msgstr ""
 
 #. module: hr_appraisal
@@ -1546,62 +1162,11 @@ msgid "This employee will do a self-appraisal"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_1
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_2
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_3
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_4
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_5
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_1
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_2
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_3
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3_1
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3_2
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_1
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_2
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_3
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_5
-#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_5_1
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_1
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_1_1
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_1_2
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_1
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_2
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_3
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_4
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_5
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_6
-#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_7
-msgid "This question requires an answer."
-msgstr ""
-
-#. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.arow_3_1_15
-msgid "Time management: projects/tasks are completed on time"
-msgstr ""
-
-#. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:265
+#: code:addons/hr_appraisal/models/hr_appraisal.py:289
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
 msgid "To Start"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid ""
-"To assist employees in their professional growth, through the identification of strengths and opportunities for\n"
-"development"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:survey.question,description:hr_appraisal.appraisal_1
-msgid "To initiate a clear and open communication of performance expectations"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1615,6 +1180,12 @@ msgid "Today Activities"
 msgstr "Σημερινές Δραστηριότητες"
 
 #. module: hr_appraisal
+#: code:addons/hr_appraisal/wizard/request_appraisal.py:21
+#, python-format
+msgid "Unable to post message, please configure the sender's email address."
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_unread
 msgid "Unread Messages"
 msgstr "Μη αναγνωσμένα μηνύματα"
@@ -1625,12 +1196,14 @@ msgid "Unread Messages Counter"
 msgstr "Μετρητής μη αναγνωσμένων μηνυμάτων"
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_5_1
-#: model:survey.question,title:hr_appraisal.appraisal_5_1
-msgid ""
-"Use the following space to make any comments regarding the above performance"
-" evaluation."
-msgstr ""
+#: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__template_id
+msgid "Use template"
+msgstr "Χρήση προτύπου"
+
+#. module: hr_appraisal
+#: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
+msgid "User"
+msgstr "Χρήστης"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_res_users
@@ -1648,22 +1221,22 @@ msgid "Website communication history"
 msgstr "Ιστορικό επικοινωνίας ιστότοπου"
 
 #. module: hr_appraisal
-#: model:survey.label,value:hr_appraisal.oprow_2_4_2
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid ""
-"What I did several months ago is still of use to the company, the services "
-"or the products today"
+"With this setup, all employees of your company will follow the same "
+"appraisal plan."
 msgstr ""
 
 #. module: hr_appraisal
-#: model:survey.question,question:hr_appraisal.appraisal_2
-#: model:survey.question,title:hr_appraisal.appraisal_2
-msgid "Work Plan"
-msgstr ""
-
-#. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:258
+#: code:addons/hr_appraisal/models/hr_appraisal.py:282
 #, python-format
-msgid "You cannot delete appraisal which is in %s state"
+msgid "You cannot delete appraisal which is not in draft or canceled state"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:170
+#, python-format
+msgid "You must configure your mail address."
 msgstr ""
 
 #. module: hr_appraisal
@@ -1675,21 +1248,59 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:220
+#: code:addons/hr_appraisal/models/hr_appraisal.py:232
 #, python-format
 msgid ""
-"Your last appraisal was on %s. You will be able to request a new appraisal "
-"on %s. If you think it's too late, feel free to have a chat with your "
-"manager."
+"Your last appraisal was on %s %s. You will be able to request a new "
+"appraisal on %s %s. If you think it's too late, feel free to have a chat "
+"with your manager."
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_survey_id
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_collaborators_survey_id
-msgid "collaborate's Appraisal"
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__parent_user_id
+msgid "Zboub"
+msgstr ""
+
+#. module: hr_appraisal
+#: selection:hr.appraisal.reminder,event:0
+msgid "after the arrival date"
+msgstr ""
+
+#. module: hr_appraisal
+#: selection:hr.appraisal.reminder,event:0
+msgid "after the last appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:198
+#: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:78
+#, python-format
+msgid "appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:196
+#: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:72
+#, python-format
+msgid "appraisal about %s"
+msgstr ""
+
+#. module: hr_appraisal
+#: selection:hr.appraisal.reminder,notify:0
+msgid "employee"
+msgstr ""
+
+#. module: hr_appraisal
+#: selection:hr.appraisal.reminder,notify:0
+msgid "manager"
 msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "oe_kanban_text_red"
 msgstr "oe_kanban_text_red"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
+msgid "text-danger"
+msgstr ""

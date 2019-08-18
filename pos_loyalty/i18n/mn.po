@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_loyalty
+# 	* pos_loyalty
 # 
 # Translators:
 # Otgonbayar.A <gobi.mn@gmail.com>, 2018
@@ -8,14 +8,15 @@
 # Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
 # Onii Onii <onii0223@yahoo.com>, 2018
 # Martin Trigaux, 2019
+# Baasansuren Sharavsuren <baasansuren@bumanit.mn>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Baasansuren Sharavsuren <baasansuren@bumanit.mn>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,17 +27,17 @@ msgstr ""
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<span>Points per currency :</span>"
-msgstr ""
+msgstr "<span>Валют бүрт оноо :</span>"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<strong>Points per order :</strong>"
-msgstr ""
+msgstr "Захиалга бүрт оноо"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<strong>Points per product :</strong>"
-msgstr ""
+msgstr "<strong>Бараа бүрт оноо:</strong>"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__name
@@ -66,7 +67,7 @@ msgstr "Холбох хаяг"
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
 msgid "Create a new loyalty program"
-msgstr ""
+msgstr "Лоялти програм шинээр үүсгэх"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__create_uid
@@ -179,7 +180,7 @@ msgstr "Сүүлийн засвар хийсэн огноо"
 #: model:ir.model.fields,field_description:pos_loyalty.field_res_partner__loyalty_points
 #: model:ir.model.fields,field_description:pos_loyalty.field_res_users__loyalty_points
 msgid "Loyalty Points"
-msgstr ""
+msgstr "Лоялти оноо"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_program
@@ -233,7 +234,7 @@ msgstr ""
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__minimum_points
 msgid "Minimum Points"
-msgstr ""
+msgstr "Хамгийн бага оноо"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__name
@@ -243,22 +244,17 @@ msgstr "Нэр"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:368
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:370
 #, python-format
 msgid "No Rewards Available"
-msgstr ""
+msgstr "Шагнал олгогдохгүй"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:384
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:386
 #, python-format
 msgid "Please select a reward"
-msgstr ""
-
-#. module: pos_loyalty
-#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
-msgid "Point Cost"
-msgstr ""
+msgstr "Шагналаа сонгоно уу"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_product_id
@@ -318,6 +314,11 @@ msgid "Points Won:"
 msgstr "Хожсон оноо:"
 
 #. module: pos_loyalty
+#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
+msgid "Points per Currency"
+msgstr ""
+
+#. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pp_currency
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__pp_currency
 msgid "Points per currency"
@@ -337,7 +338,7 @@ msgstr "Бараа бүрээрх оноо"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_config__loyalty_id
 msgid "Pos Loyalty Program"
-msgstr ""
+msgstr "Борлуулалтын цэгийн лоялти хөтөлбөр"
 
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
@@ -357,7 +358,7 @@ msgstr "Шагналын нэр"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__reward_type
 msgid "Reward Type"
-msgstr ""
+msgstr "Шагналын төрөл"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
@@ -381,7 +382,7 @@ msgstr "Дүрмийн нэр"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__rule_type
 msgid "Rule Type"
-msgstr ""
+msgstr "Дүрмийн төрөл"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__rule_ids
@@ -464,7 +465,7 @@ msgstr "Лоялти хөтөлбөрийн хүрээнд хэрэглэгчи�
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_config__loyalty_id
 msgid "The loyalty program used by this point of sale."
-msgstr ""
+msgstr "Лоялти програмыг борлуулалтын цэг дээр хэрэглэх"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__minimum_points
@@ -512,12 +513,12 @@ msgstr "Шагналын төрөл"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:369
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:371
 #, python-format
 msgid ""
 "There are no rewards available for this customer as part of the loyalty "
 "program"
-msgstr ""
+msgstr "Лоялти хөтөлбөрийн хүрээнд  тухайн харилцагчид шагнал олгогдохгүй"
 
 #. module: pos_loyalty
 #. openerp-web

@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * voip
+# 	* voip
 # 
 # Translators:
 # Xu Lei <xulei8@qq.com>, 2016
@@ -23,9 +23,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -37,7 +37,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:314
+#: code:addons/voip/static/src/js/user_agent.js:315
 #, python-format
 msgid " Please check your configuration."
 msgstr "请检查你的配置"
@@ -46,6 +46,18 @@ msgstr "请检查你的配置"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
 msgstr "#案件"
+
+#. module: voip
+#: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
+msgid "Action to Perform"
+msgstr ""
+
+#. module: voip
+#: model:ir.model.fields,help:voip.field_mail_activity_type__category
+msgid ""
+"Actions may trigger specific behavior like opening calendar view or "
+"automatically mark as done when a document is uploaded"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -145,7 +157,7 @@ msgstr "向谁呼叫"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/dialing_panel.js:674
 #, python-format
 msgid "Calling "
 msgstr "呼叫"
@@ -176,20 +188,8 @@ msgid "Cancelled"
 msgstr "已取消"
 
 #. module: voip
-#: model:ir.model.fields,help:voip.field_mail_activity_type__category
-msgid ""
-"Categories may trigger specific behavior like opening calendar view or "
-"automatically mark as done when a document is uploaded"
-msgstr ""
-
-#. module: voip
-#: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
-msgid "Category"
-msgstr "类别"
-
-#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:498
+#: code:addons/voip/static/src/js/dialing_panel.js:493
 #, python-format
 msgid "Click to unblock"
 msgstr "点击解除阻塞"
@@ -208,7 +208,7 @@ msgstr "配置设置"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:295
+#: code:addons/voip/static/src/js/user_agent.js:296
 #, python-format
 msgid "Connecting..."
 msgstr ""
@@ -250,7 +250,7 @@ msgstr "客户"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:478
+#: code:addons/voip/static/src/js/dialing_panel.js:473
 #, python-format
 msgid "Customer unavailable"
 msgstr "客户不可用"
@@ -391,7 +391,7 @@ msgstr "入库"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:485
+#: code:addons/voip/static/src/js/user_agent.js:492
 #, python-format
 msgid "Incoming call from "
 msgstr "来电自"
@@ -513,6 +513,11 @@ msgid "NEXT ACTIVITIES"
 msgstr "下一步活动"
 
 #. module: voip
+#: selection:mail.activity.type,category:0
+msgid "None"
+msgstr "无"
+
+#. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Not Held"
 msgstr "未挂掉"
@@ -536,8 +541,8 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:219
-#: code:addons/voip/static/src/js/user_agent.js:224
+#: code:addons/voip/static/src/js/user_agent.js:220
+#: code:addons/voip/static/src/js/user_agent.js:225
 #, python-format
 msgid "One or more parameter is missing. Please check your configuration."
 msgstr "一个或者多个参数缺失，请检查你的配置"
@@ -605,14 +610,14 @@ msgstr "电话"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:177
+#: code:addons/voip/static/src/js/dialing_panel.js:172
 #, python-format
 msgid "Please check if a phone number is given for the current phonecall"
 msgstr "请检查电话号码是否存在于当前电话列表中"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:341
+#: code:addons/voip/static/src/js/user_agent.js:342
 #, python-format
 msgid "Please check your configuration.</br> (Reason receives :"
 msgstr "请检查你的配置。</br> ( 收到的理由 :"
@@ -720,13 +725,8 @@ msgid "Specific Date"
 msgstr "指定日"
 
 #. module: voip
-#: selection:mail.activity.type,category:0
-msgid "Standard"
-msgstr "标准"
-
-#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/dialing_panel.js:674
 #, python-format
 msgid "Start Calling"
 msgstr "开始呼叫"
@@ -748,6 +748,11 @@ msgid "Summary"
 msgstr "摘要"
 
 #. module: voip
+#: selection:mail.activity.type,category:0
+msgid "Tax report"
+msgstr ""
+
+#. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP adress of your PBX Server"
 msgstr "PBX服务器的IP地址"
@@ -759,14 +764,14 @@ msgstr "WebSocket的网址"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:479
+#: code:addons/voip/static/src/js/dialing_panel.js:474
 #, python-format
 msgid "The customer is temporary unavailable. Please try later."
 msgstr "客户电话暂时不可用，请稍后再拨。"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:570
+#: code:addons/voip/static/src/js/user_agent.js:577
 #, python-format
 msgid ""
 "The number is incorrect, the user credentials could be wrong or the "
@@ -776,14 +781,14 @@ msgstr "</br>"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:176
+#: code:addons/voip/static/src/js/dialing_panel.js:171
 #, python-format
 msgid "The phonecall has no number"
 msgstr "该来电没有号码"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:244
+#: code:addons/voip/static/src/js/user_agent.js:245
 #, python-format
 msgid ""
 "The server configuration could be wrong. Please check your configuration."
@@ -802,7 +807,7 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:313
+#: code:addons/voip/static/src/js/user_agent.js:314
 #, python-format
 msgid "The websocket uri could be wrong."
 msgstr "网络连接 uri 可能是错误的。"
@@ -920,16 +925,16 @@ msgstr "错误配置的呼叫。没有配置外接电话号码"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:187
-#: code:addons/voip/static/src/js/dialing_panel.js:289
-#: code:addons/voip/static/src/js/dialing_panel.js:310
+#: code:addons/voip/static/src/js/dialing_panel.js:182
+#: code:addons/voip/static/src/js/dialing_panel.js:284
+#: code:addons/voip/static/src/js/dialing_panel.js:305
 #, python-format
 msgid "You are already in a call"
 msgstr "您已经在通话中"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:298
+#: code:addons/voip/static/src/js/user_agent.js:299
 #, python-format
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
@@ -953,7 +958,7 @@ msgstr "秒"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:340
+#: code:addons/voip/static/src/js/user_agent.js:341
 #, python-format
 msgid "the connection cannot be made. "
 msgstr "连接无法建立."

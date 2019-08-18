@@ -1,26 +1,27 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_taxcloud
+# 	* account_taxcloud
 # 
 # Translators:
 # Niki Waibel, 2017
 # Tina Rittmüller <tr@ife.de>, 2017
 # Wolfgang Taferner, 2017
-# Martin Trigaux, 2017
 # Henry Mineehen <info@mineehen.de>, 2017
 # darenkster <inactive+darenkster@transifex.com>, 2017
 # Ermin Trevisan <trevi@twanda.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # brokemeister <work@maltejansen.de>, 2018
 # Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,6 +40,8 @@ msgid ""
 "<i title=\"Import/update TICs from TaxCloud\" role=\"img\" aria-"
 "label=\"Import/update TICs from TaxCloud\" class=\"fa fa-refresh fa-fw\"/>"
 msgstr ""
+"<i title=\"Import/update TICs from TaxCloud\" role=\"img\" aria-"
+"label=\"Import/update TICs from TaxCloud\" class=\"fa fa-refresh fa-fw\"/>"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
@@ -105,6 +108,11 @@ msgid ""
 "internal category of the product. If thereisn't any, the one on the product "
 "itself will be used. Only used in United States."
 msgstr ""
+"Jedes Produkt fällt in eine Kategorie, für die von der Regierung bestimmte "
+"Steuern festgelegt wurden. Das System verwendet die Steuer Cloud-Kategorie, "
+"die für die interne Kategorie des Produkts festgelegt wurde. Wenn es keine "
+"gibt, wird die auf dem Produkt selbst verwendet. Wird nur in den USA "
+"verwendet."
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
@@ -117,9 +125,9 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_taxcloud
-#: model:ir.model,name:account_taxcloud.model_account_invoice
-msgid "Invoice"
-msgstr "Rechnung"
+#: model:ir.model,name:account_taxcloud.model_account_move
+msgid "Journal Entries"
+msgstr "Buchungssätze"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update
@@ -149,7 +157,7 @@ msgstr "Produkt-TIC-Kategorien"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_tic_category
 msgid "Product TIC Category"
-msgstr ""
+msgstr "Produkt TIC Kategorie"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_template
@@ -183,11 +191,13 @@ msgid "TaxCloud"
 msgstr "TaxCloud"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_id
 msgid "TaxCloud API ID"
 msgstr "TaxCloud-API-ID"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_key
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_key
 msgid "TaxCloud API KEY"
 msgstr "TaxCloud-API-Schlüssel"
@@ -233,8 +243,8 @@ msgid "Template for Fiscal Position"
 msgstr "Vorlage für die Steuerzuordnung"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:43
-#: code:addons/account_taxcloud/models/res_config_settings.py:23
+#: code:addons/account_taxcloud/models/account_invoice.py:55
+#: code:addons/account_taxcloud/models/res_config_settings.py:27
 #, python-format
 msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
 msgstr ""
@@ -242,7 +252,8 @@ msgstr ""
 "Menü „Einstellungen“."
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:115
+#: code:addons/account_taxcloud/models/account_invoice.py:119
+#: code:addons/account_taxcloud/models/account_invoice.py:152
 #, python-format
 msgid ""
 "The source document on the refund is not valid and thus the refunded cart "
@@ -252,7 +263,7 @@ msgstr ""
 "erstattete Wagen nicht auf Ihrem TaxCloud-Konto angemeldet"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:85
+#: code:addons/account_taxcloud/models/account_invoice.py:122
 #, python-format
 msgid ""
 "The tax rates have been updated, you may want to check it before validation"
@@ -261,16 +272,11 @@ msgstr ""
 "überprüfen."
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/account_invoice.py:43
-#: code:addons/account_taxcloud/models/res_config_settings.py:23
+#: code:addons/account_taxcloud/models/account_invoice.py:53
+#: code:addons/account_taxcloud/models/res_config_settings.py:25
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
 msgstr "Steuern können nicht aus der TaxCloud erfasst werden:"
-
-#. module: account_taxcloud
-#: model:ir.actions.server,name:account_taxcloud.action_account_invoice_update_taxes
-msgid "Update taxes with Taxcloud"
-msgstr "Steuern mit TaxCloud aktualisieren"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_fiscal_position__is_taxcloud
@@ -279,7 +285,7 @@ msgid "Use TaxCloud API"
 msgstr "TaxCloud-API verwenden"
 
 #. module: account_taxcloud
-#: code:addons/account_taxcloud/models/product.py:28
+#: code:addons/account_taxcloud/models/product.py:30
 #, python-format
 msgid "[%s] %s"
 msgstr "[%s] %s"

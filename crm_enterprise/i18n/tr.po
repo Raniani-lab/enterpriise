@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * crm_enterprise
+# 	* crm_enterprise
 # 
 # Translators:
 # Ediz Duman <neps1192@gmail.com>, 2019
@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-01-16 08:37+0000\n"
 "Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
@@ -26,12 +26,12 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "% Opportunities"
-msgstr ""
+msgstr "% Fırsatlar"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Average Deal Size"
-msgstr ""
+msgstr "Ortalama Anlaşma Boyutu"
 
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_activity_report
@@ -76,7 +76,7 @@ msgstr "Oluşturulma Tarihi"
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert
 msgid "Days To Convert"
-msgstr ""
+msgstr "Dönüştürülecek Günler"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -98,12 +98,12 @@ msgstr "Kapanmaya Kalan Gün"
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_exceeding_closing
 msgid "Exceeded Closing Days"
-msgstr ""
+msgstr "Kapanış Günü Geçti"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Exceeding Close Days"
-msgstr ""
+msgstr "Kapanış Günleri Geçti"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -130,7 +130,7 @@ msgstr "Grupla"
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_activity_report__won_status
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won_status
 msgid "Is Won"
-msgstr ""
+msgstr "Kazanıldı"
 
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_lead
@@ -201,11 +201,11 @@ msgstr "Fırsat Analizi"
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Prorated Revenue"
-msgstr ""
+msgstr "Eşit Dağıtılmış Gelir"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
-msgid "Sales Channel"
+msgid "Sales Team"
 msgstr "Satış Ekibi"
 
 #. module: crm_enterprise
@@ -241,7 +241,7 @@ msgstr "Aşama"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Win/Loss Ratio"
-msgstr ""
+msgstr "Kazanılan/Kayıp Oranı"
 
 #. module: crm_enterprise
 #: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0

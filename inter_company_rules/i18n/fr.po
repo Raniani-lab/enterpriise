@@ -1,26 +1,26 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * inter_company_rules
+# 	* inter_company_rules
 # 
 # Translators:
 # Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2016
 # Félix Desjardins <felixinx@gmail.com>, 2017
 # Olivier Lenoir <olivier.lenoir@free.fr>, 2017
 # e2f <projects@e2f.com>, 2018
-# fr rev <e2ffr02@hotmail.com>, 2018
+# bb76cd9ac0cb7e20167a14728edb858b, 2018
 # Leo Schmitt <inactive+lschmitt@transifex.com>, 2018
 # Xavier Belmere <Info@cartmeleon.com>, 2018
 # Eloïse Stilmant <est@odoo.com>, 2018
-# Martin Trigaux, 2019
 # Marie Willemyns <mwi@odoo.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,10 +29,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/account_invoice.py:89
+#: code:addons/inter_company_rules/models/account_move.py:82
 #, python-format
-msgid " Invoice: "
-msgstr "Facture :"
+msgid "%s Invoice: %s"
+msgstr ""
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
@@ -78,7 +78,7 @@ msgid "Applicable On"
 msgstr "Applicable à"
 
 #. module: inter_company_rules
-#: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice__auto_generated
+#: model:ir.model.fields,field_description:inter_company_rules.field_account_move__auto_generated
 msgid "Auto Generated Document"
 msgstr "Document généré automatiquement"
 
@@ -109,7 +109,7 @@ msgid "Config Settings"
 msgstr "Paramètres de config"
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/purchase_order.py:82
+#: code:addons/inter_company_rules/models/purchase_order.py:91
 #: code:addons/inter_company_rules/models/sale_order.py:77
 #, python-format
 msgid ""
@@ -158,15 +158,26 @@ msgid "Inter-Company Rules"
 msgstr "Règles inter-sociétés"
 
 #. module: inter_company_rules
-#: model:ir.model,name:inter_company_rules.model_account_invoice
-msgid "Invoice"
-msgstr "Facture"
+#: model:ir.model,name:inter_company_rules.model_account_move
+msgid "Journal Entries"
+msgstr "Pièces comptables"
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/account_invoice.py:81
+#: model:ir.model,name:inter_company_rules.model_account_move_line
+msgid "Journal Item"
+msgstr "Écriture comptable"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:54
 #, python-format
-msgid "Please define %s journal for this company: \"%s\" (id:%d)."
-msgstr "SVP, définir le journal %s pour cette société : \"%s\" (id : %d)"
+msgid "Partner:"
+msgstr ""
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:53
+#, python-format
+msgid "Pricelist:"
+msgstr ""
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:39
@@ -175,7 +186,6 @@ msgid "Provide at least one user for inter company relation for % "
 msgstr "Indiquer au moins un utilisateur pour la relation inter-société %"
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/account_invoice.py:44
 #: code:addons/inter_company_rules/models/sale_order.py:43
 #, python-format
 msgid "Provide one user for intercompany relation for % "
@@ -201,6 +211,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rule_type
 msgid "Rule Type"
 msgstr "Type de règle"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:52
+#, python-format
+msgid "SO currency:"
+msgstr ""
 
 #. module: inter_company_rules
 #: selection:res.company,applicable_on:0
@@ -238,7 +254,7 @@ msgstr ""
 "choisie."
 
 #. module: inter_company_rules
-#: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice__auto_invoice_id
+#: model:ir.model.fields,field_description:inter_company_rules.field_account_move__auto_invoice_id
 msgid "Source Invoice"
 msgstr "Origine de la facture"
 
@@ -263,6 +279,14 @@ msgid "Synchronize Sales & Purchase Orders"
 msgstr "Synchroniser les Bons de Commande d'Achat et de Vente"
 
 #. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:50
+#, python-format
+msgid ""
+"The currency of the SO is obtained from the pricelist of the company "
+"partner."
+msgstr ""
+
+#. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__warehouse_id
 msgid "Warehouse"
 msgstr "Entrepôt"
@@ -279,7 +303,7 @@ msgid "When a company validates a"
 msgstr "Quand une compagnie valide un"
 
 #. module: inter_company_rules
-#: code:addons/inter_company_rules/models/purchase_order.py:47
+#: code:addons/inter_company_rules/models/purchase_order.py:48
 #, python-format
 msgid ""
 "You cannot create SO from PO because sale price list currency is different "

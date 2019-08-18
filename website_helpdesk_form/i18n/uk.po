@@ -1,18 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_form
+# 	* website_helpdesk_form
 # 
 # Translators:
 # Zoriana Zaiats, 2018
 # Bohdan Lisnenko, 2018
 # ТАрас <tratatuta@i.ua>, 2018
+# Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2017-02-15 11:47+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -38,17 +39,30 @@ msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"
 msgstr "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
 
 #. module: website_helpdesk_form
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
-msgid "Attachment(s)"
-msgstr "Долучення"
+#. openerp-web
+#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:39
+#, python-format
+msgid "Attachment"
+msgstr "Прикріплення"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+msgid "Attachment(s)"
+msgstr "Прикріплення"
+
+#. module: website_helpdesk_form
+#. openerp-web
+#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:31
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#, python-format
 msgid "Description"
 msgstr "Опис"
 
 #. module: website_helpdesk_form
+#. openerp-web
+#: code:addons/website_helpdesk_form/static/src/js/website_helpdesk_form_editor.js:16
 #: model:ir.model,name:website_helpdesk_form.model_helpdesk_team
+#, python-format
 msgid "Helpdesk Team"
 msgstr "Команда служби підтримки"
 
@@ -58,7 +72,10 @@ msgid "Send"
 msgstr "Надіслати"
 
 #. module: website_helpdesk_form
+#. openerp-web
+#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:23
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#, python-format
 msgid "Subject"
 msgstr "Тема"
 
@@ -66,6 +83,11 @@ msgstr "Тема"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
 msgid "Submit an issue using this page:<br/>"
 msgstr "Задайте проблему, скориставшись цією сторінкою:<br/>"
+
+#. module: website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+msgid "Team"
+msgstr "Команда"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
@@ -76,7 +98,7 @@ msgstr "Дякуємо, за надсилання вашої помилки, н�
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Ticket"
-msgstr "Квиток"
+msgstr "Заявка"
 
 #. module: website_helpdesk_form
 #: model:ir.model.fields,field_description:website_helpdesk_form.field_helpdesk_team__feature_form_url
@@ -84,12 +106,18 @@ msgid "URL to Submit Issue"
 msgstr "URL-адреса для надсилання помилки"
 
 #. module: website_helpdesk_form
+#. openerp-web
+#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:15
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#, python-format
 msgid "Your Email"
 msgstr "Ваша ел. пошта"
 
 #. module: website_helpdesk_form
+#. openerp-web
+#: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:7
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#, python-format
 msgid "Your Name"
 msgstr "Ваше ім’я"
 
@@ -97,4 +125,4 @@ msgstr "Ваше ім’я"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
 #: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Your Ticket Number is"
-msgstr "Ваш номер квитка є"
+msgstr "Ваш номер заявки"

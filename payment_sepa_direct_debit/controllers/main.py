@@ -15,6 +15,7 @@ class SepaDirectDebitController(http.Controller):
     def _check_values(self, acquirer, iban, phone=None):
         validate_iban(iban)
         # TO CHECK: should we restrict to country code from iban country?
+        sanitized_number = None
         if acquirer.sepa_direct_debit_sms_enabled:
             if not phone:
                 raise ValidationError(_('No phone number provided.'))

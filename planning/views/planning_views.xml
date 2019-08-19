@@ -36,6 +36,13 @@
                 <sheet string="Shift">
                     <field name="is_assigned_to_me" invisible="1"/>
                     <field name="allow_self_unassign" invisible="1"/>
+                    <group attrs="{'invisible': [('template_autocomplete_ids', '=', False)]}">
+                        <field name="template_id" class="text-break flex-wrap"
+                            domain="[['id', 'in', template_autocomplete_ids]]"
+                            widget="radio" limit="5" options="{'horizontal': true}"
+                        />
+                    </group>
+                    <field name="template_autocomplete_ids" invisible="1"/>
                     <field name="recurrency_id" invisible='1'/>
                     <group>
                         <group>
@@ -48,6 +55,9 @@
                             <field name="allocated_hours" widget="float_time"/>
                             <field name="allocated_percentage"/>
                         </group>
+                    </group>
+                    <group>
+                        <field name="template_creation" groups="planning.group_planning_manager"/>
                     </group>
                     <group>
                         <field name="name"/>
@@ -297,6 +307,12 @@
         <field name="view_mode">tree</field>
     </record>
 
+    <record id="planning_action_shift_template" model="ir.actions.act_window">
+        <field name="name">Shift Templates</field>
+        <field name="res_model">planning.slot.template</field>
+        <field name="view_mode">tree</field>
+    </record>
+
     <!--
         Menus
     -->
@@ -384,4 +400,11 @@
             action="planning_action_roles"
             groups="base.group_system"/>
 
+        <menuitem
+            id="planning_menu_settings_shift_template"
+            name="Shift Templates"
+            parent="planning_menu_settings"
+            sequence="30"
+            action="planning_action_shift_template"
+            groups="base.group_system"/>
 </odoo>

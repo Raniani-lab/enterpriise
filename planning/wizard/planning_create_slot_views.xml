@@ -6,16 +6,11 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <form string="Forecast Form">
-                <sheet string="Project Forecast">
-                    <group attrs="{ 'invisible': [['autocomplete_planning_ids', '=', []]]}">
-                        <field name="previous_planning_id"
-                            domain="[['id', 'in', autocomplete_planning_ids]]"
-                            context="{'planning_autocomplete_name': '1'}"
-                            widget="radio"
-                            limit="5"
-                            />
+                <sheet string="Create Shift">
+                    <group attrs="{ 'invisible': [['autocomplete_templates_ids', '=', []]]}">
+                        <field name="shift_template_id" domain="[['id', 'in', autocomplete_templates_ids]]" context="{'planning_autocomplete_name': '1'}" widget="radio" limit="5"/>
                     </group>
-                    <field name="autocomplete_planning_ids" invisible="1" />
+                    <field name="autocomplete_templates_ids" invisible="1" />
                     <group>
                         <group>
                             <field name="employee_id" string="Assign To"/>
@@ -51,6 +46,8 @@
                 <footer>
                     <button name="action_create_new" type="object" string="Save" class='btn-primary'/>
                     <button name="discard" string="Discard" class='btn-secondary' special="cancel"/>
+                    <button name="action_save_as_template" class="oe_stat_button btn-secondary float-right" string="Save As Template" type="object" icon="fa-floppy-o"
+                    />
                 </footer>
             </form>
         </field>

@@ -1,7 +1,21 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import math
+
+from datetime import datetime, timedelta, time, date, timezone
+import pytz
 from odoo import api, fields, models, _
+from odoo.tools import format_time
+
+
+def timedelta_to_float_time(td):
+    if not isinstance(td, timedelta):
+        raise TypeError('Argument \'td\' must be of type datetime.timedelta (received %s)' % td.__class__)
+    ts = td.total_seconds()
+    m, s = divmod(ts, 60)
+    h, m = divmod(m, 60)
+    return h, m
 
 
 class PlanningCreateSlot(models.TransientModel):
@@ -19,8 +33,8 @@ class PlanningCreateSlot(models.TransientModel):
     repeat_until = fields.Date("Repeat Until", help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
 
     # Autocomplete fields
-    previous_planning_id = fields.Many2one('planning.slot', string='Recent Forecasts', store=False)
-    autocomplete_planning_ids = fields.Many2many('planning.slot', store=False, compute='_compute_autocomplete_planning_ids')
+    shift_template_id = fields.Many2one('planning.slot.template', string='Shift templates')
+    autocomplete_templates_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_autocomplete_planning_ids')
 
     # Used to display warning in Form view
     employee_tz_warning = fields.Char("Timezone Warning", compute='_compute_employee_tz_warning')
@@ -29,27 +43,19 @@ class PlanningCreateSlot(models.TransientModel):
         ('check_end_date_lower_repeat_until', 'CHECK(repeat_until IS NULL OR end_datetime < repeat_until)', 'Forecast should end before the repeat ends'),
     ]
 
-    @api.depends('employee_id')
+    @api.depends('role_id')
     def _compute_autocomplete_planning_ids(self):
-        """Computes a list of plannings that could be used to complete the creation wizard
+        """Computes a list of plannings templates that could be used to complete the creation wizard
             plannings must
-                -be assigned to the same employee
-                -have distinct roles
-            they are ordered by their end_datetime (most recent first)
+                -be a record of planning.slot.template
+                -be assigned to the same employee if the employee field is set
+                -have the same role as the one set in the Roles field of the wizard if it is set
+            they are ordered by their start_time (most recent first)
         """
-        if self.employee_id:
-            plannings = self.env['planning.slot'].search([
-                ['employee_id', '=', self.employee_id.id]
-            ], order='end_datetime')
-            seen = {}
-
-            def filter_func(planning):
-                uniq = seen.get(planning.role_id, True)
-                seen[planning.role_id] = False
-                return uniq
-
-            plannings = plannings.filtered(filter_func)
-            self.autocomplete_planning_ids = plannings
+        domain = []
+        if self.role_id:
+            domain = [('role_id', '=', self.role_id.id)]
+        self.autocomplete_templates_ids = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
 
     @api.depends('employee_id')
     def _compute_employee_tz_warning(self):
@@ -59,13 +65,25 @@ class PlanningCreateSlot(models.TransientModel):
             else:
                 planning.employee_tz_warning = False
 
-    @api.onchange('previous_planning_id')
-    def _onchange_previous_planning_id(self):
-        if self.previous_planning_id and self.start_datetime:
-            interval = self.previous_planning_id.end_datetime - self.previous_planning_id.start_datetime
-            self.end_datetime = self.start_datetime + interval
-
-            self.role_id = self.previous_planning_id.role_id
+    @api.onchange('shift_template_id')
+    def _onchange_shift_template_id(self):
+        user_tz = pytz.timezone(self.env.user.tz or 'UTC')
+        if self.shift_template_id and self.start_datetime:
+            start_datetime = user_tz.localize(datetime.combine(
+                self.start_datetime,
+                time(
+                    hour=int(self.shift_template_id.start_time), minute=round(math.modf(self.shift_template_id.start_time)[0] / (1 / 60.0))
+                )
+            ))
+            start_datetime = start_datetime.astimezone(pytz.utc)
+            self.start_datetime = start_datetime.replace(tzinfo=None)
+            self.end_datetime = (self.start_datetime + timedelta(
+                hours=int(self.shift_template_id.duration_hours_count),
+                minutes=round(
+                    math.modf(self.shift_template_id.duration_hours_count)[0] / (1 / 60.0)
+                )
+            )).replace(tzinfo=None)
+            self.role_id = self.shift_template_id.role_id
 
     def action_save_and_send(self):
         """
@@ -76,6 +94,17 @@ class PlanningCreateSlot(models.TransientModel):
         related_plannings = self.action_create_new()
         for planning in related_plannings:
             planning.action_send()
+
+    def action_save_as_template(self):
+        """ hit save as template button: current form values will be a new planning.slot.template record attached
+        to the current document. """
+        self.ensure_one()
+        destination_tz = pytz.timezone(self.env.user.tz or 'UTC')
+        start_datetime = pytz.utc.localize(self.start_datetime).astimezone(destination_tz)
+        end_datetime = pytz.utc.localize(self.end_datetime).astimezone(destination_tz)
+        duration = end_datetime - start_datetime  # Compute duration w/ tzinfo otherwise DST will not be taken into account
+        self.env['planning.slot.template'].create(self._prepare_template_values(start_datetime, duration, self.role_id.id))
+        return self._reopen(self.id)
 
     def action_create_new(self):
         self.ensure_one()
@@ -110,4 +139,24 @@ class PlanningCreateSlot(models.TransientModel):
             'repeat_unit': self.repeat_unit,
             'repeat_until': self.repeat_until,
             'company_id': self.company_id.id,
+        }
+
+    def _prepare_template_values(self, start_dt, duration, role_id):
+        duration_hours, duration_minutes = timedelta_to_float_time(duration)
+        return {
+            'start_time': start_dt.hour + 1 / 60.0 * start_dt.minute,
+            'duration_hours_count': duration_hours + 1 / 60.0 * duration_minutes,
+            'role_id': role_id or False
+        }
+
+    def _reopen(self, res_id):
+        # save original model in context, because selecting the list of available
+        # templates requires a model in context
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_id': res_id,
+            'res_model': self._name,
+            'target': 'new',
+            'context': self._context,
         }

@@ -24,25 +24,44 @@
             <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 11:00:00')"/>
             <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_admin"/>
-            <field name="employee_id" ref="planning_role_1"/>
+            <field name="role_id" ref="planning_role_1"/>
         </record>
         <record id="planning_slot_2" model="planning.slot">
             <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 10:00:00')"/>
             <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
-            <field name="employee_id" ref="planning_role_3"/>
+            <field name="role_id" ref="planning_role_3"/>
         </record>
         <record id="planning_slot_3" model="planning.slot">
             <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 11:00:00')"/>
             <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  12:00:00')"/>
             <field name="employee_id" ref="hr.employee_admin"/>
-            <field name="employee_id" ref="planning_role_2"/>
+            <field name="role_id" ref="planning_role_2"/>
         </record>
         <record id="planning_slot_4" model="planning.slot">
             <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 11:30:00')"/>
             <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  12:30:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
-            <field name="employee_id" ref="planning_role_2"/>
+            <field name="role_id" ref="planning_role_2"/>
+        </record>
+
+        <!-- Templates -->
+        <record id="planning_slot_template_1" model="planning.slot.template">
+            <field name="start_time" eval="round(6 + 1/60.0 * 45, 2)"/>
+            <field name="duration" eval="8.0"/>
+            <field name="role_id" ref="planning_role_1"/>
+        </record>
+
+        <record id="planning_slot_template_2" model="planning.slot.template">
+            <field name="start_time" eval="round(8 + 1/60.0 * 50, 2)"/>
+            <field name="duration" eval="24.0"/>
+            <field name="role_id" ref="planning_role_2"/>
+        </record>
+
+        <record id="planning_slot_template_3" model="planning.slot.template">
+            <field name="start_time" eval="round(10 + 1/60.0 * 30, 2)"/>
+            <field name="duration" eval="48.0"/>
+            <field name="role_id" ref="planning_role_3"/>
         </record>
 
         <!-- Tomorrow Evening shifts -->
@@ -50,25 +69,25 @@
             <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 19:00:00')"/>
             <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  21:00:00')"/>
             <field name="employee_id" ref="hr.employee_admin"/>
-            <field name="employee_id" ref="planning_role_1"/>
+            <field name="role_id" ref="planning_role_1"/>
         </record>
         <record id="planning_slot_2" model="planning.slot">
             <field name="start_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 18:00:00')"/>
             <field name="end_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 21:00:00')"/>
             <field name="employee_id" ref="hr.employee_qdp"/>
-            <field name="employee_id" ref="planning_role_3"/>
+            <field name="role_id" ref="planning_role_3"/>
         </record>
         <record id="planning_slot_3" model="planning.slot">
             <field name="start_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 20:00:00')"/>
             <field name="end_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 22:00:00')"/>
             <field name="employee_id" ref="hr.employee_admin"/>
-            <field name="employee_id" ref="planning_role_2"/>
+            <field name="role_id" ref="planning_role_2"/>
         </record>
         <record id="planning_slot_4" model="planning.slot">
             <field name="start_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 19:30:00')"/>
             <field name="end_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 22:30:00')"/>
             <field name="employee_id" ref="hr.employee_mit"/>
-            <field name="employee_id" ref="planning_role_2"/>
+            <field name="role_id" ref="planning_role_2"/>
         </record>
 
     </data>

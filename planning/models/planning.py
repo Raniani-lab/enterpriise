@@ -58,6 +58,11 @@ class Planning(models.Model):
     is_published = fields.Boolean("Is the shift sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
     publication_warning = fields.Boolean("Modified since last publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
 
+    # template dummy fields (only for UI purpose)
+    template_creation = fields.Boolean("Save as a Template", default=False, store=False)
+    template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
+    template_id = fields.Many2one('planning.slot.template', string='Planning Templates', store=False)
+
     _sql_constraints = [
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'You cannot have negative shift'),
@@ -111,6 +116,13 @@ class Planning(models.Model):
         else:
             self.overlap_slot_count = 0
 
+    @api.depends('role_id')
+    def _compute_template_autocomplete_ids(self):
+        domain = []
+        if self.role_id:
+            domain = [('role_id', '=', self.role_id.id)]
+        self.template_autocomplete_ids = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         if self.employee_id:
@@ -139,6 +151,33 @@ class Planning(models.Model):
     def _onchange_dates(self):
         if self.employee_id:
             self.publication_warning = True
+
+    @api.onchange('employee_id', 'role_id', 'template_creation')
+    def _onchange_template_autocomplete_ids(self):
+        domain = []
+        if self.role_id:
+            domain = [('role_id', '=', self.role_id.id)]
+        templates = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+        if templates:
+            if not self.template_creation:
+                self.template_autocomplete_ids = templates
+            else:
+                self.template_autocomplete_ids = False
+        else:
+            self.template_autocomplete_ids = False
+
+    @api.onchange('template_id')
+    def _onchange_template_id(self):
+        user_tz = pytz.timezone(self.env.user.tz or 'UTC')
+        if self.template_id and self.start_datetime:
+            h, m = divmod(self.template_id.start_time, 1)
+            self.start_datetime = fields.Datetime.to_string(user_tz.localize(self.start_datetime.replace(hour=int(h), minute=int(m * 60))).astimezone(pytz.utc))
+
+            h, m = divmod(self.template_id.duration, 1)
+            delta = timedelta(hours=int(h), minutes=int(m * 60))
+            self.end_datetime = fields.Datetime.to_string(self.start_datetime + delta)
+
+            self.role_id = self.template_id.role_id
 
     # ----------------------------------------------------
     # ORM overrides
@@ -177,6 +216,19 @@ class Planning(models.Model):
             result.append([slot.id, name])
         return result
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        result = super(Planning, self).create(vals_list)
+
+        # create the templates
+        template_value_list = []
+        for index, values in enumerate(vals_list):
+            if values.get('template_creation', False):
+                template_value_list.append(result[index]._prepare_template_values())
+        self._save_as_template(template_value_list)
+
+        return result
+
     def write(self, values):
         # detach planning entry from recurrency
         breaking_fields = self._get_fields_breaking_recurrency()
@@ -186,6 +238,13 @@ class Planning(models.Model):
         # warning on published shifts
         if 'publication_warning' not in values and (set(values.keys()) & set(self._get_fields_breaking_publication())):
             values['publication_warning'] = True
+        # create the templates
+        if values.get('template_creation', False):
+            template_value_list = []
+            for slot in self:
+                template_value_list.append(slot._prepare_template_values())
+            self._save_as_template(template_value_list)
+
         return super(Planning, self).write(values)
 
     # ----------------------------------------------------
@@ -381,6 +440,36 @@ class Planning(models.Model):
             if current_id:
                 domain_mapping[slot.id] = expression.AND([domain_mapping[slot.id], [('id', '!=', current_id)]])
         return domain_mapping
+
+    def _prepare_template_values(self):
+        """ extract values from shift to create a template """
+        # compute duration w/ tzinfo otherwise DST will not be taken into account
+        destination_tz = pytz.timezone(self.env.user.tz or 'UTC')
+        start_datetime = pytz.utc.localize(self.start_datetime).astimezone(destination_tz)
+        end_datetime = pytz.utc.localize(self.end_datetime).astimezone(destination_tz)
+
+        # convert time delta to hours and minutes
+        total_seconds = (end_datetime - start_datetime).total_seconds()
+        m, s = divmod(total_seconds, 60)
+        h, m = divmod(m, 60)
+
+        return {
+            'start_time': start_datetime.hour + start_datetime.minute / 60.0,
+            'duration': h + (m / 60.0),
+            'role_id': self.role_id.id
+        }
+
+    @api.model
+    def _save_as_template(self, tmpl_vals_list):
+        to_create_list = []
+        for values in tmpl_vals_list:
+            domain = [('duration', '=', values['duration']), ('start_time', '=', values['start_time'])]
+            if values.get('role_id'):
+                domain = expression.AND([domain, [('role_id', '=', values['role_id'])]])
+            if not self.env['planning.template'].search_count(domain):
+                to_create_list.append(values)
+        return self.env['planning.slot.template'].create(to_create_list)
+
 
 class PlanningRole(models.Model):
     _name = 'planning.role'

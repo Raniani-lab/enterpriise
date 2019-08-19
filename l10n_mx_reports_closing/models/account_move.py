@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 
 class AccountMove(models.Model):
@@ -14,8 +13,8 @@ class AccountMove(models.Model):
 
     def _get_closing_move(self, search_date):
         company_id = self.env.context.get('company_id') or self.env.user.company_id
-        dt = fields.datetime.strptime(search_date, DEFAULT_SERVER_DATE_FORMAT)
-        company_fiscalyear_dates = company_id.compute_fiscalyear_dates(dt)
+        company_fiscalyear_dates = company_id.compute_fiscalyear_dates(
+            search_date)
         return self.env['account.move'].search(
             [('company_id', '=', company_id.id),
              ('l10n_mx_closing_move', '=', 'True'),

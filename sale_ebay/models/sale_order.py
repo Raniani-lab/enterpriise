@@ -111,6 +111,9 @@ class SaleOrder(models.Model):
 
     @api.model
     def _process_all_taxes(self, tax_dict, price_unit):
+        """If there is more than one product sold, price_unit should actually be the sum of all products;
+           price_unit is given per product, whereas the tax amount is computed over the sum of all products.
+        """
         tax_commands = []
         for tax in tax_dict.get('TaxDetails', []):
             tax_amount = float(tax['TaxAmount']['value'])
@@ -259,14 +262,14 @@ class SaleOrder(models.Model):
         price_unit = float(transaction['TransactionPrice']['value'])
         price_unit = transaction_currency._convert(price_unit,
             self.currency_id, self.company_id, self.date_order or datetime.now())
-
-        tax_commands = self._process_all_taxes(transaction['Taxes'], price_unit)
+        qty = float(transaction['QuantityPurchased'])
+        tax_commands = self._process_all_taxes(transaction['Taxes'], price_unit * qty)
 
         sol = self.env['sale.order.line'].create({
             'product_id': variant.id,
             'order_id': self.id,
             'name': variant.name,
-            'product_uom_qty': float(transaction['QuantityPurchased']),
+            'product_uom_qty': qty,
             'product_uom': variant.uom_id.id,
             'price_unit': price_unit,
             'tax_id': tax_commands,

@@ -37,7 +37,7 @@ var Many2ManyTags = relational_fields.FieldMany2ManyTags;
 var OPTIONS_BY_WIDGET = {
     image: [
         {name: 'size', type: 'selection', string: _lt("Size"), selection: [
-            [[90, 90], _lt("Small")], [[180, 180], _lt("Medium")], [[270, 270], _lt("Large")],
+            [[0, 90], _lt("Small")], [[0, 180], _lt("Medium")], [[0, 270], _lt("Large")],
         ]},
     ],
     many2one: [
@@ -548,7 +548,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 };
                 if (widget === 'image') {
                     // add small as a default size for image widget
-                    new_attrs.options = JSON.stringify({size: [90, 90]});
+                    new_attrs.options = JSON.stringify({size: [0, 90]});
                 }
             } else if ($input.attr('type') === 'checkbox') {
                 if (!_.contains(this.MODIFIERS_IN_NODE_AND_ATTRS, attribute)) {

@@ -586,24 +586,54 @@ class View(models.Model):
         its name attribute (relative identifier) or by getting the number of preceding
         sibling elements (absolute identifier)
         """
-        if node.get('name'):
+        # Some nodes may have a name which is not id-like, but is a technical attribute
+        # that won't be unique
+        named_tags = ['field', 'button']
+
+        # 0. Identify "regular" nodes by their name: name here is id-like
+        if node.get('name') and node.tag not in named_tags:
             node_str = '%s[@name=\'%s\']' % (node.tag, node.get('name'))
-        else:
-            same_tag_prev_siblings = list(node.itersiblings(tag=node.tag, preceding=True))
-            num_prev_noname_node = sum(
-                1 for sibling in same_tag_prev_siblings
-                if 'name' not in sibling.attrib
-            )
+            return node_str
+
+        same_tag_prev_siblings = list(node.itersiblings(tag=node.tag, preceding=True))
+
+        # Otherwise, we'd have to compute the absolute path of the node along 2 cases
+        # 1. Current node does not have a name or doesn't need one
+        if not node.get('name') or node.tag not in named_tags:
+            # Only consider same tag siblings that don't have a name either
+            colliding_prev_siblings = [
+                sibling for sibling in same_tag_prev_siblings
+                if ('name' not in sibling.attrib)
+            ]
 
             node_str = '%s' % (node.tag,)
+
             # Only count no name node to avoid conflict with other studio change
-            if num_prev_noname_node != len(same_tag_prev_siblings):
+            if len(colliding_prev_siblings) != len(same_tag_prev_siblings):
                 node_str += '[not(@name)]'
+
             # We need to add 1 to the number of previous siblings to get the
             # position index of the node because these indices start at 1 in an xpath context.
-            node_str += '[%s]' % (num_prev_noname_node + 1,)
+            node_str += '[%s]' % (len(colliding_prev_siblings) + 1,)
+            return node_str
 
-        return node_str
+        # 2. Current node has a name which is not id-like
+        # There can be more than one node in that case
+        if node.get('name') and node.tag in named_tags:
+            # Only consider same tag siblings that do have the same name
+            colliding_prev_siblings = [
+                sibling for sibling in same_tag_prev_siblings
+                if (node.get('name') == sibling.get('name'))
+            ]
+
+            node_str = '%s[@name=\'%s\']' % (
+                node.tag,
+                node.get('name'),
+            )
+            if len(colliding_prev_siblings):
+                node_str += '[%s]' % (len(colliding_prev_siblings) + 1,)
+
+            return node_str
 
     def _closest_node_to_xpath(self, node, old_view, moved_fields, node_context=None):
         """

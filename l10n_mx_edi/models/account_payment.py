@@ -122,7 +122,8 @@ class AccountPayment(models.Model):
     @api.multi
     def cancel(self):
         result = super(AccountPayment, self).cancel()
-        for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
+        for record in self.filtered(lambda r: r.l10n_mx_edi_pac_status in [
+                'to_sign', 'signed', 'to_cancel']):
             record._l10n_mx_edi_cancel()
         return result
 

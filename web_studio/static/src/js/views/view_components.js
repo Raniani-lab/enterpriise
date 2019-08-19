@@ -196,7 +196,7 @@ var ImageWidgetComponent = AbstractNewWidgetComponent.extend({
     type: 'binary',
     label: _lt('Image'),
     className: 'o_web_studio_field_picture',
-    attrs: {widget: 'image', options: '{"size": [90, 90]}'},
+    attrs: {widget: 'image', options: '{"size": [0, 90]}'},
 });
 var TagWidgetComponent = AbstractNewWidgetComponent.extend({
     type: 'many2many',

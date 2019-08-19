@@ -67,19 +67,23 @@ class IoTController(http.Controller):
         # Update or create devices
         if box:
             for device_identifier in devices:
-                data_device = devices[device_identifier]
-                if data_device['connection'] == 'network':
-                    device = request.env['iot.device'].sudo().search([('identifier', '=', device_identifier)])
-                else:
-                    device = request.env['iot.device'].sudo().search([('iot_id', '=', box.id), ('identifier', '=', device_identifier)])
+                available_types = [s[0] for s in request.env['iot.device']._fields['type'].selection]
+                available_connections = [s[0] for s in request.env['iot.device']._fields['connection'].selection]
 
-                if device:
-                    device.name = data_device['name']
-                else:
-                    device = request.env['iot.device'].sudo().create({
-                        'iot_id': box.id,
-                        'name': data_device['name'],
-                        'identifier': device_identifier,
-                        'type': data_device['type'],
-                        'connection': data_device['connection'],
-                    })
+                data_device = devices[device_identifier]
+                if data_device['type'] in available_types and data_device['connection'] in available_connections:
+                    if data_device['connection'] == 'network':
+                        device = request.env['iot.device'].sudo().search([('identifier', '=', device_identifier)])
+                    else:
+                        device = request.env['iot.device'].sudo().search([('iot_id', '=', box.id), ('identifier', '=', device_identifier)])
+
+                    if device:
+                        device.name = data_device['name']
+                    else:
+                        device = request.env['iot.device'].sudo().create({
+                            'iot_id': box.id,
+                            'name': data_device['name'],
+                            'identifier': device_identifier,
+                            'type': data_device['type'],
+                            'connection': data_device['connection'],
+                        })

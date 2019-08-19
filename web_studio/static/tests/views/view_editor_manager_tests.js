@@ -39,7 +39,7 @@ QUnit.module('ViewEditorManager', {
                         type: "many2one",
                         relation: 'product',
                     },
-                    product_ids: {string: "Products", type: "one2many", relation: "product", searchable: true},
+                    product_ids: {string: "Products", type: "one2many", relation: "product"},
                     priority: {
                         string: "Priority",
                         type: "selection",
@@ -57,11 +57,11 @@ QUnit.module('ViewEditorManager', {
             },
             product: {
                 fields: {
-                    display_name: {string: "Display Name", type: "char", searchable: true},
-                    m2o: {string: "M2O", type: "many2one", relation: 'partner', searchable: true},
-                    partner_ids: {string: "Partners", type: "one2many", relation: "partner", searchable: true},
+                    display_name: {string: "Display Name", type: "char"},
+                    m2o: {string: "M2O", type: "many2one", relation: 'partner'},
+                    partner_ids: {string: "Partners", type: "one2many", relation: "partner"},
                     coucou_id: {string: "coucou", type: "many2one", relation: "coucou"},
-                    m2m: {string: "M2M", type: "many2many", relation: "product", searchable: true},
+                    m2m: {string: "M2M", type: "many2many", relation: "product"},
                     toughness: {
                         manual: true,
                         string: "toughness",
@@ -677,13 +677,13 @@ QUnit.module('ViewEditorManager', {
                     assert.step('image');
                     return Promise.resolve();
                 } else if (route === '/web_studio/edit_view') {
-                    assert.strictEqual(args.operations[0].new_attrs.options, "{\"size\":[270,270],\"preview_image\":\"coucou\"}",
+                    assert.strictEqual(args.operations[0].new_attrs.options, "{\"size\":[0,270],\"preview_image\":\"coucou\"}",
                         "appropriate options for 'image' widget should be passed");
                     // the server sends the arch in string but it's post-processed
                     // by the ViewEditorManager
                     fieldsView.arch = "<form>" +
                         "<sheet>" +
-                            "<field name='image' widget='image' options='{\"size\": [270, 270]}'/>" +
+                            "<field name='image' widget='image' options='{\"size\": [0, 270]}'/>" +
                         "</sheet>" +
                     "</form>";
                     return Promise.resolve({
@@ -742,7 +742,7 @@ QUnit.module('ViewEditorManager', {
             res_id: 4,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
-                    assert.strictEqual(args.operations[0].new_attrs.options, '{"size":[90,90]}',
+                    assert.strictEqual(args.operations[0].new_attrs.options, '{"size":[0,90]}',
                         "appropriate default options for 'image' widget should be passed");
                     // the server sends the arch in string but it's post-processed
                     // by the ViewEditorManager
@@ -775,6 +775,36 @@ QUnit.module('ViewEditorManager', {
 
         // change widget to image
         await testUtils.fields.editSelect(vem.$('.o_web_studio_sidebar_content.o_display_field select#widget'), 'image');
+        vem.destroy();
+    });
+
+    QUnit.test('integer field should come with 0 as default value', async function(assert) {
+        assert.expect(1);
+
+        var fieldsView;
+        var arch = "<tree><field name='display_name'/></tree>";
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].node.field_description.default_value,
+                        '0', "related arg should be correct");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            list: fieldsView,
+                        },
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = $.extend(true, {}, vem.fields_view);
+        await testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_integer'), $('.o_web_studio_hook'));
         vem.destroy();
     });
 
@@ -2196,7 +2226,6 @@ QUnit.module('ViewEditorManager', {
         this.data.product.fields.monetary_field = {
             string: 'Monetary',
             type: 'monetary',
-            searchable: true,
         };
         var arch = "<tree><field name='display_name'/></tree>";
         var vem = await studioTestUtils.createViewEditorManager({
@@ -2253,7 +2282,6 @@ QUnit.module('ViewEditorManager', {
         this.data.product.fields.monetary_field = {
             string: 'Monetary',
             type: 'monetary',
-            searchable: true,
         };
 
         this.data.coucou.fields.x_currency_id = {
@@ -2311,7 +2339,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a related field', async function (assert) {
-        assert.expect(24);
+        assert.expect(25);
 
 
         this.data.coucou.fields.related_field = {
@@ -2391,9 +2419,14 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal').length, 1, "the modal should still be displayed");
 
         $('.modal .o_field_selector').focusin(); // open the selector popover
+
+        assert.containsOnce($, '.o_field_selector_popover li',
+            "there should only be one available field (the many2one)");
+
         await testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));
         await testUtils.dom.click($('.o_field_selector_popover li[data-name=display_name]'));
         await testUtils.dom.click($('.modal-footer .btn-primary:first'));
+
 
         // create a new many2one related field
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));

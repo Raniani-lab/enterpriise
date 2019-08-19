@@ -125,6 +125,7 @@ class AccountInvoiceLine(models.Model):
                         SELECT id
                         FROM account_account_type
                         WHERE internal_group = 'expense')
+                        AND company_id = %(company_id)s
                     )
                 ) p_search,
                 to_tsquery(%(lang)s, %(description)s) query_plain

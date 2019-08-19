@@ -293,7 +293,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             } else if (_.contains(['selection', 'one2many', 'many2one', 'many2many', 'related'], field_description.type)) {
                 def_field_values = new Promise(function (resolve, reject) {
                     // open dialog to precise the required fields for this field
-                    dialog = new NewFieldDialog(self, modelName, field_description, self.fields).open();
+                    dialog = new NewFieldDialog(self, modelName, field_description, _.filter(self.fields, {type: 'many2one'})).open();
                     dialog.on('field_default_values_saved', self, function (values) {
                         if (values.related && values.type === 'monetary') {
                             if (self._hasCurrencyField()) {
@@ -327,6 +327,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
                         });
                     }
                 });
+            } else if (field_description.type === 'integer') {
+                field_description.default_value = '0'
             }
         }
         // When the field values is selected, close the dialog and update the view

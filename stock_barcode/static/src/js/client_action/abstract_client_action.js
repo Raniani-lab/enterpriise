@@ -505,7 +505,11 @@ var ClientAction = AbstractAction.extend({
             });
 
             return self._getState(recordId, state);
-        }, function () {
+        }, function (error) {
+            // on server error, let error be displayed and do nothing
+            if (error !== undefined) {
+                return Promise.reject();
+            }
             if (params.forceReload) {
                 return self._getState(recordId);
             } else {
@@ -956,11 +960,12 @@ var ClientAction = AbstractAction.extend({
             var expectedNumberOfLines = quants.length;
             var currentNumberOfLines = 0;
 
+            var qtyField = self.actionParams.model === 'stock.inventory' ? "product_qty" : "qty_done";
             var currentPage = self.pages[self.currentPageIndex];
             for (var i=0; i < currentPage.lines.length; i++) {
                 var currentLine = currentPage.lines[i];
                 // FIXME sle: float_compare?
-                if (currentLine.package_id && currentLine.package_id[0] === package_id && currentLine.qty_done > 0) {
+                if (currentLine.package_id && currentLine.package_id[0] === package_id && currentLine[qtyField] > 0) {
                     currentNumberOfLines += 1;
                 }
             }
@@ -985,7 +990,7 @@ var ClientAction = AbstractAction.extend({
                             var product_barcode = _.findKey(self.productsByBarcode, function (product) {
                                 return product.id === quant.product_id[0];
                             });
-                            var product = self.productsByBarcode[product_barcode];
+                            var product = _.clone(self.productsByBarcode[product_barcode]);
                             if (! product) {
                                 var product_key = _.findKey(products_without_barcode, function (product) {
                                     return product.id === quant.product_id[0];

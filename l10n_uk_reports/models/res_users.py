@@ -13,3 +13,9 @@ class User(models.Model):
     l10n_uk_hmrc_vat_token_expiration_time = fields.Datetime("Oauth access token expiration time", copy=False,
                                                              help="When the access token expires, then it can be refreshed"
                                                                   "through the Odoo server with the user token. ")
+
+    @api.multi
+    def hmrc_reset_tokens(self):
+        self.ensure_one()
+        self.env['hmrc.service']._clean_tokens()
+        return True

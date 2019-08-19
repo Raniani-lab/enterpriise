@@ -158,6 +158,7 @@ class WebsiteCalendar(http.Controller):
             'partner_ids': [(4, pid, False) for pid in partner_ids],
             'categ_ids': [(4, categ_id.id, False)],
             'appointment_type_id': appointment_type.id,
+            'user_id': Employee.user_id.id,
         })
         event.attendee_ids.write({'state': 'accepted'})
         return request.redirect('/website/calendar/view/' + event.access_token + '?message=new')

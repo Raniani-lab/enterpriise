@@ -10,7 +10,8 @@ class MxClosingReportAccountTrial(models.AbstractModel):
     _inherit = "l10n_mx.trial.report"
 
     def _get_lines_fourth_level(self, accounts, grouped_accounts, initial_balances, options, comparison_table):
-        closing_move = self.env['account.move']._get_closing_move(options['date']['date_to'])
+        date_to = fields.Date.from_string(options['date']['date_to'])
+        closing_move = self.env['account.move']._get_closing_move(date_to)
         if closing_move:
             accounts_to_show = closing_move.mapped('line_ids.account_id')
             lines_last_period = {}

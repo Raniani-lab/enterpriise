@@ -108,4 +108,15 @@
     <button class="o_search_panel_mobile_bottom_close btn btn-primary w-100 fixed-bottom">See result</button>
 </t>
 
+<t t-name="SnackBar" >
+    <div class="o_snackbar">
+        <p class="o_snackbar_message">
+            <t t-esc="widget.message"/>
+        </p>
+        <button type="button" class="o_snackbar_button">
+            <t t-esc="widget.actionText"/>
+        </button>
+    </div>
+</t>
+
 </templates>

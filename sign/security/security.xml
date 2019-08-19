@@ -103,5 +103,30 @@
             <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
         </record>
+
+        <!-- Portal Access Rules -->
+        <record id="ir_rule_sign_request_portal" model="ir.rule">
+            <field name="name">Portal Personal Sign Request</field>
+            <field name="model_id" ref="sign.model_sign_request"/>
+            <field name="domain_force">[('message_partner_ids','child_of',[user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="False"/>
+        </record>
+
+        <record id="sign_request_line_rule_portal" model="ir.rule">
+            <field name="name">Portal Sign Requests Line</field>
+            <field name="model_id" ref="sign.model_sign_request_item"/>
+            <field name="domain_force">[('message_partner_ids','child_of',[user.partner_id.id])]</field>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+
     </data>
+
 </odoo>

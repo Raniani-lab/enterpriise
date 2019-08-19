@@ -4,9 +4,7 @@
 # Copyright (c) 2005-2006 Axelor SARL. (http://www.axelor.com)
 
 from odoo import api, fields, models
-from datetime import datetime, timedelta
-
-from dateutil.relativedelta import relativedelta
+from datetime import timedelta
 
 
 class HrLeave(models.Model):
@@ -14,8 +12,8 @@ class HrLeave(models.Model):
 
     @api.model
     def gantt_unavailability(self, start_date, end_date, scale, group_bys=None, rows=None):
-        start_datetime = fields.Datetime.from_string(start_date.replace('T', ' '))
-        end_datetime = fields.Datetime.from_string(end_date.replace('T', ' '))
+        start_datetime = fields.Datetime.from_string(start_date)
+        end_datetime = fields.Datetime.from_string(end_date)
         employee_ids = set()
         for toplevel_row in rows:
             if toplevel_row.get('records') and 'employee_id' in toplevel_row.get('groupedBy', []):

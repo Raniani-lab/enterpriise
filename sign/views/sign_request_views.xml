@@ -101,16 +101,15 @@
                                 <span class="o_stat_text">Activity Logs</span>
                             </div>
                         </button>
-                        <button type="object" name="_compute_hashes" class="oe_read_only oe_stat_button" icon="fa-shield" groups="sign.group_sign_manager">
-                            <div class="o_field_widget o_stat_info">
-                                <span class="o_stat_text">Activity Check</span>
-                            </div>
-                        </button>
                     </div>
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="integrity" invisible="1"/>
                     <div class="oe_title">
                         <label for="reference" class="oe_edit_only"/>
                         <h1><field name="reference"/></h1>
+                    </div>
+                    <div class="alert alert-warning" role="alert" attrs="{'invisible': [('integrity', '=', True)]}">
+                        The integrity of the document's history cannot be verified. This could mean that signature values or the underlying PDF document may have been modified after the fact.
                     </div>
 
                     <field name="request_item_ids" context="{'default_sign_request_id': id}" nolabel="1"/>

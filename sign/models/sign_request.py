@@ -67,7 +67,7 @@ class SignRequest(models.Model):
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
     progress = fields.Char(string="Progress", compute="_compute_count")
     start_sign = fields.Boolean(string="", help="At least one signer has signed the document.", compute="_compute_count")
-    integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes')
+    integrity = fields.Boolean(string="Integrity of the Sign request", compute='compute_hashes')
 
     active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
@@ -76,7 +76,7 @@ class SignRequest(models.Model):
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
 
-    sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Technical: for reporting purposes")
+    sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
 
 
     @api.depends('request_item_ids.state')
@@ -160,9 +160,12 @@ class SignRequest(models.Model):
         }
 
     @api.onchange("progress", "start_sign")
-    def _compute_hashes(self):
-        logs = self.env['sign.log'].sudo().search([('sign_request_id', '=', self.id)], order='id asc')
-        logs._check_document_integrity()
+    def compute_hashes(self):
+        for document in self:
+            try:
+                document.integrity = self.sign_log_ids._check_document_integrity()
+            except Exception:
+                document.integrity = False
 
     def toggle_favorited(self):
         self.ensure_one()

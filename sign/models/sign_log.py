@@ -10,9 +10,16 @@ from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.http import request
 
-_logger = logging.getLogger()
+_logger = logging.getLogger(__name__)
 
 LOG_FIELDS = ['log_date', 'action', 'partner_id', 'request_state', 'latitude', 'longitude', 'IP',]
+
+def get_attachment_sha(attachment):
+    if attachment.store_fname:
+        source_bin = attachment._file_read(attachment.store_fname)
+    else:
+        source_bin = attachment.db_datas
+    return sha256(source_bin).hexdigest()
 
 
 class SignLog(models.Model):
@@ -24,8 +31,7 @@ class SignLog(models.Model):
     sign_request_item_id = fields.Many2one('sign.request.item')
 
     # Accessed as ?
-    # TODO when no user/partner : print Anonymous in report.
-    user_id = fields.Many2one('res.users', groups="sign.group_sign_manager")  # TODO do we need the user when we have the partner?
+    user_id = fields.Many2one('res.users', groups="sign.group_sign_manager")
     partner_id = fields.Many2one('res.partner')
 
     # Accessed on ?
@@ -39,22 +45,17 @@ class SignLog(models.Model):
     IP = fields.Char("IP address of the visitor", required=True, groups="sign.group_sign_manager")
     log_hash = fields.Char(string="Inalterability Hash", readonly=True, copy=False)
     string_to_hash =fields.Char() # fields.Char(store=False)
-    integrity_check = fields.Boolean(store=False)
 
     # Accessed for ?
     action = fields.Selection(
         string="Action Performed",
         selection=[
             ('create', 'Creation'),
-            ('open', 'Opening and/or Download'),
+            ('open', 'View/Download'),
             ('sign', 'Signature'),
             ('check', 'Check'),
         ], required=True,
     )
-    """
-    Do we want to distinguish public request creation and backend ?
-    For the moment, creation logs are only saved for public creation (through controller).
-    """
 
     request_state = fields.Selection([
         ("sent", "Signatures in Progress"),
@@ -78,7 +79,7 @@ class SignLog(models.Model):
         vals['log_date'] = datetime.utcnow()
         if vals['action'] == 'create':
             sign_request = self.env['sign.request'].browse(vals['sign_request_id'])
-            vals['log_hash'] = sha256(sign_request.template_id.datas).hexdigest()
+            vals['log_hash'] = get_attachment_sha(sign_request.template_id.attachment_id)
         elif vals['action'] == 'sign':
             vals['log_hash'] = self._get_new_hash(vals)
             del vals['token']
@@ -141,17 +142,18 @@ class SignLog(models.Model):
         """
         Check the integrity of a sign request by comparing the logs hash to the computed values.
         """
-        sha_pdf = sha256(self.sign_request_id.template_id.attachment_id.datas).hexdigest()
+        source_attach = self.sign_request_id.template_id.attachment_id
+        sha_pdf = get_attachment_sha(source_attach)
         logs = self.filtered(lambda item: item.action in ['sign', 'create'])
-        verified_hashes = []
+        verified_hashes = {}
         for log in logs:
+            verified_hashes[log.log_hash] = "pending"
             if log.action == "create":
                 if log.log_hash == sha_pdf:
-                    verified_hashes.append(log.log_hash)
+                    verified_hashes[log.log_hash] = "verified"
                     continue
                 else:
-                    log.integrity_check = False
-                    msg = f'An error occurred when computing the hash {id}. Something went wrong.\nINVALID HASH: {log.log_hash}'
+                    msg = _('An error occurred when computing the hash %s. Something went wrong.\nINVALID HASH: {%s}') % (log.id, log.log_hash)
                     raise UserError(_(msg))
             elif log.action == "sign":
                 request_items_ids = log.sign_request_id.request_item_ids
@@ -173,18 +175,16 @@ class SignLog(models.Model):
                             'token': request_item_id.access_token
                             }
                     if log.log_hash == self._get_new_hash(vals):
-                        verified_hashes.append(log.log_hash)
-                        msg = f"Coherent Hash for request_id: {log.sign_request_id.id} : Log {log.id}"
+                        msg = "Coherent Hash for sign request %s: log %s is consistent" % (log.sign_request_id.id, log.id)
                         _logger.info(msg)
-
-        if len(verified_hashes) < len(logs):
-            print(verified_hashes)
-            msg = 'An error occurred when computing the hash. Something went wrong.\n'
-            log.sign_request_id.integrity = False
-            raise UserError(_(msg))
-        else:
-            msg = "The Activity log is coherent with the values. :-)"
+                        verified_hashes[log.log_hash] = "verified"
+        if not 'pending' in verified_hashes.values():
+            msg = "Verified sign request integrity (%s): activity logs are coherent with stored values." % (self.sign_request_id.ids)
             _logger.info(msg)
+        else:
+            msg = _('An error occurred when computing the hashes. Something went wrong.\n Hash logs: %s' % (verified_hashes))
+            raise UserError(_(msg))
+        return True
 
     def _prepare_vals_from_item(self, request_item):
         request = request_item.sign_request_id

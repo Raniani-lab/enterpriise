@@ -23,14 +23,13 @@
                 </div>
             </button>
         </xpath>
-        <xpath expr="//header" position="inside">
+        <button name="preference_change_password" position="before">
             <field name="employee_ids" invisible="1"/>
             <button name="action_send_appraisal_request"
                 string="Request Appraisal"
                 type="object"
                 class="btn btn-primary"/>
-
-        </xpath>
+        </button>
         <xpath expr="//page[@name='hr_settings']" position="inside">
             <page string="Appraisal">
                 <group string="Appraisals Set Up">

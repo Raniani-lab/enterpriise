@@ -29,7 +29,7 @@
                     <field name="score" />
                 </field>
                 <xpath expr="//page[@name='extra']/group" position="inside">
-                    <group string="Scoring">
+                    <group string="Scoring" invisible="1">
                         <field name="score_ids"
                             widget="many2many_tags" options="{'color_field': 'color'}"
                             domain="[('object_id.model','=','crm.lead')]"
@@ -58,7 +58,7 @@
             <field name="inherit_id" ref="crm.crm_case_form_view_oppor" />
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='Misc']" position="after">
-                    <group string="Scoring">
+                    <group string="Scoring" invisible="1">
                         <field name="score_ids"
                             widget="many2many_tags" options="{'color_field': 'color'}"
                             domain="[('object_id.model','=','crm.lead')]"

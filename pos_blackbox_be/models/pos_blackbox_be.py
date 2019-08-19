@@ -450,7 +450,7 @@ POS ID: {pos_id}
         return fields
 
     @api.model
-    def create_from_ui(self, orders):
+    def create_from_ui(self, orders, draft=False):
         # this will call pos_order_pro_forma.create_from_ui when required
         pro_forma_orders = [order['data'] for order in orders if order['data'].get('blackbox_pro_forma')]
 
@@ -692,8 +692,8 @@ class product_template(models.Model):
 
     @api.model
     def _remove_availibility_all_but_blackbox(self):
-        """ Remove all products from the point of sale that were not create by this module 
-        
+        """ Remove all products from the point of sale that were not create by this module
+
         Useful in demo only.
         Only a subset of demo products should be displayed for the certification process
         """

@@ -127,13 +127,25 @@ class ProjectWorksheetTemplate(models.Model):
             'res_model': model.model,
             'view_mode': 'tree,form',
             'target': 'current',
-            'context': "{'create': 0}",  # needed when leaving studio edit form view
+            'context': {
+                'edit': False,
+                'create': False,
+                'delete': False,
+            }
+        })
+        # generate an xmlid for the action, studio requires it to activate the studio
+        # systray item
+        self.env['ir.model.data'].sudo().create({
+            'name': 'template_action_' + "_".join(template.name.split(' ')),
+            'model': 'ir.actions.act_window',
+            'module': 'industry_fsm_report',
+            'res_id': action.id,
+            'noupdate': True,
         })
         template.write({
             'action_id': action.id,
             'model_id': model.id,
         })
-
         # this must be done after form view creation and filling the 'model_id' field
         template.sudo()._generate_qweb_report_template()
 
@@ -160,6 +172,22 @@ class ProjectWorksheetTemplate(models.Model):
         context['create'] = 0
         action['context'] = context
         return action
+
+    # ---------------------------------------------------------
+    # Actions
+    # ---------------------------------------------------------
+
+    def action_fsm_report(self):
+        self.ensure_one()
+        return {
+            'name': _('Analysis'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'graph,pivot,list,form',
+            'res_model': self.model_id.model,
+            'context': {
+                'fsm_mode': True,
+            }
+        }
 
     # ---------------------------------------------------------
     # Business Methods

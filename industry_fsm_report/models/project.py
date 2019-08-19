@@ -89,7 +89,6 @@ class Task(models.Model):
             'context': {
                 'default_x_task_id': self.id,
                 'form_view_initial_mode': 'edit',
-                'create': False,
             },
         })
         return action

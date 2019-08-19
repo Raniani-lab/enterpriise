@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': "Field Service",
     'summary': "Schedule and track onsite operations, invoice time and material",
@@ -24,7 +25,9 @@ Adds the following options:
     'data': [
         'data/fsm_data.xml',
         'security/fsm_security.xml',
+        'security/ir.model.access.csv',
         'views/res_config_settings_views.xml',
+        'report/project_report_views.xml',
         'views/product_product_views.xml',
         'views/project_views.xml',
         'views/assets.xml',

@@ -30,8 +30,11 @@
             <gantt date_start="planned_date_begin"
                 date_stop="planned_date_end"
                 default_scale="week"
+                scales="day,week,month"
                 string="Planning"
-                precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:half'}">
+                thumbnails="{'user_id': 'image_64'}"
+                js_class="task_gantt"
+                precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:full'}">
                 <templates>
                     <div t-name="gantt-popover" class="container-fluid">
                         <div class="row no-gutters">
@@ -60,7 +63,12 @@
             <map res_partner="partner_id"  default_order="planned_date_begin" routing="true">
                 <marker-popup>
                     <field name="name" string="Task"/>
-                    <field name="user_id" string="Assigned to"/>
+                    <field name="partner_id" string="Customer" />
+                    <field name="partner_email" string=""/>
+                    <field name="partner_phone" string=""/>
+                    <field name="partner_street" string="Address" />
+                    <field name="partner_zip" string=""/>
+                    <field name="partner_city" string=""/>
                 </marker-popup>
             </map>
         </field>

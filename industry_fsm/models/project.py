@@ -5,6 +5,7 @@ from datetime import timedelta, datetime
 
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, AccessError
+from odoo.osv import expression
 
 
 class Project(models.Model):
@@ -21,7 +22,6 @@ class Project(models.Model):
         return result
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
-    product_template_ids = fields.Many2many('product.template', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", string="Allowed Products", help="Products allowed to be added on this Task's Material.")
     timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain="[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", help='Select a Service product with which you would like to bill your time spent on tasks.')
 
     _sql_constraints = [
@@ -66,20 +66,15 @@ class Task(models.Model):
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     quotation_count = fields.Integer(compute='_compute_quotation_count')
-    product_template_ids = fields.Many2many(related='project_id.product_template_ids')
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     fsm_state = fields.Selection([('draft', 'New'), ('validated', 'Validated'), ('sold', 'Sold')], default='draft', string='Status', readonly=True)
-    partner_email = fields.Char(related='partner_id.email', string='Customer Email', readonly=False)
-    partner_phone = fields.Char(related='partner_id.phone', readonly=False)
-    partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
-    partner_zip = fields.Char(related='partner_id.zip', readonly=False)
-    partner_city = fields.Char(related='partner_id.city', readonly=False)
     planned_date_begin = fields.Datetime(default=_default_planned_date_begin)
     planned_date_end = fields.Datetime(default=_default_planned_date_end)
     user_id = fields.Many2one(group_expand='_read_group_user_ids')
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
+    fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice')
 
     @api.model
     def _search_is_fsm(self, operator, value):
@@ -123,6 +118,22 @@ class Task(models.Model):
             task.material_line_total_price = sum(material_sale_lines.mapped('price_subtotal'))
             task.material_line_product_count = len(material_sale_lines.mapped('product_id'))
 
+    def _compute_fsm_to_invoice(self):
+        for task in self:
+            task.fsm_to_invoice = bool(task.sale_order_id.invoice_status == 'to invoice')
+
+    @api.model
+    def _search_fsm_to_invoice(self, operator, value):
+        query = """
+            SELECT so.id
+            FROM sale_order so
+            WHERE so.invoice_status = 'to invoice'
+        """
+        operator_new = 'not inselect'
+        if(bool(operator == '=') ^ bool(value)):
+            operator_new = 'inselect'
+        return [('sale_order_id', operator_new, (query, ()))]
+
     # ---------------------------------------------------------
     # Actions
     # ---------------------------------------------------------
@@ -147,14 +158,17 @@ class Task(models.Model):
 
     def action_view_invoices(self):
         invoices = self.mapped('sale_order_id.invoice_ids')
-        action = self.env.ref('account.action_invoice_tree1').read()[0]
-        action['domain'] = [('id', 'in', invoices.ids)]
         # prevent view with onboarding banner
-        list_view = self.env.ref('account.invoice_tree')
-        form_view = self.env.ref('account.invoice_form')
-        action['views'] = [[list_view.id, 'list'], [form_view.id, 'form']]
-
-        return action
+        list_view = self.env.ref('account.view_move_tree')
+        form_view = self.env.ref('account.view_move_form')
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invoices'),
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'views': [[list_view.id, 'list'], [form_view.id, 'form']],
+            'domain': [('id', 'in', invoices.ids)],
+        }
 
     def action_fsm_create_quotation(self):
         view_form_id = self.env.ref('sale.view_order_form').id
@@ -191,8 +205,14 @@ class Task(models.Model):
     def action_fsm_view_material(self):
         self._fsm_ensure_sale_order()
 
+        domain = []
+        if self.project_id and self.project_id.timesheet_product_id:
+            domain = expression.AND([domain, [('id', '!=', self.project_id.timesheet_product_id.id)]])
+        deposit_product = self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
+        if deposit_product:
+            domain = expression.AND([domain, [('id', '!=', deposit_product.id)]])
+
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
-        domain = [('product_tmpl_id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
         return {
             'type': 'ir.actions.act_window',
             'name': _('Products'),
@@ -251,8 +271,7 @@ class Task(models.Model):
         context = literal_eval(action.get('context', "{}"))
         context.update({
             'active_model': 'sale.order',
-            'active_id': self.sale_order_id.id,
-            'active_ids': self.sale_order_id.ids,
+            'active_ids': self.mapped('sale_order_id').ids,
         })
         action['context'] = context
         return action

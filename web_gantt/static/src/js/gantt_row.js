@@ -66,6 +66,14 @@ var GanttRow = Widget.extend({
         this.consolidate = options.consolidate;
         this.consolidationParams = viewInfo.consolidationParams;
 
+        if(options.thumbnail){
+            this.thumbnailUrl = session.url('/web/image', {
+                model: options.thumbnail.model,
+                id: this.resId,
+                field: this.options.thumbnail.field,
+            });
+        }
+
         // the total row has some special behaviour
         this.isTotal = this.groupId === 'groupTotal';
 

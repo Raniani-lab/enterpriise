@@ -114,6 +114,8 @@ var GanttView = AbstractView.extend({
             initialDate.add(offset, scale);
         }
 
+        // thumbnails for groups (display a thumbnail next to the group name)
+        var thumbnails = this.arch.attrs.thumbnails ? pyUtils.py_eval(this.arch.attrs.thumbnails) : {};
         // plan option
         var canPlan = this.arch.attrs.plan ? !!JSON.parse(this.arch.attrs.plan) : true;
 
@@ -151,6 +153,7 @@ var GanttView = AbstractView.extend({
         this.rendererParams.displayUnavailability = displayUnavailability;
         this.rendererParams.collapseFirstLevel = collapseFirstLevel;
         this.rendererParams.consolidationParams = consolidationParams;
+        this.rendererParams.thumbnails = thumbnails;
     },
 });
 

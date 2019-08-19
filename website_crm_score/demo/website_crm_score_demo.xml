@@ -238,16 +238,6 @@
             <field name="value">1</field>
             <field name="domain">[['country_id', '!=', 'China']]</field>
         </record>
-        <record id="website_crm_score_score_4" model="website.crm.score">
-            <field name="name">Homepage Score</field>
-            <field name="value">2</field>
-            <field name="domain">[['score_pageview_ids.url', 'ilike', '%/']]</field>
-        </record>
-        <record id="website_crm_score_score_5" model="website.crm.score">
-            <field name="name">Aboutus Score</field>
-            <field name="value">8</field>
-            <field name="domain">[['score_pageview_ids.url', 'ilike', '%/aboutus']]</field>
-        </record>
         <record id="website_crm_score_score_6" model="website.crm.score">
             <field name="name">Email</field>
             <field name="value">8</field>

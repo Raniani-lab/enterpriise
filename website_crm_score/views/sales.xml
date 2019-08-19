@@ -7,18 +7,6 @@
         <!--
         LEADS
          -->
-        <!-- Crm Lead Search Filter - Language added -->
-        <record model="ir.ui.view" id="view_crm_case_leads_filter_inherit">
-            <field name="name">crm.lead.search.inherit</field>
-            <field name="model">crm.lead</field>
-            <field name="inherit_id" ref="crm.view_crm_case_leads_filter" />
-            <field name="arch" type="xml">
-                <field name="city" position="after">
-                    <field name="lang_id"/>
-                </field>
-            </field>
-        </record>
-
         <!-- Crm Lead Tree View - Score and Salesman added -->
         <record model="ir.ui.view" id="lead_tree_view">
             <field name="name">crm.lead.tree.inherit</field>
@@ -37,13 +25,6 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_form_view_leads" />
             <field name="arch" type="xml">
-                <div name="button_box" position="inside">
-                    <button class="oe_stat_button" type="action"
-                        name="%(website_crm_score_pageviews)d" icon="fa-tags"
-                        context="{'search_default_lead_id': active_id, 'default_lead_id': active_id}">
-                        <field string="Page views" name="pageviews_count" widget="statinfo"/>
-                    </button>
-                </div>
                 <field name="priority" position="after">
                     <field name="score" />
                 </field>
@@ -55,7 +36,6 @@
                             context="{'object_name': 'crm.lead'}"
                             readonly="1"
                         />
-                        <field name="lang_id" readonly="1"/>
                     </group>
                 </xpath>
             </field>
@@ -85,7 +65,6 @@
                             context="{'object_name': 'crm.lead'}"
                             readonly="1"
                         />
-                        <field name="lang_id" readonly="1"/>
                     </group>
                 </xpath>
             </field>

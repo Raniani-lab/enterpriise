@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Project forecast will warn if the user assigned to a forecast doesn't have a timezone -->
+        <record id="base.user_demo" model="res.users">
+            <field name="tz">Europe/Brussels</field>
+        </record>
+
+        <record id="planning_role_1" model="planning.role">
+            <field name="name">Barman</field>
+            <field name="color">1</field>
+        </record>
+        <record id="planning_role_2" model="planning.role">
+            <field name="name">Waiter</field>
+            <field name="color">2</field>
+        </record>
+        <record id="planning_role_3" model="planning.role">
+            <field name="name">Cooker</field>
+            <field name="color">3</field>
+        </record>
+
+        <!-- Morning shifts -->
+        <record id="planning_slot_1" model="planning.slot">
+            <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  12:00:00')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="employee_id" ref="planning_role_1"/>
+        </record>
+        <record id="planning_slot_2" model="planning.slot">
+            <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 10:00:00')"/>
+            <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  12:00:00')"/>
+            <field name="employee_id" ref="hr.employee_qdp"/>
+            <field name="employee_id" ref="planning_role_3"/>
+        </record>
+        <record id="planning_slot_3" model="planning.slot">
+            <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 11:00:00')"/>
+            <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  12:00:00')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="employee_id" ref="planning_role_2"/>
+        </record>
+        <record id="planning_slot_4" model="planning.slot">
+            <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 11:30:00')"/>
+            <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  12:30:00')"/>
+            <field name="employee_id" ref="hr.employee_mit"/>
+            <field name="employee_id" ref="planning_role_2"/>
+        </record>
+
+        <!-- Tomorrow Evening shifts -->
+        <record id="planning_slot_1" model="planning.slot">
+            <field name="start_datetime" eval="DateTime.today().strftime('%Y-%m-%d 19:00:00')"/>
+            <field name="end_datetime" eval="DateTime.today().strftime('%Y-%m-%d  21:00:00')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="employee_id" ref="planning_role_1"/>
+        </record>
+        <record id="planning_slot_2" model="planning.slot">
+            <field name="start_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 18:00:00')"/>
+            <field name="end_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 21:00:00')"/>
+            <field name="employee_id" ref="hr.employee_qdp"/>
+            <field name="employee_id" ref="planning_role_3"/>
+        </record>
+        <record id="planning_slot_3" model="planning.slot">
+            <field name="start_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 20:00:00')"/>
+            <field name="end_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 22:00:00')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="employee_id" ref="planning_role_2"/>
+        </record>
+        <record id="planning_slot_4" model="planning.slot">
+            <field name="start_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 19:30:00')"/>
+            <field name="end_datetime" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 22:30:00')"/>
+            <field name="employee_id" ref="hr.employee_mit"/>
+            <field name="employee_id" ref="planning_role_2"/>
+        </record>
+
+    </data>
+</odoo>

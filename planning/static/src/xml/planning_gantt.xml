@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates xml:space="preserve">
-    <div t-name="ForecastGanttView.buttons">
+    <div t-name="PlanningGanttView.buttons">
         <button t-if="widget.is_action_enabled('create')" class="o_gantt_button_add btn btn-primary mr-3" title="Add record">
             Add
         </button>
@@ -27,12 +27,9 @@
                 <i class="fa fa-compress"/>
             </button>
         </div>
-        <button class="o_gantt_button_duplicate_period btn btn-secondary mr-3" title="Duplicate">
-            Duplicate period
-        </button>
     </div>
 
-    <t t-name="ForecastGanttView.Row" t-extend="GanttView.Row">
+    <t t-name="PlanningGanttView.Row" t-extend="GanttView.Row">
         <t t-jquery=".o_gantt_row_title" t-operation="prepend">
             <t t-if="widget.groupedByField == 'employee_id'">
                 <img t-att-src="'/web/image?model=hr.employee&amp;field=image_64&amp;id='+widget.resId+'&amp;unique='" style="height: 30px;width: 30px;" class="rounded-circle"/>

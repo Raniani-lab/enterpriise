@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo><data>
 
-  <!-- wizards -->
-    <act_window id="project_forecast_repeat_forecast_wizard"
-            name="Repeat forecast"
-            res_model="project.forecast.repeat"
-            view_mode="form"
-            target="new" />
-
-
-    <record id="project_forecast_create_wizard_action" model="ir.actions.act_window" >
-        <field name="name">Create forecasts</field>
-        <field name="res_model">project.forecast.create</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
-
   <!-- tree view -->
   <record id="project_forecast_view_tree" model="ir.ui.view">
     <field name="name">project.forecast.tree</field>
@@ -37,13 +22,9 @@
     <field name="model">project.forecast</field>
     <field name="arch" type="xml">
         <form string="Forecast Form">
-            <header>
-                <button name="%(project_forecast_repeat_forecast_wizard)d" class="btn btn-primary" type="action" string="repeat" attrs="{'invisible': ['|' ,('recurrency_id', '!=', False), ('id', '=', False)]}" />
-            </header>
             <sheet string="Project Forecast">
                 <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                 <field name="active" invisible="1"/>
-                <field name="recurrency_id" invisible='1'></field>
                 <group>
                     <group>
                         <field name="employee_id" string="Assign To"/>
@@ -105,7 +86,6 @@
     <field name="arch" type="xml">
       <gantt
              plan="false"
-             js_class="forecast_gantt"
              date_start="start_datetime"
              date_stop="end_datetime"
              consolidation="resource_time"
@@ -114,7 +94,6 @@
              default_scale="week"
              scales="day,week,month"
              precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
-             on_create="%(project_forecast_create_wizard_action)d"
              decoration-warning="published == False"
              decoration-danger="resource_time > 100"
              display_unavailability="1"
@@ -143,7 +122,6 @@
         <field name="published" />
         <field name="resource_time" />
         <field name="resource_hours" />
-        <field name="recurrency_id" />
       </gantt>
     </field>
   </record>

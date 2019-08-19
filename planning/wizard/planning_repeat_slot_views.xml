@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="project_forecast_repeat_view_form" model="ir.ui.view">
-        <field name="name">Repeat a forecast</field>
-        <field name="model">project.forecast.repeat</field>
+
+    <record id="planning_repeat_slot_view_form" model="ir.ui.view">
+        <field name="name">Repeat a Shift</field>
+        <field name="model">planning.repeat.slot</field>
         <field name="arch" type="xml">
-            <form string="Repeat forecast">
+            <form string="Repeat Shift">
                 <sheet>
-                    <field name="related_forecast_id" invisible="1"/>
+                    <field name="planning_slot_id" invisible="1"/>
                     <group>
                         <group>
                             <label for="repeat_interval" />
@@ -27,4 +28,12 @@
             </form>
         </field>
     </record>
+
+    <record id="planning_repeat_slot_action" model="ir.actions.act_window" >
+        <field name="name">Repeat a Shift</field>
+        <field name="res_model">planning.repeat.slot</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
 </odoo>

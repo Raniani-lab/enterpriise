@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from collections import defaultdict
 from datetime import datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
-import base64
 import logging
 import pytz
 
 from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
-from odoo.tools.safe_eval import safe_eval
 from odoo import tools
 
-from odoo.addons.project_forecast.models.project_forecast_recurrency import repeat_span_to_relativedelta
 
 _logger = logging.getLogger(__name__)
 
@@ -55,9 +51,6 @@ class ProjectForecast(models.Model):
 
     start_datetime = fields.Datetime(required=True, default=_default_start_datetime)
     end_datetime = fields.Datetime(required=True, default=_default_end_datetime)
-
-    # repeat
-    recurrency_id = fields.Many2one('project.forecast.recurrency', readonly=True, index=True)
 
     # email
     published = fields.Boolean(default=False)
@@ -127,25 +120,11 @@ class ProjectForecast(models.Model):
                 self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
             if end_datetime:
                 self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-        if self.recurrency_id:
-            return {
-                'warning': {
-                    'title': _("Warning"),
-                    'message': _("This action will remove the current forecast from the recurrency. Are you sure you want to continue?"),
-                }
-            }
 
     @api.onchange('task_id')
     def _onchange_task_id(self):
         if self.task_id:
             self.project_id = self.task_id.project_id
-        if self.recurrency_id:
-            return {
-                'warning': {
-                    'title': _("Warning"),
-                    'message': _("This action will remove the current forecast from the recurrency. Are you sure you want to continue?"),
-                }
-            }
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
@@ -155,11 +134,6 @@ class ProjectForecast(models.Model):
         }
         if self.task_id:
             self.task_id = False
-        if self.recurrency_id:
-            result['warning'] = {
-                'title': _("Warning"),
-                'message': _("This action will remove the current forecast from the recurrency. Are you sure you want to continue?"),
-            }
         return result
 
     @api.onchange('resource_hours', 'start_datetime', 'end_datetime')
@@ -178,10 +152,6 @@ class ProjectForecast(models.Model):
     # ----------------------------------------------------
 
     def write(self, values):
-        breaking_fields = self._get_fields_breaking_recurrency()
-        for fieldname in breaking_fields:
-            if fieldname in values and not values.get('recurrency_id'):
-                values.update({'recurrency_id': False})
         if ('published' not in values) and (set(values.keys()) & set(self._get_publish_important_fields())):
             values['published'] = False
         return super(ProjectForecast, self).write(values)
@@ -192,8 +162,8 @@ class ProjectForecast(models.Model):
 
     @api.model
     def action_duplicate_period(self, start_datetime, end_datetime, interval):
-        forecasts_to_duplicate = self.search([('start_datetime', '>=', start_datetime), ('end_datetime', '<=', end_datetime), ('recurrency_id', '=', False)])
-        delta = repeat_span_to_relativedelta(1, interval)
+        forecasts_to_duplicate = self.search([('start_datetime', '>=', start_datetime), ('end_datetime', '<=', end_datetime)])
+        delta = tools.get_timedelta(1, interval)
         list_values = []
         for forecast in forecasts_to_duplicate:
             new_values = forecast._get_record_repeatable_fields_as_values()
@@ -295,37 +265,6 @@ class ProjectForecast(models.Model):
                 [('project_id', '=', self.env.context['default_project_id'])]
             ])
         return tasks.sudo().search(tasks_domain, order=order)
-
-    @api.model
-    def _get_fields_breaking_recurrency(self):
-        """Returns the list of field which when changed should break the relation of the forecast
-            with it's recurrency
-        """
-        return [
-            'employee_id',
-            'project_id',
-            'task_id'
-        ]
-
-    @api.model
-    def _get_repeatable_fields(self):
-        """
-            Returns the name of the fields meant to be cloned between repeated/duplicated forecast
-            Allows extending the model without breaking repeating, by adding new fields
-            to this list
-        """
-        return [
-            'employee_id',
-            'project_id',
-            'task_id',
-            'resource_hours',
-        ]
-
-    def _get_record_repeatable_fields_as_values(self):
-        values = {}
-        for field_name in self._get_repeatable_fields():
-            values[field_name] = self[field_name]
-        return self._convert_to_write(values)
 
     @api.model
     def _get_publish_important_fields(self):

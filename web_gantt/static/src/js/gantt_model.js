@@ -291,8 +291,8 @@ var GanttModel = AbstractModel.extend({
             model: this.modelName,
             method: 'gantt_unavailability',
             args: [
-                this.ganttData.startDate,
-                this.ganttData.stopDate,
+                this.convertToServerTime(this.ganttData.startDate),
+                this.convertToServerTime(this.ganttData.stopDate),
                 this.ganttData.scale,
                 this.ganttData.groupedBy,
                 this._computeUnavailabilityRows(this.ganttData.rows),

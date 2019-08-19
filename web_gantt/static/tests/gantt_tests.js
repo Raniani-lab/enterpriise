@@ -2264,7 +2264,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('display_unavailability attribute', async function (assert) {
-        assert.expect(14);
+        assert.expect(16);
 
         var gantt = await createView({
             View: GanttView,
@@ -2278,6 +2278,10 @@ QUnit.module('Views', {
                 if (args.method === 'gantt_unavailability') {
                     assert.strictEqual(args.model, 'tasks',
                         "the availability should be fetched on the correct model");
+                    assert.strictEqual(args.args[0], '2018-12-01 00:00:00',
+                        "the start_date argument should be in the server format");
+                    assert.strictEqual(args.args[1], '2018-12-31 23:59:59',
+                        "the end_date argument should be in the server format");
                     var rows = args.args[4];
                     rows.forEach(function(r) {
                         r.unavailabilities = [{

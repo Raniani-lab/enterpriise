@@ -34,9 +34,6 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
         }
         cls.bert_leave = cls.env['resource.calendar.leaves'].create(leave_values)
 
-    def _datetime_to_gantt_string(self, dt):
-        return fields.Datetime.to_string(dt).replace(' ', 'T')
-
     def test_gantt_unavailability_correctly_update_gantt_object_single_group_by(self):
         # create a few forecasts in the opera project
         values = {
@@ -70,8 +67,8 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
         }]
 
         gantt_processed_rows = self.env['project.forecast'].gantt_unavailability(
-            self._datetime_to_gantt_string(datetime(2019, 1, 1)),
-            self._datetime_to_gantt_string(datetime(2019, 1, 7)),
+            datetime(2019, 1, 1),
+            datetime(2019, 1, 7),
             'week',
             'user_id, stage_id',
             rows
@@ -125,8 +122,8 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
             }]
         }]
         gantt_processed_rows = self.env['project.forecast'].gantt_unavailability(
-            self._datetime_to_gantt_string(datetime(2019, 1, 1)),
-            self._datetime_to_gantt_string(datetime(2019, 1, 7)),
+            datetime(2019, 1, 1),
+            datetime(2019, 1, 7),
             'week',
             'user_id, stage_id',
             rows

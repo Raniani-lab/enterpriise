@@ -10,7 +10,7 @@ class TaxFinancialReport(models.AbstractModel):
             Add Buttons to Tax Report
         """
         rslt = super(TaxFinancialReport, self)._get_reports_buttons()
-        if self.env.user.company_id.country_id.id == self.env.ref('base.uk').id:
+        if self.env.company.country_id.id == self.env.ref('base.uk').id:
             # If token, but no refresh_token, check if you got the refresh_token on the server first
             # That way, you can see immediately if your login was successful after logging in
             # and the label of the button will be correct

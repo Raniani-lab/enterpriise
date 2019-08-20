@@ -1,23 +1,29 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
 
 
 class CrmLeadConvert2Ticket(models.TransientModel):
     """ wizard to convert a Lead into a Helpdesk ticket and move the Mail Thread """
-
     _name = "crm.lead.convert2ticket"
-    _inherit = 'crm.partner.binding'
     _description = 'Lead convert to Ticket'
 
     @api.model
     def default_get(self, fields):
         result = super(CrmLeadConvert2Ticket, self).default_get(fields)
-        lead_id = self.env.context.get('active_id')
-        if lead_id:
-            result['lead_id'] = lead_id
+        if 'lead_id' in fields:
+            lead_id = result.get('lead_id') or self.env.context.get('active_id')
+            if lead_id:
+                lead = self.env['crm.lead'].browse(lead_id)
+                result.update({
+                    'lead_id': lead.id,
+                    'partner_id': lead._find_matching_partner(),
+                })
         return result
 
     lead_id = fields.Many2one('crm.lead', string='Lead', domain=[('type', '=', 'lead')])
+    partner_id = fields.Many2one('res.partner', 'Customer')
     team_id = fields.Many2one('helpdesk.team', string='Team', required=True)
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', "Ticket Type")
 
@@ -25,7 +31,7 @@ class CrmLeadConvert2Ticket(models.TransientModel):
         self.ensure_one()
         # get the lead to transform
         lead = self.lead_id
-        partner_id = self._find_matching_partner()
+        partner_id = self.partner_id.id
         if not partner_id and (lead.partner_name or lead.contact_name):
             partner_id = lead.handle_partner_assignation(action='create')[lead.id]
         # create new helpdesk.ticket

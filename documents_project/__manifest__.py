@@ -4,7 +4,7 @@
 {
     'name': 'Documents - Projects',
     'version': '1.0',
-    'category': 'Uncategorized',
+    'category': 'Operations/Documents',
     'summary': 'Project from documents',
     'description': """
 Add the ability to create invoices from the document module.

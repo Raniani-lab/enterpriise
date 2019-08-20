@@ -4,7 +4,7 @@
 {
     'name': "Sale enterprise",
     'version': "1.0",
-    'category': "Sales",
+    'category': "Sales/Sales",
     'summary': "Advanced Features for Sale Management",
     'description': """
 Contains advanced features for sale management

@@ -5,7 +5,7 @@
 {
     'name': 'Expenses in Payslips',
     'version': '1.0',
-    'category': 'Accounting/Expenses',
+    'category': 'Human Resources/Payroll',
     'sequence': 95,
     'summary': 'Submit, validate and reinvoice employee expenses',
     'description': """

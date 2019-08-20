@@ -4,7 +4,7 @@
 {
     'name': 'Odoo Cloud Notification Client (OCN)',
     'version': '1.0',
-    'category': 'Tool',
+    'category': 'Tools',
     'summary': 'Allow push notification to devices',
     'description': """
 Odoo Cloud Notifications (OCN)

@@ -9,6 +9,7 @@
     """,
     'version': '1.0',
     'depends': ['web_grid', 'hr_timesheet'],
+    'category': 'Operations/Timesheets',
     'data': [
         'data/mail_data.xml',
         'security/timesheet_security.xml',

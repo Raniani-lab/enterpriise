@@ -6,7 +6,7 @@
     'description': """
     Schedule your teams across projects and estimate deadlines more accurately.
     """,
-    'category': 'Project',
+    'category': 'Operations/Project',
     'version': '1.0',
     'depends': ['project', 'planning'],
     'data': [

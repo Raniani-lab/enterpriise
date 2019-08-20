@@ -5,7 +5,7 @@
 {
     'name': '',
     'version': '1.0',
-    'category': 'Point of Sale',
+    'category': 'Sales/Point Of Sale',
     'sequence': 6,
     'summary': 'Link your PoS configuration with an IoT Box',
     'description': """

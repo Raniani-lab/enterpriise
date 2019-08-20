@@ -10,10 +10,10 @@
     "author": "WT-IO-IT GmbH, Wolfgang Taferner",
     "website": "https://www.wt-io-it.at",
     "license": 'OEEL-1',
-    "category": "Accounting",
+    "category": "Accounting/Accounting",
     'summary': "Austrian Financial Reports",
     'description': """
-   
+
 Accounting reports for Austria.
 ================================
 

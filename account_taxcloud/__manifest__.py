@@ -5,7 +5,7 @@
     'description': """
 Computes the sales tax automatically using TaxCloud and the customer's address in United States.
     """,
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'version': '1.0',
     'depends': ['l10n_us'],
     'data': [

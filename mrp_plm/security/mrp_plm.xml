@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- This group is meant to manage PLM stages -->
-    <record model="ir.module.category" id="module_category_plm">
+    <record model="ir.module.category" id="module_category_manufacturing_plm">
         <field name="name">PLM</field>
         <field name="description">Helps you manage your product's lifecycles.</field>
         <field name="sequence">5</field>
@@ -22,7 +22,7 @@
     </record>
 
     <record model="res.users" id="base.user_root">
-       <field eval="[(4,ref('mrp_plm.group_plm_manager'))]" name="groups_id"/>         
+       <field eval="[(4,ref('mrp_plm.group_plm_manager'))]" name="groups_id"/>
     </record>
 
     <record model="res.users" id="base.user_admin">

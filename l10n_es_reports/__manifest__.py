@@ -14,7 +14,7 @@
     'version': '4.1',
     'author': 'Spanish Localization Team',
     'website': 'https://launchpad.net/openerp-spain',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'description': """
         Accounting reports for Spain
     """,

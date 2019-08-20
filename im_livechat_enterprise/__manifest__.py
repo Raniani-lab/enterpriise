@@ -4,7 +4,7 @@
 {
     'name': "Live chat enterprise",
     'version': "1.0",
-    'category': "Website",
+    'category': 'Website/Website',
     'summary': "Advanced features for Live Chat",
     'description': """
 Contains advanced features for Live Chat such as new views

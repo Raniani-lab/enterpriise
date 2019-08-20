@@ -4,7 +4,7 @@
 {
     'name': 'Switzerland - Accounting Reports',
     'version': '1.1',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'description': """
         Accounting reports for Switzerland
     """,

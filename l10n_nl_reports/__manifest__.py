@@ -67,7 +67,7 @@
 {
     'name': 'Netherlands - Accounting Reports',
     'version': '1.5',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'description': """
         Accounting reports for Netherlands
     """,

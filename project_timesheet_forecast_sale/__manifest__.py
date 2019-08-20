@@ -4,7 +4,7 @@
 {
     'name': 'Compare timesheets and forecast for your projects',
     'version': '1.0',
-    'category': 'Project',
+    'category': 'Operations/Project',
     'description': """
 Compare timesheets and forecast for your projects.
 ==================================================

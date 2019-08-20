@@ -3,7 +3,7 @@
 {
     'name' : 'Accounting Reports',
     'summary': 'View and create reports',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'description': """
 Accounting Reports
 ==================

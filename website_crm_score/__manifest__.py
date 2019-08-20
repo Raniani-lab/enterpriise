@@ -1,7 +1,7 @@
 {
     'name': "Lead Scoring",
     'summary': "Compute scores and assign leads automatically",
-    'category': "Sales",
+    'category': "Sales/CRM",
     'version': "1.0",
     'depends': ['base', 'sales_team', 'website_crm', 'crm_enterprise'],
     'description': """

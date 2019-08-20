@@ -3,7 +3,7 @@
 
 {
     'name': 'Budget Management',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'description': """
 Use budgets to compare actual with expected revenues and costs
 --------------------------------------------------------------

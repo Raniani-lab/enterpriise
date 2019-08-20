@@ -3,7 +3,7 @@
 {
     'name': "Fedex Shipping",
     'description': "Send your shippings through Fedex and track them online",
-    'category': 'Warehouse',
+    'category': 'Operations/Inventory/Delivery',
     'version': '1.0',
     'depends': ['delivery', 'mail'],
     'data': [

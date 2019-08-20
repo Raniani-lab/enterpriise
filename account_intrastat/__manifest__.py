@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name' : 'Intrastat Reports',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'description': """
 Intrastat Reports
 ==================

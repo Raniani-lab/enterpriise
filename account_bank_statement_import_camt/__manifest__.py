@@ -3,7 +3,7 @@
 
 {
     'name': 'Import CAMT Bank Statement',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'depends': ['account_bank_statement_import'],
     'description': """
 Module to import CAMT bank statements.

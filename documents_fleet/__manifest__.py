@@ -4,7 +4,7 @@
 {
     'name': 'Documents - Fleet',
     'version': '1.0',
-    'category': 'Uncategorized',
+    'category': 'Operations/Documents',
     'summary': 'Fleet from documents',
     'description': """
 Adds fleet data to documents

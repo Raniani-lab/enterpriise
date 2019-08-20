@@ -3,7 +3,7 @@
 
 {
     'name': 'Test Belgian Payroll',
-    'category': 'Human Resource',
+    'category': 'Human Resources',
     'summary': 'Test Belgian Payroll',
     'depends': [
         'hr_contract_salary',

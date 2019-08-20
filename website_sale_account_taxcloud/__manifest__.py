@@ -4,7 +4,7 @@
     'summary': """""",
     'description': """
     """,
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'depends': ['sale_account_taxcloud', 'website_sale'],
     'data': ['views/templates.xml'],
     'auto_install': True,

@@ -5,6 +5,7 @@
     'summary': "Basic 2D Grid view for odoo",
     'description': """
     """,
+    'category': 'Hidden',
 
     'version': '0.1',
 

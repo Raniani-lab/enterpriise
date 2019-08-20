@@ -4,7 +4,7 @@
 {
     'name': "Purchase enterprise",
     'version': "1.0",
-    'category': "Purchase",
+    'category': "Operations/Purchase",
     'summary': "Advanced Features for Purchase Management",
     'description': """
 Contains advanced features for purchase management

@@ -3,7 +3,7 @@
 
 {
     'name': 'Stock Intrastat',
-    'category': 'Stock',
+    'category': 'Operations/Inventory',
     'description': """
 A module that add the stock management in intrastat reports.
 ============================================================

@@ -4,7 +4,7 @@
 {
     'name': 'Chile - Accounting Reports',
     'version': '1.1',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'author': 'CubicERP, Blanco Martin y Asociados',
     'description': """
         Accounting reports for Chile

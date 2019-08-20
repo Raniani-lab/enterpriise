@@ -4,7 +4,7 @@
     'name': "SEPA Payments for Payroll",
     'summary': "Pay your employees with SEPA payment.",
     'description': '',
-    'category': 'Human Resources',
+    'category': 'Human Resources/Payroll',
     'version': '1.0',
     'depends': ['hr_payroll_account', 'account_sepa'],
     'data': [

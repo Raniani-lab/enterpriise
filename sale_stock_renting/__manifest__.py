@@ -13,7 +13,7 @@ Allows use of stock application to manage rentals inventory
     'author': "Odoo S.A.",
     'website': "https://www.odoo.com",
 
-    'category': 'Sales',
+    'category': 'Sales/Sales',
     'version': '1.0',
 
     'depends': ['sale_renting', 'sale_stock'],

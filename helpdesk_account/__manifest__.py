@@ -3,7 +3,7 @@
 
 {
     'name': 'Helpdesk Account',
-    'category': 'Helpdesk',
+    'category': 'Operations/Helpdesk',
     'summary': 'Project, Tasks, Account',
     'depends': ['helpdesk_sale', 'account'],
     'auto_install': False,

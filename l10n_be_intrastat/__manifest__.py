@@ -3,7 +3,7 @@
 
 {
     'name': 'Belgian Intrastat Declaration',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'description': """
 Generates Intrastat XML report for declaration
 Based on invoices.

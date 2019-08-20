@@ -3,7 +3,7 @@
 {
     'name': "United States Postal Service (USPS) Shipping",
     'description': "Send your shippings through USPS and track them online",
-    'category': 'Warehouse',
+    'category': 'Operations/Inventory/Delivery',
     'version': '1.0',
     'depends': ['delivery', 'mail'],
     'data': [

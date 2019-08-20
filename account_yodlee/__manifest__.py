@@ -2,7 +2,7 @@
 {
     'name': "Yodlee",
     'summary': "Yodlee Finance",
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'version': '2.0',
     'depends': ['account_online_sync'],
     'description': '''

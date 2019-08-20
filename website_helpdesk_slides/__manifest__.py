@@ -3,7 +3,7 @@
 
 {
     'name': 'Website Slides Helpdesk',
-    'category': 'Helpdesk',
+    'category': 'Operations/Helpdesk',
     'sequence': 58,
     'summary': 'Ticketing, Support, Slides',
     'depends': [

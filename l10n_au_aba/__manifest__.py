@@ -4,7 +4,6 @@
 {
     'name': "ABA Credit Transfer",
     'summary': """Export payments as ABA Credit Transfer files""",
-    'category': 'Accounting',
     'description': """
 ABA Credit Transfer
 ===================
@@ -105,7 +104,7 @@ Use
     file from which you can click on the file to download locally.  This
     file can then be uploaded to the bank.
 """,
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'version': '1.0',
     'depends': ['account_batch_payment', 'l10n_au'],
     'data': [

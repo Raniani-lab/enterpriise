@@ -7,7 +7,7 @@
     'description': """
         Import Data From Winbooks
     """,
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'depends': ['account_accountant', 'base_vat'],
     'external_dependencies': {'python': ['dbfread']},
     'data': [

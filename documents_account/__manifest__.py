@@ -4,12 +4,12 @@
 {
     'name': 'Documents - Accounting',
     'version': '1.0',
-    'category': 'Uncategorized',
+    'category': 'Operations/Documents',
     'summary': 'Invoices from Documents',
     'description': """
-Bridge module between the accounting and documents apps. It enables 
-the creation invoices from the Documents module, and adds a 
-button on Accounting's reports allowing to save the report into the 
+Bridge module between the accounting and documents apps. It enables
+the creation invoices from the Documents module, and adds a
+button on Accounting's reports allowing to save the report into the
 Documents app in the desired format(s).
 """,
     'website': ' ',

@@ -4,7 +4,7 @@
 {
     'name': 'MRP II',
     'version': '1.0',
-    'category': 'Manufacturing',
+    'category': 'Manufacturing/Manufacturing',
     'sequence': 51,
     'summary': """Work Orders, Planning, Stock Reports.""",
     'depends': ['quality', 'mrp', 'barcodes'],

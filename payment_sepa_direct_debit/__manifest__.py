@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Sepa Direct Debit Payment Acquirer",
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'summary': "Payment Acquirer: Sepa Direct Debit",
     'version': '1.0',
     'description': """Sepa Direct Debit Payment Acquirer""",

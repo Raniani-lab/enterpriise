@@ -161,6 +161,10 @@ class Document(models.Model):
                 model = self.env['ir.model'].name_search(record.res_model, limit=1)
                 if model:
                     record.res_model_name = model[0][1]
+                else:
+                    record.res_model_name = False
+            else:
+                record.res_model_name = False
 
     @api.depends('folder_id')
     def _compute_available_rules(self):

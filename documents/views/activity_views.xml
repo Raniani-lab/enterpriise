@@ -9,7 +9,6 @@
             <xpath expr="//field[@name='category']" position="after">
                 <field name="folder_id" attrs="{'invisible': [('category', '!=', 'upload_file')]}"/>
                 <field name="tag_ids" domain="[('folder_id', 'child_of', folder_id)]" widget="many2many_tags" attrs="{'invisible': [('category', '!=', 'upload_file')]}"/>
-                <field name="default_user_id"/>
             </xpath>
             <xpath expr="//field[@name='force_next']" position="attributes">
                 <attribute name="attrs">{'invisible': [('folder_id', '=', True)]}</attribute>

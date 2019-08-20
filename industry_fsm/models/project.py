@@ -316,12 +316,10 @@ class Task(models.Model):
 
         # as before, mark the task as 'sold' on SO confirmation
         self.write({'fsm_state': 'sold'})
-
         # redirect create invoice wizard (of the Sales Order)
         action = self.env.ref('sale.action_view_sale_advance_payment_inv').read()[0]
         context = literal_eval(action.get('context', "{}"))
         context.update({
-            'active_model': 'sale.order',
             'active_ids': self.mapped('sale_order_id').ids,
         })
         action['context'] = context

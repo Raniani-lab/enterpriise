@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale_renting.product_template_form_view_rental"/>
         <field name="arch" type="xml">
             <group name="extra" position="after">
-                <group name="padding">
+                <group name="padding" string="Padding Time">
                     <label for="preparation_time"/>
                     <div>
                         <field name="preparation_time" widget="float_time" class="oe_inline"/>

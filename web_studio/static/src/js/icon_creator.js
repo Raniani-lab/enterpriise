@@ -1,220 +1,155 @@
 odoo.define('web_studio.IconCreator', function (require) {
-"use strict";
+    "use strict";
 
-var core = require('web.core');
-var session = require('web.session');
-var Widget = require('web.Widget');
+    const { COLORS, BG_COLORS, ICONS } = require('web_studio.utils');
+    const CustomFileInput = require('web.CustomFileInput');
 
-var utils = require('web_studio.utils');
+    const { Component, hooks } = owl;
+    const { useRef, useState } = hooks;
 
-var QWeb = core.qweb;
-
-var IconCreator = Widget.extend({
-    template: 'web_studio.IconCreator',
-    events: {
-        'click .o_web_studio_selector': '_onSelector',
-        'click .js_upload': '_onUploadButton',
-        'click .js_discard_upload': '_onUploadDiscarded',
-    },
-    /**
-     * @constructor
-     * @param {widget} parent
-     * @param {Object} [options]
-     * @param {string} [options.color]
-     * @param {string} [options.background_color]
-     * @param {string} [options.icon_class]
-     */
-    init: function (parent, options) {
-        this.COLORS = utils.COLORS;
-        this.BG_COLORS = utils.BG_COLORS;
-        this.ICONS = utils.ICONS;
-
-        options = options || {};
-
-        this.color = options.color || this.COLORS[4];
-        this.background_color = options.background_color ||  this.BG_COLORS[5];
-        this.icon_class = options.icon_class || this.ICONS[0];
-
-
-        this.PALETTE_TEMPLATES = {
-            'color':            'web_studio.IconCreator.IconColorPalette',
-            'background_color': 'web_studio.IconCreator.BgPalette',
-            'icon':             'web_studio.IconCreator.IconPalette',
-        };
-
-        // Upload related stuff
-        this.uploaded_image = options.webIconData;
-        this.uploaded = !!options.webIconData;
-        this.uploaded_attachment_id = false;
-        this.image_only = true;
-        this.user_id = session.uid;
-        this.fileupload_id = _.uniqueId('o_fileupload');
-        $(window).on(this.fileupload_id, this._onUploadDone.bind(this));
-
-        this.mode = 'edit';
-        this._super.apply(this, arguments);
-    },
-    /**
-     * @override
-     */
-    start: function () {
-        this.update(true);
-        return this._super.apply(this, arguments);
-    },
-    /**
-     * @override
-     */
-    destroy: function () {
-        $(window).off(this.fileupload_id);
-        return this._super.apply(this, arguments);
-    },
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
+    const DEFAULT_ICON = {
+        backgroundColor: BG_COLORS[5],
+        color: COLORS[4],
+        iconClass: ICONS[0],
+    };
 
     /**
-     * @returns {Integer|Array} the icon value, which could either be:
-     *  - the ir.attachment id of the uploaded image
-     *  - if the icon has been created, an array containing
-     *      [icon_class, color, background_color]
+     * Icon creator
+     *
+     * Component which purpose is to design an app icon. It can be an uploaded image
+     * which will be displayed as is, or an icon customized with the help of presets
+     * of colors and icon symbols (@see web_studio.utils for the full list of colors
+     * and icon classes).
+     * @extends Component
      */
-    getValue: function () {
-        if (this.uploaded) {
-            return this.uploaded_attachment_id;
-        } else {
-            return [this.icon_class, this.color, this.background_color];
-        }
-    },
-    /**
-     * Render the widget in edit mode.
-     */
-    enableEdit: function () {
-        this.mode = 'edit';
-        this.renderElement();
-    },
-    /**
-     * Render the widget in readonly mode.
-     */
-    disableEdit: function () {
-        this.mode = 'readonly';
-        this.renderElement();
-    },
-    /**
-     * @param {Boolean} replace_icon
-     */
-    update: function (replace_icon) {
-        var self = this;
-        this.$('.o_app_icon').css('background-color', this.background_color)
-                             .find('i').css('color', this.color);
+    class IconCreator extends Component {
+        /**
+         * @param {Object} [props]
+         * @param {string} [props.backgroundColor] Background color of the custom
+         *      icon.
+         * @param {string} [props.color] Color of the custom icon.
+         * @param {boolean} props.editable
+         * @param {string} [props.iconClass] Font Awesome class of the custom icon.
+         * @param {string} props.type 'base64' (if an actual image) or 'custom_icon'.
+         * @param {number} [props.uploaded_attachment_id] Databse ID of an uploaded
+         *      attachment
+         * @param {string} [props.webIconData] Base64-encoded string representing
+         *      the icon image.
+         */
+        constructor() {
+            super(...arguments);
 
-        if (replace_icon) {
-            this.$('.o_app_icon i').fadeOut(50, function () {
-                $(this).attr('class', self.icon_class).fadeIn(800);
+            this.COLORS = COLORS;
+            this.BG_COLORS = BG_COLORS;
+            this.ICONS = ICONS;
+
+            this.iconRef = useRef('app-icon');
+
+            this.show = useState({
+                backgroundColor: false,
+                color: false,
+                iconClass: false,
             });
         }
 
-        this.$('.o_web_studio_selector[data-type="icon"] i').attr(
-            'class', self.icon_class
-        );
-        this.$('.o_web_studio_selector[data-type="background_color"]').css(
-            'background-color', this.background_color
-        );
-        this.$('.o_web_studio_selector[data-type="color"]').css(
-            'background-color', this.color
-        );
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     * @param {Event} ev
-     */
-    _onSelector: function (ev) {
-        var self = this;
-        var $el = $(ev.currentTarget);
-        var selector_type = $el.data('type');
-
-        if (!selector_type) { return; }
-        if (this.$palette) { this.$palette.remove(); }
-
-        this.$palette = $(QWeb.render(this.PALETTE_TEMPLATES[selector_type], {
-            widget: this,
-        }));
-        $el
-            .find('.o_web_studio_selector_pointer')
-            .before(this.$palette);
-        this.$palette.on('mouseleave', function () {
-            $(this).remove();
-        });
-        this.$palette.find('.o_web_studio_selector').click(function (ev) {
-            $el = $(ev.currentTarget);
-            if (selector_type === 'background_color') {
-                self.background_color = $el.data('color');
-                self.update();
-            } else if (selector_type === 'color') {
-                self.color = $el.data('color');
-                self.update();
-            } else {
-                self.icon_class = $el.children('i').attr('class');
-                self.update(true);
+        async willUpdateProps(nextProps) {
+            if ('iconClass' in nextProps && nextProps.iconClass !== this.props.iconClass) {
+                await new Promise(r => $(this.iconRef.el).stop().fadeOut(50, r));
+                this.transition = () => $(this.iconRef.el).stop().fadeIn(800);
             }
-        });
-    },
-    /**
-     * @private
-     * @param {Event} event
-     */
-    _onUploadButton: function (event) {
-        event.preventDefault();
+        }
 
-        var self = this;
-        this.$('input.o_input_file').on('change', function () {
-            self.$('form.o_form_binary_form').submit();
-        });
-        this.$('input.o_input_file').click();
+        patched() {
+            if (this.transition) {
+                this.transition();
+                delete this.transition;
+            }
+        }
 
-    },
-    /**
-     * @private
-     * @param {Event} event
-     * @param {Object} result
-     */
-    _onUploadDone: function (event, result) {
-        event.preventDefault();
+        //--------------------------------------------------------------------------
+        // Handlers
+        //--------------------------------------------------------------------------
 
-        this.uploaded = true;
-        this.uploaded_attachment_id = result.id;
+        /**
+         * @private
+         */
+        _onDesignIconClick() {
+            this.trigger('icon_changed', Object.assign({
+                type: 'custom_icon'
+            }, DEFAULT_ICON));
+        }
 
-        var self = this;
-        this._rpc({
+        /**
+         * @private
+         * @param {OwlEvent} ev
+         */
+        async _onFileUploaded(ev) {
+            if (!ev.detail.files.length) {
+                // Happens when cancelling upload
+                return;
+            }
+            const file = ev.detail.files[0];
+            const res = await this.rpc({
                 model: 'ir.attachment',
                 method: 'read',
-                args: [[this.uploaded_attachment_id], ['datas']],
-            })
-            .then(function (res) {
-                var base64 = res[0].datas.replace(/\s/g, '');
-                self.uploaded_image = 'data:image/png;base64,' + base64;
-                self.renderElement();
+                args: [[file.id], ['datas']],
             });
-    },
-    /**
-     * @private
-     * @param {Event} event
-     */
-    _onUploadDiscarded: function (event) {
-        event.preventDefault();
 
-        this.uploaded = false;
-        this.uploaded_attachment_id = false;
-        this.renderElement();
-        this.update(true);
-    },
-});
+            this.trigger('icon_changed', {
+                type: 'base64',
+                uploaded_attachment_id: file.id,
+                webIconData: 'data:image/png;base64,' + res[0].datas.replace(/\s/g, ''),
+            });
+        }
 
-return IconCreator;
+        /**
+         * @private
+         * @param {string} palette
+         * @param {string} value
+         */
+        _onPaletteItemClick(palette, value) {
+            if (this.props[palette] === value) {
+                return; // same value
+            }
 
+            const detail = {
+                backgroundColor: this.props.backgroundColor,
+                color: this.props.color,
+                iconClass: this.props.iconClass,
+                type: 'custom_icon',
+            };
+            detail[palette] = value;
+
+            this.trigger('icon_changed', detail);
+        }
+
+        /**
+         * @private
+         * @param {string} palette
+         */
+        _onTogglePalette(palette) {
+            for (const pal in this.show) {
+                if (pal === palette) {
+                    this.show[pal] = !this.show[pal];
+                } else if (this.show[pal]) {
+                    this.show[pal] = false;
+                }
+            }
+        }
+    }
+
+    IconCreator.components = { CustomFileInput };
+    IconCreator.defaultProps = DEFAULT_ICON;
+    IconCreator.props = {
+        backgroundColor: { type: String, optional: 1 },
+        color: { type: String, optional: 1 },
+        editable: Boolean,
+        iconClass: { type: String, optional: 1 },
+        type: { validate: t => ['base64', 'custom_icon'].includes(t) },
+        uploaded_attachment_id: { type: Number, optional: 1 },
+        webIconData: { type: String, optional: 1 },
+    };
+    IconCreator.template = 'IconCreator';
+
+    return IconCreator;
 });

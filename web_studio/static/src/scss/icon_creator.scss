@@ -31,6 +31,16 @@
                 padding-left: 2px;
                 font-size: 6em;
                 transition: color 0.2s ease 0s;
+                &.icon-fade-enter-active {
+                    transition: opacity .8s;
+                }
+                &.icon-fade-leave-active {
+                    transition: opacity .05s;
+                }
+                &.icon-fade-enter,
+                &.icon-fade-leave-to {
+                    opacity: 0;
+                }
             }
         }
     }

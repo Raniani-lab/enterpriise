@@ -122,7 +122,7 @@ Menu.include({
 
         // update the burger menu content: either display the submenus (if we
         // are in an app, and if it contains submenus) or the user menu
-        var displaySubMenus = !this.home_menu_displayed;
+        var displaySubMenus = !this.homeMenuDisplayed;
         if (displaySubMenus) {
             var app = _.findWhere(this.menu_data.children, {id: this.current_primary_menu});
             displaySubMenus = !!(app && app.children.length);

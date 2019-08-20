@@ -25,7 +25,7 @@ var Menu = Widget.extend({
     init: function (parent, menu_data) {
         var self = this;
         this._super.apply(this, arguments);
-        this.home_menu_displayed = true;
+        this.homeMenuDisplayed = true;
         this.backbutton_displayed = false;
 
         this.$menu_sections = {};
@@ -41,7 +41,6 @@ var Menu = Widget.extend({
 
         // Bus event
         core.bus.on('change_menu_section', this, this.change_menu_section);
-        core.bus.on('toggle_mode', this, this.toggle_mode);
     },
     start: function () {
         var self = this;
@@ -78,14 +77,14 @@ var Menu = Widget.extend({
         return Promise.all([this._super.apply(this, arguments), autoMoreMenu]);
     },
     toggle_mode: function (home_menu, overapp) {
-        this.home_menu_displayed = !!home_menu;
-        this.backbutton_displayed = this.home_menu_displayed && !!overapp;
+        this.homeMenuDisplayed = !!home_menu;
+        this.backbutton_displayed = this.homeMenuDisplayed && !!overapp;
 
-        this.$menu_toggle.toggleClass('fa-chevron-left', this.home_menu_displayed)
-                         .toggleClass('fa-th', !this.home_menu_displayed);
-        this.$menu_toggle.toggleClass('d-none', this.home_menu_displayed && !this.backbutton_displayed);
-        this.$menu_brand_placeholder.toggleClass('d-none', this.home_menu_displayed);
-        this.$section_placeholder.toggleClass('d-none', this.home_menu_displayed);
+        this.$menu_toggle.toggleClass('fa-chevron-left', this.homeMenuDisplayed)
+                         .toggleClass('fa-th', !this.homeMenuDisplayed);
+        this.$menu_toggle.toggleClass('d-none', this.homeMenuDisplayed && !this.backbutton_displayed);
+        this.$menu_brand_placeholder.toggleClass('d-none', this.homeMenuDisplayed);
+        this.$section_placeholder.toggleClass('d-none', this.homeMenuDisplayed);
 
         if (!home_menu) {
             // we force here a recomputation of the layout to make sure that the
@@ -246,7 +245,7 @@ var Menu = Widget.extend({
      */
     _onToggleHomeMenu: function (ev) {
         ev.preventDefault();
-        this.trigger_up(this.home_menu_displayed ? 'hide_home_menu' : 'show_home_menu');
+        this.trigger_up(this.homeMenuDisplayed ? 'hide_home_menu' : 'show_home_menu');
         this.$el.parent().removeClass('o_mobile_menu_opened');
     },
 });

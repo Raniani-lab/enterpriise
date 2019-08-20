@@ -1,307 +1,342 @@
 odoo.define('web_studio.AppCreator', function (require) {
-"use strict";
+    "use strict";
 
-var AbstractAction = require('web.AbstractAction');
-var config = require('web.config');
-var core = require('web.core');
-var framework = require('web.framework');
-var relational_fields = require('web.relational_fields');
-var session = require('web.session');
+    const AbstractAction = require('web.AbstractAction');
+    const { action_registry } = require('web.core');
+    const { COLORS, BG_COLORS, ICONS } = require('web_studio.utils');
+    const { FieldMany2One } = require('web.relational_fields');
+    const IconCreator = require('web_studio.IconCreator');
+    const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
+    const { useFocusOnUpdate, useExternalListener } = require('web.custom_hooks');
 
-var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
-var IconCreator = require('web_studio.IconCreator');
+    const { Component, hooks } = owl;
+    const { useState, useRef } = hooks;
 
-var QWeb = core.qweb;
-var FieldMany2One = relational_fields.FieldMany2One;
-var _t = core._t;
+    const AppCreatorAdapter = AbstractAction.extend(StandaloneFieldManagerMixin, {
 
-var AppCreator = AbstractAction.extend(StandaloneFieldManagerMixin, {
-    contentTemplate: 'web_studio.AppCreator',
-    events: {
-        'click .o_web_studio_app_creator_next': '_onNext',
-        'click .o_web_studio_app_creator_back': '_onBack',
-        'change input': '_onCheckFields',
-        'keyup input': '_onCheckFields',
-        'input input': '_onCheckFields',
-        'paste input': '_onCheckFields',
-        'focus input.o_web_studio_app_creator_field_warning': '_onWarning',
-        'keyup input.o_web_studio_app_creator_field_warning': '_onWarning',
-    },
-    /**
-     * @constructor
-     */
-    init: function () {
-        this._super.apply(this, arguments);
-        StandaloneFieldManagerMixin.init.call(this);
-        this.currentStep = 1;
-        this.debug = config.isDebug();
-    },
-    /**
-     * @override
-     */
-    start: function () {
-        // namespace the event to remove it easily (because of bind)
-        $('body').on('keypress.app_creator', this._onKeyPress.bind(this));
+        /**
+         * This widget is directly bound to its inner owl component and its sole purpose
+         * is to instanciate it with the adequate properties: it will manually
+         * mount the component when attached to the dom, will dismount it when detached
+         * and destroy it when destroyed itself.
+         * @constructor
+         */
+        init(parent, action, options={}) {
+            this._super(...arguments);
+            StandaloneFieldManagerMixin.init.call(this);
 
-        return this._super.apply(this, arguments).then(this._update.bind(this));
-    },
-    /**
-     * @override
-     */
-    destroy: function () {
-        $('body').off('keypress.app_creator');
-        this._super.apply(this, arguments);
-    },
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-
-    /**
-     * Re-render the widget and update its content according to @currentStep.
-     * @returns {Promise}
-     */
-    update: function () {
-        var self = this;
-        this.renderElement();
-        return this._update().then(function () {
-            // focus on input
-            self.$('input').first().focus();
-        });
-    },
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
-    /*
-     * Check that all the fields in the form are correctly filled, according to
-     * the @currentStep. If one isn't, this is emphasized by ´_fieldWarning´.
-     *
-     * @private
-     */
-    _checkFields: function (field_warning) {
-        var ready = false;
-        var warningClass = 'o_web_studio_app_creator_field_warning';
-
-        if (this.currentStep === 2) {
-            var app_name = this.$('input[name="app_name"]').val();
-            if (app_name) {
-                ready = true;
-                this.$next.find('span').text(_t('Next'));
-            } else if (field_warning) {
-                this.$next.find('span').empty();
-                this.$('.o_web_studio_app_creator_name').addClass(warningClass);
+            if (options.env) {
+                AppCreator.env = options.env;
             }
-        } else if (this.currentStep === 3) {
-            var menu_name = this.$('input[name="menu_name"]').val();
-            if (field_warning && !menu_name) {
-                this.$('.o_web_studio_app_creator_menu').addClass(warningClass);
+            this.AppCreatorProps = options.props || {};
+        },
+
+        /**
+         * Generate a legacy many2one field. This has to be done manually since as
+         * long as the many2one field is not an owl Component.
+         * This is only made in debug mode.
+         */
+        async willStart() {
+            let many2one = false;
+            if (AppCreator.env.isDebug()) {
+                const recordId = await this.model.makeRecord('ir.actions.act_window', [{
+                    name: 'model',
+                    relation: 'ir.model',
+                    type: 'many2one',
+                    domain: [['transient', '=', false], ['abstract', '=', false]]
+                }]);
+                const record = this.model.get(recordId);
+                many2one = new FieldMany2One(this, 'model', record, { mode: 'edit' });
+                this._registerWidget(recordId, 'model', many2one);
+                await many2one.appendTo(document.createDocumentFragment());
             }
-            var model_id = this.many2one.value && this.many2one.value.res_id;
-            var model_choice = this.$('input[name="model_choice"]').is(':checked');
+            this._component = new AppCreator(null, Object.assign({ many2one }, this.AppCreatorProps));
+        },
 
-            if (field_warning && model_choice && !model_id) {
-                this.$('.o_web_studio_app_creator_model').addClass(warningClass);
-            }
+        async start() {
+            await this._super(...arguments);
+            return this._component.mount(this.el);
+        },
 
-            this.$next.find('span').empty();
-            if (menu_name) {
-                // we can only select a model in debug mode
-                if (!this.debug || !model_choice || (model_choice && model_id)) {
-                    ready = true;
-                    this.$next.find('span').text(_t('Create your app'));
-                }
-            }
-            this.$('.o_web_studio_app_creator_model').toggle(model_choice);
-        }
+        destroy() {
+            this._component.destroy();
+            this._super(...arguments);
+        },
 
-        this.$next.toggleClass('is_ready', ready);
-        return ready;
-    },
-    /**
-     * @private
-     * @param {String} app_name
-     * @param {String} menu_name
-     * @param {Integer} model_id
-     * @param {Integer/Array} icon - can either be:
-     *  - the ir.attachment id of the uploaded image
-     *  - if the icon has been created with the IconCreator, an array containing:
-     *      [icon_class, color, background_color]
-     * @returns {Promise}
-     */
-    _createNewApp: function (app_name, menu_name, model_id, icon) {
-        var self = this;
-        framework.blockUI();
-        return this._rpc({
-            route: '/web_studio/create_new_menu',
-            params: {
-                app_name: app_name,
-                menu_name: menu_name,
-                model_id: model_id,
-                is_app: true,
-                icon: icon,
-                context: session.user_context,
-            },
-        }).then(function (result) {
-            core.bus.trigger('clear_cache');
-            self.trigger_up('new_app_created', result);
-            framework.unblockUI();
-        }).guardedCatch(framework.unblockUI.bind(framework));
-    },
-    /**
-     * Update the widget according to the @currentStep
-     * The steps are:
-     *  - welcome
-     *  - form with the app name
-     *  - form with the menu name and an optional model
-     *
-     * @private
-     * @returns {Promise}
-     */
-    _update: function () {
-        var self = this;
+        on_attach_callback() {
+            return this._component.__callMounted();
+        },
 
-        this.$left = this.$('.o_web_studio_app_creator_left_content');
-        this.$right = this.$('.o_web_studio_app_creator_right_content');
-        this.$back = this.$('.o_web_studio_app_creator_back');
-        this.$next = this.$('.o_web_studio_app_creator_next');
+        on_detach_callback: function () {
+            return this._component.__callWillUnmount();
+        },
 
-        // hide back button for step 1)
-        this.$back.toggleClass('o_hidden', (this.currentStep === 1));
+        //--------------------------------------------------------------------------
+        // Handlers
+        //--------------------------------------------------------------------------
 
-        this.$next.removeClass('is_ready');
-
-        if (this.currentStep === 1) {
-            // add 'Welcome to' content
-            var $welcome = $(QWeb.render('web_studio.AppCreator.Welcome'));
-            this.$left.append($welcome);
-            this.$right.append($('<img>', {
-                src: "/web_studio/static/src/img/studio_app_icon.png",
-                class: 'o_web_studio_welcome_image',
-            }));
-
-            // manage 'previous' and 'next' buttons
-            this.$back.addClass('o_hidden');
-            this.$next.find('span').text(_t('Next'));
-            this.$next.addClass('is_ready');
-            return Promise.resolve();
-        } else if (this.currentStep === 2) {
-            // add 'Create your App' content
-            var $appForm = $(QWeb.render('web_studio.AppCreator.App', {
-                widget: this,
-            }));
-            this.$left.append($appForm);
-
-            if (!this.iconCreator) {
-                this.iconCreator = new IconCreator(this);
-            } else {
-                this.iconCreator.enableEdit();
-            }
-            return this.iconCreator.appendTo(this.$right).then(function () {
-                self._checkFields();
+        /**
+         * @private
+         * @param {OdooEvent} ev
+         * @param {Widget} ev.target
+         * @param {Object} ev.data
+         */
+        async _onFieldChanged({ target, data }) {
+            await StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
+            const ev = new CustomEvent('field_changed', {
+                bubbles: true,
+                cancelable: true,
+                detail: data,
             });
-        } else {
-            // create a Many2one field widget for the custom model
-            return this.model.makeRecord('ir.actions.act_window', [{
-                name: 'model',
-                relation: 'ir.model',
-                type: 'many2one',
-                domain: [['transient', '=', false], ['abstract', '=', false]]
-            }]).then(function (recordID) {
-                var record = self.model.get(recordID);
-                var options = {
-                    mode: 'edit',
-                };
-                self.many2one = new FieldMany2One(self, 'model', record, options);
-                self._registerWidget(recordID, 'model', self.many2one);
-
-                // add 'Create your first Menu' content
-                var $menuForm = $(QWeb.render('web_studio.AppCreator.Menu', {
-                    widget: self,
-                }));
-                self.$left.append($menuForm);
-                self.iconCreator.disableEdit();
-                return Promise.all([
-                    self.many2one.appendTo($menuForm.find('.js_model')),
-                    self.iconCreator.appendTo(self.$right)
-                ]).then(function () {
-                    self._checkFields();
-                });
-            });
-        }
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
+            target.el.dispatchEvent(ev);
+        },
+    });
 
     /**
-     * @private
-     */
-    _onBack: function () {
-        this.currentStep--;
-        this.update();
-    },
-    /**
-     * @private
-     */
-    _onCheckFields: function () {
-        this._checkFields(false);
-    },
-    /*
-     * Override the method of the StandaloneFieldManagerMixin to call
-     * ´_checkFields´ each time the field widget changes.
+     * App creator
      *
-     * @private
-     * @override
+     * Action handling the complete creation of a new app. It requires the user
+     * to enter an app name, to customize the app icon (@see IconCreator) and
+     * to finally enter a menu name, with the option to bind the default app
+     * model to an existing one.
+     *
+     * TODO: this component is bound to an action adapter since the action manager
+     * cannot yet handle owl component. This file must be reviewed as soon as
+     * the action manager is updated.
+     * @extends Component
      */
-    _onFieldChanged: function () {
-        StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
-        this._checkFields(false);
-    },
-    /**
-     * @param {KeyEvent} ev
-     */
-    _onKeyPress: function (ev) {
-        if (ev.which === $.ui.keyCode.ENTER) {
-            this._onNext();
+    class AppCreator extends Component {
+        constructor() {
+            super(...arguments);
+            // TODO: Many2one component directly attached in XML. For now we have
+            // to toggle it manually according to the state changes.
+            this.state = useState({
+                step: 'welcome',
+                appName: "",
+                menuName: "",
+                modelChoice: false,
+                modelId: false,
+                iconData: {
+                    backgroundColor: BG_COLORS[5],
+                    color: COLORS[4],
+                    iconClass: ICONS[0],
+                    type: 'custom_icon',
+                },
+            });
+
+            this.focusOnUpdate = useFocusOnUpdate();
+            this.invalid = useState({
+                appName: false,
+                menuName: false,
+                modelId: false,
+            });
+            this.many2oneContainerRef = useRef('many2one-container');
+            useExternalListener(window, 'keydown', this._onKeydown);
         }
-    },
-    /**
-     * @private
-     * @param {Event} e
-     */
-    _onWarning: function (e) {
-        $(e.currentTarget).removeClass('o_web_studio_app_creator_field_warning');
-    },
-    /**
-     * @private
-     */
-    _onNext: function () {
-        if (this.currentStep === 1) {
-            this.currentStep++;
-            this.update();
-        } else if (this.currentStep === 2) {
-            if (!this._checkFields(true)) { return; }
 
-            // everything is fine, let's save the values before the next step
-            this.app_name = this.$('input[name="app_name"]').val();
-            this.icon = this.iconCreator.getValue();
-            this.currentStep++;
-            this.update();
-        } else {
-            if (!this._checkFields(true)) { return; }
-            var menu_name = this.$('input[name="menu_name"]').val();
-            var model_choice = this.$('input[name="model_choice"]').is(':checked');
-            var model_id = model_choice && this.many2one.value.res_id;
-            this._createNewApp(this.app_name, menu_name, model_id, this.icon);
+        mounted() {
+            // Manualy mounts many2one widget if its container is in the DOM.
+            // Theoretically, it should never be the case when first mounted, but
+            // since we can set a custom state in tests, we need to do it here
+            // too anyway.
+            if (this.many2oneContainerRef.el) {
+                this.many2oneContainerRef.el.appendChild(this.props.many2one.el);
+            }
         }
-    },
-});
 
-core.action_registry.add('action_web_studio_app_creator', AppCreator);
+        patched() {
+            // Manualy mounts many2one widget if its container is in the DOM.
+            if (this.many2oneContainerRef.el) {
+                this.many2oneContainerRef.el.appendChild(this.props.many2one.el);
+            }
+        }
 
-return AppCreator;
+        //--------------------------------------------------------------------------
+        // Getters
+        //--------------------------------------------------------------------------
 
+        /**
+         * @returns {boolean}
+         */
+        get isReady() {
+            return (
+                    this.state.step === 'welcome'
+                ) || (
+                    this.state.step ===  'app' &&
+                    this.state.appName
+                ) || (
+                    this.state.step === 'model' &&
+                    this.state.menuName &&
+                    (
+                        !this.state.modelChoice ||
+                        this.state.modelId
+                    )
+                );
+        }
+
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
+
+        /**
+         * Switch the current step and clean all invalid keys.
+         * @private
+         * @param {string} step
+         */
+        _changeStep(step) {
+            this.state.step = step;
+            for (const key in this.invalid) {
+                this.invalid[key] = false;
+            }
+            this.focusOnUpdate();
+        }
+
+        /**
+         * @private
+         * @returns {Promise}
+         */
+        async _createNewApp() {
+            this.env.services.blockUI();
+
+            const iconValue = this.state.iconData.type === 'custom_icon' ?
+                // custom icon data
+                [this.state.iconData.iconClass, this.state.iconData.color, this.state.iconData.backgroundColor] :
+                // attachment
+                this.state.iconData.uploaded_attachment_id;
+
+            const result = await this.rpc({
+                route: '/web_studio/create_new_menu',
+                params: {
+                    app_name: this.state.appName,
+                    menu_name: this.state.menuName,
+                    model_id: this.state.modelChoice && this.state.modelId,
+                    is_app: true,
+                    icon: iconValue,
+                    context: this.env.session.user_context,
+                },
+            }).guardedCatch(() => this.env.services.unblockUI());
+            this.trigger('new_app_created', result);
+            this.env.services.unblockUI();
+        }
+
+        //--------------------------------------------------------------------------
+        // Handlers
+        //--------------------------------------------------------------------------
+
+        /**
+         * @private
+         * @param {Event} ev
+         */
+        _onChecked(ev) {
+            this.state.modelChoice = ev.currentTarget.checked;
+            if (!ev.currentTarget.checked) {
+                this.invalid.modelId = false;
+            }
+        }
+
+        /**
+         * @private
+         */
+        _onFieldChanged() {
+            if (this.props.many2one.value) {
+                this.state.modelId = this.props.many2one.value.res_id;
+            }
+        }
+
+        /**
+         * @private
+         * @param {OwlEvent} ev
+         */
+        _onIconChanged(ev) {
+            for (const key in this.state.iconData) {
+                delete this.state.iconData[key];
+            }
+            Object.assign(this.state.iconData, ev.detail);
+        }
+
+        /**
+         * @private
+         * @param {InputEvent} ev
+         */
+        _onInput(ev) {
+            const input = ev.currentTarget;
+            if (this.invalid[input.id]) {
+                this.invalid[input.id] = !input.value;
+            }
+            this.state[input.id] = input.value;
+        }
+
+        /**
+         * @private
+         * @param {KeyboardEvent} ev
+         */
+        _onKeydown(ev) {
+            if (
+                ev.key === 'Enter' && !(
+                    ev.target.classList &&
+                    ev.target.classList.contains('o_web_studio_app_creator_previous')
+                )
+            ) {
+                ev.preventDefault();
+                this._onNext();
+            }
+        }
+
+        /**
+         * @private
+         */
+        async _onNext() {
+            switch (this.state.step) {
+                case 'welcome':
+                    this._changeStep('app');
+                    break;
+                case 'app':
+                    if (!this.state.appName) {
+                        this.invalid.appName = true;
+                    } else {
+                        this._changeStep('model');
+                    }
+                    break;
+                case 'model':
+                    if (!this.state.menuName) {
+                        this.invalid.menuName= true;
+                    }
+                    if (this.state.modelChoice && !this.state.modelId) {
+                        this.invalid.modelId = true;
+                    }
+                    const isValid = Object.values(this.invalid).reduce(
+                        (valid, key) => valid && !key,
+                        true
+                    );
+                    if (isValid) {
+                        this._createNewApp();
+                    }
+                    break;
+            }
+        }
+
+        /**
+         * @private
+         */
+        _onPrevious() {
+            switch (this.state.step) {
+                case 'app':
+                    this._changeStep('welcome');
+                    break;
+                case 'model':
+                    this._changeStep('app');
+                    break;
+            }
+        }
+    }
+
+    AppCreator.components = { IconCreator };
+    AppCreator.props = {
+        many2one: FieldMany2One,
+    };
+    AppCreator.template = 'AppCreator';
+
+    action_registry.add('action_web_studio_app_creator', AppCreatorAdapter);
+
+    return AppCreatorAdapter;
 });

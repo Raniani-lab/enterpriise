@@ -78,7 +78,9 @@
         <xpath expr="//script[last()]" position="after">
             <script type="text/javascript" src="/web_enterprise/static/src/js/apps.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/control_panel_renderer.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/home_menu_wrapper.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/home_menu.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/expiration_panel.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/menu_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/search_panel_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/swipe_item_mixin.js"></script>
@@ -100,6 +102,7 @@
         <xpath expr="//t[@t-set='head']" position="inside">
             <script type="text/javascript" src="/web_enterprise/static/tests/test_utils.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/home_menu_tests.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/tests/expiration_panel_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/menu_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/upgrade_fields_tests.js"></script>
         </xpath>

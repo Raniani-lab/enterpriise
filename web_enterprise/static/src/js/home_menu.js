@@ -1,740 +1,471 @@
-odoo.define('web_enterprise.HomeMenu', function (require) {
-"use strict";
+odoo.define("web_enterprise.HomeMenu", function (require) {
+    "use strict";
 
-var config = require('web.config');
-var core = require('web.core');
-var utils = require('web.utils');
-var Widget = require('web.Widget');
+    const ExpirationPanel = require("web_enterprise.ExpirationPanel");
+    const { useExternalListener } = require('web.custom_hooks');
 
-var QWeb = core.qweb;
-var NBR_ICONS = 6;
-
-var HomeMenu = Widget.extend({
-    template: 'HomeMenu',
-    events: {
-        'click .o_menuitem': '_onMenuitemClick',
-        'input input.o_menu_search_input': '_onMenuSearchInput',
-        'compositionstart': '_onCompositionStart',
-        'compositionend': '_onCompositionEnd',
-    },
-    /**
-     * @override
-     * @param {web.Widget} parent
-     * @param {Object[]} menuData
-     */
-    init: function (parent, menuData) {
-        this._super.apply(this, arguments);
-        this._menuData = this._processMenuData(menuData);
-        this._state = this._getInitialState();
-    },
-    /**
-     * @override
-     */
-    start: function () {
-        this.$input = this.$('input');
-        this.$menuSearch = this.$('.o_menu_search');
-        this.$mainContent = this.$('.o_home_menu_scrollable');
-        return this._super.apply(this, arguments);
-    },
-    /**
-     * @override
-     */
-    on_attach_callback: function () {
-        core.bus.on("keydown", this, this._onKeydown);
-        this._state = this._getInitialState();
-        this.$input.val('');
-        this._render();
-    },
-    /**
-     * @override
-     */
-    on_detach_callback: function () {
-        core.bus.off("keydown", this, this._onKeydown);
-    },
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
+    const { Component, hooks } = owl;
+    const { useState, useRef } = hooks;
 
     /**
-     * @returns {number}
+     * Home menu
+     *
+     * This component handles the display and navigation between the different
+     * available applications and menus.
+     * @extends Component
      */
-    getAppIndex: function () {
-        return this._state.focus < this._state.apps.length ? this._state.focus : null;
-    },
-    /**
-     * @returns {number}
-     */
-    getMenuIndex: function () {
-        var state = this._state;
-        return state.focus >= this._state.apps.length ? state.focus - this._state.apps.length : null;
-    },
+    class HomeMenu extends Component {
+        /**
+         * @param {Object} props
+         * @param {Object[]} props.apps application icons
+         * @param {string} props.apps[].action
+         * @param {number} props.apps[].id
+         * @param {string} props.apps[].label
+         * @param {string} props.apps[].parents
+         * @param {(boolean|string|Object)} props.apps[].webIcon either:
+         *      - boolean: false (no webIcon)
+         *      - string: path to Odoo icon file
+         *      - Object: customized icon (background, class and color)
+         * @param {string} [props.apps[].webIconData]
+         * @param {string} props.apps[].xmlid
+         * @param {Object[]} props.menuItems menu paths
+         * @param {string} props.menuItems[].action
+         * @param {number} props.menuItems[].id
+         * @param {string} props.menuItems[].label
+         * @param {number} props.menuItems[].menu_id
+         * @param {string} props.menuItems[].parents
+         * @param {string} props.menuItems[].webIcon
+         * @param {string} props.menuItems[].xmlid
+         */
+        constructor() {
+            super(...arguments);
 
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
+            this.availableApps = this.props.apps;
+            this.displayedMenuItems = [];
+            this.inputRef = useRef('input');
+            this.mainContentRef = useRef('mainContent');
+            this.state = useState({
+                // Check if expiration panel must be shown and get its prop diffDays.
+                displayExpirationPanel: this._shouldExpirationPanelBeDisplayed(),
+                focusedIndex: null,
+                isSearching: false,
+                query: "",
+            });
 
-    /**
-     * @private
-     * @returns {Object} state
-     * @returns {Object[]} state.apps      List of all menus that are apps
-     * @returns {Object[]} state.menuItems List of all menus
-     * @returns {number} state.focus       Index of focused element (app or menu item)
-     */
-    _getInitialState: function () {
-        return {
-            apps: _.where(this._menuData, {is_app: true}),
-            menuItems: [],
-            focus: null,
-            isComposing: false,     // composing mode for input (e.g. japanese)
-        };
-    },
-    /**
-     * @private
-     * @param {Object} menu           The considered opened menu
-     * @param {string} menu.action    ID of the action linked to this menu
-     * @param {number} menu.id
-     * @param {boolean} [menu.is_app] A menu is an app if it has no parent
-     * @param {number} menu.menu_id   (When menu not an app) id of the parent app
-     */
-    _openMenu: function (menu) {
-        this.trigger_up(menu.is_app ? 'app_clicked' : 'menu_clicked', {
-            menu_id: menu.id,
-            action_id: menu.action,
-        });
-        if (!menu.is_app) {
-            core.bus.trigger('change_menu_section', menu.menu_id);
+            if (!this.env.device.isMobile) {
+                useExternalListener(window, 'keydown', this._onKeydown);
+            }
         }
-    },
-    /**
-     * @private
-     * @param {Object} menuData                 The considered menu, (initially "Root")
-     * @param {string} [menuData.action]
-     * @param {number|false} menuData.id
-     * @param {boolean} menuData.is_app         States whether the menu is an app or not
-     * @param {number} menuData.menu_id         (When menu not an app) id of the parent app
-     * @param {string} menuData.name
-     * @param {number} [menuData.parent_id]
-     * @param {string} [menuData.web_icon]      Path of the icon
-     * @param {string} [menuData.web_icon_data] Base64 string representation of the web icon
-     * @param {string} menuData.xmlid
-     * @returns {Object[]}
-     */
-    _processMenuData: function (menuData) {
-        var result = [];
-        utils.traversePath(menuData, function (menuItem, parents) {
-            if (!menuItem.id || !menuItem.action) {
+
+        patched() {
+            if (this.state.focusedIndex !== null && !this.env.device.isMobile) {
+                const selectedItem = document.querySelector('.o_home_menu .o_menuitem.o_focused');
+                // When TAB is managed externally the class o_focused disappears.
+                if (selectedItem) {
+                    // Center window on the focused item
+                    selectedItem.scrollIntoView({ block: 'center' });
+                }
+            }
+        }
+
+        //--------------------------------------------------------------------------
+        // Getters
+        //--------------------------------------------------------------------------
+
+        /**
+         * @returns {(number|null)}
+         */
+        get appIndex() {
+            const appLength = this.displayedApps.length;
+            const focusedIndex = this.state.focusedIndex;
+            return focusedIndex < appLength ? focusedIndex : null;
+        }
+
+        /**
+         * @returns {Object[]}
+         */
+        get displayedApps() {
+            return this.availableApps;
+        }
+
+        /**
+         * @returns {number}
+         */
+        get maxIconNumber() {
+            const w = window.innerWidth;
+            return (w < 576) ? 3 : (w < 768 ? 4 : 6);
+        }
+
+        /**
+         * @returns {(number|null)}
+         */
+        get menuIndex() {
+            const appLength = this.displayedApps.length;
+            const focusedIndex = this.state.focusedIndex;
+            return focusedIndex >= appLength ? focusedIndex - appLength : null;
+        }
+
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
+
+        /**
+         * Check if the expiration panel mush be shown and compute its props.
+         * @private
+         */
+        _shouldExpirationPanelBeDisplayed() {
+            // Don't show the expiration warning for portal users
+            if (!this.env.session.warning) {
+                return false;
+            }
+
+            // If no date found, assume 1 month and hope for the best
+            const expirationDate = new moment(
+                this.env.session.expiration_date || new moment().add(30, "d")
+            );
+            const diffDays = ExpirationPanel.computeDiffDays(expirationDate);
+            const hideCookie = this.env.services.getCookie("oe_instance_hide_panel");
+
+            return (diffDays <= 30 && !hideCookie) || diffDays <= 0;
+        }
+
+        /**
+         * @private
+         * @param {Object[]} array
+         * @returns {Object[]}
+         */
+        _filter(array) {
+            const options = {
+                extract: el => (el.parents + " / " + el.label).split("/").reverse().join("/"),
+            };
+            return fuzzy.filter(this.state.query, array, options).map(el => el.original);
+        }
+
+        /**
+         * @private
+         * @param {Object} param
+         * @param {Object} param.menu
+         * @param {boolean} param.isApp
+         */
+        _openMenu({ menu, isApp }) {
+            this.trigger(isApp ? 'app_clicked' : 'menu_clicked', {
+                menu_id: menu.id,
+                action_id: menu.action,
+            });
+            if (!isApp) {
+                this.env.bus.trigger('change_menu_section', menu.menu_id);
+            }
+        }
+
+        /**
+         * Update this.state.focusedIndex if not null.
+         * @private
+         * @param {string} cmd
+         */
+        _updateFocusedIndex(cmd) {
+            const nbrApps = this.displayedApps.length;
+            const nbrMenuItems = this.displayedMenuItems.length;
+            const lastIndex = nbrApps + nbrMenuItems - 1;
+            let oldIndex = this.state.focusedIndex;
+            if (lastIndex < 0) {
                 return;
             }
-            var item = {
-                parents: _.pluck(parents.slice(1), 'name').join(' / '),
-                label: menuItem.name,
-                id: menuItem.id,
-                xmlid: menuItem.xmlid,
-                action: menuItem.action ? menuItem.action.split(',')[1] : '',
-                is_app: !menuItem.parent_id,
-                web_icon: menuItem.web_icon,
-            };
-            if (!menuItem.parent_id) {
-                if (menuItem.web_icon_data) {
-                    item.web_icon_data =
-                        ('data:image/png;base64,' + menuItem.web_icon_data).replace(/\s/g, "");
-                } else if (item.web_icon) {
-                    var iconData = item.web_icon.split(',');
-                    item.web_icon = {
-                        class: iconData[0],
-                        color: iconData[1],
-                        background: iconData[2],
-                    };
+            if (!this.state.isSearching) {
+                if (document.activeElement.classList.contains('o_menuitem')) {
+                    oldIndex = [...this.el.getElementsByClassName('o_menuitem')].indexOf(document.activeElement);
                 } else {
-                    item.web_icon_data = '/web_enterprise/static/src/img/default_icon_app.png';
+                    this.el.getElementsByClassName('o_menuitem')[0].focus();
+                    return;
                 }
-            } else {
-                item.menu_id = parents[1].id;
             }
-            result.push(item);
-        });
-        return result;
-    },
-    /**
-     * @private
-     */
-    _render: function () {
-        this.$menuSearch.toggleClass('o_bar_hidden', !this._state.isSearching);
-        this.$mainContent.html(QWeb.render('HomeMenu.Content', { widget: this }));
-        var $focused = this.$mainContent.find('.o_focused');
-        if ($focused.length && !config.device.isMobile) {
-            if (!this._state.isComposing) {
-                $focused.focus();
+            const appIndex = this.state.isSearching ? this.appIndex : oldIndex;
+            const lastAppIndex = nbrApps - 1;
+            const appFocused = appIndex !== null;
+            const lineNumber = Math.ceil(nbrApps / this.maxIconNumber);
+            const currentLine = appFocused ? Math.ceil((appIndex + 1) / this.maxIconNumber) : null;
+            let newIndex;
+            switch (cmd) {
+                case 'previousElem':
+                    newIndex = oldIndex - 1;
+                    break;
+                case 'nextElem':
+                    newIndex = oldIndex + 1;
+                    break;
+                case 'previousColumn':
+                    if (!appFocused) {
+                        newIndex = oldIndex;
+                    } else if (oldIndex % this.maxIconNumber) {
+                        // app is not the first one on its line
+                        newIndex = oldIndex - 1;
+                    } else {
+                        newIndex = oldIndex + Math.min(lastAppIndex - oldIndex, this.maxIconNumber - 1);
+                    }
+                    break;
+                case 'nextColumn':
+                    if (!appFocused) {
+                        newIndex = oldIndex;
+                    } else if (oldIndex === lastAppIndex || (oldIndex + 1) % this.maxIconNumber === 0) {
+                        // app is the last one on its line
+                        newIndex = (currentLine - 1) * this.maxIconNumber;
+                    } else {
+                        newIndex = oldIndex + 1;
+                    }
+                    break;
+                case 'previousLine':
+                    if (!appFocused) {
+                        if (oldIndex > lastAppIndex + 1) {
+                            // there is a menu item 'above' -> select it
+                            newIndex = oldIndex - 1;
+                        } else {
+                            // select first app of last line
+                            newIndex = (lineNumber - 1) * this.maxIconNumber;
+                        }
+                    } else if (currentLine === 1) {
+                        // app is in first line
+                        if (nbrMenuItems > 0) {
+                            // there is at least a menu item -> select the last one
+                            newIndex = lastIndex;
+                        } else {
+                            // no menu item -> select the app in the closest column on last line
+                            newIndex = oldIndex + (lineNumber - 1) * this.maxIconNumber;
+                            if (newIndex > lastAppIndex) {
+                                newIndex = lastAppIndex;
+                            }
+                        }
+                    } else {
+                        // we go to the previous line on same column
+                        newIndex = oldIndex - this.maxIconNumber;
+                    }
+                    break;
+                case 'nextLine':
+                    if (!appFocused) {
+                        newIndex = oldIndex + 1;
+                    } else if (currentLine === lineNumber) {
+                        // app is in last line
+                        if (nbrMenuItems > 0) {
+                            // there is at least a menu item -> select the first one
+                            newIndex = lastAppIndex + 1;
+                        } else {
+                            // no menu item -> select the app in the same column on first line
+                            newIndex = oldIndex % this.maxIconNumber;
+                        }
+                    } else {
+                        // we go to the next line on the closest column
+                        newIndex = oldIndex + Math.min(this.maxIconNumber, lastAppIndex - oldIndex);
+                    }
+                    break;
             }
-            this.$el.scrollTo($focused, {offset: {top:-0.5*this.$el.height()}});
-        }
-
-        var offset = window.innerWidth -
-                        (this.$mainContent.offset().left * 2 + this.$mainContent.outerWidth());
-        if (offset) {
-            this.$el.css('padding-left', "+=" + offset);
-        }
-    },
-    /**
-     * Apply fuzzy search on 'data.search', and update 'this._state.focus'
-     * This is called by 'this._onKeydown' and 'this._onMenuSearchInput'
-     *
-     * @private
-     * @param {Object} data
-     * @param {number} [data.focus]  Move change of the focus (1: move down, -1: move top)
-     * @param {string} [data.search] Input text displayed in the search bar
-     */
-    _update: function (data) {
-        var self = this;
-        if (data.search) {
-            var options = {
-                extract: function (el) {
-                    return (el.parents + ' / ' + el.label).split('/').reverse().join('/');
-                }
-            };
-            var searchResults = fuzzy.filter(data.search, this._menuData, options);
-            var results = _.map(searchResults, function (result) {
-                return self._menuData[result.index];
-            });
-            this._state = _.extend(this._state, {
-                apps: _.where(results, {is_app: true}),
-                menuItems: _.where(results, {is_app: false}),
-                focus: results.length ? 0 : null,
-                isSearching: true,
-            });
-        }
-        if (this._state.focus !== null && 'focus' in data) {
-            var state = this._state;
-            var nbrApps = state.apps.length;
-            var nbrMenus = state.menuItems.length;
-            var newIndex = data.focus + (state.focus || 0);
+            // if newIndex is out of bounds -> normalize it
             if (newIndex < 0) {
-                newIndex = nbrApps + nbrMenus - 1;
-            }
-            if (newIndex >= nbrApps + nbrMenus) {
+                newIndex = lastIndex;
+            } else if (newIndex > lastIndex) {
                 newIndex = 0;
             }
-            if (newIndex >= nbrApps && state.focus < nbrApps && data.focus > 0) {
-                if (state.focus + data.focus - (state.focus % data.focus) < nbrApps) {
-                    newIndex = nbrApps - 1;
-                } else {
-                    newIndex = nbrApps;
-                }
+            if (this.state.isSearching) {
+                this.state.focusedIndex = newIndex;
+            } else {
+                const item = this.el.getElementsByClassName('o_menuitem')[newIndex];
+                item.focus();
             }
-            if (newIndex < nbrApps && state.focus >= nbrApps && data.focus < 0) {
-                newIndex = nbrApps - (nbrApps % NBR_ICONS);
-                if (newIndex === nbrApps) {
-                    newIndex = nbrApps - NBR_ICONS;
-                }
+        }
+
+        /**
+         * Update query and recompute 'global' state (this.state and displayed elements).
+         * @private
+         * @param {string} query
+         */
+        _updateQuery(query) {
+            // Update input and search state
+            this.state.query = query;
+            this.inputRef.el.value = this.state.query;
+            this.state.isSearching = true;
+
+            // Keep elements matching search query
+            if (query === "") {
+                this.availableApps = this.props.apps;
+                this.displayedMenuItems = [];
+            } else {
+                this.availableApps = this._filter(this.props.apps);
+                this.displayedMenuItems = this._filter(this.props.menuItems);
             }
-            state.focus = newIndex;
+            const total = this.displayedApps.length + this.displayedMenuItems.length;
+            this.state.focusedIndex = total ? 0 : null;
         }
-        this._render();
-    },
 
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
+        //--------------------------------------------------------------------------
+        // Handlers
+        //--------------------------------------------------------------------------
 
-    /**
-     * @private
-     * @param {KeyboardEvent} ev
-     */
-    _onKeydown: function (ev) {
-        var isEditable = ev.target.tagName === "INPUT" ||
-                            ev.target.tagName === "TEXTAREA" ||
-                            ev.target.isContentEditable;
-        if (isEditable && ev.target !== this.$input[0]) {
-            return;
+        /**
+         * @private
+         * @param {Object} app
+         */
+        _onAppClick(app) {
+            this._openMenu({ menu: app, isApp: true });
         }
-        var state = this._state;
-        var elemFocused = state.focus !== null;
-        var appFocused = elemFocused && state.focus < state.apps.length;
-        var delta = appFocused ? NBR_ICONS : 1;
-        var $input = this.$input;
-        switch (ev.which) {
-            case $.ui.keyCode.DOWN:
-                this._update({focus: elemFocused ? delta : 0});
-                ev.preventDefault();
-                break;
-            case $.ui.keyCode.RIGHT:
-                if ($input.is(':focus') && $input[0].selectionEnd < $input.val().length) {
-                    return;
-                }
-                this._update({focus: elemFocused ? 1 : 0});
-                ev.preventDefault();
-                break;
-            case $.ui.keyCode.TAB:
-                if ($input.val() === "") {
-                    return;
-                }
-                ev.preventDefault();
-                var f = elemFocused ? (ev.shiftKey ? -1 : 1) : 0;
-                this._update({focus: f});
-                break;
-            case $.ui.keyCode.UP:
-                this._update({focus: elemFocused ? -delta : 0});
-                ev.preventDefault();
-                break;
-            case $.ui.keyCode.LEFT:
-                if ($input.is(':focus') && $input[0].selectionStart > 0) {
-                    return;
-                }
-                this._update({focus: elemFocused ? -1 : 0});
-                ev.preventDefault();
-                break;
-            case $.ui.keyCode.ENTER:
-                if (elemFocused) {
-                    var menus = appFocused ? state.apps : state.menuItems;
-                    var index = appFocused ? state.focus : state.focus - state.apps.length;
-                    this._openMenu(menus[index]);
-                    ev.preventDefault();
-                }
+
+        /**
+         * @private
+         */
+        _onHideExpirationPanel() {
+            this.env.services.setCookie("oe_instance_hide_panel", true, 24 * 60 * 60);
+            this.state.displayExpirationPanel = false;
+        }
+
+        /**
+         * @private
+         * @param {InputEvent} ev
+         */
+        _onInputSearch(ev) {
+            this._updateQuery(ev.target.value);
+        }
+
+        /**
+         * @private
+         * @param {KeyboardEvent} ev
+         */
+        _onKeydown(ev) {
+            const isEditable =
+                ev.target.tagName === "INPUT" ||
+                ev.target.tagName === "TEXTAREA" ||
+                ev.target.isContentEditable;
+
+            const input = this.inputRef.el;
+            if (isEditable && ev.target !== input) {
                 return;
-            case $.ui.keyCode.PAGE_DOWN:
-            case $.ui.keyCode.PAGE_UP:
-            case 16: // Shift
-            case 17: // CTRL
-            case 18: // Alt
-                break;
-            case $.ui.keyCode.ESCAPE:
-                // clear text on search, hide it if no content before ESC
-                // hide home menu if there is an inner action
-                this._state = this._getInitialState();
-                this._state.isSearching = $input.val().length > 0;
-                $input.val("");
-                this._update({focus: 0, search: $input.val()});
-                if (!this._state.isSearching) {
-                    this.trigger_up('hide_home_menu');
-                }
-                break;
-            case 67: // c
-            case 88: // x
-                // keep focus and selection on keyboard copy and cut
-                if (ev.ctrlKey || ev.metaKey) {
+            }
+
+            switch (ev.key) {
+                case 'ArrowDown':
+                    this._updateFocusedIndex('nextLine');
+                    ev.preventDefault();
                     break;
-                }
-            default:
-                if (!this.$input.is(':focus')) {
-                    this.$input.focus();
-                }
-        }
-    },
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onCompositionStart: function(ev) {
-        this._state.isComposing = true;
-    },
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onCompositionEnd: function(ev) {
-        this._state.isComposing = false;
-    },
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onMenuitemClick: function (ev) {
-        ev.preventDefault();
-        var menuId = $(ev.currentTarget).data('menu');
-        this._openMenu(_.findWhere(this._menuData, {id: menuId}));
-    },
-    /**
-     * @private
-     * @param {KeyboardEvent} ev Keyboard interactions with the search bar
-     */
-    _onMenuSearchInput: function (ev) {
-        if (!ev.target.value) {
-            this._state = this._getInitialState();
-            this._state.isSearching = true;
-        }
-
-        this._update({search: ev.target.value, focus: 0});
-    }
-});
-
-return HomeMenu;
-
-});
-
-odoo.define('web_enterprise.ExpirationPanel', function (require) {
-"use strict";
-
-var ajax = require('web.ajax');
-var core = require('web.core');
-var session = require('web.session');
-var utils = require('web.utils');
-var HomeMenu = require('web_enterprise.HomeMenu');
-
-var QWeb = core.qweb;
-
-HomeMenu.include({
-    events: _.extend(HomeMenu.prototype.events, {
-        'click .oe_instance_buy': '_onEnterpriseBuy',
-        'click .oe_instance_renew': '_onEnterpriseRenew',
-        'click .oe_instance_upsell': '_onEnterpriseUpsell',
-        'click a.oe_instance_register_show': '_onEnterpriseRegisterShow',
-        'click #confirm_enterprise_code': '_onEnterpriseCodeSubmit',
-        'click .oe_instance_hide_panel': '_onEnterpriseHidePanel',
-        'click .check_enterprise_status': '_onEnterpriseCheckStatus',
-        'click .oe_contract_send_mail': '_onEnterpriseSendUnlinkEmail',
-    }),
-    /**
-     * @override
-     */
-    start: function () {
-        return this._super.apply(this, arguments).then(this._enterpriseExpirationCheck.bind(this));
-    },
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
-    /**
-     * Checks for the database expiration date and display a warning accordingly.
-     *
-     * @private
-     */
-    _enterpriseExpirationCheck: function () {
-        var self = this;
-
-        // don't show the expiration warning for portal users
-        if (!(session.warning))  {
-            return;
-        }
-        var today = new moment();
-        // if no date found, assume 1 month and hope for the best
-        var dbexpirationDate = new moment(session.expiration_date || new moment().add(30, 'd'));
-        var duration = moment.duration(dbexpirationDate.diff(today));
-        var options = {
-            'diffDays': Math.round(duration.asDays()),
-            'dbexpiration_reason': session.expiration_reason,
-            'warning': session.warning,
-        };
-        self._enterpriseShowPanel(options);
-    },
-    /**
-     * Show expiration panel 30 days before the expiry
-     *
-     * @private
-     * @param {Object} options
-     * @param {number} options.diffDays Number of days before expiry
-     * @param {string|false} options.dbexpiration_reason E.g. 'trial','renewal','upsell',...
-     * @param {'admin'|'user'} options.warning Type of logged-in accounts addressed by message
-     */
-    _enterpriseShowPanel: function (options) {
-        var self = this;
-        var hideCookie = utils.get_cookie('oe_instance_hide_panel');
-        if ((options.diffDays <= 30 && !hideCookie) || options.diffDays <= 0) {
-
-            var expirationPanel = $(QWeb.render('WebClient.database_expiration_panel', {
-                has_mail: _.includes(session.module_list, 'mail'),
-                diffDays: options.diffDays,
-                dbexpiration_reason:options.dbexpiration_reason,
-                warning: options.warning
-            })).insertBefore(self.$menuSearch);
-
-            if (options.diffDays <= 0) {
-                expirationPanel.children().addClass('alert-danger');
-                expirationPanel.find('.oe_instance_buy')
-                               .on('click.widget_events', self.proxy('_onEnterpriseBuy'));
-                expirationPanel.find('.oe_instance_renew')
-                               .on('click.widget_events', self.proxy('_onEnterpriseRenew'));
-                expirationPanel.find('.oe_instance_upsell')
-                               .on('click.widget_events', self.proxy('_onEnterpriseUpsell'));
-                expirationPanel.find('.check_enterprise_status')
-                               .on('click.widget_events', self.proxy('_onEnterpriseCheckStatus'));
-                expirationPanel.find('.oe_instance_hide_panel').hide();
-                $.blockUI({message: expirationPanel.find('.database_expiration_panel')[0],
-                           css: { cursor : 'auto' },
-                           overlayCSS: { cursor : 'auto' } });
+                case 'ArrowRight':
+                    if (
+                        input === document.activeElement &&
+                        input.selectionEnd < this.state.query.length
+                    ) {
+                        return;
+                    }
+                    this._updateFocusedIndex('nextColumn');
+                    ev.preventDefault();
+                    break;
+                case 'ArrowUp':
+                    this._updateFocusedIndex('previousLine');
+                    ev.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                    if (
+                        input === document.activeElement &&
+                        input.selectionStart > 0
+                    ) {
+                        return;
+                    }
+                    this._updateFocusedIndex('previousColumn');
+                    ev.preventDefault();
+                    break;
+                case 'Tab':
+                    if (!this.state.isSearching) {
+                        return;
+                    }
+                    ev.preventDefault();
+                    this._updateFocusedIndex(ev.shiftKey ? 'previousElem' : 'nextElem');
+                    break;
+                case 'Enter':
+                    if (this.state.focusedIndex !== null) {
+                        const isApp = this.appIndex !== null;
+                        const menu = isApp ?
+                            this.displayedApps[this.appIndex] :
+                            this.displayedMenuItems[this.menuIndex];
+                        this._openMenu({ menu, isApp });
+                        ev.preventDefault();
+                    }
+                    return;
+                case 'Alt':
+                case 'AltGraph':
+                case 'Control':
+                case 'PageDown':
+                case 'PageUp':
+                case 'Shift':
+                    break;
+                case 'Escape':
+                    // Clear search query and hide search bar if there was no content
+                    // before ESC
+                    // Hide home menu if there is an inner action
+                    const currentQuery = this.state.query;
+                    this._updateQuery("");
+                    if (!currentQuery) {
+                        this.state.focusedIndex = null;
+                        this.state.isSearching = false;
+                        this.trigger("hide_home_menu");
+                    }
+                    break;
+                case 'c':
+                case 'x':
+                    // keep focus and selection on keyboard copy and cut
+                    if (ev.ctrlKey || ev.metaKey) {
+                        break;
+                    }
+                default:
+                    // If any other key:
+                    // Input is focused and the key is automatically processed by it
+                    // just as if it were directly typed in it.
+                    if (document.activeElement !== input) {
+                        input.focus();
+                    }
             }
         }
-    },
 
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    _onEnterpriseBuy: function () {
-        var limitDate = new moment().subtract(15, 'days').format("YYYY-MM-DD");
-        this._rpc({
-                model: 'res.users',
-                method: 'search_count',
-                args: [[["share", "=", false],["login_date", ">=", limitDate]]],
-            })
-            .then(function (users) {
-                window.location =
-                    $.param.querystring("https://www.odoo.com/odoo-enterprise/upgrade", {num_users: users});
-            });
-    },
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onEnterpriseCheckStatus: function (ev) {
-        ev.preventDefault();
-        var self = this;
-        this._rpc({
-                model: 'ir.config_parameter',
-                method: 'get_param',
-                args: ['database.expiration_date'],
-            })
-            .then(function (oldDate) {
-                var dbexpirationDate = new moment(oldDate);
-                var duration = moment.duration(dbexpirationDate.diff(new moment()));
-                if (Math.round(duration.asDays()) < 30) {
-                    self._rpc({
-                            model: 'publisher_warranty.contract',
-                            method: 'update_notification',
-                            args: [[]],
-                        })
-                        .then(function () {
-                            self._rpc({
-                                    model: 'ir.config_parameter',
-                                    method: 'get_param',
-                                    args: ['database.expiration_date']
-                                })
-                                .then(function (dbexpiration_date) {
-                                    $('.oe_instance_register').hide();
-                                    $('.database_expiration_panel .alert')
-                                            .removeClass('alert-info alert-warning alert-danger');
-                                    if (dbexpirationDate !== oldDate && new moment(dbexpirationDate) > new moment()) {
-                                        $.unblockUI();
-                                        $('.oe_instance_hide_panel').show();
-                                        $('.database_expiration_panel .alert').addClass('alert-success');
-                                        $('.valid_date').html(moment(dbexpirationDate).format('LL'));
-                                        $('.oe_subscription_updated').show();
-                                    } else {
-                                        window.location.reload();
-                                    }
-                                });
-                        });
-                }
-            });
-    },
-    _onEnterpriseSendUnlinkEmail: function(ev) {
-        ev.preventDefault();
-        this._rpc({
-            model: 'ir.config_parameter',
-            method: 'get_param',
-            args: ['database.already_linked_send_mail_url']
-        })
-        .then(function(unlink_mail_send_url) {
-            $('.oe_contract_sending_mail').show();
-            $('.oe_contract_sending_mail_success, .oe_contract_sending_mail_fail').hide();
-            ajax.jsonRpc(unlink_mail_send_url, 'call', {}).then(function (result) {
-                if(result.result) {
-                    $('.oe_contract_sending_mail').hide();
-                    $('.oe_contract_sending_mail_success').show();
-                }
-                else {
-                    $('.oe_contract_sending_mail').hide();
-                    $('.oe_contract_sending_mail_fail_reason').text(result.reason);
-                    $('.oe_contract_sending_mail_fail').show();
-                }
-            });
-        });
-    },
-    /**
-     * Save the registration code then triggers a ping to submit it
-     *
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onEnterpriseCodeSubmit: function (ev) {
-        ev.preventDefault();
-        var self = this;
-        var enterpriseCode = $('.database_expiration_panel').find('#enterprise_code').val();
-        if (!enterpriseCode) {
-            var $c = $('#enterprise_code');
-            $c.attr('placeholder', $c.attr('title')); // raise attention to input
-            return;
+        /**
+         * @private
+         * @param {Object} menu
+         */
+        _onMenuitemClick(menu) {
+            this._openMenu({ menu, isApp: false });
         }
-        Promise.all(
-            [this._rpc({
-                    model: 'ir.config_parameter',
-                    method: 'get_param',
-                    args: ['database.expiration_date']
-                }),
-            this._rpc({
-                    model: 'ir.config_parameter',
-                    method: 'set_param',
-                    args: ['database.enterprise_code', enterpriseCode]
-                })]
-        ).then(function (results) {
-            var oldDate = results[0];
-            utils.set_cookie('oe_instance_hide_panel', '', -1);
-            self._rpc({
-                    model: 'publisher_warranty.contract',
-                    method: 'update_notification',
-                    args: [[]],
-                })
-                .then(function () {
-                    $.unblockUI();
-                    Promise.all(
-                        [self._rpc({
-                                model: 'ir.config_parameter',
-                                method: 'get_param',
-                                args: ['database.expiration_date']
-                            }),
-                        self._rpc({
-                                model: 'ir.config_parameter',
-                                method: 'get_param',
-                                args: ['database.expiration_reason']
-                            }),
-                        self._rpc({
-                                model: 'ir.config_parameter',
-                                method: 'get_param',
-                                args: ['database.already_linked_subscription_url']
-                            }),
-                        self._rpc({
-                                model: 'ir.config_parameter',
-                                method: 'get_param',
-                                args: ['database.already_linked_email']
-                            })]
-                    ).then(function (results) {
-                        var dbexpirationDate = results[0];
-                        var dbalready_linked_subscription_url = results[2];
-                        var dbalready_linked_email = results[3];
-                        $('.oe_instance_register').hide();
-                        $('.oe_contract_email_block').hide();
-                        $('.oe_contract_no_email_block').hide();
-                        $('.database_expiration_panel .alert')
-                                .removeClass('alert-info alert-warning alert-danger');
-                        if (dbexpirationDate !== oldDate && !dbalready_linked_subscription_url) {
-                            $('.oe_instance_hide_panel').show();
-                            $('.database_expiration_panel .alert').addClass('alert-success');
-                            $('.valid_date').html(moment(dbexpirationDate).format('LL'));
-                            $('.oe_instance_success').show();
-                        } else if (dbalready_linked_subscription_url) {
-                            $('.database_expiration_panel .alert').addClass('alert-danger');
-                            $('.oe_database_already_linked, .oe_instance_register_form').show();
-                            $('.oe_contract_sending_mail, .oe_contract_sending_mail_success, .oe_contract_sending_mail_fail').hide();
-                            $('.oe_contract_link')
-                                .attr('href', dbalready_linked_subscription_url)
-                                .text(dbalready_linked_subscription_url);
-                            if (dbalready_linked_email.length > 0) {
-                                $('.oe_contract_email_block').show();
-                                $('.oe_contract_email').text(dbalready_linked_email);
-                            } else {
-                                $('.oe_contract_no_email_block').show();
-                            }
-                            $('#confirm_enterprise_code').html('Retry');
-                        } else {
-                            $('.database_expiration_panel .alert').addClass('alert-danger');
-                            $('.oe_instance_error, .oe_instance_register_form').show();
-                            $('#confirm_enterprise_code').html('Retry');
-                        }
-                    });
-                });
-        });
-    },
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onEnterpriseHidePanel: function (ev) {
-        ev.preventDefault();
-        utils.set_cookie('oe_instance_hide_panel', true, 24*60*60);
-        $('.database_expiration_panel').hide();
-    },
-    /**
-     * @private
-     */
-    _onEnterpriseRegisterShow: function () {
-        this.$('.oe_instance_register_form').slideToggle();
-    },
-    /**
-     * @private
-     */
-    _onEnterpriseRenew: function () {
-        var self = this;
-        this._rpc({
-                model: 'ir.config_parameter',
-                method: 'get_param',
-                args: ['database.expiration_date'],
-            })
-            .then(function (oldDate) {
-                utils.set_cookie('oe_instance_hide_panel', '', -1);
-                self._rpc({
-                        model: 'publisher_warranty.contract',
-                        method: 'update_notification',
-                        args: [[]],
-                    })
-                    .then(function () {
-                        Promise.all(
-                            [self._rpc({
-                                    model: 'ir.config_parameter',
-                                    method: 'get_param',
-                                    args: ['database.expiration_date']
-                                }),
-                            self._rpc({
-                                    model: 'ir.config_parameter',
-                                    method: 'get_param',
-                                    args: ['database.expiration_reason']
-                                }),
-                            self._rpc({
-                                    model: 'ir.config_parameter',
-                                    method: 'get_param',
-                                    args: ['database.enterprise_code']
-                                })]
-                        ).then(function (results) {
-                            var newDate = results[0];
-                            var dbexpirationDate = results[1];
-                            var enterpriseCode = results[2];
-                            var mtNewDate = new moment(newDate);
-                            if (newDate !== oldDate && mtNewDate > new moment()) {
-                                $.unblockUI();
-                                $('.oe_instance_register').hide();
-                                $('.database_expiration_panel .alert')
-                                        .removeClass('alert-info alert-warning alert-danger');
-                                $('.database_expiration_panel .alert')
-                                        .addClass('alert-success');
-                                $('.valid_date').html(moment(newDate).format('LL'));
-                                $('.oe_instance_success, .oe_instance_hide_panel').show();
-                            } else {
-                                var params = enterpriseCode ? {contract: enterpriseCode} : {};
-                                window.location =
-                                    $.param.querystring("https://www.odoo.com/odoo-enterprise/renew", params);
-                            }
-                        });
-                    });
-            });
-    },
-    /**
-     * @private
-     */
-    _onEnterpriseUpsell: function () {
-        var self = this;
-        var limitDate = new moment().subtract(15, 'days').format("YYYY-MM-DD");
-        this._rpc({
-                model: 'ir.config_parameter',
-                method: 'get_param',
-                args: ['database.enterprise_code'],
-            })
-            .then(function (contract) {
-                self._rpc({
-                        model: 'res.users',
-                        method: 'search_count',
-                        args: [[["share", "=", false],["login_date", ">=", limitDate]]],
-                    })
-                    .then(function (users) {
-                        var params =
-                            contract ? {contract: contract, num_users: users} : {num_users: users};
-                        window.location =
-                            $.param.querystring("https://www.odoo.com/odoo-enterprise/upsell", params);
-                    });
-            });
-    },
-});
+    }
 
+    HomeMenu.components = { ExpirationPanel };
+    HomeMenu.props = {
+        apps: {
+            type: Array,
+            element: {
+                type: Object,
+                shape: {
+                    action: String,
+                    id: Number,
+                    label: String,
+                    parents: String,
+                    webIcon: [Boolean, String, {
+                        type: Object,
+                        shape: {
+                            iconClass: String,
+                            color: String,
+                            backgroundColor: String,
+                        },
+                    }],
+                    webIconData: { type: String, optional: 1 },
+                    xmlid: String,
+                },
+            },
+        },
+        menuItems: {
+            type: Array,
+            element: {
+                type: Object,
+                shape: {
+                    action: String,
+                    id: Number,
+                    label: String,
+                    menu_id: Number,
+                    parents: String,
+                    webIcon: Boolean,
+                    xmlid: String,
+                },
+            },
+        },
+    };
+    HomeMenu.template = "HomeMenu";
+
+    return HomeMenu;
 });

@@ -1,145 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-<div t-name="HomeMenu" class="o_home_menu">
-    <div class="o_menu_search o_bar_hidden d-none d-md-flex">
-        <span class="fa fa-search o_menu_search_icon" role="img" aria-label="Search" title="Search"/>
-        <input type="text" placeholder="Search..." class="o_menu_search_input" onfocus="this.value = this.value;"/>
-    </div>
-    <div class="o_home_menu_scrollable">
-        <t t-call="HomeMenu.Content"/>
-    </div>
-</div>
+<!-- Owl Templates -->
 
-<t t-name="HomeMenu.Content">
-    <div t-if="widget._state.apps.length" class="o_apps">
-        <t t-set="focused_app_index" t-value="widget.getAppIndex()"/>
-        <t t-foreach="widget._state.apps" t-as="app">
-          <a
-            t-att-class="'o_app o_menuitem' + ((focused_app_index === app_index)? ' o_focused' : '')"
-            t-att-data-menu="app.id"
-            t-att-data-action-model="app.action ? app.action.split(',')[0] : ''"
-            t-att-data-action-id="app.action"
-            t-att-data-menu-xmlid="app.xmlid"
-            t-att-href="app.href ? app.href : ('#menu_id='+app.id+'&amp;action_id='+app.action)">
-            <div t-if="app.web_icon_data" class="o_app_icon"
-                t-attf-style="background-image: url('#{app.web_icon_data}');"/>
-            <div t-else="" class="o_app_icon o_app_icon_has_pictogram"
-                t-attf-style="background-color: #{app.web_icon.background};">
-                <i t-att-class="app.web_icon.class" t-attf-style="color: #{app.web_icon.color};"/>
+<t t-name="DatabaseExpirationPanel" owl="1">
+    <div role="alert"
+        class="database_expiration_panel alert"
+        t-attf-class="alert-{{state.alertType}}"
+        >
+        <!-- t-translation="off" should be on next a element below -->
+        <a t-if="state.diffDays &gt; 0" href="#" class="oe_instance_hide_panel float-right" t-on-click.prevent="_onHide" aria-label="Dismiss">×</a>
+        <span t-if="state.message === 'register'" class="oe_instance_register">
+            <t t-if="!mailInstalled">You will be able to register your database once you have installed your first app.</t>
+            <t t-else="">
+                <t t-set="delay">
+                    <t t-if="state.diffDays === 30">1 month</t>
+                    <t t-else=""><t t-esc="state.diffDays"/> days</t>
+                </t>
+                <t t-if="state.diffDays &gt; 0">
+                    <t t-if="expirationReason === 'demo'">This demo database will expire in <t t-esc="delay"/>. </t>
+                    <t t-else="">This database will expire in <t t-esc="delay"/>. </t>
+                </t>
+                <t t-if="state.diffDays &lt; 1">This database has expired. </t>
+                <t t-if="warning === 'admin'">
+                    <t t-if="notYetRegistered">
+                        <a class="oe_instance_register_show" href="#" t-on-click.prevent="_onClickRegister">Register your subscription</a>
+                        or
+                        <a class="oe_instance_buy" href="#" t-on-click.prevent="_onBuy">buy a subscription</a>.
+                    </t>
+                    <t t-if="expirationReason === 'renewal'">
+                        <a class="oe_instance_renew" href="#" t-on-click.prevent="_onRenew">Renew your subscription</a>
+                        <a class="check_enterprise_status" href="#"
+                            title="Refresh subscription status"
+                            aria-label="Refresh subscription status"
+                            t-on-click.prevent="_onCheckStatus"
+                            >
+                            <i class="fa fa-refresh"/>
+                        </a>
+                    </t>
+                    <t t-elif="expirationReason === 'upsell'">You have more users or more apps installed than your subscription allows.<br/>
+                        <a class="oe_instance_upsell" href="#" t-on-click.prevent="_onUpsell">Upgrade your subscription</a>
+                        <a class="check_enterprise_status" href="#"
+                            title="Refresh subscription status"
+                            aria-label="Refresh subscription status"
+                            t-on-click.prevent="_onCheckStatus"
+                            >
+                            <i class="fa fa-refresh"/>
+                        </a>
+                    </t>
+                </t>
+                <t t-elif="warning === 'user'">Log in as an administrator to correct the issue.</t>
+            </t>
+        </span>
+        <span t-if="state.message === 'success'" class="oe_instance_register oe_instance_success">Thank you, your registration was successful! Your database is valid until <span><t t-esc="state.validDate"/></span>.</span>
+        <span t-elif="state.message === 'update'" class="oe_instance_register oe_subscription_updated">Your subscription was updated and is valid until <span><t t-esc="state.validDate"/></span>.</span>
+        <span t-elif="state.message === 'error'" class="oe_instance_register oe_instance_error">Something went wrong while registering your database. You can try again or contact <a href="https://www.odoo.com/help" target="_blank">Odoo Support</a>.</span>
+        <span t-elif="state.message === 'link'" class="oe_instance_register oe_database_already_linked">
+            Your subscription is already linked to a database.<br/>
+            To unlink it you can either:<br/>
+            <span>- Login to your Odoo.com dashboard then unlink your previous database: <a t-att-href="state.linkedSubscriptionUrl"> <t t-esc="state.linkedSubscriptionUrl"/></a></span><br/>
+            <span t-if="state.emailLinked" class="oe_contract_email_block">
+                - <a href="#" class="oe_contract_send_mail" t-on-click.prevent="_onSendUnlinkEmail">Click here to send an email</a> to the subscription owner (email: <strong t-esc="state.emailLinked"/>) with the instructions to follow
+                <p t-if="state.emailDelivery === 'ongoing'">Sending the instructions by email ...</p>
+                <p t-elif="state.emailDelivery === 'success'">The instructions to unlink your subscription from the previous database(s) have been sent</p>
+                <p t-elif="state.emailDelivery === 'fail'">Unable to send the instructions by email, please contact the <a href="https://www.odoo.com/help" target="_blank">Odoo Support</a><br/>
+                    Error reason: <t t-esc="state.failReason"/>
+                </p>
+            </span>
+            <span t-else="">- Contact your sales representative to help you to unlink your previous database</span>
+        </span>
+        <form t-if="state.displayRegisterForm" class="oe_instance_register oe_instance_register_form form-inline justify-content-center mt-4" t-transition="vertical-slide">
+            <div class="form-group">
+                <label for="enterprise_code">Subscription Code: </label>
+                <input type="text" class="form-control mx-2" t-ref="input"
+                    placeholder="Paste code here"
+                    title="Your subscription code"
+                />
             </div>
-            <div class="o_caption"><t t-esc="app.label"/></div>
-          </a>
-        </t>
-    </div>
-    <div t-if="widget._state.menuItems.length" class="o_menuitems">
-        <t t-set="focused_menu_index" t-value="widget.getMenuIndex()"/>
-        <t t-foreach="widget._state.menuItems" t-as="menu">
-            <a role="menuitem"
-              t-att-class="'o_menuitem' + ((focused_menu_index === menu_index)? ' o_focused' : '')"
-              t-att-href="menu.href ? menu.href : ('#menu_id='+menu.id+'&amp;action_id='+menu.action)"
-              t-att-data-menu="menu.id">
-                  <span class="o_menuitem_parents"><t t-esc="menu.parents"/> /</span>
-                  <t t-esc="menu.label"/>
-            </a>
-        </t>
-    </div>
-    <t t-if="widget._state.apps.length + widget._state.menuItems.length === 0">
-        <div class="o_no_result" role="alert">No result</div>
-    </t>
-    <div class="o_home_menu_footer" aria-hidden="true">
-        <img src="/web/static/src/img/logo_inverse_white_206px.png" alt="Logo"/>
+            <button class="btn btn-primary" t-on-click.prevent="_onCodeSubmit" ><t t-esc="state.buttonText"/></button>
+        </form>
     </div>
 </t>
 
-<t t-name="WebClient.database_expiration_panel">
-    <div class="database_expiration_panel" id="announcement_bar_table">
-        <div t-attf-class="alert alert-#{diffDays&lt;6?'danger':(diffDays&lt;16?'warning':'info')}" role="alert">
-            <a href="#" class="oe_instance_hide_panel float-right" t-translation="off" aria-label="Dismiss">&amp;times;</a>
-            <span>
-                <span class="oe_instance_expires"></span>
-                <span class="oe_instance_register">
-                    <t t-if="!has_mail">
-                        You will be able to register your database once you have installed your first app.
-                    </t>
-                    <t t-if="has_mail">
-                        <t t-if="diffDays == 30">
-                            <t t-set="delay">1 month</t>
-                        </t>
-                        <t t-if="diffDays != 30">
-                            <t t-set="delay"><t t-esc="diffDays"/> days</t>
-                        </t>
-                        <t t-if="diffDays &gt; 0">
-                            <t t-if="dbexpiration_reason == 'demo'">
-                                This demo database will expire in <span t-esc="delay"/>.
-                            </t>
-                            <t t-if="dbexpiration_reason != 'demo'">
-                                This database will expire in <span t-esc="delay"/>.
-                            </t>
-                        </t>
-                        <t t-if="diffDays &lt; 1">
-                            This database has expired.
-                        </t>
-                        <!-- only show corrective actions to an admin (group_system) -->
-                        <t t-if="warning=='admin'">
-                            <t t-if="dbexpiration_reason == 'trial' or dbexpiration_reason == 'demo' or dbexpiration_reason === false">
-                                <a class="oe_instance_register_show" href="#">Register your subscription</a> or <a class="oe_instance_buy" href="#">buy a subscription</a>.
-                            </t>
-                            <t t-if="dbexpiration_reason == 'renewal'">
-                                <a class="oe_instance_renew" href="#">Renew your subscription</a>
-                                <a class="check_enterprise_status" href="#" title="Refresh subscription status" aria-label="Refresh subscription status"><i class="fa fa-refresh"></i></a>
-                            </t>
-                            <t t-if="dbexpiration_reason == 'upsell'">
-                                You have more users or more apps installed than your subscription allows.<br/>
-                                <a class="oe_instance_upsell" href="#">Upgrade your subscription</a>
-                                <a class="check_enterprise_status" href="#" title="Refresh subscription status" aria-label="Refresh subscription status"><i class="fa fa-refresh"></i></a>
-                            </t>
-                        </t>
-                        <t t-if="warning=='user'">
-                            Log in as an administrator to correct the issue.
-                        </t>
-                    </t>
-                </span>
-            </span>
-            <span class="oe_instance_register oe_instance_success">
-                Thank you, your registration was successful! Your database is valid until <span class="valid_date"/>.
-            </span>
-            <span class="oe_instance_register oe_subscription_updated">
-                Your subscription was updated and is valid until <span class="valid_date"/>.
-            </span>
-            <span class="oe_instance_register oe_instance_error">
-              Something went wrong while registering your database. You can try again or contact <a href="https://www.odoo.com/help" target="_blank">Odoo Help</a>.
-            </span>
-            <span class="oe_instance_register oe_database_already_linked">
-              Your subscription is already linked to a database.<br/>
-              To unlink it you can either:<br/>
-              - Login to your Odoo.com dashboard then unlink your previous database: <a class="oe_contract_link"/><br/>
-            <span class="oe_contract_email_block">
-              - <a href="#" class="oe_contract_send_mail">Click here to send an email</a> to the subscription owner (email: <strong class="oe_contract_email" />) with the instructions to follow
-              <p class="oe_contract_sending_mail">Sending the instructions by email ...</p>
-              <p class="oe_contract_sending_mail_success">The instructions to unlink your subscription from the previous database(s) have been sent</p>
-              <p class="oe_contract_sending_mail_fail">Unable to send the instructions by email, please contact the <a href="www.odoo.com/help">Odoo Support</a><br/>
-                Error reason: <span class="oe_contract_sending_mail_fail_reason"/>
-              </p>
-            </span>
-            <span class="oe_contract_no_email_block">
-              - Contact your sales representative to help you to unlink your previous database
-            </span>
-            </span>
-            <div class="oe_instance_register oe_instance_register_form">
-                <form class="form-inline justify-content-center mt-4">
-                    <div class="form-group">
-                        <label for="enterprise_code">Subscription Code: </label>
-                        <input type="text" class="form-control mx-2" id="enterprise_code"
-                               placeholder="Paste code here"
-                               title="Your subscription code"/>
-                    </div>
-                    <button class="btn btn-primary" id="confirm_enterprise_code">Register</button>
-                </form>
+<t t-name="HomeMenu" owl="1">
+    <div class="o_home_menu">
+        <ExpirationPanel t-if="state.displayExpirationPanel" t-on-hide-expiration-panel.stop="_onHideExpirationPanel"/>
+        <div class="o_home_menu_header">
+            <div class="o_menu_search d-md-flex" t-att-class="{o_search_hidden: !state.isSearching}">
+                <span class="fa fa-search o_menu_search_icon" role="img" aria-label="Search" title="Search"/>
+                <input t-ref="input" type="text" placeholder="Search..." class="o_menu_search_input" t-on-input="_onInputSearch"/>
             </div>
+        </div>
+        <div class="o_home_menu_scrollable" t-ref="mainContent">
+            <div t-if="displayedApps.length" class="o_apps">
+                <a t-foreach="displayedApps" t-as="app"
+                    class="o_app o_menuitem"
+                    t-att-class="{o_focused: appIndex === app_index}"
+                    t-att-data-menu-xmlid="app.xmlid"
+                    t-att-href="app.href || ('#menu_id='+app.id+'&amp;action_id='+app.action)"
+                    t-key="app.id"
+                    t-on-click.prevent="_onAppClick(app)"
+                    >
+                    <div t-if="app.webIconData" class="o_app_icon"
+                        t-attf-style="background-image: url('{{app.webIconData}}');"
+                    />
+                    <div t-else="" class="o_app_icon"
+                        t-attf-style="background-color: {{app.webIcon.backgroundColor}};"
+                        >
+                        <i t-att-class="app.webIcon.iconClass" t-attf-style="color: {{app.webIcon.color}};"/>
+                    </div>
+                    <div class="o_caption" t-esc="app.label"/>
+                </a>
+            </div>
+            <div t-if="displayedMenuItems.length" class="o_menuitems">
+                <a t-foreach="displayedMenuItems" t-as="menu"
+                    role="menuitem"
+                    class="o_menuitem"
+                    t-att-class="{o_focused: menuIndex === menu_index}"
+                    t-att-href="menu.href ? menu.href : ('#menu_id='+menu.id+'&amp;action_id='+menu.action)"
+                    t-key="menu.id"
+                    t-on-click.prevent="_onMenuitemClick(menu)"
+                    >
+                    <span class="o_menuitem_parents"><t t-esc="menu.parents"/> / </span>
+                    <t t-esc="menu.label"/>
+                </a>
+            </div>
+            <div t-elif="!displayedApps.length" class="o_no_result" role="alert">
+                No result
+            </div>
+        </div>
+        <div class="o_home_menu_footer">
+            <img src="/web/static/src/img/logo_inverse_white_206px.png" alt="Logo"/>
         </div>
     </div>
 </t>
+
+<t t-name="HomeMenuWrapper" owl="1">
+    <HomeMenu apps="state.apps" menuItems="state.menuItems" t-att-style="state.style" t-on-scroll="_onScroll"/>
+</t>
+
+<!-- Legacy Templates -->
 
 <header t-name="Menu">
     <nav class="o_main_navbar">

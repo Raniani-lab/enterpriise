@@ -9,16 +9,16 @@ if (config.isDebug()) {
         start: function() {
             var self = this;
             return this._super.apply(this, arguments).then(function () {
-                // Override toggle_home_menu to trigger an event to update the debug manager's state
-                var toggle_home_menu = self.toggle_home_menu;
-                self.toggle_home_menu = function (display) {
+                // Override toggleHomeMenu to trigger an event to update the debug manager's state
+                var toggleHomeMenu = self.toggleHomeMenu;
+                self.toggleHomeMenu = function (display) {
                     var action, controller;
                     if (!display) {
                         action = self.action_manager.getCurrentAction();
                         controller = self.action_manager.getCurrentController();
                     }
                     self.current_action_updated(action, controller);
-                    toggle_home_menu.apply(self, arguments);
+                    toggleHomeMenu.apply(self, arguments);
                 };
             });
         },

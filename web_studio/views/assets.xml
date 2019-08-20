@@ -5,7 +5,7 @@
 
     <template id="assets_backend" name="Web Studio Assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/web_studio/static/src/js/home_menu_all.js"></script>
+            <script type="text/javascript" src="/web_studio/static/src/js/background_image.js"></script>
         </xpath>
     </template>
 
@@ -22,7 +22,7 @@
         <script type="text/javascript" src="/web_studio/static/src/js/menu.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/edit_menu.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/submenu.js"></script>
-        <script type="text/javascript" src="/web_studio/static/src/js/home_menu.js"></script>
+        <script type="text/javascript" src="/web_studio/static/src/js/studio_home_menu.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/icon_creator.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/utils.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/tours/web_studio.js"></script>
@@ -150,6 +150,8 @@
             </script>
             <t t-call="web_studio.compiled_assets_studio"/>
 
+            <script type="text/javascript" src="/web_studio/static/tests/studio_home_menu_tests.js"></script>
+            <script type="text/javascript" src="/web_studio/static/tests/home_menu_wrapper_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/action_editor_action_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/app_creator_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/edit_menu_tests.js"></script>

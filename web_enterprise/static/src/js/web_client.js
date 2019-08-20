@@ -1,32 +1,38 @@
 odoo.define('web.WebClient', function (require) {
 "use strict";
 
-var AbstractWebClient = require('web.AbstractWebClient');
-var config = require('web.config');
-var core = require('web.core');
-var data_manager = require('web.data_manager');
-var dom = require('web.dom');
-var session = require('web.session');
+const AbstractWebClient = require('web.AbstractWebClient');
+const config = require('web.config');
+const core = require('web.core');
+const data_manager = require('web.data_manager');
+const dom = require('web.dom');
+const session = require('web.session');
 
-var HomeMenu = require('web_enterprise.HomeMenu');
-var Menu = require('web_enterprise.Menu');
+const HomeMenuWrapper = require('web_enterprise.HomeMenuWrapper');
+const Menu = require('web_enterprise.Menu');
 
 return AbstractWebClient.extend({
-    custom_events: _.extend({}, AbstractWebClient.prototype.custom_events, {
+    // We should review globally the communication with the web client via events
+    events: _.extend({}, AbstractWebClient.prototype.events, {
         app_clicked: 'on_app_clicked',
+        hide_home_menu: '_onHideHomeMenu',
         menu_clicked: 'on_menu_clicked',
         show_home_menu: '_onShowHomeMenu',
+    }),
+    // The navbar (and maybe other components) communicates via trigger_up
+    // with the web client. We don't change that for now.
+    custom_events: _.extend({}, AbstractWebClient.prototype.custom_events, {
         hide_home_menu: '_onHideHomeMenu',
+        menu_clicked: 'on_menu_clicked',
+        show_home_menu: '_onShowHomeMenu',
     }),
     init: function () {
-        this._super.apply(this, arguments);
-        this.home_menu_displayed = false;
+        this._super(...arguments);
+        this.homeMenuManagerDisplayed = false;
     },
     start: function () {
         core.bus.on('change_menu_section', this, function (menu_id) {
-            this.do_push_state(_.extend($.bbq.getState(), {
-                menu_id: menu_id,
-            }));
+            this.do_push_state(Object.assign($.bbq.getState(), { menu_id }));
         });
 
         return this._super.apply(this, arguments);
@@ -62,186 +68,174 @@ return AbstractWebClient.extend({
             }
         });
     },
-    load_menus: function () {
-        return (odoo.loadMenusPromise || odoo.reloadMenus())
-            .then(function (menuData) {
-                // Compute action_id if not defined on a top menu item
-                for (var i = 0; i < menuData.children.length; i++) {
-                    var child = menuData.children[i];
-                    if (child.action === false) {
-                        while (child.children && child.children.length) {
-                            child = child.children[0];
-                            if (child.action) {
-                                menuData.children[i].action = child.action;
-                                break;
-                            }
-                        }
+    load_menus: async function () {
+        const menuData = await (odoo.loadMenusPromise || odoo.reloadMenus());
+        // Compute action_id if not defined on a top menu item
+        for (let i = 0; i < menuData.children.length; i++) {
+            let child = menuData.children[i];
+            if (child.action === false) {
+                while (child.children && child.children.length) {
+                    child = child.children[0];
+                    if (child.action) {
+                        menuData.children[i].action = child.action;
+                        break;
                     }
                 }
-                odoo.loadMenusPromise = null;
-                return menuData;
-            });
+            }
+        }
+        odoo.loadMenusPromise = null;
+        return menuData;
     },
     show_application: function () {
-        var self = this;
         this.set_title();
 
-        const insertMenu = () => {
-            this.menu.$el.prependTo(this.$el);
-        };
-
-        return this.menu_dp.add(this.instanciate_menu_widgets()).then(function () {
-            $(window).bind('hashchange', self.on_hashchange);
-
-            // Listen to 'scroll' event in home_menu and propagate it on main bus
-            self.home_menu.$el.on('scroll', core.bus.trigger.bind(core.bus, 'scroll'));
-
+        const insertMenu = () => this.menu.$el.prependTo(this.$el);
+        return this.menu_dp.add(this.instanciate_menu_widgets()).then(async () => {
+            $(window).bind('hashchange', this.on_hashchange);
             // If the url's state is empty, we execute the user's home action if there is one (we
             // show the home menu if not)
-            // If it is not empty, we trigger a dummy hashchange event so that `self.on_hashchange`
+            // If it is not empty, we trigger a dummy hashchange event so that `this.on_hashchange`
             // will take care of toggling the home menu and loading the action.
-            var state = $.bbq.getState(true);
-            if (_.keys(state).length === 1 && _.keys(state)[0] === "cids") {
-                return self.menu_dp.add(self._rpc({
-                        model: 'res.users',
-                        method: 'read',
-                        args: [session.uid, ["action_id"]],
-                    }))
-                    .then(function(result) {
-                        var data = result[0];
-                        if(data.action_id) {
-                            return self.do_action(data.action_id[0]).then(function() {
-                                self.toggle_home_menu(false);
-                                self.menu.change_menu_section(self.menu.action_id_to_primary_menu_id(data.action_id[0]));
-                            });
-                        } else {
-                            self.toggle_home_menu(true);
-                        }
-                    });
+            const state = $.bbq.getState(true);
+            if (Object.keys(state).length === 1 && Object.keys(state)[0] === "cids") {
+                const result = await this.menu_dp.add(this._rpc({
+                    model: 'res.users',
+                    method: 'read',
+                    args: [session.uid, ["action_id"]],
+                }));
+                const data = result[0];
+                if (data.action_id) {
+                    await this.do_action(data.action_id[0]);
+                    this.menu.change_menu_section(this.menu.action_id_to_primary_menu_id(data.action_id[0]));
+                    return this.toggleHomeMenu(false);
+                } else {
+                    return this.toggleHomeMenu(true);
+                }
             } else {
-                return self.on_hashchange();
+                return this.on_hashchange();
             }
         }).then(insertMenu).guardedCatch(insertMenu);
     },
-
-    instanciate_menu_widgets: function() {
-        var self = this;
-        var defs = [];
-        return this.load_menus().then(function(menu_data) {
-            self.menu_data = menu_data;
-
-            self.home_menu = new HomeMenu(self, menu_data);
-            self.menu = new Menu(self, menu_data);
-
-            defs.push(self.home_menu.appendTo(document.createDocumentFragment()));
-            defs.push(self.menu.appendTo(document.createDocumentFragment()));
-            return Promise.all(defs);
-        });
+    /**
+     * @param {Object} params
+     * @param {Object} params.menuData
+     * @returns {Promise}
+     */
+    instanciate_menu_widgets: async function() {
+        const menuData = await this.load_menus();
+        this.homeMenuManager = this._instanciateHomeMenuWrapper(menuData);
+        this.menu = await this._instanciateMenu(menuData);
     },
 
     // --------------------------------------------------------------
     // do_*
     // --------------------------------------------------------------
+
     /**
      * Extends do_action() to toggle the home menu off if the action isn't displayed in a dialog
      */
-    do_action: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function (action) {
-            if (self.menu.home_menu_displayed && action.target !== 'new' &&
-                action.type !== 'ir.actions.act_window_close') {
-                    self.toggle_home_menu(false);
-                }
-            return action;
-        });
+    do_action: async function () {
+        const action = await this._super(...arguments);
+        if (
+            this.homeMenuManagerDisplayed &&
+            action.target !== 'new' &&
+            action.type !== 'ir.actions.act_window_close'
+        ) {
+            await this.toggleHomeMenu(false);
+        }
+        return action;
     },
+
     // --------------------------------------------------------------
     // URL state handling
     // --------------------------------------------------------------
-    on_hashchange: function(event) {
+
+    on_hashchange: async function(ev) {
         if (this._ignore_hashchange) {
             this._ignore_hashchange = false;
             return Promise.resolve();
         }
-
-        var self = this;
-        return this.clear_uncommitted_changes().then(function () {
-            var stringstate = $.bbq.getState(false);
-            if (!_.isEqual(self._current_state, stringstate)) {
-                var state = $.bbq.getState(true);
-                if (state.action || (state.model && (state.view_type || state.id))) {
-                    return self.menu_dp.add(self.action_manager.loadState(state, !!self._current_state)).then(function () {
+        try {
+            await this.clear_uncommitted_changes();
+        } catch (err) {
+            if (ev) {
+                this._ignore_hashchange = true;
+                window.location = ev.originalEvent.oldURL;
+                return;
+            }
+        }
+        const stringstate = $.bbq.getState(false);
+        if (!_.isEqual(this._current_state, stringstate)) {
+            const state = $.bbq.getState(true);
+            if (state.action || (state.model && (state.view_type || state.id))) {
+                return this.menu_dp.add(this.action_manager.loadState(state, !!this._current_state))
+                    .then(() => {
                         if (state.menu_id) {
-                            if (state.menu_id !== self.menu.current_primary_menu) {
+                            if (state.menu_id !== this.menu.current_primary_menu) {
                                 core.bus.trigger('change_menu_section', state.menu_id);
                             }
                         } else {
-                            var action = self.action_manager.getCurrentAction();
+                            const action = this.action_manager.getCurrentAction();
                             if (action) {
-                                var menu_id = self.menu.action_id_to_primary_menu_id(action.id);
+                                const menu_id = this.menu.action_id_to_primary_menu_id(action.id);
                                 core.bus.trigger('change_menu_section', menu_id);
                             }
                         }
-                        self.toggle_home_menu(false);
-                    }).guardedCatch(self.toggle_home_menu.bind(self, true));
-                } else if (state.menu_id) {
-                    var action_id = self.menu.menu_id_to_action_id(state.menu_id);
-                    return self.menu_dp.add(self.do_action(action_id, {clear_breadcrumbs: true})).then(function () {
-                        core.bus.trigger('change_menu_section', state.menu_id);
-                        self.toggle_home_menu(false);
+                        return this.toggleHomeMenu(false);
+                    })
+                    .guardedCatch(() => {
+                        return this.toggleHomeMenu(true);
                     });
-                } else {
-                    self.toggle_home_menu(true);
-                }
+            } else if (state.menu_id) {
+                const action_id = this.menu.menu_id_to_action_id(state.menu_id);
+                await this.menu_dp.add(this.do_action(action_id, {clear_breadcrumbs: true}));
+                core.bus.trigger('change_menu_section', state.menu_id);
+                return this.toggleHomeMenu(false);
+            } else {
+                return this.toggleHomeMenu(true);
             }
-            self._current_state = stringstate;
-        }, function () {
-            if (event) {
-                self._ignore_hashchange = true;
-                window.location = event.originalEvent.oldURL;
-            }
-        });
+        }
+        this._current_state = stringstate;
     },
+
     // --------------------------------------------------------------
     // Menu handling
     // --------------------------------------------------------------
-    on_app_clicked: function (ev) {
-        var self = this;
-        return this.menu_dp.add(data_manager.load_action(ev.data.action_id))
-            .then(function (result) {
-                return self.action_mutex.exec(function () {
-                    return new Promise(function (resolve, reject) {
-                        var options = _.extend({}, ev.data.options, {
-                            clear_breadcrumbs: true,
-                            action_menu_id: ev.data.menu_id,
-                        });
-                        Promise.resolve(self._openMenu(result, options)).guardedCatch(function () {
-                            self.toggle_home_menu(true);
-                            resolve();
-                        }).then(function () {
-                            self._on_app_clicked_done(ev)
-                                .then(resolve)
-                                .guardedCatch(reject);
-                        });
-                    });
-                });
+
+    /**
+     * @private
+     * @param {OwlEvent} ev
+     */
+    on_app_clicked: async function (ev) {
+        const result = await this.menu_dp.add(data_manager.load_action(ev.detail.action_id));
+        return this.action_mutex.exec(() => new Promise((resolve, reject) => {
+            const options = Object.assign({}, ev.detail.options, {
+                clear_breadcrumbs: true,
+                action_menu_id: ev.detail.menu_id,
             });
+            Promise.resolve(this._openMenu(result, options))
+                .then(() => {
+                    this._on_app_clicked_done(ev)
+                        .then(resolve)
+                        .guardedCatch(reject);
+                })
+                .guardedCatch(async () => {
+                    await this.toggleHomeMenu(true);
+                    resolve();
+                });
+        }));
     },
     _on_app_clicked_done: function(ev) {
-        core.bus.trigger('change_menu_section', ev.data.menu_id);
-        this.toggle_home_menu(false);
+        core.bus.trigger('change_menu_section', ev.detail.menu_id);
+        this.toggleHomeMenu(false);
         return Promise.resolve();
     },
-    on_menu_clicked: function (ev) {
-        var self = this;
-        return this.menu_dp.add(data_manager.load_action(ev.data.action_id))
-            .then(function (result) {
-                return self.action_mutex.exec(function () {
-                    return self._openMenu(result, {clear_breadcrumbs: true});
-                });
-            }).then(function () {
-                self.$el.removeClass('o_mobile_menu_opened');
-            });
+    on_menu_clicked: async function (ev) {
+        // ev.data.action_id is used in case the event is still an odoo event: retrocompatibility
+        const action_id = (ev.detail && ev.detail.action_id) || ev.data.action_id;
+        const result = await this.menu_dp.add(data_manager.load_action(action_id));
+        await this.action_mutex.exec(() => this._openMenu(result, { clear_breadcrumbs: true }));
+        this.el.classList.remove('o_mobile_menu_opened');
     },
     /**
      * Open the action linked to a menu.
@@ -255,66 +249,66 @@ return AbstractWebClient.extend({
     _openMenu: function (action, options) {
         return this.do_action(action, options);
     },
-    toggle_home_menu: function (display) {
-        if (display === this.home_menu_displayed) {
-            return; // nothing to do (prevents erasing previously detached webclient content)
+    /**
+     * @param {boolean} display
+     * @returns {Promise}
+     */
+    toggleHomeMenu: async function (display) {
+        // We check that the homeMenuManagerDisplayed variable is different from
+        // the display argument to execute a toggle only when needed.
+        if (display === this.homeMenuManagerDisplayed) {
+            return;
         }
+        this.homeMenuManagerDisplayed = display;
+        this.menu.toggle_mode(display, this.action_manager.getCurrentAction() !== null);
+        this.el.classList.toggle('o_home_menu_background', display);
+
         if (display) {
-            var self = this;
-            this.clear_uncommitted_changes().then(function() {
-                // Save the current scroll position
-                self.scrollPosition = self.getScrollPosition();
+            await this.clear_uncommitted_changes();
 
-                // Detach the web_client contents
-                var $to_detach = self.$el.contents()
-                        .not(self.menu.$el)
-                        .not('.o_loading')
-                        .not('.o_in_home_menu')
-                        .not('.o_notification_manager');
-                self.web_client_content = document.createDocumentFragment();
-                dom.detach([{widget: self.action_manager}], {$to_detach: $to_detach}).appendTo(self.web_client_content);
+            // Save the current scroll position
+            this.scrollPosition = this.getScrollPosition();
 
-                // Attach the home_menu
-                self.append_home_menu();
-                self.$el.addClass('o_home_menu_background');
+            // Detach the web_client contents
+            const $to_detach = this.$el.contents()
+                .not(this.menu.$el)
+                .not('.o_loading')
+                .not('.o_in_home_menu')
+                .not('.o_notification_manager');
+            this.web_client_content = document.createDocumentFragment();
+            dom.detach([{ widget: this.action_manager }], { $to_detach: $to_detach }).appendTo(this.web_client_content);
 
-                // Save and clear the url
-                self.url = $.bbq.getState();
-                if (location.hash) {
-                    self._ignore_hashchange = true;
-                    $.bbq.pushState('#home', 2); // merge_mode 2 to replace the current state
-                }
-                $.bbq.pushState({'cids': self.url.cids}, 0);
+            // Save and clear the url
+            this.url = $.bbq.getState();
+            if (location.hash) {
+                this._ignore_hashchange = true;
+                $.bbq.pushState('#home', 2); // merge_mode 2 to replace the current state
+            }
+            $.bbq.pushState({ cids: this.url.cids }, 0);
 
-                self.menu.toggle_mode(true, self.action_manager.getCurrentAction() !== null);
-            });
+            // Attach the home_menu
+            await this.homeMenuManager.mount(this.el);
         } else {
-            dom.detach([{widget: this.home_menu}]);
             dom.append(this.$el, [this.web_client_content], {
                 in_DOM: true,
-                callbacks: [{widget: this.action_manager}],
+                callbacks: [{ widget: this.action_manager }],
             });
+            delete this.web_client_content;
             this.trigger_up('scrollTo', this.scrollPosition);
-            this.home_menu_displayed = false;
-            this.$el.removeClass('o_home_menu_background');
-            this.menu.toggle_mode(false, this.action_manager.getCurrentAction() !== null);
+
+            // Detach the home_menu
+            this.homeMenuManager.unmount();
         }
     },
-    append_home_menu: function () {
-        dom.append(this.$el, [this.home_menu.$el], {
-            in_DOM: true,
-            callbacks: [{widget: this.home_menu}],
-        });
-        this.home_menu_displayed = true;
-    },
     _onShowHomeMenu: function () {
-        this.toggle_home_menu(true);
+        this.toggleHomeMenu(true);
     },
     _onHideHomeMenu: function () {
-        if (this.action_manager.getCurrentAction() !== null) {
+        // Backbutton is displayed only if the current action is not null (checked in toggleHomeMenu)
+        if (this.menu.backbutton_displayed) {
             // Restore the url
             $.bbq.pushState(this.url, 2); // merge_mode 2 to replace the current state
-            this.toggle_home_menu(false);
+            this.toggleHomeMenu(false);
         }
     },
 
@@ -336,6 +330,30 @@ return AbstractWebClient.extend({
             };
         }
         return this._super.apply(this, arguments);
+    },
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     * @param {Object} menuData
+     * @returns {Menu}
+     */
+    _instanciateMenu: async function (menuData) {
+        const menu = new Menu(this, menuData);
+        await menu.appendTo(document.createDocumentFragment());
+        menu.toggle_mode(this.homeMenuManagerDisplayed, false);
+        return menu;
+    },
+    /**
+     * @private
+     * @param {Object} menuData
+     * @returns {HomeMenuWrapper}
+     */
+    _instanciateHomeMenuWrapper: function (menuData) {
+        return new HomeMenuWrapper(null, { menuData });
     },
 
     //--------------------------------------------------------------------------

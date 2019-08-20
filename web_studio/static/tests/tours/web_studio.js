@@ -1,43 +1,79 @@
 odoo.define('web_studio.tests.tour', function (require) {
 "use strict";
 
-var tour = require('web_tour.tour');
+const tour = require('web_tour.tour');
 
-var utils = require('web_studio.utils');
+const { randomString } = require('web_studio.utils');
+
+let createdAppString = null;
+let createdMenuString = null;
 
 tour.register('web_studio_tests_tour', {
     test: true,
-    url: "/web?studio=app_creator&debug=tests",
+    url: "/web?debug=tests",
 }, [{
+    // open studio
+    trigger: '.o_main_navbar .o_web_studio_navbar_item',
+}, {
     trigger: '.o_web_studio_new_app',
 }, {
-    // the next 6 steps are here to create a new app
+    // the next steps are here to create a new app
     trigger: '.o_web_studio_app_creator_next',
 }, {
     trigger: '.o_web_studio_app_creator_name > input',
-    run: 'text ' + utils.randomString(6),
-}, {
-    trigger: '.o_web_studio_selectors .o_web_studio_selector:eq(2)',
+    run: 'text ' + (createdAppString = randomString(6)),
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
 }, {
     trigger: '.o_web_studio_app_creator_menu > input',
-    run: 'text ' + utils.randomString(6),
+    run: 'text ' + (createdMenuString = randomString(6)),
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
 }, {
-    // toggle the home menu
+    // toggle the home menu outside of studio and come back in studio
+    extra_trigger: '.o_menu_toggle.fa-th',
+    trigger: '.o_web_studio_leave',
+}, {
     trigger: '.o_menu_toggle.fa-th',
 }, {
-    // a invisible element cannot be used as a trigger so this small hack is
-    // mandatory for the next step
-    trigger: '.o_app[data-menu-xmlid*="studio"]:last',
-    run: function () {
-        this.$anchor.find('.o_web_studio_edit_icon').css('visibility', 'visible');
+    trigger: '.o_main_navbar .o_web_studio_navbar_item',
+}, {
+    // open the app creator and leave it
+    trigger: '.o_web_studio_new_app',
+}, {
+    trigger: '.o_web_studio_leave',
+}, {
+    // go back to the previous app
+    trigger: 'body',
+    run: () => {
+        window.dispatchEvent(new KeyboardEvent('keydown', {
+            bubbles: true,
+            key: 'Escape',
+        }));
     },
 }, {
+    // this should open the previous app outside of studio
+    extra_trigger: `.o_web_client:not(.o_in_studio) .o_menu_brand:contains(${createdAppString})`,
+    // go back to the home menu
+    trigger: '.o_menu_toggle.fa-th',
+}, {
+    // check that the menu exists
+    trigger: 'input.o_menu_search_input',
+    run: 'text ' + createdMenuString,
+}, {
+    // search results should have been updated
+    extra_trigger: `.o_menuitem.o_focused:contains(${createdAppString} / ${createdMenuString})`,
+    // enter Studio
+    trigger: '.o_main_navbar .o_web_studio_navbar_item',
+}, {
     // edit an app
-    trigger: '.o_app[data-menu-xmlid*="studio"]:last .o_web_studio_edit_icon',
+    trigger: `.o_app[data-menu-xmlid*="studio"]:contains(${createdAppString})`,
+    run: function () {
+        // We can't emulate a hover to display the edit icon
+        const editIcon = this.$anchor[0].querySelector('.o_web_studio_edit_icon');
+        editIcon.style.visibility = 'visible';
+        editIcon.click();
+    },
 }, {
     // design the icon
     // TODO: we initially tested this (change an app icon) at the end but a
@@ -45,14 +81,14 @@ tour.register('web_studio_tests_tour', {
     // issue with multiple workers) on runbot prevent us from doing it. It thus have
     // been moved at the beginning of this test to avoid the registry to be reloaded
     // before the write on ir.ui.menu.
-    trigger: '.o_web_studio_selector[data-type="background_color"]',
+    trigger: '.o_web_studio_selector:eq(0)',
 }, {
     trigger: '.o_web_studio_palette > .o_web_studio_selector:first',
 }, {
     trigger: '.modal-footer .btn.btn-primary',
 }, {
     // click on the created app
-    trigger: '.o_app[data-menu-xmlid*="studio"]:last',
+    trigger: `.o_app[data-menu-xmlid*="studio"]:contains(${createdAppString})`,
 }, {
     // create a new menu
     trigger: '.o_main_navbar .o_web_edit_menu',
@@ -60,7 +96,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_edit_menu_modal .js_add_menu',
 }, {
     trigger: 'input[name="name"]',
-    run: 'text ' + utils.randomString(6),
+    run: 'text ' + (createdMenuString = randomString(6)),
 }, {
     trigger: '.o_field_many2one[name="model"] input',
     run: 'text a',
@@ -203,6 +239,32 @@ tour.register('web_studio_tests_tour', {
     // leave Studio
     trigger: '.o_web_studio_leave',
 }, {
+    // come back to the home menu to check if the menu data have changed
+    trigger: '.o_menu_toggle.fa-th',
+}, {
+    trigger: 'input.o_menu_search_input',
+    run: 'text ' + createdMenuString,
+}, {
+    // search results should have been updated
+    extra_trigger: `.o_menuitem.o_focused:contains(${createdAppString} / ${createdMenuString})`,
+    // cleans the search bar query
+    trigger: 'body',
+    run: () => {
+        window.dispatchEvent(new KeyboardEvent('keydown', {
+            bubbles: true,
+            key: 'Escape',
+        }));
+    },
+}, {
+    // go back again to the app (using keyboard)
+    trigger: 'body',
+    run: () => {
+        window.dispatchEvent(new KeyboardEvent('keydown', {
+            bubbles: true,
+            key: 'Escape',
+        }));
+    },
+}, {
     // re-open studio
     trigger: '.o_web_studio_navbar_item',
 }, {
@@ -286,7 +348,7 @@ tour.register('web_studio_hide_fields_tour', {
     trigger: `
         .o_web_studio_app_creator_name
         > input`,
-    run: `text ${utils.randomString(6)}`,
+    run: `text ${randomString(6)}`,
 }, {
     // make another interaction to show "next" button
     trigger: `
@@ -298,7 +360,7 @@ tour.register('web_studio_hide_fields_tour', {
     trigger: `
         .o_web_studio_app_creator_menu
         > input`,
-    run: `text ${utils.randomString(6)}`,
+    run: `text ${randomString(6)}`,
 }, {
     trigger: '.o_web_studio_app_creator_next',
 }, {

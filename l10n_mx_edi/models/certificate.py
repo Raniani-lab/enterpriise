@@ -181,12 +181,12 @@ class Certificate(models.Model):
 
     @api.multi
     def unlink(self):
-        if self.env['account.move'].search(
-                [('l10n_mx_edi_cfdi_certificate_id', 'in', self.ids)]):
+        if self.env['account.move'].sudo().search(
+                [('l10n_mx_edi_cfdi_name', '!=', False)], limit=1):
             raise UserError(_(
-                'You cannot remove a certificate that has already been used '
-                'to sign an invoice. Expired Certificates will not be used '
-                'as Odoo uses the latest valid certificate.'))
+                'You cannot remove a certificate if at least an invoice has been signed. '
+                'Expired Certificates will not be used as Odoo uses the latest valid certificate. '
+                'To not use it, you can unlink it from the current company certificates.'))
         res = super(Certificate, self).unlink()
         self.clear_caches()
         return res

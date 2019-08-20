@@ -7,7 +7,7 @@ from odoo.tests import Form
 
 class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommon):
 
-    def generate_sale_order(self, company, partner, user):
+    def _generate_draft_sale_order(self, company, partner, user):
         """ Generate sale order and confirm its state """
         sale_order = Form(self.env['sale.order'])
         sale_order.company_id = company
@@ -25,7 +25,10 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommon):
                 line.product_id = self.product_consultant
                 line.price_unit = 450.0
 
-        # Confirm Sale order
+        return sale_order
+
+    def generate_sale_order(self, company, partner, user):
+        sale_order = self._generate_draft_sale_order(company, partner, user)
         sale_order.action_confirm()
 
     def validate_generated_purchase_order(self, company, partner):
@@ -45,6 +48,7 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommon):
         self.assertTrue(purchase_order.order_line[0].price_unit == 450, "Price unit is incorrect.")
         self.assertTrue(purchase_order.order_line[0].product_qty == 1, "Product qty is incorrect.")
         self.assertTrue(purchase_order.order_line[0].price_subtotal == 450, "line total is incorrect.")
+        return purchase_order
 
     def test_00_inter_company_sale_purchase(self):
         """ Configure "Sale/Purchase" option and then Create sale order and find related
@@ -120,3 +124,23 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommon):
         # I check that purchase order has been created with company_a
         purchase_order = self.env['purchase.order'].search([('company_id', '=', self.company_a.id)], limit=1)
         self.assertTrue((not purchase_order), "Sale order created for company B from Purchase order of company B without configuration")
+
+    def test_03_inter_company_so_section(self):
+        """ Configure "Sale/Purchase" option.
+        Create a sale order which has a section line
+        Find related purchase order to related company and compare them.
+        """
+
+        # Generate sale order in company A for company B
+        self.company_b.update({
+            'applicable_on': 'sale_purchase',
+        })
+        so = self._generate_draft_sale_order(self.company_a, self.company_b.partner_id, self.res_users_company_a)
+        so.write({
+            'order_line': [(0, False, {'display_type': 'line_section', 'name': 'Great Section'})]
+        })
+        so.action_confirm()
+        self.assertEqual(len(so.order_line), 2)
+        # Check purchase order is created in company B ( for company A )
+        po = self.validate_generated_purchase_order(self.company_a, self.company_b)
+        self.assertEqual(len(po.order_line), 1)

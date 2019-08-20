@@ -95,7 +95,7 @@ var InventoryClientAction = ClientAction.extend({
     /**
      * @override
      */
-    _makeNewLine: function (product, barcode, qty_done) {
+    _makeNewLine: function (product, barcode, qty_done, package_id) {
         var virtualId = this._getNewVirtualId();
         var currentPage = this.pages[this.currentPageIndex];
         var newLine = {
@@ -103,7 +103,8 @@ var InventoryClientAction = ClientAction.extend({
             'product_id': {
                 'id': product.id,
                 'display_name': product.display_name,
-                'barcode': barcode
+                'barcode': barcode,
+                'tracking': product.tracking,
             },
             'product_barcode': barcode,
             'display_name': product.display_name,
@@ -114,6 +115,7 @@ var InventoryClientAction = ClientAction.extend({
                 'id': currentPage.location_id,
                 'name': currentPage.location_name,
             },
+            'package_id': package_id,
             'state': 'confirm',
             'reference': this.name,
             'virtual_id': virtualId,
@@ -134,18 +136,19 @@ var InventoryClientAction = ClientAction.extend({
             if (line.id) {
                 cmd = [1, line.id, {
                     'product_qty' : line.product_qty,
-                    'prod_lot_id': line.prod_lot_id && line.prod_lot_id[0]
+                    'prod_lot_id': line.prod_lot_id && line.prod_lot_id[0],
+                    'package_id': line.package_id && line.package_id[0],
                 }];
                 formattedCommands.push(cmd);
             // Lines needs to be created
             } else {
                 cmd = [0, 0, {
-                    // TODO : Add prod_lot_id and package_id
                     'product_id':  line.product_id.id,
                     'product_uom_id': line.product_uom_id,
                     'product_qty': line.product_qty,
                     'location_id': line.location_id.id,
                     'prod_lot_id': line.prod_lot_id && line.prod_lot_id[0],
+                    'package_id': line.package_id && line.package_id[0],
                     'dummy_id': line.virtual_id,
                 }];
                 formattedCommands.push(cmd);

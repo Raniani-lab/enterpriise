@@ -23,7 +23,11 @@ odoo.define('website.home_menu', function (require) {
             ev.preventDefault();
 
             // We add a spinner for the user to understand the loading.
-            $(ev.currentTarget).removeClass('fa fa-th o_menu_toggle').append($('<span/>', {'class': 'fa fa-spin fa-spinner'}));
+            var $button = $(ev.currentTarget);
+            if (!$button.hasClass('fa')) {
+                return;
+            }
+            $button.removeClass('fa fa-th').append($('<span/>', {'class': 'fa fa-spin fa-spinner'}));
             var url = '/web#home';
             window.location.href = url;
         },

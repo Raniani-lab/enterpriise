@@ -28,10 +28,15 @@ select { // FIXME buggy 'padding-left'
     background-position: right center;
     border-radius: 0; // webkit OSX browsers have a border-radius on select
 
-    color: transparent; // This is a hack to remove the outline in FF
-    text-shadow: 0 0 0 $o-main-text-color;
-    > option {
-        color: $o-main-text-color;
+    color: $o-main-text-color;
+
+    // This is a hack to remove the outline in FF
+    &:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 $o-main-text-color;
+        > option {
+            color: $o-main-text-color;
+        }
     }
 }
 

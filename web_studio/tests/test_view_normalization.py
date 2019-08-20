@@ -1352,6 +1352,38 @@ class TestViewNormalization(TransactionCase):
               </data>
             ''')
 
+    def test_view_normalization_37(self):
+        """Button have a name which is not unique"""
+
+        self.view = self.base_view.create({
+            'arch_base':
+            '''
+              <form>
+                <header>
+                    <button name="action_confirm"/>
+                    <button name="action_confirm"/>
+                </header>
+              </form>
+            ''',
+            'model': 'res.partner',
+            'type': 'form'})
+
+        self._test_view_normalization(
+            '''
+              <data>
+                <xpath expr="/form[1]/header[1]/button[2]" position="attributes">
+                  <attribute name="fire">on the bayou</attribute>
+                </xpath>
+              </data>
+            ''',
+            '''
+              <data>
+                <xpath expr="//form[1]/header[1]/button[@name='action_confirm'][2]" position="attributes">
+                  <attribute name="fire">on the bayou</attribute>
+                </xpath>
+              </data>
+            ''')
+
     def tearDown(self):
         super(TestViewNormalization, self).tearDown()
         random.seed()

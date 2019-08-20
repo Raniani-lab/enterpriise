@@ -55,7 +55,7 @@ class AccountInvoice(models.Model):
         if is_from_cron:
             to_cancel |= inv_mx
         for invoice in (inv_mx - to_cancel) if not is_from_cron else []:
-            invoice.message_post(_(
+            invoice.message_post(body=_(
                 'On this invoice can not be used the cancel button, because '
                 'the invoice is not cancelled in the SAT system. If you want '
                 'to cancel this invoice, press the option "Request '

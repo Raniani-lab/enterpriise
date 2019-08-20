@@ -65,13 +65,10 @@ class AccountChartOfAccountReport(models.AbstractModel):
         accounts_results, taxes_results = self.env['account.general.ledger']._do_query(options_list, fetch_lines=False)
 
         lines = []
-        totals = None
+        totals = [0.0] * (2 * (len(options_list) + 2))
 
         # Add lines, one per account.account record.
         for account, periods_results in accounts_results:
-            if not totals:
-                totals = [0.0] * (2 * (len(periods_results) + 2))
-
             sums = []
             account_balance = 0.0
             for i, period_values in enumerate(reversed(periods_results)):

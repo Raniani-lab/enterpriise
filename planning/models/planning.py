@@ -296,8 +296,8 @@ class Planning(models.Model):
 
     @api.model
     def gantt_unavailability(self, start_date, end_date, scale, group_bys=None, rows=None):
-        start_datetime = fields.Datetime.from_string(start_date.replace('T', ' '))
-        end_datetime = fields.Datetime.from_string(end_date.replace('T', ' '))
+        start_datetime = fields.Datetime.from_string(start_date)
+        end_datetime = fields.Datetime.from_string(end_date)
         employee_ids = set()
         for toplevel_row in rows:
             if toplevel_row.get('records') and 'employee_id' in toplevel_row.get('groupedBy', []):

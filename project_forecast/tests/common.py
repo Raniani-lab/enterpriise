@@ -75,4 +75,4 @@ class TestCommonForecast(SavepointCase):
             setattr(fields.Datetime, 'today', datetime_today_old)
 
     def get_by_employee(self, employee):
-        return self.env['project.forecast'].search([('employee_id', '=', employee.id)])
+        return self.env['planning.slot'].search([('employee_id', '=', employee.id)])

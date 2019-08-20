@@ -8,7 +8,7 @@ from odoo.osv import expression
 
 class Forecast(models.Model):
 
-    _inherit = "project.forecast"
+    _inherit = 'planning.slot'
 
     effective_hours = fields.Float("Effective hours", compute='_compute_effective_hours', compute_sudo=True, store=True)
     percentage_hours = fields.Float("Progress", compute='_compute_percentage_hours', compute_sudo=True, store=True)
@@ -25,11 +25,11 @@ class Forecast(models.Model):
             stop_dt = forecast.end_datetime
             forecast.working_days_count = forecast.employee_id._get_work_days_data(start_dt, stop_dt)['days']
 
-    @api.depends('resource_hours', 'effective_hours')
+    @api.depends('allocated_hours', 'effective_hours')
     def _compute_percentage_hours(self):
         for forecast in self:
-            if forecast.resource_hours:
-                forecast.percentage_hours = forecast.effective_hours / forecast.resource_hours
+            if forecast.allocated_hours:
+                forecast.percentage_hours = forecast.effective_hours / forecast.allocated_hours
             else:
                 forecast.percentage_hours = 0
 

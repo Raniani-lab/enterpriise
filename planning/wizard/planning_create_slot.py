@@ -3,8 +3,10 @@
 
 import math
 
-from datetime import datetime, timedelta, time, date, timezone
+from datetime import datetime, timedelta, time
 import pytz
+
+from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.tools import format_time
 
@@ -40,7 +42,7 @@ class PlanningCreateSlot(models.TransientModel):
     employee_tz_warning = fields.Char("Timezone Warning", compute='_compute_employee_tz_warning')
 
     _sql_constraints = [
-        ('check_end_date_lower_repeat_until', 'CHECK(repeat_until IS NULL OR end_datetime < repeat_until)', 'Forecast should end before the repeat ends'),
+        ('check_end_date_lower_repeat_until', 'CHECK(repeat_until IS NULL OR end_datetime < repeat_until)', 'Planning should end before the repeat ends'),
     ]
 
     @api.depends('role_id')

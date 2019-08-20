@@ -5,7 +5,7 @@
         <field name="model">planning.create.slot</field>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form string="Forecast Form">
+            <form string="Planning Form">
                 <sheet string="Create Shift">
                     <group attrs="{ 'invisible': [['autocomplete_templates_ids', '=', []]]}">
                         <field name="shift_template_id" domain="[['id', 'in', autocomplete_templates_ids]]" context="{'planning_autocomplete_name': '1'}" widget="radio" limit="5"/>

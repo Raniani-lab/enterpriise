@@ -38,13 +38,13 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
         # create a few forecasts in the opera project
         values = {
             'project_id': self.project_opera.id,
-            'resource_hours': 8,
+            'allocated_hours': 8,
             'start_datetime': datetime(2019, 8, 6, 0, 0),
             'end_datetime': datetime(2019, 8, 8, 0, 0),
         }
         generated = {}
         for employee in [self.employee_bert, self.employee_lionel, self.employee_joseph]:
-            generated[employee.id] = self.env['project.forecast'].create({'employee_id': employee.id, **values})
+            generated[employee.id] = self.env['planning.slot'].create({'employee_id': employee.id, **values})
 
         rows = [{
             'groupedBy': ["employee_id"],
@@ -66,7 +66,7 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
             'rows': []
         }]
 
-        gantt_processed_rows = self.env['project.forecast'].gantt_unavailability(
+        gantt_processed_rows = self.env['planning.slot'].gantt_unavailability(
             datetime(2019, 1, 1),
             datetime(2019, 1, 7),
             'week',
@@ -89,13 +89,13 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
         # create a few forecasts in the opera project
         values = {
             'project_id': self.project_opera.id,
-            'resource_hours': 8,
+            'allocated_hours': 8,
             'start_datetime': datetime(2019, 8, 6, 0, 0),
             'end_datetime': datetime(2019, 8, 8, 0, 0),
         }
         generated = {}
         for employee in [self.employee_bert, self.employee_lionel, self.employee_joseph]:
-            generated[employee.id] = self.env['project.forecast'].create({'employee_id': employee.id, **values})
+            generated[employee.id] = self.env['planning.slot'].create({'employee_id': employee.id, **values})
         rows = [{
             'groupedBy': ["project_id", "employee_id"],
             'records': list(map(lambda x: x.read()[0], generated.values())),
@@ -121,7 +121,7 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
                 'rows': []
             }]
         }]
-        gantt_processed_rows = self.env['project.forecast'].gantt_unavailability(
+        gantt_processed_rows = self.env['planning.slot'].gantt_unavailability(
             datetime(2019, 1, 1),
             datetime(2019, 1, 7),
             'week',

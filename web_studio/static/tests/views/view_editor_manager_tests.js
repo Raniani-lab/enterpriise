@@ -656,7 +656,7 @@ QUnit.module('ViewEditorManager', {
 
         var arch = "<form>" +
             "<sheet>" +
-                "<field name='image' widget='image' options='{\"size\":[90, 90],\"preview_image\":\"coucou\"}'/>" +
+                "<field name='image' widget='image' options='{\"size\":[0, 90],\"preview_image\":\"coucou\"}'/>" +
             "</sheet>" +
         "</form>";
         var fieldsView;
@@ -709,16 +709,16 @@ QUnit.module('ViewEditorManager', {
 
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field select#option_size',
             "the sidebar should display dropdown to change image size");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size option:selected').val(), "[90,90]",
+        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size option:selected').val(), "[0,90]",
             "the image size should be correctly selected");
         assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_field_image'),'o_web_studio_clicked',
             "image should have the clicked style");
 
         // change image size to large
-        await testUtils.fields.editSelect(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size'), "[270,270]");
+        await testUtils.fields.editSelect(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size'), "[0,270]");
 
         assert.verifySteps(['image'], "the image should have been fetched again");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size option:selected').val(), "[270,270]",
+        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size option:selected').val(), "[0,270]",
             "the image size should be correctly selected");
         vem.destroy();
     });

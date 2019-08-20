@@ -19,16 +19,13 @@ const _t = core._t;
 /**
  * Overrides Discuss module in mobile
  */
-Discuss.include({
-    ...SwipeItemMixin,
+Discuss.include(Object.assign({}, SwipeItemMixin, {
     contentTemplate: 'mail.discuss_mobile',
-    events: {
-        ...Discuss.prototype.events,
-        ...SwipeItemMixin.events,
+    events: Object.assign({}, Discuss.prototype.events, SwipeItemMixin.events, {
         'click .o_mail_mobile_tab': '_onMobileTabClicked',
         'click .o_mailbox_inbox_item': '_onMobileInboxButtonClicked',
         'click .o_mail_preview': '_onMobileThreadClicked',
-    },
+    }),
 
     /**
      * @override
@@ -394,6 +391,6 @@ Discuss.include({
         var threadID = $(ev.currentTarget).data('preview-id');
         this.call('mail_service', 'openThreadWindow', threadID);
     },
-});
+}));
 
 });

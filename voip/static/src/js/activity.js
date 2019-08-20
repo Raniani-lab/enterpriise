@@ -4,10 +4,9 @@ odoo.define('voip.Activity', function (require) {
 const Activity = require('mail.Activity');
 
 Activity.include({
-    events: {
-        ...Activity.prototype.events,
+    events: Object.assign({}, Activity.prototype.events, {
         'click .o_activity_voip_call': '_onClickVoipCall',
-    },
+    }),
 
     /**
      * @override

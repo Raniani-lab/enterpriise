@@ -4,10 +4,9 @@ odoo.define('accountReportsFollowup.FollowupFormController', function (require) 
 var FollowupFormController = require('accountReports.FollowupFormController');
 
 FollowupFormController.include({
-    events: {
-        ...FollowupFormController.prototype.events,
+    events: Object.assign({}, FollowupFormController.prototype.events, {
         'click .o_account_reports_followup_manual_action_button': '_onManualAction',
-    },
+    }),
 
     //--------------------------------------------------------------------------
     // Private

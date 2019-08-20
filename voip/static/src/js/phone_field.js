@@ -18,10 +18,9 @@ if (config.device.isMobile) {
  * Override of FieldPhone to use the DialingPanel to perform calls on clicks.
  */
 Phone.include({
-    events: {
-        ...Phone.prototype.events,
+    events: Object.assign({}, Phone.prototype.events, {
         'click': '_onClick',
-    },
+    }),
 
     //--------------------------------------------------------------------------
     // Private

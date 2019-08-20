@@ -8,15 +8,14 @@ var _t = core._t;
 var QWeb = core.qweb;
 
 var FollowupFormController = FormController.extend({
-    events: {
-        ...FormController.prototype.events,
+    events: Object.assign({}, FormController.prototype.events, {
         'click .o_account_reports_followup_print_letter_button': '_onPrintLetter',
         'click .o_account_reports_followup_send_mail_button': '_onSendMail',
         'click .o_account_reports_followup_send_sms_button': '_onSendSMS',
         'click .o_account_reports_followup_do_it_later_button': '_onDoItLater',
         'click .o_account_reports_followup_done_button': '_onDone',
         'click .o_account_reports_followup_reconcile': '_onReconcile',
-    },
+    }),
     custom_events: _.extend({}, FormController.prototype.custom_events, {
         expected_date_changed: '_onExpectedDateChanged',
         next_action_date_changed: '_onNextActionDateChanged',

@@ -11,12 +11,8 @@ const SnackBar = require('web_enterprise.SnackBar');
 
 const _t = core._t;
 
-MessagingMenu.include({
-    ...SwipeItemMixin,
-    events: {
-        ...SwipeItemMixin.events,
-        ...MessagingMenu.prototype.events,
-    },
+MessagingMenu.include(Object.assign({}, SwipeItemMixin, {
+    events: Object.assign({}, SwipeItemMixin.events, MessagingMenu.prototype.events),
     init() {
         SwipeItemMixin.init.call(this, {
             allowSwipe: (ev, action) => {
@@ -69,5 +65,5 @@ MessagingMenu.include({
     _toggleUnReadPreviewDisplay(ev) {
         this._getPreviewFromSwipe(ev).toggleClass('o_preview_unread');
     },
-});
+}));
 });

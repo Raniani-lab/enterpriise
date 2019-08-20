@@ -23,7 +23,9 @@ class AddIotBox(models.TransientModel):
                 iot_token.write({'value': token})
         else:
             self.env['ir.config_parameter'].create({'key': 'iot_token', 'value': token})
-        return web_base_url.value + '|' + token
+        db_uuid = self.env['ir.config_parameter'].search([('key', '=', 'database.uuid')], limit=1).value or ''
+        enterprise_code = self.env['ir.config_parameter'].search([('key', '=', 'database.enterprise_code')], limit=1).value or ''
+        return web_base_url.value + '|' + token + '|' + db_uuid + '|' + enterprise_code
 
     token = fields.Char(string='Token', default=_default_token, store=False)
 

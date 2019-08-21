@@ -290,7 +290,6 @@ class Sign(http.Controller):
         for sign_user in sign_users:
             request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
 
-        request_item.action_completed()
         Log = request.env['sign.log'].sudo()
         vals = Log._prepare_vals_from_item(request_item)
         vals.update({
@@ -299,6 +298,7 @@ class Sign(http.Controller):
         vals = Log._update_vals_with_http_request(vals)
         vals['token'] = token
         Log.create(vals)
+        request_item.action_completed()
         return True
 
     @http.route(['/sign/password/<int:sign_request_id>'], type='json', auth='public')

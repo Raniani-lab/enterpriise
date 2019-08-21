@@ -321,7 +321,24 @@ class SignRequest(models.Model):
                 'res_model': self._name,
                 'res_id': self.id,
             })
-
+            
+            pdf_writer = PdfFileWriter()
+            report_action = self.env.ref('sign.action_sign_request_print_logs')
+            pdf_content, __ = report_action.render_qweb_pdf(self.id)
+            reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
+            for page in range(reader.getNumPages()):
+                pdf_writer.addPage(reader.getPage(page))
+            _buffer = io.BytesIO()
+            pdf_writer.write(_buffer)
+            merged_pdf = _buffer.getvalue()
+            _buffer.close()
+            attachment_log = self.env['ir.attachment'].create({
+                'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
+                'datas': base64.b64encode(merged_pdf),
+                'type': 'binary',
+                'res_model': self._name,
+                'res_id': self.id,
+            })
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
@@ -330,7 +347,7 @@ class SignRequest(models.Model):
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
                  'subject': _('%s has been signed') % self.reference,
-                 'attachment_ids': [(4, attachment.id)]},
+                 'attachment_ids': [(4, attachment.id), (4, attachment_log.id)]},
                 force_send=True
             )
 

@@ -42,6 +42,28 @@
         </field>
     </record>
 
+    <record id="marketing_trace_view_graph" model="ir.ui.view">
+        <field name="name">marketing.trace.view.graph</field>
+        <field name="model">marketing.trace</field>
+        <field name="arch" type="xml">
+            <graph>
+                <field name="activity_id" type="row"/>
+                <field name="state" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="marketing_trace_view_pivot" model="ir.ui.view">
+        <field name="name">marketing.trace.view.pivot</field>
+        <field name="model">marketing.trace</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="state" type="row"/>
+                <field name="activity_id" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
     <record id="marketing_trace_view_search" model="ir.ui.view">
         <field name="name">marketing.trace.view.search</field>
         <field name="model">marketing.trace</field>
@@ -60,11 +82,12 @@
     <record id="marketing_trace_action" model="ir.actions.act_window">
         <field name="name">Traces</field>
         <field name="res_model">marketing.trace</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">pivot,graph,tree,form</field>
     </record>
 
     <menuitem id="marketing_trace_menu"
-        parent="marketing_automation_configuration_menu"
+        parent="marketing_automation_reporting_menu"
         action="marketing_trace_action"
-        sequence="2"/>
+        groups="marketing_automation.group_marketing_automation_user"
+        sequence="16"/>
 </odoo>

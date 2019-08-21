@@ -49,7 +49,7 @@ class MarketingCampaign(models.Model):
     last_sync_date = fields.Datetime(string='Last activities synchronization')
     require_sync = fields.Boolean(string="Sync of participants is required", compute='_compute_require_sync')
     # participants
-    participant_ids = fields.One2many('marketing.participant', 'campaign_id', string='Participants')
+    participant_ids = fields.One2many('marketing.participant', 'campaign_id', string='Participants', copy=False)
     running_participant_count = fields.Integer(string="# of active participants", compute='_compute_participants')
     completed_participant_count = fields.Integer(string="# of completed participants", compute='_compute_participants')
     total_participant_count = fields.Integer(string="# of active and completed participants", compute='_compute_participants')
@@ -284,7 +284,8 @@ class MarketingActivity(models.Model):
         default='hours', required=True)
     interval_standardized = fields.Integer('Send after (in hours)', compute='_compute_interval_standardized', store=True, readonly=True)
 
-    validity_duration = fields.Boolean('Validity Duration')
+    validity_duration = fields.Boolean('Validity Duration', 
+        help='Check this to make sure your actions are not executed after a specific amount of time after the scheduled date. (e.g. : Time-limited offer, Upcoming event, …)')
     validity_duration_number = fields.Integer(string='Valid during', default=0)
     validity_duration_type = fields.Selection([
         ('hours', 'Hours'),
@@ -309,7 +310,7 @@ class MarketingActivity(models.Model):
         ('email', 'Email'),
         ('action', 'Server Action')
         ], required=True, default='email')
-    mass_mailing_id = fields.Many2one('mailing.mailing', string='Email Template')
+    mass_mailing_id = fields.Many2one('mailing.mailing', string='Email Template', copy=True)
     server_action_id = fields.Many2one('ir.actions.server', string='Server Action')
 
     # Related to parent activity
@@ -329,7 +330,7 @@ class MarketingActivity(models.Model):
         ('mail_bounce', 'Mail: bounced')], default='begin', required=True)
 
     # For trace
-    trace_ids = fields.One2many('marketing.trace', 'activity_id', string='Traces')
+    trace_ids = fields.One2many('marketing.trace', 'activity_id', string='Traces', copy=False)
     processed = fields.Integer(compute='_compute_statistics')
     rejected = fields.Integer(compute='_compute_statistics')
     total_sent = fields.Integer(compute='_compute_statistics')
@@ -361,12 +362,12 @@ class MarketingActivity(models.Model):
 
     @api.depends('activity_type', 'trace_ids')
     def _compute_statistics(self):
-        if not self.ids:
-            self.update({
-                'total_bounce': 0, 'total_reply': 0, 'total_sent': 0,
-                'rejected': 0, 'total_click': 0, 'processed': 0, 'total_open': 0,
-            })
-        else:
+        # Fix after ORM-pocalyspe : Update in any case, otherwise, None to some values (crash)
+        self.update({
+            'total_bounce': 0, 'total_reply': 0, 'total_sent': 0,
+            'rejected': 0, 'total_click': 0, 'processed': 0, 'total_open': 0,
+        })
+        if self.ids:
             activity_data = {activity._origin.id: {} for activity in self}
             for stat in self._get_full_statistics():
                 activity_data[stat.pop('activity_id')].update(stat)
@@ -678,6 +679,13 @@ class MarketingActivity(models.Model):
         return self._action_view_documents_filtered('bounced')
 
     def _action_view_documents_filtered(self, view_filter):
-        if not self.mass_mailing_id:
+        if not self.mass_mailing_id:  # Only available for mass mailing
             return False
-        return self.mass_mailing_id._action_view_documents_filtered(view_filter)
+        action = self.env.ref('marketing_automation.marketing_participants_action_mail').read()[0]
+        participant_ids = self.trace_ids.filtered(lambda stat: stat[view_filter]).mapped("participant_id").ids
+        action.update({
+            'display_name': "Rarticipants of %s (%s)" % (self.name, view_filter),
+            'domain': [('id', 'in', participant_ids)],
+            'context': dict(self._context, create=False)
+        })
+        return action

@@ -23,39 +23,43 @@
                                     'form_view_ref': 'marketing_automation.mailing_mailing_view_form_marketing_activity'}"
                                 attrs="{
                                     'required': [('activity_type', '=', 'email')],
-                                    'invisible': [('activity_type', '!=', 'email')]}"/>
+                                    'invisible': [('activity_type', '!=', 'email')]}"
+                                options="{'no_quick_create': True}"/>
                             <field name="server_action_id" domain="[('model_id', '=', model_id)]" attrs="{'required': [('activity_type', '=', 'action')], 'invisible': [('activity_type', '!=', 'action')]}" context="{'default_model_id': model_id}" />
                             <field name="statistics_graph_data" invisible="1" />
                         </group>
                         <group>
-                            <label for="interval_number" string="Perform"/>
+                            <label for="interval_number" string="Trigger"/>
                             <div class="container">
                                 <div class="row">
-                                    <field name="interval_number" nolabel="1" class="col-md-6"/>
-                                    <field name="interval_type" nolabel="1" class="col-md-6"/>
+                                    <field name="interval_number" nolabel="1" class="col-2 px-0"/>
+                                    <field name="interval_type" nolabel="1" class="col-10"/>
                                 </div>
                                 <div class="row">
-                                    <span class="oe_inline">after</span>
-                                    <field name="trigger_type" class="oe_inline ml4"/>
+                                    <span class="col-2 px-0 pt-1">after</span>
+                                    <field name="trigger_type" class="col-10 pt-1 pr-1"/>    
                                 </div>
                             </div>
                             <label for="parent_id" attrs="{'invisible': [('trigger_type', '=', 'begin')]}"/>
                             <div>
-                                <field name="parent_id" domain="[('id', 'in', parent.marketing_activity_ids), ('id', '!=', id)]" attrs="{'required': [('trigger_type', '!=', 'begin')], 'invisible': [('trigger_type', '=', 'begin')]}" options="{'no_create_edit': True}"/>
+                                <field name="parent_id" 
+                                    domain="[('id', 'in', parent.marketing_activity_ids), ('id', '!=', id)]" 
+                                    attrs="{'required': [('trigger_type', '!=', 'begin')], 'invisible': [('trigger_type', '=', 'begin')]}" 
+                                    options="{'no_create_edit': True, 'no_create': True}"/>
                             </div>
                             <span class="o_form_label" invisible="1">Warning</span>
                             <div>
                                 <small class="oe_edit_only text-muted" attrs="{'invisible': [('trigger_type', '=', 'begin')]}">(save the campaign to make its activities selectable)</small>
                             </div>
-                            <label for="validity_duration"/>
+                            <label for="validity_duration" string="Expiry Duration"/>
                             <div>
                                 <field name="validity_duration"/>
                             </div>
-                            <label for="validity_duration_number" string="Valid during" attrs="{'invisible': [('validity_duration', '=', False)]}"/>
+                            <label for="validity_duration_number" string="Cancel after" attrs="{'invisible': [('validity_duration', '=', False)]}"/>
                             <div attrs="{'invisible': [('validity_duration', '=', False)]}" class="container">
                                 <div class="row">
-                                    <field name="validity_duration_number" nolabel="1" class="col-md-6"/>
-                                    <field name="validity_duration_type" nolabel="1" class="col-md-6"/>
+                                    <field name="validity_duration_number" nolabel="1" class="col-2 px-0"/>
+                                    <field name="validity_duration_type" nolabel="1" class="col-10"/>
                                 </div>
                             </div>
                             <field name="model_id" invisible="1"/>

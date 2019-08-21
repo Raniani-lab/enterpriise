@@ -82,6 +82,7 @@ class PaymentAcquirerSepaDirectDebit(models.Model):
     def _compute_iap_credits(self):
         creds = self.env['iap.account'].get_credits('sms')
         self.filtered(lambda a: a.provider == 'sepa_direct_debit').update({'iap_sms_credits': creds})
+        self.filtered(lambda a: a.provider != 'sepa_direct_debit').update({'iap_sms_credits': 0})
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='sms')

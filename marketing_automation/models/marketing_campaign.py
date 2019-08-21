@@ -57,9 +57,12 @@ class MarketingCampaign(models.Model):
 
     @api.depends('marketing_activity_ids.require_sync', 'last_sync_date')
     def _compute_require_sync(self):
-        for campaign in self.filtered(lambda camp: camp.last_sync_date and camp.state == 'running'):
-            activities_changed = campaign.marketing_activity_ids.filtered(lambda activity: activity.require_sync)
-            campaign.require_sync = bool(activities_changed)
+        for campaign in self:
+            if campaign.last_sync_date and campaign.state == 'running':
+                activities_changed = campaign.marketing_activity_ids.filtered(lambda activity: activity.require_sync)
+                campaign.require_sync = bool(activities_changed)
+            else:
+                campaign.require_sync = False
 
     @api.depends('marketing_activity_ids.mass_mailing_id')
     def _compute_mass_mailing_count(self):

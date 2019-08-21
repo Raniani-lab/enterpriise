@@ -20,7 +20,7 @@ class DocumentsFolderSetting(models.Model):
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.user.company_id,
                                  ondelete='cascade')
     journal_id = fields.Many2one('account.journal', required=True)
-    folder_id = fields.Many2one('documents.folder', required=True)
+    folder_id = fields.Many2one('documents.folder', string="Workspace", required=True)
     tag_ids = fields.Many2many('documents.tag', string="Tags")
 
     _sql_constraints = [

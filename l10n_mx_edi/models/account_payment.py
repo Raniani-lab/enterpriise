@@ -295,7 +295,12 @@ class AccountPayment(models.Model):
         """Fill the invoice fields from the cfdi values."""
         for rec in self:
             attachment_id = rec.l10n_mx_edi_retrieve_last_attachment()
+            rec.l10n_mx_edi_cfdi_uuid = None
             if not attachment_id:
+                rec.l10n_mx_edi_cfdi = None
+                rec.l10n_mx_edi_cfdi_supplier_rfc = None
+                rec.l10n_mx_edi_cfdi_customer_rfc = None
+                rec.l10n_mx_edi_cfdi_certificate_id = None
                 continue
             attachment_id = attachment_id[0]
             # At this moment, the attachment contains the file size in its 'datas' field because

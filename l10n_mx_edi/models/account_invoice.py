@@ -655,7 +655,13 @@ class AccountMove(models.Model):
         '''
         for inv in self:
             attachment_id = inv.l10n_mx_edi_retrieve_last_attachment()
+            inv.l10n_mx_edi_cfdi_uuid = None
             if not attachment_id:
+                inv.l10n_mx_edi_cfdi = None
+                inv.l10n_mx_edi_cfdi_supplier_rfc = None
+                inv.l10n_mx_edi_cfdi_customer_rfc = None
+                inv.l10n_mx_edi_cfdi_amount = None
+                inv.l10n_mx_edi_cfdi_certificate_id = None
                 continue
             # At this moment, the attachment contains the file size in its 'datas' field because
             # to save some memory, the attachment will store its data on the physical disk.
@@ -681,8 +687,11 @@ class AccountMove(models.Model):
     @api.depends('partner_id')
     def _compute_need_external_trade(self):
         """Assign the "Need external trade?" value how in the partner"""
-        for record in self.filtered(lambda i: i.type == 'out_invoice'):
+        out_invoice = self.filtered(lambda i: i.type == 'out_invoice')
+        for record in out_invoice:
             record.l10n_mx_edi_external_trade = record.partner_id.l10n_mx_edi_external_trade
+        for record in self - out_invoice:
+            record.l10n_mx_edi_external_trade = False
 
     def _inverse_need_external_trade(self):
         return True

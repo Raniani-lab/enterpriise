@@ -76,7 +76,7 @@ class PaymentAcquirerSepaDirectDebit(models.Model):
 
             non_sepa_countries = [c.name for c in record.country_ids if c.code not in SEPA_ZONE]
             if non_sepa_countries:
-                raise ValidationError(_("Restricted to countries of the SEPA Zone. %s not allowed." % (', '.join(non_sepa_countries))))
+                raise ValidationError(_("Restricted to countries of the SEPA Zone. %s not allowed.") % ', '.join(non_sepa_countries))
 
     @api.depends('provider')
     def _compute_iap_credits(self):

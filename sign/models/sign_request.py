@@ -6,7 +6,6 @@ import io
 import time
 import uuid
 
-from email.utils import formataddr
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
@@ -17,7 +16,7 @@ from werkzeug.urls import url_join
 from random import randint
 
 from odoo import api, fields, models, http, _
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, formataddr
 
 def _fix_image_transparency(image):
     """ Modify image transparency to minimize issue of grey bar artefact.

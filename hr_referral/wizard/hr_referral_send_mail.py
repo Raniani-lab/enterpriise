@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from email.utils import formataddr
-
 from odoo import api, fields, models, _
-
 from odoo.exceptions import AccessError, ValidationError
+from odoo.tools import formataddr
 
 
 class HrReferralSendMail(models.TransientModel):

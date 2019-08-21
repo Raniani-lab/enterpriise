@@ -14,10 +14,11 @@ class IotBox(models.Model):
     name = fields.Char('Name', readonly=True)
     identifier = fields.Char(string='Identifier (Mac Address)', readonly=True)
     device_ids = fields.One2many('iot.device', 'iot_id', string="Devices", readonly=True)
+    device_count = fields.Integer(compute='_compute_device_count')
     ip = fields.Char('Domain Address', readonly=True)
     ip_url = fields.Char('IoT Box Home Page', readonly=True, compute='_compute_ip_url')
     screen_url = fields.Char('Screen URL', help="Url of the page that will be displayed by hdmi port of the box.")
-    version = fields.Char('IoT Version')
+    version = fields.Char('Image Version')
 
     def _compute_ip_url(self):
         for box in self:
@@ -26,6 +27,10 @@ class IotBox(models.Model):
                 box.ip_url = 'https://' + box.ip
             else:
                 box.ip_url = 'http://' + box.ip + ':8069'
+
+    def _compute_device_count(self):
+        for box in self:
+            box.device_count = len(box.device_ids)
 
 
 class IotDevice(models.Model):

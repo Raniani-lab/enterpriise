@@ -45,6 +45,17 @@
             </form>
         </field>
     </record>
+    <record id="iot_device_action_search_iot_box" model="ir.actions.act_window">
+        <field name="name">Devices</field>
+        <field name="res_model">iot.device</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_iot_id': [active_id]}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                There is no device connected to this IoT Box
+            </p>
+        </field>
+    </record>
     <record id="iot_box_view_kanban" model="ir.ui.view">
         <field name="name">iot.box.view.kanban</field>
         <field name="model">iot.box</field>
@@ -55,9 +66,14 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click p-0">
-                            <div class="col-9 p-2 border-left">
+                            <div class="p-4 border-left">
                                 <div class="text-truncate font-weight-bold" t-att-title="record.name.raw_value"><field name="name"/></div>
-                                <div class="text-truncate"><field name="identifier"/></div>
+                                <div>
+                                    <span><field name="ip_url" widget="url"/></span>
+                                    <a class="float-right" name="%(iot_device_action_search_iot_box)d" type="action">
+                                        <span aria-label="Device Count"><field name="device_count"/> <i t-attf-class="fa fa-plug"/></span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </t>
@@ -143,7 +159,6 @@
                                 </div>
                                 <div class="col-9 p-2 border-left">
                                     <div class="text-truncate font-weight-bold" t-att-title="record.name.raw_value"><field name="name"/></div>
-                                    <div class="text-truncate"><field name="identifier"/></div>
                                     <span class="text-muted font-italic text-truncate"><field name="iot_id"/></span>
                                     <div>
                                         <t t-if="record.connected.raw_value">
@@ -179,9 +194,12 @@
         <field name="model">iot.device</field>
         <field name="arch" type="xml">
             <search string="IoT Device">
+                <field name="name"/>
+                <field name="type"/>
                 <group expand="0" string="Group By">
                     <filter name="group_by_type" string="Device type" context="{'group_by': 'type'}"/>
                     <filter name="group_by_iot_id" string="IoT Box" context="{'group_by':'iot_id'}"/>
+                    <filter name="group_by_connection" string="Connection" context="{'group_by':'connection'}"/>
                 </group>
             </search>
         </field>

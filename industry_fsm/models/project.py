@@ -22,24 +22,21 @@ class Project(models.Model):
         return result
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
+    allow_material = fields.Boolean("Products on Tasks")
+    allow_quotations = fields.Boolean("Extra quotation")
     timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain="[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", help='Select a Service product with which you would like to bill your time spent on tasks.')
 
     _sql_constraints = [
-        ('timesheet_product_required_if_fsm', "CHECK((is_fsm = 't' AND timesheet_product_id IS NOT NULL) OR (is_fsm = 'f'))", 'The timesheet product is required when the task can be billed.'),
+        ('material_imply_billable', "CHECK((allow_material = 't' AND allow_billable = 't') OR (allow_material = 'f'))", 'The material can be allowed only when the task can be billed.'),
+        ('timesheet_product_required_if_billable_and_timesheets', "CHECK((allow_billable = 't' AND allow_timesheets = 't' AND timesheet_product_id IS NOT NULL) OR (allow_billable = 'f') OR (allow_timesheets = 'f'))", 'The timesheet product is required when the task can be billed and timesheets are allowed.'),
         ('fsm_imply_task_rate', "CHECK((is_fsm = 't' AND sale_line_id IS NULL) OR (is_fsm = 'f'))", 'An FSM project must be billed at task rate.'),
-        ('timesheet_required_if_fsm', "CHECK((is_fsm = 't' AND allow_timesheets = 't') OR (is_fsm = 'f'))", 'The FSM proejct must allow timesheets.'),
     ]
 
-    @api.onchange('is_fsm')
-    def _onchange_is_fsm(self):
-        """ FSM is seen as a preconfiguration: we want to put FSM project in some already existing flows """
-        if self.is_fsm:
-            self.allow_timesheets = True  # timesheet is required to invoice time of the intervention
-            self.allow_timesheet_timer = True
-            self.sale_line_id = False  # force to be billed at task rate
-        else:
-            self.timesheet_product_id = False
-            self.allow_timesheet_timer = False
+    @api.onchange('allow_billable')
+    def _onchange_allow_billable(self):
+        super(Project, self)._onchange_allow_billable()
+        if not self.allow_billable:
+            self.allow_material = False
 
 
 class Task(models.Model):
@@ -66,6 +63,9 @@ class Task(models.Model):
             return now + timedelta(minutes=15 - now.minute % 15, seconds=-now.second) + timedelta(hours=1)
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
+    allow_material = fields.Boolean(related='project_id.allow_material')
+    allow_quotations = fields.Boolean(related='project_id.allow_quotations')
+    allow_billable = fields.Boolean(related="project_id.allow_billable")
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     quotation_count = fields.Integer(compute='_compute_quotation_count')
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')

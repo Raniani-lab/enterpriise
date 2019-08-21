@@ -19,7 +19,7 @@ class RevenueKPIsDashboard(http.Controller):
         return {
             'stat_types': {
                 key: {
-                    'name': _(stat['name']),
+                    'name': stat['name'],
                     'dir': stat['dir'],
                     'code': stat['code'],
                     'prior': stat['prior'],
@@ -29,7 +29,7 @@ class RevenueKPIsDashboard(http.Controller):
             },
             'forecast_stat_types': {
                 key: {
-                    'name': _(stat['name']),
+                    'name': stat['name'],
                     'code': stat['code'],
                     'prior': stat['prior'],
                     'add_symbol': stat['add_symbol'],

@@ -40,7 +40,6 @@ class Lead(models.Model):
             self.env['website.crm.score'].assign_scores_to_leads(lead_ids=self.ids)
 
     def merge_dependences(self, opportunities):
-        self._merge_pageviews(opportunities)
         self._merge_scores(opportunities)
 
         # Call default merge function

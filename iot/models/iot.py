@@ -94,19 +94,3 @@ class KeyboardLayout(models.Model):
     name = fields.Char('Name')
     layout = fields.Char('Layout')
     variant = fields.Char('Variant')
-
-    @api.model
-    def load_keyboard_layouts(self, iot_url):
-        if not self.search([]):
-            url = iot_url + '/hw_proxy/load_keyboard_layouts'
-            try:
-                response = requests.post(url, json={
-                    'jsonrpc': '2.0',
-                    'method': 'call',
-                })
-                response.raise_for_status()
-                layouts = response.json()['result']
-                for layout in layouts:
-                    self.create(layout)
-            except Exception as e:
-                raise exceptions.UserError(_('Could not load the list of keyboard layouts : %s') % e)

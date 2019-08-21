@@ -2,6 +2,7 @@
 from odoo import http
 from odoo.http import request
 import odoo
+import json
 import os
 import zipfile
 import io
@@ -31,6 +32,10 @@ class IoTController(http.Controller):
             zipfile_ob.write(zip[0], zip[1]) # In order to remove the absolute path
         zipfile_ob.close()
         return file_like_object.getvalue()
+
+    @http.route('/iot/keyboard_layouts', type='http', auth='public', csrf=False)
+    def load_keyboard_layouts(self, available_layouts):
+        request.env['iot.keyboard.layout'].sudo().create(json.loads(available_layouts))
 
     # Return home screen
     @http.route('/iot/box/<string:identifier>/screen_url', type='http', auth='public')
@@ -74,7 +79,6 @@ class IoTController(http.Controller):
                     'ip': iot_box['ip'],
                     'version': iot_box['version'],
                 })
-                request.env['iot.keyboard.layout'].sudo().load_keyboard_layouts(box.ip_url)
 
         # Update or create devices
         if box:

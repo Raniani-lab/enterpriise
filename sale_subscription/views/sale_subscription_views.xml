@@ -216,7 +216,7 @@
                     <group name="main">
                         <group>
                             <field name="partner_id" required="1"/>
-                            <field name="pricelist_id" groups="product.group_sale_pricelist"/>
+                            <field name="pricelist_id" groups="product.group_product_pricelist"/>
                             <field name="code"/>
                             <field name="date_start"/>
                             <field name="date" attrs="{'invisible':[('recurring_rule_boundary','=','unlimited')]}"/>

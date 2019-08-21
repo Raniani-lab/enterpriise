@@ -48,7 +48,7 @@
 
         <div t-if="widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="o_barcode_control d-flex">
             <button class="btn btn-secondary text-uppercase o_add_line"><i class="fa fa-plus mr-1"/> Add product</button>
-            <button t-if="widget.groups.group_tracking_lot" class="btn btn-secondary text-uppercase o_put_in_pack"><i class="fa fa-cube mr-1"/> Put In Pack</button>
+            <button t-if="widget.groups.group_tracking_lot and widget.model == 'stock.picking'" class="btn btn-secondary text-uppercase o_put_in_pack"><i class="fa fa-cube mr-1"/> Put In Pack</button>
         </div>
         <div t-if="widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="o_barcode_control d-flex">
             <button t-if="widget.groups.group_stock_multi_locations" class="btn btn-secondary text-uppercase o_previous_page"><i class="fa fa-angle-left mr-3"/>Previous</button>
@@ -116,6 +116,9 @@
                                 <span t-if="line.theoretical_qty" t-esc="'/ ' + line.theoretical_qty"/>
                             </span>
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
+                        </div>
+                        <div t-if="line.package_id">
+                            <i class="fa fa-fw fa-truck"/> <t t-esc="line.package_id[1]"/>
                         </div>
                         <div t-if="line.product_id.tracking !== 'none'">
                             <i class="fa fa-barcode"/>

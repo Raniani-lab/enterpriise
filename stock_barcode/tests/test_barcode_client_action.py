@@ -1201,3 +1201,27 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         ])
 
         self.assertEqual(quantity.qty_done, 12.345)
+
+    def test_inventory_package(self):
+        """ Simulate an adjustment where a package is scanned and edited """
+        clean_access_rights(self.env)
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        pack = self.env['stock.quant.package'].create({
+            'name': 'PACK001',
+        })
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 7, package_id=pack)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 3, package_id=pack)
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, "test_inventory_package", login="admin", timeout=180)
+
+        # Check the package is updated after adjustment
+        self.assertDictEqual(
+            {q.product_id: q.quantity for q in pack.quant_ids},
+            {self.product1: 7, self.product2: 21}
+        )

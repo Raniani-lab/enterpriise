@@ -2238,6 +2238,46 @@ tour.register('test_inventory_nomenclature', {test: true}, [
     },
 ]);
 
+tour.register('test_inventory_package', {test: true}, [
+
+    {
+        trigger: '.button_inventory',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan PACK001',
+    },
+
+    {
+        trigger: '.o_barcode_line:contains("product2") .o_edit',
+    },
+
+    {
+        trigger: '[name="product_qty"]',
+        run: 'text 21'
+    },
+
+    {
+        trigger: '.o_save',
+    },
+
+    {
+        trigger: '.o_validate_page',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The inventory adjustment has been validated');
+        },
+    },
+]);
+
 tour.register('test_pack_multiple_scan', {test: true}, [
 
     {

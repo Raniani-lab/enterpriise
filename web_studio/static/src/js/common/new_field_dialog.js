@@ -134,7 +134,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 followRelations: this.followRelations,
                 fields: this.fields, //_.filter(this.fields, this.filter),
                 readonly: false,
-                filters: this.filters,
+                filters: _.extend({}, this.filters, {searchable: false}),
             };
             this.fieldSelector = new ModelFieldSelector(this, this.model_name, [], field_options);
             defs.push(this.fieldSelector.appendTo(this.$('.o_many2one_field')));

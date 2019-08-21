@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models,api
+from odoo import fields, models,api, _
 from odoo.exceptions import UserError
 import requests
 from odoo.http import request
@@ -10,7 +10,7 @@ from odoo.http import request
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    map_box_token = fields.Char(config_parameter='web_map.token_map_box',string = 'Token Map Box', help='Necessary for some functionnality in the map view', copy=True, default='',Store=True)
+    map_box_token = fields.Char(config_parameter='web_map.token_map_box',string = 'Token Map Box', help='Necessary for some functionalities in the map view', copy=True, default='',Store=True)
 
     @api.onchange('map_box_token')
     def check_token_validity(self):
@@ -26,10 +26,10 @@ class ResConfigSettings(models.TransientModel):
                 if(result.status_code != 200):
                     self.map_box_token = ''
                     if error_code == 401:
-                        raise UserError('The token input is not valid')
+                        raise UserError(_('The token input is not valid'))
                     elif error_code == 403:
-                        raise UserError('This referer is not authorized')
+                        raise UserError(_('This referer is not authorized'))
                     elif error_code == 500:
-                        raise UserError('The MapBox server is unreachable')
+                        raise UserError(_('The MapBox server is unreachable'))
             except Exception:
                 raise

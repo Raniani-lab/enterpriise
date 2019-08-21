@@ -7,7 +7,7 @@ import json
 import requests
 import logging
 import datetime
-from re import fullmatch
+from re import match
 from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
@@ -56,7 +56,7 @@ class HmrcVatObligation(models.Model):
         :param status:
         :return: list of obligations of the status type for the requested period
         """
-        if not fullmatch(r'[0-9]{9}', vat):
+        if not match(r'^[0-9]{9}$', vat):
             raise UserError(_("VAT numbers of UK companies should have exactly 9 figures. Please check the settings of the current company."))
 
         user = self.env.user

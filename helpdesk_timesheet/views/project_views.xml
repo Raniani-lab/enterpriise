@@ -17,7 +17,7 @@
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_mode">kanban,tree,form,pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_inherit_helpdesk_timesheet"/>
-        <field name="context">{'search_default_project_id': active_id, default_project_id': active_id}</field>
+        <field name="context">{'search_default_project_id': active_id, 'default_project_id': active_id}</field>
     </record>
 
     <record id="project_project_view_project_tickets_kanban_inherited" model="ir.ui.view">

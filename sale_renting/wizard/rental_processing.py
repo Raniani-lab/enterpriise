@@ -9,7 +9,7 @@ class RentalProcessing(models.TransientModel):
     _name = 'rental.order.wizard'
     _description = 'Pick-up/Return products'
 
-    order_id = fields.Many2one('sale.order', required=True, on_delete='cascade')
+    order_id = fields.Many2one('sale.order', required=True, ondelete='cascade')
     rental_wizard_line_ids = fields.One2many('rental.order.wizard.line', 'rental_order_wizard_id')
     status = fields.Selection(
         selection=[
@@ -74,11 +74,11 @@ class RentalProcessingLine(models.TransientModel):
             'is_late': line.is_late and delay_price > 0
         }
 
-    rental_order_wizard_id = fields.Many2one('rental.order.wizard', 'Rental Order Wizard', required=True, on_delete='cascade')
+    rental_order_wizard_id = fields.Many2one('rental.order.wizard', 'Rental Order Wizard', required=True, ondelete='cascade')
     status = fields.Selection(related='rental_order_wizard_id.status')
 
-    order_line_id = fields.Many2one('sale.order.line', required=True, on_delete='cascade')
-    product_id = fields.Many2one('product.product', string='Product', required=True, on_delete='cascade')
+    order_line_id = fields.Many2one('sale.order.line', required=True, ondelete='cascade')
+    product_id = fields.Many2one('product.product', string='Product', required=True, ondelete='cascade')
     qty_reserved = fields.Float("Reserved")
     qty_delivered = fields.Float("Delivered")
     qty_returned = fields.Float("Returned")

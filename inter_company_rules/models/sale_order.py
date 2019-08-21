@@ -50,7 +50,7 @@ class sale_order(models.Model):
             # read it as sudo, because inter-compagny user can not have the access right on PO
             po_vals = rec.sudo()._prepare_purchase_order_data(company, company_partner)
             purchase_order = PurchaseOrder.with_user(intercompany_uid).create(po_vals)
-            for line in rec.order_line.sudo():
+            for line in rec.order_line.sudo().filtered(lambda l: not l.display_type):
                 po_line_vals = rec._prepare_purchase_order_line_data(line, rec.date_order,
                     purchase_order.id, company)
                 # TODO: create can be done in batch; this may be a performance bottleneck

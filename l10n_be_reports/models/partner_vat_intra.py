@@ -21,7 +21,14 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
         if not context.get('company_ids'):
             return lines
         seq = amount_sum = 0
-        tag_ids = [self.env['ir.model.data'].xmlid_to_res_id(k) for k in ['l10n_be.tax_report_line_44', 'l10n_be.tax_report_line_46L', 'l10n_be.tax_report_line_46T']]
+        tag_ids = [
+            self.env.ref('l10n_be.tax_report_line_44').id,
+            self.env.ref('l10n_be.tax_report_line_48s44').id,
+            self.env.ref('l10n_be.tax_report_line_46L').id,
+            self.env.ref('l10n_be.tax_report_line_48s46L').id,
+            self.env.ref('l10n_be.tax_report_line_46T').id,
+            self.env.ref('l10n_be.tax_report_line_48s46T').id,
+        ]
         if get_xml_data:
             group_by = 'p.vat, intra_code'
             select = ''

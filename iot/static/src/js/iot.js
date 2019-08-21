@@ -117,12 +117,17 @@ var IotScanProgress = Widget.extend({
 
         IoTScan.reset();
 
-        var self = this;
-        window.addEventListener('_onAddRange', self._onAddRange.bind(this));
-        window.addEventListener('_updateRangeProgress', self._updateRangeProgress.bind(this));
-        window.addEventListener('_addIOTProgress', self._addIOTProgress.bind(this));
-        window.addEventListener('_updateIOTProgress', self._updateIOTProgress.bind(this));
-        window.addEventListener('_clearIOTProgress', self._clearIOTProgress.bind(this));
+        this.eventListeners = {
+            '_onAddRange': this._onAddRange.bind(this),
+            '_updateRangeProgress': this._updateRangeProgress.bind(this),
+            '_addIOTProgress': this._addIOTProgress.bind(this),
+            '_updateIOTProgress': this._updateIOTProgress.bind(this),
+            '_clearIOTProgress': this._clearIOTProgress.bind(this),
+        };
+
+        _.each(this.eventListeners, function (listener, event) {
+            window.addEventListener(event, listener);
+        });
     },
 
     /**
@@ -140,6 +145,16 @@ var IotScanProgress = Widget.extend({
         this.$progressIotFound = this.$('.iot_box_found');
 
 
+    },
+
+    /**
+     * @override
+     */
+    destroy: function () {
+        this._super.apply(this, arguments);
+        _.each(this.eventListeners, function (listener, event) {
+            window.removeEventListener(event, listener);
+        });
     },
 
     /**

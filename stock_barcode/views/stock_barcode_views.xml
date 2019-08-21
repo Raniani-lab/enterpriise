@@ -61,11 +61,9 @@
         <field name="view_id" ref="stock_barcode.stock_picking_kanban"/>
         <field name="context">{
             'form_view_initial_mode': 'edit',
-            'search_default_picking_type_id': [active_id],
-            'default_picking_type_id': active_id,
             'contact_display': 'partner_address',
             'search_default_available': 1,
-            'force_detailed_view': True,
+            'force_detailed_view': True
         }</field>
     </record>
 

@@ -12,7 +12,7 @@
         <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer_form"/>
         <field name="arch" type="xml">
             <field name="proxy_ip" position="replace">
-                <field name="device_id"/>
+                <field name="device_id" attrs="{'invisible': [('printer_type', '!=', 'iot')]}"/>
             </field>
         </field>
     </record>

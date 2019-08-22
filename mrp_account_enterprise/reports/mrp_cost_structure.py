@@ -37,7 +37,7 @@ class MrpCostStructure(models.AbstractModel):
 
             #get the cost of raw material effectively used
             raw_material_moves = []
-            query_str = """SELECT sm.product_id, sm.bom_line_id, SUM(sm.product_qty), abs(SUM(svl.value))
+            query_str = """SELECT sm.product_id, sm.bom_line_id, abs(SUM(svl.quantity)), abs(SUM(svl.value))
                              FROM stock_move AS sm
                        INNER JOIN stock_valuation_layer AS svl ON svl.stock_move_id = sm.id
                             WHERE sm.raw_material_production_id in %s AND sm.state != 'cancel' AND sm.product_qty != 0

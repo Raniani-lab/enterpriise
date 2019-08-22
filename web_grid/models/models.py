@@ -447,7 +447,7 @@ ColumnMetadata = collections.namedtuple('ColumnMetadata', 'grouping domain prev 
 
 class date_range(object):
     def __init__(self, start, stop):
-        assert start < stop
+        assert start <= stop
         self.start = start
         self.end = stop
 
@@ -461,7 +461,7 @@ class date_range(object):
 
 class datetime_range(object):
     def __init__(self, start, stop, step, user_tz):
-        assert start < stop
+        assert start <= stop
         self._start = user_tz.localize(datetime.datetime.combine(start, datetime.time.min))
         self._end = user_tz.localize(datetime.datetime.combine(stop, datetime.time.max))
         self.step = step
@@ -516,6 +516,7 @@ class datetime_range(object):
 # ---------------------------------------------------------
 
 START_OF = {
+    'day': relativedelta(days=0),
     'week': relativedelta(weekday=MO(-1)),
     'month': relativedelta(day=1),
     'year': relativedelta(yearday=1),
@@ -526,6 +527,7 @@ START_OF_WEEK = {
     'year': relativedelta(yearday=1, weekday=MO(-1)),
 }
 END_OF = {
+    'day': relativedelta(days=0),
     'week': relativedelta(weekday=SU),
     'month': relativedelta(months=1, day=1, days=-1),
     'year': relativedelta(years=1, yearday=1, days=-1),

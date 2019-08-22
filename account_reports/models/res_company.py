@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class ResCompany(models.Model):
     _inherit = "res.company"
+
+    overdue_sms_msg = fields.Text(string='Overdue Payments SMS Message', translate=True,
+        default=lambda s: _("""Our records indicate that some payments on your account are still due.
+If you have any queries regarding your account, Please contact us. Best Regards,"""))
 
     @api.model
     def _get_default_misc_journal(self):

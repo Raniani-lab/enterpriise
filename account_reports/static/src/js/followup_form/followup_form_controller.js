@@ -12,6 +12,7 @@ var FollowupFormController = FormController.extend({
         ...FormController.prototype.events,
         'click .o_account_reports_followup_print_letter_button': '_onPrintLetter',
         'click .o_account_reports_followup_send_mail_button': '_onSendMail',
+        'click .o_account_reports_followup_send_sms_button': '_onSendSMS',
         'click .o_account_reports_followup_do_it_later_button': '_onDoItLater',
         'click .o_account_reports_followup_done_button': '_onDone',
         'click .o_account_reports_followup_reconcile': '_onReconcile',
@@ -105,6 +106,15 @@ var FollowupFormController = FormController.extend({
             .removeClass('btn-primary').addClass('btn-secondary');
     },
     /**
+     * Remove the highlight on Send SMS button.
+     *
+     * @private
+     */
+    _removeHighlightSMS: function () {
+        this.$buttons.find('button.o_account_reports_followup_send_sms_button')
+            .removeClass('btn-primary').addClass('btn-secondary');
+    },
+    /**
      * Remove the highlight on Print Letter button.
      *
      * @private
@@ -158,6 +168,10 @@ var FollowupFormController = FormController.extend({
             }}, {
             clear: false,
         });
+    },
+
+    _getPartner() {
+        return this.model.get(this.handle, {raw: true}).res_id;
     },
 
     //--------------------------------------------------------------------------
@@ -264,10 +278,9 @@ var FollowupFormController = FormController.extend({
      * @private
      */
     _onReconcile: function () {
-        var partnerID = this.model.get(this.handle, {raw: true}).res_id;
         var context = {
             'mode': 'customers',
-            'partner_ids': [partnerID],
+            'partner_ids': [this._getPartner()],
         }
         this.do_action({
             type: 'ir.actions.client',
@@ -294,9 +307,8 @@ var FollowupFormController = FormController.extend({
      */
     _onPrintLetter: function () {
         var self = this;
-        var partnerID = this.model.get(this.handle, {raw: true}).res_id;
         var records = {
-            ids: [partnerID],
+            ids: [this._getPartner()],
         };
         this._rpc({
             model: 'account.followup.report',
@@ -329,9 +341,9 @@ var FollowupFormController = FormController.extend({
      */
     _onSendMail: function () {
         var self = this;
-        var partnerID = this.model.get(this.handle, {raw: true}).res_id;
-        this.options = {};
-        this.options.partner_id = partnerID;
+        this.options = {
+            partner_id: this._getPartner()
+        };
         this._rpc({
             model: 'account.followup.report',
             method: 'send_email',
@@ -342,6 +354,30 @@ var FollowupFormController = FormController.extend({
             self._displayDone();
             self.renderer.renderMailAlert();
         });
+    },
+    /**
+     * Send the sms server-side.
+     *
+     * @private
+     */
+    async _onSendSMS() {
+        this.options = {
+            partner_id: this._getPartner()
+        };
+        let action = await this._rpc({
+            model: 'account.followup.report',
+            method: 'send_sms',
+            args: [this.options],
+        })
+        this.do_action(action, {
+            on_close: (infos) => {
+                if (!infos) {
+                    this._removeHighlightSMS()
+                    this._displayDone();
+                    this.renderer.renderSMSAlert();
+                }
+            },
+        })
     },
     /**
      * This method creates an action depending on the name and then executes

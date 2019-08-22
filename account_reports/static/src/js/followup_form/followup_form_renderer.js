@@ -81,6 +81,12 @@ var FollowupFormRenderer = FormRenderer.extend({
         this.$('div.o_account_reports_page').prepend(QWeb.render("CustomerStatements.send_mail"));
     },
     /**
+     * Render an alert to indicate that an sms has been sent.
+     */
+    renderSMSAlert: function () {
+        this.$('div.o_account_reports_page').prepend(QWeb.render("CustomerStatements.send_sms"));
+    },
+    /**
      * Render the next reminder section, in manual mode, and render the
      * datepicker.
      */

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import base64
 import tempfile
 import subprocess
 
@@ -24,15 +25,16 @@ class CameraDriver(Driver):
         try:
             """
             Check the max resolution for webcam.
-            Take picture and save it to a tmp file.
-            Convert this picture in base 64.
+            Take picture, output it on stdout and convert it in base 64.
             Release Event with picture in data.
             """
-            with tempfile.NamedTemporaryFile() as tmp:
-                resolution = subprocess.check_output("v4l2-ctl --list-formats-ext|grep 'Size'|awk '{print $3}'|sort -rn|awk NR==1", shell=True).decode('utf-8')
-                subprocess.check_call("fswebcam -d %s %s -r %s" % (self.dev.interface, tmp.name, resolution), shell=True)
-                self.data['image'] = subprocess.check_output("cat %s | base64" % tmp.name, shell=True)
-                self.data['message'] = 'Image captured'
+            v4l2 = subprocess.Popen(['v4l2-ctl', '--list-formats-ext'], stdout=subprocess.PIPE)
+            all_sizes = subprocess.Popen(['grep', 'Size'], stdin=v4l2.stdout, stdout=subprocess.PIPE)
+            all_resolutions = subprocess.Popen(['awk', '{print $3}'], stdin=all_sizes.stdout, stdout=subprocess.PIPE)
+            sorted_resolutions = subprocess.Popen(['sort', '-rn'], stdin=all_resolutions.stdout, stdout=subprocess.PIPE)
+            resolution = subprocess.check_output(['awk', 'NR==1'], stdin=sorted_resolutions.stdout).decode('utf-8')
+            self.data['image'] = base64.b64encode(subprocess.check_output(["fswebcam", "-d", self.dev.interface, "-", "-r", resolution]))
+            self.data['message'] = 'Image captured'
         except subprocess.CalledProcessError as e:
             self.data['message'] = e.output
         event_manager.device_changed(self)

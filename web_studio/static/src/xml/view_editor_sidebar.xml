@@ -455,8 +455,17 @@
                 <label for="widget">Widget</label>
                 <select id="widget" name="widget" data-type="attributes">
                     <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.widgetKey ===  w[0] ? 'selected' : undefined" t-att-value="w[0]">
-                        <t t-set="desc" t-value="w[1].prototype.description"/>
-                        <t t-esc="desc || w[0]"/> <t t-if="widget.debug and desc">(<t t-esc="w[0]"/>)</t>
+                        <t
+                            t-set="desc"
+                            t-value="
+                                w[1].prototype.hasOwnProperty('description') and
+                                w[1].prototype.description"/>
+                        <t t-if="widget.debug">
+                            <t
+                                t-set="desc"
+                                t-value="desc and desc + ' ('+w[0]+')' or w[0]"/>
+                        </t>
+                        <t t-esc="desc"/>
                     </option>
                 </select>
             </div>

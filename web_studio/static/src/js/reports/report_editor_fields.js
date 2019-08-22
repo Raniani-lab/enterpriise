@@ -11,8 +11,6 @@ var relationalFields = require('web.relational_fields');
 
 
 var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
-    description: "",
-
     init: function (parent, name, record, options) {
         this._super.apply(this, arguments);
 

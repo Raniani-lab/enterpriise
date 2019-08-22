@@ -9,7 +9,6 @@ var FieldBinaryImage = basic_fields.FieldBinaryImage;
 var QWeb = core.qweb;
 
 var TabletImage = FieldBinaryImage.extend({
-    description: "",
     template: 'FieldBinaryTabletImage',
     events: _.extend({}, FieldBinaryImage.prototype.events, {
         'click .o_form_image_controls': '_onOpenPreview',

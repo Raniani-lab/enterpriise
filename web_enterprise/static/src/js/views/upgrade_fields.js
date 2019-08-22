@@ -13,7 +13,6 @@ var field_registry = require('web.field_registry');
 var relational_fields = require('web.relational_fields');
 
 var UpgradeBoolean = basic_fields.FieldBoolean.extend({
-    description: "",
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -28,7 +27,9 @@ var UpgradeBoolean = basic_fields.FieldBoolean.extend({
 });
 
 var UpgradeRadio = relational_fields.FieldRadio.extend({
-    description: "",
+    // We don't require this widget to be displayed in studio sidebar in
+    // non-debug mode hence just extended it from its original widget, so that
+    // description comes from parent and hasOwnProperty based condition fails
 });
 
 field_registry

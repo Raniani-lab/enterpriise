@@ -371,6 +371,8 @@ class MrpEco(models.Model):
             if eco.current_bom_id:
                 # Compute difference between old bom and newly activated bom.
                 eco.previous_change_ids = eco._get_difference_bom_lines(eco.bom_id, eco.current_bom_id)
+            else:
+                eco.previous_change_ids = False
 
     @api.depends('routing_id.operation_ids', 'new_routing_id.operation_ids')
     def _compute_routing_change_ids(self):

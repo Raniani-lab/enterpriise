@@ -249,7 +249,7 @@ class Task(models.Model):
     def action_fsm_view_material(self):
         self._fsm_ensure_sale_order()
 
-        domain = []
+        domain = [('sale_ok', '=', True)]
         if self.project_id and self.project_id.timesheet_product_id:
             domain = expression.AND([domain, [('id', '!=', self.project_id.timesheet_product_id.id)]])
         deposit_product = self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')

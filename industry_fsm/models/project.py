@@ -71,7 +71,7 @@ class Task(models.Model):
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-    fsm_state = fields.Selection([('draft', 'New'), ('validated', 'Validated'), ('sold', 'Sold')], default='draft', string='Status', readonly=True)
+    fsm_state = fields.Selection([('draft', 'New'), ('validated', 'Validated'), ('sold', 'Sold')], default='draft', string='Status', readonly=True, copy=False)
     planned_date_begin = fields.Datetime(default=_default_planned_date_begin)
     planned_date_end = fields.Datetime(default=_default_planned_date_end)
     user_id = fields.Many2one(group_expand='_read_group_user_ids')

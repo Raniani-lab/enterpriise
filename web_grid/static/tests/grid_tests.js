@@ -1057,5 +1057,129 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('grid view in day range ', async function (assert) {
+        assert.expect(14);
+        var nbReadGrid = 0;
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `
+                <grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">
+                    <field name="project_id" type="row"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="day" string="Day" span="day" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>
+            `,
+            currentDate: "2017-01-30",
+            mockRPC: function (route, args) {
+                if (args.method === 'read_grid') {
+                    nbReadGrid++;
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+        assert.ok(grid.$('table').length, "Table rendered properly.");
+        assert.strictEqual(nbReadGrid, 1, "should have read one grid by group")
+        assert.containsOnce(grid, 'thead th:not(.o_grid_title_header)', "Single Day column should be shown");
+        var grid_anchor = grid.$('thead tr').text().split(',\n').join().replace(/\s/g, '');
+        assert.equal(grid_anchor, "Mon,Jan30", "grid should start with grid_anchor date as the default date.");
+
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
+
+        grid_anchor = grid.$('thead tr').text().split(',\n').join().replace(/\s/g, '');
+        assert.equal(grid_anchor, 'Tue,Jan31', "Date should be of next day.");
+        assert.strictEqual(nbReadGrid, 2, "should have read one grid by group")
+        assert.containsOnce(grid, 'thead th:not(.o_grid_title_header)', "Single Day column should be shown");
+
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
+
+        grid_anchor = grid.$('thead tr').text().split(',\n').join().replace(/\s/g, '');
+        assert.equal(grid_anchor, "Mon,Jan30", "Date should be today's date.");
+        assert.strictEqual(nbReadGrid, 3, "should have read one grid by group")
+        assert.containsOnce(grid, 'thead th:not(.o_grid_title_header)', "Single Day column should be shown");
+
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
+
+        grid_anchor = grid.$('thead tr').text().split(',\n').join().replace(/\s/g, '');
+        assert.equal(grid_anchor, 'Sun,Jan29', "Date should be of 29th Jan.");
+        assert.strictEqual(nbReadGrid, 4, "should have read four read grid");
+
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
+
+        grid_anchor = grid.$('thead tr').text().split(',\n').join().replace(/\s/g, '');
+        assert.equal(grid_anchor, 'Mon,Jan30', "Date should be of 30th Jan.");
+        assert.strictEqual(nbReadGrid, 5, "should have five read grid");
+        grid.destroy();
+    });
+
+    QUnit.test('basic grouped grid view in day range', async function (assert) {
+        assert.expect(19);
+        var nbReadGroup = 0;
+
+        this.arch = `
+            <grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">
+                <field name="project_id" type="row" section="1"/>
+                <field name="task_id" type="row"/>
+                <field name="date" type="col">
+                    <range name="day" string="Day" span="day" step="day"/>
+                </field>
+                <field name="unit_amount" type="measure" widget="float_time"/>
+            </grid>
+        `;
+
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2017-01-25",
+            mockRPC: function (route, args) {
+                if (args.method === 'read_group') {
+                    assert.strictEqual(args.kwargs.groupby.length, 1,
+                        "should read group on the section (project_id)");
+                    assert.strictEqual(args.kwargs.groupby[0], 'project_id',
+                        "should read group on the section (project_id)");
+                    nbReadGroup++;
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        assert.ok(grid.$('table').length, "should have rendered a table");
+        assert.strictEqual(nbReadGroup, 1, "should have one read_grid by group")
+        assert.containsOnce(grid, 'thead th:not(.o_grid_title_header)', "Single Day column should be shown");
+        assert.containsN(grid, '.o_grid_section', 2, "should have one section by project");
+
+        // first section
+        assert.containsOnce(grid, '.o_grid_section:eq(0) th:contains(P1)',
+            "first section should be for project P1");
+        assert.containsN(grid, '.o_grid_section:eq(0) div.o_grid_cell_container', 1,
+            "first section should have 1 cells");
+        assert.containsNone(grid, '.o_grid_section:eq(0) th:contains(Unknown)',
+            "first section should'nt have a row without task");
+        assert.containsOnce(grid, '.o_grid_section:eq(0) th:contains(BS task)',
+            "first section should have a row for BS task");
+
+        var grid_anchor = grid.$('thead tr').text().split(',\n').join().replace(/\s/g, '');
+        assert.equal(grid_anchor, "Wed,Jan25", "grid should start with grid_anchor date as the default date.");
+
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
+
+        var next_date = grid.$('thead tr').text().split(',\n').join().replace(/\s/g, '');
+        assert.equal(next_date, 'Thu,Jan26', "Date should be of next day.");
+        assert.containsOnce(grid, 'thead th:not(.o_grid_title_header)', "Single Day column should be shown");
+
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
+
+        var previous_date = grid.$('thead tr').text().split(',\n').join().replace(/\s/g, '');
+        assert.equal(previous_date, "Wed,Jan25", "Date should be today's date.");
+        assert.containsOnce(grid, 'thead th:not(.o_grid_title_header)', "Single Day column should be shown");
+        grid.destroy();
+    });
+
 });
 });

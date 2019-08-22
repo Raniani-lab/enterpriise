@@ -180,9 +180,9 @@
                 <field name="task_id" type="row" section="1"/>
                 <field name="employee_id" type="row"/>
                 <field name="start_datetime" type="col">
-                    <range name="days" string="Day" span="month" step="day" />
+                    <range name="days" string="Month" span="month" step="day" />
                     <range name="weeks" string="Week" span="month" step="week" />
-                    <range name="months" string="Month" span="year" step="month" />
+                    <range name="months" string="year" span="year" step="month" />
                 </field>
                 <field name="resource_hours" type="measure"/>
             </grid>
@@ -198,9 +198,9 @@
                 <field name="project_id" type="row"/>
                 <field name="task_id" type="row"/>
                 <field name="start_datetime" type="col">
-                    <range name="days" string="Day" span="month" step="day" />
+                    <range name="days" string="Month" span="month" step="day" />
                     <range name="weeks" string="Week" span="month" step="week" />
-                    <range name="months" string="Month" span="year" step="month" />
+                    <range name="months" string="Year" span="year" step="month" />
                 </field>
                 <field name="resource_hours" type="measure"/>
             </grid>
@@ -216,9 +216,9 @@
                 <field name="task_id" type="row"/>
                 <field name="employee_id" type="row"/>
                 <field name="start_datetime" type="col">
-                    <range name="days" string="Day" span="month" step="day" />
+                    <range name="days" string="Month" span="month" step="day" />
                     <range name="weeks" string="Week" span="month" step="week" />
-                    <range name="months" string="Month" span="year" step="month" />
+                    <range name="months" string="Year" span="year" step="month" />
                 </field>
                 <field name="resource_hours" type="measure"/>
             </grid>

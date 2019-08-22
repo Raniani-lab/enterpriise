@@ -39,14 +39,24 @@ class SignTemplate(models.Model):
     tag_ids = fields.Many2many('sign.template.tag', string='Tags')
     color = fields.Integer()
     extension = fields.Char(compute='_compute_extension')
-    redirect_url = fields.Char(string="Optional Link",
-        help="Optional link for redirection after signature instead of https://www.odoo.com/page/sign")
+    redirect_url = fields.Char(string="Redirect Link", default="",
+        help="Optional link for redirection after signature")
+    redirect_url_text = fields.Char(string="Link Label", default="Open Link",
+        help="Optional text to display on the button link")
+
+    def name_get(self):
+        res = []
+        for template in self:
+            if template.attachment_id.name:
+                # For now, we only support PDF file in the app
+                res.append((template.id, template.attachment_id.name.replace('.pdf', '')))
+        return res
 
     @api.depends('attachment_id.name')
     def _compute_extension(self):
         for template in self:
-            if template.attachment_id.name:
-                template.extension = '.' + template.attachment_id.name.split('.')[-1]
+            if template.attachment_id.mimetype:
+                template.extension = template.attachment_id.mimetype.replace('application/', '').replace(';base64', '')
             else:
                 template.extension = ''
 
@@ -84,8 +94,6 @@ class SignTemplate(models.Model):
             file_pdf = PdfFileReader(io.BytesIO(base64.b64decode(datas)), strict=False, overwriteWarnings=False)
         except Exception as e:
             raise UserError(_("This file cannot be read. Is it a valid PDF?"))
-        if file_pdf.isEncrypted:
-            raise UserError(_("Your PDF file shouldn't be encrypted with a password in order to be used as a signature template"))
         attachment = self.env['ir.attachment'].create({'name': name, 'datas': datas, 'mimetype': mimetype})
         template = self.create({'attachment_id': attachment.id, 'favorited_ids': [(4, self.env.user.id)], 'active': active})
         return {'template': template.id, 'attachment': attachment.id}
@@ -137,6 +145,15 @@ class SignTemplate(models.Model):
         option_id = option if option else self.env['sign.item.option'].create({'value': value})
         return option_id.id
 
+    def open_requests(self,):
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Sign requests"),
+            "res_model": "sign.request",
+            "domain": [["template_id.id", "in", self.ids]],
+            "views": [[False, 'kanban'],[False, "form"]],
+            "res_id": self.id,
+        }
 
 class SignTemplateTag(models.Model):
 
@@ -217,6 +234,8 @@ class SignItemValue(models.Model):
 
     sign_item_id = fields.Many2one('sign.item', string="Signature Item", required=True, ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", required=True, ondelete='cascade')
+    sign_request_item_id = fields.Many2one('sign.request.item', string="Signature Request item", required=True,
+                                           ondelete='cascade')
 
     value = fields.Text()
 
@@ -227,9 +246,20 @@ class SignItemParty(models.Model):
 
     name = fields.Char(required=True, translate=True)
 
-    sms_authentification = fields.Boolean('SMS Authentification', default=False)
+    sms_authentification = fields.Boolean('SMS Authentication', default=False,)
 
     @api.model
     def add(self, name):
         party = self.search([('name', '=', name)])
         return party.id if party else self.create({'name': name}).id
+
+    def buy_credits(self):
+        service_name = 'sms'
+        url = self.env['iap.account'].get_credits_url(service_name)
+        return {
+            'name': 'Buy SMS credits',
+            'res_model': 'ir.actions.act_url',
+            'type': 'ir.actions.act_url',
+            'target': 'current',
+            'url': url
+        }

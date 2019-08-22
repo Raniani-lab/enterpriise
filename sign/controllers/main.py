@@ -7,9 +7,10 @@ import logging
 import mimetypes
 import re
 
-from PyPDF2 import PdfFileReader
+from PyPDF2 import  PdfFileReader, PdfFileWriter
 
 from odoo import http, _
+from odoo.http import request
 from odoo.addons.web.controllers.main import content_disposition
 from odoo.addons.iap.models.iap import InsufficientCreditError
 
@@ -48,10 +49,30 @@ class Sign(http.Controller):
                             break
                     item_type['auto_field'] = auto_field
 
+            if current_request_item.state != 'completed':
+                """ When signer attempts to sign the request again,
+                its localisation should be reset.
+                We prefer having no/approximative (from geoip) information
+                than having wrong old information (from geoip/browser)
+                on the signer localisation.
+                """
+                current_request_item.write({
+                    'latitude': request.session['geoip'].get('latitude') if 'geoip' in request.session else 0,
+                    'longitude': request.session['geoip'].get('longitude') if 'geoip' in request.session else 0,
+                })
+
         sr_values = http.request.env['sign.item.value'].sudo().search([('sign_request_id', '=', sign_request.id)])
         item_values = {}
         for value in sr_values:
             item_values[value.sign_item_id.id] = value.value
+
+        Log = request.env['sign.log'].sudo()
+        vals = Log._prepare_vals_from_item(current_request_item) if current_request_item else Log._prepare_vals_from_request(sign_request)
+        vals.update({
+            'action': 'open',
+        })
+        vals = Log._update_vals_with_http_request(vals)
+        Log.create(vals)
 
         return {
             'sign_request': sign_request,
@@ -91,7 +112,24 @@ class Sign(http.Controller):
             return http.request.not_found()
 
         document = None
-        if download_type == "origin":
+        if download_type == "log":
+            pdf_writer = PdfFileWriter()
+            report_action = http.request.env.ref('sign.action_sign_request_print_logs').sudo()
+            pdf_content, __ = report_action.render_qweb_pdf(sign_request.id)
+            reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
+            for page in range(reader.getNumPages()):
+                pdf_writer.addPage(reader.getPage(page))
+            _buffer = io.BytesIO()
+            pdf_writer.write(_buffer)
+            merged_pdf = _buffer.getvalue()
+            _buffer.close()
+            pdfhttpheaders = [
+                ('Content-Type', 'application/pdf'),
+                ('Content-Length', len(merged_pdf)),
+                ('Content-Disposition', 'attachment; filename=' + "Activity Logs.pdf;")
+            ]
+            return request.make_response(merged_pdf, headers=pdfhttpheaders)
+        elif download_type == "origin":
             document = sign_request.template_id.attachment_id.datas
         elif download_type == "completed":
             document = sign_request.completed_document
@@ -99,11 +137,13 @@ class Sign(http.Controller):
                 return http.redirect_with_hash('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
 
         if not document:
+            # Shouldn't it fall back on 'origin' download type?
             return http.redirect_with_hash("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})
 
-        filename = sign_request.reference
-        if filename != sign_request.template_id.attachment_id.name:
-            filename += sign_request.template_id.attachment_id.name[sign_request.template_id.attachment_id.name.rfind('.'):]
+        extension = "".join(['.', sign_request.template_id.extension])
+        # Avoid to have file named "test file.pdf (V2)" impossible to open on Windows.
+        # This line produce: test file (V2).pdf
+        filename = "".join([sign_request.reference.replace(extension, ''), extension])
 
         return http.request.make_response(
             base64.b64decode(document),
@@ -250,6 +290,14 @@ class Sign(http.Controller):
         for sign_user in sign_users:
             request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
 
+        Log = request.env['sign.log'].sudo()
+        vals = Log._prepare_vals_from_item(request_item)
+        vals.update({
+            'action': 'sign',
+        })
+        vals = Log._update_vals_with_http_request(vals)
+        vals['token'] = token
+        Log.create(vals)
         request_item.action_completed()
         return True
 

@@ -138,7 +138,6 @@ odoo.define('sign.PDFIframe', function (require) {
                         el.name
                     );
                     $signatureItem.data({itemId: el.id, order: i});
-
                     self.configuration[parseInt(el.page)].push($signatureItem);
                 });
 
@@ -203,7 +202,8 @@ odoo.define('sign.PDFIframe', function (require) {
             function select_option($container, option_id) {
                 var $selected_op = $container.find(':data(id)').filter(function () { return $(this).data('id') === option_id;});
                 var $other_options = $container.find(':data(id)').filter(function () { return $(this).data('id') !== option_id;});
-
+                $selected_op.css("color", "black");
+                $other_options.css("color", "black");
                 $selected_op.addClass('o_sign_selected_option');
                 $selected_op.removeClass('o_sign_not_selected_option');
                 $other_options.removeClass('o_sign_selected_option');
@@ -243,7 +243,7 @@ odoo.define('sign.PDFIframe', function (require) {
                 type: type['item_type'],
                 value: value || "",
                 options: selected_options,
-                placeholder: type['placeholder']
+                placeholder: (name) ? name : type['placeholder']
             }));
 
             if (type['item_type'] === 'selection') {
@@ -320,6 +320,7 @@ odoo.define('sign.Document', function (require) {
             this.signerName = this.$('#o_sign_signer_name_input_info').val();
             this.signerPhone = this.$('#o_sign_signer_phone_input_info').val();
             this.RedirectURL = this.$('#o_sign_input_optional_redirect_url').val();
+            this.RedirectURLText = this.$('#o_sign_input_optional_redirect_url_text').val();
             this.types = this.$('.o_sign_field_type_input_info');
             this.items = this.$('.o_sign_item_input_info');
             this.select_options = this.$('.o_sign_select_options_input_info');
@@ -648,10 +649,10 @@ odoo.define('sign.document_signing', function (require) {
 
             if (!options.buttons) {
                 options.buttons = [];
+                options.buttons.push({text: _t("Cancel"), close: true});
                 options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", disabled: true, click: function (e) {
                     this.confirmFunction();
                 }});
-                options.buttons.push({text: _t("Cancel"), close: true});
             }
 
             this._super(parent, options);
@@ -753,6 +754,14 @@ odoo.define('sign.document_signing', function (require) {
             var isEmpty = this.nameAndSignature.isSignatureEmpty();
             this.$primaryButton.prop('disabled', isEmpty);
         },
+        /**
+         * @override
+         */
+        renderElement: function () {
+            this._super.apply(this, arguments);
+             // this trigger the adding of a custom css
+             this.$modal.addClass('o_sign_signature_dialog');
+         },
     });
 
     var SignItemNavigator = Widget.extend({
@@ -956,7 +965,7 @@ odoo.define('sign.document_signing', function (require) {
                     });
                 }
                 if (response === true) {
-                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.requestID)).open();
+                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, this.RedirectURLText, self.requestID)).open();
                     self.do_hide();
                 }
                 if (typeof response === 'object') {
@@ -1052,13 +1061,44 @@ odoo.define('sign.document_signing', function (require) {
             return EncryptedDialog;
         },
 
-        init: function(parent, RedirectURL, requestID, options) {
+        init: function(parent, RedirectURL, RedirectURLText, requestID, options) {
+            var self = this;
             options = (options || {});
             options.title = options.title || _t("Thank You !");
             options.subtitle = options.subtitle || _t("Your signature has been saved.");
             options.size = options.size || "medium";
             options.technical = false;
             options.buttons = [];
+            if (RedirectURL) {
+                // check if url contains http:// or https://
+                if (!/^(f|ht)tps?:\/\//i.test(RedirectURL)) {
+                RedirectURL = "http://" + RedirectURL;
+             }
+            options.buttons.push({text: _t(RedirectURLText), classes: 'btn-primary', click: function (e) {
+                window.location.replace(RedirectURL);
+                }});
+            } 
+
+            // If sign now: do_action to return to templates
+            // If request sent by mail: reload the document
+            var ButtonName = "";
+            if (! session.uid) {
+                ButtonName = "View Signed Document";
+                var NextAction = function() {
+                window.location.reload();
+                };
+                } else {
+                    ButtonName = "Return to templates";
+                    var NextAction = function() {
+                        return self.do_action('sign.sign_template_action', {
+                            clear_breadcrumbs: true
+                            });
+                        };
+                }
+
+            options.buttons.push({text: _t(ButtonName), classes: 'btn-primary', close: true, click: function (e) {
+                new NextAction();
+            }});
             this.RedirectURL = RedirectURL;
             this.requestID = requestID;
             this._super(parent, options);
@@ -1080,6 +1120,7 @@ odoo.define('sign.document_signing', function (require) {
          */
         renderElement: function () {
             this._super.apply(this, arguments);
+            // this trigger the adding of a custom css
             this.$modal.addClass('o_sign_thank_you_dialog');
             this.$modal.find('button.close').addClass('invisible');
             this.$modal.find('.modal-header .o_subtitle').before('<br/>');
@@ -1160,7 +1201,7 @@ odoo.define('sign.document_signing', function (require) {
 
             this.events = _.extend(this.events || {}, {
                 'keydown .page .ui-selected': function(e) {
-                    if((e.keyCode || e.which) !== 9) {
+                    if((e.keyCode || e.which) !== 13) {
                         return true;
                     }
                     e.preventDefault();
@@ -1192,9 +1233,13 @@ odoo.define('sign.document_signing', function (require) {
             var self = this;
             var $signatureItem = this._super.apply(this, arguments);
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
-
             if(!readonly) {
-                if(type['item_type'] === "signature" || type['item_type'] === "initial") {
+                // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.
+                if ( type['name'].includes('Text') && type['placeholder'] === $signatureItem.prop('placeholder')) {
+                    $signatureItem.attr('placeholder', ' ');
+                    $signatureItem.find(".o_placeholder").text(" ");
+                 }
+                if (type['item_type'] === "signature" || type['item_type'] === "initial") {
                     $signatureItem.on('click', function(e) {
                         self.refreshSignItems();
                         var $signedItems = self.$('.o_sign_sign_item').filter(function(i) {
@@ -1253,7 +1298,6 @@ odoo.define('sign.document_signing', function (require) {
             } else {
                 $signatureItem.val(value);
             }
-
             return $signatureItem;
         },
 
@@ -1307,9 +1351,9 @@ odoo.define('sign.document_signing', function (require) {
             }
 
             if (this.current_name) {
-                parent.$('div.container-fluid .col-lg-6').first().removeClass('col-lg-6').addClass('col-lg-3')
-                parent.$('div.container-fluid .col-lg-6').first().removeClass('col-lg-6').addClass('col-lg-5')
-                parent.$('div.container-fluid .col-lg-3').first().after('<div class="col-lg-4"><H2>'+this.current_name+'</H2></div>')
+                parent.$('div.container-fluid .col-lg-6').first().removeClass('col-lg-6').addClass('col-lg-4')
+                parent.$('div.container-fluid .col-lg-4').first().after('<div class="col-lg-4"><div class="o_sign_request_from text-center"><h2>'+this.current_name+'</h2></div></div>')
+                parent.$('div.container-fluid .col-lg-6').first().removeClass('col-lg-6').addClass('col-lg-4')
             }
         },
         get_pdfiframe_class: function () {
@@ -1354,12 +1398,13 @@ odoo.define('sign.document_signing', function (require) {
                             value = $elem.data('signature');
                         }
                         if($elem[0].type === 'checkbox') {
+                            value = false ;
                             if ($elem[0].checked) {
                                 value = 'on';
                             } else {
-                                value = 'off';
+                                if (!$elem.data('required')) value = 'off';
+                                }
                             }
-                        }
                         if(!value) {
                             if($elem.data('required')) {
                                 this.iframeWidget.checkSignItemsCompletion();
@@ -1392,7 +1437,7 @@ odoo.define('sign.document_signing', function (require) {
                             (new (self.get_nextdirectsigndialog_class())(self, self.RedirectURL, self.requestID)).open();
                         }
                         else {
-                            (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.requestID)).open();
+                            (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText, self.requestID)).open();
                         }
                     }
                     if (typeof response === 'object') {
@@ -1456,7 +1501,7 @@ odoo.define('sign.document_signing', function (require) {
                             }, 500);
                         }
                     });
-                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.requestID)).open();
+                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText, self.requestID)).open();
                 }
             });
         },

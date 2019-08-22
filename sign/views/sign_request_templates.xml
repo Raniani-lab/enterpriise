@@ -57,14 +57,15 @@
 
             <div class="row o_sign_page_info pt4 pb4">
                 <div class="col-lg-4">
-                    <h4 class="o_sign_request_reference_title"><t t-esc="sign_request.reference"/></h4>
-
-
+                    <div class="o_sign_request_from">
+                        <h4 class="o_sign_request_reference_title"><t t-esc="sign_request.reference"/></h4>
+                    </div>
                     <a role="button" t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/completed" class="btn btn-primary o_sign_download_document_button">Download Document</a>
+                    <a role="button" t-if="sign_request.start_sign" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/log" class="btn btn-secondary o_sign_download_log_button">Activity Logs</a>
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="clearfix">
+                    <div class="o_sign_request_from">
                         <img class="float-left mr8" t-attf-src="/web/image/res.partner/#{sign_request.create_uid.partner_id.id}/image_64/32x32" alt="Signature" style="max-width: 32px;"/>
                         <t t-if="sign_request.create_uid.partner_id.name">From: <t t-esc="sign_request.create_uid.partner_id.name"/><br/></t>
                         <t t-if="sign_request.create_uid.partner_id.email"><a t-attf-href="mailto:{{sign_request.create_uid.partner_id.email}}"><t t-esc="sign_request.create_uid.partner_id.email"/></a><br/></t>
@@ -107,6 +108,7 @@
         <input id="o_sign_signer_name_input_info" type="hidden" t-att-value="current_request_item.partner_id.name if current_request_item and current_request_item.partner_id else None"/>
         <input id="o_sign_signer_phone_input_info" type="hidden" t-att-value="current_request_item.partner_id.mobile if current_request_item and current_request_item.partner_id else None"/>
         <input id="o_sign_input_optional_redirect_url" type="hidden" t-att-value="sign_request.template_id.redirect_url"/>
+        <input id="o_sign_input_optional_redirect_url_text" type="hidden" t-att-value="sign_request.template_id.redirect_url_text"/>
         <input t-if="current_request_item and current_request_item.state == 'sent'" id="o_sign_ask_location_input" type="hidden"/>
         <t t-if="len(sign_request.request_item_ids) == 1 and not sign_request.request_item_ids[0].partner_id">
             <input id="o_sign_is_public_user" type="hidden"/>
@@ -139,14 +141,24 @@
             </t>
             <div class="o_sign_document">
                 <header>
-                    <div class="container text-center">
-                        <a href="/"><img src="/logo.png" alt="Logo"/></a>
+                    <div>
+                        <div class="col-lg-4">
+                            <div class="o_logo">
+                                <a href="/"><img src="/logo.png" alt="Logo"/></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
                         <div t-if="sign_request" class="o_sign_header_instruction">
                             <t t-if="not current_request_item">Need to sign? Check your inbox to get your secure access</t>
                             <t t-if="current_request_item and current_request_item.state == 'sent'">Please Review And Act On This Document</t>
                             <t t-if="current_request_item and current_request_item.state == 'completed'">You have completed the document</t>
                         </div>
-                        <a href="https://www.odoo.com/page/sign"><img src="/sign/static/img/odoo_signed.png" alt="Signed"/></a>
+                        </div>
+                        <div class="col-lg-4">
+                        <div class="o_odoo">
+                            <a href="https://www.odoo.com/page/sign?utm_source=db&amp;utm_medium=sign"><img src="/sign/static/img/odoo_signed.png" alt="Signed"/></a>
+                        </div>
+                        </div>
                     </div>
                 </header>
                 <t t-call="sign._doc_sign"/>
@@ -165,7 +177,7 @@
             <div class="container text-center">
                 <h3>Missing Password</h3>
                 <p>
-                    The password's PDF is required to generate the final document.
+                    The PDF's password is required to generate the final document.
                 </p>
                 <form string="PDF is encrypted" role="form" method="post" onsubmit="this.action = this.action + location.hash">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>

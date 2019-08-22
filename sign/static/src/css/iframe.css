@@ -38,12 +38,19 @@
     cursor: pointer;
 }
 
+.o_sign_sign_item .o_placeholder {
+    font-size: 12pt !important;
+    vertical-align: middle;
+}
+
 textarea.o_sign_sign_item {
     white-space: pre;
+    font-size: 12pt !important;
 }
 
 .o_sign_sign_item_required {
     background-color: rgba(255, 235, 235, 0.9);
+    font-size: 10pt;
 }
 
 .o_sign_item_custom_popover .form-group {
@@ -253,6 +260,7 @@ textarea.o_sign_sign_item {
 .o_sign_sign_item .o_sign_helper {
     vertical-align: middle;
     height: 100%;
+    color: #757575;
     display: inline-block;
 }
 
@@ -273,7 +281,10 @@ textarea.o_sign_sign_item {
     overflow: hidden;
     white-space: nowrap;
     font-size: 10pt;
-    text-align: left;
+    text-align: right;
+    padding: 2px;
+    margin: 2px;
+
 }
 
 .o_sign_sign_item .o_sign_config_area .fa-arrows {
@@ -292,12 +303,19 @@ textarea.o_sign_sign_item {
     height: 100%;
     width: 100%;
     display: flex;
+    margin-top: -22px;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
 }
 
 .o_sign_item_option {
     padding: 5px;
+    /* font-size: 12pt; */
+}
+
+.o_sign_option_separator {
+    padding: 5px;
+    /* font-size: 12pt; */
 }
 
 .o_sign_selected_option {
@@ -405,3 +423,13 @@ textarea.o_sign_sign_item {
     height: 30px;
     padding: 0px 20px 0px 20px;
 }
+
+.o_sign_close_button {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    float: right;
+    line-height: 1;
+    text-shadow: 0 1px 0 #FFFFFF;
+    opacity: .5;
+  }

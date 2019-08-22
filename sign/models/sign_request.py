@@ -16,7 +16,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from werkzeug.urls import url_join
 from random import randint
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, http, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 def _fix_image_transparency(image):
@@ -45,7 +45,6 @@ class SignRequest(models.Model):
     def _default_access_token(self):
         return str(uuid.uuid4())
 
-    @api.model
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).state.selection]
 
@@ -56,7 +55,7 @@ class SignRequest(models.Model):
 
     request_item_ids = fields.One2many('sign.request.item', 'sign_request_id', string="Signers")
     state = fields.Selection([
-        ("sent", "Signatures in Progress"),
+        ("sent", "Sent"),
         ("signed", "Fully Signed"),
         ("canceled", "Canceled")
     ], default='sent', tracking=True, group_expand='_expand_states')
@@ -66,7 +65,9 @@ class SignRequest(models.Model):
     nb_wait = fields.Integer(string="Sent Requests", compute="_compute_count", store=True)
     nb_closed = fields.Integer(string="Completed Signatures", compute="_compute_count", store=True)
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
-    progress = fields.Integer(string="Progress", compute="_compute_count")
+    progress = fields.Char(string="Progress", compute="_compute_count")
+    start_sign = fields.Boolean(string="", help="At least one signer has signed the document.", compute="_compute_count")
+    integrity = fields.Boolean(string="Integrity of the Sign request", compute='compute_hashes')
 
     active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
@@ -74,6 +75,9 @@ class SignRequest(models.Model):
     color = fields.Integer()
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
+
+    sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
+
 
     @api.depends('request_item_ids.state')
     def _compute_count(self):
@@ -87,10 +91,8 @@ class SignRequest(models.Model):
             rec.nb_wait = wait
             rec.nb_closed = closed
             rec.nb_total = wait + closed
-            if rec.nb_wait + rec.nb_closed <= 0:
-                rec.progress = 0
-            else:
-                rec.progress = rec.nb_closed*100 / (rec.nb_total)
+            rec.start_sign = bool(closed)
+            rec.progress = "{} / {}".format(wait, wait + closed)
 
     @api.depends('request_item_ids.state', 'request_item_ids.partner_id.name')
     def _compute_request_item_infos(self):
@@ -127,7 +129,7 @@ class SignRequest(models.Model):
             },
         }
 
-    def open_sign_request(self):
+    def open_request(self):
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
@@ -147,6 +149,24 @@ class SignRequest(models.Model):
             'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': self.id, 'access_token': self.access_token},
         }
 
+    def open_logs(self):
+        self.ensure_one()
+        return {
+            "name": _("Access History"),
+            "type": "ir.actions.act_window",
+            "res_model": "sign.log",
+            'view_mode': 'tree,form',
+            'domain': [('sign_request_id', '=', self.id)],
+        }
+
+    @api.onchange("progress", "start_sign")
+    def compute_hashes(self):
+        for document in self:
+            try:
+                document.integrity = self.sign_log_ids._check_document_integrity()
+            except Exception:
+                document.integrity = False
+
     def toggle_favorited(self):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
@@ -164,6 +184,13 @@ class SignRequest(models.Model):
         for sign_request in self:
             for sign_request_item in sign_request.request_item_ids:
                 sign_request_item.write({'state':'sent'})
+                Log = http.request.env['sign.log'].sudo()
+                vals = Log._prepare_vals_from_request(sign_request)
+                vals.update({
+                    'action': 'create',
+                })
+                vals = Log._update_vals_with_http_request(vals)
+                Log.create(vals)
 
     def action_sent(self, subject=None, message=None):
         # Send accesses by email
@@ -176,6 +203,13 @@ class SignRequest(models.Model):
             included_request_items = sign_request.request_item_ids.filtered(lambda r: not r.partner_id or r.partner_id.id not in ignored_partners)
 
             if sign_request.send_signature_accesses(subject, message, ignored_partners=ignored_partners):
+                Log = http.request.env['sign.log'].sudo()
+                vals = Log._prepare_vals_from_request(sign_request)
+                vals.update({
+                    'action': 'create',
+                })
+                vals = Log._update_vals_with_http_request(vals)
+                Log.create(vals)
                 followers = sign_request.message_follower_ids.mapped('partner_id')
                 followers -= sign_request.create_uid.partner_id
                 followers -= sign_request.request_item_ids.mapped('partner_id')
@@ -189,7 +223,7 @@ class SignRequest(models.Model):
         self.write({'state': 'signed'})
         self.env.cr.commit()
         if not self.check_is_encrypted():
-            #if the file is encrypted, we must wait that the document is decrypted
+            # if the file is encrypted, we must wait that the document is decrypted
             self.send_completed_document()
 
     def check_is_encrypted(self):
@@ -287,7 +321,24 @@ class SignRequest(models.Model):
                 'res_model': self._name,
                 'res_id': self.id,
             })
-
+            
+            pdf_writer = PdfFileWriter()
+            report_action = self.env.ref('sign.action_sign_request_print_logs')
+            pdf_content, __ = report_action.render_qweb_pdf(self.id)
+            reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
+            for page in range(reader.getNumPages()):
+                pdf_writer.addPage(reader.getPage(page))
+            _buffer = io.BytesIO()
+            pdf_writer.write(_buffer)
+            merged_pdf = _buffer.getvalue()
+            _buffer.close()
+            attachment_log = self.env['ir.attachment'].create({
+                'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
+                'datas': base64.b64encode(merged_pdf),
+                'type': 'binary',
+                'res_model': self._name,
+                'res_id': self.id,
+            })
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
@@ -296,7 +347,8 @@ class SignRequest(models.Model):
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
                  'subject': _('%s has been signed') % self.reference,
-                 'attachment_ids': [(4, attachment.id)]}
+                 'attachment_ids': [(4, attachment.id), (4, attachment_log.id)]},
+                force_send=True
             )
 
         tpl = self.env.ref('sign.sign_template_mail_completed')
@@ -437,15 +489,21 @@ class SignRequest(models.Model):
         output.close()
 
     @api.model
-    def _message_send_mail(self, body, notif_template_xmlid, message_values, notif_values, mail_values, **kwargs):
+    def _message_send_mail(self, body, notif_template_xmlid, message_values, notif_values, mail_values, force_send=False, **kwargs):
         """ Shortcut to send an email. """
+        # the notif layout wrapping expects a mail.message record, but we don't want
+        # to actually create the record
+        # See @tde-banana-odoo for details
         msg = self.env['mail.message'].sudo().new(dict(body=body, **message_values))
 
         notif_layout = self.env.ref(notif_template_xmlid)
         body_html = notif_layout.render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
         body_html = self.env['mail.thread']._replace_local_links(body_html)
 
-        return self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
+        mail = self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
+        if force_send:
+            mail.send()
+        return mail
 
     @api.model
     def initialize_new(self, id, signers, followers, reference, subject, message, send=True, without_mail=False):
@@ -488,8 +546,9 @@ class SignRequestItem(models.Model):
     def _default_access_token(self):
         return str(uuid.uuid4())
 
-    partner_id = fields.Many2one('res.partner', string="Partner", ondelete='cascade')
+    partner_id = fields.Many2one('res.partner', string="Contact", ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
+    sign_item_value_ids = fields.One2many('sign.item.value', 'sign_request_item_id', string="Value")
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
     role_id = fields.Many2one('sign.item.role', string="Role")
@@ -552,7 +611,8 @@ class SignRequestItem(models.Model):
                 {'email_from': formataddr((signer.create_uid.name, signer.create_uid.email)),
                  'author_id': signer.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
-                 'subject': subject}
+                 'subject': subject},
+                force_send=True
             )
 
     def sign(self, signature):
@@ -575,7 +635,8 @@ class SignRequestItem(models.Model):
             for itemId in signature:
                 item_value = SignItemValue.search([('sign_item_id', '=', int(itemId)), ('sign_request_id', '=', request.id)])
                 if not item_value:
-                    item_value = SignItemValue.create({'sign_item_id': int(itemId), 'sign_request_id': request.id, 'value': signature[itemId]})
+                    item_value = SignItemValue.create({'sign_item_id': int(itemId), 'sign_request_id': request.id,
+                                                       'value': signature[itemId], 'sign_request_item_id': self.id})
                     if item_value.sign_item_id.type_id.item_type == 'signature':
                         self.signature = signature[itemId][signature[itemId].find(',')+1:]
                         if user:

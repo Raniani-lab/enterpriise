@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+    <!-- Signature Request Template Views -->
     <record id="sign_template_view_kanban" model="ir.ui.view">
         <field name="name">sign.template.kanban</field>
         <field name="model">sign.template</field>
         <field name="arch" type="xml">
-            <kanban quick_create="false" class="o_sign_template_kanban">
+            <kanban quick_create="false" class="o_kanban_dashboard">
                 <field name="active"/>
                 <field name="attachment_id"/>
                 <field name="color"/>
@@ -15,37 +15,42 @@
                 <field name="create_uid"/>
 
                 <templates>
-                    <div t-name="kanban-box" t-attf-class="oe_kanban_global_click {{!selection_mode ? kanban_color(record.color.raw_value) : ''}}">
-                        <div class="o_kanban_title clearfix">
+                    <div t-name="kanban-box" t-attf-class="oe_kanban_global_click {{kanban_color(record.color.raw_value)}}">
+                        <div class="o_kanban_record_top">
+                            <div class="o_kanban_record_headings">
+                                <div class="o_kanban_record_title">
+                                <a type="object" name="toggle_favorited" aria-label="Not in favorites, set it" title="Not in favorites, add it"
+                                    class="fa fa-lg fa-star-o favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0" groups="sign.group_sign_manager" />
+                                <a type="object" name="toggle_favorited" aria-label="In favorites, remove it" title="In favorites, remove it"
+                                    class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) == 0"/>
+                                <span><field name="display_name"/>.<field name="extension"/></span>
+                                </div>
+                            </div>
                             <div class="o_dropdown_kanban dropdown">
                                 <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                    <span class="fa fa-bars fa-lg"/>
+                                    <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
                                     <t t-if="widget.editable" groups="base.group_no_one"><a role="menuitem" type="edit" class="dropdown-item">Properties</a></t>
-                                    <a role="menuitem" type="object" name="go_to_custom_template" class="dropdown-item">Edit Fields</a>
+                                    <a role="menuitem" type="object" name="go_to_custom_template" class="dropdown-item" context="{'sign_edit_call': 'sign_template_edit'}">Edit Fields</a>
+                                     <a role="menuitem" type="object" name="open_requests" class="dropdown-item">Sign Requests</a>
                                     <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
                                         <t t-if="!record.active.raw_value">Restore</t>
                                         <t t-if="record.active.raw_value">Archive</t>
                                     </a>
-                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
-                                    <ul role="menu" class="oe_kanban_colorpicker" data-field="color"/>
+                                <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                <ul role="menu" class="oe_kanban_colorpicker" data-field="color"/>
                                 </div>
                             </div>
-                            <a type="object" name="toggle_favorited" aria-label="Not in favorites, set it" title="Not in favorites, add it"
-                                class="fa fa-lg fa-star-o favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0" groups="sign.group_sign_manager" />
-                            <a type="object" name="toggle_favorited" aria-label="In favorites, remove it" title="In favorites, remove it"
-                                class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) == 0"/>
-                            <span><field name="attachment_id"/><field name="extension"/></span>
                         </div>
-                        <div class="oe_kanban_content">
+                        <div class="o_kanban_record_body">
                             <em><field name="create_date"/></em>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </div>
                         <div class="o_kanban_record_bottom">
                             <div class="oe_kanban_bottom_left">
                                 <button name="%(sign.action_sign_send_request)d" type="action" class="btn btn-primary btn-sm mt8 o_kanban_sign_send_request" context="{'sign_directly_without_mail': 0}">Send</button>
-                                <button name="%(sign.action_sign_send_request)d" type="action" class="btn btn-primary btn-sm mt8 o_kanban_sign_directly" context="{'sign_directly_without_mail': 1}">Sign Directly</button>
+                                <button name="%(sign.action_sign_send_request)d" type="action" class="btn btn-primary btn-sm mt8 o_kanban_sign_directly" context="{'sign_directly_without_mail': 1}">Sign Now</button>
                                 <button name="%(sign.action_sign_template_share)d" type="action" class="btn btn-sm mt8" attrs="{'invisible': [('responsible_count', '&gt;', 1)]}">Share</button>
                             </div>
                             <div class="oe_kanban_bottom_right">
@@ -77,7 +82,6 @@
             <form create="false">
                 <header>
                     <button name="%(sign.action_sign_send_request)d" string="Send" type="action" class="oe_highlight" context="{'sign_directly_without_mail': 0}"/>
-                    <button name="%(sign.action_sign_send_request)d" string="Sign Directly" type="action" class="oe_highlight" context="{'sign_directly_without_mail': 1}"/>
                     <button name="%(sign.action_sign_template_share)d" string="Share" type="action" attrs="{'invisible': [('responsible_count', '&gt;', 1)]}"/>
                 </header>
                 <sheet>
@@ -87,10 +91,8 @@
                     <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <h1>
-                            <label for="name"/>
                             <div class="o_row">
-                                <field name="name"  placeholder="Name for the file" nolabel="1"/>
-                                <field name="extension" nolabel="1"/>
+                                <field name="name"  placeholder="Name of the file" nolabel="1"/>
                             </div>
                         </h1>
                     </div>
@@ -102,6 +104,7 @@
                             <field name="responsible_count" invisible="1"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags"/>
                             <field name="redirect_url" widget="url"/>
+                            <field name="redirect_url_text"  attrs="{'invisible':[('redirect_url','=','')]}"/>
                             <field name="privacy"/>
                             <field name="favorited_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
@@ -125,7 +128,7 @@
         <field name="model">sign.template</field>
         <field name="arch" type="xml">
             <search>
-                <field name="attachment_id"/>
+                <field name="attachment_id" string="Document Name"/>
                 <field name="tag_ids"/>
                 <filter name="my_templates" string="My Templates" domain="[('create_uid', '=', uid)]"/>
                 <filter name="favorite" string="My Favorites" domain="[('favorited_ids', '=', uid)]"/>
@@ -285,6 +288,7 @@
                     </div>
                     <group>
                         <field name="sms_authentification"/>
+                        <button type="object" name="buy_credits" string="Buy SMS credit" class="btn-primary"></button>
                     </group>
                 </sheet>
             </form>

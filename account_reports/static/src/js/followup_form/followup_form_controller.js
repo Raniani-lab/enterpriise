@@ -8,6 +8,14 @@ var _t = core._t;
 var QWeb = core.qweb;
 
 var FollowupFormController = FormController.extend({
+    events: {
+        ...FormController.prototype.events,
+        'click .o_account_reports_followup_print_letter_button': '_onPrintLetter',
+        'click .o_account_reports_followup_send_mail_button': '_onSendMail',
+        'click .o_account_reports_followup_do_it_later_button': '_onDoItLater',
+        'click .o_account_reports_followup_done_button': '_onDone',
+        'click .o_account_reports_followup_reconcile': '_onReconcile',
+    },
     custom_events: _.extend({}, FormController.prototype.custom_events, {
         expected_date_changed: '_onExpectedDateChanged',
         next_action_date_changed: '_onNextActionDateChanged',
@@ -39,21 +47,6 @@ var FollowupFormController = FormController.extend({
         this.$buttons = $(QWeb.render("CustomerStatements.buttons", {
             widget: this
         }));
-        this.$buttons.on('click',
-            '.o_account_reports_followup_print_letter_button',
-            this._onPrintLetter.bind(this));
-        this.$buttons.on('click',
-            '.o_account_reports_followup_send_mail_button',
-            this._onSendMail.bind(this));
-        this.$buttons.on('click',
-            '.o_account_reports_followup_do_it_later_button',
-            this._onDoItLater.bind(this));
-        this.$buttons.on('click',
-            '.o_account_reports_followup_done_button',
-            this._onDone.bind(this));
-        this.$buttons.on('click',
-            '.o_account_reports_followup_reconcile',
-            this._onReconcile.bind(this));
         this.$buttons.appendTo($node);
     },
 

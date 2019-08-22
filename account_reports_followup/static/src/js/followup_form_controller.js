@@ -1,38 +1,12 @@
 odoo.define('accountReportsFollowup.FollowupFormController', function (require) {
 "use strict";
 
-var core = require('web.core');
 var FollowupFormController = require('accountReports.FollowupFormController');
 
-var QWeb = core.qweb;
-
 FollowupFormController.include({
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-
-    /**
-     * @override
-     */
-    renderButtons: function ($node) {
-        this.$buttons = $(QWeb.render("CustomerStatements.buttonsWithLevels", {
-            widget: this,
-            action_name: this.model.get(this.handle).data.followup_level.manual_action_note
-        }));
-        this.$buttons.on('click', '.o_account_reports_followup_print_letter_button',
-            this._onPrintLetter.bind(this));
-        this.$buttons.on('click', '.o_account_reports_followup_send_mail_button',
-            this._onSendMail.bind(this));
-        this.$buttons.on('click', '.o_account_reports_followup_manual_action_button',
-            this._onManualAction.bind(this));
-        this.$buttons.on('click', '.o_account_reports_followup_do_it_later_button',
-            this._onDoItLater.bind(this));
-        this.$buttons.on('click', '.o_account_reports_followup_done_button',
-            this._onDone.bind(this));
-        this.$buttons.on('click', '.o_account_reports_followup_reconcile',
-            this._onReconcile.bind(this));
-        this.$buttons.appendTo($node);
+    events: {
+        ...FollowupFormController.prototype.events,
+        'click .o_account_reports_followup_manual_action_button': '_onManualAction',
     },
 
     //--------------------------------------------------------------------------
@@ -53,34 +27,25 @@ FollowupFormController.include({
      * @private
      */
     _updateButtons: function () {
+        let setButtonClass = (button, primary) => {
+            /* Set class 'btn-primary' if parameter `primary` is true
+             * 'btn-secondary' otherwise
+             */
+            let addedClass = primary ? 'btn-primary' : 'btn-secondary'
+            let removedClass = !primary ? 'btn-secondary' : 'btn-primary'
+            this.$buttons.find(`button.${button}`)
+                .removeClass(removedClass).addClass(addedClass);
+        }
         if (!this.$buttons) {
             return;
         }
         var followupLevel = this.model.get(this.handle).data.followup_level;
-        if (followupLevel.print_letter) {
-            this.$buttons.find('button.o_account_reports_followup_print_letter_button')
-                .removeClass('btn-secondary').addClass('btn-primary');
-        } else {
-            this.$buttons.find('button.o_account_reports_followup_print_letter_button')
-                .removeClass('btn-primary').addClass('btn-secondary');
-        }
-        if (followupLevel.send_email) {
-            this.$buttons.find('button.o_account_reports_followup_send_mail_button')
-                .removeClass('btn-secondary').addClass('btn-primary');
-        } else {
-            this.$buttons.find('button.o_account_reports_followup_send_mail_button')
-                .removeClass('btn-primary').addClass('btn-secondary');
-        }
+        setButtonClass('o_account_reports_followup_print_letter_button', followupLevel.print_letter)
+        setButtonClass('o_account_reports_followup_send_mail_button', followupLevel.send_email)
         if (followupLevel.manual_action) {
             this.$buttons.find('button.o_account_reports_followup_manual_action_button')
                 .html(followupLevel.manual_action_note);
-            if (!followupLevel.manual_action_done) {
-                this.$buttons.find('button.o_account_reports_followup_manual_action_button')
-                    .removeClass('btn-secondary').addClass('btn-primary');
-            } else {
-                this.$buttons.find('button.o_account_reports_followup_manual_action_button')
-                    .removeClass('btn-primary').addClass('btn-secondary');
-            }
+            setButtonClass('o_account_reports_followup_manual_action_button', !followupLevel.manual_action_done)
         } else {
             this.$buttons.find('button.o_account_reports_followup_manual_action_button').hide();
         }

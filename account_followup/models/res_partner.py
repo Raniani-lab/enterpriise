@@ -72,7 +72,13 @@ class ResPartner(models.Model):
 
     def _compute_unpaid_invoices(self):
         for record in self:
-            record.unpaid_invoices = self.env['account.move'].search([('commercial_partner_id', '=', record.id), ('state', '=', 'posted'), ('invoice_payment_state', '!=', 'paid'), ('type', 'in', self.env['account.move'].get_sale_types())])
+            record.unpaid_invoices = self.env['account.move'].search([
+                ('company_id', '=', self.env.company.id),
+                ('commercial_partner_id', '=', record.id),
+                ('state', '=', 'posted'),
+                ('invoice_payment_state', '!=', 'paid'),
+                ('type', 'in', self.env['account.move'].get_sale_types())
+            ])
 
     def get_next_action(self, followup_line):
         """

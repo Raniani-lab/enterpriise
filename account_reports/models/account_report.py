@@ -813,6 +813,10 @@ class AccountReport(models.AbstractModel):
     def _get_columns_name_hierarchy(self, options):
         return []
 
+    # TO BE OVERWRITTEN
+    def _get_columns_name(self, options):
+        return []
+
     #TO BE OVERWRITTEN
     def _get_lines(self, options, line_id=None):
         return []

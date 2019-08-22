@@ -90,8 +90,7 @@ class Base(models.AbstractModel):
                     # generate de novo domain for the cell
                     # The domain of the cell is the combination of the domain of the row, the
                     # column and the view.
-                    d = expression.AND([r['domain'], c['domain'], domain])
-                    row.append(self._grid_make_empty_cell(d))
+                    row.append(self._grid_make_empty_cell(r['domain'], c['domain'], domain))
                 row[-1]['is_current'] = c.get('is_current', False)
 
         return {
@@ -103,7 +102,8 @@ class Base(models.AbstractModel):
             'grid': grid,
         }
 
-    def _grid_make_empty_cell(self, cell_domain):
+    def _grid_make_empty_cell(self, row_domain, column_domain, view_domain):
+        cell_domain = expression.AND([row_domain, column_domain, view_domain])
         return {'size': 0, 'domain': cell_domain, 'value': 0}
 
     def _grid_format_cell(self, group, cell_field, readonly_field):

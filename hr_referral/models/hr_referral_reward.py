@@ -47,7 +47,7 @@ class HrReferralReward(models.Model):
         points = sum(current_employee.referral_point_ids.mapped('points'))
 
         if points < self.cost:
-            raise UserError(_("You have not enough points to buy this product."))
+            raise UserError(_("You do not have enough points to buy this product."))
 
         # Use sudo, employee has normaly not the right to create or write on points
         self.env['hr.referral.points'].sudo().create({

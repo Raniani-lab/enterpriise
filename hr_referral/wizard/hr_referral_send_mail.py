@@ -36,9 +36,9 @@ class HrReferralSendMail(models.TransientModel):
     @api.onchange('job_id', 'url')
     def _onchange_body_html(self):
         if not self.job_id:
-            self.body_html = _('Hello,<br><br>Amazing job offers in my company! Have a look, they can be interesting for you<br>%s') % (self.url)
+            self.body_html = _('Hello,<br><br>There are some amazing job offers in my company! Have a look, they  can be interesting for you<br>%s') % (self.url)
         else:
-            self.body_html = _('Hello,<br><br>Amazing job offer of %s in my company! It will be fit for you<br>%s') % (self.job_id.name, self.url)
+            self.body_html = _('Hello,<br><br>There is an amazing job offer for %s in my company! It will be a fit for you<br>%s') % (self.job_id.name, self.url)
 
     def send_mail_referral(self):
         if not self.env.user.has_group('base.group_user'):

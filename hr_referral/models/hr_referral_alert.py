@@ -15,7 +15,7 @@ class HrReferralAlert(models.Model):
         ('url', 'Specify URL')
     ], string="On Click", default='no', required=True)
     url = fields.Char(string="URL",
-        help="External links must start with 'http://www.'. For internal url, you don't need to put domain name, you can just insert the path.")
+        help="External links must start with 'http://www.'. For an internal url, you don't need to put domain name, you can just insert the path.")
     date_from = fields.Date()
     date_to = fields.Date()
     active = fields.Boolean(default=True)

@@ -273,4 +273,4 @@ class Applicant(models.Model):
 class RecruitmentStage(models.Model):
     _inherit = "hr.recruitment.stage"
 
-    points = fields.Integer('Points', help="Amount of points that the referent will received when the applicant will reach this stage")
+    points = fields.Integer('Points', help="Amount of points that the referent will receive when the applicant will reach this stage")

@@ -12,9 +12,9 @@ class HrReferralFriend(models.Model):
     position = fields.Selection([
         ('front', 'Front'),
         ('back', 'Back')
-    ], required=True, default='back',help="Define the position of the friend. If it's a small friend like a dog, you must select Front, it will be placed in the front of the dashboard, above superhero. This heroe will have the half of the normal size.")
+    ], required=True, default='back',help="Define the position of the friend. If it's a small friend like a dog, you must select Front, it will be placed in the front of the dashboard, above superhero. This hero will have half of the normal size.")
     company_id = fields.Many2one('res.company', 'Company')
     image = fields.Binary("Dashboard Image", required=True,
-        help="This field holds the image used as image for the friend on dashboard, limited to 1024x1024px.")
+        help="This field holds the image used as image for the friend on the dashboard, limited to 1024x1024px.")
     image_head = fields.Binary("Image", required=True,
         help="This field holds the image used as image for the head's friend when the user must choose a new friend, limited to 1024x1024px.")

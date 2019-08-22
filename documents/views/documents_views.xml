@@ -681,7 +681,7 @@
         <search>
             <field name="name"/>
             <field name="tag_ids"/>
-            <field name="folder_id" string="Workspace"/>
+            <field name="folder_id"/>
             <group expand="0" string="Group By">
                 <filter string="Workspace" name="group_by_folder" domain="[]" context="{'group_by': 'folder_id'}"/>
             </group>
@@ -740,7 +740,7 @@
         <field name="model">documents.facet</field>
         <field name="arch" type="xml">
             <tree default_order="sequence">
-                <field name="folder_id" string="Workspace"/>
+                <field name="folder_id"/>
                 <field name="name" string="Category"/>
                 <field name="tag_ids" string="Tags" widget="many2many_tags"/>
             </tree>

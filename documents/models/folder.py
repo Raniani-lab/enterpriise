@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 
 class DocumentFolder(models.Model):
     _name = 'documents.folder'
-    _description = 'Documents Folder'
+    _description = 'Documents Workspace'
     _parent_name = 'parent_folder_id'
     _order = 'sequence'
 

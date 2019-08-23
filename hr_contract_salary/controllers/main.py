@@ -230,6 +230,7 @@ class website_hr_contract_salary(http.Controller):
         values.update(self._get_documents_src(contract.employee_id))
         response = request.render("hr_contract_salary.salary_package", values)
         response.flatten()
+        request.env['hr.contract'].flush()
         request.env.cr.execute('ROLLBACK TO SAVEPOINT salary')
         return response
 

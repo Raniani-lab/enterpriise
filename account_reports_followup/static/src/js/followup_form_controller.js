@@ -42,6 +42,7 @@ FollowupFormController.include({
         var followupLevel = this.model.get(this.handle).data.followup_level;
         setButtonClass('o_account_reports_followup_print_letter_button', followupLevel.print_letter)
         setButtonClass('o_account_reports_followup_send_mail_button', followupLevel.send_email)
+        setButtonClass('o_account_reports_followup_send_sms_button', followupLevel.send_sms)
         if (followupLevel.manual_action) {
             this.$buttons.find('button.o_account_reports_followup_manual_action_button')
                 .html(followupLevel.manual_action_note);
@@ -102,6 +103,16 @@ FollowupFormController.include({
      */
     _onSendMail: function () {
         this.model.doSendMail(this.handle);
+        this._super.apply(this, arguments);
+    },
+    /**
+     * Send the sms server-side.
+     *
+     * @override
+     * @private
+     */
+    _onSendSMS() {
+        this.model.doSendSMS(this.handle);
         this._super.apply(this, arguments);
     },
 });

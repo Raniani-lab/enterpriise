@@ -29,6 +29,7 @@ class FollowupLine(models.Model):
     delay = fields.Integer('Due Days', required=True,
                            help="The number of days after the due date of the invoice to wait before sending the reminder.  Could be negative if you want to send a polite alert beforehand.")
     followup_id = fields.Many2one('account_followup.followup', 'Follow Ups', required=True, ondelete="cascade")
+    sms_description = fields.Char('SMS Text Message', translate=True, default="Dear %(partner_name)s, it seems that some of your payments stay unpaid")
     description = fields.Text('Printed Message', translate=True, default="""
         Dear %(partner_name)s,
 
@@ -40,6 +41,7 @@ Best Regards,
 """)
     send_email = fields.Boolean('Send an Email', help="When processing, it will send an email", default=True)
     print_letter = fields.Boolean('Print a Letter', help="When processing, it will print a PDF", default=True)
+    send_sms = fields.Boolean('Send an SMS Text Message', help="When processing, it will send an sms text message", default=False)
     manual_action = fields.Boolean('Manual Action', help="When processing, it will set the manual action to be taken for that customer. ", default=False)
     manual_action_note = fields.Text('Action To Do', placeholder="e.g. Give a phone call, check with others , ...")
     manual_action_type_id = fields.Many2one('mail.activity.type', 'Manual Action Type', default=False)
@@ -47,12 +49,13 @@ Best Regards,
 
     _sql_constraints = [('days_uniq', 'unique(followup_id, delay)', 'Days of the follow-up levels must be different')]
 
-    @api.constrains('description')
+    @api.constrains('description', 'sms_description')
     def _check_description(self):
         for line in self:
             if line.description:
                 try:
                     line.description % {'partner_name': '', 'date':'', 'user_signature': '', 'company_name': ''}
+                    line.sms_description % {'partner_name': '', 'date':'', 'user_signature': '', 'company_name': ''}
                 except:
                     raise Warning(_('Your description is invalid, use the right legend or %% if you want to use the percent character.'))
 

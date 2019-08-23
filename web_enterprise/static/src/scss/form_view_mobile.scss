@@ -6,6 +6,11 @@
             padding: 16px;
         }
 
+        .o_form_sheet_bg > .o_form_sheet {
+            border-left: 0;
+            border-right: 0;
+        }
+
         .o_form_label:not(.o_invisible_modifier) {
             padding-bottom: 4px;
         }

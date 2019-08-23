@@ -7,10 +7,11 @@ var widgetRegistry = require('web.widget_registry');
 var Widget = require('web.Widget');
 var DeviceProxy = require('iot.widgets').DeviceProxy;
 var PrinterProxy = require('pos_iot.Printer');
+var AbstractAction = require('web.AbstractAction');
 
 var _t = core._t;
 
-var CloseSession = Widget.extend({
+var CloseSession = AbstractAction.extend({
     template: 'CloseSession',
     events: {
         'click': '_onClickCloseSession',
@@ -70,11 +71,12 @@ var CloseSession = Widget.extend({
      * Calls the method specified in this.action on the current pos.session
      */
     _performAction: function () {
+        var self = this;
         return this._rpc({
             model: 'pos.session',
             method: this.attrs.action,
             args: [this.data.id],
-        });
+        }).then(self.do_action);
 
     },
 
@@ -94,7 +96,7 @@ var CloseSession = Widget.extend({
                 self.terminal.action({ messageType: 'Balance' })
                     .then(self._onTerminalActionResult.bind(self));
             } else {
-                self._performAction().then(self.trigger_up.bind(self, 'reload'));
+                self._performAction();
             }
         });
     },
@@ -102,7 +104,7 @@ var CloseSession = Widget.extend({
     /**
      * Processes the return value of an action sent to the terminal
      *
-     * @param {Object} data 
+     * @param {Object} data
      * @param {boolean} data.result
      */
     _onTerminalActionResult: function (data) {
@@ -129,9 +131,8 @@ var CloseSession = Widget.extend({
         } else if (data.TicketMerchant && this.printer) {
             this.printer.print_receipt("<div class='pos-receipt'><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
         }
-
-        this._performAction().then(self.trigger_up.bind(self, 'reload'));
         this.terminal.remove_listener();
+        this._performAction();
     },
 });
 

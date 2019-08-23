@@ -13,6 +13,7 @@ var _lt = core._lt;
 
 var GridView = AbstractView.extend({
     display_name: _lt('Grid'),
+    mobile_friendly: true,
     icon: 'fa-th',
     config: _.extend({}, AbstractView.prototype.config, {
         Model: GridModel,

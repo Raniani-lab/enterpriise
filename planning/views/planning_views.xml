@@ -11,6 +11,7 @@
                 <field name="start_datetime"/>
                 <field name="end_datetime"/>
                 <field name="allocated_hours" widget="float_time"/>
+                <field name="allocated_percentage" groups="planning.group_planning_show_percentage"/>
             </tree>
         </field>
     </record>
@@ -53,7 +54,7 @@
                             <field name="start_datetime" string="Start date"/>
                             <field name="end_datetime" string="End date"/>
                             <field name="allocated_hours" widget="float_time"/>
-                            <field name="allocated_percentage"/>
+                            <field name="allocated_percentage" groups="planning.group_planning_show_percentage"/>
                         </group>
                     </group>
                     <group>
@@ -164,6 +165,7 @@
                 <field name="publication_warning"/>
                 <field name="employee_id"/>
                 <field name="overlap_slot_count"/>
+                <field name="allocated_percentage"/>
                 <templates>
                     <div t-name="gantt-popover" class="container-fluid">
                         <div class="row no-gutters">
@@ -182,6 +184,20 @@
                     </div>
                 </templates>
             </gantt>
+        </field>
+    </record>
+
+    <record id="planning_view_gantt_inherit" model="ir.ui.view">
+        <field name="name">planning.slot.gantt.inherit</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="planning.planning_view_gantt"/>
+        <field name="groups_id" eval="[(4,ref('planning.group_planning_show_percentage'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//li[@id='allocated_hours']" position="after">
+                <t t-if="allocated_percentage != 100">
+                    <li><strong>Allocated Time (%): </strong> <t t-esc="Math.round(allocated_percentage)"/></li>
+                </t>
+            </xpath>
         </field>
     </record>
 

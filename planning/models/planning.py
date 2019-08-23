@@ -50,9 +50,13 @@ class Planning(models.Model):
     is_assigned_to_me = fields.Boolean('Is this shift assigned to the current user', compute='_compute_is_assigned_to_me')
     overlap_slot_count = fields.Integer('Overlapping slots', compute='_compute_overlap_slot_count')
 
-    # forecast allocation
-    allocated_hours = fields.Float("Allocated hours", default=0)
-    allocated_percentage = fields.Float("Allocated Time (%)", compute='_compute_allocated_percentage', compute_sudo=True, store=True, help="Expressed in the Unit of Measure of the project company")
+    # time allocation
+    allocation_type = fields.Selection([
+        ('planning', 'Planning'),
+        ('forecast', 'Forecast')
+    ], compute='_compute_allocation_type')
+    allocated_hours = fields.Float("Allocated hours", default=0, compute='_compute_allocated_hours', store=True)
+    allocated_percentage = fields.Float("Allocated Time (%)", default=100, help="Percentage of time the employee is supposed to work during the shift.")
 
     # publication and sending
     is_published = fields.Boolean("Is the shift sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
@@ -73,17 +77,25 @@ class Planning(models.Model):
         for slot in self:
             slot.is_assigned_to_me = slot.user_id == self.env.user
 
-    @api.depends('allocated_hours', 'start_datetime', 'end_datetime', 'employee_id.resource_calendar_id')
-    def _compute_allocated_percentage(self):
-        for planning in self:
-            if planning.employee_id:
-                hours = planning.employee_id._get_work_days_data(planning.start_datetime, planning.end_datetime, compute_leaves=True)['hours']
-                if hours > 0:
-                    planning.allocated_percentage = planning.allocated_hours * 100.0 / hours
-                else:
-                    planning.allocated_percentage = 0  # allow to create a forecast for a day you are not supposed to work
+    @api.depends('start_datetime', 'end_datetime')
+    def _compute_allocation_type(self):
+        for slot in self:
+            if (slot.end_datetime - slot.start_datetime).total_seconds() / 3600.0 < 24:
+                slot.allocation_type = 'planning'
             else:
-                planning.allocated_percentage = 0
+                slot.allocation_type = 'forecast'
+
+    @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id', 'allocated_percentage')
+    def _compute_allocated_hours(self):
+        for slot in self:
+            percentage = slot.allocated_percentage / 100.0 or 1
+            if slot.allocation_type == 'planning':
+                slot.allocated_hours = (slot.end_datetime - slot.start_datetime).total_seconds() * percentage / 3600.0
+            else:
+                if slot.employee_id:
+                    slot.allocated_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours'] * percentage
+                else:
+                    slot.allocated_hours = 0.0
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_overlap_slot_count(self):
@@ -141,11 +153,6 @@ class Planning(models.Model):
                     'message': _("This action will remove the current shift from the recurrency. Are you sure you want to continue?"),
                 }
             }
-
-    @api.onchange('employee_id', 'start_datetime', 'end_datetime')
-    def _onchange_employee_and_dates(self):
-        if self.employee_id and self.start_datetime and self.end_datetime:
-            self.allocated_hours = self.employee_id._get_work_days_data(self.start_datetime, self.end_datetime, compute_leaves=True)['hours']
 
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):

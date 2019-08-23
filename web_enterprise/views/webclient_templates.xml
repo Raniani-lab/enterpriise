@@ -81,6 +81,7 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/menu_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/search_panel_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/swipe_item_mixin.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/core/dialog.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/calendar/calendar_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_view.js"></script>

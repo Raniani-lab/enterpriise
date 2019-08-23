@@ -11,6 +11,31 @@ var view_dialogs = require('web.view_dialogs');
 
 var _t = core._t;
 
+view_dialogs.FormViewDialog.include({
+    /**
+     * @override
+     */
+    init(parent, options) {
+        options.headerButtons = options.headerButtons || [];
+        this._super.apply(this, arguments);
+    },
+    /**
+     * Set the "Remove" button to the dialog's header buttons set
+     *
+     * @override
+     */
+    _setRemoveButtonOption(options, btnClasses) {
+        options.headerButtons.push({
+            text: _t("Remove"),
+            classes: `btn-secondary ${btnClasses}`,
+            click: async () => {
+                await this._remove();
+                this.close();
+            },
+        });
+    },
+});
+
 view_dialogs.SelectCreateDialog.include({
     init: function () {
         this._super.apply(this,arguments);
@@ -23,7 +48,7 @@ view_dialogs.SelectCreateDialog.include({
     _prepareButtons: function () {
         this._super.apply(this, arguments);
         if (this.options.selectionMode) {
-            this.__buttons.unshift({
+            this.headerButtons.push({
                 text: _t("Clear"),
                 classes: 'btn-secondary o_clear_button',
                 close: true,

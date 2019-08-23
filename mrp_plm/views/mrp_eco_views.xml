@@ -280,6 +280,7 @@
                 <field name="product_tmpl_id" string="Product" filter_domain="['|', ('product_tmpl_id', 'ilike', self), ('bom_id', 'ilike', self)]"/>
                 <field name="routing_id"/>
                 <field name="tag_ids"/>
+                <field name="stage_id"/>
                 <group expand="0" string="Filters">
                     <filter name="mychange" string="My Change Orders" domain="[('user_id', '=', uid)]"/>
                     <separator/>
@@ -297,8 +298,6 @@
                     <filter name="routingchange" string="Routing" domain="[('type', 'in', ('routing', 'both'))]"/>
                     <separator/>
                     <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
-                    <separator/>
-                    <filter name="activities_my" string="My Activities" domain="[('activity_ids.user_id', '=', uid)]"/>
                     <separator/>
                     <filter invisible="1" string="Late Activities" name="activities_overdue"
                         domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"

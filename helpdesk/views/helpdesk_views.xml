@@ -314,8 +314,6 @@
                 <separator/>
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
                 <separator/>
-                <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
-                <separator/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
                     domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
                     help="Show all records which has next action date is before today"/>
@@ -327,6 +325,8 @@
                 <separator/>
                 <filter string="Upcoming SLA Fail" domain="[('sla_deadline','!=',False),('sla_deadline', '&lt;=', (datetime.date.today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]" name="upcoming_sla_fail" groups="helpdesk.group_use_sla"/>
                 <filter string="SLA Failed" domain="[('sla_fail','=', True)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
+                <separator/>
+                <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
                 <group expand="0" string="Group By">
                     <filter string="Assigned to" name="assignee" context="{'group_by':'user_id'}"/>
                     <filter string="Team" name="team" context="{'group_by':'team_id'}"/>

@@ -100,12 +100,10 @@
                     ('collaborators_ids.user_id', 'in', [uid]),
                     ('colleagues_ids.user_id', 'in', [uid]),
                 ]"/>
+                <separator/>
                 <filter string="My Appraisals" name="my_appraisals" domain="[('employee_id.user_id', '=', uid)]"/>
                 <separator/>
-                <filter string="My Activities" name="activities_my"
-                    domain="[('activity_ids.user_id', '=', uid)]"/>
-                <separator/>
-                <filter string="Late Appraisals" name="late_appraisals" domain="[('date_close', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Late" name="late_appraisals" domain="[('date_close', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
                     domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
                     help="Show all records which has next action date is before today"/>

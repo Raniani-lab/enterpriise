@@ -39,7 +39,6 @@
                 <field name="type"/>
                 <group expand="0" string="Group By">
                     <filter name="owner" string="Owner" domain="[]" context="{'group_by':'create_uid'}"/>
-                    <filter name="type" string="Type" domain="[]" context="{'group_by':'type'}" groups="base.group_no_one"/>
                     <filter name="by_model" string="Model" domain="[]" context="{'group_by': 'res_model'}"/>
                     <filter name="company" string="Company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
                     <filter name="creation_month" string="Creation Date" domain="[]" context="{'group_by':'create_date'}"/>

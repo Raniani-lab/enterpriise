@@ -10,24 +10,24 @@
                 <t t-set="view_logs" t-value="o.sign_log_ids.filtered(lambda l: l.action == 'open')"/>
                 <t t-set="change_logs" t-value="o.sign_log_ids - view_logs"/>
                 <t t-set="creation_log" t-value="o.sign_log_ids.filtered(lambda l: l.action == 'create')"/>
-                <t t-call="web.external_layout">
-                    <br/>
+                <t t-call="web.external_layout"><br/>
                     <h3>
-                        Access history of <strong t-field="o.reference"/>
+                        Log history of <strong t-field="o.reference"/>
                     </h3>
-                    <div class="text-muted float-right">Printed on <t t-esc="print_date"/> UTC</div>
+                    <br/>
+                    <div class="text-muted float-left">Printed on <t t-esc="print_date"/> UTC</div><br/>
                     <h5>Document Details</h5>
 
                     <div class="row">
                         <div class="col-6">
                             <div><b>Created by:</b> <span t-field="o.create_uid.partner_id"/></div>
                             <div><b>Created on:</b> <span t-field="o.create_date"/> (UTC)</div>
-                            <div><b>Creation IP Address:</b> <span t-esc="creation_log and creation_log[0].IP"/></div>
+                            <div><b>Creation IP Address:</b> <span t-esc="creation_log and creation_log[0].ip"/></div>
                             <div><b>Signers:</b> <span t-esc="len(o.request_item_ids)"/></div>
                         </div>
                         <div class="col-6">
                             <div><b>Document ID:</b> <t t-esc="o.id"/></div>
-                            <div><b>Document signature:</b> <small t-esc="creation_log and creation_log[0].log_hash"/></div>
+                            <div><b>Signature:</b> <small t-esc="creation_log and creation_log[0].log_hash"/></div>
                         </div>
                     </div>
                     <br/>
@@ -37,8 +37,8 @@
                             <tr>
                                 <th class="text-left">Action</th>
                                 <th class="text-left">By</th>
-                                <th class="text-left">Access Date (UTC)</th>
-                                <th class="text-left">Document state</th>
+                                <th class="text-left">Date (UTC)</th>
+                                <th class="text-left">State</th>
                                 <th class="text-left" groups="sign.group_sign_manager">Latitude</th>
                                 <th class="text-left" groups="sign.group_sign_manager">Longitude</th>
                                 <th class="text-left" groups="sign.group_sign_manager">IP</th>
@@ -53,10 +53,18 @@
                                     <td> <span t-field="log.request_state"/> </td>
                                     <td groups="sign.group_sign_manager"> <span t-if="log.latitude" t-field="log.latitude"/> </td>
                                     <td groups="sign.group_sign_manager"> <span t-if="log.longitude" t-field="log.longitude"/> </td>
-                                    <td groups="sign.group_sign_manager"> <span t-field="log.IP"/> </td>
+                                    <td groups="sign.group_sign_manager"> <span t-field="log.ip"/> </td>
                                 </tr>
                                 <tr t-if="log.log_hash">
-                                    <td colspan="7" class="text-right small">Security hash: <pre t-field="log.log_hash"/></td>
+                                    <td colspan="1" class="text-left small" style="border-right-style:hidden;border-left-style:hidden;">
+                                        <span t-if="log.sign_request_item_id.signature"
+                                              class="text-left small" t-field="log.sign_request_item_id.signature"
+                                              t-options='{"widget": "image", "max_height": "40"}'
+                                        />
+                                    </td>
+                                    <td colspan="6" class="text-right small" style="border-right-style:hidden;border-left-style:hidden;">
+                                         Signature: <pre style="display:inline" t-field="log.log_hash"/>
+                                    </td>
                                 </tr>
                             </t>
                         </tbody>
@@ -72,11 +80,11 @@
                         <thead>
                             <tr>
                                 <th class="text-left">Viewed/downloaded by</th>
-                                <th class="text-left">Access Date (UTC)</th>
-                                <th class="text-left">Document state</th>
+                                <th class="text-left">Date (UTC)</th>
+                                <th class="text-left">State</th>
                                 <th class="text-left" groups="sign.group_sign_manager">Latitude</th>
                                 <th class="text-left" groups="sign.group_sign_manager">Longitude</th>
-                                <th class="text-left" groups="sign.group_sign_manager">IP</th>
+                                <th class="text-left" groups="sign.group_sign_manager">ip</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,7 +94,7 @@
                                 <td> <span t-field="log.request_state"/> </td>
                                 <td groups="sign.group_sign_manager"> <span t-if="log.latitude" t-field="log.latitude"/> </td>
                                 <td groups="sign.group_sign_manager"> <span t-if="log.longitude" t-field="log.longitude"/> </td>
-                                <td> <span t-field="log.IP"/> </td>
+                                <td> <span t-field="log.ip"/> </td>
                             </tr>
                         </tbody>
                     </table>

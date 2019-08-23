@@ -67,7 +67,7 @@ class SignRequest(models.Model):
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
     progress = fields.Char(string="Progress", compute="_compute_count")
     start_sign = fields.Boolean(string="", help="At least one signer has signed the document.", compute="_compute_count")
-    integrity = fields.Boolean(string="Integrity of the Sign request", compute='compute_hashes')
+    integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes')
 
     active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
@@ -77,7 +77,6 @@ class SignRequest(models.Model):
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
-
 
     @api.depends('request_item_ids.state')
     def _compute_count(self):
@@ -160,7 +159,7 @@ class SignRequest(models.Model):
         }
 
     @api.onchange("progress", "start_sign")
-    def compute_hashes(self):
+    def _compute_hashes(self):
         for document in self:
             try:
                 document.integrity = self.sign_log_ids._check_document_integrity()
@@ -186,9 +185,7 @@ class SignRequest(models.Model):
                 sign_request_item.write({'state':'sent'})
                 Log = http.request.env['sign.log'].sudo()
                 vals = Log._prepare_vals_from_request(sign_request)
-                vals.update({
-                    'action': 'create',
-                })
+                vals['action'] = 'create'
                 vals = Log._update_vals_with_http_request(vals)
                 Log.create(vals)
 
@@ -205,9 +202,7 @@ class SignRequest(models.Model):
             if sign_request.send_signature_accesses(subject, message, ignored_partners=ignored_partners):
                 Log = http.request.env['sign.log'].sudo()
                 vals = Log._prepare_vals_from_request(sign_request)
-                vals.update({
-                    'action': 'create',
-                })
+                vals['action'] = 'create'
                 vals = Log._update_vals_with_http_request(vals)
                 Log.create(vals)
                 followers = sign_request.message_follower_ids.mapped('partner_id')
@@ -321,20 +316,11 @@ class SignRequest(models.Model):
                 'res_model': self._name,
                 'res_id': self.id,
             })
-            
-            pdf_writer = PdfFileWriter()
             report_action = self.env.ref('sign.action_sign_request_print_logs')
             pdf_content, __ = report_action.render_qweb_pdf(self.id)
-            reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
-            for page in range(reader.getNumPages()):
-                pdf_writer.addPage(reader.getPage(page))
-            _buffer = io.BytesIO()
-            pdf_writer.write(_buffer)
-            merged_pdf = _buffer.getvalue()
-            _buffer.close()
             attachment_log = self.env['ir.attachment'].create({
                 'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
-                'datas': base64.b64encode(merged_pdf),
+                'datas': base64.b64encode(pdf_content),
                 'type': 'binary',
                 'res_model': self._name,
                 'res_id': self.id,

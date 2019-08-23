@@ -7,7 +7,7 @@ import logging
 import mimetypes
 import re
 
-from PyPDF2 import  PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfFileReader
 
 from odoo import http, _
 from odoo.http import request
@@ -68,9 +68,7 @@ class Sign(http.Controller):
 
         Log = request.env['sign.log'].sudo()
         vals = Log._prepare_vals_from_item(current_request_item) if current_request_item else Log._prepare_vals_from_request(sign_request)
-        vals.update({
-            'action': 'open',
-        })
+        vals['action'] = 'open'
         vals = Log._update_vals_with_http_request(vals)
         Log.create(vals)
 
@@ -113,22 +111,14 @@ class Sign(http.Controller):
 
         document = None
         if download_type == "log":
-            pdf_writer = PdfFileWriter()
             report_action = http.request.env.ref('sign.action_sign_request_print_logs').sudo()
             pdf_content, __ = report_action.render_qweb_pdf(sign_request.id)
-            reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
-            for page in range(reader.getNumPages()):
-                pdf_writer.addPage(reader.getPage(page))
-            _buffer = io.BytesIO()
-            pdf_writer.write(_buffer)
-            merged_pdf = _buffer.getvalue()
-            _buffer.close()
             pdfhttpheaders = [
                 ('Content-Type', 'application/pdf'),
-                ('Content-Length', len(merged_pdf)),
+                ('Content-Length', len(pdf_content)),
                 ('Content-Disposition', 'attachment; filename=' + "Activity Logs.pdf;")
             ]
-            return request.make_response(merged_pdf, headers=pdfhttpheaders)
+            return request.make_response(pdf_content, headers=pdfhttpheaders)
         elif download_type == "origin":
             document = sign_request.template_id.attachment_id.datas
         elif download_type == "completed":
@@ -292,11 +282,9 @@ class Sign(http.Controller):
 
         Log = request.env['sign.log'].sudo()
         vals = Log._prepare_vals_from_item(request_item)
-        vals.update({
-            'action': 'sign',
-        })
-        vals = Log._update_vals_with_http_request(vals)
+        vals['action'] = 'sign'
         vals['token'] = token
+        vals = Log._update_vals_with_http_request(vals)
         Log.create(vals)
         request_item.action_completed()
         return True

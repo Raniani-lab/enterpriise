@@ -12,15 +12,7 @@ from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
-LOG_FIELDS = ['log_date', 'action', 'partner_id', 'request_state', 'latitude', 'longitude', 'IP',]
-
-def get_attachment_sha(attachment):
-    if attachment.store_fname:
-        source_bin = attachment._file_read(attachment.store_fname)
-    else:
-        source_bin = attachment.db_datas
-    return sha256(source_bin).hexdigest()
-
+LOG_FIELDS = ['log_date', 'action', 'partner_id', 'request_state', 'latitude', 'longitude', 'ip',]
 
 class SignLog(models.Model):
     _name = 'sign.log'
@@ -42,9 +34,9 @@ class SignLog(models.Model):
     # Else : taken from geoip
     latitude = fields.Float(digits=(10, 7), groups="sign.group_sign_manager")
     longitude = fields.Float(digits=(10, 7), groups="sign.group_sign_manager")
-    IP = fields.Char("IP address of the visitor", required=True, groups="sign.group_sign_manager")
+    ip = fields.Char("IP address of the visitor", required=True, groups="sign.group_sign_manager")
     log_hash = fields.Char(string="Inalterability Hash", readonly=True, copy=False)
-    string_to_hash =fields.Char() # fields.Char(store=False)
+    token = fields.Char(string="User token")
 
     # Accessed for ?
     action = fields.Selection(
@@ -53,7 +45,6 @@ class SignLog(models.Model):
             ('create', 'Creation'),
             ('open', 'View/Download'),
             ('sign', 'Signature'),
-            ('check', 'Check'),
         ], required=True,
     )
 
@@ -73,118 +64,58 @@ class SignLog(models.Model):
 
     def create(self, vals):
         """
-        1/ if action=='create': get iniital shasign from template (checksum pdf)
+        1/ if action=='create': get initial shasign from template (checksum pdf)
         2/ if action == 'sign': search for logs with hash for the same request and use that to compute new hash
         """
         vals['log_date'] = datetime.utcnow()
-        if vals['action'] == 'create':
-            sign_request = self.env['sign.request'].browse(vals['sign_request_id'])
-            vals['log_hash'] = get_attachment_sha(sign_request.template_id.attachment_id)
-        elif vals['action'] == 'sign':
-            vals['log_hash'] = self._get_new_hash(vals)
-            del vals['token']
+        vals['log_hash'] = self._get_or_check_hash(vals)
         res = super(SignLog, self).create(vals)
         return res
 
-        # ----------------------
-
-    def _get_new_hash(self, vals):
+    def _get_or_check_hash(self, vals):
         """ Returns the hash to write on sign log entries """
-        # get the previous activity
-        # check if sign logs already exists for this sign_request
-        if 'check_id' in vals:
-            prev_activity = self.sudo().search([('sign_request_id', '=', vals['sign_request_id']),
-                                                ('id', '<', vals['check_id'])], limit=1, order='id desc')
-        else:
-            prev_activity = self.sudo().search([('sign_request_id', '=', vals['sign_request_id']),
-                                                ], limit=1, order='id desc')
-        if not prev_activity:
-            raise UserError(
-                _(
-                    'An error occurred when computing the hash. Impossible to get the unique previous activity.'))
-        # build and return the hash
-        return self._compute_hash(prev_activity.log_hash, vals)
-
-    def _compute_hash(self, previous_hash, vals):
-        """ Computes the hash of the browse_record given as self, based on the hash
-        of the previous record in the company's securisation sequence given as parameter"""
-        if vals['action'] in ['sign', 'check']:
-            string_to_hash = self._compute_string_to_hash(vals)
-            hash_string = sha256((str(previous_hash) + string_to_hash).encode('utf-8'))
-            return hash_string.hexdigest()
-        else:
+        if vals['action'] not in ['sign', 'create']:
             return False
+        # When we check the hash, we need to restrict the previous activity to logs created before
+        domain = [('sign_request_id', '=', vals['sign_request_id']), ('action', 'in', ['create', 'sign'])]
+        if 'id' in vals:
+            domain.append(('id', '<', vals['id']))
+        prev_activity = self.sudo().search(domain, limit=1, order='id desc')
+        # Multiple signers lead to multiple creation actions but for them, the hash of the PDF must be calculated.
+        previous_hash = ""
+        if not prev_activity:
+            sign_request = self.env['sign.request'].browse(vals['sign_request_id'])
+            body = sign_request.template_id.with_context(bin_size=False).attachment_id.datas
+        else:
+            previous_hash = prev_activity.log_hash
+            body = self._compute_string_to_hash(vals)
+        hash = sha256((previous_hash + str(body)).encode('utf-8')).hexdigest()
+        return hash
 
     def _compute_string_to_hash(self, vals):
-        def _getattrstring(vals, field_str):
-            field_value = vals[field_str]
-            return str(field_value)
         values = {}
         for field in LOG_FIELDS:
-            values[field] = _getattrstring(vals, field)
-        context_check = vals.get('check', False)
+            values[field] = str(vals[field])
         # Values are filtered based on the token
-        if context_check:
-            request_items_ids = self.browse(vals['check_id']).sign_request_id.request_item_ids.filtered(lambda item: item.access_token == vals['token'])
-        else:
-            # Signer is signing the document. We save the value of its field. self is an empty recorset.
-            request_items_ids = self.env['sign.request'].browse(vals['sign_request_id']).request_item_ids.filtered(lambda item: item.access_token == vals['token'])
-
-        for request_item in request_items_ids:
-            for signature_value in request_item.sign_item_value_ids:
-                values[str(signature_value.id)] = str(signature_value.value)
-        vals['string_to_hash'] = dumps(values, sort_keys=True,
-                                       ensure_ascii=True, indent=None,
-                                       separators=(',', ':'))
-        return vals['string_to_hash']
+        # Signer is signing the document. We save the value of its field. self is an empty recordset.
+        item_values = self.env['sign.request.item.value'].search([('sign_request_id', '=', vals['sign_request_id'])]).filtered(lambda item: item.sign_request_item_id.access_token == vals['token'])
+        for item_value in item_values:
+            values[str(item_value.id)] = str(item_value.value)
+        return dumps(values, sort_keys=True, ensure_ascii=True, indent=None)
 
     def _check_document_integrity(self):
         """
         Check the integrity of a sign request by comparing the logs hash to the computed values.
         """
-        source_attach = self.sign_request_id.template_id.attachment_id
-        sha_pdf = get_attachment_sha(source_attach)
         logs = self.filtered(lambda item: item.action in ['sign', 'create'])
-        verified_hashes = {}
         for log in logs:
-            verified_hashes[log.log_hash] = "pending"
-            if log.action == "create":
-                if log.log_hash == sha_pdf:
-                    verified_hashes[log.log_hash] = "verified"
-                    continue
-                else:
-                    msg = _('An error occurred when computing the hash %s. Something went wrong.\nINVALID HASH: {%s}') % (log.id, log.log_hash)
-                    raise UserError(_(msg))
-            elif log.action == "sign":
-                request_items_ids = log.sign_request_id.request_item_ids
-                for request_item_id in request_items_ids:
-                    vals = {'sign_request_id': log.sign_request_id.id,
-                            'sign_request_item_id': log.sign_request_item_id.id,
-                            'user_id': log.user_id.id,
-                            'log_date': log.log_date,
-                            'string_to_hash': log.string_to_hash,
-                            'IP': log.IP,
-                            'latitude': log.latitude,
-                            'longitude': log.longitude,
-                            'action': log.action,
-                            'partner_id': log.partner_id.id,
-                            'request_state': log.request_state,
-                            'check_id': log.id,
-                            'log_hash': log.log_hash,
-                            'check': 'check',
-                            'token': request_item_id.access_token
-                            }
-                    if log.log_hash == self._get_new_hash(vals):
-                        msg = "Coherent Hash for sign request %s: log %s is consistent" % (log.sign_request_id.id, log.id)
-                        _logger.info(msg)
-                        verified_hashes[log.log_hash] = "verified"
-        if not 'pending' in verified_hashes.values():
-            msg = "Verified sign request integrity (%s): activity logs are coherent with stored values." % (self.sign_request_id.ids)
-            _logger.info(msg)
-        else:
-            msg = _('An error occurred when computing the hashes. Something went wrong.\n Hash logs: %s' % (verified_hashes))
-            raise UserError(_(msg))
+            vals = {key: value[0] if isinstance(value, tuple) else value for key, value in log.read()[0].items()}
+            hash = self._get_or_check_hash(vals)
+            if hash != log.log_hash:
+                # TODO add logs and comments
+                return False
         return True
+
 
     def _prepare_vals_from_item(self, request_item):
         request = request_item.sign_request_id
@@ -205,7 +136,7 @@ class SignLog(models.Model):
     def _update_vals_with_http_request(self, vals):
         vals.update({
             'user_id': request.env.user.id if not request.env.user._is_public() else None,
-            'IP': request.httprequest.remote_addr,
+            'ip': request.httprequest.remote_addr,
         })
         if not vals.get('partner_id', False):
             vals.update({

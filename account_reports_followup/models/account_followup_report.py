@@ -28,6 +28,7 @@ class AccountFollowupReport(models.AbstractModel):
                 'name': followup_line.name,
                 'print_letter': followup_line.print_letter,
                 'send_email': followup_line.send_email,
+                'send_sms': followup_line.send_sms,
                 'manual_action': followup_line.manual_action,
                 'manual_action_note': followup_line.manual_action_note
             }
@@ -62,14 +63,30 @@ class AccountFollowupReport(models.AbstractModel):
             return followup_line
         return False
 
-    def _get_default_summary(self, options):
-        followup_line = self.get_followup_line(options)
+    @api.model
+    def _get_sms_summary(self, options):
         partner = self.env['res.partner'].browse(options.get('partner_id'))
-        lang = partner.lang or self.env.user.lang or 'en_US'
+        level = partner.get_followup_level()
+        options = dict(options, followup_level=level)
+        return self._build_followup_summary_with_field('sms_description', options) or super()._get_sms_summary(options)
+
+    @api.model
+    def _get_default_summary(self, options):
+        return self._build_followup_summary_with_field('description', options) or super()._get_default_summary(options)
+
+    @api.model
+    def _build_followup_summary_with_field(self, field, options):
+        """
+        Build the followup summary based on the relevent followup line.
+        :param field: followup line field used as the summary "template"
+        :param options: dict that should contain the followup level and the partner
+        :return: the summary if a followup line exists or None
+        """
+        followup_line = self.get_followup_line(options)
         if followup_line:
             partner = self.env['res.partner'].browse(options['partner_id'])
             lang = partner.lang or self.env.user.lang or 'en_US'
-            summary = followup_line.with_context(lang=lang).description
+            summary = followup_line.with_context(lang=lang)[field]
             try:
                 summary = summary % {'partner_name': partner.name,
                                      'date': time.strftime(DEFAULT_SERVER_DATE_FORMAT),
@@ -80,7 +97,6 @@ class AccountFollowupReport(models.AbstractModel):
                           % (partner.lang, followup_line.id, exception)
                 raise ValueError(message)
             return summary
-        return super(AccountFollowupReport, self)._get_default_summary(options)
 
     @api.model
     def do_manual_action(self, options):

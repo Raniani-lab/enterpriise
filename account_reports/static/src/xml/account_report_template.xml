@@ -10,6 +10,9 @@
             <button type="button" class="btn btn-primary o_account_reports_followup_send_mail_button">
                 Send by email
             </button>
+            <button type="button" class="btn btn-primary o_account_reports_followup_send_sms_button">
+                Send by sms
+            </button>
             <button type="button" class="btn btn-secondary o_account_reports_followup_do_it_later_button" data-toggle='tooltip' title='Odoo will remind you to take care of this follow-up on the next reminder date.'>
                 Remind me later
             </button>
@@ -32,6 +35,13 @@
         <div class="alert alert-info alert-dismissible" role="status" >
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&amp;times;</span></button>
             The follow-up report was successfully emailed!
+        </div>
+    </t>
+
+    <t t-name="CustomerStatements.send_sms">
+        <div class="alert alert-info alert-dismissible" role="status" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&amp;times;</span></button>
+            The follow-up was successfully sent!
         </div>
     </t>
 

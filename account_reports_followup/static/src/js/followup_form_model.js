@@ -43,6 +43,17 @@ FollowupFormModel.include({
             level.send_email = false;
         }
     },
+   /**
+    * Save the fact that the user has send an SMS text message for this record.
+    *
+    * @param {string} handle Local resource id of a record
+    */
+    doSendSMS: function (handle) {
+        var level = this.localData[handle].data.followup_level;
+        if (level && level.send_sms) {
+            level.send_sms = false;
+        }
+    },
 
     //--------------------------------------------------------------------------
     // Private

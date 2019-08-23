@@ -10,6 +10,7 @@
                     <field name="delay"/>
                     <field name="send_email"/>
                     <field name="print_letter"/>
+                    <field name="send_sms"/>
                     <field name="manual_action_type_id"/>
                 </tree>
             </field>
@@ -28,6 +29,7 @@
                     <group>
                         <field name="send_email"/>
                         <field name="print_letter"/>
+                        <field name="send_sms"/>
                         <field name="manual_action"/>
                     </group>
 
@@ -53,6 +55,9 @@
                             </table>
                         </p>
                         <field name="description" nolabel="1" colspan="2"/>
+                    </group>
+                    <group string="Send an SMS Text Message" attrs="{'invisible': [('send_sms', '=', False)]}">
+                        <field name="sms_description" widget="sms_widget" nolabel="1" colspan="2"/>
                     </group>
                 </form>
             </field>

@@ -153,15 +153,25 @@ class AccountFollowupReport(models.AbstractModel):
             lines.pop()
         return lines
 
+    @api.model
+    def _get_sms_summary(self, options):
+        return self._build_summary_with_field('overdue_sms_msg', options)
+
+    @api.model
     def _get_default_summary(self, options):
         """
         Override
         Return the overdue message of the company as the summary of the report
         """
+        return self._build_summary_with_field('overdue_msg', options)
+
+    @api.model
+    def _build_summary_with_field(self, field, options):
         partner = self.env['res.partner'].browse(options.get('partner_id'))
         lang = partner.lang or self.env.user.lang or 'en_US'
-        return self.env.company.with_context(lang=lang).overdue_msg or\
-            self.env['res.company'].with_context(lang=lang).default_get(['overdue_msg'])['overdue_msg']
+        return self.env.company.with_context(lang=lang)[field] or\
+            self.env['res.company'].with_context(lang=lang).default_get([field])[field]
+
 
     def _get_report_manager(self, options):
         """
@@ -236,6 +246,22 @@ class AccountFollowupReport(models.AbstractModel):
             'report_manager_id': report_manager_id,
             'html': html,
             'next_action': next_action,
+        }
+
+    @api.model
+    def send_sms(self, options):
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'name': _("Send SMS Text Message"),
+            'res_model': 'sms.composer',
+            'target': 'new',
+            'views': [(False, "form")],
+            'context': {
+                'default_body': self._get_sms_summary(options),
+                'default_res_model': 'res.partner',
+                'default_res_id': options.get('partner_id'),
+            },
         }
 
     @api.model

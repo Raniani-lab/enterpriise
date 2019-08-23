@@ -34,8 +34,11 @@ class QualityPoint(models.Model):
     def _compute_standard_deviation_and_average(self):
         # The variance and mean are computed by the Welford’s method and used the Bessel's
         # correction because are working on a sample.
-        points = self.filtered(lambda x: x.test_type == 'measure')
-        for point in points:
+        for point in self:
+            if point.test_type != 'measure':
+                point.average = 0
+                point.standard_deviation = 0
+                continue
             mean = 0.0
             s = 0.0
             n = 0
@@ -139,6 +142,8 @@ class QualityCheck(models.Model):
                     rec.measure, rec.norm_unit, rec.point_id.tolerance_min,
                     rec.point_id.tolerance_max, rec.norm_unit
                 )
+            else:
+                rec.warning_message = ''
 
     @api.depends('measure')
     def _compute_measure_success(self):

@@ -4,29 +4,31 @@
 
         <template id="worksheet_custom_page">
                 <div class="page">
-                    <table class="w-100">
-                        <tr>
-                            <th class="pr-2 align-top"><strong>Contact: </strong></th>
-                            <td class="align-top w-40">
-                                <div class="align-top" t-esc="doc.user_id" t-options='{
-                                    "widget": "contact",
-                                    "fields": ["name", "address", "phone", "email"]
-                                    }'/>
-                            </td>
+                    <div class="d-flex flex-wrap justify-content-md-around">
+                        <div class="d-flex flex-wrap p-2 flex-column align-items-start">
+                            <div class="pr-2 align-top"><strong>Contact: </strong></div>
+                            <div class="align-top" t-esc="doc.user_id" t-options='{
+                                "widget": "contact",
+                                "fields": ["name", "address", "phone", "email"]
+                                }'/>
+                        </div>
+                        <div class="d-flex flex-wrap p-2 flex-column align-items-start">
                             <t t-if="doc.partner_id">
-                                <th class="pr-2 align-top">Customer: </th>
-                                <td class="align-top"><t t-esc="doc.partner_id" t-options='{
-                                                          "widget": "contact",
-                                                          "fields": ["name", "address", "phone", "email"]
-                                                          }'/>
-                                </td>
+                                <div class="pr-2 align-top"><strong>Customer: </strong></div>
+                                <div class="align-top"><t t-esc="doc.partner_id" t-options='{
+                                                            "widget": "contact",
+                                                            "fields": ["name", "address", "phone", "email"]
+                                                            }'/>
+                                </div>
                             </t>
-                        </tr>
-                    </table>
+                        </div>
+                    </div>
+
 
                     <h1 class="mt-4 mb-4"> Task: <span t-field="doc.name"/></h1>
                     <t t-if="doc.allow_timesheets and doc.timesheet_ids">
                         <h2>Timesheets</h2>
+                        <div class="table-responsive-sm">
                         <table class="table table-sm o_main_table">
                             <thead>
                                 <tr>
@@ -55,12 +57,14 @@
                                 </t>
                             </tbody>
                         </table>
+                        </div>
                     </t>
                     <t groups="sales_team.group_sale_salesman">
                         <t t-set="order" t-value="doc.sale_order_id"/>
                         <t t-set="timesheet_product" t-value="doc.sale_line_id"/>
                         <t t-if="doc.is_fsm and order">
                             <h2>Time &amp; Material</h2>
+                            <div class="table-responsive-sm">
                             <table class="table table-sm o_main_table">
                                 <thead>
                                     <tr>
@@ -131,10 +135,11 @@
                                     </t>
                                 </tbody>
                             </table>
+                            </div>
 
-                            <div class="clearfix" name="so_total_summary">
-                                <div id="total" class="row" name="total">
-                                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                            <div class="container" name="so_total_summary">
+                                <div id="total" class="row justify-content-end" name="total">
+                                    <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-5'}">
                                         <table t-if="order.amount_untaxed != 0" class="table table-sm">
                                             <tr class="border-black o_subtotal" style="">
                                                 <td><strong>Subtotal</strong></td>

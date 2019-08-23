@@ -23,7 +23,7 @@
                 <div role="alert" class="alert-warning p-3 text-center"
                     attrs="{'invisible': ['|', ('is_fsm', '=', False), ('planning_overlap', '=', 0)]}">
                     <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pr-1">
-                        <field name="planning_overlap"/> tasks
+                        <field name="planning_overlap"/> other tasks
                     </button>
                     <span class="align-middle">for this employee at the same time.</span>
                 </div>
@@ -108,17 +108,17 @@
             <xpath expr="//header" position="inside">
                 <field name="is_fsm" invisible="1"/>
                 <field name="allow_quotations" invisible="1"/>
-                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotations" attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
             </xpath>
-            <div name="button_box" position="inside">
+            <xpath expr="//button[@name='action_fsm_create_invoice']" position="inside">
                 <button name="action_fsm_view_quotations"
                     type="object"
                     class="oe_stat_button"
                     icon="fa-pencil-square-o"
                     attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('quotation_count', '=', 0)]}">
-                    <field string="Quotation(s)" name="quotation_count" widget="statinfo"/>
+                    <field string="Quotations" name="quotation_count" widget="statinfo"/>
                 </button>
-            </div>
+            </xpath>
         </field>
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman')), (4, ref('industry_fsm.group_fsm_quotation_from_task'))]"/>
     </record>
@@ -248,8 +248,14 @@
                         attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
 
                     <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 mt-2 font-weight-bold" attrs="{'invisible': ['|', ('display_timesheet_timer', '=', False), ('timesheet_timer_start', '=', False)]}"/>
-
                 </header>
+                <div role="alert" class="alert-warning p-3 text-center"
+                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('planning_overlap', '=', 0)]}">
+                    <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pr-1">
+                        <field name="planning_overlap"/> other tasks
+                    </button>
+                    <span class="align-middle">for this employee at the same time.</span>
+                </div>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', ('allow_timesheets', '=', False), '&amp;', ('timesheet_timer_start', '=', False), ('total_hours_spent', '=', 0)]}">
@@ -279,13 +285,6 @@
                             <field name="invoice_count" widget="statinfo" string="Invoices"/>
                         </button>
                     </div>
-                    <div role="alert" class="alert-warning p-3 text-center"
-                        attrs="{'invisible': ['|', ('is_fsm', '=', False), ('planning_overlap', '=', 0)]}">
-                        <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pr-1">
-                            <field name="planning_overlap"/> tasks
-                        </button>
-                        <span class="align-middle">for this employee at the same time.</span>
-                    </div>
                     <group>
                         <group>
                             <label for="name" class="oe_edit_only"/>
@@ -303,10 +302,12 @@
                             <label for="project_id" class="oe_edit_only"/>
                             <field name="project_id" domain="[('is_fsm', '=', True)]" required="True" nolabel="1" class="oe_edit_only"/>
                             <label for="planned_date_begin" string="Date"/>
-                            <div class="o_row">
-                                <field name="planned_date_begin"/>
-                                <span attrs="{'invisible': [('planned_date_end', '=', False)]}"> to </span>
-                                <field name="planned_date_end"/>
+                            <div class="w-100">
+                                <div class="o_row">
+                                    <field name="planned_date_begin"/>
+                                    <span attrs="{'invisible': [('planned_date_end', '=', False)]}"> to </span>
+                                    <field name="planned_date_end"/>
+                                </div>
                             </div>
                             <field name="user_id" options="{'no_open': True}"/>
                         </group>
@@ -379,7 +380,7 @@
                         ('planned_date_begin', '=', False),
                         ('planned_date_end', '=', False)
                 ]" groups="industry_fsm.group_fsm_manager"/>
-                <filter string="To Do" name="todo" domain="[('fsm_state', '=', 'draft'), ('user_id', '!=', False)]"/>
+                <filter string="To Do" name="todo" domain="[('fsm_state', '=', 'draft'), ('user_id', '!=', False), ('planned_date_begin', '!=', False), ('planned_date_end', '!=', False)]"/>
                 <filter string="To Invoice" name="to_invoice" domain="[('fsm_to_invoice', '=', True), ('fsm_state', 'in', ['validated', 'sold']), ('is_fsm', '=', True )]" groups="sales_team.group_sale_salesman" />
                 <separator />
                 <filter name="planned_today" string="Planned for Today" domain="[
@@ -479,7 +480,6 @@
             'search_default_my_tasks': True,
             'search_default_planned_future': True,
             'search_default_planned_today': True,
-            'search_default_todo': True,
         }</field>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
@@ -531,7 +531,6 @@
         <field name="domain">[('is_fsm', '=', True)]</field>
         <field name="context">{
             'search_default_my_tasks': True,
-            'search_default_planned_future': True,
             'search_default_planned_today': True,
             'search_default_todo': True,
         }</field>
@@ -574,7 +573,7 @@
 
     <!-- All Tasks: main action -->
     <record id="project_task_action_all_fsm" model="ir.actions.act_window">
-        <field name="name">To Do</field>
+        <field name="name">All Tasks</field>
         <field name="res_model">project.task</field>
         <field name="view_mode">kanban,gantt,calendar,map,pivot,graph,tree,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
@@ -635,7 +634,7 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No task to schedule
-            </p><p>All tasks are scheduled</p>
+            </p><p>Click Create to start a new task</p>
         </field>
     </record>
 

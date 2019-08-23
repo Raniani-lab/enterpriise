@@ -259,7 +259,7 @@ class Task(models.Model):
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Products'),
+            'name': _('Choose Products'),
             'res_model': 'product.product',
             'views': [(kanban_view.id, 'kanban'), (False, 'form')],
             'domain': domain,

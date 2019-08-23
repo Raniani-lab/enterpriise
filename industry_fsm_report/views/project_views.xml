@@ -191,7 +191,6 @@
             <xpath expr="//field[@name='project_id']" position="attributes">
                 <attribute name="context">{
                     'default_is_fsm': True,
-                    'default_is_fsm': True
                     }
                 </attribute>
             </xpath>

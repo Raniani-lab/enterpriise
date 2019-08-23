@@ -61,6 +61,8 @@
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/touch_device.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/snackbar.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/swipe_item_mixin.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/form_view_mobile.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
 
             <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/navbar_mobile.scss"/>
         </xpath>

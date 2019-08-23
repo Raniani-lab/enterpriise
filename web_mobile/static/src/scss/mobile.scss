@@ -1,9 +1,3 @@
-.o_field_many2one {
-    input[type="text"]:disabled{
-        background-color:#FFF;
-    }
-}
-
 .o_mobile_sticky {
     @include o-position-sticky();
     z-index: 2;

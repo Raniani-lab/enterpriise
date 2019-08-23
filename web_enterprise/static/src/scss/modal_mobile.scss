@@ -1,0 +1,32 @@
+@include media-breakpoint-down(sm) {
+    // adapt for mobile the form view modal
+    .o_technical_modal.show {
+        > .modal-dialog > .modal-content {
+            .modal-header > * {
+                display: inline-block;
+            }
+
+            .modal-body.o_act_window .o_group.o_inner_group > tbody > tr > td:not(.o_td_label) {
+                width: 100% !important;
+
+                > * {
+                    width: 100%;
+                }
+            }
+
+            footer {
+                display: flex;
+                flex-wrap: wrap;
+                text-align: left;
+                align-items: center;
+                justify-content: space-around;
+
+                button.btn {
+                    width: 45%;
+                    text-overflow: ellipsis;
+                    white-space: inherit;
+                }
+            }
+        }
+    }
+}

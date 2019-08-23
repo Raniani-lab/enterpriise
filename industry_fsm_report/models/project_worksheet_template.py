@@ -122,7 +122,7 @@ class ProjectWorksheetTemplate(models.Model):
             """
         })
         action = self.env['ir.actions.act_window'].sudo().create({
-            'name': 'Project Template : ' + template.name,
+            'name': 'Worksheets',
             'res_model': model.model,
             'view_mode': 'tree,form',
             'target': 'current',

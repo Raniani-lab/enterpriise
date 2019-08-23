@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 class Project(models.Model):
     _inherit = 'project.project'
 
-    allow_forecast = fields.Boolean("Allow forecast", default=False, help="Enable forecasting on the project.")
+    allow_forecast = fields.Boolean("Forecast", default=False, help="Enable forecasting on the project.")
 
     def write(self, vals):
         if 'active' in vals:
@@ -24,7 +24,7 @@ class Project(models.Model):
 class Task(models.Model):
     _inherit = 'project.task'
 
-    allow_forecast = fields.Boolean('Allow Forecast', readonly=True, related='project_id.allow_forecast', store=False)
+    allow_forecast = fields.Boolean('Forecast', readonly=True, related='project_id.allow_forecast', store=False)
 
     def write(self, vals):
         if 'active' in vals:

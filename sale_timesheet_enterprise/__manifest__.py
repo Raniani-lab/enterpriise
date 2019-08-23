@@ -18,6 +18,7 @@
         'views/res_config_settings_views.xml',
         'views/project_task_views.xml',
         'wizard/project_task_create_timesheet_views.xml',
+        'wizard/project_task_create_sale_order_views.xml',
         'data/sale_timesheet_enterprise_data.xml',
     ],
 

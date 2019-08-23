@@ -538,7 +538,7 @@
     <record id="product_product_form_view_quality_control" model="ir.ui.view">
         <field name="name">product.product.quality</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_related_putaway_rules']" position="after">
                 <button name="action_see_quality_control_points" type="object" icon="fa-list" class="oe_stat_button" groups="quality.group_quality_user">

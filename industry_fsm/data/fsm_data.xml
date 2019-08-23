@@ -16,10 +16,11 @@
         </record>
 
         <record id="fsm_time_product" model="product.product">
-            <field name="name">Time</field>
+            <field name="name">Service on Timesheet</field>
             <field name="type">service</field>
             <field name="list_price">40</field>
             <field name="service_policy">delivered_timesheet</field>
+            <field name="image_1920" type="base64" file="industry_fsm/static/img/product_product_fsm_time_product.png"/>
         </record>
 
         <record id="fsm_project" model="project.project">
@@ -27,6 +28,8 @@
             <field name="is_fsm" eval="True"/>
             <field name="allow_timesheets" eval="True"/>
             <field name="allow_timesheet_timer" eval="True"/>
+            <field name="allow_billable" eval="True"/>
+            <field name="allow_material" eval="True"/>
             <field name="timesheet_product_id" ref="fsm_time_product"/>
             <field name="type_ids" eval="[(4, ref('planning_project_stage_0')), (4, ref('planning_project_stage_1'))]"/>
         </record>

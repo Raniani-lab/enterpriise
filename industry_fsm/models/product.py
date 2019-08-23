@@ -13,7 +13,7 @@ class ProductProduct(models.Model):
         task_id = self.env.context.get('fsm_task_id')
         if task_id:
             task = self.env['project.task'].browse(task_id)
-            product_map = {sol.product_id.id: sol.product_uom_qty for sol in task.sale_order_id.order_line}
+            product_map = {sol.product_id.id: sol.product_uom_qty for sol in task.sudo().sale_order_id.order_line}
 
             for product in self:
                 product.fsm_quantity = product_map.get(product.id, 0)
@@ -24,7 +24,13 @@ class ProductProduct(models.Model):
         task_id = self.env.context.get('fsm_task_id')
         if task_id:
             task = self.env['project.task'].browse(task_id)
-            sale_line = self.env['sale.order.line'].search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id)], limit=1)
+
+            SaleOrderLine = self.env['sale.order.line']
+            if self.user_has_groups('industry_fsm.group_fsm_user'):
+                task = task.sudo()
+                SaleOrderLine = SaleOrderLine.sudo()
+
+            sale_line = SaleOrderLine.search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id)], limit=1)
 
             if not sale_line:  # create the sale line with qty = 1
                 vals = {
@@ -43,7 +49,7 @@ class ProductProduct(models.Model):
 
                 if self.invoice_policy == 'delivery' and self.service_type == 'manual':
                     vals['qty_delivered'] = 1
-                sale_line = self.env['sale.order.line'].create(vals)
+                sale_line = SaleOrderLine.create(vals)
             else:   # increment sale line quantities
                 vals = {
                     'product_uom_qty': sale_line.product_uom_qty + 1
@@ -57,7 +63,13 @@ class ProductProduct(models.Model):
         task_id = self.env.context.get('fsm_task_id')
         if task_id:
             task = self.env['project.task'].browse(task_id)
-            sale_line = self.env['sale.order.line'].search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id)], limit=1)
+
+            SaleOrderLine = self.env['sale.order.line']
+            if self.user_has_groups('industry_fsm.group_fsm_user'):
+                task = task.sudo()
+                SaleOrderLine = SaleOrderLine.sudo()
+
+            sale_line = SaleOrderLine.search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id)], limit=1)
             if sale_line:
                 vals = {
                     'product_uom_qty': sale_line.product_uom_qty - 1
@@ -65,8 +77,6 @@ class ProductProduct(models.Model):
                 if self.invoice_policy == 'delivery' and self.service_type == 'manual':
                     vals['qty_delivered'] = sale_line.qty_delivered - 1
 
-                if vals['product_uom_qty'] != 0:
-                    sale_line.write(vals)
-                else:
-                    sale_line.unlink()
+                sale_line.write(vals)
+
         return True

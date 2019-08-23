@@ -7,6 +7,7 @@ class Project(models.Model):
     _inherit = 'project.project'
 
     allow_timesheet_timer = fields.Boolean('Timesheet Timer', default=False, help="Use a timer to record timesheets on tasks")
+    allow_billable = fields.Boolean("Task billing")
 
     _sql_constraints = [
         ('timer_only_when_timesheet', "CHECK((allow_timesheets = 'f' AND allow_timesheet_timer = 'f') OR (allow_timesheets = 't'))", 'The timesheet timer can only be activated on project allowing timesheet.'),
@@ -16,6 +17,15 @@ class Project(models.Model):
     def _onchange_allow_timesheets(self):
         if not self.allow_timesheets:
             self.allow_timesheet_timer = False
+
+    @api.onchange('allow_billable')
+    def _onchange_allow_billable(self):
+        """ In order to keep task billable type as 'task_rate' using sale_timesheet usual flow.
+            (see _compute_billable_type method in sale_timesheet)
+        """
+        if self.allow_billable:
+            self.sale_order_id = False
+            self.sale_line_employee_ids = False
 
     def write(self, values):
         result = super(Project, self).write(values)
@@ -60,14 +70,14 @@ class ProjectTask(models.Model):
     def action_timer_stop(self):
         self.ensure_one()
         start_time = self.timesheet_timer_start
-        if start_time:
+        if start_time:  # timer was either running or paused
             pause_time = self.timesheet_timer_pause
             if pause_time:
                 start_time = start_time + (fields.Datetime.now() - pause_time)
-                self.write({'timesheet_timer_pause': False})
+            else:
+                self.action_timer_pause()
             minutes_spent = (fields.Datetime.now() - start_time).total_seconds() / 60
             minutes_spent = self._timer_rounding(minutes_spent)
-            self.write({'timesheet_timer_start': False})
             return self._action_create_timesheet(minutes_spent * 60 / 3600)
         return False
 
@@ -82,6 +92,20 @@ class ProjectTask(models.Model):
     # ---------------------------------------------------------
     # Business Methods
     # ---------------------------------------------------------
+
+    def action_make_billable(self):
+        return {
+            "name": _("Create Sales Order"),
+            "type": 'ir.actions.act_window',
+            "res_model": 'project.task.create.sale.order',
+            "views": [[False, "form"]],
+            "target": 'new',
+            "context": {
+                'active_id': self.id,
+                'active_model': 'project.task',
+                'form_view_initial_mode': 'edit',
+            },
+        }
 
     def _action_create_timesheet(self, time_spent):
         return {

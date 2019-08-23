@@ -20,19 +20,11 @@ class Project(models.Model):
                 result['worksheet_template_id'] = default_worksheet.id
         return result
 
-    allow_worksheets = fields.Boolean("Allow Worksheets", help="Enables customizable worksheets on tasks.")
+    allow_worksheets = fields.Boolean("Worksheets", help="Enables customizable worksheets on tasks.")
     worksheet_template_id = fields.Many2one(
         'project.worksheet.template',
         string="Default Worksheet",
         help="Choose a default worksheet template for this project (you can change it individually on each task).")
-
-    @api.onchange('is_fsm')
-    def _onchange_is_fsm(self):
-        super(Project, self)._onchange_is_fsm()
-        if self.is_fsm:
-            self.allow_worksheets = True
-        else:
-            self.worksheet_template_id = False
 
     @api.onchange('allow_worksheets')
     def _onchange_allow_worksheets(self):

@@ -376,8 +376,6 @@ class AmazonAccount(models.Model):
                         self._generate_stock_moves(order)
                     elif order.amazon_channel == 'fbm':
                         order.action_done()
-                    if order.invoice_status == 'to invoice':
-                        order._create_invoices()
                     _logger.info("synchronized sale.order with amazon_order_ref %s for "
                                  "amazon.account with id %s" % (amazon_order_ref, self.id))
                 elif order_found:  # Order already sync
@@ -706,6 +704,7 @@ class AmazonAccount(models.Model):
                 'location_id': self.location_id.id,
                 'location_dest_id': customers_location.id,
                 'state': 'confirmed',
+                'sale_line_id': order_line.id,
             })
             stock_move._action_assign()
             stock_move._set_quantity_done(order_line.product_uom_qty)

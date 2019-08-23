@@ -11,7 +11,8 @@
                         class="oe_stat_button"
                         icon="fa-amazon"
                         type="object"
-                        groups="sales_team.group_sale_manager">
+                        groups="sales_team.group_sale_manager"
+                        attrs="{'invisible': [('offer_count', '=', 0)]}">
                     <field name="offer_count" widget="statinfo" string="Offers"/>
                 </button>
             </div>
@@ -28,7 +29,8 @@
                         class="oe_stat_button"
                         icon="fa-amazon"
                         type="object"
-                        groups="sales_team.group_sale_manager">
+                        groups="sales_team.group_sale_manager"
+                        attrs="{'invisible': [('offer_count', '=', 0)]}">
                     <field name="offer_count" widget="statinfo" string="Offers"/>
                 </button>
             </div>

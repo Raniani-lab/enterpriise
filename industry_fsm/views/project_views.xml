@@ -409,7 +409,34 @@
         </field>
     </record>
 
+    <!-- Non primary kanban inherit (fsm tasks must display start date instead of deadline in all application) -->
     <record id="project_task_view_kanban" model="ir.ui.view">
+        <field name="name">project.task.kanban.fsm.nonprimary</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                <field name="planned_date_begin" />
+                <field name="is_fsm" />
+                <field name="fsm_state" />
+            </xpath>
+            <xpath expr="//templates/descendant::field[@name='partner_id']" position="after">
+                <t t-if="record.is_fsm.raw_value and record.partner_city.value"> • <field name="partner_city" /></t>
+            </xpath>
+            <xpath expr="//span[@name='date']" position="before">
+                <!-- color of the span -->
+                <t t-if="record.is_fsm.raw_value" t-set="date" t-value="" />
+                <t t-if="record.is_fsm.raw_value" t-set="deadline_class" t-value="" />
+                <t t-if="record.is_fsm.raw_value and record.fsm_state.raw_value == 'draft' and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().startOf('day')" t-set="deadline_class">oe_kanban_text_red</t>
+                <t t-elif="record.is_fsm.raw_value and record.fsm_state.raw_value == 'draft' and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().endOf('day')" t-set="deadline_class">text-warning font-weight-bold</t>
+                <!-- field -->
+                <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Primary kanban inherit all tasks in fsm must display their date in hours format -->
+    <record id="project_task_view_kanban_fsm" model="ir.ui.view">
         <field name="name">project.task.kanban.fsm</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_kanban"/>
@@ -419,6 +446,19 @@
             <xpath expr="//kanban" position="attributes">
                 <attribute name="default_group_by">planned_date_begin:day</attribute>
                 <attribute name="class">o_fsm_kanban</attribute>
+            </xpath>
+            <xpath expr="//kanban" position="inside">
+                <field name="planned_date_begin" />
+            </xpath>
+            <xpath expr="//t[@t-set='deadline_class'][last()]" position="after">
+                <!-- in fsm, use only red color when displaying date as hours -->
+                <!-- also take into account the time instead of the day if we display hours -->
+                <t t-if="!context.fsm_task_kanban_whole_date" t-set="deadline_class"></t>
+                <t t-if="!context.fsm_task_kanban_whole_date and moment(record.planned_date_begin.raw_value.toISOString()) lt moment()" t-set="deadline_class">oe_kanban_text_red</t>
+            </xpath>
+            <xpath expr="//t[@t-set='date_format']" position="after">
+                <!-- force date formatting to hours in fsm, wether we show deadline or planned_date_begin -->
+                <t t-if="!context.fsm_task_kanban_whole_date" t-set="date_format" t-value="'HH:mm A'" />
             </xpath>
         </field>
     </record>
@@ -450,7 +490,7 @@
     <record id="project_task_action_fsm_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="5"/>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm"/>
     </record>
 
@@ -507,7 +547,7 @@
     <record id="project_task_action_fsm_map_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="10"/>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 
@@ -542,6 +582,7 @@
         <field name="context">{
             'fsm_mode': True,
             'search_default_groupby_stage': 1,
+            'fsm_task_kanban_whole_date': 1,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -555,7 +596,7 @@
     <record id="project_task_action_all_fsm_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="5"/>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_all_fsm"/>
     </record>
 
@@ -608,7 +649,7 @@
     <record id="project_task_action_to_schedule_fsm_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="10"/>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
     </record>
 
@@ -654,7 +695,7 @@
     <record id="project_task_action_to_invoice_fsm_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="10"/>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
     </record>
 
@@ -692,7 +733,7 @@
     <record id="project_task_action_planning_groupby_user_fsm_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="10"/>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
     </record>
 
@@ -737,7 +778,7 @@
     <record id="project_task_action_planning_groupby_project_fsm_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="10"/>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="project_task_view_kanban"/>
+        <field name="view_id" ref="project_task_view_kanban_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
     </record>
 

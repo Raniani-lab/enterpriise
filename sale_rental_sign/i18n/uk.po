@@ -23,12 +23,12 @@ msgstr ""
 #. module: sale_rental_sign
 #: model:ir.model.fields,field_description:sale_rental_sign.field_sale_order__sign_request_count
 msgid "# of Signature Requests"
-msgstr ""
+msgstr "К-сть запитів на підпис"
 
 #. module: sale_rental_sign
 #: model_terms:ir.ui.view,arch_db:sale_rental_sign.message_signature_link
 msgid "A document has been signed and a copy attached to this order:"
-msgstr ""
+msgstr "Документ підписано, а копія прикріплена до замовлення:"
 
 #. module: sale_rental_sign
 #: model_terms:ir.ui.view,arch_db:sale_rental_sign.rental_sign_wizard_view_form
@@ -58,12 +58,12 @@ msgstr "Створено на"
 #. module: sale_rental_sign
 #: model:ir.model.fields,field_description:sale_rental_sign.field_res_config_settings__rental_sign_tmpl_id
 msgid "Default Document"
-msgstr ""
+msgstr "Документ за замовчуванням"
 
 #. module: sale_rental_sign
 #: model:ir.model.fields,field_description:sale_rental_sign.field_res_company__rental_sign_tmpl_id
 msgid "Default Document Template for Rentals"
-msgstr ""
+msgstr "Шаблон документу за замовчуванням для оренди"
 
 #. module: sale_rental_sign
 #: model:ir.model.fields,field_description:sale_rental_sign.field_rental_sign_wizard__display_name
@@ -78,7 +78,7 @@ msgstr "Шаблон документа"
 #. module: sale_rental_sign
 #: model_terms:ir.ui.view,arch_db:sale_rental_sign.rental_order_inherit_rental_sign
 msgid "Document(s) Signed"
-msgstr ""
+msgstr "Документ(и) підписано"
 
 #. module: sale_rental_sign
 #: model:ir.model.fields,field_description:sale_rental_sign.field_rental_sign_wizard__id
@@ -111,7 +111,7 @@ msgstr "Замовлення на продаж"
 #. module: sale_rental_sign
 #: model:ir.model.fields,help:sale_rental_sign.field_res_config_settings__rental_sign_tmpl_id
 msgid "Set a default document template for all rentals in the current company"
-msgstr ""
+msgstr "Встановіть шаблон документу для всіх оренд у поточній компанії"
 
 #. module: sale_rental_sign
 #: model_terms:ir.ui.view,arch_db:sale_rental_sign.rental_sign_wizard_view_form
@@ -123,12 +123,12 @@ msgstr "Підписати документ"
 #: model_terms:ir.ui.view,arch_db:sale_rental_sign.rental_order_inherit_rental_sign
 #: model_terms:ir.ui.view,arch_db:sale_rental_sign.rental_sign_wizard_view_form
 msgid "Sign Documents"
-msgstr ""
+msgstr "Підписати документи"
 
 #. module: sale_rental_sign
 #: model:ir.model,name:sale_rental_sign.model_rental_sign_wizard
 msgid "Sign Documents from a SO"
-msgstr ""
+msgstr "Підписати документ із ЗНП"
 
 #. module: sale_rental_sign
 #: model:ir.model,name:sale_rental_sign.model_sign_send_request
@@ -152,8 +152,11 @@ msgid ""
 "from a rental order. You should select a template accessible to all Sign "
 "users."
 msgstr ""
+"Цей документ буде обрано за замовчуванням після підписання документів із "
+"замовлення на оренду. Вам необхідно обрати шаблон, доступний для всіх "
+"користувачів Підпису."
 
 #. module: sale_rental_sign
 #: model_terms:ir.ui.view,arch_db:sale_rental_sign.res_config_settings_view_form
 msgid "Upload a template"
-msgstr ""
+msgstr "Завантажити шаблон"

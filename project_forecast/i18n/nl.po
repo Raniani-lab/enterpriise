@@ -93,6 +93,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
 msgid "<strong class=\"text-warning\">There are non published changes</strong>"
 msgstr ""
+"<strong class=\"text-warning\">Er zijn geen wijzigingen "
+"gepubliceerd</strong>"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
@@ -137,7 +139,7 @@ msgstr "Voeg record toe"
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__resource_time
 msgid "Allocated Time (%)"
-msgstr ""
+msgstr "Toegewezen tijd (%)"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__time
@@ -168,7 +170,7 @@ msgstr "Toewijzen aan"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__autocomplete_forecast_ids
 msgid "Autocomplete Forecast"
-msgstr ""
+msgstr "Automatisch aanvullen prognose"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
@@ -271,7 +273,7 @@ msgstr "Verwijder"
 #: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:233
 #, python-format
 msgid "Delete all"
-msgstr ""
+msgstr "Alles verwijderen"
 
 #. module: project_forecast
 #. openerp-web
@@ -321,7 +323,7 @@ msgstr "Werknemer"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_tz_warning
 msgid "Employee Tz Warning"
-msgstr ""
+msgstr "Werknemer tijdzone waarschuwing"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
@@ -344,7 +346,7 @@ msgstr "Einddatum"
 #: code:addons/project_forecast/models/project_forecast_recurrency.py:49
 #, python-format
 msgid "Every %s %s until %s"
-msgstr ""
+msgstr "Elke %s%s tot %s"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__exclude
@@ -381,7 +383,7 @@ msgstr "Prognose analyse"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_default_view
 msgid "Forecast Default View"
-msgstr ""
+msgstr "Prognose standaard weergave"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
@@ -499,7 +501,7 @@ msgstr "Is een volger"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__last_generated_end_datetime
 msgid "Last Generated End Date"
-msgstr ""
+msgstr "Laatst gegenereerde einddatum"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
@@ -615,7 +617,7 @@ msgstr "Project prognose"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast_create
 msgid "Project Forecast creation wizard"
-msgstr ""
+msgstr "Project prognose aanmaken wizar"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__published
@@ -677,7 +679,7 @@ msgstr "Herhaal"
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_unit
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_unit
 msgid "Repeat Unit"
-msgstr ""
+msgstr "Herhaal tot"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat_until
@@ -696,7 +698,7 @@ msgstr "Herhaal elke"
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_repeat_forecast_wizard
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
 msgid "Repeat forecast"
-msgstr ""
+msgstr "Prognose herhalen"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_until
@@ -716,7 +718,7 @@ msgstr "Opslaan"
 #: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:203
 #, python-format
 msgid "Save & send"
-msgstr ""
+msgstr "Opslaan & Verzenden"
 
 #. module: project_forecast
 #. openerp-web
@@ -866,7 +868,7 @@ msgstr "Week/weken"
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_default_view
 #: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_default_view
 msgid "Which view should be seen by default for forecasts"
-msgstr ""
+msgstr "Welke weergave standaard getoond moet worden voor prognoses"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast_repeat
@@ -883,7 +885,7 @@ msgstr "U wijst meer tijd toe dan er beschikbaar is voor deze werknemer"
 #: code:addons/project_forecast/wizard/repeat.py:23
 #, python-format
 msgid "You can only apply this action from a forecast."
-msgstr ""
+msgstr "U kan deze actie alleen toepassen vanuit een prognose."
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project.py:22
@@ -926,7 +928,7 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
 msgid "discard"
-msgstr ""
+msgstr "annuleren"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form

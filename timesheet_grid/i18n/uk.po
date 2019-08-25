@@ -836,13 +836,13 @@ msgstr "Тиждень"
 #: selection:res.company,timesheet_mail_employee_interval:0
 #: selection:res.company,timesheet_mail_manager_interval:0
 msgid "after the end of the month"
-msgstr ""
+msgstr "після закінчення місяця"
 
 #. module: timesheet_grid
 #: selection:res.company,timesheet_mail_employee_interval:0
 #: selection:res.company,timesheet_mail_manager_interval:0
 msgid "after the end of the week"
-msgstr ""
+msgstr "після закінчення тижня"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form

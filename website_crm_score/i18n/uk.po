@@ -155,7 +155,7 @@ msgstr ""
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid "Define a new sales team"
-msgstr ""
+msgstr "Визначіть нову команду продажу"
 
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0

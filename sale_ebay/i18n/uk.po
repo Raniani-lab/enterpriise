@@ -258,6 +258,8 @@ msgid ""
 "Ebay Synchronisation could not confirm because of the following error:\n"
 "%s"
 msgstr ""
+"Не можна підтвердити синхронізацію Ebay через наступну помилку:\n"
+"%s"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_order.py:26
@@ -266,6 +268,8 @@ msgid ""
 "Ebay could not synchronize order:\n"
 "%s"
 msgstr ""
+"Ebay не може синхронізувати замовлення:\n"
+"%s"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
@@ -297,12 +301,12 @@ msgstr "Ebay: Від'єднати списки шаблонів товару eBa
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_orders_sync
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_orders_sync
 msgid "Ebay: get new orders"
-msgstr ""
+msgstr "Ebay: отримати нові замовлення"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_recovery
 msgid "Ebay: orders recovery"
-msgstr ""
+msgstr "Ebay: відновлення замовлень"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
@@ -562,7 +566,7 @@ msgstr "Шаблон товару"
 #: code:addons/sale_ebay/models/sale_order.py:210
 #, python-format
 msgid "Product created from eBay transaction %s"
-msgstr ""
+msgstr "Товар створений із транзакції eBay %s"
 
 #. module: sale_ebay
 #: selection:res.config.settings,ebay_domain:0
@@ -635,7 +639,7 @@ msgstr "Команда продажу"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Team to manage eBay sales"
-msgstr ""
+msgstr "Команда продажу для керування продажами eBay"
 
 #. module: sale_ebay
 #: selection:res.config.settings,ebay_domain:0
@@ -763,6 +767,10 @@ msgid ""
 " the date of the oldest order you wish to synchronize in the format \"YYYY-"
 "MM-DD\"."
 msgstr ""
+"Немає дати останньої синхронізації у вашій системі параметрів. Створіть "
+"запис системи параметрів з ключем \"ebay_last_sync\" і встановлене значення "
+"на дату найстарішого замовлення, яку ви бажаєте синхронізувати у форматі "
+"\"РІК-МІСЯЦЬ-ДЕНЬ\"."
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
@@ -945,4 +953,4 @@ msgstr "Валюта ebay"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Team"
-msgstr ""
+msgstr "Команда продажу ebay"

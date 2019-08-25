@@ -51,7 +51,7 @@ msgstr "Acció"
 #: code:addons/web_enterprise/static/src/xml/base.xml:239
 #, python-format
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. module: web_enterprise
 #. openerp-web

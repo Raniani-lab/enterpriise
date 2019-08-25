@@ -28,7 +28,7 @@ msgstr ""
 #: code:addons/pos_iot/static/src/xml/pos.xml:114
 #, python-format
 msgid "Access your"
-msgstr ""
+msgstr "Krijg toegang tot uw"
 
 #. module: pos_iot
 #. openerp-web
@@ -42,7 +42,7 @@ msgstr "Annuleer"
 #: code:addons/pos_iot/static/src/xml/pos.xml:58
 #, python-format
 msgid "Cancel Payment Request"
-msgstr ""
+msgstr "Annuleer betaalaanvraag"
 
 #. module: pos_iot
 #. openerp-web
@@ -74,14 +74,14 @@ msgstr "Sluit dit venster en probeer het opnieuw"
 #: code:addons/pos_iot/static/src/js/payment.js:252
 #, python-format
 msgid "Configuration of payment terminal failed"
-msgstr ""
+msgstr "Configuratie van betaalterminal mislukt"
 
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:47
 #, python-format
 msgid "Connection error"
-msgstr ""
+msgstr "Fout bij verbinding"
 
 #. module: pos_iot
 #. openerp-web
@@ -96,7 +96,7 @@ msgstr "Verbinding met de IOT Box mislukt"
 #: code:addons/pos_iot/static/src/js/payment.js:231
 #, python-format
 msgid "Connection to terminal failed"
-msgstr ""
+msgstr "Verbinding met terminal mislukt"
 
 #. module: pos_iot
 #. openerp-web
@@ -129,14 +129,14 @@ msgstr "Alleen Firefox: klik op bevestig beveiligingsuitzondering"
 #: code:addons/pos_iot/static/src/xml/pos.xml:50
 #, python-format
 msgid "Force Done"
-msgstr ""
+msgstr "Forceer gereed"
 
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:50
 #, python-format
 msgid "Force done"
-msgstr ""
+msgstr "Forceer gereed"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__proxy_ip
@@ -187,7 +187,7 @@ msgstr "Ok"
 #: code:addons/pos_iot/static/src/xml/pos.xml:71
 #, python-format
 msgid "Payment Successful"
-msgstr ""
+msgstr "Betaling succesvol"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_payment_terminal
@@ -199,19 +199,19 @@ msgstr "Betaal terminal"
 #: code:addons/pos_iot/static/src/xml/pos.xml:31
 #, python-format
 msgid "Payment request pending"
-msgstr ""
+msgstr "Betaalaanvraag in behandeling"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
 msgid "Payment terminal"
-msgstr ""
+msgstr "Betaalterminal"
 
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/js/payment.js:195
 #, python-format
 msgid "Payment terminal error"
-msgstr ""
+msgstr "Betaalterminal fout"
 
 #. module: pos_iot
 #. openerp-web
@@ -248,7 +248,7 @@ msgstr "Gekoppelde box"
 #: code:addons/pos_iot/static/src/xml/pos.xml:63
 #, python-format
 msgid "Request send to terminal"
-msgstr ""
+msgstr "Aanvraag verstuurd naar terminal"
 
 #. module: pos_iot
 #. openerp-web
@@ -262,7 +262,7 @@ msgstr "Opnieuw proberen"
 #: code:addons/pos_iot/static/src/xml/pos.xml:39
 #, python-format
 msgid "Retry Electronic payment"
-msgstr ""
+msgstr "Opnieuw electronische betaling proberen"
 
 #. module: pos_iot
 #. openerp-web
@@ -277,7 +277,7 @@ msgstr "Verzenden"
 #: code:addons/pos_iot/static/src/xml/pos.xml:42
 #, python-format
 msgid "Send Payment Request"
-msgstr ""
+msgstr "Verstuurd betaalaanvraag"
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__proxy_ip
@@ -293,19 +293,19 @@ msgstr ""
 #: code:addons/pos_iot/static/src/js/payment.js:114
 #, python-format
 msgid "There is already an electronic payment in progress."
-msgstr ""
+msgstr "Er is al een electronische betaling in uitvoering."
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_account_journal__use_payment_terminal
 msgid "Use a Payment Terminal"
-msgstr ""
+msgstr "Gebruik een betaalterminal"
 
 #. module: pos_iot
 #. openerp-web
 #: code:addons/pos_iot/static/src/xml/pos.xml:55
 #, python-format
 msgid "Waiting for card"
-msgstr ""
+msgstr "Wachtend op kaart"
 
 #. module: pos_iot
 #. openerp-web

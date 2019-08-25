@@ -28,7 +28,7 @@ msgstr ""
 #: code:addons/project_forecast/wizard/create_forecast.py:109
 #, python-format
 msgid "%s's schedules timezone differs from yours"
-msgstr ""
+msgstr "Запланований часовий пояс %s відрізняється від вашого"
 
 #. module: project_forecast
 #: model:mail.template,body_html:project_forecast.email_template_forecast_single
@@ -69,6 +69,41 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div>\n"
+"                    <p>Шановний(а) ${object.employee_id.name or ''},</p><br/>\n"
+"                    <p>Вам призначено наступний прогноз.</p><br/>\n"
+"                    <table style=\"table-layout: fixed;\">\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Від</th>\n"
+"                            <td style=\"padding: 5px;\">${ctx.formatted_start_datetime}</td>\n"
+"                        </tr>\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">До</th>\n"
+"                            <td style=\"padding: 5px;\">${ctx.formatted_end_datetime}</td>\n"
+"                        </tr>\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Проект</th>\n"
+"                            <td style=\"padding: 5px;\">${object.project_id.name}</td>\n"
+"                        </tr>\n"
+"                        % if object.task_id\n"
+"                            <tr>\n"
+"                                <th style=\"padding: 5px;text-align: left;\">Завдання</th>\n"
+"                                <td style=\"padding: 5px;\">${object.task_id.name or ''}</td>\n"
+"                            </tr>\n"
+"                        % endif\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Заплановані години</th>\n"
+"                            <td style=\"padding: 5px;\">${ctx.resource_hours}</td>\n"
+"                        </tr>\n"
+"\n"
+"                    </table>\n"
+"                    % if ctx.render_link\n"
+"                        <div style=\"margin: 15px; text-align: center\">\n"
+"                            <a href=\"/web?#action=${ctx.get('action_id')}&amp;model=project.forecast&amp;view_type=gantt&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">Переглянути прогноз</a>\n"
+"                        </div>\n"
+"                    % endif\n"
+"                </div>\n"
+"            "
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
@@ -86,21 +121,23 @@ msgid ""
 "<strong class=\"text-danger\">There are more hours planned than "
 "available</strong>"
 msgstr ""
+"<strong class=\"text-danger\">Заплановано більше годин, ніж "
+"доступно</strong>"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
 msgid "<strong class=\"text-warning\">There are non published changes</strong>"
-msgstr ""
+msgstr "<strong class=\"text-warning\">Є зміни, які не публікуються</strong>"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
 msgid "<strong>Allocated Time: </strong>"
-msgstr ""
+msgstr "<strong>Розподілений час: </strong>"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
 msgid "<strong>Planned Hours: </strong>"
-msgstr ""
+msgstr "<strong>Заплановані години: </strong>"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
@@ -135,7 +172,7 @@ msgstr "Додати запис"
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__resource_time
 msgid "Allocated Time (%)"
-msgstr ""
+msgstr "Розподілений час (%)"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__time
@@ -166,7 +203,7 @@ msgstr "Призначити"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__autocomplete_forecast_ids
 msgid "Autocomplete Forecast"
-msgstr ""
+msgstr "Автоматичне заповнення прогнозу"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
@@ -182,13 +219,13 @@ msgstr "За проектом"
 #: code:addons/project_forecast/models/project_forecast.py:363
 #, python-format
 msgid "Cannot remove more hours than there actually is"
-msgstr ""
+msgstr "Не можливо вилучити більше годин, ніж є по факту"
 
 #. module: project_forecast
 #: code:addons/project_forecast/wizard/repeat.py:39
 #, python-format
 msgid "Cannot repeat an already repeating forecast"
-msgstr ""
+msgstr "Не можливо повторити прогноз, який вже повторюється"
 
 #. module: project_forecast
 #. openerp-web
@@ -221,7 +258,7 @@ msgstr "Налаштування"
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_create_wizard_action
 msgid "Create forecasts"
-msgstr ""
+msgstr "Створити прогнози"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
@@ -255,7 +292,7 @@ msgstr "Перегляд за замовчуванням"
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_generation_span_interval
 #: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_generation_span_interval
 msgid "Delay for the rate at which recurring forecasts should be generated"
-msgstr ""
+msgstr "Затримка швидкості, з якою мають формуватися повторювані прогнози"
 
 #. module: project_forecast
 #. openerp-web
@@ -269,14 +306,14 @@ msgstr "Видалити"
 #: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:233
 #, python-format
 msgid "Delete all"
-msgstr ""
+msgstr "Видалити все"
 
 #. module: project_forecast
 #. openerp-web
 #: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:243
 #, python-format
 msgid "Delete future"
-msgstr ""
+msgstr "Видалити майбутні"
 
 #. module: project_forecast
 #. openerp-web
@@ -306,7 +343,7 @@ msgstr "Дублювати"
 #: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:30
 #, python-format
 msgid "Duplicate period"
-msgstr ""
+msgstr "Дублювати період"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_hr_employee
@@ -319,7 +356,7 @@ msgstr "Співробітник"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_tz_warning
 msgid "Employee Tz Warning"
-msgstr ""
+msgstr "Попередження працівника"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
@@ -342,7 +379,7 @@ msgstr "Кінцева дата"
 #: code:addons/project_forecast/models/project_forecast_recurrency.py:49
 #, python-format
 msgid "Every %s %s until %s"
-msgstr ""
+msgstr "Кожен%s %s до %s"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__exclude
@@ -378,7 +415,7 @@ msgstr "Аналіз прогнозу"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_default_view
 msgid "Forecast Default View"
-msgstr ""
+msgstr "Перегляд прогнозу за замовчуванням"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
@@ -390,7 +427,7 @@ msgstr "Форма прогнозу"
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_generation_span_uom
 #: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_generation_span_uom
 msgid "Forecast Generation Span Uom"
-msgstr ""
+msgstr "Одиниця вимірювання проміжку генерації прогнозу"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
@@ -417,29 +454,29 @@ msgstr "Прогноз за завданням"
 #. module: project_forecast
 #: sql_constraint:project.forecast:0 sql_constraint:project.forecast.create:0
 msgid "Forecast end date should be greater than its start date"
-msgstr ""
+msgstr "Кінцева дата прогнозу має бути більшою, ніж дата початку"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/res_config_settings.py:45
 #, python-format
 msgid "Forecast generation span should be between 1 and 24 weeks"
-msgstr ""
+msgstr "Проміжок генерації прогнозу повинен бути між 1 та 24 тижнем"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/res_config_settings.py:43
 #, python-format
 msgid "Forecast generation span should be between 1 and 6 months"
-msgstr ""
+msgstr "Проміжок генерації прогнозу повинен бути між 1 та 6 місяцем"
 
 #. module: project_forecast
 #: sql_constraint:project.forecast.create:0
 msgid "Forecast should end before the repeat ends"
-msgstr ""
+msgstr "Прогноз повинен закінчуватися раніше, ніж закінчується повтор"
 
 #. module: project_forecast
 #: model:mail.template,subject:project_forecast.email_template_forecast_single
 msgid "Forecast: new schedule"
-msgstr ""
+msgstr "Прогноз: нове планування"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:122
@@ -451,14 +488,14 @@ msgstr "Прогнозований час має бути позитивним"
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast_recurrency__forecast_ids
 msgid "Forecasts that were created using this recurrency"
-msgstr ""
+msgstr "Прогнози, які були створені, використовуючи ці повторення"
 
 #. module: project_forecast
 #: model:ir.actions.server,name:project_forecast.ir_cron_forecast_schedule_ir_actions_server
 #: model:ir.cron,cron_name:project_forecast.ir_cron_forecast_schedule
 #: model:ir.cron,name:project_forecast.ir_cron_forecast_schedule
 msgid "Forecasts: generate next forecasts"
-msgstr ""
+msgstr "Прогнози: створити наступні прогнози"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -496,7 +533,7 @@ msgstr "Стежить"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__last_generated_end_datetime
 msgid "Last Generated End Date"
-msgstr ""
+msgstr "Остання створена кінцева дата"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
@@ -612,7 +649,7 @@ msgstr "Прогнозування проектів"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast_create
 msgid "Project Forecast creation wizard"
-msgstr ""
+msgstr "Помічник створення прогнозу проекту"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__published
@@ -624,17 +661,17 @@ msgstr "Опубліковано"
 #: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_generation_span_interval
 #: model_terms:ir.ui.view,arch_db:project_forecast.res_config_settings_view_form
 msgid "Rate of forecast generation"
-msgstr ""
+msgstr "Ставка створення прогнозу"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__previous_forecast_id
 msgid "Recent Forecasts"
-msgstr ""
+msgstr "Останні прогнози"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast_recurrency
 msgid "Recurent forecasts definition"
-msgstr ""
+msgstr "Дефініція прогнозів повторення"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__recurrency_id
@@ -645,17 +682,17 @@ msgstr "Повторення"
 #. module: project_forecast
 #: sql_constraint:project.forecast.recurrency:0
 msgid "Recurrency repeat interval should be at least 1"
-msgstr ""
+msgstr "Інтервал повторення повинен бути принаймні 1"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__related_forecast_id
 msgid "Related Forecast"
-msgstr ""
+msgstr "Пов'язаний прогноз"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__forecast_ids
 msgid "Related forecasts"
-msgstr ""
+msgstr "Пов'язані прогнози"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__user_id
@@ -673,7 +710,7 @@ msgstr "Повторити"
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_unit
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_unit
 msgid "Repeat Unit"
-msgstr ""
+msgstr "Повторювати одиницю"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat_until
@@ -686,18 +723,18 @@ msgstr "Повторювати до"
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_interval
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_interval
 msgid "Repeat every"
-msgstr ""
+msgstr "Повторювати кожен"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_repeat_forecast_wizard
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
 msgid "Repeat forecast"
-msgstr ""
+msgstr "Повторювати прогноз"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_until
 msgid "Repeat until"
-msgstr ""
+msgstr "Повторювати до"
 
 #. module: project_forecast
 #. openerp-web
@@ -712,7 +749,7 @@ msgstr "Зберегти"
 #: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:203
 #, python-format
 msgid "Save & send"
-msgstr ""
+msgstr "Зберегти на надіслати"
 
 #. module: project_forecast
 #. openerp-web
@@ -725,7 +762,7 @@ msgstr "Надіслати"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_datetime
 msgid "Start Datetime"
-msgstr ""
+msgstr "Початок дати часу"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__start_datetime
@@ -760,6 +797,8 @@ msgid ""
 "This action will remove the current forecast from the recurrency. Are you "
 "sure you want to continue?"
 msgstr ""
+"Ця дія видалить поточний прогноз із повторення. Ви впевнені, що хочете "
+"продовжити?"
 
 #. module: project_forecast
 #. openerp-web
@@ -769,6 +808,8 @@ msgid ""
 "This will duplicate all forecasts from this period to the next. Are you sure"
 " you want to continue?"
 msgstr ""
+"Це дублюватиме усі прогнози з цього періоду до наступного. Ви впевнені, що "
+"хочете продовжити?"
 
 #. module: project_forecast
 #. openerp-web
@@ -778,6 +819,8 @@ msgid ""
 "This will remove this forecast and all related ones. Are you sure you want "
 "to continue?"
 msgstr ""
+"Це видалить цей прогноз та всі пов'язані з ним. Ви впевнені, що хочете "
+"продовжити?"
 
 #. module: project_forecast
 #. openerp-web
@@ -787,13 +830,14 @@ msgid ""
 "This will remove this forecast and all subsequent ones. Are you sure you "
 "want to continue?"
 msgstr ""
+"Це видалить цей прогноз та всі наступні. Ви впевнені, що хочете продовжити?"
 
 #. module: project_forecast
 #. openerp-web
 #: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:227
 #, python-format
 msgid "This will remove this forecast. Are you sure you want to continue?"
-msgstr ""
+msgstr "Це видалить цей прогноз. Ви впевнені, що хочете продовжити?"
 
 #. module: project_forecast
 #: model:ir.filters,name:project_forecast.ir_filter_forecast_time_by_month
@@ -811,7 +855,7 @@ msgstr "Сьогодні"
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_generation_span_uom
 #: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_generation_span_uom
 msgid "Unit for the rate at which recurring forecasts should be generated"
-msgstr ""
+msgstr "Одиниця швидкості, з якою слід створювати повторювані прогнози"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
@@ -821,7 +865,7 @@ msgstr "До"
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast_recurrency__repeat_until
 msgid "Up to which date should the forecasts be repeated"
-msgstr ""
+msgstr "До якої дати прогнози слід повторити"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__user_id
@@ -862,24 +906,24 @@ msgstr "Тиждень(і)"
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_default_view
 #: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_default_view
 msgid "Which view should be seen by default for forecasts"
-msgstr ""
+msgstr "Який перегляд повинен відображатися для прогнозів за замовчуванням"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast_repeat
 msgid "Wizard to repeat an existing forecast"
-msgstr ""
+msgstr "Помічник для повторення існуючого прогнозу"
 
 #. module: project_forecast
 #: code:addons/project_forecast/wizard/create_forecast.py:166
 #, python-format
 msgid "You are allocating more hours than available for this employee"
-msgstr ""
+msgstr "Вам призначаєте більше годин, ніж доступно для цього співробітника"
 
 #. module: project_forecast
 #: code:addons/project_forecast/wizard/repeat.py:23
 #, python-format
 msgid "You can only apply this action from a forecast."
-msgstr ""
+msgstr "Ви можете підтвердити цю дію лише з прогнозу."
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project.py:22
@@ -918,13 +962,15 @@ msgid ""
 "can only edit forecasts resource hours if grouped by at least employee and "
 "project"
 msgstr ""
+"може лише редагувати прогнози годин ресурсів, якщо згруповано принаймні за "
+"співробітником та проектом"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
 msgid "discard"
-msgstr ""
+msgstr "відмінити"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "repeat"
-msgstr ""
+msgstr "повторити"

@@ -735,7 +735,7 @@ msgstr "Ініціали"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__favorited_ids
 msgid "Invited Users"
-msgstr ""
+msgstr "Залучені користувачі"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_is_follower
@@ -1038,7 +1038,7 @@ msgstr "Гаразд"
 #. module: sign
 #: selection:sign.template,privacy:0
 msgid "On Invitation"
-msgstr ""
+msgstr "На запрошення"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
@@ -1407,6 +1407,11 @@ msgid ""
 "Invited users can always edit the document template.\n"
 "Existing requests based on this template will not be affected by changes."
 msgstr ""
+"Встановіть, хто може використовувати цей шаблон:\n"
+"- Усі користувачі: усі користувачі модуля Підпис можуть переглядати та використовувати шаблон\n"
+"- На запрошеннях: лише запрошені користувачі можуть переглядати та використовувати шаблон\n"
+"Запрошені користувачі можуть завжди редагувати шаблон документа.\n"
+"Існуючі запити на основі цих шаблонів не впливатимуть на зміни."
 
 #. module: sign
 #. openerp-web

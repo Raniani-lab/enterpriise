@@ -28,7 +28,7 @@ msgstr "<span class=\"o_form_label\">Політика виставлення р�
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "<strong>Round timesheets</strong>"
-msgstr ""
+msgstr "<strong>Округлені табелі</strong>"
 
 #. module: sale_timesheet_enterprise
 #: selection:res.config.settings,invoiced_timesheet:0
@@ -64,7 +64,7 @@ msgstr "Налаштування"
 #: code:addons/sale_timesheet_enterprise/models/project_task.py:64
 #, python-format
 msgid "Confirm Time Spent"
-msgstr ""
+msgstr "Підтвердити витрачений час"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task_create_timesheet
@@ -94,7 +94,7 @@ msgstr "Назва для відображення"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__display_timesheet_timer
 msgid "Display Timesheet Time"
-msgstr ""
+msgstr "Відобразити час табеля"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task_create_timesheet__id
@@ -124,7 +124,7 @@ msgstr "Останнє оновлення"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Measure time spent on tasks"
-msgstr ""
+msgstr "Вимірювати витрачений час на завданнях"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__timesheet_min_duration
@@ -175,7 +175,7 @@ msgstr "Початок"
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_company__use_timesheet_timer
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__use_timesheet_timer
 msgid "Start and Stop"
-msgstr ""
+msgstr "Почати та Зупинити"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_task_view_form
@@ -201,7 +201,7 @@ msgstr "Час"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_pause
 msgid "Timesheet Timer Last Pause"
-msgstr ""
+msgstr "Остання пауза таймера табеля"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__timesheet_timer_start

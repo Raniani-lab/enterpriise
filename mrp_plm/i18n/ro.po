@@ -353,7 +353,7 @@ msgstr "Atașamente"
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
 msgid "BOM Structure Report"
-msgstr ""
+msgstr "Raport Structură LdM "
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:29+0000\n"
-"PO-Revision-Date: 2019-08-12 11:29+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 08:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: project_forecast
-#: code:addons/project_forecast/wizard/create_forecast.py:109
+#: code:addons/project_forecast/wizard/create_forecast.py:0
 #, python-format
 msgid "%s's schedules timezone differs from yours"
 msgstr ""
@@ -30,11 +30,11 @@ msgid ""
 "                    <table style=\"table-layout: fixed;\">\n"
 "                        <tr>\n"
 "                            <th style=\"padding: 5px;text-align: left;\">From</th>\n"
-"                            <td style=\"padding: 5px;\">${ctx.formatted_start_datetime}</td>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.start_datetime, tz=object.employee_id.tz)}</td>\n"
 "                        </tr>\n"
 "                        <tr>\n"
 "                            <th style=\"padding: 5px;text-align: left;\">To</th>\n"
-"                            <td style=\"padding: 5px;\">${ctx.formatted_end_datetime}</td>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.end_datetime, tz=object.employee_id.tz)}</td>\n"
 "                        </tr>\n"
 "                        <tr>\n"
 "                            <th style=\"padding: 5px;text-align: left;\">Project</th>\n"
@@ -48,11 +48,11 @@ msgid ""
 "                        % endif\n"
 "                        <tr>\n"
 "                            <th style=\"padding: 5px;text-align: left;\">Planned Hours</th>\n"
-"                            <td style=\"padding: 5px;\">${ctx.resource_hours}</td>\n"
+"                            <td style=\"padding: 5px;\">${format_duration(object.resource_hours)}</td>\n"
 "                        </tr>\n"
 "\n"
 "                    </table>\n"
-"                    % if ctx.render_link\n"
+"                    % if group_project_user_id in object.employee_id.user_id.groups_id.ids\n"
 "                        <div style=\"margin: 15px; text-align: center\">\n"
 "                            <a href=\"/web?#action=${ctx.get('action_id')}&amp;model=project.forecast&amp;view_type=gantt&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">View Forecast</a>\n"
 "                        </div>\n"
@@ -105,19 +105,20 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__active
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__active
 msgid "Active"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:5
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Add"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:5
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Add record"
 msgstr ""
@@ -126,21 +127,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__resource_time
 msgid "Allocated Time (%)"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__time
-msgid "Allocated time / Time span"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
-msgid "Allow Forecast"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
-msgid "Allow forecast"
 msgstr ""
 
 #. module: project_forecast
@@ -170,26 +156,27 @@ msgid "By Project"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:363
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Cannot remove more hours than there actually is"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/wizard/repeat.py:39
+#: code:addons/project_forecast/wizard/repeat.py:0
 #, python-format
 msgid "Cannot repeat an already repeating forecast"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:26
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Collapse rows"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__color
 msgid "Color"
 msgstr ""
 
@@ -200,6 +187,7 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__company_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__company_id
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__company_id
 msgid "Company"
 msgstr ""
@@ -250,28 +238,28 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:224
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid "Delete"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:233
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid "Delete all"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:243
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid "Delete future"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:259
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
 #, python-format
 msgid "Discard"
@@ -287,29 +275,23 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:30
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Duplicate"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:30
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Duplicate period"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model,name:project_forecast.model_hr_employee
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__employee_id
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_tz_warning
-msgid "Employee Tz Warning"
 msgstr ""
 
 #. module: project_forecast
@@ -320,29 +302,24 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_datetime
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__end_datetime
 msgid "End Datetime"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__end_datetime
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "End date"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast_recurrency.py:49
+#: code:addons/project_forecast/models/project_forecast_recurrency.py:0
 #, python-format
 msgid "Every %s %s until %s"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__exclude
-msgid "Exclude"
-msgstr ""
-
-#. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:23
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Expand rows"
 msgstr ""
@@ -354,6 +331,9 @@ msgid "Expressed in the Unit of Measure of the project company"
 msgstr ""
 
 #. module: project_forecast
+#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
+#: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_menu
 msgid "Forecast"
 msgstr ""
@@ -406,24 +386,25 @@ msgid "Forecast by task"
 msgstr ""
 
 #. module: project_forecast
-#: sql_constraint:project.forecast:0 sql_constraint:project.forecast.create:0
+#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_check_start_date_lower_end_date
+#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_create_check_start_date_lower_end_date
 msgid "Forecast end date should be greater than its start date"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/res_config_settings.py:45
+#: code:addons/project_forecast/models/res_config_settings.py:0
 #, python-format
 msgid "Forecast generation span should be between 1 and 24 weeks"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/res_config_settings.py:43
+#: code:addons/project_forecast/models/res_config_settings.py:0
 #, python-format
 msgid "Forecast generation span should be between 1 and 6 months"
 msgstr ""
 
 #. module: project_forecast
-#: sql_constraint:project.forecast.create:0
+#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_create_check_end_date_lower_repeat_until
 msgid "Forecast should end before the repeat ends"
 msgstr ""
 
@@ -433,8 +414,7 @@ msgid "Forecast: new schedule"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:122
-#: code:addons/project_forecast/wizard/create_forecast.py:116
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Forecasted time must be positive"
 msgstr ""
@@ -457,12 +437,12 @@ msgid "Future"
 msgstr ""
 
 #. module: project_forecast
-#: selection:res.company,forecast_default_view:0
+#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_default_view__gantt
 msgid "Gantt"
 msgstr ""
 
 #. module: project_forecast
-#: selection:res.company,forecast_default_view:0
+#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_default_view__grid
 msgid "Grid"
 msgstr ""
 
@@ -480,8 +460,10 @@ msgid "ID"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_is_follower
-msgid "Is Follower"
+#: model:ir.model.fields,help:project_forecast.field_project_forecast_create__repeat_until
+msgid ""
+"If set, the recurrence stop at that date. Otherwise, the recurrence is "
+"applied indefinitely."
 msgstr ""
 
 #. module: project_forecast
@@ -521,11 +503,11 @@ msgid "Month"
 msgstr ""
 
 #. module: project_forecast
-#: selection:project.forecast.create,repeat_unit:0
-#: selection:project.forecast.recurrency,repeat_unit:0
-#: selection:project.forecast.repeat,repeat_unit:0
-#: selection:res.company,forecast_generation_span_uom:0
-msgid "Month(s)"
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_create__repeat_unit__month
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_recurrency__repeat_unit__month
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_repeat__repeat_unit__month
+#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_generation_span_uom__month
+msgid "Months"
 msgstr ""
 
 #. module: project_forecast
@@ -540,12 +522,13 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__name
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__name
 msgid "Name"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:15
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Next"
 msgstr ""
@@ -557,7 +540,7 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:175
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid "Open"
 msgstr ""
@@ -568,11 +551,6 @@ msgid "Past"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast__time
-msgid "Percentage of working time"
-msgstr ""
-
-#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_hours
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__resource_hours
 msgid "Planned hours"
@@ -580,7 +558,7 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:9
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Previous"
 msgstr ""
@@ -607,6 +585,7 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__published
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__published
 msgid "Published"
 msgstr ""
 
@@ -634,7 +613,7 @@ msgid "Recurrency"
 msgstr ""
 
 #. module: project_forecast
-#: sql_constraint:project.forecast.recurrency:0
+#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_recurrency_check_repeat_interval_positive
 msgid "Recurrency repeat interval should be at least 1"
 msgstr ""
 
@@ -692,7 +671,7 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:197
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
 #, python-format
 msgid "Save"
@@ -700,26 +679,26 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:203
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid "Save & send"
 msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:216
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:252
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid "Send"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_datetime
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__start_datetime
 msgid "Start Datetime"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__start_datetime
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Start date"
 msgstr ""
@@ -734,18 +713,20 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__stage_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__stage_id
 msgid "Task stage"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__tag_ids
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__tag_ids
 msgid "Task tags"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:145
-#: code:addons/project_forecast/models/project_forecast.py:157
-#: code:addons/project_forecast/models/project_forecast.py:167
+#: code:addons/project_forecast/models/project_forecast.py:0
+#: code:addons/project_forecast/models/project_forecast.py:0
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid ""
 "This action will remove the current forecast from the recurrency. Are you "
@@ -754,7 +735,7 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:144
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid ""
 "This will duplicate all forecasts from this period to the next. Are you sure"
@@ -763,7 +744,7 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:236
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid ""
 "This will remove this forecast and all related ones. Are you sure you want "
@@ -772,7 +753,7 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:88
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid ""
 "This will remove this forecast and all subsequent ones. Are you sure you "
@@ -781,7 +762,7 @@ msgstr ""
 
 #. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:227
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
 #, python-format
 msgid "This will remove this forecast. Are you sure you want to continue?"
 msgstr ""
@@ -792,8 +773,13 @@ msgid "Time by month"
 msgstr ""
 
 #. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_tz_warning
+msgid "Timezone Warning"
+msgstr ""
+
+#. module: project_forecast
 #. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:12
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
 #, python-format
 msgid "Today"
 msgstr ""
@@ -821,15 +807,15 @@ msgid "User"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:144
-#: code:addons/project_forecast/models/project_forecast.py:156
-#: code:addons/project_forecast/models/project_forecast.py:166
+#: code:addons/project_forecast/models/project_forecast.py:0
+#: code:addons/project_forecast/models/project_forecast.py:0
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Warning"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/wizard/create_forecast.py:165
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Warning!"
 msgstr ""
@@ -842,11 +828,11 @@ msgid "Week"
 msgstr ""
 
 #. module: project_forecast
-#: selection:project.forecast.create,repeat_unit:0
-#: selection:project.forecast.recurrency,repeat_unit:0
-#: selection:project.forecast.repeat,repeat_unit:0
-#: selection:res.company,forecast_generation_span_uom:0
-msgid "Week(s)"
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_create__repeat_unit__week
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_recurrency__repeat_unit__week
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_repeat__repeat_unit__week
+#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_generation_span_uom__week
+msgid "Weeks"
 msgstr ""
 
 #. module: project_forecast
@@ -861,19 +847,19 @@ msgid "Wizard to repeat an existing forecast"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/wizard/create_forecast.py:166
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "You are allocating more hours than available for this employee"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/wizard/repeat.py:23
+#: code:addons/project_forecast/wizard/repeat.py:0
 #, python-format
 msgid "You can only apply this action from a forecast."
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project.py:22
+#: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid ""
 "You cannot delete a project containing forecasts. You can either delete all "
@@ -882,7 +868,7 @@ msgid ""
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project.py:44
+#: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid ""
 "You cannot delete a task containing forecasts. You can either delete all the"
@@ -890,14 +876,13 @@ msgid ""
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:128
-#: code:addons/project_forecast/wizard/create_forecast.py:121
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Your task is not in the selected project."
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:358
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid ""
 "can only edit forecasts resource hours if grouped by at least employee and "

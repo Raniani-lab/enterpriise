@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* mrp_workorder_iot
+# 	* mrp_workorder_iot
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
-"PO-Revision-Date: 2019-03-20 14:07+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 08:04+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,17 +26,17 @@ msgid "Boxes"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__cancel
 msgid "Cancel"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__clomo
 msgid "Close MO"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__clowo
 msgid "Close WO"
 msgstr ""
 
@@ -66,12 +66,12 @@ msgid "Display Name"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Fail"
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__ip
+msgid "Domain Address"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__finish
 msgid "Finish"
 msgstr ""
 
@@ -83,11 +83,6 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_iot_trigger
 msgid "IOT Trigger"
-msgstr ""
-
-#. module: mrp_workorder_iot
-#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__ip
-msgid "IP Address"
 msgstr ""
 
 #. module: mrp_workorder_iot
@@ -121,52 +116,47 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__next
 msgid "Next"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__pack
 msgid "Pack"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Pass"
-msgstr ""
-
-#. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__pause
 msgid "Pause"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__prev
 msgid "Previous"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-slip
 msgid "Print Delivery Slip"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print
 msgid "Print Labels"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-op
 msgid "Print Operation"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__record
 msgid "Record Production"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__scrap
 msgid "Scrap"
 msgstr ""
 
@@ -176,17 +166,12 @@ msgid "Sequence"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__skip
 msgid "Skip"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Take Measure"
-msgstr ""
-
-#. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__picture
 msgid "Take Picture"
 msgstr ""
 
@@ -196,7 +181,7 @@ msgid "Triggers"
 msgstr ""
 
 #. module: mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__validate
 msgid "Validate"
 msgstr ""
 
@@ -214,4 +199,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__workcenter_id
 msgid "Workcenter"
 msgstr ""
-

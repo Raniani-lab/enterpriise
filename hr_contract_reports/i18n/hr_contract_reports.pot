@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:29+0000\n"
-"PO-Revision-Date: 2019-08-12 11:29+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 08:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,6 @@ msgstr ""
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__date
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 msgid "Date"
 msgstr ""
 
@@ -104,7 +103,7 @@ msgid "Employees Analysis"
 msgstr ""
 
 #. module: hr_contract_reports
-#: selection:hr.contract.employee.report,departure_reason:0
+#: model:ir.model.fields.selection,name:hr_contract_reports.selection__hr_contract_employee_report__departure_reason__fired
 msgid "Fired"
 msgstr ""
 
@@ -116,6 +115,11 @@ msgstr ""
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__id
 msgid "ID"
+msgstr ""
+
+#. module: hr_contract_reports
+#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
+msgid "Last 365 Days"
 msgstr ""
 
 #. module: hr_contract_reports
@@ -139,12 +143,12 @@ msgid "New Employees"
 msgstr ""
 
 #. module: hr_contract_reports
-#: selection:hr.contract.employee.report,departure_reason:0
+#: model:ir.model.fields.selection,name:hr_contract_reports.selection__hr_contract_employee_report__departure_reason__resigned
 msgid "Resigned"
 msgstr ""
 
 #. module: hr_contract_reports
-#: selection:hr.contract.employee.report,departure_reason:0
+#: model:ir.model.fields.selection,name:hr_contract_reports.selection__hr_contract_employee_report__departure_reason__retired
 msgid "Retired"
 msgstr ""
 
@@ -180,5 +184,5 @@ msgstr ""
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "month(s)"
+msgid "months"
 msgstr ""

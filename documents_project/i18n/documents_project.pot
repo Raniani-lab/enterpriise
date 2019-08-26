@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:29+0000\n"
-"PO-Revision-Date: 2019-08-12 11:29+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 08:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,11 @@ msgstr ""
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_ir_attachment
 msgid "Attachment"
+msgstr ""
+
+#. module: documents_project
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Centralize files attached to projects and tasks"
 msgstr ""
 
 #. module: documents_project
@@ -48,18 +53,8 @@ msgid "Create a Task"
 msgstr ""
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Create signature request"
-msgstr ""
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr ""
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Customer invoice"
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Default Tags"
 msgstr ""
 
 #. module: documents_project
@@ -70,11 +65,6 @@ msgstr ""
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
-msgstr ""
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product template"
 msgstr ""
 
 #. module: documents_project
@@ -94,33 +84,13 @@ msgid "Project Workspace"
 msgstr ""
 
 #. module: documents_project
-#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
-msgid "Select the new workspace to be used for project's documents"
-msgstr ""
-
-#. module: documents_project
-#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
-msgid "Select the tags to be applied to the project's new documents"
-msgstr ""
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Sign directly"
-msgstr ""
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
 msgid "Task"
 msgstr ""
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor Credit Note"
-msgstr ""
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor bill"
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Workspace"
 msgstr ""
 
 #. module: documents_project

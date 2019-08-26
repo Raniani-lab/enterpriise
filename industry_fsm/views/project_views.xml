@@ -8,7 +8,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="sale_timesheet_enterprise.project_task_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_timer_start'][hasclass('btn-primary')]" position='before'>
+            <xpath expr="//button[@name='action_timer_start'][hasclass('btn-primary')]" position='after'>
                 <field name="is_fsm" invisible="1"/>
                 <field name="allow_material" invisible="1"/>
                 <field name="allow_timesheets" invisible="1"/>
@@ -17,11 +17,13 @@
                 <field name="fsm_state" invisible="1"/>
                 <field name="fsm_to_invoice" invisible="1"/>
                 <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
-                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0)]}"/>
-                <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
-                    attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                 <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager                    "/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_done', '=', False), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager                    "/>
+            </xpath>
+            <xpath expr="//button[@name='action_timer_start'][hasclass('btn-secondary')]" position='before'>
+                <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                 <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
                     attrs="{'invisible': ['|', '|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
             </xpath>
@@ -41,12 +43,17 @@
                 <attribute name="groups">base.group_no_one</attribute>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
-                <button class="oe_stat_button" name="action_timer_start" type="object" icon="fa-play" help="Launch the Timer" attrs="{'invisible': ['|', '|', '|', ('is_fsm', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False)]}" groups="hr_timesheet.group_hr_timesheet_user">
+                <button class="oe_stat_button" name="action_timer_start" type="object" icon="fa-play" help="Launch the Timer" attrs="{'invisible': ['|', '|', '|', '|', ('display_timesheet_timer', '=', False), ('is_fsm', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False)]}" groups="hr_timesheet.group_hr_timesheet_user">
                     <div class="o_stat_info">
                         Start
                     </div>
                 </button>
-                <button class="oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', '|', ('is_fsm', '=', False), ('allow_timesheets', '=', False), '&amp;', ('timesheet_timer_start', '=', False), ('total_hours_spent', '=', 0)]}" groups="hr_timesheet.group_hr_timesheet_user">
+                <button class="oe_stat_button" name="action_timer_stop" type="object" icon="fa-stop" help="Stop the Timer" attrs="{'invisible': ['|', '|', '|', '|', ('is_fsm', '=', False), ('display_timesheet_timer', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '=', False)]}">
+                    <div class="o_stat_info">
+                        Stop
+                    </div>
+                </button>
+                <button class="oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', '|', ('is_fsm', '=', False), ('allow_timesheets', '=', False), '&amp;', ('display_timesheet_timer', '=', True), ('total_hours_spent', '=', 0)]}" groups="hr_timesheet.group_hr_timesheet_user">
                     <div class="o_stat_info">
                         <div>Time</div>
                         <span class="o_stat_value">
@@ -74,6 +81,9 @@
             <xpath expr="//header/button[@name='action_timer_start'][hasclass('btn-secondary')]" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}</attribute>
             </xpath>
+            <xpath expr="//header/button[@name='action_timer_stop']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|', ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False), '&amp;', ('is_fsm', '=', True), ('total_hours_spent', '=', 0)]}</attribute>
+            </xpath>
             <xpath expr="//button[@name='action_make_billable']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', '|', '|', '|',  '|', ('is_fsm', '=', True), ('allow_billable', '=', False), ('timesheet_timer_start', '!=', False), ('billable_type', '!=', 'no'), ('partner_id', '=', False), ('sale_order_id', '!=', False)]}</attribute>
             </xpath>
@@ -99,7 +109,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='sale_line_id']" position="attributes">
                 <attribute name="attrs">
-                    {'invisible': ['|', ('is_fsm', '=', False), ('partner_id', '=', False)]}
+                    {'invisible': ['|', ('is_fsm', '=', True), ('partner_id', '=', False)]}
                 </attribute>
             </xpath>
             <xpath expr="//field[@name='user_id']" position="after">
@@ -246,7 +256,7 @@
 
 
     <!--
-        FSM Task views
+         FSM Task views
     -->
 
     <record id="project_task_view_form" model="ir.ui.view">
@@ -265,18 +275,18 @@
                     <field name="fsm_to_invoice" invisible="1"/>
                     <field name="allow_billable" invisible="1"/>
                     <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
-                        attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0)]}"/>
-                    <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
-                        attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}"/>
+                        attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                     <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', '|', '|', '|',  '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                        attrs="{'invisible': ['|', '|', '|', '|',  '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('fsm_done', '=', False), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                    <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
+                        attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                     <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
                         attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
 
                     <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
                         attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"/>
                     <button class="btn-primary btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
-                        attrs="{'invisible': ['|', ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
+                        attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
                     <button class="btn-primary" name="action_timer_pause" type="object" string="Pause"
                         attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '!=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
                     <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume"
@@ -294,17 +304,22 @@
                 <sheet>
                     <field name="active" invisible="1" />
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', ('allow_timesheets', '=', False), '&amp;', ('timesheet_timer_start', '=', False), ('total_hours_spent', '=', 0)]}">
+                        <button class="oe_stat_button" name="action_timer_start" type="object" icon="fa-play" help="Launch the Timer" attrs="{'invisible': ['|', '|', '|', ('display_timesheet_timer', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False)]}">
+                            <div class="o_stat_info">
+                                Start
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_timer_stop" type="object" icon="fa-stop" help="Stop the Timer" attrs="{'invisible': ['|', '|', '|', '|', ('is_fsm', '=', False), ('display_timesheet_timer', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '=', False)]}">
+                            <div class="o_stat_info">
+                                Stop
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', ('allow_timesheets', '=', False), '&amp;', ('display_timesheet_timer', '=', True), ('total_hours_spent', '=', 0)]}">
                             <div class="o_stat_info">
                                 <div>Time</div>
                                 <span class="o_stat_value">
                                     <field name="total_hours_spent" widget="float_time" nolabel="1" class="mr-1" />
                                 </span>
-                            </div>
-                        </button>
-                        <button class="oe_stat_button" name="action_timer_start" type="object" icon="fa-play" help="Launch the Timer" attrs="{'invisible': ['|', '|', '|', ('display_timesheet_timer', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False)]}">
-                            <div class="o_stat_info">
-                                Start
                             </div>
                         </button>
                         <button class="oe_stat_button" name="action_fsm_view_material"
@@ -323,6 +338,7 @@
                     </div>
                     <group>
                         <group>
+                            <field name="name"/>
                             <field name="partner_id" required="1"
                                 context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
                                 options='{"always_reload": True}'
@@ -330,7 +346,6 @@
                             <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>
                             <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_mobile', '=', False)]}"/>
                             <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_email', '=', False)]}"/>
-                            <field name="name"/>
                             <field name="stage_id" invisible="1"/>
                         </group>
                         <group>
@@ -381,6 +396,7 @@
                 <button name="action_fsm_view_quotations"
                     type="object"
                     class="oe_stat_button"
+
                     icon="fa-dollar"
                     attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
                     <field string="Quotations" name="quotation_count" widget="statinfo"/>
@@ -449,7 +465,9 @@
             <calendar date_start="planned_date_begin" date_stop="planned_date_end" string="Tasks" mode="month" color="user_id" form_view_id="%(industry_fsm.project_task_view_form)d" event_open_popup="1">
                 <field name="name"/>
                 <field name="partner_id"/>
+                <field name="partner_city"/>
                 <field name="partner_zip"/>
+                <field name="partner_phone"/>
             </calendar>
         </field>
     </record>
@@ -495,17 +513,36 @@
         </field>
     </record>
 
+    <!-- Quick create view for fsm's kanban -->
+    <record id="quick_create_task_form_fsm" model="ir.ui.view">
+        <field name="name">project.task.form.quick_create</field>
+        <field name="model">project.task</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="company_id" invisible="1" />
+                <group>
+                    <field name="name" string = "Task Title"/>
+                    <field name="partner_id" required="1" options="{'no_open': True}, 'no_create': True}" />
+                    <field name="user_id" options="{'no_open': True, 'no_create': True}"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
     <!-- Primary kanban inherit all tasks in fsm must display their date in hours format -->
     <record id="project_task_view_kanban_fsm" model="ir.ui.view">
         <field name="name">project.task.kanban.fsm</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_kanban"/>
         <field name="mode">primary</field>
-        <field name="priority">100</field>
         <field name="arch" type="xml">
             <xpath expr="//kanban" position="attributes">
+                <attribute name="default_order">planned_date_begin</attribute>
                 <attribute name="default_group_by">planned_date_begin:day</attribute>
                 <attribute name="class">o_fsm_kanban</attribute>
+                <attribute name="quick_create_view">industry_fsm.quick_create_task_form_fsm</attribute>
+                <attribute name="on_create">quick_create</attribute>
             </xpath>
             <xpath expr="//kanban" position="inside">
                 <field name="planned_date_begin" />

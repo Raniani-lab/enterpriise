@@ -93,10 +93,10 @@
                 <field name="timesheet_timer_start" invisible="1"/>
                 <field name="timesheet_timer_pause" invisible="1"/>
                 <t t-if="record.display_timesheet_timer &amp;&amp; record.timesheet_timer_pause.raw_value">
-                    <i class="fa fa-pause text-warning"></i>
+                    <i class="fa fa-pause text-warning" title="Timer is Paused"></i>
                 </t>
                 <t t-elif="record.display_timesheet_timer &amp;&amp; record.timesheet_timer_start.raw_value">
-                    <i class="fa fa-play text-success"></i>
+                    <i class="fa fa-play text-success" title="Timer is Running"></i>
                 </t>
             </xpath>
         </field>

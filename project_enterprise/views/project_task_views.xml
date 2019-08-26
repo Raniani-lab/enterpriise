@@ -65,11 +65,10 @@
                 <marker-popup>
                     <field name="name" string="Task"/>
                     <field name="partner_id" string="Customer" />
-                    <field name="partner_email" string=""/>
-                    <field name="partner_phone" string=""/>
                     <field name="partner_street" string="Address" />
                     <field name="partner_zip" string=""/>
                     <field name="partner_city" string=""/>
+                    <field name="partner_phone" string="Phone"/>
                 </marker-popup>
             </map>
         </field>

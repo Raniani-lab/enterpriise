@@ -79,7 +79,7 @@ class ProductProduct(models.Model):
                 if sale_line.qty_delivered_method == 'manual':
                     vals['qty_delivered'] = sale_line.qty_delivered - 1
 
-                if vals['product_uom_qty'] and task.sale_order_id.state != 'sale' <= 0:
+                if vals['product_uom_qty'] <= 0 and task.sale_order_id.state != 'sale':
                     sale_line.unlink()
                 else:
                     sale_line.write(vals)

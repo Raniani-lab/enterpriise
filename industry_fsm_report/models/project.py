@@ -57,7 +57,7 @@ class Task(models.Model):
 
     @api.onchange('project_id')
     def _onchange_project_id(self):
-        if self.project_id.is_fsm:
+        if self.project_id.allow_worksheets:
             self.worksheet_template_id = self.project_id.worksheet_template_id.id
         else:
             self.worksheet_template_id = False
@@ -98,8 +98,8 @@ class Task(models.Model):
 
     def action_preview_worksheet(self):
         self.ensure_one()
-        if not self.worksheet_count:
-            raise UserError(_("To send the report, you need to select a worksheet template and fill in a worksheet."))
+        if not self.worksheet_template_id:
+            raise UserError(_("To send the report, you need to select a worksheet template."))
 
         # Note: as we want to see all time and material on worksheet, ensure the SO is created when (case: timesheet but no material, the time should be sold on SO)
         if self.allow_billable:
@@ -119,8 +119,8 @@ class Task(models.Model):
 
     def action_send_report(self):
         self.ensure_one()
-        if self.worksheet_template_id and not self.worksheet_count:
-            raise UserError(_("To send the report, you need to select a worksheet template and fill in a worksheet."))
+        if not self.worksheet_template_id:
+            raise UserError(_("To send the report, you need to select a worksheet template."))
 
         # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
         # time should be sold on SO)

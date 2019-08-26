@@ -98,11 +98,9 @@ class ProjectWorksheetTemplate(models.Model):
             'arch': """
             <form>
                 <sheet>
-                    <group invisible="context.get('studio') or context.get('default_x_task_id')">
-                        <group>
+                    <h1 invisible="context.get('studio') or context.get('default_x_task_id')">
                             <field name="x_task_id" domain="[('is_fsm', '=', True)]"/>
-                        </group>
-                    </group>
+                    </h1>
                     <group>
                         <group>
                             <field name="x_comments"/>

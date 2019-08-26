@@ -62,7 +62,7 @@
                     <t>
                         <t t-set="order" t-value="doc.sale_order_id"/>
                         <t t-set="timesheet_product" t-value="doc.sale_line_id"/>
-                        <t t-if="doc.is_fsm and order">
+                        <t t-if="doc.allow_billable and order and order.amount_total != 0">
                             <h2>Time &amp; Material</h2>
                             <div class="table-responsive-sm">
                             <table class="table table-sm o_main_table">
@@ -155,7 +155,7 @@
                     </t>
                     <div t-if="doc.worksheet_template_id.report_view_id and worksheet_map.get(doc.id)" style="page-break-inside: avoid">
                         <t t-set="worksheet" t-value="worksheet_map.get(doc.id)"/>
-                        <h2>Summary</h2>
+                        <h2>Worksheet</h2>
                         <t t-call="#{doc.worksheet_template_id.report_view_id.id}"/>
                         <br/>
                     </div>

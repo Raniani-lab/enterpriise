@@ -61,7 +61,7 @@ class Sign(http.Controller):
                     'longitude': request.session['geoip'].get('longitude') if 'geoip' in request.session else 0,
                 })
 
-        sr_values = http.request.env['sign.item.value'].sudo().search([('sign_request_id', '=', sign_request.id)])
+        sr_values = http.request.env['sign.request.item.value'].sudo().search([('sign_request_id', '=', sign_request.id)])
         item_values = {}
         for value in sr_values:
             item_values[value.sign_item_id.id] = value.value

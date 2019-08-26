@@ -385,7 +385,7 @@ class SignRequest(models.Model):
         packet = io.BytesIO()
         can = canvas.Canvas(packet)
         itemsByPage = self.template_id.sign_item_ids.getByPage()
-        SignItemValue = self.env['sign.item.value']
+        SignItemValue = self.env['sign.request.item.value']
         for p in range(0, old_pdf.getNumPages()):
             page = old_pdf.getPage(p)
             width = float(page.mediaBox.getUpperRight_x())
@@ -534,7 +534,7 @@ class SignRequestItem(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Contact", ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
-    sign_item_value_ids = fields.One2many('sign.item.value', 'sign_request_item_id', string="Value")
+    sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
     role_id = fields.Many2one('sign.item.role', string="Role")
@@ -563,7 +563,7 @@ class SignRequestItem(models.Model):
         })
         for request_item in self:
             itemsToClean = request_item.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id == request_item.role_id or not r.responsible_id)
-            self.env['sign.item.value'].search([('sign_item_id', 'in', itemsToClean.mapped('id')), ('sign_request_id', '=', request_item.sign_request_id.id)]).unlink()
+            self.env['sign.request.item.value'].search([('sign_item_id', 'in', itemsToClean.mapped('id')), ('sign_request_id', '=', request_item.sign_request_id.id)]).unlink()
         self.mapped('sign_request_id')._check_after_compute()
 
     def action_sent(self):
@@ -606,7 +606,7 @@ class SignRequestItem(models.Model):
         if not isinstance(signature, dict):
             self.signature = signature
         else:
-            SignItemValue = self.env['sign.item.value']
+            SignItemValue = self.env['sign.request.item.value']
             request = self.sign_request_id
 
             signerItems = request.template_id.sign_item_ids.filtered(lambda r: not r.responsible_id or r.responsible_id.id == self.role_id.id)
@@ -646,3 +646,16 @@ class SignRequestItem(models.Model):
         for rec in self:
             rec._reset_sms_token()
             self.env['sms.api']._send_sms([rec.sms_number], _('Your confirmation code is %s') % rec.sms_token)
+
+
+class SignRequestItemValue(models.Model):
+    _name = "sign.request.item.value"
+    _description = "Signature Item Value"
+    _rec_name = 'sign_request_id'
+
+    sign_request_item_id = fields.Many2one('sign.request.item', string="Signature Request item", required=True,
+                                           ondelete='cascade')
+    sign_item_id = fields.Many2one('sign.item', string="Signature Item", required=True, ondelete='cascade')
+    sign_request_id = fields.Many2one(string="Signature Request", required=True, ondelete='cascade', related='sign_request_item_id.sign_request_id')
+
+    value = fields.Text()

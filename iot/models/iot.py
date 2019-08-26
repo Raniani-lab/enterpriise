@@ -18,6 +18,7 @@ class IotBox(models.Model):
     ip = fields.Char('Domain Address', readonly=True)
     ip_url = fields.Char('IoT Box Home Page', readonly=True, compute='_compute_ip_url')
     screen_url = fields.Char('Screen URL', help="Url of the page that will be displayed by hdmi port of the box.")
+    drivers_auto_update = fields.Boolean('Automatic drivers update', help='Automatically update drivers when the IoT Box boots', default=True)
     version = fields.Char('Image Version', readonly=True)
 
     def _compute_ip_url(self):

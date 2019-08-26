@@ -26,6 +26,7 @@
                             <field name="ip"/>
                             <field name="ip_url" widget="url"/>
                             <field name="version"/>
+                            <field name="drivers_auto_update"/>
                             <field name="screen_url"/>
                         </group>
                     </group>

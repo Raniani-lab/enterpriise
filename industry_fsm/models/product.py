@@ -26,7 +26,7 @@ class ProductProduct(models.Model):
             task = self.env['project.task'].browse(task_id)
 
             SaleOrderLine = self.env['sale.order.line']
-            if self.user_has_groups('industry_fsm.group_fsm_user'):
+            if self.user_has_groups('project.group_project_user'):
                 task = task.sudo()
                 SaleOrderLine = SaleOrderLine.sudo()
 
@@ -65,7 +65,7 @@ class ProductProduct(models.Model):
             task = self.env['project.task'].browse(task_id)
 
             SaleOrderLine = self.env['sale.order.line']
-            if self.user_has_groups('industry_fsm.group_fsm_user'):
+            if self.user_has_groups('project.group_project_user'):
                 task = task.sudo()
                 SaleOrderLine = SaleOrderLine.sudo()
 

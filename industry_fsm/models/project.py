@@ -363,7 +363,7 @@ class Task(models.Model):
             raise UserError(_('The FSM task must have a customer set to be sold.'))
 
         SaleOrder = self.env['sale.order']
-        if self.user_has_groups('industry_fsm.group_fsm_user'):
+        if self.user_has_groups('project.group_project_user'):
             SaleOrder = SaleOrder.sudo()
 
         sale_order = SaleOrder.create({

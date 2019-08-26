@@ -92,10 +92,11 @@
         </field>
     </record>
 
+    <!-- Project Task form view -->
     <record id="view_task_form2_inherit" model="ir.ui.view">
         <field name="name">task.form.inherit</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="inherit_id" ref="industry_fsm.view_task_form2_inherit"/>
         <field name="arch" type="xml">
             <field name="sale_line_id" position="after">
                 <field name="allow_worksheets" invisible="1"/>
@@ -106,14 +107,14 @@
                 <field name="fsm_is_sent" invisible="1"/>
                 <field name="worksheet_signature" invisible="1"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
-                    attrs="{'invisible': ['|', '|', '|', ('worksheet_signature', '!=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), '&amp;', '|', ('allow_timesheets', '=', False), ('timesheet_ids', '=', []), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', ('worksheet_signature', '!=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), '&amp;', '|', ('allow_timesheets', '=', False), ('total_hours_spent', '=', 0), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', ('worksheet_signature', '=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), '&amp;', '|', ('allow_timesheets', '=', False), ('timesheet_ids', '=', []), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', ('worksheet_signature', '=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), '&amp;', '|', ('allow_timesheets', '=', False), ('total_hours_spent', '=', 0), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
 
                 <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
                     attrs="{'invisible': ['|', '|', '|', ('fsm_is_sent', '=', True), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', '|', ('allow_timesheets', '=', False), ('timesheet_ids', '=', []), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', '|', ('allow_timesheets', '=', False), ('total_hours_spent', '=', 0), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
 
             </xpath>
 
@@ -139,24 +140,25 @@
                 </button>
             </xpath>
             <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-primary')]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_worksheets', '=', True), ('worksheet_count', '=', 0)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_worksheets', '=', True), ('worksheet_count', '=', 0)]}</attribute>
             </xpath>
             <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-secondary')]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('worksheet_template_id', '!=', False), '&amp;', ('allow_worksheets', '=', True), ('worksheet_count', '=', 0), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('worksheet_template_id', '!=', False), '&amp;', ('allow_worksheets', '=', True), ('worksheet_count', '=', 0), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}</attribute>
             </xpath>
         </field>
     </record>
 
+    <!-- FSM Task form view -->
     <record id="project_task_view_form_inherit" model="ir.ui.view">
         <field name="name">task.form.inherit</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="industry_fsm.project_task_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-primary')]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_worksheets', '=', True), ('worksheet_count', '=', 0)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_worksheets', '=', True), ('worksheet_count', '=', 0)]}</attribute>
             </xpath>
             <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-secondary')]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('worksheet_template_id', '!=', False), '&amp;', ('allow_worksheets', '=', True), ('worksheet_count', '=', 0), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('worksheet_template_id', '!=', False), '&amp;', ('allow_worksheets', '=', True), ('worksheet_count', '=', 0), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}</attribute>
             </xpath>
 
             <xpath expr="//button[@name='action_timer_start']" position="before">
@@ -164,14 +166,14 @@
                 <field name="fsm_is_sent" invisible="1"/>
                 <field name="worksheet_signature" invisible="1"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
-                    attrs="{'invisible': ['|', '|', '|', ('worksheet_signature', '!=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), '&amp;', '|', ('allow_timesheets', '=', False), ('timesheet_ids', '=', []), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', ('worksheet_signature', '!=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), '&amp;', '|', ('allow_timesheets', '=', False), ('total_hours_spent', '=', 0), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', ('worksheet_signature', '=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), '&amp;', '|', ('allow_timesheets', '=', False), ('timesheet_ids', '=', []), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', ('worksheet_signature', '=', False), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), '&amp;', '|', ('allow_timesheets', '=', False), ('total_hours_spent', '=', 0), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
 
                 <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
                     attrs="{'invisible': ['|', '|', '|', ('fsm_is_sent', '=', True), ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', '|', ('allow_timesheets', '=', False), ('timesheet_ids', '=', []), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
+                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '!=', 0), ('fsm_is_sent', '=', False), '&amp;', '|', ('allow_timesheets', '=', False), ('total_hours_spent', '=', 0), '|', ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}"/>
             </xpath>
 
             <xpath expr="//button[@name='action_fsm_view_material']" position="before">

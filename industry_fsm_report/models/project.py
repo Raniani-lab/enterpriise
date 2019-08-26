@@ -64,10 +64,6 @@ class Task(models.Model):
         return self.allow_worksheets and not self.worksheet_signature
 
     def action_fsm_worksheet(self):
-        timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
-        if timesheet_access and self.allow_timesheets and self.is_fsm and not (self.timesheet_ids or self.timesheet_timer_start):
-            raise UserError(_("Please, start the timer before recording the worksheet."))
-
         # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
         # time should be sold on SO)
         if self.allow_billable:

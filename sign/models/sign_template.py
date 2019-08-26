@@ -38,27 +38,10 @@ class SignTemplate(models.Model):
 
     tag_ids = fields.Many2many('sign.template.tag', string='Tags')
     color = fields.Integer()
-    extension = fields.Char(compute='_compute_extension')
     redirect_url = fields.Char(string="Redirect Link", default="",
         help="Optional link for redirection after signature")
     redirect_url_text = fields.Char(string="Link Label", default="Open Link",
         help="Optional text to display on the button link")
-
-    def name_get(self):
-        res = []
-        for template in self:
-            if template.attachment_id.name:
-                # For now, we only support PDF file in the app
-                res.append((template.id, template.attachment_id.name.replace('.pdf', '')))
-        return res
-
-    @api.depends('attachment_id.name')
-    def _compute_extension(self):
-        for template in self:
-            if template.attachment_id.mimetype:
-                template.extension = template.attachment_id.mimetype.replace('application/', '').replace(';base64', '')
-            else:
-                template.extension = ''
 
     @api.depends('sign_item_ids.responsible_id')
     def _compute_responsible_count(self):
@@ -90,12 +73,17 @@ class SignTemplate(models.Model):
     def upload_template(self, name=None, dataURL=None, active=True):
         mimetype = dataURL[dataURL.find(':')+1:dataURL.find(',')]
         datas = dataURL[dataURL.find(',')+1:]
+        # TODO: for now, PDF files without extension are recognized as application/octet-stream;base64
         try:
             file_pdf = PdfFileReader(io.BytesIO(base64.b64decode(datas)), strict=False, overwriteWarnings=False)
         except Exception as e:
             raise UserError(_("This file cannot be read. Is it a valid PDF?"))
+        file_type = mimetype.replace('application/', '').replace(';base64', '')
+        extension = re.compile(re.escape(file_type), re.IGNORECASE)
+        name = extension.sub(file_type, name)
         attachment = self.env['ir.attachment'].create({'name': name, 'datas': datas, 'mimetype': mimetype})
         template = self.create({'attachment_id': attachment.id, 'favorited_ids': [(4, self.env.user.id)], 'active': active})
+
         return {'template': template.id, 'attachment': attachment.id}
 
     @api.model

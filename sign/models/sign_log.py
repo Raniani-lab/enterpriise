@@ -18,16 +18,14 @@ class SignLog(models.Model):
     _name = 'sign.log'
     _order = 'log_date, id'
     _description = "Sign requests access history"
-
+    
+    # Accessed on ?
+    log_date = fields.Datetime(default=fields.Datetime.now, required=True)
     sign_request_id = fields.Many2one('sign.request', required=True)
     sign_request_item_id = fields.Many2one('sign.request.item')
-
     # Accessed as ?
     user_id = fields.Many2one('res.users', groups="sign.group_sign_manager")
     partner_id = fields.Many2one('res.partner')
-
-    # Accessed on ?
-    log_date = fields.Datetime(default=lambda self: fields.Datetime.now(), required=True)
 
     # Accessed from ?
     # If defined on request item when signing: take from it

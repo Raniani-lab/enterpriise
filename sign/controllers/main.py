@@ -130,10 +130,10 @@ class Sign(http.Controller):
             # Shouldn't it fall back on 'origin' download type?
             return http.redirect_with_hash("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})
 
-        extension = "".join(['.', sign_request.template_id.extension])
         # Avoid to have file named "test file.pdf (V2)" impossible to open on Windows.
         # This line produce: test file (V2).pdf
-        filename = "".join([sign_request.reference.replace(extension, ''), extension])
+        extension = '.' + sign_request.template_id.attachment_id.mimetype.replace('application/', '').replace(';base64', '')
+        filename = sign_request.reference.replace(extension, '') + extension
 
         return http.request.make_response(
             base64.b64decode(document),

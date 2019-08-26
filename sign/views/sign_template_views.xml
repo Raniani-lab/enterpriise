@@ -23,7 +23,7 @@
                                     class="fa fa-lg fa-star-o favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0" groups="sign.group_sign_manager" />
                                 <a type="object" name="toggle_favorited" aria-label="In favorites, remove it" title="In favorites, remove it"
                                     class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button" t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) == 0"/>
-                                <span><field name="display_name"/>.<field name="extension"/></span>
+                                <span><field name="display_name"/></span>
                                 </div>
                             </div>
                             <div class="o_dropdown_kanban dropdown">

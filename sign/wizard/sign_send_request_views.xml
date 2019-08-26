@@ -22,7 +22,6 @@
                     <label for="filename" invisible="context.get('sign_directly_without_mail',True)"/>
                     <div class="o_row" invisible="context.get('sign_directly_without_mail',True)">
                         <field name="filename"  placeholder="Name for the file" nolabel="1" />
-                        .<field name="extension" nolabel="1"/>
                     </div>
                 </group>
                 <footer>

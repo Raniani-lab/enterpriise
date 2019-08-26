@@ -65,7 +65,7 @@
                 attrs="{'required': False,'invisible': ['|',('ebay_listing_type','=', 'Chinese'),('product_variant_count', '=', 1)]}">
                 <tree string="Variants" editable="bottom" create="false" delete="false">
                   <field name="currency_id" invisible="1"/>
-                  <field name="attribute_value_ids" widget="many2many_tags"/>
+                  <field name="product_template_attribute_value_ids" widget="many2many_tags" readonly="1"/>
                   <field name="ebay_use"/>
                   <field name="ebay_fixed_price" string="Fixed Price" widget="monetary"/>
                   <field name="ebay_quantity"/>

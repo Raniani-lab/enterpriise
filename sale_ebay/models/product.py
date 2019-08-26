@@ -14,6 +14,7 @@ from xml.sax.saxutils import escape
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, RedirectWarning, ValidationError
+from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
 
@@ -271,29 +272,18 @@ class ProductTemplate(models.Model):
         currency = self.env['res.currency'].browse(int(currency_id))
         comp_currency = self.env.company.currency_id
         items = self._prepare_item_dict()
-        items['Item']['Variations'] = {'Variation': []}
+        items['Item']['Variations'] = {
+            'Variation': [],
+            'VariationSpecificsSet': self._get_ebay_variation_specific_set(),
+        }
         variations = items['Item']['Variations']['Variation']
 
-        name_values = {}
         for variant in self.product_variant_ids:
             if self.ebay_sync_stock:
                 variant.ebay_quantity = max(int(variant.virtual_available), 0)
             if variant.ebay_use and not variant.ebay_quantity and\
                not self.env['ir.config_parameter'].sudo().get_param('ebay_out_of_stock'):
                 raise UserError(_('All the quantities must be greater than 0 or you need to enable the Out Of Stock option.'))
-            variant_name_values = []
-            for spec in variant.attribute_value_ids:
-                attr_line = self.attribute_line_ids.filtered(
-                    lambda l: l.attribute_id.id == spec.attribute_id.id)
-                if len(attr_line.value_ids) > 1:
-                    if spec.attribute_id.name not in name_values:
-                        name_values[spec.attribute_id.name] = []
-                    if spec not in name_values[spec.attribute_id.name]:
-                        name_values[spec.attribute_id.name].append(spec)
-                    variant_name_values.append({
-                        'Name': self._ebay_encode(spec.attribute_id.name),
-                        'Value': self._ebay_encode(spec.name),
-                        })
             # Since 1st March 2016, identifiers are mandatory
             # We set default values in case none is set by the user
             # Check the length of the barcode field to guess its type.
@@ -307,52 +297,34 @@ class ProductTemplate(models.Model):
             variations.append({
                 'Quantity': variant.ebay_quantity,
                 'StartPrice': comp_currency._convert(variant.ebay_fixed_price, currency, self.env.company, fields.Date.today()),
-                'VariationSpecifics': {'NameValueList': variant_name_values},
+                'VariationSpecifics': variant._get_ebay_variation_specifics(),
                 'Delete': False if variant.ebay_use else True,
                 'VariationProductListingDetails': {
                     'UPC': upc,
-                    'EAN': ean}
-                })
-        # example of a valid name value list array
-        # possible_name_values = [{'Name':'size','Value':['16gb','32gb']},{'Name':'color', 'Value':['red','blue']}]
-        possible_name_values = []
-        for key in name_values:
-            possible_name_values.append({
-                'Name': self._ebay_encode(key),
-                'Value': [self._ebay_encode(n.name) for n in sorted(name_values[key], key=lambda v: v.sequence)]
+                    'EAN': ean,
+                },
             })
-        items['Item']['Variations']['VariationSpecificsSet'] = {
-            'NameValueList': possible_name_values
-        }
         return items
 
     def _get_item_dict(self):
-        result = []
-        for product in self:
-            if len(product.product_variant_ids) > 1 and product.ebay_listing_type == 'FixedPriceItem':
-                item_dict = product._prepare_variant_dict()
-            else:
-                item_dict = product._prepare_non_variant_dict()
-            result.append(item_dict)
-        return result
+        self.ensure_one()
+        if len(self.product_variant_ids) > 1 and self.ebay_listing_type == 'FixedPriceItem':
+            item_dict = self._prepare_variant_dict()
+        else:
+            item_dict = self._prepare_non_variant_dict()
+        return item_dict
 
     def _set_variant_url(self, item_id):
-        for product in self:
-            variants = product.product_variant_ids.filtered('ebay_use')
-            if len(variants) > 1 and product.ebay_listing_type == 'FixedPriceItem':
-                for variant in variants:
-                    name_value_list = [{
-                        'Name': self._ebay_encode(spec.attribute_id.name),
-                        'Value': self._ebay_encode(spec.name)
-                    } for spec in variant.attribute_value_ids]
-                    call_data = {
-                        'ItemID': item_id,
-                        'VariationSpecifics': {
-                            'NameValueList': name_value_list
-                        }
-                    }
-                    item = self.ebay_execute('GetItem', call_data)
-                    variant.ebay_variant_url = item.dict()['Item']['ListingDetails']['ViewItemURL']
+        self.ensure_one()
+        variants = self.product_variant_ids.filtered('ebay_use')
+        if len(variants) > 1 and self.ebay_listing_type == 'FixedPriceItem':
+            for variant in variants:
+                call_data = {
+                    'ItemID': item_id,
+                    'VariationSpecifics': variant._get_ebay_variation_specifics(),
+                }
+                item = self.ebay_execute('GetItem', call_data)
+                variant.ebay_variant_url = item.dict()['Item']['ListingDetails']['ViewItemURL']
 
     @api.model
     def get_ebay_api(self, domain):
@@ -842,14 +814,7 @@ class ProductTemplate(models.Model):
                     if not isinstance(name_value_list, list):
                         name_value_list = [name_value_list]
                     # get only the item specific in the value list
-                    attrs = []
-                    # get the attribute.value ids in order to get the variant listed on ebay
-                    for spec in (n for n in name_value_list if n['Source'] == 'ItemSpecific'):
-                        attr = self.env['product.attribute.value'].search(
-                            [('name', '=', spec['Value'])])
-                        attrs.append(('attribute_value_ids', '=', attr.id))
-                    variant = self.env['product.product'].search(attrs).filtered(
-                        lambda l: l.product_tmpl_id.id == self.id)
+                    variant = self._get_variant_from_ebay_specs([n for n in name_value_list if n['Source'] == 'ItemSpecific'])
             else:
                 variant = self.product_variant_ids[0]
             variant.ebay_quantity_sold = variant.ebay_quantity_sold + int(transaction['QuantityPurchased'])
@@ -1001,6 +966,25 @@ class ProductTemplate(models.Model):
         # TODO: remove in master
         self._sync_product_status()
 
+    def _get_ebay_variation_specific_set(self):
+        self.ensure_one()
+        # example of a valid name value list array
+        # [{'Name':'size','Value':['16gb','32gb']},{'Name':'color', 'Value':['red','blue']}]
+        return {
+            'NameValueList': [{
+                'Name': self._ebay_encode(ptal.attribute_id.name),
+                'Value': [self._ebay_encode(ptav.product_attribute_value_id.name) for ptav in ptal.product_template_value_ids],
+            } for ptal in self.valid_product_template_attribute_line_ids._without_no_variant_attributes()],
+        }
+
+    def _get_variant_from_ebay_specs(self, specs):
+        """`specs` format is [{'Name': "...", 'Value': "..."}, ...]"""
+        self.ensure_one()
+        domain = expression.OR([[('attribute_id.name', '=', spec['Name']), ('product_attribute_value_id.name', '=', spec['Value'])] for spec in specs])
+        combination = self.env['product.template.attribute.value'].search([('product_tmpl_id', '=', self.id)] + domain)
+        return self._get_variant_for_combination(combination)
+
+
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
@@ -1010,3 +994,12 @@ class ProductProduct(models.Model):
     ebay_quantity = fields.Integer(string='Quantity On eBay', default=1)
     ebay_listing_type = fields.Selection(related='product_tmpl_id.ebay_listing_type', readonly=False)
     ebay_variant_url = fields.Char('eBay Variant URL')
+
+    def _get_ebay_variation_specifics(self):
+        self.ensure_one()
+        return {
+            'NameValueList': [{
+                'Name': self.env['product.template']._ebay_encode(ptav.attribute_id.name),
+                'Value': self.env['product.template']._ebay_encode(ptav.product_attribute_value_id.name),
+            } for ptav in self.product_template_attribute_value_ids._filter_single_value_lines()]
+        }

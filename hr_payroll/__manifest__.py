@@ -13,6 +13,7 @@
         'hr_contract',
         'hr_holidays',
         'hr_work_entry',
+        'mail',
         'web_dashboard',
     ],
     'data': [

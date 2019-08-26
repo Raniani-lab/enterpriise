@@ -7,10 +7,15 @@ from odoo import fields, models, api, _
 class ResCompany(models.Model):
     _inherit = "res.company"
 
+    def _domain_company(self):
+        company = self.env.company
+        return ['|', ('company_id', '=', False), ('company_id', '=', company)]
+
     documents_account_settings = fields.Boolean()
-    account_folder = fields.Many2one('documents.folder', string="Accounting Workspace",
+    account_folder = fields.Many2one('documents.folder', string="Accounting Workspace", domain=_domain_company,
                                      default=lambda self: self.env.ref('documents.documents_finance_folder',
-                                                                       raise_if_not_found=False))
+                                                                       raise_if_not_found=False)
+                                     )
 
 
 class DocumentsFolderSetting(models.Model):

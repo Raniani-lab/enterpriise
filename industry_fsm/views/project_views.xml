@@ -103,7 +103,7 @@
     <record id="project_task_view_form_quotation" model="ir.ui.view">
         <field name="name">view.form.fsm.inherit.quotation</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="inherit_id" ref="view_task_form2_inherit"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <field name="is_fsm" invisible="1"/>

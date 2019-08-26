@@ -164,9 +164,9 @@ class Task(models.Model):
             FROM sale_order so
             WHERE so.invoice_status = 'to invoice'
         """
-        operator_new = 'not inselect'
+        operator_new = 'inselect'
         if(bool(operator == '=') ^ bool(value)):
-            operator_new = 'inselect'
+            operator_new = 'not inselect'
         return [('sale_order_id', operator_new, (query, ()))]
 
     # ---------------------------------------------------------
@@ -302,6 +302,11 @@ class Task(models.Model):
             values = {'fsm_state': 'validated'}
             if closed_stage:
                 values['stage_id'] = closed_stage.id
+
+            if task.allow_billable:
+                task._fsm_ensure_sale_order()
+                if task.sudo().sale_order_id.state in ['draft', 'sent']:
+                    task.sudo().sale_order_id.action_confirm()
 
             task.write(values)
 

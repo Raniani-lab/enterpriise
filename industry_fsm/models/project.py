@@ -46,9 +46,7 @@ class Task(models.Model):
     def default_get(self, fields_list):
         result = super(Task, self).default_get(fields_list)
         if 'project_id' in fields_list and not result.get('project_id') and self._context.get('fsm_mode'):
-            fsm_project = self.env.ref('industry_fsm.fsm_project', raise_if_not_found=False)
-            if not fsm_project:
-                fsm_project = self.env['project.project'].search([('is_fsm', '=', True)], limit=1)
+            fsm_project = self.env['project.project'].search([('is_fsm', '=', True)], order='sequence', limit=1)
             result['project_id'] = fsm_project.id
         return result
 
@@ -336,7 +334,7 @@ class Task(models.Model):
         domain = self._get_fsm_overlap_domain()[self.id]
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Overlapping tasks'),
+            'name': _('Overlapping Tasks'),
             'res_model': 'project.task',
             'domain': domain,
             'views': [(fsm_task_list_view.id, 'tree'), (fsm_task_form_view.id, 'form')],

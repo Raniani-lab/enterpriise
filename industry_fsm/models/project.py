@@ -63,7 +63,6 @@ class Task(models.Model):
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     allow_material = fields.Boolean(related='project_id.allow_material')
     allow_quotations = fields.Boolean(related='project_id.allow_quotations')
-    allow_billable = fields.Boolean(related="project_id.allow_billable")
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     quotation_count = fields.Integer(compute='_compute_quotation_count')
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')

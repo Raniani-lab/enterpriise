@@ -66,7 +66,7 @@
                 <attribute name="attrs">{'invisible': ['|', '|', '&amp;', ('is_fsm', '=', True), ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//button[@name='action_make_billable']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', ('is_fsm', '=', True), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', '|', '|',  '|', ('is_fsm', '=', True), ('allow_billable', '=', False), ('timesheet_timer_start', '!=', False), ('billable_type', '!=', 'no'), ('partner_id', '=', False), ('sale_order_id', '!=', False)]}</attribute>
             </xpath>
         </field>
     </record>

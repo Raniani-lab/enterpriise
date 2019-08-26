@@ -15,7 +15,7 @@ class Project(models.Model):
     def default_get(self, fields):
         """ Pre-fill timesheet product as "Time" data product when creating new project allowing billable tasks by default. """
         result = super(Project, self).default_get(fields)
-        if 'timesheet_product_id' in fields and result.get('is_fsm') and not result.get('timesheet_product_id'):
+        if 'timesheet_product_id' in fields and not result.get('timesheet_product_id'):
             default_product = self.env.ref('industry_fsm.fsm_time_product', False)
             if default_product:
                 result['timesheet_product_id'] = default_product.id

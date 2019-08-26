@@ -21,7 +21,8 @@
         <form string="Mail Template">
             <sheet>
                 <group>
-                    <field name="name" string="Subject"/>
+                    <field name="subject"/>
+                    <field name="name" string="Internal Reference"/>
                     <field name="email_from"/>
                     <label for="mailing_model_id" string="Recipients" invisible="1"/>
                     <field name="mailing_model_id" invisible="1"/>

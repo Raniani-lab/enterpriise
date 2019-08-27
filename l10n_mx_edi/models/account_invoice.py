@@ -1269,7 +1269,7 @@ class AccountMove(models.Model):
             raise UserError(_(
                 'Invoice must be in draft or open state in order to be '
                 'cancelled.'))
-        if self.filtered(lambda inv: not inv.journal_id.update_posted):
+        if self.filtered(lambda inv: inv.journal_id.restrict_mode_hash_table):
             raise UserError(_(
                 'You cannot modify a posted entry of this journal.\nFirst you '
                 'should set the journal to allow cancelling entries.'))

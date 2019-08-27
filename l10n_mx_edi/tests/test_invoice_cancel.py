@@ -36,7 +36,6 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         """The cron that cancel in Odoo when the PAC status is to_cancel is
         executed"""
         invoice = self.create_invoice()
-        invoice.sudo().journal_id.update_posted = True
         invoice.action_invoice_open()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -51,7 +50,6 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         """The cron that cancel in Odoo when the SAT status is cancelled is
         executed"""
         invoice = self.create_invoice()
-        invoice.sudo().journal_id.update_posted = True
         invoice.action_invoice_open()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -65,7 +63,6 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
     def test_case4(self):
         """The cron that return to Open the invoice is executed"""
         invoice = self.create_invoice()
-        invoice.sudo().journal_id.update_posted = True
         invoice.action_invoice_open()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -87,7 +84,6 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         """The cron that return to Open the invoice is executed (When the PAC)
         status is to_cancel"""
         invoice = self.create_invoice()
-        invoice.sudo().journal_id.update_posted = True
         invoice.action_invoice_open()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))

@@ -144,7 +144,6 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # -----------------------
         # Testing cancel PAC process
         # -----------------------
-        invoice.sudo().journal_id.update_posted = True
         invoice.with_context(called_from_cron=True).action_invoice_cancel()
         self.assertEqual(invoice.state, "cancel")
         self.assertTrue(

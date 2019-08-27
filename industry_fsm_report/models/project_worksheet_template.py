@@ -54,12 +54,6 @@ class ProjectWorksheetTemplate(models.Model):
                     'on_delete': 'cascade',
                 }),
                 (0, 0, {
-                    'name': 'x_operation_type',
-                    'ttype': 'selection',
-                    'field_description': 'Operation Type',
-                    'selection': "[('functional','Functional'),('technical','Technical')]"
-                }),
-                (0, 0, {
                     'name': 'x_comments',
                     'ttype': 'text',
                     'field_description': 'Comments',
@@ -111,7 +105,6 @@ class ProjectWorksheetTemplate(models.Model):
                     </group>
                     <group>
                         <group>
-                            <field name="x_operation_type" widget="radio" options="{'horizontal': true}"/>
                             <field name="x_comments"/>
                         </group>
                         <group>

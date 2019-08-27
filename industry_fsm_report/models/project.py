@@ -106,7 +106,7 @@ class Task(models.Model):
     def action_send_report(self):
         self.ensure_one()
         if self.worksheet_template_id and not self.worksheet_count:
-            raise UserError(_("To send the report, you need to set a worksheet template and create a worksheet."))
+            raise UserError(_("To send the report, you need to select a worksheet template and fill in a worksheet."))
 
         # Note: as we want to see all time and material on worksheet, ensure the SO is created (case: timesheet but no material, the
         # time should be sold on SO)

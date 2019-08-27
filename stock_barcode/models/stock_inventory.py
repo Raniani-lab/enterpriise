@@ -79,6 +79,9 @@ class StockInventory(models.Model):
             inventory['actionReportInventory'] = self.env.ref('stock.action_report_inventory').id
             if self.env.company.nomenclature_id:
                 inventory['nomenclature_id'] = [self.env.company.nomenclature_id.id]
+            if not inventory['location_ids'] and not inventory['line_ids']:
+                warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+                inventory['location_ids'] = warehouse.lot_stock_id.read(['id', 'display_name', 'parent_path'])
         return inventories
 
     @api.model

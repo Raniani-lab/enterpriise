@@ -222,8 +222,10 @@ var ClientAction = AbstractAction.extend({
 
     /**
      * Return an unique location, even if the model have a x2m field.
+     * Could also return undefined if it's from an inventory adjustment with no
+     * locations.
      *
-     * @returns {Object}
+     * @returns {Object|undefined}
      */
     _getLocationId: function () {
         return this.currentState.location_id || this.currentState.location_ids[0];
@@ -802,7 +804,8 @@ var ClientAction = AbstractAction.extend({
         */
         var sourceLocation = this.locationsByBarcode[barcode];
         if (sourceLocation  && ! (this.mode === 'receipt' || this.mode === 'no_multi_locations')) {
-            if (! isChildOf(this._getLocationId(), sourceLocation)) {
+            const locationId = this._getLocationId();
+            if (locationId && !isChildOf(locationId, sourceLocation)) {
                 errorMessage = _t('This location is not a child of the main location.');
                 return Promise.reject(errorMessage);
             } else {

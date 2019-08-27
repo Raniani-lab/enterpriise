@@ -301,7 +301,6 @@ QUnit.module('ReportComponents', {
         await testUtils.nextTick();
 
         await testUtils.dom.triggerEvents($('.o_web_studio_field_modal .o_field_selector'), ['focus']);
-        await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="toto"]'));
         await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_close'));
         await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
@@ -356,7 +355,6 @@ QUnit.module('ReportComponents', {
         await testUtils.nextTick();
 
         await testUtils.dom.triggerEvents($('.o_web_studio_field_modal .o_field_selector'), ['focus']);
-        await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="toto"]'));
         await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="image"]'));
         await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 

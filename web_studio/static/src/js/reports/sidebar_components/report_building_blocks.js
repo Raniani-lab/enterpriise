@@ -474,7 +474,11 @@ var AbstractFieldBlock = AbstractNewBuildingBlock.extend({
                     // it shouldn't be manipulated by the user
                     return !!field.relation && field.name !== 'docs';
                 });
-                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
+                var fieldChain = [];
+                if (availableKeys.length) {
+                    fieldChain.push(_.first(availableKeys).name);
+                }
+                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys, fieldChain).open();
                 dialog.on('field_default_values_saved', self, function (values) {
                     if (values.related.split('.').length < 2) {
                         Dialog.alert(self, _t('The record field name is missing'));
@@ -740,7 +744,13 @@ var BlockAddress = AbstractNewBuildingBlock.extend({
                 };
                 var availableKeys = self._getContextKeys(self.node);
                 // TODO: maybe filter keys to only get many2one fields to res.partner?
-                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
+                // For reports, set the current model ('doc') by default
+                // in 'ModelFieldSelector' whenever available
+                var fieldChain = [];
+                if (availableKeys.length) {
+                    fieldChain.push(_.first(availableKeys).name);
+                }
+                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys, fieldChain).open();
                 dialog.on('field_default_values_saved', self, function (values) {
                     if (!_.contains(values.related, '.')) {
                         Dialog.alert(self, _t('Please specify a field name for the selected model.'));
@@ -789,7 +799,13 @@ var BlockTable = AbstractNewBuildingBlock.extend({
                     },
                 };
                 var availableKeys = self._getContextKeys(self.node);
-                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
+                // For reports, set the current model ('doc') by default
+                // in 'ModelFieldSelector' whenever available
+                var fieldChain = [];
+                if (availableKeys.length) {
+                    fieldChain.push(_.first(availableKeys).name);
+                }
+                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys, fieldChain).open();
                 dialog.on('field_default_values_saved', self, function (values) {
                     if (values.type === 'one2many' || values.type === 'many2many') {
                         resolve({
@@ -855,7 +871,13 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
                     },
                 };
                 var availableKeys = self._getContextKeys(self.node);
-                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
+                // For reports, set the current model ('doc') by default
+                // in 'ModelFieldSelector' whenever available
+                var fieldChain = [];
+                if (availableKeys.length) {
+                    fieldChain.push(_.first(availableKeys).name);
+                }
+                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys, fieldChain).open();
                 dialog.on('field_default_values_saved', self, function (values) {
                     resolve({
                         inheritance: self._dataInheritance(values),

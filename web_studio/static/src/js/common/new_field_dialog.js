@@ -29,11 +29,13 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      * @param {String} model_name
      * @param {Object} field
      * @param {Object} fields
+     * @param {Object[]} field_chain - list of the initial field chain parts
      */
-    init: function (parent, model_name, field, fields) {
+    init: function (parent, model_name, field, fields, field_chain) {
         this.model_name = model_name;
         this.type = field.type;
         this.field = field;
+        this.fieldChain = field_chain || [];
         this.order = field.order;
         this.followRelations = field.followRelations || function (field) {return true;};
         this.filter = field.filter || function (field) {return true;};
@@ -136,7 +138,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 readonly: false,
                 filters: _.extend({}, this.filters, {searchable: false}),
             };
-            this.fieldSelector = new ModelFieldSelector(this, this.model_name, [], field_options);
+            this.fieldSelector = new ModelFieldSelector(this, this.model_name, this.fieldChain, field_options);
             defs.push(this.fieldSelector.appendTo(this.$('.o_many2one_field')));
         }
 

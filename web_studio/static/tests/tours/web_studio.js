@@ -516,9 +516,6 @@ tour.register('web_studio_new_report_tour', {
         $('div.o_field_selector_value').focusin();
     }
 }, {
-    // select the first element of the model (doc)
-    trigger: '.o_field_selector_popover:not(.hidden) .o_field_selector_popover_body > ul > li:first()'
-}, {
     // select the second element of the model (followers)
     trigger: '.o_field_selector_popover_body > ul > li:contains(Followers)'
 }, {
@@ -663,9 +660,6 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     run: function () {
         $('div.o_field_selector_value').focusin();
     }
-}, {
-    // select the first element of the model (doc)
-    trigger: '.o_field_selector_popover:not(.hidden) .o_field_selector_popover_body > ul > li:first()'
 }, {
     // select the second element of the model (followers)
     trigger: '.o_field_selector_popover_body > ul > li:contains(Followers)'

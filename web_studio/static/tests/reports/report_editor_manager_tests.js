@@ -950,7 +950,7 @@ QUnit.module('ReportEditorManager', {
     });
 
     QUnit.test('drag & drop field block', async function (assert) {
-        assert.expect(6);
+        assert.expect(7);
         var done = assert.async();
 
         this.templates.push({
@@ -1006,8 +1006,12 @@ QUnit.module('ReportEditorManager', {
             // drag and drop a Field component, which should trigger a view edition
             await testUtils.dom.dragAndDrop($field, $target, {position: 'inside'});
 
+            assert.strictEqual($('.o_web_studio_field_modal .o_field_selector_chain_part').text().trim(), "o (Model Test)",
+                'correct object "o" should be set by by default');
+
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             await testUtils.nextTick();
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_prev_page'));
 
             assert.strictEqual($('.o_web_studio_field_modal .o_field_selector_item').text().trim(), "o (Model Test)",
                 'Only "o" should be selectable, not "docs"');
@@ -1029,6 +1033,58 @@ QUnit.module('ReportEditorManager', {
             await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
             await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
             await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
+
+            rem.destroy();
+            done();
+        });
+    });
+
+    QUnit.test('preselect first available field in the field selector', async function (assert) {
+        assert.expect(1);
+        var done = assert.async();
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        var templateData = {
+            dataOeContext: '{"doc": "model.test"}'
+        };
+
+        var rem = await studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42],
+                currentId: 42,
+            },
+            report: {
+                report_name: 'awesome_report',
+            },
+            reportHTML: studioTestUtils.getReportHTML(this.templates, templateData),
+            reportViews: studioTestUtils.getReportViews(this.templates, templateData),
+            reportMainViewID: 42,
+        });
+
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+
+            var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(0) .o_web_studio_component:contains(Field):eq(0)');
+            var $target = rem.$('iframe').contents().find('.page');
+            // drag and drop a Field component
+            await testUtils.dom.dragAndDrop($field, $target, {position: 'inside'});
+
+            // check that model field selector already has correct value
+            var selectedField = $('.o_web_studio_field_modal .o_field_selector .o_field_selector_chain_part').text().trim();
+            assert.strictEqual(selectedField, "doc (Model Test)",
+                "field selector should display first available field 'doc (Model Test)'");
 
             rem.destroy();
             done();
@@ -1141,7 +1197,6 @@ QUnit.module('ReportEditorManager', {
 
                 $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
                 await testUtils.nextTick();
-                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
@@ -1452,7 +1507,6 @@ QUnit.module('ReportEditorManager', {
                 }
                 $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
                 await testUtils.nextTick();
-                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
@@ -1582,7 +1636,6 @@ QUnit.module('ReportEditorManager', {
                 }
                 $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
                 await testUtils.nextTick();
-                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
                 await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
@@ -1711,7 +1764,6 @@ QUnit.module('ReportEditorManager', {
             await testUtils.dom.dragAndDrop($text, $main, {position: {top: 50, left: 100}});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             await testUtils.nextTick();
-            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
             await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             rem.destroy();
@@ -1884,7 +1936,6 @@ QUnit.module('ReportEditorManager', {
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Data table)');
             await testUtils.dom.dragAndDrop($text, $main, {position: {top: 50, left: 300}});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
-            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
             await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             assert.strictEqual($('.o_technical_modal h4:contains(Alert)').length, 1, "Should display an alert because the selected field is wrong");
@@ -1960,7 +2011,6 @@ QUnit.module('ReportEditorManager', {
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Address)');
             await testUtils.dom.dragAndDrop($text, $page, {position: 'inside'});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
-            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
             await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="partner"]'));
             await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
@@ -2495,6 +2545,70 @@ QUnit.module('ReportEditorManager', {
         config.debug = initialDebugMode;
         rem.destroy();
     });
+
+    QUnit.test('preselect appropriate value in domain dialog', async function (assert) {
+        var done = assert.async();
+        assert.expect(4);
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                        '<div class="class1">' +
+                            '<span>First span</span>' +
+                        '</div>' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        var templateData = {
+            dataOeContext: '{"docs": "model.test", "o": "model.test"}'
+        };
+
+        var rem = await studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42],
+                currentId: 42,
+            },
+            report: {
+                report_name: 'awesome_report',
+            },
+
+            reportHTML: studioTestUtils.getReportHTML(this.templates, templateData),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+            reportMainViewID: 42,
+        });
+
+        await rem.editorIframeDef.then(async function () {
+            // click on the span tag to set visibility with help of domain
+            await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First span)'));
+
+            // check if the span is selected properly
+            assert.hasClass(rem.$('iframe').contents().find('span:contains(First span)'),'o_web_studio_report_selected',
+                "the corresponding nodes should be selected");
+            assert.hasClass(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="options"]'),'active',
+                "the sidebar should be updated showing 'options' tab.");
+
+            // Click the 'Visible If' input to set open domain editor dialog
+            await testUtils.dom.click(rem.$('.card.o_web_studio_active .o_field_domain_dialog_button'));
+            assert.strictEqual($('body.modal-open .modal-body .o_domain_selector .o_domain_add_first_node_button').length, 1,
+                'dialog box should be opened');
+
+            //Add a new domain rule and check if value is correctly set
+            await testUtils.dom.click($('body.modal-open .modal-body .o_domain_selector .o_domain_add_first_node_button'));
+            var selectedField = $('.o_domain_leaf_edition .o_field_selector .o_field_selector_value .o_field_selector_chain_part').text().trim();
+            assert.strictEqual(selectedField, "o (Model Test)", "field selector should display first available field 'o (Model Test)'");
+
+            rem.destroy();
+            done();
+        });
+    });
+
 });
 
 });

@@ -758,12 +758,15 @@ var TIf = AbstractEditComponent.extend({
         e.preventDefault();
         var self = this;
         var availableKeys = this._getContextKeys(this.node);
+        // set a default document on the domain selector
+        var defaultDoc = _.findWhere(availableKeys, {relation: this.context.docs, type: 'many2one'});
+        defaultDoc = defaultDoc && defaultDoc.name || _.first(availableKeys).name;
         var value = Domain.prototype.conditionToDomain(this.node.attrs['t-if'] || '');
         var dialog = new DomainSelectorDialog(this, 'record_fake_model', value, {
             readonly: this.mode === "readonly",
             debugMode: config.isDebug(),
             fields: availableKeys,
-            default: [[availableKeys[0].name, '!=', false]],
+            default: [[defaultDoc, '!=', false]],
             operators: ["=", "!=", ">", "<", ">=", "<=", "in", "not in", "set", "not set"],
         }).open();
         dialog.on("domain_selected", this, function (e) {

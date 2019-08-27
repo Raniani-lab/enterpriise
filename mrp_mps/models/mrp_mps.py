@@ -5,7 +5,7 @@ from collections import defaultdict, namedtuple
 from math import log10
 
 from odoo import api, fields, models, _
-from odoo.tools.date_utils import add
+from odoo.tools.date_utils import add, subtract
 from odoo.tools.float_utils import float_round
 from odoo.osv.expression import OR, AND
 
@@ -229,25 +229,26 @@ class MrpProductionSchedule(models.Model):
         indirect_demand_qty = defaultdict(float)
         incoming_qty, incoming_qty_done = self._get_incoming_qty(date_range)
         outgoing_qty, outgoing_qty_done = self._get_outgoing_qty(date_range)
-        fields = [
+        read_fields = [
             'forecast_target_qty',
             'min_to_replenish_qty',
             'max_to_replenish_qty',
             'product_id',
         ]
         if self.env.user.has_group('stock.group_stock_multi_warehouses'):
-            fields.append('warehouse_id')
+            read_fields.append('warehouse_id')
         if self.env.user.has_group('uom.group_uom'):
-            fields.append('product_uom_id')
-        production_schedule_states = schedules_to_compute.read(fields)
+            read_fields.append('product_uom_id')
+        production_schedule_states = schedules_to_compute.read(read_fields)
         production_schedule_states_by_id = {mps['id']: mps for mps in production_schedule_states}
         for production_schedule in indirect_demand_order:
             # Bypass if the schedule is only used in order to compute indirect
             # demand.
             rounding = production_schedule.product_id.uom_id.rounding
+            lead_time = production_schedule._get_lead_times()
             production_schedule_state = production_schedule_states_by_id[production_schedule['id']]
             if production_schedule in self:
-                procurement_date = production_schedule._get_lead_times()
+                procurement_date = add(fields.Date.today(), days=lead_time)
                 precision_digits = max(0, int(-(log10(production_schedule.product_uom_id.rounding))))
                 production_schedule_state['precision_digits'] = precision_digits
                 production_schedule_state['forecast_ids'] = []
@@ -294,7 +295,11 @@ class MrpProductionSchedule(models.Model):
                 starting_inventory_qty = forecast_values['safety_stock_qty']
                 # Set the indirect demand qty for children schedules.
                 for (mps, ratio) in indirect_demand_ratio:
-                    related_key = ((date_start, date_stop), mps.product_id, mps.warehouse_id)
+                    if not forecast_values['replenish_qty']:
+                        continue
+                    related_date = max(subtract(date_start, days=lead_time), fields.Date.today())
+                    index = next(i for i, (dstart, dstop) in enumerate(date_range) if related_date <= dstart or (related_date >= dstart and related_date <= dstop))
+                    related_key = (date_range[index], mps.product_id, mps.warehouse_id)
                     indirect_demand_qty[related_key] += ratio * forecast_values['replenish_qty']
 
             if production_schedule in self:
@@ -526,8 +531,7 @@ class MrpProductionSchedule(models.Model):
             else:
                 return _get_rule_lead_time(lead_time, product, rule.location_src_id)
 
-        lead_time = _get_rule_lead_time(0, self.product_id, self.warehouse_id.lot_stock_id)
-        return add(fields.Date.today(), days=lead_time)
+        return _get_rule_lead_time(0, self.product_id, self.warehouse_id.lot_stock_id)
 
     def _get_replenish_qty(self, after_forecast_qty):
         """ Modify the quantity to replenish depending the min/max and targeted

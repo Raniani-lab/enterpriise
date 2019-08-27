@@ -42,9 +42,11 @@
         <field name="arch" type="xml">
             <form string="Production Workcenter" delete="0" create="0" class="o_workorder_tablet" js_class="tablet_pdf_viewer">
                 <field name="allow_producing_quantity_change" invisible="1"/>
+                <field name="company_id" invisible="1"/>
                 <field name="raw_workorder_line_ids" invisible="1">
                     <!-- to save those values updated in _onchange_qty_producing -->
                     <tree editable="bottom">
+                        <field name="company_id" invisible="1"/>
                         <field name="qty_done"/>
                         <field name="qty_reserved"/>
                         <field name="qty_to_consume"/>
@@ -56,6 +58,7 @@
                 <field name="finished_workorder_line_ids" invisible="1">
                     <!-- to save those values updated in _onchange_qty_producing -->
                     <tree editable="bottom">
+                        <field name="company_id" invisible="1"/>
                         <field name="qty_done"/>
                         <field name="qty_reserved"/>
                         <field name="qty_to_consume"/>
@@ -103,7 +106,7 @@
                         <div attrs="{'invisible': [('product_tracking', '=', 'none')]}">
                             <label for="finished_lot_id" string="Lot Number:" attrs="{'invisible': [('product_tracking', '!=', 'lot')]}"/>
                             <label for="finished_lot_id" string="Serial Number:" attrs="{'invisible': [('product_tracking', '!=', 'serial')]}"/>
-                            <field name="finished_lot_id" context="{'default_product_id': product_id}" domain="[('id', 'in', allowed_lots_domain)]"/>
+                            <field name="finished_lot_id" context="{'default_product_id': product_id, 'default_company_id': company_id}" domain="[('id', 'in', allowed_lots_domain)]"/>
                             <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus-square-o" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('finished_lot_id', '!=', False)]}"/>
                         </div>
                     </div>
@@ -207,7 +210,7 @@
                         <div class="o_workorder_field text-center">
                             <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'serial')]}">Serial Number</div>
                             <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'lot')]}">Lot Number</div>
-                            <field name="lot_id" context="{'default_product_id': component_id, 'active_mo_id': test_type == 'register_consumed_materials' and production_id or False}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id)]"/>
+                            <field name="lot_id" context="{'default_product_id': component_id, 'default_company_id': company_id, 'active_mo_id': test_type == 'register_consumed_materials' and production_id or False}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
                         </div>
                         <div class="o_workorder_field text-right">
                             <label for="qty_done" string="Quantity"/>
@@ -235,6 +238,7 @@
         <field name="arch" type="xml">
             <form string="Workorder Actions">
                 <field name="state" invisible="1"/>
+                <field name="company_id" invisible="1"/>
                 <field name="working_state" invisible="1"/>
                 <field name="workcenter_id" invisible="1"/>
                 <div class="row workorder_menu">

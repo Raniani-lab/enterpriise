@@ -31,7 +31,8 @@ class MrpProductionWorkcenterLine(models.Model):
     quality_alert_ids = fields.One2many('quality.alert', 'workorder_id')
     quality_alert_count = fields.Integer(compute="_compute_quality_alert_count")
 
-    current_quality_check_id = fields.Many2one('quality.check', "Current Quality Check", store=True)
+    current_quality_check_id = fields.Many2one(
+        'quality.check', "Current Quality Check", store=True, check_company=True)
 
     # QC-related fields
     allow_producing_quantity_change = fields.Boolean('Allow Changes to Producing Quantity', default=True)
@@ -115,7 +116,8 @@ class MrpProductionWorkcenterLine(models.Model):
     def action_generate_serial(self):
         self.ensure_one()
         self.finished_lot_id = self.env['stock.production.lot'].create({
-            'product_id': self.product_id.id
+            'product_id': self.product_id.id,
+            'company_id': self.company_id.id,
         })
 
     def action_print(self):
@@ -205,6 +207,7 @@ class MrpProductionWorkcenterLine(models.Model):
             quality_check_data = {
                 'workorder_id': self.id,
                 'product_id': self.product_id.id,
+                'company_id': self.company_id.id,
                 'parent_id': parent_id.id,
                 'finished_product_sequence': self.qty_produced,
             }
@@ -441,6 +444,7 @@ class MrpProductionWorkcenterLine(models.Model):
             production = wo.production_id
             points = self.env['quality.point'].search([('operation_id', '=', wo.operation_id.id),
                                                        ('picking_type_id', '=', production.picking_type_id.id),
+                                                       ('company_id', '=', wo.company_id.id),
                                                        '|', ('product_id', '=', production.product_id.id),
                                                        '&', ('product_id', '=', False), ('product_tmpl_id', '=', production.product_id.product_tmpl_id.id)])
 
@@ -455,6 +459,7 @@ class MrpProductionWorkcenterLine(models.Model):
                         'workorder_id': wo.id,
                         'point_id': point.id,
                         'team_id': point.team_id.id,
+                        'company_id': wo.company_id.id,
                         'product_id': production.product_id.id,
                         # Two steps are from the same production
                         # if and only if the produced quantities at the time they were created are equal.
@@ -480,6 +485,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 values = {
                     'workorder_id': wo.id,
                     'product_id': production.product_id.id,
+                    'company_id': wo.company_id.id,
                     'component_id': move.product_id.id,
                     'team_id': quality_team_id,
                     # Two steps are from the same production
@@ -615,6 +621,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 lot = self.env['stock.production.lot'].create({
                     'name': barcode,
                     'product_id': self.component_id.id,
+                    'company_id': self.company_id.id,
                 })
             self.lot_id = lot
         elif self.production_id.product_id.tracking and self.production_id.product_id.tracking != 'none':
@@ -622,6 +629,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 lot = self.env['stock.production.lot'].create({
                     'name': barcode,
                     'product_id': self.product_id.id,
+                    'company_id': self.company_id.id,
                 })
             self.finished_lot_id = lot
 

@@ -4,11 +4,10 @@
 {
     'name': "VOIP for crm",
 
-    'summary': """
-        Link between voip and crm""",
+    'summary': "Link between voip and crm",
 
     'description': """
-        Allow to add the lead partner to phonecall list
+Adds the lead partner to phonecall list
     """,
 
     'category': 'Sales',

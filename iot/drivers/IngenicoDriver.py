@@ -738,18 +738,21 @@ class IngenicoDriver(Driver):
         Override
         """
         try:
-            self.data = {'value': '', 'Stage': False, 'Response': False, 'Ticket': False}
+            self.data = {'value': '', 'Stage': False, 'Response': False, 'Ticket': False, 'Error': False}
             while True:
                 sleep(1)
                 msg = IncommingIngenicoMessage(self)
                 if msg:
                     self.data['value'] = 'Connected'
                     self.data["Response"] = False
+                    self.data["Error"] = False
                     msgType = msg.getMessageType()
                     if msgType == "KeepAliveRequest":
                         self._outgoingMessage( "KeepAliveResponse", reason=msg.getKeepAliveReasonId())
                     elif msgType == "TransactionResponse":
                         self.data["Response"] = msg.getTransactionResult() if msg.getTransactionResult() else self.data["Response"]
+                        if self.data["Response"] == 'Error':
+                            self.data["Error"] = 'Canceled'
                         self.data["Ticket"] = msg.getTransactionTicket() if msg.getTransactionTicket() else self.data["Ticket"]
                     self.data['Stage'] = msg.getTransactionStage() if msg.getTransactionStage() else self.data['Stage']
                     self.data['cid'] = self.cid

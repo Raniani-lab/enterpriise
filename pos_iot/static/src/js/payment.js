@@ -133,12 +133,9 @@ var PaymentIOT = PaymentInterface.extend({
             }
             this.terminal.remove_listener();
             resolve(true);
-        } else if (data.Stage === 'WaitingForCard') {
+        } else if (['WaitingForCard', 'WaitingForPin'].includes(data.Stage)) {
             line.set_payment_status('waitingCard');
             this.pos.gui.screen_instances.payment.render_paymentlines();
-        } else if (['Finished', 'None'].includes(data.Stage) && ['timeout', 'waitingCard'].includes(line.get_payment_status())) {
-            this.terminal.remove_listener();
-            resolve(false);
         }
     },
 

@@ -38,7 +38,7 @@ var TerminalProxy = DeviceProxy.extend({
                 this.transaction = false;
                 setTimeout(function () {
                     self.listener({
-                        Stage: 'Finished',
+                        Error: 'Canceled',
                         cid: self.cid,
                     });
                 });

@@ -425,8 +425,8 @@
                     <button string="Apply Changes" name="action_apply" type="object"
                             class="oe_highlight" attrs="{'invisible': [('allow_apply_change', '=', False)]}"/>
                     <button name="action_see_attachments" type="object" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}" string="Update Documents"/>
-                    <button name="open_new_bom" type="object" attrs="{'invisible': [('new_bom_id', '=', False)]}" string="Update BoM"/>
-                    <button name="open_new_routing" type="object" attrs="{'invisible': [('new_routing_id', '=', False)]}" string="Update Routing"/>
+                    <button name="open_new_bom" type="object" attrs="{'invisible': ['|', ('new_bom_id', '=', False), ('state', '=', 'done')]}" string="Update BoM"/>
+                    <button name="open_new_routing" type="object" attrs="{'invisible': ['|', ('new_routing_id', '=', False), ('state', '=', 'done')]}" string="Update Routing"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

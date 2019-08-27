@@ -688,6 +688,7 @@ class MrpEcoBomChange(models.Model):
         for rec in self:
             rec.upd_product_qty = rec.new_product_qty - rec.old_product_qty
             rec.operation_change = rec.new_operation_id.name if rec.change_type == 'add' else rec.old_operation_id.name
+            rec.uom_change = False
             if (rec.old_uom_id and rec.new_uom_id) and rec.old_uom_id != rec.new_uom_id:
                 rec.uom_change = rec.old_uom_id.name + ' -> ' + rec.new_uom_id.name
             if (rec.old_operation_id != rec.new_operation_id) and rec.change_type == 'update':

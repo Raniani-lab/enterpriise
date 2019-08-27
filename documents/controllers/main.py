@@ -134,7 +134,7 @@ class ShareRoute(http.Controller):
                         'name': ufile.filename,
                         'mimetype': mimetype,
                         'datas': base64.encodestring(ufile.read()),
-                        'folder_id': folder_id,
+                        'folder_id': int(folder_id),
                     })
                 except Exception as e:
                     logger.exception("Fail to upload document %s" % ufile.filename)

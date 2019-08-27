@@ -86,7 +86,7 @@ class StockInventory(models.Model):
 
     @api.model
     def open_new_inventory(self):
-        company_user = self.env.user.company_id
+        company_user = self.env.company
         warehouse = self.env['stock.warehouse'].search([('company_id', '=', company_user.id)], limit=1)
         if warehouse:
             default_location_id = warehouse.lot_stock_id

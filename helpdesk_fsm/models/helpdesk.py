@@ -43,7 +43,7 @@ class HelpdeskTicket(models.Model):
             default_project_id = fsm_projects.id
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Create task'),
+            'name': _('Create a Field Service task'),
             'res_model': 'helpdesk.create.fsm.task',
             'view_mode': 'form',
             'target': 'new',

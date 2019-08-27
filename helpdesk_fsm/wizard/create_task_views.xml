@@ -9,14 +9,17 @@
                 <form>
                     <sheet>
                         <group col="2">
-                            <field name="helpdesk_ticket_id" invisible="1"/>
-                            <field name="name" />
-                            <field name="project_id" widget="Many2one"/>
-                            <field name="partner_id" widget="Many2one"/>
+                            <group>
+                                <field name="helpdesk_ticket_id" invisible="1"/>
+                                <field name="name" />
+                                <field name="project_id" widget="Many2one" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
+                                <field name="partner_id" widget="Many2one"/>
+                            </group>
                         </group>
                     </sheet>
                     <footer>
-                        <button string="Save" class="btn btn-primary" name="action_generate_task" type="object" />
+                        <button string="Create &amp; View Task" class="btn btn-primary" name="action_generate_and_view_task" type="object" />
+                        <button string="Create Task" class="btn btn-primary" name="action_generate_task" type="object" />
                         <button string="Discard" class="btn btn-secondary" special="cancel" />
                     </footer>
                 </form>

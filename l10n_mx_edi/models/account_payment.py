@@ -73,10 +73,6 @@ class AccountPayment(models.Model):
     l10n_mx_edi_cfdi_uuid = fields.Char(string='Fiscal Folio', copy=False, readonly=True,
         help='Folio in electronic invoice, is returned by SAT when send to stamp.',
         compute='_compute_cfdi_values')
-    l10n_mx_edi_cfdi_certificate_id = fields.Many2one('l10n_mx_edi.certificate',
-        string='Certificate', copy=False, readonly=True,
-        help='The certificate used during the generation of the cfdi.',
-        compute='_compute_cfdi_values')
     l10n_mx_edi_cfdi_supplier_rfc = fields.Char('Supplier RFC', copy=False, readonly=True,
         help='The supplier tax identification number.',
         compute='_compute_cfdi_values')
@@ -300,7 +296,6 @@ class AccountPayment(models.Model):
                 rec.l10n_mx_edi_cfdi = None
                 rec.l10n_mx_edi_cfdi_supplier_rfc = None
                 rec.l10n_mx_edi_cfdi_customer_rfc = None
-                rec.l10n_mx_edi_cfdi_certificate_id = None
                 continue
             attachment_id = attachment_id[0]
             # At this moment, the attachment contains the file size in its 'datas' field because
@@ -317,8 +312,6 @@ class AccountPayment(models.Model):
             rec.l10n_mx_edi_cfdi_customer_rfc = tree.Receptor.get(
                 'Rfc', tree.Receptor.get('rfc'))
             certificate = tree.get('noCertificado', tree.get('NoCertificado'))
-            rec.l10n_mx_edi_cfdi_certificate_id = self.env['l10n_mx_edi.certificate'].sudo().search(
-                [('serial_number', '=', certificate)], limit=1)
 
     def _l10n_mx_edi_retry(self):
         rep_is_required = self.filtered(lambda r: r.l10n_mx_edi_is_required())
@@ -664,7 +657,8 @@ class AccountPayment(models.Model):
         password = pac_info['password']
         for rec in self:
             uuids = [rec.l10n_mx_edi_cfdi_uuid]
-            certificate_id = rec.l10n_mx_edi_cfdi_certificate_id.sudo()
+            certificate_ids = rec.company_id.l10n_mx_edi_certificate_ids
+            certificate_id = certificate_ids.sudo().get_valid_certificate()
             cer_pem = certificate_id.get_pem_cer(certificate_id.content)
             key_pem = certificate_id.get_pem_key(
                 certificate_id.key, certificate_id.password)
@@ -716,7 +710,8 @@ class AccountPayment(models.Model):
         password = pac_info['password']
         for inv in self:
             uuid = inv.l10n_mx_edi_cfdi_uuid
-            certificate_id = inv.l10n_mx_edi_cfdi_certificate_id.sudo()
+            certificate_ids = inv.company_id.l10n_mx_edi_certificate_ids
+            certificate_id = certificate_ids.sudo().get_valid_certificate()
             company_id = self.company_id
             cer_pem = certificate_id.get_pem_cer(certificate_id.content)
             key_pem = certificate_id.get_pem_key(

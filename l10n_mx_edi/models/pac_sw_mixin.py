@@ -172,7 +172,8 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         for rec in self:
             xml = rec.l10n_mx_edi_get_xml_etree()
             tfd_node = rec.l10n_mx_edi_get_tfd_etree(xml)
-            certificate = rec.l10n_mx_edi_cfdi_certificate_id.sudo()
+            certificate_ids = rec.company_id.l10n_mx_edi_certificate_ids
+            certificate = certificate_ids.sudo().get_valid_certificate()
             data = {
                 'rfc': xml.Emisor.get('Rfc'),
                 'b64Cer': certificate.content.decode('UTF-8'),

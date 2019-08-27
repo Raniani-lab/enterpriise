@@ -119,10 +119,6 @@ class AccountMove(models.Model):
     l10n_mx_edi_cfdi_amount = fields.Monetary(string='Total Amount', copy=False, readonly=True,
         help='The total amount reported on the cfdi.',
         compute='_compute_cfdi_values')
-    l10n_mx_edi_cfdi_certificate_id = fields.Many2one('l10n_mx_edi.certificate',
-        string='Certificate', copy=False, readonly=True,
-        help='The certificate used during the generation of the cfdi.',
-        compute='_compute_cfdi_values')
     l10n_mx_edi_time_invoice = fields.Char(
         string='Time invoice', readonly=True, copy=False,
         states={'draft': [('readonly', False)]},
@@ -382,7 +378,8 @@ class AccountMove(models.Model):
         password = pac_info['password']
         for inv in self:
             uuids = [inv.l10n_mx_edi_cfdi_uuid]
-            certificate_id = inv.l10n_mx_edi_cfdi_certificate_id.sudo()
+            certificate_ids = inv.company_id.l10n_mx_edi_certificate_ids
+            certificate_id = certificate_ids.sudo().get_valid_certificate()
             cer_pem = certificate_id.get_pem_cer(
                 certificate_id.content)
             key_pem = certificate_id.get_pem_key(
@@ -454,7 +451,8 @@ class AccountMove(models.Model):
         password = pac_info['password']
         for inv in self:
             uuid = inv.l10n_mx_edi_cfdi_uuid
-            certificate_id = inv.l10n_mx_edi_cfdi_certificate_id.sudo()
+            certificate_ids = inv.company_id.l10n_mx_edi_certificate_ids
+            certificate_id = certificate_ids.sudo().get_valid_certificate()
             company_id = self.company_id
             cer_pem = certificate_id.get_pem_cer(
                 certificate_id.content)
@@ -661,7 +659,6 @@ class AccountMove(models.Model):
                 inv.l10n_mx_edi_cfdi_supplier_rfc = None
                 inv.l10n_mx_edi_cfdi_customer_rfc = None
                 inv.l10n_mx_edi_cfdi_amount = None
-                inv.l10n_mx_edi_cfdi_certificate_id = None
                 continue
             # At this moment, the attachment contains the file size in its 'datas' field because
             # to save some memory, the attachment will store its data on the physical disk.
@@ -681,8 +678,6 @@ class AccountMove(models.Model):
             inv.l10n_mx_edi_cfdi_customer_rfc = tree.Receptor.get(
                 'Rfc', tree.Receptor.get('rfc'))
             certificate = tree.get('noCertificado', tree.get('NoCertificado'))
-            inv.l10n_mx_edi_cfdi_certificate_id = self.env['l10n_mx_edi.certificate'].sudo().search(
-                [('serial_number', '=', certificate)], limit=1)
 
     @api.depends('partner_id')
     def _compute_need_external_trade(self):

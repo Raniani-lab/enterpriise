@@ -66,7 +66,7 @@ class SignRequest(models.Model):
     nb_closed = fields.Integer(string="Completed Signatures", compute="_compute_count", store=True)
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
     progress = fields.Char(string="Progress", compute="_compute_count")
-    start_sign = fields.Boolean(string="", help="At least one signer has signed the document.", compute="_compute_count")
+    start_sign = fields.Boolean(string="Signature Started", help="At least one signer has signed the document.", compute="_compute_count")
     integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes')
 
     active = fields.Boolean(default=True, string="Active")
@@ -75,6 +75,7 @@ class SignRequest(models.Model):
     color = fields.Integer()
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
+    completion_date = fields.Date(string="Completion Date", compute="_compute_count")
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
 
@@ -92,6 +93,13 @@ class SignRequest(models.Model):
             rec.nb_total = wait + closed
             rec.start_sign = bool(closed)
             rec.progress = "{} / {}".format(wait, wait + closed)
+            if closed:
+                rec.start_sign = True
+            if wait == 0 and closed:
+                last_completed_request = rec.request_item_ids.sorted(key=lambda i: i.signing_date, reverse=True)[0]
+                rec.completion_date = last_completed_request.signing_date
+            else:
+                rec.completion_date = None
 
     @api.depends('request_item_ids.state', 'request_item_ids.partner_id.name')
     def _compute_request_item_infos(self):
@@ -108,6 +116,12 @@ class SignRequest(models.Model):
         for rec in self:
             if rec.state == 'sent' and rec.nb_closed == len(rec.request_item_ids) and len(rec.request_item_ids) > 0: # All signed
                 rec.action_signed()
+
+    def _get_final_recipients(self):
+        self.ensure_one()
+        all_recipients = set(self.request_item_ids.mapped('signer_email'))
+        all_recipients |= set(self.mapped('message_follower_ids.partner_id.email'))
+        return all_recipients
 
     def button_send(self):
         self.action_sent()

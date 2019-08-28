@@ -140,7 +140,11 @@ class SignLog(models.Model):
             vals.update({
                 'partner_id': request.env.user.partner_id.id if not request.env.user._is_public() else None
             })
-        if 'geoip' in request.session:
+        # NOTE: during signing, this method is always called after the log is generated based on the
+        # request item. This means that if the signer accepted the browser geolocation request, the `vals`
+        # will already contain much more precise coordinates. We should use the GeoIP ones only if the
+        # browser did not send anything
+        if 'geoip' in request.session and not (vals.get('latitude') and vals.get('longitude')):
             vals.update({
                 'latitude': request.session['geoip'].get('latitude') or 0.0,
                 'longitude': request.session['geoip'].get('longitude') or 0.0,

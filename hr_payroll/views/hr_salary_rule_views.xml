@@ -57,10 +57,13 @@
             <form string="Employee Function">
             <sheet>
                 <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name" class="oe_inline"/></h1>
+                </div>
                 <group>
                     <group name="salary_details">
                         <field name="active" invisible="1"/>
-                        <field name="name"/>
                         <field name="type_id"/>
                         <field name="use_worked_day_lines"/>
                         <field name="country_id" options="{'no_create': True}"/>
@@ -133,9 +136,12 @@
                             <field string="Structures" name="struct_type_count" widget="statinfo"/>
                         </button>
                     </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" class="oe_inline"/></h1>
+                    </div>
                     <group>
                         <group>
-                            <field name="name"/>
                             <field name="country_id"/>
                             <field name="wage_type"/>
                         </group>

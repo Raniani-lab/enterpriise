@@ -68,6 +68,7 @@
         <field name="product_ids" eval="[(4, ref('product.product_product_3'))]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_0"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
+        <field name="note">Assemble the different parts of the desk combination.</field>
     </record>
 
     <record id="base.group_user" model="res.groups">

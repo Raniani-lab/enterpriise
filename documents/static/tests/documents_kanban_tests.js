@@ -1,6 +1,7 @@
 odoo.define('documents.documents_kanban_tests', function (require) {
 "use strict";
 
+var DocumentsKanbanController = require('documents.DocumentsKanbanController');
 var DocumentsKanbanView = require('documents.DocumentsKanbanView');
 
 var mailTestUtils = require('mail.testUtils');
@@ -27,22 +28,24 @@ function searchValue(el, value) {
     matches.val(value).trigger('keydown');
 }
 
-function mockXHR(uploadXHR, customSend) {
-    // the original window.XMLHttpRequest must be saved and restored after it the mock version has been used.
-    window.XMLHttpRequest = class {
-        constructor () {
-            uploadXHR.push(this);
-            this.upload = new window.EventTarget();
-        }
-        open() {}
-        send(data) {customSend && customSend(data);}
-    };
-}
 
 QUnit.module('Views');
 
 QUnit.module('DocumentsKanbanView', {
     beforeEach: function () {
+        const self = this;
+        this.ORIGINAL_CREATE_XHR = DocumentsKanbanController.prototype._createXHR;
+        this.patchDocumentXHR = (mockedXHRs, customSend) => {
+            DocumentsKanbanController.prototype._createXHR = () => {
+                const xhr = {
+                    upload: new window.EventTarget(),
+                    open() {},
+                    send(data) { customSend && customSend(data); },
+                };
+                mockedXHRs.push(xhr);
+                return xhr;
+            }
+        }
         this.data = {
             'documents.document': {
                 fields: {
@@ -234,6 +237,9 @@ QUnit.module('DocumentsKanbanView', {
                 ],
             },
         };
+    },
+    afterEach() {
+        DocumentsKanbanController.prototype._createXHR = this.ORIGINAL_CREATE_XHR;
     },
 }, function () {
     QUnit.test('basic rendering', async function (assert) {
@@ -2687,13 +2693,9 @@ QUnit.module('DocumentsKanbanView', {
             content: 'hello, world',
             contentType: 'text/plain',
         });
-        const originalXMLHttpRequest = window.XMLHttpRequest;
 
-        const send = data => {
-            assert.step('xhrSend');
-        };
         const mockedXHRs = [];
-        mockXHR(mockedXHRs, send);
+        this.patchDocumentXHR(mockedXHRs, data => assert.step('xhrSend'));
 
         const kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -2728,7 +2730,6 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual(kanban.$('.o_documents_progress_text_right').text(), "(350/500Mb)",
             "the current upload progress should be at (350/500Mb)")
 
-        window.XMLHttpRequest = originalXMLHttpRequest;
         kanban.destroy();
     });
 
@@ -2750,13 +2751,9 @@ QUnit.module('DocumentsKanbanView', {
             content: 'hello, world',
             contentType: 'text/plain',
         });
-        const originalXMLHttpRequest = window.XMLHttpRequest;
 
-        const send = data => {
-            assert.step('xhrSend');
-        };
         const mockedXHRs = [];
-        mockXHR(mockedXHRs, send);
+        this.patchDocumentXHR(mockedXHRs, data => assert.step('xhrSend'));
 
         const kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -2801,7 +2798,6 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.containsOnce(kanban, '.o_documents_progress_border', "There should only be one card left");
 
-        window.XMLHttpRequest = originalXMLHttpRequest;
         kanban.destroy();
     });
 
@@ -2813,10 +2809,9 @@ QUnit.module('DocumentsKanbanView', {
             content: 'hello, world',
             contentType: 'text/plain',
         });
-        const originalXMLHttpRequest = window.XMLHttpRequest;
-        let mockedXHRs = [];
 
-        mockXHR(mockedXHRs);
+        const mockedXHRs = [];
+        this.patchDocumentXHR(mockedXHRs);
 
         const kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -2849,7 +2844,6 @@ QUnit.module('DocumentsKanbanView', {
         assert.containsOnce($, '.o_notification', "should display a notification on upload error");
         assert.strictEqual($('.o_notification_content').text(), "One or more file(s) failed to upload",
            "the notification message should be the response error message");
-        window.XMLHttpRequest = originalXMLHttpRequest;
         kanban.destroy();
     });
 

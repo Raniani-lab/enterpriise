@@ -45,10 +45,10 @@ MockServer.include({
         var gridAnchor = moment(kwargs.context.grid_anchor || this.currentDate);
         var today = moment();
         var span = kwargs.range.span;
-        var start = gridAnchor.clone().startOf(span === 'week' ? 'isoWeek' : 'month');
-        var end = gridAnchor.clone().endOf(span === 'week' ? 'isoWeek' : 'month');
-        var nextAnchor = gridAnchor.clone().add(1, span === 'week' ? 'weeks' : 'month').format('YYYY-MM-DD');
-        var prevAnchor = gridAnchor.clone().subtract(1, span === 'week' ? 'weeks' : 'month').format('YYYY-MM-DD');
+        var start = gridAnchor.clone().startOf(span === 'day' ? 'day' : span === 'week' ? 'isoWeek' : 'month');
+        var end = gridAnchor.clone().endOf(span === 'day' ? 'day' : span === 'week' ? 'isoWeek' : 'month');
+        var nextAnchor = gridAnchor.clone().add(1, span === 'day' ? 'day' : span === 'week' ? 'weeks' : 'month').format('YYYY-MM-DD');
+        var prevAnchor = gridAnchor.clone().subtract(1, span === 'day' ? 'day' : span === 'week' ? 'weeks' : 'month').format('YYYY-MM-DD');
 
         // compute columns
         var columns = [];
@@ -70,7 +70,7 @@ MockServer.include({
         var domain = [
             '&',
             [kwargs.col_field, '>=', start.format('YYYY-MM-DD')],
-            [kwargs.col_field, '<', end.format('YYYY-MM-DD')]
+            [kwargs.col_field, '<=', end.format('YYYY-MM-DD')]
         ].concat(kwargs.domain);
 
         var groups = this._mockReadGroup(model, {
@@ -154,7 +154,19 @@ MockServer.include({
      * @private
      * @returns {Promise}
      */
-    _mockReadGridDomain: function () {
+    _mockReadGridDomain: function (model, kwargs) {
+        if (kwargs.context && kwargs.context.grid_anchor && kwargs.range && kwargs.range.span) {
+            var gridAnchor = moment(kwargs.context.grid_anchor || this.currentDate);
+            var span = kwargs.range.span;
+            var start = gridAnchor.clone().startOf(span === 'day' ? 'day' : span === 'week' ? 'isoWeek' : 'month');
+            var end = gridAnchor.clone().endOf(span === 'day' ? 'day' : span === 'week' ? 'isoWeek' : 'month');
+
+            return Promise.resolve([
+                '&',
+                ['date', '>=', start.format('YYYY-MM-DD')],
+                ['date', '<=', end.format('YYYY-MM-DD')],
+            ]);
+        }
         return Promise.resolve([
             '&',
             ['date', '>=', '2017-01-01'],

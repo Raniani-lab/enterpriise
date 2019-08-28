@@ -2,6 +2,7 @@ odoo.define('web_grid.GridController', function (require) {
 "use strict";
 
 var AbstractController = require('web.AbstractController');
+var config = require('web.config');
 var core = require('web.core');
 var dialogs = require('web.view_dialogs');
 var utils = require('web.utils');
@@ -47,7 +48,9 @@ var GridController = AbstractController.extend({
             _ranges: this.ranges,
             _buttons: this.navigationButtons,
             allowCreate: this.canCreate,
-        }}));
+        },
+            isMobile: config.device.isMobile
+        }));
         this.$buttons.appendTo($node);
         this._updateButtons();
         this.$buttons.on('click', '.o_grid_button_add', this._onAddLine.bind(this));
@@ -118,9 +121,8 @@ var GridController = AbstractController.extend({
             this.$buttons.find('.grid_arrow_previous').toggleClass('d-none', !state.prev);
             this.$buttons.find('.grid_arrow_next').toggleClass('d-none', !state.next);
             this.$buttons.find('.grid_button_initial').toggleClass('d-none', !state.initial);
-            this.$buttons.find('.grid_arrow_range[data-name=' + this.currentRange + ']')
-                    .addClass('active')
-                    .siblings().removeClass('active');
+            this.$buttons.find('.grid_arrow_range').removeClass('active');
+            this.$buttons.find('.grid_arrow_range[data-name=' + this.currentRange + ']').addClass('active');
         }
     },
 
@@ -262,6 +264,9 @@ var GridController = AbstractController.extend({
     _onRangeChange: function (e) {
         e.stopPropagation();
         var $target = $(e.target);
+        if (config.device.isMobile) {
+            $target.closest(".dropdown-menu").prev().dropdown("toggle");
+        }
         if ($target.hasClass('active')) {
             return;
         }

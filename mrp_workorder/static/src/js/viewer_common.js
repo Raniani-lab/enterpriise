@@ -2,7 +2,6 @@ odoo.define('mrp.viewer_common', function (require) {
 "use strict";
 
 var mrpViewerCommon = {
-    formFixedHeight: '250px',
     supportedFieldTypes: [],
 
     /**
@@ -45,7 +44,7 @@ var mrpViewerCommon = {
         var $form = $('.o_form_view.o_workorder_tablet');
         if ($form.length) {
             if (this._needFormHeightFix()) {
-                $form.css('min-height', this.formFixedHeight);
+                $form.css('min-height', 'auto');
             } else {
                 $form.css('min-height', '100%');
             }

@@ -247,8 +247,7 @@ class Sign(http.Controller):
         if not request_item:
             return False
         if request_item.role_id and request_item.role_id.sms_authentification:
-            if request_item.partner_id.mobile != phone_number:
-                request_item.partner_id.mobile = phone_number
+            request_item.sms_number = phone_number
             try:
                 request_item._send_sms()
             except InsufficientCreditError:

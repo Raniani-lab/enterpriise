@@ -539,7 +539,7 @@ class SignRequestItem(models.Model):
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
     access_via_link = fields.Boolean('Accessed Through Token')
     role_id = fields.Many2one('sign.item.role', string="Role")
-    sms_number = fields.Char(related='partner_id.mobile', readonly=False)
+    sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True)
     sms_token = fields.Char('SMS Token', readonly=True)
 
     signature = fields.Binary(attachment=True)

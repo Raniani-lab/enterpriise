@@ -213,6 +213,7 @@
                         <group>
                             <field name="latitude"/>
                             <field name="longitude"/>
+                            <field name="sms_number"/>
                         </group>
                     </group>
                 </sheet>

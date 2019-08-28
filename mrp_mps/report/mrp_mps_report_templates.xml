@@ -5,7 +5,7 @@
 
         <div class="o_form_view">
             <div class="page o_form_sheet_bg">
-                <div class="o_form_sheet">
+                <div>
                     <div class="h2">MPS in Main Warehouse</div>
                     <t t-foreach="products" t-as="product">
                         <table class="table table-responsive table-sm mps_table">

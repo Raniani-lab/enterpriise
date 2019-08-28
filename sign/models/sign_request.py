@@ -312,7 +312,7 @@ class SignRequest(models.Model):
 
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         for signer in self.request_item_ids:
-            if not signer.partner_id or not signer.partner_id.email:
+            if not signer.signer_email:
                 continue
 
             tpl = self.env.ref('sign.sign_template_mail_completed')
@@ -345,7 +345,7 @@ class SignRequest(models.Model):
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
                 {'email_from': formataddr((self.create_uid.name, self.create_uid.email)),
                  'author_id': self.create_uid.partner_id.id,
-                 'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
+                 'email_to': formataddr((signer.partner_id.name, signer.signer_email)),
                  'subject': _('%s has been signed') % self.reference,
                  'attachment_ids': [(4, attachment.id), (4, attachment_log.id)]},
                 force_send=True
@@ -564,7 +564,7 @@ class SignRequestItem(models.Model):
         ("completed", "Completed")
     ], readonly=True, default="draft")
 
-    signer_email = fields.Char(related='partner_id.email', readonly=False)
+    signer_email = fields.Char(related='partner_id.email', readonly=False, depends=(['partner_id']), store=True)
 
     latitude = fields.Float(digits=(10, 7))
     longitude = fields.Float(digits=(10, 7))

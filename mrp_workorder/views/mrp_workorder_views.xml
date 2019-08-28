@@ -207,10 +207,12 @@
                             <div attrs="{'invisible': [('test_type', '=', 'register_consumed_materials')]}" class="o_form_label">By-product</div>
                             <field name="component_id" readonly="1"/>
                         </div>
-                        <div class="o_workorder_field text-center">
-                            <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'serial')]}">Serial Number</div>
-                            <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'lot')]}">Lot Number</div>
-                            <field name="lot_id" context="{'default_product_id': component_id, 'default_company_id': company_id, 'active_mo_id': test_type == 'register_consumed_materials' and production_id or False}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                        <div class="o_workorder_field">
+                            <div class="o_workorder_lot">
+                                <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'serial')]}">Serial Number</div>
+                                <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'lot')]}">Lot Number</div>
+                                <field name="lot_id" class="text-center o_lot_number" context="{'default_product_id': component_id, 'default_company_id': company_id, 'active_mo_id': test_type == 'register_consumed_materials' and production_id or False}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                            </div>
                         </div>
                         <div class="o_workorder_field text-right">
                             <label for="qty_done" string="Quantity"/>

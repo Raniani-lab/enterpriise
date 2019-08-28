@@ -123,6 +123,17 @@
                 }
 
                 .o_workorder_field {
+                    > div.o_workorder_lot {
+                        width: 100%;
+                        justify-content: center;
+                        > .o_lot_number {
+                            width: 50%;
+                            &:not(.o_with_button) button.o_external_button {
+                                display: block !important;
+                                visibility: hidden;
+                            }
+                        }
+                    }
                     > div {
                         display: inline-flex;
                         align-items: baseline;

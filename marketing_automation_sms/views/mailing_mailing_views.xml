@@ -6,13 +6,19 @@
         <field name="inherit_id" ref="marketing_automation.mailing_mailing_view_form_marketing_activity"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='subject']" position="attributes">
-                <attribute name="attrs">{'invisible': [('mailing_type', '!=', 'mail')]}</attribute>
+                <attribute name="attrs">{
+                    'invisible': [('mailing_type', '!=', 'mail')], 
+                    'readonly': [('state', 'in', ('sending', 'done'))]}
+                </attribute>
             </xpath>
             <xpath expr="//field[@name='subject']" position="after">
                 <field name="name" attrs="{'invisible': [('mailing_type', '=', 'mail')]}"/>
             </xpath>
             <xpath expr="//field[@name='email_from']" position="attributes">
-                <attribute name="attrs">{'invisible': [('mailing_type', '!=', 'mail')]}</attribute>
+                <attribute name="attrs">{
+                    'invisible': [('mailing_type', '!=', 'mail')],
+                    'readonly': [('state', 'in', ('sending', 'done'))]}
+                </attribute>
             </xpath>
             <xpath expr="//page[@name='mail_body']" position="attributes">
                 <attribute name="attrs">{'invisible': [('mailing_type', '!=', 'mail')]}</attribute>

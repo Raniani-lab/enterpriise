@@ -237,10 +237,13 @@ var GanttRow = Widget.extend({
         firstPill.count = 1;
 
         var timeToken = this.SCALES[this.state.scale].time;
-        var cellTime = this.SCALES[this.state.scale].cellPrecisions[this.viewInfo.activeScaleInfo.precision];
+        var precision = this.viewInfo.activeScaleInfo.precision;
+        var cellTime = this.SCALES[this.state.scale].cellPrecisions[precision];
         var intervals = _.reduce(this.viewInfo.slots, function (intervals, slotStart) {
             intervals.push(slotStart);
-            intervals.push(slotStart.clone().add(cellTime, timeToken));
+            if (precision === 'half') {
+                intervals.push(slotStart.clone().add(cellTime, timeToken));
+            }
             return intervals;
         }, []);
 

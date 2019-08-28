@@ -298,27 +298,21 @@ class generic_tax_report(models.AbstractModel):
                                                  * CASE WHEN account_journal.type = 'sale' THEN -1 ELSE 1 END
                                                  * CASE WHEN account_move.type in ('in_refund', 'out_refund') THEN -1 ELSE 1 END)
                         AS balance
-                 FROM account_account_tag_account_move_line_rel aml_tag
-                 JOIN account_move_line
-                 ON aml_tag.account_move_line_id = account_move_line.id
+                 FROM %s
                  JOIN account_move
                  ON account_move_line.move_id = account_move.id
+                 JOIN account_account_tag_account_move_line_rel aml_tag
+                 ON aml_tag.account_move_line_id = account_move_line.id
                  JOIN account_journal
                  ON account_move.journal_id = account_journal.id
                  JOIN account_account_tag acc_tag
                  ON aml_tag.account_account_tag_id = acc_tag.id
                  JOIN account_tax_report_line_tags_rel
                  ON acc_tag.id = account_tax_report_line_tags_rel.account_account_tag_id
-                 WHERE account_move_line.company_id IN %(company_ids)s
-                 AND account_move_line.date <= %(date_to)s
-                 AND account_move_line.date >= %(date_from)s
-                 AND (NOT %(only_posted)s OR account_move.state = 'posted')
-                 AND account_move_line.tax_exigible
-                 AND account_journal.id = account_move_line.journal_id
+                 WHERE account_move_line.tax_exigible AND %s
                  GROUP BY account_tax_report_line_tags_rel.account_tax_report_line_id
-        """
-        params = {'date_from': self.env.context['date_from'], 'date_to': self.env.context['date_to'], 'company_ids': tuple(self.env.context['company_ids']), 'only_posted': self.env.context.get('state') == 'posted'}
-        self.env.cr.execute(sql, params)
+        """ %(tables, where_clause)
+        self.env.cr.execute(sql, where_params)
         results = self.env.cr.fetchall()
         for result in results:
             if result[0] in dict_to_fill:

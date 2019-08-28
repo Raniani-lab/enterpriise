@@ -20,6 +20,7 @@ class IotBox(models.Model):
     screen_url = fields.Char('Screen URL', help="Url of the page that will be displayed by hdmi port of the box.")
     drivers_auto_update = fields.Boolean('Automatic drivers update', help='Automatically update drivers when the IoT Box boots', default=True)
     version = fields.Char('Image Version', readonly=True)
+    company_id = fields.Many2one('res.company', 'Company')
 
     def _compute_ip_url(self):
         for box in self:
@@ -62,6 +63,7 @@ class IotDevice(models.Model):
         help="Type of connection.")
     report_ids = fields.One2many('ir.actions.report', 'device_id', string='Reports')
     iot_ip = fields.Char(related="iot_id.ip")
+    company_id = fields.Many2one('res.company', 'Company', related="iot_id.company_id")
     connected = fields.Boolean(string='Status', help='If device is connected to the IoT Box', readonly=True)
     keyboard_layout = fields.Many2one('iot.keyboard.layout', string='Keyboard Layout')
     screen_url = fields.Char('Screen URL', help="URL of the page that will be displayed by the device, leave empty to use the customer facing display of the POS.")

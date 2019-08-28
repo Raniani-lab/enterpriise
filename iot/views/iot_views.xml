@@ -25,6 +25,7 @@
                             <field name="identifier" readonly="True"/>
                             <field name="ip"/>
                             <field name="ip_url" widget="url"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                             <field name="version"/>
                             <field name="drivers_auto_update"/>
                         </group>

@@ -6,9 +6,33 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="hr_timesheet.project_invoice_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='allow_timesheets']" position="after">
-                <field name="allow_timesheet_timer" attrs="{'invisible': [('allow_timesheets', '=', False)]}" />
-                <field name="allow_billable" attrs="{'invisible': [('billable_type', '=', 'employee_rate')]}"/>
+            <xpath expr="//div[@id='timesheet_settings']" position="after">
+                    <div class="col-lg-6 o_setting_box"  attrs="{'invisible': [('allow_timesheets', '=', False)]}">
+                        <div class="o_setting_left_pane">
+                            <field name="allow_timesheet_timer"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="allow_timesheet_timer"/>
+                            <div class="text-muted">
+                                Track your time using a timer
+                            </div>
+                        </div>
+                    </div>
+            </xpath>
+            <xpath expr="//div[@id='timesheet_settings']/.." position="after">
+                <div class="row mt16 o_settings_container">
+                    <div class="col-lg-6 o_setting_box" id="allow_billable_container" attrs="{'invisible': [('billable_type', '=', 'employee_rate')]}">
+                        <div class="o_setting_left_pane">
+                            <field name="allow_billable"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="allow_billable"/>
+                            <div class="text-muted" id="allow_billable_setting">
+                                Invoice your time and material from tasks
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>
@@ -21,7 +45,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='allow_timesheets']" position="after">
                 <field name="billable_type" invisible="1"/>
-                <field name="allow_timesheet_timer" attrs="{'invisible': [('allow_timesheets', '=', False)]}" />
+                <field name="allow_timesheet_timer" invisible="1"/>
                 <field name="allow_billable" attrs="{'invisible': [('billable_type', '=', 'employee_rate')]}"/>
             </xpath>
         </field>

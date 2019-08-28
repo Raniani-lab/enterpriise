@@ -15,7 +15,7 @@ class Project(models.Model):
     def default_get(self, fields):
         """ Pre-fill timesheet product as "Time" data product when creating new project allowing billable tasks by default. """
         result = super(Project, self).default_get(fields)
-        if 'timesheet_product_id' in fields and not result.get('timesheet_product_id'):
+        if 'timesheet_product_id' in fields and result.get('allow_billable') and result.get('allow_timesheets') and not result.get('timesheet_product_id'):
             default_product = self.env.ref('industry_fsm.fsm_time_product', False)
             if default_product:
                 result['timesheet_product_id'] = default_product.id
@@ -23,7 +23,7 @@ class Project(models.Model):
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
     allow_material = fields.Boolean("Products on Tasks")
-    allow_quotations = fields.Boolean("Extra quotation")
+    allow_quotations = fields.Boolean("Extra Quotations")
     timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain="[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", help='Select a Service product with which you would like to bill your time spent on tasks.')
 
     _sql_constraints = [
@@ -32,10 +32,29 @@ class Project(models.Model):
         ('fsm_imply_task_rate', "CHECK((is_fsm = 't' AND sale_line_id IS NULL) OR (is_fsm = 'f'))", 'An FSM project must be billed at task rate.'),
     ]
 
+
+    @api.onchange('allow_timesheets', 'allow_billable')
+    def _onchange_allow_timesheets_and_billable(self):
+        if self.allow_timesheets and self.allow_billable and not self.timesheet_product_id:
+            default_product = self.env.ref('industry_fsm.fsm_time_product', False)
+            if default_product:
+                self.timesheet_product_id = default_product
+        else:
+            self.timesheet_product_id = False
+
+    @api.onchange('allow_timesheets')
+    def _onchange_allow_timesheets(self):
+        if self.allow_timesheets:
+            self.allow_timesheet_timer = True
+        else:
+            self.allow_timesheet_timer = False
+
     @api.onchange('allow_billable')
     def _onchange_allow_billable(self):
         super(Project, self)._onchange_allow_billable()
-        if not self.allow_billable:
+        if self.allow_billable:
+            self.allow_material = True
+        else:
             self.allow_material = False
 
 

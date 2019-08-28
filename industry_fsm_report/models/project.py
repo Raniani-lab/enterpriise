@@ -14,7 +14,7 @@ class Project(models.Model):
             if no other worksheet set.
         """
         result = super(Project, self).default_get(fields)
-        if 'worksheet_template_id' in fields and result.get('is_fsm') and not result.get('worksheet_template_id'):
+        if 'worksheet_template_id' in fields and result.get('allow_worksheets') and not result.get('worksheet_template_id'):
             default_worksheet = self.env.ref('industry_fsm_report.fsm_worksheet_template', False)
             if default_worksheet:
                 result['worksheet_template_id'] = default_worksheet.id
@@ -28,7 +28,11 @@ class Project(models.Model):
 
     @api.onchange('allow_worksheets')
     def _onchange_allow_worksheets(self):
-        if not self.allow_worksheets:
+        if self.allow_worksheets:
+            default_worksheet = self.env.ref('industry_fsm_report.fsm_worksheet_template', False)
+            if default_worksheet:
+                self.worksheet_template_id = default_worksheet.id
+        else:
             self.worksheet_template_id = False
 
 

@@ -13,15 +13,20 @@
                 <field name="allow_material" invisible="1"/>
                 <field name="allow_timesheets" invisible="1"/>
                 <field name="allow_billable" invisible="1"/>
+                <field name="allow_quotations" invisible="1"/>
                 <field name="fsm_state" invisible="1"/>
+                <field name="fsm_to_invoice" invisible="1"/>
                 <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
                     attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0)]}"/>
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                     attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}"/>
                 <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|',  '|', ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager                    "/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager                    "/>
                 <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('invoice_count', '=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+            </xpath>
+            <xpath expr="//button[@name='action_timer_resume']" position='after'>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': [('allow_quotations', '=', False)]}" groups="sales_team.group_sale_salesman"/>
             </xpath>
             <xpath expr="//header" position="after">
                 <div role="alert" class="alert-warning p-3 text-center"
@@ -110,10 +115,6 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="sale_timesheet.project_task_view_form_sale_order"/>
         <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
-                <field name="allow_quotations" invisible="1"/>
-                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': [('allow_quotations', '=', False)]}"/>
-            </xpath>
             <xpath expr="//button[@name='action_view_so']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('sale_order_id', '=', False)]}</attribute>
             </xpath>
@@ -126,7 +127,7 @@
                     attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('quotation_count', '=', 0)]}">
                     <field string="Quotations" name="quotation_count" widget="statinfo"/>
                 </button>
-            </xpath>
+            </div>
         </field>
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman')), (4, ref('industry_fsm.group_fsm_quotation_from_task'))]"/>
     </record>
@@ -138,11 +139,35 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="sale_timesheet_enterprise.project_view_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='allow_billable']" position="after">
-                <field name="is_fsm" invisible="1"/>
+            <div id="allow_billable_setting" position="after">
                 <field name="timesheet_product_id" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('allow_timesheets', '=', False)], 'required': ['&amp;', ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}"/>
-                <field name="allow_material" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
-                <field name="allow_quotations" groups="industry_fsm.group_fsm_quotation_from_task"/>
+            </div>
+            <xpath expr="//div[@id='allow_billable_container']" position="after">
+                <field name="is_fsm" invisible="1"/>
+                <div class="col-lg-6 o_setting_box" attrs="{'invisible': [('allow_billable', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <field name="allow_material"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="allow_material"/>
+                        <div class="text-muted" id="allow_billable_setting">
+                            Track the material used to complete tasks
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//div[@id='rating_settings']" position="after">
+                <div class="col-lg-6 o_setting_box"  groups="industry_fsm.group_fsm_quotation_from_task">
+                    <div class="o_setting_left_pane">
+                        <field name="allow_quotations"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="allow_quotations"/>
+                        <div class="text-muted" id="allow_billable_setting">
+                            Create new quotations directly from tasks
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>
@@ -168,8 +193,7 @@
             </field>
             <field name="allow_billable" position="after">
                 <field name="company_id" invisible="1"/>
-                <field name="allow_material" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
-                <field name="allow_quotations" groups="industry_fsm.group_fsm_quotation_from_task"/>
+                <field name="allow_material" invisible="1"/>
             </field>
         </field>
     </record>

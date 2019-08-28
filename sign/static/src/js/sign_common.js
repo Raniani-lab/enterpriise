@@ -1380,6 +1380,10 @@ odoo.define('sign.document_signing', function (require) {
         },
 
         signItemDocument: function(e) {
+            var $btn = this.$('.o_sign_validate_banner button');
+            var init_btn_text = $btn.text();
+            $btn.prepend('<i class="fa fa-spin fa-spinner" />');
+            $btn.attr('disabled', true);
             var mail = "";
             this.iframeWidget.$('.o_sign_sign_item').each(function(i, el) {
                 var value = $(el).val();
@@ -1434,6 +1438,7 @@ odoo.define('sign.document_signing', function (require) {
                 };
                 var self = this;
                 session.rpc(route, params).then(function(response) {
+                    $btn.text(init_btn_text);
                     if (!response) {
                         Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
                             title: _t("Error"),
@@ -1443,6 +1448,7 @@ odoo.define('sign.document_signing', function (require) {
                         });
                     }
                     if (response === true) {
+                        $btn.removeAttr('disabled', true);
                         self.iframeWidget.disableItems();
                         if (self.name_list && self.name_list.length > 0) {
                             (new (self.get_nextdirectsigndialog_class())(self, self.RedirectURL, self.requestID)).open();
@@ -1452,6 +1458,7 @@ odoo.define('sign.document_signing', function (require) {
                         }
                     }
                     if (typeof response === 'object') {
+                        $btn.removeAttr('disabled', true);
                         if (response.sms) {
                             (new SMSSignerDialog(self, self.requestID, self.accessToken, signatureValues, self.signerPhone, self.RedirectURL))
                                 .open();

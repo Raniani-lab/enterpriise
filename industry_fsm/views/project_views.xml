@@ -17,7 +17,9 @@
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                     attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'),  '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}"/>
                 <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                    attrs="{'invisible': ['|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '!=', 'validated'), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|',  '|', ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('invoice_count', '=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
             </xpath>
             <xpath expr="//header" position="after">
                 <div role="alert" class="alert-warning p-3 text-center"
@@ -62,8 +64,11 @@
                     <field name="invoice_count" widget="statinfo" string="Invoices"/>
                 </button>
             </xpath>
-            <xpath expr="//header/button[@name='action_timer_start']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', '&amp;', ('is_fsm', '=', True), ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}</attribute>
+            <xpath expr="//header/button[@name='action_timer_start'][hasclass('btn-primary')]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|', '|', ('is_fsm', '=', True), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_timer_start'][hasclass('btn-secondary')]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//button[@name='action_make_billable']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', '|', '|', '|',  '|', ('is_fsm', '=', True), ('allow_billable', '=', False), ('timesheet_timer_start', '!=', False), ('billable_type', '!=', 'no'), ('partner_id', '=', False), ('sale_order_id', '!=', False)]}</attribute>
@@ -108,17 +113,16 @@
             <xpath expr="//header" position="inside">
                 <field name="is_fsm" invisible="1"/>
                 <field name="allow_quotations" invisible="1"/>
-                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotations" attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': [('allow_quotations', '=', False)]}"/>
             </xpath>
             <xpath expr="//button[@name='action_fsm_create_invoice']" position="inside">
                 <button name="action_fsm_view_quotations"
                     type="object"
                     class="oe_stat_button"
-                    icon="fa-pencil-square-o"
-                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
-                    <div class="o_field_widget o_stat_info">
-                        <span class="o_stat_value"><field name="quotation_count" widget="statinfo"/></span>
-                    </div>
+                    icon="fa-dollar"
+                    groups="industry_fsm.group_fsm_manager"
+                    attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('quotation_count', '=', 0)]}">
+                    <field string="Quotations" name="quotation_count" widget="statinfo"/>
                 </button>
             </xpath>
         </field>
@@ -156,7 +160,7 @@
         <field name="inherit_id" ref="sale_timesheet_enterprise.project_project_view_form_simplified_inherit"/>
         <field name="arch" type="xml">
             <field name="allow_timesheet_timer" position="after">
-                <field name="timesheet_product_id" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('allow_timesheets', '=', False)], 'required': ['&amp;', ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}"/>
+                <field name="timesheet_product_id" attrs="{'invisible': ['|', '|', ('allow_billable', '=', False), ('allow_timesheets', '=', False), ('timesheet_product_id', '!=', False)], 'required': ['&amp;', ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}"/>
             </field>
             <field name="allow_billable" position="after">
                 <field name="company_id" invisible="1"/>
@@ -237,9 +241,11 @@
                     <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'),  '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}"/>
                     <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '!=', 'validated'), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                        attrs="{'invisible': ['|', '|', '|', '|',  '|', ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                    <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
+                        attrs="{'invisible': ['|', '|', '|', '|', '|', ('invoice_count', '=', 0), ('allow_billable', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
 
-                    <button class="btn-primary" name="action_timer_start" type="object" string="Start"
+                    <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
                         attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"/>
                     <button class="btn-primary btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
                         attrs="{'invisible': ['|', ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
@@ -248,7 +254,7 @@
                     <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume"
                         attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
 
-                    <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 mt-2 font-weight-bold" attrs="{'invisible': ['|', ('display_timesheet_timer', '=', False), ('timesheet_timer_start', '=', False)]}"/>
+                    <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 font-weight-bold" attrs="{'invisible': ['|', ('display_timesheet_timer', '=', False), ('timesheet_timer_start', '=', False)]}"/>
                 </header>
                 <div role="alert" class="alert-warning p-3 text-center"
                     attrs="{'invisible': ['|', ('is_fsm', '=', False), ('planning_overlap', '=', 0)]}">
@@ -268,7 +274,7 @@
                                 </span>
                             </div>
                         </button>
-                        <button class="oe_stat_button" name="action_timer_start" type="object" icon="fa-play" help="Launch the Timer" attrs="{'invisible': ['|', '|', ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False)]}">
+                        <button class="oe_stat_button" name="action_timer_start" type="object" icon="fa-play" help="Launch the Timer" attrs="{'invisible': ['|', '|', '|', ('display_timesheet_timer', '=', False), ('allow_timesheets', '=', False), ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False)]}">
                             <div class="o_stat_info">
                                 Start
                             </div>
@@ -335,15 +341,15 @@
             <xpath expr="//field[@name='timesheet_timer_start']" position="after">
                 <field name="is_fsm" invisible="1"/>
                 <field name="allow_quotations" invisible="1"/>
-                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('timesheet_timer_start', '!=', False)]}"/>
+                <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': [('allow_quotations', '=', False)]}"/>
             </xpath>
             <xpath expr="//button[@name='action_fsm_view_material']" position="after">
                 <button name="action_fsm_view_quotations"
                     type="object"
                     class="oe_stat_button"
-                    icon="fa fa-pencil-square-o"
+                    icon="fa-dollar"
                     attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
-                    <field string="Quotation" name="quotation_count" widget="statinfo"/>
+                    <field string="Quotations" name="quotation_count" widget="statinfo"/>
                 </button>
             </xpath>
         </field>

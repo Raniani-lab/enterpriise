@@ -20,6 +20,7 @@ class Task(models.Model):
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)
     partner_street = fields.Char(related='partner_id.street', readonly=False)
+    project_color = fields.Integer('Project color', related='project_id.color')
 
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be prior to the planned end date."),

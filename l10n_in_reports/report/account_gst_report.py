@@ -14,6 +14,7 @@ class L10nInReportAccount(models.AbstractModel):
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_partner = True
+    filter_journals = True
 
     def _get_options(self, previous_options=None):
         options = super(L10nInReportAccount, self)._get_options(previous_options)
@@ -107,6 +108,7 @@ class L10nInReportAccount(models.AbstractModel):
         if context.get('partner_categories'):
             filter_domain += [
                 ('partner_id.category_id', 'in', context['partner_categories'].ids)]
+        filter_domain += self._get_options_journals_domain(options)
         if gst_section:
             model_domain = self.get_gst_section_model_domain(gst_return_type, gst_section)
             fields_values = self.env[model_domain.get('model')].search_read(

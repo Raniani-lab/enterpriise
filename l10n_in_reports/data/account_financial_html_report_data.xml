@@ -6,6 +6,7 @@
         <field name="date_range" eval="1" />
         <field name='parent_id' ref='l10n_in.account_reports_in_statements_menu'/>
         <field name="tax_report" eval="1"/>
+        <field name="show_journal_filter" eval="1"/>
     </record>
 
     <record id="total_output_liability_l10n_in_line_0" model="account.financial.html.report.line">

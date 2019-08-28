@@ -47,6 +47,25 @@
         </field>
     </record>
 
+    <record id="iot_device_view_form" model="ir.ui.view">
+        <field name="name">iot.device.view.form.inherit.mrp.workorder.iot</field>
+        <field name="model">iot.device</field>
+        <field name="inherit_id" ref="iot.iot_device_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="IoT Triggers" attrs="{'invisible': [('type', '!=', 'device')]}">
+                    <field name="trigger_ids">
+                        <tree>
+                            <field name="workcenter_id"/>
+                            <field name="key"/>
+                            <field name="action"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
     <!-- JS stuff -->
     <template id="assets_backend" inherit_id="web.assets_backend" name="MRP Workorder IoT assets">
         <xpath expr="." position="inside">

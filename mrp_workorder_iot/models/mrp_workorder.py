@@ -65,3 +65,8 @@ class IotTrigger(models.Model):
                                ('print', 'Print Labels'),
                                ('pack', 'Pack'),
                                ('scrap', 'Scrap'),])
+
+class IoTDevice(models.Model):
+    _inherit = "iot.device"
+
+    trigger_ids = fields.One2many('iot.trigger', 'device_id')

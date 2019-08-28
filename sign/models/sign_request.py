@@ -537,6 +537,7 @@ class SignRequestItem(models.Model):
     sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
+    access_via_link = fields.Boolean('Accessed Through Token')
     role_id = fields.Many2one('sign.item.role', string="Role")
     sms_number = fields.Char(related='partner_id.mobile', readonly=False)
     sms_token = fields.Char('SMS Token', readonly=True)
@@ -585,7 +586,7 @@ class SignRequestItem(models.Model):
             tpl = self.env.ref('sign.sign_template_mail_request')
             body = tpl.render({
                 'record': signer,
-                'link': url_join(base_url, "sign/document/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
+                'link': url_join(base_url, "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
                 'subject': subject,
                 'body': message if message != '<p><br></p>' else False,
             }, engine='ir.qweb', minimal_qcontext=True)

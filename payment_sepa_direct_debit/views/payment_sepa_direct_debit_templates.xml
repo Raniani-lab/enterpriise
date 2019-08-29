@@ -13,7 +13,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-fw fa-bank"/></div>
                             </div>
-                            <input name="iban" type="text" class="form-control" placeholder="BE1234" />
+                            <input name="iban" type="text" class="form-control"/>
                         </div>
                     </div>
                 </div>

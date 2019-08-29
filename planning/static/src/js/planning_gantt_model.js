@@ -2,6 +2,7 @@ odoo.define('planning.PlanningGanttModel', function (require) {
     "use strict";
 
     var GanttModel = require('web_gantt.GanttModel');
+    var _t = require('web.core')._t;
 
     var PlanningGanttModel = GanttModel.extend({
         /**
@@ -19,6 +20,12 @@ odoo.define('planning.PlanningGanttModel', function (require) {
                     rows.unshift(rows.pop());
                 }
             }
+            // rename 'Undefined Employee' into 'Open Shifts'
+            _.each(rows, function(row){
+                if(row.groupedByField === 'employee_id' && !row.resId){
+                    row.name = _t('Open Shifts');
+                }
+            });
             return rows;
         },
     });

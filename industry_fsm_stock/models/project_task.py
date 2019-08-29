@@ -9,7 +9,7 @@ class Task(models.Model):
 
     def _fsm_create_sale_order(self):
         sale_order = super(Task, self)._fsm_create_sale_order()
-        self._validate_stock()
+        self.sudo()._validate_stock()
         return sale_order
 
     def _validate_stock(self):

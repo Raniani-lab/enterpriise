@@ -10,7 +10,7 @@ class TaskCustomReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        docs = self.env['project.task'].browse(docids)
+        docs = self.env['project.task'].browse(docids).sudo()
 
         worksheet_map = {}
         for task in docs:

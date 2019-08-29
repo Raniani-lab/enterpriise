@@ -59,7 +59,7 @@
                         </table>
                         </div>
                     </t>
-                    <t groups="sales_team.group_sale_salesman">
+                    <t>
                         <t t-set="order" t-value="doc.sale_order_id"/>
                         <t t-set="timesheet_product" t-value="doc.sale_line_id"/>
                         <t t-if="doc.is_fsm and order">

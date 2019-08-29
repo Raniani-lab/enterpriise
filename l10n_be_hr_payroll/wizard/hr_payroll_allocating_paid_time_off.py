@@ -30,7 +30,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
     def _onchange_struct_id(self):
         if not self.env.user.has_group('hr_payroll.group_hr_payroll_user'):
             raise UserError(_("You don't have the right to do this. Please contact your administrator!"))
-        self.alloc_employee_ids = ''
+        self.alloc_employee_ids = False
         if not self.date_start or not self.date_end or not self.company_id or self.date_start > self.date_end:
             return
 
@@ -64,6 +64,8 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                     SELECT * FROM hr_work_entry
                     WHERE
                         work_entry_type_id IN (SELECT id FROM hr_work_entry_type WHERE leave_right IS TRUE)
+                        AND date_start <= %(stop)s
+                        AND date_stop >= %(start)s
                         AND state = 'validated'
                     ) we ON (we.contract_id = contract.id)
                 LEFT JOIN resource_calendar calendar ON (contract.resource_calendar_id = calendar.id)
@@ -72,12 +74,13 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
         """.format(where_structure=structure)
 
         self.env.cr.execute(query, {'coeff': coefficient, 'start': period_start, 'stop': period_end, 'structure': self.structure_type_id.id, 'company': tuple(self.env.companies.ids)})
-        self.alloc_employee_ids = self.env.cr.dictfetchall()
+        self.alloc_employee_ids = [(0, 0, vals) for vals in self.env.cr.dictfetchall()]
 
     def generate_allocation(self):
         allocation_values = []
         for alloc in self.alloc_employee_ids.filtered(lambda alloc: alloc.paid_time_off):
             allocation_values.append({
+                'name': _('Paid Time Off Allocation'),
                 'holiday_status_id': self.holiday_status_id.id,
                 'employee_id': alloc.employee_id.id,
                 'number_of_days': alloc.paid_time_off

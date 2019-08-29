@@ -14,14 +14,14 @@ var GanttRow = Widget.extend({
         'mousemove .o_gantt_cell': '_onMouseMove',
         'mouseenter .o_gantt_pill': '_onPillEntered',
         'mouseup .o_gantt_pill': '_onPillClicked', // jQuery UI uses mouseup
-        'click .o_gantt_row_sidebar': '_onRowSidebarClicked',
-        'mouseup .o_gantt_cell_buttons > .o_gantt_cell_add': '_onButtonAddClicked', // jQuery UI uses mouseup
-        'mouseup .o_gantt_cell_buttons > .o_gantt_cell_plan': '_onButtonPlanClicked', // jQuery UI uses mouseup
+        'click': '_onRowSidebarClicked',
+        'mouseup .o_gantt_cell_buttons .o_gantt_cell_add': '_onButtonAddClicked', // jQuery UI uses mouseup
+        'mouseup .o_gantt_cell_buttons .o_gantt_cell_plan': '_onButtonPlanClicked', // jQuery UI uses mouseup
     },
     NB_GANTT_RECORD_COLORS: 12,
-    LEVEL_LEFT_OFFSET: 15, // 15 px per level
-    LEVEL_TOP_OFFSET: 36, // 36 px per level
-    POPOVER_DELAY: 500,
+    LEVEL_LEFT_OFFSET: 16, // 16 px per level
+    LEVEL_TOP_OFFSET: 32, // 32 px per level
+    POPOVER_DELAY: 260,
     /**
      * @override
      * @param {Object} pillsInfo
@@ -89,8 +89,9 @@ var GanttRow = Widget.extend({
         this._calculateMarginAndWidth();
         this._insertIntoSlot();
 
-        this.leftPadding = this.groupLevel * this.LEVEL_LEFT_OFFSET;
-        this.cellHeight = this.level * this.LEVEL_TOP_OFFSET;
+        // Add the 16px odoo window default padding.
+        this.leftPadding = (this.groupLevel + 1) * this.LEVEL_LEFT_OFFSET;
+        this.cellHeight = this.level * this.LEVEL_TOP_OFFSET + (this.level > 0 ? this.level - 1 : 0);
 
         this.MIN_WIDTHS = { full: 100, half: 50, quarter: 25 };
         this.PARTS = { full: 1, half: 2, quarter: 4 };
@@ -103,6 +104,14 @@ var GanttRow = Widget.extend({
         this._onButtonAddClicked = _.debounce(this._onButtonAddClicked, 500, true);
         this._onButtonPlanClicked = _.debounce(this._onButtonPlanClicked, 500, true);
         this._onPillClicked = _.debounce(this._onPillClicked, 500, true);
+
+        if (this.isTotal) {
+            const maxCount = Math.max(...this.pills.map(p => p.count));
+            const factor = maxCount ? (90 / maxCount) : 0;
+            for (let p of this.pills) {
+                p.totalHeight = factor * p.count;
+            }
+        }
     },
     /**
      * @override
@@ -254,10 +263,13 @@ var GanttRow = Widget.extend({
         firstPill.count = 1;
 
         var timeToken = this.SCALES[this.state.scale].time;
-        var cellTime = this.SCALES[this.state.scale].cellPrecisions[this.viewInfo.activeScaleInfo.precision];
+        var precision = this.viewInfo.activeScaleInfo.precision;
+        var cellTime = this.SCALES[this.state.scale].cellPrecisions[precision];
         var intervals = _.reduce(this.viewInfo.slots, function (intervals, slotStart) {
             intervals.push(slotStart);
-            intervals.push(slotStart.clone().add(cellTime, timeToken));
+            if (precision === 'half') {
+                intervals.push(slotStart.clone().add(cellTime, timeToken));
+            }
             return intervals;
         }, []);
 
@@ -283,11 +295,6 @@ var GanttRow = Widget.extend({
                         startDate: moment.max(_.min(pillsInThisInterval, 'startDate').startDate, intervalStart),
                         stopDate: moment.min(_.max(pillsInThisInterval, 'stopDate').stopDate, intervalStop),
                     };
-                    if (isContinuous) {
-                        // Pills are continuous but different count: display them together
-                        previousPill.continuousRight = true;
-                        newPill.continuousLeft = true;
-                    }
 
                     // Enrich the aggregates with consolidation data
                     if (self.consolidate && self.consolidationParams.field) {
@@ -316,8 +323,9 @@ var GanttRow = Widget.extend({
         var minColor = 215;
         var maxColor = 100;
         this.pills.forEach(function (pill) {
+            pill.consolidated = true;
             if (self.consolidate && self.consolidationParams.maxValue) {
-                pill.style = pill.consolidationExceeded ? 'background-color: #DC6965;' : 'background-color: #00A04A;';
+                pill.status = pill.consolidationExceeded ? 'danger' : 'success';
                 pill.display_name = pill.consolidationValue;
             } else {
                 var color = minColor - ((pill.count - 1) / maxCount) * (minColor - maxColor);
@@ -341,14 +349,16 @@ var GanttRow = Widget.extend({
                     left = pill.startDate.diff(pill.startDate.clone().startOf('hour'), 'minutes');
                     pill.leftMargin = (left / 60) * 100;
                     diff = pill.stopDate.diff(pill.startDate, 'minutes');
-                    pill.width = (diff / 60) * 100;
+                    var gapSize = pill.stopDate.diff(pill.startDate, 'hours') - 1; // Eventually compensate border(s) width
+                    pill.width = gapSize > 0 ? 'calc(' + (diff / 60) * 100 + '% + ' + gapSize + 'px)' : (diff / 60) * 100 + '%';
                     break;
                 case 'week':
                 case 'month':
                     left = pill.startDate.diff(pill.startDate.clone().startOf('day'), 'hours');
                     pill.leftMargin = (left / 24) * 100;
                     diff = pill.stopDate.diff(pill.startDate, 'hours');
-                    pill.width = (diff / 24) * 100;
+                    var gapSize = pill.stopDate.diff(pill.startDate, 'days') - 1; // Eventually compensate border(s) width
+                    pill.width = gapSize > 0 ? 'calc(' + (diff / 24) * 100 + '% + ' + gapSize + 'px)' : (diff / 24) * 100 + '%';
                     break;
                 case 'year':
                     var startDateMonthStart = pill.startDate.clone().startOf('month');
@@ -361,7 +371,7 @@ var GanttRow = Widget.extend({
                         // A 30th of a month slot is too small to display
                         // 1-day events are displayed as if they were 2-days events
                         diff = Math.max(Math.ceil(pill.stopDate.diff(pill.startDate, 'days', true)), 2);
-                        pill.width = (diff / pill.startDate.daysInMonth()) * 100;
+                        pill.width = (diff / pill.startDate.daysInMonth()) * 100 + "%";
                     } else {
                         // The pill spans more than one month, so counting its
                         // number of days is not enough as some months have more
@@ -381,13 +391,15 @@ var GanttRow = Widget.extend({
                             // that the middle months are fully covered
                             width += (monthsDiff - 2) * 100;
                         }
-                        pill.width = width;
+                        pill.width = width + "%";
                     }
                     break;
                 default:
                     break;
             }
-            pill.topPadding = pill.level * self.LEVEL_TOP_OFFSET;
+
+            // Add 1px top-gap to events sharing the same cell.
+            pill.topPadding = pill.level * (self.LEVEL_TOP_OFFSET + 1);
         });
     },
     /**
@@ -605,7 +617,7 @@ var GanttRow = Widget.extend({
         if (this.options.canEdit && !pill.disableStartResize && !pill.disableStopResize && !this.isGroup) {
             $pill.draggable({
                 containment: '.o_gantt_row_container',
-                grid: [this.resizeSnappingWidth, this.LEVEL_TOP_OFFSET],
+                grid: [this.resizeSnappingWidth, 1],
                 start: function () {
                     self.trigger_up('updating_pill_started');
                     self.$el.addClass('o_gantt_dragging');
@@ -897,7 +909,7 @@ var GanttRow = Widget.extend({
      * @private
      */
     _onRowSidebarClicked: function () {
-        if (this.isGroup) {
+        if (this.isGroup & !this.isTotal) {
             if (this.isOpen) {
                 this.trigger_up('collapse_row', {rowId: this.rowId});
             } else {

@@ -90,7 +90,7 @@ class TestScoring(common.TransactionCase):
             'stage_id': self.stage,
         }).id
 
-        self.env.cr.execute("UPDATE crm_lead SET create_date = '2010-01-01 00:00:00' WHERE id != %d" % self.lead5)
+        self.env.cr.execute("UPDATE crm_lead SET create_date = '2010-01-01 00:00:00' WHERE id != %s", (self.lead5,))
 
         # Salesteam
         self.team0 = self.team.create({

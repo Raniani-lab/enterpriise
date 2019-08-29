@@ -556,7 +556,7 @@
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
             <button name="toggle_active" position="before">
-                <button name="action_see_quality_control_points" type="object" icon="fa-list" class="oe_stat_button" groups="quality.group_quality_user">
+                <button name="action_see_quality_control_points" type="object" icon="fa-list" class="oe_stat_button" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}" groups="quality.group_quality_user">
                     <field string="Quality Points" name="quality_control_point_qty" widget="statinfo"/>
                 </button>
                 <button name="action_see_quality_checks" type="object" class="oe_stat_button" icon="fa-check" groups="quality.group_quality_user">

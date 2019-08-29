@@ -11,13 +11,17 @@ gui.Gui.include({
      */
     close: function () {
         var self = this;
-        var terminal = this.pos.iot_device_proxies.payment;
         if (this.pos.useIoTPaymentTerminal()) {
-            terminal.action({ messageType: 'CloseShift' })
-                .finally(self._super.bind(self));
+            var close_promises = [];
+            this.pos.payment_methods.forEach(function(payment_method) {
+                if (payment_method.terminal_proxy) {
+                    close_promises.push(payment_method.terminal_proxy.action({ messageType: 'CloseShift' }));
+                };
+            });
+            Promise.all(close_promises).finally(self._super.bind(self));
         } else {
             this._super();
-        }
+        };
     },
 });
 });

@@ -10,6 +10,8 @@ class TestUi(odoo.tests.HttpCase):
     def test_01_pos_iot_payment_terminal(self):
         env = self.env(user=self.env.ref('base.user_admin'))
 
+        self.env['ir.config_parameter'].sudo().set_param('pos_iot.six_payment_terminal', True)
+
         # Create IoT Box
         iotbox_id = env['iot.box'].sudo().create({
             'name': 'iotbox-test',
@@ -18,7 +20,7 @@ class TestUi(odoo.tests.HttpCase):
         })
 
         # Create IoT device
-        env['iot.device'].sudo().create({
+        payment_terminal_device = env['iot.device'].sudo().create({
             'iot_id': iotbox_id.id,
             'name': 'Payment terminal',
             'identifier': 'test_payment_terminal',
@@ -34,7 +36,8 @@ class TestUi(odoo.tests.HttpCase):
             'payment_method_ids': [(0, 0, {
                 'name': 'Terminal',
                 'is_cash_count': False,
-                'use_payment_terminal': 'iot_box'
+                'use_payment_terminal': 'six',
+                'iot_device_id': payment_terminal_device.id,
             })],
         })
 

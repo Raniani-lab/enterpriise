@@ -10,19 +10,20 @@ var PaymentIOT = PaymentInterface.extend({
     send_payment_request: function (cid) {
         var self = this;
         this._super.apply(this, this.arguments);
-
-        if (!this.pos.iot_device_proxies['payment']) {
+        var paymentline = this.pos.get_order().get_paymentline(cid)
+        var terminal_proxy = paymentline.payment_method.terminal_proxy
+        if (!terminal_proxy) {
             this._showErrorConfig();
             return Promise.resolve(false);
         }
 
-        this.terminal = this.pos.iot_device_proxies['payment'];
+        this.terminal = terminal_proxy;
 
         var data = {
             messageType: 'Transaction',
             TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),
             cid: cid,
-            amount: Math.round(this.pos.get_order().get_paymentline(cid).amount*100),
+            amount: Math.round(paymentline.amount*100),
             currency: this.pos.currency.name,
             language: this.pos.user.lang.split('_')[0],
         };
@@ -177,7 +178,8 @@ var PaymentIOT = PaymentInterface.extend({
     _onValueChange: function (resolve, order, data) {
         clearTimeout(this.payment_update);
         var line = order.get_paymentline(data.cid);
-        if (line && (!data.owner || data.owner === this.pos.iot_device_proxies.payment._iot_longpolling._session_id)) {
+        var terminal_proxy = this.pos.payment_methods_by_id[line.payment_method.id].terminal_proxy;
+        if (line && terminal_proxy && (!data.owner || data.owner === terminal_proxy._iot_longpolling._session_id)) {
             this._waitingResponse(resolve, data, line);
             if (data.processing) {
                 this._query_terminal();

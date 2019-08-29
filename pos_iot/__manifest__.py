@@ -15,6 +15,8 @@ It links the module
         'views/pos_config_views.xml',
         'views/pos_session_views.xml',
         'views/point_of_sale_assets.xml',
+        'views/res_config_setting_views.xml',
+        'views/pos_payment_method_views.xml',
     ],
     'depends': ['point_of_sale', 'iot'],
     'qweb': ['static/src/xml/pos.xml'],

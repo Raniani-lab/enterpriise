@@ -86,7 +86,11 @@ tour.register('payment_terminals_tour', {
         trigger: 'body:has(.loader:hidden)',
         run: function () {
             //Overrides the methods inside DeviceProxy to mock the IoT Box
-            posmodel.iot_device_proxies.payment = new TerminalProxy({iot_ip: posmodel.iot_device_proxies.payment._iot_ip, identifier: posmodel.iot_device_proxies.payment._identifier});
+            posmodel.payment_methods.forEach(function(payment_method) {
+                if (payment_method.terminal_proxy) {
+                    payment_method.terminal_proxy = new TerminalProxy({iot_ip: payment_method.terminal_proxy._iot_ip, identifier: payment_method.terminal_proxy._identifier});
+                }
+            });
         },
     }, { // Leave category displayed by default
         content: "Click category switch",

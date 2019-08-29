@@ -53,10 +53,13 @@ chrome.Chrome.include({
      */
     _sendBalance: function () {
         var self = this;
-        var terminal = this.pos.iot_device_proxies.payment;
-        terminal.add_listener(self._onValueChange.bind(self));
-        terminal.action({ messageType: 'Balance' })
-            .then(self._onTerminalActionResult.bind(self));
+        this.pos.payment_methods.forEach(function(payment_method) {
+            if (payment_method.terminal_proxy) {
+                payment_method.terminal_proxy.add_listener(self._onValueChange.bind(self, payment_method.terminal_proxy));
+                payment_method.terminal_proxy.action({ messageType: 'Balance' })
+                    .then(self._onTerminalActionResult.bind(self));
+            };
+        });
     },
 
     //--------------------------------------------------------------------------
@@ -86,7 +89,7 @@ chrome.Chrome.include({
      * @param {String} data.Error
      * @param {String} data.TicketMerchant
      */
-    _onValueChange: function (data) {
+    _onValueChange: function (terminal_proxy, data) {
         if (data.Error) {
             this.pos.gui.show_popup('error', {
                 'title': _t('Terminal Error'),
@@ -95,7 +98,7 @@ chrome.Chrome.include({
         } else if (data.TicketMerchant && this.pos.proxy.printer) {
             this.pos.proxy.printer.print_receipt("<div class='pos-receipt'><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
         }
-        this.pos.iot_device_proxies.payment.remove_listener();
+        terminal_proxy.remove_listener();
     },
 });
 

@@ -7,15 +7,19 @@ var DeviceProxy = require('iot.widgets').DeviceProxy;
 var PrinterProxy = require('pos_iot.Printer');
 
 models.load_fields("res.users", "lang");
-models.register_payment_method('iot_box', PaymentIOT);
+models.load_fields("pos.payment.method", "iot_device_id")
+models.register_payment_method('six', PaymentIOT);
+models.register_payment_method('ingenico', PaymentIOT);
 
 models.load_models([{
     model: 'iot.device',
     fields: ['iot_ip', 'identifier', 'type'],
-    domain: function(self) { return [['iot_id', '=', self.config.iotbox_id[0]], ]; },
+    domain: function(self) {
+        var payment_terminal_device_ids = self.payment_methods.map(function (payment_method) { return payment_method.iot_device_id[0]; });
+        return ['|', ['iot_id', '=', self.config.iotbox_id[0]], ['id', 'in', payment_terminal_device_ids]];
+    },
     loaded: function(self, iot_devices) {
         var used_devices = {
-            'payment': self.config.iface_payment_terminal,
             'scale': self.config.iface_electronic_scale,
             'scanner': self.config.iface_scan_via_proxy,
             'display': self.config.iface_customer_facing_display,
@@ -28,7 +32,14 @@ models.load_models([{
                 iot_device_proxies[iot_device.type] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier });
             } else if (self.config.iface_print_via_proxy && iot_device.id === self.config.iface_printer_id[0]) {
                 iot_device_proxies[iot_device.type] = new PrinterProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier });
-            }
+            };
+            if (iot_device.type == 'payment') {
+                self.payment_methods.forEach(function(payment_method) {
+                    if (payment_method.iot_device_id[0] == iot_device.id) {
+                        payment_method.terminal_proxy = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier })
+                    };
+                });
+            };
         });
         self.iot_device_proxies = iot_device_proxies;
         if (_.size(self.iot_device_proxies)) {
@@ -49,9 +60,13 @@ models.PosModel = models.PosModel.extend({
         var res = posmodel_super.after_load_server_data.apply(this, arguments);
         if (this.useIoTPaymentTerminal()) {
             res.then(function () {
-                self.iot_device_proxies.payment.action({
-                    messageType: 'OpenShift',
-                    language: self.user.lang.split('_')[0],
+                self.payment_methods.forEach(function (payment_method) {
+                    if (payment_method.terminal_proxy) {
+                        payment_method.terminal_proxy.action({
+                            messageType: 'OpenShift',
+                            language: self.user.lang.split('_')[0],
+                        });
+                    };
                 });
             });
         }
@@ -60,9 +75,8 @@ models.PosModel = models.PosModel.extend({
 
     useIoTPaymentTerminal: function () {
         return this.config && this.config.use_proxy
-            && this.iot_device_proxies && this.iot_device_proxies.payment
-            && this.payment_methods.some(function (payment_method) {
-                return payment_method.use_payment_terminal == 'iot_box';
+            && this.payment_methods.some(function(payment_method) {
+                return payment_method.terminal_proxy;
             });
     }
 });

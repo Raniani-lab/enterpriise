@@ -98,6 +98,7 @@
                             <group>
                                 <group>
                                     <field name="partner_id"/>
+                                    <field name="company_id" groups="base.group_multi_company"/>
                                     <field name="email_cc" groups="base.group_no_one"/>
                                 </group>
                                 <group>
@@ -130,6 +131,9 @@
             </field>
             <field name="partner_id" position="after">
                 <field name="activity_exception_decoration" widget="activity_exception"/>
+            </field>
+            <field name="date_assign" position="after">
+                <field name="company_id" groups="base.main_company"/>
             </field>
         </field>
     </record>
@@ -250,6 +254,7 @@
                             <field name="point_id"/>
                             <field name="control_date" invisible="1"/>
                             <field name="team_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                             <field name="user_id" string="Control Person" invisible="1"/>
                         </group>
                     </group>
@@ -284,6 +289,7 @@
                 <field name="point_id" invisible="1"/>
                 <field name="test_type" invisible="1"/>
                 <field name="measure_success" invisible="1"/>
+                <field name="company_id" invisible="1"/>
                 <group>
                     <group>
                         <label for="measure" attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
@@ -390,6 +396,7 @@
                 <field name="point_id" optional="hide"/>
                 <field name="team_id" optional="show"/>
                 <field name="quality_state" optional="show"/>
+                <field name="company_id" groups="base.main_company"/>
             </tree>
         </field>
     </record>
@@ -652,6 +659,9 @@
                             </div>
                             <field name="alias_contact" class="oe_inline" groups="base.group_no_one"
                                     string="Accept Emails From"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </group>
                 </sheet>

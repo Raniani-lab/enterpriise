@@ -37,6 +37,9 @@ class ProjectWorksheetTemplate(models.Model):
     def create(self, vals):
         template = super(ProjectWorksheetTemplate, self).create(vals)
         name = 'x_project_worksheet_template_' + str(template.id)
+        # while creating model it will initialize the init_models method from create of ir.model
+        # and there is related field of model_id in mail template so it's going to recusrive loop while recompute so used flush
+        self.flush()
         model = self.env['ir.model'].sudo().create({
             'name': vals['name'],
             'model': name,

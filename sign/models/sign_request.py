@@ -92,7 +92,7 @@ class SignRequest(models.Model):
             rec.nb_closed = closed
             rec.nb_total = wait + closed
             rec.start_sign = bool(closed)
-            rec.progress = "{} / {}".format(wait, wait + closed)
+            rec.progress = "{} / {}".format(closed, wait + closed)
             if closed:
                 rec.start_sign = True
             if wait == 0 and closed:

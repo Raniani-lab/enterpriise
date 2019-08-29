@@ -661,6 +661,7 @@
                                 <tree editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="name"/>
+                                    <field name="display_name" invisible="1"/>
                                 </tree>
                             </field>
                         </page>

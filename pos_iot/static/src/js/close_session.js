@@ -76,7 +76,13 @@ var CloseSession = AbstractAction.extend({
             model: 'pos.session',
             method: this.attrs.action,
             args: [this.data.id],
-        }).then(self.do_action);
+        }).then(function (action) {
+            if(action){
+                self.do_action(action);
+            } else {
+                self.trigger_up('reload');
+            }
+        });
 
     },
 

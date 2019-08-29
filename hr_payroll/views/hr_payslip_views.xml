@@ -194,7 +194,7 @@
         <field name="arch" type="xml">
             <form string="Payslip">
             <header>
-                <button string="Confirm" name="action_payslip_done" type="object" states="verify" class="oe_highlight"/>
+                <button string="Confirm" name="action_payslip_done" type="object" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
                 <button string="Refund" name="refund_sheet" states="confirm,done" type='object' />
                 <button string="Set to Draft" name="action_payslip_draft" type="object" states="cancel"/>
                 <button string="Compute Sheet" name="compute_sheet" type="object" states="draft" class="oe_highlight"/>

@@ -67,11 +67,13 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click p-0">
                             <div class="p-4 border-left">
-                                <div class="text-truncate font-weight-bold" t-att-title="record.name.raw_value"><field name="name"/></div>
-                                <div>
+                                <div class="col-10 text-truncate font-weight-bold" t-att-title="record.name.raw_value"><field name="name"/></div>
+                                <div class="col-10">
                                     <span><field name="ip_url" widget="url"/></span>
-                                    <a class="float-right" name="%(iot_device_action_search_iot_box)d" type="action">
-                                        <span aria-label="Device Count"><field name="device_count"/> <i t-attf-class="fa fa-plug"/></span>
+                                </div>
+                                <div>
+                                    <a class="p-2" name="%(iot_device_action_search_iot_box)d" type="action">
+                                        <span class="float-right" aria-label="Device Count"><field name="device_count"/> <i t-attf-class="fa fa-plug"/></span>
                                     </a>
                                 </div>
                             </div>

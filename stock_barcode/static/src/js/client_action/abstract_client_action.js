@@ -1168,6 +1168,7 @@ var ClientAction = AbstractAction.extend({
                 args: [{
                     'name': barcode,
                     'product_id': product.id,
+                    'company_id': self.currentState.company_id[0],
                 }],
             });
         };
@@ -1425,6 +1426,7 @@ var ClientAction = AbstractAction.extend({
             var currentPage = self.pages[self.currentPageIndex];
             var default_location_id = currentPage.location_id;
             var default_location_dest_id = currentPage.location_dest_id;
+            var default_company_id = self.currentState.company_id[0];
             return self._save().then(function () {
                 if (self.actionParams.model === 'stock.picking') {
                     self.ViewsWidget = new ViewsWidget(
@@ -1433,6 +1435,7 @@ var ClientAction = AbstractAction.extend({
                         'stock_barcode.stock_move_line_product_selector',
                         {
                             'default_picking_id': self.currentState.id,
+                            'default_company_id': default_company_id,
                             'default_location_id': default_location_id,
                             'default_location_dest_id': default_location_dest_id,
                             'default_qty_done': 1,
@@ -1445,7 +1448,7 @@ var ClientAction = AbstractAction.extend({
                         'stock.inventory.line',
                         'stock_barcode.stock_inventory_line_barcode',
                         {
-                            'default_company_id': self.currentState.company_id[0],
+                            'default_company_id': default_company_id,
                             'default_inventory_id': self.currentState.id,
                             'default_location_id': default_location_id,
                             'default_product_qty': 1,

@@ -72,6 +72,7 @@
                     <field name="state" attrs="{'invisible': [('state', '=', False)]}" />
                     <field name="priority" attrs="{'invisible': [('priority', '=', False)]}" />
                     <field name="owner_id" attrs="{'invisible': [('owner_id', '=', False)]}" groups="stock.group_tracking_owner" />
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="move_lines" attrs="{'invisible': [('move_lines', '=', False)]}" >
                         <tree>
                             <field name="product_id"/>

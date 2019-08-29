@@ -311,6 +311,22 @@ class SignRequest(models.Model):
             self.generate_completed_document()
 
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        attachment = self.env['ir.attachment'].create({
+            'name': "%s.pdf" % self.reference,
+            'datas': self.completed_document,
+            'type': 'binary',
+            'res_model': self._name,
+            'res_id': self.id,
+        })
+        report_action = self.env.ref('sign.action_sign_request_print_logs')
+        pdf_content, __ = report_action.render_qweb_pdf(self.id)
+        attachment_log = self.env['ir.attachment'].create({
+            'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
+            'datas': base64.b64encode(pdf_content),
+            'type': 'binary',
+            'res_model': self._name,
+            'res_id': self.id,
+        })
         for signer in self.request_item_ids:
             if not signer.signer_email:
                 continue
@@ -323,22 +339,6 @@ class SignRequest(models.Model):
                 'body': False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
-            attachment = self.env['ir.attachment'].create({
-                'name': "%s.pdf" % self.reference,
-                'datas': self.completed_document,
-                'type': 'binary',
-                'res_model': self._name,
-                'res_id': self.id,
-            })
-            report_action = self.env.ref('sign.action_sign_request_print_logs')
-            pdf_content, __ = report_action.render_qweb_pdf(self.id)
-            attachment_log = self.env['ir.attachment'].create({
-                'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
-                'datas': base64.b64encode(pdf_content),
-                'type': 'binary',
-                'res_model': self._name,
-                'res_id': self.id,
-            })
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},

@@ -563,7 +563,9 @@
         <input id="string" name="string" type="text" data-type="attributes"
             t-att-value="widget.state.attrs.string"/>
     </div>
-    <t t-call="web_studio.Sidebar.Remove"/>
+    <t t-call="web_studio.Sidebar.Toolbox">
+        <t t-call="web_studio.Sidebar.Remove"/>
+    </t>
 </t>
 
 <!-- PageEditor -->
@@ -603,10 +605,12 @@
 <!-- FilterEditor -->
 <t t-name="web_studio.ViewEditorSidebar.filter">
     <div class="o_web_studio_sidebar_text">
-        <label for="string">Label Text</label>
+        <label for="string">Label</label>
         <input id="string" name="string" type="text"
             t-att-value="widget.state.attrs.string"/>
-        <label for="domain">Filter Domain</label>
+    </div>
+    <div class="o_web_studio_sidebar_text">
+        <label for="domain">Domain</label>
         <input id="domain" name="domain" type="text"
             t-att-value="widget.state.attrs.domain" readonly="readonly"/>
     </div>
@@ -730,7 +734,9 @@
         <input id="string" name="string" type="text" data-type="attributes"
             t-att-value="widget.state.attrs.string"/>
     </div>
-    <t t-call="web_studio.Sidebar.Remove"/>
+    <t t-call="web_studio.Sidebar.Toolbox">
+        <t t-call="web_studio.Sidebar.Remove"/>
+    </t>
 </t>
 
 <!-- ShowInvisibleElements -->

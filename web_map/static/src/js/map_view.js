@@ -20,6 +20,7 @@ odoo.define('web_map.MapView', function (require) {
         icon: 'fa-map-marker',
         display_name: 'Map',
         viewType: 'map',
+        mobile_friendly: true,
         searchMenuTypes: ['filter', 'favorite'],
 
         init: function (viewInfo, params) {

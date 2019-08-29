@@ -16,6 +16,8 @@
                        decoration-info="state in ['confirm', 'validate1']"
                        precision="{'week': 'day:full', 'month': 'day:full'}"
                        plan="0"
+                       total_row="True"
+                       thumbnails="{'employee_id': 'image_64'}"
                        display_unavailability="1"
                 >
                     <field name="state" invisible="1"/>

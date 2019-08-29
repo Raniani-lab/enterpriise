@@ -171,6 +171,20 @@
             <field name="payslip_id" ref="hr_payslip_demo_may"/>
         </record>
 
+    <!-- Work Entries for Laurie -->
+
+    <function model="hr.contract" name="_generate_work_entries">
+        <value eval="[ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')]"/>
+        <value eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
+        <value eval="DateTime.today()"/>
+    </function>
+
+    <function model="hr.work.entry" name="action_validate">
+        <value model="hr.work.entry" eval="obj().search([
+            ('employee_id', '=', ref('hr_contract_salary.hr_employee_laurie_poiret'))
+        ]).ids"/>
+    </function>
+
     <!-- Individual account demo -->
 
     <record id="hr_payslip_demo_lap_january" model="hr.payslip">

@@ -13,7 +13,7 @@ var PaymentIOT = PaymentInterface.extend({
 
         if (!this.pos.iot_device_proxies['payment']) {
             this._showErrorConfig();
-            return;
+            return Promise.resolve(false);
         }
 
         this.terminal = this.pos.iot_device_proxies['payment'];

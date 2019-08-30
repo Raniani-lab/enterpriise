@@ -92,7 +92,7 @@ chrome.Chrome.include({
                 'title': _t('Terminal Error'),
                 'body': data.Error,
             });
-        } else if (data.TicketMerchant) {
+        } else if (data.TicketMerchant && this.pos.proxy.printer) {
             this.pos.proxy.printer.print_receipt("<div class='pos-receipt'><div class='pos-payment-terminal-receipt'>" + data.TicketMerchant.replace(/\n/g, "<br />") + "</div></div>");
         }
         this.pos.iot_device_proxies.payment.remove_listener();

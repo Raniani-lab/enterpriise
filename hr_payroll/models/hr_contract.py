@@ -89,7 +89,7 @@ class HrContract(models.Model):
                     'employee_id': employee.id,
                     'contract_id': contract.id,
                     'company_id': contract.company_id.id,
-                    'state': 'confirmed',
+                    'state': 'draft',
                 }]
 
             # Leaves
@@ -115,7 +115,7 @@ class HrContract(models.Model):
                     'employee_id': employee.id,
                     'leave_id': leave.holiday_id and leave.holiday_id.id,
                     'company_id': contract.company_id.id,
-                    'state': 'confirmed',
+                    'state': 'draft',
                     'contract_id': contract.id,
                 }]
 
@@ -185,7 +185,7 @@ class HrContract(models.Model):
         # First, found work entry that didn't exceed interval.
         work_entries = self.env['hr.work.entry'].read_group(
             [
-                ('state', 'in', ['validated', 'confirmed']),
+                ('state', 'in', ['validated', 'draft']),
                 ('date_start', '>=', date_from),
                 ('date_stop', '<=', date_to),
                 ('contract_id', 'in', self.ids),
@@ -199,7 +199,7 @@ class HrContract(models.Model):
         work_entries = self.env['hr.work.entry'].search(
             [
                 '&', '&',
-                ('state', 'in', ['validated', 'confirmed']),
+                ('state', 'in', ['validated', 'draft']),
                 ('contract_id', 'in', self.ids),
                 '|', '|', '&', '&',
                 ('date_start', '>=', date_from),

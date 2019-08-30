@@ -111,11 +111,12 @@ class Task(models.Model):
                             T.user_id as user_id,
                             T.project_id,
                             T.planned_date_begin as planned_date_begin,
-                            T.planned_date_end as planned_date_end
-
+                            T.planned_date_end as planned_date_end,
+                            T.active as active
                         FROM project_task T
                         LEFT OUTER JOIN project_project P ON P.id = T.project_id
                         WHERE T.id IN %s
+                            AND T.active = 't'
                             AND P.is_fsm = 't'
                             AND T.planned_date_begin IS NOT NULL
                             AND T.planned_date_end IS NOT NULL
@@ -123,6 +124,7 @@ class Task(models.Model):
                     ) T1
                 INNER JOIN project_task T2
                     ON T1.id != T2.id
+                        AND T2.active = 't'
                         AND T1.user_id = T2.user_id
                         AND T2.planned_date_begin IS NOT NULL
                         AND T2.planned_date_end IS NOT NULL

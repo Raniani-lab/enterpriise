@@ -230,7 +230,6 @@
                     <field name="company_id" invisible="1"/>
                     <field name="fsm_to_invoice" invisible="1"/>
                     <field name="allow_billable" invisible="1"/>
-
                     <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'), '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0)]}"/>
                     <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
@@ -257,6 +256,7 @@
                     <span class="align-middle">for this employee at the same time.</span>
                 </div>
                 <sheet>
+                    <field name="active" invisible="1" />
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', ('allow_timesheets', '=', False), '&amp;', ('timesheet_timer_start', '=', False), ('total_hours_spent', '=', 0)]}">
                             <div class="o_stat_info">
@@ -371,6 +371,7 @@
                 <field name="name" string="Tasks"/>
                 <field name="partner_id" operator="child_of"/>
                 <field name="user_id"/>
+                <field name="active"/>
                 <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
                 <separator />
                 <filter string="To schedule" name="schedule" domain="[
@@ -383,6 +384,7 @@
                 <filter string="To Do" name="todo" domain="[('fsm_state', '=', 'draft'), ('user_id', '!=', False), ('planned_date_begin', '!=', False), ('planned_date_end', '!=', False)]"/>
                 <filter string="To Invoice" name="to_invoice" domain="[('fsm_to_invoice', '=', True), ('fsm_state', 'in', ['validated', 'sold']), ('is_fsm', '=', True )]" groups="sales_team.group_sale_salesman" />
                 <separator />
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <filter name="planned_today" string="Planned for Today" domain="[
                     ('planned_date_begin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
                     ('planned_date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>

@@ -22,7 +22,7 @@
             <field name="report_name">Worksheet ${object.name}${(' - ' + object.partner_id.name) if object.partner_id else ''}.pdf</field>
             <field name="body_html" type="html">
                 <p>
-                    Dear ${object.partner_id.name},<br/><br/>
+                    Dear ${object.partner_id.name or 'Customer'},<br/><br/>
                     Please find attached the worksheet of our onsite operation. <br/><br/>
                     Feel free to contact us if you have any questions.<br/><br/>
                     Best regards,<br/><br/>

@@ -353,13 +353,14 @@ class Task(models.Model):
     def action_fsm_view_overlapping_tasks(self):
         fsm_task_form_view = self.env.ref('industry_fsm.project_task_view_form')
         fsm_task_list_view = self.env.ref('industry_fsm.project_task_view_list_fsm')
+        fsm_task_kanban_view = self.env.ref('industry_fsm.project_task_view_kanban_fsm')
         domain = self._get_fsm_overlap_domain()[self.id]
         return {
             'type': 'ir.actions.act_window',
             'name': _('Overlapping Tasks'),
             'res_model': 'project.task',
             'domain': domain,
-            'views': [(fsm_task_list_view.id, 'tree'), (fsm_task_form_view.id, 'form')],
+            'views': [(fsm_task_list_view.id, 'tree'), (fsm_task_kanban_view.id, 'kanban'), (fsm_task_form_view.id, 'form')],
             'context': {
                 'fsm_mode': True,
                 'task_nameget_with_hours': False,

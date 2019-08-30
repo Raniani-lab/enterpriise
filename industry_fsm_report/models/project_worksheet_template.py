@@ -121,6 +121,7 @@ class ProjectWorksheetTemplate(models.Model):
                 'edit': False,
                 'create': False,
                 'delete': False,
+                'duplicate': False,
             }
         })
         # generate an xmlid for the action, studio requires it to activate the studio
@@ -195,7 +196,6 @@ class ProjectWorksheetTemplate(models.Model):
     def _get_qweb_arch_omitted_fields(self):
         return [
             'x_task_id', 'x_name',  # redundants
-            'x_customer_signature', 'x_worker_signature'  # treated separately by the template
         ]
 
     @api.model
@@ -216,20 +216,28 @@ class ProjectWorksheetTemplate(models.Model):
                 field_info = form_view_fields[field_name]
 
                 widget = field_node.attrib.get('widget', False)
-                # no signature widget in qweb
-                if widget == 'signature':
-                    widget = 'image'
+                is_signature = False
                 # adapt the widget syntax
                 if widget:
-                    field_node.attrib['t-options'] = "{'widget': '%s'}" % widget
+                    if widget == 'signature':
+                        is_signature = True
+                    # no signature widget in qweb
+                    field_node.attrib['t-options'] = "{'widget': '%s'}" % (widget if not is_signature else 'image')
                     field_node.attrib.pop('widget')
                 # basic form view -> qweb node transformation
-                if field_info['type'] != 'binary' or widget in ['image']:
+                if field_info['type'] != 'binary' or widget in ['image', 'signature']:
                     # adapt the field node itself
-                    field_node.tag = 'div'
-                    field_node.attrib['t-field'] = 'worksheet.' + field_node.attrib['name']
-                    field_node.attrib['class'] = 'text-wrap col-9'
+                    field_name = 'worksheet.' + field_node.attrib['name']
                     field_node.attrib.pop('name')
+                    if is_signature:
+                        field_node.tag = 'img'
+                        field_node.attrib['style'] = 'width: 250px;'
+                        field_node.attrib['t-att-src'] = 'image_data_uri(%s)' % field_name
+                        field_node.attrib['t-if'] = field_name
+                    else:
+                        field_node.tag = 'div'
+                        field_node.attrib['class'] = 'text-wrap col-9'
+                        field_node.attrib['t-field'] =  field_name
                     # generate a description
                     description = etree.Element('div', {'class': 'col-3 font-weight-bold'})
                     description.text = field_info['string']

@@ -70,8 +70,8 @@
                 </div>
             </xpath>
             <xpath expr="//field[@name='state']" position="before">
-                <field name="leave_id" invisible="1"/>
-                <button string="Go To Conflicting Time Off" name="open_leave" type="object" attrs="{'invisible': ['|', '|', ('state', '!=', 'conflict'), ('leave_id', '=', False)]}"/>
+                <button string="Refuse Time Off" name="action_refuse_leave" type="object" attrs="{'invisible': ['|', '|', ('state', '!=', 'conflict'), ('leave_id', '=', False)]}"/>
+                <button string="Approve Time Off" name="action_approve_leave" type="object" attrs="{'invisible': ['|', '|', ('state', '!=', 'conflict'), ('leave_id', '=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='work_entry_type_id']" position="after">
                 <field name="leave_id" attrs="{'invisible': [('leave_id', '=', False)]}"/>

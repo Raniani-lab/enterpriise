@@ -2,9 +2,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': "Mass SMS in Marketing Automation",
+    'name': "SMS Marketing in Marketing Automation",
     'version': "1.0",
-    'summary': "Integrate mass SMS in marketing campaigns",
+    'summary': "Integrate SMS Marketing in marketing campaigns",
     'category': "Marketing/Marketing Automation",
     'depends': [
         'marketing_automation',

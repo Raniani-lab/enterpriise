@@ -149,7 +149,7 @@ class Task(models.Model):
 
     def _compute_material_line_totals(self):
         for task in self:
-            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: sol.product_id != task.project_id.timesheet_product_id)
+            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: sol.product_id != task.project_id.timesheet_product_id and sol.product_uom_qty != 0)
             task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
             task.material_line_product_count = len(material_sale_lines.mapped('product_id'))
 

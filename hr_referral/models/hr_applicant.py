@@ -5,6 +5,7 @@ import json
 from werkzeug import url_encode
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 from odoo.osv import expression
 
 
@@ -183,7 +184,7 @@ class Applicant(models.Model):
     def retrieve_referral_welcome_screen(self):
         result = {}
         if not self.env.user.employee_id:
-            return result
+            raise UserError(_("You don't have access to this application as your user is not linked to an employee."))
         employee_id = self.env.user.employee_id
 
         result['id'] = employee_id.id

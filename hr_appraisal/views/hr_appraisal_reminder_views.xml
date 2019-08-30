@@ -33,7 +33,7 @@
                 <field name="notify"/>
                 <field name="appraisal_reminder"/>
                 <field name="event"/>
-                <field name="company_id" domain="[('company_id', '=', company_id)]" invisible="1"/>
+                <field name="company_id" invisible="1"/>
             </tree>
         </field>
     </record>

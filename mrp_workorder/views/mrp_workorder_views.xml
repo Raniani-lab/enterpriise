@@ -129,8 +129,8 @@
                         <div class="o_actions" attrs="{'invisible': [('working_state', '=', 'blocked')]}">
                             <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3 my-3 text-center">
                                 <field name="duration" widget="mrp_time_counter" class="mr-3"/>
-                                <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}"/>
-                                <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}"/>
+                                <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}" title="User is not working"/>
+                                <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}" title="User is working"/>
                             </span>
                             <button
                                 name="action_next"
@@ -328,7 +328,7 @@
         <field name="model">quality.point</field>
         <field name="arch" type="xml">
             <search string="Quality Point Steps">
-                <field name="routing_id" domain="[('routing_id', '=', active_id)]" string="Routing"/>
+                <field name="routing_id" string="Routing"/>
             </search>
         </field>
     </record>

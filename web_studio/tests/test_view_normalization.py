@@ -718,8 +718,8 @@ class TestViewNormalization(TransactionCase):
               </xpath>
               <xpath expr="//templates//div" position="inside">
                 <div class="o_dropdown_kanban dropdown">
-                            <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#">
-                                <span class="fa fa-bars fa-lg"/>
+                            <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#">
+                                <span class="fa fa-bars fa-lg" title="menu"/>
                             </a>
                             <div class="dropdown-menu" role="menu">
                                 <t t-if="widget.editable"><a type="edit" class="dropdown-item">Edit</a></t>
@@ -742,8 +742,8 @@ class TestViewNormalization(TransactionCase):
               </xpath>
               <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='child_ids']/kanban[1]/templates[1]/t[1]/div[1]/field[@name='name']" position="after">
                 <div class="o_dropdown_kanban dropdown" name="studio_div_302a40">
-                  <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#">
-                    <span class="fa fa-bars fa-lg"/>
+                  <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#">
+                    <span class="fa fa-bars fa-lg" title="menu"/>
                   </a>
                   <div class="dropdown-menu" role="menu" name="studio_div_4e2ccd">
                     <t t-if="widget.editable">

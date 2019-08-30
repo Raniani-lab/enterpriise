@@ -11,7 +11,7 @@ class View(models.Model):
         """ Compute and set on node access rights based on view type. Specific
         views can add additional specific rights like creating columns for
         many2one-based grouping views. """
-        node = super(View, self)._postprocess_access_rights(model, node)
+        super(View, self)._postprocess_access_rights(model, node)
 
         Model = self.env[model]
         is_base_model = self.env.context.get('base_model_name', model) == model
@@ -22,5 +22,3 @@ class View(models.Model):
                         not Model.check_access_rights(operation, raise_exception=False) or
                         not self._context.get(action, True) and is_base_model):
                     node.set(action, 'false')
-
-        return node

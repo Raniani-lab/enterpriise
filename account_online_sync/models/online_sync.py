@@ -173,6 +173,9 @@ class ProviderAccount(models.Model):
                 'views': [[view_id, 'form']],
         }
 
+    def update_credentials(self):
+        pass
+
 
 class OnlineAccount(models.Model):
     """

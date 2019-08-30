@@ -595,7 +595,7 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                 'search_default_subscription_start_date': moment(this.start_date).toDate(),
                 // TODO: add contract_ids as another filter
             };
-            view_xmlid = "sale_subscription_dashboard.action_invoice_line_entries_report";
+            view_xmlid = "sale_subscription_dashboard.action_move_line_entries_report";
         }
         else if (this.selected_stat === 'nrr' || this.selected_stat  === 'net_revenue') {
             // TODO: add filters

@@ -35,7 +35,7 @@
                                         <field name="no_of_recruitment"/> Open <t t-esc="pos"/>
                                     </div>
                                     <div class="d-flex align-items-center flex-grow-0 mt-1">
-                                        <img src="/hr_referral/static/src/img/points.svg" class="mr-2" height="20px" alt=""/>
+                                        <img src="/hr_referral/static/src/img/points.svg" class="mr-2" height="20px" alt="Points icon"/>
                                         <span class="text-nowrap"><field name="max_points"/> Points</span>
                                     </div>
                                 </div>

@@ -52,7 +52,7 @@
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
                                         <div t-attf-class="o_kanban_referral_top_right font-weight-bold #{(record.points_missing.raw_value &lt; 1) ? '' : 'text-danger'}">
-                                            <img src="/hr_referral/static/src/img/points.svg" class="mr-2" height="20px" alt=""/>
+                                            <img src="/hr_referral/static/src/img/points.svg" class="mr-2" height="20px" alt="Point icon"/>
                                             <span><field name="cost"/> Points</span>
                                         </div>
                                         <div class="o_text_title_left">

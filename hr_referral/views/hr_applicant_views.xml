@@ -55,7 +55,7 @@
                             <div t-attf-class="o_kanban_card_header">
                                 <t t-if="record.referral_state.raw_value == 'hired'">
                                     <div class="o_head_friend float-right">
-                                        <span class="small border px-1"><i class='fa fa-check mr-2' /><field name="referral_state"/></span>
+                                        <span class="small border px-1"><i class='fa fa-check mr-2' title="Hired"/><field name="referral_state"/></span>
                                     </div>
                                 </t>
                                 <t t-else="">
@@ -102,9 +102,9 @@
                             <table class="table">
                                 <tr t-foreach="JSON.parse(record.shared_item_infos.raw_value)" t-as="stage">
                                     <td>
-                                        <t t-if="stage.done"><i class="text-success fa fa-check"></i></t>
-                                        <t t-elif="record.referral_state.raw_value == 'closed'"><i class="text-danger fa fa-times"></i></t>
-                                        <t t-else=""><i class="fa fa-square-o"></i></t>
+                                        <t t-if="stage.done"><i class="text-success fa fa-check" title="Done"></i></t>
+                                        <t t-elif="record.referral_state.raw_value == 'closed'"><i class="text-danger fa fa-times" title="Closed"></i></t>
+                                        <t t-else=""><i class="fa fa-square-o" title="Open"></i></t>
                                     </td>
                                     <td><t t-esc="stage.name"/></td>
                                     <td t-if="stage.done">+<t t-esc="stage.points"/> Points</td>

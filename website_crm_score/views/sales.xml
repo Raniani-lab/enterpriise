@@ -32,7 +32,6 @@
                     <group string="Scoring">
                         <field name="score_ids"
                             widget="many2many_tags"
-                            domain="[('object_id.model','=','crm.lead')]"
                             context="{'object_name': 'crm.lead'}"
                             readonly="1"
                         />
@@ -42,7 +41,6 @@
                     <group string="Scoring">
                         <field name="score_ids"
                             widget="many2many_tags"
-                            domain="[('object_id.model','=','crm.lead')]"
                             context="{'object_name': 'crm.lead'}"
                             readonly="1"
                         />
@@ -104,7 +102,7 @@
                                                     <li class="nav-item"><a type="open" class="nav-link"><b><field name="name"/></b></a></li>
                                                     <li class="nav-item"><field name="team_user_domain" widget="filters"/></li>
 						                            <li t-attf-class="nav-item #{button_state}">
-                                                        <a type="object" name="toggle_active" t-attf-class="nav-link fa fa-check-square"/>
+                                                        <a type="object" name="toggle_active" t-attf-class="nav-link fa fa-check-square" title="Toggle active"/>
 						                            </li>
                                                 </ul>
                                                 <div class="o_assignation_leads_count">

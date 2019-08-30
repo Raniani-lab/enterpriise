@@ -467,7 +467,7 @@
                                         <field name="recurring_rule_type" class="field_rule_type" required="1"/>
                                     </div>
                                     <field name="recurring_rule_boundary" widget="radio" options="{'horizontal':true}"/>
-                                    <label for="" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}"/>
+                                    <span class="o_form_label" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}"/>
                                     <div class="o_row" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}">
                                         <span class="mr-1">For</span>
                                         <field name="recurring_rule_count"/>

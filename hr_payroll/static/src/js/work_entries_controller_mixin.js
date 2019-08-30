@@ -85,7 +85,6 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
 
             var records = this._fetchRecords();
             var hasConflicts = records.some(function (record) { return record.state === 'conflict'; });
-            var allConflicts = records.every(function (record) { return record.state === 'conflict'; });
             var allValidated = records.every(function (record) { return record.state === 'validated'; });
 
             this.$buttons.find('.btn-work-entry').remove();
@@ -96,10 +95,6 @@ odoo.define('hr_payroll.WorkEntryControllerMixin', function(require) {
                     event_class: 'btn-payslip-generate',
                     disabled: hasConflicts,
                 }));
-            }
-
-            if (hasConflicts && !allConflicts) {
-                this._displayWarning(QWeb.render('hr_work_entry.work_entry_error_message'));
             }
         },
 

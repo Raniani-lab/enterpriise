@@ -36,6 +36,7 @@ class IoTController(http.Controller):
     @http.route('/iot/keyboard_layouts', type='http', auth='public', csrf=False)
     def load_keyboard_layouts(self, available_layouts):
         request.env['iot.keyboard.layout'].sudo().create(json.loads(available_layouts))
+        return ''
 
     # Return home screen
     @http.route('/iot/box/<string:identifier>/screen_url', type='http', auth='public')

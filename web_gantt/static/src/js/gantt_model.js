@@ -156,7 +156,15 @@ var GanttModel = AbstractModel.extend({
         }
         if ('groupBy' in params) {
             if (params.groupBy && params.groupBy.length) {
-                this.ganttData.groupedBy = params.groupBy;
+                this.ganttData.groupedBy = params.groupBy.filter(
+                    groupedByField => {
+                        var fieldName = groupedByField.split(':')[0]
+                        return fieldName in this.fields && this.fields[fieldName].type.indexOf('date') === -1;
+                    }
+                );
+                if(this.ganttData.groupedBy.length !== params.groupBy.length){
+                    this.do_warn(_t('Invalid group by'), _t('Grouping by date is not supported, ignoring it'));
+                }
             } else {
                 this.ganttData.groupedBy = this.defaultGroupBy;
             }

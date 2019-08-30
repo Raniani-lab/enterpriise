@@ -38,7 +38,8 @@
                    decoration-warning="state == 'conflict'"
                    progress="name"
                    scales="day,week,month"
-                   create="0">
+                   create="0"
+                   plan="0">
                 <field name="color" invisible="1"/>
                 <field name="state"/>
                 <field name="employee_id"/>

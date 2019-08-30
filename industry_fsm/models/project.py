@@ -153,16 +153,18 @@ class Task(models.Model):
             task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
             task.material_line_product_count = len(material_sale_lines.mapped('product_id'))
 
+    @api.depends('sale_order_id.invoice_status', 'sale_order_id.order_line')
     def _compute_fsm_to_invoice(self):
         for task in self:
-            task.fsm_to_invoice = bool(task.sale_order_id.invoice_status == 'to invoice')
+            task.fsm_to_invoice = bool(task.sale_order_id.invoice_status not in ('no', 'invoiced'))
 
     @api.model
     def _search_fsm_to_invoice(self, operator, value):
         query = """
             SELECT so.id
             FROM sale_order so
-            WHERE so.invoice_status = 'to invoice'
+            WHERE so.invoice_status != 'invoiced'
+                AND so.invoice_status != 'no'
         """
         operator_new = 'inselect'
         if(bool(operator == '=') ^ bool(value)):

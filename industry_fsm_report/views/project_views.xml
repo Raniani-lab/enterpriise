@@ -185,8 +185,8 @@
                 </button>
             </xpath>
             <field name="project_id" position="after">
-                <label class="oe_edit_only" for="worksheet_template_id" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
-                <field class="oe_edit_only" name="worksheet_template_id" nolabel="1" attrs="{'invisible': [('is_fsm', '=', False)]}" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
+                <label class="oe_edit_only" for="worksheet_template_id" attrs="{'invisible': ['|', ('is_fsm', '=', False), ('allow_worksheets', '=', False)]}"/>
+                <field class="oe_edit_only" name="worksheet_template_id" nolabel="1" attrs="{'invisible': ['|', ('is_fsm', '=', False), ('allow_worksheets', '=', False)]}" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
             </field>
             <xpath expr="//field[@name='project_id']" position="attributes">
                 <attribute name="context">{

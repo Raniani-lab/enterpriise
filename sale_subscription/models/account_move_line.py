@@ -41,6 +41,7 @@ class AccountMoveLine(models.Model):
         """
         for line in self:
             if not (line.subscription_end_date and line.subscription_start_date):
+                line.subscription_mrr = 0
                 continue
             # we need to retro-compute the interval of the subscription as close as possible
             # hence the addition of 1 extra day to the end date - this mirrors the computation

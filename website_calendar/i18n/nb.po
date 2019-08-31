@@ -1,19 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_calendar
+# 	* website_calendar
 # 
 # Translators:
-# Viktor Basso <viktor@voit.no>, 2018
 # Martin Trigaux, 2019
 # Jorunn D. Newth, 2019
 # Marius Stedjan <marius@stedjan.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Marius Stedjan <marius@stedjan.com>, 2019\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:66
+#: code:addons/website_calendar/models/calendar_appointment.py:0
 #, python-format
 msgid " (copy)"
 msgstr " (kopi)"
@@ -39,7 +38,7 @@ msgid "#{day['today_cls'] and 'Today' or ''}"
 msgstr ""
 
 #. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:142
+#: code:addons/website_calendar/controllers/main.py:0
 #, python-format
 msgid "%s with %s"
 msgstr "%s med %s"
@@ -55,7 +54,7 @@ msgid "+1 (650) 691-3277"
 msgstr "+1 (650) 691-3277"
 
 #. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:186
+#: code:addons/website_calendar/controllers/main.py:0
 #, python-format
 msgid ", All Day"
 msgstr ", hele dagen"
@@ -73,6 +72,11 @@ msgid ""
 msgstr ""
 "<br/>\n"
 "                            Det er for sent å avlyse via nett, kontakt deltakerne på annen måte hvis du ikke har mulighet til å møte opp."
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -171,6 +175,11 @@ msgstr "Tilgangstoken"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "Action Needed"
 msgstr "Handling påkrevd"
+
+#. module: website_calendar
+#: model:res.groups,name:website_calendar.group_calendar_manager
+msgid "Administrator"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.website_calendar_report
@@ -288,8 +297,13 @@ msgid "Calendar"
 msgstr "Kalender"
 
 #. module: website_calendar
+#: model:ir.model,name:website_calendar.model_calendar_event
+msgid "Calendar Event"
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__can_publish
-msgid "Can publish"
+msgid "Can Publish"
 msgstr ""
 
 #. module: website_calendar
@@ -298,12 +312,12 @@ msgid "Cancel Before (hours)"
 msgstr "Avlys før (timer)"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__checkbox
 msgid "Checkboxes (multiple answers)"
 msgstr "Avkryssingsbokser (flere svar)"
 
 #. module: website_calendar
-#: selection:calendar.appointment.type,assignation_method:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assignation_method__chosen
 msgid "Chosen by the Customer"
 msgstr "Valgt av kunden"
 
@@ -341,7 +355,7 @@ msgstr "Kontakt"
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/appointment_employee_url.js:67
+#: code:addons/website_calendar/static/src/js/appointment_employee_url.js:0
 #, python-format
 msgid "Copied !"
 msgstr "Kopiert!"
@@ -386,7 +400,7 @@ msgid "Display Name"
 msgstr "Visningsnavn"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__select
 msgid "Dropdown (one answer)"
 msgstr "Nedtrekksmeny (ett svar)"
 
@@ -396,15 +410,15 @@ msgid "Duration:"
 msgstr "Varighet:"
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "Edit"
+msgstr "Rediger"
+
+#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Employees"
 msgstr "Ansatte"
-
-#. module: website_calendar
-#: model:ir.model,name:website_calendar.model_calendar_event
-msgid "Event"
-msgstr "Arrangement"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_follower_ids
@@ -427,18 +441,9 @@ msgid "Fri"
 msgstr "Fre"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__5
 msgid "Friday"
 msgstr "Fredag"
-
-#. module: website_calendar
-#: model_terms:calendar.appointment.type,message_intro:website_calendar.calendar_appointment
-msgid ""
-"Get a <strong>customized demo</strong> and an <strong>analysis of your "
-"needs</strong>."
-msgstr ""
-"Få en <strong>tilpasset demo</strong> og en <strong>analyse av behovene "
-"dine</strong>."
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__assignation_method
@@ -452,7 +457,7 @@ msgstr "Hvordan møter kunder booker på nettstedet blir tildelt ansatte."
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__id
 msgid "ID"
-msgstr "IDID"
+msgstr "ID"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread
@@ -466,6 +471,7 @@ msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -497,8 +503,8 @@ msgstr "Er følger"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
-msgid "Is published"
-msgstr "Er Publisert"
+msgid "Is Published"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__country_ids
@@ -534,7 +540,7 @@ msgstr "Sist oppdatert"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__location
 msgid "Location"
-msgstr "Sted"
+msgstr "Lokasjon"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__location
@@ -550,11 +556,6 @@ msgstr "Sted:"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_main_attachment_id
 msgid "Main Attachment"
 msgstr ""
-
-#. module: website_calendar
-#: model:res.groups,name:website_calendar.group_calendar_manager
-msgid "Manager"
-msgstr "Leder"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error
@@ -573,25 +574,25 @@ msgid "Mon"
 msgstr "Man"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__1
 msgid "Monday"
 msgstr "Mandag"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__text
 msgid "Multi-line text"
 msgstr "Tekstboks med flere linjer"
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:30
+#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:0
 #, python-format
 msgid "Name"
 msgstr "Navn"
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:29
+#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:0
 #, python-format
 msgid "New Appointment Type"
 msgstr ""
@@ -674,7 +675,7 @@ msgid "Placeholder"
 msgstr "Plassholder"
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:302
+#: code:addons/website_calendar/models/calendar_appointment.py:0
 #, python-format
 msgid "Please enter a valid hour between 0:00 to 24:00 for your slots."
 msgstr "Legg til en gyldig time mellom 0:00 og 24:00 for å sette opp tidsrom."
@@ -702,12 +703,12 @@ msgid "Questions"
 msgstr "Spørsmål"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__radio
 msgid "Radio (one answer)"
 msgstr "Radioknapp (ett svar)"
 
 #. module: website_calendar
-#: selection:calendar.appointment.type,assignation_method:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assignation_method__random
 msgid "Random"
 msgstr "Tilfeldig"
 
@@ -732,13 +733,23 @@ msgid "Restrict Countries"
 msgstr "Avgrens land"
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "SCHEDULED"
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_seo_optimized
 msgid "SEO optimized"
 msgstr "SEO-optimalisert"
 
 #. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: website_calendar
 #: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
-msgid "SMS Text Message - 1 Hour(s)"
+msgid "SMS Text Message - 1 Hours"
 msgstr ""
 
 #. module: website_calendar
@@ -747,7 +758,7 @@ msgid "Sat"
 msgstr "Lør"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__6
 msgid "Saturday"
 msgstr "Lørdag"
 
@@ -755,11 +766,6 @@ msgstr "Lørdag"
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Schedule Appointment"
 msgstr "Book en avtale"
-
-#. module: website_calendar
-#: model:calendar.appointment.type,name:website_calendar.calendar_appointment
-msgid "Schedule a Demo"
-msgstr "Book en demo"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
@@ -788,7 +794,7 @@ msgid "Sequence"
 msgstr "Sekvens"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__char
 msgid "Single line text"
 msgstr "Enkel tekstlinje"
 
@@ -813,7 +819,7 @@ msgid "Sun"
 msgstr "Søn"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__7
 msgid "Sunday"
 msgstr "Søndag"
 
@@ -828,7 +834,7 @@ msgid "Thu"
 msgstr "Tor"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__4
 msgid "Thursday"
 msgstr "Torsdag"
 
@@ -869,7 +875,7 @@ msgid "Tue"
 msgstr "Tir"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__2
 msgid "Tuesday"
 msgstr "Tirsdag"
 
@@ -894,18 +900,9 @@ msgid "Visible on current website"
 msgstr "Synlig på gjeldende nettsted"
 
 #. module: website_calendar
-#: model_terms:calendar.appointment.type,message_confirmation:website_calendar.calendar_appointment
-msgid ""
-"We thank you for your interest in our products!<br>\n"
-"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
-msgstr ""
-"Takk for interessen for produktene våre!<br>\n"
-"Husk å komme <strong>10 minutter</strong> før avtalen."
-
-#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids
 msgid "Website Messages"
-msgstr "Nettstedmeldinger"
+msgstr "Meldinger fra nettsted"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_url
@@ -915,7 +912,7 @@ msgstr "Nettsted-URL"
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_message_ids
 msgid "Website communication history"
-msgstr "Kommunikasjonshistorikk på nettstedet"
+msgstr "Historikk for kommunikasjon på nettsted"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_description
@@ -943,7 +940,7 @@ msgid "Wed"
 msgstr "Ons"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__3
 msgid "Wednesday"
 msgstr "Onsdag"
 

@@ -1,21 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_reports_followup
+# 	* account_reports_followup
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Michael Yeung, 2018
+# Martin Trigaux, 2019
+# Andy Cheng <andy.cheng@richsoda.com>, 2019
 # sejun huang <sejun.huang@gmail.com>, 2019
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
-# Ying Chang <acc.tou@gmail.com>, 2019
+# Ying <acc.tou@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Ying Chang <acc.tou@gmail.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
+"Last-Translator: Ying <acc.tou@gmail.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,8 +25,6 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -45,10 +43,8 @@ msgstr ""
 "親愛的%(partner_name)s:\n"
 "\n"
 "不知道您是否有收到我公司的多次對賬提醒？\n"
-"\n"
 "貴公司任有超期餘款未付，請貴司於8日內將附件清單所示餘款項結清。如超期仍未結清，\n"
-" 我公司不排除付諸法律流程。我相信這些都不是大家所希望的。相關未結款清單附於郵件附件。如有任何疑問，請立即\n"
-"聯繫我公司會計部門\n"
+" 我公司不排除付諸法律流程。我相信這些都不是大家所希望的。相關未結款清單附於郵件附件。如有任何疑問，請立即聯繫我公司會計部門\n"
 "\n"
 "。致\n"
 
@@ -133,7 +129,7 @@ msgstr "會計催款"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_note
 msgid "Action To Do"
-msgstr "待做的動作"
+msgstr "待辦的行動"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -163,24 +159,31 @@ msgstr "配置設定"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner
 msgid "Contact"
-msgstr "聯絡人"
+msgstr "聯繫人"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_uid
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__create_uid
 msgid "Created by"
-msgstr "創建者"
+msgstr "創立者"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_date
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__create_date
 msgid "Created on"
-msgstr "創建時間"
+msgstr "建立於"
 
 #. module: account_reports_followup
-#: sql_constraint:account_followup.followup.line:0
+#: model:ir.model.constraint,message:account_reports_followup.constraint_account_followup_followup_line_days_uniq
 msgid "Days of the follow-up levels must be different"
 msgstr "催款等級中的天數必須是不同的"
+
+#. module: account_reports_followup
+#: model:account_followup.followup.line,sms_description:account_reports_followup.demo_followup_line1
+#: model:account_followup.followup.line,sms_description:account_reports_followup.demo_followup_line2
+#: model:account_followup.followup.line,sms_description:account_reports_followup.demo_followup_line3
+msgid "Dear %(partner_name)s, it seems that some of your payments stay unpaid"
+msgstr ""
 
 #. module: account_reports_followup
 #: model_terms:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
@@ -192,13 +195,6 @@ msgstr "默認催款等級和相關功能"
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__display_name
 msgid "Display Name"
 msgstr "顯示名稱"
-
-#. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:19
-#, python-format
-msgid "Done"
-msgstr "完成"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__delay
@@ -284,25 +280,25 @@ msgstr "ID"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_move_line
 msgid "Journal Item"
-msgstr "日記帳項"
+msgstr "日記帳專案"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup____last_update
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line____last_update
 msgid "Last Modified on"
-msgstr "最後修改時間"
+msgstr "最後修改於"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__write_uid
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__write_uid
 msgid "Last Updated by"
-msgstr "最後更新人"
+msgstr "最後更新者"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__write_date
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__write_date
 msgid "Last Updated on"
-msgstr "最後更新時間"
+msgstr "最後更新於"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_move_line__followup_date
@@ -311,7 +307,7 @@ msgstr "最近的催款"
 
 #. module: account_reports_followup
 #. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:13
+#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:0
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 #, python-format
@@ -324,22 +320,13 @@ msgid "Manual Action Type"
 msgstr "手動操作類型"
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:86
+#: code:addons/account_reports_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Manual action done"
 msgstr "手動操作已完成"
 
 #. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:16
-#, python-format
-msgid ""
-"Odoo will remind you to take care of this follow-up on the next reminder "
-"date."
-msgstr "系統還會在下一個提醒日期提醒您關注一下這個催款"
-
-#. module: account_reports_followup
-#: sql_constraint:account_followup.followup:0
+#: model:ir.model.constraint,message:account_reports_followup.constraint_account_followup_followup_company_uniq
 msgid "Only one follow-up per company is allowed"
 msgstr "一間公司僅允許一項後續追蹤"
 
@@ -367,23 +354,14 @@ msgid "Print a Letter"
 msgstr "打印信"
 
 #. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
-#, python-format
-msgid "Print letter"
-msgstr "列印信"
-
-#. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__description
 msgid "Printed Message"
 msgstr "Printed Message"
 
 #. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:16
-#, python-format
-msgid "Remind me later"
-msgstr "稍後提醒我"
+#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__sms_description
+msgid "SMS Text Message"
+msgstr "短信"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_filter
@@ -403,19 +381,18 @@ msgstr "發送信函或郵件"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_email
 msgid "Send an Email"
-msgstr "發送郵件"
+msgstr "發送電子郵件"
 
 #. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:10
-#, python-format
-msgid "Send by email"
-msgstr "使用電子郵件寄送"
+#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_sms
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+msgid "Send an SMS Text Message"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__sequence
 msgid "Sequence"
-msgstr "序列"
+msgstr "序號"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__delay
@@ -460,16 +437,6 @@ msgid "Total debit"
 msgstr "借方合計"
 
 #. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
-msgid "Urging reminder email"
-msgstr "催促提醒郵件"
-
-#. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
-msgid "Urging reminder letter"
-msgstr "催促提醒信函"
-
-#. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "When processing, it will print a PDF"
 msgstr "正在處理，它會打印一個PDF文件"
@@ -478,6 +445,11 @@ msgstr "正在處理，它會打印一個PDF文件"
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_email
 msgid "When processing, it will send an email"
 msgstr "處理時，將發出一個email"
+
+#. module: account_reports_followup
+#: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_sms
+msgid "When processing, it will send an sms text message"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__manual_action
@@ -502,7 +474,13 @@ msgstr ""
 " 翻譯成各種語言 ."
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup.py:57
+#: code:addons/account_reports_followup/models/account_followup.py:0
+#, python-format
+msgid "You have to define at least one line in the followup levels of %s"
+msgstr ""
+
+#. module: account_reports_followup
+#: code:addons/account_reports_followup/models/account_followup.py:0
 #, python-format
 msgid ""
 "Your description is invalid, use the right legend or %% if you want to use "

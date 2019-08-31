@@ -1,0 +1,142 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* marketing_automation_sms
+# 
+# Translators:
+# Martin Trigaux, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
+"Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: marketing_automation_sms
+#: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_campaign__mailing_sms_count
+msgid "# SMS Mailings"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
+msgid "<i class=\"fa fa-pie-chart\"/> Details"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__activity_type
+msgid "Activity Type"
+msgstr "Tipo de actividad"
+
+#. module: marketing_automation_sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
+msgid "Bounced"
+msgstr "Devuelto"
+
+#. module: marketing_automation_sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
+msgid "Clicked"
+msgstr "Seleccionado"
+
+#. module: marketing_automation_sms
+#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
+#, python-format
+msgid "Email failed"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
+#, python-format
+msgid "Email ignored"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
+#, python-format
+msgid "Exception in mass SMS: %s"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model:ir.model,name:marketing_automation_sms.model_marketing_activity
+#: model:ir.model.fields,field_description:marketing_automation_sms.field_sms_composer__marketing_activity_id
+msgid "Marketing Activity"
+msgstr "Actividad de marketing"
+
+#. module: marketing_automation_sms
+#: model:ir.actions.act_window,name:marketing_automation_sms.mail_mass_mailing_action_marketing_automation
+msgid "Marketing Automation Mailings"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
+#, python-format
+msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
+msgstr ""
+"Marketing automatizado: la actividad <%s> encontró el error de envío masivo "
+"%s"
+
+#. module: marketing_automation_sms
+#: model:ir.model,name:marketing_automation_sms.model_marketing_campaign
+msgid "Marketing Campaign"
+msgstr "Campaña de marketing"
+
+#. module: marketing_automation_sms
+#: model:ir.model,name:marketing_automation_sms.model_mailing_mailing
+msgid "Mass Mailing"
+msgstr "Correo masivo"
+
+#. module: marketing_automation_sms
+#: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__activity_type__sms
+msgid "SMS"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
+msgid "SMS Content"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__sms_mailing_id
+msgid "SMS Mailing"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
+msgid "SMS Options"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
+msgid "SMS Sent"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model:ir.model,name:marketing_automation_sms.model_sms_composer
+msgid "Send SMS Wizard"
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
+msgid "Sent"
+msgstr "Enviado"
+
+#. module: marketing_automation_sms
+#: code:addons/marketing_automation_sms/models/marketing_activity.py:0
+#, python-format
+msgid ""
+"To use this feature you should be an administrator or belong to the "
+"marketing automation group."
+msgstr ""
+
+#. module: marketing_automation_sms
+#: model:ir.model.fields,help:marketing_automation_sms.field_marketing_activity__sms_mailing_id
+msgid ""
+"UX Field to choose an SMS mailing. Separate field to ease options / default "
+"/ domain propagation."
+msgstr ""

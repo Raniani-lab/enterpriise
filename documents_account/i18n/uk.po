@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_account
+# 	* documents_account
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -8,10 +8,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:38+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -30,19 +30,22 @@ msgstr ""
 "умовам"
 
 #. module: documents_account
+#: model:ir.model.constraint,message:documents_account.constraint_documents_account_folder_setting_journal_unique
+msgid "A setting already exists for this journal"
+msgstr "Для цього журналу вже існує параметр"
+
+#. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
 msgstr "Віджет узгодження рахунку"
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags
-#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_tags
-msgid "Account Tags"
-msgstr "Теги рахунків"
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
+msgid "Accounting "
+msgstr "Бухоблік"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
-#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Accounting Workspace"
 msgstr "Робочій простір бухобліку"
 
@@ -52,14 +55,19 @@ msgid "Activity type"
 msgstr "Тип дії"
 
 #. module: documents_account
-#: model:ir.model,name:documents_account.model_ir_attachment
-msgid "Attachment"
-msgstr "Прикріплення"
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Centralize accounting files and documents"
+msgstr ""
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
 msgid "Companies"
 msgstr "Компанії"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__company_id
+msgid "Company"
+msgstr "Компанія"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_config_settings
@@ -72,19 +80,44 @@ msgid "Create"
 msgstr "Створити"
 
 #. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.credit_note_rule
+msgid "Create Credit Note"
+msgstr "Створити сторно"
+
+#. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
+msgid "Create Customer Invoice"
+msgstr "Створити рахунок клієнта"
+
+#. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule
 msgid "Create Vendor Bill"
 msgstr "Створити рахунок постачальника"
 
 #. module: documents_account
-#: model:documents.workflow.rule,name:documents_account.credit_note_rule
-msgid "Create Vendor Refund"
-msgstr "Створити відшкодування постачальника"
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_uid
+msgid "Created by"
+msgstr "Створив"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_date
+msgid "Created on"
+msgstr "Створено на"
+
+#. module: documents_account
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_refund
 msgid "Credit note"
 msgstr "Сторно"
+
+#. module: documents_account
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
+msgid "Customer invoice"
+msgstr "Рахунок клієнта"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__display_name
+msgid "Display Name"
+msgstr "Назва для відображення"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
@@ -103,6 +136,7 @@ msgstr "Банківська виписка"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__folder_id
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
 msgid "Folder"
 msgstr "Папка"
 
@@ -112,7 +146,7 @@ msgid "Folder where to save the generated file"
 msgstr "Папка для зберігання створеного файлу"
 
 #. module: documents_account
-#: code:addons/documents_account/wizard/report_export_wizard.py:31
+#: code:addons/documents_account/wizard/report_export_wizard.py:0
 #, python-format
 msgid "Generated Documents"
 msgstr "Згенеровані документи"
@@ -123,9 +157,14 @@ msgid "Has Business Option"
 msgstr "Має бізнес-функцію"
 
 #. module: documents_account
-#: model:ir.model,name:documents_account.model_account_invoice
-msgid "Invoice"
-msgstr "Рахунок"
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__id
+msgid "ID"
+msgstr "ID"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__journal_id
+msgid "Journal"
+msgstr "Журнал"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_move
@@ -135,7 +174,37 @@ msgstr "Записи в журналі"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_move_line
 msgid "Journal Item"
-msgstr "Запис у журналі"
+msgstr "Елемент журналу"
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_documents_account_folder_setting
+msgid "Journal and Folder settings"
+msgstr "Налаштування журналу та папки"
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Journals"
+msgstr "Журнали"
+
+#. module: documents_account
+#: model:ir.actions.act_window,name:documents_account.action_folder_settings_installer
+msgid "Journals to synchronize"
+msgstr "Журнали для синхронізації"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting____last_update
+msgid "Last Modified on"
+msgstr "Останні зміни на"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__write_uid
+msgid "Last Updated by"
+msgstr "Востаннє оновив"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__write_date
+msgid "Last Updated on"
+msgstr "Останнє оновлення"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reconcile_model
@@ -146,53 +215,20 @@ msgstr ""
 "та відповідних платежів"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product template"
-msgstr "Шаблон товару"
-
-#. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_move_line__reconciliation_invoice_id
 msgid "Reconciliation Invoice"
 msgstr "Узгодження рахунку"
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_account_invoice__reconciliation_move_line_id
+#: model:ir.model.fields,field_description:documents_account.field_account_move__document_request_line_id
 msgid "Reconciliation Journal Entry Line"
 msgstr "Узгодження рядка запису журналу"
 
 #. module: documents_account
-#: model:mail.activity.type,name:documents_account.mail_documents_activity_data_md
-msgid "Reconciliation request"
-msgstr "Запит на узгодження"
-
-#. module: documents_account
-#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid "Select the tags to be applied to the accounting's new documents"
-msgstr "Виберіть теги, які будуть застосовані до нових документів бухобліку"
-
-#. module: documents_account
-#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid ""
-"Select the workspace to be used for accounting's documents for the invoices\n"
-"                                    of your company."
-msgstr ""
-"Виберіть робочу область, яка буде використовуватися для облікових документів\n"
-" для рахунків компанії."
-
-#. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr "Шаблон підпису"
-
-#. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__tag_ids
 msgid "Tags"
 msgstr "Теги"
-
-#. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Task"
-msgstr "Завдання"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
@@ -200,14 +236,19 @@ msgid "Tax Statement"
 msgstr "Податкова виписка"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
 msgid "Vendor Credit Note"
-msgstr "Сторно продавця"
+msgstr "Сторно постачальника"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice
 msgid "Vendor bill"
 msgstr "Рахунок постачальника"
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Workspace"
+msgstr "Робоча область"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder

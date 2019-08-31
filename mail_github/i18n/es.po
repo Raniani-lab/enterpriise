@@ -1,18 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mail_github
+# 	* mail_github
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Cristopher Cravioto <ccr@odoo.com>, 2018
-# Miquel Torner <miq@odoo.com>, 2018
+# Martin Trigaux, 2019
+# Pedro M. Baeza <pedro.baeza@gmail.com>, 2019
+# Miquel Torner <miq@odoo.com>, 2019
+# Cristopher Cravioto <ccr@odoo.com>, 2019
+# Jon Perez <jop@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Miquel Torner <miq@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:36+0000\n"
+"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,8 +102,8 @@ msgstr "Creado el"
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel
-msgid "Discussion channel"
-msgstr "Canal de discusión"
+msgid "Discussion Channel"
+msgstr "Canal de conversaciones"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__display_name
@@ -110,7 +113,7 @@ msgstr "Nombre mostrado"
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel_github
 msgid "Email Github Channel"
-msgstr ""
+msgstr "Mandar correo electrónico a canal de Github"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel__github_enabled
@@ -338,6 +341,7 @@ msgstr "creado uno nuevo"
 
 #. module: mail_github
 #: code:addons/mail_github/controllers/main.py:197
+#: code:addons/mail_github/controllers/main.py:205
 #, python-format
 msgid "issue"
 msgstr "incidencia"
@@ -358,8 +362,8 @@ msgid "on repository"
 msgstr "en el repositorio"
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:211
-#: code:addons/mail_github/controllers/main.py:218
+#: code:addons/mail_github/controllers/main.py:212
+#: code:addons/mail_github/controllers/main.py:219
 #, python-format
 msgid "pull request"
 msgstr "hacer una solicitud"

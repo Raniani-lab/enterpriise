@@ -1,35 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality
+# 	* quality
 # 
 # Translators:
-# Rudolf Schnapka <rs@techno-flex.de>, 2017
-# dd5cd5bab88c61e9dedf84f5ea59b147, 2017
-# Renzo Meister, 2017
-# ba566f9f7abd166f8f1f032649ec3e69, 2017
-# Niki Waibel, 2017
-# Tina Rittmüller <tr@ife.de>, 2017
-# Henry Mineehen <info@mineehen.de>, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
-# Constantin Ehrenstein <transifex@skiller.eu>, 2017
-# DE T1 <e2f8846@yahoo.com>, 2017
-# JackTheHunter <Maximilian.N98@gmail.com>, 2017
-# Katharina Moritz <kmo@e2f.com>, 2017
-# Wolfgang Taferner, 2018
-# Ermin Trevisan <trevi@twanda.com>, 2018
-# Jan Meyer, 2019
-# Johannes Croe <jcr@odoo.com>, 2019
 # Martin Trigaux, 2019
 # Felix Schubert <felix.schubert@go-erp.com>, 2019
+# Andreas Stauder <andreas.stauder@brain-tec.ch>, 2019
+# Jan Meyer, 2019
+# Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
+# Bettina Pfeifer <betzilla@web.de>, 2019
+# Leon Grill <leg@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
-"PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Felix Schubert <felix.schubert@go-erp.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,9 +70,19 @@ msgid "Activities"
 msgstr "Aktivitäten"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Aktivität Ausnahme Dekoration"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
 msgid "Activity State"
 msgstr "Status der Aktivität"
+
+#. module: quality
+#: model:res.groups,name:quality.group_quality_manager
+msgid "Administrator"
+msgstr "Administrator"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -131,7 +130,7 @@ msgstr "# Anhänge"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__reason
 msgid "Cause"
-msgstr ""
+msgstr "Ursache"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__check_id
@@ -146,14 +145,14 @@ msgstr "Anzahl der Kontrollen"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:8
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Clear"
-msgstr "Suche löschen"
+msgstr "Löschen"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:28
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Close"
 msgstr "Abschliessen"
@@ -221,6 +220,11 @@ msgid "Created on"
 msgstr "Erstellt am"
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Creation Date"
+msgstr "Erzeugt am"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_assign
 msgid "Date Assigned"
 msgstr "Zugewiesenes Datum"
@@ -238,7 +242,7 @@ msgstr "Standardeinstellungen"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "Definiert den Typ des Qualitätskontrollpunkts."
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -268,7 +272,17 @@ msgid "Display Name"
 msgstr "Anzeigename"
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Done"
+msgstr "Erledigt"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
+msgid "Email cc"
+msgstr "E-Mail cc"
+
+#. module: quality
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__fail
 msgid "Failed"
 msgstr "Fehlgeschlagen"
 
@@ -302,12 +316,22 @@ msgid "Followers (Partners)"
 msgstr "Abonnenten (Partner)"
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Future Activities"
+msgstr "Anstehende Aktivitäten"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Group By"
+msgstr "Gruppieren nach"
+
+#. module: quality
 #: model:ir.module.category,description:quality.module_category_quality
 msgid "Helps you manage your quality alerts and quality checks."
 msgstr "Hilfe zum Verwalten von Qualitätsalarmen und -prüfungen."
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__2
 msgid "High"
 msgstr "Hoch"
 
@@ -333,6 +357,16 @@ msgstr ""
 "für die Erstellung von Aufgaben beinhaltet)."
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_icon
+msgid "Icon"
+msgstr "Icon"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Symbol, um eine Ausnahmeaktivität anzuzeigen."
+
+#. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_unread
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_unread
 #: model:ir.model.fields,help:quality.field_quality_check__message_unread
@@ -350,13 +384,20 @@ msgstr "Falls markiert, benötigen neue Nachrichten Ihre Kenntnisnahme."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_alert__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_alert_team__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_check__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_check__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_point__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_point__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
-"Das Senden mancher Nachrichten ist fehlgeschlagen wenn dieses Fenster "
-"angekreuzt ist."
+msgstr "Wenn gewählt, ist das Senden einiger Nachrichten fehlgeschlagen."
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "In Progress"
+msgstr "In Arbeit"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -381,7 +422,7 @@ msgstr "Ist ein Abonnent"
 #: model:ir.model.fields,field_description:quality.field_quality_reason____last_update
 #: model:ir.model.fields,field_description:quality.field_quality_tag____last_update
 msgid "Last Modified on"
-msgstr "Zuletzt geändert am"
+msgstr "Letzte Änderung am"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_uid
@@ -393,7 +434,7 @@ msgstr "Zuletzt geändert am"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_uid
 msgid "Last Updated by"
-msgstr "Zuletzt aktualisiert durch"
+msgstr "Zuletzt aktualisiert von"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_date
@@ -408,13 +449,23 @@ msgid "Last Updated on"
 msgstr "Zuletzt aktualisiert am"
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Late Activities"
+msgstr "Verspätete Aktivitäten"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
+msgid "List of cc from incoming emails."
+msgstr "Liste der cc aus eingehenden E-Mails."
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Lot"
 msgstr "Fertigungslos"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__1
 msgid "Low"
 msgstr "Niedrig"
 
@@ -427,17 +478,12 @@ msgid "Main Attachment"
 msgstr "Hauptanhänge"
 
 #. module: quality
-#: model:res.groups,name:quality.group_quality_manager
-msgid "Manager"
-msgstr "Manager"
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_has_error
 msgid "Message Delivery error"
-msgstr "Error beim senden der Nachricht"
+msgstr "Fehler beim Senden der Nachricht"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_ids
@@ -448,26 +494,30 @@ msgid "Messages"
 msgstr "Nachrichten"
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "My Alerts"
+msgstr "Meine Alarme"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__name
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__name
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__name
 #: model:ir.model.fields,field_description:quality.field_quality_check__name
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__name
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
-#: model:ir.model.fields,field_description:quality.field_quality_tag__name
 msgid "Name"
 msgstr "Name"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:32
-#: code:addons/quality/models/quality.py:69
-#: code:addons/quality/models/quality.py:70
-#: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:181
-#: code:addons/quality/models/quality.py:182
-#: code:addons/quality/models/quality.py:209
-#: code:addons/quality/models/quality.py:244
-#: code:addons/quality/models/quality.py:245
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
@@ -489,7 +539,7 @@ msgid "Next Activity Type"
 msgstr "Nächster Aktivitätstyp"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__0
 msgid "Normal"
 msgstr "Normal"
 
@@ -547,6 +597,7 @@ msgstr "Anzahl ungelesener Nachrichten"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Operation"
 msgstr "Vorgang"
 
@@ -570,11 +621,6 @@ msgstr ""
 #: model:quality.reason,name:quality.reason_other
 msgid "Others"
 msgstr "Andere"
-
-#. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Overdue"
-msgstr "Überfällig"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
@@ -608,7 +654,7 @@ msgid "Parts Quality"
 msgstr "Teilequalität"
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__pass
 msgid "Passed"
 msgstr "Bestanden"
 
@@ -622,11 +668,6 @@ msgstr "Liefervorgang"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
 msgstr "Bild"
-
-#. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Planned"
-msgstr "Geplant"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -655,6 +696,7 @@ msgstr "Priorität"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_tmpl_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__product_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Product"
 msgstr "Produkt"
 
@@ -671,6 +713,7 @@ msgstr "Qualität"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Quality Alert"
 msgstr "Qualitätsalarm"
 
@@ -692,17 +735,22 @@ msgstr "Qualitätskontrolle"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Qualitätskontrollpunkt"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr ""
+msgstr "Testtyp für die Qualitätskontrolle"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_tag
 msgid "Quality Tag"
 msgstr "Qualitäts-Tag"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Quality Team"
+msgstr "Qualitätsteam"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_force_thread_id
@@ -718,6 +766,7 @@ msgstr "Referenz"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__user_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Responsible"
 msgstr "Verantwortlich"
 
@@ -728,20 +777,34 @@ msgstr "Manager Veranstaltung"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Root Cause"
 msgstr "Hauptursache"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_reason
 msgid "Root Cause for Quality Failure"
-msgstr ""
+msgstr "Grundursache für Qualitätsfehler"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "SMS Zustellungsfehler"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
-msgstr "Reihenfolge"
+msgstr "Sequenz"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Show all records which has next action date is before today"
+msgstr "Alle Datensätze mit vor heute geplanten Aktionen anzeigen"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_3
@@ -750,6 +813,7 @@ msgstr "Gelöst"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Stage"
 msgstr "Stufe"
 
@@ -772,13 +836,18 @@ msgstr ""
 "Geplant: anstehende Aktivitäten."
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_tag__name
+msgid "Tag Name"
+msgstr "Tag Bezeichnung"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
 msgid "Tags"
 msgstr "Stichwörter"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:17
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Take a Picture"
 msgstr "Bild aufnehmen"
@@ -798,6 +867,7 @@ msgid "Technical name"
 msgstr "Technischer Name"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__test_type_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "Testtyp"
@@ -852,19 +922,25 @@ msgid "Title"
 msgstr "Titel"
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__none
 msgid "To do"
 msgstr "Zu Erledigen"
 
 #. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Today"
-msgstr "Heute"
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Today Activities"
+msgstr "Heutige Aktivitäten"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Type"
 msgstr "Typ"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Typ der Ausnahmeaktivität im Datensatz."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread
@@ -880,11 +956,11 @@ msgstr "Ungelesene Nachrichten"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_unread_counter
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Zähler der ungelesenen Nachrichten"
+msgstr "Anzahl ungelesener Nachrichten"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:10
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Uploading..."
 msgstr "Hochladen …"
@@ -905,13 +981,13 @@ msgid "Vendor"
 msgstr "Lieferant"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__3
 msgid "Very High"
 msgstr "Sehr hoch"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:32
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Viewer"
 msgstr ""

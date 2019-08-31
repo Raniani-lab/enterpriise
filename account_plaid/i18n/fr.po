@@ -1,22 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_plaid
+# 	* account_plaid
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Richard Mathot <rim@odoo.com>, 2017
-# e2f_fr_t5 <e2f_fr_t5@outlook.com>, 2018
-# Olivier Lenoir <olivier.lenoir@free.fr>, 2018
-# Clo <clo@odoo.com>, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
+# Martin Trigaux, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,10 +23,10 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Additional information on error"
-msgstr "Information additionnelle sur l'erreur "
+msgstr "Informations additionnelles sur l'erreur "
 
 #. module: account_plaid
-#: code:addons/account_plaid/models/plaid.py:55
+#: code:addons/account_plaid/models/plaid.py:0
 #, python-format
 msgid "Get %s status code for call to %s. Content message: %s"
 msgstr "Reçu le code %s pour l'accès à %s. Contenu du message: %s"
@@ -41,13 +37,13 @@ msgid "Interface for Online Account Journal"
 msgstr ""
 
 #. module: account_plaid
-#: code:addons/account_plaid/models/plaid.py:136
+#: code:addons/account_plaid/models/plaid.py:0
 #, python-format
 msgid "Only an Accountant is allowed to perform this operation."
 msgstr ""
 
 #. module: account_plaid
-#: selection:account.online.provider,provider_type:0
+#: model:ir.model.fields.selection,name:account_plaid.selection__account_online_provider__provider_type__plaid
 msgid "Plaid"
 msgstr "Plaid"
 
@@ -59,7 +55,7 @@ msgstr "Type d'erreur Plaid"
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_item_id
 msgid "Plaid Item"
-msgstr "Objet Plaid"
+msgstr "Article Plaid"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
@@ -72,7 +68,7 @@ msgid "Provider for online account synchronization"
 msgstr "Fournisseur de synchronisation de banque en ligne"
 
 #. module: account_plaid
-#: code:addons/account_plaid/models/plaid.py:41
+#: code:addons/account_plaid/models/plaid.py:0
 #, python-format
 msgid ""
 "There was en error with Plaid Services!\n"
@@ -83,15 +79,10 @@ msgid ""
 msgstr ""
 
 #. module: account_plaid
-#: code:addons/account_plaid/models/plaid.py:74
+#: code:addons/account_plaid/models/plaid.py:0
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
 msgstr "Timeout: le serveur n'a pas répondu dans les 60 secondes"
-
-#. module: account_plaid
-#: selection:account.online.provider,provider_type:0
-msgid "Yodlee"
-msgstr "Yodlee"
 
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id

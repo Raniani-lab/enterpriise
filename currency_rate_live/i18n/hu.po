@@ -1,18 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * currency_rate_live
+# 	* currency_rate_live
 # 
 # Translators:
-# krnkris, 2017
-# Martin Trigaux, 2017
+# Martin Trigaux, 2019
+# krnkris, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
+# Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +31,7 @@ msgid ""
 msgstr ""
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__boc
 msgid "Bank Of Canada"
 msgstr ""
 
@@ -51,17 +53,17 @@ msgid "Currency: rate update"
 msgstr ""
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__daily
 msgid "Daily"
-msgstr "Napi"
+msgstr "Naponta"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__ecb
 msgid "European Central Bank"
 msgstr "Európai Központi Bank"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__fta
 msgid "Federal Tax Administration (Switzerland)"
 msgstr ""
 
@@ -74,7 +76,7 @@ msgstr "Intervallum"
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_interval_unit
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_interval_unit
 msgid "Interval Unit"
-msgstr "Időköz egysége"
+msgstr "Időköz egység"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__last_currency_sync_date
@@ -84,17 +86,17 @@ msgid "Last Sync Date"
 msgstr ""
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__manually
 msgid "Manually"
-msgstr "Manuális"
+msgstr "Kézzel"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__banxico
 msgid "Mexican Bank"
 msgstr ""
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__monthly
 msgid "Monthly"
 msgstr "Havi"
 
@@ -121,15 +123,7 @@ msgid "Service Provider"
 msgstr "Szolgáltató"
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:387
-#, python-format
-msgid ""
-"The Yahoo currency rate web service has been discontinued. Please select "
-"another currency rate provider."
-msgstr ""
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:103
+#: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
 msgid ""
 "Unable to connect to the online exchange rate platform %s. The web service "
@@ -137,7 +131,7 @@ msgid ""
 msgstr ""
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:390
+#: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
 msgid ""
 "Unable to connect to the online exchange rate platform. The web service may "
@@ -147,17 +141,12 @@ msgstr ""
 "lehet, hogy átmenetileg nem üzemel. Kérem próbálja meg ismét."
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__weekly
 msgid "Weekly"
 msgstr "Heti"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
-msgid "Yahoo (DISCONTINUED)"
-msgstr ""
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:143
+#: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
 msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "
@@ -165,6 +154,6 @@ msgid ""
 msgstr ""
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__xe_com
 msgid "xe.com"
 msgstr ""

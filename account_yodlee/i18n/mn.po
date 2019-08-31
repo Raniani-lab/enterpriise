@@ -1,21 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_yodlee
+# 	* account_yodlee
 # 
 # Translators:
-# Otgonbayar.A <gobi.mn@gmail.com>, 2018
-# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
-# Ganbold BATKHUYAG <gbatkhuyag@gmail.com>, 2018
-# Onii Onii <onii0223@yahoo.com>, 2018
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,20 +21,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:103
-#: code:addons/account_yodlee/models/yodlee.py:110
+#: code:addons/account_yodlee/models/yodlee.py:0
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "(Diagnostic: %r for URL %s)"
 msgstr "(Оношлогоо: URL %s - д %r)"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:259
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Account"
 msgstr "Данс"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:355
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Account Already Registered (436):Your Auto-Registration could not be "
@@ -50,7 +47,7 @@ msgstr ""
 "орон батлаад, сайтын нэмэх явцыг зөв нэвтрэх мэдээллээр гүйцээнэ үү."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:342
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Account Locked (407): We could not update your account because it appears "
@@ -67,7 +64,7 @@ msgstr ""
 "түүнийг шинэчлэнэ үү."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:369
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Account Not Found(408): We're sorry, we couldn't find any accounts for you "
@@ -79,7 +76,7 @@ msgstr ""
 "уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:347
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Account Reported Closed (422): We were unable to update your account "
@@ -92,7 +89,7 @@ msgstr ""
 "боломжгүй. Чухал бүртгэлийг идэвхигүйжүүлэх эсвэл устгаад дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:344
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Account Type Not Supported(417):The type of account we found is not "
@@ -108,7 +105,7 @@ msgid "Active/Inactive on Yodlee system"
 msgstr "Yodlee систем дээр идэвхитэй/идэвхигүй"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:377
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "An Error has occurred (code %s)"
 msgstr "Алдаа гарлаа (код %s)"
@@ -119,13 +116,13 @@ msgid "Companies"
 msgstr "Компаниуд"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:199
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Could not make sense of parameters: %s"
 msgstr "Дараах оролтын өгөгдөлийг ойлгохгүй байна: %s"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:339
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Credential Re-Verification Required (402): We could not update your account "
@@ -138,7 +135,7 @@ msgstr ""
 "баталгаажуулна уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:345
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Credential Re-Verification Required (420):The site has merged with another. "
@@ -149,19 +146,19 @@ msgstr ""
 "шинэчлэнэ үү."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:228
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Error %s, message: %s"
 msgstr "Алдаа%s, мэдэгдэл: %s"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:102
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Error %s, message: %s, reference code: %s"
 msgstr "Алдаа %s, зурвас: %s, лавлагааны код: %s"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:338
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Home Value Not Found (511): The site is unable to provide home value for "
@@ -173,10 +170,10 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr "Онлайн дансны журнал бүртгэлийн интерфэйс"
+msgstr "Онлайн журналд холбогдох интерфэйс"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:346
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Invalid Language Setting (421): The language setting for your site account "
@@ -187,7 +184,7 @@ msgstr ""
 "Англи биш байна. Сайт руу ороод Англи хэлийг тохируулна уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:361
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Additional Authentication Enrollment Required (521) : Please "
@@ -201,7 +198,7 @@ msgstr ""
 "шинэчлэгдсэн эсэхийг нягтлана уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:364
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Authentication Information Expired (524):We're sorry, the "
@@ -212,7 +209,7 @@ msgstr ""
 "оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:360
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Authentication Information Incorrect (520):We're sorry, the site "
@@ -224,7 +221,7 @@ msgstr ""
 "шинэчлэх гэж оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:363
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Authentication Information Incorrect (523):We're sorry, the "
@@ -234,7 +231,7 @@ msgstr ""
 "баталгаажуулалтын мэдээлэл буруу байна. Дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:359
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Authentication Information Required (519): Your account was not "
@@ -246,7 +243,7 @@ msgstr ""
 "тул таны бүртгэл шинэчлэгдсэнгүй. Бүртгэлийн тохиргоог шинэчлэнэ үү."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:358
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Authentication Information Unavailable (518):Your account was not"
@@ -258,7 +255,7 @@ msgstr ""
 " Одоо оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:365
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Credential Re-Verification Required (526): We could not update "
@@ -270,7 +267,7 @@ msgstr ""
 "тул бид таны бүртгэлийг шинэчлэж чадсангүй. Дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:376
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Problem Updating Account (525): We could not update your account "
@@ -283,7 +280,7 @@ msgstr ""
 " уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:362
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Request Timed Out (522) :Your request has timed out as the "
@@ -295,7 +292,7 @@ msgstr ""
 "хүсэлтийн хугацаа хэтэрсэн. Дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:374
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "MFA error: Site Device Information Expired(509): We're sorry, we can't "
@@ -308,7 +305,7 @@ msgstr ""
 "дэмжлэгтэй холбогдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:330
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Multiple User Logins(416): We attempted to update your account, but another "
@@ -320,7 +317,7 @@ msgstr ""
 "нэвтэрсэн байгаа бол гараад хэсэг хугацааны дараа оролдоно уу"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:356
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "New Login Information Required(506):We're sorry, to log in to this site, you"
@@ -332,7 +329,7 @@ msgstr ""
 "оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:332
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "No Account Found (423): We were unable to detect an account. Please verify "
@@ -346,7 +343,7 @@ msgstr ""
 "холбогдоорой."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:357
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "No Payees Found(512):Your request cannot be completed as no payees were "
@@ -356,24 +353,19 @@ msgstr ""
 "олдоогүй тул таны хүсэлтийг дуусгаж чадсангүй."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:206
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Online institution"
 msgstr "Онлайн байгууллага"
 
 #. module: account_yodlee
-#: selection:account.online.provider,provider_type:0
-msgid "Plaid"
-msgstr "Plaid"
-
-#. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:48
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Please configure an email in the company settings."
 msgstr "Компанийн тохиргоонд имэйл тохируулна уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:341
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account (406): We could not update your account because the"
@@ -388,7 +380,7 @@ msgstr ""
 "шинэчлэнэ үү, үгүй бол дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:375
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account (517): We are sorry, there was a technical problem "
@@ -398,7 +390,7 @@ msgstr ""
 "техникийн асуудал тулгарлаа. Дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:366
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(401):We're sorry, your request timed out. Please "
@@ -408,7 +400,7 @@ msgstr ""
 "хэтэрсэн. Дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:367
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(403):We're sorry, there was a technical problem "
@@ -420,7 +412,7 @@ msgstr ""
 "дотор шийдвэрлэдэг. Дараа дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:368
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(404):We're sorry, there was a technical problem "
@@ -430,7 +422,7 @@ msgstr ""
 "шинэчлэхэд техник алдаа гарлаа. Дараа дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:326
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(409): We could not update your account because the "
@@ -440,7 +432,7 @@ msgstr ""
 "хүндрэлтэй байгаа тул бид таны бүртгэлийг шинэчлэж чадсангүй. "
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:328
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(412): We could not update your account because the "
@@ -450,7 +442,7 @@ msgstr ""
 "байгаа тул бид таны бүртгэлийг шинэчлэж чадсангүй. "
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:370
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(413):We're sorry, we couldn't update your account "
@@ -462,7 +454,7 @@ msgstr ""
 "асуудлыг ихэвчлэн хэд хоногийн дотор шийдвэрлэдэг. Дараа дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:329
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(415): We could not update your account because the "
@@ -472,7 +464,7 @@ msgstr ""
 "байгаа тул бид таны бүртгэлийг шинэчлэж чадсангүй. "
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:331
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(418): We could not update your account because the "
@@ -482,7 +474,7 @@ msgstr ""
 "байгаа тул бид таны бүртгэлийг шинэчлэж чадсангүй. Дараа оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:371
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(419):We're sorry, we couldn't update your account "
@@ -494,7 +486,7 @@ msgstr ""
 "хэд хоногийн дотор шийдвэрлэдэг. Дараа дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:334
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(425): We could not update your account because the "
@@ -504,7 +496,7 @@ msgstr ""
 "тул бид таны бүртгэлийг шинэчлэж чадсангүй. Дараа оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:335
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(426): We could not update your account for "
@@ -516,7 +508,7 @@ msgstr ""
 " дотор шийдвэрлэдэг. Төвөг удсанд  өршөөгөөрэй."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:372
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Problem Updating Account(507):We're sorry, Yodlee has just started providing"
@@ -528,7 +520,7 @@ msgstr ""
 "хэдэн өдөр болж магадгүй. Дараа дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:337
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Property Record Not Found (510): The site is unable to find any property "
@@ -546,10 +538,10 @@ msgstr "Үйлчилгээ үзүүлэгчийн төрөл"
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr "Онлайн нягтлан бодох бүртгэлийн синхрончлолын үйлчилгээ үзүүлэгч"
+msgstr "Онлайн данс ижилсүүлэх үйлчилгээ үзүүлэгч"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:350
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Re-Verification Required (429): We could not update your account due to the "
@@ -562,7 +554,7 @@ msgstr ""
 "үү."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:348
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Re-verification Required (427): We could not update your account due to the "
@@ -576,7 +568,7 @@ msgstr ""
 "өршөөгөөрэй."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:349
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Re-verification Required (428): We could not update your account due to the "
@@ -588,7 +580,7 @@ msgstr ""
 " г уншиж зөвшөөрнө үү."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:352
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Registration Requires Attention (433): Auto registration is not complete. "
@@ -600,7 +592,7 @@ msgstr ""
 "дуусгана уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:353
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Registration Requires Attention (434): Your Auto-Registration could not be "
@@ -612,7 +604,7 @@ msgstr ""
 "бүртгэлийн мэдээллийг дахин шалгана уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:354
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Registration Requires Attention (435): Your Auto-Registration could not be "
@@ -624,7 +616,7 @@ msgstr ""
 "бүртгэлийн мэдээллийг дахин шалгана уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:373
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Request Timed Out (508): We are sorry, your request timed out due to "
@@ -634,7 +626,7 @@ msgstr ""
 "улмаас хугацаа хэтэрсэн байна. Дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:343
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Requested Account Type Not Found (414): We could not find your requested "
@@ -646,13 +638,13 @@ msgstr ""
 " сонгоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:137
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Server not reachable, please try again later"
 msgstr "Серверт хандалт хийх боломжгүй байна, дараа дахин оролдоно уу"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:333
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Site Down for Maintenance(424):We were unable to update your account as the "
@@ -665,7 +657,7 @@ msgstr ""
 "асуудлыг ихэвчлэн хэдэн цагийн дотор шийдвэрлэдэг. Дараа дахин оролдоно уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:327
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Site No Longer Available (411):The site no longer provides online services "
@@ -675,7 +667,7 @@ msgstr ""
 "үзүүлэхээ больсон. Энэ бүртгэлийг устгана уу."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:351
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Site No Longer Supported (430):This site is no longer supported for data "
@@ -687,7 +679,7 @@ msgstr ""
 "Төвөг удсанд өршөөгөөрэй."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:336
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Site Not Supported (505): We currently does not support the security system "
@@ -701,19 +693,19 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.actions.client,name:account_yodlee.yodlee_widget
 msgid "Synchronization process completed"
-msgstr "Ижилсүүлэх явц дууслаа"
+msgstr "Ижилсүүлэх ажиллагаа дууслаа"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:60
-#: code:addons/account_yodlee/models/yodlee.py:73
-#: code:addons/account_yodlee/models/yodlee.py:87
-#: code:addons/account_yodlee/models/yodlee.py:135
+#: code:addons/account_yodlee/models/yodlee.py:0
+#: code:addons/account_yodlee/models/yodlee.py:0
+#: code:addons/account_yodlee/models/yodlee.py:0
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "Timeout: the server did not reply within 30s"
 msgstr "Хугацаа хэтрэлт: сервер 30 секундэд хариулсангүй"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:340
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid ""
 "Update Request Canceled(405):Your account was not updated because you "
@@ -723,7 +715,7 @@ msgstr ""
 "шинэчлэгдсэнгүй."
 
 #. module: account_yodlee
-#: selection:account.online.provider,provider_type:0
+#: model:ir.model.fields.selection,name:account_yodlee.selection__account_online_provider__provider_type__yodlee
 msgid "Yodlee"
 msgstr "Yodlee"
 
@@ -758,7 +750,7 @@ msgid "access_token"
 msgstr "access_token"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:297
+#: code:addons/account_yodlee/models/yodlee.py:0
 #, python-format
 msgid "message: %s"
 msgstr "зурвас: %s"

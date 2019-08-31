@@ -1,19 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_enterprise
+# 	* sale_enterprise
 # 
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2018
-# Osoul <baruni@osoul.ly>, 2018
-# Ahmed AL-Haddad <ahmed@utech-sa.com>, 2018
-# Martin Trigaux, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2019
+# Martin Trigaux, 2019
+# Osoul <baruni@osoul.ly>, 2019
+# Shaima Safar <shaima.safar@open-inside.com>, 2019
+# Rami Awad <rami.awad.od@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: Rami Awad <rami.awad.od@gmail.com>, 2019\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,31 +26,31 @@ msgstr ""
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "# Customers"
-msgstr ""
+msgstr "عدد العملاء"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "# Lines"
-msgstr ""
+msgstr "عدد البنود"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Average Order"
-msgstr ""
+msgstr "متوسط الأمر"
 
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__days_to_confirm
 msgid "Days To Confirm"
-msgstr ""
+msgstr "عدد الأيام حتى التأكيد"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Days to Confirm"
-msgstr ""
+msgstr "عدد الأيام حتى التأكيد"
 
 #. module: sale_enterprise
+#: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__invoiced
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
-#: selection:sale.report,invoice_status:0
 msgid "Fully Invoiced"
 msgstr "مفوتر بالكامل"
 
@@ -58,14 +60,14 @@ msgid "Invoice Status"
 msgstr "حالة الفاتورة"
 
 #. module: sale_enterprise
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__no
 msgid "Nothing to Invoice"
-msgstr "لا يوجد شي للفوترة"
+msgstr "لا توجد مبالغ لفوترتها"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Orders"
-msgstr "أوامر المبيعات"
+msgstr "أوامر"
 
 #. module: sale_enterprise
 #: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
@@ -76,30 +78,40 @@ msgstr "تحليل المبيعات"
 #. module: sale_enterprise
 #: model:ir.model,name:sale_enterprise.model_sale_report
 msgid "Sales Analysis Report"
-msgstr ""
+msgstr "تقرير المبيعات التحليلي"
 
 #. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Sales Teams"
+msgstr "فرق المبيعات"
+
+#. module: sale_enterprise
+#: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__to_invoice
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
-#: selection:sale.report,invoice_status:0
 msgid "To Invoice"
 msgstr "في انتظار الفوترة"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Total Sales"
-msgstr ""
+msgstr "إجمالي المبيعات"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Total, Tax Included"
-msgstr ""
+msgstr "المجموع شامل الضريبة"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Untaxed Total"
-msgstr "الإجمالي بدون الضرائب"
+msgstr "الإجمالي بدون ضرائب"
 
 #. module: sale_enterprise
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__upselling
 msgid "Upselling Opportunity"
-msgstr "فرص الارتقاء بالصفقة"
+msgstr "فرصة إعادة البيع"
+
+#. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "days"
+msgstr "يوم"

@@ -1,18 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_loyalty
+# 	* pos_loyalty
 # 
 # Translators:
-# Kenny Kang <winterrise@gmail.com>, 2018
 # Martin Trigaux, 2019
+# Andy Cheng <andy.cheng@richsoda.com>, 2019
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
-"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "類別"
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_res_partner
 msgid "Contact"
-msgstr "聯絡人"
+msgstr "聯繫人"
 
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
@@ -71,14 +71,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__create_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__create_uid
 msgid "Created by"
-msgstr "創建者"
+msgstr "創立者"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__create_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__create_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__create_date
 msgid "Created on"
-msgstr "創建時間"
+msgstr "建立於"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__cumulative
@@ -156,21 +156,21 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward____last_update
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule____last_update
 msgid "Last Modified on"
-msgstr "最後修改時間"
+msgstr "最後修改於"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__write_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__write_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__write_uid
 msgid "Last Updated by"
-msgstr "最後更新人"
+msgstr "最後更新者"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__write_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__write_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__write_date
 msgid "Last Updated on"
-msgstr "最後更新時間"
+msgstr "最後更新於"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_order__loyalty_points
@@ -235,25 +235,20 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__name
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__name
 msgid "Name"
-msgstr "名稱"
+msgstr "名称"
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:368
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:370
 #, python-format
 msgid "No Rewards Available"
 msgstr ""
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:384
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:386
 #, python-format
 msgid "Please select a reward"
-msgstr ""
-
-#. module: pos_loyalty
-#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
-msgid "Point Cost"
 msgstr ""
 
 #. module: pos_loyalty
@@ -314,6 +309,11 @@ msgid "Points Won:"
 msgstr ""
 
 #. module: pos_loyalty
+#: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
+msgid "Points per Currency"
+msgstr ""
+
+#. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pp_currency
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__pp_currency
 msgid "Points per currency"
@@ -338,7 +338,7 @@ msgstr ""
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
 msgid "Product"
-msgstr "產品"
+msgstr "商品"
 
 #. module: pos_loyalty
 #: selection:loyalty.reward,reward_type:0
@@ -505,7 +505,7 @@ msgstr ""
 
 #. module: pos_loyalty
 #. openerp-web
-#: code:addons/pos_loyalty/static/src/js/loyalty.js:369
+#: code:addons/pos_loyalty/static/src/js/loyalty.js:371
 #, python-format
 msgid ""
 "There are no rewards available for this customer as part of the loyalty "

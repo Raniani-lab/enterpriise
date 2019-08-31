@@ -1,19 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_subscription_dashboard
+# 	* sale_subscription_dashboard
 # 
 # Translators:
-# Martin Trigaux, 2018
-# krnkris, 2018
-# gezza <geza.nagy@oregional.hu>, 2018
+# Martin Trigaux, 2019
+# krnkris, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-28 12:16+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: gezza <geza.nagy@oregional.hu>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: gezza <geza.nagy@oregional.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,30 +64,20 @@ msgid "30 Days Ago"
 msgstr "30 nappal ezelőtt"
 
 #. module: sale_subscription_dashboard
-#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Active invoices"
 msgstr "Aktív számlák"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:382
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:387
 #, python-format
 msgid "Annual Run-Rate"
 msgstr "Éves futtatási-arány"
 
 #. module: sale_subscription_dashboard
-#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
-msgid "Asset End Date"
-msgstr "Vagyoni eszköz befejezés dátum"
-
-#. module: sale_subscription_dashboard
-#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
-msgid "Asset Start Date"
-msgstr "Vagyoni eszköz kezdő dátum"
-
-#. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:618
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1106
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:625
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1127
 #, python-format
 msgid "Churned MRR"
 msgstr "Forgó havi ismétlődő bevétel"
@@ -108,8 +98,8 @@ msgstr "Jelenlegi havi ismétlődő bevétel"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:890
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:962
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:918
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:990
 #, python-format
 msgid "Current Value: "
 msgstr "Aktuális érték:"
@@ -128,16 +118,16 @@ msgstr "Részletes KPI - teljesítménymutató"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:628
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1114
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:637
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1128
 #, python-format
 msgid "Down MRR"
 msgstr "Havi ismétlődő bevétel csökkenés"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:623
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1110
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:631
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1127
 #, python-format
 msgid "Expansion MRR"
 msgstr "Havi ismétlődő bevétel növekedés"
@@ -179,13 +169,13 @@ msgid "Filter on subscriptions"
 msgstr ""
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:430
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:435
 #, python-format
 msgid "Forecasted Annual MRR Growth"
 msgstr "Éves havi ismétlődő bevétel Szerződések növekedésének előrejelzése"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:436
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:441
 #, python-format
 msgid "Forecasted Annual Subscriptions Growth"
 msgstr ""
@@ -196,15 +186,15 @@ msgid "Forecasted KPIs"
 msgstr "Előrejelzett KPI - teljesítménymutatók"
 
 #. module: sale_subscription_dashboard
-#: model_terms:ir.actions.act_window,help:sale_subscription_dashboard.action_invoice_line_entries_report
+#: model_terms:ir.actions.act_window,help:sale_subscription_dashboard.action_move_line_entries_report
 msgid ""
 "From this view, have an analysis of your different invoice line entries."
 msgstr "Ebből a nézetből, van egy elemzése a különböző számla tétel sorokra."
 
 #. module: sale_subscription_dashboard
-#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Group By"
-msgstr "Csoportosítás ezzel"
+msgstr "Csoportosítás"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -223,14 +213,14 @@ msgid "In"
 msgstr "Ebben"
 
 #. module: sale_subscription_dashboard
-#: model:ir.actions.act_window,name:sale_subscription_dashboard.action_invoice_line_entries_report
-#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_pivot
-#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
+#: model:ir.actions.act_window,name:sale_subscription_dashboard.action_move_line_entries_report
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_pivot
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Invoice Line Entries Analysis"
 msgstr "Számla tétel sor elemzések"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:63
+#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:61
 #, python-format
 msgid ""
 "It makes no sense to sum MRR of different currencies. Please select "
@@ -240,7 +230,7 @@ msgstr ""
 "pénznemekben. Kérem válasszon ugyanazon pénznemmel rendelkező vállalatot."
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:391
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:396
 #, python-format
 msgid "Lifetime Value"
 msgstr "Élettartam érték"
@@ -276,7 +266,7 @@ msgid "Loading..."
 msgstr "Betöltés…"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:400
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:405
 #, python-format
 msgid "Logo Churn"
 msgstr "Forgó bevétel jel"
@@ -290,13 +280,13 @@ msgstr "HIB - Havi Ismétlődő Bevétel :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1099
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1130
 #, python-format
 msgid "MRR Growth"
 msgstr "HIB Növekekedés"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:346
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:351
 #, python-format
 msgid "Monthly Recurring Revenue"
 msgstr "Havi ismétlődő bevétel"
@@ -318,7 +308,7 @@ msgstr "Hónapok"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1122
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1128
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:426
 #, python-format
 msgid "NRR"
@@ -333,40 +323,40 @@ msgstr "NIB - Nettó Ismétlődő Bevétel :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:633
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1118
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:643
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1128
 #, python-format
 msgid "Net New MRR"
 msgstr "Nettó új havi ismétlődő bevétel"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:355
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:360
 #, python-format
 msgid "Net Revenue"
 msgstr "Nettó Árbevétel"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:613
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1102
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:619
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1127
 #, python-format
 msgid "New MRR"
 msgstr "Új havi ismétlődő bevétel"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:61
+#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:59
 #, python-format
 msgid "No company selected."
 msgstr "Nem lett kiválasztva vállalat "
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:364
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:369
 #, python-format
 msgid "Non-Recurring Revenue"
 msgstr "Nem-ismétlődő árbevétel"
 
 #. module: sale_subscription_dashboard
-#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "OUT invoices"
 msgstr "Számlák KI"
 
@@ -415,7 +405,7 @@ msgid "Recurring Revenue Dashboard for"
 msgstr "Ismétlődő bevétel növekedés műszerfal ehhez"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:409
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:414
 #, python-format
 msgid "Revenue Churn"
 msgstr "Forgó árbevétel"
@@ -441,7 +431,7 @@ msgid "Revenue KPIs"
 msgstr "Bevétel KPI - teljesítménymutató"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:373
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:378
 #, python-format
 msgid "Revenue per Subscription"
 msgstr ""
@@ -462,7 +452,7 @@ msgstr "Példa adat"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:87
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:88
 #, python-format
 msgid "Select at least one company."
 msgstr "Legalább egy vállakozást válasszon ki."
@@ -491,7 +481,7 @@ msgstr "Feliratkozás"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:418
+#: code:addons/sale_subscription_dashboard/controllers/stat_types.py:423
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:135
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:146
 #, python-format
@@ -535,7 +525,7 @@ msgid "There is no subscription modification during this period."
 msgstr ""
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:65
+#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:63
 #, python-format
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
@@ -550,8 +540,8 @@ msgstr "Frissítés"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:88
-#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:107
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:89
+#: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:108
 #, python-format
 msgid "Warning"
 msgstr "Figyelmeztetés"
@@ -586,8 +576,8 @@ msgid "months with"
 msgstr "hónap ezzel"
 
 #. module: sale_subscription_dashboard
-#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:23
-#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:33
+#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:22
+#: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:32
 #, python-format
 msgid "name"
 msgstr "név"
@@ -605,4 +595,4 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:242
 #, python-format
 msgid "to"
-msgstr "ig"
+msgstr "eddig"

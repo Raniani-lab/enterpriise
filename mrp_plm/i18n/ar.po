@@ -1,36 +1,33 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mrp_plm
+# 	* mrp_plm
 # 
 # Translators:
-# Amer Hazaa <eng.amer.it@gmail.com>, 2018
-# amrnegm <amrnegm.01@gmail.com>, 2018
-# Walid Baruni <baroni@osoul.ly>, 2018
-# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
-# zahi chemaly <zahi@sercotex.net>, 2018
-# Islam Eldeeb <islameldeb@gmail.com>, 2018
-# Yihya Hugirat <hugirat@gmail.com>, 2018
-# Sadig Adam <sadig41@gmail.com>, 2018
-# Akram Alfusayal <akram_ma@hotmail.com>, 2018
-# Martin Trigaux, 2018
-# nle_odoo, 2018
-# Mohammed Albasha <m.albasha.ma@gmail.com>, 2018
-# Ghaith Gammar <g.gammar@saharaifs.net>, 2018
-# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
-# amal ahmed <amalalhashemy88@hotmail.com>, 2018
-# Zuhair Hammadi <zuhair12@gmail.com>, 2018
-# Shaima Safar <shaima.safar@open-inside.com>, 2018
-# Mostafa Hanafy <mostafa.s.hanafy@gmail.com>, 2018
-# Osoul <baruni@osoul.ly>, 2018
-# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# nle_odoo, 2019
+# Walid Baruni <baroni@osoul.ly>, 2019
+# Ahmed AL-Haddad <ahmed@utech-sa.com>, 2019
+# Zuhair Hammadi <zuhair12@gmail.com>, 2019
+# Shaima Safar <shaima.safar@open-inside.com>, 2019
+# Yihya Hugirat <hugirat@gmail.com>, 2019
+# Mustafa Rawi <mustafa@cubexco.com>, 2019
+# Sadig Adam <sadig41@gmail.com>, 2019
+# Akram Alfusayal <akram_ma@hotmail.com>, 2019
+# amrnegm <amrnegm.01@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Osoul <baruni@osoul.ly>, 2019
+# Mohammed Albasha <m.albasha.ma@gmail.com>, 2019
+# Ghaith Gammar <g.gammar@saharaifs.net>, 2019
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2019
+# amal ahmed <amalalhashemy88@hotmail.com>, 2019
+# Mostafa Hanafy <mostafa.s.hanafy@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: Mustafa Rawi <mustafa@cubexco.com>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: Mostafa Hanafy <mostafa.s.hanafy@gmail.com>, 2019\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,16 +36,9 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: mrp_plm
-#: model:ir.model.fields,field_description:mrp_plm.field_product_product__product_attachment_count
-msgid "# Attachment"
-msgstr ""
-
-#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__mrp_document_count
-#: model:ir.model.fields,field_description:mrp_plm.field_product_product__template_attachment_count
-#: model:ir.model.fields,field_description:mrp_plm.field_product_template__template_attachment_count
 msgid "# Attachments"
-msgstr ""
+msgstr "عدد المرفقات"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__eco_count
@@ -56,12 +46,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__eco_count
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__eco_count
 msgid "# ECOs"
-msgstr ""
+msgstr "عدد أوامر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__eco_inprogress_count
 msgid "# ECOs in progress"
-msgstr ""
+msgstr "عدد أوامر التصميم الهندسي الجارية"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
@@ -70,10 +60,20 @@ msgstr "&amp;nbsp;"
 
 #. module: mrp_plm
 #. openerp-web
-#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:9
+#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:0
 #, python-format
 msgid "&times;"
 msgstr "&times;"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+msgid "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"Messages\"/>"
+msgstr "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"الرسائل\"/>"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"إدارة\" title=\"إدارة\"/>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -81,9 +81,21 @@ msgid ""
 "<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
 "title=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"لقب النطاق\" "
+"title=\"لقب النطاق\"/>&amp;nbsp;"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:650
+#: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_file_kanban_mrp_plm
+msgid "<i class=\"fa fa-remove\" role=\"img\" aria-label=\"Remove\" title=\"Remove\"/>"
+msgstr "<i class=\"fa fa-remove\" role=\"img\" aria-label=\"إزالة\" title=\"إزالة\"/>"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_file_kanban_mrp_plm
+msgid "<i class=\"fa fa-undo\" role=\"img\" aria-label=\"Undo\" title=\"Undo\"/>"
+msgstr "<i class=\"fa fa-undo\" role=\"img\" aria-label=\"التراجع\" title=\"التراجع\"/>"
+
+#. module: mrp_plm
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid ""
 "<p class=\"o_view_nocontent_smiling_face\">\n"
@@ -92,22 +104,15 @@ msgid ""
 "                        Use this feature to store any files, like drawings or specifications.\n"
 "                    </p>"
 msgstr ""
-
-#. module: mrp_plm
-#: code:addons/mrp_plm/models/product.py:40
-#: code:addons/mrp_plm/models/product.py:86
-#, python-format
-msgid ""
 "<p class=\"o_view_nocontent_smiling_face\">\n"
-"                        Upload files to your product\n"
+"                        ارفع ملفات لأمر التصميم الهندسي الذي سيتم تطبيقه على المنتج لاحقًا\n"
 "                    </p><p>\n"
-"                        Use this feature to store any files, like drawings or specifications.\n"
+"                        استخدم هذه الخاصية لتخزين أي ملفات، كرسومات أو مواصفات.\n"
 "                    </p>"
-msgstr ""
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
-msgid "<span>Bill of Materials</span><br/>"
+msgid "<span>BOM</span><br/>"
 msgstr ""
 
 #. module: mrp_plm
@@ -118,7 +123,7 @@ msgstr "<span>جديد</span>"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "<span>Routing</span><br/>"
-msgstr ""
+msgstr "<span>خط الإنتاج</span><br/>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -131,12 +136,14 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"قاموس بايثون سيتم تقديره لتوفير قيم افتراضية عند إنشاء سجلات جديدة لهذا "
+"اللقب."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "Action Needed"
-msgstr "الإجراء المطلوب"
+msgstr "إجراء مطلوب"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__active
@@ -149,13 +156,18 @@ msgid "Activities"
 msgstr "الأنشطة"
 
 #. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_state
 msgid "Activity State"
 msgstr "حالة النشاط"
 
 #. module: mrp_plm
-#: selection:mrp.eco.bom.change,change_type:0
-#: selection:mrp.eco.routing.change,change_type:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_bom_change__change_type__add
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_routing_change__change_type__add
 msgid "Add"
 msgstr "إضافة"
 
@@ -165,14 +177,19 @@ msgid "Add a new tag"
 msgstr "إضافة وسم جديد"
 
 #. module: mrp_plm
+#: model:res.groups,name:mrp_plm.group_plm_manager
+msgid "Administrator"
+msgstr ""
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_id
 msgid "Alias"
-msgstr "الكنية"
+msgstr "لقب"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_contact
 msgid "Alias Contact Security"
-msgstr "الاسم المستعار للاتصال الأمن"
+msgstr "لقب الاتصال الآمن"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_name
@@ -182,7 +199,7 @@ msgstr "اسم اللقب"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_domain
 msgid "Alias domain"
-msgstr "لقب النطاق"
+msgstr "نطاق اللقب"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_model_id
@@ -198,56 +215,66 @@ msgstr "الكل"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "All Approvals have be done"
-msgstr ""
+msgstr "يجب إتمام كافة الموافقات"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "All Validations"
-msgstr ""
+msgstr "كافة الاعتمادات"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__allow_change_stage
 msgid "Allow Change Stage"
-msgstr ""
+msgstr "السماح بتغيير المرحلة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__allow_apply_change
 msgid "Allow to apply changes"
-msgstr ""
+msgstr "السماح بتطبيق التغييرات"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_stage__allow_apply_change
 msgid "Allow to apply changes from this stage."
-msgstr ""
+msgstr "السماح بتطبيق التغييرات من هذه المرحلة."
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Apply Changes"
-msgstr ""
+msgstr "تطبيق التغييرات"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Apply Rebase"
-msgstr ""
+msgstr "تطبيق إعادة التفريع"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__type
 msgid "Apply on"
-msgstr ""
+msgstr "يُطبق على"
+
+#. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__approval_date
+msgid "Approval Date"
+msgstr "تاريخ الموافقة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__approval_roles
 msgid "Approval Roles"
-msgstr ""
+msgstr "أدوار الموافقة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__template_stage_id
 msgid "Approval Stage"
-msgstr ""
+msgstr "مراحل الموافقة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__approval_type
 msgid "Approval Type"
+msgstr "نوع الموافقة"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.message_approval
+msgid "Approval:"
 msgstr ""
 
 #. module: mrp_plm
@@ -256,32 +283,33 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approvals"
-msgstr ""
+msgstr "الموافقات"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__approval_ids
 msgid "Approvals by stage"
-msgstr ""
+msgstr "الموافقات حسب المرحلة"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approve"
-msgstr "موافقه"
+msgstr "موافقة"
 
 #. module: mrp_plm
-#: selection:mrp.eco,kanban_state:0 selection:mrp.eco.approval,status:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__kanban_state__done
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval__status__approved
 msgid "Approved"
-msgstr "مقبول"
+msgstr "معتمد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__user_id
 msgid "Approved by"
-msgstr ""
+msgstr "تمت الموافقة من قبل"
 
 #. module: mrp_plm
-#: selection:mrp.eco.approval.template,approval_type:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval_template__approval_type__optional
 msgid "Approves, but the approval is optional"
-msgstr ""
+msgstr "يوافق، لكن الموافقة اختيارية"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -290,18 +318,18 @@ msgid "Archived"
 msgstr "مؤرشف"
 
 #. module: mrp_plm
-#: selection:mrp.eco,effectivity:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__effectivity__asap
 msgid "As soon as possible"
-msgstr "باقرب وقت ممكن"
+msgstr "بأقرب وقت ممكن"
 
 #. module: mrp_plm
-#: selection:mrp.eco,effectivity:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__effectivity__date
 msgid "At Date"
-msgstr "في تاريخ"
+msgstr "بتاريخ"
 
 #. module: mrp_plm
 #. openerp-web
-#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:16
+#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:0
 #, python-format
 msgid "Attachment"
 msgstr "مرفق"
@@ -313,132 +341,138 @@ msgid "Attachment Count"
 msgstr "عدد المرفقات"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:642
-#: code:addons/mrp_plm/models/product.py:32
-#: code:addons/mrp_plm/models/product.py:78
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__mrp_document_ids
-#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
-#: model_terms:ir.ui.view,arch_db:mrp_plm.product_product_view_form_inherit_plm
-#: model_terms:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
 #, python-format
 msgid "Attachments"
-msgstr "المُرفقات"
+msgstr "المرفقات"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+msgid "Awaiting My Validation"
+msgstr ""
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+msgid "Awaiting Validation"
+msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
 msgid "BOM Structure Report"
-msgstr ""
+msgstr "تقرير بنية قائمة المواد"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom
 msgid "Bill of Material"
-msgstr "قائمة الخامات"
+msgstr "قائمة المواد"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom_line
 msgid "Bill of Material Line"
-msgstr ""
+msgstr "بند قائمة المواد"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:152
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.actions.act_window,name:mrp_plm.mrp_bom_action_kanban
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_id
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_boms
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #, python-format
 msgid "Bill of Materials"
-msgstr "فاتورة المواد"
+msgstr "قائمة المواد"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid ""
-"Bills of materials allow you to define the list of required raw\n"
-"              materials used to make a finished product; through a manufacturing\n"
+"Bills of materials allow you to define the list of required components\n"
+"              used to make a finished product; through a manufacturing\n"
 "              order or a pack of products."
 msgstr ""
 
 #. module: mrp_plm
-#: selection:mrp.eco,kanban_state:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__kanban_state__blocked
 msgid "Blocked"
 msgstr "محجوب"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__is_blocking
 msgid "Blocking Stage"
-msgstr ""
-
-#. module: mrp_plm
-#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-msgid "BoM"
-msgstr "فاتورة المواد"
+msgstr "مرحلة الحجب"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "BoM Changes"
-msgstr ""
+msgstr "تغييرات قائمة المواد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_rebase_ids
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "BoM Rebase"
-msgstr ""
+msgstr "تغيير قائمة المواد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_bom_revision
 msgid "BoM Revision"
+msgstr "تنقيح قائمة المواد"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.report_mrp_bom_inherit_mrp_plm
+msgid "BoM Version"
 msgstr ""
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:154
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "BoM and Routing"
-msgstr ""
+msgstr "قائمة المواد وخط الإنتاج"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "BoM:"
-msgstr ""
+msgstr "قائمة المواد:"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_approve
 msgid "Can Approve"
-msgstr ""
+msgstr "بإمكانه قبول"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_reject
 msgid "Can Reject"
-msgstr ""
+msgstr "يمكنه رفض"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_changes
 msgid "Changes"
-msgstr ""
+msgstr "تغييرات"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made in previous eco"
-msgstr ""
+msgstr "التغييرات التي تم إجراؤها في أمر التصميم الهندسي السابق"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on old bill of materials"
-msgstr ""
+msgstr "التغييرات التي تم إجراؤها في قائمة المواد السابقة"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the new revision bill of materials"
-msgstr ""
+msgstr "التغييرات التي تم إجراؤها في قائمة المواد الجديدة المنقحة"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the routing."
-msgstr ""
+msgstr "التغييرات التي تم إجراؤها على خط الإنتاج."
 
 #. module: mrp_plm
 #. openerp-web
-#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:25
+#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:0
 #, python-format
 msgid "Close"
-msgstr "إقفال"
+msgstr "إغلاق"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__color
@@ -449,61 +483,61 @@ msgstr "اللون"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__color
 msgid "Color Index"
-msgstr "اللون"
+msgstr "معرف اللون"
 
 #. module: mrp_plm
-#: selection:mrp.eco.approval,status:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval__status__comment
 msgid "Commented"
-msgstr ""
+msgstr "كتب تعليقًا"
 
 #. module: mrp_plm
-#: selection:mrp.eco.approval.template,approval_type:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval_template__approval_type__comment
 msgid "Comments only"
-msgstr ""
+msgstr "التعليقات فقط"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__company_id
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Company"
-msgstr "المؤسسة"
+msgstr "الشركة"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_configuration
 msgid "Configuration"
-msgstr "الإعدادات"
+msgstr "إعداد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__conflict
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__conflict
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: selection:mrp.eco,state:0
 msgid "Conflict"
-msgstr ""
+msgstr "تعارض"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Conflict Resolved"
-msgstr ""
+msgstr "تم حل التعارض"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__operation_change
 msgid "Consumed in Operation"
-msgstr "المستهلك في العملية"
+msgstr "تقرير الاستهلاك"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid "Create a bill of materials"
-msgstr ""
+msgstr "إنشاء قائمة مواد"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
 msgid "Create a new ECO stage"
-msgstr ""
+msgstr "إنشاء مرحلة جديدة لأمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_dashboard
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_form
 msgid "Create a new ECO type"
-msgstr ""
+msgstr "إنشاء نوع جديد لأمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action
@@ -516,7 +550,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_report
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_routing
 msgid "Create a new engineering change order"
-msgstr ""
+msgstr "إنشاء أمر تغيير هندسي جديد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__create_uid
@@ -545,7 +579,7 @@ msgstr "أنشئ في"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity
 msgid "Date on which the changes should be applied. For reference only."
-msgstr ""
+msgstr "تاريخ تطبيق التغييرات. كمرجع فقط."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_defaults
@@ -560,17 +594,17 @@ msgstr "حذف"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Description of the change and its reason ..."
-msgstr ""
+msgstr "وصف التغيير وسببه..."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__bom_change_ids
 msgid "Difference between old BoM and new BoM revision"
-msgstr ""
+msgstr "الفرق بين قائمة المواد القديمة والجديدة المنقحة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__routing_change_ids
 msgid "Difference between old routing and new routing revision"
-msgstr ""
+msgstr "الفرق بين خط الإنتاج القديم وخط الإنتاج الجديد المنقح"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__display_name
@@ -582,18 +616,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__display_name
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__display_name
 msgid "Display Name"
-msgstr "اسم العرض"
+msgstr "الاسم المعروض"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__displayed_image_id
 msgid "Displayed Image"
-msgstr ""
+msgstr "الصورة المعروضة"
 
 #. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+msgid "Documents"
+msgstr "المستندات"
+
+#. module: mrp_plm
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__done
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: selection:mrp.eco,state:0
 msgid "Done"
-msgstr "تم"
+msgstr "المنتهية"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -609,101 +648,103 @@ msgstr "المدة"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_id
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "ECO"
-msgstr ""
+msgstr "أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_graph
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_pivot
 msgid "ECO Analysis"
-msgstr ""
+msgstr "تحليل أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_approval
 msgid "ECO Approval"
-msgstr ""
+msgstr "موافقة أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_approval_template
 msgid "ECO Approval Template"
-msgstr ""
+msgstr "قالب موافقة أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_change_ids
 msgid "ECO BoM Changes"
-msgstr ""
+msgstr "تغييرات قائمة كميات أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_bom_change
 msgid "ECO BoM changes"
-msgstr ""
+msgstr "تغييرات قائمة كميات أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__eco_rebase_id
 msgid "ECO Rebase"
-msgstr ""
+msgstr "تغيير أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__routing_change_ids
 msgid "ECO Routing Changes"
-msgstr ""
+msgstr "تغييرات خط إنتاج أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_stage
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_stage_id
 msgid "ECO Stage"
-msgstr ""
+msgstr "مرحلة أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_stage_action
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_stages
 msgid "ECO Stages"
-msgstr ""
+msgstr "مراحل أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_tag_action
 #: model:ir.model,name:mrp_plm.model_mrp_eco_tag
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_tag
 msgid "ECO Tags"
-msgstr ""
+msgstr "وسوم أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_type
 msgid "ECO Type"
-msgstr ""
+msgstr "نوع أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_form
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_types
 msgid "ECO Types"
-msgstr ""
+msgstr "أنواع أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "ECO approvals"
-msgstr ""
+msgstr "موافقات أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
 msgid "ECO details"
-msgstr ""
+msgstr "تفاصيل أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
 msgid "ECO stages give the different stages for the Engineering Change Orders"
-msgstr ""
+msgstr "تعرض مراحل أمر التصميم الهندسي مراحل أوامر التصميم الهندسي المختلفة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__eco_ids
 msgid "ECO to be applied"
-msgstr ""
+msgstr "أمر التصميم الهندسي الذي سيتم تطبيقه"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
 msgid "ECO(s)"
-msgstr ""
+msgstr "أوامر التصميم الهندسي"
 
 #. module: mrp_plm
+#. openerp-web
+#: code:addons/mrp_plm/static/src/js/mrp_bom_report.js:0
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_ecos
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_routing__eco_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__eco_ids
@@ -713,50 +754,52 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_calendar
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_routing_view_form_inherit_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.report_mrp_bom_inherit_mrp_plm
+#, python-format
 msgid "ECOs"
-msgstr ""
+msgstr "أوامر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Eco"
-msgstr ""
+msgstr "أمر التصميم الهندسي"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:663
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Eco BoM"
-msgstr ""
+msgstr "قائمة كميات أمر التصميم الهندسي"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:675
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Eco Routing"
-msgstr ""
+msgstr "خط إنتاج أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_routing_change
 msgid "Eco Routing changes"
-msgstr ""
+msgstr "تغييرات خط إنتاج أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Edit Task"
-msgstr ""
+msgstr "تحرير المهمة"
 
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_effective
 msgid "Effective"
-msgstr ""
+msgstr "الفعلي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__effectivity
 msgid "Effectivity"
-msgstr ""
+msgstr "الفعالية"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__effectivity_date
 msgid "Effectivity Date"
-msgstr ""
+msgstr "تاريخ الفعالية"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_view_form
@@ -764,15 +807,21 @@ msgid "Email Alias"
 msgstr "لقب البريد الإلكتروني"
 
 #. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__email_cc
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+msgid "Email cc"
+msgstr ""
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__eco_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__eco_id
 msgid "Engineering Change"
-msgstr ""
+msgstr "التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco
 msgid "Engineering Change Order (ECO)"
-msgstr ""
+msgstr "أمر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action
@@ -785,27 +834,37 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_report
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_routing
 msgid "Engineering Change Orders"
-msgstr ""
+msgstr "أوامر التصميم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "Engineering Changes"
+msgstr "التغييرات الهندسية"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+msgid "Exception Activities"
 msgstr ""
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+msgid "Extra Info"
+msgstr "معلومات إضافية"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Filters"
-msgstr "المرشحات"
+msgstr "الفلاتر"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__final_stage
 msgid "Final Stage"
-msgstr ""
+msgstr "المرحلة الأخيرة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__folded
 msgid "Folded in kanban view"
-msgstr ""
+msgstr "مطوي في عرض كانبان"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_follower_ids
@@ -828,12 +887,12 @@ msgstr "المتابعون (الشركاء)"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity_date
 msgid "For reference only."
-msgstr ""
+msgstr "كمرجع فقط."
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Future Activities"
-msgstr "الأنشطة القادمة"
+msgstr "الأنشطة المستقبلية"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -843,10 +902,10 @@ msgstr "تجميع حسب..."
 #. module: mrp_plm
 #: model:ir.module.category,description:mrp_plm.module_category_plm
 msgid "Helps you manage your product's lifecycles."
-msgstr ""
+msgstr "تساعدك على إدارة دورات حياة منتجك."
 
 #. module: mrp_plm
-#: selection:mrp.eco,priority:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__priority__1
 msgid "High"
 msgstr "مرتفع"
 
@@ -860,7 +919,7 @@ msgstr "مرتفع"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__id
 msgid "ID"
-msgstr "المعرف"
+msgstr "المُعرف"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_parent_thread_id
@@ -868,24 +927,37 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"مُعرف السجل الأصلي الذي يحتوي اللقب (مثال: 'المشروع' يحمل لقب إنشاء المهمة)"
+
+#. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_exception_icon
+msgid "Icon"
+msgstr "الأيقونة"
+
+#. module: mrp_plm
+#: model:ir.model.fields,help:mrp_plm.field_mrp_eco__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_unread
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_unread
 msgid "If checked new messages require your attention."
-msgstr "إذا حددته، سيتم إخطارك بالرسائل الجديدة."
+msgstr "إذا كان محددًا، فهناك رسائل جديدة تحتاج لرؤيتها."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "إذا حددته، سيتم إخطارك بالرسائل الجديدة."
+msgstr "إذا كان محددًا، فهناك رسائل جديدة تحتاج لرؤيتها."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error
+#: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_sms_error
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_has_error
+#: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "إذا تم تحديده ، فإن بعض الرسائل بها خطأ في التسليم."
+msgstr "إذا كان محددًا، فقد حدث خطأ في تسليم بعض الرسائل."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_bom__active
@@ -893,13 +965,21 @@ msgid ""
 "If the active field is set to False, it will allow you to hide the bills of "
 "material without removing it."
 msgstr ""
-"اذا كان وضع الحقل الفعال هو خطأ, سيسمح لك بإخفاء فواتير المواد بدون ازالتها."
+"اذا تم تغيير وضع الحقل الفعال لخطأ, سيسمح لك بإخفاء قوائم المواد بدون "
+"ازالتها."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__active
 msgid ""
 "If the active field is set to False, it will allow you to hide the "
 "engineering change order without removing it."
+msgstr ""
+"اذا تم تغيير وضع الحقل الفعال لخطأ, سيسمح لك بإخفاء أمر التصميم الهندسي بدون"
+" ازالتها."
+
+#. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__image_64
+msgid "Image 64"
 msgstr ""
 
 #. module: mrp_plm
@@ -911,19 +991,25 @@ msgstr "رسائل مهمة"
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "في #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: mrp_plm
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__kanban_state__normal
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__progress
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: selection:mrp.eco,kanban_state:0 selection:mrp.eco,state:0
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_progress
 msgid "In Progress"
-msgstr "في تَقَدم "
+msgstr "قيد التنفيذ"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__is_approved
 msgid "Is Approved"
-msgstr ""
+msgstr "مقبول"
+
+#. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__is_closed
+msgid "Is Closed"
+msgstr "مقفل"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_is_follower
@@ -934,12 +1020,12 @@ msgstr "متابع"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__is_rejected
 msgid "Is Rejected"
-msgstr ""
+msgstr "مرفوض"
 
 #. module: mrp_plm
-#: selection:mrp.eco.approval.template,approval_type:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval_template__approval_type__mandatory
 msgid "Is required to approve"
-msgstr ""
+msgstr "مطلوب الموافقة عليه"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__kanban_state
@@ -949,7 +1035,7 @@ msgstr "حالة كانبان"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Kit"
-msgstr ""
+msgstr "عدة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco____last_update
@@ -993,25 +1079,25 @@ msgid "Late Activities"
 msgstr "الأنشطة المتأخرة"
 
 #. module: mrp_plm
+#: model:ir.model.fields,help:mrp_plm.field_mrp_eco__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_main_attachment_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "المرفق الرئيسي"
 
 #. module: mrp_plm
-#: model:res.groups,name:mrp_plm.group_plm_manager
-msgid "Manager"
-msgstr "المدير"
-
-#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__upd_time_cycle_manual
 msgid "Manual Duration Change"
-msgstr ""
+msgstr "تغيير المدة اليدوية"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_master_data
 msgid "Master Data"
-msgstr "دليل المنتجات"
+msgstr "البيانات الرئيسية"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_has_error
@@ -1028,7 +1114,7 @@ msgstr "الرسائل"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_search
 msgid "Mrp Eco Tags"
-msgstr ""
+msgstr "وسوم أمر التصميم الهندسي بنظام تخطيط متطلبات المواد"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1038,16 +1124,15 @@ msgstr "أنشطتي"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "My Change Orders"
-msgstr ""
+msgstr "أوامر التغيير الخاصة بي"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "My Validations"
-msgstr ""
+msgstr "اعتماداتي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__name
-#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__name
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__name
 msgid "Name"
 msgstr "الاسم"
@@ -1060,52 +1145,52 @@ msgstr "جديد"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_bom_id
 msgid "New Bill of Materials"
-msgstr ""
+msgstr "قائمة مواد جديدة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__current_bom_id
 msgid "New Bom"
-msgstr ""
+msgstr "قائمة مواد جديدة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__new_operation_id
 msgid "New Consumed in Operation"
-msgstr ""
+msgstr "تقرير استهلاك جديد"
 
 #. module: mrp_plm
 #: model:mrp.eco.type,name:mrp_plm.ecotype0
 msgid "New Product Introduction"
-msgstr ""
+msgstr "مقدمة منتج جديد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__new_uom_id
 msgid "New Product UoM"
-msgstr ""
+msgstr "وحدة قياس جديدة للمنتج"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_routing_id
 msgid "New Routing"
-msgstr ""
+msgstr "خط إنتاج جديد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__new_time_cycle_manual
 msgid "New manual duration"
-msgstr ""
+msgstr "مدة يدوية جديدة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__new_product_qty
 msgid "New revision quantity"
-msgstr ""
+msgstr "كمية منقحة جديدة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr "الموعد النهائي للنشاط القادم"
+msgstr "الموعد النهائي للنشاط التالي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_summary
 msgid "Next Activity Summary"
-msgstr "ملخص النشاط القادم"
+msgstr "ملخص النشاط التالي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_type_id
@@ -1113,20 +1198,20 @@ msgid "Next Activity Type"
 msgstr "نوع النشاط التالي"
 
 #. module: mrp_plm
-#: selection:mrp.eco,priority:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__priority__0
 msgid "Normal"
-msgstr "طبيعي"
+msgstr "عادي"
 
 #. module: mrp_plm
-#: selection:mrp.eco.approval,status:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval__status__none
 msgid "Not Yet"
-msgstr ""
+msgstr "ليس بعد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__note
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Note"
-msgstr "ملاحظة"
+msgstr "الملاحظات"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction_counter
@@ -1138,19 +1223,19 @@ msgstr "عدد الإجراءات"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_has_error_counter
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_has_error_counter
 msgid "Number of error"
-msgstr "عدد الاخطاء"
+msgstr "عدد الأخطاء"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "عدد الرسائل التي تتطلب اجراء"
+msgstr "عدد الرسائل التي تتطلب إجراء"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "عدد الرسائل مع خطأ في التسليم"
+msgstr "عدد الرسائل الحادث بها خطأ في التسليم"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_unread_counter
@@ -1161,12 +1246,12 @@ msgstr "عدد الرسائل الجديدة"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__old_time_cycle_manual
 msgid "Old manual duration"
-msgstr ""
+msgstr "المدة اليدوية القديمة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_stage__final_stage
 msgid "Once the changes are applied, the ECOs will be moved to this stage."
-msgstr ""
+msgstr "بمجرد تطبيق التغييرات، سيتم نقل أوامر التصميم الهندسي لهذه المرحلة."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_force_thread_id
@@ -1175,42 +1260,39 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
-
-#. module: mrp_plm
-#: selection:mrp.eco,activity_state:0
-msgid "Overdue"
-msgstr "المستحقات المتأخرة"
+"معرف اختياري لمناقشة (سجل) سيتم إرفاق كافة الرسائل الواردة به، حتى لو لم "
+"يردوا عليه. إذا تم تعيين قيمة له، سيعطل هذا إنشاء السجلات الجديدة بالكامل."
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_dashboard
 msgid "Overview"
-msgstr "اللوحة"
+msgstr "نظرة عامة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_user_id
 msgid "Owner"
-msgstr "المالِك"
+msgstr "المالك"
 
 #. module: mrp_plm
 #: model:ir.module.category,name:mrp_plm.module_category_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_root
 msgid "PLM"
-msgstr ""
+msgstr "دورة حياة المنتج"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_dashboard
 msgid "PLM Overview"
-msgstr ""
+msgstr "نظرة عامة على دورة حياة المنتج"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_model_id
 msgid "Parent Model"
-msgstr "موديل الشريك"
+msgstr "الكائن الأصل"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "معرف مناقشة السجل الأصلي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_parent_model_id
@@ -1219,11 +1301,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
-
-#. module: mrp_plm
-#: selection:mrp.eco,activity_state:0
-msgid "Planned"
-msgstr "مخطط"
+"الكائن الأب الذي يحتفظ بلقب البريد الإلكتروني. الكائن الذي يحتفظ بالإشارة "
+"إلى لقب البريد الإلكتروني لا يشترط بالضرورة أن يكون هو الكائن المحدد في "
+"الحقل alias_model_id (مثال: المشروع (الكائن الأب) والمهمة (الكائن))"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_contact
@@ -1233,45 +1313,45 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
-"سياسة لنشر رسالة على المستند باستخدام بوابة البريد الالكتروني.\n"
+"سياسة لنشر رسالة على المستند باستخدام بوابة البريد الإلكتروني.\n"
 "- الجميع: يمكن للجميع النشر\n"
 "- الشركاء: الشركاء المعتمدون فقط\n"
-"- المتابعين: فقط متابعو الوثيقة ذات الصلة أو أعضاء القنوات التالية.\n"
+"- المتابعون: فقط متابعو الوثيقة ذات الصلة أو أعضاء القنوات التالية.\n"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__previous_bom_id
 msgid "Previous BoM"
-msgstr ""
+msgstr "قائمة المواد السابقة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__old_operation_id
 msgid "Previous Consumed in Operation"
-msgstr ""
+msgstr "تقرير الاستهلاك السابق"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__previous_change_ids
 msgid "Previous ECO Changes"
-msgstr ""
+msgstr "تغييرات أمر التصميم الهندسي السابق"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Previous Eco Bom Changes"
-msgstr ""
+msgstr "تغييرات قائمة كميات أمر التصميم الهندسي السابق"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__old_uom_id
 msgid "Previous Product UoM"
-msgstr ""
+msgstr "وحدة قياس المنتج السابقة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_routing__previous_routing_id
 msgid "Previous Routing"
-msgstr ""
+msgstr "خط الإنتاج السابق"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__old_product_qty
 msgid "Previous revision quantity"
-msgstr ""
+msgstr "كمية المراجعة السابقة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__priority
@@ -1279,7 +1359,6 @@ msgid "Priority"
 msgstr "الأولوية"
 
 #. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_product_product
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__product_tmpl_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__product_id
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
@@ -1289,10 +1368,10 @@ msgid "Product"
 msgstr "المنتج"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:151
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Product Only"
-msgstr ""
+msgstr "المنتج فقط"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_product_template
@@ -1302,7 +1381,7 @@ msgstr "قالب المنتج"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__active
 msgid "Production Ready"
-msgstr ""
+msgstr "الإنتاج جاهز"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_products
@@ -1316,25 +1395,27 @@ msgstr "الكمية"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__rebase_id
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__rebase
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: selection:mrp.eco,state:0
 msgid "Rebase"
-msgstr ""
+msgstr "إعادة التفريع"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Rebase new revision of BoM with previous eco bom and old bom changes."
 msgstr ""
+"إعادة تفريع النسخة الجديدة المنقحة من قائمة المواد مع مراعاة تغييرات قائمة "
+"كميات أمر التصميم الهندسي السابق وقائمة الكميات القديمة."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "معرف مناقشة السجل"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__name
 msgid "Reference"
-msgstr "المرجع"
+msgstr "رقم الإشارة"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -1342,18 +1423,18 @@ msgid "Reject"
 msgstr "رفض"
 
 #. module: mrp_plm
-#: selection:mrp.eco.approval,status:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval__status__rejected
 msgid "Rejected"
 msgstr "مرفوض"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__displayed_image_attachment_id
 msgid "Related attachment"
-msgstr ""
+msgstr "المرفق المرتبط"
 
 #. module: mrp_plm
-#: selection:mrp.eco.bom.change,change_type:0
-#: selection:mrp.eco.routing.change,change_type:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_bom_change__change_type__remove
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_routing_change__change_type__remove
 msgid "Remove"
 msgstr "إزالة"
 
@@ -1365,27 +1446,27 @@ msgstr "التقارير"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__required_user_ids
 msgid "Requested Users"
-msgstr ""
+msgstr "المستخدمون المطلوبون"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_id
 msgid "Responsible"
-msgstr "المسؤول"
+msgstr "المسئول"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_user_id
 msgid "Responsible User"
-msgstr "المستخدم المسئول"
-
-#. module: mrp_plm
-#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
-msgid "Rev :"
-msgstr ""
+msgstr "المستخدم المسؤول"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__revision_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_routing__revision_ids
 msgid "Revision"
+msgstr "تنقيح"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+msgid "Revision :"
 msgstr ""
 
 #. module: mrp_plm
@@ -1395,33 +1476,39 @@ msgid "Role"
 msgstr "الدور"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:154
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__routing_id
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #, python-format
 msgid "Routing"
-msgstr "التقريب"
+msgstr "خط الإنتاج"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Routing Changes"
-msgstr ""
+msgstr "تغييرات خط الإنتاج"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_routing_revision
 msgid "Routing Revision"
-msgstr ""
+msgstr "تنقيح خط الإنتاج"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Routing:"
-msgstr ""
+msgstr "خط الإنتاج:"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_routing
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_routings
 msgid "Routings"
-msgstr "توجيهات"
+msgstr "خطوط الإنتاج"
+
+#. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_has_sms_error
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_search
@@ -1433,19 +1520,19 @@ msgstr "بحث"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__sequence
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__sequence
 msgid "Sequence"
-msgstr "التسلسل"
+msgstr "المسلسل"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Set Cover Image"
-msgstr ""
+msgstr "تعيين صورة غلاف"
 
 #. module: mrp_plm
 #. openerp-web
-#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:8
+#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:0
 #, python-format
 msgid "Set a Cover Image"
-msgstr ""
+msgstr "تعيين صورة غلاف"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -1455,36 +1542,22 @@ msgstr "الإعدادات"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Short Summary"
-msgstr ""
+msgstr "ملخص قصير"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__allow_apply_change
 msgid "Show Apply Change"
-msgstr ""
+msgstr "إظهار تطبيق التغيير"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Show all records which has next action date is before today"
-msgstr ""
-"عرض كافة السجلات التي تاريخ الإجراء التالي فيها يسبق تاريخ اليوم الجاري"
-
-#. module: mrp_plm
-#: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__image_small
-msgid "Small-sized image"
-msgstr "صورة مصغرة"
-
-#. module: mrp_plm
-#: model:ir.model.fields,help:mrp_plm.field_mrp_bom__image_small
-msgid ""
-"Small-sized image of the product. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is"
-" required."
-msgstr ""
+msgstr "عرض كافة السجلات المُعين لها تاريخ إجراء تالي يسبق تاريخ اليوم الجاري"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Someone rejected this change"
-msgstr ""
+msgstr "رفض أحدهم هذا التغيير"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__stage_id
@@ -1496,17 +1569,17 @@ msgstr "المرحلة"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__stage_ids
 msgid "Stages"
-msgstr "مراحل"
+msgstr "المراحل"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Start New Revision"
-msgstr ""
+msgstr "بدء تنقيح جديد"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "State"
-msgstr "الحالة"
+msgstr "المحافظة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__state
@@ -1525,25 +1598,30 @@ msgstr ""
 "الحالة على أساس الأنشطة\n"
 "المتأخرة: تاريخ الاستحقاق مر\n"
 "اليوم: تاريخ النشاط هو اليوم\n"
-"المخطط: الأنشطة المستقبلية"
+"المخطط: الأنشطة المستقبلية."
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:347
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Successfully Rebased !"
-msgstr ""
+msgstr "تمت إعادة التفريع بنجاح!"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid ""
 "System will automatically resolved the conflict(s) and apply changes. Do you"
 " agree?"
-msgstr ""
+msgstr "سيقوم النظام بحل هذه التعارضات تلقائيًا وتطبيق التغييرات، هل توافق؟"
 
 #. module: mrp_plm
-#: sql_constraint:mrp.eco.tag:0
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__name
+msgid "Tag Name"
+msgstr "اسم الوسم"
+
+#. module: mrp_plm
+#: model:ir.model.constraint,message:mrp_plm.constraint_mrp_eco_tag_name_uniq
 msgid "Tag name already exists !"
-msgstr "هذا الوسم موجود بالفعل!"
+msgstr "اسم الوسم موجود بالفعل!"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__tag_ids
@@ -1554,12 +1632,12 @@ msgstr "الوسوم"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__user_can_approve
 msgid "Technical field to check if approval by current user is required"
-msgstr ""
+msgstr "حقل تقني للتحقق مما إن كانت موافقة المستخدم الحالي مطلوبة"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__user_can_reject
 msgid "Technical field to check if reject by current user is possible"
-msgstr ""
+msgstr "حقل تقني للتحقق مما إن كان يحق للمستخدم الحالي الرفض"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__approval_template_id
@@ -1569,18 +1647,18 @@ msgstr "قالب"
 #. module: mrp_plm
 #: model:res.groups,comment:mrp_plm.group_plm_manager
 msgid "The PLM manager manages products lifecycle management"
-msgstr ""
+msgstr "يدير مدير مستخدم دورة حياة المنتج عملية إدارة دورة حياة المنتج"
 
 #. module: mrp_plm
 #: model:res.groups,comment:mrp_plm.group_plm_user
 msgid "The PLM user uses products lifecycle management"
-msgstr ""
+msgstr "يستخدم مستخدم دورة حياة المنتج عملية إدارة دورة حياة المنتج"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_product_product__version
 #: model:ir.model.fields,help:mrp_plm.field_product_template__version
 msgid "The current version of the product."
-msgstr ""
+msgstr "نسخة المنتج الحالية."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_model_id
@@ -1589,6 +1667,8 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"الكائن (مستندات أودو) الذي يقترن معه هذا اللقب. أي رسالة واردة لا ترد على "
+"سجل موجود ستقوم بإنشاء سجل جديد من نفس نوع هذا الكائن (مثلًا: مهمة مشروع)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_name
@@ -1596,6 +1676,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"اسم لقب البريد الإلكتروني، مثلًا: 'وظائف' إذا كنت جمع الرسائل المرسلة "
+"لـ<jobs@example.odoo.com>"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_user_id
@@ -1605,33 +1687,34 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"مالك السجلات المنشأة عند استلام رسائل بريد إلكتروني على هذا اللقب. إذا لم "
+"يتم تعيين قيمة لهذا الحقل، سيحاول النظام معرفة المالك الصحيح حسب عنوان "
+"البريد الإلكتروني للمرسل، أو سيستخدم حساب المشرف إذا لم يجد حسابًا مرتبطًا "
+"بعنوان البريد الإلكتروني."
 
 #. module: mrp_plm
 #. openerp-web
-#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:20
+#: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:0
 #, python-format
 msgid ""
 "There is no available image to be set as cover. Add an image as an "
 "attachment to the the engineering order."
 msgstr ""
+"لا توجد صورة متاحة لاستخدامها كصورة غلاف. قم بإضافة صورة كمرفق للأمر "
+"الهندسي."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_validation
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "To Apply"
-msgstr ""
+msgstr "للتطبيق"
 
 #. module: mrp_plm
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__confirmed
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: selection:mrp.eco,state:0
 msgid "To Do"
-msgstr "في انتظار التنفيذ"
-
-#. module: mrp_plm
-#: selection:mrp.eco,activity_state:0
-msgid "Today"
-msgstr "اليوم"
+msgstr "المهام المراد تنفيذها"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1647,9 +1730,14 @@ msgid "Type"
 msgstr "النوع"
 
 #. module: mrp_plm
+#: model:ir.model.fields,help:mrp_plm.field_mrp_eco__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__uom_change
 msgid "Unit of Measure"
-msgstr "وحده القياس "
+msgstr "وحدة القياس"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_unread
@@ -1664,25 +1752,25 @@ msgid "Unread Messages Counter"
 msgstr "عدد الرسائل الجديدة"
 
 #. module: mrp_plm
-#: selection:mrp.eco.bom.change,change_type:0
-#: selection:mrp.eco.routing.change,change_type:0
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_bom_change__change_type__update
+#: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_routing_change__change_type__update
 msgid "Update"
 msgstr "تحديث"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update BoM"
-msgstr ""
+msgstr "تحديث قائمة المواد"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update Documents"
-msgstr ""
+msgstr "تحديث المستندات"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update Routing"
-msgstr ""
+msgstr "تحديث خط الإنتاج"
 
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_user
@@ -1697,7 +1785,7 @@ msgstr "المستخدمون"
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_validated
 msgid "Validated"
-msgstr "تم الإعتماد"
+msgstr "تم الاعتماد"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__version
@@ -1709,29 +1797,19 @@ msgid "Version"
 msgstr "الإصدار"
 
 #. module: mrp_plm
-#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-msgid "Waiting Any Validation"
-msgstr ""
-
-#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_approvals
 msgid "Waiting Approvals"
-msgstr ""
-
-#. module: mrp_plm
-#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-msgid "Waiting My Validation"
-msgstr ""
+msgstr "بانتظار الموافقات"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Waiting for Approvals"
-msgstr ""
+msgstr "بانتظار الموافقات"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_approvals_my
 msgid "Waiting my Approvals"
-msgstr ""
+msgstr "بانتظار موافقاتي"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__website_message_ids
@@ -1756,23 +1834,34 @@ msgid "Work Centers"
 msgstr "مراكز العمل"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:489
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "You cannot change the stage, as approvals are required in the process."
 msgstr ""
+"لا يمكنك تغيير المرحلة، لا تزال بعض الموافقات مطلوبة لإتمام عملية المعالجة."
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:479
+#: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "You cannot change the stage, as approvals are still required."
-msgstr ""
+msgstr "لا يمكنك تغيير المرحلة، لا تزال بعض الموافقات مطلوبة."
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.message_approval
+msgid "by"
+msgstr "بواسطة"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
 msgid "e.g. Engineering Department"
-msgstr ""
+msgstr "مثلًا: القسم الهندسي"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "oe_kanban_text_red"
 msgstr "oe_kanban_text_red"
+
+#. module: mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.message_approval
+msgid "was"
+msgstr ""

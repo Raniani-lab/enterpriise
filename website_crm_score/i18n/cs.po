@@ -1,22 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_crm_score
-# 
-# Translators:
-# Jaroslav Helemik Nemec <nemec@helemik.cz>, 2018
-# Jakub Lohnisky <jakub@lepremier.cz>, 2018
-# Jan Horzinka <jan.horzinka@centrum.cz>, 2018
-# Michal Veselý <michal@veselyberanek.net>, 2018
-# Martin Trigaux, 2018
-# trendspotter <j.podhorecky@volny.cz>, 2018
+# 	* website_crm_score
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,36 +16,38 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
-msgid "# Page Views"
-msgstr "počet zobrazení strany"
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+msgid ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
+"of leads\" role=\"img\"/>"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_needaction
 msgid "Action Needed"
-msgstr "Vyžaduje akci"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__running
-msgid "Active"
-msgstr "Aktivní"
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_ir_ui_view__track
-#: model:ir.model.fields,help:website_crm_score.field_website_page__track
-msgid "Allow to specify for one page of the website to be trackable or not"
 msgstr ""
 
 #. module: website_crm_score
-#: selection:website.crm.score,rule_type:0
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__active
+msgid "Active"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__active
 msgid "Archive"
-msgstr "Archivovat"
+msgstr ""
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_search
+msgid "Archived"
+msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Assignation"
-msgstr "Přiřazení"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__leads_count
@@ -75,7 +68,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_attachment_count
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_attachment_count
 msgid "Attachment Count"
-msgstr "Počet příloh"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
@@ -86,12 +79,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "Avatar"
-msgstr "Avatar"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
 msgid "Capacity"
-msgstr "Kapacita"
+msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
@@ -100,17 +93,15 @@ msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_uid
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_uid
 msgid "Created by"
-msgstr "Vytvořil(a)"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_date
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_date
 msgid "Created on"
-msgstr "Vytvořeno"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.actions.server,name:website_crm_score.action_score_now
@@ -144,27 +135,26 @@ msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
-msgid "Define a new sales channel"
+msgid "Define a new sales team"
 msgstr ""
 
 #. module: website_crm_score
-#: selection:website.crm.score,rule_type:0
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__unlink
 msgid "Delete"
-msgstr "Smazat"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__display_name
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__display_name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__display_name
 msgid "Display Name"
-msgstr "Zobrazovaný název"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__score_team_domain
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_user_domain
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__domain
 msgid "Domain"
-msgstr "Doména"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__event_based
@@ -175,7 +165,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_follower_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_follower_ids
 msgid "Followers"
-msgstr "Sledující"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_channel_ids
@@ -190,34 +180,35 @@ msgid "Followers (Partners)"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_http
-msgid "HTTP Routing"
-msgstr "HTTP Routing"
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Group By"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__id
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__id
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error
+#: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_sms_error
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_error
+#: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Pokud je zaškrtnuto, některé zprávy mají chybu při doručení."
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_is_follower
@@ -226,35 +217,22 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
-msgid "Language"
-msgstr "Jazyk"
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_crm_lead__lang_id
-msgid "Language from the website when lead has been created"
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user____last_update
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score____last_update
+msgid "Last Modified on"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user____last_update
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview____last_update
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score____last_update
-msgid "Last Modified on"
-msgstr "Naposled změněno"
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_uid
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_uid
 msgid "Last Updated by"
-msgstr "Naposledy upraveno od"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_date
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_date
 msgid "Last Updated on"
-msgstr "Naposled upraveno"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__last_run
@@ -262,26 +240,16 @@ msgid "Last run"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__lead_id
-msgid "Lead"
-msgstr "Zájemce"
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
-#: model:ir.ui.menu,name:website_crm_score.pageview_menu
-msgid "Lead Page Views"
+#: model:ir.model,name:website_crm_score.model_crm_lead
+msgid "Lead/Opportunity"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_crm_lead
-msgid "Lead/Opportunity"
-msgstr "Případ / příležitost"
-
-#. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_leads
+#: model:ir.ui.menu,name:website_crm_score.menu_crm_leads
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Leads"
-msgstr "Zájemci"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.ui.menu,name:website_crm_score.team_user
@@ -307,24 +275,13 @@ msgid ""
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_crm_lead__score_pageview_ids
-msgid "List of (tracked) pages seen by the owner of this lead"
-msgstr ""
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:9
-#, python-format
-msgid "Log visits on leads"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_main_attachment_id
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_main_attachment_id
 msgid "Main Attachment"
-msgstr "Hlavní příloha"
+msgstr ""
 
 #. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 msgid "Maximum Leads / 30 days"
 msgstr ""
@@ -333,13 +290,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error
 msgid "Message Delivery error"
-msgstr "Chyba při doručování zpráv"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_ids
 msgid "Messages"
-msgstr "Zprávy"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__min_for_assign
@@ -356,56 +313,36 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__name
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Name"
-msgstr "Název"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Počet akcí"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error_counter
 msgid "Number of error"
-msgstr "Počet chyb"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Počet zpráv, které vyžadují akci"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Počet zpráv s chybou při doručení"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread_counter
 msgid "Number of unread messages"
-msgstr "Počet nepřečtených zpráv"
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_table
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-msgid "Opportunities"
-msgstr "Příležitosti"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
-msgid "Page Views"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
-msgid "Page views"
 msgstr ""
 
 #. module: website_crm_score
@@ -414,14 +351,9 @@ msgid "Percentage leads"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__phone
-msgid "Phone"
-msgstr "Telefon"
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__ratio
 msgid "Ratio"
-msgstr "Poměr"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__rule_type
@@ -429,13 +361,14 @@ msgid "Rule Type"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__running
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__active
 msgid "Running"
-msgstr "Spuštěno"
+msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
-msgid "SaleTeam"
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_sms_error
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_sms_error
+msgid "SMS Delivery error"
 msgstr ""
 
 #. module: website_crm_score
@@ -444,21 +377,26 @@ msgid "Saleman"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_action
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channels"
-msgstr "Prodejní kanály"
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_user_action
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
 msgstr ""
 
 #. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Sales Person"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
 msgid "Sales Records"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+msgid "Sales Team"
 msgstr ""
 
 #. module: website_crm_score
@@ -471,16 +409,22 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids
 msgid "Salesman"
-msgstr "Pokladník"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_team_user
 msgid "Salesperson (Team Member)"
-msgstr "Prodejce (člen týmu)"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_user_action
+msgid "Salespersons"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_opportunity_view_dashboard
 msgid "Score"
 msgstr ""
 
@@ -492,9 +436,8 @@ msgid "Scores"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
-#: model_terms:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
-#: selection:website.crm.score,rule_type:0
 msgid "Scoring"
 msgstr ""
 
@@ -515,83 +458,48 @@ msgid ""
 msgstr ""
 
 #. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
-msgid "Search PageViews"
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_search
+msgid "Search CRM Score"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
 msgid "Teams Assignation"
-msgstr "Přiřazení týmů"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_ir_ui_view__track
-#: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
-msgid "Track"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph
-msgid "Unassigned leads"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_unread
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_unread
 msgid "Unread Messages"
-msgstr "Nepřečtené zprávy"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_unread_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Počítadlo nepřečtených zpráv"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__url
-msgid "Url"
-msgstr "Url"
+msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
-"Use sales channels to organize your sales departments.\n"
-"                    Each channel will work with a separate pipeline."
+"Use sales teams to organize your sales departments.\n"
+"                    Each team will work with a separate pipeline."
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
-msgid "User"
-msgstr "Uživatel"
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
-msgid "User Sales Channel"
+msgid "User Sales Team"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_res_users
 msgid "Users"
-msgstr "Uživatelé"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__value
 msgid "Value"
-msgstr "Hodnota"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_ui_view
-msgid "View"
-msgstr "Zobrazení"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__view_date
-msgid "Viewing Date"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_pageview
-msgid "Website CRM Page View"
 msgstr ""
 
 #. module: website_crm_score
@@ -603,18 +511,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__website_message_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__website_message_ids
 msgid "Website Messages"
-msgstr "Zprávy Webové stránky"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot
-msgid "Website Pages"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__website_message_ids
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__website_message_ids
 msgid "Website communication history"
-msgstr "Historie komunikace Webové stránky"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__event_based
@@ -623,18 +526,6 @@ msgid ""
 "have already been checked previously. This option incurs a large performance"
 " penalty, so it should be checked only for rules that depend on dynamic "
 "events"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-check"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-times"
 msgstr ""
 
 #. module: website_crm_score
@@ -652,4 +543,4 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "o_assignation_button_inactive"
-msgstr "o_assignation_button_inactive"
+msgstr ""

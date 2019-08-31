@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_batch_payment
+# 	* account_batch_payment
 # 
 # Translators:
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2019
-# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
+# nurbakhit nurka <nurbakhit@bumanit.mn>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:32+0000\n"
-"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
+"Last-Translator: nurbakhit nurka <nurbakhit@bumanit.mn>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,13 +33,13 @@ msgid "Account Reconciliation widget"
 msgstr "Дансны тулгалтын модел"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:75
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "All payments in the batch must belong to the same company."
 msgstr "Багцлах гэж буй төлбөрүүд нь бүгд ижил компаных байх ёстой."
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:84
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "All payments in the batch must share the same payment method."
 msgstr "Багцлах гэж буй төлбөрүүд нь бүгд ижил төлбөрийн аргатай байх ёстой."
@@ -62,7 +63,7 @@ msgstr "Банк"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Bank Journal"
-msgstr "Банкны Журнал"
+msgstr "Банкны журнал"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -73,7 +74,7 @@ msgstr "Багцын агуулга"
 #: model:account.payment.method,name:account_batch_payment.account_payment_method_batch_deposit
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.account_journal_dashboard_kanban_view_inherited
 msgid "Batch Deposit"
-msgstr "Багц хадгаламж"
+msgstr "Багц төлбөр"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
@@ -134,8 +135,7 @@ msgid "Code"
 msgstr "Код"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:61
-#: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
+#: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Create Batch Payment"
 msgstr "Багц төлбөр үүсгэх"
@@ -151,16 +151,21 @@ msgid "Create a new vendor batch payment"
 msgstr "Нийлүүлэгчийн багц төлбөр шинээр үүсгэх"
 
 #. module: account_batch_payment
+#: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
+msgid "Create batch payment"
+msgstr ""
+
+#. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_uid
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__create_uid
 msgid "Created by"
-msgstr "Үүсгэгч"
+msgstr "Үүсгэсэн этгээд"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_date
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__create_date
 msgid "Created on"
-msgstr "Үүсгэсэн"
+msgstr "Үүсгэсэн огноо"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file_create_date
@@ -188,7 +193,7 @@ msgstr "Огноо"
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__display_name
 #: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment__display_name
 msgid "Display Name"
-msgstr "Дэлгэцийн Нэр"
+msgstr "Дэлгэрэнгүй нэр"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
@@ -239,7 +244,7 @@ msgstr "Боловсруулсан огоо"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Group By"
-msgstr "Бүлэглэх"
+msgstr "Бүлэглэлт"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__id
@@ -249,19 +254,19 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_batch_payment
-#: selection:account.batch.payment,batch_type:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__batch_type__inbound
 msgid "Inbound"
-msgstr "Ирсэн"
+msgstr "Ирж буй"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:37
+#: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Inbound Batch Payments Sequence"
 msgstr "Ирж буй багц төлбөрийн дугаарлалт"
 
 #. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:135
+#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:0
 #, python-format
 msgid "Incorrect Operation"
 msgstr "Буруу үйлдэл"
@@ -276,19 +281,19 @@ msgstr "Журнал"
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment____last_update
 #: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment____last_update
 msgid "Last Modified on"
-msgstr "Сүүлийн засвар хийсэн огноо"
+msgstr "Сүүлд зассан огноо"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__write_uid
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_uid
 msgid "Last Updated by"
-msgstr "Сүүлийн засвар хийсэн"
+msgstr "Сүүлд зассан этгээд"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__write_date
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_date
 msgid "Last Updated on"
-msgstr "Сүүлийн засвар хийсэн огноо"
+msgstr "Сүүлд зассан огноо"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
@@ -306,17 +311,17 @@ msgid "Name of the generated XML file"
 msgstr "Боловсруулсан XML файлын нэр"
 
 #. module: account_batch_payment
-#: selection:account.batch.payment,state:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__state__draft
 msgid "New"
 msgstr "Шинэ"
 
 #. module: account_batch_payment
-#: selection:account.batch.payment,batch_type:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__batch_type__outbound
 msgid "Outbound"
-msgstr "Гарсан"
+msgstr "Гарч буй"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:20
+#: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Outbound Batch Payments Sequence"
 msgstr "Гарч буй багц төлбөрийн дугаарлалт"
@@ -324,7 +329,7 @@ msgstr "Гарч буй багц төлбөрийн дугаарлалт"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_id
 msgid "Payment Method"
-msgstr "Төлбөрийн хэлбэр"
+msgstr "Төлбөрийн арга"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_payment
@@ -344,40 +349,35 @@ msgid "Print Batch Payment"
 msgstr "Багц төлбөр хэвлэх"
 
 #. module: account_batch_payment
-#: model:ir.actions.server,name:account_batch_payment.action_account_print_batch_payment
-msgid "Print Batch Payments"
-msgstr "Багц төлбөр хэвлэх"
-
-#. module: account_batch_payment
-#: selection:account.batch.payment,state:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__state__reconciled
 msgid "Reconciled"
 msgstr "Тулгагдсан"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__name
 msgid "Reference"
-msgstr "Дугаар"
+msgstr "Холбогдол"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Register Payment"
-msgstr "Төлбөр Бүртгэх"
+msgstr "Төлбөр бүртгэх"
 
 #. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:8
+#: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Select a Batch Payment"
 msgstr "Багц төлбөр сонгох"
 
 #. module: account_batch_payment
-#: selection:account.batch.payment,state:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__state__sent
 msgid "Sent"
 msgstr "Илгээгдсэн"
 
 #. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:133
+#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:0
 #, python-format
 msgid ""
 "Some journal items from the selected batch payment are already selected in "
@@ -390,10 +390,10 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__state
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "State"
-msgstr "Муж"
+msgstr "Төлөв"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:86
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid ""
 "The batch must have the same payment method as the payments it contains."
@@ -401,14 +401,14 @@ msgstr ""
 "Багцад агуулагдаж буй төлбөрүүд бүгд ижил төлбөрийн аргатай байх ёстой."
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:81
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "The batch must have the same type as the payments it contains."
 msgstr ""
 "Багцад агуулагдаж буй төлбөрүүд бүгд ижил төлбөрийн төрөлтэй байх ёстой."
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:78
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid ""
 "The journal of the batch payment and of the payments it contains must be the"
@@ -455,7 +455,7 @@ msgstr ""
 "харуулах эсэхийг илтгэнэ."
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_payment.py:38
+#: code:addons/account_batch_payment/models/account_payment.py:0
 #, python-format
 msgid ""
 "You cannot make a batch payment with internal transfers. Internal transfers "

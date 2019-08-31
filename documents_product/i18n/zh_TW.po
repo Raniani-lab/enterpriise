@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_product
+# 	* documents_product
 # 
 # Translators:
 # Martin Trigaux, 2019
 # sejun huang <sejun.huang@gmail.com>, 2019
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
+# Jeanphy <hzh0292@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Jeanphy <hzh0292@qq.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +35,11 @@ msgid "Attachment"
 msgstr "附件"
 
 #. module: documents_product
+#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
+msgid "Centralize files attached to products"
+msgstr ""
+
+#. module: documents_product
 #: model:ir.model,name:documents_product.model_res_company
 msgid "Companies"
 msgstr "公司"
@@ -49,13 +55,13 @@ msgid "Create"
 msgstr "創建"
 
 #. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
+#: model:documents.tag,name:documents_product.documents_product_sheet_tag
+msgid "DataSheets"
 msgstr ""
 
 #. module: documents_product
-#: model:documents.tag,name:documents_product.documents_product_sheet_tag
-msgid "DataSheets"
+#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
+msgid "Default Tags"
 msgstr ""
 
 #. module: documents_product
@@ -84,6 +90,11 @@ msgid "Plans"
 msgstr ""
 
 #. module: documents_product
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
+msgid "Product"
+msgstr "商品"
+
+#. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
@@ -91,14 +102,13 @@ msgstr ""
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product Workspace"
 msgstr ""
 
 #. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_product.selection__documents_workflow_rule__create_model__product_template
 msgid "Product template"
-msgstr ""
+msgstr "产品模板"
 
 #. module: documents_product
 #: model:documents.folder,name:documents_product.documents_product_folder
@@ -106,40 +116,13 @@ msgid "Products"
 msgstr "產品"
 
 #. module: documents_product
-#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid "Select the tags to be applied to product's new documents"
-msgstr ""
-
-#. module: documents_product
-#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid ""
-"Select the workspace to be used for product's documents for the products of\n"
-"                                    your company."
-msgstr ""
-
-#. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr ""
-
-#. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_specs_tag
 msgid "Specs"
 msgstr ""
 
 #. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Task"
-msgstr "任務"
-
-#. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor Credit Note"
-msgstr "供應商採購折讓單"
-
-#. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor bill"
+#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
+msgid "Workspace"
 msgstr ""
 
 #. module: documents_product

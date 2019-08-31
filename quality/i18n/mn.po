@@ -1,23 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality
+# 	* quality
 # 
 # Translators:
-# Otgonbayar.A <gobi.mn@gmail.com>, 2018
-# nasaaskii <nasaaskii@gmail.com>, 2018
-# Batzul B <batzul.active@gmail.com>, 2018
-# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
-# Onii Onii <onii0223@yahoo.com>, 2018
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
 # Martin Trigaux, 2019
+# nurbakhit nurka <nurbakhit@bumanit.mn>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
-"PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: nurbakhit nurka <nurbakhit@bumanit.mn>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +47,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction
 msgid "Action Needed"
-msgstr "Үйлдэл Шаардлагатай"
+msgstr "Үйлдэл шаардсан"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_2
@@ -69,9 +65,19 @@ msgid "Activities"
 msgstr "Ажилбар"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
 msgid "Activity State"
-msgstr "Ажилбарын Төлөв"
+msgstr "Ажилбарын төлөв"
+
+#. module: quality
+#: model:res.groups,name:quality.group_quality_manager
+msgid "Administrator"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -86,7 +92,7 @@ msgstr "Анхааруулгууд"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_id
 msgid "Alias"
-msgstr "Хуурмаг нэр"
+msgstr "Alias"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_contact
@@ -101,7 +107,7 @@ msgstr "Хуурмаг нэр"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_domain
 msgid "Alias domain"
-msgstr "Хуурмаг домэйн"
+msgstr "Имэйл домэйн"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_model_id
@@ -134,14 +140,14 @@ msgstr ""
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:8
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Clear"
 msgstr "Цэвэрлэх"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:28
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Close"
 msgstr "Хаах"
@@ -154,7 +160,7 @@ msgstr "Өнгө"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_tag__color
 msgid "Color Index"
-msgstr "Өнгөний Индекс"
+msgstr "Өнгөний индекс"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__company_id
@@ -167,7 +173,7 @@ msgstr "Компани"
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_1
 msgid "Confirmed"
-msgstr "Баталсан"
+msgstr "Батлагдсан"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
@@ -194,7 +200,7 @@ msgstr "Залруулах үйлдэл"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__create_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__create_uid
 msgid "Created by"
-msgstr "Үүсгэгч"
+msgstr "Үүсгэсэн этгээд"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__create_date
@@ -206,7 +212,12 @@ msgstr "Үүсгэгч"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__create_date
 #: model:ir.model.fields,field_description:quality.field_quality_tag__create_date
 msgid "Created on"
-msgstr "Үүсгэсэн"
+msgstr "Үүсгэсэн огноо"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Creation Date"
+msgstr "Үүсгэсэн огноо"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_assign
@@ -241,7 +252,7 @@ msgstr "Энэ чанарын шалгалтыг гүйцэтгэх шаардл
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__description
 msgid "Description"
-msgstr "Тодорхойлолт"
+msgstr "Тайлбар"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__display_name
@@ -253,10 +264,20 @@ msgstr "Тодорхойлолт"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__display_name
 #: model:ir.model.fields,field_description:quality.field_quality_tag__display_name
 msgid "Display Name"
-msgstr "Дэлгэцийн Нэр"
+msgstr "Дэлгэрэнгүй нэр"
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Done"
+msgstr "Дууссан"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
+msgid "Email cc"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__fail
 msgid "Failed"
 msgstr "Амжилтгүй"
 
@@ -290,12 +311,22 @@ msgid "Followers (Partners)"
 msgstr "Дагагчид (Харилцагчид)"
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Future Activities"
+msgstr "Ирээдүйн ажилбар"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Group By"
+msgstr "Бүлэглэлт"
+
+#. module: quality
 #: model:ir.module.category,description:quality.module_category_quality
 msgid "Helps you manage your quality alerts and quality checks."
 msgstr "Чанарын анхааруулга ба чанарын шалгалтуудыг удирдахад тусладаг."
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__2
 msgid "High"
 msgstr "Өндөр"
 
@@ -321,14 +352,22 @@ msgstr ""
 " нэрийг агуулж байгаа төсөл)"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_icon
+msgid "Icon"
+msgstr "Дүрс"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_unread
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_unread
 #: model:ir.model.fields,help:quality.field_quality_check__message_unread
 #: model:ir.model.fields,help:quality.field_quality_point__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
-"Хэрэв тэмдэглэгдсэн бол таныг шинэ зурвасуудад анхаарал хандуулахыг "
-"шаардана."
+msgstr "Хэрэв сонгогдсон тохиолдолд шинэ зурвасууд таны анхаарлыг шаардана."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_needaction
@@ -336,15 +375,24 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Хэрэв сонгосон бол, шинэ зурвасуудад анхаарал хандуулахыг шаардана."
+msgstr "Хэрэв сонгогдсон бол, шинэ зурвасууд таны анхаарлыг шаардана."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_alert__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_alert_team__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_check__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_check__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_point__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_point__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Үүнийг сонговол алдаа үүсэх үед зурвасууд ирнэ."
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "In Progress"
+msgstr "Явагдаж буй"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -369,7 +417,7 @@ msgstr "Дагагч эсэх"
 #: model:ir.model.fields,field_description:quality.field_quality_reason____last_update
 #: model:ir.model.fields,field_description:quality.field_quality_tag____last_update
 msgid "Last Modified on"
-msgstr "Сүүлийн засвар хийсэн огноо"
+msgstr "Сүүлд зассан огноо"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_uid
@@ -381,7 +429,7 @@ msgstr "Сүүлийн засвар хийсэн огноо"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_uid
 msgid "Last Updated by"
-msgstr "Сүүлийн засвар хийсэн"
+msgstr "Сүүлд зассан этгээд"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_date
@@ -393,7 +441,17 @@ msgstr "Сүүлийн засвар хийсэн"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_date
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_date
 msgid "Last Updated on"
-msgstr "Сүүлийн засвар хийсэн огноо"
+msgstr "Сүүлд зассан огноо"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Late Activities"
+msgstr "Хоцорсон ажилбар"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
@@ -402,7 +460,7 @@ msgid "Lot"
 msgstr "Цуврал"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__1
 msgid "Low"
 msgstr "Нам"
 
@@ -415,17 +473,12 @@ msgid "Main Attachment"
 msgstr "Үндсэн хавсралт"
 
 #. module: quality
-#: model:res.groups,name:quality.group_quality_manager
-msgid "Manager"
-msgstr "Менежер"
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_has_error
 msgid "Message Delivery error"
-msgstr "Алдаа үүссэн талаарх мессеж"
+msgstr "Алдаа үүссэн талаарх зурвас"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_ids
@@ -436,26 +489,30 @@ msgid "Messages"
 msgstr "Зурвасууд"
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "My Alerts"
+msgstr "Миний анхааруулгууд"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__name
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__name
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__name
 #: model:ir.model.fields,field_description:quality.field_quality_check__name
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__name
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
-#: model:ir.model.fields,field_description:quality.field_quality_tag__name
 msgid "Name"
 msgstr "Нэр"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:32
-#: code:addons/quality/models/quality.py:69
-#: code:addons/quality/models/quality.py:70
-#: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:181
-#: code:addons/quality/models/quality.py:182
-#: code:addons/quality/models/quality.py:209
-#: code:addons/quality/models/quality.py:244
-#: code:addons/quality/models/quality.py:245
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
@@ -469,7 +526,7 @@ msgstr "Дараагийн ажилбарын эцсийн огноо"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
 msgid "Next Activity Summary"
-msgstr "Дараагийн Ажилбарын Хураангуй"
+msgstr "Дараагийн ажилбарын гарчиг"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
@@ -477,7 +534,7 @@ msgid "Next Activity Type"
 msgstr "Дараагийн ажилбарын төрөл"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__0
 msgid "Normal"
 msgstr "Хэвийн"
 
@@ -515,7 +572,7 @@ msgstr "Алдааны тоо"
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Үйлдэл шаардлагатай зурвасын тоо"
+msgstr "Үйлдэл шаардсан зурвасын тоо"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error_counter
@@ -535,13 +592,14 @@ msgstr "Уншаагүй зурвасын тоо"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Operation"
 msgstr "Ажилбар"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_id
 msgid "Operation Type"
-msgstr "Хүлээн авах ажиллагаа"
+msgstr "Агуулахын баримтын төрөл"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_force_thread_id
@@ -558,11 +616,6 @@ msgstr ""
 #: model:quality.reason,name:quality.reason_other
 msgid "Others"
 msgstr ""
-
-#. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Overdue"
-msgstr "Хугацаа хэтэрсэн"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
@@ -596,7 +649,7 @@ msgid "Parts Quality"
 msgstr ""
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__pass
 msgid "Passed"
 msgstr "Тэнцсэн"
 
@@ -604,17 +657,12 @@ msgstr "Тэнцсэн"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__picking_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__picking_id
 msgid "Picking"
-msgstr "Бэлтгэх"
+msgstr "Агуулахын баримт"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
 msgstr "Зураг"
-
-#. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Planned"
-msgstr "Төлөвлөсөн"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -643,6 +691,7 @@ msgstr "Урьтамж"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_tmpl_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__product_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Product"
 msgstr "Бараа"
 
@@ -650,7 +699,7 @@ msgstr "Бараа"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_id
 msgid "Product Variant"
-msgstr "Барааны Хувилбар"
+msgstr "Барааны хувилбар"
 
 #. module: quality
 #: model:ir.module.category,name:quality.module_category_quality
@@ -659,6 +708,7 @@ msgstr "Чанар"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Quality Alert"
 msgstr "Чанарын анхааруулга"
 
@@ -693,6 +743,11 @@ msgid "Quality Tag"
 msgstr "Чанарын пайз"
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Quality Team"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_force_thread_id
 msgid "Record Thread ID"
 msgstr "Бичлэгийн Мөчирийн ID"
@@ -700,22 +755,24 @@ msgstr "Бичлэгийн Мөчирийн ID"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__name
 msgid "Reference"
-msgstr "Дугаар"
+msgstr "Холбогдол"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__user_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Responsible"
 msgstr "Хариуцагч"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
 msgid "Responsible User"
-msgstr "Хариуцагч хэрэглэгч"
+msgstr "Хариуцсан хэрэглэгч"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Root Cause"
 msgstr "Учир шалтгаан"
 
@@ -725,11 +782,26 @@ msgid "Root Cause for Quality Failure"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
-msgstr "Дараалал"
+msgstr "Дугаарлалт"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Show all records which has next action date is before today"
+msgstr ""
+"Өнөөдрийг хүртэлх хугацаанд дараагийн ажилбарын огноо нь тохируулагдсан бүх "
+"тэмдэглэлүүд"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_3
@@ -738,6 +810,7 @@ msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Stage"
 msgstr "Үе шат"
 
@@ -760,13 +833,18 @@ msgstr ""
 "Төлөвлөгдсөн: Ирээдүйд гүйцэтгэх ажилбарууд"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_tag__name
+msgid "Tag Name"
+msgstr "Пайзын нэр"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
 msgid "Tags"
-msgstr "Пайзууд"
+msgstr "Пайз"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:17
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Take a Picture"
 msgstr ""
@@ -786,6 +864,7 @@ msgid "Technical name"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__test_type_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "Тестийн төрөл"
@@ -839,19 +918,25 @@ msgid "Title"
 msgstr "Гарчиг"
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__none
 msgid "To do"
 msgstr "Хийх"
 
 #. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Today"
-msgstr "Өнөөдөр"
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Today Activities"
+msgstr "Өнөөдрийн ажилбар"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Type"
 msgstr "Төрөл"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread
@@ -859,7 +944,7 @@ msgstr "Төрөл"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_unread
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_unread
 msgid "Unread Messages"
-msgstr "Уншаагүй Зурвасууд"
+msgstr "Уншаагүй зурвас"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread_counter
@@ -871,7 +956,7 @@ msgstr "Уншаагүй зурвасын тоолуур"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:10
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Uploading..."
 msgstr "Ачааллаж байна..."
@@ -892,13 +977,13 @@ msgid "Vendor"
 msgstr "Нийлүүлэгч"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__3
 msgid "Very High"
 msgstr "Маш Өндөр"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:32
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Viewer"
 msgstr ""
@@ -909,7 +994,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__website_message_ids
 msgid "Website Messages"
-msgstr "Вебсайтын зурвасууд"
+msgstr "Вебсайтын зурвас"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__website_message_ids

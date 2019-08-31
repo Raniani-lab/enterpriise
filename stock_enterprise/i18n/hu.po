@@ -1,20 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * stock_enterprise
+# 	* stock_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
 # krnkris, 2019
-# Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
 # Ákos Nagy <akos.nagy@oregional.hu>, 2019
+# Tamás Belinszky <tamasbelinszky@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.3+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-12 12:34+0000\n"
-"PO-Revision-Date: 2019-01-16 08:41+0000\n"
-"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: Tamás Belinszky <tamasbelinszky@gmail.com>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,12 +24,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__assigned
 msgid "Available"
 msgstr "Rendelkezésre álló"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
 msgid "Cancelled"
 msgstr "Visszavonva"
 
@@ -43,7 +44,7 @@ msgid "Creation Date"
 msgstr "Létrehozva"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__outgoing
 msgid "Customers"
 msgstr "Ügyfelek"
 
@@ -59,7 +60,7 @@ msgstr ""
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
-msgid "Day(s)"
+msgid "Days"
 msgstr "Nap"
 
 #. module: stock_enterprise
@@ -102,9 +103,9 @@ msgid "Display Name"
 msgstr "Megjelenített név"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__done
 msgid "Done"
-msgstr "Kész"
+msgstr "Elvégezve"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
@@ -132,7 +133,7 @@ msgid "ID"
 msgstr "Azonosító"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__internal
 msgid "Internal"
 msgstr "Belső"
 
@@ -157,7 +158,12 @@ msgid "Last Modified on"
 msgstr "Legutóbb frissítve"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Month"
+msgstr "Hónap"
+
+#. module: stock_enterprise
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
 msgid "New"
 msgstr "Új"
 
@@ -167,7 +173,7 @@ msgid "Operation Type"
 msgstr "Művelet típus"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__partially_available
 msgid "Partially Available"
 msgstr "Részlegesen elérhető"
 
@@ -189,12 +195,18 @@ msgstr "Termék"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__categ_id
 msgid "Product Category"
-msgstr "Termékkategória"
+msgstr "Termék kategória"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_qty
 msgid "Product Quantity"
 msgstr "Termékmennyiség"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Quantity"
+msgstr "Mennyiség"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -208,6 +220,7 @@ msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
 msgid "Reference"
 msgstr "Hivatkozás"
 
@@ -217,6 +230,11 @@ msgid "Report"
 msgstr "Kimutatás"
 
 #. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
+msgid "Scheduled Date"
+msgstr "Ütemezett dátum"
+
+#. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__state
 msgid "Status"
 msgstr "Állapot"
@@ -224,6 +242,11 @@ msgstr "Állapot"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
+msgstr ""
+
+#. module: stock_enterprise
+#: model:ir.model,name:stock_enterprise.model_report_stock_quantity
+msgid "Stock Quantity Report"
 msgstr ""
 
 #. module: stock_enterprise
@@ -261,27 +284,32 @@ msgid "Type"
 msgstr "Típus"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__incoming
 msgid "Vendors"
-msgstr "Beszállítók"
+msgstr "Szállítók"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__waiting
 msgid "Waiting Another Move"
 msgstr "Másik mozgásra várakozás"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__confirmed
 msgid "Waiting Availability"
 msgstr "Hozzáférésre várás"
 
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
 #: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
-msgid "Warehouse Dashboard"
+msgid "Warehouse Analysis"
 msgstr ""
 
 #. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Week"
+msgstr "Hét"
+
+#. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "day(s)"
-msgstr ""
+msgid "days"
+msgstr "nap"

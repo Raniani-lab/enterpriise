@@ -1,24 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mrp_account
+# 	* mrp_account_enterprise
 # 
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2018
-# Martin Trigaux, 2018
-# hamza tayseer atieh <hamza.atieh@minervadata.com>, 2018
-# Osoul <baruni@osoul.ly>, 2018
-# Mohammed Albasha <m.albasha.ma@gmail.com>, 2018
-# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
-# Ghaith Gammar <g.gammar@saharaifs.net>, 2018
-# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
-# Firas Asad <firas101@gmail.com>, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2019
+# Martin Trigaux, 2019
+# Mohammed Albasha <m.albasha.ma@gmail.com>, 2019
+# Ghaith Gammar <g.gammar@saharaifs.net>, 2019
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Firas Asad <firas101@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: Osama Ahmaro <osamaahmaro@gmail.com>, 2019\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,210 +23,177 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model:ir.actions.report,print_report_name:mrp_account_enterprise.action_cost_struct_mrp_production
+msgid "'Cost Analysis - %s ' % object.name"
+msgstr ""
+
+#. module: mrp_account_enterprise
+#: model:ir.actions.report,print_report_name:mrp_account_enterprise.action_cost_struct_product_template
+msgid "'Cost Structure Analysis - %s' % object.name"
+msgstr ""
+
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid ", from"
-msgstr ""
+msgstr "، من"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Code</span>"
+msgstr "<span>الكود</span>"
+
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
+msgid "<span>Components</span>"
 msgstr ""
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Cost/hour</span>"
-msgstr ""
+msgstr "<span>التكلفة في الساعة</span>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Operation</span>"
-msgstr ""
+msgstr "<span>العملية</span>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Operator</span>"
-msgstr ""
+msgstr "<span>المشغل</span>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Quantity</span>"
-msgstr "الكمية"
+msgstr "<span>الكمية</span>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "<span>Raw Materials</span>"
-msgstr ""
-
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Scraps</span>"
-msgstr ""
+msgstr "<span>التوالف</span>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Total Cost</span>"
-msgstr ""
+msgstr "<span>التكلفة الكلية</span>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Unit Cost</span>"
-msgstr ""
+msgstr "<span>سعر الوحدة</span>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Working Time</span>"
+msgstr "<span>وقت العمل</span>"
+
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
+msgid "<strong>Total Cost of Components</strong>"
 msgstr ""
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<strong>Total Cost of Operations</strong>"
-msgstr ""
+msgstr "</strong>إجمالي تكلفة العمليات</strong>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "<strong>Total Cost of Raw Materials</strong>"
-msgstr ""
-
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<strong>Total Cost of Scraps</strong>"
-msgstr ""
+msgstr "<strong>إجمالي تكلفة التوالف</strong>"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<strong>Unit Cost</strong>"
-msgstr ""
+msgstr "<strong>تكلفة الوحدة</strong>"
 
-#. module: mrp_account
-#: model:ir.model.fields,field_description:mrp_account.field_mrp_workcenter__costs_hour_account_id
-msgid "Analytic Account"
-msgstr "الحساب التحليلي"
-
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "By product(s)"
-msgstr ""
+msgstr "حسب المنتج"
 
-#. module: mrp_account
-#: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_production_form_inherit_view6
-#: model_terms:ir.ui.view,arch_db:mrp_account.product_product_inherit_form_view_cost_structure
+#. module: mrp_account_enterprise
+#: model:ir.actions.report,name:mrp_account_enterprise.action_cost_struct_mrp_production
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_production_form_inherit_view6
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.product_product_inherit_form_view_cost_structure
 msgid "Cost Analysis"
-msgstr ""
+msgstr "تحليل التكلفة"
 
-#. module: mrp_account
-#: model:ir.model.fields,field_description:mrp_account.field_mrp_workcenter_productivity__cost_already_recorded
-msgid "Cost Recorded"
-msgstr ""
-
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Cost Structure"
-msgstr "تركيب التكلفة"
+msgstr "بنية التكلفة"
 
-#. module: mrp_account
-#: model:ir.actions.report,name:mrp_account.action_cost_struct_product_template
+#. module: mrp_account_enterprise
+#: model:ir.actions.report,name:mrp_account_enterprise.action_cost_struct_product_template
 msgid "Cost Structure Analysis"
-msgstr ""
+msgstr "تحليل بنية التكلفة"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Cost for"
-msgstr ""
+msgstr "تكلفة"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Cost of Operations"
-msgstr ""
+msgstr "تكلفة العمليات"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Cost of Scraps"
-msgstr ""
+msgstr "تكلفة التوالف"
 
-#. module: mrp_account
-#: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure__display_name
-#: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_product_template_cost_structure__display_name
+#. module: mrp_account_enterprise
+#: model:ir.model.fields,field_description:mrp_account_enterprise.field_report_mrp_account_enterprise_mrp_cost_structure__display_name
+#: model:ir.model.fields,field_description:mrp_account_enterprise.field_report_mrp_account_enterprise_product_template_cost_structure__display_name
 msgid "Display Name"
-msgstr "اسم العرض"
+msgstr "الاسم المعروض"
 
-#. module: mrp_account
-#: model:ir.model.fields,help:mrp_account.field_mrp_workcenter__costs_hour_account_id
-msgid ""
-"Fill this only if you want automatic analytic accounting entries on "
-"production orders."
-msgstr ""
-"ملء هذا فقط إذا كنت تريد القيود المحاسبية التحليلية التلقائي على أوامر "
-"الإنتاج. "
-
-#. module: mrp_account
-#: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure__id
-#: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_product_template_cost_structure__id
+#. module: mrp_account_enterprise
+#: model:ir.model.fields,field_description:mrp_account_enterprise.field_report_mrp_account_enterprise_mrp_cost_structure__id
+#: model:ir.model.fields,field_description:mrp_account_enterprise.field_report_mrp_account_enterprise_product_template_cost_structure__id
 msgid "ID"
-msgstr "المعرف"
+msgstr "المُعرف"
 
-#. module: mrp_account
-#: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure____last_update
-#: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_product_template_cost_structure____last_update
+#. module: mrp_account_enterprise
+#: model:ir.model.fields,field_description:mrp_account_enterprise.field_report_mrp_account_enterprise_mrp_cost_structure____last_update
+#: model:ir.model.fields,field_description:mrp_account_enterprise.field_report_mrp_account_enterprise_product_template_cost_structure____last_update
 msgid "Last Modified on"
 msgstr "آخر تعديل في"
 
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model:ir.model,name:mrp_account_enterprise.model_report_mrp_account_enterprise_mrp_cost_structure
 msgid "MRP Cost Structure Report"
-msgstr ""
+msgstr "تقرير بنية التكلفة في نظام تخطيط متطلبات المواد"
 
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_product_product
+#. module: mrp_account_enterprise
+#: model:ir.model,name:mrp_account_enterprise.model_product_product
 msgid "Product"
 msgstr "المنتج"
 
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_product_template
+#. module: mrp_account_enterprise
+#: model:ir.model,name:mrp_account_enterprise.model_product_template
 msgid "Product Template"
 msgstr "قالب المنتج"
 
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
+#. module: mrp_account_enterprise
+#: model:ir.model,name:mrp_account_enterprise.model_report_mrp_account_enterprise_product_template_cost_structure
 msgid "Product Template Cost Structure Report"
-msgstr ""
+msgstr "تقرير بنية تكلفة قالب المنتج"
 
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_mrp_production
-msgid "Production Order"
-msgstr "امر الانتاج"
-
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Some of the Manufacturing Order(s) selected are not done yet"
-msgstr ""
+msgstr "بعض أوامر التصنيع غير منتهية بعد"
 
-#. module: mrp_account
-#: model:ir.model.fields,help:mrp_account.field_mrp_workcenter_productivity__cost_already_recorded
-msgid ""
-"Technical field automatically checked when a ongoing production posts "
-"journal entries for its costs. This way, we can record one production's cost"
-" multiple times and only consider new entries in the work centers time "
-"lines."
-msgstr ""
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_mrp_workcenter
-msgid "Work Center"
-msgstr "مركز العمل"
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_mrp_workcenter_productivity
-msgid "Workcenter Productivity Log"
-msgstr ""
-
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "hours"
 msgstr "ساعات"
 
-#. module: mrp_account
-#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#. module: mrp_account_enterprise
+#: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "manufacturing order(s)."
-msgstr ""
+msgstr "أوامر التصنيع."

@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * stock_enterprise
+# 	* stock_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -9,10 +9,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2019-01-16 08:41+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -22,12 +22,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__assigned
 msgid "Available"
 msgstr "Beschikbaar"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
@@ -42,7 +42,7 @@ msgid "Creation Date"
 msgstr "Aanmaakdatum"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__outgoing
 msgid "Customers"
 msgstr "Klanten"
 
@@ -58,8 +58,8 @@ msgstr "Cyclustijd (dagen)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
-msgid "Day(s)"
-msgstr "Dag(en)"
+msgid "Days"
+msgstr "Dagen"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -102,10 +102,10 @@ msgstr "Leveringen vertraging"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
 msgid "Display Name"
-msgstr "Weergave naam"
+msgstr "Schermnaam"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__done
 msgid "Done"
 msgstr "Gereed"
 
@@ -135,7 +135,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__internal
 msgid "Internal"
 msgstr "Intern"
 
@@ -160,7 +160,12 @@ msgid "Last Modified on"
 msgstr "Laatst gewijzigd op"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Month"
+msgstr "Maand"
+
+#. module: stock_enterprise
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
 msgid "New"
 msgstr "Nieuw"
 
@@ -170,7 +175,7 @@ msgid "Operation Type"
 msgstr "Bewerkingssoort"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__partially_available
 msgid "Partially Available"
 msgstr "Gedeeltelijk beschikbaar"
 
@@ -192,12 +197,18 @@ msgstr "Product"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__categ_id
 msgid "Product Category"
-msgstr "Productcategorie"
+msgstr "Product categorie"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_qty
 msgid "Product Quantity"
 msgstr "Producthoeveelheid"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Quantity"
+msgstr "Hoeveelheid"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -211,6 +222,7 @@ msgstr "Ontvangsten vertraging"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
 msgid "Reference"
 msgstr "Referentie"
 
@@ -218,6 +230,11 @@ msgstr "Referentie"
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_cohort_view
 msgid "Report"
 msgstr "Rapport"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
+msgid "Scheduled Date"
+msgstr "Geplande datum"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__state
@@ -228,6 +245,11 @@ msgstr "Status"
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
 msgstr "Voorraadoverzicht"
+
+#. module: stock_enterprise
+#: model:ir.model,name:stock_enterprise.model_report_stock_quantity
+msgid "Stock Quantity Report"
+msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
@@ -268,27 +290,32 @@ msgid "Type"
 msgstr "Soort"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__incoming
 msgid "Vendors"
 msgstr "Leveranciers"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__waiting
 msgid "Waiting Another Move"
 msgstr "Wachtend op andere mutatie"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__confirmed
 msgid "Waiting Availability"
 msgstr "Wachten op beschikbaarheid"
 
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
 #: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
-msgid "Warehouse Dashboard"
-msgstr "Magazijn dashboard"
+msgid "Warehouse Analysis"
+msgstr "Magazijn analyse"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Week"
+msgstr "Week"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "day(s)"
-msgstr "dag(en)"
+msgid "days"
+msgstr "dagen"

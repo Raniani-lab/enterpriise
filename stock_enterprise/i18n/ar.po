@@ -1,24 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * stock_enterprise
+# 	* stock_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
-# Ghaith Gammar <g.gammar@saharaifs.net>, 2018
-# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
-# Shaima Safar <shaima.safar@open-inside.com>, 2018
-# Waleed Mohsen <mohsen.waleed@gmail.com>, 2018
-# Mustafa Rawi <mustafa@cubexco.com>, 2018
-# Walid Baruni <baruni@osoul.ly>, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2019
+# Martin Trigaux, 2019
+# Osoul <baruni@osoul.ly>, 2019
+# Ghaith Gammar <g.gammar@saharaifs.net>, 2019
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2019
+# Shaima Safar <shaima.safar@open-inside.com>, 2019
+# Waleed Mohsen <mohsen.waleed@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Walid Baruni <baruni@osoul.ly>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: Waleed Mohsen <mohsen.waleed@gmail.com>, 2019\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,19 +26,19 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__assigned
 msgid "Available"
 msgstr "متوفر"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
 msgid "Cancelled"
 msgstr "ملغي"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__company_id
 msgid "Company"
-msgstr "المؤسسة"
+msgstr "الشركة"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__creation_date
@@ -47,7 +46,7 @@ msgid "Creation Date"
 msgstr "تاريخ الإنشاء"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__outgoing
 msgid "Customers"
 msgstr "العملاء"
 
@@ -63,8 +62,8 @@ msgstr ""
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
-msgid "Day(s)"
-msgstr "(يوم)/ أيام"
+msgid "Days"
+msgstr "الأيام"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -103,12 +102,12 @@ msgstr ""
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
 msgid "Display Name"
-msgstr "اسم العرض"
+msgstr "الاسم المعروض"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__done
 msgid "Done"
-msgstr "تم"
+msgstr "المنتهية"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
@@ -123,7 +122,7 @@ msgstr ""
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Transfers"
-msgstr "التحركات المنتهية"
+msgstr "الشحنات المنتهية"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__scheduled_date
@@ -133,10 +132,10 @@ msgstr "التاريخ المتوقع"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__id
 msgid "ID"
-msgstr "المعرف"
+msgstr "المُعرف"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__internal
 msgid "Internal"
 msgstr "داخلي"
 
@@ -161,7 +160,12 @@ msgid "Last Modified on"
 msgstr "آخر تعديل في"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Month"
+msgstr "الشهر"
+
+#. module: stock_enterprise
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
 msgid "New"
 msgstr "جديد"
 
@@ -171,7 +175,7 @@ msgid "Operation Type"
 msgstr "نوع العملية"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__partially_available
 msgid "Partially Available"
 msgstr "متوفر جزئيا"
 
@@ -201,6 +205,12 @@ msgid "Product Quantity"
 msgstr "كمية المنتج"
 
 #. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Quantity"
+msgstr "الكمية"
+
+#. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Cycle Time"
 msgstr ""
@@ -212,13 +222,19 @@ msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
 msgid "Reference"
-msgstr "المرجع"
+msgstr "رقم الإشارة"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_cohort_view
 msgid "Report"
 msgstr "التقرير"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
+msgid "Scheduled Date"
+msgstr "التاريخ المجدول"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__state
@@ -231,9 +247,14 @@ msgid "Stock Overview"
 msgstr ""
 
 #. module: stock_enterprise
+#: model:ir.model,name:stock_enterprise.model_report_stock_quantity
+msgid "Stock Quantity Report"
+msgstr ""
+
+#. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
 msgid "Stock Report"
-msgstr ""
+msgstr "تقرير المخزون"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -265,22 +286,32 @@ msgid "Type"
 msgstr "النوع"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__incoming
 msgid "Vendors"
 msgstr "الموردون"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__waiting
 msgid "Waiting Another Move"
-msgstr "في انتظار تحرك آخر "
+msgstr "في انتظار حركة أخرى"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__confirmed
 msgid "Waiting Availability"
 msgstr "منتظر التوفر"
 
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
 #: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
-msgid "Warehouse Dashboard"
+msgid "Warehouse Analysis"
 msgstr ""
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Week"
+msgstr "الأسبوع"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+msgid "days"
+msgstr "يوم"

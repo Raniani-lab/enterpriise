@@ -1,21 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * crm_enterprise
+# 	* crm_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
-# gezza <geza.nagy@oregional.hu>, 2019
-# Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
-# Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # krnkris, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
+# Ákos Nagy <akos.nagy@oregional.hu>, 2019
+# Daniel Gerstenbrand <daniel.gerstenbrand@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:37+0000\n"
-"Last-Translator: krnkris, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Daniel Gerstenbrand <daniel.gerstenbrand@gmail.com>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,12 +26,17 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "% Opportunities"
-msgstr ""
+msgstr "% Lehetőségek"
+
+#. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Archived"
+msgstr "Archivált"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Average Deal Size"
-msgstr ""
+msgstr "Átlag Üzlet Méret"
 
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_activity_report
@@ -51,7 +56,7 @@ msgstr "Város"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Closed Date"
-msgstr "Zárás dátuma"
+msgstr "Lezárás dátuma"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -87,13 +92,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Days to Assign"
-msgstr "Hozzárendelésig hátralévő napok"
+msgstr "Nap hozzárendelésig"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Days to Close"
-msgstr "Lezárásig hátralévő napok"
+msgstr "Nap lezárásig"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_exceeding_closing
@@ -108,34 +113,34 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Expected Closing Date"
-msgstr "Várható befejezés dátuma"
+msgstr "Várható lezárás dátuma"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Expected Revenue"
-msgstr "Várható bevételek"
+msgstr "Várható árbevétel"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Extended Filters"
-msgstr "Részletes szűrők"
+msgstr "Bővített szűrők"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Group By"
-msgstr "Csoportosítás ezzel"
+msgstr "Csoportosítás"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_activity_report__won_status
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won_status
 msgid "Is Won"
-msgstr ""
+msgstr "Megnyert"
 
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr "Érdeklődő/Lehetőség"
+msgstr "Érdeklődés/Lehetőség"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -147,26 +152,27 @@ msgstr "Érdeklődések"
 #. module: crm_enterprise
 #: model:ir.actions.act_window,name:crm_enterprise.crm_lead_action_dashboard
 msgid "Leads Analysis"
-msgstr "Érdeklődők elemzése"
+msgstr "Érdeklődések elemzése"
 
 #. module: crm_enterprise
-#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
+#: model:ir.model.fields.selection,name:crm_enterprise.selection__crm_activity_report__won_status__lost
+#: model:ir.model.fields.selection,name:crm_enterprise.selection__crm_lead__won_status__lost
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_activity_report_view_search
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost"
-msgstr "Meghiúsult"
+msgstr "Elvesztett"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost Reason"
-msgstr "Meghiúsulás oka"
+msgstr "Elvesztés oka"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Medium"
-msgstr "Közepes"
+msgstr "Médium"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -188,25 +194,26 @@ msgid "Opportunities Analysis"
 msgstr "Lehetőségek elemzése"
 
 #. module: crm_enterprise
-#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
+#: model:ir.model.fields.selection,name:crm_enterprise.selection__crm_activity_report__won_status__pending
+#: model:ir.model.fields.selection,name:crm_enterprise.selection__crm_lead__won_status__pending
 msgid "Pending"
 msgstr "Függő"
 
 #. module: crm_enterprise
 #: model:ir.actions.act_window,name:crm_enterprise.crm_opportunity_action_dashboard
 msgid "Pipeline Analysis"
-msgstr "Folyamatelemzés"
+msgstr "Folyamat elemzése"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Prorated Revenue"
-msgstr "Arányosan elosztott jövedelem"
+msgstr "Arányosított árbevétel"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
-msgid "Sales Channel"
-msgstr "Értékesítési csatorna"
+msgid "Sales Team"
+msgstr "Értékesítési csapat"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -221,12 +228,12 @@ msgstr "Értékesítő"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Show only lead"
-msgstr "Csak az Érdeklődések mutatása"
+msgstr "Csak az érdeklődések megjelenítése"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Show only opportunity"
-msgstr "Csak lehetőségek mutatása"
+msgstr "Csak a lehetőségek megjelenítése"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -241,10 +248,11 @@ msgstr "Szakasz"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Win/Loss Ratio"
-msgstr ""
+msgstr "Nyereség/veszteség arány"
 
 #. module: crm_enterprise
-#: selection:crm.activity.report,won_status:0 selection:crm.lead,won_status:0
+#: model:ir.model.fields.selection,name:crm_enterprise.selection__crm_activity_report__won_status__won
+#: model:ir.model.fields.selection,name:crm_enterprise.selection__crm_lead__won_status__won
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Won"
 msgstr "Megnyert"
@@ -252,8 +260,8 @@ msgstr "Megnyert"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
-msgid "day(s)"
-msgstr ""
+msgid "days"
+msgstr "nap"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph

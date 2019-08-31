@@ -1,22 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_sale_dashboard
+# 	* website_sale_dashboard
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Ediz Duman <neps1192@gmail.com>, 2019
+# Martin Trigaux, 2019
 # Levent Karakaş <levent@mektup.at>, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
 # cagri erarslan <cagri.erarslan@mechsoft.com.tr>, 2019
 # Umur Akın <umura@projetgrup.com>, 2019
-# Ediz Duman <neps1192@gmail.com>, 2019
+# ANIL TAN SAĞIR <anils@projetgrup.com>, 2019
 # Gökhan Yüksel <yg_yuksel@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-06-25 08:41+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Gökhan Yüksel <yg_yuksel@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -59,15 +60,15 @@ msgstr "Ortalama Sipariş"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "Client ID"
-msgstr "İstemci ID"
+msgstr "Müşteri ID"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "Client Secret"
-msgstr "İstemci Gizli Anahtarı"
+msgstr "Müşteri Gizli Anahtarı"
 
 #. module: website_sale_dashboard
-#: selection:res.company,website_sale_dashboard_onboarding_state:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__closed
 msgid "Closed"
 msgstr "Kapanma"
 
@@ -87,9 +88,9 @@ msgid "Digest"
 msgstr "Özet"
 
 #. module: website_sale_dashboard
-#: selection:res.company,website_sale_dashboard_onboarding_state:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__done
 msgid "Done"
-msgstr "Tamamlandı"
+msgstr "Biten"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
@@ -97,7 +98,7 @@ msgid "Follow your website traffic in Odoo."
 msgstr ""
 
 #. module: website_sale_dashboard
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__sale_report__invoice_status__invoiced
 msgid "Fully Invoiced"
 msgstr "Tamamen Faturalandırılmış"
 
@@ -112,17 +113,17 @@ msgid "Invoice Status"
 msgstr "Fatura Durumu"
 
 #. module: website_sale_dashboard
-#: selection:res.company,website_sale_dashboard_onboarding_state:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__just_done
 msgid "Just done"
 msgstr "Yeni bitti"
 
 #. module: website_sale_dashboard
-#: selection:res.company,website_sale_dashboard_onboarding_state:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__not_done
 msgid "Not done"
 msgstr "Yapılmadı"
 
 #. module: website_sale_dashboard
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__sale_report__invoice_status__no
 msgid "Nothing to Invoice"
 msgstr "Faturalandıracak bir şey yok"
 
@@ -153,7 +154,7 @@ msgid "The configuration is done. Happy selling!"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__sale_report__invoice_status__to_invoice
 msgid "To Invoice"
 msgstr "Faturalanacak"
 
@@ -178,7 +179,7 @@ msgid "Untaxed Total"
 msgstr "Vergi Hariç Toplam"
 
 #. module: website_sale_dashboard
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__sale_report__invoice_status__upselling
 msgid "Upselling Opportunity"
 msgstr "Arttırılmış Satış Fırsatı"
 

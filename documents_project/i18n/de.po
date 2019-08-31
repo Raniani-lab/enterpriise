@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_project
+# 	* documents_project
 # 
 # Translators:
-# Jan Meyer, 2019
-# Johannes Croe <jcr@odoo.com>, 2019
 # Martin Trigaux, 2019
+# Johannes Croe <jcr@odoo.com>, 2019
+# Leon Grill <leg@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,6 +37,11 @@ msgid "Attachment"
 msgstr "Dateianhang"
 
 #. module: documents_project
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Centralize files attached to projects and tasks"
+msgstr ""
+
+#. module: documents_project
 #: model:ir.model,name:documents_project.model_res_company
 msgid "Companies"
 msgstr "Unternehmen"
@@ -43,7 +49,7 @@ msgstr "Unternehmen"
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_res_config_settings
 msgid "Config Settings"
-msgstr "Konfiguration "
+msgstr "Konfigurationseinstellungen"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
@@ -53,17 +59,17 @@ msgstr "Anlegen"
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule
 msgid "Create a Task"
-msgstr ""
+msgstr "Eine Aufgabe erstellen"
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr "Gutschrift"
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Default Tags"
+msgstr ""
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__documents_project_settings
 msgid "Documents Project Settings"
-msgstr ""
+msgstr "Dokumente Projekteinstellungen"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__has_business_option
@@ -71,9 +77,9 @@ msgid "Has Business Option"
 msgstr "Hat Geschäftsoptionen"
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product template"
-msgstr "Produkt Vorlage"
+#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
+msgid "Project"
+msgstr "Projekt"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_tags
@@ -83,45 +89,20 @@ msgstr "Projekt Stichwörter"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
-#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
 msgid "Project Workspace"
-msgstr ""
+msgstr "Projekt-Arbeitsbereich"
 
 #. module: documents_project
-#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
-msgid ""
-"Select the new workspace to be used for project's documents for the projects and tasks\n"
-"                                of your company."
-msgstr ""
-
-#. module: documents_project
-#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
-msgid "Select the tags to be applied to the project's new documents"
-msgstr ""
-"Wählen Sie die Stichwörter, die auf den neuen Dokumenten des Projekts "
-"ausgewählt werden sollen."
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr "Vorlage für Signaturanfrage"
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
 msgid "Task"
 msgstr "Aufgabe"
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor Credit Note"
-msgstr "Lieferanten-Gutschrift"
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor bill"
-msgstr "Lieferantenrechnung"
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Workspace"
+msgstr "Arbeitsbereich"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder
 msgid "project default workspace"
-msgstr ""
+msgstr "Projekt Standard-Arbeitsbereich"

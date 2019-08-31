@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * approvals
+# 	* approvals
 # 
 # Translators:
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Thijs van Oers <thijsvanoers@yahoo.com>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-03-20 14:35+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -21,16 +22,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
-msgid "<span class=\"text-muted\">Category</span>"
-msgstr "<span class=\"text-muted\">Categorie</span>"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
-msgid "<span class=\"text-muted\">Request Status</span>"
-msgstr "<span class=\"text-muted\">Aanvraag status</span>"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -58,6 +49,11 @@ msgid "Activity"
 msgstr "Activiteit"
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_state
 msgid "Activity State"
 msgstr "Activiteitsfase"
@@ -66,17 +62,18 @@ msgstr "Activiteitsfase"
 #: model:ir.model.fields,help:approvals.field_approval_category__has_item
 #: model:ir.model.fields,help:approvals.field_approval_request__has_item
 msgid "Additional items that should be specified on the request."
-msgstr ""
+msgstr "Extra items dat op het verzoek moet worden vermeld."
 
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
-msgid "Admin"
-msgstr "Admin"
+msgid "Administrator"
+msgstr "Beheerder"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_all
+#: model:ir.ui.menu,name:approvals.approvals_approval_menu_all
 msgid "All Approvals"
-msgstr ""
+msgstr "Alle goedkeuringen"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__amount
@@ -88,7 +85,7 @@ msgstr "Bedrag"
 #: model:ir.model.fields,help:approvals.field_approval_category__has_reference
 #: model:ir.model.fields,help:approvals.field_approval_request__has_reference
 msgid "An additional reference that should be specified on the request."
-msgstr ""
+msgstr "Een aanvullende referentie die op het verzoek moet worden vermeld."
 
 #. module: approvals
 #: model:mail.activity.type,name:approvals.mail_activity_data_approval
@@ -98,39 +95,54 @@ msgstr "Goedkeuring"
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_category
 msgid "Approval Category"
-msgstr ""
+msgstr "Goedkeuringscategorie"
 
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_request
 msgid "Approval Request"
-msgstr ""
+msgstr "Goedkeuringsaanvraag"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__name
 msgid "Approval Subject"
-msgstr ""
+msgstr "Onderwerp goedkeuring"
 
 #. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_approval_menu_all
 #: model:ir.ui.menu,name:approvals.approvals_menu_root
 msgid "Approvals"
 msgstr "Goedkeuringen"
 
 #. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_approval_menu_to_review
-msgid "Approvals to Review"
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
+msgid "Approvals Type Name"
+msgstr ""
+
+#. module: approvals
+#: model:ir.actions.act_window,name:approvals.approval_category_action
+#: model:ir.ui.menu,name:approvals.approvals_category_menu_config
+msgid "Approvals Types"
+msgstr ""
+
+#. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
+msgid "Approvals Types Image"
 msgstr ""
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_to_review
+#: model:ir.ui.menu,name:approvals.approvals_approval_menu_to_review
+msgid "Approvals to Review"
+msgstr "Goed te keuren controles"
+
+#. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_to_review_category
 msgid "Approvals to review"
-msgstr ""
+msgstr "Goed te keuren controles"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:10
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:27
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 #, python-format
@@ -138,9 +150,9 @@ msgid "Approve"
 msgstr "Goedkeuren"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__approved
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__approved
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__approved
 msgid "Approved"
 msgstr "Goedgekeurd"
 
@@ -154,14 +166,14 @@ msgstr "Goedkeurder"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Approver(s)"
-msgstr ""
+msgstr "Goedkeurder(s)"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__user_ids
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approver_ids
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Approvers"
-msgstr ""
+msgstr "Goedkeurders"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -195,9 +207,9 @@ msgid "Business Trip"
 msgstr "Zakenreis"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__cancel
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__cancel
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__cancel
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Cancel"
 msgstr "Annuleren"
@@ -208,40 +220,14 @@ msgid "Car Rental Application"
 msgstr "Auto verhuur aanvraag"
 
 #. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_category_menu_config
-msgid "Categories"
-msgstr "Categorieën"
-
-#. module: approvals
-#: model:ir.actions.act_window,name:approvals.approval_category_action
 #: model:ir.model.fields,field_description:approvals.field_approval_request__category_id
 msgid "Category"
 msgstr "Categorie"
 
 #. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
-msgid "Category Image"
-msgstr "Categorie afbeelding"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
-msgid "Category Name"
-msgstr "Naam categorie"
-
-#. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_config
 msgid "Configuration"
 msgstr "Configuratie"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
-msgid "Confirm"
-msgstr "Bevestigen"
-
-#. module: approvals
-#: selection:approval.request,request_status:0
-msgid "Confirmed"
-msgstr "Bevestigd"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__partner_id
@@ -297,7 +283,7 @@ msgstr "Startdatum"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:14
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
 msgid "Deadline"
 msgstr "Deadline"
@@ -310,6 +296,7 @@ msgstr "Verwijder"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__description
 #: model:ir.model.fields,field_description:approvals.field_approval_request__reason
+#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Description"
 msgstr "Omschrijving"
 
@@ -318,7 +305,7 @@ msgstr "Omschrijving"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__display_name
 #: model:ir.model.fields,field_description:approvals.field_approval_request__display_name
 msgid "Display Name"
-msgstr "Weergavenaam"
+msgstr "Schermnaam"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -340,7 +327,7 @@ msgstr "Dropdown menu"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "E.g: Expenses Paris business trip"
-msgstr ""
+msgstr "Bijv: Onkosten business trip Parijs"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
@@ -352,6 +339,11 @@ msgstr "Wijzig aanvraag"
 #: model:ir.model.fields,field_description:approvals.field_approval_request__is_manager_approver
 msgid "Employee's Manager"
 msgstr "Manager werknemer"
+
+#. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
+msgid "Fields"
+msgstr "Velden"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_follower_ids
@@ -371,7 +363,7 @@ msgstr "Volgers (Relaties)"
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_general_approval
 msgid "General Approval"
-msgstr ""
+msgstr "Generieke Goedkeuring"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_access_to_request
@@ -440,6 +432,16 @@ msgid "ID"
 msgstr "ID"
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__activity_exception_icon
+msgid "Icon"
+msgstr "Icoon"
+
+#. module: approvals
+#: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Icoon om uitzondering op activiteit aan te geven."
+
+#. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_unread
 msgid "If checked new messages require your attention."
 msgstr "Indien aangevinkt vragen nieuwe berichten uw aandacht."
@@ -451,6 +453,7 @@ msgstr "Indien aangevinkt vragen nieuwe berichten uw aandacht."
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error
+#: model:ir.model.fields,help:approvals.field_approval_request__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "indien aangevinkt hebben sommige leveringen een fout."
 
@@ -473,7 +476,7 @@ msgstr "Items"
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_job_referral_award
 msgid "Job Referral Award"
-msgstr ""
+msgstr "Job referral beloning"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver____last_update
@@ -504,7 +507,7 @@ msgstr "Locatie"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:10
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
 msgid "Log"
 msgstr "Log"
@@ -538,12 +541,12 @@ msgstr "Minimale goedkeuring"
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_approval_menu
 msgid "My Approvals"
-msgstr ""
+msgstr "Mijn goedkeuringen"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_search_view_search
 msgid "My Approvals to Review"
-msgstr ""
+msgstr "Mijn goed te keuren controles"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_search_view_search
@@ -552,13 +555,9 @@ msgstr "Mijn aanvraag"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action
+#: model:ir.ui.menu,name:approvals.approvals_request_menu_my
 msgid "My Requests"
 msgstr "Mijn aanvragen"
-
-#. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_request_menu_my
-msgid "My request"
-msgstr "Mijn aanvraag"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__name
@@ -566,21 +565,16 @@ msgid "Name"
 msgstr "Naam"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__new
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__new
 msgid "New"
 msgstr "Nieuw"
 
 #. module: approvals
+#: model:ir.ui.menu,name:approvals.approvals_category_menu_new
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
 msgid "New Request"
 msgstr "Nieuw verzoek"
-
-#. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_category_menu_new
-msgid "New request"
-msgstr "Nieuwe aanvraag"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_date_deadline
@@ -598,17 +592,22 @@ msgid "Next Activity Type"
 msgstr "Volgende activiteit type"
 
 #. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
-msgid "No"
-msgstr "Nee"
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action_to_review
+msgid "No new approvals to review"
+msgstr ""
+
+#. module: approvals
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__no
+msgid "None"
+msgstr "Geen"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_needaction_counter
@@ -638,7 +637,7 @@ msgstr "Aantal berichten met leveringsfout"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__request_to_validate_count
 msgid "Number of requests to validate"
-msgstr ""
+msgstr "Aantal aanvragen om te valideren"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_unread_counter
@@ -646,20 +645,16 @@ msgid "Number of unread messages"
 msgstr "Aantal ongelezen berichten"
 
 #. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
-msgid "Option Settings"
-msgstr "Optie instellingen"
-
-#. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__requirer_document__optional
 msgid "Optional"
 msgstr "Optioneel"
 
@@ -667,11 +662,6 @@ msgstr "Optioneel"
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Options"
 msgstr "Opties"
-
-#. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Overdue"
-msgstr "Vervallen"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -688,11 +678,6 @@ msgstr "Betaalaanvraag"
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Period"
 msgstr "Periode"
-
-#. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Planned"
-msgstr "Gepland"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_procurement
@@ -713,8 +698,8 @@ msgstr "Referentie"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:13
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:30
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 #, python-format
@@ -722,9 +707,9 @@ msgid "Refuse"
 msgstr "Weiger"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__refused
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__refused
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__refused
 msgid "Refused"
 msgstr "Geweigerd"
 
@@ -737,7 +722,7 @@ msgstr "Verzoek"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__request_owner_id
 msgid "Request Owner"
-msgstr ""
+msgstr "Aanvrager"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__request_status
@@ -745,15 +730,16 @@ msgid "Request Status"
 msgstr "Verzoek status"
 
 #. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__requirer_document__required
 msgid "Required"
 msgstr "Verplicht"
 
@@ -763,12 +749,17 @@ msgid "Responsible User"
 msgstr "Verantwoordelijke gebruiker"
 
 #. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_category__sequence
-msgid "Sequence"
-msgstr "Volgorde"
+#: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "SMS Afleverfout"
 
 #. module: approvals
-#: code:addons/approvals/models/approval_request.py:180
+#: model:ir.model.fields,field_description:approvals.field_approval_category__sequence
+msgid "Sequence"
+msgstr "Reeks"
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "State change."
 msgstr "Status wijziging."
@@ -792,21 +783,31 @@ msgstr ""
 "Gepland: Toekomstige activiteiten."
 
 #. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
+msgid "Submit"
+msgstr "Verstuur"
+
+#. module: approvals
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__pending
+msgid "Submitted"
+msgstr "Verstuurd"
+
+#. module: approvals
 #: model:res.groups,comment:approvals.group_approval_user
 msgid "The user will be able to see approvals created by himself."
-msgstr ""
+msgstr "De gebruiker kan goedkeuringen zien die door hemzelf zijn aangemaakt."
 
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_manager
 msgid "The user will have access to the approvals configuration."
-msgstr ""
+msgstr "De gebruiker heeft toegang tot de goedkeuringsinstellingen."
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:19
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:35
-#: selection:approval.approver,status:0
-#: selection:approval.request,user_status:0
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__pending
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__pending
 #, python-format
 msgid "To Approve"
 msgstr "Goed te keuren"
@@ -817,9 +818,14 @@ msgid "To Review:"
 msgstr "Na te kijken:"
 
 #. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Today"
-msgstr "Vandaag"
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__new
+msgid "To Submit"
+msgstr "In te dienen"
+
+#. module: approvals
+#: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_unread
@@ -833,7 +839,7 @@ msgstr "Aantal ongelezen berichten"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:18
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__user_id
 #, python-format
 msgid "User"
@@ -859,3 +865,15 @@ msgstr "Website communicatie geschiedenis"
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Withdraw"
 msgstr "Opnemen"
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid "You have to add at least %s approvers to confirm your request."
+msgstr "Voeg minimaal %smedewerker(s) toe die u aanvraag moeten goedkeuren"
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid "You have to attach at lease one document."
+msgstr ""

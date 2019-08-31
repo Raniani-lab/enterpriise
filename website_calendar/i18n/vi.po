@@ -1,24 +1,27 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_calendar
+# 	* website_calendar
 # 
 # Translators:
-# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
-# Martin Trigaux, 2018
-# fanha99 <fanha99@hotmail.com>, 2018
-# Tai, 2018
-# son dang <son.dang@doda100.com>, 2018
-# Tuan Tran <tmtuan.projects@gmail.com>, 2018
-# Duy BQ <duybq86@gmail.com>, 2018
-# Minh Nguyen <ndminh210994@gmail.com>, 2018
-# khoibv Mr <kendev2009@gmail.com>, 2018
+# Martin Trigaux, 2019
+# fanha99 <fanha99@hotmail.com>, 2019
+# Tai, 2019
+# son dang <son.dang@doda100.com>, 2019
+# Tuan Tran <tmtuan.projects@gmail.com>, 2019
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
+# Duy BQ <duybq86@gmail.com>, 2019
+# Minh Nguyen <ndminh210994@gmail.com>, 2019
+# Chinh Chinh <trinhttp@trobz.com>, 2019
+# Dung Nguyen Thi <dungnt@trobz.com>, 2019
+# Dao Nguyen <trucdao.uel@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:15+0000\n"
-"PO-Revision-Date: 2018-10-08 07:15+0000\n"
-"Last-Translator: khoibv Mr <kendev2009@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: Dao Nguyen <trucdao.uel@gmail.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +30,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:66
+#: code:addons/website_calendar/models/calendar_appointment.py:0
 #, python-format
 msgid " (copy)"
 msgstr " (sao chép)"
@@ -35,7 +38,7 @@ msgstr " (sao chép)"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_count
 msgid "# Appointments"
-msgstr ""
+msgstr "# Cuộc hẹn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -43,36 +46,31 @@ msgid "#{day['today_cls'] and 'Today' or ''}"
 msgstr ""
 
 #. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:142
+#: code:addons/website_calendar/controllers/main.py:0
 #, python-format
 msgid "%s with %s"
-msgstr ""
+msgstr "%s với %s"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "(timezone:"
-msgstr ""
+msgstr "(múi giờ:"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "+1 (650) 691-3277"
-msgstr ""
+msgstr "+84 (909) 511-451"
 
 #. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:186
+#: code:addons/website_calendar/controllers/main.py:0
 #, python-format
 msgid ", All Day"
-msgstr ""
+msgstr ", Cả ngày"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "-- select a country --"
-msgstr ""
-
-#. module: website_calendar
-#: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
-msgid "1 Hour SMS text"
-msgstr ""
+msgstr "-- chọn quốc gia --"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -80,31 +78,38 @@ msgid ""
 "<br/>\n"
 "                            It's too late to cancel online, please contact the attendees another way if you really can't make it."
 msgstr ""
+"<br/>\n"
+"                            Quá trễ để có thể hủy online, vui lòng liên hệ với những người tham gia khác bằng cách khác nếu bạn thực sự không thể thực hiện."
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Quản lý\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Add to Google Calendar"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>Đưa vào Google Calendar"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Add to iCal/Outlook"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>Đưa vào iCal/Outlook"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<i class=\"fa fa-fw fa-times\"/>Cancel / Reschedule"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-times\"/>Hủy / Lên lịch lại"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> days</span>"
-msgstr ""
+msgstr "<span> ngày</span>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> hours before</span>"
-msgstr ""
+msgstr "<span> giờ trước khi bắt đầu</span>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -114,17 +119,17 @@ msgstr "<span> giờ</span>"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span>and not after </span>"
-msgstr ""
+msgstr "<span>và kế tiếp </span>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span>at least </span>"
-msgstr ""
+msgstr "<span>ít nhất </span>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span>until </span>"
-msgstr ""
+msgstr "<span>tối thiểu </span>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
@@ -132,6 +137,8 @@ msgid ""
 "<strong>Appointment canceled!</strong>\n"
 "                            You can schedule another appointment from here."
 msgstr ""
+"<strong>Cuộc hẹn đã bị hủy!</strong>\n"
+"                            Bạn có thể lên lịch hẹn lại 1 lần khác ở đây."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
@@ -141,6 +148,10 @@ msgid ""
 "                            Someone has booked the same time slot a few\n"
 "                            seconds before you."
 msgstr ""
+"<strong>Đặt cuộc hẹn thất bại!</strong>\n"
+"                            Lượt bạn đã chọn hiện không còn nữa.\n"
+"                            Có ai đó đã chọn chung khoản thời gian với bạn sớm\n"
+"                            hơn bạn vài giây."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
@@ -149,16 +160,19 @@ msgid ""
 "                            The selected timeslot is not available.\n"
 "                            It appears you already have another meeting with us at that date."
 msgstr ""
+"<strong>Đặt cuộc hẹn thất bại!</strong>\n"
+"                            Thời gian đã chọn hiện không còn trống.\n"
+"                            Có vẻ bạn đã có một cuộc hẹn khác với chúng tôi vào ngày đó."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<strong>Your appointment has been successfully booked!</strong>"
-msgstr ""
+msgstr "<strong>Cuộc hẹn của bạn đã được đặt thành công!</strong>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "A text message reminder is sent to you before your appointment"
-msgstr ""
+msgstr "Một đoạn thông báo nhắc nhở được gửi tới bạn trước cuộc hẹn của bạn"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__access_token
@@ -168,18 +182,23 @@ msgstr "Token truy cập"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "Action Needed"
-msgstr "Cần có Hành động"
+msgstr "Hành động cần thiết"
+
+#. module: website_calendar
+#: model:res.groups,name:website_calendar.group_calendar_manager
+msgid "Administrator"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.website_calendar_report
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report_online
 msgid "All Appointments"
-msgstr ""
+msgstr "Tất cả cuộc hẹn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Allow Cancelling"
-msgstr ""
+msgstr "Cho phép hủy"
 
 #. module: website_calendar
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action
@@ -187,6 +206,8 @@ msgid ""
 "Allow your customers to book an appointment on your website\n"
 "                by creating appointment types here."
 msgstr ""
+"Cho phép khách hàng của bạn đặt lịch hẹn trên website của bạn\n"
+"                bằng cách tạo loại cuộc hẹn ở đây."
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__name
@@ -200,27 +221,27 @@ msgstr "Trả lời"
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 #: model:website.menu,name:website_calendar.menu_appointment
 msgid "Appointment"
-msgstr ""
+msgstr "Cuộc hẹn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Appointment Confirmation"
-msgstr ""
+msgstr "Xác nhận cuộc hẹn"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_duration
 msgid "Appointment Duration"
-msgstr ""
+msgstr "Thời lượng cuộc hẹn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Appointment Introduction"
-msgstr ""
+msgstr "Giới thiệu cuộc hẹn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
 msgid "Appointment Time"
-msgstr ""
+msgstr "Thời gian cuộc hẹn"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__appointment_type_id
@@ -229,55 +250,54 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_tree
 msgid "Appointment Type"
-msgstr ""
+msgstr "Loại cuộc hẹn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Appointment:"
-msgstr ""
+msgstr "Cuộc hẹn:"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "Appointment<span class=\"chevron\"/>"
-msgstr ""
+msgstr "Cuộc hẹn<span class=\"chevron\"/>"
 
 #. module: website_calendar
-#: model:ir.module.category,name:website_calendar.module_category_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_graph
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_pivot
 msgid "Appointments"
-msgstr ""
+msgstr "Cuộc hẹn"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__assignation_method
 msgid "Assignation Method"
-msgstr ""
+msgstr "Phương thức giao"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_attachment_count
 msgid "Attachment Count"
-msgstr "Số đính kèm"
+msgstr "Số lượng tập tin đính kèm"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Attendees:"
-msgstr ""
+msgstr "Tham dự:"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__slot_ids
 msgid "Availabilities"
-msgstr ""
+msgstr "Lịch trống"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__answer_ids
 msgid "Available Answers"
-msgstr ""
+msgstr "Câu trả lời hiện có"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Available Employees"
-msgstr ""
+msgstr "Nhân viên hiện có"
 
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
@@ -285,34 +305,44 @@ msgid "Calendar"
 msgstr "Lịch"
 
 #. module: website_calendar
+#: model:ir.model,name:website_calendar.model_calendar_event
+msgid "Calendar Event"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__can_publish
+msgid "Can Publish"
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
 msgid "Cancel Before (hours)"
-msgstr ""
+msgstr "Hủy trước (giờ)"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__checkbox
 msgid "Checkboxes (multiple answers)"
-msgstr ""
+msgstr "Checkboxes (nhiều câu trả lời)"
 
 #. module: website_calendar
-#: selection:calendar.appointment.type,assignation_method:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assignation_method__chosen
 msgid "Chosen by the Customer"
-msgstr ""
+msgstr "Chọn bởi khách hàng"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Confirm Appointment <span class=\"fa fa-arrow-right\"/>"
-msgstr ""
+msgstr "Xác nhận cuộc hẹn <span class=\"fa fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Confirm your details"
-msgstr ""
+msgstr "Xác nhận chi tiết của bạn"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_confirmation
 msgid "Confirmation Message"
-msgstr ""
+msgstr "Thông báo xác nhận"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
@@ -329,11 +359,11 @@ msgstr "Đã được xác nhận"
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_res_partner
 msgid "Contact"
-msgstr "Liên hệ"
+msgstr "Danh bạ"
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/appointment_employee_url.js:67
+#: code:addons/website_calendar/static/src/js/appointment_employee_url.js:0
 #, python-format
 msgid "Copied !"
 msgstr "Đã sao chép!"
@@ -378,14 +408,19 @@ msgid "Display Name"
 msgstr "Tên hiển thị"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__select
 msgid "Dropdown (one answer)"
-msgstr ""
+msgstr "Danh sách (một câu trả lời)"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Duration:"
-msgstr ""
+msgstr "Thời gian:"
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "Edit"
+msgstr "Sửa"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
@@ -394,24 +429,19 @@ msgid "Employees"
 msgstr "Nhân viên"
 
 #. module: website_calendar
-#: model:ir.model,name:website_calendar.model_calendar_event
-msgid "Event"
-msgstr "Sự kiện"
-
-#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_follower_ids
 msgid "Followers"
-msgstr "Người dõi theo"
+msgstr "Người theo dõi"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_channel_ids
 msgid "Followers (Channels)"
-msgstr "Người theo dõi (Các kênh)"
+msgstr "Người theo dõi (Kênh)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Người theo dõi (Các đối tác)"
+msgstr "Người theo dõi (Đối tác)"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -419,22 +449,17 @@ msgid "Fri"
 msgstr "Thứ sáu"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__5
 msgid "Friday"
 msgstr "Thứ sáu"
-
-#. module: website_calendar
-#: model_terms:calendar.appointment.type,message_intro:website_calendar.calendar_appointment
-msgid ""
-"Get a <strong>customized demo</strong> and an <strong>analysis of your "
-"needs</strong>."
-msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__assignation_method
 msgid ""
 "How employees will be assigned to meetings customers book on your website."
 msgstr ""
+"Làm thế nào nhân viên sẽ được chỉ định cho các cuộc họp khách hàng đặt trên "
+"trang web của bạn."
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__id
@@ -447,17 +472,18 @@ msgstr "ID"
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Nếu đánh dấu kiểm, các thông điệp mới yêu cầu sự có mặt của bạn."
+msgstr "Nếu chọn, các tin nhắn mới yêu cầu sự có mặt của bạn."
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Nếu đánh dấu kiểm, các thông điệp mới yêu cầu sự có mặt của bạn."
+msgstr "Nếu chọn, các tin nhắn mới yêu cầu sự có mặt của bạn."
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Nếu đánh dấu thì một số thông điệp có lỗi."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.setup
@@ -466,16 +492,19 @@ msgid ""
 "                        to the \"Calendar\" application in Odoo and create\n"
 "                        an online appointment."
 msgstr ""
+"Để cấu hình đặt lịch hẹn online, vào \n"
+"                        phần phân hệ \"Lịch\" trong hệ thống và tạo\n"
+"                        một lịch đặt hẹn online."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Individual Appointment Link"
-msgstr ""
+msgstr "Link cuộc hẹn riêng"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_intro
 msgid "Introduction Message"
-msgstr ""
+msgstr "Đoạn giới thiệu"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_is_follower
@@ -484,7 +513,7 @@ msgstr "Trở thành người theo dõi"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
-msgid "Is published"
+msgid "Is Published"
 msgstr ""
 
 #. module: website_calendar
@@ -493,6 +522,8 @@ msgid ""
 "Keep empty to allow visitors from any country, otherwise you only allow "
 "visitors from selected countries"
 msgstr ""
+"Để trống để cho phép khách truy cập từ bất kỳ quốc gia nào, nếu không, bạn "
+"chỉ cho phép khách truy cập từ các quốc gia đã được chọn"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer____last_update
@@ -500,7 +531,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type____last_update
 msgid "Last Modified on"
-msgstr "Sửa lần cuối vào"
+msgstr "Sửa lần cuối"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_uid
@@ -508,7 +539,7 @@ msgstr "Sửa lần cuối vào"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_uid
 msgid "Last Updated by"
-msgstr "Cập nhật lần cuối bởi"
+msgstr "Cập nhật gần đây bởi"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_date
@@ -516,7 +547,7 @@ msgstr "Cập nhật lần cuối bởi"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_date
 msgid "Last Updated on"
-msgstr "Cập nhật lần cuối vào"
+msgstr "Cập nhật gần đây vào"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__location
@@ -526,59 +557,54 @@ msgstr "Địa điểm"
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__location
 msgid "Location of the appointments"
-msgstr ""
+msgstr "Địa điểm của cuộc gặp"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Location:"
-msgstr ""
+msgstr "Địa điểm:"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_main_attachment_id
 msgid "Main Attachment"
-msgstr "Đính kèm chính"
-
-#. module: website_calendar
-#: model:res.groups,name:website_calendar.group_calendar_manager
-msgid "Manager"
-msgstr "Quản lý"
+msgstr "Tệp đính kèm chính"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Thông báo gửi đi gặp lỗi"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Messages"
-msgstr "Thông điệp"
+msgstr "Thông báo"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Mon"
-msgstr "Thứ hai"
+msgstr "Thứ 2"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__1
 msgid "Monday"
-msgstr "Thư Hai"
+msgstr "Thứ Hai"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__text
 msgid "Multi-line text"
-msgstr ""
+msgstr "Dạng chữ có nhiều dòng"
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:30
+#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:0
 #, python-format
 msgid "Name"
 msgstr "Tên"
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:29
+#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:0
 #, python-format
 msgid "New Appointment Type"
 msgstr ""
@@ -586,7 +612,7 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.setup
 msgid "No appointments available!"
-msgstr ""
+msgstr "Không có cuộc hẹn nào!"
 
 #. module: website_calendar
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_event_action_reporting
@@ -597,7 +623,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Số lượng Hành động"
+msgstr "Số lượng hành động"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error_counter
@@ -607,22 +633,22 @@ msgstr "Số lỗi"
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Số thông điệp cần có hành động"
+msgstr "Số thông báo cần xử lý"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Số lượng tin gửi đi bị lỗi"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread_counter
 msgid "Number of unread messages"
-msgstr "Số thông điệp chưa đọc"
+msgstr "Số tin chưa đọc"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__appointment_type_id
 msgid "Online Appointment"
-msgstr ""
+msgstr "Đặt lịch hẹn online"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_answer
@@ -647,12 +673,13 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.calendar_appointment_type_action
 #: model:ir.actions.act_window,name:website_calendar.calendar_event_action_reporting
+#: model:ir.module.category,name:website_calendar.module_category_calendar
 #: model:ir.ui.menu,name:website_calendar.appointment_type_menu
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report_all
 #: model:ir.ui.menu,name:website_calendar.website_appointment_type_menu
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_search_inherit_website_calendar
 msgid "Online Appointments"
-msgstr ""
+msgstr "Đặt lịch hẹn online"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__placeholder
@@ -660,15 +687,17 @@ msgid "Placeholder"
 msgstr "Placeholder"
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:302
+#: code:addons/website_calendar/models/calendar_appointment.py:0
 #, python-format
 msgid "Please enter a valid hour between 0:00 to 24:00 for your slots."
 msgstr ""
+"Vui lòng điền chính xác giờ trong khoản từ 0:00 tới 24:00 cho mỗi lượt của "
+"bạn."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
 msgid "Please, select another date."
-msgstr ""
+msgstr "Vui lòng chọn 1 ngày khác."
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__name
@@ -678,7 +707,7 @@ msgstr "Câu hỏi"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_type
 msgid "Question Type"
-msgstr ""
+msgstr "Loại câu hỏi"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__question_id
@@ -688,12 +717,12 @@ msgid "Questions"
 msgstr "Câu hỏi"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__radio
 msgid "Radio (one answer)"
-msgstr ""
+msgstr "Radio (1 câu trả lời)"
 
 #. module: website_calendar
-#: selection:calendar.appointment.type,assignation_method:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assignation_method__random
 msgid "Random"
 msgstr "Ngẫu nhiên"
 
@@ -710,16 +739,31 @@ msgstr "Báo cáo"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_required
 msgid "Required Answer"
-msgstr ""
+msgstr "Bắt buộc trả lời"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__country_ids
 msgid "Restrict Countries"
+msgstr "Hạn chế quốc gia"
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "SCHEDULED"
 msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_seo_optimized
 msgid "SEO optimized"
+msgstr "Tối ưu SEO"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: website_calendar
+#: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
+msgid "SMS Text Message - 1 Hours"
 msgstr ""
 
 #. module: website_calendar
@@ -728,39 +772,34 @@ msgid "Sat"
 msgstr "Thứ 7"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__6
 msgid "Saturday"
 msgstr "Thứ Bảy"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Schedule Appointment"
-msgstr ""
-
-#. module: website_calendar
-#: model:calendar.appointment.type,name:website_calendar.calendar_appointment
-msgid "Schedule a Demo"
-msgstr ""
+msgstr "Lên lịch hẹn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "Schedule an Appointment"
-msgstr ""
+msgstr "Lên lịch một buổi hẹn"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_schedule_hours
 msgid "Schedule before (hours)"
-msgstr ""
+msgstr "Lên lịch trước (giờ)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__max_schedule_days
 msgid "Schedule not after (days)"
-msgstr ""
+msgstr "Lên lịch không được sau (ngày)"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Scheduling & Availability"
-msgstr ""
+msgstr "Lên lịch & Hiển thị"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__sequence
@@ -769,24 +808,24 @@ msgid "Sequence"
 msgstr "Trình tự"
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__char
 msgid "Single line text"
-msgstr ""
+msgstr "Dòng chữ"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Slots"
-msgstr ""
+msgstr "Lượt"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__hour
 msgid "Starting Hour"
-msgstr ""
+msgstr "Giờ bắt đầu"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Starting Hour (0:00 - 24:00)"
-msgstr ""
+msgstr "Giờ bắt đầu (0:00 - 24:00)"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -794,14 +833,14 @@ msgid "Sun"
 msgstr "CN"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__7
 msgid "Sunday"
 msgstr "Chủ nhật"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_url
 msgid "The full URL to access the document through the website."
-msgstr "URL đầy đủ để truy cập tài liệu thông qua trang web"
+msgstr "URL đầy đủ để truy cập tài liệu thông qua trang web."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -809,7 +848,7 @@ msgid "Thu"
 msgstr "Thứ 5"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__4
 msgid "Thursday"
 msgstr "Thứ năm"
 
@@ -821,18 +860,18 @@ msgstr "Thời gian"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Time displayed in"
-msgstr ""
+msgstr "Thời gian hiển thị theo"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_select_timezone
 msgid "Time zone:"
-msgstr ""
+msgstr "Múi giờ:"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "Time<span class=\"chevron\"/>"
-msgstr ""
+msgstr "Thời gian<span class=\"chevron\"/>"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_tz
@@ -842,7 +881,7 @@ msgstr "Múi giờ"
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__appointment_tz
 msgid "Timezone where appointment take place"
-msgstr ""
+msgstr "Múi giờ nơi cuộc hẹn diễn ra"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -850,7 +889,7 @@ msgid "Tue"
 msgstr "Thứ 3"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__2
 msgid "Tuesday"
 msgstr "Thứ Ba"
 
@@ -862,29 +901,22 @@ msgstr "Tin chưa đọc"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Bộ đếm Thông điệp chưa đọc"
+msgstr "Bộ đếm tin chưa đọc"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "View Availabilities <span class=\"fa fa-arrow-right\"/>"
-msgstr ""
+msgstr "Xem lịch trống <span class=\"fa fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published
 msgid "Visible on current website"
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:calendar.appointment.type,message_confirmation:website_calendar.calendar_appointment
-msgid ""
-"We thank you for your interest in our products!<br>\n"
-"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
-msgstr ""
+msgstr "Hiển thị ở website hiện tại"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids
 msgid "Website Messages"
-msgstr "Thông điệp Website"
+msgstr "Thông báo Website"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_url
@@ -909,37 +941,37 @@ msgstr "Website dữ liệu từ khóa"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_title
 msgid "Website meta title"
-msgstr "Website dữ liệu Tiêu đề"
+msgstr "Website dữ liệu tiêu đề"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_og_img
 msgid "Website opengraph image"
-msgstr ""
+msgstr "Hình ảnh trang web"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Wed"
-msgstr "Thứ tư"
+msgstr "Thứ 4"
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__3
 msgid "Wednesday"
 msgstr "Thứ Tư"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__weekday
 msgid "Week Day"
-msgstr ""
+msgstr "Ngày trong tuần"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "When:"
-msgstr ""
+msgstr "Lúc:"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.employee_select
 msgid "With:"
-msgstr ""
+msgstr "Với:"
 
 #. module: website_calendar
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_event_action_reporting
@@ -950,42 +982,42 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Country"
-msgstr ""
+msgstr "Quốc gia của bạn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Email"
-msgstr "Email của Bạn"
+msgstr "Email"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Name"
-msgstr "Tên bạn"
+msgstr "Tên"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Phone"
-msgstr "Số ĐT của Bạn"
+msgstr "Điện thoại của bạn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Your appointment is in less than"
-msgstr ""
+msgstr "Cuộc hẹn của bạn ít hơn"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "e.g. Schedule a demo"
-msgstr ""
+msgstr "vd: Lên lịch một buổi demo"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "hour"
-msgstr ""
+msgstr "giờ"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "hours from now!"
-msgstr ""
+msgstr "giờ kể từ lúc này!"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -995,4 +1027,4 @@ msgstr "trên"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "timezone"
-msgstr ""
+msgstr "múi giờ"

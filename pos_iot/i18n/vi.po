@@ -1,16 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_iot
+# 	* pos_iot
 # 
 # Translators:
-# Duy BQ <duybq86@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
+# Duy BQ <duybq86@gmail.com>, 2019
+# Chinh Chinh <trinhttp@trobz.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:13+0000\n"
-"PO-Revision-Date: 2018-10-08 07:13+0000\n"
-"Last-Translator: Duy BQ <duybq86@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: Chinh Chinh <trinhttp@trobz.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,23 +23,374 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Access your"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_print_via_proxy
+msgid "Bypass browser printing and prints via the hardware proxy."
+msgstr "Bỏ qua việc in ra trình duyệt và in thông qua proxy phần cứng."
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Cancel Payment Request"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Click on Advanced/Show Details/Details/More information"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid ""
+"Click on Proceed to .../Add Exception/Visit this website/Go on to the "
+"webpage"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Close this window and try again"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#, python-format
+msgid "Configuration of payment terminal failed"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Connection error"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/iot.js:0
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#, python-format
+msgid "Connection to IoT Box failed"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/chrome.js:0
+#: code:addons/pos_iot/static/src/js/close_session.js:0
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#, python-format
+msgid "Connection to terminal failed"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/scale.js:0
+#, python-format
+msgid "Could not connect to IoT scale"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Delete"
+msgstr "Xoá"
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_config__iface_payment_terminal
+msgid "Enables Payment Terminal integration."
+msgstr "Kích hoạt tích hợp thiết bị thanh toán."
+
+#. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_session_view_form
+msgid "End of Session"
+msgstr "Cuối phiên"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#, python-format
+msgid "Error"
+msgstr "Lỗi"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/close_session.js:0
+#, python-format
+msgid "Error performing balance"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Firefox only : Click on Confirm Security Exception"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Force Done"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Force done"
+msgstr ""
+
+#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__proxy_ip
 msgid "IP Address"
 msgstr "Địa chỉ IP"
 
 #. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid ""
+"If you are on a secure server (HTTPS) check if you accepted the certificate:"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_printer_id
+msgid "Iface Printer"
+msgstr ""
+
+#. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
 msgid "IoT Box"
+msgstr "IoT Box"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "IoT Box Homepage"
+msgstr ""
+
+#. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "IoT Boxes"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/scale.js:0
+#, python-format
+msgid ""
+"It seems that no scale was detected.\n"
+"Make sure that the scale is connected and visible in the IoT app."
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/scale.js:0
+#, python-format
+msgid "No Scale Detected"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Ok"
+msgstr "Đồng ý"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Payment Successful"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_payment_terminal
+msgid "Payment Terminal"
+msgstr "Thiêt bị Thanh toán"
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_payment__transaction_id
+msgid "Payment Transaction ID"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Payment request pending"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Payment reversed"
+msgstr ""
+
+#. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+msgid "Payment terminal"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#, python-format
+msgid "Payment terminal error"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Please check if the IoT Box is still connected."
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/chrome.js:0
+#: code:addons/pos_iot/static/src/js/close_session.js:0
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#, python-format
+msgid "Please check if the terminal is still connected."
 msgstr ""
 
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_config
 msgid "Point of Sale Configuration"
-msgstr "Cấu hình Điểm bán lẻ"
+msgstr "Cấu hình điểm bán lẻ"
+
+#. module: pos_iot
+#: model:ir.model,name:pos_iot.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "Đơn bán lẻ"
+
+#. module: pos_iot
+#: model:ir.model,name:pos_iot.model_pos_payment_method
+msgid "Point of Sale Payment Methods"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model,name:pos_iot.model_pos_payment
+msgid "Point of Sale Payments"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_print_via_proxy
+msgid "Print via Proxy"
+msgstr "In qua Proxy"
+
+#. module: pos_iot
+#: model:ir.model.fields,help:pos_iot.field_pos_payment_method__use_payment_terminal
+msgid "Record payments using a payment terminal"
+msgstr ""
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iotbox_id
 msgid "Related Box"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Request send to terminal"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Retry"
+msgstr "Thử lại"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Retry Electronic payment"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Reverse"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Reverse Payment"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Reverse request sent to terminal"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Send"
+msgstr "Gửi"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/chrome.js:0
+#, python-format
+msgid "Send Balance"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Send Payment Request"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/chrome.js:0
+#, python-format
+msgid "Terminal Error"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/scale.js:0
+#, python-format
+msgid "The IoT scale is not responding. You should check your connection."
 msgstr ""
 
 #. module: pos_iot
@@ -46,3 +401,39 @@ msgid ""
 msgstr ""
 "Tên máy chủ hoặc địa chỉ ip của proxy phần cứng, Sẽ được tự động phát hiện "
 "nếu để trống."
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#, python-format
+msgid "There is already an electronic payment in progress."
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_payment__card_type
+msgid "Type of card used"
+msgstr ""
+
+#. module: pos_iot
+#: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__use_payment_terminal
+msgid "Use a Payment Terminal"
+msgstr ""
+
+#. module: pos_iot
+#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_session_view_form
+msgid "Validate Closing & Post Entries"
+msgstr "Thẩm định đóng & Vào sổ các bút toán"
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/xml/pos.xml:0
+#, python-format
+msgid "Waiting for card"
+msgstr ""
+
+#. module: pos_iot
+#. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:0
+#, python-format
+msgid "You must select a payment terminal in your POS config."
+msgstr ""

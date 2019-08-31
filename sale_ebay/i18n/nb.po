@@ -1,21 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_ebay
+# 	* sale_ebay
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Aleksander, 2018
-# Viktor Basso <viktor@voit.no>, 2018
-# Jorunn D. Newth, 2018
-# Jan Pedro Tumusok <jpt@eyenetworks.no>, 2018
+# Martin Trigaux, 2019
 # Marius Stedjan <marius@stedjan.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Marius Stedjan <marius@stedjan.com>, 2019\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -25,22 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_ebay
-#: model:mail.template,body_html:sale_ebay.ebay_desciption_default
-msgid ""
-"\n"
-"                  \n"
-"          ${object.ebay_description | safe}\n"
-"        \n"
-"      "
-msgstr ""
-"\n"
-"                  \n"
-"          ${object.ebay_description | safe}\n"
-"        \n"
-"      "
-
-#. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:395
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
@@ -48,7 +29,7 @@ msgid ""
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:398
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid ""
 " You need to have at least 2 variations selected for a multi-variations listing.\n"
@@ -56,33 +37,33 @@ msgid ""
 msgstr ""
 
 #. module: sale_ebay
-#: selection:product.template,ebay_listing_duration:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_10
 msgid "10 Days"
 msgstr "10 dager"
 
 #. module: sale_ebay
-#: selection:product.template,ebay_listing_duration:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_3
 msgid "3 Days"
 msgstr "3 dager"
 
 #. module: sale_ebay
-#: selection:product.template,ebay_listing_duration:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_30
 msgid "30 Days (only for fixed price)"
 msgstr "30 dager (bare for fastsatt pris)"
 
 #. module: sale_ebay
-#: selection:product.template,ebay_listing_duration:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_5
 msgid "5 Days"
 msgstr "5 dager"
 
 #. module: sale_ebay
-#: selection:product.template,ebay_listing_duration:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_7
 msgid "7 Days"
 msgstr "7 dager"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "<span class=\"o_form_label\">Sales Channel</span>"
+msgid "<span class=\"o_form_label\">Sales Team</span>"
 msgstr ""
 
 #. module: sale_ebay
@@ -106,7 +87,7 @@ msgid "<span class=\"o_form_label\">eBay Options</span>"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:271
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid ""
 "All the quantities must be greater than 0 or you need to enable the Out Of "
@@ -120,7 +101,7 @@ msgid "Allow Best Offer"
 msgstr "Tillat beste tilbud"
 
 #. module: sale_ebay
-#: selection:product.template,ebay_listing_type:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_type__chinese
 msgid "Auction"
 msgstr "Auksjon"
 
@@ -139,7 +120,7 @@ msgstr "Kjøp nå-pris"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Cancel"
-msgstr "Kanseller"
+msgstr "Avbryt"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_category_id
@@ -179,7 +160,7 @@ msgid "Config Settings"
 msgstr "Konfigurasjonsinnstillinger"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:364
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid "Configure The eBay Integrator Now"
 msgstr ""
@@ -225,7 +206,7 @@ msgid "Currency"
 msgstr "Valuta"
 
 #. module: sale_ebay
-#: selection:ebay.category,category_type:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__ebay_category__category_type__store
 msgid "Custom Store Category"
 msgstr "Tilpasset butikkategori"
 
@@ -261,28 +242,31 @@ msgid "Duration"
 msgstr "Varighet"
 
 #. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.action_end_items_listings
-msgid "Ebay: End Product Templates Listings on eBay"
+#: code:addons/sale_ebay/models/sale_order.py:0
+#, python-format
+msgid ""
+"Ebay Synchronisation could not confirm because of the following error:\n"
+"%s"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.action_list_items
-msgid "Ebay: List Product Templates on eBay"
+#: code:addons/sale_ebay/models/sale_order.py:0
+#, python-format
+msgid ""
+"Ebay could not synchronize order:\n"
+"%s"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.action_relist_items
-msgid "Ebay: Relist Product Templates on eBay"
+#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_sync_ir_actions_server
+#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_orders_sync
+#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_orders_sync
+msgid "Ebay: get new orders"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.action_revise_items
-msgid "Ebay: Revise Product Templates on eBay"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.action_unlink_items_listings
-msgid "Ebay: Unlink eBay Product Templates Listings"
+#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_recovery
+msgid "Ebay: orders recovery"
 msgstr ""
 
 #. module: sale_ebay
@@ -308,7 +292,7 @@ msgid "End Item's Listing"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:257
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid ""
 "Error Encountered.\n"
@@ -316,7 +300,7 @@ msgid ""
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:401
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid ""
 "Error Encountered.\n"
@@ -331,7 +315,7 @@ msgid "Fixed Price"
 msgstr "Fastpris"
 
 #. module: sale_ebay
-#: selection:product.template,ebay_listing_type:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_type__fixedpriceitem
 msgid "Fixed price"
 msgstr "Fast pris"
 
@@ -346,7 +330,7 @@ msgid "Gallery Plus"
 msgstr "Gallery Plus"
 
 #. module: sale_ebay
-#: selection:product.template,ebay_listing_duration:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__gtc
 msgid "Good 'Til Cancelled (only for fixed price)"
 msgstr ""
 
@@ -357,7 +341,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__id
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__id
 msgid "ID"
-msgstr "IDID"
+msgstr "ID"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -365,7 +349,7 @@ msgid "Import eBay config data and sync transactions"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:393
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid ""
 "Impossible to revise a listing into a multi-variations listing.\n"
@@ -450,7 +434,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_location
 msgid "Location"
-msgstr "Sted"
+msgstr "Lokasjon"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -471,24 +455,24 @@ msgid "Name"
 msgstr "Navn"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/sale_ebay.py:199
+#: code:addons/sale_ebay/models/sale_ebay.py:0
 #, python-format
 msgid "No Business Policies"
 msgstr ""
 
 #. module: sale_ebay
-#: selection:ebay.category,category_type:0
+#: model:ir.model.fields.selection,name:sale_ebay.selection__ebay_category__category_type__ebay
 msgid "Official eBay Category"
 msgstr "Offisiell eBay-kategori"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:363
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid "One parameter is missing."
 msgstr "Et parameter mangler."
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:389
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid "Or the condition is not compatible with the category."
 msgstr ""
@@ -536,7 +520,13 @@ msgid "Product Template"
 msgstr "Produktmal"
 
 #. module: sale_ebay
-#: selection:res.config.settings,ebay_domain:0
+#: code:addons/sale_ebay/models/sale_order.py:0
+#, python-format
+msgid "Product created from eBay transaction %s"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model.fields.selection,name:sale_ebay.selection__res_config_settings__ebay_domain__prod
 msgid "Production"
 msgstr "Produksjon"
 
@@ -594,17 +584,22 @@ msgid "Revise Item"
 msgstr ""
 
 #. module: sale_ebay
-#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Sales Channel"
-msgstr "Salgskanal"
+#: model:ir.model,name:sale_ebay.model_sale_order
+msgid "Sales Order"
+msgstr "Salgsordre"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Sales channel to manage eBay sales"
-msgstr "Salgskanal for administrasjon av eBay-salg"
+msgid "Sales Team"
+msgstr "Salgsteam"
 
 #. module: sale_ebay
-#: selection:res.config.settings,ebay_domain:0
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Sales Team to manage eBay sales"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model.fields.selection,name:sale_ebay.selection__res_config_settings__ebay_domain__sand
 msgid "Sandbox"
 msgstr "Sandkasse"
 
@@ -680,14 +675,16 @@ msgid "Sync now"
 msgstr "Synkroniser nå"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:746
+#: code:addons/sale_ebay/models/product.py:0
+#: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:742
-#: code:addons/sale_ebay/models/product.py:743
+#: code:addons/sale_ebay/models/product.py:0
+#: code:addons/sale_ebay/models/product.py:0
+#: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "The Buyer Posted :\n"
 msgstr ""
@@ -715,6 +712,16 @@ msgid ""
 msgstr ""
 
 #. module: sale_ebay
+#: code:addons/sale_ebay/models/product.py:0
+#, python-format
+msgid ""
+"There is no last synchronization date in your System Parameters. Create a "
+"System Parameter record with the key \"ebay_last_sync\" and the value set to"
+" the date of the oldest order you wish to synchronize in the format \"YYYY-"
+"MM-DD\"."
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_template_id
 msgid "This field contains the template that will be used."
@@ -735,11 +742,6 @@ msgstr "Overføring"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__policy_type
 msgid "Type"
 msgstr "Type"
-
-#. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.action_ebay_update_carrier
-msgid "Update eBay Carrier Information"
-msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_sync_stock
@@ -850,7 +852,7 @@ msgid "eBay Website"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/sale_ebay.py:54
+#: code:addons/sale_ebay/models/sale_ebay.py:0
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the categories. \n"
@@ -858,8 +860,8 @@ msgid ""
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:495
-#: code:addons/sale_ebay/models/product.py:568
+#: code:addons/sale_ebay/models/product.py:0
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the products. \n"
@@ -867,7 +869,7 @@ msgid ""
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:391
+#: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid "eBay is unreachable. Please try again later."
 msgstr ""
@@ -884,11 +886,41 @@ msgid "eBay url"
 msgstr "eBay-URL"
 
 #. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.action_end_items_listings
+msgid "eBay: End product listings"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.action_list_items
+msgid "eBay: List products"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.action_relist_items
+msgid "eBay: Relist products"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.action_revise_items
+msgid "eBay: Revise products"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.action_unlink_items_listings
+msgid "eBay: Unlink product listings"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.actions.server,name:sale_ebay.action_ebay_update_carrier
+msgid "eBay: Update carrier information"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_currency
 msgid "ebay Currency"
 msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
-msgid "ebay Sales Channel"
+msgid "ebay Sales Team"
 msgstr ""

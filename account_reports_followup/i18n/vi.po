@@ -1,21 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_reports_followup
+# 	* account_reports_followup
 # 
 # Translators:
-# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
-# Martin Trigaux, 2018
-# fanha99 <fanha99@hotmail.com>, 2018
-# Phạm Lân <phamquanglan@gmail.com>, 2018
-# Duy BQ <duybq86@gmail.com>, 2018
-# Minh Nguyen <ndminh210994@gmail.com>, 2018
+# Martin Trigaux, 2019
+# fanha99 <fanha99@hotmail.com>, 2019
+# Phạm Lân <phamquanglan@gmail.com>, 2019
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
+# Duy BQ <duybq86@gmail.com>, 2019
+# Chinh Chinh <trinhttp@trobz.com>, 2019
+# Dung Nguyen Thi <dungnt@trobz.com>, 2019
+# Dao Nguyen <trucdao.uel@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Minh Nguyen <ndminh210994@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
+"Last-Translator: Dao Nguyen <trucdao.uel@gmail.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,8 +28,6 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
-#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -42,15 +43,15 @@ msgid ""
 "Best Regards,\n"
 msgstr ""
 "\n"
-"Gửi công ty %(partner_name)s,\n"
+"Xin chào %(partner_name)s,\n"
 "\n"
-"Mặc dù chúng tôi đã gửi nhiều lần nhắc nhở thanh toán, nhưng tài khoản của bạn vẫn chưa giải quyết.\n"
+"Mặc dù chúng tôi đã gửi nhắc nhở thanh toán nhiều lần, nhưng tài khoản nợ của bạn vẫn chưa được giải quyết.\n"
 "\n"
-"Trừ khi tài khoản của bạn được thanh toán đầy đủ trong 8 ngày tới, chúng tôi sẽ thực hiện theo pháp lý để thu hồi nợ sẽ được thực hiện mà không cần thông báo trước.\n"
+"Trừ khi tài khoản của bạn được thanh toán đầy đủ trong 8 ngày tới, chúng tôi sẽ thực hiện theo pháp lý để thu hồi nợ mà không cần thông báo trước.\n"
 "\n"
 "Tôi tin rằng hành động này sẽ chứng minh là không cần thiết và chi tiết các khoản thanh toán đúng hạn được in dưới đây.\n"
 "\n"
-"Trong trường hợp có bất kỳ thắc mắc liên quan đến vấn đề này, đừng ngần ngại liên hệ với bộ phận kế toán của chúng tôi.\n"
+"Trong trường hợp có bất kỳ thắc mắc nào liên quan đến vấn đề này, đừng ngần ngại liên hệ với bộ phận kế toán của chúng tôi.\n"
 "\n"
 "Xin chân thành cảm ơn,\n"
 
@@ -67,9 +68,9 @@ msgid ""
 "Best Regards,\n"
 msgstr ""
 "\n"
+"Xin chào %(partner_name)s,\n"
 "\n"
-"Gửi công ty %(partner_name)s,\n"
-"Đây có thể là sai sót của chúng tôi, nhưng có vẻ như số tiền sau vẫn chưa được thanh toán. Vui lòng thực hiện các biện pháp thích hợp để thực hiện thanh toán này trong 8 ngày tới.\n"
+"Đây có thể là sai sót của chúng tôi, nhưng dường như bạn có một số tiền chưa được thanh toán. Bạn vui lòng thanh toán khoản này trong 8 ngày tới.\n"
 "\n"
 "Nếu khoản thanh toán của bạn đã được thực hiện trước khi thư này được gửi, vui lòng bỏ qua thông báo này. Đừng ngần ngại liên hệ với bộ phận kế toán của chúng tôi.\n"
 "\n"
@@ -93,12 +94,13 @@ msgid ""
 "Best Regards,\n"
 msgstr ""
 "\n"
-"Gửi công ty %(partner_name)s,\n"
+"Xin chào %(partner_name)s,\n"
 "\n"
-"Chúng tôi rất thất vọng khi thấy rằng mặc dù đã gửi lời nhắc, rằng tài khoản của bạn hiện đang bị quá hạn nghiêm trọng.\n"
+""
+"Mặc dù chúng tôi đã gửi rất nhiều lời nhắc nhưng tài khoản của bạn vẫn đang trễ hạn thanh toán một cách nghiêm trọng.\n"
 "\n"
-"Điều quan trọng là thanh toán ngay lập tức phải được thực hiện, nếu không chúng tôi sẽ phải xem xét việc đặt lệnh dừng trên tài khoản của bạn có nghĩa là chúng tôi sẽ không còn có thể cung cấp cho công ty của bạn (hàng hóa/dịch vụ) nữa.\n"
-"Vui lòng thực hiện các biện pháp thích hợp để thực hiện thanh toán này trong 8 ngày tới.\n"
+"Bạn cần phải thanh toán ngay lập tức, nếu không chúng tôi sẽ phải xem xét đến việc đặt lệnh dừng trên tài khoản của bạn. Đồng nghĩa là chúng tôi sẽ không còn có thể cung cấp cho bạn (hàng hóa/dịch vụ) nào nữa.\n"
+"Vui lòng thực hiện các biện pháp thích hợp để tiến hàng thanh toán trong 8 ngày tới.\n"
 "\n"
 "Chi tiết các khoản thanh toán quá hạn được in dưới đây.\n"
 "\n"
@@ -123,6 +125,11 @@ msgstr ": Tài khoản"
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User's Company Name"
 msgstr ": Tên công ty người dùng"
+
+#. module: account_reports_followup
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_kanban
+msgid "<i class=\"fa fa-building\" role=\"img\" aria-label=\"Enterprise\"/>"
+msgstr "<i class=\"fa fa-building\" role=\"img\" aria-label=\"Enterprise\"/>"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup
@@ -157,12 +164,12 @@ msgstr "Tên Công ty"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_config_settings
 msgid "Config Settings"
-msgstr "Cấu hình thiết lập"
+msgstr "Cấu hình"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner
 msgid "Contact"
-msgstr "Liên hệ"
+msgstr "Danh bạ"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_uid
@@ -177,27 +184,28 @@ msgid "Created on"
 msgstr "Thời điểm tạo"
 
 #. module: account_reports_followup
-#: sql_constraint:account_followup.followup.line:0
+#: model:ir.model.constraint,message:account_reports_followup.constraint_account_followup_followup_line_days_uniq
 msgid "Days of the follow-up levels must be different"
-msgstr "Số ngày theo dõi các cấp phải khác nhau"
+msgstr "Số ngày của các mức độ theo dõi phải khác nhau"
+
+#. module: account_reports_followup
+#: model:account_followup.followup.line,sms_description:account_reports_followup.demo_followup_line1
+#: model:account_followup.followup.line,sms_description:account_reports_followup.demo_followup_line2
+#: model:account_followup.followup.line,sms_description:account_reports_followup.demo_followup_line3
+msgid "Dear %(partner_name)s, it seems that some of your payments stay unpaid"
+msgstr ""
 
 #. module: account_reports_followup
 #: model_terms:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
 msgid "Define follow-up levels and their related actions"
 msgstr ""
+"Định nghĩa các mức độ theo dõi và các hành động tương ứng cho từng mức độ"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__display_name
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
-
-#. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:19
-#, python-format
-msgid "Done"
-msgstr "Hoàn thành"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__delay
@@ -217,7 +225,7 @@ msgstr "Theo dõi"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__name
 msgid "Follow-Up Action"
-msgstr "Thực hiện theo dõi"
+msgstr "Hành động theo dõi"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__followup_line_ids
@@ -234,21 +242,22 @@ msgstr "Tiêu chí tiếp theo"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_move_line__followup_line_id
 msgid "Follow-up Level"
-msgstr "Cấp độ theo dõi"
+msgstr "Mức độ theo dõi"
 
 #. module: account_reports_followup
 #: model:ir.ui.menu,name:account_reports_followup.account_followup_menu
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.res_config_settings_view_form
 msgid "Follow-up Levels"
-msgstr "Follow-up Levels"
+msgstr "Mức độ theo dõi"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_report
 msgid "Follow-up Report"
-msgstr ""
+msgstr "Báo cáo theo dõi công nợ"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,field_description:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Follow-up Responsible"
 msgstr "Chịu trách nhiệm theo dõi"
 
@@ -256,7 +265,7 @@ msgstr "Chịu trách nhiệm theo dõi"
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_tree
 msgid "Follow-up Steps"
-msgstr "Bước tiếp theo"
+msgstr "Các bước theo dõi"
 
 #. module: account_reports_followup
 #: model_terms:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
@@ -265,14 +274,14 @@ msgid ""
 "                possible to use print and e-mail templates to send specific messages to\n"
 "                the customer."
 msgstr ""
-"Đối với mỗi bước, hãy chỉ định các hành động cần thực hiện và trì hoãn trong vài ngày. Nó là\n"
-"                 có thể sử dụng mẫu in và e-mail để gửi tin nhắn cụ thể đến\n"
-"                 khách hàng."
+"Đối với mỗi bước, hãy chỉ định các hành động cần thực hiện và trì hoãn trong vài ngày. \n"
+"Có thể sử dụng mẫu in và e-mail để gửi tin nhắn cụ thể đến\n"
+" khách hàng."
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__sequence
 msgid "Gives the sequence order when displaying a list of follow-up lines."
-msgstr "Cung cấp thứ tự chuỗi khi hiển thị danh sách các dòng tiếp theo."
+msgstr "Cung cấp thứ tự khi hiển thị danh sách các dòng tiếp theo."
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__id
@@ -283,25 +292,25 @@ msgstr "ID"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_move_line
 msgid "Journal Item"
-msgstr "Phát sinh"
+msgstr "Bút toán"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup____last_update
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line____last_update
 msgid "Last Modified on"
-msgstr "Sửa lần cuối vào"
+msgstr "Sửa lần cuối"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__write_uid
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__write_uid
 msgid "Last Updated by"
-msgstr "Cập nhật lần cuối bởi"
+msgstr "Cập nhật gần đây bởi"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__write_date
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__write_date
 msgid "Last Updated on"
-msgstr "Cập nhật lần cuối vào"
+msgstr "Cập nhật gần đây vào"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_move_line__followup_date
@@ -310,46 +319,38 @@ msgstr "Theo dõi gần đây"
 
 #. module: account_reports_followup
 #. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:13
+#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:0
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 #, python-format
 msgid "Manual Action"
-msgstr "Thực hiện thủ công"
+msgstr "Hành động thủ công"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_type_id
 msgid "Manual Action Type"
-msgstr ""
+msgstr "Loại hành động thủ công"
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:86
+#: code:addons/account_reports_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Manual action done"
-msgstr "Thực hiện hoàn tất thủ công"
+msgstr "Hành động thủ công đã hoàn thành"
 
 #. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:16
-#, python-format
-msgid ""
-"Odoo will remind you to take care of this follow-up on the next reminder "
-"date."
-msgstr ""
-
-#. module: account_reports_followup
-#: sql_constraint:account_followup.followup:0
+#: model:ir.model.constraint,message:account_reports_followup.constraint_account_followup_followup_company_uniq
 msgid "Only one follow-up per company is allowed"
-msgstr "Chỉ cho phép một công ty theo dõi cho mỗi công ty"
+msgstr "Chỉ một theo dõi cho mỗi công ty"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,help:account_reports_followup.field_res_users__payment_responsible_id
 msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the action."
 msgstr ""
-"Tùy chọn bạn có thể chỉ định người dùng cho trường này, điều này sẽ khiến "
-"anh ta chịu trách nhiệm về hành động."
+"Bạn có thể chỉ định người dùng cho trường này, điều này sẽ khiến anh ta chịu"
+" trách nhiệm về hành động."
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
@@ -364,14 +365,7 @@ msgstr "Theo dõi thanh toán"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "Print a Letter"
-msgstr ""
-
-#. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
-#, python-format
-msgid "Print letter"
-msgstr ""
+msgstr "In một lá thư"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__description
@@ -379,11 +373,9 @@ msgid "Printed Message"
 msgstr "Thông điệp đã in"
 
 #. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:16
-#, python-format
-msgid "Remind me later"
-msgstr ""
+#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__sms_description
+msgid "SMS Text Message"
+msgstr "Thông điệp SMS"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_filter
@@ -406,11 +398,10 @@ msgid "Send an Email"
 msgstr "Gửi Email"
 
 #. module: account_reports_followup
-#. openerp-web
-#: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:10
-#, python-format
-msgid "Send by email"
-msgstr "Gửi qua email"
+#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_sms
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+msgid "Send an SMS Text Message"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__sequence
@@ -424,8 +415,8 @@ msgid ""
 "the reminder.  Could be negative if you want to send a polite alert "
 "beforehand."
 msgstr ""
-"Số ngày sau ngày hết hạn của hóa đơn phải chờ trước khi gửi lời nhắc. Có thể"
-" âm nếu bạn muốn gửi cảnh báo lịch sự trước."
+"Gửi lời nhắc khi hoá đơn đã đáo hạn sau số ngày trên. Có thể âm nếu bạn muốn"
+" gửi cảnh báo lịch sự trước."
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line3
@@ -445,13 +436,12 @@ msgid ""
 "                        overdue invoice will be executed."
 msgstr ""
 "Để nhắc nhở khách hàng thanh toán hóa đơn của họ, bạn có thể\n"
-"                         xác định các hành động khác nhau tùy thuộc vào mức độ nghiêm trọng\n"
-"                         quá hạn của khách hàng là. Những hành động này được nhóm lại\n"
-"                         vào các cấp tiếp theo được kích hoạt khi đến hạn\n"
-"                         ngày của một hóa đơn đã vượt qua một số\n"
-"                         Số ngày. Nếu có các hóa đơn quá hạn khác cho\n"
-"                         cùng một khách hàng, hành động của hầu hết\n"
-"                         hóa đơn quá hạn sẽ được thực hiện."
+" xác định các hành động khác nhau tùy thuộc vào mức độ nghiêm trọng\n"
+"quá hạn của khách hàng. Những hành động này được nhóm lại\n"
+" vào các cấp tiếp theo được kích hoạt khi hóa đơn đã vượt qua số ngày đáo hạn nhất định. \n"
+"Nếu có nhiều hóa đơn quá hạn cho\n"
+"cùng một khách hàng, hệ thống sẽ ưu tiên lấy\n"
+" hóa đơn có mức độ quá hạn nghiêm trọng nhất."
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
@@ -464,24 +454,19 @@ msgid "Total debit"
 msgstr "Tổng nợ"
 
 #. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
-msgid "Urging reminder email"
-msgstr "Email nhắc nhở khẩn cấp"
-
-#. module: account_reports_followup
-#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
-msgid "Urging reminder letter"
-msgstr "Thư nhắc nhở khẩn cấp"
-
-#. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "When processing, it will print a PDF"
-msgstr ""
+msgstr "Trong quá trình xử lý, file PDF sẽ được in"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_email
 msgid "When processing, it will send an email"
-msgstr "Khi xử lý, nó sẽ gửi một Email"
+msgstr "Trong quá trình xử lý, email sẽ được gửi đi"
+
+#. module: account_reports_followup
+#: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_sms
+msgid "When processing, it will send an sms text message"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__manual_action
@@ -489,7 +474,8 @@ msgid ""
 "When processing, it will set the manual action to be taken for that "
 "customer. "
 msgstr ""
-"Khi xử lý, nó sẽ đặt hành động thủ công được thực hiện cho khách hàng đó."
+"Trong quá trình xử lý, hành động thủ công sẽ được định sẵn cho khách hàng "
+"đó."
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -500,14 +486,20 @@ msgid ""
 "                            forget to translate in all languages you installed\n"
 "                            using to top right icon."
 msgstr ""
-"Viết ở đây phần giới thiệu trong bức thư,\n"
-"                             theo mức độ theo dõi. Bạn có thể\n"
-"                             sử dụng các từ khóa sau trong văn bản. Đừng\n"
-"                             quên dịch bằng tất cả ngôn ngữ bạn đã cài đặt\n"
-"                             sử dụng biểu tượng trên cùng bên phải."
+"Viết ở đây phần giới thiệu của bức thư,\n"
+"dựa theo mức độ theo dõi. Bạn có thể\n"
+"sử dụng các từ khóa sau trong văn bản. Đừng\n"
+"quên dịch bằng tất cả ngôn ngữ bạn đã cài đặt\n"
+"bằng cách sử dụng biểu tượng trên cùng bên phải."
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup.py:57
+#: code:addons/account_reports_followup/models/account_followup.py:0
+#, python-format
+msgid "You have to define at least one line in the followup levels of %s"
+msgstr ""
+
+#. module: account_reports_followup
+#: code:addons/account_reports_followup/models/account_followup.py:0
 #, python-format
 msgid ""
 "Your description is invalid, use the right legend or %% if you want to use "

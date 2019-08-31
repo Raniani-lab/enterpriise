@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * stock_enterprise
+# 	* stock_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -9,10 +9,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2019-01-16 08:41+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -22,12 +22,12 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__assigned
 msgid "Available"
 msgstr "В наявності"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
 msgid "Cancelled"
 msgstr "Скасовано"
 
@@ -42,7 +42,7 @@ msgid "Creation Date"
 msgstr "Дата створення"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__outgoing
 msgid "Customers"
 msgstr "Клієнти"
 
@@ -58,8 +58,8 @@ msgstr "Час циклу (дні)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
-msgid "Day(s)"
-msgstr "День(і)"
+msgid "Days"
+msgstr "Дні"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -105,7 +105,7 @@ msgid "Display Name"
 msgstr "Назва для відображення"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__done
 msgid "Done"
 msgstr "Готово"
 
@@ -135,7 +135,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__internal
 msgid "Internal"
 msgstr "Внутрішній"
 
@@ -160,7 +160,12 @@ msgid "Last Modified on"
 msgstr "Останні зміни на"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Month"
+msgstr "Місяць"
+
+#. module: stock_enterprise
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
 msgid "New"
 msgstr "Новий"
 
@@ -170,7 +175,7 @@ msgid "Operation Type"
 msgstr "Тип операції"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__partially_available
 msgid "Partially Available"
 msgstr "Частково в наявності"
 
@@ -200,6 +205,12 @@ msgid "Product Quantity"
 msgstr "Кількість товару"
 
 #. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Quantity"
+msgstr "Кількість"
+
+#. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Cycle Time"
 msgstr "Час циклу надходжень"
@@ -211,6 +222,7 @@ msgstr "Затримка надходження"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
 msgid "Reference"
 msgstr "Посилання"
 
@@ -218,6 +230,11 @@ msgstr "Посилання"
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_cohort_view
 msgid "Report"
 msgstr "Звіт"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
+msgid "Scheduled Date"
+msgstr "Запланована дата"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__state
@@ -228,6 +245,11 @@ msgstr "Статус"
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
 msgstr "Складський огляд"
+
+#. module: stock_enterprise
+#: model:ir.model,name:stock_enterprise.model_report_stock_quantity
+msgid "Stock Quantity Report"
+msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
@@ -241,7 +263,7 @@ msgid ""
 "creation date of the delivery order and its done date."
 msgstr ""
 "Час, необхідний для доставки замовлення (у днях). Обчислюється шляхом "
-"порівняння дати створення замовлення на поставку та її дату."
+"порівняння дати створення замовлення на доставку та її дату."
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -260,7 +282,7 @@ msgstr "Дата переміщення"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_id
 msgid "Transfer Reference"
-msgstr "Посилання переміщення"
+msgstr "Референс переміщення"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_type_code
@@ -268,27 +290,32 @@ msgid "Type"
 msgstr "Тип"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__incoming
 msgid "Vendors"
 msgstr "Постачальники"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__waiting
 msgid "Waiting Another Move"
 msgstr "Очікування іншого переміщення"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__confirmed
 msgid "Waiting Availability"
 msgstr "Очікування наявності"
 
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
 #: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
-msgid "Warehouse Dashboard"
-msgstr "Панель приладів складу"
+msgid "Warehouse Analysis"
+msgstr "Аналіз складу"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Week"
+msgstr "Тиждень"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "day(s)"
-msgstr "день(дні)"
+msgid "days"
+msgstr "дні"

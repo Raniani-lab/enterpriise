@@ -1,18 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_bank_statement_import_qif
+# 	* account_bank_statement_import_qif
 # 
 # Translators:
-# Yaroslav Molochko <onorua@gmail.com>, 2018
-# Bohdan Lisnenko, 2018
+# Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -20,11 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-
-#. module: account_bank_statement_import_qif
-#: model_terms:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_qif
-msgid "<i class=\"fa fa-download mr4\"/>Import Sample Template"
-msgstr "<i class=\"fa fa-download mr4\"/>Імпортувати зразок шаблону"
 
 #. module: account_bank_statement_import_qif
 #: model:ir.model.fields,help:account_bank_statement_import_qif.field_account_bank_statement_import__journal_id
@@ -49,7 +43,7 @@ msgstr ""
 "QIF дата форматується  за першим днем (дд/мм/рр)."
 
 #. module: account_bank_statement_import_qif
-#: code:addons/account_bank_statement_import_qif/wizard/account_bank_statement_import_qif.py:59
+#: code:addons/account_bank_statement_import_qif/wizard/account_bank_statement_import_qif.py:0
 #, python-format
 msgid "Could not decipher the QIF file."
 msgstr "Не вдалося розшифрувати файл QIF."
@@ -67,7 +61,7 @@ msgstr "Сховати поле журналу в області перегля�
 #. module: account_bank_statement_import_qif
 #: model:ir.model,name:account_bank_statement_import_qif.model_account_bank_statement_import
 msgid "Import Bank Statement"
-msgstr "Імпортувати виписку"
+msgstr "Імпортувати банківську виписку"
 
 #. module: account_bank_statement_import_qif
 #: model:ir.model,name:account_bank_statement_import_qif.model_account_journal
@@ -77,7 +71,7 @@ msgstr "Журнал"
 
 #. module: account_bank_statement_import_qif
 #: model_terms:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_qif
-msgid "Quicken Interchange Format (.QIF)"
+msgid "Quicken Interchange Format (QIF)"
 msgstr "Швидкий формат обміну (.QIF)"
 
 #. module: account_bank_statement_import_qif
@@ -101,25 +95,25 @@ msgid ""
 "institution whether they format it with month or day first.<br/>"
 msgstr ""
 "Формат QIF невизначений у датах: будь ласка, звірте з вашою фінансової "
-"установою, як вона виставляє першим місяць або день.<br/>"
+"установою, як вона форматує дату спершу по місяцю чи дню.<br/>"
 
 #. module: account_bank_statement_import_qif
-#: code:addons/account_bank_statement_import_qif/wizard/account_bank_statement_import_qif.py:105
+#: code:addons/account_bank_statement_import_qif/wizard/account_bank_statement_import_qif.py:0
 #, python-format
 msgid "This file is either not a bank statement or is not correctly formed."
 msgstr "Файл не є випискою банку або сформовано невірно. "
 
 #. module: account_bank_statement_import_qif
 #: model_terms:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_view_inherited
-msgid "_Import"
-msgstr "_Import"
+msgid "Upload"
+msgstr "Завантажити"
 
 #. module: account_bank_statement_import_qif
-#: selection:account.bank.statement.import,qif_date_format:0
+#: model:ir.model.fields.selection,name:account_bank_statement_import_qif.selection__account_bank_statement_import__qif_date_format__day_first
 msgid "dd/mm/yy"
 msgstr "дд/мм/рр"
 
 #. module: account_bank_statement_import_qif
-#: selection:account.bank.statement.import,qif_date_format:0
+#: model:ir.model.fields.selection,name:account_bank_statement_import_qif.selection__account_bank_statement_import__qif_date_format__month_first
 msgid "mm/dd/yy"
 msgstr "мм/дд/рр"

@@ -2,21 +2,12 @@
 # This file contains the translation of the following modules:
 # * hr_contract_salary
 # 
-# Translators:
-# xlu <xlu@seznam.cz>, 2018
-# Martin Trigaux, 2018
-# Ladislav Tomm <tomm@helemik.cz>, 2018
-# Jan Horzinka <jan.horzinka@centrum.cz>, 2018
-# Michal Veselý <michal@veselyberanek.net>, 2018
-# trendspotter, 2018
-# Jaroslav Helemik Nemec <nemec@helemik.cz>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Jaroslav Helemik Nemec <nemec@helemik.cz>, 2018\n"
+"PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +18,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__signatures_count
 msgid "# Signatures"
-msgstr "# Podpisy"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -148,7 +139,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Intellectual Property"
-msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Duševní vlastnictví"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -402,19 +393,19 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Address"
-msgstr "Adresa"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_applicant
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__applicant_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__applicant_id
 msgid "Applicant"
-msgstr "Žadatel"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Apply Now"
-msgstr "Aplikovat nyní"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.actions.server,name:hr_contract_salary.ir_cron_clean_redundant_salary_data_ir_actions_server
@@ -431,7 +422,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "BE10 3631 0709 4104"
-msgstr "BE10 3631 0709 4104"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -446,7 +437,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Bank account"
-msgstr "Bankovní účet"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -456,12 +447,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Birth"
-msgstr "Narození"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Birthdate"
-msgstr "Datum narození"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -493,7 +484,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -503,7 +494,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Cash"
-msgstr "Hotovost"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -518,12 +509,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Citizenship and Other Information"
-msgstr "Občanství a další informace"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "City"
-msgstr "Město"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -533,7 +524,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
 msgid "Click here to create new contracts."
-msgstr "Klikněte zde pro vytvoření nových smluv."
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -543,7 +534,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Company Car"
-msgstr "Firemní auto"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -553,7 +544,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_res_config_settings
 msgid "Config Settings"
-msgstr "Nastavení konfigurace"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -569,7 +560,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Contact Information"
-msgstr "Kontaktní informace"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -592,7 +583,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__contract_type
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__contract_type
 msgid "Contract Type"
-msgstr "Typ smlouvy"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -612,7 +603,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Country"
-msgstr "Stát"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -632,12 +623,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__create_uid
 msgid "Created by"
-msgstr "Vytvořil(a)"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__create_date
 msgid "Created on"
-msgstr "Vytvořeno"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -676,12 +667,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Details"
-msgstr "Podrobnosti"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled"
-msgstr "Zakázáno"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -721,17 +712,17 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Disabled: Yes"
-msgstr "Vypnuto: Ano"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__display_name
 msgid "Display Name"
-msgstr "Zobrazovaný název"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Divorced"
-msgstr "Rozvedený"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -746,12 +737,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Education"
-msgstr "Vzdělání"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__email_to
@@ -761,23 +752,23 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Email:"
-msgstr "Email:"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Emergency Contact:"
-msgstr "Nouzový kontakt:"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Emergency Phone:"
-msgstr "Telefon pro nouzové volání:"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_employee
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_id
 msgid "Employee"
-msgstr "Zaměstnanec"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__final_yearly_costs
@@ -788,7 +779,7 @@ msgstr ""
 #: model:ir.model,name:hr_contract_salary.model_hr_contract
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_contract_id
 msgid "Employee Contract"
-msgstr "Smlouva zaměstnance"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -803,7 +794,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Female"
-msgstr "Žena"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -828,12 +819,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Full time equivalent employer cost"
-msgstr "Celkové ekvivalentní náklady zaměstnavatele"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "GROSS SALARY"
-msgstr "HRUBÁ MZDA"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_generate_simulation_link
@@ -843,7 +834,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Gender:"
-msgstr "Pohlaví:"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_applicant_view_form
@@ -913,7 +904,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -936,8 +927,6 @@ msgid ""
 "If the active field is set to False, it will allow you to hide the resource "
 "record without removing it."
 msgstr ""
-"Pokud je pole aktivní nastaveno na Nepravda, umožní vám to skrýt záznam "
-"zdroje bez jeho odstranění."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -947,7 +936,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "In case of emergency"
-msgstr "V případě nouze"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__customer_relation
@@ -977,7 +966,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_job
 msgid "Job Position"
-msgstr "Pracovní pozice"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -987,7 +976,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__job_title
 msgid "Job Title"
-msgstr "Pracovní pozice"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1007,7 +996,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link____last_update
 msgid "Last Modified on"
-msgstr "Naposled změněno"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1017,12 +1006,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__write_uid
 msgid "Last Updated by"
-msgstr "Naposledy upraveno od"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__write_date
 msgid "Last Updated on"
-msgstr "Naposled upraveno"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1037,12 +1026,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Male"
-msgstr "Můž"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Marital Status"
-msgstr "Rodinný stav"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1052,7 +1041,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Married"
-msgstr "Ženatý/Vdaná"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1077,7 +1066,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__new_car_model_id
 msgid "Model"
-msgstr "Model"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1124,7 +1113,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Name"
-msgstr "Název"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1164,7 +1153,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "No"
-msgstr "Ne"
+msgstr ""
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:592
@@ -1217,7 +1206,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Other"
-msgstr "jiný"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1258,7 +1247,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Personal Information"
-msgstr "Osobní informace"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1268,7 +1257,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Phone:"
-msgstr "Telefon:"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1303,12 +1292,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Public Transportation"
-msgstr "Veřejná doprava"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Recompute"
-msgstr "Přepočti"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -1384,7 +1373,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Single"
-msgstr "Svobodný"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1449,7 +1438,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "State"
-msgstr "Stát"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1459,12 +1448,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Status"
-msgstr "Stav"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Street"
-msgstr "ulice"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1537,7 +1526,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Total"
-msgstr "Celkem"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
@@ -1547,7 +1536,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__vehicle_id
 msgid "Vehicle"
-msgstr "Vozidlo"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1557,7 +1546,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Widower"
-msgstr "Vdovec"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1603,7 +1592,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Yes"
-msgstr "Ano"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1640,7 +1629,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "close"
-msgstr "zavřít"
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package

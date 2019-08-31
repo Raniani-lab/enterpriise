@@ -1,17 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mrp_maintenance
+# 	* mrp_maintenance
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Jorunn D. Newth, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Jorunn D. Newth, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,19 +30,9 @@ msgid "Computed as Latest Failure Date + MTBF"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture1
-msgid "Crosscut Saw: 8 ppi."
-msgstr ""
-
-#. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Discard"
 msgstr "Forkast"
-
-#. module: mrp_maintenance
-#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture3
-msgid "Drill Machine"
-msgstr ""
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
@@ -79,11 +69,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Expected Mean Time Between Failure"
 msgstr ""
-
-#. module: mrp_maintenance
-#: model:maintenance.equipment.category,name:mrp_maintenance.equipment_furniture_tools
-msgid "Furniture Tools"
-msgstr "Møbelverktøy"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
@@ -128,7 +113,7 @@ msgid "Maintenance Request"
 msgstr "Forespørsel om vedlikehold"
 
 #. module: mrp_maintenance
-#: code:addons/mrp_maintenance/models/mrp_maintenance.py:93
+#: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
 #, python-format
 msgid "Maintenance Requests"
 msgstr "Forespørsler om vedlikehold"
@@ -161,8 +146,8 @@ msgid "Mean Time To Repair"
 msgstr ""
 
 #. module: mrp_maintenance
-#: code:addons/mrp_maintenance/models/mrp_maintenance.py:80
-#: code:addons/mrp_maintenance/models/mrp_maintenance.py:115
+#: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
+#: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
 #, python-format
 msgid "New Maintenance Request"
 msgstr "Ny forespørsel om vedlikehold"
@@ -171,6 +156,11 @@ msgstr "Ny forespørsel om vedlikehold"
 #: model:ir.model.fields,field_description:mrp_maintenance.field_mrp_production__maintenance_count
 msgid "Number of maintenance requests"
 msgstr "Antall forespørsler om vedlikehold"
+
+#. module: mrp_maintenance
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_search_inherit_mrp
+msgid "Operation"
+msgstr "Operasjon"
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_production
@@ -186,11 +176,6 @@ msgstr "Forespørsel"
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Save"
 msgstr "Lagre"
-
-#. module: mrp_maintenance
-#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture2
-msgid "Scrub Plane"
-msgstr ""
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workcenter
@@ -216,7 +201,7 @@ msgid "days"
 msgstr "dager"
 
 #. module: mrp_maintenance
-#: code:addons/mrp_maintenance/models/mrp_maintenance.py:47
+#: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
 #, python-format
 msgid "work centers"
 msgstr ""

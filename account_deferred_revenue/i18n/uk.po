@@ -1,19 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_deferred_revenue
+# 	* account_deferred_revenue
 # 
 # Translators:
-# Bohdan Lisnenko, 2018
-# Анатолій Пономаренко <aponomarenko020@gmail.com>, 2018
 # Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -23,29 +21,31 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
-msgid "Assets"
-msgstr "Активи"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Assets in running state"
-msgstr "Активи в активному стані"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Category"
-msgstr "Категорія"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Account used to recognize the expense"
+msgstr "Рахунок використовується для визнання витрат"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Category of asset"
-msgstr "Категорія активу"
+msgid "Account used to recognize the revenue"
+msgstr "Рахунок використовується для визнання доходу"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Company"
-msgstr "Компанія"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "Account used to record the deferred income"
+msgstr "Рахунок використовується для запису доходів майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_expense_model_search
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
+msgid "Asset Model"
+msgstr "Модель активу"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Compute Deferal"
+msgstr "Розрахувати відстрочку"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -53,9 +53,15 @@ msgid "Compute Revenue"
 msgstr "Вирахувати дохід"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_modal
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_modal
 msgid "Confirm"
 msgstr "Підтвердити"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Cumulative Expense"
+msgstr "Накопичення витрат"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -63,48 +69,67 @@ msgid "Cumulative Revenue"
 msgstr "Сукупний дохід"
 
 #. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_expense_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_expense_model_search
+msgid "Deferred Expense Account"
+msgstr "Рахунок витрат майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Deferred Expense Amount"
+msgstr "Сума витрат майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Deferred Expense Model name"
+msgstr "Назва моделі витрат майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model:ir.actions.act_window,name:account_deferred_revenue.action_account_expense_model_form
+#: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_expense_model_recognition
+msgid "Deferred Expense Models"
+msgstr "Моделі витрат майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Deferred Expense name"
+msgstr "Назва витрат майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model:ir.actions.act_window,name:account_deferred_revenue.action_account_expense_form
+#: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_expense_recognition
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_tree
+msgid "Deferred Expenses"
+msgstr "Витрати майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_expense_tree
+msgid "Deferred Expenses Models"
+msgstr "Моделі витрат майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Current Revenue"
-msgstr "Поточний дохід"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Customer"
-msgstr "Клієнт"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Date of Revenue Sales"
-msgstr "Дата доходів з продажів"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
+msgid "Deferred Revenue Account"
+msgstr "Рахунок доходу майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Date of asset"
-msgstr "Дата активу"
+msgid "Deferred Revenue Amount"
+msgstr "Сума доходів майбутніх періодів"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_invoice_revenue_recognition_category
-msgid "Deferred Revenue"
-msgstr "Доходи майбутніх періодів"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "Deferred Revenue Model name"
+msgstr "Назва моделі доходів майбутніх періодів"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.action_account_revenue_report_graph
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.action_account_revenue_report_pivot
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Deferred Revenue Analysis"
-msgstr "Аналіз відстрочених доходів"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_invoice_asset_form
-msgid "Deferred Revenue Type"
-msgstr "Тип доходу майбутніх періодів"
-
-#. module: account_deferred_revenue
-#: model:ir.actions.act_window,name:account_deferred_revenue.action_account_asset_asset_list_normal_sale
-#: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_asset_asset_list_normal_sale
-msgid "Deferred Revenue Types"
-msgstr "Типи доходів майбутніх періодів"
+#: model:ir.actions.act_window,name:account_deferred_revenue.action_account_revenue_model_form
+#: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_revenue_model_recognition
+msgid "Deferred Revenue Models"
+msgstr "Моделі доходів майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -113,56 +138,86 @@ msgstr "Назва доходу майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_account_revenue_form
-#: model:ir.actions.act_window,name:account_deferred_revenue.action_asset_revenue_report
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_revenue_recognition
-#: model:ir.ui.menu,name:account_deferred_revenue.menu_action_asset_revenue_report
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_sale_tree
 msgid "Deferred Revenues"
 msgstr "Доходи майбутніх періодів"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Draft"
-msgstr "Чернетка"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+msgid "Deferred Revenues Models"
+msgstr "Моделі доходів майбутніх періодів"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_modal
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_modal
+msgid "Discard"
+msgstr "Відмінити"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_tree
+msgid "Expense"
+msgstr "Витрати"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_expense_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_expense_model_search
+msgid "Expense Account"
+msgstr "Рахунок витрат"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Expense Board"
+msgstr "Панель витрат"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Expense Date"
+msgstr "Дата витрат"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Expense Lines"
+msgstr "Рядки витрат"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_expense_tree
+msgid "Expense Name"
+msgstr "Назва витрат"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Expense Recognition"
+msgstr "Визнання витрат"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Entries"
-msgstr "Записи"
+msgid "First Recognition Date"
+msgstr "Дата першого визнання"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Extended Filters..."
-msgstr "Розширені фільтри..."
-
-#. module: account_deferred_revenue
-#: model_terms:ir.actions.act_window,help:account_deferred_revenue.action_asset_revenue_report
-msgid ""
-"From this report, you can have an overview of your deferred revenue. The\n"
-"            search bar can also be used to personalize your revenue recognition reporting."
-msgstr ""
-"З цього звіту ви можете отримати огляд доходів майбутніх періодів.\n"
-"            Панель пошуку також може використовуватися для персоналізації звіту про визнання доходу."
-
-#. module: account_deferred_revenue
-#: model:ir.ui.menu,name:account_deferred_revenue.menu_recognition_depreciation_confirmation_wizard
-msgid "Generate Deferred Revenues Entries"
-msgstr "Створення записів доходів майбутніх періодів"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Gross value of asset"
-msgstr "Вартість придбання активу"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_expense_model_search
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
 msgid "Group By..."
 msgstr "Групувати за..."
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Invoice"
-msgstr "Рахунок"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_expense_model_search
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
+msgid "Journal"
+msgstr "Журнал"
+
+#. module: account_deferred_revenue
+#: model:ir.model,name:account_deferred_revenue.model_account_move_line
+msgid "Journal Item"
+msgstr "Елемент журналу"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Modify Expense"
+msgstr "Змінити витрати"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -170,54 +225,54 @@ msgid "Modify Revenue"
 msgstr "Змінити дохід"
 
 #. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Next Period Expense"
+msgstr "Наступний період витрат"
+
+#. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Next Period Revenue"
 msgstr "Наступний період доходу"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.actions.act_window,help:account_deferred_revenue.action_asset_revenue_report
-msgid "No deferred revenue"
-msgstr "Немає доходів майбутніх періодів"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_expense_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+msgid "Number of Recognitions"
+msgstr "Кількість рядків визнання"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_expense_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+msgid "Period length"
+msgstr "Тривалість періоду"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "Related Expenses"
+msgstr "Пов'язані витрати"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Number of Revenues"
-msgstr "Кількість доходів"
+msgid "Related Sales"
+msgstr "Пов'язані продажі"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Partner"
-msgstr "Партнер"
-
-#. module: account_deferred_revenue
-#: model:ir.actions.act_window,name:account_deferred_revenue.action_recognition_depreciation_confirmation_wizard
-msgid "Post Installment Lines"
-msgstr "Опублікувати рядки платежів"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Posted"
-msgstr "Опубліковано"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Posted depreciation lines"
-msgstr "Опублікувати проведення по амортизації"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Recognition in draft state"
-msgstr "Визнання у чорновому стані"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Residual"
-msgstr "Залишок"
+msgid "Residual Amount to Recognize"
+msgstr "Залишкова сума до визнання"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue"
 msgstr "Дохід"
+
+#. module: account_deferred_revenue
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_revenue_model_search
+msgid "Revenue Account"
+msgstr "Рахунок доходу"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -226,19 +281,8 @@ msgstr "Шкала доходу"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Revenue Date"
 msgstr "Дата доходу"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Revenue Entry"
-msgstr "Запис доходу"
-
-#. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Revenue Information"
-msgstr "Інформація доходу"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -246,33 +290,36 @@ msgid "Revenue Lines"
 msgstr "Рядки доходу"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_sale_tree
 msgid "Revenue Name"
 msgstr "Назва доходу"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Revenue Recognition"
 msgstr "Визнання доходів"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Running"
-msgstr "Діючий"
+#: code:addons/account_deferred_revenue/models/account_move.py:0
+#: model:ir.actions.server,name:account_deferred_revenue.action_account_aml_to_deferred_expense
+#, python-format
+msgid "Turn as a deferred expense"
+msgstr "Повернути на витрати майбутніх періодів"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
-msgid "Sales Date"
-msgstr "Дата продажів"
+#: code:addons/account_deferred_revenue/models/account_move.py:0
+#: model:ir.actions.server,name:account_deferred_revenue.action_account_aml_to_deferred_revenue
+#, python-format
+msgid "Turn as a deferred revenue"
+msgstr "Повернути на доходи майбутніх періодів"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Sell or Dispose"
-msgstr "Продаж або ліквідація"
+msgid "e.g. Annual Subscription"
+msgstr "напр., Річна підписка"
 
 #. module: account_deferred_revenue
-#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
-msgid "Set to Draft"
-msgstr "Зробити чернеткою"
+#: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_expense_form
+msgid "e.g. Annually Paid Insurance"
+msgstr "напр., Щорічно сплачується страхування"

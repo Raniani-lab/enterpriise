@@ -1,27 +1,26 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality_control
+# 	* quality_control
 # 
 # Translators:
-# Sergio Zanchetta <primes2h@gmail.com>, 2018
-# Francesco Garganese <francesco.garganese@aeromnia.aero>, 2018
-# Martin Trigaux, 2018
-# Giovanni Perteghella <giovanni@perteghella.org>, 2018
-# Davide Corio <enlightx@gmail.com>, 2018
-# Luigi Di Naro <gigidn@gmail.com>, 2018
-# Simone Bernini <simone@aperturelabs.it>, 2018
-# Paolo Valier, 2018
-# Cécile Collart <cco@odoo.com>, 2018
-# David Minneci <david@numeko.it>, 2018
-# Léonie Bouchat <lbo@odoo.com>, 2018
-# efraimbiffi <eab@odoo.com>, 2018
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
+# Francesco Garganese <francesco.garganese@aeromnia.aero>, 2019
+# Martin Trigaux, 2019
+# Giovanni Perteghella <giovanni@perteghella.org>, 2019
+# Davide Corio <enlightx@gmail.com>, 2019
+# Luigi Di Naro <gigidn@gmail.com>, 2019
+# Simone Bernini <simone@aperturelabs.it>, 2019
+# Paolo Valier, 2019
+# Léonie Bouchat <lbo@odoo.com>, 2019
+# mymage <stefano.consolaro@mymage.it>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: efraimbiffi <eab@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,10 +35,17 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Gestisci\"/>"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid ""
 "<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
 "title=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -49,17 +55,34 @@ msgid ""
 msgstr ""
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
+msgid ""
+"<span class=\"fa fa-2x\" data-icon=\"∑\" style=\"padding-left: 10px;\" "
+"role=\"img\" aria-label=\"Statistics\" title=\"Statistics\"/>"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 msgid ""
 "<span class=\"o_stat_text text-success\" attrs=\"{'invisible': [('quality_check_fail', '=', True)]}\">Quality Checks</span>\n"
 "                    <span class=\"o_stat_text text-danger\" attrs=\"{'invisible': [('quality_check_fail', '!=', True)]}\">Quality Checks</span>"
 msgstr ""
+"<span class=\"o_stat_text text-success\" attrs=\"{'invisible': [('quality_check_fail', '=', True)]}\">Controlli qualità</span>\n"
+"                    <span class=\"o_stat_text text-danger\" attrs=\"{'invisible': [('quality_check_fail', '!=', True)]}\">Controlli qualità</span>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid ""
 "<span class=\"o_stat_text\">AVG:</span>\n"
 "                        <span class=\"o_stat_text\">STD:</span>"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.product_product_form_view_quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.product_template_form_view_quality_control
+msgid ""
+"<span class=\"o_stat_text\">Pass:</span>\n"
+"                        <span class=\"o_stat_text\">Fail:</span>"
 msgstr ""
 
 #. module: quality_control
@@ -95,37 +118,33 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "Accept Emails From"
-msgstr "Accetta email da"
+msgstr "Accetta e-mail da"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_tag_action
 msgid "Add a new tag"
-msgstr "Aggiungi un tag"
-
-#. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
-msgid "Alert(s)"
-msgstr ""
+msgstr "Aggiunge una nuova etichetta"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_ids
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Alerts"
 msgstr "Avvisi"
 
 #. module: quality_control
-#: selection:quality.point,measure_frequency_type:0
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_type__all
 msgid "All Operations"
-msgstr "Tutte le Operazioni"
+msgstr "Tutte le operazioni"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Archived"
-msgstr "Contatti Archiviati"
+msgstr "Archiviato"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__average
 msgid "Average"
-msgstr "Media"
+msgstr "Medio"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
@@ -138,6 +157,7 @@ msgid "Checked By"
 msgstr ""
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_tree
 msgid "Checked Date"
 msgstr ""
@@ -173,13 +193,19 @@ msgid "Control Person"
 msgstr ""
 
 #. module: quality_control
-#: model:ir.ui.menu,name:quality_control.menu_quality_control_points
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Control Point"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.ui.menu,name:quality_control.menu_quality_control_points
 msgid "Control Points"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_tree
 msgid "Control Type"
 msgstr ""
 
@@ -215,14 +241,9 @@ msgid "Create a new quality control point"
 msgstr ""
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
-msgid "Creation Date"
-msgstr "Data creazione"
-
-#. module: quality_control
-#: selection:quality.point,measure_frequency_unit:0
-msgid "Day(s)"
-msgstr "Giorno(i)"
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__day
+msgid "Days"
+msgstr "Giorni"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -245,26 +266,21 @@ msgid "Description of the issue..."
 msgstr ""
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
-msgid "Done"
-msgstr "Completato"
-
-#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "Email Alias"
-msgstr "Email Alias"
+msgstr "Alias e-mail"
 
 #. module: quality_control
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_success__fail
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
-#: selection:quality.check,measure_success:0
 msgid "Fail"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "Failed"
-msgstr "Fallito"
+msgstr "Non riuscito"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__failure_message
@@ -283,7 +299,6 @@ msgid "Frequency Unit Value"
 msgstr ""
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
@@ -295,10 +310,9 @@ msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
-msgstr "In Corso"
+msgstr "In corso"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -343,28 +357,18 @@ msgid "Miscellaneous"
 msgstr "Varie"
 
 #. module: quality_control
-#: selection:quality.point,measure_frequency_unit:0
-msgid "Month(s)"
-msgstr "Mese(i)"
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__month
+msgid "Months"
+msgstr "Mesi"
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
-msgid "My Alerts"
-msgstr ""
-
-#. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_tree
-msgid "Name"
-msgstr "Nome"
-
-#. module: quality_control
-#: code:addons/quality_control/models/quality.py:283
+#: code:addons/quality_control/models/quality.py:0
 #, python-format
 msgid "New"
 msgstr "Nuovo"
 
 #. module: quality_control
-#: selection:quality.check,measure_success:0
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_success__none
 msgid "No measure"
 msgstr ""
 
@@ -404,8 +408,9 @@ msgstr "Note"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_failure_message
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 msgid "OK"
-msgstr "OK"
+msgstr "Ok"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
@@ -415,12 +420,12 @@ msgstr "Tipo operazione"
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
 msgid "Overview"
-msgstr "Visione d'insieme"
+msgstr "Panoramica"
 
 #. module: quality_control
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_success__pass
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
-#: selection:quality.check,measure_success:0
 msgid "Pass"
 msgstr ""
 
@@ -440,12 +445,12 @@ msgid "Percentage"
 msgstr "Percentuale"
 
 #. module: quality_control
-#: selection:quality.point,measure_frequency_type:0
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_type__periodical
 msgid "Periodically"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:163
+#: code:addons/quality_control/models/quality.py:0
 #, python-format
 msgid "Picture Uploaded"
 msgstr ""
@@ -456,14 +461,21 @@ msgid "Preventive Actions"
 msgstr "Azioni Preventive"
 
 #. module: quality_control
+#: model:ir.model,name:quality_control.model_product_product
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Product"
 msgstr "Prodotto"
 
 #. module: quality_control
+#: model:ir.model,name:quality_control.model_product_template
+msgid "Product Template"
+msgstr "Modello prodotto"
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "Project Name"
-msgstr "Nome Progetto"
+msgstr "Nome progetto"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_root
@@ -471,14 +483,15 @@ msgid "Quality"
 msgstr "Qualità"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:208
-#: code:addons/quality_control/models/quality.py:220
+#: code:addons/quality_control/models/quality.py:0
+#: code:addons/quality_control/models/quality.py:0
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search_inherit_quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 #, python-format
 msgid "Quality Alert"
-msgstr ""
+msgstr "Allarme qualità"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_graph
@@ -489,7 +502,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_count
 msgid "Quality Alert Count"
-msgstr ""
+msgstr "Totale allarmi qualità"
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_stage_action
@@ -520,11 +533,11 @@ msgid "Quality Alerts"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:251
+#: code:addons/quality_control/models/quality.py:0
 #: model:ir.model,name:quality_control.model_quality_check
 #, python-format
 msgid "Quality Check"
-msgstr ""
+msgstr "Controllo qualità"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_graph
@@ -535,17 +548,17 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_check_fail
 msgid "Quality Check Fail"
-msgstr ""
+msgstr "Controllo qualità fallito"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:171
+#: code:addons/quality_control/models/quality.py:0
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 #, python-format
 msgid "Quality Check Failed"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:186
+#: code:addons/quality_control/models/quality.py:0
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_main
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_picking
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_report
@@ -558,7 +571,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 #, python-format
 msgid "Quality Checks"
-msgstr ""
+msgstr "Controlli qualità"
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_spc
@@ -568,11 +581,17 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_control
 msgid "Quality Control"
-msgstr "Controllo Qualità"
+msgstr "Controllo qualità"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_quality_point
 msgid "Quality Control Point"
+msgstr "Punto controllo qualità"
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_product_product__quality_control_point_qty
+#: model:ir.model.fields,field_description:quality_control.field_product_template__quality_control_point_qty
+msgid "Quality Control Point Qty"
 msgstr ""
 
 #. module: quality_control
@@ -581,20 +600,32 @@ msgid "Quality Control Points"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_product_product__quality_fail_qty
+#: model:ir.model.fields,field_description:quality_control.field_product_template__quality_fail_qty
+msgid "Quality Fail Qty"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_team_action
 msgid "Quality Overview"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_product_product__quality_pass_qty
+#: model:ir.model.fields,field_description:quality_control.field_product_template__quality_pass_qty
+msgid "Quality Pass Qty"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.product_product_form_view_quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.product_template_form_view_quality_control
+msgid "Quality Points"
 msgstr ""
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_tag_action
 #: model:ir.ui.menu,name:quality_control.menu_config_quality_tags
 msgid "Quality Tags"
-msgstr ""
-
-#. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
-msgid "Quality Team"
 msgstr ""
 
 #. module: quality_control
@@ -611,25 +642,19 @@ msgid ""
 msgstr ""
 
 #. module: quality_control
-#: selection:quality.point,measure_frequency_type:0
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_type__random
 msgid "Randomly"
 msgstr "A caso"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_reporting
 msgid "Reporting"
-msgstr "Report"
+msgstr "Rendicontazione"
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Responsible"
 msgstr "Responsabile"
-
-#. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
-msgid "Root Cause"
-msgstr "Causa principale"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -637,9 +662,9 @@ msgid "Settings"
 msgstr "Impostazioni"
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
-msgid "Stage"
-msgstr "Fase"
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_stage_view_tree
+msgid "Stage Name"
+msgstr "Nome fase"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__standard_deviation
@@ -648,21 +673,22 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
-msgid "State"
+msgid "Status"
 msgstr "Stato"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move
 msgid "Stock Move"
-msgstr "Movimento Magazzino"
+msgstr "Movimento di magazzino"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_tree
 msgid "Tags"
-msgstr "Tags"
+msgstr "Etichette"
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Team"
 msgstr "Team"
@@ -675,7 +701,7 @@ msgstr "Gruppi"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Test Type"
-msgstr ""
+msgstr "Tipo di test"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
@@ -689,6 +715,7 @@ msgstr ""
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_picking
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_tree
 msgid "Transfer"
 msgstr "Trasferisci"
 
@@ -714,18 +741,18 @@ msgid "Warning Message"
 msgstr ""
 
 #. module: quality_control
-#: selection:quality.point,measure_frequency_unit:0
-msgid "Week(s)"
-msgstr "Settimana(e)"
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__week
+msgid "Weeks"
+msgstr "Settimane"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:140
+#: code:addons/quality_control/models/quality.py:0
 #, python-format
 msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/stock_picking.py:63
+#: code:addons/quality_control/models/stock_picking.py:0
 #, python-format
 msgid "You still need to do the quality checks!"
-msgstr ""
+msgstr "Si deve ancora fare i controlli di qualità!"

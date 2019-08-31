@@ -1,18 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * project_enterprise
+# 	* project_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Leon Grill <leg@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.3+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-12 12:34+0000\n"
-"PO-Revision-Date: 2019-03-20 14:43+0000\n"
-"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,20 +20,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_view_kanban_inherit
-msgid "<span class=\"o_label\">Planning</span>"
-msgstr "<span class=\"o_label\">Planung</span>"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Customer: </strong>"
+msgstr "<strong>Kunde: </strong>"
 
 #. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_project__allow_planning
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task__allow_planning
-msgid "Allow Planning"
-msgstr "Planung zulassen"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Start Date: </strong>"
+msgstr ""
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "Assigned To"
-msgstr "Zugewiesen an"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Stop Date: </strong>"
+msgstr ""
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
+msgid "Address"
+msgstr "Adresse"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
+msgid "Customer"
+msgstr "Kunde"
+
+#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_email
+msgid "Customer Email"
+msgstr "E-Mail Kunde"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_end
@@ -42,27 +55,29 @@ msgid "End date"
 msgstr "Enddatum"
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "Group By"
-msgstr "Gruppieren nach"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
+msgid "Gantt"
+msgstr "Gantt"
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "My Project"
-msgstr "Mein Projekt"
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task_type__is_closed
+msgid "Is a close stage"
+msgstr "Ist Abschlußstufe"
 
 #. module: project_enterprise
-#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning
-#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning_by_project
-#: model:ir.ui.menu,name:project_enterprise.project_task_menu_planning
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_mobile
+msgid "Mobile"
+msgstr "Mobil"
+
+#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_phone
+msgid "Phone"
+msgstr "Telefon"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "Planning"
 msgstr "Planung"
-
-#. module: project_enterprise
-#: model:ir.model,name:project_enterprise.model_project_project
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "Project"
-msgstr "Projekt"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_begin
@@ -70,16 +85,54 @@ msgid "Start date"
 msgstr "Anfangsdatum"
 
 #. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_street
+msgid "Street"
+msgstr "Straße"
+
+#. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 msgid "Task"
 msgstr "Aufgabe"
 
 #. module: project_enterprise
-#: model:ir.ui.menu,name:project_enterprise.project_task_menu
-msgid "Tasks"
-msgstr "Aufgaben"
+#: model:ir.model,name:project_enterprise.model_project_task_type
+msgid "Task Stage"
+msgstr "Aufgabenstufe"
+
+#. module: project_enterprise
+#: model:ir.model.fields,help:project_enterprise.field_project_task_type__is_closed
+msgid "Tasks in this stage are considered as closed."
+msgstr "Aufgaben in dieser Stufe werden als beendet interpretiert."
+
+#. module: project_enterprise
+#: model:ir.model.constraint,message:project_enterprise.constraint_project_task_planned_dates_check
+msgid "The planned start date must be prior to the planned end date."
+msgstr ""
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form
 msgid "Timesheets"
 msgstr "Zeiterfassung"
+
+#. module: project_enterprise
+#. openerp-web
+#: code:addons/project_enterprise/static/src/js/task_gantt_model.js:0
+#, python-format
+msgid "Unassigned tasks"
+msgstr ""
+
+#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_zip
+msgid "Zip"
+msgstr "PLZ"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_kanban
+msgid "oe_kanban_text_red"
+msgstr "oe_kanban_text_red"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_kanban
+msgid "text-warning font-weight-bold"
+msgstr ""

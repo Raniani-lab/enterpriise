@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_twitter_wall
+# 	* website_twitter_wall
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -10,10 +10,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:42+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -21,11 +21,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#. module: website_twitter_wall
-#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
-msgid "(Un)archiving a wall. Do you want to proceed?"
-msgstr ""
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
@@ -67,8 +62,13 @@ msgid "Active"
 msgstr "啟用"
 
 #. module: website_twitter_wall
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_search
+msgid "Archived"
+msgstr "封存"
+
+#. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__can_publish
-msgid "Can publish"
+msgid "Can Publish"
 msgstr ""
 
 #. module: website_twitter_wall
@@ -132,14 +132,14 @@ msgid "Is Live"
 msgstr ""
 
 #. module: website_twitter_wall
+#: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_published
+msgid "Is Published"
+msgstr ""
+
+#. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is live mode on/off"
 msgstr "是否開啟實時模式"
-
-#. module: website_twitter_wall
-#: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_published
-msgid "Is published"
-msgstr "已發表"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall____last_update
@@ -172,7 +172,7 @@ msgid "Live mode"
 msgstr ""
 
 #. module: website_twitter_wall
-#: selection:website.twitter.wall,mode:0
+#: model:ir.model.fields.selection,name:website_twitter_wall.selection__website_twitter_wall__mode__mixed
 msgid "Mixed"
 msgstr ""
 
@@ -188,7 +188,7 @@ msgid "Name"
 msgstr "名称"
 
 #. module: website_twitter_wall
-#: selection:website.twitter.wall,mode:0
+#: model:ir.model.fields.selection,name:website_twitter_wall.selection__website_twitter_wall__mode__popular
 msgid "Popular"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgid "Query operators"
 msgstr "查詢運算符"
 
 #. module: website_twitter_wall
-#: selection:website.twitter.wall,mode:0
+#: model:ir.model.fields.selection,name:website_twitter_wall.selection__website_twitter_wall__mode__recent
 msgid "Recent"
 msgstr "最近"
 
@@ -206,6 +206,11 @@ msgstr "最近"
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Repeat"
 msgstr "重複"
+
+#. module: website_twitter_wall
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_search
+msgid "Search CRM Score"
+msgstr ""
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__search_pattern
@@ -243,7 +248,7 @@ msgid "Single view"
 msgstr "單一視圖"
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:83
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
 msgid ""
 "The Twitter authentication failed. Please check your API key and secret."
@@ -262,7 +267,7 @@ msgid ""
 msgstr ""
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:94
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
 msgstr ""
@@ -289,7 +294,7 @@ msgid "Tweet Html"
 msgstr ""
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:134
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_tweet_action
 #: model:ir.ui.menu,name:website_twitter_wall.website_twitter_tweet_menu
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form

@@ -1,22 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * marketing_automation
+# 	* marketing_automation
 # 
 # Translators:
-# Yaroslav Molochko <onorua@gmail.com>, 2018
-# Zoriana Zaiats, 2018
-# Bohdan Lisnenko, 2018
-# ТАрас <tratatuta@i.ua>, 2018
-# Olga Lugova <trolka.olug@gmail.com>, 2018
 # Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2017-12-13 15:21+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -24,6 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__link_tracker_click_count
+msgid "# Clicks"
+msgstr "К-сть натискань"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
@@ -82,7 +82,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-envelope-open-o\"/> Not opened within"
-msgstr "<i class=\"fa fa-envelope-open-o\"/> Не відкрито протягом"
+msgstr "<i class=\"fa fa-envelope-open-o\"/> Не відкрито в межах"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -106,8 +106,8 @@ msgstr "<i class=\"fa fa-hand-pointer-o\"/> Не натиснуто після"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "<i class=\"fa fa-pie-chart\"/> Email Details"
-msgstr "<i class=\"fa fa-pie-chart\"/> Деталі електронної пошти"
+msgid "<i class=\"fa fa-pie-chart\"/> Details"
+msgstr "<i class=\"fa fa-pie-chart\"/> Деталі"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -136,26 +136,7 @@ msgstr ""
 "role=\"img\" aria-label=\"Add Another Activity\"/>"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid ""
-"<i data-type=\"mail_open\" class=\"fa fa-envelope-open-o o_ma_text_processed o_add_child\" title=\"Mail Opened\" role=\"img\" aria-label=\"Mail Opened\"/>\n"
-"                                                            <i data-type=\"mail_not_open\" class=\"fa fa-envelope-open-o o_ma_text_rejected o_add_child\" title=\"Mail not Opened\" role=\"img\" aria-label=\"Mail not Opened\"/>\n"
-"                                                            <i data-type=\"mail_reply\" class=\"fa fa-reply o_ma_text_processed o_add_child\" title=\"Mail Replied\" role=\"img\" aria-label=\"Mail Replied\"/>\n"
-"                                                            <i data-type=\"mail_not_reply\" class=\"fa fa-reply o_ma_text_rejected o_add_child\" title=\"Mail not Replied\" role=\"img\" aria-label=\"Mail not Replied\"/>\n"
-"                                                            <i data-type=\"mail_click\" class=\"fa fa-hand-pointer-o o_ma_text_processed o_add_child\" title=\"Mail Clicked\" role=\"img\" aria-label=\"Mail Clicked\"/>\n"
-"                                                            <i data-type=\"mail_not_click\" class=\"fa fa-hand-pointer-o o_ma_text_rejected o_add_child\" title=\"Mail not Clicked\" role=\"img\" aria-label=\"Mail not Clicked\"/>\n"
-"                                                            <i data-type=\"mail_bounce\" class=\"fa fa fa-exclamation-circle o_ma_text_rejected o_add_child\" title=\"Mail Bounced\" role=\"img\" aria-label=\"Mail Bounced\"/>"
-msgstr ""
-"<i data-type=\"mail_open\" class=\"fa fa-envelope-open-o o_ma_text_processed o_add_child\" title=\"Mail Opened\" role=\"img\" aria-label=\"Mail Opened\"/>\n"
-"                                                            <i data-type=\"mail_not_open\" class=\"fa fa-envelope-open-o o_ma_text_rejected o_add_child\" title=\"Mail not Opened\" role=\"img\" aria-label=\"Mail not Opened\"/>\n"
-"                                                            <i data-type=\"mail_reply\" class=\"fa fa-reply o_ma_text_processed o_add_child\" title=\"Mail Replied\" role=\"img\" aria-label=\"Mail Replied\"/>\n"
-"                                                            <i data-type=\"mail_not_reply\" class=\"fa fa-reply o_ma_text_rejected o_add_child\" title=\"Mail not Replied\" role=\"img\" aria-label=\"Mail not Replied\"/>\n"
-"                                                            <i data-type=\"mail_click\" class=\"fa fa-hand-pointer-o o_ma_text_processed o_add_child\" title=\"Mail Clicked\" role=\"img\" aria-label=\"Mail Clicked\"/>\n"
-"                                                            <i data-type=\"mail_not_click\" class=\"fa fa-hand-pointer-o o_ma_text_rejected o_add_child\" title=\"Mail not Clicked\" role=\"img\" aria-label=\"Mail not Clicked\"/>\n"
-"                                                            <i data-type=\"mail_bounce\" class=\"fa fa fa-exclamation-circle o_ma_text_rejected o_add_child\" title=\"Mail Bounced\" role=\"img\" aria-label=\"Mail Bounced\"/>"
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid ""
 "<small class=\"oe_edit_only text-muted\" attrs=\"{'invisible': "
 "[('trigger_type', '=', 'begin')]}\">(save the campaign to make its "
@@ -166,7 +147,7 @@ msgstr ""
 "дію такою, яку можна вибрати )</small>"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "<span class=\"o_form_label\" invisible=\"1\">Warning</span>"
 msgstr "<span class=\"o_form_label\" invisible=\"1\">Попередження</span>"
 
@@ -190,7 +171,7 @@ msgid "<span class=\"oe_edit_only\">Name</span>"
 msgstr "<span class=\"oe_edit_only\">Назва</span>"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "<span class=\"oe_inline\">after</span>"
 msgstr "<span class=\"oe_inline\">після</span>"
 
@@ -245,6 +226,7 @@ msgstr "Дії"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__parent_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__activity_id
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Activity"
 msgstr "Дія"
 
@@ -257,7 +239,7 @@ msgstr "Фільтр дій"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_type
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__activity_type
 msgid "Activity Type"
-msgstr "Тип діяльності"
+msgstr "Тип дії"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__domain
@@ -269,16 +251,9 @@ msgstr ""
 "отриманий з комбінації фільтра активності та його успадкованого фільтра"
 
 #. module: marketing_automation
-#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_after_7_days
-#: model:utm.source,name:marketing_automation.mass_mailing_after_7_days_utm_source
-msgid "After 7 days"
-msgstr "Після семи днів"
-
-#. module: marketing_automation
-#: model:marketing.activity,name:marketing_automation.marketing_activity_2
-#: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
-msgid "After 7 days (if not yet customers)"
-msgstr "Після 7 днів (якщо досі не клієнти)"
+#: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__is_website
+msgid "Allows us to filter relevant Campaign"
+msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
@@ -291,9 +266,9 @@ msgid "Archived"
 msgstr "Заархівовано"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Attach a file"
-msgstr "Долучити файл"
+msgstr "Прикріпити файл"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -305,15 +280,23 @@ msgstr ""
 "включені до кампанії, і для них можуть бути створені нові копії."
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__bounced
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__bounced
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Bounced"
 msgstr "Повернено"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__bounced_ratio
+msgid "Bounced Ratio"
+msgstr "Повернений коефіцієнт"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__campaign_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__campaign_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__campaign_id
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "Campaign"
@@ -338,7 +321,7 @@ msgid "Cancel"
 msgstr "Скасувати"
 
 #. module: marketing_automation
-#: selection:marketing.trace,state:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__canceled
 msgid "Canceled"
 msgstr "Скасовано"
 
@@ -360,15 +343,19 @@ msgid "Clicked"
 msgstr "Натиснутий"
 
 #. module: marketing_automation
-#: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
-#: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
-msgid "Commercial prospection"
-msgstr "Комерційна розвідка"
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Clicks"
+msgstr "Переходи"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__color
+msgid "Color Index"
+msgstr "Індекс кольору"
+
+#. module: marketing_automation
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__completed
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
-#: selection:marketing.participant,state:0
 msgid "Completed"
 msgstr "Завершено"
 
@@ -404,7 +391,7 @@ msgstr "Створив"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__create_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_date
 msgid "Created on"
-msgstr "Створено"
+msgstr "Створено на"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__exception
@@ -438,8 +425,8 @@ msgid "Date when this email has bounced."
 msgstr "Дата, коли цей електронний лист повернувся."
 
 #. module: marketing_automation
-#: selection:marketing.activity,interval_type:0
-#: selection:marketing.activity,validity_duration_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__days
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__days
 msgid "Days"
 msgstr "Дні"
 
@@ -455,17 +442,22 @@ msgstr "Видалити"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:181
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid "Delete Activity"
 msgstr "Видалити дію"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:183
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid "Delete All"
 msgstr "Видалити все"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__delivered
+msgid "Delivered"
+msgstr "Доставлено"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
@@ -474,7 +466,7 @@ msgstr "Прямі дочірні відслідковування"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:188
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid "Discard"
 msgstr "Відмінити"
@@ -494,7 +486,7 @@ msgid "Document ID"
 msgstr "ID документу"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Domain"
 msgstr "Домен"
 
@@ -514,21 +506,16 @@ msgid "Edit"
 msgstr "Редагувати"
 
 #. module: marketing_automation
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__activity_type__email
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
-#: selection:marketing.activity,activity_type:0
 msgid "Email"
 msgstr "Ел. пошта"
 
 #. module: marketing_automation
-#: model:ir.model,name:marketing_automation.model_mail_mail_statistics
-msgid "Email Statistics"
-msgstr "Статистика електронної пошти"
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__mass_mailing_id
 msgid "Email Template"
-msgstr "Шаблон ел. листа"
+msgstr "Шаблон електронного листа"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mail_compose_message
@@ -536,7 +523,19 @@ msgid "Email composition wizard"
 msgstr "Помічник створення електронного листа"
 
 #. module: marketing_automation
-#: selection:marketing.trace,state:0
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
+#, python-format
+msgid "Email failed"
+msgstr "Помилка електронної пошти"
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
+#, python-format
+msgid "Email ignored"
+msgstr "Електронний лист ігнорується"
+
+#. module: marketing_automation
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__error
 msgid "Error"
 msgstr "Помилка"
 
@@ -546,13 +545,13 @@ msgid "Error message"
 msgstr "Повідомлення про помилку"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:372
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr "Помилка! Ви не можете створити рекурсивну ієрархію дії."
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:378
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid ""
 "Error! You can't define a child activity with a trigger of type \"beginning "
@@ -567,13 +566,13 @@ msgid "Exception"
 msgstr "Виняток"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:593
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr "Виняток у масовій розсилці: %s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:563
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Exception in server action: %s"
 msgstr "Виняток у дії сервера: %s"
@@ -590,6 +589,11 @@ msgid "Execute Activities"
 msgstr "Виконати дії"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__failed
+msgid "Failed"
+msgstr "Невдалося"
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__domain
 msgid "Filter"
 msgstr "Фільтр"
@@ -600,8 +604,13 @@ msgid "Generate Participants"
 msgstr "Створити учасників"
 
 #. module: marketing_automation
-#: selection:marketing.activity,interval_type:0
-#: selection:marketing.activity,validity_duration_type:0
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__clicks_ratio
+msgid "Global Clicks Ratio for the campaign"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__hours
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__hours
 msgid "Hours"
 msgstr "Години"
 
@@ -613,6 +622,16 @@ msgstr "Години"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__id
 msgid "ID"
 msgstr "ID"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ignored
+msgid "Ignored"
+msgstr "Проігноровано"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_website
+msgid "Is Website"
+msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -631,7 +650,7 @@ msgstr "Останні 15 днів"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace____last_update
 msgid "Last Modified on"
-msgstr "Остання модифікація"
+msgstr "Останні зміни на"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_uid
@@ -657,7 +676,7 @@ msgid "Last activities synchronization"
 msgstr "Остання синхронізація дій"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/wizard/marketing_campaign_test.py:56
+#: code:addons/marketing_automation/wizard/marketing_campaign_test.py:0
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #, python-format
 msgid "Launch a Test"
@@ -670,59 +689,85 @@ msgid "Launch a test"
 msgstr "Запустити тест"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__lead_count
+msgid "Lead Count"
+msgstr "Підрахунок лідів"
+
+#. module: marketing_automation
+#: model:ir.actions.act_window,name:marketing_automation.link_tracker_action_marketing_campaign
+msgid "Link Statistics"
+msgstr "Статистика посилання"
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.link_tracker_menu_reporting_marketing_automation
+msgid "Link Tracker"
+msgstr "Відстежувач посилань"
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Mail Body"
 msgstr "Тіло пошти"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Mail Template"
 msgstr "Шаблон листа"
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_bounce
 msgid "Mail: bounced"
 msgstr "Лист: відхилено"
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_click
 msgid "Mail: clicked"
 msgstr "Лист: переглянуто"
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_not_click
 msgid "Mail: not clicked"
 msgstr "Лист: не переглянуто"
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_not_open
 msgid "Mail: not opened"
 msgstr "Лист: не відкрито"
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_not_reply
 msgid "Mail: not replied"
 msgstr "Лист: не відповів"
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_open
 msgid "Mail: opened"
 msgstr "Лист: відкрито"
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_reply
 msgid "Mail: replied"
 msgstr "Лист: відповів"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Mailing"
 msgstr "Розсилка"
 
 #. module: marketing_automation
+#: model:ir.model,name:marketing_automation.model_mailing_trace
+msgid "Mailing Statistics"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_items
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Mailings"
 msgstr "Розсилки"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_clicked
+msgid "Mailings Clicked"
+msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -730,7 +775,7 @@ msgid "Mails sent and not bounced"
 msgstr "Листи надіслано та не відхилено"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:153
+#: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Manually"
 msgstr "Вручну"
@@ -741,7 +786,7 @@ msgid "Mark as completed"
 msgstr "Помічено як завершено"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:96
+#: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Marked as completed"
 msgstr "Помічено як завершено"
@@ -765,30 +810,31 @@ msgid "Marketing Automation Mailings"
 msgstr "Розсилки автоматизація маркетингу"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:589
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
-msgstr "Автоматичне позначення: дія <%s> encountered mass mailing issue %s"
+msgstr ""
+"Автоматизація маркетингу: дія <%s> виникли проблеми масової розсилки %s"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:559
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
-msgstr "Автоматичне позначення: дія <%s> виникла проблема із сервером %s"
+msgstr "Автоматизація маркетингу: дія <%s> виникла проблема із сервером %s"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_execute_activities_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_execute_activities
 #: model:ir.cron,name:marketing_automation.ir_cron_campaign_execute_activities
 msgid "Marketing Automation: execute activities"
-msgstr "Автоматичне позначення: виконані дії"
+msgstr "Автоматизація маркетингу: виконані дії"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_sync_participants_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_sync_participants
 #: model:ir.cron,name:marketing_automation.ir_cron_campaign_sync_participants
 msgid "Marketing Automation: sync participants"
-msgstr "Автоматичне позначення: синхронізувати учасників"
+msgstr "Автоматизація маркетингу: синхронізувати учасників"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_campaign
@@ -807,12 +853,12 @@ msgstr "Учасник маркетингу"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_trace
-#: model:ir.model.fields,field_description:marketing_automation.field_mail_mail_statistics__marketing_trace_id
+#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace__marketing_trace_id
 msgid "Marketing Trace"
 msgstr "Відслідковування маркетингу"
 
 #. module: marketing_automation
-#: model:ir.model.fields,help:marketing_automation.field_mail_mass_mailing__use_in_marketing_automation
+#: model:ir.model.fields,help:marketing_automation.field_mailing_mailing__use_in_marketing_automation
 msgid ""
 "Marketing campaigns use mass mailings with some specific behavior; this "
 "field is used to indicate its statistics may be suspicious."
@@ -822,21 +868,19 @@ msgstr ""
 "бути підозрілою."
 
 #. module: marketing_automation
-#: model:ir.model,name:marketing_automation.model_mail_mass_mailing
+#: model:ir.model,name:marketing_automation.model_mailing_mailing
 msgid "Mass Mailing"
 msgstr "Масова розсилка"
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mail_statistics_ids
-msgid "Mass mailing statistics"
-msgstr "Статистика масової розсилки"
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_ids
+msgid "Mass Mailings"
+msgstr "Масові розсилки"
 
 #. module: marketing_automation
-#: model:ir.actions.server,name:marketing_automation.ir_action_server_action_message_sales_person
-#: model:marketing.activity,name:marketing_automation.marketing_activity_3
-#: model:utm.source,name:marketing_automation.marketing_activity_3_utm_source
-msgid "Message for sales person"
-msgstr "Повідомлення для продавців"
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mailing_trace_ids
+msgid "Mass mailing statistics"
+msgstr "Статистика масової розсилки"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
@@ -856,19 +900,19 @@ msgid "Model Name"
 msgstr "Назва моделі"
 
 #. module: marketing_automation
-#: selection:marketing.activity,interval_type:0
-#: selection:marketing.activity,validity_duration_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__months
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__months
 msgid "Months"
 msgstr "Місяці"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Name"
-msgstr "Назва"
+msgstr "Ім'я"
 
 #. module: marketing_automation
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_campaign__state__draft
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
-#: selection:marketing.campaign,state:0
 msgid "New"
 msgstr "Новий"
 
@@ -889,6 +933,21 @@ msgid "Non email activity"
 msgstr "Відсутня діяльність електронної пошти"
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Not Clicked"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Not Opened"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Not Replied"
+msgstr ""
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Not clicked yet"
 msgstr "Ще не натиснуто"
@@ -904,26 +963,45 @@ msgid "Not replied yet"
 msgstr "Ще не відповів"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_clicks_ratio
+msgid "Number of clicks"
+msgstr "Кількість кліків"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__items_total
+msgid "Number of items that are part of the campaign"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__clicked_total
+msgid "Number of items that are part of the campaign who generated a click"
+msgstr ""
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__model_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_id
 msgid "Object"
 msgstr "Об'єкт"
 
 #. module: marketing_automation
-#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_offer_free_trial
-#: model:marketing.activity,name:marketing_automation.marketing_activity_1
-#: model:utm.source,name:marketing_automation.marketing_activity_1_utm_source
-#: model:utm.source,name:marketing_automation.mass_mailing_offer_free_trial_utm_source
-msgid "Offer free catalog"
-msgstr "Запропонувати безкоштовний каталог"
-
-#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__opened
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Opened"
 msgstr "Відкрито"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__opened_ratio
+msgid "Opened Ratio"
+msgstr "Відкритий коефіцієнт"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__opportunity_count
+msgid "Opportunity Count"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Options"
 msgstr "Опції"
 
@@ -938,25 +1016,25 @@ msgid "Parent"
 msgstr "Батьківський"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:183
+#: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Parent activity mail bounced"
-msgstr "Повідомлення батьківської дії  відхилене"
+msgstr "Повідомлення батьківської дії відхилене"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:181
+#: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Parent activity mail clicked"
 msgstr "Повідомлення батьківської дії натиснуте"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:182
+#: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Parent activity mail opened"
 msgstr "Повідомлення батьківської дії відкрите"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:180
+#: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Parent activity mail replied"
 msgstr "Відповів на пошту батьківської дії"
@@ -985,13 +1063,13 @@ msgid "Participants"
 msgstr "Учасники"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Perform"
 msgstr "Виконати"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:204
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr "Будь ласка, збережіть кампанію, щоби додати дочірню дію"
@@ -1003,7 +1081,7 @@ msgstr "Будь ласка, збережіть кампанію, щоби до�
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__processed
-#: selection:marketing.trace,state:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__processed
 msgid "Processed"
 msgstr "Оброблено"
 
@@ -1013,9 +1091,14 @@ msgid "REJECTED"
 msgstr "ВІДХИЛЕНО"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__received_ratio
+msgid "Received Ratio"
+msgstr "Співвідношення отриманого"
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Recipients"
-msgstr "Отримувачі"
+msgstr "Одержувачі"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__resource_ref
@@ -1030,7 +1113,7 @@ msgid "Record ID"
 msgstr "ID запису"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:109
+#: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Record deleted"
 msgstr "Запис видалено"
@@ -1042,23 +1125,23 @@ msgid "Record model"
 msgstr "Модель запису"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:361
-#: code:addons/marketing_automation/models/marketing_campaign.py:465
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
-#: selection:marketing.trace,state:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__rejected
 #, python-format
 msgid "Rejected"
 msgstr "Відхилено"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:538
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
 msgstr ""
 "Відхилено за допомогою фільтра активності або запису видалено/архівовано"
 
 #. module: marketing_automation
-#: selection:marketing.participant,state:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__unlinked
 msgid "Removed"
 msgstr "Вилучено"
 
@@ -1068,10 +1151,21 @@ msgid "Removed means the related record does not exist anymore."
 msgstr "Видалення означає, що пов'язаний запис більше не існує."
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__replied
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__replied
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Replied"
 msgstr "Відповів"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__replied_ratio
+msgid "Replied Ratio"
+msgstr "Відповідний коефіцієнт"
+
+#. module: marketing_automation
+#: model:ir.ui.menu,name:marketing_automation.marketing_automation_reporting_menu
+msgid "Reporting"
+msgstr "Звітність"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__require_sync
@@ -1084,16 +1178,21 @@ msgid "Resource ID"
 msgstr "ID ресурсу"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
-msgid "Run"
-msgstr "Запуск"
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__user_id
+msgid "Responsible"
+msgstr "Відповідальний"
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+msgid "Run"
+msgstr "Запустити"
+
+#. module: marketing_automation
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_campaign__state__running
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__running
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
-#: selection:marketing.campaign,state:0
-#: selection:marketing.participant,state:0
 msgid "Running"
 msgstr "Діючий"
 
@@ -1108,7 +1207,8 @@ msgid "Schedule Date"
 msgstr "Встановити дату"
 
 #. module: marketing_automation
-#: selection:marketing.trace,state:0
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__scheduled
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__scheduled
 msgid "Scheduled"
 msgstr "Заплановано"
 
@@ -1144,10 +1244,15 @@ msgid "Sent"
 msgstr "Надіслано"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__sent
+msgid "Sent Emails"
+msgstr "Надіслані електронні листи"
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__server_action_id
-#: selection:marketing.activity,activity_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__activity_type__action
 msgid "Server Action"
-msgstr "Дії на сервері"
+msgstr "Дія на сервері"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1169,9 +1274,14 @@ msgid "Source Name"
 msgstr "Назва джерела"
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_mail_mass_mailing__use_in_marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_mailing_mailing__use_in_marketing_automation
 msgid "Specific mailing used in marketing campaign"
 msgstr "Конкретна розсилка використовується у маркетинговій кампанії"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__stage_id
+msgid "Stage"
+msgstr "Етап"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1203,19 +1313,14 @@ msgid "Stop"
 msgstr "Зупинити"
 
 #. module: marketing_automation
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_campaign__state__stopped
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
-#: selection:marketing.campaign,state:0
 msgid "Stopped"
 msgstr "Зупинено"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
-msgid "Subject"
-msgstr "Тема"
-
-#. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:360
-#: code:addons/marketing_automation/models/marketing_campaign.py:464
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Success"
 msgstr "Успіх"
@@ -1231,13 +1336,17 @@ msgid "TEST"
 msgstr "ТЕСТ"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__tag_ids
+msgid "Tags"
+msgstr "Теги"
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "Target"
 msgstr "Ціль"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
 msgid "Target Model"
 msgstr "Цільова модель"
@@ -1259,7 +1368,7 @@ msgstr "Тест"
 
 #. module: marketing_automation
 #. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:192
+#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid ""
 "This Activity has a dependant child activity. 'DELETE ALL' will delete all "
@@ -1268,7 +1377,7 @@ msgstr ""
 "Ця дія має залежну дочірню дію. 'ВИДАЛИТИ ВСЕ' видалить усі дочірні дії."
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:585
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid ""
 "To use this feature you should be an administrator or belong to the "
@@ -1276,6 +1385,11 @@ msgid ""
 msgstr ""
 "Для використання цієї функції ви повинні бути адміністратором або належати "
 "до групи автоматизації маркетингу."
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__total
+msgid "Total"
+msgstr "Разом"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__total_bounce
@@ -1333,7 +1447,12 @@ msgid "Update"
 msgstr "Оновити"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.mail_mass_mailing_view_search
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__crm_lead_activated
+msgid "Use Leads"
+msgstr "Використовувати ліди"
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_search
 msgid "Used in Marketing Automation"
 msgstr "Використовується в автоматизації маркетингу"
 
@@ -1346,8 +1465,8 @@ msgid ""
 "                want to process records which have the same email address"
 msgstr ""
 "Використовується для уникнення дублікатів на основі поля моделі.\n"
-"наприклад,\n"
-"                 для моделі \"Клієнти\" виберіть поле адреси електронної пошти тут, якщо ви цього не\n"
+"Наприклад,\n"
+"                 для моделі \"Клієнти\" виберіть поле адреси електронної пошти тут, якщо ви не\n"
 "                 хочете обробляти записи, що мають однакову адресу електронної пошти"
 
 #. module: marketing_automation
@@ -1357,7 +1476,7 @@ msgstr "Користувач"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration_number
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Valid during"
 msgstr "Дійсний протягом"
 
@@ -1372,8 +1491,8 @@ msgid "Validity Duration Type"
 msgstr "Тип тривалості дії"
 
 #. module: marketing_automation
-#: selection:marketing.activity,interval_type:0
-#: selection:marketing.activity,validity_duration_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__weeks
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__weeks
 msgid "Weeks"
 msgstr "Тижні"
 
@@ -1389,22 +1508,23 @@ msgid "Workflow Started On"
 msgstr "Робочий процес почато"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:173
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
 msgstr "Щоб розпочати цю кампанію, потрібно встановити принаймні одну дію."
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__act
 msgid "another activity"
 msgstr "інша дія"
 
 #. module: marketing_automation
-#: selection:marketing.activity,trigger_type:0
+#: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__begin
 msgid "beginning of campaign"
 msgstr "початок кампанії"
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers"
 msgstr "напр. пропозиції електронної комерції"

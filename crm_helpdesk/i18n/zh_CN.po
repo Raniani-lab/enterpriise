@@ -5,15 +5,17 @@
 # Translators:
 # Martin Trigaux, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
+# guohuadeng <guohuadeng@hotmail.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# Jeanphy <hzh0292@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-24 11:16+0000\n"
-"PO-Revision-Date: 2019-01-16 08:37+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Jeanphy <hzh0292@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,12 +33,12 @@ msgstr "取消日期"
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_convert2ticket_view_form
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_view_form
 msgid "Convert to Ticket"
-msgstr ""
+msgstr "转换为服务单"
 
 #. module: crm_helpdesk
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_convert2ticket_view_form
 msgid "Create Ticket"
-msgstr ""
+msgstr "创建服务单"
 
 #. module: crm_helpdesk
 #: selection:crm.lead.convert2ticket,action:0
@@ -96,7 +98,7 @@ msgstr "线索"
 #. module: crm_helpdesk
 #: model:ir.model,name:crm_helpdesk.model_crm_lead_convert2ticket
 msgid "Lead convert to Ticket"
-msgstr ""
+msgstr "线索转换为服务单"
 
 #. module: crm_helpdesk
 #: selection:crm.lead.convert2ticket,action:0

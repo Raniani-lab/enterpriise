@@ -1,20 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality
+# 	* quality
 # 
 # Translators:
-# Michael Yeung, 2018
-# sejun huang <sejun.huang@gmail.com>, 2018
-# Andy Cheng <andy.cheng@richsoda.com>, 2019
 # Martin Trigaux, 2019
+# Andy Cheng <andy.cheng@richsoda.com>, 2019
+# sejun huang <sejun.huang@gmail.com>, 2019
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:07+0000\n"
-"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +38,7 @@ msgstr ""
 msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
-msgstr "當創建別名的新記錄時，一個Python字典被提供作為預設值。"
+msgstr "當創建別名的新記錄時，一個Python字典被提供作為預設值"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_needaction
@@ -47,7 +46,7 @@ msgstr "當創建別名的新記錄時，一個Python字典被提供作為預設
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction
 msgid "Action Needed"
-msgstr "需要採取行動"
+msgstr "需採取行動"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_2
@@ -57,7 +56,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
-msgstr "有效"
+msgstr "啟用"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
@@ -65,9 +64,19 @@ msgid "Activities"
 msgstr "活動"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
 msgid "Activity State"
 msgstr "活動狀態"
+
+#. module: quality
+#: model:res.groups,name:quality.group_quality_manager
+msgid "Administrator"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -77,7 +86,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__alert_ids
 msgid "Alerts"
-msgstr "提醒"
+msgstr "警示"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_id
@@ -87,7 +96,7 @@ msgstr "別名"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_contact
 msgid "Alias Contact Security"
-msgstr "別名聯絡人安全"
+msgstr "別名聯繫人安全"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_name
@@ -97,12 +106,12 @@ msgstr "別名"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_domain
 msgid "Alias domain"
-msgstr "別名域名"
+msgstr "別名網域"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_model_id
 msgid "Aliased Model"
-msgstr "別名模型"
+msgstr "別名的模型"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
@@ -130,14 +139,14 @@ msgstr ""
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:8
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Clear"
 msgstr "清除"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:28
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Close"
 msgstr "關閉"
@@ -190,7 +199,7 @@ msgstr "糾正的動作"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__create_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__create_uid
 msgid "Created by"
-msgstr "創建者"
+msgstr "創立者"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__create_date
@@ -202,7 +211,12 @@ msgstr "創建者"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__create_date
 #: model:ir.model.fields,field_description:quality.field_quality_tag__create_date
 msgid "Created on"
-msgstr "創建時間"
+msgstr "建立於"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Creation Date"
+msgstr "創建日期"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_assign
@@ -237,7 +251,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__description
 msgid "Description"
-msgstr "描述"
+msgstr "說明"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__display_name
@@ -252,7 +266,17 @@ msgid "Display Name"
 msgstr "顯示名稱"
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Done"
+msgstr "完成"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
+msgid "Email cc"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__fail
 msgid "Failed"
 msgstr "失敗的"
 
@@ -267,7 +291,7 @@ msgstr "收攏的"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_follower_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_follower_ids
 msgid "Followers"
-msgstr "訂閱者"
+msgstr "關注人"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_channel_ids
@@ -275,7 +299,7 @@ msgstr "訂閱者"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_channel_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_channel_ids
 msgid "Followers (Channels)"
-msgstr "關注者(渠道)"
+msgstr "關注人（頻道）"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_partner_ids
@@ -283,7 +307,17 @@ msgstr "關注者(渠道)"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "關注者(業務夥伴)"
+msgstr "關注人（業務夥伴）"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Future Activities"
+msgstr "未來活動"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Group By"
+msgstr "分組按"
 
 #. module: quality
 #: model:ir.module.category,description:quality.module_category_quality
@@ -291,7 +325,7 @@ msgid "Helps you manage your quality alerts and quality checks."
 msgstr ""
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__2
 msgid "High"
 msgstr "高"
 
@@ -312,7 +346,17 @@ msgstr "ID"
 msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
-msgstr "上級記錄ID支援別名(例如:專案支援的任務創建別名)"
+msgstr "上級記錄ID支援別名(例如:專案支援任務創建別名)"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_icon
+msgid "Icon"
+msgstr "圖示"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_unread
@@ -320,7 +364,7 @@ msgstr "上級記錄ID支援別名(例如:專案支援的任務創建別名)"
 #: model:ir.model.fields,help:quality.field_quality_check__message_unread
 #: model:ir.model.fields,help:quality.field_quality_point__message_unread
 msgid "If checked new messages require your attention."
-msgstr "查看是否有需要您留意的新信息。"
+msgstr "勾選代表有新訊息需要您留意。"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_needaction
@@ -328,15 +372,24 @@ msgstr "查看是否有需要您留意的新信息。"
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "如果勾選此項，有新消息會提醒您。"
+msgstr "勾選代表有新訊息需要您留意。"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_alert__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_alert_team__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_check__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_check__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_point__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_point__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
+msgstr "勾選代表有訊息發生傳送錯誤。"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "In Progress"
+msgstr "進行中"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -349,7 +402,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_is_follower
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_is_follower
 msgid "Is Follower"
-msgstr "是訂閱者"
+msgstr "是關注人"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert____last_update
@@ -361,7 +414,7 @@ msgstr "是訂閱者"
 #: model:ir.model.fields,field_description:quality.field_quality_reason____last_update
 #: model:ir.model.fields,field_description:quality.field_quality_tag____last_update
 msgid "Last Modified on"
-msgstr "最後修改時間"
+msgstr "最後修改於"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_uid
@@ -373,7 +426,7 @@ msgstr "最後修改時間"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_uid
 msgid "Last Updated by"
-msgstr "最後更新人"
+msgstr "最後更新者"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_date
@@ -385,7 +438,17 @@ msgstr "最後更新人"
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_date
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_date
 msgid "Last Updated on"
-msgstr "最後更新時間"
+msgstr "最後更新於"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Late Activities"
+msgstr "逾期活動"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
@@ -394,7 +457,7 @@ msgid "Lot"
 msgstr "批次"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__1
 msgid "Low"
 msgstr "低"
 
@@ -407,17 +470,12 @@ msgid "Main Attachment"
 msgstr "主要附件"
 
 #. module: quality
-#: model:res.groups,name:quality.group_quality_manager
-msgid "Manager"
-msgstr "經理"
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_has_error
 msgid "Message Delivery error"
-msgstr "郵件傳遞錯誤"
+msgstr "訊息遞送錯誤"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_ids
@@ -425,7 +483,12 @@ msgstr "郵件傳遞錯誤"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_ids
 msgid "Messages"
-msgstr "消息"
+msgstr "訊息"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "My Alerts"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__name
@@ -434,24 +497,23 @@ msgstr "消息"
 #: model:ir.model.fields,field_description:quality.field_quality_check__name
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__name
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
-#: model:ir.model.fields,field_description:quality.field_quality_tag__name
 msgid "Name"
-msgstr "名稱"
+msgstr "名称"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:32
-#: code:addons/quality/models/quality.py:69
-#: code:addons/quality/models/quality.py:70
-#: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:181
-#: code:addons/quality/models/quality.py:182
-#: code:addons/quality/models/quality.py:209
-#: code:addons/quality/models/quality.py:244
-#: code:addons/quality/models/quality.py:245
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
-msgstr "新建"
+msgstr "新的"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
@@ -469,21 +531,21 @@ msgid "Next Activity Type"
 msgstr "下一活動類型"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__0
 msgid "Normal"
-msgstr "正常"
+msgstr "一般"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__note
 #: model:ir.model.fields,field_description:quality.field_quality_point__note
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Note"
-msgstr "便箋"
+msgstr "備註"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Notes"
-msgstr "便簽"
+msgstr "備註"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_needaction_counter
@@ -491,7 +553,7 @@ msgstr "便簽"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction_counter
 msgid "Number of Actions"
-msgstr "行動數量"
+msgstr "動作數量"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error_counter
@@ -507,7 +569,7 @@ msgstr "錯誤數量"
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "需要行動消息的數量"
+msgstr "需要處理的消息數量"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error_counter
@@ -515,7 +577,7 @@ msgstr "需要行動消息的數量"
 #: model:ir.model.fields,help:quality.field_quality_check__message_has_error_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "發送錯誤的郵件數"
+msgstr "有發送錯誤的郵件數量"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_unread_counter
@@ -523,17 +585,18 @@ msgstr "發送錯誤的郵件數"
 #: model:ir.model.fields,help:quality.field_quality_check__message_unread_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_unread_counter
 msgid "Number of unread messages"
-msgstr "未讀消息的數量"
+msgstr "未讀訊息的數量"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Operation"
-msgstr "作業"
+msgstr "製程"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_id
 msgid "Operation Type"
-msgstr "作業類型"
+msgstr "製程類型"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_force_thread_id
@@ -541,17 +604,12 @@ msgid ""
 "Optional ID of a thread (record) to which all incoming messages will be "
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
-msgstr "所有收件都將附上一條線程（記錄）選配的ID，即使它們不曾回覆過它。如果設定了，這個將完全阻止新記錄的創建。"
+msgstr "所有的進來的信件都將附上一條線索（記錄）選配的ID，即使它們不曾回覆過它。如果設定了，這個將完全阻止新記錄的創建。"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_other
 msgid "Others"
 msgstr "其它"
-
-#. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Overdue"
-msgstr "逾期"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
@@ -575,8 +633,8 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
-"上級模型擁有別名。擁有別名參照的模型不必是alias_model_id給出的模型 (example: 專案(parent_model) 和任務 "
-"(model))"
+"上級模型擁有別名。擁有別名參照的模型不必是alias_model_id給出的模型 (example: project(parent_model) and"
+" task (model))"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_parts
@@ -584,7 +642,7 @@ msgid "Parts Quality"
 msgstr ""
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__pass
 msgid "Passed"
 msgstr ""
 
@@ -600,11 +658,6 @@ msgid "Picture"
 msgstr "圖片"
 
 #. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Planned"
-msgstr "已安排"
-
-#. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
 msgid ""
 "Policy to post a message on the document using the mailgateway.\n"
@@ -612,7 +665,7 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
-"通過信件網關在文檔上提交一個消息政策。\n"
+"通過信件網關在文件上提交一個消息政策。\n"
 "- 任何人：任何人都可以提交\n"
 "- 合作夥伴：只有認證過的合作夥伴\n"
 "- 跟隨者：只有相關文件或下列頻道成員的跟隨者\n"
@@ -631,8 +684,9 @@ msgstr "優先級"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_tmpl_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__product_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Product"
-msgstr "產品"
+msgstr "商品"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_id
@@ -647,6 +701,7 @@ msgstr "品質"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Quality Alert"
 msgstr "品質警示"
 
@@ -681,21 +736,27 @@ msgid "Quality Tag"
 msgstr ""
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Quality Team"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr "記錄線程ID"
+msgstr "記錄線索ID"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__name
 msgid "Reference"
-msgstr "參照"
+msgstr "編號"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__user_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Responsible"
-msgstr "負責"
+msgstr "負責人"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
@@ -704,6 +765,7 @@ msgstr "責任使用者"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Root Cause"
 msgstr "根本原因"
 
@@ -713,11 +775,24 @@ msgid "Root Cause for Quality Failure"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
-msgstr "序列"
+msgstr "序號"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Show all records which has next action date is before today"
+msgstr "顯示在今天之前的下一個行動日期的所有記錄"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_3
@@ -726,6 +801,7 @@ msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Stage"
 msgstr "階段"
 
@@ -748,13 +824,18 @@ msgstr ""
 " 計劃：未來活動。"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_tag__name
+msgid "Tag Name"
+msgstr "標籤名稱"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
 msgid "Tags"
-msgstr "摘要"
+msgstr "標籤"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:17
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Take a Picture"
 msgstr "拍照"
@@ -774,6 +855,7 @@ msgid "Technical name"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__test_type_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "測試類型"
@@ -784,14 +866,15 @@ msgid ""
 "The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
-msgstr "與此別名對應的模型(Odoo單據種類)。任何一封沒有回覆已存在記錄的來郵，將導致此模組創建新記錄(例如：一個新專案任務)。"
+msgstr ""
+"相應於這個別名對應的模型(Odoo單據種類)。任何一封不屬於對某個已存在的記錄的到來信件，將導致此模組中新記錄的創建(例如，一個新的專案任務)。"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_name
 msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
-msgstr "信件別名的名稱，例如，如果您要收取 <jobs@example.odoo.com> 的電子信件，別名就要被設為：\"jobs\""
+msgstr "信件別名的名稱，例如，如果您要收取 <jobs@example.odoo.com> 的電子信件,別名就要被設為：\"jobs\""
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_user_id
@@ -801,7 +884,7 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
-"在收到此別名的電子信件時創建記錄的所有者。如果此字段未設定，系統將嘗試根據發件人(發件人)地址查找正確的所有者，或者如果沒有找到該地址的系統使用者，將使用管理員帳戶。"
+"根據此別名接收到的信件，創建記錄的所有人。若此字段沒有設定，系統將試圖根據發送者(From)地址來查找正確的所有者，如果對於那個地址沒有系統使用者被發現，將使用系統管理員帳戶。"
 
 #. module: quality
 #: model:res.groups,comment:quality.group_quality_manager
@@ -819,19 +902,25 @@ msgid "Title"
 msgstr "稱謂"
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__none
 msgid "To do"
 msgstr "待辦"
 
 #. module: quality
-#: selection:quality.alert,activity_state:0
-msgid "Today"
-msgstr "今天"
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Today Activities"
+msgstr "今天的活動"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Type"
 msgstr "類型"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread
@@ -851,7 +940,7 @@ msgstr "未讀消息計數器"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:10
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Uploading..."
 msgstr "正在上傳..."
@@ -869,16 +958,16 @@ msgstr "使用者"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__partner_id
 msgid "Vendor"
-msgstr "供應商"
+msgstr "供应商"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__3
 msgid "Very High"
 msgstr "非常高"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:32
+#: code:addons/quality/static/src/xml/widget_template.xml:0
 #, python-format
 msgid "Viewer"
 msgstr "查看者"

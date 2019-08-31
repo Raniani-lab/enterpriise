@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_invoice_extract
+# 	* account_invoice_extract
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -9,10 +9,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:36+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -36,27 +36,24 @@ msgid ""
 msgstr ""
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
-msgid "An error occured"
-msgstr "出現錯誤"
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__error_status
+#, python-format
+msgid "An error occurred"
+msgstr "發生了錯誤"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
-msgid "An error occured during digitalization. Try resending the bill."
-msgstr ""
-
-#. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Buy credits"
 msgstr "購買信用"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_can_show_resend_button
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_can_show_resend_button
 msgid "Can show the ocr resend button"
 msgstr "可以顯示OCR重發按鈕"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_can_show_send_button
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_can_show_send_button
 msgid "Can show the ocr send button"
 msgstr "可以顯示OCR發送按鈕"
 
@@ -66,7 +63,7 @@ msgid "Companies"
 msgstr "公司"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__done
 msgid "Completed flow"
 msgstr "完工流程"
 
@@ -91,17 +88,27 @@ msgid "Display Name"
 msgstr "顯示名稱"
 
 #. module: account_invoice_extract
-#: selection:res.company,extract_show_ocr_option_selection:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__no_send
 msgid "Do not process bills"
 msgstr "不處理帳單"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_word_ids
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
+msgid "Enable to get only one invoice line per tax"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_error_message
+msgid "Error message"
+msgstr "錯誤消息"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_word_ids
 msgid "Extract Word"
 msgstr "導出Word"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_state
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_state
 msgid "Extract state"
 msgstr "導出狀態"
 
@@ -109,6 +116,11 @@ msgstr "導出狀態"
 #: model:ir.model,name:account_invoice_extract.model_account_invoice_extract_words
 msgid "Extracted words from invoice scan"
 msgstr "從發票掃瞄中提取的單詞"
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
+msgid "Extraction Information"
+msgstr ""
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__field
@@ -121,18 +133,24 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_remoteid
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_remote_id
 msgid "Id of the request to IAP-OCR"
 msgstr "IAP-OCR請求的ID"
 
 #. module: account_invoice_extract
-#: model:ir.model,name:account_invoice_extract.model_account_invoice
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice"
 msgstr "應收憑單"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,help:account_invoice_extract.field_account_invoice__extract_remoteid
+#: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
+#: model:ir.cron,cron_name:account_invoice_extract.ir_cron_update_ocr_status
+#: model:ir.cron,name:account_invoice_extract.ir_cron_update_ocr_status
+msgid "Invoice OCR: Update All Status"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,help:account_invoice_extract.field_account_move__extract_remote_id
 msgid "Invoice extract id"
 msgstr "發票擴展id"
 
@@ -145,6 +163,11 @@ msgstr "發票提取選擇狀態。"
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice id"
 msgstr "發票id"
+
+#. module: account_invoice_extract
+#: model:ir.model,name:account_invoice_extract.model_account_move
+msgid "Journal Entries"
+msgstr "日記帳分錄"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words____last_update
@@ -162,22 +185,34 @@ msgid "Last Updated on"
 msgstr "最後更新於"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "No document name provided"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__no_extract_requested
 msgid "No extract requested"
 msgstr "沒有導出申請"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__not_enough_credit
 msgid "Not enough credit"
 msgstr "信用額度不足"
 
 #. module: account_invoice_extract
-#: selection:res.company,extract_show_ocr_option_selection:0
+#: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
+#: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
+msgid "OCR Single Invoice Line Per Tax"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__auto_send
 msgid "Process all bills automatically"
 msgstr "自動處理所有過程帳單"
 
 #. module: account_invoice_extract
-#: selection:res.company,extract_show_ocr_option_selection:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__manual_send
 msgid "Process bills on demand only"
 msgstr "按需處理過程帳單"
 
@@ -187,12 +222,12 @@ msgid "Processing Option"
 msgstr ""
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Resend For Digitalization"
 msgstr ""
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Send For Digitalization"
 msgstr ""
 
@@ -202,21 +237,50 @@ msgid "Send mode on invoices attachments"
 msgstr "發票附件上的發送模式"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "Server is currently under maintenance. Please retry later"
+msgstr ""
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "Server not available. Please retry later"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_status_code
+msgid "Status code"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 60 seconds."
 msgstr "數據提取尚未完成。提取通常需要5到60秒。"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "The document could not be found"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 60 seconds."
 msgstr ""
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "Unsupported image format"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Update status"
 msgstr "狀態更新"
 
@@ -226,12 +290,12 @@ msgid "User Selected"
 msgstr "使用者選擇"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_extraction
 msgid "Waiting extraction"
 msgstr "等待導出"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_validation
 msgid "Waiting validation"
 msgstr "等待驗證"
 
@@ -271,13 +335,19 @@ msgid "Word Text"
 msgstr "字元文本"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "You don't have enough credit to extract datas from your invoice. You can buy"
 " new credits here:"
 msgstr "您沒有足夠的信用積分來從發票中提取數據。您可以在這裡購買新的積分："
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "You must send the same quantity of documents and file names"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__extract_not_ready
 msgid "waiting extraction, but it is not ready"
 msgstr "等待提取，大菜烹飪中"

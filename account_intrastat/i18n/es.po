@@ -1,19 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_intrastat
+# 	* account_intrastat
 # 
 # Translators:
 # Martin Trigaux, 2019
 # Pedro M. Baeza <pedro.baeza@gmail.com>, 2019
-# Josep Carreras <joscarreras@gmail.com>, 2019
+# Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019
+# jenusfontes <joscarreras@gmail.com>, 2019
+# Manuel Gómez <nuelgoz@gmail.com>, 2019
+# Rick Hunter <rick_hunter_ec@yahoo.com>, 2019
+# Noemi Nahomy <noemi.t.angles@gmail.com>, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
-"PO-Revision-Date: 2019-01-16 08:36+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: Cristopher Cravioto <ccr@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
@@ -28,6 +32,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "                Types:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"                Tipos:"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -35,33 +41,44 @@ msgid "<span class=\"fa fa-filter\"/> Options:"
 msgstr "<span class=\"fa fa-filter\"/> Opciones:"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:16
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "<span class=\"fa fa-filter\"/> Partners:"
+msgstr "<span class=\"fa fa-filter\"/> Empresas:"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "All"
+msgstr "Todos"
+
+#. module: account_intrastat
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Arrival"
-msgstr ""
+msgstr "Llegada"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
 msgid "Arrival country"
-msgstr ""
+msgstr "País de llegada"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By country"
-msgstr ""
+msgstr "Por país"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By type"
-msgstr ""
+msgstr "Por tipo"
 
 #. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__commodity
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Commodity"
 msgstr ""
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:33
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #: model:ir.model.fields,field_description:account_intrastat.field_product_category__intrastat_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_id
@@ -77,7 +94,7 @@ msgstr "Compañías"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__company_country_id
 msgid "Company country"
-msgstr ""
+msgstr "País de la empresa"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_config_settings
@@ -90,14 +107,20 @@ msgid "Country"
 msgstr "País"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:30
-#: code:addons/account_intrastat/models/account_sales_report.py:24
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
+#: code:addons/account_intrastat/models/account_sales_report.py:0
 #, python-format
 msgid "Country Code"
 msgstr "Código de país"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:28
+#: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_origin_country_id
+#: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_origin_country_id
+msgid "Country of Origin"
+msgstr ""
+
+#. module: account_intrastat
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Date"
 msgstr "Fecha"
@@ -114,14 +137,9 @@ msgid "Default incoterm for Intrastat"
 msgstr "Incoterm para Intrastat por defecto"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:17
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Dispatch"
-msgstr ""
-
-#. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_supplier_form_inherit_account_intrastat
-msgid "Dispatch country"
 msgstr ""
 
 #. module: account_intrastat
@@ -131,7 +149,7 @@ msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_sales_report.py:124
+#: code:addons/account_intrastat/models/account_sales_report.py:0
 #: model:ir.actions.client,name:account_intrastat.action_account_report_sales
 #: model:ir.model,name:account_intrastat.model_account_sales_report
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_sales
@@ -147,7 +165,7 @@ msgstr "Ampliado"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended Mode"
-msgstr ""
+msgstr "Modo extendido"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__id
@@ -156,7 +174,12 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:39
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "Include VAT"
+msgstr ""
+
+#. module: account_intrastat
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Incoterm Code"
 msgstr ""
@@ -172,7 +195,7 @@ msgstr ""
 "comerciales usadas en las transacciones internacionales."
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_account_invoice_line__intrastat_transaction_id
+#: model:ir.model.fields,field_description:account_intrastat.field_account_move_line__intrastat_transaction_id
 #: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_category_form_view_inherit_account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
@@ -188,21 +211,21 @@ msgid "Intrastat Code"
 msgstr "Código Intrastat"
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_country_id
+#: model:ir.model.fields,field_description:account_intrastat.field_account_move__intrastat_country_id
 msgid "Intrastat Country"
 msgstr "País para el Intrasat"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:234
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #: model:ir.actions.client,name:account_intrastat.action_account_report_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_report
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_intrastat
 #, python-format
 msgid "Intrastat Report"
-msgstr ""
+msgstr "Reporte Intrastat"
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_transport_mode_id
+#: model:ir.model.fields,field_description:account_intrastat.field_account_move__intrastat_transport_mode_id
 msgid "Intrastat Transport Mode"
 msgstr "Modo de transporte Intrastat"
 
@@ -212,7 +235,7 @@ msgid "Intrastat code"
 msgstr "Código Intrastat"
 
 #. module: account_intrastat
-#: model:ir.model.fields,help:account_intrastat.field_account_invoice__intrastat_country_id
+#: model:ir.model.fields,help:account_intrastat.field_account_move__intrastat_country_id
 msgid "Intrastat country, arrival for sales, dispatch for purchases"
 msgstr ""
 
@@ -227,20 +250,25 @@ msgid "Intrastat region"
 msgstr "Región para el Instrastat"
 
 #. module: account_intrastat
-#: model:ir.model,name:account_intrastat.model_account_invoice
-msgid "Invoice"
-msgstr "Factura"
+#: model:ir.model,name:account_intrastat.model_account_move
+msgid "Journal Entries"
+msgstr "Asientos contables"
 
 #. module: account_intrastat
-#: model:ir.model,name:account_intrastat.model_account_invoice_line
-msgid "Invoice Line"
-msgstr "Linea de factura"
+#: model:ir.model,name:account_intrastat.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report____last_update
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "Only with VAT numbers"
+msgstr ""
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_category
@@ -253,21 +281,22 @@ msgid "Product Template"
 msgstr "Plantilla de producto"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:43
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__region
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Region"
 msgstr "Región"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:32
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Region Code"
-msgstr ""
+msgstr "Código de la región "
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -275,66 +304,73 @@ msgid "Standard"
 msgstr "Estándar"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:29
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "System"
-msgstr ""
+msgstr "Sistema"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:224
-#: code:addons/account_intrastat/models/account_sales_report.py:114
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
+#: code:addons/account_intrastat/models/account_sales_report.py:0
 #, python-format
 msgid "Total"
 msgstr "Total"
 
 #. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__transaction
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transaction"
 msgstr "Transacción"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:31
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Transaction Code"
 msgstr ""
 
 #. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__transport
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transport"
 msgstr ""
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:38
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Transport Code"
 msgstr ""
 
 #. module: account_intrastat
-#: sql_constraint:account.intrastat.code:0
+#: model:ir.model.constraint,message:account_intrastat.constraint_account_intrastat_code_intrastat_region_code_unique
 msgid "Triplet code/type/country_id must be unique."
 msgstr ""
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:34
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Type"
 msgstr "Tipo"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_sales_report.py:23
+#: code:addons/account_intrastat/models/account_sales_report.py:0
 #, python-format
 msgid "VAT"
-msgstr "IVA"
+msgstr "NIF"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:44
-#: code:addons/account_intrastat/models/account_sales_report.py:25
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
+#: code:addons/account_intrastat/models/account_sales_report.py:0
 #, python-format
 msgid "Value"
 msgstr "Valor"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:42
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Weight"
 msgstr "Peso"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
+msgid "With VAT numbers"
+msgstr ""

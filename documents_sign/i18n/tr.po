@@ -1,20 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_sign
+# 	* documents_sign
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Umur Akın <umura@projetgrup.com>, 2019
-# Buket Şeker <buket_skr@hotmail.com>, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +26,7 @@ msgstr ""
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
-msgstr ""
+msgstr "Koşullara uyan tüm eklerde kullanılabilecek bir koşul ve eylem dizisi"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_ir_attachment
@@ -40,9 +39,15 @@ msgid "Create"
 msgstr "Oluştur"
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr "Kredi notu"
+#: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_new
+msgid "Create signature request"
+msgstr ""
+
+#. module: documents_sign
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
+msgid "Create signature template(s)"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_request__documents_tag_ids
@@ -57,18 +62,23 @@ msgstr ""
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
+msgstr "İşletme Seçeneği Mevcut"
+
+#. module: documents_sign
+#: code:addons/documents_sign/models/workflow.py:0
+#, python-format
+msgid "New templates"
 msgstr ""
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product template"
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
+msgid "Request a signature and sign directly"
 msgstr ""
 
 #. module: documents_sign
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
-msgid "Request a Signature"
-msgstr "Bir İmza Gerekli"
+#: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_direct
+msgid "Sign directly"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -78,11 +88,6 @@ msgstr "İmza İsteği"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template
 msgid "Signature Template"
-msgstr ""
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
 msgstr "İmza Şablonu"
 
 #. module: documents_sign
@@ -94,18 +99,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Signed Document Workspace"
 msgstr ""
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Task"
-msgstr "Görev"
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor Credit Note"
-msgstr "Tedarikçi İade/Fiyat Farkı"
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor bill"
-msgstr "Satış Faturası"

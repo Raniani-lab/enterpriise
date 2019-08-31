@@ -1,17 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * hr_payroll_account
+# 	* hr_payroll_account
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Paolo Valier, 2018
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
+# Martin Trigaux, 2019
+# mymage <stefano.consolaro@mymage.it>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 13:17+0000\n"
-"PO-Revision-Date: 2018-09-21 13:17+0000\n"
-"Last-Translator: Paolo Valier, 2018\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:36+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,8 +22,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr_payroll_account
-#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_contract_form_inherit
-#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_form_inherit
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_contract_view_form
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form
 msgid "Accounting"
 msgstr "Contabilità"
 
@@ -31,21 +33,27 @@ msgid "Accounting Entry"
 msgstr "Voce contabile"
 
 #. module: hr_payroll_account
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:114
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:129
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "Adjustment Entry"
 msgstr "Voce di aggiustamento"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_contract__analytic_account_id
-#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip_line__analytic_account_id
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__analytic_account_id
 msgid "Analytic Account"
 msgstr "Conto analitico"
 
 #. module: hr_payroll_account
-#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip_line__account_credit
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
+msgid "Create Draft Entry"
+msgstr ""
+
+#. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_credit
 msgid "Credit Account"
 msgstr "Conto Credito"
@@ -56,7 +64,6 @@ msgid "Date Account"
 msgstr ""
 
 #. module: hr_payroll_account
-#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip_line__account_debit
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_debit
 msgid "Debit Account"
 msgstr "Conto Debito"
@@ -67,11 +74,6 @@ msgid "Employee Contract"
 msgstr "Contratto dipendente"
 
 #. module: hr_payroll_account
-#: model:ir.model,name:hr_payroll_account.model_hr_payslip_employees
-msgid "Generate payslips for all selected employees"
-msgstr "Genera la busta paga per tutti gli impegati selezionti"
-
-#. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_payslip__date
 msgid "Keep empty to use the period of the validation(Payslip) date."
 msgstr ""
@@ -79,30 +81,30 @@ msgstr ""
 "paga)"
 
 #. module: hr_payroll_account
+#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
+msgid "Not computed in net accountably"
+msgstr ""
+
+#. module: hr_payroll_account
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
+#, python-format
+msgid "One of the contract for these payslips has no structure type."
+msgstr ""
+
+#. module: hr_payroll_account
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
+#, python-format
+msgid "One of the payroll structures has no account journal defined on it."
+msgstr ""
+
+#. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip
 msgid "Pay Slip"
 msgstr "Busta paga"
 
 #. module: hr_payroll_account
-#: model:ir.model,name:hr_payroll_account.model_hr_payslip_run
-msgid "Payslip Batches"
-msgstr "Batch busta paga"
-
-#. module: hr_payroll_account
-#: model:ir.model,name:hr_payroll_account.model_hr_payslip_line
-msgid "Payslip Line"
-msgstr "Riga Busta Paga"
-
-#. module: hr_payroll_account
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:65
-#, python-format
-msgid "Payslip of %s"
-msgstr "Busta paga di %s"
-
-#. module: hr_payroll_account
-#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_contract__journal_id
+#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payroll_structure__journal_id
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip__journal_id
-#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip_run__journal_id
 msgid "Salary Journal"
 msgstr "Giornale stipendi"
 
@@ -112,13 +114,17 @@ msgid "Salary Rule"
 msgstr ""
 
 #. module: hr_payroll_account
-#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip_line__account_tax_id
-#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_tax_id
-msgid "Tax"
-msgstr "Imposta"
+#: model:ir.model,name:hr_payroll_account.model_hr_payroll_structure
+msgid "Salary Structure"
+msgstr "Struttura stipendio"
 
 #. module: hr_payroll_account
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:112
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
+msgid "Set to Draft"
+msgstr "Imposta a bozza"
+
+#. module: hr_payroll_account
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "The Expense Journal \"%s\" has not properly configured the Credit Account!"
 msgstr ""
@@ -126,9 +132,18 @@ msgstr ""
 "crediti!"
 
 #. module: hr_payroll_account
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:127
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "The Expense Journal \"%s\" has not properly configured the Debit Account!"
 msgstr ""
 "Il giornale delle spese '%s' non ha correttamente configurato il conto "
 "debiti!"
+
+#. module: hr_payroll_account
+#: model:ir.model.fields,help:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
+msgid ""
+"This field allows you to delete the value of this rule in the \"Net Salary\""
+" rule at the accounting level to explicitly display the value of this rule "
+"in the accounting. For example, if you want to display the value of your "
+"representation fees, you can check this field."
+msgstr ""

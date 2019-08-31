@@ -1,20 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_livechat
+# 	* website_helpdesk_livechat
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Giovanni Perteghella <giovanni@perteghella.org>, 2018
-# Paolo Valier, 2018
-# Marco Calcagni <mcalcagni@dinamicheaziendali.it>, 2018
-# Léonie Bouchat <lbo@odoo.com>, 2018
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Giovanni Perteghella <giovanni@perteghella.org>, 2019
+# Paolo Valier, 2019
+# Léonie Bouchat <lbo@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr ""
 #, python-format
 msgid " This channel is private. People must be invited to join it."
 msgstr ""
-"Questo canale è privato. Le persone devono essere invitate per entrare."
+"Questo canale è privato, per partecipare è necessario ricevere un invito."
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:52
@@ -39,9 +40,14 @@ msgid ""
 "                    "
 msgstr ""
 "<br><br>\n"
-"                    Puoi creare un nuovo biglietto scrivendo <b>/helpdesk \"titolo del biglietto\"</b>.<br>\n"
-"                    Puoi cercare un biglietto scrivendo <b>/helpdesk_search \"Parolachiave1 Parolachiave2 ecc\"</b><br>\n"
+"                    Per creare un nuovo ticket, scrivere <b>/helpdesk \"titolo del ticket\"</b>.<br>\n"
+"                    Per cercare un ticket, scrivere <b>/helpdesk_search \"Parolachiave1 Parolachiave2 ecc\"</b><br>\n"
 "                    "
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
+msgstr "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
@@ -67,7 +73,7 @@ msgstr "Crea un nuovo ticket e richiedi: %s"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
-msgid "Discussion channel"
+msgid "Discussion Channel"
 msgstr "Canale di discussione"
 
 #. module: website_helpdesk_livechat
@@ -97,7 +103,7 @@ msgid ""
 "No tickets found related to the search query. <br> make sure to use the "
 "right format: (/helpdesk_search Keyword1 Keyword2 etc...)"
 msgstr ""
-"Nessun biglietto trovato. <br> Assicurati che usi il formato corretto: "
+"Nessun ticket trovato. <br> Assicurati che usi il formato corretto: "
 "(/helpdesk_search Parolachiave1 Parolachiave2 ecc...)"
 
 #. module: website_helpdesk_livechat
@@ -113,8 +119,8 @@ msgid ""
 "the live website chatter. Simply ype ':' followed by the shortcut label to "
 "get selectable canned reponses."
 msgstr ""
-"Definisci le scorciatoie per risposte predefinite. Questo funziona per le "
-"email e la live chat del sito Web. Basta scrivere \":\", seguito "
+"Definire le scorciatoie per risposte predefinite. Questo funziona per le "
+"email e la chat in diretta del sito web. Basta scrivere \":\", seguito "
 "dall'etichetta della scorciatoia per avere delle risposte predefinite. "
 
 #. module: website_helpdesk_livechat
@@ -132,7 +138,7 @@ msgstr "Qualche parametro è errato o mancante nel comando"
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Test the livechat widget from this page:<br/>"
-msgstr "Prova il widget della live chat da questa pagina: <br/>"
+msgstr "Provare il widget della chat in diretta da questa pagina: <br/>"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,help:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_web_page
@@ -145,7 +151,7 @@ msgstr ""
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Use predefined answers in the mail composer"
-msgstr "Usa risposte predefinite nelle tue email"
+msgstr "Utilizzare risposte predefinite nelle tue email"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:99
@@ -172,10 +178,12 @@ msgid ""
 "You can search ticket by typing <b>/helpdesk_search \"Keywords1 Keywords2 "
 "etc\"</b><br>"
 msgstr ""
-"Puoi cercare un biglietto scrivendo <b>/helpdesk_search \"Parolachiave1 "
+"Per cercare un ticket, scrivere <b>/helpdesk_search \"Parolachiave1 "
 "Parolachiave2 ecc\"</b><br>"
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "channel to define auto-popup rules and geolocation filters"
 msgstr ""
+"canale per definire le regole di visualizzazione automatica dei popup e i "
+"filtri di geolocalizzazione. "

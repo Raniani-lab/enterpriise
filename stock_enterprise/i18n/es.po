@@ -1,20 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * stock_enterprise
+# 	* stock_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
+# Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # Miquel Torner <miq@odoo.com>, 2019
 # Miguel Orueta <mo@landoo.es>, 2019
-# Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2019-01-16 08:41+0000\n"
-"Last-Translator: Gabriel Umana <gabriel.umana@delfixcr.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: Miguel Orueta <mo@landoo.es>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,12 +23,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__assigned
 msgid "Available"
 msgstr "Reservado"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
 msgid "Cancelled"
 msgstr "Cancelado"
 
@@ -43,7 +43,7 @@ msgid "Creation Date"
 msgstr "Fecha de Creación"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__outgoing
 msgid "Customers"
 msgstr "Clientes"
 
@@ -59,8 +59,8 @@ msgstr "Tiempo del ciclo (Días) "
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
-msgid "Day(s)"
-msgstr "Día(s)"
+msgid "Days"
+msgstr "Días"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -106,7 +106,7 @@ msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__done
 msgid "Done"
 msgstr "Hecho"
 
@@ -136,7 +136,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__internal
 msgid "Internal"
 msgstr "Interno"
 
@@ -161,7 +161,12 @@ msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Month"
+msgstr "Mes"
+
+#. module: stock_enterprise
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
 msgid "New"
 msgstr "Nuevo"
 
@@ -171,7 +176,7 @@ msgid "Operation Type"
 msgstr "Tipo de operación"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__partially_available
 msgid "Partially Available"
 msgstr "Parcialmente disponible"
 
@@ -201,6 +206,12 @@ msgid "Product Quantity"
 msgstr "Cantidad producto"
 
 #. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Cycle Time"
 msgstr "Tiempo de ciclo de recepciones"
@@ -212,6 +223,7 @@ msgstr "Retraso de recepciones"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
 msgid "Reference"
 msgstr "Referencia"
 
@@ -219,6 +231,11 @@ msgstr "Referencia"
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_cohort_view
 msgid "Report"
 msgstr "Informe"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
+msgid "Scheduled Date"
+msgstr "Fecha prevista"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__state
@@ -229,6 +246,11 @@ msgstr "Estado"
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
 msgstr "Resumen del inventario"
+
+#. module: stock_enterprise
+#: model:ir.model,name:stock_enterprise.model_report_stock_quantity
+msgid "Stock Quantity Report"
+msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
@@ -271,27 +293,32 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: stock_enterprise
-#: selection:stock.report,picking_type_code:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__incoming
 msgid "Vendors"
 msgstr "Proveedores"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__waiting
 msgid "Waiting Another Move"
 msgstr "Esperando otro movimiento"
 
 #. module: stock_enterprise
-#: selection:stock.report,state:0
+#: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__confirmed
 msgid "Waiting Availability"
 msgstr "Esperando disponibilidad"
 
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
 #: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
-msgid "Warehouse Dashboard"
-msgstr "Tablero de Inventario"
+msgid "Warehouse Analysis"
+msgstr ""
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
+msgid "Week"
+msgstr "Semana"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "day(s)"
-msgstr "dia(s)"
+msgid "days"
+msgstr "días"

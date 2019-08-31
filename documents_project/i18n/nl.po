@@ -1,20 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_project
+# 	* documents_project
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Thomas Pot <thomas@open2bizz.nl>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,6 +37,11 @@ msgid "Attachment"
 msgstr "Bijlage"
 
 #. module: documents_project
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Centralize files attached to projects and tasks"
+msgstr ""
+
+#. module: documents_project
 #: model:ir.model,name:documents_project.model_res_company
 msgid "Companies"
 msgstr "Bedrijven"
@@ -57,9 +62,9 @@ msgid "Create a Task"
 msgstr "Taak aanmaken"
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr "Creditfactuur"
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Default Tags"
+msgstr "Standaard Labels"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__documents_project_settings
@@ -72,9 +77,9 @@ msgid "Has Business Option"
 msgstr "Heeft business optie"
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product template"
-msgstr "Productsjabloon"
+#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
+msgid "Project"
+msgstr "Project"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_tags
@@ -84,41 +89,18 @@ msgstr "Projectlabels"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
-#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
 msgid "Project Workspace"
 msgstr "Project werkplaats"
 
 #. module: documents_project
-#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
-msgid ""
-"Select the new workspace to be used for project's documents for the projects and tasks\n"
-"                                of your company."
-msgstr ""
-
-#. module: documents_project
-#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
-msgid "Select the tags to be applied to the project's new documents"
-msgstr "Selecteer de labels voor nieuwe projectdocumenten"
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr "Handtekening sjabloon"
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
 msgid "Task"
 msgstr "Taak"
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor Credit Note"
-msgstr "Leveranciers creditfactuur"
-
-#. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor bill"
-msgstr "Leveranciersfactuur"
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Workspace"
+msgstr "Werkplaats"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder

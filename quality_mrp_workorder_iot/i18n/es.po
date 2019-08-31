@@ -1,19 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality_mrp_workorder_iot
+# 	* quality_mrp_workorder_iot
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2019
-# Miquel Torner <miq@odoo.com>, 2019
 # Vivian Montana <vmo@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-03-20 14:44+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Vivian Montana <vmo@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
@@ -28,29 +26,9 @@ msgid "Action"
 msgstr "Acción"
 
 #. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Cancel"
-msgstr "Cancelar"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Close MO"
-msgstr "Cerrar Orden de Manufactura"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Close WO"
-msgstr "Cerrar la orden de trabajo"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:quality_mrp_workorder_iot.selection__iot_trigger__action__fail
 msgid "Fail"
 msgstr "Fracaso"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Finish"
-msgstr "Finalizar"
 
 #. module: quality_mrp_workorder_iot
 #: model:ir.model,name:quality_mrp_workorder_iot.model_iot_trigger
@@ -58,71 +36,11 @@ msgid "IOT Trigger"
 msgstr "Desencadenar IOT"
 
 #. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Next"
-msgstr "Siguiente"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Pack"
-msgstr "Paquete"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:quality_mrp_workorder_iot.selection__iot_trigger__action__pass
 msgid "Pass"
 msgstr "Aprobar"
 
 #. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Pause"
-msgstr "Detener"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Previous"
-msgstr "Anterior"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Print Delivery Slip"
-msgstr "Imprimir Vale de Entrega"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Print Labels"
-msgstr "Imprimir etiquetas"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Print Operation"
-msgstr "Imprimir Operación"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Record Production"
-msgstr "registro de producción"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Scrap"
-msgstr "Desechar"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Skip"
-msgstr "Saltar"
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
+#: model:ir.model.fields.selection,name:quality_mrp_workorder_iot.selection__iot_trigger__action__measure
 msgid "Take Measure"
 msgstr ""
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Take Picture"
-msgstr ""
-
-#. module: quality_mrp_workorder_iot
-#: selection:iot.trigger,action:0
-msgid "Validate"
-msgstr "Validar"

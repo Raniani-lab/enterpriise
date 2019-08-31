@@ -1,17 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_livechat
+# 	* website_helpdesk_livechat
 # 
 # Translators:
-# Bohdan Lisnenko, 2018
+# Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
-"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr "Створено нову заявка та запит: %s"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
-msgid "Discussion channel"
+msgid "Discussion Channel"
 msgstr "Канал обговорення"
 
 #. module: website_helpdesk_livechat
@@ -82,7 +82,7 @@ msgstr "Команда служби підтримки"
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__is_canned_response
 msgid "Is Canned Response"
-msgstr "Консервативний відгук"
+msgstr "Закріплений відгук"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_channel_id
@@ -101,8 +101,8 @@ msgid ""
 "No tickets found related to the search query. <br> make sure to use the "
 "right format: (/helpdesk_search Keyword1 Keyword2 etc...)"
 msgstr ""
-"Не знайдено жодної заявки, пов'язаного з пошуковим запитом. <br> обов'язково"
-" використовуйте правильний формат: (/helpdesk_search Keyword1 Keyword2 "
+"Не знайдено жодної заявки, пов'язаної з пошуковим запитом. <br> обов'язково "
+"використовуйте правильний формат: (/helpdesk_search Keyword1 Keyword2 "
 "etc...)"
 
 #. module: website_helpdesk_livechat
@@ -120,7 +120,7 @@ msgid ""
 msgstr ""
 "Встановіть ярлики заздалегідь заданих відповідей. Це працює як у поштовому "
 "композері, так і в реальному чаті. Просто натисніть клавішу \":\", за якою "
-"слідує ярлик, щоб вибрати консервативні повернення."
+"слідує ярлик, щоб вибрати закріплені відповіді.."
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat

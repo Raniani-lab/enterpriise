@@ -1,20 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_livechat
+# 	* website_helpdesk_livechat
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
-# Ramiz Deniz Öner <deniz@denizoner.com>, 2017
-# Umur Akın <umura@projetgrup.com>, 2018
+# Ediz Duman <neps1192@gmail.com>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
-"PO-Revision-Date: 2017-02-15 11:47+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -71,13 +71,13 @@ msgstr "Yeni bir destek talebi oluşturuldu: %s"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
-msgid "Discussion channel"
-msgstr "Tartışma kanalı"
+msgid "Discussion Channel"
+msgstr "Mesajlaşma Kanalı"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Yardım Masası Ekibi"
+msgstr "Destek Ekibi"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__is_canned_response
@@ -118,7 +118,8 @@ msgid ""
 "get selectable canned reponses."
 msgstr ""
 "Önceden tanımlanmış cevaplara kısa yollar ayarlayın. Bu hem mail kısmında "
-"hem de websitedeki canlı yardım kısmında çalışır."
+"hem de websitedeki canlı yardım kısmında çalışır. Seçilebilir korunmuş "
+"yanıtlar almak için ':' ve ardından kısayol etiketini yazmanız yeterlidir."
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat

@@ -1,25 +1,25 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_sale_dashboard
+# 	* website_sale_dashboard
 # 
 # Translators:
+# Martin Trigaux, 2019
+# Dariusz Żbikowski <darek@krokus.com.pl>, 2019
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
 # Tomasz Leppich <t.leppich@gmail.com>, 2019
-# Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
-# Martin Trigaux, 2019
-# zbik2607 <darek@krokus.com.pl>, 2019
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
 # Monika Grzelak <m.e.grzelak@gmail.com>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
 # Grzegorz Krukar <grzegorzgk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-06-25 08:41+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Grzegorz Krukar <grzegorzgk1@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -70,7 +70,7 @@ msgid "Client Secret"
 msgstr "Client Secret"
 
 #. module: website_sale_dashboard
-#: selection:res.company,website_sale_dashboard_onboarding_state:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__closed
 msgid "Closed"
 msgstr "Zamknięte"
 
@@ -90,7 +90,7 @@ msgid "Digest"
 msgstr "Podsumowanie"
 
 #. module: website_sale_dashboard
-#: selection:res.company,website_sale_dashboard_onboarding_state:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__done
 msgid "Done"
 msgstr "Wykonano"
 
@@ -100,7 +100,7 @@ msgid "Follow your website traffic in Odoo."
 msgstr ""
 
 #. module: website_sale_dashboard
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__sale_report__invoice_status__invoiced
 msgid "Fully Invoiced"
 msgstr "Całkowicie zafakturowane"
 
@@ -115,17 +115,17 @@ msgid "Invoice Status"
 msgstr "Stan faktury"
 
 #. module: website_sale_dashboard
-#: selection:res.company,website_sale_dashboard_onboarding_state:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__just_done
 msgid "Just done"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: selection:res.company,website_sale_dashboard_onboarding_state:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__not_done
 msgid "Not done"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__sale_report__invoice_status__no
 msgid "Nothing to Invoice"
 msgstr "Nie ma nic do fakturowania"
 
@@ -156,7 +156,7 @@ msgid "The configuration is done. Happy selling!"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__sale_report__invoice_status__to_invoice
 msgid "To Invoice"
 msgstr "Do zafakturowania"
 
@@ -181,7 +181,7 @@ msgid "Untaxed Total"
 msgstr "Untaxed Total"
 
 #. module: website_sale_dashboard
-#: selection:sale.report,invoice_status:0
+#: model:ir.model.fields.selection,name:website_sale_dashboard.selection__sale_report__invoice_status__upselling
 msgid "Upselling Opportunity"
 msgstr "Upselling Opportunity"
 

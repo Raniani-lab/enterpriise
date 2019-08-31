@@ -1,18 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mass_mailing_themes
-# 
-# Translators:
-# Martin Trigaux, 2018
-# trendspotter <j.podhorecky@volny.cz>, 2018
+# 	* mass_mailing_themes
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +18,7 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "$20"
-msgstr "$20"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -33,7 +28,7 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "20%"
-msgstr "20%"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
@@ -69,6 +64,27 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 3:</small>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-compass fa-2x text-delta\" aria-label=\"Choose\" "
+"title=\"Choose\"/>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-credit-card fa-2x text-delta\" aria-label=\"Order\" "
+"title=\"Order\"/>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-smile-o fa-2x text-delta\" aria-label=\"Enjoy!\" "
+"title=\"Enjoy!\"/>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -109,14 +125,12 @@ msgid ""
 "A delicious soup made of one or more seasonal vegetables, without added fat,"
 " starches and lactose."
 msgstr ""
-"Chutná polévka z jedné nebo více sezónních zelenin, bez přídavku tuku, "
-"škrobů a laktózy."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "ALL DAY"
-msgstr "CELÝ DEN"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -141,12 +155,12 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Captain’s Salad"
-msgstr "Kapitánův salát"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Check the top electric guitar brands and their models!"
-msgstr "Zkontrolujte nejvyšší značky elektrické kytary a jejich modely!"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -181,7 +195,6 @@ msgid ""
 "Discover the new version of our software, with a great overview on all the "
 "new features."
 msgstr ""
-"Objevte novou verzi našeho softwaru s velkým přehledem všech nových funkcí."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -205,12 +218,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Facebook"
-msgstr "Facebook"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Gibson Les Paul Junior"
-msgstr "Gibson Les Paul Junior"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -218,7 +231,7 @@ msgstr "Gibson Les Paul Junior"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Google Plus"
-msgstr "Google Plus"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -228,12 +241,12 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Heat up the popcorn and get ready for an immersive experience."
-msgstr "Zahřejte popcorn a připravte se na požitkovou zkušenost."
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Hi there!"
-msgstr "Ahoj!"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
@@ -247,7 +260,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "LinkedIn"
-msgstr "LinkedIn"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -257,7 +270,7 @@ msgstr "LinkedIn"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Logo"
-msgstr "Logo"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
@@ -267,10 +280,6 @@ msgid ""
 "                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut\n"
 "                                aliquip ex ea commodo consequat."
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod no "
-"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,"
-" quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo "
-"consequat."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -280,18 +289,18 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Mini Hamburgers"
-msgstr "Mini Hamburgery"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "More Info"
-msgstr "Více informací"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "New 45Hc-270A laptop"
-msgstr "Nový notebook 45Hc-270A"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
@@ -299,8 +308,6 @@ msgid ""
 "Normally mirrorless cameras have always sat slightly above entry-level in "
 "terms of price.."
 msgstr ""
-"Běžně bezzrcadlové kamery byly z hlediska ceny vždy mírně nad základními "
-"modely."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -315,12 +322,12 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Odoo Experience is the place to be to showcase your expertize."
-msgstr "Odoo Experience je místo, kde můžete předvést své odborné znalosti."
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Order"
-msgstr "Objednávka"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -330,7 +337,7 @@ msgstr "Objednávka"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Photo"
-msgstr "Fotografie"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -346,13 +353,13 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Puccini Jar"
-msgstr "Puccini Jar"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Read More"
-msgstr "Přečtěte si více"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -361,43 +368,43 @@ msgstr "Přečtěte si více"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Read More..."
-msgstr "Přečtěte si více..."
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Recipe of the day"
-msgstr "Recept dne"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Register Now!"
-msgstr "Zaregistrujte se nyní!"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Registration"
-msgstr "Registrace"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Sony BDVE210"
-msgstr "Sony BDVE210"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Starters"
-msgstr "Předkrmy"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Tagliatelle Boscaiola"
-msgstr "Tagliatelle Boscaiola"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "The Rise Of The Drone"
-msgstr "Rise Of The Drone"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
@@ -405,8 +412,6 @@ msgid ""
 "The new laptops look nearly identical to the original models, but closer "
 "inspection reveals a refined design."
 msgstr ""
-"Nové notebooky vypadají téměř stejně jako původní modely, ale bližší "
-"prohlídka odhaluje vylepšený design."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
@@ -426,7 +431,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "This pass gives you access to the catering and evening activities!"
-msgstr "Tento průkaz vám umožní přístup ke stravování a večerní aktivity!"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
@@ -438,7 +443,7 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Tomato Soup"
-msgstr "Rajská polévka"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -447,7 +452,7 @@ msgstr "Rajská polévka"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Twitter"
-msgstr "Twitter"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
@@ -481,4 +486,4 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "and save $20 on your next order!"
-msgstr "a ušetříte 20 dolarů na další objednávku!"
+msgstr ""

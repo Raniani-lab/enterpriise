@@ -1,26 +1,40 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_accountant
+# 	* account_accountant
 # 
 # Translators:
-# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
-# file aio <fileaio@gmail.com>, 2018
-# fanha99 <fanha99@hotmail.com>, 2018
-# Duy BQ <duybq86@gmail.com>, 2018
-# Minh Nguyen <ndminh210994@gmail.com>, 2018
+# file aio <fileaio@gmail.com>, 2019
+# fanha99 <fanha99@hotmail.com>, 2019
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
+# Duy BQ <duybq86@gmail.com>, 2019
+# Chinh Chinh <trinhttp@trobz.com>, 2019
+# Dung Nguyen Thi <dungnt@trobz.com>, 2019
+# Dao Nguyen <trucdao.uel@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Minh Nguyen <ndminh210994@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:28+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
+"Last-Translator: Dao Nguyen <trucdao.uel@gmail.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -31,6 +45,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
 msgstr ""
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_chart_template
+msgid "Account Chart Template"
+msgstr "Bảng hệ thống tài khoản"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
@@ -53,6 +72,7 @@ msgid "Account used when transferring between banks"
 msgstr "Tài khoản được sử dụng khi chuyển khoản giữa các ngân hàng"
 
 #. module: account_accountant
+#: model:ir.ui.menu,name:account_accountant.menu_accounting
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
@@ -62,6 +82,12 @@ msgstr "Kế toán"
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
 msgid "Anglo-Saxon Accounting"
 msgstr "Kế toán Anglo-Saxon"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_move__attachment_ids
+#: model:ir.model.fields,field_description:account_accountant.field_account_move_line__move_attachment_ids
+msgid "Attachments"
+msgstr "Tệp đính kèm"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
@@ -79,9 +105,16 @@ msgid "Change Lock Date"
 msgstr ""
 
 #. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:78
+#, python-format
+msgid "Choose a line to preview its attachments."
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model,name:account_accountant.model_res_config_settings
 msgid "Config Settings"
-msgstr "Cấu hình thiết lập"
+msgstr "Cấu hình"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
@@ -101,7 +134,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
 msgid "Digest"
-msgstr "Tiêu"
+msgstr "Tập san"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name
@@ -113,6 +146,8 @@ msgstr "Tên hiển thị"
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
+"Không có quyền truy cập, bỏ qua dữ liệu này cho email thông báo của người "
+"dùng"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_fiscal_year
@@ -136,6 +171,14 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
+#: code:addons/account_accountant/models/res_config_settings.py:37
+#, python-format
+msgid ""
+"Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
+"%s"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id
 msgid ""
 "Intermediary account used when moving money from a liquidity account to "
@@ -143,6 +186,16 @@ msgid ""
 msgstr ""
 "Tài khoản trung gian được sử dụng khi chuyển tiền từ tài khoản thanh khoản "
 "sang tài khoản thanh toán khác"
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_move
+msgid "Journal Entries"
+msgstr "Bút toán phát sinh"
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_move_line
+msgid "Journal Item"
+msgstr "Bút toán"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
@@ -157,26 +210,26 @@ msgstr "Ngày gần nhất"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date____last_update
 msgid "Last Modified on"
-msgstr "Sửa lần cuối vào"
+msgstr "Sửa lần cuối"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_uid
 msgid "Last Updated by"
-msgstr "Cập nhật lần cuối bởi"
+msgstr "Cập nhật gần đây bởi"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_date
 msgid "Last Updated on"
-msgstr "Cập nhật lần cuối vào"
+msgstr "Cập nhật gần đây vào"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
-msgid "Last day of your fiscal year, for automatic opening entries"
-msgstr "Ngày cuối cùng của năm tài chính của bạn, cho các mục mở tự động"
+msgid "Last day of your fiscal year"
+msgstr ""
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:130
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:18
 #, python-format
 msgid "Let's start with a new customer invoice."
 msgstr "Hãy bắt đầu với một hóa đơn khách hàng mới."
@@ -202,6 +255,14 @@ msgstr "Ngày khóa"
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
 msgstr "Khóa chu kì tài chính của bạn"
+
+#. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
+#: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
+msgid ""
+"No users can edit journal entries related to a tax prior and inclusive of "
+"this date."
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -243,11 +304,11 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_product_product_categories
 msgid "Product Categories"
-msgstr "Nhóm Sản phẩm"
+msgstr "Nhóm sản phẩm"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:125
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:13
 #, python-format
 msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
@@ -267,10 +328,23 @@ msgid "Save"
 msgstr "Lưu"
 
 #. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date
+msgid "Tax Lock Date"
+msgstr ""
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
 "The system will try to predict vendor bill accounts based on history of "
 "previous bills."
+msgstr ""
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:130
+#, python-format
+msgid "There is no attachment linked to this move."
 msgstr ""
 
 #. module: account_accountant
@@ -280,7 +354,7 @@ msgstr "Tài khoản Chuyển khoản"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:135
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:23
 #, python-format
 msgid ""
 "Use the path to quickly click back to <b>previous screens</b>, without "
@@ -291,7 +365,7 @@ msgstr ""
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tour.js:139
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:27
 #, python-format
 msgid ""
 "Your reports are available in real time. <i>No need to close a fiscal year "

@@ -1,19 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_account_taxcloud
+# 	* sale_account_taxcloud
 # 
 # Translators:
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
-# e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2017-04-28 13:57+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +21,20 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: sale_account_taxcloud
-#: model:ir.model,name:sale_account_taxcloud.model_account_invoice
-msgid "Invoice"
-msgstr "发票"
+#: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
+msgid "Go to Settings."
+msgstr ""
+
+#. module: sale_account_taxcloud
+#: model:ir.model.fields,field_description:sale_account_taxcloud.field_sale_order__is_taxcloud_configured
+msgid "Is Taxcloud Configured"
+msgstr ""
+
+#. module: sale_account_taxcloud
+#: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
+msgid ""
+"Please enter your Taxcloud credentials to compute tax rates automatically."
+msgstr ""
 
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order
@@ -32,18 +42,28 @@ msgid "Sales Order"
 msgstr "销售订单"
 
 #. module: sale_account_taxcloud
-#: code:addons/sale_account_taxcloud/models/sale_order.py:34
-#, python-format
-msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
-msgstr "TaxCloud 的配置位于“会计”应用的“设置”菜单中。"
+#: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
+msgid "Tax"
+msgstr "税率"
 
 #. module: sale_account_taxcloud
-#: code:addons/sale_account_taxcloud/models/sale_order.py:34
+#: model:ir.model.fields,help:sale_account_taxcloud.field_sale_order__is_taxcloud
+msgid "Technical field to determine whether to hide taxes in views or not."
+msgstr ""
+
+#. module: sale_account_taxcloud
+#: code:addons/sale_account_taxcloud/models/sale_order.py:0
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
 msgstr "无法从 TaxCloud 检索税款："
 
 #. module: sale_account_taxcloud
-#: model:ir.actions.server,name:sale_account_taxcloud.action_sale_order_update_taxes
-msgid "Update taxes with Taxcloud"
-msgstr "使用 Taxcloud 更新税款"
+#: model:ir.model.fields,field_description:sale_account_taxcloud.field_sale_order__is_taxcloud
+msgid "Use TaxCloud API"
+msgstr "使用TaxCloud API"
+
+#. module: sale_account_taxcloud
+#: model:ir.model.fields,help:sale_account_taxcloud.field_sale_order__is_taxcloud_configured
+msgid ""
+"Used to determine whether or not to warn the user to configure TaxCloud."
+msgstr ""

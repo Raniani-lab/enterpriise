@@ -1,22 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * project_timesheet_forecast_sale
+# 	* project_timesheet_forecast_sale
 # 
 # Translators:
-# liAnGjiA <liangjia@qq.com>, 2017
-# waveyeung <waveyeung@qq.com>, 2017
-# Jeff Yu - Elico Corp <jeff.yu@elico-corp.com>, 2017
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # Martin Trigaux, 2019
+# Jeffery CHEN <jeffery9@gmail.com>, 2019
 # keecome <7017511@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2017-12-13 15:25+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -26,26 +23,20 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/models/project.py:26
+#: code:addons/project_timesheet_forecast_sale/models/project.py:0
 #, python-format
 msgid "%s (%s remaining hours)"
 msgstr "%s (%s 剩余小时)"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:0
 #, python-format
 msgid "After"
 msgstr "之后"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
-#, python-format
-msgid "Forecasted"
-msgstr "预测"
-
-#. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:163
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:182
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:0
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
 #, python-format
 msgid "Forecasts"
 msgstr "预测"
@@ -61,7 +52,7 @@ msgid "Project Forecast"
 msgstr "项目预测"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:25
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:0
 #, python-format
 msgid ""
 "Remaining \n"
@@ -73,11 +64,13 @@ msgstr ""
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast__order_line_id
+#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast_create__order_line_id
 msgid "Sales Order Line"
-msgstr "销售订单行"
+msgstr "销售订单分录"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_forecast__order_line_id
+#: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_forecast_create__order_line_id
 msgid ""
 "Sales order item to which the task is linked. If an employee timesheets on a"
 " this task, and if this employee is not in the 'Employee/Sales Order Item "
@@ -91,12 +84,23 @@ msgid "Task"
 msgstr "任务"
 
 #. module: project_timesheet_forecast_sale
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan
-msgid "Timesheets/Forecasts"
-msgstr "时间表/预测"
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
+msgid "Timesheets"
+msgstr "工时表"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:26
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
+msgid "Timesheets and Forecasts"
+msgstr ""
+
+#. module: project_timesheet_forecast_sale
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:0
+#, python-format
+msgid "Total"
+msgstr "合计"
+
+#. module: project_timesheet_forecast_sale
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:0
 #, python-format
 msgid ""
 "What is still to deliver based on sold hours, hours already done and "

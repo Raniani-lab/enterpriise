@@ -1,21 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * voip
+# 	* voip
 # 
 # Translators:
-# Zoriana Zaiats, 2018
-# Bohdan Lisnenko, 2018
 # Yaroslav Molochko <onorua@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Bohdan Lisnenko, 2019
 # ТАрас <tratatuta@i.ua>, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -25,20 +24,34 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:314
-#, python-format
-msgid " Please check your configuration."
-msgstr "Будь ласка, перевірте ваші налаштування."
-
-#. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
-msgstr "# випадків"
+msgstr "К-сть випадків"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:141
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
+#, python-format
+msgid "Accept"
+msgstr "Прийняти"
+
+#. module: voip
+#: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
+msgid "Action to Perform"
+msgstr "Дія для виконання"
+
+#. module: voip
+#: model:ir.model.fields,help:voip.field_mail_activity_type__category
+msgid ""
+"Actions may trigger specific behavior like opening calendar view or "
+"automatically mark as done when a document is uploaded"
+msgstr ""
+"Дії повинні запустити конкретну дію, таку як відкриття календаря або "
+"автоматичне позначення як зроблено після завантаження документа."
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: model:ir.model,name:voip.model_mail_activity
 #, python-format
 msgid "Activity"
@@ -47,11 +60,11 @@ msgstr "Дія"
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
 msgid "Activity Type"
-msgstr "Тип діяльності"
+msgstr "Тип дії"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/voip_call_queue_widget.js:32
+#: code:addons/voip/static/src/js/call_center_field.js:0
 #, python-format
 msgid "Add to Call Queue"
 msgstr "Додати до черги дзінків"
@@ -59,12 +72,12 @@ msgstr "Додати до черги дзінків"
 #. module: voip
 #: model:ir.actions.server,name:voip.action_add_to_call_queue
 msgid "Add to call queue"
-msgstr ""
+msgstr "Додати до черги дзінків"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "Add voip queue support to a model"
-msgstr ""
+msgstr "Додайте підтримку черги дзвінків IP-телефонії до моделі"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_always_transfer
@@ -73,32 +86,32 @@ msgstr "Завжди перенаправляти на телефон"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:12
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:17
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:73
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:78
+#: code:addons/voip/static/src/xml/phone_call.xml:0
+#: code:addons/voip/static/src/xml/phone_call.xml:0
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Avatar"
 msgstr "Аватар"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:49
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Backspace"
 msgstr "Backspace"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:35
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "CONTACTS"
 msgstr "КОНТАКТИ"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:69
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:160
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Call"
 msgstr "Дзвінок"
@@ -114,30 +127,25 @@ msgid "Call Name"
 msgstr "Назва дзвінка"
 
 #. module: voip
-#: code:addons/voip/models/voip_queue_mixin.py:37
+#: code:addons/voip/models/voip_queue_mixin.py:0
 #, python-format
 msgid "Call activity type is not of category \"phonecall\""
+msgstr "Тип дії дзвінка не в категорії \"телефонний дзвінок\""
+
+#. module: voip
+#: code:addons/voip/models/voip_phonecall.py:0
+#: code:addons/voip/models/voip_phonecall.py:0
+#: code:addons/voip/models/voip_phonecall.py:0
+#, python-format
+msgid "Call to %s"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:196
-#, python-format
-msgid "Call from "
-msgstr "Дзвінок від"
-
-#. module: voip
-#: code:addons/voip/models/voip_phonecall.py:186
-#: code:addons/voip/models/voip_phonecall.py:231
-#, python-format
-msgid "Call to "
-msgstr "Дзвінок до"
-
-#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/phone_field.js:0
 #, python-format
-msgid "Calling "
-msgstr "Дзвінок"
+msgid "Calling %s"
+msgstr ""
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -146,7 +154,7 @@ msgstr "Дата дзвінків"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:143
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 #, python-format
 msgid "Cancel"
@@ -154,41 +162,41 @@ msgstr "Скасувати"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:43
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "Cancel failed: %s"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
 msgid "Cancel the activity"
 msgstr "Завершити дію"
 
 #. module: voip
-#: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__cancel
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__cancel
 msgid "Cancelled"
 msgstr "Скасовано"
 
 #. module: voip
-#: model:ir.model.fields,help:voip.field_mail_activity_type__category
-msgid ""
-"Categories may trigger specific behavior like opening calendar view or "
-"automatically mark as done when a document is uploaded"
-msgstr ""
-"Категорії можуть запускати особливу поведінку, наприклад, відкривати "
-"перегляд календаря або автоматично позначати як виконано, коли документ "
-"завантажується"
-
-#. module: voip
-#: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
-msgid "Category"
-msgstr "Категорія"
+#. openerp-web
+#: code:addons/voip/static/src/js/dialing_panel.js:0
+#, python-format
+msgid "Change My Preferences"
+msgstr "Змінити мої налаштування"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:498
+#: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Click to unblock"
 msgstr "Натисніть, щоб розблокувати"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:16
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Close"
 msgstr "Закрити"
@@ -200,10 +208,11 @@ msgstr "Налаштування"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:295
+#: code:addons/voip/static/src/js/user_agent.js:0
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Connecting..."
-msgstr ""
+msgstr "З'єднання..."
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_partner
@@ -226,7 +235,7 @@ msgstr "Створив"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__create_date
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__create_date
 msgid "Created on"
-msgstr "Створено"
+msgstr "Створено на"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -235,17 +244,17 @@ msgstr "Дата створення"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:125
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Customer"
 msgstr "Клієнт"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:478
+#: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Customer unavailable"
-msgstr "Клієнт не доступний"
+msgstr "Клієнт недоступний"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__call_date
@@ -254,13 +263,13 @@ msgid "Date"
 msgstr "Дата"
 
 #. module: voip
-#: selection:res.config.settings,mode:0
+#: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__demo
 msgid "Demo"
 msgstr "Демо"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:6
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Display Dialing Panel"
 msgstr "Панель дисплея набору номера"
@@ -277,13 +286,13 @@ msgstr "Назва для відображення"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:118
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Document"
 msgstr "Документ"
 
 #. module: voip
-#: selection:voip.phonecall.log.wizard,reschedule_option:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__no_reschedule
 msgid "Don't Reschedule"
 msgstr "Не переплановувати"
 
@@ -305,7 +314,7 @@ msgstr "Тривалість у хвилинах."
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:48
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Enter the number..."
 msgstr "Введіть номер..."
@@ -328,13 +337,14 @@ msgstr "Розширення телефону"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:68
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Hang up but keep call in queue"
-msgstr ""
+msgstr "Покладіть трубку, але тримайте виклик у черзі"
 
 #. module: voip
-#: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__done
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__done
 msgid "Held"
 msgstr "Утримати"
 
@@ -349,17 +359,17 @@ msgid "ID"
 msgstr "ID"
 
 #. module: voip
-#: selection:voip.phonecall.log.wizard,reschedule_option:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__7d
 msgid "In 1 Week"
 msgstr "За 1 тиждень"
 
 #. module: voip
-#: selection:voip.phonecall.log.wizard,reschedule_option:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__15d
 msgid "In 15 Day"
 msgstr "За 15 днів"
 
 #. module: voip
-#: selection:voip.phonecall.log.wizard,reschedule_option:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__2m
 msgid "In 2 Months"
 msgstr "За два місяці"
 
@@ -367,6 +377,13 @@ msgstr "За два місяці"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__in_queue
 msgid "In Call Queue"
 msgstr "У черзі дзвінка"
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
+#, python-format
+msgid "In call for:"
+msgstr ""
 
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
@@ -378,16 +395,26 @@ msgstr ""
 "          зустріч."
 
 #. module: voip
-#: selection:voip.phonecall,phonecall_type:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__phonecall_type__incoming
 msgid "Incoming"
 msgstr "Вхідні"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:485
+#: code:addons/voip/models/voip_phonecall.py:0
+#: code:addons/voip/models/voip_phonecall.py:0
+#: code:addons/voip/models/voip_phonecall.py:0
+#: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
-msgid "Incoming call from "
-msgstr "Вхідний дзвінок від"
+msgid "Incoming call from %s"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "Incoming call from %s (%s)"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__has_call_in_queue
@@ -398,7 +425,7 @@ msgstr "У черзі дзвінка"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:67
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Keypad"
 msgstr "Клавіатура"
@@ -411,7 +438,7 @@ msgstr "Клавіатура"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard____last_update
 #: model:ir.model.fields,field_description:voip.field_voip_queue_mixin____last_update
 msgid "Last Modified on"
-msgstr "Остання модифікація"
+msgstr "Останні зміни на"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__write_uid
@@ -443,11 +470,11 @@ msgstr "Пов'язане повідомлення чату"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__voip_phonecall_id
 msgid "Linked Voip Phonecall"
-msgstr "Пов'язаний дзвінок Voip"
+msgstr "Пов'язаний дзвінок IP-телефонії"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:155
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Log"
 msgstr "Примітка"
@@ -464,15 +491,21 @@ msgstr "Зареєстрований телефонний дзвінок"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:148
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Mark as done"
-msgstr "Позначте як зроблено"
+msgstr "Позначте як готово"
 
 #. module: voip
-#: selection:mail.activity.type,category:0
-msgid "Meeting"
-msgstr "Зустріч"
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__missed
+msgid "Missed"
+msgstr "Пропущено"
+
+#. module: voip
+#: code:addons/voip/models/voip_phonecall.py:0
+#, python-format
+msgid "Missed Call from %s"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__mobile
@@ -488,7 +521,7 @@ msgstr "Мобільний номер очищений"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:168
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Mute"
 msgstr "Вимкнути звук"
@@ -500,13 +533,14 @@ msgstr "Мої дзвінки"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:32
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "NEXT ACTIVITIES"
 msgstr "НАСТУПНІ ДІЇ"
 
 #. module: voip
-#: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__pending
 msgid "Not Held"
 msgstr "Втрачено"
 
@@ -528,31 +562,25 @@ msgstr ""
 "          іншого члена команди."
 
 #. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:219
-#: code:addons/voip/static/src/js/user_agent.js:224
-#, python-format
-msgid "One or more parameter is missing. Please check your configuration."
-msgstr "Один або кілька параметрів відсутні. Перевірте ваше налаштування."
-
-#. module: voip
-#: selection:voip.phonecall,phonecall_type:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__phonecall_type__outgoing
 msgid "Outgoing"
 msgstr "На відправку"
 
 #. module: voip
-#: model_terms:ir.ui.view,arch_db:voip.res_user_form
-msgid "PBX Configuration"
-msgstr "Налаштування PBX "
-
-#. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__pbx_ip
 msgid "PBX Server IP"
-msgstr "PBX сервер IP"
+msgstr "IP PBX сервера"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:32
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "PBX or Websocket address is missing. Please check your settings."
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
 msgid "Pending"
 msgstr "В очікуванні"
@@ -564,11 +592,13 @@ msgid "Phone"
 msgstr "Телефон"
 
 #. module: voip
-#: code:addons/voip/models/voip_queue_mixin.py:50
+#: code:addons/voip/models/voip_queue_mixin.py:0
 #, python-format
 msgid ""
 "Phone call cannot be created. Is it any phone number linked to record %s?"
 msgstr ""
+"Не можливо створити дзвінок. Чи пов'язаний якийсб номер телефону до запису "
+"%s?"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
@@ -577,13 +607,13 @@ msgid "Phone number sanitized"
 msgstr "Номер телефону очищений"
 
 #. module: voip
-#: selection:mail.activity.type,category:0
+#: model:ir.model.fields.selection,name:voip.selection__mail_activity_type__category__phonecall
 msgid "Phonecall"
 msgstr "Телефонний дзвінок"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:66
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Phonecall details"
 msgstr "Деталі телефонного дзвінка"
@@ -598,37 +628,52 @@ msgstr "Телефонні дзвінки"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:177
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "Please Allow the use of the microphone"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "Please accept the use of the microphone."
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Please check if a phone number is given for the current phonecall"
 msgstr ""
 "Перевірте, чи вказано номер телефону для поточного телефонного дзвінка"
 
 #. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:341
-#, python-format
-msgid "Please check your configuration.</br> (Reason receives :"
-msgstr "Будь ласка, перевірте ваші налаштування.</br> (Причина прийому:"
-
-#. module: voip
-#: selection:res.config.settings,mode:0
+#: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
 msgid "Production"
 msgstr "Виробництво"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:29
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "RECENT"
 msgstr "ПІЗНІШЕ"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:23
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Refresh the Panel"
 msgstr "Оновити панель"
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
+#, python-format
+msgid "Reject"
+msgstr "Відхилити"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_ignore_incoming
@@ -637,14 +682,32 @@ msgstr "Відхилити всі вхідні дзвінки"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/voip_call_queue_widget.js:32
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "Reject failed: %s"
+msgstr ""
+
+#. module: voip
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
+msgid "Rejected"
+msgstr "Відхилено"
+
+#. module: voip
+#: code:addons/voip/models/voip_phonecall.py:0
+#, python-format
+msgid "Rejected Incoming Call from %s"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/call_center_field.js:0
 #, python-format
 msgid "Remove from Call Queue"
 msgstr "Видалити з черги дзвінків"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:40
+#: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
 msgid "Remove from the queue"
 msgstr "Видалити з черги"
@@ -655,6 +718,13 @@ msgstr "Видалити з черги"
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Responsible"
 msgstr "Відповідальний"
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
+#, python-format
+msgid "Ringing..."
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_login
@@ -669,23 +739,23 @@ msgstr "Пароль SIP"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
 msgid "Schedule &amp; make calls from CRM app"
-msgstr "Плануйте та здійснюйте дзвінки з програми CRM"
+msgstr "Плануйте та здійснюйте дзвінки з модуля CRM"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_option
 msgid "Schedule A New Activity"
-msgstr "Розклад нової дії"
+msgstr "Запланувати нову дію"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:135
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Activity"
 msgstr "Запланувати дію"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:22
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Search Phone Calls..."
 msgstr "Пошук телефонних дзвінків..."
@@ -697,7 +767,7 @@ msgstr "Пошук телефонних дзвінків"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:120
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Send mail"
 msgstr "Надіслати лист"
@@ -709,18 +779,13 @@ msgstr "Послідовність"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
-#: selection:voip.phonecall.log.wizard,reschedule_option:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__custom
 msgid "Specific Date"
 msgstr "Спеціальна дата"
 
 #. module: voip
-#: selection:mail.activity.type,category:0
-msgid "Standard"
-msgstr "Стандартний"
-
-#. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:678
+#: code:addons/voip/static/src/js/phone_field.js:0
 #, python-format
 msgid "Start Calling"
 msgstr "Розпочати дзвінок"
@@ -744,7 +809,7 @@ msgstr "Підсумок"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP adress of your PBX Server"
-msgstr "Пдреса IP вашого серверу PBX"
+msgstr "Адреса IP вашого серверу PBX"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -753,33 +818,38 @@ msgstr "URL вашого WebSocket"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:479
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"The call was rejected as access rights to the microphone were not given"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"The connection cannot be made.</br> Please check your configuration.</br> "
+"(Reason received: %s)"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "The customer is temporary unavailable. Please try later."
 msgstr "Клієнт тимчасово недоступний. Будь ласка, спробуйте пізніше."
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:570
-#, python-format
-msgid ""
-"The number is incorrect, the user credentials could be wrong or the "
-"connection cannot be made. Please check your configuration.</br> (Reason "
-"received: %s)"
-msgstr ""
-"Номер неправильний, облікові дані користувача можуть бути неправильними або "
-"з'єднання неможливе. Перевірте ваше налаштування.</br> (Причина прийому:%s)"
-
-#. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:176
+#: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "The phonecall has no number"
 msgstr "Телефонний дзвінок немає номеру"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:244
+#: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
 "The server configuration could be wrong. Please check your configuration."
@@ -793,31 +863,40 @@ msgid ""
 "When the call is over, the status is set to Held.\n"
 "If the call is not applicable anymore, the status can be set to Cancelled."
 msgstr ""
-"Статус встановлюється на значення Зробити, коли справа створена.\n"
+"Статус встановлюється на значення Зробити, коли дзвінок створено.\n"
 "Коли дзвінок завершується, статус змінюється на Впіймано.\n"
-"Якщо дзвінок більше не підходить, статус може бути встановлений як Скасовано."
+"Якщо дзвінок більше не застосовується, статус може бути встановлений як Скасовано."
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:313
+#: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
-msgid "The websocket uri could be wrong."
-msgstr "Uri веб-сайту може бути неправильним."
+msgid "The websocket uri could be wrong. Please check your configuration."
+msgstr "Uri веб-сайту може бути неправильним. Перевірте ваше налаштування."
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"There was an error with your registration: Please check your configuration."
+msgstr ""
+
+#. module: voip
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__open
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__open
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
-#: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "To Do"
 msgstr "Зробити"
 
 #. module: voip
-#: selection:voip.phonecall.log.wizard,reschedule_option:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__1d
 msgid "Tomorrow"
 msgstr "Завтра"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:163
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Transfer"
 msgstr "Переміщення"
@@ -839,22 +918,17 @@ msgstr "Непризначено"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:18
+#: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Unfold"
 msgstr "Розгорнути"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/voip_phonecall.js:133
+#: code:addons/voip/static/src/js/phone_call_details.js:0
 #, python-format
 msgid "Unknown"
 msgstr "Невідомо"
-
-#. module: voip
-#: selection:mail.activity.type,category:0
-msgid "Upload Document"
-msgstr "Завантажити документ"
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users
@@ -862,7 +936,14 @@ msgid "Users"
 msgstr "Користувачі"
 
 #. module: voip
-#: model_terms:ir.ui.view,arch_db:voip.view_voip_user_config
+#. openerp-web
+#: code:addons/voip/static/src/js/dialing_panel.js:0
+#, python-format
+msgid "VOIP"
+msgstr "IP-телефонія"
+
+#. module: voip
+#: model_terms:ir.ui.view,arch_db:voip.res_user_form
 msgid "VOIP Configuration"
 msgstr "Налаштування VOIP"
 
@@ -897,10 +978,10 @@ msgid "VoIP Environment"
 msgstr "Середовище ІР-телефонії"
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:0
 #, python-format
 msgid "Warning"
-msgstr "Попередження"
+msgstr "Сповіщення"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__wsServer
@@ -908,7 +989,7 @@ msgid "WebSocket"
 msgstr "WebSocket"
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:36
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:0
 #, python-format
 msgid ""
 "Wrong configuration for the call. There is no external phone number "
@@ -918,16 +999,14 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:187
-#: code:addons/voip/static/src/js/dialing_panel.js:289
-#: code:addons/voip/static/src/js/dialing_panel.js:310
+#: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "You are already in a call"
 msgstr "Ви вже телефонуєте"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:298
+#: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
@@ -935,26 +1014,27 @@ msgstr "Ваш браузер не підтримує WebRTC. Перевірте
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:53
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:94
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"Your credentials are not correctly set. Please check your configuration."
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/phone_call.xml:0
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "min"
 msgstr "мінімум"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:53
-#: code:addons/voip/static/src/xml/voip_phonecall.xml:94
+#: code:addons/voip/static/src/xml/phone_call.xml:0
+#: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "sec"
 msgstr "сек"
-
-#. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:340
-#, python-format
-msgid "the connection cannot be made. "
-msgstr "з'єднання неможливе. "
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
@@ -972,11 +1052,11 @@ msgid "transfer the Call"
 msgstr "передати виклик"
 
 #. module: voip
-#: selection:voip.phonecall.transfer.wizard,transfer_choice:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_transfer_wizard__transfer_choice__extern
 msgid "transfer to another External Phone"
 msgstr "передати іншому зовнішньому телефону"
 
 #. module: voip
-#: selection:voip.phonecall.transfer.wizard,transfer_choice:0
+#: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_transfer_wizard__transfer_choice__physical
 msgid "transfer to your external phone"
 msgstr "передати вашому зовнішньому телефону"

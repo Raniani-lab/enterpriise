@@ -1,16 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_slides
+# 	* website_helpdesk_slides
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Martin Trigaux, 2019
+# Leon Grill <leg@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -135,12 +138,12 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard____last_update
 msgid "Last Modified on"
-msgstr "Zuletzt geändert am"
+msgstr "Letzte Änderung am"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Zuletzt aktualisiert durch"
+msgstr "Zuletzt aktualisiert von"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_date
@@ -201,12 +204,12 @@ msgstr "Hochladen von Folien"
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_slide_upload_wizard
 msgid "Slide Upload Wizard"
-msgstr ""
+msgstr "Folien Upload-Assistent"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Slide image"
-msgstr ""
+msgstr "Folien Bild"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__tag_ids

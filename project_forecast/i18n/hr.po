@@ -1,23 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * project_forecast
+# 	* project_forecast
 # 
 # Translators:
-# storm_mpildek <matija.pildek@storm.hr>, 2017
-# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2017
-# Martin Trigaux, 2018
-# Vladimir Olujić <olujic.vladimir@storm.hr>, 2018
-# Karolina Tonković <karolina.tonkovic@storm.hr>, 2018
-# Tina Milas, 2019
+# Martin Trigaux, 2019
 # Bole <bole@dajmi5.com>, 2019
+# Vladimir Olujić <olujic.vladimir@storm.hr>, 2019
+# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2019
+# Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2019
+# Karolina Tonković <karolina.tonkovic@storm.hr>, 2019
+# storm_mpildek <matija.pildek@storm.hr>, 2019
+# Tina Milas, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Bole <bole@dajmi5.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: Tina Milas, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,14 +27,49 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
-msgid "% Time"
-msgstr "% Vrijeme"
+#: code:addons/project_forecast/wizard/create_forecast.py:0
+#, python-format
+msgid "%s's schedules timezone differs from yours"
+msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:202
-#, python-format
-msgid "%s Task(s): %s"
+#: model:mail.template,body_html:project_forecast.email_template_forecast_single
+msgid ""
+"<div>\n"
+"                    <p>Dear ${object.employee_id.name or ''},</p><br/>\n"
+"                    <p>You have been assigned the following forecast.</p><br/>\n"
+"                    <table style=\"table-layout: fixed;\">\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">From</th>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.start_datetime, tz=object.employee_id.tz)}</td>\n"
+"                        </tr>\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">To</th>\n"
+"                            <td style=\"padding: 5px;\">${format_datetime(object.end_datetime, tz=object.employee_id.tz)}</td>\n"
+"                        </tr>\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Project</th>\n"
+"                            <td style=\"padding: 5px;\">${object.project_id.name}</td>\n"
+"                        </tr>\n"
+"                        % if object.task_id\n"
+"                            <tr>\n"
+"                                <th style=\"padding: 5px;text-align: left;\">Task</th>\n"
+"                                <td style=\"padding: 5px;\">${object.task_id.name or ''}</td>\n"
+"                            </tr>\n"
+"                        % endif\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Planned Hours</th>\n"
+"                            <td style=\"padding: 5px;\">${format_duration(object.resource_hours)}</td>\n"
+"                        </tr>\n"
+"\n"
+"                    </table>\n"
+"                    % if group_project_user_id in object.employee_id.user_id.groups_id.ids\n"
+"                        <div style=\"margin: 15px; text-align: center\">\n"
+"                            <a href=\"/web?#action=${ctx.get('action_id')}&amp;model=project.forecast&amp;view_type=gantt&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">View Forecast</a>\n"
+"                        </div>\n"
+"                    % endif\n"
+"                </div>\n"
+"            "
 msgstr ""
 
 #. module: project_forecast
@@ -47,29 +83,62 @@ msgid "<span>Forecast</span>"
 msgstr "<span>Prognoza</span>"
 
 #. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
+msgid ""
+"<strong class=\"text-danger\">There are more hours planned than "
+"available</strong>"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
+msgid "<strong class=\"text-warning\">There are non published changes</strong>"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
+msgid "<strong>Allocated Time: </strong>"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
+msgid "<strong>Planned Hours: </strong>"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
+msgid "<strong>Start Date: </strong>"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
+msgid "<strong>Stop Date: </strong>"
+msgstr ""
+
+#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__active
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__active
 msgid "Active"
 msgstr "Aktivan"
 
 #. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Add"
+msgstr "Dodaj"
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Add record"
+msgstr ""
+
+#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
-msgid "Allocated Time"
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__resource_time
+msgid "Allocated Time (%)"
 msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__time
-msgid "Allocated time / Time span"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
-msgid "Allow Forecast"
-msgstr "Dopusti Prognozu"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
-msgid "Allow forecast"
-msgstr "Dopusti prognozu"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -77,9 +146,15 @@ msgid "Archived"
 msgstr "Arhivirano"
 
 #. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Assign To"
 msgstr "Dodjeljen"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__autocomplete_forecast_ids
+msgid "Autocomplete Forecast"
+msgstr ""
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
@@ -89,25 +164,30 @@ msgstr "Po djelatniku"
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_project
 msgid "By Project"
-msgstr "Po Projektu"
+msgstr "Po projektu"
 
 #. module: project_forecast
-#: selection:res.company,forecast_span:0
-msgid "By day"
-msgstr "Po danu"
-
-#. module: project_forecast
-#: selection:res.company,forecast_span:0
-msgid "By month"
+#: code:addons/project_forecast/models/project_forecast.py:0
+#, python-format
+msgid "Cannot remove more hours than there actually is"
 msgstr ""
 
 #. module: project_forecast
-#: selection:res.company,forecast_span:0
-msgid "By week"
+#: code:addons/project_forecast/wizard/repeat.py:0
+#, python-format
+msgid "Cannot repeat an already repeating forecast"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Collapse rows"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__color
 msgid "Color"
 msgstr "Boja"
 
@@ -118,6 +198,8 @@ msgstr "Tvrtke"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__company_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__company_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__company_id
 msgid "Company"
 msgstr "Tvrtka"
 
@@ -127,27 +209,98 @@ msgid "Config Settings"
 msgstr "Postavke"
 
 #. module: project_forecast
+#: model:ir.actions.act_window,name:project_forecast.project_forecast_create_wizard_action
+msgid "Create forecasts"
+msgstr ""
+
+#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__create_uid
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__create_uid
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__create_uid
 msgid "Created by"
 msgstr "Kreirao"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__create_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__create_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__create_date
 msgid "Created on"
-msgstr "Datum kreiranja"
+msgstr "Kreirano"
 
 #. module: project_forecast
-#: selection:res.company,forecast_uom:0
-msgid "Days"
-msgstr "Dani"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+msgid "Day"
+msgstr "Dan"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_default_view
+msgid "Default view"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_generation_span_interval
+#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_generation_span_interval
+msgid "Delay for the rate at which recurring forecasts should be generated"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid "Delete"
+msgstr "Obriši"
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid "Delete all"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid "Delete future"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
+#, python-format
+msgid "Discard"
+msgstr "Odbaci"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__display_name
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__display_name
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__display_name
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__display_name
 msgid "Display Name"
-msgstr "Naziv za prikaz"
+msgstr "Naziv"
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Duplicate"
+msgstr "Dupliciraj"
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Duplicate period"
+msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__employee_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
 msgstr "Zaposlenik"
@@ -159,45 +312,42 @@ msgid "Enable forecasting on the project."
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_span
-#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_span
-msgid ""
-"Encode your forecast in a table displayed by days, weeks or the whole year."
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast__forecast_uom
-#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_uom
-#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_uom
-msgid "Encode your forecasts in hours or days."
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_date
-msgid "End Date"
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_datetime
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__end_datetime
+msgid "End Datetime"
 msgstr "Završni datum"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__exclude
-msgid "Exclude"
-msgstr "Izuzeti"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+msgid "End date"
+msgstr "Završni datum"
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast_recurrency.py:0
+#, python-format
+msgid "Every %s %s until %s"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Expand rows"
+msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__resource_time
+#: model:ir.model.fields,help:project_forecast.field_project_forecast_create__resource_time
 msgid "Expressed in the Unit of Measure of the project company"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
+#: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_menu
 msgid "Forecast"
 msgstr "Predviđanje"
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:276
-#, python-format
-msgid "Forecast (in %s)"
-msgstr ""
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_report_activities
@@ -208,9 +358,21 @@ msgid "Forecast Analysis"
 msgstr ""
 
 #. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_default_view
+msgid "Forecast Default View"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Forecast Form"
 msgstr "Forma predviđanja"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_generation_span_uom
+#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_generation_span_uom
+msgid "Forecast Generation Span Uom"
+msgstr ""
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
@@ -235,33 +397,50 @@ msgid "Forecast by task"
 msgstr ""
 
 #. module: project_forecast
-#: sql_constraint:project.forecast:0
-msgid "Forecast end date should be greater or equal to its start date"
+#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_check_start_date_lower_end_date
+#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_create_check_start_date_lower_end_date
+msgid "Forecast end date should be greater than its start date"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:200
+#: code:addons/project_forecast/models/res_config_settings.py:0
 #, python-format
-msgid ""
-"Forecast should not overlap existing forecasts. To solve this, check the "
-"project(s): %s."
+msgid "Forecast generation span should be between 1 and 24 weeks"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_user
-msgid "Forecast: view by employee"
+#: code:addons/project_forecast/models/res_config_settings.py:0
+#, python-format
+msgid "Forecast generation span should be between 1 and 6 months"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_project
-msgid "Forecast: view by project"
+#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_create_check_end_date_lower_repeat_until
+msgid "Forecast should end before the repeat ends"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:166
+#: model:mail.template,subject:project_forecast.email_template_forecast_single
+msgid "Forecast: new schedule"
+msgstr ""
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Forecasted time must be positive"
 msgstr "Predviđeno vrijeme mora biti pozitivno"
+
+#. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_forecast_recurrency__forecast_ids
+msgid "Forecasts that were created using this recurrency"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.actions.server,name:project_forecast.ir_cron_forecast_schedule_ir_actions_server
+#: model:ir.cron,cron_name:project_forecast.ir_cron_forecast_schedule
+#: model:ir.cron,name:project_forecast.ir_cron_forecast_schedule
+msgid "Forecasts: generate next forecasts"
+msgstr ""
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -269,13 +448,14 @@ msgid "Future"
 msgstr "Budućnost"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:298
-#, python-format
-msgid ""
-"Grid adjustment for project forecasts only supports the 'start_date' columns"
-" field and the 'resource_time' cell field, got respectively %(column_field)r"
-" and %(cell_field)r"
-msgstr ""
+#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_default_view__gantt
+msgid "Gantt"
+msgstr "Gantogram"
+
+#. module: project_forecast
+#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_default_view__grid
+msgid "Grid"
+msgstr "Mreža"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -283,27 +463,46 @@ msgid "Group By"
 msgstr "Grupiraj po"
 
 #. module: project_forecast
-#: selection:res.company,forecast_uom:0
-msgid "Hours"
-msgstr "Sati"
-
-#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__id
 msgid "ID"
 msgstr "ID"
 
 #. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_forecast_create__repeat_until
+msgid ""
+"If set, the recurrence stop at that date. Otherwise, the recurrence is "
+"applied indefinitely."
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__last_generated_end_datetime
+msgid "Last Generated End Date"
+msgstr ""
+
+#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create____last_update
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency____last_update
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat____last_update
 msgid "Last Modified on"
 msgstr "Zadnja promjena"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_uid
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__write_uid
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__write_uid
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__write_uid
 msgid "Last Updated by"
 msgstr "Promijenio"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__write_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__write_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__write_date
 msgid "Last Updated on"
 msgstr "Vrijeme promjene"
 
@@ -313,6 +512,14 @@ msgstr "Vrijeme promjene"
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Month"
 msgstr "Mjesec"
+
+#. module: project_forecast
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_create__repeat_unit__month
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_recurrency__repeat_unit__month
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_repeat__repeat_unit__month
+#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_generation_span_uom__month
+msgid "Months"
+msgstr "Mjeseci"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -326,8 +533,28 @@ msgstr "Moji projekti"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__name
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__name
 msgid "Name"
 msgstr "Naziv"
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Next"
+msgstr "Sljedeći"
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
+msgid "OK"
+msgstr "U redu"
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid "Open"
+msgstr "Otvori"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -335,74 +562,220 @@ msgid "Past"
 msgstr "Prošlost"
 
 #. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast__time
-msgid "Percentage of working time"
-msgstr "Postotak radnog vremena"
-
-#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_hours
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__resource_hours
 msgid "Planned hours"
 msgstr "Planirani sati"
 
 #. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Previous"
+msgstr "Prethodni"
+
+#. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_project
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__project_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Project"
 msgstr "Projekt"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Project Forecast"
 msgstr "Prognoza projekta"
 
 #. module: project_forecast
+#: model:ir.model,name:project_forecast.model_project_forecast_create
+msgid "Project Forecast creation wizard"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__published
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__published
+msgid "Published"
+msgstr "Objavljeno"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_generation_span_interval
+#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_generation_span_interval
+#: model_terms:ir.ui.view,arch_db:project_forecast.res_config_settings_view_form
+msgid "Rate of forecast generation"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__previous_forecast_id
+msgid "Recent Forecasts"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model,name:project_forecast.model_project_forecast_recurrency
+msgid "Recurent forecasts definition"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__recurrency_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__recurrency_id
+msgid "Recurrency"
+msgstr "Ponavljanje"
+
+#. module: project_forecast
+#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_recurrency_check_repeat_interval_positive
+msgid "Recurrency repeat interval should be at least 1"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__related_forecast_id
+msgid "Related Forecast"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__forecast_ids
+msgid "Related forecasts"
+msgstr ""
+
+#. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__user_id
+#: model:ir.model.fields,help:project_forecast.field_project_forecast_create__user_id
 msgid "Related user name for the resource to manage its access."
 msgstr "Korisničko ime povezano je s pristupom i upravljanjem modulima"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_date
-msgid "Start Date"
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat
+msgid "Repeat"
+msgstr "Ponovi"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat_unit
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_unit
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_unit
+msgid "Repeat Unit"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat_until
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_until
+msgid "Repeat Until"
+msgstr "Ponavljaj dok"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat_interval
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_interval
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_interval
+msgid "Repeat every"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.actions.act_window,name:project_forecast.project_forecast_repeat_forecast_wizard
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
+msgid "Repeat forecast"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_until
+msgid "Repeat until"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
+#, python-format
+msgid "Save"
+msgstr "Spremi"
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid "Save & send"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid "Send"
+msgstr "Pošalji"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_datetime
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__start_datetime
+msgid "Start Datetime"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+msgid "Start date"
 msgstr "Početni datum"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_task
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__task_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__task_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Task"
 msgstr "Zadatak"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__stage_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__stage_id
 msgid "Task stage"
 msgstr "Faza zadatka"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__tag_ids
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__tag_ids
 msgid "Task tags"
 msgstr "Oznake zadatka"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:134
+#: code:addons/project_forecast/models/project_forecast.py:0
+#: code:addons/project_forecast/models/project_forecast.py:0
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid ""
-"The employee (%s) doesn't have a timezone, this might cause errors in the "
-"time computation. It is configurable on the user linked to the employee"
+"This action will remove the current forecast from the recurrency. Are you "
+"sure you want to continue?"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_span
-#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_span
-msgid "Time Span"
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid ""
+"This will duplicate all forecasts from this period to the next. Are you sure"
+" you want to continue?"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__forecast_uom
-#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_uom
-#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_uom
-msgid "Time Unit"
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid ""
+"This will remove this forecast and all related ones. Are you sure you want "
+"to continue?"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid ""
+"This will remove this forecast and all subsequent ones. Are you sure you "
+"want to continue?"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
+#, python-format
+msgid "This will remove this forecast. Are you sure you want to continue?"
 msgstr ""
 
 #. module: project_forecast
@@ -411,9 +784,52 @@ msgid "Time by month"
 msgstr ""
 
 #. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_tz_warning
+msgid "Timezone Warning"
+msgstr ""
+
+#. module: project_forecast
+#. openerp-web
+#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
+#, python-format
+msgid "Today"
+msgstr "Danas"
+
+#. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_generation_span_uom
+#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_generation_span_uom
+msgid "Unit for the rate at which recurring forecasts should be generated"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
+msgid "Until"
+msgstr "Do"
+
+#. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_forecast_recurrency__repeat_until
+msgid "Up to which date should the forecasts be repeated"
+msgstr ""
+
+#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__user_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__user_id
 msgid "User"
 msgstr "Korisnik"
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:0
+#: code:addons/project_forecast/models/project_forecast.py:0
+#: code:addons/project_forecast/models/project_forecast.py:0
+#, python-format
+msgid "Warning"
+msgstr "Upozorenje"
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:0
+#, python-format
+msgid "Warning!"
+msgstr "Upozorenje!"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
@@ -423,14 +839,38 @@ msgid "Week"
 msgstr "Tjedan"
 
 #. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
-msgid "Year"
-msgstr "Godina"
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_create__repeat_unit__week
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_recurrency__repeat_unit__week
+#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_repeat__repeat_unit__week
+#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_generation_span_uom__week
+msgid "Weeks"
+msgstr "Tjedni"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project.py:21
+#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_default_view
+#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_default_view
+msgid "Which view should be seen by default for forecasts"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model,name:project_forecast.model_project_forecast_repeat
+msgid "Wizard to repeat an existing forecast"
+msgstr ""
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:0
+#, python-format
+msgid "You are allocating more hours than available for this employee"
+msgstr ""
+
+#. module: project_forecast
+#: code:addons/project_forecast/wizard/repeat.py:0
+#, python-format
+msgid "You can only apply this action from a forecast."
+msgstr ""
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid ""
 "You cannot delete a project containing forecasts. You can either delete all "
@@ -439,7 +879,7 @@ msgid ""
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project.py:43
+#: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid ""
 "You cannot delete a task containing forecasts. You can either delete all the"
@@ -447,18 +887,25 @@ msgid ""
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:172
+#: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Your task is not in the selected project."
 msgstr "Tvoj zadatak nije u izabranom projektu."
 
 #. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
-msgid "day(s)"
-msgstr "dan(a)"
+#: code:addons/project_forecast/models/project_forecast.py:0
+#, python-format
+msgid ""
+"can only edit forecasts resource hours if grouped by at least employee and "
+"project"
+msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:108
-#, python-format
-msgid "undefined"
-msgstr "nedefiniran"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
+msgid "discard"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+msgid "repeat"
+msgstr ""

@@ -1,27 +1,27 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_budget
+# 	* account_budget
 # 
 # Translators:
-# Karolina Tonković <karolina.tonkovic@storm.hr>, 2017
-# Marijan Rajic <mr.rajic@gmail.com>, 2017
-# Vladimir Olujić <olujic.vladimir@storm.hr>, 2018
-# Tina Milas, 2018
 # Ivan Marijanović <ivanm101@yahoo.com>, 2019
+# Marijan Rajic <mr.rajic@gmail.com>, 2019
 # Martin Trigaux, 2019
-# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2019
-# Marko Carević <marko.carevic@live.com>, 2019
-# Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019
 # Bole <bole@dajmi5.com>, 2019
+# Vladimir Olujić <olujic.vladimir@storm.hr>, 2019
+# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2019
+# Karolina Tonković <karolina.tonkovic@storm.hr>, 2019
+# Marko Carević <marko.carevic@live.com>, 2019
 # Ana-Maria Olujić <ana-maria.olujic@slobodni-programi.hr>, 2019
+# Tina Milas, 2019
+# Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
-"PO-Revision-Date: 2016-08-05 12:55+0000\n"
-"Last-Translator: Ana-Maria Olujić <ana-maria.olujic@slobodni-programi.hr>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
+"Last-Translator: Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:279
+#: code:addons/account_budget/models/account_budget.py:0
 #, python-format
 msgid ""
 "\"End Date\" of the budget line should be included in the Period of the "
@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:274
+#: code:addons/account_budget/models/account_budget.py:0
 #, python-format
 msgid ""
 "\"Start Date\" of the budget line should be included in the Period of the "
@@ -72,6 +72,11 @@ msgid "Activities"
 msgstr "Aktivnosti"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_state
 msgid "Activity State"
 msgstr "Status aktivnosti"
@@ -97,7 +102,7 @@ msgstr ""
 #: model:ir.model,name:account_budget.model_account_analytic_account
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_account_id
 msgid "Analytic Account"
-msgstr "Analitički konto"
+msgstr "Konto analitike"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_group_id
@@ -119,6 +124,7 @@ msgstr "Broj priloga"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__crossovered_budget_id
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_tree
+#: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Budget"
 msgstr "Proračun"
@@ -127,7 +133,7 @@ msgstr "Proračun"
 #: model:ir.actions.act_window,name:account_budget.act_account_analytic_account_cb_lines
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Budget Items"
-msgstr "Stavke budžeta"
+msgstr "Stavke proračuna"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_crossovered_budget_lines
@@ -192,7 +198,7 @@ msgid "Cancel Budget"
 msgstr "Poništi proračun"
 
 #. module: account_budget
-#: selection:crossovered.budget,state:0
+#: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__cancel
 msgid "Cancelled"
 msgstr "Otkazano"
 
@@ -221,7 +227,7 @@ msgid "Confirm"
 msgstr "Potvrdi"
 
 #. module: account_budget
-#: selection:crossovered.budget,state:0
+#: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__confirm
 msgid "Confirmed"
 msgstr "Potvrđeno"
 
@@ -237,7 +243,7 @@ msgstr "Kreirao"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__create_date
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__create_date
 msgid "Created on"
-msgstr "Datum kreiranja"
+msgstr "Kreirano"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__currency_id
@@ -249,16 +255,16 @@ msgstr "Valuta"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__display_name
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__display_name
 msgid "Display Name"
-msgstr "Naziv za prikaz"
+msgstr "Naziv"
 
 #. module: account_budget
-#: selection:crossovered.budget,state:0
+#: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__done
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Done"
 msgstr "Riješeno"
 
 #. module: account_budget
-#: selection:crossovered.budget,state:0
+#: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__draft
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Draft"
 msgstr "Nacrt"
@@ -278,6 +284,11 @@ msgstr "Završni datum"
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Entries..."
 msgstr "Stavke..."
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Exception Activities"
+msgstr ""
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_follower_ids
@@ -312,6 +323,16 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_exception_icon
+msgid "Icon"
+msgstr "Ikona"
+
+#. module: account_budget
+#: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_unread
 msgid "If checked new messages require your attention."
 msgstr "Ako je odabrano, nove poruke zahtijevaju Vašu pažnju."
@@ -323,6 +344,7 @@ msgstr "Ako je označeno, nove poruke zahtijevaju Vašu pažnju."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_has_error
+#: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -429,11 +451,6 @@ msgid "Number of unread messages"
 msgstr "Broj nepročitanih poruka"
 
 #. module: account_budget
-#: selection:crossovered.budget,activity_state:0
-msgid "Overdue"
-msgstr "Dospjelo"
-
-#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__paid_date
 msgid "Paid Date"
 msgstr "Datum plaćanja"
@@ -442,11 +459,6 @@ msgstr "Datum plaćanja"
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Period"
 msgstr "Period"
-
-#. module: account_budget
-#: selection:crossovered.budget,activity_state:0
-msgid "Planned"
-msgstr "Planirano"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__planned_amount
@@ -489,6 +501,11 @@ msgid "Responsible User"
 msgstr "Odgovorna osoba"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
@@ -514,7 +531,7 @@ msgid ""
 msgstr ""
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:29
+#: code:addons/account_budget/models/account_budget.py:0
 #, python-format
 msgid "The budget must have at least one account."
 msgstr "Proračun mora sadržavati barem jedan konto."
@@ -547,14 +564,14 @@ msgid "To Approve Budgets"
 msgstr "Nepotvrđeni proračuni"
 
 #. module: account_budget
-#: selection:crossovered.budget,activity_state:0
-msgid "Today"
-msgstr "Danas"
-
-#. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Today Activities"
 msgstr "Današnje aktivnosti"
+
+#. module: account_budget
+#: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_unread
@@ -572,7 +589,7 @@ msgid "Use budgets to compare actual with expected revenues and costs"
 msgstr ""
 
 #. module: account_budget
-#: selection:crossovered.budget,state:0
+#: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__validate
 msgid "Validated"
 msgstr "Provjereno"
 
@@ -587,7 +604,7 @@ msgid "Website communication history"
 msgstr "Povijest komunikacije Web stranice"
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:242
+#: code:addons/account_budget/models/account_budget.py:0
 #, python-format
 msgid ""
 "You have to enter at least a budgetary position or analytic account on a "

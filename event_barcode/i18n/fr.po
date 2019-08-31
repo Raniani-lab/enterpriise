@@ -1,27 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * event_barcode
+# 	* event_barcode
 # 
 # Translators:
-# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2016
-# Xavier Symons <xsy@openerp.com>, 2016
-# Lucas Deliege <lud@odoo.com>, 2016
-# Foo Bar <mat+test@odoo.com>, 2017
-# f5f0a0dac17dde787a1d812a6989680e, 2017
-# Richard Mathot <rim@odoo.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# Xavier Belmere <Info@cartmeleon.com>, 2018
 # Martin Trigaux, 2019
+# Aurélien Pillevesse <aurelienpillevesse@hotmail.fr>, 2019
 # Laura Piraux <lap@odoo.com>, 2019
-# Marie Willemyns <mwi@odoo.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,13 +23,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:26
+#: code:addons/event_barcode/controllers/main.py:0
 #, python-format
 msgid "%s is already registered"
 msgstr "%s est déjà enregistré"
 
 #. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:24
+#: code:addons/event_barcode/controllers/main.py:0
 #, python-format
 msgid "%s is successfully registered"
 msgstr "%s est corectement enregistré"
@@ -52,21 +45,28 @@ msgid ""
 "<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
 "label=\"Barcode\"/>"
 msgstr ""
+"<i class=\"fa-2x fa fa-barcode\" title=\"Code à barre\" role=\"img\" aria-"
+"label=\"Code à barre\"/>"
 
 #. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:18
+#: code:addons/event_barcode/controllers/main.py:0
 #, python-format
 msgid "Attendee"
 msgstr "Participant"
 
 #. module: event_barcode
+#: model:ir.actions.act_window,name:event_barcode.act_event_registration_from_barcode
+msgid "Attendees"
+msgstr "Participants"
+
+#. module: event_barcode
 #. openerp-web
-#: code:addons/event_barcode/static/src/xml/event_barcode.xml:33
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #: model:ir.model.fields,field_description:event_barcode.field_event_registration__barcode
 #: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
 #, python-format
 msgid "Barcode"
-msgstr "Code Barre"
+msgstr "Code-barres"
 
 #. module: event_barcode
 #: model:ir.actions.client,name:event_barcode.event_barcode_action_main_view
@@ -80,29 +80,29 @@ msgid "Barcode Nomenclature"
 msgstr "Nomenclature de code-barres"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/xml/event_barcode.xml:32
-#, python-format
-msgid "Barcode Scanning"
-msgstr "Scan du code-barre"
-
-#. module: event_barcode
-#: sql_constraint:event.registration:0
+#: model:ir.model.constraint,message:event_barcode.constraint_event_registration_barcode_event_uniq
 msgid "Barcode should be unique per event"
 msgstr "Le code-barres doit être unique par événément."
 
 #. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:20
+#: code:addons/event_barcode/controllers/main.py:0
 #, python-format
 msgid "Canceled registration"
 msgstr "Inscription annulée"
 
 #. module: event_barcode
 #. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:95
+#: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Close"
 msgstr "Fermer"
+
+#. module: event_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
+#, python-format
+msgid "Company Logo"
+msgstr "Logo de la société"
 
 #. module: event_barcode
 #: model:ir.model,name:event_barcode.model_res_config_settings
@@ -110,23 +110,9 @@ msgid "Config Settings"
 msgstr "Paramètres de config"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:66
-#, python-format
-msgid "Error"
-msgstr "Erreur"
-
-#. module: event_barcode
 #: model:ir.model,name:event_barcode.model_event_registration
 msgid "Event Registration"
 msgstr "Inscription à l'évènement"
-
-#. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:66
-#, python-format
-msgid "Invalid user input"
-msgstr "Entrée utilisateur invalide"
 
 #. module: event_barcode
 #: model:ir.model.fields,field_description:event_barcode.field_res_config_settings__barcode_nomenclature_id
@@ -135,48 +121,70 @@ msgstr "Nomenclature"
 
 #. module: event_barcode
 #. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:96
+#: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Print"
 msgstr "Imprimer"
 
 #. module: event_barcode
 #. openerp-web
-#: code:addons/event_barcode/static/src/xml/event_barcode.xml:42
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Registration"
 msgstr "Inscription"
 
 #. module: event_barcode
 #. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:87
+#: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Registration Summary"
 msgstr "Résumé de l'inscription"
 
 #. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:13
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
+#, python-format
+msgid "Scan your badge"
+msgstr "Scannez votre badge"
+
+#. module: event_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
+#, python-format
+msgid "Select Attendee"
+msgstr ""
+
+#. module: event_barcode
+#: code:addons/event_barcode/controllers/main.py:0
 #, python-format
 msgid "This ticket is not valid for this event"
 msgstr "Ce ticket n'est pas valide pour cet événément"
 
 #. module: event_barcode
 #. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:104
+#: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "View"
 msgstr "Vue"
 
 #. module: event_barcode
 #. openerp-web
-#: code:addons/event_barcode/static/src/xml/event_barcode.xml:34
-#, python-format
-msgid "Waiting for barcode scan..."
-msgstr "En attente d'une lecture de code-barres..."
-
-#. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:117
+#: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Warning"
 msgstr "Avertissement"
+
+#. module: event_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
+#, python-format
+msgid "Welcome to"
+msgstr "Bienvenue dans"
+
+#. module: event_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
+#, python-format
+msgid "or"
+msgstr "ou"

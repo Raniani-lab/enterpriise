@@ -1,19 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * web_enterprise
+# 	* web_enterprise
 # 
 # Translators:
-# Bohdan Lisnenko, 2018
-# ТАрас <tratatuta@i.ua>, 2018
 # Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -24,74 +22,89 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:220
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "(Enterprise Edition)"
-msgstr "(Корпоративна редакція)"
+msgstr "(Версія Enterprise)"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:67
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "1 month"
 msgstr "1 місяць"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:8
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Action"
 msgstr "Дія"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:236
-#: code:addons/web_enterprise/static/src/xml/base.xml:239
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Alt"
 msgstr "Alt"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:130
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Applications"
-msgstr "Додатки"
+msgstr "Заявки"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:39
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "COMPANIES"
 msgstr "КОМПАНІЇ"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:34
+#: code:addons/web_enterprise/static/src/js/views/view_dialogs.js:0
+#, python-format
+msgid "Clear"
+msgstr "Очистити"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Close menu"
 msgstr "Закрити меню"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:42
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Company menu"
 msgstr "Меню компанії"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:239
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Control"
 msgstr "Контроль"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:226
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Database expiration:"
 msgstr "Термін дії бази даних:"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
+#, python-format
+msgid "Filters..."
+msgstr "Фільтри..."
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
@@ -100,174 +113,191 @@ msgstr "Маршрутизація HTTP"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:98
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Log in as an administrator to correct the issue."
-msgstr "Увійти як адміністратор, щоб виправити проблему."
+msgstr "Увійти як адміністратор, щоби виправити проблему."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:51
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Logo"
 msgstr "Логотип"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:31
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Menu"
 msgstr "Меню"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:48
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "No result"
 msgstr "Немає результату"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:219
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Odoo"
 msgstr "Odoo"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:111
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Odoo Help"
 msgstr "Допомога Odoo"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:119
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Paste code here"
 msgstr "Вставте код сюди"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:90
-#: code:addons/web_enterprise/static/src/xml/base.xml:95
+#: code:addons/web_enterprise/static/src/js/views/relational_fields.js:0
+#, python-format
+msgid "Quick search: %s"
+msgstr "Швидкий пошук: %s"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Refresh subscription status"
 msgstr "Оновіть статус підписки"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:121
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Register"
-msgstr "Зареєструватися"
+msgstr "Зареєструйтеся"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:86
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Register your subscription"
-msgstr "Зареєструвати підписку"
+msgstr "Зареєструйте вашу підписку"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:89
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Renew your subscription"
-msgstr "Поновити підписку"
+msgstr "Оновіть вашу підписку"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:6
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Search"
 msgstr "Пошук"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:7
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Search..."
 msgstr "Пошук..."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:110
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
+#, python-format
+msgid "See result"
+msgstr "Переглянути результат"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid ""
 "Something went wrong while registering your database. You can try again or "
 "contact"
 msgstr ""
 "Під час реєстрації вашої бази даних сталася помилка. Ви можете спробувати ще"
-" раз або зв'язатися"
+" раз або зв'яжіться"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:116
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Subscription Code:"
 msgstr "Код підписки:"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:104
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid ""
 "Thank you, your registration was successful! Your database is valid until"
-msgstr "Дякую, ваша реєстрація була успішною! Ваша база даних діє до"
+msgstr "Дякуємо, ваша реєстрація була успішною! Ваша база даних діє до"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:80
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "This database has expired."
 msgstr "Термін дії цієї бази даних закінчився."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:76
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "This database will expire in"
 msgstr "Термін дії цієї бази даних закінчиться через"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:73
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "This demo database will expire in"
 msgstr "Термін дії демо-версії цієї бази даних закінчиться через"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:234
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Toggle home menu"
 msgstr "Переключити домашнє меню"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:131
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Toggle menu"
 msgstr "Переключити меню"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:94
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Upgrade your subscription"
 msgstr "Оновіть вашу підписку"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:92
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
-msgid "You have more users than your subscription allows."
-msgstr "У Вас більше профілів ніж дозволяє Ваша підписка."
+msgid ""
+"You have more users or more apps installed than your subscription allows."
+msgstr ""
+"У вас більше користувачів або встановлено більше додатків, ніж дозволено "
+"вашою підпискою."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:62
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid ""
 "You will be able to register your database once you have installed your "
@@ -278,35 +308,35 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:119
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Your subscription code"
-msgstr "Код Вашої підписки"
+msgstr "Код вашої підписки"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:107
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Your subscription was updated and is valid until"
 msgstr "Вашу підписку оновлено і вона діє до"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:86
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "buy a subscription"
 msgstr "купити підписку"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:70
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "days"
-msgstr "днів"
+msgstr "дні"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:86
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "or"
 msgstr "або"

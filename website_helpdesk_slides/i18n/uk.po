@@ -1,21 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_slides
+# 	* website_helpdesk_slides
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Bohdan Lisnenko, 2018
-# Taras Kovaliuk <tratatuta123@gmail.com>, 2018
-# ТАрас <tratatuta@i.ua>, 2018
-# Роман Яхненко <bsap132@gmail.com>, 2018
+# Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.3+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-12 12:34+0000\n"
-"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +24,7 @@ msgstr ""
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:72
 #, python-format
 msgid "Already exists in %s : <a href=\"%s\">click here to view it.</a>"
-msgstr "Вже існує в %s : <a href=\"%s\">натисніть тут, щоб переглянути.</a>"
+msgstr "Вже існує в %s : <a href=\"%s\">натисніть тут, щоби переглянути.</a>"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
@@ -48,7 +44,7 @@ msgstr "Канал"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Click here to view more result..."
-msgstr "Натисніть тут, щоби переглянути більше результату..."
+msgstr "Натисніть тут, щоби переглянути більше результатів..."
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__datas
@@ -62,8 +58,7 @@ msgid ""
 "Could not fetch data from url. Document or access right not available:\n"
 "%s"
 msgstr ""
-"Неможливо отримати дані з посилання. Документ або права доступу не доступні.\n"
-"Ось відповідь:\n"
+"Неможливо отримати дані з посилання. Документ або права доступу не доступні:\n"
 "%s"
 
 #. module: website_helpdesk_slides
@@ -74,7 +69,7 @@ msgstr "Створив"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__create_date
 msgid "Created on"
-msgstr "Створено"
+msgstr "Створено на"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__description
@@ -142,7 +137,7 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard____last_update
 msgid "Last Modified on"
-msgstr "Остання модифікація"
+msgstr "Останні зміни на"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_uid
@@ -162,7 +157,7 @@ msgstr "Mime-тип"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Name"
-msgstr "Назва"
+msgstr "Ім'я"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
@@ -218,7 +213,7 @@ msgstr "Зображення слайду"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__tag_ids
 msgid "Tags"
-msgstr "Мітки"
+msgstr "Теги"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
@@ -237,12 +232,12 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_helpdesk_team__elearning_url
 msgid "The full URL to access the document through the website."
-msgstr "URL-адреса повністю, для доступу до документації через сайт"
+msgstr "URL-адреса повністю, для доступу до документації через сайт."
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "The related channel is:<br/>"
-msgstr "Пов'язаний канал - це:<br/>"
+msgstr "Пов'язаний канал є:<br/>"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__name

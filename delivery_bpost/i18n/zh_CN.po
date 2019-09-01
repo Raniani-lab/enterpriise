@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_bpost
+# 	* delivery_bpost
 # 
 # Translators:
 # fausthuang, 2017
 # Amanda Li <lidan5452@126.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # Tison He <hedisen@sina.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# Jeffery CHEN <jeffery9@gmail.com>, 2018
 # Gary Wei <Gary.wei@elico-corp.com>, 2018
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
@@ -16,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2017-12-13 15:20+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -44,7 +44,7 @@ msgid "Allow deliveries on Saturday (extra charges apply)"
 msgstr "允许周六发货（额外收费）"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:98
+#: code:addons/delivery_bpost/models/bpost_request.py:106
 #, python-format
 msgid ""
 "Authentication error -- wrong credentials\n"
@@ -129,11 +129,6 @@ msgid "DOCUMENTS"
 msgstr "文件"
 
 #. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "交货方式"
-
-#. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_saturday
 msgid "Delivery on Saturday"
 msgstr "周六发货"
@@ -201,7 +196,7 @@ msgid "PNG"
 msgstr "PNG"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:134
+#: code:addons/delivery_bpost/models/bpost_request.py:142
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
 msgstr "比利时邮政不接收超过30Kg的包裹。"
@@ -212,7 +207,7 @@ msgid "Passphrase"
 msgstr "开发者令牌"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:58
+#: code:addons/delivery_bpost/models/bpost_request.py:71
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "请至少提供一个项目去发货"
@@ -226,6 +221,13 @@ msgstr "产品包装"
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "服务商"
+
+#. module: delivery_bpost
+#: code:addons/delivery_bpost/models/delivery_bpost.py:85
+#: code:addons/delivery_bpost/models/delivery_bpost.py:126
+#, python-format
+msgid "Return shipment created into bpost <br/> <b>Tracking Number : </b>%s"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
@@ -249,7 +251,18 @@ msgid "Shipment created into bpost <br/> <b>Tracking Number : </b>%s"
 msgstr "<br/><b/>"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:50
+#: model:ir.model,name:delivery_bpost.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
+
+#. module: delivery_bpost
+#: code:addons/delivery_bpost/models/bpost_request.py:301
+#, python-format
+msgid "The BPost shipping service is unresponsive, please retry later."
+msgstr ""
+
+#. module: delivery_bpost
+#: code:addons/delivery_bpost/models/bpost_request.py:63
 #, python-format
 msgid ""
 "The address of your company/warehouse is incomplete or wrong (Missing field(s):  \n"
@@ -257,7 +270,7 @@ msgid ""
 msgstr "您公司或仓库的地址是不完整的或错误的(缺少字段%s)"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:60
+#: code:addons/delivery_bpost/models/bpost_request.py:73
 #, python-format
 msgid ""
 "The estimated shipping cannot be computed because the weight of your product"
@@ -265,7 +278,7 @@ msgid ""
 msgstr "预计装运不能计算，因为您的产品未提供重量信息"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:56
+#: code:addons/delivery_bpost/models/bpost_request.py:69
 #, python-format
 msgid ""
 "The estimated shipping price cannot be computed because all your products "
@@ -273,7 +286,7 @@ msgid ""
 msgstr "预计装运价格不能计算，因为您所有的产品都是服务或数字的。"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:42
+#: code:addons/delivery_bpost/models/bpost_request.py:55
 #, python-format
 msgid ""
 "The recipient address is incomplete or wrong (Missing field(s):  \n"
@@ -302,7 +315,7 @@ msgid "Unit(s)"
 msgstr "件"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/delivery_bpost.py:91
+#: code:addons/delivery_bpost/models/delivery_bpost.py:97
 #, python-format
 msgid ""
 "You can not cancel a bpost shipment when a shipping label has already been "
@@ -310,13 +323,13 @@ msgid ""
 msgstr "当运输标签已经生成时您不能取消Bpost运输"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/delivery_bpost.py:96
+#: code:addons/delivery_bpost/models/delivery_bpost.py:102
 #, python-format
 msgid "You cannot compute a passphrase for non-bpost carriers."
 msgstr "您不能为非Bpost承运商计算一个令牌"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:52
+#: code:addons/delivery_bpost/models/bpost_request.py:65
 #, python-format
 msgid "Your company/warehouse address must be in Belgium to ship with bpost"
 msgstr "您的公司或仓库地址必须在比利时境内来使用Bpost运输"
@@ -368,13 +381,7 @@ msgid "bpost Default Packaging Type"
 msgstr "Bpost默认打包类型"
 
 #. module: delivery_bpost
-#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
-msgid "bpost Delivery Methods"
-msgstr "Bpost运输方式"
-
-#. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:46
+#: code:addons/delivery_bpost/models/bpost_request.py:59
 #, python-format
 msgid ""
 "bpost Domestic is used only to ship inside Belgium. Please change the "
@@ -382,7 +389,7 @@ msgid ""
 msgstr "Bpost国内仅用于在比利时境内运输。请更改运输方式为Bpost国际。"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:44
+#: code:addons/delivery_bpost/models/bpost_request.py:57
 #, python-format
 msgid ""
 "bpost International is used only to ship outside Belgium. Please change the "
@@ -390,15 +397,13 @@ msgid ""
 msgstr "Bpost国际仅用于在比利时境外运输。请更改运输方式为Bpost国内。"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:112
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
+msgid "bpost Shipping Methods"
+msgstr ""
+
+#. module: delivery_bpost
+#: code:addons/delivery_bpost/models/bpost_request.py:120
 #, python-format
 msgid "bpost did not return prices for this destination country."
 msgstr "Bpost未能返回此目标国家的价格"
-
-#. module: delivery_bpost
-#: model:product.product,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic
-#: model:product.product,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world
-#: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
-#: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
-msgid "kg"
-msgstr "kg"

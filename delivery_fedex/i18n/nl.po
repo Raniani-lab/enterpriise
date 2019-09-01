@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_fedex
+# 	* delivery_fedex
 # 
 # Translators:
 # Stephan Van Dyck <stephan.vandyck@vanroey.be>, 2016
@@ -9,14 +9,15 @@
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,11 +96,6 @@ msgid "Default Package Type"
 msgstr "Standaard verpakkingstype"
 
 #. module: delivery_fedex
-#: model:ir.model,name:delivery_fedex.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Verzendwijzes"
-
-#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_key
 msgid "Developer Key"
 msgstr "Ontwikkelaarssleutel"
@@ -116,7 +112,7 @@ msgid "Easypost"
 msgstr "Easypost"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:220
+#: code:addons/delivery_fedex/models/delivery_fedex.py:224
 #, python-format
 msgid ""
 "Error:\n"
@@ -152,6 +148,26 @@ msgstr "FEDEX_GROUND"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_NEXT_DAY_AFTERNOON"
+msgstr "FEDEX_VOLGENDE_DAG_NAMIDDAG"
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_NEXT_DAY_EARLY_MORNING"
+msgstr "FEDEX_VOLGENDE_DAG_VROEGE_OCHTEND"
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_NEXT_DAY_END_OF_DAY"
+msgstr "FEDEX_VOLGENDE_DAG_EINDE_DAG"
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_NEXT_DAY_MID_MORNING"
+msgstr "FEDEX_VOLGENDE_DAD_MIDDEN_OCHTEND"
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
 msgid "FIRST_OVERNIGHT"
 msgstr "FIRST_OVERNIGHT"
 
@@ -167,15 +183,15 @@ msgid "FedEx Account Number"
 msgstr "FedEx account nummer"
 
 #. module: delivery_fedex
-#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
-msgid "FedEx Delivery Methods"
-msgstr "FedEx leveringsmethodes"
-
-#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery
 msgid "FedEx Saturday Delivery"
 msgstr "FedEx zaterdag levering"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
+msgid "FedEx Shipping Methods"
+msgstr "FedEx leveringsmethodes"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -232,11 +248,6 @@ msgid "Fixed Price"
 msgstr "Vaste prijs"
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
-msgid "Generate return label"
-msgstr ""
-
-#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Go to"
 msgstr "Ga naar"
@@ -277,7 +288,7 @@ msgid "No carrier integration"
 msgstr "Geen vervoerder informatie"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:441
+#: code:addons/delivery_fedex/models/delivery_fedex.py:446
 #, python-format
 msgid "No packages for this picking"
 msgstr "Geen verpakkingen voor deze levering."
@@ -426,19 +437,19 @@ msgid "Screenshot"
 msgstr "Screenshot"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:533
+#: code:addons/delivery_fedex/models/delivery_fedex.py:539
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Levering N° %s werd geannuleerd"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:426
+#: code:addons/delivery_fedex/models/delivery_fedex.py:431
 #, python-format
 msgid "Shipment created into Fedex <br/> <b>Tracking Number : </b>%s"
 msgstr "Levering aangemaakt in Fedex <br/> <b>Traceernummer : </b>%s"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:369
+#: code:addons/delivery_fedex/models/delivery_fedex.py:374
 #, python-format
 msgid ""
 "Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
@@ -446,6 +457,11 @@ msgid ""
 msgstr ""
 "Levering aangemaakt in Fedex <br/> <b>Traceernummer : "
 "</b>%s<br/><b>Verpakkingen:</b>%s"
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Verzendmethoden"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery
@@ -479,11 +495,6 @@ msgid "The last step is the"
 msgstr "De laatste stap is de"
 
 #. module: delivery_fedex
-#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_return_label_on_delivery
-msgid "The return label is automatically generated at the delivery"
-msgstr ""
-
-#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ""
 "These certifications usually require that you contact the FedEx support team"
@@ -512,7 +523,7 @@ msgid "Unit(s)"
 msgstr "Stuk(s)"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:226
+#: code:addons/delivery_fedex/models/delivery_fedex.py:230
 #, python-format
 msgid ""
 "Warning:\n"

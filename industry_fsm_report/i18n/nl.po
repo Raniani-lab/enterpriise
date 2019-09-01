@@ -35,7 +35,7 @@ msgstr "&amp;nbsp;<span>op</span>&amp;nbsp;"
 #. module: industry_fsm_report
 #: model:ir.actions.report,print_report_name:industry_fsm_report.task_custom_report
 msgid "'Worksheet %s - %s' % (object.name, object.partner_id.name)"
-msgstr ""
+msgstr "'Werkbon %s - %s' % (object.name, object.partner_id.name)"
 
 #. module: industry_fsm_report
 #: model:mail.template,body_html:industry_fsm_report.mail_template_data_send_report

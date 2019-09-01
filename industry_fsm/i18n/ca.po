@@ -367,7 +367,7 @@ msgstr "Quantitat"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__quotation_count
 msgid "Quotation Count"
-msgstr ""
+msgstr "Compte de pressupostos"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm_quotation

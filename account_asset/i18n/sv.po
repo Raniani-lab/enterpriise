@@ -621,7 +621,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Framtida aktivieteter"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__value
@@ -751,7 +751,7 @@ msgstr "Senast uppdaterad"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Försenade aktiviteter"
 
 #. module: account_asset
 #: selection:account.asset,method:0
@@ -1092,7 +1092,7 @@ msgstr "Sätt till utkast"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Show all records which has next action date is before today"
-msgstr ""
+msgstr "Visa ella poster som har nästa händelse före idag"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:102
@@ -1179,7 +1179,7 @@ msgstr "Idag"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Dagens aktiviteter"
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:144

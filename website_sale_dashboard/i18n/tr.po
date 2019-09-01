@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_sale_dashboard
+# 	* website_sale_dashboard
 # 
 # Translators:
 # Martin Trigaux, 2018
@@ -10,14 +10,15 @@
 # Umur Akın <umura@projetgrup.com>, 2019
 # Ediz Duman <neps1192@gmail.com>, 2019
 # Gökhan Yüksel <yg_yuksel@hotmail.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2018-06-25 08:41+0000\n"
-"Last-Translator: Gökhan Yüksel <yg_yuksel@hotmail.com>, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,18 +29,19 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "# Customers"
-msgstr ""
+msgstr "# Clients"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "# Lines"
-msgstr ""
+msgstr "# Lignes"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid ""
 "/website_sale_dashboard/static/src/img/website_sale_dashboard_onboarding_bg.jpg"
 msgstr ""
+"/website_sale_dashboard/static/src/img/website_sale_dashboard_onboarding_bg.jpg"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_sale_report__is_abandoned_cart
@@ -79,7 +81,7 @@ msgstr "Şirketler"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Conversion Rate"
-msgstr ""
+msgstr "Taux de conversion"
 
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_digest_digest
@@ -94,7 +96,7 @@ msgstr "Tamamlandı"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "Follow your website traffic in Odoo."
-msgstr ""
+msgstr "Suivez le trafic de votre site Web sur Odoo."
 
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0
@@ -150,7 +152,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "The configuration is done. Happy selling!"
-msgstr ""
+msgstr "La configuration est terminée. Bonne vente!"
 
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0
@@ -160,12 +162,12 @@ msgstr "Faturalanacak"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Total Sales"
-msgstr ""
+msgstr "Ventes totales"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Total, Tax Included"
-msgstr ""
+msgstr "Total, taxes incluses"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
@@ -190,7 +192,7 @@ msgstr "Websitesi"
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "action_close_website_sale_dashboard_onboarding"
-msgstr ""
+msgstr "action_close_website_sale_dashboard_onboarding"
 
 #. module: website_sale_dashboard
 #: model:ir.actions.act_window,name:website_sale_dashboard.sale_dashboard
@@ -200,9 +202,9 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "o_onboarding_orange"
-msgstr ""
+msgstr "o_onboarding_orange"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "res.company"
-msgstr ""
+msgstr "res.company"

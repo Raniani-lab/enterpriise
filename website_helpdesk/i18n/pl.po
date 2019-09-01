@@ -1,20 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk
+# 	* website_helpdesk
 # 
 # Translators:
 # Martin Trigaux, 2019
-# zbik2607 <darek@krokus.com.pl>, 2019
+# Dariusz Żbikowski <darek@krokus.com.pl>, 2019
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
 # Zdzisław Krajewski <zdzichucb@gmail.com>, 2019
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2019-08-12 12:55+0000\n"
 "PO-Revision-Date: 2017-02-15 11:47+0000\n"
 "Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
@@ -56,11 +55,6 @@ msgid "Helpdesk Team"
 msgstr "Zespół pomocy"
 
 #. module: website_helpdesk
-#: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
-msgid "Is published"
-msgstr ""
-
-#. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.not_published_any_team
 msgid "No teams have been published."
 msgstr "Nie opublikowano żadnych zespołów."
@@ -76,21 +70,6 @@ msgid "Team Settings"
 msgstr "Ustawienia Zespołów"
 
 #. module: website_helpdesk
-#: model:ir.model.fields,help:website_helpdesk.field_helpdesk_team__website_url
-msgid "The full URL to access the document through the website."
-msgstr "Pełny adres URL dostępu do dokumentu przez stronę."
-
-#. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "View my Tickets"
 msgstr ""
-
-#. module: website_helpdesk
-#: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
-msgid "Visible on current website"
-msgstr ""
-
-#. module: website_helpdesk
-#: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url
-msgid "Website URL"
-msgstr "Adres strony internetowej"

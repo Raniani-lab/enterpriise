@@ -1,17 +1,32 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_slides
+# 	* website_helpdesk_slides
 # 
 # Translators:
+# Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2017
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
+# Richard Mathot <rim@odoo.com>, 2017
+# Clo <clo@odoo.com>, 2017
+# Jérémy Donas <LeDistordu@users.noreply.github.com>, 2017
+# Lucas Deliege <lud@odoo.com>, 2017
+# Melanie Bernard <mbe@odoo.com>, 2017
+# Olivier Dony <odo@odoo.com>, 2017
+# Xavier Belmere <Info@cartmeleon.com>, 2017
+# Xavier Symons <xsy@openerp.com>, 2017
+# Denis Leemann <denis.leemann@camptocamp.com>, 2017
+# Olivier Lenoir <olivier.lenoir@free.fr>, 2017
+# Jeanjean Noname <monsieur.spock@gmail.com>, 2017
+# e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2018
-# Nathan Grognet <ngr@odoo.com>, 2018
+# Nathan Grognet <ngr@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Nathan Grognet <ngr@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Nathan Grognet <ngr@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

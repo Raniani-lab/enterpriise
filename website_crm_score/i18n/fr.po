@@ -25,6 +25,7 @@
 # William Olhasque <william.olhasque@scopea.fr>, 2019
 # Martin Trigaux, 2019
 # Lucas Deliege <lud@odoo.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -32,7 +33,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Lucas Deliege <lud@odoo.com>, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,6 +52,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
 "of leads\" role=\"img\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
+"of leads\" role=\"img\"/>"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
@@ -119,7 +122,7 @@ msgstr "Capacité"
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid "Create a new salesman"
-msgstr ""
+msgstr "Créer un nouveau vendeur"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_uid
@@ -169,7 +172,7 @@ msgstr ""
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid "Define a new sales team"
-msgstr ""
+msgstr "Définir une nouvelle équipe de vente"
 
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
@@ -480,7 +483,7 @@ msgstr "Commerciaux"
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Person"
-msgstr ""
+msgstr "Vendeur"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
@@ -511,12 +514,12 @@ msgstr "Vendeur"
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_team_user
 msgid "Salesperson (Team Member)"
-msgstr ""
+msgstr "Vendeur (membre de l'équipe)"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action
 msgid "Salespersons"
-msgstr ""
+msgstr "Vendeurs"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
@@ -605,6 +608,8 @@ msgid ""
 "Use sales teams to organize your sales departments.\n"
 "                    Each team will work with a separate pipeline."
 msgstr ""
+"Utilisez des équipes de vente pour organiser vos services commerciaux.\n"
+"Chaque équipe travaillera avec un pipeline séparé."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id

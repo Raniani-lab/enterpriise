@@ -9,6 +9,7 @@
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +29,7 @@ msgstr ""
 #: code:addons/project_forecast/wizard/create_forecast.py:109
 #, python-format
 msgid "%s's schedules timezone differs from yours"
-msgstr ""
+msgstr "%s schema's tijdzone verschilt van de uwe"
 
 #. module: project_forecast
 #: model:mail.template,body_html:project_forecast.email_template_forecast_single
@@ -69,6 +70,41 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div>\n"
+"                    <p>Beste ${object.employee_id.name or ''},</p><br/>\n"
+"                    <p>U bent aan de volgende voorspelling toegewezen.</p><br/>\n"
+"                    <table style=\"table-layout: fixed;\">\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Van</th>\n"
+"                            <td style=\"padding: 5px;\">${ctx.formatted_start_datetime}</td>\n"
+"                        </tr>\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Tot</th>\n"
+"                            <td style=\"padding: 5px;\">${ctx.formatted_end_datetime}</td>\n"
+"                        </tr>\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Project</th>\n"
+"                            <td style=\"padding: 5px;\">${object.project_id.name}</td>\n"
+"                        </tr>\n"
+"                        % if object.task_id\n"
+"                            <tr>\n"
+"                                <th style=\"padding: 5px;text-align: left;\">Taak</th>\n"
+"                                <td style=\"padding: 5px;\">${object.task_id.name or ''}</td>\n"
+"                            </tr>\n"
+"                        % endif\n"
+"                        <tr>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Geplande Uren\n"
+"                            <td style=\"padding: 5px;\">${ctx.resource_hours}</td>\n"
+"                        </tr>\n"
+"\n"
+"                    </table>\n"
+"                    % if ctx.render_link\n"
+"                        <div style=\"margin: 15px; text-align: center\">\n"
+"                            <a href=\"/web?#action=${ctx.get('action_id')}&amp;model=project.forecast&amp;view_type=gantt&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">Bekijk Voorspelling</a>\n"
+"                        </div>\n"
+"                    % endif\n"
+"                </div>\n"
+"            "
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
@@ -192,7 +228,7 @@ msgstr "Kan niet meer uren verwijderen dan dat er zijn"
 #: code:addons/project_forecast/wizard/repeat.py:39
 #, python-format
 msgid "Cannot repeat an already repeating forecast"
-msgstr ""
+msgstr "Kan een al herhalende voorspelling niet herhalen"
 
 #. module: project_forecast
 #. openerp-web
@@ -260,6 +296,8 @@ msgstr "Standaard weergave"
 #: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_generation_span_interval
 msgid "Delay for the rate at which recurring forecasts should be generated"
 msgstr ""
+"Snelheidsvertraging waarmee terugkerende voorspellingen moeten worden "
+"gegenereerd"
 
 #. module: project_forecast
 #. openerp-web
@@ -395,7 +433,7 @@ msgstr "Prognoseformulier"
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_generation_span_uom
 #: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_generation_span_uom
 msgid "Forecast Generation Span Uom"
-msgstr ""
+msgstr "Voorspelling Generatie Span Uom"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
@@ -422,19 +460,19 @@ msgstr "Voorspelling per taak"
 #. module: project_forecast
 #: sql_constraint:project.forecast:0 sql_constraint:project.forecast.create:0
 msgid "Forecast end date should be greater than its start date"
-msgstr ""
+msgstr "Voorspelling einddatum moet groter zijn aan de startdatum"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/res_config_settings.py:45
 #, python-format
 msgid "Forecast generation span should be between 1 and 24 weeks"
-msgstr ""
+msgstr "Het voorspelling generatie bereik moet tussen 1 en 24 weken liggen"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/res_config_settings.py:43
 #, python-format
 msgid "Forecast generation span should be between 1 and 6 months"
-msgstr ""
+msgstr "Het voorspelling generatie bereik moet tussen 1 en 6 maanden liggen"
 
 #. module: project_forecast
 #: sql_constraint:project.forecast.create:0
@@ -456,14 +494,14 @@ msgstr "Voorspelde tijd moet positief zijn"
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast_recurrency__forecast_ids
 msgid "Forecasts that were created using this recurrency"
-msgstr ""
+msgstr "Voorspellingen die met deze herhaling zijn gemaakt"
 
 #. module: project_forecast
 #: model:ir.actions.server,name:project_forecast.ir_cron_forecast_schedule_ir_actions_server
 #: model:ir.cron,cron_name:project_forecast.ir_cron_forecast_schedule
 #: model:ir.cron,name:project_forecast.ir_cron_forecast_schedule
 msgid "Forecasts: generate next forecasts"
-msgstr ""
+msgstr "Voorspellingen: genereer volgende voorspellingen"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -629,7 +667,7 @@ msgstr "Gepubliceerd"
 #: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_generation_span_interval
 #: model_terms:ir.ui.view,arch_db:project_forecast.res_config_settings_view_form
 msgid "Rate of forecast generation"
-msgstr ""
+msgstr "Beoordeling van voorspellings generatie"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__previous_forecast_id
@@ -650,7 +688,7 @@ msgstr "Herhaling"
 #. module: project_forecast
 #: sql_constraint:project.forecast.recurrency:0
 msgid "Recurrency repeat interval should be at least 1"
-msgstr ""
+msgstr "Herhalingsinterval moet minimaal 1 zijn"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__related_forecast_id
@@ -766,6 +804,8 @@ msgid ""
 "This action will remove the current forecast from the recurrency. Are you "
 "sure you want to continue?"
 msgstr ""
+"Met deze actie wordt de huidige voorspelling uit de herhaling verwijderd. "
+"Weet je zeker dat je door wilt gaan?"
 
 #. module: project_forecast
 #. openerp-web
@@ -775,6 +815,8 @@ msgid ""
 "This will duplicate all forecasts from this period to the next. Are you sure"
 " you want to continue?"
 msgstr ""
+"Hiermee worden alle voorspellingen van deze periode naar de volgende "
+"gedupliceerd. Weet je zeker dat je door wilt gaan?"
 
 #. module: project_forecast
 #. openerp-web
@@ -784,6 +826,8 @@ msgid ""
 "This will remove this forecast and all related ones. Are you sure you want "
 "to continue?"
 msgstr ""
+"Hiermee worden deze voorspelling en en alle gerelateerde verwijderd. Weet je"
+" zeker dat je door wilt gaan?"
 
 #. module: project_forecast
 #. openerp-web
@@ -793,6 +837,8 @@ msgid ""
 "This will remove this forecast and all subsequent ones. Are you sure you "
 "want to continue?"
 msgstr ""
+"Hiermee worden deze voorspelling en alle volgende verwijderd. Weet je zeker "
+"dat je door wilt gaan?"
 
 #. module: project_forecast
 #. openerp-web
@@ -800,6 +846,8 @@ msgstr ""
 #, python-format
 msgid "This will remove this forecast. Are you sure you want to continue?"
 msgstr ""
+"Hiermee wordt deze voorspelling verwijderd. Weet je zeker dat je door wilt "
+"gaan?"
 
 #. module: project_forecast
 #: model:ir.filters,name:project_forecast.ir_filter_forecast_time_by_month
@@ -818,6 +866,8 @@ msgstr "Vandaag"
 #: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_generation_span_uom
 msgid "Unit for the rate at which recurring forecasts should be generated"
 msgstr ""
+"Eenheid voor de snelheid waarmee terugkerende voorspellingen moeten worden "
+"gegenereerd"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
@@ -873,7 +923,7 @@ msgstr "Welke weergave standaard getoond moet worden voor prognoses"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast_repeat
 msgid "Wizard to repeat an existing forecast"
-msgstr ""
+msgstr "Wizard om een bestaande voorspelling te herhalen"
 
 #. module: project_forecast
 #: code:addons/project_forecast/wizard/create_forecast.py:166
@@ -924,6 +974,8 @@ msgid ""
 "can only edit forecasts resource hours if grouped by at least employee and "
 "project"
 msgstr ""
+"kan alleen voorspelling van uren bewerken indien gegroepeerd op minimaal "
+"medewerker en project"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form

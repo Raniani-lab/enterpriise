@@ -1981,7 +1981,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:10
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Föregående"
 
 #. module: web_studio
 #. openerp-web

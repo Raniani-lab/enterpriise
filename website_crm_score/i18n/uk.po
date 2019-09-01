@@ -592,6 +592,8 @@ msgid ""
 "Use sales teams to organize your sales departments.\n"
 "                    Each team will work with a separate pipeline."
 msgstr ""
+"Використовуйте команди продажу, щоб організувати ваші відділи продажу.\n"
+"                    Кожна команда буде працювати з окремим конвеєром."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
@@ -601,7 +603,7 @@ msgstr "Користувач"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
 msgid "User Sales Team"
-msgstr ""
+msgstr "Користувач команди продажу"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_res_users

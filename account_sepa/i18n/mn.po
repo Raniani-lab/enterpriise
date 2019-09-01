@@ -1,20 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_sepa
+# 	* account_sepa
 # 
 # Translators:
 # Bayarkhuu Bataa, 2018
+# Martin Trigaux, 2018
 # nasaaskii <nasaaskii@gmail.com>, 2018
 # Onii Onii <onii0223@yahoo.com>, 2018
-# Martin Trigaux, 2019
-# Otgonbayar.A <gobi.mn@gmail.com>, 2019
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
@@ -40,12 +39,9 @@ msgid "Config Settings"
 msgstr "Тохируулга"
 
 #. module: account_sepa
-#: model:ir.model,name:account_sepa.model_account_abstract_payment
-msgid ""
-"Contains the logic shared between models which allows to register payments"
+#: model:ir.model.fields,field_description:account_sepa.field_account_payment__display_qr_code
+msgid "Display Qr Code"
 msgstr ""
-"Төлбарийг бүртгэх боломжийг олгодог моделийн дунд хуваалцсан логикийг агуулж"
-" байна."
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_orgid_issr
@@ -77,8 +73,8 @@ msgid "Identification assigned by an institution (eg. VAT number)."
 msgstr "Байгууллагын ялгах код нэр (жш. Татвар төлөгчийн дугаар)."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:44
-#: code:addons/account_sepa/models/account_batch_payment.py:51
+#: code:addons/account_sepa/models/account_batch_payment.py:45
+#: code:addons/account_sepa/models/account_batch_payment.py:52
 #, python-format
 msgid ""
 "In result, the file might not be accepted by all bank as a valid SEPA Credit"
@@ -123,27 +119,21 @@ msgid "Payments to send via SEPA"
 msgstr "SEPA-р дамжуулж илгээх төлбөр"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:42
+#: code:addons/account_sepa/models/account_batch_payment.py:43
 #, python-format
 msgid "Please note that the following warning has been raised:"
 msgstr "Дараах анхааруулгатай танилцана уу:"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:46
+#: code:addons/account_sepa/models/account_batch_payment.py:47
 #, python-format
 msgid "Please note that the following warnings have been raised:"
 msgstr "Дараах анхааруулга мэдээлэлтэй танилцана уу:"
 
 #. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_payment__partner_bank_account_id
-#: model:ir.model.fields,field_description:account_sepa.field_account_register_payments__partner_bank_account_id
-msgid "Recipient Bank Account"
-msgstr "Хүлээн авах банкны данс"
-
-#. module: account_sepa
-#: model:ir.model,name:account_sepa.model_account_register_payments
-msgid "Register Payments"
-msgstr "Төлбөр Бүртгэх"
+#: model:ir.model.fields,field_description:account_sepa.field_account_payment__qr_code_url
+msgid "Qr Code Url"
+msgstr ""
 
 #. module: account_sepa
 #: model:account.payment.method,name:account_sepa.account_payment_method_sepa_ct
@@ -180,6 +170,12 @@ msgstr ""
 "байдаг тул эдгээр хувилбар нь тохирох XML бүтцийг агуулна."
 
 #. module: account_sepa
+#: code:addons/account_sepa/models/account_payment.py:27
+#, python-format
+msgid "Scan me with your banking app."
+msgstr ""
+
+#. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
 msgid "Sct Generic"
 msgstr "Ердийн мэдээлэл"
@@ -209,7 +205,13 @@ msgstr ""
 "анкны данс IBAN төрлийн данс биш байх гэх мэт тохиолдлууд."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:353
+#: code:addons/account_sepa/models/account_payment.py:38
+#, python-format
+msgid "The SEPA QR Code information is not set correctly."
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_batch_payment.py:359
 #, python-format
 msgid ""
 "The account %s, linked to partner '%s', is not of type IBAN.\n"
@@ -219,7 +221,7 @@ msgstr ""
 "SEPA ашиглахын тулд тохирох IBAN төрлийн данс ашиглах шаардлагатай."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:103
+#: code:addons/account_sepa/models/account_batch_payment.py:104
 #, python-format
 msgid ""
 "The account %s, of journal '%s', is not of type IBAN.\n"
@@ -229,7 +231,7 @@ msgstr ""
 "SEPA ашиглахын тулд тохирох IBAN төрлийн данс ашиглах шаардлагатай."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:47
+#: code:addons/account_sepa/models/account_payment.py:70
 #, python-format
 msgid ""
 "The account '%s' (journal %s) requires a Bank Identification Code (BIC) to "
@@ -240,7 +242,7 @@ msgstr ""
 "болгож тохируулна уу."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:317
+#: code:addons/account_sepa/models/account_batch_payment.py:321
 #, python-format
 msgid ""
 "The amount of the payment '%s' is too high. The maximum permitted is %s."
@@ -249,7 +251,7 @@ msgstr ""
 "зөвшөөрөгдөнө."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:90
+#: code:addons/account_sepa/models/account_batch_payment.py:91
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by a BIC"
@@ -258,7 +260,7 @@ msgstr ""
 "BIC тодорхойгүй байна. (Банкны тусгай таних код)"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:92
+#: code:addons/account_sepa/models/account_batch_payment.py:93
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by an IBAN"
@@ -267,7 +269,7 @@ msgstr ""
 "IBAN тодорхойгүй байна. (Олон улсын банкны дансны дугаар)"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:111
+#: code:addons/account_sepa/models/account_batch_payment.py:112
 #, python-format
 msgid ""
 "The following payments have no recipient bank account set: %s. \n"
@@ -276,7 +278,7 @@ msgstr ""
 "Дараах төлбөр нь хүлээн авагч банкны данс тодорхойлогдоогүй байна: %s.\n"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:45
+#: code:addons/account_sepa/models/account_payment.py:68
 #, python-format
 msgid ""
 "The journal '%s' requires a proper IBAN account to pay via SEPA. Please "
@@ -286,7 +288,7 @@ msgstr ""
 "тохируулагдсан байх ёстой. Эхлээд тохиргоог зөв болгоно уу."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:56
+#: code:addons/account_sepa/models/account_payment.py:79
 #, python-format
 msgid ""
 "The partner account '%s' requires a Bank Identification Code (BIC) to pay "
@@ -296,7 +298,7 @@ msgstr ""
 "(BIC) тодорхойлогдсон байх ёстой. Эхлээд тохиргоог зөв болгоно уу."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:18
+#: code:addons/account_sepa/models/account_batch_payment.py:19
 #, python-format
 msgid ""
 "The text used in SEPA files can only contain the following characters :\n"
@@ -314,13 +316,13 @@ msgstr ""
 "/ - ? : ( ) . , ' + (space)"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:88
+#: code:addons/account_sepa/models/account_batch_payment.py:89
 #, python-format
 msgid "The transaction %s is instructed in another currency than EUR"
 msgstr "%s гүйлгээ нь Евро (EUR)-с өөр валютаар хөтлөгдсөн байна"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:347
+#: code:addons/account_sepa/models/account_batch_payment.py:353
 #, python-format
 msgid "There is no Bank Identifier Code recorded for bank account '%s'"
 msgstr ""
@@ -328,7 +330,7 @@ msgstr ""
 "байна"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:191
+#: code:addons/account_sepa/models/account_batch_payment.py:192
 #, python-format
 msgid ""
 "There is no Bank Identifier Code recorded for bank account '%s' of journal "
@@ -338,7 +340,7 @@ msgstr ""
 "таних код (BIC) тодорхойлогдоогүй байна"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:189
+#: code:addons/account_sepa/models/account_batch_payment.py:190
 #, python-format
 msgid "Too many transactions for a single file."
 msgstr "Нэг файлд хэтэрхий олон гүйлгээ тусгасан байна."
@@ -359,7 +361,7 @@ msgid "Your Company Name"
 msgstr "Танай компаны нэр"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:84
+#: code:addons/account_sepa/models/account_batch_payment.py:85
 #, python-format
 msgid "Your bank account is not labelled in EUR"
 msgstr "Таны банкны дансны валют Евро (EUR) байх ёстой"

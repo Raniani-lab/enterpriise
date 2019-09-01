@@ -28,6 +28,7 @@
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Martin Trigaux, 2019
 # Nathan Grognet <ngr@odoo.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -35,7 +36,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
-"Last-Translator: Nathan Grognet <ngr@odoo.com>, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -156,7 +157,7 @@ msgstr "Groupes d'accès"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window
 msgid "Action Window"
-msgstr ""
+msgstr "Fenêtre d'action"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window_view
@@ -286,7 +287,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:218
 #, python-format
 msgid "Alignment"
-msgstr ""
+msgstr "Alignement"
 
 #. module: web_studio
 #. openerp-web
@@ -443,7 +444,7 @@ msgstr "Entête/pied de page de société"
 #: code:addons/web_studio/static/src/js/reports/report_editor_sidebar.js:483
 #, python-format
 msgid "By default: "
-msgstr ""
+msgstr "Par défaut:"
 
 #. module: web_studio
 #. openerp-web
@@ -713,6 +714,8 @@ msgstr "Créez votre premier Menu"
 #, python-format
 msgid "Creating this type of view is not currently supported in Studio."
 msgstr ""
+"La création de ce type de vue n'est actuellement pas prise en charge dans "
+"Studio."
 
 #. module: web_studio
 #. openerp-web
@@ -734,7 +737,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_reports
 msgid "Custom Reports"
-msgstr ""
+msgstr "Rapports personnalisés"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_views
@@ -744,27 +747,27 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Custom fields:"
-msgstr ""
+msgstr "Champs personnalisés:"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Custom models:"
-msgstr ""
+msgstr "Modèles personnalisés:"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Custom reports:"
-msgstr ""
+msgstr "Rapports personnalisés:"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Custom views:"
-msgstr ""
+msgstr "Affichages personnalisés:"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Customization made with Studio will be permanently lost"
-msgstr ""
+msgstr "La personnalisation faite avec Studio sera définitivement perdue"
 
 #. module: web_studio
 #. openerp-web
@@ -943,14 +946,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:164
 #, python-format
 msgid "Display Unavailability"
-msgstr ""
+msgstr "Afficher l'indisponibilité"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:51
 #, python-format
 msgid "Display horizontally"
-msgstr ""
+msgstr "Afficher horizontalement"
 
 #. module: web_studio
 #. openerp-web
@@ -1055,7 +1058,7 @@ msgstr "Editer la Valeur"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:547
 #, python-format
 msgid "Edit Values"
-msgstr ""
+msgstr "Editer les valeurs"
 
 #. module: web_studio
 #. openerp-web
@@ -1275,7 +1278,7 @@ msgstr "Premier statut"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:226
 #, python-format
 msgid "Font style"
-msgstr ""
+msgstr "Police de caractères"
 
 #. module: web_studio
 #. openerp-web
@@ -1388,49 +1391,49 @@ msgstr "Demi-journée"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:236
 #, python-format
 msgid "Half Hour"
-msgstr ""
+msgstr "Demi-heure"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:235
 #, python-format
 msgid "Heading1"
-msgstr ""
+msgstr "Heading1"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:238
 #, python-format
 msgid "Heading2"
-msgstr ""
+msgstr "Heading2"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:241
 #, python-format
 msgid "Heading3"
-msgstr ""
+msgstr "Heading3"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:244
 #, python-format
 msgid "Heading4"
-msgstr ""
+msgstr "Heading4"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:247
 #, python-format
 msgid "Heading5"
-msgstr ""
+msgstr "Heading5"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:250
 #, python-format
 msgid "Heading6"
-msgstr ""
+msgstr "Heading6"
 
 #. module: web_studio
 #. openerp-web
@@ -2099,7 +2102,7 @@ msgstr "Création rapide"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_qweb
 msgid "Qweb"
-msgstr ""
+msgstr "Qweb"
 
 #. module: web_studio
 #. openerp-web
@@ -2142,7 +2145,7 @@ msgstr "Champ lié"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:118
 #, python-format
 msgid "Related expression"
-msgstr ""
+msgstr "Expression associée"
 
 #. module: web_studio
 #. openerp-web
@@ -2182,7 +2185,7 @@ msgstr "Rapport"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_report
 msgid "Report Action"
-msgstr ""
+msgstr "Signaler l'action"
 
 #. module: web_studio
 #. openerp-web
@@ -2411,7 +2414,7 @@ msgstr "Source"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:21
 #, python-format
 msgid "Specify all possible values"
-msgstr ""
+msgstr "Spécifiez toutes les valeurs possibles"
 
 #. module: web_studio
 #. openerp-web
@@ -2577,7 +2580,7 @@ msgstr "Texte en cellule"
 #: code:addons/web_studio/static/src/js/views/action_editor_action.js:433
 #, python-format
 msgid "The activity view is not available on this model."
-msgstr ""
+msgstr "La vue d'activité n'est pas disponible sur ce modèle."
 
 #. module: web_studio
 #. openerp-web
@@ -2618,7 +2621,7 @@ msgstr "Le modèle %s n'existe pas."
 #: code:addons/web_studio/controllers/main.py:290
 #, python-format
 msgid "The model %s doesn't support adding fields."
-msgstr ""
+msgstr "Le modèle %s ne prend pas en charge l'ajout de champs."
 
 #. module: web_studio
 #. openerp-web
@@ -3135,4 +3138,4 @@ msgstr "x_studio_"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:219
 #, python-format
 msgid "year"
-msgstr ""
+msgstr "année"

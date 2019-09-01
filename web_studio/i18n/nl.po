@@ -329,7 +329,7 @@ msgstr "Als expressie"
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:54
 #, python-format
 msgid "Auto-complete with"
-msgstr ""
+msgstr "Automatisch aanvullen met"
 
 #. module: web_studio
 #. openerp-web

@@ -99,7 +99,7 @@ msgstr "Термін дії бази даних:"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:90
 #, python-format
 msgid "Filters..."
-msgstr ""
+msgstr "Фільтри..."
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
@@ -203,7 +203,7 @@ msgstr "Пошук..."
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:108
 #, python-format
 msgid "See result"
-msgstr ""
+msgstr "Переглянути результат"
 
 #. module: web_enterprise
 #. openerp-web

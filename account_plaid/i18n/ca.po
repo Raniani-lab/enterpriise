@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2018
 # RGB Consulting <odoo@rgbconsulting.com>, 2019
+# Arnau Ros, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: RGB Consulting <odoo@rgbconsulting.com>, 2019\n"
+"Last-Translator: Arnau Ros, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +24,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Additional information on error"
-msgstr ""
+msgstr "Informació adicional en l'error"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:55
@@ -35,13 +36,13 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr ""
+msgstr "Interfície per Diari de Compte en línia "
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:136
 #, python-format
 msgid "Only an Accountant is allowed to perform this operation."
-msgstr ""
+msgstr "Només un comptable està autoritzat a realitzar aquesta operació "
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -51,12 +52,12 @@ msgstr "Plaid"
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Plaid Error Type"
-msgstr ""
+msgstr "Tipus d'error Plaid"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_item_id
 msgid "Plaid Item"
-msgstr ""
+msgstr "Article a quadres"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -66,7 +67,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Tipus de proveïdor "
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_provider
@@ -83,12 +84,17 @@ msgid ""
 "error type: %s,\n"
 "request id: %s}"
 msgstr ""
+"Hi ha hagut un error amb el serveis Plaid!\n"
+"{missatge: %s,\n"
+"codi d'error: %s\n"
+"tipus d'error: %s,\n"
+"ID sol·licitat: %s}"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:74
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
-msgstr ""
+msgstr "Timeout: El servidor no ha respost en 60 segons"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -98,4 +104,4 @@ msgstr "Yodlee"
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id
 msgid "item id in plaid database"
-msgstr ""
+msgstr "ID de l'article en la base de dades Plaid"

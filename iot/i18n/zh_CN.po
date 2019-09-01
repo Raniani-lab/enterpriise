@@ -4,13 +4,14 @@
 # 
 # Translators:
 # e2f <projects@e2f.com>, 2019
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# Jeffery CHEN <jeffery9@gmail.com>, 2019
 # niulin lnc. <admin@niulin.net>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # ChinaMaker <liuct@chinamaker.net>, 2019
 # snow wang <147156565@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # Martin Trigaux, 2019
+# Jeanphy <hzh0292@qq.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Jeanphy <hzh0292@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,7 +74,7 @@ msgstr "摄像头"
 #: code:addons/iot/static/src/js/iot.js:534
 #, python-format
 msgid "Click here to open your IoT Homepage"
-msgstr ""
+msgstr "单击此处打开您的IoT主页"
 
 #. module: iot
 #. openerp-web
@@ -96,7 +97,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/tours/iot.js:13
 #, python-format
 msgid "Click on iot App."
-msgstr ""
+msgstr "在IoT应用上点击。"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -116,7 +117,7 @@ msgstr "关闭"
 #: code:addons/iot/static/src/js/iot.js:539
 #, python-format
 msgid "Close this window and try again"
-msgstr ""
+msgstr "关闭窗口并重试"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
@@ -141,28 +142,28 @@ msgstr "连接失败"
 #: code:addons/iot/static/src/js/iot.js:542
 #, python-format
 msgid "Connection to IoT Box failed"
-msgstr ""
+msgstr "连接到IoT 盒子失败"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:42
 #, python-format
 msgid "Connection to Printer failed"
-msgstr ""
+msgstr "连接到打印机失败"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:599
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "连接到设备失败"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/tours/iot.js:23
 #, python-format
 msgid "Copy token to the clipboard."
-msgstr ""
+msgstr "复制口令到剪贴板"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_uid
@@ -213,7 +214,7 @@ msgstr "显示名称"
 #: code:addons/iot/static/src/js/iot.js:538
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr ""
+msgstr "仅火狐：在确认安全异常上点击"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -259,7 +260,7 @@ msgstr "标识 (Mac 地址)"
 #, python-format
 msgid ""
 "If you are on a secure server (HTTPS) check if you accepted the certificate:"
-msgstr ""
+msgstr "如果您是通过安全服务器（HTTPS），检查是否接受了证书："
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -295,7 +296,7 @@ msgstr "IoT 设备"
 #: code:addons/iot/static/src/js/iot.js:294
 #, python-format
 msgid "IoTBox connected"
-msgstr ""
+msgstr "IoT盒子已连接"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
@@ -344,14 +345,14 @@ msgstr "OK"
 #: code:addons/iot/static/src/js/iot.js:531
 #, python-format
 msgid "Odoo cannot reach the IoT Box."
-msgstr ""
+msgstr "Odoo无法连通LoT盒子"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/tours/iot.js:18
 #, python-format
 msgid "Open wizard to scan range."
-msgstr ""
+msgstr "打开向导来在一定范围内扫描。"
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -365,28 +366,28 @@ msgstr "付款终端"
 msgid ""
 "Please accept the certificate of your IoT Box (procedure depends on your "
 "browser) :"
-msgstr ""
+msgstr "请接受LoT盒子的证书（步骤跟您的浏览器有关）："
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:532
 #, python-format
 msgid "Please check if the IoT Box is still connected."
-msgstr ""
+msgstr "请检查IoT盒子是否仍连接。"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:597
 #, python-format
 msgid "Please check if the device is still connected."
-msgstr ""
+msgstr "请检查设备是否仍连接。"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:42
 #, python-format
 msgid "Please check if the printer is still connected."
-msgstr ""
+msgstr "请检查打印机是否仍连接。"
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -401,7 +402,7 @@ msgstr "打印机报告"
 #. module: iot
 #: model:ir.model,name:iot.model_publisher_warranty_contract
 msgid "Publisher Warranty Contract For IoT Box"
-msgstr ""
+msgstr "IoT盒子的厂商保修合同"
 
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report

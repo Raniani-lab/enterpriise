@@ -6,6 +6,7 @@
 # Martin Trigaux, 2019
 # William Olhasque <william.olhasque@scopea.fr>, 2019
 # Marie Willemyns <mwi@odoo.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2019-08-12 13:23+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +33,7 @@ msgstr ""
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">MapBox</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">MapBox</span>"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_ir_actions_act_window_view
@@ -76,7 +77,7 @@ msgstr "Contact"
 #: model:ir.model.fields,field_description:web_map.field_res_partner__contact_address_complete
 #: model:ir.model.fields,field_description:web_map.field_res_users__contact_address_complete
 msgid "Contact Address Complete"
-msgstr ""
+msgstr "Adresse de contact complète"
 
 #. module: web_map
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -133,7 +134,7 @@ msgstr "Kanban"
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Map"
-msgstr ""
+msgstr "Carte"
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
@@ -184,6 +185,8 @@ msgid ""
 "The view has switched to another provider but functionalities will be "
 "limited"
 msgstr ""
+"La vue a basculé vers un autre fournisseur mais les fonctionnalités seront "
+"limitées"
 
 #. module: web_map
 #: model:ir.model.fields,field_description:web_map.field_res_config_settings__map_box_token
@@ -208,7 +211,7 @@ msgstr "Arborescence"
 #: code:addons/web_map/static/src/js/map_model.js:138
 #, python-format
 msgid "Unauthorized connection"
-msgstr ""
+msgstr "Connexion non autorisée"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_ir_ui_view

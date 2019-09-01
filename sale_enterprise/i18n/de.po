@@ -40,12 +40,12 @@ msgstr "Durchschnittlicher Auftrag"
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__days_to_confirm
 msgid "Days To Confirm"
-msgstr ""
+msgstr "Tage zur Bestätigung"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Days to Confirm"
-msgstr ""
+msgstr "Tage zur Bestätigung"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
@@ -77,7 +77,7 @@ msgstr "Statistik Verkaufsaufträge"
 #. module: sale_enterprise
 #: model:ir.model,name:sale_enterprise.model_sale_report
 msgid "Sales Analysis Report"
-msgstr ""
+msgstr "Verkaufsanalysebericht"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard

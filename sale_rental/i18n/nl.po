@@ -7,6 +7,7 @@
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 12:56+0000\n"
 "PO-Revision-Date: 2019-08-12 13:22+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,12 +38,12 @@ msgstr "&amp;#032;"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Default Delay Costs</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Standaard Vertragingskosten</span>"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Padding Time</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Buffertijd</span>"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.product_product_form_view_rental_gantt
@@ -63,12 +64,12 @@ msgstr "<strong>Order #: </strong>"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_schedule_view_gantt
 msgid "<strong>Pickup : </strong>"
-msgstr ""
+msgstr "<strong>Ophalen : </strong>"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_schedule_view_gantt
 msgid "<strong>Return : </strong>"
-msgstr ""
+msgstr "<strong>Retour : </strong>"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_configurator_view_form
@@ -325,7 +326,7 @@ msgstr "Datum"
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_rental_wizard__pickup_date
 msgid "Date of Pickup"
-msgstr ""
+msgstr "Datum Ophaling"
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_rental_wizard__return_date
@@ -408,6 +409,8 @@ msgid ""
 "Enter the requested dates and check the price.\n"
 " Then, click here to add the product."
 msgstr ""
+"Voer de gevraagde data in en controleer de prijs.\n"
+"  Klik dan hier om het product toe te voegen."
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/sale.py:262
@@ -442,7 +445,7 @@ msgstr "Extra uur"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.res_config_settings_view_form
 msgid "Fill and sign digital documents from rental orders"
-msgstr ""
+msgstr "Invullen en onderteken digitale documenten van huurorders"
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_product_product__extra_daily
@@ -479,12 +482,12 @@ msgstr "Heeft late lijnen"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order__has_pickable_lines
 msgid "Has Pickable Lines"
-msgstr ""
+msgstr "Heeft Picking Regels"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order__has_returnable_lines
 msgid "Has Returnable Lines"
-msgstr ""
+msgstr "Heeft Retourregels"
 
 #. module: sale_rental
 #: selection:rental.pricing,unit:0 selection:rental.wizard,duration_unit:0
@@ -566,13 +569,13 @@ msgstr "Te laat"
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_form_view
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_schedule_view_form
 msgid "Late Pickup"
-msgstr ""
+msgstr "Late Ophaling"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_form_view
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_schedule_view_form
 msgid "Late Return"
-msgstr ""
+msgstr "Late Retour"
 
 #. module: sale_rental
 #. openerp-web
@@ -594,13 +597,13 @@ msgstr ""
 #. module: sale_rental
 #: sql_constraint:res.company:0
 msgid "Minimal delay time before applying fines has to be positive."
-msgstr ""
+msgstr "Minimale vertragingstijd voor boetes moet positief zijn."
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_res_company__min_extra_hour
 #: model:ir.model.fields,field_description:sale_rental.field_res_config_settings__min_extra_hour
 msgid "Minimum delay time before applying fines."
-msgstr ""
+msgstr "Minimale vertragingstijd voordat boetes worden opgelegd."
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_rental_pricing__duration
@@ -608,6 +611,8 @@ msgid ""
 "Minimum duration before this rule is applied. If set to 0, it represents a "
 "fixed rental price."
 msgstr ""
+"Minimale duur voordat deze regel wordt toegepast. Indien ingesteld op 0, "
+"vertegenwoordigt dit een vaste huurprijs."
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_view_search
@@ -621,13 +626,15 @@ msgid ""
 "Once the quotation is confirmed, it becomes a rental order.<br> You will be "
 "able to create an invoice and collect the payment."
 msgstr ""
+"Zodra de offerte is bevestigd, wordt het een huurorder. <br> U zal een "
+"factuur kunnen maken en de betaling innen."
 
 #. module: sale_rental
 #. openerp-web
 #: code:addons/sale_rental/static/src/js/tours/rental.js:101
 #, python-format
 msgid "Once the rental is done, you can register the return."
-msgstr ""
+msgstr "Zodra de huur is voltooid, kunt u de retour registreren."
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_rental_order_wizard__order_id
@@ -678,19 +685,19 @@ msgstr "Orders"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_form_view
 msgid "PICKUP"
-msgstr ""
+msgstr "OPHALING"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_res_company__padding_time
 #: model:ir.model.fields,field_description:sale_rental.field_res_config_settings__padding_time
 #: model_terms:ir.ui.view,arch_db:sale_rental.product_template_form_view_rental
 msgid "Padding Time"
-msgstr ""
+msgstr "Buffertijd"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_rental_order_wizard
 msgid "Pick-up/Return products"
-msgstr ""
+msgstr "Producten ophalen/retourneren"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_form_view
@@ -719,7 +726,7 @@ msgstr "Opgehaald"
 #: model:ir.ui.menu,name:sale_rental.rental_orders_pickup
 #: selection:rental.order.wizard,status:0
 msgid "Pickup"
-msgstr ""
+msgstr "Ophaling"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental_report__pickup_date
@@ -734,12 +741,12 @@ msgstr "Ophaaldatum"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__reservation_begin
 msgid "Pickup date - padding time"
-msgstr ""
+msgstr "Ophaling datum - buffertijd"
 
 #. module: sale_rental
 #: sql_constraint:rental.wizard:0 sql_constraint:sale.order.line:0
 msgid "Please choose a return date that is after the pickup date."
-msgstr ""
+msgstr "Kies een retourdatum na de ophaaldatum"
 
 #. module: sale_rental
 #: sql_constraint:sale.order.line:0
@@ -747,6 +754,8 @@ msgid ""
 "Please make sure that the ordered quantity is not smaller than the picked-up"
 " quantity."
 msgstr ""
+"Let op dat de bestelde hoeveelheid niet kleiner is dan de opgehaalde "
+"hoeveelheid."
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_rental_pricing__price
@@ -892,7 +901,7 @@ msgstr "Offertes"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_form_view
 msgid "RETURN"
-msgstr ""
+msgstr "RETOUR"
 
 #. module: sale_rental
 #: model:ir.actions.act_window,name:sale_rental.rental_configurator_action
@@ -1013,7 +1022,7 @@ msgstr "Verhuur van"
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_rental_order_wizard_line
 msgid "RentalOrderLine transient representation"
-msgstr ""
+msgstr "RentalOrderLine tijdelijke weergave"
 
 #. module: sale_rental
 #: model:ir.ui.menu,name:sale_rental.menu_rental_reporting
@@ -1048,7 +1057,7 @@ msgstr "Retour"
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_rental.view_rental_order_product_search
 msgid "Return Date"
-msgstr ""
+msgstr "Retour Datum"
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/sale.py:264
@@ -1133,6 +1142,8 @@ msgid ""
 "Select Variants of the Product for which this rule applies.\n"
 " Leave empty if this rule applies for any variant of this template."
 msgstr ""
+"Selecteer varianten van het product waarop deze regel van toepassing is.\n"
+"  Laat leeg als deze regel van toepassing is op elke variant van deze sjabloon."
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_rental_pricing__product_template_id
@@ -1160,7 +1171,7 @@ msgstr "Onderteken documenten"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_wizard_view_form
 msgid "Some delay cost will be added to the sales order."
-msgstr ""
+msgstr "Vertragingskosten worden aan de verkooporder toegevoegd."
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_rental_order_wizard__status
@@ -1178,6 +1189,7 @@ msgstr "Status"
 #: sql_constraint:rental.pricing:0
 msgid "The pricing duration has to be greater or equal to 0."
 msgstr ""
+"De toepassingsduur van deze prijs moet groter zijn dan of gelijk zijn aan 0."
 
 #. module: sale_rental
 #: sql_constraint:rental.pricing:0
@@ -1190,6 +1202,8 @@ msgid ""
 "The product is considered unavailable * hours before its pickup (default "
 "value on new products)."
 msgstr ""
+"Het product wordt beschouwd als niet beschikbaar * uur vóór het ophalen "
+"(standaardwaarde voor nieuwe producten)."
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_res_company__extra_product
@@ -1214,7 +1228,7 @@ msgstr "De verhuur configuratie is hier beschikbaar."
 #: model_terms:ir.actions.act_window,help:sale_rental.rental_order_today_pickup_action
 #: model_terms:ir.actions.act_window,help:sale_rental.rental_order_today_return_action
 msgid "There isn't any scheduled pickup or return."
-msgstr ""
+msgstr "Er is geen geplande ophaling of retour."
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_res_config_settings__padding_time
@@ -1222,6 +1236,8 @@ msgid ""
 "This is the default padding time set on newly created products. You can "
 "change it in the product form."
 msgstr ""
+"Dit is de standaard buffertijd die is ingesteld voor nieuw gecreëerde "
+"producten. U kunt dit wijzigen in het productformulier."
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_res_config_settings__extra_day
@@ -1230,6 +1246,8 @@ msgid ""
 "Those are the default extra costs set on newly created products. You can "
 "change them from the product form."
 msgstr ""
+"Dit zijn de standaard extra kosten die zijn ingesteld voor nieuw gecreëerde "
+"producten. U kunt ze wijzigen via het productformulier."
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.res_config_settings_view_form
@@ -1237,6 +1255,8 @@ msgid ""
 "Those values are applied to any new rental product and can be changed on "
 "product forms."
 msgstr ""
+"Deze waarden worden toegepast op elk nieuw huurproduct en kunnen worden "
+"gewijzigd op productformulieren."
 
 #. module: sale_rental
 #: model:ir.ui.menu,name:sale_rental.rental_orders_today
@@ -1248,7 +1268,7 @@ msgstr "Vandaag te doen"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_view_search_without_searchpanel
 msgid "To Pick Up"
-msgstr ""
+msgstr "Op Te Halen"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.rental_order_view_search_without_searchpanel
@@ -1303,7 +1323,7 @@ msgstr "Valideer een ophaling"
 #: code:addons/sale_rental/models/sale.py:86
 #, python-format
 msgid "Validate a return"
-msgstr ""
+msgstr "Valideer een retour"
 
 #. module: sale_rental
 #. openerp-web
@@ -1311,6 +1331,7 @@ msgstr ""
 #, python-format
 msgid "Validate the operation after checking the picked-up quantities."
 msgstr ""
+"Valideer de bewerking na het controleren van de opgehaalde hoeveelheden."
 
 #. module: sale_rental
 #. openerp-web
@@ -1320,6 +1341,8 @@ msgid ""
 "Want to <b>rent products</b>? \n"
 " Let's discover Odoo Rental App."
 msgstr ""
+"Wilt u<b>verhuren</b>? \n"
+"Laten we de Odoo Rental App ontdekken."
 
 #. module: sale_rental
 #: selection:rental.pricing,unit:0 selection:rental.wizard,duration_unit:0
@@ -1332,6 +1355,8 @@ msgid ""
 "You can also create additional products or services to sell by checking *Can"
 " be Sold* in the product form (e.g. insurance)."
 msgstr ""
+"U kunt ook extra producten of services om te verkopen maken door * Kan "
+"worden verkocht * aan te vinken in het productformulier (bijv. Verzekering)."
 
 #. module: sale_rental
 #: model_terms:ir.actions.act_window,help:sale_rental.rental_order_today_pickup_action
@@ -1341,17 +1366,20 @@ msgid ""
 "              <br>\n"
 "              or create a new rental order."
 msgstr ""
+"U kunt op een grotere periode zoeken met behulp van de bovenstaande filters\n"
+"              <br>\n"
+"              of maak een nieuwe huurorder."
 
 #. module: sale_rental
 #: code:addons/sale_rental/wizard/rental_processing.py:92
 #, python-format
 msgid "You can't return more than what's been picked-up."
-msgstr ""
+msgstr "Je kunt niet meer retourneren dan wat is opgehaald."
 
 #. module: sale_rental
 #: sql_constraint:sale.order.line:0
 msgid "You cannot return more than what has been picked up."
-msgstr ""
+msgstr "Je kunt niet meer retourneren dan wat is opgehaald."
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.product_template_form_view_rental

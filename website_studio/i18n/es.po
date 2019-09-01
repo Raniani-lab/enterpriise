@@ -1,20 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_studio
+# 	* website_studio
 # 
 # Translators:
 # Antonio Trueba, 2017
 # Luis M. Ontalba <luis.martinez@tecnativa.com>, 2017
 # e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2019
+# Jon Perez <jop@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2017-04-28 13:58+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr ""
 #: code:addons/website_studio/static/src/xml/form_manager.xml:9
 #, python-format
 msgid "App icon"
-msgstr ""
+msgstr "Icono de la aplicación"
 
 #. module: website_studio
 #. openerp-web
@@ -70,7 +71,7 @@ msgstr ""
 #: code:addons/website_studio/static/src/xml/form_manager.xml:15
 #, python-format
 msgid "View form"
-msgstr ""
+msgstr "Ver formulario"
 
 #. module: website_studio
 #. openerp-web

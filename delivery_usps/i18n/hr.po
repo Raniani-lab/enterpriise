@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_usps
+# 	* delivery_usps
 # 
 # Translators:
 # Vladimir Olujić <olujic.vladimir@storm.hr>, 2017
@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
@@ -58,11 +58,6 @@ msgstr "Vrsta datoteke"
 #: selection:delivery.carrier,delivery_type:0
 msgid "DHL"
 msgstr ""
-
-#. module: delivery_usps
-#: model:ir.model,name:delivery_usps.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Načini dostave"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_delivery_nature
@@ -298,7 +293,7 @@ msgid "Provider"
 msgstr "Davatelj "
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:332
+#: code:addons/delivery_usps/models/usps_request.py:348
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
 msgstr ""
@@ -340,16 +335,22 @@ msgid "Sample"
 msgstr "Uzorak"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/delivery_usps.py:169
+#: code:addons/delivery_usps/models/delivery_usps.py:188
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Pošiljka br. %s je otkazana"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:149
+#: code:addons/delivery_usps/models/delivery_usps.py:172
 #, python-format
 msgid "Shipment created into USPS <br/> <b>Tracking Number : </b>%s"
 msgstr "Pošiljka stvorena u USPS <br/> <b> Broj za praćenje: </b>%s"
+
+#. module: delivery_usps
+#: model:ir.model,name:delivery_usps.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
@@ -432,12 +433,6 @@ msgid "USPS Configuration"
 msgstr "USPS konfiguracija"
 
 #. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
-msgid "USPS Delivery Methods"
-msgstr ""
-
-#. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_domestic
 #: model:product.product,name:delivery_usps.product_product_delivery_usps_domestic
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_domestic_product_template
@@ -488,6 +483,12 @@ msgid "USPS Service"
 msgstr "USPS usluga"
 
 #. module: delivery_usps
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
+msgid "USPS Shipping Methods"
+msgstr ""
+
+#. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_username
 msgid "USPS User ID"
 msgstr "ID USPS korisnika"
@@ -506,7 +507,7 @@ msgid "Usps Size Container"
 msgstr ""
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:334
+#: code:addons/delivery_usps/models/usps_request.py:350
 #, python-format
 msgid "Your company or recipient ZIP code is incorrect."
 msgstr ""

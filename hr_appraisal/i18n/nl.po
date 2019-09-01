@@ -1072,7 +1072,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
 msgid "Send Request"
-msgstr ""
+msgstr "Verstuur verzoek"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -1281,7 +1281,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__parent_user_id
 msgid "Zboub"
-msgstr ""
+msgstr "Zboub"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal.reminder,event:0

@@ -159,6 +159,8 @@ msgstr "Переглянути всі записи, зведені в цій к�
 #, python-format
 msgid "The field used as readonly type must have a group_operator attribute."
 msgstr ""
+"Поле, яке використовується як тип лише для читання, повинно мати атрибут "
+"group_operator."
 
 #. module: web_grid
 #. openerp-web

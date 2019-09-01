@@ -6,6 +6,7 @@
 # Martin Trigaux, 2019
 # RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Manel Fernandez <manelfera@outlook.com>, 2019
+# Arnau Ros, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-08-12 13:19+0000\n"
-"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2019\n"
+"Last-Translator: Arnau Ros, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,7 +43,7 @@ msgstr ""
 #. module: account_ponto
 #: model:ir.model,name:account_ponto.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr ""
+msgstr "Interfície per Diari de Compte en línia "
 
 #. module: account_ponto
 #: code:addons/account_ponto/models/ponto.py:47
@@ -81,7 +82,7 @@ msgstr ""
 #. module: account_ponto
 #: model:ir.model.fields,field_description:account_ponto.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Tipus de proveïdor "
 
 #. module: account_ponto
 #: model:ir.model,name:account_ponto.model_account_online_provider
@@ -109,7 +110,7 @@ msgstr "El següent error va succeir durant la sincronització: %s"
 #: code:addons/account_ponto/models/ponto.py:52
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
-msgstr ""
+msgstr "Timeout: El servidor no ha respost en 60 segons"
 
 #. module: account_ponto
 #: model_terms:ir.ui.view,arch_db:account_ponto.ponto_online_provider_account_form_view

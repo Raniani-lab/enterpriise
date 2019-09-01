@@ -1,18 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_usps
+# 	* delivery_usps
 # 
 # Translators:
+# Martin Trigaux, 2018
 # Bohdan Lisnenko, 2018
 # ТАрас <tratatuta@i.ua>, 2018
-# Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -58,11 +58,6 @@ msgstr "Тип вмісту"
 #: selection:delivery.carrier,delivery_type:0
 msgid "DHL"
 msgstr "DHL"
-
-#. module: delivery_usps
-#: model:ir.model,name:delivery_usps.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Способи доставки"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_delivery_nature
@@ -305,7 +300,7 @@ msgid "Provider"
 msgstr "Провайдер"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:332
+#: code:addons/delivery_usps/models/usps_request.py:348
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
 msgstr ""
@@ -348,16 +343,22 @@ msgid "Sample"
 msgstr "Зразок"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/delivery_usps.py:169
+#: code:addons/delivery_usps/models/delivery_usps.py:188
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Відвантаження № %s було закрито"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:149
+#: code:addons/delivery_usps/models/delivery_usps.py:172
 #, python-format
 msgid "Shipment created into USPS <br/> <b>Tracking Number : </b>%s"
 msgstr "Відвантаження створено в USPS <br/> <b>Номер відслідковування: </b>%s"
+
+#. module: delivery_usps
+#: model:ir.model,name:delivery_usps.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Методи доставки"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
@@ -443,12 +444,6 @@ msgid "USPS Configuration"
 msgstr "Налаштування USPS "
 
 #. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
-msgid "USPS Delivery Methods"
-msgstr "Методи доставки USPS "
-
-#. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_domestic
 #: model:product.product,name:delivery_usps.product_product_delivery_usps_domestic
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_domestic_product_template
@@ -503,6 +498,12 @@ msgid "USPS Service"
 msgstr "Послуга USPS "
 
 #. module: delivery_usps
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
+msgid "USPS Shipping Methods"
+msgstr "Методи доставки USPS"
+
+#. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_username
 msgid "USPS User ID"
 msgstr "ID користувача USPS "
@@ -521,7 +522,7 @@ msgid "Usps Size Container"
 msgstr "Розмір контейнера Usps "
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:334
+#: code:addons/delivery_usps/models/usps_request.py:350
 #, python-format
 msgid "Your company or recipient ZIP code is incorrect."
 msgstr "Ваша компанія чи поштовий індекс отримувача невірні."

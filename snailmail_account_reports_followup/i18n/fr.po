@@ -1,20 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * snailmail_account_reports_followup
+# 	* snailmail_account_reports_followup
 # 
 # Translators:
 # Melanie Bernard <mbe@odoo.com>, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Martin Trigaux, 2019
 # Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-01-16 08:41+0000\n"
-"Last-Translator: Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,6 +37,8 @@ msgid ""
 "<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\"                         The letter will be sent using the IAP service from Odoo.&#10;Make sure you have enough credits on your account or proceed to a recharge.                         \"/>\n"
 "                        <br/>"
 msgstr ""
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\"                         The letter will be sent using the IAP service from Odoo.&#10;Make sure you have enough credits on your account or proceed to a recharge.                         \"/>\n"
+"                        <br/>"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
@@ -53,6 +56,9 @@ msgid ""
 "                                The recipient's address is incomplete.\n"
 "                            </span>"
 msgstr ""
+"<span class=\"text-danger\" attrs=\"{'invisible': [('letters_qty', '&gt;', 1)]}\">\n"
+"L'adresse du destinataire est incomplète.\n"
+"</span>"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
@@ -61,6 +67,9 @@ msgid ""
 "                                    Some customer addresses are not complete.\n"
 "                                </span>"
 msgstr ""
+"<span class=\"text-danger\">\n"
+"Certaines adresses clients ne sont pas complètes.\n"
+"</span>"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
@@ -108,7 +117,7 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__invalid_partner_ids
 #, python-format
 msgid "Invalid Addresses"
-msgstr ""
+msgstr "Adresses invalides"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__invalid_addresses
@@ -133,7 +142,7 @@ msgstr "Dernière mise à jour le"
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__letters_qty
 msgid "Number of letters"
-msgstr ""
+msgstr "Nombre de lettres "
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__partner_ids

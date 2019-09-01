@@ -41,7 +41,7 @@ msgstr "Додати запис"
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:150
 #, python-format
 msgid "Are you sure to delete this record?"
-msgstr ""
+msgstr "Ви впевнені, що хочете видалити цей запис?"
 
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_base

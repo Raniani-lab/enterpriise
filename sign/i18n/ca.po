@@ -7,9 +7,9 @@
 # RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Martin Trigaux, 2019
 # Manel Fernandez <manelfera@outlook.com>, 2019
-# Arnau Ros, 2019
 # M Palau <mpalau@tda.ad>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
+# Arnau Ros, 2019
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-01-16 08:41+0000\n"
-"Last-Translator: Quim - eccit <quim@eccit.com>, 2019\n"
+"Last-Translator: Arnau Ros, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -260,7 +260,7 @@ msgstr "Cancel·lat"
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 #: model:sign.item.type,placeholder:sign.sign_item_type_checkbox
 msgid "Checkbox"
-msgstr ""
+msgstr "Casella de selecció"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_template_action
@@ -873,7 +873,7 @@ msgstr "Mòbil"
 #. module: sign
 #: selection:sign.item.type,item_type:0
 msgid "Multiline Text"
-msgstr ""
+msgstr "Text múltilinia"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_multiline_text
@@ -1116,7 +1116,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "Indicador de posició"
 
 #. module: sign
 #: selection:sign.request,activity_state:0
@@ -1286,7 +1286,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:55
 #, python-format
 msgid "Saved"
-msgstr ""
+msgstr "Desat "
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__access_token

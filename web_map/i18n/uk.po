@@ -27,11 +27,14 @@ msgid ""
 "                                        </i>\n"
 "                                        Get token"
 msgstr ""
+"<i class=\"fa fa-arrow-right\">\n"
+"                                        </i>\n"
+"                                       Отримати токен"
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">MapBox</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">MapBox</span>"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_ir_actions_act_window_view
@@ -75,7 +78,7 @@ msgstr "Контакт"
 #: model:ir.model.fields,field_description:web_map.field_res_partner__contact_address_complete
 #: model:ir.model.fields,field_description:web_map.field_res_users__contact_address_complete
 msgid "Contact Address Complete"
-msgstr ""
+msgstr "Контактна адреса заповнена"
 
 #. module: web_map
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -92,6 +95,7 @@ msgstr "Діаграма"
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "Follow this link and create an account to obtain the token"
 msgstr ""
+"Перейдіть за цим посиланням та створіть обліковий запис для отримання токена"
 
 #. module: web_map
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -144,12 +148,12 @@ msgstr "Перегляд карти"
 #: code:addons/web_map/static/src/js/map_model.js:141
 #, python-format
 msgid "MapBox servers unreachable"
-msgstr ""
+msgstr "Сервери MapBox недосяжні"
 
 #. module: web_map
 #: model:ir.model.fields,help:web_map.field_res_config_settings__map_box_token
 msgid "Necessary for some functionnality in the map view"
-msgstr ""
+msgstr "Необхідний для певної функціональності у вікні карти"
 
 #. module: web_map
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -183,18 +187,20 @@ msgid ""
 "The view has switched to another provider but functionalities will be "
 "limited"
 msgstr ""
+"Перегляд перейшов до іншого провайдера, але функціональні можливості будуть "
+"обмежені"
 
 #. module: web_map
 #: model:ir.model.fields,field_description:web_map.field_res_config_settings__map_box_token
 msgid "Token Map Box"
-msgstr ""
+msgstr "Токен Map Box"
 
 #. module: web_map
 #. openerp-web
 #: code:addons/web_map/static/src/js/map_model.js:135
 #, python-format
 msgid "Token invalid"
-msgstr ""
+msgstr "Недійсний токен"
 
 #. module: web_map
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -207,7 +213,7 @@ msgstr "Дерево"
 #: code:addons/web_map/static/src/js/map_model.js:138
 #, python-format
 msgid "Unauthorized connection"
-msgstr ""
+msgstr "Неавтеризоване з'єднання"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_ir_ui_view
@@ -225,8 +231,10 @@ msgstr "Тип перегляду"
 msgid ""
 "You need to configure this token to fully access the feature of the Mapview."
 msgstr ""
+"Вам необхідно налаштувати цей токен для повного доступу до функції перегляду"
+" Карти."
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "token:"
-msgstr ""
+msgstr "токен:"

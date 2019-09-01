@@ -22,6 +22,7 @@
 # Nathan Grognet <ngr@odoo.com>, 2019
 # Marie Willemyns <mwi@odoo.com>, 2019
 # Martin Trigaux, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -29,7 +30,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -403,6 +404,9 @@ msgid ""
 "All selected timesheets are already validated. You are not indicated as "
 "responsible for your timesheet so you can't validate your own timesheet."
 msgstr ""
+"Toutes les feuilles de temps sélectionnées sont déjà validées. Vous n'êtes "
+"pas indiqué comme responsable de votre feuille de temps, vous ne pouvez donc"
+" pas valider cette dernière."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -615,6 +619,8 @@ msgid ""
 "Only a Timesheets Approver or Manager is allowed to delete a validated "
 "entry."
 msgstr ""
+"Seul un approbateur ou un gestionnaire de feuilles de temps est autorisé à "
+"supprimer une entrée validée."
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:127
@@ -623,6 +629,8 @@ msgid ""
 "Only a Timesheets Approver or Manager is allowed to modify a validated "
 "entry."
 msgstr ""
+"Seul un approbateur ou un gestionnaire de feuilles de temps est autorisé à "
+"modifier une entrée déjà validée."
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee_public
@@ -848,7 +856,7 @@ msgstr "Semaine"
 #: selection:res.company,timesheet_mail_employee_interval:0
 #: selection:res.company,timesheet_mail_manager_interval:0
 msgid "after the end of the month"
-msgstr ""
+msgstr "à la fin du mois "
 
 #. module: timesheet_grid
 #: selection:res.company,timesheet_mail_employee_interval:0

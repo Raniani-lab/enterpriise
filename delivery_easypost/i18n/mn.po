@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_easypost
+# 	* delivery_easypost
 # 
 # Translators:
 # Otgonbayar.A <gobi.mn@gmail.com>, 2018
@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2018-08-02 11:35+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
@@ -126,11 +126,6 @@ msgid "Delivery Carrier"
 msgstr "Хүргэлтийн тээвэрлэгч"
 
 #. module: delivery_easypost
-#: model:ir.model,name:delivery_easypost.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Хүргэлтийн арга"
-
-#. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__display_name
 #: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service__display_name
 msgid "Display Name"
@@ -170,12 +165,6 @@ msgid "Easypost Configuration"
 msgstr ""
 
 #. module: delivery_easypost
-#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_stock
-msgid "Easypost Delivery Methods"
-msgstr ""
-
-#. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_label_file_type
 msgid "Easypost Label File Type"
 msgstr ""
@@ -188,6 +177,12 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_easypost_service
 msgid "Easypost Service"
+msgstr ""
+
+#. module: delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_stock
+msgid "Easypost Shipping Methods"
 msgstr ""
 
 #. module: delivery_easypost
@@ -244,7 +239,7 @@ msgid "If not set, the less expensive available service level will be chosen."
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:311
+#: code:addons/delivery_easypost/models/easypost_request.py:327
 #, python-format
 msgid ""
 "It seems Easypost do not provide shipments for this order.                We"
@@ -307,7 +302,7 @@ msgid "Product Packaging"
 msgstr "Барааны Баглаа"
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:216
+#: code:addons/delivery_easypost/models/easypost_request.py:224
 #, python-format
 msgid "Product packaging used in pack %s is not configured for easypost."
 msgstr ""
@@ -346,8 +341,13 @@ msgstr ""
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:106
 #, python-format
-msgid "Shipping label for packages"
-msgstr "Баглааны тээвэрлэлтийн шошго"
+msgid "Shipment created into Easypost<br/><b>Tracking Numbers:</b> %s<br/>"
+msgstr ""
+
+#. module: delivery_easypost
+#: model:ir.model,name:delivery_easypost.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -401,7 +401,7 @@ msgid ""
 msgstr "Барааны жин байхгүй тул үнийг тооцоолох боломжгүй."
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:322
+#: code:addons/delivery_easypost/models/easypost_request.py:338
 #, python-format
 msgid ""
 "There is no rate available for the selected service level for one of your "
@@ -425,7 +425,7 @@ msgid "USPS"
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/delivery_carrier.py:128
+#: code:addons/delivery_easypost/models/delivery_carrier.py:156
 #, python-format
 msgid "You can't cancel Easypost shipping."
 msgstr ""
@@ -451,6 +451,7 @@ msgstr ""
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:86
+#: code:addons/delivery_easypost/models/delivery_carrier.py:123
 #, python-format
 msgid "error_message"
 msgstr ""

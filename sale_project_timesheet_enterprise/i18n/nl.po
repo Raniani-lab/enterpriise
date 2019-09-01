@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_project_timesheet_enterprise
+# 	* sale_project_timesheet_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-03-20 14:44+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -101,6 +101,9 @@ msgid ""
 "Product of the sales order item. Must be a service invoiced based on "
 "timesheets on tasks. The existing timesheet will be linked to this product."
 msgstr ""
+"Product van het verkooporder item. Moet een gefactureerde dienst zijn "
+"gebaseerd op urenstaten op taken. De bestaande urenstaat wordt gekoppeld aan"
+" dit product."
 
 #. module: sale_project_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_project_timesheet_enterprise.field_project_task_create_sale_order__product_id
@@ -125,6 +128,8 @@ msgid ""
 "The sales order cannot be created because some timesheets of this task are "
 "already linked to another sales order."
 msgstr ""
+"De verkooporder kan niet worden aangemaakt omdat sommige urenstaten van deze"
+" taak al gelinkt zijn aan een andere verkooporder."
 
 #. module: sale_project_timesheet_enterprise
 #: code:addons/sale_project_timesheet_enterprise/wizard/project_task_create_sale_order.py:24

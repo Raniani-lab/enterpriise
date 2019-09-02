@@ -74,9 +74,23 @@
             flex-flow: row nowrap;
             flex: 1 0 auto;
             align-items: center;
+            @include media-breakpoint-down(sm) {
+                justify-content: flex-start;
+                &.workorder_bar_left {
+                    flex-flow: wrap;
+                }
+            }
 
             &.o_workorder_bar_content_right {
                 justify-content: flex-end;
+                @include media-breakpoint-down(sm) {
+                    justify-content: flex-start;
+                    .o_actions {
+                        display: flex;
+                        flex-flow: column;
+                        width: 100%;
+                    }
+                }
             }
         }
 
@@ -92,12 +106,18 @@
             flex-flow: row wrap;
             padding: $o-wo-tablet-padding*0.5 $o-wo-tablet-padding;
             padding-left: $o-wo-tablet-padding - $o-wo-tablet-btn-margin;
+            @include media-breakpoint-down(sm) {
+                flex-flow: column;
+            }
         }
 
         // Last top Block
         .workorder_actions {
             display: flex;
             flex-flow: row nowrap;
+            @include media-breakpoint-down(sm) {
+                flex-flow: column;
+            }
             padding: $o-wo-tablet-padding*0.5 $o-wo-tablet-padding - $o-wo-tablet-btn-margin $o-wo-tablet-padding;
             box-shadow: 0 1px 1px rgba(black, 0.3);
             font-size: 1.2em;
@@ -117,6 +137,10 @@
             .o_workorder_form {
                 padding-bottom: $o-wo-tablet-padding*0.5;
                 justify-content: space-between;
+                @include media-breakpoint-down(sm) {
+                    flex-flow: column;
+                    align-items: flex-start;
+                }
 
                 > div {
                     flex: 1 0 auto;
@@ -166,7 +190,9 @@
 
         div.o_field_pdfviewer, span.o_embed_url_viewer {
             margin: 0;
-            height: auto;
+            @include media-breakpoint-up(md) {
+                height: auto;
+            }
             position: relative;
             display: flex;
             flex: 1 0 auto;

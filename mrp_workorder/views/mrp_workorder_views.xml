@@ -126,8 +126,8 @@
                         <button disabled="1" class="btn-secondary" string="Skip" icon="fa-chevron-right float-right o_workorder_btn_icon_small" attrs="{'invisible': [('is_last_step', '=', False)]}"/>
                     </div>
                     <div class="o_workorder_bar_content o_workorder_bar_content_right">
-                        <div attrs="{'invisible': [('working_state', '=', 'blocked')]}">
-                            <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3">
+                        <div class="o_actions" attrs="{'invisible': [('working_state', '=', 'blocked')]}">
+                            <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3 my-3 text-center">
                                 <field name="duration" widget="mrp_time_counter" class="mr-3"/>
                                 <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}"/>
                                 <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}"/>

@@ -259,15 +259,15 @@ class HelpdeskTicket(models.Model):
     @api.depends('sla_status_ids.deadline', 'sla_status_ids.reached_datetime')
     def _compute_sla_reached_late(self):
         """ Required to do it in SQL since we need to compare 2 columns value """
-        self.env.cr.execute("""
-            SELECT ticket_id, COUNT(id) AS reached_late_count
-            FROM helpdesk_sla_status
-            WHERE
-                ticket_id IN %s AND deadline < reached_datetime
-            GROUP BY ticket_id
-        """, (tuple(self.ids),))
-        data = self.env.cr.dictfetchall()
-        mapping = {item['ticket_id']: item['reached_late_count'] for item in data}
+        mapping = {}
+        if self.ids:
+            self.env.cr.execute("""
+                SELECT ticket_id, COUNT(id) AS reached_late_count
+                FROM helpdesk_sla_status
+                WHERE ticket_id IN %s AND deadline < reached_datetime
+                GROUP BY ticket_id
+            """, (tuple(self.ids),))
+            mapping = dict(self.env.cr.fetchall())
 
         for ticket in self:
             ticket.sla_reached_late = mapping.get(ticket.id, 0) > 0

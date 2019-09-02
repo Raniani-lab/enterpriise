@@ -222,3 +222,9 @@ class AccountMoveLine(models.Model):
 
     def turn_as_asset(self):
         return self._turn_as_asset('purchase', _("Turn as an asset") ,self.env.ref("account_asset.view_account_asset_modal"))
+
+    def turn_as_deferred_revenue(self):
+        return self._turn_as_asset('sale', _("Turn as a deferred revenue"), self.env.ref('account_deferred_revenue.view_account_asset_revenue_modal'))
+
+    def turn_as_deferred_expense(self):
+        return self._turn_as_asset('expense', _("Turn as a deferred expense"), self.env.ref('account_deferred_revenue.view_account_asset_expense_modal'))

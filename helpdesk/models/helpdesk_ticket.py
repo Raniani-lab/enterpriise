@@ -135,9 +135,9 @@ class HelpdeskSLAStatus(models.Model):
                     end_dt = status.reached_datetime
                     factor = 1
                 duration_data = status.ticket_id.team_id.resource_calendar_id.get_work_duration_data(start_dt, end_dt, compute_leaves=True)
-                status.days_to_reach = duration_data['days'] * factor
+                status.exceeded_days = duration_data['days'] * factor
             else:
-                status.days_to_reach = False
+                status.exceeded_days = False
 
 
 class HelpdeskTicket(models.Model):

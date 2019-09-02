@@ -313,16 +313,16 @@ class Task(models.Model):
             task.write(values)
 
     def action_fsm_create_invoice(self):
-        if not self.is_fsm:
+        if not all(self.mapped('is_fsm')):
             raise UserError(_('This action is only allowed on FSM project.'))
+        for task in self:
+            # ensure the SO exists before invoicing, then confirm it
+            task._fsm_ensure_sale_order()
+            if task.sale_order_id.state in ['draft', 'sent']:
+                task.sale_order_id.action_confirm()
 
-        # ensure the SO exists before invoicing, then confirm it
-        self._fsm_ensure_sale_order()
-        if self.sale_order_id.state in ['draft', 'sent']:
-            self.sale_order_id.action_confirm()
-
-        # as before, mark the task as 'sold' on SO confirmation
-        self.write({'fsm_state': 'sold'})
+            # as before, mark the task as 'sold' on SO confirmation
+            task.write({'fsm_state': 'sold'})
         # redirect create invoice wizard (of the Sales Order)
         action = self.env.ref('sale.action_view_sale_advance_payment_inv').read()[0]
         context = literal_eval(action.get('context', "{}"))

@@ -44,7 +44,7 @@ class AccountArVatLine(models.Model):
         readonly=True, string='VAT Perc.', help='VAT Perception', currency_field='company_currency_id')
     not_taxed = fields.Monetary(
         readonly=True, string='Not taxed/ex', help='Not Taxed / Exempt.\All lines that have VAT 0, Exempt, Not Taxed'
-        ' or Not Correspond', currency_field='company_currency_id')
+        ' or Not Applicable', currency_field='company_currency_id')
     other_taxes = fields.Monetary(
         readonly=True, string='Other Taxes', help='All the taxes tat ar not VAT taxes or iibb perceptions and that'
         ' are realted to documents that have VAT', currency_field='company_currency_id')

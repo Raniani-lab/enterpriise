@@ -6,6 +6,7 @@ import io
 import logging
 import mimetypes
 import re
+import werkzeug
 
 from PyPDF2 import PdfFileReader
 
@@ -94,6 +95,15 @@ class Sign(http.Controller):
     @http.route(["/sign/document/<int:id>"], type='http', auth='user')
     def sign_document_user(self, id, **post):
         return self.sign_document_public(id, None)
+
+    @http.route(["/sign/document/mail/<int:id>/<token>"], type='http', auth='public')
+    def sign_document_from_mail(self, id, token):
+        sign_request = request.env['sign.request'].sudo().browse(id)
+        if not sign_request:
+            return http.request.render('sign.deleted_sign_request')
+        current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
+        current_request_item.access_via_link = True
+        return werkzeug.redirect('/sign/document/%s/%s' % (id, token))
 
     @http.route(["/sign/document/<int:id>/<token>"], type='http', auth='public')
     def sign_document_public(self, id, token, **post):
@@ -237,8 +247,7 @@ class Sign(http.Controller):
         if not request_item:
             return False
         if request_item.role_id and request_item.role_id.sms_authentification:
-            if request_item.partner_id.mobile != phone_number:
-                request_item.partner_id.mobile = phone_number
+            request_item.sms_number = phone_number
             try:
                 request_item._send_sms()
             except InsufficientCreditError:

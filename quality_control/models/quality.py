@@ -336,7 +336,11 @@ class ProductTemplate(models.Model):
     def action_see_quality_control_points(self):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_point_action').read()[0]
-        action['context'] = dict(self.env.context, default_product_tmpl_id=self.id)
+        action['context'] = dict(self.env.context)
+        action['context'].update({
+            'search_default_product_tmpl_id': self.id,
+            'default_product_tmpl_id': self.id,
+        })
         return action
 
     def action_see_quality_checks(self):
@@ -374,8 +378,7 @@ class ProductProduct(models.Model):
 
     def action_see_quality_control_points(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_point_action').read()[0]
-        action['context'] = dict(self.env.context, default_product_tmpl_id=self.product_tmpl_id.id)
+        action = self.product_tmpl_id.action_see_quality_control_points()
         return action
 
     def action_see_quality_checks(self):

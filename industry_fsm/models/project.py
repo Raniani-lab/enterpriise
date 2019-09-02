@@ -391,7 +391,7 @@ class Task(models.Model):
         })
 
         # assign SOL to timesheets
-        self.env['account.analytic.line'].search([
+        self.env['account.analytic.line'].sudo().search([
             ('task_id', '=', self.id),
             ('so_line', '=', False),
             ('project_id', '!=', False)

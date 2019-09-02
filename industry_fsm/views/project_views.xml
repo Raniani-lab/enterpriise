@@ -17,7 +17,7 @@
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                     attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'),  '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}"/>
                 <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                    attrs="{'invisible': ['|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '!=', 'validated'), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="sales_team.group_sale_salesman"/>
+                    attrs="{'invisible': ['|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '!=', 'validated'), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
             </xpath>
             <xpath expr="//header" position="after">
                 <div role="alert" class="alert-warning p-3 text-center"
@@ -58,7 +58,7 @@
                         <field name="currency_id" invisible="True"/>
                     </div>
                 </button>
-                <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}">
+                <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager">
                     <field name="invoice_count" widget="statinfo" string="Invoices"/>
                 </button>
             </xpath>
@@ -115,8 +115,10 @@
                     type="object"
                     class="oe_stat_button"
                     icon="fa-pencil-square-o"
-                    attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('quotation_count', '=', 0)]}">
-                    <field string="Quotations" name="quotation_count" widget="statinfo"/>
+                    attrs="{'invisible': ['|', ('is_fsm', '=', False), ('quotation_count', '=', 0)]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value"><field name="quotation_count" widget="statinfo"/></span>
+                    </div>
                 </button>
             </xpath>
         </field>
@@ -235,7 +237,7 @@
                     <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_state', '!=', 'draft'),  '&amp;', ('allow_timesheets', '=', True), ('timesheet_ids', '=', []), ('allow_material', '=', False), ('material_line_product_count', '!=', 0)]}"/>
                     <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '!=', 'validated'), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="sales_team.group_sale_salesman"/>
+                        attrs="{'invisible': ['|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '!=', 'validated'), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
 
                     <button class="btn-primary" name="action_timer_start" type="object" string="Start"
                         attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"/>
@@ -281,7 +283,7 @@
                                 <field name="currency_id" invisible="True"/>
                             </div>
                         </button>
-                        <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}">
+                        <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager">
                             <field name="invoice_count" widget="statinfo" string="Invoices"/>
                         </button>
                     </div>

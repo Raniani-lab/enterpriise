@@ -33,7 +33,7 @@ class Planning(models.Model):
         return fields.Datetime.to_string(datetime.combine(fields.Datetime.now(), datetime.max.time()))
 
     name = fields.Text('Note')
-    employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id)
+    employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id')
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
     company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
     role_id = fields.Many2one('planning.role', string="Role")
@@ -536,6 +536,11 @@ class Planning(models.Model):
             if not self.env['planning.template'].search_count(domain):
                 to_create_list.append(values)
         return self.env['planning.slot.template'].create(to_create_list)
+
+    def _read_group_employee_id(self, employees, domain, order):
+        if self._context.get('planning_expand_employee'):
+            return self.env['planning.slot'].search([('create_date', '>', datetime.now() - timedelta(days=30))]).mapped('employee_id')
+        return employees
 
 
 class PlanningRole(models.Model):

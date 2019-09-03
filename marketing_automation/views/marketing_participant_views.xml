@@ -69,8 +69,8 @@
                                                             <field name="activity_id" />
                                                         </strong>
                                                         <span class="o_ma_type">
-                                                            <i class="fa fa-email" t-if="record.activity_type.raw_value == 'email'" title="Email" role="img" aria-label="Email"/>
-                                                            <i class="fa fa-cogs" t-if="record.activity_type.raw_value != 'email'" title="Non email activity" role="img" aria-label="Non email activity"/>
+                                                            <i class="fa fa-envelope" t-if="record.activity_type.raw_value == 'email'" title="Email" role="img" aria-label="Email"/>
+                                                            <i class="fa fa-cogs" t-else="" title="Other activity" role="img" aria-label="Other activity"/>
                                                             <field name="activity_type" />
                                                         </span>
                                                         <div>

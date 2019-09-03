@@ -68,7 +68,7 @@ class MarketingCampaign(models.Model):
     def _compute_mass_mailing_count(self):
         # TDE NOTE: this could be optimized but is currently displayed only in a form view, no need to optimize now
         for campaign in self:
-            campaign.mass_mailing_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id'))
+            campaign.mass_mailing_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id').filtered(lambda mailing: mailing.mailing_type == 'mail'))
 
     @api.depends('marketing_activity_ids.mass_mailing_id')
     def _compute_link_tracker_click_count(self):
@@ -197,7 +197,8 @@ class MarketingCampaign(models.Model):
         action['domain'] = [
             '&',
             ('use_in_marketing_automation', '=', True),
-            ('id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids)
+            ('id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids),
+            ('mailing_type', '=', 'mail')
         ]
         return action
 
@@ -310,7 +311,8 @@ class MarketingActivity(models.Model):
         ('email', 'Email'),
         ('action', 'Server Action')
         ], required=True, default='email')
-    mass_mailing_id = fields.Many2one('mailing.mailing', string='Email Template', copy=True)
+    mass_mailing_id = fields.Many2one('mailing.mailing', string='Email Template')
+    mass_mailing_id_mailing_type = fields.Selection([('mail', 'Email')])
     server_action_id = fields.Many2one('ir.actions.server', string='Server Action')
 
     # Related to parent activity
@@ -339,6 +341,14 @@ class MarketingActivity(models.Model):
     total_reply = fields.Integer(compute='_compute_statistics')
     total_bounce = fields.Integer(compute='_compute_statistics')
     statistics_graph_data = fields.Char(compute='_compute_statistics_graph_data')
+
+    @api.onchange('activity_type')
+    def _onchange_activity_type(self):
+        if self.activity_type == 'action':
+            self.mass_mailing_id = False
+            self.mass_mailing_id_mailing_type = False
+        elif self.activity_type == 'email':
+            self.mass_mailing_id_mailing_type = 'mail'
 
     @api.depends('activity_domain', 'campaign_id.domain')
     def _compute_inherited_domain(self):

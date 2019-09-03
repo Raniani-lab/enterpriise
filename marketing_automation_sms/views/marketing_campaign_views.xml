@@ -36,6 +36,14 @@
         	<xpath expr="//i[@data-type='mail_bounce']" position="attributes">
         		<attribute name="t-if">record.activity_type.raw_value == 'sms' or record.activity_type.raw_value == 'email'</attribute>
         	</xpath>
+            <xpath expr="//div[hasclass('o_ma_icon')]/span" position="after">
+                <span class="fa fa-comment" t-elif="record.activity_type.raw_value == 'sms'" title="SMS" role="img" aria-label="SMS"/>
+            </xpath>
+            <xpath expr="//button[@name='action_view_mailings']" position="after">
+                <button name="action_view_sms" type="object" icon="fa-comment" class="oe_stat_button">
+                    <field name="mailing_sms_count" widget="statinfo" string="SMS"/>
+                </button>
+            </xpath>
         </field>
     </record>
 </odoo>

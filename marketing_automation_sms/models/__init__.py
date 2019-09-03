@@ -2,5 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from . import mailing_mailing
+from . import mailing_trace
 from . import marketing_campaign
 from . import marketing_activity

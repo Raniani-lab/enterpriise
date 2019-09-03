@@ -14,6 +14,7 @@
         'views/mailing_mailing_views.xml',
         'views/marketing_activity_views.xml',
         'views/marketing_campaign_views.xml',
+        'views/marketing_participant_views.xml',
     ],
     'demo': [
     ],

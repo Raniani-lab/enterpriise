@@ -96,7 +96,7 @@ QUnit.module('DialingPanel', {
 }, function () {
 
 QUnit.test('autocall flow', async function (assert) {
-    assert.expect(35);
+    assert.expect(34);
 
     const self = this;
     let counterNextActivities = 0;
@@ -375,7 +375,7 @@ QUnit.test('autocall flow', async function (assert) {
         'hangup_call',
         'incoming_call',
         'incoming_call_accepted',
-        'hangup_call',
+        // 'hangup_call', // disabled due to prevent crash from phonecall with no Id
         'incoming_call',
         'rejected_call'
     ]);
@@ -384,7 +384,7 @@ QUnit.test('autocall flow', async function (assert) {
 });
 
 QUnit.test('Call from Recent tab + keypad', async function (assert) {
-    assert.expect(10);
+    assert.expect(9);
 
     const self = this;
 
@@ -510,7 +510,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
         'create_from_number',
         'hangup_call',
         'create_from_recent',
-        'hangup_call',
+        // 'hangup_call', // disabled due to prevent crash from phonecall with no Id
     ]);
 
     parent.destroy();

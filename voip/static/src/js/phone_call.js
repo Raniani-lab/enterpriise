@@ -94,15 +94,19 @@ const PhoneCall = Widget.extend({
         durationSeconds,
         isDone,
     }) {
-        await this._rpc({
-            model: 'voip.phonecall',
-            method: 'hangup_call',
-            args: [this.id],
-            kwargs: {
-                done: isDone,
-                duration_seconds: durationSeconds,
-            },
-        });
+        if (this.id === undefined) {
+            console.warn('phonecall has no id!');
+        } else {
+            await this._rpc({
+                model: 'voip.phonecall',
+                method: 'hangup_call',
+                args: [this.id],
+                kwargs: {
+                    done: isDone,
+                    duration_seconds: durationSeconds,
+                },
+            });
+        }
         this.call('mail_service', 'getMailBus').trigger('voip_reload_chatter');
     },
     /**
@@ -111,6 +115,10 @@ const PhoneCall = Widget.extend({
      * @return {Promise}
      */
     async markPhonecallAsCanceled() {
+        if (this.id === undefined) {
+            console.warn('phonecall has no id!');
+            return;
+        }
         return this._rpc({
             model: 'voip.phonecall',
             method: 'canceled_call',
@@ -126,7 +134,9 @@ const PhoneCall = Widget.extend({
      * @private
      */
     _onClick() {
-        this.trigger_up('selectCall', { phoneCallId: this.id });
+        this.trigger_up('selectCall', {
+            phoneCallId: this.id,
+        });
     },
     /**
      * @private
@@ -136,7 +146,9 @@ const PhoneCall = Widget.extend({
     _onClickRemovePhoneCall(ev) {
         ev.stopPropagation();
         ev.preventDefault();
-        this.trigger_up('removePhoneCall', { phoneCallId: this.id });
+        this.trigger_up('removePhoneCall', {
+            phoneCallId: this.id,
+        });
     },
 });
 

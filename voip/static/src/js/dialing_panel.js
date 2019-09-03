@@ -67,7 +67,7 @@ const DialingPanel = Widget.extend({
         this._isInCall = false;
         this._isPostpone = false;
         this._isShow = false;
-        this._onInputSearch = _.debounce(ev => this._onInputSearch(ev), 500);
+        this._onInputSearch = _.debounce(this._onInputSearch.bind(this), 500);
         this._tabs = {
             contacts: new PhoneCallContactsTab(this),
             nextActivities: new PhoneCallActivitiesTab(this),
@@ -128,11 +128,11 @@ const DialingPanel = Widget.extend({
     async callFromActivityWidget(params) {
         if (!this._isInCall) {
             this.$(`
-                .o_dial_tabs > li.active,
+                .o_dial_tab.active,
                 .tab-pane.active`
             ).removeClass('active');
             this.$(`
-                li.o_dial_activities_tab,
+                .o_dial_activities_tab .o_dial_tab,
                 .tab-pane.o_dial_next_activities`
             ).addClass('active');
             this._activeTab = this._tabs.nextActivities;
@@ -154,11 +154,11 @@ const DialingPanel = Widget.extend({
     async callFromPhoneWidget(params) {
         if (!this._isInCall) {
             this.$(`
-                .o_dial_tabs > li.active,
+                .o_dial_tab.active,
                 .tab-pane.active`
             ).removeClass('active');
             this.$(`
-                li.o_dial_recent_tab,
+                .o_dial_recent_tab .o_dial_tab,
                 .tab-pane.o_dial_recent`
             ).addClass('active');
             this._activeTab = this._tabs.recent;
@@ -428,8 +428,14 @@ const DialingPanel = Widget.extend({
                 return;
             }
             this._onToggleKeypad();
-            this.$('.o_dial_tabs > li.active, .tab-pane.active').removeClass('active');
-            this.$('li.o_dial_recent_tab, .tab-pane.o_dial_recent').addClass('active');
+            this.$(`
+                .o_dial_tab.active,
+                .tab-pane.active`
+            ).removeClass('active');
+            this.$(`
+                .o_dial_recent_tab .o_dial_tab,
+                .tab-pane.o_dial_recent`
+            ).addClass('active');
             this._activeTab = this._tabs.recent;
             const phoneCall = await this._activeTab.callFromNumber(number);
             await this._makeCall(number, phoneCall);
@@ -495,28 +501,6 @@ const DialingPanel = Widget.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    async _onClickSipErrorConfigurationButton(ev) {
-        //Call in order to get the id of the user's preference view
-        // instead of the user's form view
-        const data = await this._rpc({
-            model: 'ir.model.data',
-            method: 'xmlid_to_res_model_res_id',
-            args: ['base.view_users_form_simple_modif'],
-        });
-        this.do_action({
-            name: _t("Change My Preferences"),
-            res_id: realSession.uid,
-            res_model: 'res.users',
-            target: 'new',
-            type: 'ir.actions.act_window',
-            xml_id: 'base.action_res_users_my',
-            views: [[data[1], 'form']],
-        });
-    },
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
     async _onClickTab(ev) {
         ev.preventDefault();
         this._activeTab = this._tabs[ev.currentTarget.getAttribute('aria-controls')];
@@ -542,8 +526,14 @@ const DialingPanel = Widget.extend({
      */
     async _onIncomingCall(ev) {
         await this._showWidget();
-        this.$('.o_dial_tabs > li.active, .tab-pane.active').removeClass('active');
-        this.$('li.o_dial_recent_tab, .tab-pane.o_dial_recent').addClass('active');
+        this.$(`
+            .o_dial_tab.active,
+            .tab-pane.active`
+        ).removeClass('active');
+        this.$(`
+            .o_dial_recent_tab .o_dial_tab,
+            .tab-pane.o_dial_recent`
+        ).addClass('active');
         this._activeTab = this._tabs.recent;
         await this._activeTab.onIncomingCall(ev.data);
         this._$mainButtons.hide();
@@ -679,9 +669,7 @@ const DialingPanel = Widget.extend({
             this.$('.blockOverlay').on('click', () => this._onSipErrorResolved());
             this.$('.blockOverlay').attr('title', _t("Click to unblock"));
         } else {
-            this._blockOverlay(message + '<br/><button type="button" class="btn btn-danger btn-configuration">Configuration</button>');
-            this.$('.btn-configuration').on('click', ev =>
-                this._onClickSipErrorConfigurationButton(ev));
+            this._blockOverlay(message);
         }
     },
     /**
@@ -705,11 +693,11 @@ const DialingPanel = Widget.extend({
         }
         this._isInCall = true;
         this.$(`
-            .o_dial_tabs > li.active,
+            .o_dial_tab.active,
             .tab-pane.active`
         ).removeClass('active');
         this.$(`
-            li.o_dial_recent_tab,
+            .o_dial_recent_tab .o_dial_tab,
             .tab-pane.o_dial_recent`
         ).addClass('active');
         this._activeTab = this._tabs.recent;

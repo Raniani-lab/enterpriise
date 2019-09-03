@@ -209,6 +209,7 @@ var GanttModel = AbstractModel.extend({
     _fetchData: function () {
         var self = this;
         var domain = this._getDomain();
+        var context = _.extend(this.context, {'group_by': this.ganttData.groupedBy});
 
         var groupsDef;
         if (this.ganttData.groupedBy.length) {
@@ -217,7 +218,7 @@ var GanttModel = AbstractModel.extend({
                 method: 'read_group',
                 fields: this._getFields(),
                 domain: domain,
-                context: this.context,
+                context: context,
                 groupBy: this.ganttData.groupedBy,
                 lazy: this.ganttData.groupedBy.length === 1,
             });
@@ -227,7 +228,7 @@ var GanttModel = AbstractModel.extend({
             route: '/web/dataset/search_read',
             model: this.modelName,
             fields: this._getFields(),
-            context: this.context,
+            context: context,
             domain: domain,
         });
 

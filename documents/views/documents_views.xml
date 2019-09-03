@@ -547,7 +547,6 @@
                       <h1><field name="name" placeholder="E.g. Validate document"/></h1>
                       <field name="note" placeholder="Write a tooltip for the action here"/>
                     </div>
-                    <group>
                         <notebook>
                             <page string="Actions">
                                 <group>
@@ -631,7 +630,6 @@
                                 </group>
                             </page>
                         </notebook>
-                    </group>
                 </sheet>
             </form>
         </field>

@@ -15,5 +15,3 @@ class ResCompany(models.Model):
     documents_hr_folder = fields.Many2one('documents.folder', string="hr Workspace", domain=_domain_company,
                                           default=lambda self: self.env.ref('documents_hr.documents_hr_folder',
                                                                             raise_if_not_found=False))
-    documents_hr_contracts_tags = fields.Many2many('documents.tag', 'documents_hr_contracts_tags_table')
-    documents_hr_payslips_tags = fields.Many2many('documents.tag', 'documents_hr_payslips_tags_table')

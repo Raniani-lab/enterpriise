@@ -29,21 +29,10 @@
                                    <field name="documents_hr_folder" attrs="{'required' : [('documents_hr_settings', '=', True)]}"/>
                                 </div>
                             </div>
-                            <span class="o_form_label" attrs="{'invisible' : [('documents_hr_settings', '=', False)]}">
+                            <!-- invisible="1" until an HR bridge module needs tags -->
+                            <span name="documents_hr_tags" class="o_form_label" invisible="1" attrs="{'invisible' : [('documents_hr_settings', '=', False)]}">
                                 Default tags
                             </span>
-                            <div class="row mt-3" attrs="{'invisible' : [('documents_hr_settings', '=', False)]}">
-                                <label for="documents_hr_contracts_tags" class="col-sm-2 o_light_label"/>
-                                <field name="documents_hr_contracts_tags"
-                                       widget="many2many_tags"
-                                       domain="[('folder_id','=', documents_hr_folder)]"/>
-                            </div>
-                            <div class="row" attrs="{'invisible' : [('documents_hr_settings', '=', False)]}">
-                                <label for="documents_hr_payslips_tags" class="col-sm-2 o_light_label"/>
-                                <field name="documents_hr_payslips_tags"
-                                       domain="[('folder_id','=', documents_hr_folder)]"
-                                       widget="many2many_tags"/>
-                            </div>
                         </div>
                     </div>
                 </div>

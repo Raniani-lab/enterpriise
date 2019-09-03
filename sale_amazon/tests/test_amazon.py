@@ -68,7 +68,7 @@ class TestAmazon(TransactionCase):
                 'name': "TestAccountName",
                 **dict.fromkeys(('seller_key', 'access_key', 'secret_key'), ''),
                 'base_marketplace_id': 1,
-                'company_id': self.env['res.company'].search([], limit=1).id,
+                'company_id': self.env.company.id,
             })
 
     def test_update_marketplaces_no_change(self):

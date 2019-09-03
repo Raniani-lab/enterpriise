@@ -31,6 +31,7 @@ class TestDuplicateProducts(common.SavepointCase):
             'type': 'product',
             'tracking': 'serial'})
         cls.pb1 = cls.env['stock.production.lot'].create({
+            'company_id': cls.env.company.id,
             'product_id': cls.painted_boat.id,
             'name': 'pb1'})
         cls.blank_boat = cls.env['product.product'].create({
@@ -38,6 +39,7 @@ class TestDuplicateProducts(common.SavepointCase):
             'type': 'product',
             'tracking': 'serial'})
         cls.bb1 = cls.env['stock.production.lot'].create({
+            'company_id': cls.env.company.id,
             'product_id': cls.blank_boat.id,
             'name': 'bb1'})
         cls.painting = cls.env['product.product'].create({
@@ -45,6 +47,7 @@ class TestDuplicateProducts(common.SavepointCase):
             'type': 'product',
             'tracking': 'lot'})
         cls.p1 = cls.env['stock.production.lot'].create({
+            'company_id': cls.env.company.id,
             'product_id': cls.painting.id,
             'name': 'p1'})
 
@@ -153,6 +156,7 @@ class TestDuplicateProducts(common.SavepointCase):
             bp.product_qty = 1.0
         bom_form.save()
         self.p2 = self.env['stock.production.lot'].create({
+            'company_id': self.env.company.id,
             'product_id': self.painting.id,
             'name': 'p2'})
 

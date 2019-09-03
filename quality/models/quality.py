@@ -19,6 +19,7 @@ class QualityPoint(models.Model):
     _description = "Quality Control Point"
     _inherit = ['mail.thread']
     _order = "sequence, id"
+    _check_company_auto = True
 
     def __get_default_team_id(self):
         return self.env['quality.alert.team'].search([], limit=1).id
@@ -33,16 +34,18 @@ class QualityPoint(models.Model):
     sequence = fields.Integer('Sequence')
     title = fields.Char('Title')
     team_id = fields.Many2one(
-        'quality.alert.team', 'Team',
+        'quality.alert.team', 'Team', check_company=True,
         default=__get_default_team_id, required=True)
     product_id = fields.Many2one(
         'product.product', 'Product Variant',
         domain="[('product_tmpl_id', '=', product_tmpl_id)]")
     product_tmpl_id = fields.Many2one(
-        'product.template', 'Product', required=True,
-        domain="[('type', 'in', ['consu', 'product'])]")
-    picking_type_id = fields.Many2one('stock.picking.type', "Operation Type", required=True)
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+        'product.template', 'Product', required=True, check_company=True,
+        domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    picking_type_id = fields.Many2one('stock.picking.type', "Operation Type", required=True, check_company=True)
+    company_id = fields.Many2one(
+        'res.company', string='Company', required=True, index=True,
+        default=lambda self: self.env.company)
     user_id = fields.Many2one('res.users', 'Responsible')
     active = fields.Boolean(default=True)
     check_count = fields.Integer(compute="_compute_check_count")
@@ -85,7 +88,8 @@ class QualityAlertTeam(models.Model):
     _order = "sequence, id"
 
     name = fields.Char('Name', required=True)
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    company_id = fields.Many2one(
+        'res.company', string='Company', index=True)
     sequence = fields.Integer('Sequence')
     check_count = fields.Integer('# Quality Checks', compute='_compute_check_count')
     alert_count = fields.Integer('# Quality Alerts', compute='_compute_alert_count')
@@ -136,9 +140,11 @@ class QualityCheck(models.Model):
     _name = "quality.check"
     _description = "Quality Check"
     _inherit = ['mail.thread']
+    _check_company_auto = True
 
     name = fields.Char('Name', default=lambda self: _('New'))
-    point_id = fields.Many2one('quality.point', 'Control Point')
+    point_id = fields.Many2one(
+        'quality.point', 'Control Point', check_company=True)
     quality_state = fields.Selection([
         ('none', 'To do'),
         ('pass', 'Passed'),
@@ -146,17 +152,23 @@ class QualityCheck(models.Model):
         default='none', copy=False)
     control_date = fields.Datetime('Control Date', tracking=True)
     product_id = fields.Many2one(
-        'product.product', 'Product',
-        domain="[('type', 'in', ['consu', 'product'])]", required=True)
-    picking_id = fields.Many2one('stock.picking', 'Picking')
-    lot_id = fields.Many2one('stock.production.lot', 'Lot', domain="[('product_id', '=', product_id)]")
+        'product.product', 'Product', check_company=True, required=True,
+        domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    picking_id = fields.Many2one('stock.picking', 'Picking', check_company=True)
+    lot_id = fields.Many2one(
+        'stock.production.lot', 'Lot',
+        domain="[('product_id', '=', product_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     user_id = fields.Many2one('res.users', 'Responsible', tracking=True)
-    team_id = fields.Many2one('quality.alert.team', 'Team', required=True)
-    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
+    team_id = fields.Many2one(
+        'quality.alert.team', 'Team', required=True, check_company=True)
+    company_id = fields.Many2one(
+        'res.company', 'Company', required=True, index=True,
+        default=lambda self: self.env.company)
     alert_ids = fields.One2many('quality.alert', 'check_id', string='Alerts')
     alert_count = fields.Integer('# Quality Alerts', compute="_compute_alert_count")
     note = fields.Html(related='point_id.note', readonly=True)
-    test_type_id = fields.Many2one('quality.point.test_type', 'Test Type',
+    test_type_id = fields.Many2one(
+        'quality.point.test_type', 'Test Type',
         required=True)
     test_type = fields.Char(related='test_type_id.technical_name')
     picture = fields.Binary('Picture', attachment=True)
@@ -202,33 +214,38 @@ class QualityAlert(models.Model):
     _name = "quality.alert"
     _description = "Quality Alert"
     _inherit = ['mail.thread.cc', 'mail.activity.mixin']
+    _check_company_auto = True
 
     name = fields.Char('Name', default=lambda self: _('New'))
     description = fields.Html('Description')
     stage_id = fields.Many2one('quality.alert.stage', 'Stage', ondelete='restrict',
         group_expand='_read_group_stage_ids',
         default=lambda self: self.env['quality.alert.stage'].search([], limit=1).id, tracking=True)
-    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
+    company_id = fields.Many2one(
+        'res.company', 'Company', required=True, index=True,
+        default=lambda self: self.env.company)
     reason_id = fields.Many2one('quality.reason', 'Root Cause')
     tag_ids = fields.Many2many('quality.tag', string="Tags")
     date_assign = fields.Datetime('Date Assigned')
     date_close = fields.Datetime('Date Closed')
-    picking_id = fields.Many2one('stock.picking', 'Picking')
+    picking_id = fields.Many2one('stock.picking', 'Picking', check_company=True)
     action_corrective = fields.Html('Corrective Action')
     action_preventive = fields.Html('Preventive Action')
     user_id = fields.Many2one('res.users', 'Responsible', tracking=True, default=lambda self: self.env.user)
     team_id = fields.Many2one(
-        'quality.alert.team', 'Team', required=True,
+        'quality.alert.team', 'Team', required=True, check_company=True,
         default=lambda x: x.env['quality.alert.team'].search([], limit=1))
-    partner_id = fields.Many2one('res.partner', 'Vendor')
-    check_id = fields.Many2one('quality.check', 'Check')
-    product_tmpl_id = fields.Many2one('product.template', 'Product')
+    partner_id = fields.Many2one('res.partner', 'Vendor', check_company=True)
+    check_id = fields.Many2one('quality.check', 'Check', check_company=True)
+    product_tmpl_id = fields.Many2one(
+        'product.template', 'Product', check_company=True,
+        domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     product_id = fields.Many2one(
         'product.product', 'Product Variant',
         domain="[('product_tmpl_id', '=', product_tmpl_id)]")
     lot_id = fields.Many2one(
-        'stock.production.lot', 'Lot',
-        domain="['|', ('product_id', '=', product_id), ('product_id.product_tmpl_id.id', '=', product_tmpl_id)]")
+        'stock.production.lot', 'Lot', check_company=True,
+        domain="['|', ('product_id', '=', product_id), ('product_id.product_tmpl_id.id', '=', product_tmpl_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     priority = fields.Selection([
         ('0', 'Normal'),
         ('1', 'Low'),
@@ -251,3 +268,9 @@ class QualityAlert(models.Model):
     @api.onchange('product_tmpl_id')
     def onchange_product_tmpl_id(self):
         self.product_id = self.product_tmpl_id.product_variant_ids.ids and self.product_tmpl_id.product_variant_ids.ids[0]
+
+    @api.onchange('team_id')
+    def onchange_team_id(self):
+        if self.team_id:
+            self.company_id = self.team_id.company_id or self.env.company
+

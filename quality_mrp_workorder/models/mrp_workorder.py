@@ -41,6 +41,7 @@ class MrpProductionWorkcenterLine(models.Model):
         action['target'] = 'new'
         action['views'] = [(False, 'form')]
         action['context'] = {
+            'default_company_id': self.company_id.id,
             'default_product_id': self.product_id.id,
             'default_product_tmpl_id': self.product_id.product_tmpl_id.id,
             'default_workorder_id': self.id,

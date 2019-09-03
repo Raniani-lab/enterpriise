@@ -95,7 +95,10 @@ class QualityPoint(models.Model):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_check_action_main').read()[0]
         action['domain'] = [('point_id', '=', self.id)]
-        action['context'] = {'default_point_id': self.id}
+        action['context'] = {
+            'default_company_id': self.company_id.id,
+            'default_point_id': self.id
+        }
         return action
 
     def action_see_spc_control(self):

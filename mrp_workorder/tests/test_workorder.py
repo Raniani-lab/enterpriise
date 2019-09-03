@@ -17,33 +17,47 @@ class TestWorkOrder(common.TestMrpCommon):
             'tracking': 'serial'})
         cls.sp1 = cls.env['stock.production.lot'].create({
             'product_id': cls.submarine_pod.id,
-            'name': 'sp1'})
+            'name': 'sp1',
+            'company_id': cls.env.company.id,
+        })
         cls.sp2 = cls.env['stock.production.lot'].create({
             'product_id': cls.submarine_pod.id,
-            'name': 'sp2'})
+            'name': 'sp2',
+            'company_id': cls.env.company.id,
+        })
         cls.sp3 = cls.env['stock.production.lot'].create({
             'product_id': cls.submarine_pod.id,
-            'name': 'sp3'})
+            'name': 'sp3',
+            'company_id': cls.env.company.id,
+        })
         cls.elon_musk = cls.env['product.product'].create({
             'name': 'Elon Musk',
             'type': 'product',
             'tracking': 'serial'})
         cls.elon1 = cls.env['stock.production.lot'].create({
             'product_id': cls.elon_musk.id,
-            'name': 'elon1'})
+            'name': 'elon1',
+            'company_id': cls.env.company.id,
+        })
         cls.elon2 = cls.env['stock.production.lot'].create({
             'product_id': cls.elon_musk.id,
-            'name': 'elon2'})
+            'name': 'elon2',
+            'company_id': cls.env.company.id,
+        })
         cls.elon3 = cls.env['stock.production.lot'].create({
             'product_id': cls.elon_musk.id,
-            'name': 'elon3'})
+            'name': 'elon3',
+            'company_id': cls.env.company.id,
+        })
         cls.metal_cylinder = cls.env['product.product'].create({
             'name': 'Metal cylinder',
             'type': 'product',
             'tracking': 'lot'})
         cls.mc1 = cls.env['stock.production.lot'].create({
             'product_id': cls.metal_cylinder.id,
-            'name': 'mc1'})
+            'name': 'mc1',
+            'company_id': cls.env.company.id,
+        })
         cls.trapped_child = cls.env['product.product'].create({
             'name': 'Trapped child',
             'type': 'product',
@@ -52,6 +66,7 @@ class TestWorkOrder(common.TestMrpCommon):
         cls.bom_submarine = cls.env['mrp.bom'].create({
             'product_tmpl_id': cls.submarine_pod.product_tmpl_id.id,
             'product_qty': 1.0,
+            'company_id': cls.routing_2.company_id.id,
             'routing_id': cls.routing_2.id})
         cls.env['mrp.bom.line'].create({
             'product_id': cls.elon_musk.id,
@@ -469,7 +484,9 @@ class TestWorkOrder(common.TestMrpCommon):
         self.bom_submarine.bom_line_ids.filtered(lambda line: line.product_id == self.trapped_child).unlink()
         self.mc2 = self.env['stock.production.lot'].create({
             'product_id': self.metal_cylinder.id,
-            'name': 'mc2'})
+            'name': 'mc2',
+            'company_id': self.env.company.id,
+        })
         self.env['stock.quant']._update_available_quantity(self.metal_cylinder, self.location_1, -5.0, lot_id=self.mc1)
         self.env['stock.quant']._update_available_quantity(self.metal_cylinder, self.location_1, 2.0, lot_id=self.mc2)
 
@@ -639,11 +656,13 @@ class TestWorkOrder(common.TestMrpCommon):
         })
         self.abd_1 = self.env['stock.production.lot'].create({
             'product_id': self.angry_british_diver.id,
-            'name': 'abd_1'
+            'name': 'abd_1',
+            'company_id': self.env.company.id,
         })
         self.abd_2 = self.env['stock.production.lot'].create({
             'product_id': self.angry_british_diver.id,
-            'name': 'abd_2'
+            'name': 'abd_2',
+            'company_id': self.env.company.id,
         })
 
         self.advertising = self.env['product.product'].create({
@@ -653,13 +672,14 @@ class TestWorkOrder(common.TestMrpCommon):
         })
         self.advertise_1 = self.env['stock.production.lot'].create({
             'product_id': self.advertising.id,
-            'name': 'Good Advertise'
+            'name': 'Good Advertise',
+            'company_id': self.env.company.id,
         })
         self.advertise_2 = self.env['stock.production.lot'].create({
             'product_id': self.advertising.id,
-            'name': 'bad Advertise'
+            'name': 'bad Advertise',
+            'company_id': self.env.company.id,
         })
-
         submarine_pod_bom_form = Form(self.bom_submarine)
         with submarine_pod_bom_form.byproduct_ids.new() as bp:
             bp.product_id = self.angry_british_diver
@@ -780,10 +800,14 @@ class TestWorkOrder(common.TestMrpCommon):
         self.submarine_pod.tracking = 'lot'
         lot1 = self.env['stock.production.lot'].create({
             'product_id': self.submarine_pod.id,
-            'name': 'lot1'})
+            'name': 'lot1',
+            'company_id': self.env.company.id,
+        })
         lot2 = self.env['stock.production.lot'].create({
             'product_id': self.submarine_pod.id,
-            'name': 'lot2'})
+            'name': 'lot2',
+            'company_id': self.env.company.id,
+        })
 
         mrp_order_form = Form(self.env['mrp.production'])
         mrp_order_form.product_id = self.submarine_pod
@@ -828,10 +852,14 @@ class TestWorkOrder(common.TestMrpCommon):
         self.submarine_pod.tracking = 'lot'
         lot1 = self.env['stock.production.lot'].create({
             'product_id': self.submarine_pod.id,
-            'name': 'lot1'})
+            'name': 'lot1',
+            'company_id': self.env.company.id,
+        })
         lot2 = self.env['stock.production.lot'].create({
             'product_id': self.submarine_pod.id,
-            'name': 'lot2'})
+            'name': 'lot2',
+            'company_id': self.env.company.id,
+        })
 
         mrp_order_form = Form(self.env['mrp.production'])
         mrp_order_form.product_id = self.submarine_pod

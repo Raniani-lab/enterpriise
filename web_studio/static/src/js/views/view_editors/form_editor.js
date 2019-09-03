@@ -237,7 +237,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         return this._super.apply(this, arguments).then(function () {
             // Add chatter hook + chatter preview
             if (!self.has_chatter && self.chatter_allowed) {
-                var $chatter_hook = $('<div>').addClass('o_web_studio_add_chatter');
+                var $chatter_hook = $('<div>').addClass('o_web_studio_add_chatter o_chatter');
                 // Append non-hover content
                 $chatter_hook.append($('<span>', {class: 'container'})
                     .append($('<span>', {
@@ -250,11 +250,10 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                 // Append hover content (chatter preview)
                 $chatter_hook.append($(Qweb.render('mail.Chatter')).find('.o_chatter_topbar')
                     .addClass('container')
-                    .append($(Qweb.render('mail.chatter.Buttons', {
+                    .prepend($(Qweb.render('mail.chatter.Buttons', {
                         newMessageButton: true,
                         logNoteButton: true,
-                    })))
-                    .append($(Qweb.render('mail.Followers')))
+                    })), $(Qweb.render('mail.Followers')))
                 );
                 $chatter_hook.insertAfter(self.$('.o_form_sheet'));
             }

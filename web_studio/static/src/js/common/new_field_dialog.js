@@ -261,6 +261,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             values.type = selectedField.type;
             values.readonly = true;
             values.copy = false;
+            values.store = selectedField.store;
             if (_.contains(['many2one', 'many2many'], selectedField.type)) {
                 values.relation = selectedField.relation;
             } else if (selectedField.type === 'one2many') {

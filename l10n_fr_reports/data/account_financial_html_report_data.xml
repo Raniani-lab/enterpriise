@@ -1274,7 +1274,7 @@
         <field name="code">EMPRUNTS_DIVERSES_CREDIT</field>
         <field name="level" eval="3" />
         <field name="sequence" eval="4"/>
-        <field name="domain" eval="[('account_id.code', '=like', '45%'), '!', ('account_id.code', '=like', '457%')]"/>
+        <field name="domain" eval="[('account_id.code', '=like', '45%'), '!', ('account_id.code', '=like', '457%'), '!', ('account_id.code', '=like', '455%')]"/>
         <field name="formulas">balance = sum_if_neg.balance</field>
         <field name="groupby">account_id</field>
         <field name="show_domain">never</field>
@@ -1306,7 +1306,7 @@
         <field name="level" eval="3" />
         <field name="sequence" eval="7"/>
         <field name="parent_id" ref='account_financial_report_line_02_6_fr_bilan_passif'/>
-        <field name="domain" eval="['|', ('account_id.code', '=like', '421%'), '|', ('account_id.code', '=like', '422%'), '|', ('account_id.code', '=like', '424%'), '|', ('account_id.code', '=like', '427%'), '|', ('account_id.code', '=like', '43%'), '|', ('account_id.code', '=like', '442%'), '|', ('account_id.code', '=like', '446%'), '|', ('account_id.code', '=like', '447%'), ('account_id.code', '=like', '457%')]"/>
+        <field name="domain" eval="['|', ('account_id.code', '=like', '421%'), '|', ('account_id.code', '=like', '422%'), '|', ('account_id.code', '=like', '424%'), '|', ('account_id.code', '=like', '427%'), '|', ('account_id.code', '=like', '43%'), '|', ('account_id.code', '=like', '442%'), '|', ('account_id.code', '=like', '446%'), '|', ('account_id.code', '=like', '447%'), '|',('account_id.code', '=like', '457%'), ('account_id.code', '=like', '455%')]"/>
         <field name="formulas">balance = -sum.balance - DETTES_SOCIALES_CREDIT.balance</field>
     </record>
 

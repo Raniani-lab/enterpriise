@@ -26,6 +26,8 @@ class LandingCost(InvoiceTransactionCase):
         })
         self.journal_mx = self.env['account.journal'].search([
             ('name', '=', _('Customer Invoices'))], limit=1)
+        self.journal_misc = self.env['account.journal'].search([
+            ('code', '=', 'MISC')], limit=1)
         self.supplier = self.env.ref('base.res_partner_2')
         self.customer = self.env.ref('base.res_partner_3')
         self.tax_purchase = self.tax_model.search([('name', '=', 'IVA(16%) COMPRAS')])[0]
@@ -79,11 +81,16 @@ class LandingCost(InvoiceTransactionCase):
 
     def test_10_landing_cost(self):
         """Verify customs information on invoice from landed cost"""
+        self.env.user.groups_id |= (
+            self.env.ref('purchase.group_purchase_manager') |
+            self.env.ref('stock.group_stock_manager') |
+            self.env.ref('sales_team.group_sale_manager')
+        )
         purchase = self.create_purchase_order()
         purchase.button_confirm()
         picking_purchase = purchase.picking_ids
         picking_purchase.move_line_ids.write({'qty_done': 2})
-        picking_purchase.do_transfer()
+        picking_purchase.action_done()
         landing = self.landing.create({
             'l10n_mx_edi_customs_number': '15  48  3009  0001234',
             'picking_ids': [(4, picking_purchase.id)],
@@ -91,9 +98,9 @@ class LandingCost(InvoiceTransactionCase):
                 'product_id': self.product.id,
                 'price_unit': 100,
                 'split_method': 'by_quantity',
-                'account_id': 5,
+                'account_id': self.env.ref('l10n_mx.1_cuenta108_02').id,
             })],
-            'account_journal_id': 3,
+            'account_journal_id': self.journal_misc.id,
         })
         landing.compute_landed_cost()
         landing.button_validate()
@@ -102,6 +109,7 @@ class LandingCost(InvoiceTransactionCase):
         picking_sale = sale.picking_ids
 
         # Generate two moves for procurement by partial delivery
+        picking_sale.action_assign()
         picking_sale.move_line_ids.write({'qty_done': 1})
         backorder_wiz_id = picking_sale.button_validate()['res_id']
         backorder_wiz = self.env['stock.backorder.confirmation'].browse(
@@ -110,7 +118,7 @@ class LandingCost(InvoiceTransactionCase):
         picking_backorder = sale.picking_ids.filtered(
             lambda r: r.state == 'assigned')
         picking_backorder.move_line_ids.write({'qty_done': 1})
-        picking_backorder.do_transfer()
+        picking_backorder.action_done()
 
         wizard = self.env['sale.advance.payment.inv'].create({
             'advance_payment_method': 'delivered',

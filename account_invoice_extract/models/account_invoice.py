@@ -572,89 +572,103 @@ class AccountInvoice(models.Model):
 
     @api.model
     def check_all_status(self):
-        self.search([('extract_state', 'in', ['waiting_extraction', 'extract_not_ready'])]).check_status()
+        for record in self.search([('state', '=', 'draft'), ('extract_state', 'in', ['waiting_extraction', 'extract_not_ready'])]):
+            try:
+                self._check_status(record)
+            except:
+                pass
 
     @api.multi
     def check_status(self):
         """contact iap to get the actual status of the ocr requests"""
-        records_to_update = self.filtered(lambda inv: inv.extract_state in ['waiting_extraction', 'extract_not_ready'])
+        records_to_update = self.filtered(lambda inv: inv.extract_state in ['waiting_extraction', 'extract_not_ready'] and inv.state == 'draft')
+
+        for record in records_to_update:
+            self._check_status(record)
+
         limit = max(0, 20 - len(records_to_update))
         if limit > 0:
-            records_to_update |= self.search([('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']), ('id', 'not in', records_to_update.ids)], limit=limit)
-        for record in records_to_update:
-            endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/get_result'
-            params = {
-                'version': CLIENT_OCR_VERSION,
-                'document_id': record.extract_remoteid
-            }
-            result = jsonrpc(endpoint, params=params)
-            record.extract_status_code = result['status_code']
-            if result['status_code'] == SUCCESS:
-                record.extract_state = "waiting_validation"
-                ocr_results = result['results'][0]
-                record.extract_word_ids.unlink()
+            records_to_preupdate = self.search([('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']), ('id', 'not in', records_to_update.ids), ('state', '=', 'draft')], limit=limit)
+            for record in records_to_preupdate:
+                try:
+                    self._check_status(record)
+                except:
+                    pass
 
-                supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
-                date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
-                due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
-                total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
-                subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
-                invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
-                currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
-                taxes_ocr = [value['content'] for value in ocr_results['global_taxes']['selected_values']] if 'global_taxes' in ocr_results else []
-                taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in ocr_results['global_taxes']['selected_values']] if 'global_taxes' in ocr_results else []
-                vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
-                invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
+    def _check_status(self, record):
+        endpoint = self.env['ir.config_parameter'].sudo().get_param(
+            'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/get_result'
+        params = {
+            'version': CLIENT_OCR_VERSION,
+            'document_id': record.extract_remoteid
+        }
+        result = jsonrpc(endpoint, params=params)
+        record.extract_status_code = result['status_code']
+        if result['status_code'] == SUCCESS:
+            record.extract_state = "waiting_validation"
+            ocr_results = result['results'][0]
+            record.extract_word_ids.unlink()
 
-                if invoice_lines:
-                    record.with_context(total_ocr=total_ocr)._set_invoice_lines(invoice_lines, subtotal_ocr)
-                elif subtotal_ocr:
-                    vals_invoice_line = {
-                        'name': "/",
-                        'invoice_id': self.id,
-                        'price_unit': subtotal_ocr,
-                        'quantity': 1.0,
-                    }
-                    for taxes, taxes_type in zip(taxes_ocr, taxes_type_ocr):
-                        taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
-                        if taxes_record and subtotal_ocr:
-                            if 'invoice_line_tax_ids' not in vals_invoice_line:
-                                vals_invoice_line['invoice_line_tax_ids'] = [(4, taxes_record.id)]
-                            else:
-                                vals_invoice_line['invoice_line_tax_ids'].append((4, taxes_record.id))
-                            vals_invoice_line['price_unit'] = subtotal_ocr
-                    record.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(vals_invoice_line)
+            supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
+            date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
+            due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
+            total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
+            subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
+            invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
+            currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
+            taxes_ocr = [value['content'] for value in ocr_results['global_taxes']['selected_values']] if 'global_taxes' in ocr_results else []
+            taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in ocr_results['global_taxes']['selected_values']] if 'global_taxes' in ocr_results else []
+            vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
+            invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
-                record._set_supplier(supplier_ocr, vat_number_ocr)
-                record.date_invoice = date_ocr
-                record.date_due = due_date_ocr
-                record.reference = invoice_id_ocr
-                if self.user_has_groups('base.group_multi_currency'):
-                    record._set_currency(currency_ocr)
+            if invoice_lines:
+                record.with_context(total_ocr=total_ocr)._set_invoice_lines(invoice_lines, subtotal_ocr)
+            elif subtotal_ocr:
+                vals_invoice_line = {
+                    'name': "/",
+                    'invoice_id': record.id,
+                    'price_unit': subtotal_ocr,
+                    'quantity': 1.0,
+                }
+                for taxes, taxes_type in zip(taxes_ocr, taxes_type_ocr):
+                    taxes_record = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')], limit=1)
+                    if taxes_record and subtotal_ocr:
+                        if 'invoice_line_tax_ids' not in vals_invoice_line:
+                            vals_invoice_line['invoice_line_tax_ids'] = [(4, taxes_record.id)]
+                        else:
+                            vals_invoice_line['invoice_line_tax_ids'].append((4, taxes_record.id))
+                        vals_invoice_line['price_unit'] = subtotal_ocr
+                record.invoice_line_ids.with_context(set_default_account=True, journal_id=record.journal_id.id).create(vals_invoice_line)
 
-                fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
-                for field in fields_with_boxes:
-                    if field in ocr_results:
-                        value = ocr_results[field]
-                        data = []
-                        for word in value["words"]:
-                            data.append((0, 0, {
-                                "field": field,
-                                "selected_status": 1 if value["selected_value"] == word else 0,
-                                "word_text": word['content'],
-                                "word_page": word['page'],
-                                "word_box_midX": word['coords'][0],
-                                "word_box_midY": word['coords'][1],
-                                "word_box_width": word['coords'][2],
-                                "word_box_height": word['coords'][3],
-                                "word_box_angle": word['coords'][4],
-                            }))
-                        record.write({'extract_word_ids': data})
-            elif result['status_code'] == NOT_READY:
-                record.extract_state = 'extract_not_ready'
-            else:
-                record.extract_state = 'error_status'
+            record._set_supplier(supplier_ocr, vat_number_ocr)
+            record.date_invoice = date_ocr
+            record.date_due = due_date_ocr
+            record.reference = invoice_id_ocr
+            if self.user_has_groups('base.group_multi_currency'):
+                record._set_currency(currency_ocr)
+
+            fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
+            for field in fields_with_boxes:
+                if field in ocr_results:
+                    value = ocr_results[field]
+                    data = []
+                    for word in value["words"]:
+                        data.append((0, 0, {
+                            "field": field,
+                            "selected_status": 1 if value["selected_value"] == word else 0,
+                            "word_text": word['content'],
+                            "word_page": word['page'],
+                            "word_box_midX": word['coords'][0],
+                            "word_box_midY": word['coords'][1],
+                            "word_box_width": word['coords'][2],
+                            "word_box_height": word['coords'][3],
+                            "word_box_angle": word['coords'][4],
+                        }))
+                    record.write({'extract_word_ids': data})
+        elif result['status_code'] == NOT_READY:
+            record.extract_state = 'extract_not_ready'
+        else:
+            record.extract_state = 'error_status'
 
     @api.multi
     def buy_credits(self):

@@ -756,6 +756,8 @@ class AccountInvoice(models.Model):
             else:
                 return 'Pago en una sola exhibición'
         elif version == '3.3' and self.date_due and self.date_invoice:
+            if self.type == 'out_refund':
+                return 'PUE'
             # In CFDI 3.3 - SAT 2018 rule 2.7.1.44, the payment policy is PUE
             # if the invoice will be paid before 17th of the following month,
             # PPD otherwise

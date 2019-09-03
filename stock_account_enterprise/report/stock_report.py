@@ -67,8 +67,11 @@ class StockReport(models.Model):
         if stock_value:
             date = Date.to_string(Date.from_string(next((d[2] for d in domain if d[0] == 'date_done'), Date.today())))
 
-            products = self.env['product.product'].with_context(to_date=date).search([('product_tmpl_id.type', '=', 'product')])
-            value = sum(product.stock_value for product in products)
+            products = self.env['product.product'].with_context(to_date=date)
+            # Split the recordset for faster computing.
+            value = 0
+            for products_split in self.env.cr.split_for_in_conditions(products.search([('product_tmpl_id.type', '=', 'product')]).ids):
+                value += sum(product.stock_value for product in products.browse(products_split))
 
             res[0].update({
                 '__count': 1,

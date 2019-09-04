@@ -62,7 +62,7 @@ class AccountMove(models.Model):
                 activity.action_done()
             # post the message with the PDF
             subject = _('Vat closing from %s to %s') % (format_date(self.env, options.get('date').get('date_from')), format_date(self.env, options.get('date').get('date_to')))
-            move.message_post(body=move.ref, subject=subject, attachments=attachments)
+            move.with_context(no_new_invoice=True).message_post(body=move.ref, subject=subject, attachments=attachments)
             # create the recurring entry (new draft move and new activity)
             next_date_deadline = move.date + relativedelta(day=move.company_id.account_tax_periodicity_reminder_day, months=move.company_id.account_tax_next_activity_type.delay_count + 1)
             vals = {

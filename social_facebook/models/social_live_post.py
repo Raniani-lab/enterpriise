@@ -25,8 +25,11 @@ class SocialLivePostFacebook(models.Model):
             post_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/feed" % account.facebook_account_id)
 
             post = live_post.post_id
+
+            message_with_shortened_urls = self.env['link.tracker'].sudo()._convert_links_text(post.message, live_post._get_utm_values())
+
             params = {
-                'message': post.message,
+                'message': message_with_shortened_urls,
                 'access_token': account.facebook_access_token
             }
 
@@ -45,7 +48,7 @@ class SocialLivePostFacebook(models.Model):
                         for index, image_attachment in enumerate(images_attachments):
                             params.update({'attached_media[' + str(index) + ']': json.dumps(image_attachment)})
 
-            link_url = self.env['social.post']._extract_url_from_message(post.message)
+            link_url = self.env['social.post']._extract_url_from_message(message_with_shortened_urls)
             # can't combine with images
             if link_url and not post.image_ids:
                 params.update({'link': link_url})

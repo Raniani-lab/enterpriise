@@ -152,17 +152,19 @@
     </div>
 </div>
 
-<div t-name="web_studio.ReportColumn" class="row">
-    <div class="o_web_studio_sidebar_text col-6">
-        <label for="o_web_studio_size">Size</label>
-        <div class="input-group o_web_studio_size">
-            <span class="text-muted">/ 12</span>
+<div t-name="web_studio.ReportColumn">
+    <div class="row no-gutters">
+        <div class="o_web_studio_sidebar_text col-6">
+            <label for="o_web_studio_size">Size</label>
+            <div class="input-group o_web_studio_size">
+                <span class="text-muted">/ 12</span>
+            </div>
         </div>
-    </div>
-    <div class="o_web_studio_sidebar_text col-6">
-        <label for="o_web_studio_offset">Offset</label>
-        <div class="input-group o_web_studio_offset">
-            <span class="text-muted">/ 12</span>
+        <div class="o_web_studio_sidebar_text col-6">
+            <label for="o_web_studio_offset">Offset</label>
+            <div class="input-group o_web_studio_offset">
+                <span class="text-muted">/ 12</span>
+            </div>
         </div>
     </div>
 </div>

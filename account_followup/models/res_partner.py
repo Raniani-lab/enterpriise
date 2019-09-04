@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.tools.misc import format_date
 from odoo.osv import expression
-import datetime
+from datetime import date, datetime, timedelta
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 
 class ResPartner(models.Model):
@@ -18,13 +18,12 @@ class ResPartner(models.Model):
                                            domain=[('reconciled', '=', False),
                                                    ('account_id.deprecated', '=', False),
                                                    ('account_id.internal_type', '=', 'receivable')])
-    unpaid_invoices = fields.One2many('account.move', compute='_compute_unpaid_invoices', store=False)
-    total_due = fields.Monetary(compute='_compute_for_followup', store=False, readonly=True)
-    total_overdue = fields.Monetary(compute='_compute_for_followup', store=False, readonly=True)
+    unpaid_invoices = fields.One2many('account.move', compute='_compute_unpaid_invoices')
+    total_due = fields.Monetary(compute='_compute_for_followup')
+    total_overdue = fields.Monetary(compute='_compute_for_followup')
     followup_status = fields.Selection(
         [('in_need_of_action', 'In need of action'), ('with_overdue_invoices', 'With overdue invoices'), ('no_action_needed', 'No action needed')],
         compute='_compute_for_followup',
-        store=False,
         string='Follow-up Status',
         search='_search_status')
     followup_level = fields.Many2one('account_followup.followup.line', compute="_compute_for_followup", string="Follow-up Level")
@@ -39,19 +38,17 @@ class ResPartner(models.Model):
         if isinstance(value, str):
             value = [value]
         value = [v for v in value if v in ['in_need_of_action', 'with_overdue_invoices', 'no_action_needed']]
-        print(value)
         if operator not in ('in', '=') or not value:
             return []
-        results = self._get_partners_in_need_of_action(overdue_only=(value == ['with_overdue_invoices']))
-
-        print(results.mapped('followup_status'))
-        return [('id', 'in', results.filtered(lambda r:r.followup_status in value).ids)]
+        followup_data = self._query_followup_level(all_partners=True)
+        return [('id', 'in', [d['partner_id'] for d in followup_data.values() if d['followup_status'] in value])]
 
     def _compute_for_followup(self):
         """
-        Compute the fields 'total_due', 'total_overdue' and 'followup_status'
+        Compute the fields 'total_due', 'total_overdue','followup_level' and 'followup_status'
         """
-        partners_in_need_of_action = self._get_partners_in_need_of_action()
+        first_followup_level = self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order="delay asc", limit=1)
+        followup_data = self._query_followup_level()
         today = fields.Date.context_today(self)
         for record in self:
             total_due = 0
@@ -64,115 +61,50 @@ class ResPartner(models.Model):
                     is_overdue = today > aml.date_maturity if aml.date_maturity else today > aml.date
                     if is_overdue:
                         total_overdue += not aml.blocked and amount or 0
-            if total_overdue > 0:
-                followup_status = "in_need_of_action" if record in partners_in_need_of_action else "with_overdue_invoices"
-            else:
-                followup_status = "no_action_needed"
             record.total_due = total_due
             record.total_overdue = total_overdue
-            record.followup_status = followup_status
-            level = record.get_followup_level()
-            record.followup_level = self.env['account_followup.followup.line'].browse(level[0]) if level else False
+            if record.id in followup_data:
+                record.followup_status = followup_data[record.id]['followup_status']
+                record.followup_level = self.env['account_followup.followup.line'].browse(followup_data[record.id]['followup_level']) or first_followup_level
+            else:
+                record.followup_status = 'no_action_needed'
+                record.followup_level = first_followup_level
 
     def _compute_unpaid_invoices(self):
         for record in self:
             record.unpaid_invoices = self.env['account.move'].search([('commercial_partner_id', '=', record.id), ('state', '=', 'posted'), ('invoice_payment_state', '!=', 'paid'), ('type', 'in', self.env['account.move'].get_sale_types())])
 
-    def _get_partners_in_need_of_action(self, overdue_only=False):
-        """
-        Return a list of partner ids which are in status 'in_need_of_action'.
-        If 'overdue_only' is set to True, partners in status 'with_overdue_invoices' are included in the list
-        """
-        today = fields.Date.context_today(self)
-        domain = self.get_followup_lines_domain(overdue_only=overdue_only, only_unblocked=True)
-        query = self.env['account.move.line']._where_calc(domain)
-        tables, where_clause, where_params = query.get_sql()
-        sql = """SELECT "account_move_line".partner_id
-                 FROM %s
-                 WHERE %s
-                   AND "account_move_line".partner_id IS NOT NULL
-                 GROUP BY "account_move_line".partner_id"""
-        query = sql % (tables, where_clause)
-        self.env.cr.execute(query, where_params)
-        result = self.env.cr.fetchall()
-        return self.browse([r[0] for r in result] if result else [])
-
-    def _get_needofaction_fup_lines_domain(self):
-        """ returns the part of the domain on account.move.line that will filter lines ready to reach another followup level.
-        This is achieved by looking if a line at a certain followup level has a COALESCE(date_maturity, date) older than the
-        pivot date where it should get to the next level."""
-        domain = []
-        fups = self._compute_followup_lines()
-        for fup_level_id, fup_level_info in fups.items():
-            domain = expression.OR([
-                domain,
-                [('followup_line_id', '=', fup_level_id or False)] +
-                expression.OR([
-                    [('date_maturity', '!=', False), ('date_maturity', '<=', fup_level_info[0])],
-                    [('date_maturity', '=', False), ('date', '<=', fup_level_info[0])]
-                ])
-            ])
-        return domain
-
-
-    def get_followup_lines_domain(self, overdue_only=False, only_unblocked=False):
-        domain = [('reconciled', '=', False), ('account_id.deprecated', '=', False), ('account_id.internal_type', '=', 'receivable'), '|', ('debit', '!=', 0), ('credit', '!=', 0), ('company_id', '=', self.env.company.id)]
-        if only_unblocked:
-            domain += [('blocked', '=', False)]
-        if self.ids:
-            if 'exclude_given_ids' in self._context:
-                domain += [('partner_id', 'not in', self.ids)]
-            else:
-                domain += [('partner_id', 'in', self.ids)]
-
-        if not overdue_only:
-            domain += self._get_needofaction_fup_lines_domain()
-        else:
-            partners_in_need_of_action = self._get_partners_in_need_of_action()
-            domain = expression.AND([domain, ['!', ('partner_id', 'in', partners_in_need_of_action.ids)]])
-        return domain
-
     def get_next_action(self, followup_line):
         """
-        Compute the next action status of the customer. It can be 'manual' or 'auto'.
+        Compute the next action status of the customer.
         """
         self.ensure_one()
-        date_auto = format_date(self.env, self.env['account.followup.report']._get_next_date(followup_line, fields.Date.today()))
-        if self.payment_next_action_date:
-            return {
-                'type': 'manual',
-                'date': self.payment_next_action_date,
-                'date_auto': date_auto
-            }
+        date_auto = followup_line._get_next_date()
         return {
-            'type': 'auto',
-            'date_auto': date_auto
+            'date': self.payment_next_action_date or date_auto,
         }
-
-    def change_next_action(self, date):
-        for record in self:
-            msg = _('Next action date: ') + date
-            record.message_post(body=msg)
-        return True
 
     def update_next_action(self, options=False):
         """Updates the next_action_date of the right account move lines"""
-        if not options or 'next_action_date' not in options or 'next_action_type' not in options:
-            return
-        next_action_date = options['next_action_date'][0:10]
-        today = datetime.date.today()
+        next_action_date = options.get('next_action_date') and options['next_action_date'][0:10] or False
+        next_action_date_done = False
+        today = date.today()
         fups = self._compute_followup_lines()
         for partner in self:
-            if options['next_action_type'] == 'manual':
-                partner.change_next_action(next_action_date)
-            partner.payment_next_action_date = next_action_date
-            for aml in partner.unreconciled_aml_ids:
-                index = aml.followup_line_id.id or None
-                followup_date = fups[index][0]
-                next_level = fups[index][1]
-                if (aml.date_maturity and aml.date_maturity <= followup_date
-                        or (aml.date and aml.date <= followup_date)):
-                    aml.write({'followup_line_id': next_level, 'followup_date': today})
+            if options['action'] == 'done':
+                next_action_date_done = datetime.strftime(partner.followup_level._get_next_date(), DEFAULT_SERVER_DATE_FORMAT)
+            partner.payment_next_action_date = (not next_action_date or options['action'] == 'done') and next_action_date_done or next_action_date
+            if options['action'] in ('done', 'later'):
+                msg = _('Next Reminder Date set to %s') % format_date(self.env, partner.payment_next_action_date)
+                partner.message_post(body=msg)
+            if options['action'] == 'done':
+                for aml in partner.unreconciled_aml_ids:
+                    index = aml.followup_line_id.id or None
+                    followup_date = fups[index][0]
+                    next_level = fups[index][1]
+                    if (aml.date_maturity and aml.date_maturity <= followup_date
+                            or (aml.date and aml.date <= followup_date)):
+                        aml.write({'followup_line_id': next_level, 'followup_date': today})
 
     def open_action_followup(self):
         self.ensure_one()
@@ -211,7 +143,7 @@ class ResPartner(models.Model):
         """
         options = {
             'partner_id': self.id,
-            'followup_level': self.get_followup_level() or False,
+            'followup_level': (self.followup_level.id, self.followup_level.delay),
             'keep_summary': True
         }
         return self.env['account.followup.report'].with_context(print_mode=True, lang=self.lang or self.env.user.lang).get_html(options)
@@ -232,7 +164,7 @@ class ResPartner(models.Model):
         previous_level = None
         fups = {}
         for line in followup_line_ids:
-            delay = datetime.timedelta(days=line.delay)
+            delay = timedelta(days=line.delay)
             delay_in_days = line.delay
             fups[previous_level] = (current_date - delay, line.id, delay_in_days)
             previous_level = line.id
@@ -240,30 +172,108 @@ class ResPartner(models.Model):
             fups[previous_level] = (current_date - delay, previous_level, delay_in_days)
         return fups
 
-    def get_followup_level(self):
-        self.ensure_one()
-        current_date = fields.Date.today()
+    def _query_followup_level(self, all_partners=False):
+        sql = """
+            WITH unreconciled_aml AS (
+                SELECT aml.id, aml.partner_id, aml.followup_line_id, aml.date, aml.date_maturity FROM account_move_line aml
+                JOIN account_account account ON account.id = aml.account_id
+                                            AND account.deprecated = False
+                                            AND account.internal_type = 'receivable'
+                WHERE aml.reconciled = False
+                AND aml.company_id = %(company_id)s
+                {where}
+            )
+            SELECT partner.id as partner_id,
+                   current_followup_level.id as followup_level,
+                   CASE WHEN in_need_of_action_aml.id IS NOT NULL AND (prop_date.value_datetime IS NULL OR prop_date.value_datetime::date <= CURRENT_DATE) THEN 'in_need_of_action'
+                        WHEN exceeded_unreconciled_aml.id IS NOT NULL THEN 'with_overdue_invoices'
+                        ELSE 'no_action_needed' END as followup_status
+            FROM res_partner partner
+            -- Get the followup level
+            LEFT OUTER JOIN account_followup_followup_line current_followup_level ON current_followup_level.id = (
+                SELECT COALESCE(next_ful.id, ful.id) FROM unreconciled_aml aml
+                LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
+                LEFT OUTER JOIN account_followup_followup_line next_ful ON next_ful.id = (
+                    SELECT next_ful.id FROM account_followup_followup_line next_ful
+                    WHERE next_ful.delay > COALESCE(ful.delay, 0)
+                      AND COALESCE(aml.date_maturity, aml.date) + next_ful.delay <= CURRENT_DATE
+                      AND next_ful.company_id = %(company_id)s
+                    ORDER BY next_ful.delay ASC
+                    LIMIT 1
+                )
+                WHERE aml.partner_id = partner.id
+                ORDER BY COALESCE(next_ful.delay, ful.delay, 0) DESC
+                LIMIT 1
+            )
+            -- Get the followup status data
+            LEFT OUTER JOIN account_move_line in_need_of_action_aml ON in_need_of_action_aml.id = (
+                SELECT aml.id FROM unreconciled_aml aml
+                LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
+                WHERE aml.partner_id = partner.id
+                  AND COALESCE(ful.delay, 0) < current_followup_level.delay
+                  AND COALESCE(aml.date_maturity, aml.date) + COALESCE(ful.delay, 0) <= CURRENT_DATE
+                LIMIT 1
+            )
+            LEFT OUTER JOIN account_move_line exceeded_unreconciled_aml ON exceeded_unreconciled_aml.id = (
+                SELECT aml.id FROM unreconciled_aml aml
+                WHERE aml.partner_id = partner.id
+                  AND COALESCE(aml.date_maturity, aml.date) <= CURRENT_DATE
+                LIMIT 1
+            )
+            LEFT OUTER JOIN ir_property prop_date ON prop_date.res_id = CONCAT('res.partner,', partner.id) AND prop_date.name = 'payment_next_action_date'
+            WHERE partner.id in (SELECT DISTINCT partner_id FROM unreconciled_aml)
+        """.format(
+            where="" if all_partners else "AND aml.partner_id in %(partner_ids)s",
+        )
+        params = {
+            'company_id': self.env.company.id,
+            'partner_ids': tuple(self.ids),
+        }
+        self.env['account.move.line'].flush()
+        self.env['res.partner'].flush()
+        self.env['account_followup.followup.line'].flush()
+        self.env.cr.execute(sql, params)
+        result = self.env.cr.dictfetchall()
+        result = {r['partner_id']: r for r in result}
+        return result
 
-        fups = self._compute_followup_lines()
-        level = None
-        if fups:
-            level = (fups[None][1], 0)
-        if fups:
-            for aml in self.unreconciled_aml_ids:
-                if aml.company_id == self.env.company:
-                    index = aml.followup_line_id.id or None
-                    followup_date = fups[index][0]
-                    next_level = fups[index][1]
-                    delay = fups[index][2]
-                    if (aml.date_maturity and aml.date_maturity <= followup_date) or (current_date <= followup_date):
-                        if level is None or level[1] < delay:
-                            level = (next_level, delay)
-        return level
+    def _execute_followup_partner(self):
+        self.ensure_one()
+        if self.followup_status == 'in_need_of_action':
+            followup_line = self.followup_level
+            if followup_line.send_email:
+                self.send_followup_email()
+            if followup_line.manual_action:
+                # log a next activity for today
+                activity_data = {
+                    'res_id': self.id,
+                    'res_model_id': self.env['ir.model']._get(self._name).id,
+                    'activity_type_id': followup_line.manual_action_type_id.id or self.env.ref('mail.mail_activity_data_todo').id,
+                    'summary': followup_line.manual_action_note,
+                    'user_id': followup_line.manual_action_responsible_id.id or self.env.user.id,
+                }
+                self.env['mail.activity'].create(activity_data)
+            next_date = followup_line._get_next_date()
+            self.update_next_action(options={'next_action_date': datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT), 'action': 'done'})
+            if followup_line.print_letter:
+                return self
+        return None
+
+    def execute_followup(self):
+        """
+        Execute the actions to do with followups.
+        """
+        to_print = self.env['res.partner']
+        for partner in self:
+            partner_tmp = partner._execute_followup_partner()
+            if partner_tmp:
+                to_print += partner_tmp
+        if not to_print:
+            return
+        return self.env['account.followup.report'].print_followups(to_print)
 
     def _cron_execute_followup(self):
-        in_need_of_action = self._get_partners_in_need_of_action()
-        in_need_of_action_auto = self.env['res.partner']
-        for record in in_need_of_action:
-            if record.followup_level.auto_execute:
-                in_need_of_action_auto += record
-        self.env['account.followup.report'].execute_followup(in_need_of_action_auto)
+        followup_data = self._query_followup_level(all_partners=True)
+        in_need_of_action = self.env['res.partner'].browse([d['partner_id'] for d in followup_data.values() if ['followup_status'] == 'in_need_of_action'])
+        in_need_of_action_auto = in_need_of_action.filtered(lambda p: p.followup_level.auto_execute)
+        in_need_of_action_auto.execute_followup()

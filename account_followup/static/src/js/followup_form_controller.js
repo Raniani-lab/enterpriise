@@ -18,11 +18,9 @@ var FollowupFormController = FormController.extend({
     }),
     custom_events: _.extend({}, FormController.prototype.custom_events, {
         expected_date_changed: '_onExpectedDateChanged',
-        next_action_date_changed: '_onNextActionDateChanged',
-        on_auto_reminder: '_onAutoReminder',
+        next_action_date_changed: '_onChangeReminderDate',
         on_change_block: '_onChangeBlocked',
         on_change_trust: '_onChangeTrust',
-        on_manual_reminder: '_onManualReminder',
         on_save_summary: '_onSaveSummary',
         on_trigger_action: '_onTriggerAction'
     }),
@@ -186,7 +184,7 @@ var FollowupFormController = FormController.extend({
         if (!this.$buttons) {
             return;
         }
-        var followupLevel = this.model.get(this.handle).data.followup_level;
+        var followupLevel = this.model.localData[this.handle].data.followup_level;
         setButtonClass('o_account_followup_print_letter_button', followupLevel.print_letter)
         setButtonClass('o_account_followup_send_mail_button', followupLevel.send_email)
         setButtonClass('o_account_followup_send_sms_button', followupLevel.send_sms)
@@ -207,18 +205,6 @@ var FollowupFormController = FormController.extend({
     // Handlers
     //--------------------------------------------------------------------------
 
-    /**
-     * When click on 'Auto', display the computed date for next action.
-     *
-     * @private
-     */
-    _onAutoReminder: function () {
-        if (this.model.isAutoReminder(this.handle)) {
-            return;
-        }
-        var date = this.model.setAutoReminder(this.handle);
-        this.renderer.renderAutoReminder(date);
-    },
     /**
      * When a move line is blocked or unblocked, we have to write it in DB
      * and reload the HTML to update the total due and total overdue.
@@ -248,6 +234,16 @@ var FollowupFormController = FormController.extend({
         });
     },
     /**
+     * Update the next reminder date
+     *
+     * @private
+     */
+     _onChangeReminderDate: function(ev) {
+         ev.stopPropagation();
+         this.model.setNextActionDate(this.handle, ev.data.newDate);
+         this.model.updateNextAction(this.handle, 'change_date')
+     },
+    /**
      * When the user skip the partner, we have to update the next action
      * date and update the progress and increase the number of
      * follow-ups SKIPPED.
@@ -256,7 +252,7 @@ var FollowupFormController = FormController.extend({
      */
     _onDoItLater: function () {
         var self = this;
-        this.model.updateNextAction(this.handle).then(function () {
+        this.model.updateNextAction(this.handle, 'later').then(function () {
             self.model.increaseNumberSkipped();
             self._displayNextFollowup();
         });
@@ -270,7 +266,7 @@ var FollowupFormController = FormController.extend({
      */
     _onDone: function () {
         var self = this;
-        this.model.updateNextAction(this.handle).then(function () {
+        this.model.updateNextAction(this.handle, 'done').then(function () {
             self.model.increaseNumberDone();
             self._displayNextFollowup();
         });
@@ -289,19 +285,6 @@ var FollowupFormController = FormController.extend({
         });
     },
     /**
-     * When click on 'Manual', show the datepicker to choose a date for the next
-     * reminder.
-     *
-     * @private
-     */
-    _onManualReminder: function () {
-        if (!this.model.isAutoReminder(this.handle)) {
-            return;
-        }
-        this.model.setManualReminder(this.handle);
-        this.renderer.renderManualReminder();
-    },
-    /**
      * When click on 'Reconcile' it will redirect on reconciliation.
      *
      * @private
@@ -318,16 +301,6 @@ var FollowupFormController = FormController.extend({
             target: 'current',
             context: context,
         });
-    },
-    /**
-     * When the user changes the next_action_date, save it in the model.
-     *
-     * @private
-     * @param {OdooEvent} event
-     */
-    _onNextActionDateChanged: function (event) {
-        event.stopPropagation();
-        this.model.setNextActionDate(this.handle, event.data.newDate);
     },
     /**
      * Print the customer statement.
@@ -359,8 +332,8 @@ var FollowupFormController = FormController.extend({
      */
     _onManualAction: function () {
         var self = this;
-        var partnerID = this.model.get(this.handle).res_id;
-        var followupLevel = this.model.get(this.handle).data.followup_level.id;
+        var partnerID = this.model.localData[this.handle].res_id;
+        var followupLevel = this.model.localData[this.handle].data.followup_level.id;
         var options = {
             partner_id: partnerID
         };
@@ -466,13 +439,6 @@ var FollowupFormController = FormController.extend({
                 });
                 break;
             case "open_invoice":
-                _.extend(action, {
-                    res_model: 'account.invoice',
-                    res_id: event.data.resId,
-                    views: [[event.data.view, 'form']],
-                });
-                break;
-            case "open_move":
                 _.extend(action, {
                     res_model: 'account.move',
                     res_id: event.data.resId,

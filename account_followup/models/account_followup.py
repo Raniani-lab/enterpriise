@@ -5,6 +5,7 @@ import datetime
 from odoo import api, fields, models, _
 from odoo.exceptions import Warning, UserError
 from odoo.osv import expression
+from datetime import datetime, timedelta
 
 
 class FollowupLine(models.Model):
@@ -62,6 +63,17 @@ Best Regards,
         if self.auto_execute:
             self.manual_action = False
             self.print_letter = False
+
+    def _get_next_date(self):
+        self.ensure_one()
+        next_followup = self.env['account_followup.followup.line'].search([('delay', '>', self.delay),
+                                                                           ('company_id', '=', self.env.company.id)],
+                                                                          order="delay asc", limit=1)
+        if next_followup:
+            delay = next_followup.delay - self.delay
+        else:
+            delay = 14
+        return fields.Date.today() + timedelta(days=delay)
 
 
 class AccountMoveLine(models.Model):

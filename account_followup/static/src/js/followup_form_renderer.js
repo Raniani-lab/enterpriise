@@ -13,8 +13,7 @@ var _t = core._t;
 
 var FollowupFormRenderer = FormRenderer.extend({
     events: _.extend({}, FormRenderer.prototype.events, {
-        'click .o_account_followup_auto': '_onAuto',
-        'click .o_account_followup_manual': '_onManual',
+        'input .o_account_reports_next_action_date_picker input': '_onReminderDate',
         'change *[name="blocked"]': '_onChangeBlocked',
         'click .o_change_expected_date': '_onChangeExpectedDate',
         'click .o_change_trust': '_onChangeTrust',
@@ -54,18 +53,6 @@ var FollowupFormRenderer = FormRenderer.extend({
         this.$('div.alert.alert-info.alert-dismissible').remove();
     },
     /**
-     * Render the next reminder section, in auto mode, and hide the datepicker.
-     *
-     * @param {string} date Date of next reminder in auto mode
-     */
-    renderAutoReminder: function (date) {
-        this.$('.o_account_reports_next_action_date').html(date);
-        this.$('.o_account_followup_manual').toggleClass('btn-secondary btn-primary');
-        this.$('.o_account_followup_auto').toggleClass('btn-secondary btn-primary');
-        this.$('div.o_account_reports_next_action_date_picker').hide();
-        this.$('.o_account_reports_next_action_date').show();
-    },
-    /**
      * Render the summary in 'edit' mode.
      */
     renderEditSummary: function () {
@@ -85,16 +72,6 @@ var FollowupFormRenderer = FormRenderer.extend({
      */
     renderSMSAlert: function () {
         this.$('div.o_account_reports_page').prepend(QWeb.render("CustomerStatements.send_sms"));
-    },
-    /**
-     * Render the next reminder section, in manual mode, and render the
-     * datepicker.
-     */
-    renderManualReminder: function () {
-        this.$('.o_account_followup_manual').toggleClass('btn-secondary btn-primary');
-        this.$('.o_account_followup_auto').toggleClass('btn-secondary btn-primary');
-        this.$('div.o_account_reports_next_action_date_picker').show();
-        this.$('.o_account_reports_next_action_date').hide();
     },
     /**
      * Render the summary in 'non-edit' mode.
@@ -141,18 +118,7 @@ var FollowupFormRenderer = FormRenderer.extend({
         $element.html(this.state.data.followup_html);
         $element.find('.o_account_reports_summary_edit').hide();
         this.nextActionDatePicker.appendTo($element.find('div.o_account_reports_next_action_date_picker')).then(function() {
-            self.nextActionDatePicker.setValue(moment());
-            if (self.state.data.next_action === 'auto'){
-                $element.find('div.o_account_reports_next_action_date_picker').hide();
-                $element.find('.o_account_followup_manual').addClass('btn-secondary');
-                $element.find('.o_account_followup_auto').addClass('btn-primary');
-                $element.find('.o_account_reports_next_action_date').html(self.state.data.next_action_date_auto);
-            } else {
-                $element.find('.o_account_followup_manual').addClass('btn-primary');
-                $element.find('.o_account_followup_auto').addClass('btn-secondary');
-                $element.find('.o_account_reports_next_action_date').hide();
-                self.nextActionDatePicker.setValue(new moment(self.state.data.next_action_date));
-            }
+            self.nextActionDatePicker.setValue(new moment(self.state.data.next_action_date));
         });
 
         return $element;
@@ -162,15 +128,6 @@ var FollowupFormRenderer = FormRenderer.extend({
     // Handlers
     //--------------------------------------------------------------------------
 
-    /**
-     * When click on 'Auto', trigger an event to the controller to set the
-     * reminder in auto mode.
-     *
-     * @private
-     */
-    _onAuto: function () {
-        this.trigger_up('on_auto_reminder');
-    },
     /**
      * When a move line is blocked or unblocked, trigger an event to the
      * controller to write it in DB and reload the HTML to update the total
@@ -269,13 +226,12 @@ var FollowupFormRenderer = FormRenderer.extend({
         this.renderEditSummary();
     },
     /**
-     * When click on 'Manual', trigger an event to the controller to set the
-     * reminder in manual mode.
+     * When changing the reminder date, change it in db
      *
      * @private
      */
-    _onManual: function () {
-        this.trigger_up('on_manual_reminder');
+    _onReminderDate: function () {
+        this.trigger_up('on_change_reminder_date');
     },
     /**
      * When the user save the summary, trigger an event to the controller to

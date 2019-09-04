@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta
 import time
 from odoo import models, fields, api
 from odoo.tools.misc import formatLang, format_date
@@ -107,15 +106,12 @@ class AccountFollowupReport(models.AbstractModel):
                     columns = columns[:4] + columns[6:]
                 lines.append({
                     'id': aml.id,
-                    'invoice_id': aml.move_id.id,
-                    'view_invoice_id': self.env['ir.model.data'].get_object_reference('account', 'view_move_form')[1],
                     'account_move': aml.move_id,
                     'name': aml.move_id.name,
                     'caret_options': 'followup',
                     'move_id': aml.move_id.id,
                     'type': is_payment and 'payment' or 'unreconciled_aml',
                     'unfoldable': False,
-                    'has_invoice': bool(aml.move_id),
                     'columns': [type(v) == dict and v or {'name': v} for v in columns],
                 })
             total_due = formatLang(self.env, total, currency_obj=currency)
@@ -159,8 +155,8 @@ class AccountFollowupReport(models.AbstractModel):
     @api.model
     def _get_sms_summary(self, options):
         partner = self.env['res.partner'].browse(options.get('partner_id'))
-        level = partner.get_followup_level()
-        options = dict(options, followup_level=level)
+        level = partner.followup_level
+        options = dict(options, followup_level=(level.id, level.delay))
         return self._build_followup_summary_with_field('sms_description', options)
 
     @api.model
@@ -190,7 +186,7 @@ class AccountFollowupReport(models.AbstractModel):
                           % (partner.lang, followup_line.id, exception)
                 raise ValueError(message)
             return summary
-        raise UserError(_('You need a least one follow-up level in order to process your followu-up'))
+        raise UserError(_('You need a least one follow-up level in order to process your follow-up'))
 
     def _get_report_manager(self, options):
         """
@@ -258,8 +254,7 @@ class AccountFollowupReport(models.AbstractModel):
         """
         options['partner_id'] = partner_id
         partner = self.env['res.partner'].browse(partner_id)
-        level = partner.get_followup_level()
-        followup_line = self.env['account_followup.followup.line'].browse(level and level[0] or False)
+        followup_line = partner.followup_level
         report_manager_id = self._get_report_manager(options).id
         html = self.get_html(options)
         next_action = False
@@ -270,9 +265,9 @@ class AccountFollowupReport(models.AbstractModel):
             'html': html,
             'next_action': next_action,
         }
-        if level:
+        if partner.followup_level:
             infos['followup_level'] = self._get_line_info(followup_line)
-            options['followup_level'] = level
+            options['followup_level'] = (partner.followup_level.id, partner.followup_level.delay)
         return infos
 
     @api.model
@@ -334,53 +329,6 @@ class AccountFollowupReport(models.AbstractModel):
             partner.message_post(body=_('Follow-up letter printed'))
         return self.env.ref('account_followup.action_report_followup').report_action(res_ids)
 
-    def _execute_followup_partner(self, partner):
-        if partner.followup_status == 'in_need_of_action':
-            level = partner.get_followup_level()
-            followup_line = self.env['account_followup.followup.line'].browse(level and level[0] or False)
-            if followup_line.send_email:
-                partner.send_followup_email()
-            if followup_line.manual_action:
-                # log a next activity for today
-                activity_data = {
-                    'res_id': partner.id,
-                    'res_model_id': self.env['ir.model']._get(partner._name).id,
-                    'activity_type_id': followup_line.manual_action_type_id.id or self.env.ref('mail.mail_activity_data_todo').id,
-                    'summary': followup_line.manual_action_note,
-                    'user_id': followup_line.manual_action_responsible_id.id or self.env.user.id,
-                }
-                self.env['mail.activity'].create(activity_data)
-            next_date = self._get_next_date(followup_line, fields.Date.today())  # TODO first invoice date
-            partner.update_next_action(options={'next_action_date': datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT), 'next_action_type': 'auto'})
-            if followup_line.print_letter:
-                return partner
-        return None
-
-    @api.model
-    def execute_followup(self, records):
-        """
-        Execute the actions to do with followups.
-        """
-        to_print = []
-        for partner in records:
-            partner_tmp = self._execute_followup_partner(partner)
-            if partner_tmp:
-                to_print.append(partner_tmp.id)
-        if not to_print:
-            return
-        return self.print_followups(self.env['res.partner'].browse(to_print))
-
-    @api.model
-    def _get_next_date(self, followup_line, date):
-        next_followup = self.env['account_followup.followup.line'].search([('delay', '>', followup_line.delay),
-                                                                           ('company_id', '=', self.env.company.id)],
-                                                                          order="delay asc", limit=1)
-        if next_followup:
-            delay = next_followup.delay - followup_line.delay
-        else:
-            delay = 15  # TODO softcode
-        return date + timedelta(days=delay)
-
     def _get_line_info(self, followup_line):
         return {
             'id': followup_line.id,
@@ -396,7 +344,7 @@ class AccountFollowupReport(models.AbstractModel):
     def get_followup_line(self, options):
         if not options.get('followup_level'):
             partner = self.env['res.partner'].browse(options.get('partner_id'))
-            options['followup_level'] = partner.get_followup_level()
+            options['followup_level'] = (partner.followup_level.id, partner.followup_level.delay)
         if options.get('followup_level'):
             followup_line = self.env['account_followup.followup.line'].browse(options['followup_level'][0])
             return followup_line

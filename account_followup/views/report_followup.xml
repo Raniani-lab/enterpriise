@@ -61,8 +61,7 @@
         <template id="line_template_followup_report" inherit_id="account_reports.line_template" primary="True">
             <xpath expr="//div[hasclass('dropdown-menu')]" position="replace">
                 <div t-if='context.get("print_mode") != True' class="dropdown-menu o_account_reports_domain_dropdown" role="menu">
-                    <a t-if="line['has_invoice']" role="menuitem" tabindex="-1" t-att-data-id="line['invoice_id']" t-att-view-id="line['view_invoice_id']" action="open_invoice" class="dropdown-item">View Invoice</a>
-                    <a role="menuitem" tabindex="-1" t-att-data-id="line['move_id']" action="open_move" groups="account.group_account_user" class="dropdown-item">View Journal Entry</a>
+                    <a role="menuitem" tabindex="-1" t-att-data-id="line['move_id']" action="open_invoice" groups="account.group_account_user" class="dropdown-item">View Invoice</a>
                     <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" class="o_change_expected_date dropdown-item">Change expected payment date</a>
                 </div>
             </xpath>
@@ -157,14 +156,7 @@
                             <div class="col-xl-4 d-none d-xl-block"></div>
                             <div class="col-md-3 col-lg-2 col-xl-4" data-toggle='tooltip' title='Date at which Odoo will remind you to take care of that follow-up if you choose "remind me later" button.'>
                                 <b>Next Reminder Date:</b>
-                                <b><div class='o_account_reports_next_action_date'><t t-esc='partner.payment_next_action_date'/></div></b>
                                 <b><div class='o_account_reports_next_action_date_picker' /></b>
-                            </div>
-                            <div class="col-md-7 col-lg-4">
-                                <div class='btn-group'>
-                                    <button class='btn o_account_followup_auto' data-toggle='tooltip' title='The next reminder date is computed based on what you have defined in the accounting settings.'>Auto</button>
-                                    <button class='btn o_account_followup_manual' data-toggle='tooltip' title='Select this option if you want to manually define the next reminder date.'>Manual</button>
-                                </div>
                             </div>
                         </div>
                     </div>

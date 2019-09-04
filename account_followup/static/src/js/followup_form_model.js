@@ -98,14 +98,6 @@ var FollowupFormModel = BasicModel.extend({
         this.numberSkipped++;
     },
     /**
-     * @param {string} handle Local resource id of a record
-     * @return {boolean} true if the next_action is set to 'auto',
-     *                   false otherwise
-     */
-    isAutoReminder: function (handle) {
-        return this.localData[handle].data.next_action === 'auto';
-    },
-    /**
      * @return {boolean} true is all followups are done or skipped.
      */
     isJobComplete: function () {
@@ -171,26 +163,6 @@ var FollowupFormModel = BasicModel.extend({
         });
     },
     /**
-     * Set the next_action in 'auto' mode.
-     *
-     * @param {string} handle Local resource id of a record
-     * @return {string} date of next action
-     */
-    setAutoReminder: function (handle) {
-        var data = this.localData[handle].data;
-        data.next_action = 'auto';
-        data.next_action_date = data.next_action_date_auto;
-        return data.next_action_date_auto;
-    },
-    /**
-     * Set the next_action in 'manual' mode.
-     *
-     * @param {string} handle Local resource id of a record
-     */
-    setManualReminder: function (handle) {
-        this.localData[handle].data.next_action = 'manual';
-    },
-    /**
      *
      * @param {string} handle Local resource id of a record
      * @param {string} date Date of next action
@@ -204,15 +176,16 @@ var FollowupFormModel = BasicModel.extend({
      * @param {string} handle Local resource id of a record
      * @return {Promise}
      */
-    updateNextAction: function (handle) {
+    updateNextAction: function (handle, action) {
         var record = this.localData[handle];
-        var next_action_date = field_utils.parse.date(record.data.next_action === 'auto' ? new moment.utc(record.data.next_action_date_auto, time.getLangDateFormat()) : record.data.next_action_date, {}, {});
+        var next_action_date = field_utils.parse.date(record.data.next_action_date, {}, {});
         return this._rpc({
             model: 'res.partner',
             method: 'update_next_action',
             args: [[record.res_id], {
                 next_action_type: record.data.next_action,
-                next_action_date: next_action_date
+                next_action_date: next_action_date,
+                action: action,
             }],
         });
     },
@@ -301,15 +274,11 @@ var FollowupFormModel = BasicModel.extend({
             self.localData[id].data.report_manager_id = data.report_manager_id;
             self.localData[id].data.followup_html = data.html;
             if (!params.keep_summary) {
-                self.localData[id].data.followup_level = data.followup_level;
-                if (!data.followup_level) {
-                    self.localData[id].data.followup_level = {};
-                }
+                self.localData[id].data.followup_level = data.followup_level || {};
             }
             if (data.next_action) {
                 self.localData[id].data.next_action = data.next_action.type;
                 self.localData[id].data.next_action_date = data.next_action.date;
-                self.localData[id].data.next_action_date_auto = data.next_action.date_auto;
             }
             return self.localData[id].id;
         });

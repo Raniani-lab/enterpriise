@@ -18,6 +18,7 @@
         'views/res_config_settings_views.xml',
         'views/social_push_notifications_templates.xml',
         'views/website_visitor_views.xml',
+        'views/utm_campaign_views.xml',
         'data/social_media_data.xml',
     ],
     'auto_install': True,

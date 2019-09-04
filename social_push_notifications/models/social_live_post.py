@@ -28,12 +28,17 @@ class SocialLivePostPushNotifications(models.Model):
         for live_post in self:
             post = live_post.post_id
             account = live_post.account_id
-            message = post.message
             title = post.push_notification_title or _('New Message')
             icon_url = '/web/image/social.post/%s/push_notification_image/64x64' % post.id if post.push_notification_image else '/mail/static/src/img/odoobot_transparent.png'
 
             # TODO awa: force push_token domain here in case user manually removed it in form view?
             visitor_domain = safe_eval(live_post.post_id.visitor_domain)
+            target_link = ''
+            if post.push_notification_target_url:
+                link_tracker_values = live_post._get_utm_values()
+                link_tracker_values['url'] = post.push_notification_target_url
+                link_tracker = self.env['link.tracker'].create(link_tracker_values)
+                target_link = link_tracker.short_url
 
             if not post.use_visitor_timezone:
                 target_visitors = self.env['website.visitor'].search(visitor_domain)
@@ -53,9 +58,9 @@ class SocialLivePostPushNotifications(models.Model):
 
             account._firebase_send_message({
                 'title': title,
-                'body': message,
+                'body': self.env['link.tracker'].sudo()._convert_links_text(post.message, live_post._get_utm_values()),
                 'icon': icon_url,
-                'target_url': post.push_notification_target_url or ''
+                'target_url': target_link
             }, target_visitors)
 
             # TODO awa:

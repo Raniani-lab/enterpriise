@@ -40,8 +40,6 @@ class Planning(models.Model):
     color = fields.Integer("Color", related='role_id.color')
     was_copied = fields.Boolean("This shift was copied from previous week", default=False, readonly=True)
 
-    recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, copy=False)
-
     start_datetime = fields.Datetime("Start Date", required=True, default=_default_start_datetime)
     end_datetime = fields.Datetime("End Date", required=True, default=_default_end_datetime)
 
@@ -66,6 +64,13 @@ class Planning(models.Model):
     template_creation = fields.Boolean("Save as a Template", default=False, store=False)
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
     template_id = fields.Many2one('planning.slot.template', string='Planning Templates', store=False)
+
+    # Recurring (`repeat_` fields are none stored, only used for UI purpose)
+    recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
+    repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat')
+    repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat', inverse='_inverse_repeat')
+    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever')
+    repeat_until = fields.Date("Repeat Until", compute='_compute_repeat', inverse='_inverse_repeat', help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
 
     _sql_constraints = [
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'Shift end date should be greater than its start date'),
@@ -135,6 +140,36 @@ class Planning(models.Model):
             domain = [('role_id', '=', self.role_id.id)]
         self.template_autocomplete_ids = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
 
+    @api.depends('recurrency_id')
+    def _compute_repeat(self):
+        for slot in self:
+            if slot.recurrency_id:
+                slot.repeat = True
+                slot.repeat_interval = slot.recurrency_id.repeat_interval
+                slot.repeat_until = slot.recurrency_id.repeat_until
+                slot.repeat_type = slot.recurrency_id.repeat_type
+            else:
+                slot.repeat = False
+                slot.repeat_interval = False
+                slot.repeat_until = False
+                slot.repeat_type = False
+
+    def _inverse_repeat(self):
+        for slot in self:
+            if slot.repeat and not slot.recurrency_id.id:  # create the recurrence
+                recurrency_values = {
+                    'repeat_interval': slot.repeat_interval,
+                    'repeat_until': slot.repeat_until if slot.repeat_type == 'until' else False,
+                    'repeat_type': slot.repeat_type,
+                    'company_id': slot.company_id.id,
+                }
+                recurrence = self.env['planning.recurrency'].create(recurrency_values)
+                slot.recurrency_id = recurrence
+                # DO NOT generate reccuring slots here, as the current slot is not created yet (and is used as template to copy)
+            elif not slot.repeat and slot.recurrency_id:
+                slot.recurrency_id._delete_slot(slot.end_datetime)
+                slot.recurrency_id.unlink()  # will set recurrency_id to NULL
+
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         if self.employee_id:
@@ -186,6 +221,22 @@ class Planning(models.Model):
 
             self.role_id = self.template_id.role_id
 
+    @api.onchange('repeat')
+    def _onchange_default_repeat_values(self):
+        """ When checking the `repeat` flag on an existing record, the values of recurring fields are `False`. This onchange
+            restore the default value for usability purpose.
+        """
+        if self.repeat:
+            recurrence_fields = ['repeat_interval', 'repeat_until', 'repeat_type']
+            default_values = self.default_get(recurrence_fields)
+            for fname in recurrence_fields:
+                self[fname] = default_values.get(fname)
+
+    @api.onchange('repeat_type')
+    def _onchange_repeat_type(self):
+        if self.repeat_type == 'forever':
+            self.repeat_until = False
+
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------
@@ -234,6 +285,9 @@ class Planning(models.Model):
                 template_value_list.append(result[index]._prepare_template_values())
         self._save_as_template(template_value_list)
 
+        # recurring slots
+        result.mapped('recurrency_id')._repeat_slot()
+
         return result
 
     def write(self, values):
@@ -252,7 +306,13 @@ class Planning(models.Model):
                 template_value_list.append(slot._prepare_template_values())
             self._save_as_template(template_value_list)
 
-        return super(Planning, self).write(values)
+        result = super(Planning, self).write(values)
+
+        # recurring slots
+        if values.get('repeat'):
+            self.mapped('recurrency_id')._repeat_slot()
+
+        return result
 
     # ----------------------------------------------------
     # Actions

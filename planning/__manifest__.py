@@ -13,8 +13,6 @@
     'data': [
         'security/planning_security.xml',
         'security/ir.model.access.csv',
-        'wizard/planning_create_slot_views.xml',
-        'wizard/planning_repeat_slot_views.xml',
         'wizard/planning_send_views.xml',
         'views/assets.xml',
         'views/hr_views.xml',

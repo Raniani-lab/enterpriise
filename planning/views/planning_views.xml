@@ -22,7 +22,6 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="%(planning_repeat_slot_action)d" class="btn btn-primary" type="action" string="Repeat" attrs="{'invisible': ['|' ,('recurrency_id', '!=', False), ('id', '=', False)]}"/>
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I take it" attrs="{'invisible': [('employee_id', '!=', False)]}" groups="!planning.group_planning_manager"/>
                     <button name="action_self_unassign" class="btn btn-secondary" type="object" string="I am unavailable" attrs="{'invisible': ['|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False)]}" groups="!planning.group_planning_manager"/>
                 </header>
@@ -58,7 +57,15 @@
                         </group>
                     </group>
                     <group>
-                        <field name="template_creation" groups="planning.group_planning_manager"/>
+                        <field name="template_creation"/>
+                        <field name="repeat"/>
+                        <label for="repeat_interval" string="Repeat Every" attrs="{'invisible': [('repeat', '=', False)]}"/>
+                        <div class="o_row" attrs="{'invisible': [('repeat', '=', False)]}">
+                            <field name="repeat_interval" class="oe_inline" nolabel="1"/>
+                            <span>week(s)</span>
+                            <field name="repeat_type" class="oe_inline" nolabel="1" attrs="{'required': [('repeat', '=', True)]}"/>
+                            <field name="repeat_until" class="oe_inline" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until')]}" nolabel="1"/>
+                        </div>
                     </group>
                     <group>
                         <field name="name"/>
@@ -144,7 +151,6 @@
         <field name="arch" type="xml">
             <gantt
                 js_class="planning_gantt"
-                on_create="%(planning_create_slot_action)d"
                 form_view_id="%(planning_view_form_in_gantt)d"
                 date_start="start_datetime"
                 date_stop="end_datetime"

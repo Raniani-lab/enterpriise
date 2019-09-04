@@ -456,9 +456,9 @@ class AccountInvoice(models.Model):
             partner_id =  self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1).id
             if not partner_id:
                 partner_id = self.find_partner_id_with_name(supplier_ocr)
-                if partner_id:
-                    self.write({'partner_bank_id': False, 'partner_id': partner_id})
-                    self._onchange_partner_id()
+            if partner_id:
+                self.write({'partner_bank_id': False, 'partner_id': partner_id})
+                self._onchange_partner_id()
 
     @api.multi
     def _set_invoice_lines(self, invoice_lines, subtotal_ocr):

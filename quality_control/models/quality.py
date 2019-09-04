@@ -40,7 +40,7 @@ class QualityPoint(models.Model):
             mean = 0.0
             s = 0.0
             n = 0
-            for check in point.check_ids:
+            for check in point.check_ids.filtered(lambda x: x.quality_state != 'none'):
                 n += 1
                 delta = check.measure - mean
                 mean += delta / n

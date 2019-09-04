@@ -797,8 +797,7 @@ class AccountPayment(models.Model):
    </ns1:Body>
 </SOAP-ENV:Envelope>"""
         namespace = {'a': 'http://schemas.datacontract.org/2004/07/Sat.Cfdi.Negocio.ConsultaCfdi.Servicio'}
-        for rec in self.filtered(lambda r: r.l10n_mx_edi_is_required() and
-                                 r.l10n_mx_edi_pac_status in ['signed', 'cancelled']):
+        for rec in self.filtered('l10n_mx_edi_cfdi'):
             supplier_rfc = rec.l10n_mx_edi_cfdi_supplier_rfc
             customer_rfc = rec.l10n_mx_edi_cfdi_customer_rfc
             total = 0

@@ -323,20 +323,17 @@
                     </div>
                     <group>
                         <group>
-                            <label for="name" class="oe_edit_only"/>
-                            <field name="name" nolabel="1" class="oe_edit_only"/>
                             <field name="partner_id" required="1"
                                 context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
                                 options='{"always_reload": True}'
                                 widget="res_partner_many2one"/>
                             <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>
-                            <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_mobile', '=', False)]}" class="oe_edit_only"/>
+                            <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_mobile', '=', False)]}"/>
                             <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_email', '=', False)]}"/>
+                            <field name="name"/>
                             <field name="stage_id" invisible="1"/>
                         </group>
                         <group>
-                            <label for="project_id" class="oe_edit_only"/>
-                            <field name="project_id" domain="[('is_fsm', '=', True)]" required="True" nolabel="1" class="oe_edit_only"/>
                             <label for="planned_date_begin" string="Date"/>
                             <div class="w-100">
                                 <div class="o_row">
@@ -346,6 +343,7 @@
                                 </div>
                             </div>
                             <field name="user_id" options="{'no_open': True}"/>
+                            <field name="project_id" domain="[('is_fsm', '=', True)]" required="True" options="{'no_create': True, 'no_edit': True, 'no_open': 'True'}" groups="industry_fsm.group_fsm_manager"/>
                         </group>
                         <field name="description" colspan="2"/>
                         <field name="timesheet_ids" invisible="1"/>

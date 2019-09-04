@@ -1181,5 +1181,48 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('work well with selection fields', async function (assert) {
+        assert.expect(1);
+
+        this.data['analytic.line'].fields.foo = {
+            type: "selection",
+            selection: [['a', 'A'], ['b', 'B']]
+        };
+        this.data['analytic.line'].records.forEach(function (record) {
+            record.foo = "a";
+        });
+
+        this.arch = '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
+            '<field name="project_id" type="row"/>' +
+            '<field name="foo" type="row"/>' +
+            '<field name="date" type="col">' +
+                '<range name="week" string="Week" span="week" step="day"/>' +
+                '<range name="month" string="Month" span="month" step="day" invisible="context.get(\'hide_second_button\')"/>' +
+                '<range name="year" string="Year" span="year" step="month"/>' +
+            '</field>'+
+            '<field name="unit_amount" type="measure" widget="float_time"/>' +
+        '</grid>';
+
+
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2017-01-25",
+            mockRPC: function (route) {
+                if (route === 'some-image') {
+                    return Promise.resolve();
+                }
+                return this._super.apply(this, arguments);
+            },
+            debug: true,
+        });
+
+        await testUtils.nextTick();
+        assert.strictEqual(grid.$('th div').first()[0].innerHTML, `<div title="P1" class="">P1</div><div title="A" class="">A</div>`,
+            "should render properly selection value");
+        grid.destroy();
+    });
 });
 });

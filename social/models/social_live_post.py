@@ -65,3 +65,13 @@ class SocialLivePost(models.Model):
             - ...
         """
         pass
+
+    def _get_utm_values(self):
+        self.ensure_one()
+
+        post_id = self.post_id
+        return {
+            'campaign_id': post_id.utm_campaign_id.id,
+            'medium_id': self.account_id.utm_medium_id.id,
+            'source_id': post_id.utm_source_id.id
+        }

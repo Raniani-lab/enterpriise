@@ -15,3 +15,5 @@ access_social_stream_post_image_user,social.stream.post.image.user,model_social_
 access_social_stream_post_image_manager,social.stream.post.image.manager,model_social_stream_post_image,social.group_social_manager,1,1,1,1
 access_social_live_post_user,social.live.post.user,model_social_live_post,social.group_social_user,1,0,0,0
 access_social_live_post_manager,social.live.post.manager,model_social_live_post,social.group_social_manager,1,1,1,1
+access_social_utm_campaign_user,social.utm.campaign.user,utm.model_utm_campaign,social.group_social_user,1,0,0,0
+access_social_utm_campaign_manager,social.utm.campaign.manager,utm.model_utm_campaign,social.group_social_manager,1,1,1,1

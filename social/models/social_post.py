@@ -54,10 +54,15 @@ class SocialPost(models.Model):
     # stored for better calendar view performance
     calendar_date = fields.Datetime('Calendar Date', compute='_compute_calendar_date', store=True,
         help="Technical field for the calendar view.")
+    #UTM
+    utm_campaign_id = fields.Many2one('utm.campaign', domain="[('is_website', '=', False)]", string="UTM Campaign")
+    utm_source_id = fields.Many2one('utm.source', string="UTM Source", readonly=True, required=True)
+    # Statistics
     stream_posts_count = fields.Integer("Feed Posts Count", compute='_compute_stream_posts_count',
         help="Number of linked Feed Posts")
     engagement = fields.Integer("Engagement", compute='_compute_post_engagement',
         help="Number of people engagements with the post (Likes, comments...)")
+    click_count = fields.Integer('Number of clicks', compute="_compute_click_count")
 
     @api.depends('live_post_ids.engagement')
     def _compute_post_engagement(self):
@@ -116,6 +121,18 @@ class SocialPost(models.Model):
                 accounts_by_media[live_post.account_id.media_id.id].append(live_post.display_name)
             post.live_posts_by_media = json.dumps(accounts_by_media)
 
+    def _compute_click_count(self):
+        query = """SELECT COUNT(DISTINCT(click.id)) as click_count, link.source_id
+                    FROM link_tracker_click click
+                    INNER JOIN link_tracker link ON link.id = click.link_id
+                    WHERE link.source_id IN %s
+                    GROUP BY link.source_id"""
+        self.env.cr.execute(query, [tuple(self.utm_source_id.ids)])
+        click_data = self.env.cr.dictfetchall()
+        mapped_data = {datum['source_id']: datum['click_count'] for datum in click_data}
+        for post in self:
+            post.click_count = mapped_data.get(post.utm_source_id.id, 0)
+
     def name_get(self):
         return [(r.id, _('Post')) for r in self]
 
@@ -134,9 +151,20 @@ class SocialPost(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        """Every post will have a unique corresponding utm.source for statistics computation purposes.
+        This way, it will be possible to see every leads/quotations generated through a particular post."""
+
         if not self.user_has_groups('social.group_social_manager') and \
            any(vals.get('state', 'draft') != 'draft' for vals in vals_list):
             raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
+
+        sources = self.env['utm.source'].create({
+            'name': "Post %s_%s" % (fields.datetime.now(), i)
+            for i in range(len(vals_list))
+        })
+
+        for index, vals in enumerate(vals_list):
+            vals['utm_source_id'] = sources[index].id
 
         return super(SocialPost, self).create(vals_list)
 
@@ -175,6 +203,11 @@ class SocialPost(models.Model):
 
         self._action_post()
 
+    def action_redirect_to_clicks(self):
+        action = self.env.ref('link_tracker.link_tracker_action').read()[0]
+        action['domain'] = [('source_id', '=', self.utm_source_id.id)]
+        return action
+
     def _action_post(self):
         """ Called when the post is published on its social.accounts.
         It will create one social.live.post per social.account and call '_post' on each of them. """
@@ -182,7 +215,7 @@ class SocialPost(models.Model):
         for post in self:
             live_posts_create_vals = [{
                 'post_id': post.id,
-                'account_id': account.id
+                'account_id': account.id,
             } for account in post.account_ids]
 
             post.write({

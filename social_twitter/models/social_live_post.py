@@ -24,8 +24,9 @@ class SocialLivePostTwitter(models.Model):
         for live_post in self:
             account = live_post.account_id
             post = live_post.post_id
+
             params = {
-                'status': post.message,
+                'status': self.env['link.tracker'].sudo()._convert_links_text(post.message, live_post._get_utm_values()),
             }
 
             images_attachments_ids = account._format_attachments_to_images_twitter(post.image_ids)

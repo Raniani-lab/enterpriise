@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="sign.sign_item_custom_popover">
         <div class="o_sign_item_custom_popover">
-            <div class="form-group clearfix" t-if="widget.debug">
+            <div class="form-group clearfix o_popover_placeholder" t-if="widget.debug">
                 <label for="o_sign_name">Placeholder</label>
                 <div>
                     <input type="text" id="o_sign_name" class="o_input"/>
@@ -55,7 +55,6 @@
             <div class="o_sign_template_saved_info alert alert-success float-right" role="status"><span class="fa fa-check"/>Saved</div>
             <span t-if="!widget.has_sign_requests" class="fa fa-pencil" title="Edit template name" role="img" aria-label="Edit template name"/>
             <input type="text" class="o_sign_template_name_input o_input" t-att-value="widget.sign_template.display_name"/>
-            <span>.<t t-esc="widget.sign_template.extension"/></span>
         </div>
 
         <div t-if="!widget.isPDF" class="o_sign_image_document">

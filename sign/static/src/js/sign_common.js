@@ -1316,7 +1316,8 @@ odoo.define('sign.document_signing', function (require) {
             this.refreshSignItems();
             var $toComplete = this.$('.o_sign_sign_item.o_sign_sign_item_required:not(.o_sign_sign_item_pdfview)').filter(function(i, el) {
                 var $elem = $(el);
-                return !(($elem.val() && $elem.val().trim()) || $elem.data('signature'));
+                var unchecked_box = $elem.val() == 'on' && !$elem.is(":checked")
+                return !(($elem.val() && $elem.val().trim()) || $elem.data('signature')) || unchecked_box;
             });
 
             this.signatureItemNav.$el.add(this.signatureItemNav.$signatureItemNavLine).toggle($toComplete.length > 0);

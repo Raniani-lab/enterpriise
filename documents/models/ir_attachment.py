@@ -106,13 +106,13 @@ class IrAttachment(models.Model):
         attachment = super(IrAttachment, self).create(vals)
         # the context can indicate that this new attachment is created from documents, and therefore
         # doesn't need a new document to contain it.
-        if not self._context.get('no_document'):
+        if not self._context.get('no_document') and not attachment.res_field:
             attachment._create_document(dict(vals, res_model=attachment.res_model, res_id=attachment.res_id))
         return attachment
 
     def write(self, vals):
         if not self._context.get('no_document'):
-            self._create_document(vals)
+            self.filtered(lambda a: not (vals.get('res_field') or a.res_field))._create_document(vals)
         return super(IrAttachment, self).write(vals)
 
 

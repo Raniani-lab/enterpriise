@@ -82,6 +82,7 @@ class account_analytic_line(models.Model):
             "project_id/id",
             "project_id.id",
             "name",
+            "remaining_hours",
         ]
         tasks = task_ids.with_context(tz='UTC').export_data(tasks_fields)
 

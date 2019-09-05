@@ -2380,5 +2380,53 @@ QUnit.module('Views', {
 
         dashboard.destroy();
     });
+
+    QUnit.test('click on a non empty cell in an embedded pivot view redirects to a list view', async function (assert) {
+        assert.expect(3);
+
+        var dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: '<dashboard>' +
+                        '<view type="pivot" ref="some_xmlid"/>' +
+                    '</dashboard>',
+            archs: {
+                'test_report,some_xmlid,pivot': '<pivot>' +
+                        '<field name="sold" type="measure"/>' +
+                    '</pivot>',
+                'test_report,false,form': '<form>' +
+                        '<field name="sold"/>' +
+                    '</form>',
+                'test_report,false,list': '<list>' +
+                        '<field name="sold"/>' +
+                    '</list>',
+                'test_report,false,search': '<search></search>',
+            },
+            intercepts: {
+                do_action: function (ev) {
+                    assert.step('do_action');
+                    assert.deepEqual(ev.data.action, {
+                        type: 'ir.actions.act_window',
+                        name: "Untitled",
+                        res_model: 'test_report',
+                        views: [[false, "list"], [false, "form"]],
+                        view_mode: 'list',
+                        target: 'current',
+                        context: { pivot_view_ref: "some_xmlid" },
+                        domain: [],
+                    });
+                },
+            },
+        });
+
+        // Click on the unique pivot cell
+        await testUtils.dom.click(dashboard.$('.o_pivot .o_pivot_cell_value'));
+
+        // There should a unique do_action triggered.
+        assert.verifySteps(['do_action']);
+
+        dashboard.destroy();
+    });
 });
 });

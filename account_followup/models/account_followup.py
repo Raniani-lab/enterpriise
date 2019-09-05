@@ -45,7 +45,7 @@ Best Regards,
         for line in self:
             if line.description:
                 try:
-                    line.description % {'partner_name': '', 'date': '', 'user_signature': '', 'company_name': ''}
+                    line.description % {'partner_name': '', 'date': '', 'user_signature': '', 'company_name': '', 'amount_due': ''}
                 except KeyError:
                     raise Warning(_('Your description is invalid, use the right legend or %% if you want to use the percent character.'))
 
@@ -54,7 +54,7 @@ Best Regards,
         for line in self:
             if line.sms_description:
                 try:
-                    line.sms_description % {'partner_name': '', 'date': '', 'user_signature': '', 'company_name': ''}
+                    line.sms_description % {'partner_name': '', 'date': '', 'user_signature': '', 'company_name': '', 'amount_due': ''}
                 except KeyError:
                     raise Warning(_('Your sms description is invalid, use the right legend or %% if you want to use the percent character.'))
 

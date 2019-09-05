@@ -91,8 +91,10 @@ class ShareRoute(http.Controller):
                 for document in documents:
                     if document.type != 'binary':
                         continue
-                    filename = document.name
-                    doc_zip.writestr(filename, base64.b64decode(document['datas']),
+                    status, content, filename, mimetype, filehash = request.env['ir.http']._binary_record_content(
+                        document, field='datas', filename=None, filename_field='name',
+                        default_mimetype='application/octet-stream')
+                    doc_zip.writestr(filename, base64.b64decode(content),
                                      compress_type=zipfile.ZIP_DEFLATED)
         except zipfile.BadZipfile:
             logger.exception("BadZipfile exception")

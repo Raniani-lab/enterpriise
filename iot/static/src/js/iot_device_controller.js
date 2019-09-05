@@ -17,7 +17,7 @@ var IotDeviceFormController = FormController.extend({
         if (['keyboard', 'scanner'].indexOf(this.renderer.state.data.type) >= 0) {
             return this._updateKeyboardLayout().then(self._processResult.bind(self, _super));
         } else if (this.renderer.state.data.type === 'display') {
-            return this._updateScreenUrl().then(_super);
+            return this._updateScreenUrl().then(() => _super());
         } else {
             return this._super.apply(this, arguments);
         }
@@ -25,9 +25,9 @@ var IotDeviceFormController = FormController.extend({
     /**
      * 
      */
-    _processResult: function (_super, data) {
+    _processResult: function (saveRecord, data) {
         if (data.result === true) {
-            _super.apply(arguments);
+            saveRecord();
         } else {
             this.do_warn(_t('Connection to Device failed'), _t('Please check if the device is still connected.'));
         }

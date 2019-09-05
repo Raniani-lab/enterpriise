@@ -55,6 +55,7 @@ class Planning(models.Model):
     ], compute='_compute_allocation_type')
     allocated_hours = fields.Float("Allocated hours", default=0, compute='_compute_allocated_hours', store=True)
     allocated_percentage = fields.Float("Allocated Time (%)", default=100, help="Percentage of time the employee is supposed to work during the shift.")
+    working_days_count = fields.Integer("Number of working days", compute='_compute_working_days_count', store=True)
 
     # publication and sending
     is_published = fields.Boolean("Is the shift sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.")
@@ -101,6 +102,17 @@ class Planning(models.Model):
                     slot.allocated_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours'] * percentage
                 else:
                     slot.allocated_hours = 0.0
+
+    @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id')
+    def _compute_working_days_count(self):
+        for slot in self:
+            if slot.allocation_type == 'planning':
+                slot.working_days_count = 1
+            else:
+                if slot.employee_id:
+                    slot.working_days_count = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime)['days']
+                else:
+                    slot.working_days_count = 0
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_overlap_slot_count(self):

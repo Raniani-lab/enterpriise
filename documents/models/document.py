@@ -374,7 +374,7 @@ class Document(models.Model):
             if vals.get('datas') and not vals.get('attachment_id') and not record.attachment_id:
                 res_model = vals.get('res_model', record.res_model or 'documents.document')
                 res_id = vals.get('res_id') if vals.get('res_model') else record.res_id if record.res_model else record.id
-                attachment = self.env['ir.attachment'].create({
+                attachment = self.env['ir.attachment'].with_context(no_document=True).create({
                     'name': vals.get('name', record.name),
                     'res_model': res_model,
                     'res_id': res_id

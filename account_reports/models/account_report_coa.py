@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from copy import deepcopy
 
 from odoo import models, api, _, fields
 from datetime import datetime
@@ -127,7 +128,10 @@ class report_account_coa(models.AbstractModel):
         #get the balance of accounts for each period
         period_number = 0
         for period in reversed(comparison_table):
-            res = self.with_context(date_from=period['date_from'], date_to=period['date_to'])._group_by_account_id(options, line_id)
+            period_options = deepcopy(options)
+            period_options['date']['date_from'] = period['date_from']
+            period_options['date']['date_to'] = period['date_to']
+            res = self._group_by_account_id(period_options, line_id)
             if period_number == 0:
                 initial_balances = dict([(k, res[k]['initial_bal']['balance']) for k in res])
             for account in res:

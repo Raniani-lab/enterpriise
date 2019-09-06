@@ -126,34 +126,6 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_asset_revenue_modal">
-        <field name="name">account.asset.revenue.modal</field>
-        <field name="model">account.asset</field>
-        <field name="inherit_id" ref="view_account_asset_revenue_form"/>
-        <field name="mode">primary</field>
-        <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('oe_chatter')]" position="after">
-                <footer>
-                    <button name="validate" states="draft" string="Confirm" type="object" class="oe_highlight"/>
-                    <button string="Discard" class="btn-secondary" special="cancel"/>
-                </footer>
-            </xpath>
-            <xpath expr="//notebook" position="attributes">
-                <attribute name="invisible">True</attribute>
-            </xpath>
-            <xpath expr="//header" position="attributes">
-                <attribute name="invisible">True</attribute>
-            </xpath>
-            <xpath expr="//div[@name='button_box']" position="attributes">
-                <attribute name="invisible">True</attribute>
-            </xpath>
-            <field name="value_residual" position="attributes">
-                <attribute name="invisible">True</attribute>
-            </field>
-        </field>
-    </record>
-
-
     <!-- Deferred Revenues Action -->
 
     <record model="ir.actions.act_window" id="action_account_revenue_form">
@@ -181,5 +153,4 @@
 
     <menuitem parent="account.menu_finance_entries_management" id="menu_action_account_revenue_recognition" action="action_account_revenue_form" sequence="103" groups="account.group_account_manager"/>
     <menuitem parent="account.account_account_menu" id="menu_action_account_revenue_model_recognition" action="action_account_revenue_model_form" groups="account.group_account_manager"/>
-
 </odoo>

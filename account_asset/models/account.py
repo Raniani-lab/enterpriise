@@ -7,8 +7,8 @@ from odoo import api, fields, models, _
 class AccountAccount(models.Model):
     _inherit = 'account.account'
 
-    asset_model = fields.Many2one('account.asset', domain=[('state', '=', 'model')], help="If this is selected, an asset will be created automatically when Journal Items on this account are posted.")
-    create_asset = fields.Selection([('no', 'Do not create'), ('draft', 'Create in draft'), ('validate', 'Create and validate')], required=True, default='no')
+    asset_model = fields.Many2one('account.asset', domain=lambda self: [('state', '=', 'model'), ('asset_type', '=', self.asset_type)], help="If this is selected, an asset will be created automatically when Journal Items on this account are posted.")
+    create_asset = fields.Selection([('no', 'No'), ('draft', 'Create in draft'), ('validate', 'Create and validate')], required=True, default='no')
     can_create_asset = fields.Boolean(compute="_compute_can_create_asset", help="""Technical field specifying if the account can generate asset depending on it's type. It is used in the account form view.""")
     form_view_ref = fields.Char(compute='_compute_can_create_asset')
     asset_type = fields.Selection([('sale', 'Deferred Revenue'), ('expense', 'Deferred Expense'), ('purchase', 'Asset')], compute='_compute_can_create_asset')
@@ -32,11 +32,6 @@ class AccountAccount(models.Model):
                 'sale': 'account_asset.view_account_asset_revenue_form',
                 'expense': 'account_asset.view_account_asset_expense_form',
             }.get(record.asset_type)
-
-    @api.onchange('user_type_id', 'create_asset')
-    def _onchange_user_type_id(self):
-        self._compute_can_create_asset()
-        return {'domain': {'asset_model': [('state', '=', 'model'), ('asset_type', '=', self.asset_type)]}}
 
     def auto_generate_asset(self):
         return self.user_type_id in self.get_asset_accounts_type()

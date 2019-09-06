@@ -88,7 +88,7 @@ class AccountAsset(models.Model):
     parent_id = fields.Many2one('account.asset', help="An asset has a parent when it is the result of gaining value")
     children_ids = fields.One2many('account.asset', 'parent_id', help="The children are the gains in value of this asset")
 
-    @api.depends('original_move_line_ids', 'original_move_line_ids.account_id')
+    @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'asset_type')
     def _compute_value(self):
         misc_journal_id = self.env['account.journal'].search([('type', '=', 'general')], limit=1)
         for record in self:
@@ -189,6 +189,11 @@ class AccountAsset(models.Model):
             self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id
         else:
             self.account_depreciation_expense_id = self.account_depreciation_expense_id or self.account_asset_id
+
+    @api.onchange('account_depreciation_id', 'account_depreciation_expense_id')
+    def _onchange_depreciation_account(self):
+        if not self.account_asset_id or self.asset_type != 'purchase':
+            self.account_asset_id = self.account_depreciation_id if self.asset_type in ('purchase', 'expense') else self.account_depreciation_expense_id
 
     @api.onchange('model_id')
     def _onchange_model_id(self):

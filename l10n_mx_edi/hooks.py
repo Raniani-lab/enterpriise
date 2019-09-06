@@ -20,8 +20,6 @@ def post_init_hook(cr, registry):
     _assign_codes_uom(cr, registry)
     url = 'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd'
     _load_xsd_files(cr, registry, url)
-    # url = 'http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd'
-    # _load_xsd_complement(cr, registry, url)
     _load_locality_sat_catalog(cr, registry)
     _load_tariff_fraction_catalog(cr, registry)
 

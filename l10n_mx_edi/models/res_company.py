@@ -114,9 +114,3 @@ class ResCompany(models.Model):
         for xsd in xsd_files:
             self.env.ref(xsd).unlink()
         _load_xsd_files(self._cr, None, url)
-        url = 'http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd' # noqa
-        xsd = self.env.ref(
-            'l10n_mx_edi.xsd_cached_ComercioExterior11_xsd', False)
-        if xsd:
-            xsd.unlink()
-        _load_xsd_complements(self._cr, None, url)

@@ -14,6 +14,7 @@ odoo.define('web_map.MapRenderer', function (require) {
         init: function (parent, state, params) {
             this._super.apply(this, arguments);
             this.fieldsMarkerPopup = params.fieldNamesMarkerPopup;
+            this.routing = params.routing;
             this.numbering = params.numbering;
             this.hasFormView = params.hasFormView;
             this.defaultOrder = params.defaultOrder;
@@ -45,6 +46,9 @@ odoo.define('web_map.MapRenderer', function (require) {
                 this.leafletMap.fitBounds(initialCoord);
             } else {
                 this.leafletMap.fitWorld();
+            }
+            if (!this.mapBoxToken && this.routing) {
+                $(qweb.render('MapView.no_map_token')).appendTo(this.$el);
             }
             this._addMakers(this.state.records);
             this._addRoutes(this.state.route);

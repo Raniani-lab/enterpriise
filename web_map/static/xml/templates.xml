@@ -27,11 +27,13 @@
             <a class="btn btn-primary" style="color:white" t-att-href="records.url" target="_blank">navigate to</a>
         </div>
     </t>
+
     <t t-name="MapView.buttons">
         <div>
             <a class ="btn btn-primary" style="color:white" t-att-href="widget" target="_blank">View in Google Maps</a>
         </div>
     </t>
+
     <t t-name="MapView.pinlist">
         <div class="o_pin_list_container d-none d-lg-block col-2">
             <div class="o_pin_list_header">
@@ -71,4 +73,15 @@
             </li>
         </t>
     </t>
+
+    <div t-name="MapView.no_map_token" class="alert alert-warning alert-dismissible mb-0 text-center o-map-alert" role="status">
+        To get routing on your map, you first need to setup your Mapbox token.
+        <a href="/web#action=base_setup.action_general_configuration" class="ml8">
+            <i class="fa fa-arrow-right"></i>
+            Set up token
+        </a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span>&amp;times;</span>
+        </button>
+    </div>
 </templates>

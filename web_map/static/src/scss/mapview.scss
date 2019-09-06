@@ -136,4 +136,10 @@ $map-number-font-size: 19px;
             }
         }
     }
+
+    .o-map-alert {
+        @include o-position-absolute($top: 0);
+        width: 100%;
+        z-index: 401; // leaflet have 400
+    }
 }

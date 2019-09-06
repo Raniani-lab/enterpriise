@@ -233,7 +233,7 @@ class OnlineAccount(models.Model):
         if self.ponto_last_synchronization_identifier:
             paging_forward = False
             url = url + '?before=' + self.ponto_last_synchronization_identifier
-        last_sync = (self.last_sync or fields.Datetime.now() - datetime.timedelta(days=15)).date()
+        last_sync = fields.Date.to_date((self.last_sync or fields.Datetime.now() - datetime.timedelta(days=15)))
         latest_transaction_identifier = False
         while url:
             resp_json = self.account_online_provider_id._ponto_fetch('GET', url, {}, {})

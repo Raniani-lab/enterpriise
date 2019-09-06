@@ -62,10 +62,10 @@ class QualityPoint(models.Model):
         if self.picking_type_id.code == 'mrp_operation':
             return {
                 'domain': {
-                    'operation_id': [('routing_id', 'in', routing_ids), '|', ('company_id', '=', self.company_id), ('company_id', '=', False)],
-                    'component_id': [('id', 'in', list(component_ids)), '|', ('company_id', '=', self.company_id), ('company_id', '=', False)],
-                    'product_tmpl_id': [('bom_ids', '!=', False), ('bom_ids.routing_id', '!=', False), '|', ('company_id', '=', self.company_id), ('company_id', '=', False)],
-                    'product_id': [('variant_bom_ids', '!=', False), ('variant_bom_ids.routing_id', '!=', False), '|', ('company_id', '=', self.company_id), ('company_id', '=', False)],
+                    'operation_id': [('routing_id', 'in', routing_ids), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
+                    'component_id': [('id', 'in', list(component_ids)), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
+                    'product_tmpl_id': [('bom_ids', '!=', False), ('bom_ids.routing_id', '!=', False), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
+                    'product_id': [('variant_bom_ids', '!=', False), ('variant_bom_ids.routing_id', '!=', False), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
                 }
             }
 

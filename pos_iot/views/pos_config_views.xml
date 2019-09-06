@@ -39,12 +39,6 @@
                     <button name="%(iot.iot_box_action)d" icon="fa-arrow-right" type="action" string="IoT Boxes" class="btn-link mt8"/>
                 </div>
             </xpath>
-            <xpath expr="//field[@name='iface_scan_via_proxy']/.." position="before">
-                <div class="row" attrs="{'invisible' : [('is_posbox', '=', False)]}">
-                    <label string="Payment terminal" for="iface_payment_terminal" class="col-lg-3 o_light_label"/>
-                    <field name="iface_payment_terminal"/>
-                </div>
-            </xpath>
         </field>
     </record>
 </odoo>

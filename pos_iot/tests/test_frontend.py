@@ -32,7 +32,6 @@ class TestUi(odoo.tests.HttpCase):
         main_pos_config = env.ref('point_of_sale.pos_config_main')
         main_pos_config.write({
             'iotbox_id': iotbox_id.id,
-            'iface_payment_terminal': True,
             'payment_method_ids': [(0, 0, {
                 'name': 'Terminal',
                 'is_cash_count': False,

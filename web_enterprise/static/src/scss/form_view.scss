@@ -201,14 +201,10 @@
                             padding-left: $o-horizontal-padding;
                         }
                         tr > :first-child {
-                            &, .o_input {
-                                @include o-form-sheet-inner-left-padding;
-                            }
+                            @include o-form-sheet-inner-left-padding;
                         }
                         tr > :last-child {
-                            &, .o_input {
-                                @include o-form-sheet-inner-right-padding;
-                            }
+                            @include o-form-sheet-inner-right-padding;
                         }
                     }
                 }

@@ -33,7 +33,6 @@ class Employee(models.Model):
             query_list = [{'id': acc_id['id'], 'employee_token': self._default_employee_token()} for acc_id in acc_ids]
             query = 'UPDATE ' + self._table + ' SET employee_token = %(employee_token)s WHERE id = %(id)s;'
             self.env.cr._obj.executemany(query, query_list)
-            self.env.cr.commit()
         else:
             super(Employee, self)._init_column(column_name)
 

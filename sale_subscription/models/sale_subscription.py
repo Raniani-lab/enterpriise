@@ -325,7 +325,6 @@ class SaleSubscription(models.Model):
             query_list = [{'id': acc_id['id'], 'uuid': str(uuid4())} for acc_id in acc_ids]
             query = 'UPDATE ' + self._table + ' SET uuid = %(uuid)s WHERE id = %(id)s;'
             self.env.cr._obj.executemany(query, query_list)
-            self.env.cr.commit()
 
         else:
             super(SaleSubscription, self)._init_column(column_name)

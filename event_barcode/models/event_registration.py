@@ -40,7 +40,6 @@ class EventRegistration(models.Model):
             query_list = [{'id': reg['id'], 'barcode': self._get_random_token()} for reg in registration_ids]
             query = 'UPDATE ' + self._table + ' SET barcode = %(barcode)s WHERE id = %(id)s;'
             self.env.cr._obj.executemany(query, query_list)
-            self.env.cr.commit()
 
         else:
             super(EventRegistration, self)._init_column(column_name)

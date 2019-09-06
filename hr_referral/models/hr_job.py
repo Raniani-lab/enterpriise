@@ -56,7 +56,6 @@ class Job(models.Model):
             query_list = [{'id': j['id'], 'utm_campaign_id': self.env['utm.campaign'].create({'name': j['name']}).id} for j in job_ids]
             query = 'UPDATE ' + self._table + ' SET utm_campaign_id = %(utm_campaign_id)s WHERE id = %(id)s;'
             self.env.cr._obj.executemany(query, query_list)
-            self.env.cr.commit()
         else:
             super()._init_column(column_name)
 

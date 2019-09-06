@@ -94,10 +94,6 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
                 # check success mail is not sent yet
                 assertEqual(self.send_success_count, 0, 'success mail should not be sent before reconciliation')
 
-                # check subscription state
-                assertEqual(sub.in_progress, True, 'subscription should be in progress')
-                assertEqual(sub.to_renew, False, 'subscription should not be set to renew')
-
                 # check invoice amount and taxes
                 invoice_id = sub.action_subscription_invoice()['res_id']
                 invoice = self.env['account.move'].browse(invoice_id)

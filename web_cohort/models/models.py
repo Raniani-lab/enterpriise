@@ -97,7 +97,13 @@ class Base(models.AbstractModel):
                 # In backward timeline, if columns are out of given range, we need
                 # to set initial value for calculating correct percentage
                 if timeline == 'backward' and col_index == 0:
-                    col_records = [record for record in records if record[date_stop] and record[date_stop] >= col_start_date]
+                    col_records = []
+                    for record in records:
+                        if record[date_stop]:
+                            stop_date = record[date_stop]
+                            if not isinstance(stop_date, datetime):
+                                stop_date = datetime.combine(stop_date, datetime.min.time())
+                            col_records.append(stop_date >= col_start_date)
                     if measure == '__count__':
                         initial_value = len(col_records)
                     else:

@@ -23,7 +23,7 @@ screens.ScaleScreenWidget.include({
         }
         this._error = false;
         this.pos.proxy.on('change:status', this, function (eh, status) {
-            if (status.newValue.status !== 'connected' || status.NewValue.drivers.scale.status !== 'connected') {
+            if (status.newValue.status !== 'connected' || status.newValue.drivers.scale.status !== 'connected') {
                 if (!self._error) {
                     self._error = true;
                     self.gui.show_popup('error', {

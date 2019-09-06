@@ -58,6 +58,83 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
 
             actionManager.destroy();
         });
+
+        QUnit.test('disable the view from studio', async function (assert) {
+            assert.expect(3);
+
+            let loadActionStep = 0;
+            const actionManager = await createActionManager({
+                actions: [{
+                    id: 1,
+                    name: 'Kikou Action',
+                    res_model: 'kikou',
+                    type: 'ir.actions.act_window',
+                    view_mode: 'list,form',
+                    views: [[1, 'list'], [2, 'form']],
+                }],
+                data: this.data,
+                archs: {
+                    'kikou,1,list': `<tree><field name="display_name"/></tree>`,
+                    'kikou,1,search': `<search></search>`,
+                    'kikou,2,form': `<form><field name="display_name"/></form>`,
+                },
+                async mockRPC(route) {
+                    if (route === '/web_studio/edit_action') {
+                        return true;
+                    } else if (route === '/web/action/load') {
+                        loadActionStep++;
+                        /**
+                         * step 1: initial action/load
+                         * step 2: on disabling list view
+                         */
+                        if (loadActionStep === 2) {
+                            return {
+                                name: 'Kikou Action',
+                                res_model: 'kikou',
+                                view_mode: 'form',
+                                type: 'ir.actions.act_window',
+                                views: [[2, 'form']],
+                                id: 1,
+                            };
+                        }
+                    }
+                    return this._super(...arguments);
+                },
+                intercepts: {
+                    do_action(ev) {
+                        actionManager.doAction(ev.data.action, ev.data.options);
+                    },
+                },
+            });
+            await actionManager.doAction(1);
+            const action = actionManager.getCurrentAction();
+            await actionManager.doAction('action_web_studio_action_editor', {
+                action: action,
+                noEdit: true,
+            });
+            // make list view disable and form view only will be there in studio view
+            await testUtils.dom.click(actionManager.$('div[data-type="list"] .o_web_studio_more'));
+            await testUtils.dom.click(actionManager.$('div[data-type="list"] a[data-action="disable_view"]'));
+            // reloadAction = false;
+            assert.hasClass(
+                actionManager.$('div[data-type="list"]'),
+                'o_web_studio_inactive',
+                "list view should have become inactive");
+
+            // make form view disable and it should prompt the alert dialog
+            await testUtils.dom.click(actionManager.$('div[data-type="form"] .o_web_studio_more'));
+            await testUtils.dom.click(actionManager.$('div[data-type="form"] a[data-action="disable_view"]'));
+            assert.containsOnce(
+                $,
+                '.o_technical_modal',
+                "should display a modal when attempting to disable last view");
+            assert.strictEqual(
+                $('.o_technical_modal .modal-body').text().trim(),
+                "You cannot deactivate this view as it is the last one active.",
+                "modal should tell that last view cannot be disabled");
+
+            actionManager.destroy();
+        });
     });
 
 });

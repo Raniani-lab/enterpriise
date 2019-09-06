@@ -655,6 +655,7 @@ class SaleSubscription(models.Model):
         tx_obj = self.env['payment.transaction']
         results = []
 
+        off_session = self.env.context.get('off_session', True)
         for rec in self:
             reference = "SUB%s-%s" % (rec.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S'))
             values = {
@@ -669,7 +670,8 @@ class SaleSubscription(models.Model):
                 'invoice_ids': [(6, 0, [invoice.id])],
                 'callback_model_id': self.env['ir.model'].sudo().search([('model', '=', rec._name)], limit=1).id,
                 'callback_res_id': rec.id,
-                'callback_method': 'reconcile_pending_transaction',
+                'callback_method': 'reconcile_pending_transaction' if off_session else '_reconcile_and_send_mail',
+                'return_url': '/my/subscription/%s/%s' % (self.id, self.uuid),
             }
             tx = tx_obj.create(values)
 
@@ -680,7 +682,7 @@ class SaleSubscription(models.Model):
                 'decline_url': baseurl + '/my/subscription/%s/payment/%s/decline/' % (rec.uuid, tx.id),
                 'exception_url': baseurl + '/my/subscription/%s/payment/%s/exception/' % (rec.uuid, tx.id),
             }
-            tx.s2s_do_transaction(**payment_secure)
+            tx.with_context(off_session=off_session).s2s_do_transaction(**payment_secure)
             results.append(tx)
         return results
 
@@ -695,6 +697,15 @@ class SaleSubscription(models.Model):
         else:
             invoice.action_cancel()
             invoice.unlink()
+
+    def _reconcile_and_send_mail(self, tx, invoice=False):
+        if not invoice:
+            invoice = tx.invoice_ids and tx.invoice_ids[0]
+        self.reconcile_pending_transaction(tx, invoice=invoice)
+        self.send_success_mail(tx, invoice)
+        msg_body = 'Manual payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, invoice.id)
+        self.message_post(body=msg_body)
+        return True
 
     def _recurring_create_invoice(self, automatic=False):
         auto_commit = self.env.context.get('auto_commit', True)

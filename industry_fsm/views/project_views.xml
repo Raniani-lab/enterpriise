@@ -301,7 +301,7 @@
                         </group>
                         <group>
                             <label for="project_id" class="oe_edit_only"/>
-                            <field name="project_id" domain="[('is_fsm', '=', True)]" required="True" nolabel="1" class="oe_edit_only" options="{'no_create': True, 'no_edit': True, 'no_open': 'True'}"/>
+                            <field name="project_id" domain="[('is_fsm', '=', True)]" required="True" nolabel="1" class="oe_edit_only"/>
                             <label for="planned_date_begin" string="Date"/>
                             <div class="o_row">
                                 <field name="planned_date_begin"/>

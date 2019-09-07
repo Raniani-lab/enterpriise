@@ -15,6 +15,9 @@
 # Laura Piraux <lap@odoo.com>, 2019
 # Nathan Grognet <ngr@odoo.com>, 2019
 # Cécile Collart <cco@odoo.com>, 2019
+# Celia Tydgat <cty@odoo.com>, 2019
+# Inès Gérardy <ige@odoo.com>, 2019
+# gdp Odoo <gdp@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -22,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:04+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
+"Last-Translator: gdp Odoo <gdp@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -226,6 +229,26 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div>\n"
+"    Cher/Chère ${object.sudo().partner_id.name or 'Madam/Sir'},<br/><br/>\n"
+"    Votre demande\n"
+"    % if object.get_portal_url():\n"
+"    <a href=\"/my/ticket/${object.id}/${object.access_token}\">${object.name}</a>\n"
+"    % endif\n"
+"    a été reçue et est en cours de révision par notre équipe ${object.team_id.name or ''} .\n"
+"    La référence de votre ticket est ${object.id}.<br/><br/>\n"
+"\n"
+"    <div style=\"text-align: center; margin: 16px 0px 16px 0px;\">\n"
+"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" href=\"${object.get_portal_url()}\">Visualiser le ticket</a><br/>\n"
+"    </div>\n"
+"\n"
+"    Pour ajouter des commentaires supplémentaires, répondez à ce courriel.<br/><br/>\n"
+"\n"
+"    Merci,<br/><br/>\n"
+"    L'équipe ${object.team_id.name or 'Helpdesk'} .\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #. openerp-web
@@ -412,7 +435,7 @@ msgstr "Activités"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Activité d'exception de décoration"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__activity_state
@@ -1085,7 +1108,7 @@ msgstr "Email alias"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "Email cc"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email
@@ -1416,7 +1439,7 @@ msgstr "Icône"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Icône pour indiquer une activité d'exception."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_unread
@@ -1601,7 +1624,7 @@ msgstr "Créons votre premier ticket."
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Liste de cc d'emails entrants."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
@@ -1892,7 +1915,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 msgid "Percentage of happy ratings"
-msgstr ""
+msgstr "Pourcentage d'évaluations contentes"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1989,7 +2012,7 @@ msgstr "Dernière évaluation"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Evaluation de la satisfaction"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_count
@@ -2978,7 +3001,7 @@ msgstr "Le nom pour ce type existe déjà !"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Type d'activité d'exception enregistrée"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

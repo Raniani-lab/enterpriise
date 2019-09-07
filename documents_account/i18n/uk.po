@@ -47,7 +47,7 @@ msgstr "Бухоблік"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
 msgid "Accounting Workspace"
-msgstr "Робочій простір бухобліку"
+msgstr "Папка бухобліку"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reconcile_model__activity_type_id
@@ -57,7 +57,7 @@ msgstr "Тип дії"
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Centralize accounting files and documents"
-msgstr ""
+msgstr "Централізуйте бухгалтерські файли та документи"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -248,7 +248,7 @@ msgstr "Рахунок постачальника"
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Workspace"
-msgstr "Робоча область"
+msgstr "Папка"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder

@@ -37,7 +37,7 @@ msgstr "Прикріплення"
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
 msgid "Centralize files attached to projects and tasks"
-msgstr ""
+msgstr "Централізуйте файли, прикріплені до проектів та завдань"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_res_company
@@ -62,7 +62,7 @@ msgstr "Створити завдання"
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
 msgid "Default Tags"
-msgstr ""
+msgstr "Теги за замовчуванням"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__documents_project_settings
@@ -88,7 +88,7 @@ msgstr "Теги проекту"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
 msgid "Project Workspace"
-msgstr "Робочий простір проекту"
+msgstr "Папка проекту"
 
 #. module: documents_project
 #: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
@@ -98,9 +98,9 @@ msgstr "Завдання"
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
 msgid "Workspace"
-msgstr "Робоча область"
+msgstr "Папка"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder
 msgid "project default workspace"
-msgstr "робоча область проекту за замовчуванням"
+msgstr "папка проекту за замовчуванням"

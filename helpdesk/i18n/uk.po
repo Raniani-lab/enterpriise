@@ -217,6 +217,26 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div>\n"
+"    Шановний(а) ${object.sudo().partner_id.name or 'Madam/Sir'},<br/><br/>\n"
+"    Ваш запит\n"
+"    % if object.get_portal_url():\n"
+"    <a href=\"/my/ticket/${object.id}/${object.access_token}\">${object.name}</a>\n"
+"    % endif\n"
+"    отримано та переглянуто нашою командою ${object.team_id.name or ''}.\n"
+"    Референс вашої заявки ${object.id}.<br/><br/>\n"
+"\n"
+"    <div style=\"text-align: center; margin: 16px 0px 16px 0px;\">\n"
+"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" href=\"${object.get_portal_url()}\">Переглянути заявку</a><br/>\n"
+"    </div>\n"
+"\n"
+"    Щоб додати додаткові коментарі, напишіть відповідь на цей лист.<br/><br/>\n"
+"\n"
+"    Дякуємо,<br/><br/>\n"
+"    ${object.team_id.name or 'Helpdesk'} Команда.\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #. openerp-web
@@ -304,11 +324,14 @@ msgid ""
 "                    If the issue has been solved, you can close the request.\n"
 "                </small>"
 msgstr ""
+"<small>\n"
+"                    Якщо проблема вирішена, ви можете закрити запит.\n"
+"                </small>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<small><b>Close this ticket</b></small>"
-msgstr ""
+msgstr "<small><b>Закрити цю заявку</b></small>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -487,7 +510,7 @@ msgstr "Усі заявки"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__allow_portal_ticket_closing
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Allow customers to close their tickets"
-msgstr ""
+msgstr "Дозвольте клієнтам закривати їхні заявки"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -506,7 +529,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__is_self_assigned
 msgid "Am I assigned"
-msgstr ""
+msgstr "Чи я призначений"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -530,7 +553,7 @@ msgstr "Заархівовано"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Are you sure you wish to proceed?"
-msgstr ""
+msgstr "Ви впевнені, що хочете продовжити?м"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
@@ -579,6 +602,9 @@ msgid ""
 "                            You can define here labels that will be displayed for the state instead\n"
 "                            of the default labels."
 msgstr ""
+"На кожному етапі співробітник може заблокувати або зробити завдання/проблему готовою до наступного етапу.\n"
+"                            Ви можете визначити тут позначку, яка буде відображатися на етапі замість\n"
+"                            тієї, що за замовчуванням."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_attachment_count
@@ -592,7 +618,7 @@ msgid ""
 "Automated email sent to the ticket's customer when the ticket reaches this "
 "stage."
 msgstr ""
-"Автоматичне надсилання квитка клієнту електронним листом, коли квиток "
+"Автоматичне надсилання електронного листа клієнту заявки, коли заявка "
 "досягає цього етапу."
 
 #. module: helpdesk
@@ -710,12 +736,12 @@ msgstr "Закрити дату"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Close the ticket"
-msgstr ""
+msgstr "Закрити заявку"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Close ticket"
-msgstr ""
+msgstr "Закрити заявку"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -1166,8 +1192,8 @@ msgid ""
 "Follow this team to automatically track the events associated to tickets of "
 "this team."
 msgstr ""
-"Дотримуйтесь цієї команди, щоб автоматично відстежувати події, пов'язані з "
-"квитками цієї команди."
+"Дотримуйтесь цієї команди, щоб автоматично відстежувати події, пов'язані із "
+"заявками цієї команди."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_follower_ids
@@ -1344,7 +1370,7 @@ msgstr "Тип заявки служби підтримки"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_main
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_pivot_main
 msgid "Helpdesk Tickets"
-msgstr "Заявки довідки"
+msgstr "Заявки служби підтримки"
 
 #. module: helpdesk
 #. openerp-web
@@ -1824,7 +1850,7 @@ msgid ""
 "selection, when the task or issue is in that stage."
 msgstr ""
 "Перевизначте значення за замовчуванням, яке відображається для заблокованого"
-" стану для вибору каналу, коли завдання або питання знаходяться на цьому "
+" стану для вибору каналу, коли завдання або проблема знаходяться на цьому "
 "етапі."
 
 #. module: helpdesk
@@ -1835,7 +1861,7 @@ msgid ""
 "selection, when the task or issue is in that stage."
 msgstr ""
 "Перевизначте значення за замовчуванням, яке відображається для заблокованого"
-" стану для вибору каналу, коли завдання або питання знаходяться на цьому "
+" стану для вибору каналу, коли завдання або проблема знаходяться на цьому "
 "етапі."
 
 #. module: helpdesk
@@ -1846,7 +1872,7 @@ msgid ""
 "selection, when the task or issue is in that stage."
 msgstr ""
 "Перевизначте значення за замовчуванням, яке відображається для звичайного "
-"стану для вибору канбану, коли завдання або питання знаходяться на цьому "
+"стану для вибору канбану, коли завдання або проблема знаходяться на цьому "
 "етапі."
 
 #. module: helpdesk
@@ -2074,6 +2100,7 @@ msgstr "Відшкодування"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_helpdesk_sale_timesheet
 msgid "Reinvoice the time spent on ticket through tasks."
 msgstr ""
+"Виставити рахунок повторно на витрачений час на заявці за допомогою завдань."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2847,7 +2874,7 @@ msgstr "Оцінена заявка"
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_my_home_menu_helpdesk
 #, python-format
 msgid "Tickets"
-msgstr "Квитки"
+msgstr "Заявки"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed
@@ -3056,7 +3083,7 @@ msgstr "Використовувати повернення"
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Use the breadcrumbs to go back to the Kanban view."
-msgstr "Використовуйте бредкрамбс, щоби повернутися до вигляду Канбана."
+msgstr "Використовуйте хлібні крихти, щоби повернутися до перегляду Канбану."
 
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_helpdesk_user

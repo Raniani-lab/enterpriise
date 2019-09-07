@@ -7,6 +7,7 @@
 # Rick Hunter <rick_hunter_ec@yahoo.com>, 2019
 # Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # Jon Perez <jop@odoo.com>, 2019
+# Jesse Garza <jga@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:39+0000\n"
-"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
+"Last-Translator: Jesse Garza <jga@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,6 +44,8 @@ msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-danger\"> Off </strong></span>"
 msgstr ""
+"<span class=\"o_stat_text\">Modo en vivo</span>\n"
+"                                <span class=\"o_stat_text\">está <strong class=\"text-danger\"> Apagado </strong></span>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -50,6 +53,8 @@ msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-success\"> On </strong></span>"
 msgstr ""
+"<span class=\"o_stat_text\">Modo en vivo</span>\n"
+"                                <span class=\"o_stat_text\">está <strong class=\"text-success\"> Encendido </strong></span>"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__access_token
@@ -129,7 +134,7 @@ msgstr "Incrementar el nivel de zoom"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is Live"
-msgstr ""
+msgstr "Está En vivo"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_published
@@ -139,7 +144,7 @@ msgstr "Esta publicado"
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is live mode on/off"
-msgstr ""
+msgstr "Está el modo en vivo encendido/apagado"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall____last_update
@@ -149,7 +154,7 @@ msgstr "Última modificación en"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__last_search
 msgid "Last Search"
-msgstr ""
+msgstr "Última búsqueda"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__write_uid
@@ -164,12 +169,12 @@ msgstr "Última actualización el"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "List view"
-msgstr ""
+msgstr "Vista de listado"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Live mode"
-msgstr ""
+msgstr "Modo en vivo"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields.selection,name:website_twitter_wall.selection__website_twitter_wall__mode__mixed
@@ -195,7 +200,7 @@ msgstr "Popular"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Query operators"
-msgstr ""
+msgstr "Operadores de la consulta"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields.selection,name:website_twitter_wall.selection__website_twitter_wall__mode__recent
@@ -210,42 +215,42 @@ msgstr "Repetir"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_search
 msgid "Search CRM Score"
-msgstr ""
+msgstr "Buscar la puntuación del CRM"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__search_pattern
 msgid "Search string"
-msgstr ""
+msgstr "Texto a buscar"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on facebook"
-msgstr ""
+msgstr "Compartir #{wall.name} en Facebook"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on google+"
-msgstr ""
+msgstr "Compartir #{wall.name} en Google+"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on linkedin"
-msgstr ""
+msgstr "Compartir #{wall.name} en Linkedin"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on twitter"
-msgstr ""
+msgstr "Compartir #{wall.name} en Twitter"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Shuffle"
-msgstr ""
+msgstr "Aleatorio"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Single view"
-msgstr ""
+msgstr "Vista única"
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
@@ -253,6 +258,8 @@ msgstr ""
 msgid ""
 "The Twitter authentication failed. Please check your API key and secret."
 msgstr ""
+"La autenticación en Twitter no fue exitosa. Revise la clave API y la clave "
+"secreta."
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url
@@ -265,23 +272,27 @@ msgid ""
 "The search criteria to get the tweets you want. You can use the Twitter "
 "query operators."
 msgstr ""
+"El criterio de búsqueda para obtener los tuits que desea. Puede usar los "
+"operadores de búsqueda de Twitter."
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
 msgstr ""
+"La búsqueda de tuits no fue exitosa. Revise sus credenciales y token de "
+"acceso"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Three columns view"
-msgstr ""
+msgstr "Vista de tres columnas"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__total_tweets
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Total Tweets"
-msgstr "Total de tweets"
+msgstr "Total de tuits"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__tweet_ids
@@ -291,7 +302,7 @@ msgstr "Tweet"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__tweet_html
 msgid "Tweet Html"
-msgstr ""
+msgstr "Tuitear HTML"
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
@@ -317,17 +328,17 @@ msgstr "Palabra secreta del API de Twitter"
 #. module: website_twitter_wall
 #: model:ir.ui.menu,name:website_twitter_wall.menu_website_twitter_wall_root
 msgid "Twitter Wall"
-msgstr ""
+msgstr "Muro de Twitter"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_footer_custom
 msgid "Twitter wall"
-msgstr ""
+msgstr "Muro de Twitter"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Two columns view"
-msgstr ""
+msgstr "Vista de dos columnas"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__mode
@@ -343,7 +354,7 @@ msgstr "Visible en el sitio web actual"
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__wall_ids
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
 msgid "Wall"
-msgstr ""
+msgstr "Muro"
 
 #. module: website_twitter_wall
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_wall_action
@@ -351,13 +362,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_tree
 msgid "Walls"
-msgstr ""
+msgstr "Muros"
 
 #. module: website_twitter_wall
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_wall
 msgid "Website Twitter"
-msgstr ""
+msgstr "Sitio de Twitter"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_url
@@ -367,4 +378,4 @@ msgstr "URL del sitio web"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Your wall name"
-msgstr ""
+msgstr "El nombre de tu muro"

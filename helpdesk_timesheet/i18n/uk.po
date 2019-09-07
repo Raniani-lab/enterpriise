@@ -111,7 +111,7 @@ msgstr "Заявки проекту"
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_team__project_id
 msgid ""
 "Project to which the tickets (and the timesheets) will be linked by default."
-msgstr ""
+msgstr "Проект, до якого будуть належати заявки (та табелі) за замовчуванням."
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__task_id
@@ -127,13 +127,13 @@ msgstr "Завдання на цьому етапі вважаються зак�
 #: code:addons/helpdesk_timesheet/models/helpdesk.py:0
 #, python-format
 msgid "The project is required to track time on ticket."
-msgstr ""
+msgstr "Проект необхідний для відстеження часу на заявці."
 
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/helpdesk.py:0
 #, python-format
 msgid "The task must be in ticket's project."
-msgstr ""
+msgstr "Завдання повинне бути у проекті заявки."
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__task_id

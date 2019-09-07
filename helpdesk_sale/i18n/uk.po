@@ -37,6 +37,9 @@ msgid ""
 "information aims at easing your After Sales process and only serves "
 "indicative purposes."
 msgstr ""
+"Референс замовлення на продаж, на яке посилається ця заявка. Налаштування "
+"цієї інформації має на меті полегшити процес післяпродажного обслуговування "
+"і служить лише орієнтовним цілям."
 
 #. module: helpdesk_sale
 #: model:ir.model.fields,field_description:helpdesk_sale.field_helpdesk_ticket__sale_order_id

@@ -41,8 +41,10 @@ msgstr "Протерміновано"
 #: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_ticket__use_helpdesk_sale_timesheet
 msgid "Reinvoice the time spent on ticket through tasks."
 msgstr ""
+"Виставляйте рахунок повторно на витрачений час на заявці за допомогою "
+"завдань."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__use_helpdesk_sale_timesheet
 msgid "Reinvoicing Timesheet activated on Team"
-msgstr ""
+msgstr "Повторне виставлення в рахунку табеля, активованого на Команді"

@@ -23,18 +23,20 @@ msgstr ""
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
 msgid "Go to Settings."
-msgstr ""
+msgstr "Перейдіть у налаштування."
 
 #. module: sale_account_taxcloud
 #: model:ir.model.fields,field_description:sale_account_taxcloud.field_sale_order__is_taxcloud_configured
 msgid "Is Taxcloud Configured"
-msgstr ""
+msgstr "Чи Taxcloud налаштовано"
 
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
 msgid ""
 "Please enter your Taxcloud credentials to compute tax rates automatically."
 msgstr ""
+"Введіть ваші повноваження Taxcloud для вирахування податкової ставки "
+"автоматично."
 
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order
@@ -49,7 +51,7 @@ msgstr "Податок"
 #. module: sale_account_taxcloud
 #: model:ir.model.fields,help:sale_account_taxcloud.field_sale_order__is_taxcloud
 msgid "Technical field to determine whether to hide taxes in views or not."
-msgstr ""
+msgstr "Технічне поле для визначення того, чи ховати податки у переглядах."
 
 #. module: sale_account_taxcloud
 #: code:addons/sale_account_taxcloud/models/sale_order.py:0
@@ -67,3 +69,5 @@ msgstr "Використати TaxCloud API"
 msgid ""
 "Used to determine whether or not to warn the user to configure TaxCloud."
 msgstr ""
+"Використовується для визначення, чи потрібно попереджати користувача про "
+"налаштування TaxCloud."

@@ -46,6 +46,11 @@ msgid ""
 "be claimed within 8 weeks starting from the date on which your account was "
 "debited."
 msgstr ""
+". Im Rahmen Ihrer Rechte haben Sie Anspruch auf eine Rückerstattung von "
+"Ihrer Bank gemäß den Bedingungen Ihrer Vereinbarung mit Ihrer Bank. Ihre "
+"Rechte werden in einer Erklärung erläutert, die Sie bei Ihrer Bank erhalten "
+"können. Eine Rückerstattung muss innerhalb von 8 Wochen ab dem Datum, an dem"
+" Ihr Konto belastet wurde, beantragt werden."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
@@ -68,12 +73,12 @@ msgstr "<strong>Adresse:</strong>"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "<strong>City: </strong>"
-msgstr ""
+msgstr "<strong>Stadt: </strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "<strong>Country: </strong>"
-msgstr ""
+msgstr "<strong>Land: </strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -97,7 +102,7 @@ msgstr "<strong>E-Mail-Adresse:</strong>"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "<strong>IBAN:</strong>"
-msgstr ""
+msgstr "<strong>IBAN:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -116,7 +121,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "<strong>Phone:</strong>"
-msgstr ""
+msgstr "<strong>Telefon:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -136,7 +141,7 @@ msgstr "<strong>Transaktionstyp:</strong> wiederkehrend"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "<strong>Zip: </strong>"
-msgstr ""
+msgstr "<strong>PLZ: </strong>"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
@@ -209,7 +214,7 @@ msgstr "Massenzahlung"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "By signing this mandate form, you authorise (A)"
-msgstr ""
+msgstr "Mit der Unterzeichnung dieses Mandatsformulars ermächtigen Sie (A)"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
@@ -275,7 +280,7 @@ msgstr "Erstellt am"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "Creditor"
-msgstr ""
+msgstr "Kreditor"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_config_settings__sdd_creditor_identifier
@@ -782,12 +787,12 @@ msgstr "Widerrufen"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_invoice_search
 msgid "Revoked Mandate"
-msgstr ""
+msgstr "Widerrufenes Mandat"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_search
 msgid "Revoked SDD mandate"
-msgstr ""
+msgstr "Widerrufenes SDD-Mandat"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_sdd_mandate
@@ -797,7 +802,7 @@ msgstr "SDD-Mandat"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_search
 msgid "SDD Payments to Collect"
-msgstr ""
+msgstr "SDD Zahlungen zum Einzug"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner__sdd_count
@@ -923,6 +928,7 @@ msgstr ""
 msgid ""
 "The destination bank account must be related to a bank with a valid BIC."
 msgstr ""
+"Das Zielbankkonto muss einer Bank mit einem gültigen BIC zugeordnet sein."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
@@ -945,6 +951,9 @@ msgid ""
 "                specified time range. If no end date is specified,\n"
 "                you will have to contact us to stop its use."
 msgstr ""
+"Das Mandat wird nur verwendet, um Rechnungen in den\n"
+"                angegebenen Zeitrahmen zu bezahlen. Wenn kein Enddatum angegeben ist,\n"
+"                müssen Sie uns kontaktieren, um die Nutzung einzustellen."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__state
@@ -1129,3 +1138,5 @@ msgid ""
 "to send instructions to your bank to debit your account and (B) your bank to"
 " debit your account in accordance with the instructions from"
 msgstr ""
+"Anweisungen an Ihre Bank senden, um Ihr Konto zu belasten und (B) Ihre Bank,"
+" um Ihr Konto gemäß den Anweisungen von"

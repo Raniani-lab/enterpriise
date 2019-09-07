@@ -998,7 +998,7 @@ msgstr "Відкритий коефіцієнт"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__opportunity_count
 msgid "Opportunity Count"
-msgstr ""
+msgstr "Підрахунок нагод"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity

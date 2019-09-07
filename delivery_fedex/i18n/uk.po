@@ -184,7 +184,7 @@ msgstr "Налаштування Fedex"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_duty_payment
 msgid "Fedex Duty Payment"
-msgstr ""
+msgstr "Сплата мита Fedex"
 
 #. module: delivery_fedex
 #: model:delivery.carrier,name:delivery_fedex.delivery_carrier_fedex_inter
@@ -429,8 +429,7 @@ msgstr "Відвантаження № %s було закрито"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Shipment created into Fedex <br/> <b>Tracking Number : </b>%s"
-msgstr ""
-"Відвантаження створено у Fedex <br/> <b>Номер відслідковування: </b>%s"
+msgstr "Відвантаження створено у Fedex <br/> <b>Номер відстеження: </b>%s"
 
 #. module: delivery_fedex
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
@@ -439,7 +438,7 @@ msgid ""
 "Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
 "%s<br/><b>Packages:</b> %s"
 msgstr ""
-"Відправка створена у FedEx<br/><b>Відстеження номерів:</b> "
+"Відправка створена у FedEx<br/><b>Номери відстеження:</b> "
 "%s<br/><b>Пакунки:</b> %s"
 
 #. module: delivery_fedex

@@ -27,14 +27,14 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_kanban_controller.js:0
 #, python-format
 msgid " (+%s locked)"
-msgstr ""
+msgstr " (+%s заблоковано)"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_kanban_controller.js:0
 #, python-format
 msgid "%s Documents"
-msgstr ""
+msgstr "%s Документи"
 
 #. module: documents
 #. openerp-web
@@ -42,6 +42,7 @@ msgstr ""
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
 msgstr ""
+"%s файл(и) не переміщено через те, що вони заблоковані іншим користувачем"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -49,13 +50,15 @@ msgid ""
 "&amp;nbsp;\n"
 "                            <i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
 msgstr ""
+"&amp;nbsp;\n"
+"                            <i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_progress_card.js:0
 #, python-format
 msgid "(%s/%sMb)"
-msgstr ""
+msgstr "(%s/%sMb)"
 
 #. module: documents
 #. openerp-web
@@ -90,6 +93,12 @@ msgid ""
 "                               </a>\n"
 "                             "
 msgstr ""
+"<b> Файл завантажено: </b> %s <br/>\n"
+"                               <b> Посилання створене: </b> %s <br/>\n"
+"                               <a class=\"btn btn-primary\" href=\"/web#id=%s&model=documents.share&view_type=form\" target=\"_blank\">\n"
+"                                  <b>%s</b>\n"
+"                               </a>\n"
+"                             "
 
 #. module: documents
 #. openerp-web
@@ -190,18 +199,18 @@ msgstr "<i class=\"fa fa-upload\"/>  Завантажити"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "<span class=\"o_stat_text\">Actions</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Дії</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_document_res_partner_view
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "<span class=\"o_stat_text\">Documents</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Документи</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "<span class=\"o_stat_text\">Related <br/> Record</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Пов'язаний <br/> Запис</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -384,7 +393,7 @@ msgstr ""
 "                                                    </a>\n"
 "                                                </div>\n"
 "                                            </center><br/>\n"
-"                                            Надайте нам відсутній документ до закінчення терміну дії посилання (planned on ${object.date_deadline}).\n"
+"                                            Надайте нам відсутній документ до закінчення терміну дії посилання (заплановано на ${object.date_deadline}).\n"
 "                                            <br/>\n"
 "                                            % if user and user.signature:\n"
 "                                                ${user.signature | safe}\n"
@@ -615,7 +624,7 @@ msgstr "Модель псевдоніма"
 #: code:addons/documents/controllers/main.py:0
 #, python-format
 msgid "All files uploaded"
-msgstr ""
+msgstr "Усі файли завантажено"
 
 #. module: documents
 #. openerp-web
@@ -738,7 +747,7 @@ msgstr "Скасувати"
 #: code:addons/documents/static/src/xml/documents_progress_bar.xml:0
 #, python-format
 msgid "Cancel Upload"
-msgstr ""
+msgstr "Скасувати завантаження"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_facet
@@ -926,7 +935,7 @@ msgstr "Назва для відображення"
 #: code:addons/documents/static/src/js/documents_progress_bar.js:0
 #, python-format
 msgid "Do you really want to cancel the upload of %s?"
-msgstr ""
+msgstr "Ви справді хочете скасувати завантаження %s?"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -995,12 +1004,12 @@ msgstr "Документи"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
 msgid "Documents Share"
-msgstr "Спільний доступ о документів"
+msgstr "Спільний доступ до документів"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "Папка документів"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -1119,7 +1128,7 @@ msgstr "Помилка"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__excluded_tag_ids
 msgid "Excluded Tags"
-msgstr ""
+msgstr "Виключені теги"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_expense
@@ -1167,7 +1176,7 @@ msgstr "Розмір файлу"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Files Centralization"
-msgstr ""
+msgstr "Централізація файлів"
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
@@ -1215,7 +1224,7 @@ msgid ""
 "Go to the <b>images, videos & PDF viewer</b> by clicking on the preview "
 "area."
 msgstr ""
-"Перейдіть на <b>зображення, відео & PDF перегляди</b> натискаючи на "
+"Перейдіть на <b>зображення, відео та PDF перегляди</b> натискаючи на "
 "попередній перегляд."
 
 #. module: documents
@@ -1230,11 +1239,14 @@ msgid ""
 "Groups able to see the workspace and read its documents without create/edit "
 "rights."
 msgstr ""
+"Групи можуть бачити папку і читати її документи без права на "
+"створення/редагування."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "Groups able to see the workspace and read/create/edit its documents."
 msgstr ""
+"Групи можуть бачити папку та читати/створювати/редагувати її документи."
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_hr_folder
@@ -1299,7 +1311,7 @@ msgstr "Якщо позначено, деякі повідомлення маю�
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Image/Video"
-msgstr ""
+msgstr "Зображення/Відео"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_images
@@ -1374,7 +1386,7 @@ msgstr "Останнє оновлення"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
 msgid "Limit Read Groups to the documents of which they are owner."
-msgstr ""
+msgstr "Обмежте групи читання документів власниками яких вони є."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__email_cc
@@ -1538,7 +1550,7 @@ msgstr "Назва спільного посилання"
 #: code:addons/documents/static/src/js/documents_inspector.js:0
 #, python-format
 msgid "Name or Category contains: %s"
-msgstr ""
+msgstr "Назва або категорія містить: %s"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
@@ -1616,14 +1628,14 @@ msgstr "Веб-сайт Odoo"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__limited_to_single_record
 msgid "One record limit"
-msgstr "Один ліміт запису"
+msgstr "Ліміт одного запису"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
 msgid "Open chatter"
-msgstr ""
+msgstr "Відкрити чат"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
@@ -1644,7 +1656,7 @@ msgstr "Інше"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific
 msgid "Own Documents Only"
-msgstr ""
+msgstr "Лише власні документи"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
@@ -1663,7 +1675,7 @@ msgstr "Власник: #{document.create_uid.name}"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "PDF/Document"
-msgstr ""
+msgstr "PDF/Документ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
@@ -1716,7 +1728,7 @@ msgstr "Презентації"
 #: code:addons/documents/static/src/xml/documents_progress_bar.xml:0
 #, python-format
 msgid "Processing..."
-msgstr ""
+msgstr "Обробляється..."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
@@ -1736,7 +1748,7 @@ msgstr "Доступ для читання"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__read_group_ids
 msgid "Read Groups"
-msgstr ""
+msgstr "Групи читання"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
@@ -1804,7 +1816,7 @@ msgstr "Запитуваний документ"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__required_tag_ids
 msgid "Required Tags"
-msgstr ""
+msgstr "Обов'язкові теги"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model_name
@@ -1867,14 +1879,14 @@ msgstr "Запланувати дію"
 #: code:addons/documents/static/src/js/documents_inspector.js:0
 #, python-format
 msgid "Search more..."
-msgstr ""
+msgstr "Шукати більше..."
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_inspector.js:0
 #, python-format
 msgid "Select tags"
-msgstr ""
+msgstr "Оберіть теги"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -1934,7 +1946,7 @@ msgstr "Поділіться доменом"
 #: code:addons/documents/controllers/main.py:0
 #, python-format
 msgid "Share link"
-msgstr ""
+msgstr "Поділіться посиланням"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
@@ -2283,14 +2295,14 @@ msgstr "Завантажити через Email"
 #: code:addons/documents/static/src/js/documents_progress_bar.js:0
 #, python-format
 msgid "Upload cancelled"
-msgstr ""
+msgstr "Завантаження скасоване"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_progress_card.js:0
 #, python-format
 msgid "Uploading... (%s%%)"
-msgstr ""
+msgstr "Завантаження... (%s%%)"
 
 #. module: documents
 #. openerp-web
@@ -2410,7 +2422,7 @@ msgstr "Доступ на запис"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
 msgid "Write Groups"
-msgstr ""
+msgstr "Групи написання"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -2432,7 +2444,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 #, python-format
 msgid "Youtube Video"
-msgstr ""
+msgstr "Відео Youtube"
 
 #. module: documents
 #. openerp-web

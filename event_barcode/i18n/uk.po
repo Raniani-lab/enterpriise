@@ -151,7 +151,7 @@ msgstr "Відскануйте ваш значок"
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Select Attendee"
-msgstr ""
+msgstr "Виберіть учасника"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:0

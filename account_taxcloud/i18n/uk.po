@@ -86,6 +86,8 @@ msgid ""
 "Enable <b>Detect Automatically</b> to automatically use TaxCloud when "
 "selling to American customers."
 msgstr ""
+"Увімкніть <b>Виявляти автоматично</b> для автоматичного використання "
+"TaxCloud під час відправлення американським клієнтам."
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
@@ -96,7 +98,7 @@ msgstr "Схема оподаткування"
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_position_taxcloud_inherit_from_view
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.invoice_form_inherit
 msgid "Go to Settings."
-msgstr ""
+msgstr "Перейдіть у налаштування."
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__id
@@ -108,7 +110,7 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_move__is_taxcloud_configured
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_company__is_taxcloud_configured
 msgid "Is Taxcloud Configured"
-msgstr ""
+msgstr "Чи Taxcloud налаштовано"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_move
@@ -136,6 +138,8 @@ msgstr "Останнє оновлення"
 msgid ""
 "Please enter your Taxcloud credentials to compute tax rates automatically."
 msgstr ""
+"Введіть ваші повноваження Taxcloud для вирахування податкової ставки "
+"автоматично."
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_category
@@ -167,6 +171,12 @@ msgid ""
 "By default, TaxCloud relies on the TIC *[0] Uncategorized* default referring"
 " to general goods and services."
 msgstr ""
+"TIC (Інформаційні коди оподаткування) дозволяють отримати конкретні ставки "
+"податку для кожного виду товару. Це значення за замовчуванням "
+"застосовується, якщо в замовленні/рахунку-фактурі не використовується жоден "
+"товар або якщо на товар або його категорію не встановлено TIC. За "
+"замовчуванням TaxCloud покладається на TIC * [0] Без категорії * за "
+"замовчуванням, що стосується загальних товарів та послуг."
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_tree
@@ -223,7 +233,7 @@ msgstr "Категорія TaxCloud"
 #. module: account_taxcloud
 #: model:ir.model.fields,help:account_taxcloud.field_account_move__is_taxcloud
 msgid "Technical field to determine whether to hide taxes in views or not."
-msgstr ""
+msgstr "Технічне поле для визначення того, чи ховати податки у переглядах."
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position_template
@@ -258,6 +268,9 @@ msgid ""
 "TaxCloud to compute specific tax rates for each product type. The value set "
 "here prevails over the one set on the product category."
 msgstr ""
+"Це стосується TIC (Інформаційні коди оподаткування), вони використовуються "
+"TaxCloud для обчислення конкретних податкових ставок для кожного виду "
+"товару. Наведене тут значення переважає над набором для категорії товару."
 
 #. module: account_taxcloud
 #: model:ir.model.fields,help:account_taxcloud.field_product_category__tic_category_id
@@ -267,6 +280,11 @@ msgid ""
 "used when no TIC is set on the product. If no value is set here, the default"
 " value set in Invoicing settings is used."
 msgstr ""
+"Це стосується TIC (Інформаційні коди оподаткування), вони використовуються "
+"TaxCloud для обчислення конкретних податкових ставок для кожного виду "
+"товару. Це значення використовується, коли на товарі не встановлено жодного "
+"TIC. Якщо тут не встановлено значення, використовується значення за "
+"замовчуванням, встановлене в налаштуваннях виставлення рахунків."
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:0
@@ -289,6 +307,8 @@ msgstr "Використати TaxCloud API"
 msgid ""
 "Used to determine whether or not to warn the user to configure TaxCloud."
 msgstr ""
+"Використовується для визначення, чи потрібно попереджати користувача про "
+"налаштування TaxCloud."
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/product.py:0

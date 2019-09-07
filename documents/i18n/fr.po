@@ -22,6 +22,10 @@
 # Sébastien BÜHL <buhlsebastien@gmail.com>, 2019
 # Olivier ANDRE <frsw194@gmail.com>, 2019
 # Cécile Collart <cco@odoo.com>, 2019
+# Celia Tydgat <cty@odoo.com>, 2019
+# gdp Odoo <gdp@odoo.com>, 2019
+# Inès Gérardy <ige@odoo.com>, 2019
+# Gilles Dupont <gid@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -29,7 +33,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
+"Last-Translator: Gilles Dupont <gid@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,7 +81,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_inspector.js:0
 #, python-format
 msgid "+ Add a tag "
-msgstr ""
+msgstr "+ Ajouter une étiquette"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -87,12 +91,12 @@ msgstr ", a expiré le"
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
 msgid "2018"
-msgstr ""
+msgstr "2018"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
 msgid "2019"
-msgstr ""
+msgstr "2019"
 
 #. module: documents
 #: code:addons/documents/controllers/main.py:0
@@ -339,6 +343,110 @@ msgid ""
 "                </table>\n"
 "            "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;\"><tr><td align=\"center\">\n"
+"                    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: white; color: #454748; border-collapse:separate;\">\n"
+"                    <tbody>\n"
+"                        <!-- HEADER -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"middle\">\n"
+"                                        <span style=\"font-size: 10px;\">\n"
+"                                            Demande de documents: <br/>\n"
+"                                            % if object.name:\n"
+"                                                <span style=\"font-size: 20px; font-weight: bold;\">\n"
+"                                                    ${object.name | safe}\n"
+"                                                </span>\n"
+"                                            % endif\n"
+"                                        </span><br/>\n"
+"                                    </td><td valign=\"middle\" align=\"right\">\n"
+"                                        <img src=\"/logo.png?company=${object.create_uid.company_id.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${object.create_uid.company_id.name}\"/>\n"
+"                                    </td></tr>\n"
+"                                    <tr><td colspan=\"2\" style=\"text-align:center;\">\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                        <!-- CONTENT -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                                        <div>\n"
+"                                            Bonjour ${object.owner_id.name},\n"
+"                                            <br/><br/>\n"
+"                                            ${object.create_uid.name} (${object.create_uid.email}) vous demande de fournir le document suivant:\n"
+"                                            <br/><br/>\n"
+"                                            <center>\n"
+"                                                <div>\n"
+"                                                    % if object.name:\n"
+"                                                        <b>${object.name | safe}</b>\n"
+"                                                    % endif\n"
+"                                                </div>\n"
+"                                                <div>\n"
+"                                                    % if object.activity_note:\n"
+"                                                        <i>${object.activity_note | safe}</i>\n"
+"                                                    % endif\n"
+"                                                </div>\n"
+"                                                <br/>\n"
+"                                                <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"                                                    <a href=\"${object.full_url}\" style=\"background-color: #875A7B; padding: 20px 30px 20px 30px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                                                        Télécharger le document demandé\n"
+"                                                    </a>\n"
+"                                                </div>\n"
+"                                            </center><br/>\n"
+"                                            Veuillez nous fournir le document manquant avant l'expiration du lien (planned on ${object.date_deadline}).\n"
+"                                            <br/>\n"
+"                                            % if user and user.signature:\n"
+"                                                ${user.signature | safe}\n"
+"                                            % endif\n"
+"                                            <br/>\n"
+"                                        </div>\n"
+"                                    </td></tr>\n"
+"                                    <tr><td style=\"text-align:center;\">\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                        <!-- FOOTER -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"middle\" align=\"left\">\n"
+"                                        ${object.create_uid.company_id.name}\n"
+"                                    </td></tr>\n"
+"                                    <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
+"                                        ${object.create_uid.company_id.phone}\n"
+"                                        % if object.create_uid.company_id.email\n"
+"                                            | <a href=\"'mailto:%s' % ${object.create_uid.company_id.email}\" style=\"text-decoration:none; color: #454748;\">${object.create_uid.company_id.email}</a>\n"
+"                                        % endif\n"
+"                                        % if object.create_uid.company_id.website\n"
+"                                            | <a href=\"'%s' % ${object.create_uid.company_id.website}\" style=\"text-decoration:none; color: #454748;\">\n"
+"                                            ${object.create_uid.company_id.website}\n"
+"                                        </a>\n"
+"                                        % endif\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                    </tbody>\n"
+"                    </table>\n"
+"                    </td></tr>\n"
+"                    <!-- POWERED BY -->\n"
+"                    <tr><td align=\"center\" style=\"min-width: 590px;\">\n"
+"                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
+"                          <tr><td style=\"text-align: center; font-size: 13px;\">\n"
+"                            % if object.date_deadline:\n"
+"                                Ce lien expire le <b>${object.date_deadline}.</b><br/>\n"
+"                            % endif\n"
+"                            Powered by <a target=\"_blank\" href=\"https://www.odoo.com/page/documents\" style=\"color: #875A7B;\">Odoo Documents</a>\n"
+"                          </td></tr>\n"
+"                        </table>\n"
+"                    </td></tr>\n"
+"                </table>\n"
+"            "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_defaults
@@ -362,6 +470,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
 msgid "A workspace will inherit the tags of its parent workspace"
 msgstr ""
+"Un espace de travail héritera des étiquettes de son espace de travail parent"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_absences
@@ -438,7 +547,7 @@ msgstr "Activité"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Activité d'exception de décoration"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
@@ -519,7 +628,7 @@ msgstr "Modèle concerné"
 #: code:addons/documents/controllers/main.py:0
 #, python-format
 msgid "All files uploaded"
-msgstr ""
+msgstr "Tous les fichiers envoyés"
 
 #. module: documents
 #. openerp-web
@@ -587,7 +696,7 @@ msgstr "Compte des pièces jointes"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__description
 msgid "Attachment Description"
-msgstr ""
+msgstr "Description de la pièce jointe"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__attachment_name
@@ -619,7 +728,7 @@ msgstr "Facture"
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
 msgid "Brochures"
-msgstr ""
+msgstr "Brochures"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_mail_activity_type__folder_id
@@ -642,7 +751,7 @@ msgstr "Annuler"
 #: code:addons/documents/static/src/xml/documents_progress_bar.xml:0
 #, python-format
 msgid "Cancel Upload"
-msgstr ""
+msgstr "Annuler l'envoi"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_facet
@@ -777,7 +886,7 @@ msgstr "Jours"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__default_user_id
 msgid "Default User"
-msgstr ""
+msgstr "Utilisateur par défaut"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
@@ -978,17 +1087,17 @@ msgstr "Ex. : Finance"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "E.g. Missing Expense"
-msgstr ""
+msgstr "Par exemple, note de frais manquante"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form
 msgid "E.g. Status"
-msgstr ""
+msgstr "Par exemple, le statut"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "E.g. Validate document"
-msgstr ""
+msgstr "Par exemple, valider le document"
 
 #. module: documents
 #: code:addons/documents/models/ir_attachment.py:0
@@ -1000,7 +1109,7 @@ msgstr "ERREUR : Fichier PDF invalide !"
 #: code:addons/documents/models/ir_attachment.py:0
 #, python-format
 msgid "ERROR: Invalid list of pages to split. Example: 1,5-9,10"
-msgstr ""
+msgstr "ERREUR : Liste non valide des pages à fractionner. Exemple : 1,5-9,10"
 
 #. module: documents
 #: code:addons/documents/models/ir_attachment.py:0
@@ -1011,7 +1120,7 @@ msgstr "ERREUR: le fichier doit être un PDF"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "Email cc"
 
 #. module: documents
 #. openerp-web
@@ -1023,7 +1132,7 @@ msgstr "Erreur"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__excluded_tag_ids
 msgid "Excluded Tags"
-msgstr ""
+msgstr "Étiquettes exclues"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_expense
@@ -1071,7 +1180,7 @@ msgstr "Taille de Fichier"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Files Centralization"
-msgstr ""
+msgstr "Centralisation des fichiers"
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
@@ -1132,11 +1241,15 @@ msgid ""
 "Groups able to see the workspace and read its documents without create/edit "
 "rights."
 msgstr ""
+"Les groupes peuvent voir l'espace de travail et lire ses documents sans "
+"droits de création/modification."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "Groups able to see the workspace and read/create/edit its documents."
 msgstr ""
+"Groupes capables de voir l'espace de travail et de lire/créer/éditer ses "
+"documents."
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_hr_folder
@@ -1178,7 +1291,7 @@ msgstr "Icône"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Icône pour indiquer une activité d'exception."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_unread
@@ -1201,7 +1314,7 @@ msgstr "Si actif, certains messages ont une erreur de livraison."
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Image/Video"
-msgstr ""
+msgstr "Image/Video"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_images
@@ -1281,7 +1394,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Liste de cc d'emails entrants."
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
@@ -1350,7 +1463,7 @@ msgstr "Marquer comme brouillon"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
 msgid "Mark all as Done"
-msgstr ""
+msgstr "Marquer tout comme Fait"
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_marketing_folder
@@ -1546,7 +1659,7 @@ msgstr "Autre"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific
 msgid "Own Documents Only"
-msgstr ""
+msgstr "Documents personnels seulement"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
@@ -1565,7 +1678,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "PDF/Document"
-msgstr ""
+msgstr "PDF/Document"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
@@ -1581,7 +1694,7 @@ msgstr "Identifiant de la discussion de l'enregistrement parent"
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Parent Workspace"
-msgstr ""
+msgstr "Espace de travail parent"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
@@ -1618,7 +1731,7 @@ msgstr "Presentations"
 #: code:addons/documents/static/src/xml/documents_progress_bar.xml:0
 #, python-format
 msgid "Processing..."
-msgstr ""
+msgstr "Traitement....."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
@@ -1706,7 +1819,7 @@ msgstr "Document demandé"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__required_tag_ids
 msgid "Required Tags"
-msgstr ""
+msgstr "Étiquettes requises"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model_name
@@ -1776,7 +1889,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_inspector.js:0
 #, python-format
 msgid "Select tags"
-msgstr ""
+msgstr "Sélectionner les étiquettes"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -1830,7 +1943,7 @@ msgstr "Partager les liens"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share domain"
-msgstr ""
+msgstr "Partager le domaine"
 
 #. module: documents
 #: code:addons/documents/controllers/main.py:0
@@ -1854,14 +1967,14 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_kanban.xml:0
 #, python-format
 msgid "Share this domain"
-msgstr ""
+msgstr "Partager ce domaine"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
 msgid "Share this selection"
-msgstr ""
+msgstr "Partager cette sélection"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__type
@@ -1923,7 +2036,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
 msgid "Sub workspaces"
-msgstr ""
+msgstr "Sous-espaces de travail"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_summary
@@ -1954,7 +2067,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Tag categories defined for this workspace"
-msgstr ""
+msgstr "Catégories d'étiquettes définies pour cet espace de travail"
 
 #. module: documents
 #. openerp-web
@@ -1980,6 +2093,8 @@ msgstr "Texte"
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
 msgid "Text shown when hovering on this tag category or its tags"
 msgstr ""
+"Texte affiché lors du survol de cette catégorie d'étiquettes ou de ses "
+"étiquettes"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -2024,12 +2139,14 @@ msgstr "Ce token d'accès existe déjà"
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_document_attachment_unique
 msgid "This attachment is already a document"
-msgstr ""
+msgstr "Cette pièce jointe est déjà un document"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__group_ids
 msgid "This attachment will only be available for the selected user groups"
 msgstr ""
+"Cette pièce jointe ne sera disponible que pour les groupes d'utilisateurs "
+"sélectionnés"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -2057,6 +2174,7 @@ msgstr "Ce lien a expiré"
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This workspace will only be available to the selected company"
 msgstr ""
+"Cet espace de travail ne sera disponible que pour la société sélectionnée"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail
@@ -2106,7 +2224,7 @@ msgstr "Type"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Type d'activité d'exception enregistrée"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__url
@@ -2318,7 +2436,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 #, python-format
 msgid "Youtube Video"
-msgstr ""
+msgstr "Vidéo Youtube"
 
 #. module: documents
 #. openerp-web
@@ -2332,7 +2450,7 @@ msgstr "document"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
 msgid "documents"
-msgstr ""
+msgstr "documents"
 
 #. module: documents
 #. openerp-web
@@ -2372,7 +2490,7 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #, python-format
 msgid "selected"
-msgstr ""
+msgstr "sélectionnés"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout

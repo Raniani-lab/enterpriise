@@ -13,6 +13,7 @@
 # Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # Jon Perez <jop@odoo.com>, 2019
 # Mariana Santos Romo <msn@odoo.com>, 2019
+# Efrem Jimenez <efj@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -20,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:04+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Mariana Santos Romo <msn@odoo.com>, 2019\n"
+"Last-Translator: Efrem Jimenez <efj@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1326,7 +1327,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__method_period__12
 msgid "Years"
-msgstr ""
+msgstr "Años"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

@@ -299,7 +299,7 @@ msgstr "Календар"
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_event
 msgid "Calendar Event"
-msgstr ""
+msgstr "Календар подій"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__can_publish

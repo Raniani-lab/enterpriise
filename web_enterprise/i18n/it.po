@@ -109,7 +109,7 @@ msgstr "Scadenza database:"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Filters..."
-msgstr ""
+msgstr "Filtri..."
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http

@@ -122,7 +122,7 @@ msgstr "<i class=\"fa fa-1x fa-cutlery fa-fw\"/> Ваучери на їжу"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-gift fa-fw fa-lg\"/> 13<sup>th</sup> Month"
-msgstr "<i class=\"fa fa-1x fa-gift fa-fw fa-lg\"/> 13<sup>те</sup> Місяць"
+msgstr "<i class=\"fa fa-1x fa-gift fa-fw fa-lg\"/> 13<sup>тий</sup> Місяць"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -879,7 +879,7 @@ msgstr "Поле освіти"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Field of Study:"
-msgstr "Поле освіти:"
+msgstr "Сфера освіти:"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template

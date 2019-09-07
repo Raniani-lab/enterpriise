@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2019
 # Miguel Orueta <mo@landoo.es>, 2019
+# Jon Perez <jop@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Miguel Orueta <mo@landoo.es>, 2019\n"
+"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,18 +24,20 @@ msgstr ""
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
 msgid "Go to Settings."
-msgstr ""
+msgstr "Ir a los ajustes"
 
 #. module: sale_account_taxcloud
 #: model:ir.model.fields,field_description:sale_account_taxcloud.field_sale_order__is_taxcloud_configured
 msgid "Is Taxcloud Configured"
-msgstr ""
+msgstr "¿Taxcloud está configurado?"
 
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
 msgid ""
 "Please enter your Taxcloud credentials to compute tax rates automatically."
 msgstr ""
+"Ingrese sus credenciales de Taxcloud para calcular las tasas de impuestos "
+"automáticamente."
 
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order
@@ -50,6 +53,7 @@ msgstr "Impuesto"
 #: model:ir.model.fields,help:sale_account_taxcloud.field_sale_order__is_taxcloud
 msgid "Technical field to determine whether to hide taxes in views or not."
 msgstr ""
+"Campo técnico para determinar si ocultar los impuestos en las vistas o no."
 
 #. module: sale_account_taxcloud
 #: code:addons/sale_account_taxcloud/models/sale_order.py:0
@@ -67,3 +71,5 @@ msgstr "Usar API NubeImpuesto"
 msgid ""
 "Used to determine whether or not to warn the user to configure TaxCloud."
 msgstr ""
+"Se usa para determinar si se debe advertir o no al usuario que configure "
+"TaxCloud."

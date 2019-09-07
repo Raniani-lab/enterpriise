@@ -29,12 +29,12 @@ msgstr "Цуцлах"
 #. module: helpdesk_sale_coupon
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_coupon.helpdesk_ticket_view_form_inherit_helpdesk_sale_coupon
 msgid "Coupon"
-msgstr ""
+msgstr "Купон"
 
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_sale_coupon_generate__program
 msgid "Coupon Program"
-msgstr ""
+msgstr "Купон хөтөлбөр"
 
 #. module: helpdesk_sale_coupon
 #: code:addons/helpdesk_sale_coupon/models/helpdesk.py:22

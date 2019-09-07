@@ -6,6 +6,7 @@
 # Cécile Collart <cco@odoo.com>, 2019
 # Martin Trigaux, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
+# Guillaume Piens <gup@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:04+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2019\n"
+"Last-Translator: Guillaume Piens <gup@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,7 +96,7 @@ msgstr "Position fiscale"
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_position_taxcloud_inherit_from_view
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.invoice_form_inherit
 msgid "Go to Settings."
-msgstr ""
+msgstr "aller sur paramètres"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__id

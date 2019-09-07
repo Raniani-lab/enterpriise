@@ -33,7 +33,7 @@ msgstr "Скасовано"
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Centralize files attached to applications and job positions"
-msgstr ""
+msgstr "Централізуйте файли, прикріплені до заявок та вакансій"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_res_company
@@ -48,12 +48,12 @@ msgstr "Налаштування"
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Default Tags"
-msgstr ""
+msgstr "Теги за замовчуванням"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__documents_recruitment_settings
 msgid "Documents Recruitment Settings"
-msgstr ""
+msgstr "Налаштування документів рекрутингу"
 
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_new_tag
@@ -69,29 +69,29 @@ msgstr "Рекрутинг"
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_plans_tag
 msgid "Recruitment Reserve"
-msgstr ""
+msgstr "Резервний рекрутинг"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_tag_ids
 msgid "Recruitment Tag"
-msgstr ""
+msgstr "Тег рекрутингу"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_tag_ids
 msgid "Recruitment Tags"
-msgstr ""
+msgstr "Теги рекрутингу"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_folder_id
 msgid "Recruitment Workspace"
-msgstr ""
+msgstr "Папка рекрутингу"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_folder_id
 msgid "Recruitment default workspace"
-msgstr ""
+msgstr "Папка рекрутингу за замовчуванням"
 
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Workspace"
-msgstr "Робоча область"
+msgstr "Папка"

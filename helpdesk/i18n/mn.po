@@ -4,10 +4,10 @@
 # 
 # Translators:
 # Otgonbayar.A <gobi.mn@gmail.com>, 2019
-# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
 # Martin Trigaux, 2019
 # nurbakhit nurka <nurbakhit@bumanit.mn>, 2019
 # Baasansuren Sharavsuren <baasansuren@bumanit.mn>, 2019
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:04+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Baasansuren Sharavsuren <baasansuren@bumanit.mn>, 2019\n"
+"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +41,7 @@ msgstr "${object.display_name}"
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "% endif"
-msgstr ""
+msgstr "% endif"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -50,6 +50,9 @@ msgid ""
 "    % if email_alias\n"
 "    <strong style=\"font-size: 16px;\">Try the mail gateway</strong>"
 msgstr ""
+"% set email_alias = object.env['helpdesk.team'].search([('alias_name','!=', False)],limit=1).alias_id.display_name\n"
+"    % if email_alias\n"
+"    <strong style=\"font-size: 16px;\">Mail-ын гарц ашиглах</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
@@ -112,6 +115,58 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div>\n"
+"    % set access_token = object.rating_get_access_token()\n"
+"    % set partner = object.rating_get_partner_id()\n"
+"    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0;\">\n"
+"    <tbody>\n"
+"        <tr><td valign=\"top\" style=\"font-size: 14px;\">\n"
+"            Сайн байна уу ${partner.name},<br/>\n"
+"            Та тусламжийн төвд ирсэн \"<strong>${object.name}</strong>\" тасалбартай холбогдуулан манай үйлчилгээнд үнэлгээ өгнө үү.\n"
+"            % if object.rating_get_rated_partner_id().name:\n"
+"                Хариуцагч: <strong>${object.rating_get_rated_partner_id().name}</strong>.<br/>\n"
+"            % else:\n"
+"                .<br/>\n"
+"            % endif\n"
+"        </td></tr>\n"
+"        <tr><td style=\"text-align: center;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" summary=\"o_mail_notification\" style=\"width:100%; margin: 32px 0px 32px 0px;\">\n"
+"                <tr><td style=\"font-size: 14px;\">\n"
+"                    <strong>Манай үйлчилгээний талаарх санал хүсэлтээ үлдээнэ үү</strong><br/>\n"
+"                    <span style=\"text-color: #888888\">(click on one of these smileys)</span>\n"
+"                </td></tr>\n"
+"                <tr><td style=\"font-size: 14px;\">\n"
+"                    <table style=\"width:100%;text-align:center;\">\n"
+"                        <tr>\n"
+"                            <td>\n"
+"                                <a href=\"/rating/${access_token}/10\">\n"
+"                                    <img alt=\"Satisfied\" src=\"/rating/static/src/img/rating_10.png\" title=\"Satisfied\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                            <td>\n"
+"                                <a href=\"/rating/${access_token}/5\">\n"
+"                                    <img alt=\"Not satisfied\" src=\"/rating/static/src/img/rating_5.png\" title=\"Not satisfied\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                            <td>\n"
+"                                <a href=\"/rating/${access_token}/1\">\n"
+"                                    <img alt=\"Highly Dissatisfied\" src=\"/rating/static/src/img/rating_1.png\" title=\"Highly Dissatisfied\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                    </table>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td></tr>\n"
+"        <tr><td valign=\"top\" style=\"font-size: 14px;\">\n"
+"            Санал үнэлгээгээ үлдээсэнд танд баярлалаа. Таны санал бидний ажлын чанарыг сайжруулахад үнэтэй хувь нэмэр болно.\n"
+"            <br/><span style=\"margin: 0px 0px 0px 0px; font-size: 12px; opacity: 0.5; color: #454748;\">Тантай холбоотой ${object.stage_id.name} тасалбарын төлөв шинэчлэгдсэн тул энэхүү имэйлийг танд илгээж мэдээлэл хүргэсэн болно.</b></span>\n"
+"        </td></tr>\n"
+"    </tbody>\n"
+"    </table>\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.solved_ticket_request_email_template
@@ -128,6 +183,17 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div>\n"
+"    Хүндэт ${object.sudo().partner_id.name or 'Madam/Sir'},<br/><br/>\n"
+"    Энэхүү зурвасаараа бид тантай холбоотой (reference ${object.id}) тасалбарыг хааж байгаагаа мэдэгдэж байна.\n"
+"    Бидний үйлчилгээ таны сэтгэлд нийцсэн гэдэгт бид итгэлтэй байна.\n"
+"    Хэрэв танд нэмэлт асуулт эсвэл санал хүсэлт байвал энэхүү имэйлд хариу имэйл илгээж энэхүү тасалбарыг буцаан нээхдээ бүү цаараглаарай.<br/><br/>\n"
+"    Хамтарч ажилласан танд баярлалаа.<br/>\n"
+"    Гүнээ хүндэтгэе,<br/><br/>\n"
+"    ${object.team_id.name or 'Helpdesk'} баг.\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.new_ticket_request_email_template
@@ -162,11 +228,13 @@ msgid ""
 "<b>Stars</b> mark the <b>ticket priority</b>. You can change it directly "
 "from here!"
 msgstr ""
+"<b>Од</b> тэмдэглэгээ нь <b>тасалбарын урьтамжыг тодорхойлно</b>. Та эндээс "
+"Од үнэлгээг засаж өөрчлөх боложтой!"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<em class=\"text-muted\"><small>No description</small></em>"
-msgstr ""
+msgstr "<em class=\"text-muted\"><small>Тайлбар алга</small></em>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
@@ -176,17 +244,17 @@ msgstr "<i class=\"fa fa-arrow-circle-right \"/> Санал хүсэлтүүди
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "<i class=\"fa fa-arrow-right\"/> Configure domain name"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right\"/> Домейн нэр тохируулах"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "<i class=\"fa fa-arrow-right\"/> View documentation"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right\"/> Баримтжуулалт харах"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"Messages\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"Messages\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -204,6 +272,8 @@ msgid ""
 "<i class=\"fa fa-envelope-o\" title=\"Domain alias\" role=\"img\" aria-"
 "label=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
+"<i class=\"fa fa-envelope-o\" title=\"Domain alias\" role=\"img\" aria-"
+"label=\"Domain alias\"/>&amp;nbsp;"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -211,6 +281,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-arrow-right\" role=\"img\" aria-label=\"Rating URL\" "
 "title=\"Rating URL\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-arrow-right\" role=\"img\" aria-label=\"Rating URL\" "
+"title=\"Rating URL\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
@@ -246,6 +318,8 @@ msgid ""
 "<span class=\"fa fa-clock-o\" title=\"Deadline\" role=\"img\" aria-"
 "label=\"Deadline\"/>"
 msgstr ""
+"<span class=\"fa fa-clock-o\" title=\"Deadline\" role=\"img\" aria-"
+"label=\"Deadline\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_partner_form_inherit_helpdesk
@@ -255,27 +329,27 @@ msgstr "<span class=\"o_stat_text\"> Тасалбарууд</span>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Assigned to</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Хариуцсан этгээд</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Description</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Тайлбар</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Managed by</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Удирдах этгээд</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Reported by</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Тасалбар бүртгүүлсэн этгээд</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Reported on</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-2\">Тасалбарыг бүртгэсэн</strong>"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_defaults
@@ -360,6 +434,9 @@ msgid ""
 "Add columns to configure <b>stages for your tickets</b>.<br/><i>e.g. "
 "Awaiting Customer Feedback, Customer Followup, ...</i>"
 msgstr ""
+"Багана шинээр нэмж <b>тасалбарын үе шатуудыг зохиомжлоорой</b>.<br/><i>ж.ш. "
+"Үйлчүүлэгчээс санал хүсэлт хүлээж буй, Үйлчүүлэгчийг дагагчаар бүртгэх, "
+"...</i>"
 
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_helpdesk_manager
@@ -426,6 +503,9 @@ msgid ""
 "Allow your customers to easily rate your services. Activate this option will"
 " add a default email template on non folded closing stages"
 msgstr ""
+"Үйлчүүлэгч танай үйлчилгээнд хялбархнаар үнэлгээ өгөхийг зөвшөөрөх. Энэ "
+"боломжыг идэвхижүүлснээр эвхэгдээгүй хаалтын үе шатанд зориулж автоматаар "
+"имэйл загвар бүртгэгдэнэ."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__is_self_assigned
@@ -459,20 +539,20 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "Assign To Me"
-msgstr ""
+msgstr "Надад хариуцуулах"
 
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Assign the ticket to someone."
-msgstr ""
+msgstr "Тасалбарыг хэн нэгэнд хариуцуулах."
 
 #. module: helpdesk
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
 #, python-format
 msgid "Assign to me"
-msgstr ""
+msgstr "Надад хариуцуулах"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__assign_method
@@ -595,7 +675,7 @@ msgstr "Имэйл сонгоно уу:"
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Click here to view this team's tickets."
-msgstr ""
+msgstr "Энэ багын тасалбаруудыг харахын тулд энд дарна уу."
 
 #. module: helpdesk
 #. openerp-web
@@ -605,6 +685,8 @@ msgid ""
 "Click these cards to open their form view, or <b>drag &amp; drop</b> them "
 "through the different stages of this team."
 msgstr ""
+"Эдгээр карт дээр дарснаар форм дэлгэцийг нээх, эсвэл <b>drag &amp; drop</b> "
+"хийснээр тэдгээрийг үеэс үе шатын хооронд шилжүүлж зөөх боломжтой."
 
 #. module: helpdesk
 #. openerp-web
@@ -710,7 +792,7 @@ msgstr "Үйлчилгээний түвшний гэрээний бодлогу�
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Connect third party application and create tickets using web services"
-msgstr ""
+msgstr "Веб сервис ашиглан гуравдагч системтэй холбогдон тасалбар үүсгэх"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_res_partner
@@ -727,17 +809,17 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action_main
 msgid "Create a new Service Level Agreement (SLA) policy"
-msgstr ""
+msgstr "Шинээр Тасралтгүй ажиллагааны нөхцөл (SLA) үүсгэх"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_stage_action
 msgid "Create a new stage in your helpdesk pipeline"
-msgstr ""
+msgstr "Тусламжын төвийн граффикт үе шат нэмэх"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.email_template_action_helpdesk
 msgid "Create a new template"
-msgstr ""
+msgstr "Шинэ загвар бүртгэх"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.action_upcoming_sla_fail_all_tickets
@@ -752,12 +834,12 @@ msgstr "Шинэ тасалбар үүсгэх"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
 msgid "Create a new ticket tag"
-msgstr ""
+msgstr "Тасалбарын пайз шинээр үүсгэх"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_action
 msgid "Create a new ticket team"
-msgstr ""
+msgstr "Тусламжын баг шинээр үүсгэх"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_type_action
@@ -769,7 +851,7 @@ msgstr "Шинэ тасалбарын төрөл үүсгэх"
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_main_my
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_main_tree
 msgid "Create your first ticket."
-msgstr ""
+msgstr "Анхны тасалбараа бүртгэнэ үү."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__create_uid
@@ -817,7 +899,7 @@ msgstr "Захиалагч"
 #. module: helpdesk
 #: model:helpdesk.team,name:helpdesk.helpdesk_team1
 msgid "Customer Care"
-msgstr ""
+msgstr "Дэмжлэг тусламжын баг"
 
 #. module: helpdesk
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
@@ -922,7 +1004,7 @@ msgstr "Тайлбар"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Description for customer portal"
-msgstr ""
+msgstr "Захиалагчийн хандалтын тодорхойлолт"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -959,7 +1041,7 @@ msgstr "Дэлгэрэнгүй нэр"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__portal_show_rating
 msgid "Display Rating on Customer Portal"
-msgstr ""
+msgstr "Захиалагчийн портал хуудсанд үнэлгээ харуулах"
 
 #. module: helpdesk
 #: code:addons/helpdesk/models/digest.py:0
@@ -1001,7 +1083,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email
 msgid "Email on Customer"
-msgstr ""
+msgstr "Захиалагчийн имэйл"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -1009,11 +1091,13 @@ msgid ""
 "Emails sent to <strong>${email_alias}</strong> generate new tickets in your "
 "Helpdesk funnel.<br>"
 msgstr ""
+"<strong>${email_alias}</strong> хаягт имэйл илгээснээр танай Тусламжийн багт"
+" шинэ тасалбар бүртгэгдэх болно.<br>"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_slides
 msgid "Enable eLearning"
-msgstr ""
+msgstr "eLearning идэвхижүүлэх"
 
 #. module: helpdesk
 #. openerp-web
@@ -1023,6 +1107,9 @@ msgid ""
 "Enter a subject or title for this ticket.<br/><i>(e.g. Problem with "
 "installation, Wrong order, Can't understand bill, etc.)</i>"
 msgstr ""
+"Энэ тасалбарт гарчиг эсвэл товч агуулга оруулна уу.<br/><i>(ж.ш. Програм "
+"суулгалтын асуудал, Буруу захиалга, Нэхэмжлэлийг ойлгохгүй байна, гэх "
+"мэт.)</i>"
 
 #. module: helpdesk
 #. openerp-web
@@ -1030,6 +1117,8 @@ msgstr ""
 #, python-format
 msgid "Enter the customer. Feel free to create it on the fly."
 msgstr ""
+"Захиалагчыг сонгоно уу. Хэрэв бүртгэгдээгүй захиалагч байвал бүртгэхдээ бүү "
+"эргэлзээрэй."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__exceeded_days
@@ -1055,7 +1144,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Failed SLA: {{record.sla_name.raw_value}}"
-msgstr ""
+msgstr "SLA зөрчигдсөн: {{record.sla_name.raw_value}}"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -1127,7 +1216,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Get in touch with your website visitors"
-msgstr ""
+msgstr "Вебсайтын зочлогчидтой холбогдож үйлчлэх"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1165,7 +1254,7 @@ msgstr "Бүлэглэлт"
 #. module: helpdesk
 #: model:mail.activity.type,name:helpdesk.mail_act_helpdesk_handle
 msgid "Handle Ticket"
-msgstr ""
+msgstr "Тасалбар шийдвэрлэх"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
@@ -1198,7 +1287,7 @@ msgstr "Тусламжийн Төв"
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_team_dashboard_action_main
 msgid "Helpdesk Overview"
-msgstr ""
+msgstr "Тусламжийн төвийн товчоо"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_sla
@@ -1208,12 +1297,12 @@ msgstr "Тусламжийн төвийн үйлчилгээний түвшни�
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_stage
 msgid "Helpdesk Stage"
-msgstr ""
+msgstr "Тусламж дэмжлэгийн үе шат"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_tag
 msgid "Helpdesk Tags"
-msgstr ""
+msgstr "Тусламж дэмжлэгийн пайз"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_team
@@ -1255,7 +1344,7 @@ msgstr "Туламжийн төвийн тасалбарын Шинжилгээ"
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_ticket_type
 msgid "Helpdesk Ticket Type"
-msgstr ""
+msgstr "Тусламжийн төвийн тасалбарын төрөл"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_main
@@ -1292,7 +1381,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "How to assign newly created tickets to the right person"
-msgstr ""
+msgstr "Шинээр бүртгэгдсэн тасалбарыг хэрхэн зохих хариуцагчид нь оноох"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__id
@@ -1361,7 +1450,7 @@ msgstr "Чухал зурвасууд"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "#{kanban_getcolorname(record.color.raw_value)} дотор"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
@@ -1387,7 +1476,7 @@ msgstr "Явагдаж буй"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Incoming emails create tickets"
-msgstr ""
+msgstr "Хүлээн авах имэйлээс тасалбар бүртгэх"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1430,7 +1519,7 @@ msgstr "Канбан Зөв Тайлбар"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed_value
 msgid "Kpi Helpdesk Tickets Closed Value"
-msgstr ""
+msgstr "Тусламж дэмжлэгийн тасалбар хаалтын KPI"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data
@@ -1503,7 +1592,7 @@ msgstr "Хамгийн сүүлийн санал хүсэлтүүд"
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Let's create your first ticket."
-msgstr ""
+msgstr "Таны эхний тасалбарыг бүртгэцгээе"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__email_cc
@@ -1547,7 +1636,7 @@ msgstr "Алдаа үүссэн талаарх зурвас"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Message and communication history"
-msgstr ""
+msgstr "Зурвас болон харилцааны түүх"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_ids
@@ -1565,7 +1654,7 @@ msgstr "Хамгийн бага Урьтамж"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__stage_id
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla_status__sla_stage_id
 msgid "Minimum stage a ticket needs to reach in order to satisfy this SLA."
-msgstr ""
+msgstr "SLA бодлогыг хангахуйц хамгийн бага эрэмбэтэй үе шат"
 
 #. module: helpdesk
 #. openerp-web
@@ -1644,7 +1733,7 @@ msgstr "Дараагийн ажилбарын төрөл"
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_sla_urgent
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_urgent
 msgid "No tickets to display"
-msgstr ""
+msgstr "Харуулах тасалбар алга"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_needaction_counter
@@ -1851,7 +1940,7 @@ msgstr "Бүтээмж"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Publish this team's ratings on your website"
-msgstr ""
+msgstr "Энэ багийн үнэлгээг вебсайтандаа нийтлэх"
 
 #. module: helpdesk
 #: model:helpdesk.ticket.type,name:helpdesk.type_question
@@ -1861,7 +1950,7 @@ msgstr "Асуулт"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Question and answer section on your website"
-msgstr ""
+msgstr "Танай вебсайт дээрх асуулт ба хариултын булан"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__randomly
@@ -1881,12 +1970,12 @@ msgstr "Үнэлгээний дундаж"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_feedback
 msgid "Rating Last Feedback"
-msgstr ""
+msgstr "Сүүлд бүртгэсэн санал сэтгэгдлийн үнэлгээ"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_image
 msgid "Rating Last Image"
-msgstr ""
+msgstr "Сүүлийн зурагны үнэлгээ"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_value
@@ -2019,7 +2108,7 @@ msgstr "Хариуцсан хэрэглэгч"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Restore"
-msgstr ""
+msgstr "Сэргээх"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_product_returns
@@ -2139,19 +2228,20 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Save this page and refresh to activate the feature."
 msgstr ""
+"Энэ боломжийг идэвхижүүлэхийн тулд хуудсыг хадгалаад дахин ачааллана уу"
 
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Save this ticket and the modifications you've made to it."
-msgstr ""
+msgstr "Энэ тасалбарыг хадгалснаар таны хийсэн өөрчлөлт хэрэгжих болно."
 
 #. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search <span class=\"nolabel\"> (in Content)</span>"
-msgstr ""
+msgstr "Хайлт <span class=\"nolabel\"> (агуулгаар)</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_search
@@ -2162,19 +2252,19 @@ msgstr "Үйлчилгээний түвшний гэрээний бодлого�
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in All"
-msgstr ""
+msgstr "Бүхнээс хайх"
 
 #. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in Customer"
-msgstr ""
+msgstr "Захиалагчаас хайх"
 
 #. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in Messages"
-msgstr ""
+msgstr "Зурвасаас хайх"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__access_token
@@ -2199,14 +2289,14 @@ msgstr "Өөртөө-Үйлчилэх"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Sell &amp; Track Hours"
-msgstr ""
+msgstr "Цагуудыг зарах &amp; мөшгих"
 
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
 msgid "Send an email to"
-msgstr ""
+msgstr "Имэйл илгээх хаяг"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2223,12 +2313,14 @@ msgstr "Дугаарлалт"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Set the calendar used to compute SLA target"
-msgstr ""
+msgstr "SLA зорилтыг тооцоолох календарчлал"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Set up your Service Level Agreements to track performance"
 msgstr ""
+"Та өөрийн гүйцэтгэлийг үнэлэхийн тулд Үйлчилгээний чанарын үзүүлэлт (SLA) "
+"тодорхойлно уу."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -2245,6 +2337,8 @@ msgstr "Хуваалцах"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Share presentation and videos, and organize into courses"
 msgstr ""
+"Сургалтын материал ба видео агуулгуудыг нийтлэж сургалтын хөтөлбөр "
+"боловсруулах"
 
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_use_sla
@@ -2266,7 +2360,7 @@ msgstr ""
 #. module: helpdesk
 #: model:helpdesk.stage,name:helpdesk.stage_solved
 msgid "Solved"
-msgstr ""
+msgstr "Шийдвэрлэсэн"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__source_id
@@ -2375,7 +2469,7 @@ msgstr "Гарчиг..."
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Submit tickets with an online form"
-msgstr ""
+msgstr "Онлайн асуулгаар тасалбар бүртгэж илгээх эсэх"
 
 #. module: helpdesk
 #. openerp-web
@@ -2430,7 +2524,7 @@ msgstr "Зорилтот Захиалагчийн Үнэлгээ"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__stage_id
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__sla_stage_id
 msgid "Target Stage"
-msgstr ""
+msgstr "Үе шатын зорилт"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_res_users__helpdesk_target_success
@@ -2470,7 +2564,7 @@ msgstr "Багийн гишүүд"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_search
 msgid "Team Search"
-msgstr ""
+msgstr "Баг хайлт"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
@@ -2533,6 +2627,8 @@ msgid ""
 "The success rate is based on the tickets which passed the SLA policies "
 "successfully."
 msgstr ""
+"Амжилтын хувь бол SLA бодлогын шалгуурыг амжилттай хангасан тасалбарын тоонд"
+" үндэслэнэ."
 
 #. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:0
@@ -2569,11 +2665,13 @@ msgid ""
 "This is a name that helps you keep track of your different campaign efforts,"
 " e.g. Fall_Drive, Christmas_Special"
 msgstr ""
+"Энэ нэр нь танд арга хэмжээнүүдийг ялган хянахад тусална. ж.ш. Fall_Drive, "
+"Christmas_Special"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__medium_id
 msgid "This is the method of delivery, e.g. Postcard, Email, or Banner Ad"
-msgstr ""
+msgstr "Энэ бол хүргэлтийн арга хэлбэр, ж.ш. Ил захидал, Имэйл, Banner Ad"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__source_id
@@ -2581,11 +2679,13 @@ msgid ""
 "This is the source of the link, e.g. Search Engine, another domain, or name "
 "of email list"
 msgstr ""
+"Энэ бол холбоосын эх сурвалж. ж.ш. Хайлтын Engine, ямар нэг гуравдагч "
+"домэйн, эсвэл email list-ын нэр"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_helpdesk_timesheet
 msgid "This required to have project module installed."
-msgstr ""
+msgstr "Төслийн модуль (project) суугдсан байх шаардлагатай."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__fold
@@ -2604,7 +2704,7 @@ msgstr ""
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
 msgid "Three stars, maximum score"
-msgstr ""
+msgstr "Гурван од, хамгийн дээд оноо"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_id
@@ -2656,7 +2756,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Ticket ID"
-msgstr ""
+msgstr "Тасалбарын ID"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_tree
@@ -2667,7 +2767,7 @@ msgstr ""
 #: model:mail.message.subtype,name:helpdesk.mt_team_ticket_rated
 #: model:mail.message.subtype,name:helpdesk.mt_ticket_rated
 msgid "Ticket Rated"
-msgstr ""
+msgstr "Тасалбар үнэлэгдсэн"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_sla_status
@@ -2720,7 +2820,7 @@ msgstr "Тасалбар үүссэн"
 #. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_ticket_rated
 msgid "Ticket rated"
-msgstr ""
+msgstr "Тасалбар үнэлэгдсэн"
 
 #. module: helpdesk
 #. openerp-web
@@ -2755,7 +2855,7 @@ msgstr "Тасалбарууд"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed
 msgid "Tickets Closed"
-msgstr ""
+msgstr "Тасалбар хаагдсан"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
@@ -2770,6 +2870,8 @@ msgid ""
 "Tickets in this stage are considered as done. This is used notably when "
 "computing SLAs and KPIs on tickets."
 msgstr ""
+"Энэ үе шатанд ирсэн тасалбаруудыг хаагдсан гэж үзнэ. SLA үзүүлэлтээр хэмжих "
+"буюу тасалбарын KPI-г тооцохдоо энэхүү үе шатыг үндэслэнэ."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -2801,7 +2903,7 @@ msgstr "Анхны оноолтод хүрэх хугацаа (цагаар)"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_timesheet
 msgid "Timesheet on Ticket"
-msgstr ""
+msgstr "Тасалбар дээр цаг бүртгэх"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.action_upcoming_sla_fail_all_tickets
@@ -2838,7 +2940,7 @@ msgstr "Өнөөдрийн ажилбар"
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "Try Now"
-msgstr ""
+msgstr "Одоо оролдох"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_twitter
@@ -2850,7 +2952,7 @@ msgstr "Жиргээ"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
 msgid "Two stars, with a maximum of three"
-msgstr ""
+msgstr "Гурван одноос хоёрыг авсан"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_type__name
@@ -2880,7 +2982,7 @@ msgstr "Асуудлыг илгээх URL"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__portal_rating_url
 msgid "URL to Submit an Issue"
-msgstr ""
+msgstr "Асуудал хүлээн авах URL"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -2958,7 +3060,7 @@ msgstr ""
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Use the breadcrumbs to go back to the Kanban view."
-msgstr ""
+msgstr "Kanban харагдац руу буцахын тулд breadscrumbs-ыг ашиглана уу."
 
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_helpdesk_user
@@ -2987,7 +3089,7 @@ msgstr "Урьтамж өндөртэй бүтэлгүйтсэн тасалба�
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "View this teams ratings on this page:<br/>"
-msgstr ""
+msgstr "Энэ хуудсанд тухайн багт өгсөн үнэлгээнүүдийг харна:<br/>"
 
 #. module: helpdesk
 #. openerp-web
@@ -3004,6 +3106,8 @@ msgid ""
 "Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to "
 "start.</i>"
 msgstr ""
+"Та өөрийн үйлчлүүлэгчдийн <b>сэтгэл ханамжыг нэмэгдүүлэхийг хүсч байна "
+"уу</b>?<br/><i>Тусламж дэмжлэг</i>дээр дарж ажлаа эхэлнэ үү."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_form
@@ -3036,6 +3140,10 @@ msgid ""
 "balanced assignation, tickets are assigned to the user with the least amount"
 " of open tickets."
 msgstr ""
+"Санамсаргүй оноолтын тусламжтайгаар хэрэглэгч бүрийн нийт хариуцсан "
+"тасалбарын тоо хэмжээ ижил байна. Тэнцвэртэй оноолтын тусламжтайгаар "
+"хэрэглэгчдийн хариуцсан бөгөөд нээлттэй тасалбарын тоо хэмжээ тэнцвэртэй "
+"байна."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__resource_calendar_id
@@ -3081,7 +3189,7 @@ msgstr "Оноолтын аргыг өөрчлөхийн тулд багийн �
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_dashboard_action_main
 msgid "Your teams will appear here"
-msgstr ""
+msgstr "Таны баг энд харагдана"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -3118,9 +3226,9 @@ msgstr "багийн хайлт"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
 msgid "to create a ticket."
-msgstr ""
+msgstr "тасалбар үүсгэнэ."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "to create tickets"
-msgstr ""
+msgstr "тасалбар үүсгэнэ"

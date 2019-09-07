@@ -342,7 +342,7 @@ msgstr "Одиниці для розміру упаковки UPS"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
 msgid "Ups Duty Payment"
-msgstr ""
+msgstr "Сплата мита Ups"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit

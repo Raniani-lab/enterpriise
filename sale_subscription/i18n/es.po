@@ -19,7 +19,9 @@
 # JOSE ALEJANDRO ECHEVERRI VALENCIA <josealejandroeche@gmail.com>, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # John Guardado <jgu@odoo.com>, 2019
+# VivianMontana23 <vivianpvm@gmail.com>, 2019
 # Jon Perez <jop@odoo.com>, 2019
+# Efrem Jimenez <efj@odoo.com>, 2019
 # Mariana Santos Romo <msn@odoo.com>, 2019
 # 
 msgid ""
@@ -797,7 +799,7 @@ msgstr "Administradora"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Alert Name"
-msgstr ""
+msgstr "Nombre de la Alerta"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_alert_action
@@ -2334,7 +2336,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Valoración de Satisfacción"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_count
@@ -2468,7 +2470,7 @@ msgstr "Error de entrega del SMS"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__sms_template_id
 msgid "SMS Template"
-msgstr ""
+msgstr "Plantilla de SMS"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -3458,7 +3460,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__recurring_rule_type__yearly
 msgid "Years"
-msgstr ""
+msgstr "Años"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions

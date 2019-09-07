@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
+# Mariana Santos Romo <msn@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Mariana Santos Romo <msn@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,13 +25,13 @@ msgstr ""
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Convert tickets into Field Service tasks"
-msgstr ""
+msgstr "Convertir tickets en tareas de Servicio Externo"
 
 #. module: helpdesk_fsm
 #: code:addons/helpdesk_fsm/models/helpdesk.py:0
 #, python-format
 msgid "Create task"
-msgstr ""
+msgstr "Crear tarea"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid
@@ -60,7 +61,7 @@ msgstr "Nombre mostrado"
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Field Service"
-msgstr ""
+msgstr "Servicio externo"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__fsm_task_count
@@ -70,7 +71,7 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
 msgid "Generate Task"
-msgstr ""
+msgstr "Generar tarea"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
@@ -111,7 +112,7 @@ msgstr "Última actualización el"
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__use_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 msgid "Onsite Interventions"
-msgstr ""
+msgstr "Intervenciones en Sitio "
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
@@ -121,12 +122,12 @@ msgstr "Proyecto"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
 msgid "Project in which to create the task"
-msgstr ""
+msgstr "Proyecto en el que se crea la tarea"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__helpdesk_ticket_id
 msgid "Related ticket"
-msgstr ""
+msgstr "Ticket relacionado"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
@@ -149,12 +150,12 @@ msgstr "Tareas"
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Tasks from Tickets"
-msgstr ""
+msgstr "Tareas de los Tickets"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__fsm_task_ids
 msgid "Tasks generated from this ticket"
-msgstr ""
+msgstr "Tareas generadas a partir de este ticket"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
@@ -164,12 +165,12 @@ msgstr "Tiquet"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_project_task__helpdesk_ticket_id
 msgid "Ticket this task was generated from"
-msgstr ""
+msgstr "Ticket a partir del cual se generó esta tarea"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__partner_id
 msgid "Ticket's customer, will be linked to the task"
-msgstr ""
+msgstr "El cliente del ticket, estará vinculado a la tarea"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form

@@ -8,6 +8,7 @@
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Thijs van Oers <thijsvanoers@yahoo.com>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Charles Vervaecke <cvk@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:39+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Charles Vervaecke <cvk@odoo.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -505,6 +506,8 @@ msgid ""
 "Use sales teams to organize your sales departments.\n"
 "                    Each team will work with a separate pipeline."
 msgstr ""
+"Gebruik verkoopteams om uw verkoopdepartementen te organiseren.\n"
+"                    Elk team zal met een afzonderlijke pijplijn werken."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id

@@ -37,7 +37,7 @@ msgstr "Прикріплення"
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Centralize files attached to products"
-msgstr ""
+msgstr "Централізуйте файли, прикріплені до товарів"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_res_company
@@ -62,7 +62,7 @@ msgstr "Таблиці даних"
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Default Tags"
-msgstr ""
+msgstr "Теги за замовчуванням"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
@@ -103,7 +103,7 @@ msgstr "Теги товару"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
 msgid "Product Workspace"
-msgstr "Робоча область товару"
+msgstr "Папка товару"
 
 #. module: documents_product
 #: model:ir.model.fields.selection,name:documents_product.selection__documents_workflow_rule__create_model__product_template
@@ -123,9 +123,9 @@ msgstr "Характеристики"
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Workspace"
-msgstr "Робоча область"
+msgstr "Папка"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
 msgid "product default workspace"
-msgstr "робоча область товару за замовчуванням"
+msgstr "папка товару за замовчуванням"

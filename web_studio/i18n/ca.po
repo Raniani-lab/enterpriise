@@ -363,7 +363,7 @@ msgstr "Automatitzacions"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:510
 #, python-format
 msgid "Average"
-msgstr ""
+msgstr "Mitjana"
 
 #. module: web_studio
 #. openerp-web

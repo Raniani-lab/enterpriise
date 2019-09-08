@@ -964,7 +964,7 @@ msgstr "ERROR: El archivo debe ser un PDF"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "Correo electrónico cc"
 
 #. module: documents
 #: selection:documents.document,type:0

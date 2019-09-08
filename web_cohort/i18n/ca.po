@@ -55,7 +55,7 @@ msgstr "Activitat"
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:184
 #, python-format
 msgid "Average"
-msgstr ""
+msgstr "Mitjana"
 
 #. module: web_cohort
 #: model:ir.model,name:web_cohort.model_base

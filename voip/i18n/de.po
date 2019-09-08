@@ -28,6 +28,8 @@
 # Marco Tarsia <marco.y.tarsia@gmail.com>, 2019
 # Leon Grill <leg@odoo.com>, 2019
 # Martin Trigaux, 2019
+# Chris Egal <sodaswed@web.de>, 2019
+# Sebastian <shu@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -35,7 +37,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:30+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Sebastian <shu@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,7 +60,7 @@ msgstr "Fälle"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
 msgid "Action to Perform"
-msgstr ""
+msgstr "Aktion beginnen"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_mail_activity_type__category
@@ -66,6 +68,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Aktion führt gegebenfalls zu weiteren Funktionen wie Kalenderansicht oder "
+"automatischer Ausführung wenn ein Dokument hochgeladen wurde."
 
 #. module: voip
 #. openerp-web
@@ -701,7 +705,7 @@ msgstr "Neue Aktivität planen"
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:135
 #, python-format
 msgid "Schedule Activity"
-msgstr ""
+msgstr "Aktivität planen"
 
 #. module: voip
 #. openerp-web

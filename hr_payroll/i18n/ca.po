@@ -1889,7 +1889,7 @@ msgstr "Validat"
 #. module: hr_payroll
 #: selection:hr.payslip.run,state:0
 msgid "Verify"
-msgstr ""
+msgstr "Verificar"
 
 #. module: hr_payroll
 #: selection:hr.payslip,state:0

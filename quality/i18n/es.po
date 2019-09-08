@@ -279,7 +279,7 @@ msgstr "Nombre a mostrar"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "Correo electrónico cc"
 
 #. module: quality
 #: selection:quality.check,quality_state:0

@@ -171,7 +171,7 @@ class Planning(models.Model):
                 }
                 recurrence = self.env['planning.recurrency'].create(recurrency_values)
                 slot.recurrency_id = recurrence
-                # DO NOT generate reccuring slots here, as the current slot is not created yet (and is used as template to copy)
+                slot.recurrency_id._repeat_slot()
             elif not slot.repeat and slot.recurrency_id:
                 slot.recurrency_id._delete_slot(slot.end_datetime)
                 slot.recurrency_id.unlink()  # will set recurrency_id to NULL
@@ -200,13 +200,6 @@ class Planning(models.Model):
                 self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
             if end_datetime:
                 self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-        if self.recurrency_id:
-            return {
-                'warning': {
-                    'title': _("Warning"),
-                    'message': _("This action will remove the current shift from the recurrency. Are you sure you want to continue?"),
-                }
-            }
 
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):
@@ -242,16 +235,10 @@ class Planning(models.Model):
         """ When checking the `repeat` flag on an existing record, the values of recurring fields are `False`. This onchange
             restore the default value for usability purpose.
         """
-        if self.repeat:
-            recurrence_fields = ['repeat_interval', 'repeat_until', 'repeat_type']
-            default_values = self.default_get(recurrence_fields)
-            for fname in recurrence_fields:
-                self[fname] = default_values.get(fname)
-
-    @api.onchange('repeat_type')
-    def _onchange_repeat_type(self):
-        if self.repeat_type == 'forever':
-            self.repeat_until = False
+        recurrence_fields = ['repeat_interval', 'repeat_until', 'repeat_type']
+        default_values = self.default_get(recurrence_fields)
+        for fname in recurrence_fields:
+            self[fname] = default_values.get(fname)
 
     # ----------------------------------------------------
     # ORM overrides
@@ -290,31 +277,11 @@ class Planning(models.Model):
             result.append([slot.id, name])
         return result
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        result = super(Planning, self).create(vals_list)
-
-        # recurring slots
-        result.mapped('recurrency_id')._repeat_slot()
-
-        return result
-
     def write(self, values):
-        # detach planning entry from recurrency
-        breaking_fields = self._get_fields_breaking_recurrency()
-        for fieldname in breaking_fields:
-            if fieldname in values and not values.get('recurrency_id'):
-                values.update({'recurrency_id': False})
         # warning on published shifts
         if 'publication_warning' not in values and (set(values.keys()) & set(self._get_fields_breaking_publication())):
             values['publication_warning'] = True
-
         result = super(Planning, self).write(values)
-
-        # recurring slots
-        if values.get('repeat'):
-            self.mapped('recurrency_id')._repeat_slot()
-
         return result
 
     # ----------------------------------------------------

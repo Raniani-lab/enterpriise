@@ -168,10 +168,17 @@ class Task(models.Model):
             task.quotation_count = mapped_data.get(task.id, 0)
 
     def _compute_material_line_totals(self):
+
+        def if_fsm_material_line(sale_line_id, task):
+            is_not_timesheet_line = sale_line_id.product_id != task.project_id.timesheet_product_id
+            is_not_empty = sale_line_id.product_uom_qty != 0
+            is_not_service_from_so = sale_line_id != task.sale_line_id
+            return all([is_not_timesheet_line, is_not_empty, is_not_service_from_so])
+
         for task in self:
-            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: sol.product_id != task.project_id.timesheet_product_id and sol.product_uom_qty != 0)
+            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: if_fsm_material_line(sol, task))
             task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
-            task.material_line_product_count = len(material_sale_lines.mapped('product_id'))
+            task.material_line_product_count = sum(material_sale_lines.mapped('product_uom_qty'))
 
     @api.depends('sale_order_id.invoice_status', 'sale_order_id.order_line')
     def _compute_fsm_to_invoice(self):
@@ -291,6 +298,7 @@ class Task(models.Model):
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
                 'partner': self.partner_id.id if self.partner_id else False,
+                'search_default_consumable': 1,
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">
                             Create a new product
@@ -375,9 +383,12 @@ class Task(models.Model):
 
     def _fsm_ensure_sale_order(self):
         """ get the SO of the task. If no one, create it and return it """
-        if self.sale_order_id:
-            return self.sale_order_id
-        return self._fsm_create_sale_order()
+        sale_order = self.sale_order_id
+        if not sale_order:
+            sale_order = self._fsm_create_sale_order()
+        if self.project_id.allow_timesheets and not self.sale_line_id:
+            self._fsm_create_sale_order_line()
+        return sale_order
 
     def _fsm_create_sale_order(self):
         """ Create the SO from the task, with the 'service product' sales line and link all timesheet to that line it """
@@ -394,13 +405,14 @@ class Task(models.Model):
         })
         sale_order.onchange_partner_id()
 
-        assign_current_user = self.env['sale.order'].check_access_rights('create', raise_exception=False)
-        if(not assign_current_user):
-            # write after creation since onchange_partner_id sets the current user
-            sale_order.write({'user_id': False})
+        # write after creation since onchange_partner_id sets the current user
+        sale_order.write({'user_id': self.user_id.id})
 
+        self.sale_order_id = sale_order
+
+    def _fsm_create_sale_order_line(self):
         sale_order_line = self.env['sale.order.line'].sudo().create({
-            'order_id': sale_order.id,
+            'order_id': self.sale_order_id.id,
             'product_id': self.project_id.timesheet_product_id.id,
             'project_id': self.project_id.id,
             'task_id': self.id,
@@ -419,7 +431,6 @@ class Task(models.Model):
         ]).write({
             'so_line': sale_order_line.id
         })
-        return sale_order
 
     def _get_fsm_overlap_domain(self):
         domain_mapping = {}

@@ -23,6 +23,8 @@
         'views/planning_templates.xml',
         'data/planning_cron.xml',
         'data/mail_data.xml',
+    ],
+    'demo': [
         'data/planning_demo.xml',
     ],
     'application': True,

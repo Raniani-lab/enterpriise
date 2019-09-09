@@ -336,9 +336,8 @@ class Planning(models.Model):
     def action_self_unassign(self):
         """ Allow planning user to self unassign from a shift, if the feature is activated """
         self.ensure_one()
-        # user must at least 'read' the shift to self unassign. (Prevent any user in the system (portal, ...) to unassign any shift)
-        if not self.check_access_rights('read', raise_exception=False):
-            raise AccessError(_("You don't the right to self unassign."))
+        # The following condition will check the read access on planning.slot, and that user must at least 'read' the
+        # shift to self unassign. Prevent any user in the system (portal, ...) to unassign any shift.
         if not self.allow_self_unassign:
             raise UserError(_("The company does not allow you to self unassign."))
         if self.employee_id != self.env.user.employee_id:

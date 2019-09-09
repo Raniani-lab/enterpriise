@@ -108,7 +108,7 @@ class RentalOrderLine(models.Model):
     qty_returned = fields.Float("Returned", default=0.0, copy=False)
     # returned_quantity = qty_delivered
 
-    pickup_date = fields.Datetime(string="Pickup")
+    pickup_date = fields.Datetime(string="Delivery")
     return_date = fields.Datetime(string="Return")
     reservation_begin = fields.Datetime("Pickup date - padding time", compute='_compute_reservation_begin', store=True)
 
@@ -180,8 +180,7 @@ class RentalOrderLine(models.Model):
 
     def get_rental_order_line_description(self):
         if (self.is_rental):
-            return "\n%s %s %s %s" % (
-                _("From"),
+            return "\n%s %s %s" % (
                 format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format='short'),
                 _("to"),
                 format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short'),

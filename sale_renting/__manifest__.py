@@ -2,7 +2,7 @@
 {
     'name': "Rental",
 
-    'summary': "Manage rental contracts, deliveries, returns",
+    'summary': "Manage rental contracts, deliveries and returns",
 
     'description': """
         Specify rentals of products (products, quotations, invoices, ...)

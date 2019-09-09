@@ -45,7 +45,7 @@ class ProductTemplate(models.Model):
         result = []
         rental_product_ids = self.filtered(lambda p: p.rent_ok).ids
         for res in res_names:
-            result.append((res[0], res[0] in rental_product_ids and "%s (R)" % res[1] or res[1]))
+            result.append((res[0], res[0] in rental_product_ids and "%s %s" % (res[1], _("(Rental)")) or res[1]))
         return result
 
 
@@ -61,7 +61,7 @@ class ProductProduct(models.Model):
         result = []
         rental_product_ids = self.filtered(lambda p: p.rent_ok).ids
         for res in res_names:
-            result.append((res[0], res[0] in rental_product_ids and "%s (R)" % res[1] or res[1]))
+            result.append((res[0], res[0] in rental_product_ids and "%s %s" % (res[1], _("(Rental)")) or res[1]))
         return result
 
     def _get_qty_in_rent_domain(self):

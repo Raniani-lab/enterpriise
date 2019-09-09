@@ -37,7 +37,7 @@ class RentalWizard(models.TransientModel):
                                      compute="_compute_duration")
 
     unit_price = fields.Monetary(
-        string="Unit Price", help="Best unit price for specified duration (less expensive).",
+        string="Unit Price", help="This price is based on the rental price rule that gives the cheapest price for requested duration.",
         readonly=False, default=0.0, required=True)
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist')
 

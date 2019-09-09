@@ -18,7 +18,7 @@ class RentalPricing(models.Model):
 
     _name = 'rental.pricing'
     _description = 'Pricing rule of rentals'
-    _order = 'unit, duration'
+    _order = 'price'
 
     duration = fields.Integer(
         string="Duration", required=True,

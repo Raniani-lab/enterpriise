@@ -17,7 +17,9 @@
               Available )
             </span>
           </div>
-          <field name="lot_ids" widget="many2many_tags" placeholder="Select available serial numbers." context="{'default_product_id': product_id}" attrs="{'invisible': [('tracking', '!=', 'serial')]}"/>
+          <field name="lot_ids" widget="many2many_tags" placeholder="Select available serial numbers."
+            attrs="{'invisible': [('tracking', '!=', 'serial')]}"
+            options="{'no_open':1, 'no_create_edit':1}"/>
       </field>
       <xpath expr="//notebook" position="inside">
         <page string="Stock" attrs="{'invisible': [('is_product_storable', '=', False)]}">

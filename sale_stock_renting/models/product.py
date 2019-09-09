@@ -10,8 +10,8 @@ class ProductTemplate(models.Model):
 
     # Padding Time
 
-    preparation_time = fields.Float(string="Before Deliver", company_dependent=True,
-                                    help="Temporarily make this product unavailable before deliver.")
+    preparation_time = fields.Float(string="Security Time", company_dependent=True,
+                                    help="Temporarily make this product unavailable before pickup.")
 
     # TODO replace by UI greying of unselectable conflicting choices ?
     @api.constrains('rent_ok', 'tracking')

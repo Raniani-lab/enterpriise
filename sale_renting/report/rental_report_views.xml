@@ -73,7 +73,7 @@
           <field name="context">{'search_default_confirmed_orders':1, 'group_by_no_leaf':1,'group_by':[], 'time_ranges': {'field':'pickup_date', 'range':'this_year'}}}</field>
       </record>
 
-      <menuitem id="menu_rental_reporting" name="Reporting" parent="rental_menu_root" sequence="4" groups="sales_team.group_sale_manager" action="action_rental_report"/>
+      <menuitem id="menu_rental_reporting" name="Reporting" parent="rental_menu_root" sequence="5" groups="sales_team.group_sale_manager" action="action_rental_report"/>
 
       <report
             id="action_report_rental_saleorder"

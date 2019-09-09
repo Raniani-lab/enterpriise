@@ -6,9 +6,10 @@
       <field name="arch" type="xml">
           <form js_class="rental_configurator_form">
               <!-- TODO change apply button string if edit mode?-->
-              <field name="product_id" readonly="1" nolabel="1"
-                context="{'default_rent_ok': 1, 'default_sale_ok': 0, 'default_purchase_ok': 0}"
-                options="{'no_open': True}"/>
+              <h1>
+                  <field name="product_id" readonly="1" nolabel="1"
+                    options="{'no_open': True}"/>
+              </h1>
               <group name="rental_configurator">
                 <group name="rental_specs">
                     <label for="pickup_date" string="Date"/>

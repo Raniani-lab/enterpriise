@@ -104,6 +104,7 @@ class HrWorkEntry(models.Model):
             FROM hr_work_entry b
             INNER JOIN hr_leave l ON b.employee_id = l.employee_id
             WHERE
+                b.active = TRUE AND
                 b.id IN %s AND
                 l.date_from < b.date_stop AND
                 l.date_to > b.date_start AND

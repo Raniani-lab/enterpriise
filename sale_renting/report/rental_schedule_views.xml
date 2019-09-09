@@ -21,10 +21,8 @@
                           ('return_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
               <filter name="Late" domain="[('late', '=', True), ('report_line_status', '!=', 'returned')]"/>
               <separator/>
-              <field name="user_id"/>
-              <field name="team_id"/>
               <field name="product_id"/>
-              <field name="categ_id"/>
+              <field name="user_id"/>
               <field name="partner_id"/>
               <field name="country_id"/>
               <group expand="0" string="Extended Filters">
@@ -38,7 +36,7 @@
                   <filter string="Customer Country" name="country_id" context="{'group_by':'country_id'}"/>
                   <filter string="Product" name="Product" context="{'group_by':'product_id'}"/>
                   <filter string="Product Category" name="Category" context="{'group_by':'categ_id'}"/>
-                  <filter name="status" string="Status" context="{'group_by':'rental_status'}"/>
+                  <filter name="status" string="Status" context="{'group_by':'report_line_status'}"/>
                   <filter string="Company" name="company" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
                   <separator/>
                   <filter string="Order Date" name="date" context="{'group_by':'order_date'}"/>
@@ -56,13 +54,15 @@
           <gantt string="Rental"
                  date_start="pickup_date"
                  date_stop="return_date"
-                 default_group_by='product_id'
+                 default_group_by="product_id"
                  create="false"
                  edit="false"
-                 decoration-info="report_line_status=='reserved'"
-                 decoration-warning="report_line_status=='pickedup' and not late"
-                 decoration-success="report_line_status=='returned'"
-                 decoration-danger="late and report_line_status != 'returned'">
+                 decoration-info="state in ['draft', 'sent']"
+                 decoration-danger="late"
+                 consolidation="product_uom_qty"
+                 consolidation_max="{'product_id': 100000000000, 'lot_id': 100000000000, 'report_line_status': 100000000000, 'categ_id': 100000000000, 'company_id': 100000000000, 'partner_id': 100000000000, 'team_id': 100000000000, 'user_id': 100000000000}"
+                 color="color"
+                 thumbnails="{'product_id': 'image_128', 'partner_id': 'image_128', 'user_id': 'image_128'}">
                  <templates>
                      <div t-name="gantt-popover" class="container-fluid">
                          <div class="row no-gutters">
@@ -71,6 +71,29 @@
                                      <li><strong>Order #: </strong> <t t-esc="name"/></li>
                                      <li><strong>Pickup : </strong> <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD hh:mm A')"/></li>
                                      <li><strong>Return : </strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD hh:mm A')"/></li>
+                                     <li><strong>Status : </strong> <t t-field="report_line_status"/>
+                                        <!-- t-field doesn't work, report_line_status isn't a field but a string -->
+                                        <t t-if="late">
+                                            Late
+                                            <t t-if="report_line_status == 'reserved'">
+                                                Pickup
+                                            </t>
+                                            <t t-elif="report_line_status == 'pickedup'">
+                                                Return
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                          <t t-if="report_line_status == 'pickedup'">
+                                              Picked-Up
+                                          </t>
+                                          <t t-elif="report_line_status == 'returned'">
+                                              Returned
+                                          </t>
+                                          <t t-else="">
+                                              Reserved
+                                          </t>
+                                        </t>
+                                     </li>
                                  </ul>
                              </div>
                          </div>
@@ -78,7 +101,9 @@
                  </templates>
               <field name="name"/>
               <field name="report_line_status"/>
+              <field name="state"/>
               <field name="late"/>
+              <field name="product_uom_qty"/>
           </gantt>
       </field>
   </record>
@@ -87,7 +112,7 @@
       <field name="name">Scheduled Rentals</field>
       <field name="res_model">sale.rental.schedule</field>
       <field name="view_mode">gantt</field>
-      <field name="context">{'search_default_Rentals':1, 'group_by_no_leaf':1,'group_by':[]}</field>
+      <field name="context">{'search_default_Rentals':1, 'group_by_no_leaf':1}</field>
   </record>
 
   <menuitem id="menu_rental_schedule" name="Schedule" parent="rental_menu_root" sequence="3" groups="sales_team.group_sale_manager" action="action_rental_order_schedule"/>

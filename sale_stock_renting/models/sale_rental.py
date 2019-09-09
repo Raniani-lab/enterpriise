@@ -236,7 +236,7 @@ class RentalOrderLine(models.Model):
         for line in self:
             line.unavailable_lot_ids = (line.reserved_lot_ids | line.pickedup_lot_ids) - line.returned_lot_ids
 
-    @api.depends('pickup_date', 'product_id.preparation_time')
+    @api.depends('pickup_date')
     def _compute_reservation_begin(self):
         lines = self.filtered(lambda line: line.is_rental)
         for line in lines:

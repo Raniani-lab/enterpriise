@@ -458,12 +458,10 @@ class Planning(models.Model):
     # ----------------------------------------------------
     # Business Methods
     # ----------------------------------------------------
-    @api.model
     def _name_get_fields(self):
         """ List of fields that can be displayed in the name_get """
         return ['employee_id', 'role_id']
 
-    @api.model
     def _get_fields_breaking_publication(self):
         """ Fields list triggering the `publication_warning` to True when updating shifts """
         return [
@@ -472,7 +470,6 @@ class Planning(models.Model):
             'end_datetime'
         ]
 
-    @api.model
     def _get_fields_breaking_recurrency(self):
         """Returns the list of field which when changed should break the relation of the forecast
             with it's recurrency

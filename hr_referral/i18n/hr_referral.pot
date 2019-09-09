@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
+"PO-Revision-Date: 2019-09-09 11:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -515,7 +515,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Hello,<br><br>There are some amazing job offers in my company! Have a look, "
-"they  can be interesting for you<br>%s"
+"they  can be interesting for you<br><a href=\"%s\">See Job Offers</a>"
 msgstr ""
 
 #. module: hr_referral
@@ -523,7 +523,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Hello,<br><br>There is an amazing job offer for %s in my company! It will be"
-" a fit for you<br>%s"
+" a fit for you<br><a href=\"%s\">See Job Offer</a>"
 msgstr ""
 
 #. module: hr_referral
@@ -572,12 +572,8 @@ msgid "Icon to indicate an exception activity."
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_unread
-msgid "If checked new messages require your attention."
-msgstr ""
-
-#. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction
+#: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_unread
 msgid "If checked, new messages require your attention."
 msgstr ""
 
@@ -816,7 +812,7 @@ msgstr ""
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr ""
 
 #. module: hr_referral
@@ -1278,6 +1274,14 @@ msgid "You do not have enough points to buy this product."
 msgstr ""
 
 #. module: hr_referral
+#: code:addons/hr_referral/models/hr_applicant.py:0
+#, python-format
+msgid ""
+"You don't have access to this application as your user is not linked to an "
+"employee."
+msgstr ""
+
+#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "You earned"
 msgstr ""
@@ -1307,7 +1311,7 @@ msgstr ""
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
-msgid "clicks"
+msgid "click(s)"
 msgstr ""
 
 #. module: hr_referral

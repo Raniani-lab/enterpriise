@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
-"PO-Revision-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
+"PO-Revision-Date: 2019-09-09 11:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,20 +25,6 @@ msgstr ""
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_print_via_proxy
 msgid "Bypass browser printing and prints via the hardware proxy."
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Cancel"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Cancel Payment Request"
 msgstr ""
 
 #. module: pos_iot
@@ -72,10 +58,8 @@ msgid "Configuration of payment terminal failed"
 msgstr ""
 
 #. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Connection error"
+#: model:ir.model.fields.selection,name:pos_iot.selection__pos_payment_method__use_payment_terminal__iot_box
+msgid "Connected to IOTBox"
 msgstr ""
 
 #. module: pos_iot
@@ -103,27 +87,8 @@ msgid "Could not connect to IoT scale"
 msgstr ""
 
 #. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Delete"
-msgstr ""
-
-#. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_payment_terminal
 msgid "Enables Payment Terminal integration."
-msgstr ""
-
-#. module: pos_iot
-#: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_session_view_form
-msgid "End of Session"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/js/payment.js:0
-#, python-format
-msgid "Error"
 msgstr ""
 
 #. module: pos_iot
@@ -138,20 +103,6 @@ msgstr ""
 #: code:addons/pos_iot/static/src/xml/pos.xml:0
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Force Done"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Force done"
 msgstr ""
 
 #. module: pos_iot
@@ -213,35 +164,8 @@ msgid "Ok"
 msgstr ""
 
 #. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Payment Successful"
-msgstr ""
-
-#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_payment_terminal
 msgid "Payment Terminal"
-msgstr ""
-
-#. module: pos_iot
-#: model:ir.model.fields,field_description:pos_iot.field_pos_payment__transaction_id
-msgid "Payment Transaction ID"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Payment request pending"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Payment reversed"
 msgstr ""
 
 #. module: pos_iot
@@ -251,6 +175,7 @@ msgstr ""
 
 #. module: pos_iot
 #. openerp-web
+#: code:addons/pos_iot/static/src/js/payment.js:0
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Payment terminal error"
@@ -279,18 +204,8 @@ msgid "Point of Sale Configuration"
 msgstr ""
 
 #. module: pos_iot
-#: model:ir.model,name:pos_iot.model_pos_order
-msgid "Point of Sale Orders"
-msgstr ""
-
-#. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_payment_method
 msgid "Point of Sale Payment Methods"
-msgstr ""
-
-#. module: pos_iot
-#: model:ir.model,name:pos_iot.model_pos_payment
-msgid "Point of Sale Payments"
 msgstr ""
 
 #. module: pos_iot
@@ -300,7 +215,7 @@ msgstr ""
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_payment_method__use_payment_terminal
-msgid "Record payments using a payment terminal"
+msgid "Record payments with a terminal on this journal."
 msgstr ""
 
 #. module: pos_iot
@@ -310,66 +225,9 @@ msgstr ""
 
 #. module: pos_iot
 #. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Request send to terminal"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Retry"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Retry Electronic payment"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Reverse"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Reverse Payment"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Reverse request sent to terminal"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Send"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
 #: code:addons/pos_iot/static/src/js/chrome.js:0
 #, python-format
 msgid "Send Balance"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Send Payment Request"
 msgstr ""
 
 #. module: pos_iot
@@ -394,18 +252,6 @@ msgid ""
 msgstr ""
 
 #. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/js/payment.js:0
-#, python-format
-msgid "There is already an electronic payment in progress."
-msgstr ""
-
-#. module: pos_iot
-#: model:ir.model.fields,field_description:pos_iot.field_pos_payment__card_type
-msgid "Type of card used"
-msgstr ""
-
-#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__use_payment_terminal
 msgid "Use a Payment Terminal"
 msgstr ""
@@ -413,13 +259,6 @@ msgstr ""
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_session_view_form
 msgid "Validate Closing & Post Entries"
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/pos.xml:0
-#, python-format
-msgid "Waiting for card"
 msgstr ""
 
 #. module: pos_iot

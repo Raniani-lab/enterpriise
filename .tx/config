@@ -142,6 +142,11 @@ file_filter = currency_rate_live/i18n/<lang>.po
 source_file = currency_rate_live/i18n/currency_rate_live.pot
 source_lang = en
 
+[odoo-13.delivery_barcode]
+file_filter = delivery_barcode/i18n/<lang>.po
+source_file = delivery_barcode/i18n/delivery_barcode.pot
+source_lang = en
+
 [odoo-13.delivery_bpost]
 file_filter = delivery_bpost/i18n/<lang>.po
 source_file = delivery_bpost/i18n/delivery_bpost.pot
@@ -180,6 +185,16 @@ source_lang = en
 [odoo-13.documents_account]
 file_filter = documents_account/i18n/<lang>.po
 source_file = documents_account/i18n/documents_account.pot
+source_lang = en
+
+[odoo-13.documents_fleet]
+file_filter = documents_fleet/i18n/<lang>.po
+source_file = documents_fleet/i18n/documents_fleet.pot
+source_lang = en
+
+[odoo-13.documents_hr]
+file_filter = documents_hr/i18n/<lang>.po
+source_file = documents_hr/i18n/documents_hr.pot
 source_lang = en
 
 [odoo-13.documents_hr_recruitment]
@@ -412,6 +427,11 @@ file_filter = payment_sepa_direct_debit/i18n/<lang>.po
 source_file = payment_sepa_direct_debit/i18n/payment_sepa_direct_debit.pot
 source_lang = en
 
+[odoo-13.planning]
+file_filter = planning/i18n/<lang>.po
+source_file = planning/i18n/planning.pot
+source_lang = en
+
 [odoo-13.pos_enterprise]
 file_filter = pos_enterprise/i18n/<lang>.po
 source_file = pos_enterprise/i18n/pos_enterprise.pot
@@ -540,6 +560,11 @@ source_lang = en
 [odoo-13.sale_subscription_dashboard]
 file_filter = sale_subscription_dashboard/i18n/<lang>.po
 source_file = sale_subscription_dashboard/i18n/sale_subscription_dashboard.pot
+source_lang = en
+
+[odoo-13.sale_subscription_sepa_direct_debit]
+file_filter = sale_subscription_sepa_direct_debit/i18n/<lang>.po
+source_file = sale_subscription_sepa_direct_debit/i18n/sale_subscription_sepa_direct_debit.pot
 source_lang = en
 
 [odoo-13.sale_subscription_taxcloud]

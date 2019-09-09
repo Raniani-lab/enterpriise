@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
+"PO-Revision-Date: 2019-09-09 11:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -334,11 +334,6 @@ msgid "A workspace will inherit the tags of its parent workspace"
 msgstr ""
 
 #. module: documents
-#: model:documents.tag,name:documents.documents_hr_documents_absences
-msgid "Absences"
-msgstr ""
-
-#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "Access"
 msgstr ""
@@ -506,11 +501,6 @@ msgstr ""
 #. module: documents
 #: model:ir.module.category,description:documents.module_category_documents_management
 msgid "Allows you to manage your documents."
-msgstr ""
-
-#. module: documents
-#: model:documents.tag,name:documents.documents_hr_documents_appraisal
-msgid "Appraisal"
 msgstr ""
 
 #. module: documents
@@ -682,7 +672,6 @@ msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_Contracts
-#: model:documents.tag,name:documents.documents_hr_documents_contracts
 #: model:documents.tag,name:documents.documents_internal_template_contracts
 msgid "Contracts"
 msgstr ""
@@ -1109,7 +1098,6 @@ msgid "Groups able to see the workspace and read/create/edit its documents."
 msgstr ""
 
 #. module: documents
-#: model:documents.folder,name:documents.documents_hr_folder
 #: model:documents.tag,name:documents.documents_internal_knowledge_hr
 msgid "HR"
 msgstr ""
@@ -1149,14 +1137,10 @@ msgid "Icon to indicate an exception activity."
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__message_unread
-#: model:ir.model.fields,help:documents.field_documents_share__message_unread
-msgid "If checked new messages require your attention."
-msgstr ""
-
-#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction
+#: model:ir.model.fields,help:documents.field_documents_document__message_unread
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
+#: model:ir.model.fields,help:documents.field_documents_share__message_unread
 msgid "If checked, new messages require your attention."
 msgstr ""
 
@@ -1452,7 +1436,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr ""
 
 #. module: documents
@@ -2042,7 +2026,6 @@ msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Type"
 msgstr ""
 

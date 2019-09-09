@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
-"PO-Revision-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
+"PO-Revision-Date: 2019-09-09 11:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -214,9 +214,29 @@ msgid "Accounting Information"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure__active
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__active
 msgid "Active"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_state
+msgid "Activity State"
 msgstr ""
 
 #. module: hr_payroll
@@ -289,8 +309,18 @@ msgid ""
 msgstr ""
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
+msgid "Approve Time Off"
+msgstr ""
+
+#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Archived"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_attachment_count
+msgid "Attachment Count"
 msgstr ""
 
 #. module: hr_payroll
@@ -793,6 +823,11 @@ msgid "Draft Slip"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__email_cc
+msgid "Email cc"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_employee
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__employee_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__employee_id
@@ -878,6 +913,21 @@ msgid "Fixed Amount"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_line__amount_percentage
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule__amount_percentage
 msgid "For example, enter 50.0 to apply a percentage of 50%"
@@ -948,11 +998,6 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__date_generated_to
 msgid "Generated To"
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
-msgid "Go To Conflicting Time Off"
 msgstr ""
 
 #. module: hr_payroll
@@ -1034,6 +1079,28 @@ msgid "ID"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_needaction
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_has_error
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__credit_note
 msgid ""
 "If its checked, indicates that all payslips generated from here are refund "
@@ -1076,6 +1143,11 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__note
 msgid "Internal Note"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_is_follower
+msgid "Is Follower"
 msgstr ""
 
 #. module: hr_payroll
@@ -1200,13 +1272,33 @@ msgid ""
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__email_cc
+msgid "List of cc from incoming emails."
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__paid
 msgid "Made Payment Order ? "
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__condition_range_max
 msgid "Maximum Range"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_ids
+msgid "Messages"
 msgstr ""
 
 #. module: hr_payroll
@@ -1267,6 +1359,21 @@ msgid "Net Wage"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_type__round_days__no
 msgid "No Rounding"
 msgstr ""
@@ -1293,6 +1400,11 @@ msgid "Nothing to show"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__number_of_days
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_worked_days__number_of_days
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -1307,9 +1419,29 @@ msgid "Number of Hours"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract__full_time_required_hours
 #: model:ir.model.fields,help:hr_payroll.field_resource_calendar__full_time_required_hours
 msgid "Number of hours to work to be considered as fulltime."
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_unread_counter
+msgid "Number of unread messages"
 msgstr ""
 
 #. module: hr_payroll
@@ -1434,8 +1566,10 @@ msgid "Payroll with SEPA payment"
 msgstr ""
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
 #: model:ir.actions.report,name:hr_payroll.action_report_payslip
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
+#, python-format
 msgid "Payslip"
 msgstr ""
 
@@ -1655,6 +1789,11 @@ msgid "Refund: "
 msgstr ""
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_view_form_inherit
+msgid "Refuse Time Off"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_employee__registration_number
 msgid "Registration Number of the Employee"
 msgstr ""
@@ -1690,6 +1829,11 @@ msgid "Resource Working Time"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_type__round_days_type
 msgid "Round Type"
 msgstr ""
@@ -1722,6 +1866,11 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_action_hr_salary_rule_form
 msgid "Rules"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_has_sms_error
+msgid "SMS Delivery error"
 msgstr ""
 
 #. module: hr_payroll
@@ -1908,6 +2057,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 msgid "Status"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
 msgstr ""
 
 #. module: hr_payroll
@@ -2119,6 +2277,11 @@ msgid "Type"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_type__is_unforeseen
 msgid "Unforeseen Absence"
 msgstr ""
@@ -2137,6 +2300,16 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_employee_grade_form
 msgid "Unpaid Work Entry Types"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_unread_counter
+msgid "Unread Messages Counter"
 msgstr ""
 
 #. module: hr_payroll
@@ -2197,6 +2370,16 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__warning_message
 msgid "Warning Message"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__website_message_ids
+msgid "Website communication history"
 msgstr ""
 
 #. module: hr_payroll

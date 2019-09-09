@@ -7,8 +7,8 @@
     'category': 'Uncategorized',
     'summary': 'Products from Documents',
     'description': """
-Add the ability to create products from the document module.
-and to get the option to send products' attachments to the documents app.
+Adds the ability to create products from the document module and adds the
+option to send products' attachments to the documents app.
 """,
     'website': ' ',
     'depends': ['documents', 'product'],

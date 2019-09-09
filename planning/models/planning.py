@@ -17,6 +17,17 @@ from odoo.tools import format_time
 _logger = logging.getLogger(__name__)
 
 
+def days_span(start_datetime, end_datetime):
+    if not isinstance(start_datetime, datetime):
+        raise ValueError
+    if not isinstance(end_datetime, datetime):
+        raise ValueError
+    end = datetime.combine(end_datetime, datetime.min.time())
+    start = datetime.combine(start_datetime, datetime.min.time())
+    duration = end - start
+    return duration.days + 1
+
+
 class Planning(models.Model):
     _name = 'planning.slot'
     _description = 'Planning Shift'
@@ -106,13 +117,10 @@ class Planning(models.Model):
     @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id')
     def _compute_working_days_count(self):
         for slot in self:
-            if slot.allocation_type == 'planning':
-                slot.working_days_count = 1
+            if slot.employee_id:
+                slot.working_days_count = days_span(slot.start_datetime, slot.end_datetime)
             else:
-                if slot.employee_id:
-                    slot.working_days_count = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime)['days']
-                else:
-                    slot.working_days_count = 0
+                slot.working_days_count = 0
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_overlap_slot_count(self):

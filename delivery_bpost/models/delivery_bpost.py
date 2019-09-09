@@ -47,7 +47,7 @@ class ProviderBpost(models.Model):
 
     def bpost_rate_shipment(self, order):
         bpost = BpostRequest(self.prod_environment, self.log_xml)
-        check_value = bpost.check_required_value(order.partner_shipping_id, order.carrier_id.bpost_delivery_nature, order.warehouse_id.partner_id, order=order)
+        check_value = bpost.check_required_value(order.partner_shipping_id, self.bpost_delivery_nature, order.warehouse_id.partner_id, order=order)
         if check_value:
             return {'success': False,
                     'price': 0.0,

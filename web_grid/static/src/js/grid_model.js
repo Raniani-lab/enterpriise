@@ -119,6 +119,9 @@ return AbstractModel.extend({
      * @returns {Promise}
      */
     reload: function (handle, params) {
+        if (params === 'special') {
+            return $.when();
+        }
         params = params || {};
         if ('context' in params) {
             // keep the grid anchor, when reloading view (e.i.: removing a filter in search view)

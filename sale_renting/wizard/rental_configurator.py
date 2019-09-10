@@ -2,8 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
-
+from odoo import api, fields, models, _
+import math
 
 class RentalWizard(models.TransientModel):
     _name = 'rental.wizard'
@@ -48,6 +48,8 @@ class RentalWizard(models.TransientModel):
         readonly=False, default=0.0, required=True)
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist')
 
+    pricing_explanation = fields.Html(string="Price Computation", help="Helper text to understand rental price computation.", compute="_compute_pricing_explanation")
+
     @api.depends('pickup_date', 'return_date')
     def _compute_pricing(self):
         for wizard in self:
@@ -77,6 +79,51 @@ class RentalWizard(models.TransientModel):
                 wizard.unit_price = wizard.pricing_id._compute_price(wizard.duration, wizard.duration_unit)
             elif wizard.duration > 0:
                 wizard.unit_price = wizard.product_id.lst_price
+
+    @api.depends('unit_price', 'pricing_id')
+    def _compute_pricing_explanation(self):
+        translated_pricing_duration_unit = dict()
+        for key, value in self.pricing_id._fields['unit']._description_selection(self.env):
+            translated_pricing_duration_unit[key] = value
+        for wizard in self:
+            if wizard.pricing_id and wizard.duration > 0 and wizard.unit_price != 0.0:
+                pricing_explanation = "%i * %i %s (%s)" % (
+                    math.ceil(wizard.duration / wizard.pricing_id.duration),
+                    wizard.pricing_id.duration,
+                    translated_pricing_duration_unit[wizard.pricing_id.unit],
+                    self.env['ir.qweb.field.monetary'].value_to_html(
+                        wizard.pricing_id.price, {
+                            'from_currency': wizard.pricing_id.currency_id,
+                            'display_currency': wizard.pricing_id.currency_id,
+                            'company_id': self.env.company.id,
+                        }))
+                if wizard.product_id.extra_hourly or wizard.product_id.extra_daily:
+                    pricing_explanation += "<br/>%s" % (_("Extras:"))
+                if wizard.product_id.extra_hourly:
+                    pricing_explanation += " %s%s" % (
+                        self.env['ir.qweb.field.monetary'].value_to_html(
+                            wizard.product_id.extra_hourly, {
+                                'from_currency': wizard.product_id.currency_id,
+                                'display_currency': wizard.product_id.currency_id,
+                                'company_id': self.env.company.id,
+                            }),
+                        _("/hour"))
+                if wizard.product_id.extra_daily:
+                    pricing_explanation += " %s%s" % (
+                        self.env['ir.qweb.field.monetary'].value_to_html(
+                            wizard.product_id.extra_daily, {
+                                'from_currency': wizard.product_id.currency_id,
+                                'display_currency': wizard.product_id.currency_id,
+                                'company_id': self.env.company.id,
+                            }),
+                        _("/day"))
+                wizard.pricing_explanation = pricing_explanation
+            else:
+                # if no pricing on product: explain only sales price is applied ?
+                if not wizard.product_id.rental_pricing_ids and wizard.duration:
+                    wizard.pricing_explanation = _("No rental price is defined on the product.\nThe price used is the sales price.")
+                else:
+                    wizard.pricing_explanation = ""
 
     _sql_constraints = [
         ('rental_period_coherence',

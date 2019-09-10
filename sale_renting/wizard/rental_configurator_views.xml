@@ -33,6 +33,7 @@
                   <field name="pricing_id" invisible="1"/>
                   <field name="unit_price"/>
                   <field name="currency_id" invisible="1"/>
+                  <field name="pricing_explanation" class="text-muted" nolabel="1"/>
                 </group>
                 </group>
                 <notebook name="debug" groups="base.group_no_one" invisible="1">

@@ -212,7 +212,7 @@ class AccountMove(models.Model):
         #TODO helper which is not of too much help and should be removed
         self.ensure_one()
         if cfdi is None and self.l10n_mx_edi_cfdi:
-            cfdi = base64.decodestring(self.l10n_mx_edi_cfdi)
+            cfdi = base64.decodebytes(self.l10n_mx_edi_cfdi)
         return fromstring(cfdi) if cfdi else None
 
     @api.model
@@ -254,7 +254,7 @@ class AccountMove(models.Model):
         #get the xslt path
         xslt_path = CFDI_XSLT_CADENA_TFD
         #get the cfdi as eTree
-        cfdi = base64.decodestring(self.l10n_mx_edi_cfdi)
+        cfdi = base64.decodebytes(self.l10n_mx_edi_cfdi)
         cfdi = self.l10n_mx_edi_get_xml_etree(cfdi)
         cfdi = self.l10n_mx_edi_get_tfd_etree(cfdi)
         #return the cadena
@@ -353,7 +353,7 @@ class AccountMove(models.Model):
         username = pac_info['username']
         password = pac_info['password']
         for inv in self:
-            cfdi = base64.decodestring(inv.l10n_mx_edi_cfdi)
+            cfdi = base64.decodebytes(inv.l10n_mx_edi_cfdi)
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
@@ -425,7 +425,7 @@ class AccountMove(models.Model):
         username = pac_info['username']
         password = pac_info['password']
         for inv in self:
-            cfdi = base64.decodestring(inv.l10n_mx_edi_cfdi)
+            cfdi = base64.decodebytes(inv.l10n_mx_edi_cfdi)
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
@@ -665,7 +665,7 @@ class AccountMove(models.Model):
             # To avoid this problem, we read the 'datas' directly on the disk.
             datas = attachment_id._file_read(attachment_id.store_fname)
             inv.l10n_mx_edi_cfdi = datas
-            cfdi = base64.decodestring(datas).replace(
+            cfdi = base64.decodebytes(datas).replace(
                 b'xmlns:schemaLocation', b'xsi:schemaLocation')
             tree = inv.l10n_mx_edi_get_xml_etree(cfdi)
             # if already signed, extract uuid
@@ -930,7 +930,7 @@ class AccountMove(models.Model):
         values = {
             'record': self,
         }
-        tree = fromstring(base64.decodestring(xml_signed))
+        tree = fromstring(base64.decodebytes(xml_signed))
         addenda_node = fromstring(addenda.render(values=values))
         if addenda_node.tag != '{http://www.sat.gob.mx/cfd/3}Addenda':
             node = etree.Element(etree.QName(
@@ -941,7 +941,7 @@ class AccountMove(models.Model):
         self.message_post(
             body=_('Addenda has been added in the CFDI with success'),
             subtype='account.mt_invoice_validated')
-        xml_signed = base64.encodestring(etree.tostring(
+        xml_signed = base64.encodebytes(etree.tostring(
             tree, pretty_print=True, xml_declaration=True, encoding='UTF-8'))
         attachment_id = self.l10n_mx_edi_retrieve_last_attachment()
         attachment_id.write({
@@ -1050,7 +1050,7 @@ class AccountMove(models.Model):
                 'name': filename,
                 'res_id': inv.id,
                 'res_model': inv._name,
-                'datas': base64.encodestring(cfdi),
+                'datas': base64.encodebytes(cfdi),
                 'description': 'Mexican invoice',
                 })
             inv.message_post(

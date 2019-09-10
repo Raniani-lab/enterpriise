@@ -77,7 +77,7 @@ class TestAccountReportsCommon(SavepointCase):
 
         chart_template = cls.env.ref('l10n_generic_coa.configurable_chart_template', raise_if_not_found=False)
         if not chart_template:
-            _logger.warn('Reports Tests skipped because l10n_generic_coa is not installed')
+            _logger.warning('Reports Tests skipped because l10n_generic_coa is not installed')
             cls.skipTest("l10n_generic_coa not installed")
 
         # Create companies.
@@ -386,7 +386,7 @@ class TestAccountReportsCommon(SavepointCase):
         used_currency = currency or self.env.company.currency_id
 
         # Compare the table length to see if any line is missing
-        self.assertEquals(len(lines), len(expected_values))
+        self.assertEqual(len(lines), len(expected_values))
 
         # Compare cell by cell the current value with the expected one.
         i = 0

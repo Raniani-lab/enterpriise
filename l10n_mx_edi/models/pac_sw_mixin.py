@@ -85,7 +85,7 @@ class PACSWMixin(models.AbstractModel):
         if (response_json['status'] == 'error' and
                 response_json['message'].startswith('307')):
             # XML signed previously
-            cfdi = base64.encodestring(
+            cfdi = base64.encodebytes(
                 response_json['messageDetail'].encode('UTF-8'))
             cfdi = cfdi.decode('UTF-8')
             response_json['data'] = {'cfdi': cfdi}

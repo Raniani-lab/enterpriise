@@ -77,7 +77,7 @@ class TestDeliveryEasypost(TransactionCase):
         in order to call the '_put_in_pack' method.
         """
         wiz_action = picking.put_in_pack()
-        self.assertEquals(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
+        self.assertEqual(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
         wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
             'delivery_packaging_id': picking.carrier_id.easypost_default_packaging_id.id
         })
@@ -108,7 +108,7 @@ class TestDeliveryEasypost(TransactionCase):
         choose_delivery_carrier.button_confirm()
         sale_order_fedex.action_confirm()
 
-        self.assertEquals(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")
+        self.assertEqual(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")
         picking_fedex = sale_order_fedex.picking_ids[0]
 
         picking_fedex.action_assign()
@@ -150,9 +150,9 @@ class TestDeliveryEasypost(TransactionCase):
         choose_delivery_carrier.button_confirm()
         sale_order_fedex.action_confirm()
 
-        self.assertEquals(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")
+        self.assertEqual(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")
         picking_fedex = sale_order_fedex.picking_ids[0]
-        self.assertEquals(picking_fedex.carrier_id.id, sale_order_fedex.carrier_id.id,
+        self.assertEqual(picking_fedex.carrier_id.id, sale_order_fedex.carrier_id.id,
                           "Carrier is not the same on Picking and on SO(easypost-fedex).")
 
         picking_fedex.action_assign()
@@ -198,9 +198,9 @@ class TestDeliveryEasypost(TransactionCase):
         choose_delivery_carrier.button_confirm()
         sale_order_fedex.action_confirm()
 
-        self.assertEquals(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")
+        self.assertEqual(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")
         picking_fedex = sale_order_fedex.picking_ids[0]
-        self.assertEquals(picking_fedex.carrier_id.id, sale_order_fedex.carrier_id.id,
+        self.assertEqual(picking_fedex.carrier_id.id, sale_order_fedex.carrier_id.id,
                           "Carrier is not the same on Picking and on SO(easypost-fedex).")
 
         picking_fedex.action_assign()

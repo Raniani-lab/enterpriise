@@ -39,13 +39,13 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         })
 
         # Check account invoice state should be draft.
-        self.assertEquals(customer_invoice.state, 'draft', 'Initially customer invoice should be in the "Draft" state')
+        self.assertEqual(customer_invoice.state, 'draft', 'Initially customer invoice should be in the "Draft" state')
 
         # Validate invoice
         customer_invoice.with_user(self.res_users_company_a).post()
 
         # Check Invoice status should be open after validate.
-        self.assertEquals(customer_invoice.state, 'posted', 'Invoice should be in Open state.')
+        self.assertEqual(customer_invoice.state, 'posted', 'Invoice should be in Open state.')
 
         # I check that the vendor bill is created with proper data.
         supplier_invoice = self.env['account.move'].with_user(self.res_users_company_b).search([('type', '=', 'in_invoice')], limit=1)

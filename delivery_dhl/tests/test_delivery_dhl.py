@@ -42,7 +42,7 @@ class TestDeliveryDHL(TransactionCase):
         in order to call the '_put_in_pack' method.
         """
         wiz_action = picking.put_in_pack()
-        self.assertEquals(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
+        self.assertEqual(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
         wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
             'delivery_packaging_id': picking.carrier_id.dhl_default_packaging_id.id
         })
@@ -73,10 +73,10 @@ class TestDeliveryDHL(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -87,7 +87,7 @@ class TestDeliveryDHL(TransactionCase):
 
         picking.cancel_shipment()
         self.assertFalse(picking.carrier_tracking_ref, "Carrier Tracking code has not been properly deleted")
-        self.assertEquals(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
+        self.assertEqual(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
 
     def test_02_dhl_basic_international_flow(self):
         SaleOrder = self.env['sale.order']
@@ -115,10 +115,10 @@ class TestDeliveryDHL(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -129,7 +129,7 @@ class TestDeliveryDHL(TransactionCase):
 
         picking.cancel_shipment()
         self.assertFalse(picking.carrier_tracking_ref, "Carrier Tracking code has not been properly deleted")
-        self.assertEquals(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
+        self.assertEqual(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
 
     def test_03_dhl_multipackage_international_flow(self):
         SaleOrder = self.env['sale.order']
@@ -162,10 +162,10 @@ class TestDeliveryDHL(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         move0 = picking.move_lines[0]
         move0.quantity_done = 1.0
@@ -173,7 +173,7 @@ class TestDeliveryDHL(TransactionCase):
         move1 = picking.move_lines[1]
         move1.quantity_done = 1.0
         self.wiz_put_in_pack(picking)
-        self.assertEquals(len(picking.move_line_ids.mapped('result_package_id')), 2, "2 Packages should have been created at this point")
+        self.assertEqual(len(picking.move_line_ids.mapped('result_package_id')), 2, "2 Packages should have been created at this point")
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking.action_done()
@@ -182,7 +182,7 @@ class TestDeliveryDHL(TransactionCase):
 
         picking.cancel_shipment()
         self.assertFalse(picking.carrier_tracking_ref, "Carrier Tracking code has not been properly deleted")
-        self.assertEquals(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
+        self.assertEqual(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
 
     def test_04_dhl_flow_from_delivery_order(self):
 

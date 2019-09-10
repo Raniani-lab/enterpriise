@@ -42,8 +42,8 @@ class TestQualityCheck(TestQualityCommon):
         self.picking_in.action_confirm()
 
         # Check Quality Check for incoming shipment is created and check it's state is 'none'.
-        self.assertEquals(len(self.picking_in.check_ids), 1)
-        self.assertEquals(self.picking_in.check_ids.quality_state, 'none')
+        self.assertEqual(len(self.picking_in.check_ids), 1)
+        self.assertEqual(self.picking_in.check_ids.quality_state, 'none')
 
         # 'Pass' Quality Checks of incoming shipment.
         self.picking_in.check_ids.do_pass()
@@ -52,7 +52,7 @@ class TestQualityCheck(TestQualityCommon):
         self.picking_in.button_validate()
 
         # Now check state of quality check.
-        self.assertEquals(self.picking_in.check_ids.quality_state, 'pass')
+        self.assertEqual(self.picking_in.check_ids.quality_state, 'pass')
 
     def test_01_picking_quality_check_type_text(self):
 
@@ -93,11 +93,11 @@ class TestQualityCheck(TestQualityCommon):
         self.picking_in.action_confirm()
 
         # Check Quality Check for incoming shipment is created and check it's state is 'none'.
-        self.assertEquals(len(self.picking_in.check_ids), 1)
-        self.assertEquals(self.picking_in.check_ids.quality_state, 'none')
+        self.assertEqual(len(self.picking_in.check_ids), 1)
+        self.assertEqual(self.picking_in.check_ids.quality_state, 'none')
 
         # Check that the Quality Check on the picking has 'picture' as test_type
-        self.assertEquals(self.picking_in.check_ids[0].test_type, 'text')
+        self.assertEqual(self.picking_in.check_ids[0].test_type, 'text')
 
     def test_02_picking_quality_check_type_picture(self):
 
@@ -133,8 +133,8 @@ class TestQualityCheck(TestQualityCommon):
         # Confirm incoming shipment.
         self.picking_in.action_confirm()
         # Check Quality Check for incoming shipment is created and check it's state is 'none'.
-        self.assertEquals(len(self.picking_in.check_ids), 1)
-        self.assertEquals(self.picking_in.check_ids.quality_state, 'none')
+        self.assertEqual(len(self.picking_in.check_ids), 1)
+        self.assertEqual(self.picking_in.check_ids.quality_state, 'none')
 
         # Check that the Quality Check on the picking has 'picture' as test_type
-        self.assertEquals(self.picking_in.check_ids[0].test_type, 'picture')
+        self.assertEqual(self.picking_in.check_ids[0].test_type, 'picture')

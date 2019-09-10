@@ -46,27 +46,27 @@ class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
 
     def test_pricing(self):
         # check pricing returned = expected
-        self.assertEquals(
+        self.assertEqual(
             self.product_id._get_best_pricing_rule(duration=9.0, unit='hour')._compute_price(9.0, 'hour'),
             30.0
         )
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id._get_best_pricing_rule(duration=11.0, unit='hour')._compute_price(11.0, 'hour'),
             38.5
         )
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id._get_best_pricing_rule(duration=16.0, unit='hour')._compute_price(16.0, 'hour'),
             56.0
         )
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id._get_best_pricing_rule(duration=20, unit='hour')._compute_price(20.0, 'hour'),
             60.0
         )
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id._get_best_pricing_rule(duration=24.0, unit='hour')._compute_price(24.0, 'hour'),
             60.0
         )
@@ -80,12 +80,12 @@ class TestRentalCommon(odoo.tests.common.SingleTransactionCase):
         self.product_id.extra_hourly = 2.5
         self.product_id.extra_daily = 15.0
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id._compute_delay_price(timedelta(hours=5.0)),
             12.5
         )
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id._compute_delay_price(timedelta(hours=5.0, days=6)),
             102.5
         )

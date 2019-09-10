@@ -156,7 +156,7 @@ class TestRentalCommon(common.SingleTransactionCase):
 
     def test_rental_product_flow(self):
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.qty_available,
             4
         )
@@ -165,7 +165,7 @@ class TestRentalCommon(common.SingleTransactionCase):
             'product_uom_qty': 3
         })
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin,
                 self.order_line_id1.return_date,
@@ -182,7 +182,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         })
 
         """ In sale order warehouse """
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.with_context(
                 warehouse=self.order_line_id1.order_id.warehouse_id.id,
                 from_date=self.order_line_id1.reservation_begin,
@@ -192,7 +192,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         )
 
         """ In company internal rental location (in stock valuation but not in available qty) """
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.with_context(
                 location=self.env.company.rental_loc_id.id,
                 from_date=self.order_line_id1.pickup_date,
@@ -202,13 +202,13 @@ class TestRentalCommon(common.SingleTransactionCase):
         )
 
         """ In company warehouses """
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.qty_available,
             1
         )
 
         """ In company stock valuation """
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.with_context(company_owned=True).qty_available,
             4
         )
@@ -222,7 +222,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         })
 
         """ In sale order warehouse """
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.with_context(
                 warehouse=self.order_line_id1.order_id.warehouse_id.id
             ).qty_available,
@@ -230,7 +230,7 @@ class TestRentalCommon(common.SingleTransactionCase):
         )
 
         """ In company internal rental location (in stock valuation but not in available qty) """
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.with_context(
                 location=self.env.company.rental_loc_id.id,
                 from_date=self.order_line_id1.pickup_date,
@@ -240,13 +240,13 @@ class TestRentalCommon(common.SingleTransactionCase):
         )
 
         """ In company warehouses """
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.qty_available,
             3
         )
 
         """ In company stock valuation """
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.with_context(company_owned=True).qty_available,
             4
         )
@@ -259,7 +259,7 @@ class TestRentalCommon(common.SingleTransactionCase):
             'qty_returned': 3
         })
 
-        self.assertEquals(
+        self.assertEqual(
             self.product_id.qty_available,
             4.0
         )
@@ -269,7 +269,7 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         lots = self.env['stock.production.lot'].search([('product_id', '=', self.tracked_product_id.id)])
         rentable_lots = self.env['stock.production.lot']._get_available_lots(self.tracked_product_id)
-        self.assertEquals(set(lots.ids), set(rentable_lots.ids))  # set is here to ensure that order wont break test
+        self.assertEqual(set(lots.ids), set(rentable_lots.ids))  # set is here to ensure that order wont break test
 
         self.order_line_id2.reserved_lot_ids += self.lot_id1
         self.order_line_id2.product_uom_qty = 1.0
@@ -278,7 +278,7 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         # Ensure lots are unreserved if other lots are picked up in their place
         # and qty pickedup = product_uom_qty (qty reserved)
-        self.assertEquals(self.order_line_id2.reserved_lot_ids, self.order_line_id2.pickedup_lot_ids)
+        self.assertEqual(self.order_line_id2.reserved_lot_ids, self.order_line_id2.pickedup_lot_ids)
 
         return
 

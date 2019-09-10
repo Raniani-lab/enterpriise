@@ -106,7 +106,7 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
         wizard.action_validate()
         # check timesheet date on the employee
         end_of_week = (week_before + END_OF['week'])
-        self.assertEquals(self.employee_user.timesheet_validated, end_of_week, 'validate timesheet date should be the end of the week')
+        self.assertEqual(self.employee_user.timesheet_validated, end_of_week, 'validate timesheet date should be the end of the week')
 
         self.assertTrue(any([delivered_timesheet1.validated, ordered_timesheet1.validated]), 'Timesheet should be validated')
         # check timesheet is linked to SOL

@@ -24,7 +24,7 @@ class TestInterCompanyPurchaseToSale(TestInterCompanyRulesCommon):
         # Confirm Purchase order
         purchase_order.button_confirm()
         # Check purchase order state should be purchase.
-        self.assertEquals(purchase_order.state, 'purchase', 'Purchase order should be in purchase state.')
+        self.assertEqual(purchase_order.state, 'purchase', 'Purchase order should be in purchase state.')
         return purchase_order
 
     def validate_generated_sale_order(self, purchase_order, company, partner):

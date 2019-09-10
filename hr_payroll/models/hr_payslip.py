@@ -114,7 +114,7 @@ class HrPayslip(models.Model):
                 self.env['ir.attachment'].create({
                     'name': pdf_name,
                     'type': 'binary',
-                    'datas': base64.encodestring(pdf_content),
+                    'datas': base64.encodebytes(pdf_content),
                     'res_model': payslip._name,
                     'res_id': payslip.id
                 })

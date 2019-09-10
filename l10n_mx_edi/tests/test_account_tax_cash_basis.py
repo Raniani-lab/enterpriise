@@ -203,20 +203,20 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         """Test if the company is Mexican. Let's assert the currency conversion
         prior to begin and not waste time with further debug."""
 
-        self.assertEquals(
+        self.assertEqual(
             self.env.company.country_id,
             self.env.ref('base.mx'), "The company's country is not Mexico")
 
         xrate = self.mxn._convert(1, self.usd, self.company, self.two_days_ago)
-        self.assertEquals(
+        self.assertEqual(
             xrate, 0.80, 'two days ago in USD at a rate => 1MXN = 0.80 USD')
 
         xrate = self.mxn._convert(1, self.usd, self.company, self.yesterday)
-        self.assertEquals(
+        self.assertEqual(
             xrate, 1.00, 'yesterday in USD at a rate => 1MXN = 1.00 USD')
 
         xrate = self.mxn._convert(1, self.usd, self.company, self.today)
-        self.assertEquals(
+        self.assertEqual(
             xrate, 1.25, 'today in USD at a rate => 1MXN = 1.25 USD')
 
     def test_01_cash_basis_multicurrency_payment_before_invoice(self):
@@ -289,14 +289,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             -1250)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 40)
 
     def test_02_cash_basis_multicurrency_payment_after_invoice(self):
@@ -369,14 +369,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             -800)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), -72)
 
     def test_03_cash_basis_multicurrency_payment_same_day_than_invoice(self):
@@ -441,14 +441,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             -1250)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 0)
 
     def test_04_invoice_company_currency_payment_not_company_currency(self):
@@ -514,14 +514,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             -1000)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 0)
 
     def test_05_invoice_not_company_currency_payment_in_company_currency(self):
@@ -596,7 +596,7 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             -800)
 
@@ -604,7 +604,7 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), -32)
 
     def test_06_invoice_company_currency_payment_not_company_currency(self):
@@ -670,14 +670,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             -1000)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 0)
 
     def test_07_cash_basis_multicurrency_payment_before_invoice(self):
@@ -737,14 +737,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             1250)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), -40)
 
     def test_08_cash_basis_multicurrency_payment_after_invoice(self):
@@ -804,14 +804,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             800)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 72)
 
     def test_09_cash_basis_multicurrency_payment_same_day_than_invoice(self):
@@ -862,14 +862,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             1250)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 0)
 
     def test_10_invoice_company_currency_payment_not_company_currency(self):
@@ -922,14 +922,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             1000)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 0)
 
     def test_11_invoice_not_company_currency_payment_in_company_currency(self):
@@ -991,7 +991,7 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             800)
 
@@ -999,7 +999,7 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 32)
 
     def test_12_invoice_company_currency_payment_not_company_currency(self):
@@ -1052,14 +1052,14 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision),
             1000)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), 0)
 
     def test_14_cash_basis_multicurrency_creditnote_after_invoice(self):
@@ -1141,11 +1141,11 @@ class TestL10nMxTaxCashBasis(common.InvoiceTransactionCase):
         base_amls = self.account_move_line_model.search(
             [('account_id', '=', self.account_tax_cash_basis.id)])
         base_at_payment = sum(base_amls.filtered('tax_ids').mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(base_at_payment, precision_digits=self.precision), 0)
 
         tax_amls = self.account_move_line_model.search(
             [('account_id', '=', self.tax_account.id)])
         tax_diff = sum(tax_amls.mapped('balance'))
-        self.assertEquals(
+        self.assertEqual(
             float_round(tax_diff, precision_digits=self.precision), -72)

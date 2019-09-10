@@ -18,14 +18,14 @@ class TestBillsPrediction(AccountingTestCase):
             invoice_line_form.name = description
         move = invoice_form.save()
 
-        self.assertEquals(move.invoice_line_ids.account_id, expected_account, "Account %s should have been predicted instead of %s" % (expected_account.code, move.invoice_line_ids.account_id.code))
+        self.assertEqual(move.invoice_line_ids.account_id, expected_account, "Account %s should have been predicted instead of %s" % (expected_account.code, move.invoice_line_ids.account_id.code))
 
         if account_to_set:
             invoice_form = Form(move)
             with invoice_form.invoice_line_ids.edit(0) as invoice_line_form:
                 invoice_line_form.account_id = account_to_set
                 # We check that the account doesn't get another value due to onchange calling itself
-                self.assertEquals(invoice_line_form.account_id, account_to_set, "Account %s has been assigned manually, but has been changed to account %s" % (account_to_set.code, invoice_line_form.account_id.code))
+                self.assertEqual(invoice_line_form.account_id, account_to_set, "Account %s has been assigned manually, but has been changed to account %s" % (account_to_set.code, invoice_line_form.account_id.code))
             move = invoice_form.save()
         move.post()
 

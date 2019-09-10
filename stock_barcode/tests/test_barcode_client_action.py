@@ -442,7 +442,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         delivery_picking.action_confirm()
         delivery_picking.action_assign()
-        self.assertEquals(len(delivery_picking.move_lines), 2)
+        self.assertEqual(len(delivery_picking.move_lines), 2)
 
         def picking_write_mock(self, vals):
             global CALL_COUNT

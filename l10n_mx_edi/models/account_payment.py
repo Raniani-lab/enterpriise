@@ -176,7 +176,7 @@ class AccountPayment(models.Model):
         #TODO helper which is not of too much help and should be removed
         self.ensure_one()
         if cfdi is None:
-            cfdi = base64.decodestring(self.l10n_mx_edi_cfdi)
+            cfdi = base64.decodebytes(self.l10n_mx_edi_cfdi)
         return fromstring(cfdi)
 
     @api.model
@@ -213,7 +213,7 @@ class AccountPayment(models.Model):
         #get the xslt path
         xslt_path = CFDI_XSLT_CADENA_TFD
         #get the cfdi as eTree
-        cfdi = base64.decodestring(self.l10n_mx_edi_cfdi)
+        cfdi = base64.decodebytes(self.l10n_mx_edi_cfdi)
         cfdi = self.l10n_mx_edi_get_xml_etree(cfdi)
         cfdi = self.l10n_mx_edi_get_tfd_etree(cfdi)
         #return the cadena
@@ -303,7 +303,7 @@ class AccountPayment(models.Model):
             # To avoid this problem, we read the 'datas' directly on the disk.
             datas = attachment_id._file_read(attachment_id.store_fname)
             rec.l10n_mx_edi_cfdi = datas
-            tree = rec.l10n_mx_edi_get_xml_etree(base64.decodestring(datas))
+            tree = rec.l10n_mx_edi_get_xml_etree(base64.decodebytes(datas))
             tfd_node = rec.l10n_mx_edi_get_tfd_etree(tree)
             if tfd_node is not None:
                 rec.l10n_mx_edi_cfdi_uuid = tfd_node.get('UUID')
@@ -335,7 +335,7 @@ class AccountPayment(models.Model):
                 'name': filename,
                 'res_id': rec.id,
                 'res_model': rec._name,
-                'datas': base64.encodestring(cfdi),
+                'datas': base64.encodebytes(cfdi),
                 'description': _('Mexican CFDI to payment'),
                 })
             rec.message_post(
@@ -636,7 +636,7 @@ class AccountPayment(models.Model):
         username = pac_info['username']
         password = pac_info['password']
         for rec in self:
-            cfdi = base64.decodestring(rec.l10n_mx_edi_cfdi)
+            cfdi = base64.decodebytes(rec.l10n_mx_edi_cfdi)
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)
@@ -684,7 +684,7 @@ class AccountPayment(models.Model):
         username = pac_info['username']
         password = pac_info['password']
         for rec in self:
-            cfdi = base64.decodestring(rec.l10n_mx_edi_cfdi)
+            cfdi = base64.decodebytes(rec.l10n_mx_edi_cfdi)
             try:
                 transport = Transport(timeout=20)
                 client = Client(url, transport=transport)

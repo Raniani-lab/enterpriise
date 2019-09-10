@@ -43,7 +43,7 @@ class TestAccountReportsFilters(AccountingTestCase):
         report._init_filter_date(options)
         report._init_filter_comparison(options)
 
-        self.assertEquals(len(options['comparison']['periods']), len(expected_period_values))
+        self.assertEqual(len(options['comparison']['periods']), len(expected_period_values))
 
         for i, expected_values in enumerate(expected_period_values):
             self.assertDictEqual(options['comparison']['periods'][i], expected_values)

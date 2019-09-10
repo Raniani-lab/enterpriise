@@ -81,10 +81,10 @@ class TestDeliveryBpost(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -117,10 +117,10 @@ class TestDeliveryBpost(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -154,14 +154,14 @@ class TestDeliveryBpost(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         delivery_line = sale_order.order_line.filtered(lambda line: line.is_delivery)
-        self.assertEquals(len(delivery_line), 1, "The delivery line is not present on the SO.")
-        self.assertEquals(delivery_line.price_unit, 0, "The delivery cost should be 0.")
+        self.assertEqual(len(delivery_line), 1, "The delivery line is not present on the SO.")
+        self.assertEqual(delivery_line.price_unit, 0, "The delivery cost should be 0.")
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -170,7 +170,7 @@ class TestDeliveryBpost(TransactionCase):
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "bpost carrying price is probably incorrect")
         # Check that the delivery cost (previously set to 0) has been correctly updated
-        self.assertEquals(picking.carrier_price, delivery_line.price_unit, "The delivery cost is not updated")
+        self.assertEqual(picking.carrier_price, delivery_line.price_unit, "The delivery cost is not updated")
 
     def test_03_bpost_flow_from_delivery_order(self):
 

@@ -48,8 +48,8 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
             'zip': '37200',
         })
         certificate = self.env['l10n_mx_edi.certificate'].create({
-            'content': base64.encodestring(self.cert),
-            'key': base64.encodestring(self.cert_key),
+            'content': base64.encodebytes(self.cert),
+            'key': base64.encodebytes(self.cert_key),
             'password': self.cert_password,
         })
         self.account_settings.create({
@@ -79,7 +79,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
             ('res_model', '=', 'account.move'),
             ('name', '=', invoice.l10n_mx_edi_cfdi_name)])
         error_msg = 'You cannot delete a set of documents which has a legal'
-        with self.assertRaisesRegexp(ValidationError, error_msg):
+        with self.assertRaisesRegex(ValidationError, error_msg):
             xml_attachment.unlink()
         # Creates a dummy PDF to attach it and then try to delete it
         pdf_filename = '%s.pdf' % os.path.splitext(xml_attachment.name)[0]
@@ -87,7 +87,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
             'name': pdf_filename,
             'res_id': invoice.id,
             'res_model': 'account.move',
-            'datas': base64.encodestring(b'%PDF-1.3'),
+            'datas': base64.encodebytes(b'%PDF-1.3'),
         })
         pdf_attachment.unlink()
 
@@ -135,8 +135,8 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
                          invoice.message_ids.mapped('body'))
         xml_attachs = invoice.l10n_mx_edi_retrieve_attachments()
         self.assertEqual(len(xml_attachs), 2)
-        xml_1 = objectify.fromstring(base64.decodestring(xml_attachs[0].datas))
-        xml_2 = objectify.fromstring(base64.decodestring(xml_attachs[1].datas))
+        xml_1 = objectify.fromstring(base64.decodebytes(xml_attachs[0].datas))
+        xml_2 = objectify.fromstring(base64.decodebytes(xml_attachs[1].datas))
         if hasattr(xml_2, 'Addenda'):
             xml_2.remove(xml_2.Addenda)
         self.assertEqualXML(xml_1, xml_2)
@@ -193,7 +193,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         self.assertEqual(invoice.state, "posted")
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
-        xml_str = base64.decodestring(invoice.message_ids[-2].attachment_ids.datas)
+        xml_str = base64.decodebytes(invoice.message_ids[-2].attachment_ids.datas)
         xml = objectify.fromstring(xml_str)
         xml_expected = objectify.fromstring(
             '<ADDENDA10 xmlns:cfdi="http://www.sat.gob.mx/cfd/3" '
@@ -228,7 +228,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         refund.refresh()
         refund.post()
         xml = refund.l10n_mx_edi_get_xml_etree()
-        self.assertEquals(xml.CfdiRelacionados.CfdiRelacionado.get('UUID'),
+        self.assertEqual(xml.CfdiRelacionados.CfdiRelacionado.get('UUID'),
                           invoice.l10n_mx_edi_cfdi_uuid,
                           'Invoice UUID is different to CFDI related')
 
@@ -334,7 +334,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         msg = ("Error in the products:.*%s.* The format of the customs "
                "number is incorrect.*For example: 15  48  3009  0001234") % (
                    invoice.invoice_line_ids.product_id.name)
-        with self.assertRaisesRegexp(ValidationError, msg):
+        with self.assertRaisesRegex(ValidationError, msg):
             invoice.post()
 
         node_expected = '''

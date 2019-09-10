@@ -118,7 +118,7 @@ class ShareRoute(http.Controller):
             document = request.env['documents.document'].browse(int(document_id))
             ufile = files[0]
             try:
-                data = base64.encodestring(ufile.read())
+                data = base64.encodebytes(ufile.read())
                 mimetype = self._neuter_mimetype(ufile.content_type, http.request.env.user)
                 document.write({
                     'name': ufile.filename,
@@ -135,7 +135,7 @@ class ShareRoute(http.Controller):
                     request.env['documents.document'].create({
                         'name': ufile.filename,
                         'mimetype': mimetype,
-                        'datas': base64.encodestring(ufile.read()),
+                        'datas': base64.encodebytes(ufile.read()),
                         'folder_id': int(folder_id),
                     })
                 except Exception as e:

@@ -44,7 +44,7 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         cron = self.env.ref(
             'l10n_mx_edi_cancellation.ir_cron_cancellation_invoices_open_to_cancel')  # noqa
         cron.method_direct_trigger()
-        self.assertEquals(
+        self.assertEqual(
             invoice.state, 'cancel', 'The invoice cannot be cancelled')
 
     def test_case3(self):
@@ -59,7 +59,7 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         cron = self.env.ref(
             'l10n_mx_edi_cancellation.ir_cron_cancellation_invoices_open_to_cancel')  # noqa
         cron.method_direct_trigger()
-        self.assertEquals(
+        self.assertEqual(
             invoice.state, 'cancel', 'The invoice cannot be cancelled')
 
     def test_case4(self):
@@ -76,11 +76,11 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         xml_valid = misc.file_open(path.join(
             'l10n_mx_edi_cancellation', 'tests', 'cfdi_vauxoo.xml'
         )).read().encode('UTF-8')
-        attachment.datas = base64.encodestring(xml_valid)
+        attachment.datas = base64.encodebytes(xml_valid)
         cron = self.env.ref(
             'l10n_mx_edi_cancellation.ir_cron_cancellation_invoices_cancel_signed_sat')  # noqa
         cron.method_direct_trigger()
-        self.assertEquals(
+        self.assertEqual(
             invoice.state, 'open', 'The invoice cannot be returned to open')
 
     def test_case5(self):
@@ -96,18 +96,18 @@ class TestL10nMxEdiCancelTest(InvoiceTransactionCase):
         xml_valid = misc.file_open(path.join(
             'l10n_mx_edi_cancellation', 'tests', 'cfdi_vauxoo.xml'
         )).read().encode('UTF-8')
-        attachment.datas = base64.encodestring(xml_valid)
+        attachment.datas = base64.encodebytes(xml_valid)
         invoice.l10n_mx_edi_pac_status = 'to_cancel'
         invoice.l10n_mx_edi_update_sat_status()
         invoice.refresh()
-        self.assertEquals(
+        self.assertEqual(
             invoice.l10n_mx_edi_sat_status, 'valid',
             'The SAT status is not valid')
         cron = self.env.ref(
             'l10n_mx_edi_cancellation.ir_cron_cancellation_invoices_cancel_signed_sat')  # noqa
         time.sleep(10)
         cron.method_direct_trigger()
-        self.assertEquals(
+        self.assertEqual(
             invoice.l10n_mx_edi_pac_status, 'signed',
             'The PAC status not was updated: %s' %
             invoice.message_ids.mapped('body'))

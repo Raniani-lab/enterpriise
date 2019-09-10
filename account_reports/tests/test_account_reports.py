@@ -2683,13 +2683,13 @@ class TestAccountReports(TestAccountReportsCommon):
             options = self._init_options(report, self.january_date, self.january_end_date)
             move = self._close_vat_entries(report, options)
             # assert element on move
-            self.assertEquals(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
+            self.assertEqual(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
             debit_line = move.line_ids.filtered(lambda a: a.debit > 0)
             credit_line = move.line_ids.filtered(lambda a: a.credit > 0)
-            self.assertEquals(debit_line.debit, 150)
-            self.assertEquals(credit_line.credit, 150)
-            self.assertEquals(credit_line.name, 'Payable tax amount')
-            self.assertEquals(credit_line.account_id.id, self.tax_pay_account.id)
+            self.assertEqual(debit_line.debit, 150)
+            self.assertEqual(credit_line.credit, 150)
+            self.assertEqual(credit_line.name, 'Payable tax amount')
+            self.assertEqual(credit_line.account_id.id, self.tax_pay_account.id)
             move.post()
 
             # Try closing vat entries for february
@@ -2697,15 +2697,15 @@ class TestAccountReports(TestAccountReportsCommon):
             move.flush()
             move = self._close_vat_entries(report, options)
             # assert element on move
-            self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
+            self.assertEqual(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
             debit_line = move.line_ids.filtered(lambda a: a.debit == 15)
             debit_line_balanced = move.line_ids.filtered(lambda a: a.name == 'Balance tax current account (payable)')
             credit_line_total = move.line_ids.filtered(lambda a: a.credit > 0)
-            self.assertEquals(debit_line.debit, 15)
-            self.assertEquals(debit_line_balanced.debit, 150)
-            self.assertEquals(debit_line_balanced.account_id.id, self.tax_pay_account.id)
-            self.assertEquals(credit_line_total.credit, 165)
-            self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)
+            self.assertEqual(debit_line.debit, 15)
+            self.assertEqual(debit_line_balanced.debit, 150)
+            self.assertEqual(debit_line_balanced.account_id.id, self.tax_pay_account.id)
+            self.assertEqual(credit_line_total.credit, 165)
+            self.assertEqual(credit_line_total.account_id.id, self.tax_pay_account.id)
 
     def test_automatic_vat_closing_report_receivable(self):
         def _get_attachment(*args, **kwargs):
@@ -2727,29 +2727,29 @@ class TestAccountReports(TestAccountReportsCommon):
             options = self._init_options(report, self.january_date, self.january_end_date)
             move = self._close_vat_entries(report, options)
             # assert element on move
-            self.assertEquals(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
+            self.assertEqual(len(move.line_ids), 2, 'Tax Move created should have only 2 lines')
             debit_line = move.line_ids.filtered(lambda a: a.debit > 0)
             credit_line = move.line_ids.filtered(lambda a: a.credit > 0)
-            self.assertEquals(debit_line.debit, 15)
-            self.assertEquals(debit_line.name, 'Receivable tax amount')
-            self.assertEquals(debit_line.account_id.id, self.tax_rec_account.id)
-            self.assertEquals(credit_line.credit, 15)
+            self.assertEqual(debit_line.debit, 15)
+            self.assertEqual(debit_line.name, 'Receivable tax amount')
+            self.assertEqual(debit_line.account_id.id, self.tax_rec_account.id)
+            self.assertEqual(credit_line.credit, 15)
             move.post()
             # Try closing vat entries for february
             options = self._init_options(report, self.february_date, self.february_end_date)
             move = self._close_vat_entries(report, options)
             # assert element on move
-            self.assertEquals(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
+            self.assertEqual(len(move.line_ids), 3, 'Tax Move created should have 3 lines')
             debit_line = move.line_ids.filtered(lambda a: a.debit == 150)
             credit_line_balanced = move.line_ids.filtered(lambda a: a.name == 'Balance tax current account (receivable)')
             credit_line_total = move.line_ids.filtered(lambda a: a.name == 'Payable tax amount')
-            self.assertEquals(debit_line.debit, 150)
+            self.assertEqual(debit_line.debit, 150)
             # Should balance the 15 previous usd on tax receivable
-            self.assertEquals(credit_line_balanced.credit, 15)
-            self.assertEquals(credit_line_balanced.account_id.id, self.tax_rec_account.id)
+            self.assertEqual(credit_line_balanced.credit, 15)
+            self.assertEqual(credit_line_balanced.account_id.id, self.tax_rec_account.id)
             # We still need to pay 135 to the VAT
-            self.assertEquals(credit_line_total.credit, 135)
-            self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)
+            self.assertEqual(credit_line_total.credit, 135)
+            self.assertEqual(credit_line_total.account_id.id, self.tax_pay_account.id)
 
 
     # -------------------------------------------------------------------------

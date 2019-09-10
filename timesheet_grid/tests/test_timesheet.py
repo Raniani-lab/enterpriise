@@ -41,7 +41,7 @@ class TestTimesheetValidation(TestCommonTimesheet):
 
         # Check validated date
         end_of_week = (datetime.now() + END_OF['week']).date()
-        self.assertEquals(self.empl_employee.timesheet_validated, end_of_week, 'validate timesheet date should be the end of the week')
+        self.assertEqual(self.empl_employee.timesheet_validated, end_of_week, 'validate timesheet date should be the end of the week')
 
         # Employee can not modify validated timesheet
         with self.assertRaises(AccessError):

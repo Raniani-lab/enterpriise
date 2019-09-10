@@ -54,14 +54,14 @@ class TestReleaseToPayInvoice(AccountingTestCase):
                 new_invoice = move_form.save()
                 invoices_list.append(new_invoice)
 
-                self.assertEquals(new_invoice.release_to_pay, params['rslt'], "Wrong invoice release to pay status for scenario " + str(scenario))
+                self.assertEqual(new_invoice.release_to_pay, params['rslt'], "Wrong invoice release to pay status for scenario " + str(scenario))
 
             elif action == 'receive':
                 purchase_line.write({'qty_received': params['qty']})  # as the product is a service, its recieved quantity is set manually
 
                 if 'rslt' in params:
                     for (invoice_index, status) in params['rslt']:
-                        self.assertEquals(invoices_list[invoice_index].release_to_pay, status, "Wrong invoice release to pay status for scenario " + str(scenario))
+                        self.assertEqual(invoices_list[invoice_index].release_to_pay, status, "Wrong invoice release to pay status for scenario " + str(scenario))
 
     def test_3_way_match(self):
         self.check_release_to_pay_scenario(10, [('receive',{'qty': 5}), ('invoice', {'qty': 5, 'rslt': 'yes'})], invoicing_policy='purchase')

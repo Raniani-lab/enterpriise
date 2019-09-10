@@ -43,7 +43,7 @@ class AccountBatchPayment(models.Model):
 
             return {
                 'filename': 'PAIN008' + datetime.now().strftime('%Y%m%d%H%M%S') + '.xml',
-                'file': base64.encodestring(self.payment_ids.generate_xml(company, self.sdd_required_collection_date, self.sdd_batch_booking)),
+                'file': base64.encodebytes(self.payment_ids.generate_xml(company, self.sdd_required_collection_date, self.sdd_batch_booking)),
             }
 
         return super(AccountBatchPayment, self)._generate_export_file()

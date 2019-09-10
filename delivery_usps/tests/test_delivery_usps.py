@@ -70,10 +70,10 @@ class TestDeliveryUSPS(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -85,7 +85,7 @@ class TestDeliveryUSPS(TransactionCase):
         picking.cancel_shipment()
 
         self.assertFalse(picking.carrier_tracking_ref, "Carrier Tracking code has not been properly deleted")
-        self.assertEquals(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
+        self.assertEqual(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
 
     def test_02_usps_basic_international_flow(self):
         SaleOrder = self.env['sale.order']
@@ -111,10 +111,10 @@ class TestDeliveryUSPS(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -125,7 +125,7 @@ class TestDeliveryUSPS(TransactionCase):
 
         picking.cancel_shipment()
         self.assertFalse(picking.carrier_tracking_ref, "Carrier Tracking code has not been properly deleted")
-        self.assertEquals(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
+        self.assertEqual(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
 
     def test_03_usps_ship_to_canada_flow(self):
         SaleOrder = self.env['sale.order']
@@ -151,10 +151,10 @@ class TestDeliveryUSPS(TransactionCase):
         choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
-        self.assertEquals(len(sale_order.picking_ids), 1, "The Sale Order did not generate a picking.")
+        self.assertEqual(len(sale_order.picking_ids), 1, "The Sale Order did not generate a picking.")
 
         picking = sale_order.picking_ids[0]
-        self.assertEquals(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
+        self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -165,7 +165,7 @@ class TestDeliveryUSPS(TransactionCase):
 
         picking.cancel_shipment()
         self.assertFalse(picking.carrier_tracking_ref, "Carrier Tracking code has not been properly deleted")
-        self.assertEquals(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
+        self.assertEqual(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
 
     def test_04_usps_flow_from_delivery_order(self):
 

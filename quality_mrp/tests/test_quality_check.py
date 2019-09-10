@@ -38,8 +38,8 @@ class TestQualityCheck(TestQualityMrpCommon):
         produce_wiz.do_produce()
 
         # Check Quality Check for Production is created and check it's state is 'none'.
-        self.assertEquals(len(self.mrp_production_qc_test1.check_ids), 1)
-        self.assertEquals(self.mrp_production_qc_test1.check_ids.quality_state, 'none')
+        self.assertEqual(len(self.mrp_production_qc_test1.check_ids), 1)
+        self.assertEqual(self.mrp_production_qc_test1.check_ids.quality_state, 'none')
 
         # 'Pass' Quality Checks of production order.
         self.mrp_production_qc_test1.check_ids.do_pass()
@@ -49,4 +49,4 @@ class TestQualityCheck(TestQualityMrpCommon):
         self.mrp_production_qc_test1.button_mark_done()
 
         # Now check state of quality check.
-        self.assertEquals(self.mrp_production_qc_test1.check_ids.quality_state, 'pass')
+        self.assertEqual(self.mrp_production_qc_test1.check_ids.quality_state, 'pass')

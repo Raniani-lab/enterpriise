@@ -452,7 +452,7 @@ class ProviderFedex(models.Model):
             ##############
             else:
                 raise UserError(_('No packages for this picking'))
-            if self.return_label_on_delivery and request.get('date'):
+            if self.return_label_on_delivery:
                 self.get_return_label(picking, tracking_number=request['tracking_number'], origin_date=request['date'])
             commercial_invoice = srm.get_document()
             if commercial_invoice:
@@ -522,9 +522,12 @@ class ProviderFedex(models.Model):
             srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id, superself.fedex_account_number, 'SENDER')
         srm.return_label(tracking_number, origin_date)
         response = srm.process_shipment()
-        fedex_labels = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), response['tracking_number'], index, self.fedex_label_file_type), label)
-                        for index, label in enumerate(srm._get_labels(self.fedex_label_file_type))]
-        picking.message_post(body='Return Label', attachments=fedex_labels)
+        if not response.get('errors_message'):
+            fedex_labels = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), response['tracking_number'], index, self.fedex_label_file_type), label)
+                            for index, label in enumerate(srm._get_labels(self.fedex_label_file_type))]
+            picking.message_post(body='Return Label', attachments=fedex_labels)
+        else:
+            raise UserError(response['errors_message'])
 
     def fedex_get_tracking_link(self, picking):
         return 'https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=%s' % picking.carrier_tracking_ref

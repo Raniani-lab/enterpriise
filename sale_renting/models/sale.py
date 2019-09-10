@@ -180,10 +180,16 @@ class RentalOrderLine(models.Model):
 
     def get_rental_order_line_description(self):
         if (self.is_rental):
+            if self.pickup_date.date() == self.return_date.date():
+                # If return day is the same as pickup day, don't display return_date Y/M/D in description.
+                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='HH:mm a')
+            else:
+                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short')
+
             return "\n%s %s %s" % (
                 format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format='short'),
                 _("to"),
-                format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short'),
+                return_date_part,
             )
         else:
             return ""

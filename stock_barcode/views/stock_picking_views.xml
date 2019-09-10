@@ -104,7 +104,7 @@
 
             <!-- Use the form view -->
             <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
-                <button style="padding: 0px 10px;" class="btn btn-link d-none d-sm-block fa fa-desktop" name="open_picking" type="object"/>
+                <button style="padding: 0px 10px;" class="btn btn-link fa fa-desktop" name="open_picking" type="object"/>
             </xpath>
 
             <!-- Use mobile view-->

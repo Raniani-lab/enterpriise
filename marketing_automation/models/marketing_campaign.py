@@ -226,7 +226,10 @@ class MarketingCampaign(models.Model):
                     self.env.cr.commit()
 
             if to_remove:
-                participants_to_unlink = participants.search([('res_id', 'in', list(to_remove))])
+                participants_to_unlink = participants.search([
+                    ('res_id', 'in', list(to_remove)),
+                    ('campaign_id', '=', campaign.id),
+                ])
                 for index, participant in enumerate(participants_to_unlink, start=1):
                     participant.action_set_unlink()
                     if not index % BATCH_SIZE:

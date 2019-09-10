@@ -106,7 +106,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
                 totals[i] += value
 
                 # Create columns.
-                columns.append({'name': self.format_value(value, blank_if_zero=True), 'class': 'number'})
+                columns.append({'name': self.format_value(value, blank_if_zero=True), 'class': 'number', 'no_format_name': value})
 
             name = account.name_get()[0][1]
             if len(name) > 40 and not self._context.get('print_mode'):

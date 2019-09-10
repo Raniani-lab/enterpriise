@@ -562,7 +562,7 @@ class AccountReport(models.AbstractModel):
             if not depth:
                 depth = line.get('level', 1)
             level_dict.setdefault('depth', depth)
-            level_dict.setdefault('parent_id', 'hierarchy_' + codes[0][1])
+            level_dict.setdefault('parent_id', 'hierarchy_' + codes[0][1] if codes[0][0] != 'root' else codes[0][1])
             level_dict.setdefault('children', {})
             code = codes[1]
             codes = codes[1:]
@@ -636,11 +636,11 @@ class AccountReport(models.AbstractModel):
                 # No group code found in any lines, compute it automatically.
                 no_group_hierarchy = {}
                 for no_group_line in no_group_lines:
-                    codes = [(self.LEAST_SORT_PRIO, _('(No Group)'))]
+                    codes = [('root', str(line.get('parent_id')) or 'root'), (self.LEAST_SORT_PRIO, _('(No Group)'))]
                     if not accounts_hierarchy:
                         account = get_account(no_group_line.get('account_id', no_group_line.get('id')))
-                        codes = [(0, 'root')] + self.get_account_codes(account)
-                    add_line_to_hierarchy(no_group_line, codes, no_group_hierarchy)
+                        codes = [('root', str(line.get('parent_id')) or 'root')] + self.get_account_codes(account)
+                    add_line_to_hierarchy(no_group_line, codes, no_group_hierarchy, line.get('level', 0) + 1)
                 no_group_lines = []
 
                 deep_merge_dict(no_group_hierarchy, accounts_hierarchy)
@@ -660,8 +660,8 @@ class AccountReport(models.AbstractModel):
                 no_group_lines.append(line)
                 continue
 
-            codes = [(0, 'root')] + self.get_account_codes(account)
-            add_line_to_hierarchy(line, codes, accounts_hierarchy)
+            codes = [('root', str(line.get('parent_id')) or 'root')] + self.get_account_codes(account)
+            add_line_to_hierarchy(line, codes, accounts_hierarchy, line.get('level', 0) + 1)
 
         return new_lines
 

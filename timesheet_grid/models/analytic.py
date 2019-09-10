@@ -60,20 +60,16 @@ class AnalyticLine(models.Model):
         if not self:
             raise UserError(_("There aren't any timesheet to validate"))
 
-        employees = self.mapped('employee_id')
-        validable_employees = employees.filtered(lambda e: not e.timesheet_validated or e.timesheet_validated < validate_to)
-        if not validable_employees:
-            raise UserError(_('All selected timesheets are already validated'))
+        domain = self.env['ir.rule']._compute_domain(self._name, 'write')  # can write on the timesheet of team employee or all
 
-        if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
-            validable_employees = validable_employees.filtered(lambda e: e.timesheet_manager_id.id == self.env.user.id)
-            if not validable_employees:
-                raise UserError(_('All selected timesheets are already validated. You are not indicated as responsible for your timesheet so you can\'t validate your own timesheet.'))
-
+        employees = self.filtered_domain(domain or []).mapped('employee_id')
+        employees = employees.sudo().filtered(lambda e: not e.timesheet_validated or e.timesheet_validated < validate_to)
+        if not employees:
+            raise UserError(_('All selected timesheets for which you are indicated as responsible are already validated.'))
         validation = self.env['timesheet.validation'].create({
             'validation_date': validate_to,
             'validation_line_ids': [
-                (0, 0, {'employee_id': employee.id}) for employee in validable_employees
+                (0, 0, {'employee_id': employee.id}) for employee in employees
             ]
         })
 

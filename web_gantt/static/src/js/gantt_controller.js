@@ -79,6 +79,31 @@ var GanttController = AbstractController.extend({
 
     /**
      * @private
+     * @param {integer} id
+     * @param {Object} schedule
+     */
+    _copy: function (id, schedule) {
+        return this._executeAsyncOperation(
+            this.model.copy.bind(this.model),
+            [id, schedule]
+        );
+    },
+    /**
+     * @private
+     * @param {function} operation
+     * @param {Array} args
+     */
+    _executeAsyncOperation: function (operation, args) {
+        const self = this;
+        var prom = new Promise(function (resolve, reject) {
+            var asyncOp = operation(...args);
+            asyncOp.then(resolve).guardedCatch(resolve);
+            self.dp.add(asyncOp).guardedCatch(reject);
+        });
+        return prom.then(this.reload.bind(this, {}));
+    },
+    /**
+     * @private
      * @param {OdooEvent} event
      */
     _getDialogContext: function (date, groupId) {
@@ -143,26 +168,29 @@ var GanttController = AbstractController.extend({
      *
      * @returns {function}
      */
-    _onDialogRemove: function (resID){
+    _onDialogRemove: function (resID) {
         var controller = this;
 
         var confirm = new Promise(function (resolve) {
             confirmDialog(this, _t('Are you sure to delete this record?'), {
-                confirm_callback: function() { resolve(true); },
-                cancel_callback: function() { resolve(false); },
+                confirm_callback: function () {
+                    resolve(true);
+                },
+                cancel_callback: function () {
+                    resolve(false);
+                },
             });
         });
 
-        return confirm.then(function(confirmed) {
-            if((!confirmed)){
+        return confirm.then(function (confirmed) {
+            if ((!confirmed)) {
                 return Promise.resolve();
             }// else
             return controller._rpc({
                 model: controller.modelName,
                 method: 'unlink',
                 args: [[resID,],],
-            })
-            .then(function(){
+            }).then(function () {
                 return controller.reload();
             })
         });
@@ -203,8 +231,8 @@ var GanttController = AbstractController.extend({
      *
      * @param {object} context
      */
-    _onCreate: function(context){
-        if(this.createAction){
+    _onCreate: function (context) {
+        if (this.createAction) {
             var fullContext = _.extend({}, this.context, context);
             this.do_action(this.createAction, {
                 additional_context: fullContext,
@@ -223,26 +251,20 @@ var GanttController = AbstractController.extend({
      * records might be outdated, causing the rpc failure).
      *
      * @private
-     * @param {integer} id
+     * @param {integer[]|integer} ids
      * @param {Object} schedule
      * @param {boolean} isUTC
      * @returns {Promise} resolved when the record has been reloaded, rejected
      *   if the request has been dropped by DropPrevious
      */
     _reschedule: function (ids, schedule, isUTC) {
-        var resolveProm;
-        var rejectProm;
-        var prom = new Promise(function (resolve, reject) {
-            resolveProm = resolve;
-            rejectProm = reject;
-        });
-        var rpcProm = this.model.reschedule(ids, schedule, isUTC);
-        rpcProm.then(resolveProm).guardedCatch(resolveProm);
-        this.dp.add(rpcProm).guardedCatch(rejectProm);
-        return prom.then(this.reload.bind(this, {}));
+        return this._executeAsyncOperation(
+            this.model.reschedule.bind(this.model),
+            [ids, schedule, isUTC]
+        );
     },
     /**
-     * Overriden to hide expand/collapse buttons when they have no effect.
+     * Overridden to hide expand/collapse buttons when they have no effect.
      *
      * @override
      * @private
@@ -298,7 +320,7 @@ var GanttController = AbstractController.extend({
     _onCollapseClicked: function (ev) {
         ev.preventDefault();
         this.model.collapseRows();
-        this.update({}, {reload: false});
+        this.update({}, { reload: false });
     },
     /**
      * @private
@@ -317,7 +339,7 @@ var GanttController = AbstractController.extend({
     _onExpandClicked: function (ev) {
         ev.preventDefault();
         this.model.expandRows();
-        this.update({}, {reload: false});
+        this.update({}, { reload: false });
     },
     /**
      * @private
@@ -336,7 +358,7 @@ var GanttController = AbstractController.extend({
     _onNextPeriodClicked: function (ev) {
         ev.preventDefault();
         var state = this.model.get();
-        this.update({date: state.focusDate.add(1, state.scale)});
+        this.update({ date: state.focusDate.add(1, state.scale) });
     },
     /**
      * Opens dialog when clicked on pill to view record.
@@ -365,22 +387,25 @@ var GanttController = AbstractController.extend({
      * @param {string} [ev.data.pillId]
      * @param {string} [ev.data.newGroupId]
      * @param {string} [ev.data.oldGroupId]
+     * @param {'copy'|'reschedule'} [ev.data.action]
      */
     _onPillDropped: function (ev) {
         ev.stopPropagation();
 
         var state = this.model.get();
 
-        var schedule = _.pick(ev.data, [
-            state.dateStartField,
-            state.dateStopField
-        ]);
+        var schedule = {};
 
         var diff = ev.data.diff;
         if (diff) {
             var pill = _.findWhere(state.records, { id: ev.data.pillId });
             schedule[state.dateStartField] = pill[state.dateStartField].clone().add(diff, this.SCALES[state.scale].time);
             schedule[state.dateStopField] = pill[state.dateStopField].clone().add(diff, this.SCALES[state.scale].time);
+        } else if (ev.data.action === 'copy') {
+            // When we copy the info on dates is sometimes mandatory (e.g. working on hr.leave, see copy_data)
+            const pill = _.findWhere(state.records, { id: ev.data.pillId });
+            schedule[state.dateStartField] = pill[state.dateStartField].clone();
+            schedule[state.dateStopField] = pill[state.dateStopField].clone();
         }
 
         if (ev.data.newGroupId && ev.data.newGroupId !== ev.data.oldGroupId) {
@@ -399,8 +424,11 @@ var GanttController = AbstractController.extend({
                 }
             });
         }
-
-        this._reschedule(ev.data.pillId, schedule);
+        if (ev.data.action === 'copy') {
+            this._copy(ev.data.pillId, schedule);
+        } else {
+            this._reschedule(ev.data.pillId, schedule);
+        }
     },
     /**
      * Save pill information when resized
@@ -448,7 +476,7 @@ var GanttController = AbstractController.extend({
     _onPrevPeriodClicked: function (ev) {
         ev.preventDefault();
         var state = this.model.get();
-        this.update({date: state.focusDate.subtract(1, state.scale)});
+        this.update({ date: state.focusDate.subtract(1, state.scale) });
     },
     /**
      * @private
@@ -460,7 +488,7 @@ var GanttController = AbstractController.extend({
         this.$buttons.find('.o_gantt_button_scale').removeClass('active');
         $button.addClass('active');
         this.$buttons.find('.o_gantt_dropdown_selected_scale').text($button.text());
-        this.update({scale: $button.data('value')});
+        this.update({ scale: $button.data('value') });
     },
     /**
      * @private
@@ -468,7 +496,7 @@ var GanttController = AbstractController.extend({
      */
     _onTodayClicked: function (ev) {
         ev.preventDefault();
-        this.update({date: moment()});
+        this.update({ date: moment() });
     },
 });
 

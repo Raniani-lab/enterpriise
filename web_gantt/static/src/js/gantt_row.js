@@ -20,7 +20,9 @@ var GanttRow = Widget.extend({
     },
     NB_GANTT_RECORD_COLORS: 12,
     LEVEL_LEFT_OFFSET: 16, // 16 px per level
-    LEVEL_TOP_OFFSET: 32, // 32 px per level
+    // This determines the pills heigth. It needs to be an odd number. If it is not a pill can
+    // be dropped between two rows without the droppables drop method being called (see tolerance: 'intersect').
+    LEVEL_TOP_OFFSET: 31, // 31 px per level
     POPOVER_DELAY: 260,
     /**
      * @override
@@ -128,26 +130,33 @@ var GanttRow = Widget.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * Set the current $el (the whole row) as droppable for the pills.
+     * Set the row (if not total row) as droppable for the pills (but the draggables option "containment" prevents
+     * them from going above the row headers).
      * See @_setDraggable
+     * @param {DOMElement} firstCell
      */
-    setDroppable: function (cellWidth) {
+    setDroppable: function (firstCell) {
+        if (this.isTotal) {
+            return;
+        }
         var self = this;
-        this.resizeSnappingWidth = cellWidth / this.cellPart;
+        const resizeSnappingWidth = this._getResizeSnappingWidth(firstCell);
         this.$el.droppable({
             drop: function (event, ui) {
-                var diff = Math.round(ui.position.left / self.resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
+                var diff = self._getDiff(resizeSnappingWidth, ui.position.left);
                 var $pill = ui.draggable;
                 var oldGroupId = $pill.closest('.o_gantt_row').data('group-id');
                 if (diff || (self.groupId !== oldGroupId)) { // do not perform write if nothing change
-                    self._saveDragChanges($pill.data('id'), diff, oldGroupId, self.groupId);
+                    const action = event.ctrlKey || event.metaKey ? 'copy': 'reschedule';
+                    self._saveDragChanges($pill.data('id'), diff, oldGroupId, self.groupId, action);
                 } else {
-                    $pill.animate({
+                    ui.helper.animate({
                         left: 0,
                         top: 0,
                     });
                 }
             },
+            tolerance: 'intersect',
         });
     },
 
@@ -420,7 +429,6 @@ var GanttRow = Widget.extend({
      * @private
      */
     _evaluateDecoration: function () {
-
         var self = this;
         this.pills.forEach(function (pill) {
             var pillDecorations = [];
@@ -432,7 +440,7 @@ var GanttRow = Widget.extend({
             pill.decorations = pillDecorations;
 
             if (self.colorField) {
-                pill._color = self.getColor(pill[self.colorField]);
+                pill._color = self._getColor(pill[self.colorField]);
             }
 
             if (self.progressField) {
@@ -444,7 +452,7 @@ var GanttRow = Widget.extend({
      * @param {integer|Array} value
      * @private
      */
-    getColor: function (value) {
+    _getColor: function (value) {
         if (_.isNumber(value)) {
             return Math.round(value) % this.NB_GANTT_RECORD_COLORS;
         } else if (_.isArray(value)) {
@@ -465,6 +473,13 @@ var GanttRow = Widget.extend({
             session.user_context,
             {current_date: moment().format('YYYY-MM-DD')}
         );
+    },
+    /**
+     * @private
+     * @param {number} gridOffset
+     */
+    _getDiff: function (resizeSnappingWidth, gridOffset) {
+        return Math.round(gridOffset / resizeSnappingWidth) * this.viewInfo.activeScaleInfo.interval;
     },
     /**
      * Evaluate the pill evaluation context.
@@ -503,6 +518,18 @@ var GanttRow = Widget.extend({
         data.userTimezoneStartDate = this._convertToUserTime(data[this.state.dateStartField]);
         data.userTimezoneStopDate = this._convertToUserTime(data[this.state.dateStopField]);
         return data;
+    },
+    /**
+     * @private
+     * @returns {number}
+     */
+    _getResizeSnappingWidth: function (firstCell) {
+        if (!this.firstCell) {
+            this.firstCell = firstCell || $('.o_gantt_view .o_gantt_header_scale .o_gantt_header_cell:first')[0];
+        }
+        // jQuery (< 3.0) rounds the width value but we need the exact value
+        // getBoundingClientRect is costly when there are lots of rows
+        return this.firstCell.getBoundingClientRect().width / this.cellPart;
     },
     /**
      * Insert pill into gantt row slot according to its start date
@@ -571,14 +598,18 @@ var GanttRow = Widget.extend({
      * @private
      * @param {integer} pillID
      * @param {integer} diff
+     * @param {string} oldGroupId
+     * @param {string} newGroupId
+     * @param {'copy'|'reschedule'} action
      */
-    _saveDragChanges: function (pillId, diff, oldGroupId, newGroupId) {
+    _saveDragChanges: function (pillId, diff, oldGroupId, newGroupId, action) {
         this.trigger_up('pill_dropped', {
             pillId: pillId,
             diff: diff,
             oldGroupId: oldGroupId,
             newGroupId: newGroupId,
             groupLevel: this.groupLevel,
+            action: action,
         });
     },
     /**
@@ -607,19 +638,43 @@ var GanttRow = Widget.extend({
      * @param {jQuery} $pill
      */
     _setDraggable: function ($pill) {
-        if ($pill.hasClass('ui-draggable')) {
+        if ($pill.hasClass('ui-draggable-dragging')) {
             return;
         }
+
         var self = this;
         var pill = _.findWhere(this.pills, { id: $pill.data('id') });
 
         // DRAGGABLE
         if (this.options.canEdit && !pill.disableStartResize && !pill.disableStopResize && !this.isGroup) {
+
+            const resizeSnappingWidth = this._getResizeSnappingWidth()
+            const grid = [resizeSnappingWidth, 1];
+
+            if ($pill.draggable( "instance")) {
+                $pill.draggable("option", "grid", grid);
+                return;
+            }
+            if (!this.$containment) {
+                this.$containment = $('#o_gantt_containment');
+            }
             $pill.draggable({
-                containment: '.o_gantt_row_container',
-                grid: [this.resizeSnappingWidth, 1],
-                start: function () {
+                containment: this.$containment,
+                grid: grid,
+                start: function (event, ui) {
                     self.trigger_up('updating_pill_started');
+
+                    const pillWidth = $pill[0].getBoundingClientRect().width;
+                    ui.helper.css({ width: pillWidth });
+                    ui.helper.removeClass('position-relative');
+
+                    // The following trigger up will sometimes add the class o_hidden on the $pill.
+                    // This is why the pill's width is computed above.
+                    self.trigger_up('start_dragging', {
+                        $draggedPill: $pill,
+                        $draggedPillClone: ui.helper,
+                    });
+
                     self.$el.addClass('o_gantt_dragging');
                     $pill.popover('hide');
                     self.$('.o_gantt_pill').popover('disable');
@@ -629,15 +684,56 @@ var GanttRow = Widget.extend({
                         // Kill draggable if pill opened its dialog
                         return false;
                     }
-                    var diff = Math.round((ui.position.left - ui.originalPosition.left) / self.resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
-                    self._updateResizeBadge($pill, diff, ui);
+                    var diff = self._getDiff(resizeSnappingWidth, ui.position.left);
+                    self._updateResizeBadge(ui.helper, diff, ui);
                 },
                 stop: function () {
                     self.trigger_up('updating_pill_stopped');
+                    self.trigger_up('stop_dragging');
+
                     self.$el.removeClass('o_gantt_dragging');
                     self.$('.o_gantt_pill').popover('enable');
+
+                    $pill.draggable().data().uiDraggable.cancelHelperRemoval = true;
+                },
+                helper: 'clone',
+            });
+        } else {
+            if ($pill.draggable( "instance")) {
+                return;
+            }
+            if (!this.$lockIndicator) {
+                this.$lockIndicator = $('<div class="fa fa-lock"/>').css({
+                    'z-index': 20,
+                    position: 'absolute',
+                    top: '4px',
+                    right: '4px',
+                });
+            }
+            $pill.draggable({
+                // prevents the pill from moving but allows to send feedback
+                grid: [0, 0],
+                start: function () {
+                    self.trigger_up('updating_pill_started');
+                    self.trigger_up('start_no_dragging');
+                    $pill.popover('hide');
+                    self.$('.o_gantt_pill').popover('disable');
+                    self.$lockIndicator.appendTo($pill);
+                },
+                drag: function () {
+                    if ($(event.target).hasClass('o_gantt_pill_editing')) {
+                        // Kill draggable if pill opened its dialog
+                        return false;
+                    }
+                },
+                stop: function () {
+                    self.trigger_up('updating_pill_stopped');
+                    self.trigger_up('stop_no_dragging');
+                    self.$('.o_gantt_pill').popover('enable');
+                    self.$lockIndicator.detach();
                 },
             });
+            $pill.addClass('o_fake_draggable');
         }
     },
     /**
@@ -654,6 +750,8 @@ var GanttRow = Widget.extend({
 
         var pill = _.findWhere(self.pills, { id: $pill.data('id') });
 
+        const resizeSnappingWidth = this._getResizeSnappingWidth();
+
         // RESIZABLE
         var handles = [];
         if (!pill.disableStartResize) {
@@ -665,21 +763,25 @@ var GanttRow = Widget.extend({
         if (handles.length && !self.options.disableResize && !self.isGroup && self.options.canEdit) {
             $pill.resizable({
                 handles: handles.join(', '),
-                grid: [this.resizeSnappingWidth, pillHeight],
+                // DAM: I wanted to use a containment but there is a bug with them
+                // when elements are both draggable and resizable. In that case, is is no more possible
+                // to resize on the left side of the pill (I mean starting from left, go to left)
+                grid: [resizeSnappingWidth, pillHeight],
                 start: function () {
+                    $pill.popover('hide');
                     self.$('.o_gantt_pill').popover('disable');
                     self.trigger_up('updating_pill_started');
                     self.$el.addClass('o_gantt_dragging');
                 },
                 resize: function (event, ui) {
-                    var diff = Math.round((ui.size.width - ui.originalSize.width) / self.resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
+                    var diff = Math.round((ui.size.width - ui.originalSize.width) / resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
                     self._updateResizeBadge($pill, diff, ui);
                 },
                 stop: function (event, ui) {
                     self.trigger_up('updating_pill_stopped');
                     self.$el.removeClass('o_gantt_dragging');
                     self.$('.o_gantt_pill').popover('enable');
-                    var diff = Math.round((ui.size.width - ui.originalSize.width) / self.resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
+                    var diff = Math.round((ui.size.width - ui.originalSize.width) / resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
                     var direction = ui.position.left ? 'left' : 'right';
                     if (diff) { // do not perform write if nothing change
                         self._saveResizeChanges(pill.id, diff, direction);
@@ -777,18 +879,19 @@ var GanttRow = Widget.extend({
     /**
      * @private
      * @param {jQuert} $pill
-     * @param {integer} resizeSnappingWidth
+     * @param {integer} diff
      * @param {Object} ui
      */
     _updateResizeBadge: function ($pill, diff, ui) {
         $pill.find('.o_gantt_pill_resize_badge').remove();
         if (diff) {
             var direction = ui.position.left ? 'left' : 'right';
-            $(QWeb.render('GanttView.ResizeBadge', {
+            $( QWeb.render('GanttView.ResizeBadge', {
                 diff: diff,
                 direction: direction,
                 time: this.viewInfo.activeScaleInfo.time,
-            })).appendTo($pill);
+            } ), { css: { 'z-index': 2 } } )
+            .appendTo($pill);
         }
     },
 
@@ -901,7 +1004,9 @@ var GanttRow = Widget.extend({
         var $pill = $(ev.currentTarget);
 
         this._setResizable($pill);
-        this._setDraggable($pill);
+        if (!this.isTotal) {
+            this._setDraggable($pill);
+        }
     },
     /**
      * Toggle Collapse/Expand rows when user click in gantt row sidebar

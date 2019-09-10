@@ -171,7 +171,6 @@ QUnit.module('Views', {
                     return 60;
                 },
             },
-            debug:1
         });
 
         assert.containsOnce(gantt, '.o_gantt_header_container',
@@ -274,11 +273,11 @@ QUnit.module('Views', {
             'should have a 31 slots for month view');
         assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row', 2,
             'should have a 2 rows');
-        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:first-child .o_gantt_row_sidebar',
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_row_sidebar',
             'should have a sidebar');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:first-child .o_gantt_row_title').text().trim(), 'Project 1',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_row_title').text().trim(), 'Project 1',
             'should contain "Project 1" in sidebar title');
-        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row:first-child .o_gantt_pill_wrapper', 4,
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_pill_wrapper', 4,
             'should have a 4 pills in first row');
         assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:last-child .o_gantt_row_title').text().trim(), 'Project 2',
             'should contain "Project 2" in sidebar title');
@@ -328,11 +327,11 @@ QUnit.module('Views', {
             'should have a 31 slots for month view');
         assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row', 5,
             'should have a 5 rows');
-        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:first-child .o_gantt_row_sidebar',
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_row_sidebar',
             'should have a sidebar');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:first-child .o_gantt_row_title').text().trim(), 'Unused Project 1',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_row_title').text().trim(), 'Unused Project 1',
             'should contain "Unused Project" in sidebar title');
-        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row:first-child .o_gantt_pill_wrapper', 0,
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row:nth-child(2) .o_gantt_pill_wrapper', 0,
             'should have 0 pills in first row');
         assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:last-child .o_gantt_row_title').text().trim(), 'Project 1',
             'should contain "Project 1" in sidebar title');
@@ -1716,6 +1715,53 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('copy a pill in another row', async function (assert) {
+            assert.expect(4);
+    
+            var gantt = await createView({
+                View: GanttView,
+                model: 'tasks',
+                data: this.data,
+                arch: '<gantt date_start="start" date_stop="stop" />',
+                groupBy: ['project_id'],
+                viewOptions: {
+                    initialDate: initialDate,
+                },
+                mockRPC: function (route, args) {
+                    if (args.method === 'copy') {
+                        assert.deepEqual(args.args[0], 7,
+                            "should copy the correct record");
+                        assert.deepEqual(args.args[1],  {
+                            start: "2018-12-21 06:30:12",
+                            stop: "2018-12-21 18:29:59",
+                            project_id: 1
+                        },
+                        "should use the correct default values when copying");
+                    }
+                    return this._super.apply(this, arguments);
+                },
+                domain: [['id', 'in', [1, 7]]],
+            });
+    
+            assert.containsN(gantt, '.o_gantt_pill', 2,
+                "there should be two pills (task 1 and task 7)");
+            assert.containsN(gantt, '.o_gantt_row', 2,
+                "there should be two rows (project 1 and project 2");
+    
+            // move a pill (task 7) in the other row and in the the next cell (+1 day)
+            var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+            var cellHeight = gantt.$('.o_gantt_cell:first').height() / 2;
+            await testUtils.dom.triggerEvent(gantt.$el, 'keydown',{ctrlKey: true});
+
+            await testUtils.dom.dragAndDrop(
+                gantt.$('.o_gantt_pill[data-id=7]'),
+                gantt.$('.o_gantt_pill[data-id=7]'),
+                { position: { left: cellWidth, top: -cellHeight }, ctrlKey: true },
+            );
+
+            gantt.destroy();
+        });
+
     QUnit.test('move a pill in another row in multi-level grouped', async function (assert) {
         assert.expect(3);
 
@@ -1746,11 +1792,11 @@ QUnit.module('Views', {
         });
         await testUtils.nextTick();
 
-        assert.containsN(gantt, '.o_gantt_pill.ui-draggable', 1,
+        assert.containsN(gantt, '.o_gantt_pill.ui-draggable:not(.o_fake_draggable)', 1,
             "there should be only one draggable pill (Task 7)");
 
         // move a pill (task 7) in the top-level group (User 2)
-        var $pill = gantt.$('.o_gantt_pill.ui-draggable');
+        var $pill = gantt.$('.o_gantt_pill.ui-draggable:not(.o_fake_draggable)');
         var groupHeaderHeight = gantt.$('.o_gantt_cell:first').height();
         var cellHeight = $pill.closest('.o_gantt_cell').height();
         await testUtils.dom.dragAndDrop(
@@ -1785,7 +1831,7 @@ QUnit.module('Views', {
 
         assert.doesNotHaveClass(gantt.$('.o_gantt_row_group .o_gantt_pill'), 'ui-resizable',
             'the group row pill should not be resizable');
-        assert.doesNotHaveClass(gantt.$('.o_gantt_row_group .o_gantt_pill'), 'ui-draggable',
+        assert.hasClass(gantt.$('.o_gantt_row_group .o_gantt_pill'), 'o_fake_draggable',
             'the group row pill should not be draggable');
         assert.hasClass(gantt.$('.o_gantt_row:not(.o_gantt_row_group) .o_gantt_pill'), 'ui-resizable',
             'the pill should be resizable');

@@ -284,11 +284,12 @@ class HrPayslip(models.Model):
         date_to = self.date_to
 
         self.company_id = employee.company_id
-
-        if not self.contract_id: # Add a default contract if not already defined
+        if not self.contract_id or self.employee_id != self.contract_id.employee_id: # Add a default contract if not already defined
             contracts = employee._get_contracts(date_from, date_to)
 
             if not contracts or not contracts[0].structure_type_id.default_struct_id:
+                self.contract_id = False
+                self.struct_id = False
                 return
             self.contract_id = contracts[0]
             self.struct_id = contracts[0].structure_type_id.default_struct_id

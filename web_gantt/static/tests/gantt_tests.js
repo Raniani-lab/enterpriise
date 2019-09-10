@@ -780,7 +780,7 @@ QUnit.module('Views', {
         });
 
         // open dialog to create a task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "click");
         await testUtils.nextTick();
         // check that the dialog is opened with prefilled fields
         var $modal = $('.modal');
@@ -810,7 +810,7 @@ QUnit.module('Views', {
             'Task should be created with name "Task 8"');
 
         // open dialog to view a task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "click");
         await testUtils.nextTick();
 
         $modal = $('.modal-lg');
@@ -844,9 +844,7 @@ QUnit.module('Views', {
         // to be activated
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "mouseenter");
         await testUtils.nextTick();
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "mousedown");
-        await testUtils.nextTick();
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "click");
         await testUtils.nextTick();
 
         assert.containsOnce($, '.modal', 'There should be one modal opened');
@@ -888,7 +886,7 @@ QUnit.module('Views', {
         });
 
         // open dialog to create a task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "click");
         await testUtils.nextTick();
 
         var $modal = $('.modal');
@@ -923,12 +921,12 @@ QUnit.module('Views', {
         });
 
         // open dialog to create a task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "click");
         await testUtils.nextTick();
         // create the task
         await testUtils.modal.clickButton('Save & Close');
         // open dialog to view the task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "click");
         await testUtils.nextTick();
 
         var $modal = $('.modal');
@@ -971,12 +969,12 @@ QUnit.module('Views', {
         });
 
         // open dialog to create a task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "click");
         await testUtils.nextTick();
         // create the task
         await testUtils.modal.clickButton('Save & Close');
         // open dialog to view the task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "click");
         await testUtils.nextTick();
 
         var $modal = $('.modal');
@@ -1035,12 +1033,12 @@ QUnit.module('Views', {
         });
 
         // open dialog to create a task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "click");
         await testUtils.nextTick();
         // create the task
         await testUtils.modal.clickButton('Save & Close');
         // open dialog to view the task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "click");
         await testUtils.nextTick();
 
         // trigger the delete button
@@ -1106,7 +1104,7 @@ QUnit.module('Views', {
         });
 
         // open dialog to create a task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "click");
         await testUtils.nextTick();
 
         assert.strictEqual($('.modal').length, 1, 'There should be one modal opened');
@@ -1262,7 +1260,7 @@ QUnit.module('Views', {
         });
 
         // click on the plan button
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "click");
         await testUtils.nextTick();
 
         assert.strictEqual($('.modal .o_list_view').length, 1,
@@ -1310,7 +1308,7 @@ QUnit.module('Views', {
         });
 
         // click on the plan button
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "click");
         await testUtils.nextTick();
 
         await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
@@ -1353,7 +1351,7 @@ QUnit.module('Views', {
         });
 
         // click on the plan button
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:not(.o_gantt_row_group):first .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:not(.o_gantt_row_group):first .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "click");
         await testUtils.nextTick();
 
         await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
@@ -1534,7 +1532,7 @@ QUnit.module('Views', {
         });
 
         assert.containsN(gantt, '.o_gantt_pill', 3, "the list view is filtered");
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell:first .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell:first .o_gantt_cell_add'), "click");
         await testUtils.nextTick();
         await testUtils.fields.editInput($('.modal .modal-body input[name=name]'), 'new task');
         await testUtils.modal.clickButton('Save & Close');
@@ -1986,7 +1984,7 @@ QUnit.module('Views', {
         assert.containsNone(gantt, '.o_gantt_pill.ui-draggable',
             "the pills should not be draggable");
 
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill:first'), 'mouseup');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill:first'), 'click');
         await testUtils.nextTick();
 
         assert.strictEqual($('.modal').length, 1,
@@ -2524,7 +2522,7 @@ QUnit.module('Views', {
 
 
         // open dialog to create a task
-        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "click");
         await testUtils.nextTick();
 
         assert.strictEqual($('.modal').length, 1, 'There should be one modal opened');

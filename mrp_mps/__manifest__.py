@@ -7,7 +7,7 @@
     'category': 'Manufacturing',
     'sequence': 50,
     'summary': 'Master Production Schedule',
-    'depends': ['mrp', 'purchase'],
+    'depends': ['mrp', 'purchase', 'purchase_stock'],
     'description': """
 Master Production Schedule
 ==========================

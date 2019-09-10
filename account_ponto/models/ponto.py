@@ -84,6 +84,13 @@ class ProviderAccount(models.Model):
     def _update_ponto_accounts(self, method='add'):
         resp_json = self._ponto_fetch('GET', '/accounts', {}, {})
         res = {'added': self.env['account.online.journal']}
+        # When we are trying to add a new institution, add all existing account_online_journal that are not currently linked
+        # The reason is that a user can first synchronize for journal A and receive 3 bank accounts, he only link one bank account
+        # and does nothing with the 2 others, then later he create a new journal and synchronize again with the same ponto token
+        # because he would like to link one of the two remaining account to his journal. Since the accounts were already fetched in
+        # Odoo, we have to show it to him so that he can link them.
+        if method == 'add':
+            res['added'] = self.account_online_journal_ids.filtered(lambda j: len(j.journal_ids) == 0)
         for account in resp_json.get('data', {}):
             # Fetch accounts
             vals = {
@@ -112,19 +119,22 @@ class ProviderAccount(models.Model):
 
     def success_callback(self, token):
         # Create account.provider and fetch account
-        vals = {
-            'name': _('Ponto'),
-            'ponto_token': token,
-            'provider_identifier': 'ponto',
-            'status': 'SUCCESS',
-            'status_code': 0,
-            'message': '',
-            'last_refresh': fields.Datetime.now(),
-            'action_required': False,
-            'provider_type': 'ponto',
-        }
-        new_provider_account = self.create(vals)
-        return new_provider_account.with_context(no_post_message=True)._update_ponto_accounts()
+        # Search for already existing ponto provider and if found update that one, otherwise create a new one
+        provider_account = self.search([('ponto_token', '=', token)])
+        if not provider_account:
+            vals = {
+                'name': _('Ponto'),
+                'ponto_token': token,
+                'provider_identifier': 'ponto',
+                'status': 'SUCCESS',
+                'status_code': 0,
+                'message': '',
+                'last_refresh': fields.Datetime.now(),
+                'action_required': False,
+                'provider_type': 'ponto',
+            }
+            provider_account = self.create(vals)
+        return provider_account.with_context(no_post_message=True)._update_ponto_accounts()
 
     def manual_sync(self):
         if self.provider_type != 'ponto':
@@ -265,3 +275,25 @@ class OnlineAccount(models.Model):
             self.ponto_last_synchronization_identifier = latest_transaction_identifier
         # Create the bank statement with the transactions
         return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0])
+
+
+class OnlineAccountWizard(models.TransientModel):
+    _inherit = 'account.online.wizard'
+
+    def _get_journal_values(self, account, create=False):
+        vals = super(OnlineAccountWizard, self)._get_journal_values(account=account, create=create)
+        if account.online_account_id.account_online_provider_id.provider_type == 'ponto':
+            vals['post_at'] = 'bank_rec'
+            vals['name'] = account.account_number
+            # create bank account in Odoo if not already exists
+            company = account.journal_id and account.journal_id.company_id or self.env.company
+            res_bank_id = self.env['res.partner.bank'].search([('acc_number', '=', account.account_number), ('company_id', '=', company.id)])
+            if not len(res_bank_id):
+                res_bank_id = self.env['res.partner.bank'].create({
+                    'acc_number': account.account_number,
+                    'company_id': company.id,
+                    'currency_id': company.currency_id.id,
+                    'partner_id': company.partner_id.id,
+                })
+            vals['bank_account_id'] = res_bank_id.id
+        return vals

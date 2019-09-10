@@ -53,13 +53,13 @@
                         <br/>
                     </span>
                     <t t-if='receipt.loyalty.points_won'>
-                        <div>Points Won <span t-esc='receipt.loyalty.points_won' class="pos-receipt-right-align"/></div>
+                        <div>Points Won <span t-esc='widget.format_pr(receipt.loyalty.points_won, receipt.loyalty.rounding)' class="pos-receipt-right-align"/></div>
                     </t>
                     <t t-if='receipt.loyalty.points_spent'>
-                        <div>Points Spent <span t-esc='receipt.loyalty.points_spent' class="pos-receipt-right-align"/></div>
+                        <div>Points Spent <span t-esc='widget.format_pr(receipt.loyalty.points_spent, receipt.loyalty.rounding)' class="pos-receipt-right-align"/></div>
                     </t>
                     <t t-if='receipt.loyalty.points_total'>
-                        <div>Total Points <span t-esc='receipt.loyalty.points_total' class="pos-receipt-right-align"/></div>
+                        <div>Total Points <span t-esc='widget.format_pr(receipt.loyalty.points_total, receipt.loyalty.rounding)' class="pos-receipt-right-align"/></div>
                     </t>
                     <br />
                 </div>

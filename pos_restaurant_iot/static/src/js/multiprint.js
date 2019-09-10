@@ -4,6 +4,11 @@ odoo.define('pos_restaurant_iot.multiprint', function (require) {
 var models = require('point_of_sale.models');
 var PrinterProxy = require('pos_iot.Printer');
 
+// The override of create_printer needs to happen after its declaration in
+// pos_restaurant. We need to make sure that this code is executed after the
+// multiprint file in pos_restaurant.
+require('pos_restaurant.multiprint');
+
 models.load_fields("restaurant.printer", 'device_identifier');
 
 var _super_posmodel = models.PosModel.prototype;

@@ -170,6 +170,9 @@ return AbstractRenderer.extend({
         if (["many2one", "many2many", "one2many", "selection"].indexOf(field_type) > -1) {
             return value_to_display[1];
         }
+        else if (["date"].indexOf(field_type) > -1) {
+            return Array.isArray(value_to_display) ? value_to_display.slice(1).join(' ') : value_to_display;
+        }
         else {
             return value_to_display;
         }

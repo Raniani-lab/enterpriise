@@ -32,7 +32,7 @@
                 <field name="picking_type_use_existing_lots" invisible="1"/>
                 <field name="lot_name"
                     groups="stock.group_production_lot"
-                    attrs="{'invisible': ['|', ('tracking', '=', 'none'), ('picking_type_use_create_lots', '=', False)]}"
+                    attrs="{'invisible': ['|', '|', ('tracking', '=', 'none'), ('picking_type_use_create_lots', '=', False), ('picking_type_use_existing_lots', '=', True)]}"
                     />
                 <field name="lot_id"
                     groups="stock.group_production_lot"

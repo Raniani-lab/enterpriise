@@ -541,8 +541,8 @@ QUnit.module('Views', {
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'), 'active',
             'day view should be activated');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '20 December 2018',
-            'should contain "20 December 2018" in header');
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'Thursday, December 20, 2018',
+            'should contain "Thursday, December 20, 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 24,
             'should have a 24 slots for day view');
         assert.containsN(gantt, '.o_gantt_pill_wrapper', 4,
@@ -646,13 +646,13 @@ QUnit.module('Views', {
         assert.verifySteps(["start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '19 December 2018',
-            'should contain "19 December 2018" in header');
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'Wednesday, December 19, 2018',
+            'should contain "Wednesday, December 19, 2018" in header');
         assert.verifySteps(["start,<=,2018-12-19 22:59:59,stop,>=,2018-12-18 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '20 December 2018',
-            'should contain "20 December 2018" in header');
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'Thursday, December 20, 2018',
+            'should contain "Thursday, December 20, 2018" in header');
         assert.verifySteps(["start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00"]);
 
         // switch to week view and check week navigation
@@ -2085,8 +2085,8 @@ QUnit.module('Views', {
 
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'), 'active',
             'day view should be activated');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '20 December 2018',
-            'should contain "20 December 2018" in header');
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'Thursday, December 20, 2018',
+            'should contain "Thursday, December 20, 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 24,
             'should have a 24 slots for day view');
 
@@ -2500,7 +2500,7 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '16 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'Sunday, December 16, 2018',
             'gantt view should be set to 4 days before initial date');
 
         gantt.destroy();

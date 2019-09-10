@@ -153,7 +153,7 @@ var GanttRenderer = AbstractRenderer.extend({
         var focusDate = this.state.focusDate;
         switch (this.state.scale) {
             case 'day':
-                return focusDate.format('DD MMMM YYYY');
+                return focusDate.format('dddd, MMMM DD, YYYY');
             case 'week':
                 var dateStart = focusDate.clone().startOf('week').format('DD MMMM YYYY');
                 var dateEnd = focusDate.clone().endOf('week').format('DD MMMM YYYY');

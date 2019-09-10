@@ -23,7 +23,7 @@ screens.ScaleScreenWidget.include({
         }
         this._error = false;
         this.pos.proxy.on('change:status', this, function (eh, status) {
-            if (status.newValue.status !== 'connected' || status.newValue.drivers.scale.status !== 'connected') {
+            if (!self.iot_box.connected || !status.newValue.drivers.scale || status.newValue.drivers.scale.status !== 'connected') {
                 if (!self._error) {
                     self._error = true;
                     self.gui.show_popup('error', {
@@ -34,6 +34,9 @@ screens.ScaleScreenWidget.include({
             } else { self._error = false; }
         });
         this.pos.proxy_queue.schedule(function () { self.scale.action({ action: 'start_reading' }); });
+        this.iot_box = _.find(this.pos.proxy.iot_boxes, function (iot_box) {
+            return iot_box.ip == self.scale._iot_ip;
+        });
         this._read_scale();
         this._super();
     },

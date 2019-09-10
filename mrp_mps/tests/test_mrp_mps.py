@@ -117,3 +117,18 @@ class TestMpsReport(TestMpsCommon):
         self.computerdesk.mps_forecasted = 75
         result = self.Mps.get_data(self.computerdesk)[-1]
         self.assertEqual(result['forecasted'], 75.0, "Wrong calculation of forecasted.")
+
+    def test_10_mrp_3_steps(self):
+        wh = self.env.ref('stock.warehouse0')
+        wh.manufacture_steps = 'pbm_sam'
+        self.computerdesk.write({
+            'route_ids': [(6, 0, [self.ref('mrp.route_warehouse0_manufacture')])]
+        })
+
+        data = self.Mps.get_data(self.computerdesk)
+        self.assertEqual(data[0]['to_supply'], 25.0, "Wrong initial value of to_supply")
+
+        self.SaleForecast.generate_procurement(product_id=self.computerdesk.id)
+
+        data = self.Mps.get_data(self.computerdesk)
+        self.assertEqual(data[0]['to_supply'], 25.0, "Wrong resulting value of to_supply")

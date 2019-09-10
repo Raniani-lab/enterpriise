@@ -191,6 +191,9 @@ class MrpMpsReport(models.TransientModel):
             if proc_dec:
                 wh = self.env['stock.warehouse'].search([], limit=1)
                 loc = wh.lot_stock_id
+                # Get the top level location of the warehouse
+                while loc.location_id:
+                    loc = loc.location_id
                 purchase_lines = self.env['purchase.order.line'].search([('order_id.picking_type_id.default_location_dest_id', 'child_of', loc.id),
                                                                          ('product_id', '=', product.id),
                                                                          ('state', 'in', ('draft','sent','to approve')),

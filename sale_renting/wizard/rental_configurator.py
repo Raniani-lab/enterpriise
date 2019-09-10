@@ -9,11 +9,18 @@ class RentalWizard(models.TransientModel):
     _name = 'rental.wizard'
     _description = 'Configure the rental of a product'
 
+    def _default_uom_id(self):
+        if self.env.context.get('default_uom_id', False):
+            return self.env['uom.uom'].browse(self.context.get('default_uom_id'))
+        else:
+            return self.env['product.product'].browse(self.env.context.get('default_product_id')).uom_id
+
     rental_order_line_id = fields.Many2one('sale.order.line', ondelete='cascade')  # When wizard used to edit a Rental SO line
 
     product_id = fields.Many2one(
         'product.product', "Product", required=True, ondelete='cascade',
         domain=[('rent_ok', '=', True)], help="Product to rent (has to be rentable)")
+    uom_id = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True, default=_default_uom_id)
 
     pickup_date = fields.Datetime(
         string="Deliver", required=True, help="Date of Deliver",

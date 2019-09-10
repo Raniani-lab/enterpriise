@@ -25,7 +25,11 @@
                     </div>
                 </group>
                 <group name="rental_pricing">
-                  <field name="quantity"/>
+                  <label for="quantity"/>
+                  <div name="qty_to_reserve">
+                    <field name="quantity" class="oe_inline col-lg-3 text-left pl-0"/>
+                    <field name="uom_id" class="oe_inline" options="{'no_open':1}"/>
+                  </div>
                   <field name="pricing_id" invisible="1"/>
                   <field name="unit_price"/>
                   <field name="currency_id" invisible="1"/>

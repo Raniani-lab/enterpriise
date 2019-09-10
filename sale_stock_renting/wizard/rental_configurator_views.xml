@@ -5,22 +5,22 @@
     <field name="model">rental.wizard</field>
     <field name="inherit_id" ref="sale_renting.rental_configurator_view_form"/>
     <field name="arch" type="xml">
-      <field name="quantity" position="replace">
-          <label for="quantity"/>
-          <div>
+      <xpath expr="//div[@name='qty_to_reserve']" position="replace">
+          <div name="qty_to_reserve">
             <field name="quantity" class="oe_inline col-lg-3 text-left pl-0"/>
+            <field name="uom_id" class="oe_inline" options="{'no_open':1}" attrs="{'invisible': [('is_product_storable', '=', True)]}"/>
             <span class="oe_inline" attrs="{'invisible': [('is_product_storable', '=', False)]}">
               (
               <field name="qty_available_during_period" class="oe_inline" nolabel="1"/>
               &amp;#032;
-              <field name="uom_id" class="oe_inline"/>
+              <field name="product_uom_id" class="oe_inline"/>
               Available )
             </span>
           </div>
           <field name="lot_ids" widget="many2many_tags" placeholder="Select available serial numbers."
             attrs="{'invisible': [('tracking', '!=', 'serial')]}"
             options="{'no_open':1, 'no_create_edit':1}"/>
-      </field>
+      </xpath>
       <xpath expr="//notebook" position="inside">
         <page string="Stock" attrs="{'invisible': [('is_product_storable', '=', False)]}">
           <field name="is_product_storable" invisible="1"/>

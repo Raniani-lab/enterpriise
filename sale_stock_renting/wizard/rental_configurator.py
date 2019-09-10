@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -11,8 +10,7 @@ class RentalWizard(models.TransientModel):
 
     warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse')
 
-    uom_id = fields.Char(related='product_id.uom_id.name')
-    name = fields.Char(related='product_id.name')
+    product_uom_id = fields.Char(string="Product UoM", related='product_id.uom_id.name')
 
     # Stock availability
     rented_qty_during_period = fields.Float(

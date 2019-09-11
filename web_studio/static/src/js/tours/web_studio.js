@@ -95,7 +95,7 @@ tour.register('web_studio_new_app_tour', {
     auto: true,
 }, {
     trigger: '.o_web_studio_add_chatter',
-    content: _t("Add a <b>chatter widget</b> to allow discussions on your document: by email or inline."),
+    content: _t("Add a <b>chatter widget</b> to allow discussions on your document: by email or online."),
     position: 'top',
 }, {
     trigger: '.o_web_studio_form_view_editor .oe_chatter',

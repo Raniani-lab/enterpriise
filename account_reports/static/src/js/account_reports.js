@@ -243,9 +243,22 @@ var accountReportsWidget = AbstractAction.extend({
         this._add_line_classes();
     },
     _add_line_classes: function() {
-        this.$('.o_account_report_line').filter(function () {
-            return $(this).data('unfolded') === 'True';
-        }).parent().addClass('o_js_account_report_parent_row_unfolded');
+        /* Pure JS to improve performance in very cornered case (~200k lines)
+         * Jquery code:
+         *  this.$('.o_account_report_line').filter(function () {
+         *      return $(this).data('unfolded') === 'True';
+         *  }).parent().addClass('o_js_account_report_parent_row_unfolded');
+         */
+        var el = this.$el[0];
+        var report_lines = el.getElementsByClassName('o_account_report_line');
+        for (var l=0; l < report_lines.length; l++) {
+            var line = report_lines[l];
+            var unfolded = line.dataset.unfolded;
+            if (unfolded === 'True') {
+                line.parentNode.classList.add('o_js_account_report_parent_row_unfolded');
+            }
+        }
+        // This selector is not adaptable in pure JS
         this.$('tr[data-parent-id]').addClass('o_js_account_report_inner_row');
      },
     filter_accounts: function(e) {

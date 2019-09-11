@@ -35,7 +35,7 @@
             <field name="name">Net Profit</field>
             <field name="code">NEP</field>
             <field name="financial_report_id" ref="account_financial_report_profitandloss0"/>
-            <field name="formulas">balance = INC.balance - LEX.balance</field>
+            <field name="formulas">balance = GRP.balance - LEX.balance</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="0" />
         </record>
@@ -43,7 +43,7 @@
         <record id="account_financial_report_totalincome0" model="account.financial.html.report.line">
             <field name="name">Income</field>
             <field name="code">INC</field>
-            <field name="formulas">balance = OPINC.balance + OIN.balance - COS.balance</field>
+            <field name="formulas">balance = OPINC.balance + OIN.balance</field>
             <field name="parent_id" eval="False"/>
             <field name="financial_report_id" ref="account_financial_report_profitandloss0"/>
             <field name="sequence" eval="1"/>
@@ -53,7 +53,7 @@
         <record id="account_financial_report_gross_profit0" model="account.financial.html.report.line">
             <field name="name">Gross Profit</field>
             <field name="code">GRP</field>
-            <field name="formulas">balance = OPINC.balance - COS.balance</field>
+            <field name="formulas">balance = INC.balance - COS.balance</field>
             <field name="parent_id" ref='account_financial_report_totalincome0'/>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2" />

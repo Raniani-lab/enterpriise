@@ -66,9 +66,13 @@ class report_account_aged_partner(models.AbstractModel):
                         caret_type = 'account.payment'
                     else:
                         caret_type = 'account.move'
+
+                    line_date = aml.date_maturity or aml.date
+                    if not self._context.get('no_format'):
+                        line_date = format_date(self.env, line_date)
                     vals = {
                         'id': aml.id,
-                        'name': format_date(self.env, aml.date_maturity or aml.date),
+                        'name': line_date,
                         'class': 'date',
                         'caret_options': caret_type,
                         'level': 4,

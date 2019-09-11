@@ -14,7 +14,7 @@
         MTD-VAT API to HMRC.   
     """,
     'author': 'SmartMode LTD',
-    'website': 'http://www.smartmode.co.uk',
+    'website': 'https://www.odoo.com/page/accounting',
     'depends': [
         'l10n_uk', 'account_reports'
     ],

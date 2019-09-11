@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
+from email.utils import formataddr
 import uuid
 
 from odoo import api, fields, models, tools, _
@@ -262,6 +263,12 @@ class HelpdeskTicket(models.Model):
         if 'partner_id' in vals and 'partner_email' not in vals:
             partner_email = self.env['res.partner'].browse(vals['partner_id']).email
             vals.update(partner_email=partner_email)
+        # Manually create a partner now since 'generate_recipients' doesn't keep the name. This is
+        # to avoid intrusive changes in the 'mail' module
+        if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
+            vals['partner_id'] = self.env['res.partner'].find_or_create(
+                formataddr((vals['partner_name'], vals['partner_email']))
+            )
 
         # context: no_log, because subtype already handle this
         ticket = super(HelpdeskTicket, self).create(vals)

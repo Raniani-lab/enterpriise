@@ -89,8 +89,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
             'res_model': 'account.move',
             'datas': base64.encodestring(b'%PDF-1.3'),
         })
-        with self.assertRaisesRegexp(ValidationError, error_msg):
-            pdf_attachment.unlink()
+        pdf_attachment.unlink()
 
         # ----------------
         # Testing discount

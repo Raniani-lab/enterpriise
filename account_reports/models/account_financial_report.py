@@ -589,13 +589,12 @@ class AccountFinancialReportLine(models.Model):
             # Fake domain to always get the join to the account_move_line__move_id table.
             fake_domain = [('move_id.id', '!=', None)]
             sub_tables, sub_where_clause, sub_where_params = self.env['account.move.line']._query_get(domain=fake_domain)
-            tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=fake_domain + ast.literal_eval(self.domain))
 
             # Get moves having a line using a bank account.
             bank_journals = self.env['account.journal'].search([('type', 'in', ('bank', 'cash'))])
             bank_accounts = bank_journals.mapped('default_debit_account_id') + bank_journals.mapped('default_credit_account_id')
             q = '''SELECT DISTINCT(\"account_move_line\".move_id)
-                    FROM ''' + tables + '''
+                    FROM ''' + sub_tables + '''
                     WHERE account_id IN %s
                     AND ''' + sub_where_clause
             p = [tuple(bank_accounts.ids)] + sub_where_params
@@ -1265,7 +1264,7 @@ class IrModuleModule(models.Model):
         # generated missing action translations for translated reports
         self.env.cr.execute("""
            INSERT INTO ir_translation (lang, type, name, res_id, src, value, module, state)
-           SELECT l.code, 'model', 'ir.actions.client,name', a.id, t.src, t.value, t.module, t.state
+           SELECT DISTINCT ON (l.code, a.id) l.code, 'model', 'ir.actions.client,name', a.id, t.src, t.value, t.module, t.state
              FROM account_financial_html_report r
              JOIN ir_act_client a ON (r.name = a.name)
              JOIN ir_translation t ON (t.res_id = r.id AND t.name = 'account.financial.html.report,name')
@@ -1282,7 +1281,7 @@ class IrModuleModule(models.Model):
         # generated missing menu translations for translated reports
         self.env.cr.execute("""
            INSERT INTO ir_translation (lang, type, name, res_id, src, value, module, state)
-           SELECT l.code, 'model', 'ir.ui.menu,name', m.id, t.src, t.value, t.module, t.state
+           SELECT DISTINCT ON (l.code, m.id) l.code, 'model', 'ir.ui.menu,name', m.id, t.src, t.value, t.module, t.state
              FROM account_financial_html_report r
              JOIN ir_ui_menu m ON (r.name = m.name)
              JOIN ir_translation t ON (t.res_id = r.id AND t.name = 'account.financial.html.report,name')

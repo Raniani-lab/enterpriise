@@ -5,6 +5,7 @@ import time
 
 from odoo.addons.account.tests.account_test_classes import AccountingTestCase
 from odoo.tests import tagged
+from odoo.exceptions import ValidationError
 
 
 @tagged('post_install', '-at_install')
@@ -87,3 +88,12 @@ class TestBatchPayment(AccountingTestCase):
         self.env['account.reconciliation.widget'].process_bank_statement_line(bank_statement_line.ids, [{"payment_aml_ids": move_line_ids}])
         self.assertTrue(all(payment.state == 'reconciled' for payment in self.payments))
         self.assertTrue(batch.state == 'reconciled')
+
+    def test_zero_amount_payment(self):
+        zero_payment = self.createPayment(self.customers[0], 0)
+        batch_vals = {
+            'journal_id': self.journal.id,
+            'payment_ids': [(4, zero_payment.id, None)],
+            'payment_method_id': self.batch_deposit.id,
+        }
+        self.assertRaises(ValidationError, self.env['account.batch.payment'].create, batch_vals)

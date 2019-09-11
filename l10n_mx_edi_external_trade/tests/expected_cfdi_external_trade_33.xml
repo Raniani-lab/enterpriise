@@ -22,7 +22,7 @@
     <cfdi:Emisor Nombre="YourCompany"
         RegimenFiscal="601"
         Rfc="TCM970625MB1"/>
-    <cfdi:Receptor Nombre="Agrolait"
+    <cfdi:Receptor Nombre="Deco Addict"
         Rfc="XEXX010101000"
         UsoCFDI="P01"
         NumRegIdTrib="123456789"
@@ -91,24 +91,24 @@
             </cce11:Emisor>
             <cce11:Receptor>
                 <cce11:Domicilio
-                    Calle="rue de Namur"
-                    NumeroExterior="69"
-                    Municipio="Wavre"
+                    Calle="Elsie Drive"
+                    NumeroExterior="325"
+                    Municipio="Franklin"
                     Estado="NV" Pais="USA"
                     CodigoPostal="39301"/>
             </cce11:Receptor>
             <cce11:Destinatario
-                Nombre="Agrolait">
+                Nombre="Deco Addict">
                 <cce11:Domicilio
                     Calle="Street Parent"
-                    NumeroExterior="69"
-                    Municipio="Wavre"
+                    NumeroExterior="325"
+                    Municipio="Franklin"
                     Estado="NV" Pais="USA"
                     CodigoPostal="39301"/>
             </cce11:Destinatario>
             <cce11:Mercancias>
                 <cce11:Mercancia
-                    NoIdentificacion="PCSC234"
+                    NoIdentificacion="FURN_7800"
                     FraccionArancelaria="84289099"
                     CantidadAduana="1.000"
                     UnidadAduana="06"

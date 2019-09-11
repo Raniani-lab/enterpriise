@@ -62,6 +62,11 @@ html {
         }
     }
 
+    // FIXME: Fix scrolling in modal on focus input due to a bug between Chrome (Android) and Bootstrap
+    body.modal-open {
+        position: fixed;
+    }
+
     .o_loading {
         position: fixed;
         bottom: 0;

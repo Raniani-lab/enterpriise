@@ -37,7 +37,7 @@ def run_after_commit(function, *args, **kwargs):
         db_registry = registry(dbname)
         with api.Environment.manage(), db_registry.cursor() as new_cr:
             env = api.Environment(new_cr, uid, context)
-            function(env[model_name].browse(ids), *args, **kwargs)
+            function(env[model_name].browse(ids).exists(), *args, **kwargs)
 
     _logger.debug("Method %s.%s will be called after commit", self, function)
     self.env.cr.after('commit', callback)

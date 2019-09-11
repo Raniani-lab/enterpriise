@@ -102,7 +102,7 @@ class HmrcVatObligation(models.Model):
         obligations = self.retrieve_vat_obligations(
             self.env.company.vat,
             (today + relativedelta(months=-6)).strftime('%Y-%m-%d'),
-            (today + relativedelta(months=6)).strftime('%Y-%m-%d'))
+            (today + relativedelta(months=6,leapdays=-1)).strftime('%Y-%m-%d'))
 
         for new_obligation in obligations:
             obligation = self.env['l10n_uk.vat.obligation'].search([('period_key', '=', new_obligation.get('periodKey')),

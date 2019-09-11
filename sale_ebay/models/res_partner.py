@@ -27,7 +27,7 @@ class ResPartner(models.Model):
             # to minimize the number of duplicates this could be more aggressive
             return re.sub(r"\s+", "", string).lower() if string else ''
         def phone_normalize(string):
-            return re.sub(r"\D", "", string)
+            return re.sub(r"\D", "", string) if string else ''
         def zip_normalize(string):
             return string.split('-')[0] if \
                 self.country_id.name == "United States" else default_normalize(string)

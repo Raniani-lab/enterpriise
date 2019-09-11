@@ -44,21 +44,36 @@ class HrEmployee(models.Model):
         for rec in self:
             rec.related_partner_id = rec.user_id.partner_id
 
-    @api.onchange('appraisal_by_manager', 'parent_id')
+    @api.onchange('appraisal_by_manager')
+    def onchange_appraisal_by_manager(self):
+        if not self.appraisal_manager_ids:
+            self._onchange_manager_appraisal()
+
+    @api.onchange('parent_id')
     def _onchange_manager_appraisal(self):
         if self.appraisal_by_manager and self.parent_id:
             self.appraisal_manager_ids = [self.parent_id.id]
         else:
             self.appraisal_manager_ids = False
 
-    @api.onchange('appraisal_by_colleagues', 'department_id', 'parent_id')
+    @api.onchange('appraisal_by_colleagues')
+    def onchange_appraisal_by_colleagues(self):
+        if not self.appraisal_colleagues_ids:
+            self.onchange_colleagues()
+
+    @api.onchange('department_id', 'parent_id')
     def onchange_colleagues(self):
         if self.appraisal_by_colleagues and self.department_id and self.parent_id:
             self.appraisal_colleagues_ids = self.search([('department_id', '=', self.department_id.id), ('id', '!=', self._origin.id), ('parent_id', '=', self.parent_id.id)])
         else:
             self.appraisal_colleagues_ids = False
 
-    @api.onchange('appraisal_by_collaborators', 'child_ids')
+    @api.onchange('appraisal_by_collaborators')
+    def onchange_appraisal_by_collaborators(self):
+        if not self.appraisal_collaborators_ids:
+            self.onchange_subordinates()
+
+    @api.onchange('child_ids')
     def onchange_subordinates(self):
         if self.appraisal_by_collaborators:
             self.appraisal_collaborators_ids = self.child_ids

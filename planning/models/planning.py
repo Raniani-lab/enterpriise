@@ -118,28 +118,14 @@ class Planning(models.Model):
     def _compute_overlap_slot_count(self):
         if self.ids:
             query = """
-                SELECT
-                    S1.id, COUNT(S2.id)
-                FROM
-                    (
-                        SELECT
-                            S.id as id,
-                            S.employee_id as employee_id,
-                            S.start_datetime as start_datetime,
-                            S.end_datetime as end_datetime
-                        FROM planning_slot S
-                        WHERE employee_id IS NOT NULL
-                    ) S1
-                INNER JOIN planning_slot S2
-                    ON S1.id != S2.id
-                        AND S1.employee_id = S2.employee_id
-                        AND (S1.start_datetime::TIMESTAMP, S1.end_datetime::TIMESTAMP)
-                            OVERLAPS (S2.start_datetime::TIMESTAMP, S2.end_datetime::TIMESTAMP)
-                GROUP BY S1.id
+                SELECT S1.id,count(*) FROM
+                    planning_slot S1, planning_slot S2
+                WHERE
+                    S1.start_datetime < S2.end_datetime and S1.end_datetime > S2.start_datetime and S1.id <> S2.id and S1.employee_id = S2.employee_id
+                GROUP BY S1.id;
             """
             self.env.cr.execute(query, (tuple(self.ids),))
-            raw_data = self.env.cr.dictfetchall()
-            overlap_mapping = dict(map(lambda d: d.values(), raw_data))
+            overlap_mapping = dict(self.env.cr.fetchall())
             for slot in self:
                 slot.overlap_slot_count = overlap_mapping.get(slot.id, 0)
         else:

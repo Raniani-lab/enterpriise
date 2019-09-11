@@ -37,6 +37,7 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="image" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [80, 80]}'/>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
@@ -51,6 +52,7 @@
                         <page string="Options" name="options">
                             <group>
                                 <group string="Fields" name="option_settings">
+                                    <field name="active" invisible="1"/>
                                     <field name="requirer_document" string="Document" widget="radio" options="{'horizontal': true}"/>
                                     <field name="has_partner" string="Contact" widget="radio" options="{'horizontal': true}"/>
                                     <field name="has_date" string="Date" widget="radio" options="{'horizontal': true}"/>

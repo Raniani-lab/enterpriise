@@ -114,6 +114,21 @@ class HrPayrollStructureType(models.Model):
         for structure_type in self:
             structure_type.struct_type_count = len(structure_type.struct_ids)
 
+    def _check_country(self, vals):
+        country_id = vals.get('country_id')
+        if country_id and country_id not in self.env.companies.mapped('country_id').ids:
+            raise UserError(_('You should also be logged into a company in %s to set this country.') % self.env['res.country'].browse(country_id).name)
+
+    def write(self, vals):
+        if self.env.context.get('payroll_check_country'):
+            self._check_country(vals)
+        return super().write(vals)
+
+    @api.model
+    def create(self, vals):
+        if self.env.context.get('payroll_check_country'):
+            self._check_country(vals)
+        return super().create(vals)
 
 class HrSalaryRuleCategory(models.Model):
     _name = 'hr.salary.rule.category'

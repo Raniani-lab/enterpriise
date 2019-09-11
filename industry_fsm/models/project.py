@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from ast import literal_eval
 from datetime import timedelta, datetime
+import pytz
 
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, AccessError
@@ -64,20 +65,23 @@ class Task(models.Model):
     @api.model
     def default_get(self, fields_list):
         result = super(Task, self).default_get(fields_list)
+        user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
+        date_begin = result.get('planned_date_begin')
+        if date_begin:
+            date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
+            date_begin = date_begin.replace(hour=9, minute=0, second=0)
+            date_begin = date_begin.astimezone(pytz.utc).replace(tzinfo=None)
+            result['planned_date_begin'] = date_begin
+        date_end = result.get('planned_date_end')
+        if date_end:
+            date_end = pytz.utc.localize(date_end).astimezone(user_tz)
+            date_end = date_end.replace(hour=17, minute=0, second=0)
+            date_end = date_end.astimezone(pytz.utc).replace(tzinfo=None)
+            result['planned_date_end'] = date_end
         if 'project_id' in fields_list and not result.get('project_id') and self._context.get('fsm_mode'):
             fsm_project = self.env['project.project'].search([('is_fsm', '=', True)], order='sequence', limit=1)
             result['project_id'] = fsm_project.id
         return result
-
-    def _default_planned_date_begin(self):
-        if self.env.context.get('fsm_mode'):
-            now = datetime.now()
-            return now + timedelta(minutes=15 - now.minute % 15, seconds=-now.second)
-
-    def _default_planned_date_end(self):
-        if self.env.context.get('fsm_mode'):
-            now = datetime.now()
-            return now + timedelta(minutes=15 - now.minute % 15, seconds=-now.second) + timedelta(hours=1)
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     allow_material = fields.Boolean(related='project_id.allow_material')
@@ -88,8 +92,6 @@ class Task(models.Model):
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     fsm_state = fields.Selection([('draft', 'New'), ('validated', 'Validated'), ('sold', 'Sold')], default='draft', string='Status', readonly=True, copy=False)
-    planned_date_begin = fields.Datetime(default=_default_planned_date_begin)
-    planned_date_end = fields.Datetime(default=_default_planned_date_end)
     user_id = fields.Many2one(group_expand='_read_group_user_ids')
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
     fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice')

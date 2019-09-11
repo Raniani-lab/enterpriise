@@ -77,7 +77,7 @@ class ProductProduct(models.Model):
                 if self.invoice_policy == 'delivery' and self.service_type == 'manual':
                     vals['qty_delivered'] = sale_line.qty_delivered - 1
 
-                if vals['product_uom_qty'] and task.sale_order.state != 'sale' <= 0:
+                if vals['product_uom_qty'] and task.sale_order_id.state != 'sale' <= 0:
                     sale_line.unlink()
                 else:
                     sale_line.write(vals)

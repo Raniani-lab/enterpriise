@@ -42,6 +42,8 @@ class ProjectTask(models.Model):
 
     timesheet_timer_start = fields.Datetime("Timesheet Timer Start", default=None)
     timesheet_timer_pause = fields.Datetime("Timesheet Timer Last Pause")
+    timesheet_timer_first_start = fields.Datetime("Timesheet Timer First Use", readonly=True)
+    timesheet_timer_last_stop = fields.Datetime("Timesheet Timer Last Use", readonly=True)
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
     allow_billable = fields.Boolean(related="project_id.allow_billable")
 
@@ -56,6 +58,8 @@ class ProjectTask(models.Model):
 
     def action_timer_start(self):
         self.ensure_one()
+        if not self.timesheet_timer_first_start:
+            self.write({'timesheet_timer_first_start': fields.Datetime.now()})
         return self.write({'timesheet_timer_start': fields.Datetime.now()})
 
     def action_timer_pause(self):

@@ -342,6 +342,14 @@
                                     <field name="planned_date_end"/>
                                 </div>
                             </div>
+                            <label for="timesheet_timer_first_start" string="Effective Hours"/>
+                            <div class="w-100">
+                                <div class="o_row">
+                                    <field name="timesheet_timer_first_start"/>
+                                    <span attrs="{'invisible': [('timesheet_timer_last_stop', '=', False)]}"> to </span>
+                                    <field name="timesheet_timer_last_stop"/>
+                                </div>
+                            </div>
                             <field name="user_id" options="{'no_open': True}"/>
                             <field name="project_id" domain="[('is_fsm', '=', True)]" required="True" options="{'no_create': True, 'no_edit': True, 'no_open': 'True'}" groups="industry_fsm.group_fsm_manager"/>
                         </group>

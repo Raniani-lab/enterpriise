@@ -613,7 +613,7 @@ class SaleSubscription(models.Model):
         else:
             domain = ['|', '|', ('code', operator, name), ('name', operator, name), ('partner_id.name', operator, name)]
         subscription_ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return self.browse(subscription_ids).name_get()
+        return models.lazy_name_get(self.browse(subscription_ids).with_user(name_get_uid))
 
     def wipe(self):
         """Wipe a subscription clean by deleting all its lines."""

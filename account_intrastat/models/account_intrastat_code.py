@@ -38,13 +38,14 @@ class AccountIntrastatCode(models.Model):
         return result
 
     @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100):
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         args = args or []
         if operator == 'ilike' and not (name or '').strip():
             domain = []
         else:
             domain = ['|', '|', ('code', operator, name), ('name', operator, name), ('description', operator, name)]
-        return super(AccountIntrastatCode, self).search(expression.AND([args, domain]), limit=limit).name_get()
+        record_ids = self._search(expression.AND([args, domain]), limit=limit, access_rights_uid=name_get_uid)
+        return models.lazy.name_get(self.browse(record_ids).with_user(name_get_uid))
 
     _sql_constraints = [
         ('intrastat_region_code_unique', 'UNIQUE (code, type, country_id)', 'Triplet code/type/country_id must be unique.'),

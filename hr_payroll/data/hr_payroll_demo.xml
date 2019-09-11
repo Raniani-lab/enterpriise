@@ -36,12 +36,14 @@
             <field name="type_id" ref="structure_type_employee"/>
             <field name="regular_pay" eval="True"/>
             <field name="unpaid_work_entry_type_ids" eval="[(4, ref('hr_payroll.work_entry_type_unpaid_leave'))]"/>
+            <field name="country_id" eval="False"/>
         </record>
 
         <record id="structure_worker_001" model="hr.payroll.structure">
             <field name="name">Worker Pay</field>
             <field name="type_id" ref="structure_type_worker"/>
             <field name="regular_pay" eval="True"/>
+            <field name="country_id" eval="False"/>
         </record>
 
         <!-- Salary Rules for Worker Pay-->

@@ -616,6 +616,7 @@
         <field name="domain">[('is_fsm', '=', True)]</field>
         <field name="context">{
             'fsm_mode': True,
+            'default_user_id': False,
             'search_default_groupby_stage': 1,
             'fsm_task_kanban_whole_date': 1,
         }</field>
@@ -666,6 +667,7 @@
         <field name="context">{
             'fsm_mode': True,
             'search_default_schedule': True,
+            'default_user_id': False,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -712,6 +714,7 @@
         <field name="context">{
             'fsm_mode': True,
             'search_default_to_invoice': True,
+            'default_user_id': False,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

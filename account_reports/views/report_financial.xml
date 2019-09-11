@@ -181,6 +181,11 @@
                             <i class="fa fa-caret-right" t-if="not line.get('unfolded')" role="img" aria-label="Folded" title="Folded"/>
                         </span>
                     </t>
+                    <t t-elif="not line.get('caret_options')">
+                        <span t-att-data-id="line['id']" class="o_account_reports_caret_icon">
+                            <i class="fa fa-caret-right invisible" role="img" aria-label="Unfolded" title="Unfolded"/>
+                        </span>
+                    </t>
                     <t t-if="not line.get('caret_options')">
                             <span class="account_report_line_name" t-att-title="line.get('title_hover')">
                                 <a t-if="line.get('action_id')" t-att-data-id="line['id']" t-att-data-action-id="line['action_id']" t-att-action="line.get('action', 'execute_action')">
@@ -279,7 +284,7 @@
             </div>
             <div class="o_account_reports_summary"/>
             <div class="table-responsive">
-                <table class="o_account_reports_table">
+                <table class="o_account_reports_table table-hover">
                     <t t-call="{{model._get_templates()['main_table_header_template']}}"/>
                     <tbody>
                         <t t-if="lines.get('lines')">
@@ -313,7 +318,7 @@
 
 <template id="template_aged_partner_balance_report" inherit_id="account_reports.main_template" primary="True">
     <xpath expr="//table" position="attributes">
-        <attribute name="class">o_account_reports_table table-striped</attribute>
+        <attribute name="class">o_account_reports_table table-striped table-hover</attribute>
     </xpath>
 </template>
 

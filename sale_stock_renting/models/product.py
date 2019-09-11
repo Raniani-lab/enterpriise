@@ -52,16 +52,17 @@ class Product(models.Model):
 
         # TODO is it more efficient to filter the records active in period
         # or to make another search on all the sale order lines???
-        if begins_during_period:
-            for date in begins_during_period.mapped('reservation_begin'):
+        if active_lines_in_period:
+            for date in (begins_during_period.mapped('reservation_begin') + [fro]):
+                # If no soline in begins_during_period, we need to check at period beginning
+                # how much products are rented.
                 active_lines_at_date = active_lines_in_period.filtered(
                     lambda line: line.reservation_begin <= date and line.return_date >= date)
                 qty_rented_at_date = sum(active_lines_at_date.mapped(unavailable_qty))
                 if qty_rented_at_date > max_qty_rented:
                     max_qty_rented = qty_rented_at_date
 
-        qty_always_in_rent_during_period = sum(covers_period.mapped(unavailable_qty))
-        # better to use mapped or for ... in ?
+        qty_always_in_rent_during_period = sum(covers_period.mapped(unavailable_qty)) if covers_period else 0
 
         return max_qty_rented + qty_always_in_rent_during_period
 

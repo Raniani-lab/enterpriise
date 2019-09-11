@@ -66,7 +66,7 @@ class Job(models.Model):
         return super().create(vals)
 
     def set_recruit(self):
-        self.job_open_date.write({'job_open_date': fields.Date.today()})
+        self.write({'job_open_date': fields.Date.today()})
         return super(Job, self).set_recruit()
 
     def action_share_external(self):

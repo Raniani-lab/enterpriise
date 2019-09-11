@@ -11,6 +11,10 @@
             <field name="allow_worksheets" eval="True" />
         </record>
 
+        <record id="field_service_product" model="product.product">
+            <field name="worksheet_template_id" ref="fsm_worksheet_template"/>
+        </record>
+
         <record id="mail_template_data_send_report" model="mail.template">
             <field name="name">Task Report</field>
             <field name="model_id" ref="project.model_project_task"/>

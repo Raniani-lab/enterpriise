@@ -34,5 +34,14 @@
             <field name="type_ids" eval="[(4, ref('planning_project_stage_0')), (4, ref('planning_project_stage_1'))]"/>
         </record>
 
+        <record id="field_service_product" model="product.product">
+            <field name="name">Field Service</field>
+            <field name="project_id" ref="fsm_project"/>
+            <field name="service_tracking">task_global_project</field>
+            <field name="type">service</field>
+            <field name="service_policy">delivered_timesheet</field>
+            <field name="image_1920" type="base64" file="industry_fsm/static/img/product_product_fsm_time_product.png"/>
+        </record>
+
     </data>
 </odoo>

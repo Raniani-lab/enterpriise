@@ -158,7 +158,7 @@ class TestAccountAsset(common.TransactionCase):
 
         # Test that we cannot validate an asset with non zero remaining value of the last depreciation line
         asset_form = Form(asset)
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(UserError):
             with self.cr.savepoint():
                 with asset_form.depreciation_move_ids.edit(4) as line_edit:
                     line_edit.amount_total = 1000.0

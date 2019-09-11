@@ -515,9 +515,6 @@ class Planning(models.Model):
                         ('start_datetime', '<', slot.end_datetime),
                         ('end_datetime', '>', slot.start_datetime)
             ]
-            current_id = slot.id
-            if current_id:
-                domain_mapping[slot.id] = expression.AND([domain_mapping[slot.id], [('id', '!=', current_id)]])
         return domain_mapping
 
     def _prepare_template_values(self):

@@ -62,7 +62,7 @@ class Planning(models.Model):
     publication_warning = fields.Boolean("Modified since last publication", default=False, readonly=True, help="If checked, it means that the shift contains has changed since its last publish.", copy=False)
 
     # template dummy fields (only for UI purpose)
-    template_creation = fields.Boolean("Save as a Template", default=False, store=False)
+    template_creation = fields.Boolean("Save as a Template", default=False, store=False, inverse='_inverse_template_creation')
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
     template_id = fields.Many2one('planning.slot.template', string='Planning Templates', store=False)
 
@@ -182,6 +182,19 @@ class Planning(models.Model):
                 slot.recurrency_id._delete_slot(slot.end_datetime)
                 slot.recurrency_id.unlink()  # will set recurrency_id to NULL
 
+    def _inverse_template_creation(self):
+        values_list = []
+        existing_values = []
+        for slot in self:
+            if slot.template_creation:
+                values_list.append(slot._prepare_template_values())
+        # Here we check if there's already a template w/ the same data
+        existing_templates = self.env['planning.slot.template'].read_group([], ['role_id', 'start_time', 'duration'], ['role_id', 'start_time', 'duration'], limit=None, lazy=False)
+        if len(existing_templates):
+            for element in existing_templates:
+                existing_values.append({'role_id': element['role_id'][0], 'start_time': element['start_time'], 'duration': element['duration']})
+        self.env['planning.slot.template'].create([x for x in values_list if x not in existing_values])
+
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         if self.employee_id:
@@ -206,12 +219,9 @@ class Planning(models.Model):
         if self.employee_id:
             self.publication_warning = True
 
-    @api.onchange('employee_id', 'role_id', 'template_creation')
+    @api.onchange('template_creation')
     def _onchange_template_autocomplete_ids(self):
-        domain = []
-        if self.role_id:
-            domain = [('role_id', '=', self.role_id.id)]
-        templates = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
+        templates = self.env['planning.slot.template'].search([], order='start_time', limit=10)
         if templates:
             if not self.template_creation:
                 self.template_autocomplete_ids = templates
@@ -290,13 +300,6 @@ class Planning(models.Model):
     def create(self, vals_list):
         result = super(Planning, self).create(vals_list)
 
-        # create the templates
-        template_value_list = []
-        for index, values in enumerate(vals_list):
-            if values.get('template_creation', False):
-                template_value_list.append(result[index]._prepare_template_values())
-        self._save_as_template(template_value_list)
-
         # recurring slots
         result.mapped('recurrency_id')._repeat_slot()
 
@@ -311,12 +314,6 @@ class Planning(models.Model):
         # warning on published shifts
         if 'publication_warning' not in values and (set(values.keys()) & set(self._get_fields_breaking_publication())):
             values['publication_warning'] = True
-        # create the templates
-        if values.get('template_creation', False):
-            template_value_list = []
-            for slot in self:
-                template_value_list.append(slot._prepare_template_values())
-            self._save_as_template(template_value_list)
 
         result = super(Planning, self).write(values)
 
@@ -534,17 +531,6 @@ class Planning(models.Model):
             'duration': h + (m / 60.0),
             'role_id': self.role_id.id
         }
-
-    @api.model
-    def _save_as_template(self, tmpl_vals_list):
-        to_create_list = []
-        for values in tmpl_vals_list:
-            domain = [('duration', '=', values['duration']), ('start_time', '=', values['start_time'])]
-            if values.get('role_id'):
-                domain = expression.AND([domain, [('role_id', '=', values['role_id'])]])
-            if not self.env['planning.template'].search_count(domain):
-                to_create_list.append(values)
-        return self.env['planning.slot.template'].create(to_create_list)
 
     def _read_group_employee_id(self, employees, domain, order):
         if self._context.get('planning_expand_employee'):

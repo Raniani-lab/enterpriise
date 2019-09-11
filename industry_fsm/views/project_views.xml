@@ -818,7 +818,7 @@
         <field name="view_mode">kanban,tree,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True)]</field>
-        <field name="context" eval="{'search_default_groupby_project': 1, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+        <field name="context" eval="{'search_default_groupby_project': 1, 'search_default_groupby_user': 2, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
     </record>
 
     <record id="project_task_action_planning_groupby_project_gantt" model="ir.actions.act_window.view">

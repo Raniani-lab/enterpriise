@@ -104,6 +104,17 @@
         </field>
     </record>
 
+    <record id="project_task_view_search_fsm_report" model="ir.ui.view">
+        <field name="name">project.task.search.fsm</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" eval="ref('industry_fsm.project_task_view_search_fsm')" />
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <filter string="Worksheet Template" name="groupby_worksheet_template" context="{'group_by':'worksheet_template_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">
         <field name="name">project.project.view.form.simplified.inherit</field>
         <field name="model">project.project</field>
@@ -241,7 +252,6 @@
         <field name="view_mode">tree,graph,pivot,form</field>
     </record>
 
-
     <record id="industry_fsm.project_project_action_only_fsm" model="ir.actions.act_window">
         <field name="context">
             {
@@ -255,6 +265,61 @@
             }
         </field>
     </record>
+
+    <!-- action planning by worksheet -->
+
+    <record id="project_task_action_fsm_planning_groupby_worksheet" model="ir.actions.act_window">
+        <field name="name">Planning by Worksheet</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="industry_fsm.project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="context" eval="{'search_default_groupby_worksheet_template': 1, 'search_default_groupby_user': 2, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_worksheet_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="project_enterprise.project_task_view_gantt"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_worksheet"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_worksheet_fsm_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="industry_fsm.project_task_view_kanban_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_worksheet"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_worksheet_fsm_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="industry_fsm.project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_worksheet"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_worksheet_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="industry_fsm.project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_worksheet"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_worksheet_fsm_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="35"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="industry_fsm.project_task_view_form"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_worksheet"/>
+    </record>
+
+    <!-- planning by worksheet menu -->
+    <menuitem id="project_task_menu_planning_by_project_fsm"
+        name="By Worksheet"
+        sequence="20"
+        action="project_task_action_fsm_planning_groupby_worksheet"
+        parent="industry_fsm.fsm_menu_planning"
+        groups="industry_fsm.group_fsm_manager"/>
+
     <!-- settings menu -->
     <menuitem id="fsm_settings_worksheets"
         name="Worksheet Templates"

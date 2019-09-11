@@ -53,6 +53,7 @@ class Task(models.Model):
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
     worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)
     worksheet_signed_by = fields.Char('Signed By', help='Name of the person that signed the task.', copy=False)
+    worksheet_color = fields.Integer(related='worksheet_template_id.color')
 
     @api.onchange('project_id')
     def _onchange_project_id(self):

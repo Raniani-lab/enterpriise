@@ -446,6 +446,21 @@
         </field>
     </record>
 
+    <record id="project_task_view_gantt_fsm" model="ir.ui.view">
+        <field name="name">project.task.view.gantt</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" eval="ref('project_enterprise.project_task_view_gantt')" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="planning_overlap" />
+                <field name="is_fsm" />
+            </xpath>
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="decoration-danger">is_fsm and planning_overlap &gt; 0</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Non primary kanban inherit (fsm tasks must display start date instead of deadline in all application) -->
     <record id="project_task_view_kanban" model="ir.ui.view">
         <field name="name">project.task.kanban.fsm.nonprimary</field>

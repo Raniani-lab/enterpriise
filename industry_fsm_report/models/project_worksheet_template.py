@@ -19,6 +19,7 @@ class ProjectWorksheetTemplate(models.Model):
     model_id = fields.Many2one('ir.model', ondelete='cascade', readonly=True, domain=[('state', '=', 'manual')])
     action_id = fields.Many2one('ir.actions.act_window', readonly=True)
     report_view_id = fields.Many2one('ir.ui.view', domain=[('type', '=', 'qweb')], readonly=True)
+    color = fields.Integer('Color', default=0)
     active = fields.Boolean(default=True)
 
     def _compute_worksheet_count(self):

@@ -3,7 +3,7 @@
 
     <record forcecreate="True" id="ir_cron_update_state_invoice" model="ir.cron">
         <field name="name">Automatic update of state on the SAT (for invoices)</field>
-        <field name="model_id" ref="account.model_account_invoice"/>
+        <field name="model_id" ref="account.model_account_move"/>
         <field name="state">code</field>
         <field name="code">
 invoices = model.search([

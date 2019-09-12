@@ -97,7 +97,7 @@ class Planning(models.Model):
     @api.depends('start_datetime', 'end_datetime')
     def _compute_allocation_type(self):
         for slot in self:
-            if (slot.end_datetime - slot.start_datetime).total_seconds() / 3600.0 < 24:
+            if slot.start_datetime and slot.end_datetime and (slot.end_datetime - slot.start_datetime).total_seconds() / 3600.0 < 24:
                 slot.allocation_type = 'planning'
             else:
                 slot.allocation_type = 'forecast'
@@ -105,14 +105,15 @@ class Planning(models.Model):
     @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id', 'allocated_percentage')
     def _compute_allocated_hours(self):
         for slot in self:
-            percentage = slot.allocated_percentage / 100.0 or 1
-            if slot.allocation_type == 'planning':
-                slot.allocated_hours = (slot.end_datetime - slot.start_datetime).total_seconds() * percentage / 3600.0
-            else:
-                if slot.employee_id:
-                    slot.allocated_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours'] * percentage
+            if slot.start_datetime and slot.end_datetime:
+                percentage = slot.allocated_percentage / 100.0 or 1
+                if slot.allocation_type == 'planning' and slot.start_datetime and slot.end_datetime:
+                    slot.allocated_hours = (slot.end_datetime - slot.start_datetime).total_seconds() * percentage / 3600.0
                 else:
-                    slot.allocated_hours = 0.0
+                    if slot.employee_id:
+                        slot.allocated_hours = slot.employee_id._get_work_days_data(slot.start_datetime, slot.end_datetime, compute_leaves=True)['hours'] * percentage
+                    else:
+                        slot.allocated_hours = 0.0
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id')
     def _compute_working_days_count(self):

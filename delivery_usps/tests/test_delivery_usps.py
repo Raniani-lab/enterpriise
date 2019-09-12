@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import logging
+import re
+from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, tagged, Form
+
+
+_logger = logging.getLogger(__name__)
+country_unavailable_msg = 'USPS temporary unavailable in %s, test aborted.'
+country_unavailable_re = re.compile(
+    r'No services available\.\n'
+    r'At this time, all mail services to (\w+) are not available\.')
 
 
 @tagged('-standard', 'external')
@@ -65,7 +75,14 @@ class TestDeliveryUSPS(TransactionCase):
             'default_carrier_id': self.env.ref('delivery_usps.delivery_carrier_usps_domestic').id,
         }))
         choose_delivery_carrier = delivery_wizard.save()
-        choose_delivery_carrier.update_price()
+        try:
+            choose_delivery_carrier.update_price()
+        except UserError as exc:
+            m = country_unavailable_re.search(exc.name)
+            if m:
+                _logger.warning(country_unavailable_msg, m.group(1), exc_info=True)
+                return
+            raise
         self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "USPS delivery cost for this SO has not been correctly estimated.")
         choose_delivery_carrier.button_confirm()
 
@@ -106,7 +123,14 @@ class TestDeliveryUSPS(TransactionCase):
             'default_carrier_id': self.env.ref('delivery_usps.delivery_carrier_usps_international').id,
         }))
         choose_delivery_carrier = delivery_wizard.save()
-        choose_delivery_carrier.update_price()
+        try:
+            choose_delivery_carrier.update_price()
+        except UserError as exc:
+            m = country_unavailable_re.search(exc.name)
+            if m:
+                _logger.warning(country_unavailable_msg, m.group(1), exc_info=True)
+                return
+            raise
         self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "USPS delivery cost for this SO has not been correctly estimated.")
         choose_delivery_carrier.button_confirm()
 
@@ -146,7 +170,14 @@ class TestDeliveryUSPS(TransactionCase):
             'default_carrier_id': self.env.ref('delivery_usps.delivery_carrier_usps_international').id,
         }))
         choose_delivery_carrier = delivery_wizard.save()
-        choose_delivery_carrier.update_price()
+        try:
+            choose_delivery_carrier.update_price()
+        except UserError as exc:
+            m = country_unavailable_re.search(exc.name)
+            if m:
+                _logger.warning(country_unavailable_msg, m.group(1), exc_info=True)
+                return
+            raise
         self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "USPS delivery cost for this SO has not been correctly estimated.")
         choose_delivery_carrier.button_confirm()
 
@@ -202,5 +233,12 @@ class TestDeliveryUSPS(TransactionCase):
         self.assertEqual(delivery_order.state, 'assigned', 'Shipment state should be ready(assigned).')
         delivery_order.move_ids_without_package.quantity_done = 1.0
 
-        delivery_order.button_validate()
+        try:
+            delivery_order.button_validate()
+        except UserError as exc:
+            m = country_unavailable_re.search(exc.name)
+            if m:
+                _logger.warning(country_unavailable_msg, m.group(1), exc_info=True)
+                return
+            raise
         self.assertEqual(delivery_order.state, 'done', 'Shipment state should be done.')

@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import logging
+from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged, Form
 
+_logger = logging.getLogger(__name__)
 
 @tagged('-standard', 'external')
 class TestDeliveryBpost(TransactionCase):
@@ -89,7 +92,13 @@ class TestDeliveryBpost(TransactionCase):
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
-        picking.action_done()
+        try:
+            picking.action_done()
+        except UserError as exc:
+            if exc.name == "The BPost shipping service is unresponsive, please retry later.":
+                _logger.warning("BPost test aborted, service is unresponsive.", exc_info=exc)
+                return
+            raise
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "bpost carrying price is probably incorrect")
 
@@ -125,7 +134,13 @@ class TestDeliveryBpost(TransactionCase):
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
-        picking.action_done()
+        try:
+            picking.action_done()
+        except UserError as exc:
+            if exc.name == "The BPost shipping service is unresponsive, please retry later.":
+                _logger.warning("BPost test aborted, service is unresponsive.", exc_info=exc)
+                return
+            raise
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "bpost carrying price is probably incorrect")
 
@@ -166,7 +181,13 @@ class TestDeliveryBpost(TransactionCase):
         picking.move_lines[0].quantity_done = 1.0
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
-        picking.action_done()
+        try:
+            picking.action_done()
+        except UserError as exc:
+            if exc.name == "The BPost shipping service is unresponsive, please retry later.":
+                _logger.warning("BPost test aborted, service is unresponsive.", exc_info=exc)
+                return
+            raise
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "bpost carrying price is probably incorrect")
         # Check that the delivery cost (previously set to 0) has been correctly updated
@@ -207,5 +228,11 @@ class TestDeliveryBpost(TransactionCase):
         self.assertEqual(delivery_order.state, 'assigned', 'Shipment state should be ready(assigned).')
         delivery_order.move_ids_without_package.quantity_done = 1.0
 
-        delivery_order.button_validate()
+        try:
+            delivery_order.button_validate()
+        except UserError as exc:
+            if exc.name == "The BPost shipping service is unresponsive, please retry later.":
+                _logger.warning("BPost test aborted, service is unresponsive.", exc_info=exc)
+                return
+            raise
         self.assertEqual(delivery_order.state, 'done', 'Shipment state should be done.')

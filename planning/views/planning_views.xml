@@ -261,7 +261,7 @@
     <record id="planning_action_my" model="ir.actions.act_window">
         <field name="name">My Planning</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">calendar,tree,form</field>
+        <field name="view_mode">calendar,gantt,tree,form</field>
         <field name="context">{'search_default_my_shifts': 1}</field>
     </record>
 
@@ -349,19 +349,12 @@
             parent="planning_menu_my_planning"
             action="planning_action_my"/>
 
-        <menuitem
-            id="planning_menu_open_shift"
-            name="Schedule"
-            sequence="20"
-            parent="planning_menu_my_planning"
-            action="planning_action_open_shift"/>
-
     <menuitem
         id="planning_menu_schedule"
         name="Schedule"
         sequence="30"
         parent="planning_menu_root"
-        groups="planning.group_planning_manager"/>
+        groups="planning.group_planning_manager,planning.group_planning_user"/>
 
         <menuitem
             id="planning_menu_schedule_by_employee"

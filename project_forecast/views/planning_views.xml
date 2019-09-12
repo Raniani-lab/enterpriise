@@ -42,4 +42,27 @@
         </field>
     </record>
 
+    <!-- actions -->
+    <record id="planning_action_schedule_by_project" model="ir.actions.act_window">
+        <field name="name">Planning Schedule</field>
+        <field name="res_model">planning.slot</field>
+        <field name="view_mode">gantt,calendar,tree,form</field>
+        <field name="context">{'search_default_group_by_project': 1, 'planning_expand_project': 1}</field>
+    </record>
+
+        <record id="planning_action_schedule_by_project_view_gantt" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">gantt</field>
+            <field name="view_id" ref="planning.planning_view_gantt"/>
+            <field name="act_window_id" ref="planning_action_schedule_by_project"/>
+        </record>
+
+    <!-- menus -->
+    <menuitem
+        id="planning_menu_schedule_by_project"
+        name="By Project"
+        sequence="30"
+        parent="planning.planning_menu_schedule"
+        action="planning_action_schedule_by_project"/>
+
 </odoo>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
 import logging
@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 class PlanningShift(models.Model):
     _inherit = 'planning.slot'
 
-    project_id = fields.Many2one('project.project', string="Project", domain=[('allow_forecast', '=', True)])
+    project_id = fields.Many2one('project.project', string="Project", domain=[('allow_forecast', '=', True)], group_expand='_read_group_project_id')
     task_id = fields.Many2one('project.task', string="Task", domain="[('project_id', '=', project_id)]")
 
     _sql_constraints = [
@@ -44,3 +44,8 @@ class PlanningShift(models.Model):
         for forecast in self:
             if forecast.task_id and (forecast.task_id not in forecast.project_id.tasks):
                 raise ValidationError(_("Your task is not in the selected project."))
+
+    def _read_group_project_id(self, projects, domain, order):
+        if self._context.get('planning_expand_project'):
+            return self.env['planning.slot'].search([('create_date', '>', datetime.now() - timedelta(days=30))]).mapped('project_id')
+        return projects

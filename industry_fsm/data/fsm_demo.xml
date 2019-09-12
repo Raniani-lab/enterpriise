@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="0">
+    <data noupdate="1">
 
         <record id="planning_task_0" model="project.task">
             <field name="sequence">1</field>
             <field name="user_id" ref="base.user_admin"/>
+            <field name="partner_id" ref="base.res_partner_address_25"/>
             <field name="name">Boiler maintenance</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
+            <field name="fsm_state">validated</field>
             <field name="stage_id" ref="industry_fsm.planning_project_stage_1" />
             <field name="planned_date_begin" eval="DateTime.today().strftime('%Y-%m-%d 07:00:00')"/>
             <field name="planned_date_end" eval="DateTime.today().strftime('%Y-%m-%d 09:00:00')"/>
@@ -18,6 +20,7 @@
             <field name="partner_id" ref="base.res_partner_address_25"/>
             <field name="name">Fix sink</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
+            <field name="fsm_state">validated</field>
             <field name="stage_id" ref="industry_fsm.planning_project_stage_1" />
             <field name="planned_date_begin" eval="DateTime.today().strftime('%Y-%m-%d 09:00:00')"/>
             <field name="planned_date_end" eval="DateTime.today().strftime('%Y-%m-%d  10:00:00')"/>
@@ -29,6 +32,7 @@
             <field name="partner_id" ref="base.res_partner_address_34"/>
             <field name="name">Filter replacement</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
+            <field name="fsm_state">validated</field>
             <field name="stage_id" ref="industry_fsm.planning_project_stage_1" />
             <field name="planned_date_begin" eval="DateTime.today().strftime('%Y-%m-%d 10:00:00')"/>
             <field name="planned_date_end" eval="DateTime.today().strftime('%Y-%m-%d  11:00:00')"/>
@@ -40,6 +44,7 @@
             <field name="partner_id" ref="base.res_partner_address_28"/>
             <field name="name">Check joints</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
+            <field name="fsm_state">validated</field>
             <field name="stage_id" ref="industry_fsm.planning_project_stage_1" />
             <field name="planned_date_begin" eval="DateTime.today().strftime('%Y-%m-%d 11:00:00')"/>
             <field name="planned_date_end" eval="DateTime.today().strftime('%Y-%m-%d  12:00:00')"/>
@@ -51,6 +56,7 @@
             <field name="partner_id" ref="base.res_partner_address_30"/>
             <field name="name">Bathroom ventilation</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
+            <field name="fsm_state">validated</field>
             <field name="stage_id" ref="industry_fsm.planning_project_stage_1" />
             <field name="planned_date_begin" eval="DateTime.today().strftime('%Y-%m-%d 13:00:00')"/>
             <field name="planned_date_end" eval="DateTime.today().strftime('%Y-%m-%d  14:30:00')"/>
@@ -58,10 +64,11 @@
 
         <record id="planning_task_5" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_id" ref="base.user_demo"/>
             <field name="partner_id" ref="base.res_partner_address_7"/>
             <field name="name">3-port Valve replacement</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
+            <field name="fsm_state">validated</field>
             <field name="stage_id" ref="industry_fsm.planning_project_stage_1" />
             <field name="planned_date_begin" eval="DateTime.today().strftime('%Y-%m-%d 15:00:00')"/>
             <field name="planned_date_end" eval="DateTime.today().strftime('%Y-%m-%d  16:00:00')"/>
@@ -73,7 +80,7 @@
             <field name="partner_id" ref="base.res_partner_address_33"/>
             <field name="name">Two radiators installation</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
-            <field name="fsm_state">draft</field>
+            <field name="fsm_state">validated</field>
             <field name="stage_id" ref="industry_fsm.planning_project_stage_1" />
             <field name="planned_date_begin" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d 08:00:00')"/>
             <field name="planned_date_end" eval="(DateTime.today() + relativedelta(days=1)).strftime('%Y-%m-%d  16:30:00')"/>
@@ -85,11 +92,14 @@
             <field name="partner_id" ref="base.res_partner_address_13"/>
             <field name="name">Install pipeline system</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
-            <field name="fsm_state">draft</field>
+            <field name="fsm_state">validated</field>
             <field name="stage_id" ref="industry_fsm.planning_project_stage_1" />
             <field name="planned_date_begin" eval="(DateTime.today() + relativedelta(days=2)).strftime('%Y-%m-%d 08:00:00')"/>
             <field name="planned_date_end" eval="(DateTime.today() + relativedelta(days=2)).strftime('%Y-%m-%d  16:30:00')"/>
         </record>
+
+        <function model="project.task" name="action_fsm_validate"
+            eval="[[ref('planning_task_0'), ref('planning_task_1'), ref('planning_task_2'), ref('planning_task_3'), ref('planning_task_4'), ref('planning_task_5'), ref('planning_task_6'), ref('planning_task_7')]]"/>
 
         <!-- Set the demo user as a fsm user -->
         <record id="group_fsm_user" model="res.groups">
@@ -98,7 +108,7 @@
 
         <record id="planning_task_8" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_id" ref="base.user_demo"/>
             <field name="partner_id" ref="base.res_partner_address_18"/>
             <field name="name">Install air extractor</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>
@@ -134,7 +144,7 @@
 
         <record id="planning_task_11" model="project.task">
             <field name="sequence">1</field>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="user_id" eval="False"/>
             <field name="partner_id" ref="base.res_partner_address_28"/>
             <field name="name">Find and fix leak</field>
             <field name="project_id" ref="industry_fsm.fsm_project"/>

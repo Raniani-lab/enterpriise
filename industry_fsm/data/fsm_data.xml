@@ -39,6 +39,7 @@
             <field name="project_id" ref="fsm_project"/>
             <field name="service_tracking">task_global_project</field>
             <field name="type">service</field>
+            <field name="list_price">0</field>
             <field name="service_policy">delivered_timesheet</field>
             <field name="image_1920" type="base64" file="industry_fsm/static/img/product_product_fsm_time_product.png"/>
         </record>

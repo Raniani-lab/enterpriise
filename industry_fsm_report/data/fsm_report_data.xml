@@ -11,7 +11,7 @@
             <field name="allow_worksheets" eval="True" />
         </record>
 
-        <record id="field_service_product" model="product.product">
+        <record id="industry_fsm.field_service_product" model="product.product">
             <field name="worksheet_template_id" ref="fsm_worksheet_template"/>
         </record>
 

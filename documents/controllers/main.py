@@ -110,7 +110,7 @@ class ShareRoute(http.Controller):
     # Download & upload routes #####################################################################
 
     @http.route('/documents/upload_attachment', type='http', methods=['POST'], auth="user")
-    def upload_document(self, folder_id, ufile, document_id=False):
+    def upload_document(self, folder_id, ufile, document_id=False, partner_id=False):
         files = request.httprequest.files.getlist('ufile')
         result = {'success': _("All files uploaded")}
         if document_id:
@@ -136,6 +136,7 @@ class ShareRoute(http.Controller):
                         'mimetype': mimetype,
                         'datas': base64.encodestring(ufile.read()),
                         'folder_id': int(folder_id),
+                        'partner_id': int(partner_id)
                     })
                 except Exception as e:
                     logger.exception("Fail to upload document %s" % ufile.filename)

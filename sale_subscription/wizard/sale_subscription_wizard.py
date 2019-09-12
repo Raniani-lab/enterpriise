@@ -17,7 +17,7 @@ class SaleSubscriptionWizard(models.TransientModel):
                                  "next invoicing date.")
 
     def create_sale_order(self):
-        fpos_id = self.env['account.fiscal.position'].with_context(force_company=self.subscription_id.company_id.id).get_fiscal_position(self.subscription_id.partner_id.id)
+        fpos_id = self.env['account.fiscal.position'].with_company(self.subscription_id.company_id).get_fiscal_position(self.subscription_id.partner_id.id)
         sale_order_obj = self.env['sale.order']
         team = self.env['crm.team']._get_default_team_id(user_id=self.subscription_id.user_id.id)
         new_order_vals = {

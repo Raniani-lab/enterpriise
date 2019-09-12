@@ -171,7 +171,7 @@ class ProviderUPS(models.Model):
                 ups_service_type = self.ups_default_service_type
             ups_carrier_account = False
             if self.ups_bill_my_account:
-                ups_carrier_account = picking.partner_id.with_context(force_company=picking.company_id.id).property_ups_carrier_account
+                ups_carrier_account = picking.partner_id.with_company(picking.company_id).property_ups_carrier_account
 
             if picking.carrier_id.ups_cod:
                 cod_info = {
@@ -267,7 +267,7 @@ class ProviderUPS(models.Model):
             ups_service_type = self.ups_default_service_type
         ups_carrier_account = False
         if self.ups_bill_my_account:
-            ups_carrier_account = picking.partner_id.with_context(force_company=picking.company_id.id).property_ups_carrier_account
+            ups_carrier_account = picking.partner_id.with_company(picking.company_id).property_ups_carrier_account
 
         if picking.carrier_id.ups_cod:
             cod_info = {

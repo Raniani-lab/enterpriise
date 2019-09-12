@@ -20,11 +20,11 @@ class SaleOrder(models.Model):
     @api.depends('partner_id')
     def _compute_ups_carrier_account(self):
         for order in self:
-            order.partner_ups_carrier_account = order.partner_id.with_context(force_company=order.company_id.id).property_ups_carrier_account
+            order.partner_ups_carrier_account = order.partner_id.with_company(order.company_id).property_ups_carrier_account
 
     def _inverse_ups_carrier_account(self):
         for order in self:
-            order.partner_id.with_context(force_company=order.company_id.id).property_ups_carrier_account = order.partner_ups_carrier_account
+            order.partner_id.with_company(order.company_id).property_ups_carrier_account = order.partner_ups_carrier_account
 
     def _action_confirm(self):
         if self.carrier_id.ups_bill_my_account and not self.partner_ups_carrier_account:

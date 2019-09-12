@@ -28,7 +28,7 @@ class purchase_order(models.Model):
             :param company : the company of the created PO
             :rtype company : res.company record
         """
-        self = self.with_context(force_company=company.id)
+        self = self.with_company(company)
         SaleOrder = self.env['sale.order']
         SaleOrderLine = self.env['sale.order.line']
 

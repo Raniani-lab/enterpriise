@@ -268,7 +268,7 @@ class SaleSubscription(models.Model):
     @api.onchange('partner_id')
     def onchange_partner_id(self):
         if self.partner_id:
-            self.pricelist_id = self.partner_id.with_context(force_company=self.company_id.id).property_product_pricelist.id
+            self.pricelist_id = self.partner_id.with_company(self.company_id).property_product_pricelist.id
         if self.partner_id.user_id:
             self.user_id = self.partner_id.user_id
 
@@ -296,7 +296,7 @@ class SaleSubscription(models.Model):
         vals['code'] = (
             vals.get('code') or
             self.env.context.get('default_code') or
-            self.env['ir.sequence'].with_context(force_company=vals.get('company_id')).next_by_code('sale.subscription') or
+            self.env['ir.sequence'].with_company(vals.get('company_id')).next_by_code('sale.subscription') or
             'New'
         )
         if vals.get('name', 'New') == 'New':
@@ -488,13 +488,8 @@ class SaleSubscription(models.Model):
         if not self.partner_id:
             raise UserError(_("You must first select a Customer for Subscription %s!") % self.name)
 
-        # VFE FIXME one day, we shouldn't use force_company anymore...
-        if 'force_company' in self.env.context:
-            company = self.env['res.company'].browse(self.env.context['force_company'])
-        else:
-            company = self.company_id
-            # Ensure subsequent calls use self.company_id if checking for force_company or company_id
-            self = self.with_context(force_company=company.id, company_id=company.id)
+        self = self.with_company(self.company_id).with_context(company_id=self.company_id.id)
+        company = self.company_id
 
         fpos_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
         journal = self.template_id.journal_id or self.env['account.journal'].search([('type', '=', 'sale'), ('company_id', '=', company.id)], limit=1)
@@ -581,8 +576,9 @@ class SaleSubscription(models.Model):
     def _prepare_renewal_order_values(self):
         res = dict()
         for subscription in self:
+            subscription = subscription.with_company(subscription.company_id)
             order_lines = []
-            fpos_id = self.env['account.fiscal.position'].with_context(force_company=subscription.company_id.id).get_fiscal_position(subscription.partner_id.id)
+            fpos_id = subscription.env['account.fiscal.position'].get_fiscal_position(subscription.partner_id.id)
             for line in subscription.recurring_invoice_line_ids:
                 order_lines.append((0, 0, {
                     'product_id': line.product_id.id,
@@ -743,8 +739,8 @@ class SaleSubscription(models.Model):
             sub_data = subscriptions.read(fields=['id', 'company_id'])
             for company_id in set(data['company_id'][0] for data in sub_data):
                 sub_ids = [s['id'] for s in sub_data if s['company_id'][0] == company_id]
-                subs = self.with_context(company_id=company_id, force_company=company_id).browse(sub_ids)
-                context_invoice = dict(self.env.context, type='out_invoice', company_id=company_id, force_company=company_id)
+                subs = self.with_company(company_id).with_context(company_id=company_id).browse(sub_ids)
+                Invoice = self.env['account.move'].with_context(type='out_invoice', company_id=company_id).with_company(company_id)
                 for subscription in subs:
                     subscription = subscription[0]  # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration
                     if automatic and auto_commit:
@@ -756,7 +752,7 @@ class SaleSubscription(models.Model):
                             tx = None
                             if payment_token:
                                 invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
-                                new_invoice = self.env['account.move'].with_context(context_invoice).create(invoice_values)
+                                new_invoice = Invoice.create(invoice_values)
                                 new_invoice.message_post_with_view(
                                     'mail.message_origin_link',
                                     values={'self': new_invoice, 'origin': subscription},
@@ -831,7 +827,7 @@ class SaleSubscription(models.Model):
                     elif subscription.template_id.payment_mode in ['draft_invoice', 'manual', 'validate_send']:
                         try:
                             invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
-                            new_invoice = self.env['account.move'].with_context(context_invoice).create(invoice_values)
+                            new_invoice = Invoice.create(invoice_values)
                             new_invoice.message_post_with_view(
                                 'mail.message_origin_link',
                                 values={'self': new_invoice, 'origin': subscription},
@@ -935,18 +931,16 @@ class SaleSubscriptionLine(models.Model):
 
     @api.onchange('product_id', 'quantity')
     def onchange_product_quantity(self):
-        subscription = self.analytic_account_id
-        company_id = subscription.company_id.id
-        pricelist_id = subscription.pricelist_id.id
-        context = dict(self.env.context, company_id=company_id, force_company=company_id, pricelist=pricelist_id, quantity=self.quantity)
         if not self.product_id:
             self.price_unit = 0.0
         else:
-            partner = subscription.partner_id.with_context(context)
-            if partner.lang:
-                context.update({'lang': partner.lang})
+            subscription = self.analytic_account_id
 
-            product = self.product_id.with_context(context)
+            self = self.with_company(subscription.company_id)
+            product = self.product_id.with_context(
+                pricelist=subscription.pricelist_id.id,
+                quantity=self.quantity,
+            )
             self.price_unit = product.price
 
             if not self.uom_id or product.uom_id.category_id.id != self.uom_id.category_id.id:
@@ -977,7 +971,7 @@ class SaleSubscriptionLine(models.Model):
         for tax in product_tmp.taxes_id.filtered(lambda t: t.company_id == self.analytic_account_id.company_id):
             fpos_obj = self.env['account.fiscal.position']
             partner = self.analytic_account_id.partner_id
-            fpos_id = fpos_obj.with_context(force_company=self.analytic_account_id.company_id.id).get_fiscal_position(partner.id)
+            fpos_id = fpos_obj.with_company(self.analytic_account_id.company_id).get_fiscal_position(partner.id)
             fpos = fpos_obj.browse(fpos_id)
             if fpos:
                 tax = fpos.map_tax(tax, product, partner)

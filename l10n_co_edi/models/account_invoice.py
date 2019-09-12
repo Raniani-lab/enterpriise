@@ -50,7 +50,7 @@ class AccountMove(models.Model):
         '''
         self.ensure_one()
         SEQUENCE_CODE = 'l10n_co_edi.filename'
-        IrSequence = self.env['ir.sequence'].with_context(force_company=self.company_id.id)
+        IrSequence = self.env['ir.sequence'].with_company(self.company_id)
         invoice_number = IrSequence.next_by_code(SEQUENCE_CODE)
 
         # if a sequence does not yet exist for this company create one

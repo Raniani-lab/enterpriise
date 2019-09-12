@@ -29,7 +29,7 @@ class sale_order(models.Model):
             :param company : the company of the created PO
             :rtype company : res.company record
         """
-        self = self.with_context(force_company=company.id, company_id=company.id)
+        self = self.with_company(company).with_context(company_id=company.id)
         PurchaseOrder = self.env['purchase.order']
         PurchaseOrderLine = self.env['purchase.order.line']
 

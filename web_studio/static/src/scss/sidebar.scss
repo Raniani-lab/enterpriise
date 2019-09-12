@@ -130,6 +130,11 @@
                 @include o-web-studio-select;
             }
 
+            &.o_web_studio_sidebar_optional_select {
+                @include o-web-studio-select;
+                margin-top: 0px;
+            }
+
             &.o_web_studio_sidebar_tags {
                 .o_field_widget {
                     display: flex;

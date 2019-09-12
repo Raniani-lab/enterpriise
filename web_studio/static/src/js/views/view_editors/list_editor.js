@@ -202,6 +202,22 @@ return ListRenderer.extend(EditorMixin, {
     /**
      * @override
      * @private
+     * @param {Object} record
+     * @param {Object} node
+     * @param {...any} args
+     * @return {jQueryElement}
+     */
+    _renderBodyCell(record, node, ...args) {
+        const $td = this._super(record, node, ...args);
+        const invisibleTechnicalNames = this.invisible_columns.map(column => column.attrs.name);
+        if (invisibleTechnicalNames.includes(node.attrs.name)) {
+            $td.addClass('o_web_studio_show_invisible');
+        }
+        return $td;
+    },
+    /**
+     * @override
+     * @private
      */
     _renderHeader: function () {
         var $header = this._super.apply(this, arguments);

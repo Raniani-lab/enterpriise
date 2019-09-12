@@ -47,8 +47,8 @@
                     <label for="editable">Editable</label>
                     <select id="editable" name="editable">
                         <option></option>
-                        <option t-att-selected="widget.state.attrs.editable === 'top' ? 'selected' : undefined" value="top">top</option>
-                        <option t-att-selected="widget.state.attrs.editable === 'bottom' ? 'selected' : undefined" value="bottom">bottom</option>
+                        <option t-att-selected="widget.state.attrs.editable === 'top' ? 'selected' : undefined" value="top">New record on top</option>
+                        <option t-att-selected="widget.state.attrs.editable === 'bottom' ? 'selected' : undefined" value="bottom">New record at the bottom</option>
                     </select>
                 </div>
             </t>
@@ -400,6 +400,14 @@
                     <label for="readonly" class="custom-control-label">Read only</label>
                     <a role="button" href="#" data-type="readonly" class="btn btn-link o_web_studio_attrs">Conditional</a>
                 </div>
+            </div>
+            <div class="o_web_studio_sidebar_optional_select">
+                <label for="optional">Optional</label>
+                <select id="optional" name="optional" data-type="attributes">
+                    <option></option>
+                    <option t-att-selected="widget.state.attrs.optional === 'show' ? 'selected' : undefined" value="show">Show by default</option>
+                    <option t-att-selected="widget.state.attrs.optional === 'hide' ? 'selected' : undefined" value="hide">Hide by default</option>
+                </select>
             </div>
         </t>
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_checkbox">

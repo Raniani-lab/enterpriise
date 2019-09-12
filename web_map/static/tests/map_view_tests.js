@@ -10,41 +10,42 @@ odoo.define('web_map.view_view_tests', function (require) {
 
                 'project.task': {
                     fields: {
-                        name: {string: "name", type: "char"},
-                        sequence: {string: "sequence", type: 'integer'},
-                        partner_id: {string: "partner", type: "many2one", relation: 'res.partner'}
+                        display_name: { string: "name", type: "char" },
+                        sequence: { string: "sequence", type: 'integer' },
+                        partner_id: { string: "partner", type: "many2one", relation: 'res.partner' },
+                        another_partner_id: { string: "another relation", type: "many2one", relation: 'res.partner}'},
                     },
                     records: [
-                        {id: 1, name: "project", partner_id: [1]}
+                        { id: 1, display_name: "project", partner_id: [1] }
                     ],
                     oneRecord: {
                         records: [
-                            {id: 1, name: "Foo", partner_id: [1]}
+                            {id: 1, display_name: "Foo", partner_id: [1]}
                         ],
                         length: 1
                     },
 
                     twoRecords: {
                         records: [
-                            {id: 1, name: "FooProject", sequence: 1, partner_id: [1]},
-                            {id: 2, name: 'BarProject', sequence: 2, partner_id: [2]},
+                            {id: 1, display_name: "FooProject", sequence: 1, partner_id: [1]},
+                            {id: 2, display_name: 'BarProject', sequence: 2, partner_id: [2]},
                         ],
                         length: 2
                     },
 
                     threeRecords: {
                         records: [
-                            {id: 1, name: "FooProject", sequence: 1, partner_id: [1]},
-                            {id: 2, name: 'BarProject', sequence: 2, partner_id: [2]},
-                            {id: 1, name: "FooBarProject", sequence: 3, partner_id: [1]}
+                            {id: 1, display_name: "FooProject", sequence: 1, partner_id: [1]},
+                            {id: 2, display_name: 'BarProject', sequence: 2, partner_id: [2]},
+                            {id: 1, display_name: "FooBarProject", sequence: 3, partner_id: [1]}
                         ],
                         length: 3
                     },
 
                     twoRecordOnePartner: {
                         records: [
-                            {id: 1, name: "FooProject", partner_id: [1]},
-                            {id: 2, name: 'BarProject', partner_id: [1]},
+                            {id: 1, display_name: "FooProject", partner_id: [1]},
+                            {id: 2, display_name: 'BarProject', partner_id: [1]},
                         ],
                         length: 2
                     },
@@ -54,7 +55,13 @@ odoo.define('web_map.view_view_tests', function (require) {
                     },
                     recordWithouthPartner: {
                         records: [
-                            {id: 1, name: "Foo", partner_id: []}
+                            {id: 1, display_name: "Foo", partner_id: []}
+                        ],
+                        length: 1
+                    },
+                    anotherPartnerId: {
+                        records: [
+                            {id: 1, display_name: "FooProject", another_partner_id: [1]},
                         ],
                         length: 1
                     }
@@ -162,7 +169,6 @@ odoo.define('web_map.view_view_tests', function (require) {
                                 'contact_address_complete': 'Cfezfezfefes'
                             }
                         ],
-
                 }
             };
             testUtils.mock.patch(MapView, {});
@@ -240,7 +246,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          */
 
         QUnit.test('Create a view with no record', async function (assert) {
-            assert.expect(12);
+            assert.expect(8);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -255,14 +261,10 @@ odoo.define('web_map.view_view_tests', function (require) {
                         case '/web/dataset/search_read':
                             assert.strictEqual(args.model, 'project.task', 'The model should be project.task');
                             assert.strictEqual(args.fields[0], 'partner_id');
-                            assert.strictEqual(args.fields[1], 'name');
+                            assert.strictEqual(args.fields[1], 'display_name');
                             return Promise.resolve(this.data['project.task'].noRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
-                            assert.strictEqual(args.model, 'res.partner', 'The model should be res.partner');
-                            assert.strictEqual(args.args[1][0], 'contact_address_complete');
-                            assert.strictEqual(args.args[1][1], 'partner_latitude');
-                            assert.strictEqual(args.args[1][2], 'partner_longitude');
-                            return Promise.resolve(this.data['res.partner'].emptyRecords);
+                        case '/web/dataset/call_kw/res.partner/search_read':
+                            assert.ok(false, 'should not search_read the partners if there are no partner')
                     }
                     return Promise.resolve();
                 },
@@ -275,18 +277,18 @@ odoo.define('web_map.view_view_tests', function (require) {
             assert.strictEqual(map.renderer.state.records.length, 0, 'There should be no records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 3, 'The map should at its minimum zoom level(3)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
             map.destroy();
         });
         /**
          * data: one record that has no partner linked to it
-         * The record should be spliced
+         * The record should be kept and displayed in the list of records in gray (no clickable)
          * should have no marker
          * Should have no route
          * Map should be at his minimum zoom level
          */
         QUnit.test('Create a view with one record that has no partner', async function (assert) {
-            assert.expect(4);
+            assert.expect(6);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -297,7 +299,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].recordWithouthPartner);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].emptyRecords);
                     }
                     return Promise.resolve();
@@ -306,10 +308,12 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: 'token'
                 },
             });
-            assert.strictEqual(map.renderer.state.records.length, 0, 'There should be no records');
+            assert.strictEqual(map.renderer.state.records.length, 1, 'There should be no records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 3, 'The map should at its minimum level of zoom(3)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum level of zoom(1)');
+            assert.containsOnce(map,'.o_pin_list_container .o_pin_list_details li');
+            assert.containsOnce(map,'.o_pin_list_container .o_pin_list_details li span');
             map.destroy();
         });
 
@@ -334,7 +338,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].coordinatesNoAddress);
                     }
                     return Promise.resolve();
@@ -352,13 +356,13 @@ odoo.define('web_map.view_view_tests', function (require) {
         /**
          * data: one record linked to one partner with no address and wrong coordinates
          * api: MapBox
-         * record should be spliced
+         * record should be kept and displayed in the list
          * no route
          * no marker
          * map should be at its minimum zoom level
          */
         QUnit.test('Create view with one record linked to a partner with wrong coordinates with MB', async function (assert) {
-            assert.expect(3);
+            assert.expect(5);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -369,7 +373,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].wrongCoordinatesNoAddress);
                     }
                     return Promise.resolve();
@@ -378,16 +382,18 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: 'token'
                 },
             });
-            assert.strictEqual(map.renderer.state.records.length, 0, 'There should be one records');
+            assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.strictEqual(map.$('img.leaflet-marker-icon').length, 0, 'There should be np marker on the map');
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 0, 'There should be no route on the map');
+            assert.containsOnce(map,'.o_pin_list_container .o_pin_list_details li');
+            assert.containsOnce(map,'.o_pin_list_container .o_pin_list_details li span');
             map.destroy();
         });
 
         /**
          * data: one record linked to one partner with no address and wrong coordinates
          * api: OpenStreet Map
-         * record should be spliced
+         * record should be kept
          * no route
          * no marker
          * map should be at its minimum zoom level
@@ -404,7 +410,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].wrongCoordinatesNoAddress);
                     }
                     return Promise.resolve();
@@ -413,7 +419,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: ''
                 },
             });
-            assert.strictEqual(map.renderer.state.records.length, 0, 'There should be one records');
+            assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.strictEqual(map.$('div.leaflet-marker-icon').length, 0, 'There should be no marker on the map');
             assert.strictEqual(map.$('.leaflet-overlay-pane').find('path').length, 0, 'There should be no route on the map');
             map.destroy();
@@ -438,7 +444,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].noCoordinatesGoodAddress);
                         case '/web/dataset/call_kw/res.partner/update_latitude_longitude':
                             assert.strictEqual(args.model, "res.partner", 'The model should be "res.partner"');
@@ -478,7 +484,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].noCoordinatesGoodAddress);
                         case '/web/dataset/call_kw/res.partner/update_latitude_longitude':
                             assert.strictEqual(args.model, "res.partner", 'The model should be "res.partner"');
@@ -501,7 +507,7 @@ odoo.define('web_map.view_view_tests', function (require) {
         /**
          * data: one record linked to a partner with no coordinates and no address
          * api: MapBox
-         * no record
+         * 1 record
          * no route
          * no marker
          * min level of zoom
@@ -519,7 +525,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].unlocatedRecords);
                     }
                     return Promise.resolve();
@@ -528,17 +534,17 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: 'token'
                 }
             });
-            assert.strictEqual(map.renderer.state.records.length, 0, 'There should be no records');
+            assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 3, 'The map should at its minimum zoom level(3)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
             map.destroy();
         });
 
         /**
          * data: one record linked to a partner with no coordinates and no address
          * api: OSM
-         * no record
+         * one record
          * no route
          * no marker
          * min level of zoom
@@ -556,7 +562,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].unlocatedRecords);
                     }
                     return Promise.resolve();
@@ -565,17 +571,17 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: ''
                 }
             });
-            assert.strictEqual(map.renderer.state.records.length, 0, 'There should be no records');
+            assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 3, 'The map should at its mimimum zoom level(3)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
             map.destroy();
         });
 
         /**
          * data: one record linked to a partner with no coordinates and wrong address
          * api: OSM
-         * no record
+         * one record
          * no route
          * no marker
          * min level zoom
@@ -593,7 +599,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].noCoordinatesWrongAddress);
                     }
                     return Promise.resolve();
@@ -602,17 +608,17 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: ''
                 }
             });
-            assert.strictEqual(map.renderer.state.records.length, 0, 'There should be no records');
+            assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 3, 'The map should at its minimum zoom level(3)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
             map.destroy();
         });
 
         /**
          * data: one record linked to a partner with no coordinates and wrong address
          * api: mapbox
-         * no record
+         * one record
          * no route
          * no marker
          * min level zoom
@@ -630,7 +636,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].noCoordinatesWrongAddress);
                     }
                     return Promise.resolve();
@@ -639,10 +645,10 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: 'token'
                 }
             });
-            assert.strictEqual(map.renderer.state.records.length, 0, 'There should be no records');
+            assert.strictEqual(map.renderer.state.records.length, 1, 'There should be one records');
             assert.notOk(map.$('img.leaflet-marker-icon').length, 'No marker should be on a the map.');
             assert.notOk(map.$('.leaflet-overlay-pane').find('path').length, 'No route should be shown');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 3, 'The map should at its minimum zoom level(3)');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The map should at its minimum zoom level(1)');
             map.destroy();
         });
 
@@ -666,7 +672,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecordOnePartner);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].oneLocatedRecord);
                     }
                     return Promise.resolve();
@@ -701,7 +707,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                         case '/web/dataset/call_kw/res.partner/update_latitude_longitude':
                             assert.strictEqual(args.args[0].length, 2, 'Should have 2 record needing caching');
@@ -751,10 +757,10 @@ odoo.define('web_map.view_view_tests', function (require) {
                             assert.strictEqual(args.model, 'res.partner', 'The model should be res.partner');
                             assert.strictEqual(args.fields[0], 'id');
                             return Promise.resolve(this.data['res.partner'].recordsPrimary);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             assert.strictEqual(args.model, 'res.partner', 'The model should be res.partner as well');
-                            assert.strictEqual(args.args[0][0], 2);
-                            assert.strictEqual(args.args[0][1], 1);
+                            assert.strictEqual(args.kwargs.domain[1][2][0], 2);
+                            assert.strictEqual(args.kwargs.domain[1][2][1], 1);
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -775,18 +781,18 @@ odoo.define('web_map.view_view_tests', function (require) {
          */
 
         QUnit.test('Create a view with 2 located records and 1 unlocated', async function (assert) {
-            assert.expect(3);
+            assert.expect(4);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
                 data: this.data,
-                arch: '<map res_partner="partner_id"  routing="true">' +
+                arch: '<map res_partner="partner_id" routing="true">' +
                     '</map>',
                 mockRPC: function (route) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].threeRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsOneUnlocated);
                     }
                     return Promise.resolve();
@@ -795,9 +801,10 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: 'token'
                 },
             });
-            assert.strictEqual(map.renderer.state.records.length, 2, 'One of the record should have been spliced');
+            assert.strictEqual(map.renderer.state.records.length, 3);
             assert.strictEqual(map.renderer.state.records[0].partner.id, 1, 'The partner\'s id should be 1');
-            assert.strictEqual(map.renderer.state.records[1].partner.id, 1, 'The partner\'s id should be 1');
+            assert.strictEqual(map.renderer.state.records[1].partner.id, 2, 'The partner\'s id should be 2');
+            assert.strictEqual(map.renderer.state.records[2].partner.id, 1, 'The partner\'s id should be 1');
             map.destroy();
         });
 
@@ -818,7 +825,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -834,7 +841,7 @@ odoo.define('web_map.view_view_tests', function (require) {
         });
 
         QUnit.test('testing the size of the map', async function (assert) {
-            assert.expect(2);
+            assert.expect(1);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -849,7 +856,6 @@ odoo.define('web_map.view_view_tests', function (require) {
                 },
             });
 
-            assert.strictEqual($('.o_map_container').width(), $('.o_content').width(), 'The map should be the same width as the content div');
             assert.strictEqual($('.o_map_container').height(), $('.o_content').height(), 'The map should be the same height as the content div');
 
             map.destroy();
@@ -867,7 +873,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -899,7 +905,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -910,7 +916,7 @@ odoo.define('web_map.view_view_tests', function (require) {
             });
             assert.notOk(map.model.resPartnerField, 'the resPartnerField should not be set');
 
-            assert.strictEqual(map.$('.o_map_view').length, 2, '2 div should have the class "o_map_view"');
+            assert.strictEqual(map.$('.o_map_view').length, 1, '1 div should have the class "o_map_view"');
             assert.ok(map.$('.leaflet-map-pane').length, "If the map exists this div should exist");
             assert.ok(map.renderer.leafletMap, 'If the map exists this property should be initialized');
             assert.ok(map.$('.leaflet-pane .leaflet-tile-pane').children().length, 'The map tiles should have been happened to the DOM');
@@ -919,7 +925,7 @@ odoo.define('web_map.view_view_tests', function (require) {
 
             assert.strictEqual(map.renderer.polylines.length, 0, 'Should have no polylines');
             assert.strictEqual(map.$('.leaflet-overlay-pane').children().length, 0, 'Should have no showing route');
-            assert.strictEqual(map.renderer.leafletMap.getZoom(), 3, 'The level of zoom should should be at it\'s minimum');
+            assert.strictEqual(map.renderer.leafletMap.getZoom(), 1, 'The level of zoom should should be at it\'s minimum');
             map.destroy();
         });
 
@@ -942,7 +948,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -968,13 +974,13 @@ odoo.define('web_map.view_view_tests', function (require) {
         /**
          * two located records
          * with default_order
-         * numbered icon
+         * no numbered icon
          * test click on them
          * asserts that the rpc receive the right parameters
          */
 
         QUnit.test('Create a view with default_order', async function (assert) {
-            assert.expect(8);
+            assert.expect(6);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -986,7 +992,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                         case '/web/dataset/search_read':
                             assert.strictEqual(args.sort, 'name ASC', 'The sorting order should be on the field name in a ascendant way');
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -995,13 +1001,11 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: ''
                 },
             });
-            assert.ok(map.renderer.numbering, 'the numbering option should be enabled');
+            assert.ok(map.renderer.numbering === false, 'the numbering option should not be enabled');
             assert.notOk(map.model.routing, 'The routing option should not be enabled');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').length, 2, 'There should be 2 markers');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').eq(0).children().text(), "1", 'The first marker should display 1');
-            assert.strictEqual(map.$('div.leaflet-marker-icon').eq(1).children().text(), "2", 'The second marker should display 2');
+            assert.strictEqual(map.$('img.leaflet-marker-icon').length, 2, 'There should be 2 markers');
             assert.strictEqual(map.$('.leaflet-popup-pane').children().length, 0, 'Should have no showing popup');
-            await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(1));
+            await testUtils.dom.click(map.$('img.leaflet-marker-icon').eq(1));
             assert.strictEqual(map.$('.leaflet-popup-pane').children().length, 1, 'Should have one showing popup');
             map.destroy();
         });
@@ -1025,7 +1029,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -1066,7 +1070,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].oneLocatedRecord);
                     }
                     return Promise.resolve();
@@ -1097,7 +1101,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].recordWithouthPartner);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].emptyRecords);
                     }
                     return Promise.resolve();
@@ -1130,7 +1134,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -1163,7 +1167,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressCoordinates);
                     }
                     return Promise.resolve();
@@ -1196,7 +1200,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].recordWithouthPartner);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].emptyRecords);
                     }
                     return Promise.resolve();
@@ -1230,7 +1234,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -1273,7 +1277,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -1304,7 +1308,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                 data: this.data,
                 arch: '<map res_partner="partner_id"  routing="true">' +
                     '<marker-popup>' +
-                    '<field name="name" string="Name: "/>' +
+                    '<field name="display_name" string="Name: "/>' +
                     '</marker-popup>' +
                     '</map>',
                 viewOptions: {
@@ -1313,9 +1317,9 @@ odoo.define('web_map.view_view_tests', function (require) {
                 mockRPC: function (route, args) {
                     switch (route) {
                         case '/web/dataset/search_read':
-                            assert.ok(args.fields.includes('name'));
+                            assert.ok(args.fields.includes('display_name'));
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -1324,7 +1328,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     map_box_token: 'token'
                 },
             });
-            assert.strictEqual(map.renderer.fieldsMarkerPopup[0].fieldName, "name");
+            assert.strictEqual(map.renderer.fieldsMarkerPopup[0].fieldName, "display_name");
             await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0)[0]);
             assert.strictEqual(map.renderer.fieldsMarkerPopup.length, 1, 'fieldsMarkerPopup should contain one field');
             assert.strictEqual(map.$('tbody').children().children().length, 3, 'The popup should have one field');
@@ -1356,7 +1360,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].twoRecords);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -1386,7 +1390,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                                 length: 101,
                                 records: _.range(1, 101).map(i => {return {id: i, name: 'project', partner_id: [i]}})
                             });
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(_.range(1, 101).map(i => {
                                 return {id: i, name: 'Foo', 'partner_latitude': 10.0, 'partner_longitude': 10.5};
                             }));
@@ -1399,14 +1403,14 @@ odoo.define('web_map.view_view_tests', function (require) {
             });
 
             assert.isVisible(map.pager);
-            assert.strictEqual(map.pager.$('.o_pager_value').text(), "1-20",
+            assert.strictEqual(map.pager.$('.o_pager_value').text(), "1-80",
                 "current pager value should be 1-20");
             assert.strictEqual(map.pager.$('.o_pager_limit').text(), "101",
                 "current pager limit should be 21");
 
             await testUtils.dom.click(map.pager.$('.o_pager_next'));
 
-            assert.strictEqual(map.pager.$('.o_pager_value').text(), "21-40",
+            assert.strictEqual(map.pager.$('.o_pager_value').text(), "81-101",
                 "pager value should be 21-40");
 
             map.destroy();
@@ -1428,7 +1432,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return this._super.apply(this, arguments);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].twoRecordsAddressNoCoordinates);
                     }
                     return Promise.resolve();
@@ -1487,7 +1491,7 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].oneLocatedRecord);
                     }
                     return Promise.resolve();
@@ -1526,7 +1530,57 @@ odoo.define('web_map.view_view_tests', function (require) {
                     switch (route) {
                         case '/web/dataset/search_read':
                             return Promise.resolve(this.data['project.task'].oneRecord);
-                        case '/web/dataset/call_kw/res.partner/read':
+                        case '/web/dataset/call_kw/res.partner/search_read':
+                            return Promise.resolve(this.data['res.partner'].oneLocatedRecord);
+                    }
+                    return Promise.resolve();
+                },
+                session: {
+                    map_box_token: 'token'
+                },
+            });
+            await testUtils.dom.click(map.$('img.leaflet-marker-icon').eq(0));
+            assert.notOk(map.$('div.leaflet-popup-pane').find('button.btn.btn-primary.open').length, 'The button should not be present in the dom');
+            map.destroy();
+        });
+
+        QUnit.test('attribute panel_title on the arch should display in the pin list', async function (assert) {
+            assert.expect(1);
+            var map = await createView({
+                View: MapView,
+                model: 'project.task',
+                data: this.data,
+                arch: '<map res_partner="partner_id" panel_title="AAAAAAAAAAAAAAAAA">' +
+                    '</map>',
+                mockRPC: function (route) {
+                    switch (route) {
+                        case '/web/dataset/search_read':
+                            return Promise.resolve(this.data['project.task'].oneRecord);
+                        case '/web/dataset/call_kw/res.partner/search_read':
+                            return Promise.resolve(this.data['res.partner'].oneLocatedRecord);
+                    }
+                    return Promise.resolve();
+                },
+                session: {
+                },
+            });
+            assert.strictEqual(map.$('.o_pin_list_container .o_pin_list_header span').text(), 'AAAAAAAAAAAAAAAAA');
+            map.destroy();
+        });
+
+        QUnit.test('Test using a field other than partner_id for the map view', async function (assert) {
+            assert.expect(1);
+            var map = await createView({
+                View: MapView,
+                model: 'project.task',
+                data: this.data,
+                arch: '<map res_partner="another_partner_id">' +
+                    '</map>',
+                mockRPC: function (route) {
+                    switch (route) {
+                        case '/web/dataset/search_read':
+                            return Promise.resolve(this.data['project.task'].anotherPartnerId);
+                        case '/web/dataset/call_kw/res.partner/search_read':
                             return Promise.resolve(this.data['res.partner'].oneLocatedRecord);
                     }
                     return Promise.resolve();

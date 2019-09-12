@@ -18,16 +18,18 @@ odoo.define('web_map.MapController', function (require) {
 
         /**
          * @override
-         * @param {JqueryElement} $node 
+         * @param {JqueryElement} $node
          */
 
         renderButtons: function ($node) {
             var url = 'https://www.google.com/maps/dir/?api=1';
             if (this.model.data.records.length) {
                 url += '&waypoints=';
-                this.model.data.records.forEach(function (record) {
-                    url += record.partner.partner_latitude + ',' + record.partner.partner_longitude + '|';
-                });
+                this.model.data.records
+                    .filter((record) => record.partner && record.partner.partner_latitude && record.partner.partner_longitude)
+                    .forEach((record) => {
+                        url += record.partner.partner_latitude + ',' + record.partner.partner_longitude + '|';
+                    });
                 url = url.slice(0, -1);
             }
             var $buttons = $(qweb.render("MapView.buttons"), { widget: this });
@@ -93,23 +95,22 @@ odoo.define('web_map.MapController', function (require) {
         //------------------------------------------------------------------------------------
 
         /**
-         * 
+         *
          * @param {MouseEvent} ev
          * @private
-         * redirects to google maps with all the records' coordinates 
+         * redirects to google maps with all the records' coordinates
          */
         _onGetItineraryClicked: function (ev) {
             window.open('https://www.google.com/maps/dir/?api=1&destination=' + ev.data.lat + ',' + ev.data.lon);
         },
 
         /**
-         * 
-         * @param {MouseEvent} ev 
+         *
+         * @param {MouseEvent} ev
          * @private
          * Redirects to a form view in edit mode
          */
         _onOpenClicked: function (ev) {
-
             this.trigger_up('switch_view', {
                 view_type: 'form',
                 res_id: ev.data.id,

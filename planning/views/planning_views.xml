@@ -135,7 +135,7 @@
         <field name="arch" type="xml">
             <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="role_id" form_view_id="%(planning_view_form_quickcreate)d" event_open_popup="true" quick_add="False">
                 <field name="name"/>
-                <field name="employee_id"/>
+                <field name="employee_id" avatar_field="image_64"/>
                 <field name="role_id"/>
             </calendar>
         </field>

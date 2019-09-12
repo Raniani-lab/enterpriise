@@ -67,6 +67,17 @@ class IntrastatReport(models.AbstractModel):
             '_get_expedition_form': self._get_expedition_form,
         })
 
+    @api.model
+    def _build_query(self, date_from, date_to, journal_ids, invoice_types=None, with_vat=False):
+        query, params = super(IntrastatReport, self)._build_query(date_from, date_to, journal_ids, invoice_types=invoice_types, with_vat=with_vat)
+        # If you don't know the country of origin of the goods, as an exception you may replace the country code by "QU".
+        query['select'] += ', CASE WHEN inv_line.intrastat_product_origin_country_id IS NULL THEN \'QU\' ELSE product_country.code END AS intrastat_product_origin_country'
+        query['from'] += ' LEFT JOIN res_country product_country ON product_country.id = inv_line.intrastat_product_origin_country_id'
+        # For VAT numbers of companies outside the European Union, for example in the case of triangular trade, you always have to use the code "QV999999999999".
+        query['select'] += ', CASE WHEN partner_country.id IS NULL THEN \'QV999999999999\' ELSE partner.vat END AS partner_vat'
+        query['from'] += ' LEFT JOIN res_country partner_country ON partner.country_id = partner_country.id AND partner_country.intrastat IS TRUE'
+        return query, params
+
     def _get_reception_code(self, extended):
         return 'EX19E' if extended else 'EX19S'
 
@@ -74,7 +85,7 @@ class IntrastatReport(models.AbstractModel):
         return 'EXF19E' if extended else 'EXF19S'
 
     def _get_expedition_code(self, extended):
-        return 'EX29E' if extended else 'EX29S'
+        return 'INTRASTAT_X_E' if extended else 'INTRASTAT_X_S'
 
     def _get_expedition_form(self, extended):
-        return 'EXF29E' if extended else 'EXF29S'
+        return 'INTRASTAT_X_EF' if extended else 'INTRASTAT_X_SF'

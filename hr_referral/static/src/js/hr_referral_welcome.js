@@ -5,14 +5,13 @@ var config = require('web.config');
 var AbstractAction = require('web.AbstractAction');
 var core = require('web.core');
 var _t = core._t;
-var pyUtils = require('web.py_utils');
 
 
 var MyReferral = AbstractAction.extend({
     contentTemplate: 'HrReferralWelcome',
     events: {
         'click .o_hr_referral_start': '_completeOnboarding',
-        'click .o_level_up': '_upgradeLevel',
+        'click .o_hr_referral_level_up': '_upgradeLevel',
         'click .o_referral_action': '_onActionClicked',
         'click .o_choose_friend_available': '_chooseFriend',
         'slide.bs.carousel #carouselOnboarding': '_onNewSlide',

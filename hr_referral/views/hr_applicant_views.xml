@@ -53,28 +53,41 @@
                         <t t-if="record.referral_state.raw_value == 'hired'" t-set="oe_kanban_color" t-value="10"/>
                         <t t-if="record.referral_state.raw_value == 'closed'" t-set="oe_kanban_color" t-value="9"/>
                         <div t-attf-class="oe_kanban_color_{{oe_kanban_color}} oe_kanban_card">
-                            <div t-if="record.friend_id.value" class="o_head_friend o_kanban_referral_top_right">
-                                <span class="small border px-1"><i class='fa fa-check mr-2' /><field name="referral_state"/></span>
-                                <field  name="friend_image" widget='image'/>
-                            </div>
-                            <div t-else="">
-                                <div class="o_kanban_referral_top_right" >
-                                    <span t-if="record.referral_state.raw_value == 'closed'" class="badge-pill badge-danger small"><field name="referral_state"/></span>
-                                    <span t-else="" class="badge-pill badge-primary small"><field name="referral_state"/></span>
-                                </div>
-                            </div>
                             <div t-attf-class="o_kanban_card_header">
+                                <t t-if="record.friend_id.value">
+                                    <div class="o_head_friend float-right">
+                                        <span class="small border px-1"><i class='fa fa-check mr-2' /><field name="referral_state"/></span>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="float-right" >
+                                        <span t-if="record.referral_state.raw_value == 'closed'" class="badge-pill badge-danger small"><field name="referral_state"/></span>
+                                        <span t-else="" class="badge-pill badge-primary small"><field name="referral_state"/></span>
+                                    </div>
+                                </t>
                                 <div t-if="record.partner_name.value" class="o_kanban_card_header_title">
                                     <div class="o_primary"><t t-esc="record.partner_name.value"/></div>
+                                    <t t-if="record.friend_id.value">
+                                        <div style="clear:both"/>
+                                        <div class="o_head_friend float-right">
+                                            <field name="friend_image" widget='image'/>
+                                        </div>
+                                    </t>
                                     <t t-esc="record.name.value"/>
                                 </div>
                                 <div t-else="" class="o_kanban_card_header_title">
                                     <div class="o_primary"><t t-esc="record.name.value"/></div>
+                                    <t t-if="record.friend_id.value">
+                                        <div style="clear:both"/>
+                                        <div class="o_head_friend float-right">
+                                            <field name="friend_image" widget='image'/>
+                                        </div>
+                                    </t>
                                 </div>
+                                <p class="text-muted"><t t-esc="record.job_id.value"/></p>
                             </div>
 
-                            <div class="o_kanban_card_content">
-                                <p class="text-muted"><t t-esc="record.job_id.value"/></p>
+                            <div>
                                 <div t-if="record.user_id.value"><b>Responsible: </b><field name="user_id"/></div>
                                 <h5><b>
                                     <div t-if="record.referral_state.raw_value == 'progress'">
@@ -85,7 +98,7 @@
                                     </span>
                                 </b></h5>
                             </div>
-                            <div class="progress">
+                            <div class="progress" style="z-index: 0;">
                                 <div class="progress-bar" role="progressbar" t-att-style="'width: ' + record.earned_points.value / record.max_points.value * 100 + '%;'" t-att-aria-valuenow="record.earned_points.value" aria-valuemin="0" t-att-aria-valuemax="record.max_points.value"/>                     </div>
                             <table class="table">
                                 <tr t-foreach="JSON.parse(record.shared_item_infos.raw_value)" t-as="stage">

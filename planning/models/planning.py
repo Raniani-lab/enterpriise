@@ -201,6 +201,9 @@ class Planning(models.Model):
                 self.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
             if end_datetime:
                 self.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
+            # Set default role if the role field is empty
+            if not self.role_id and self.employee_id.planning_role_id:
+                self.role_id = self.employee_id.planning_role_id
 
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):

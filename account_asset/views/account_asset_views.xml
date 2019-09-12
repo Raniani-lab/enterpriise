@@ -164,7 +164,7 @@
         <field name="name">account.asset.purchase.tree</field>
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
-            <tree string="Assets" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')">
+            <tree string="Assets" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')" decoration-warning="(state == 'close' and value_residual != 0)">
                 <field name="name"/>
                 <field name="first_depreciation_date"/>
                 <field name="book_value"/>

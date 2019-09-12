@@ -548,8 +548,8 @@ class AccountAsset(models.Model):
                 # Create a new depr. line with the residual amount and post it
                 asset_sequence = len(asset.depreciation_move_ids) - len(unposted_depreciation_move_ids) + 1
 
-                initial_amount = sum(asset.original_move_line_ids.mapped(lambda r: r.debit - r.credit))
-                initial_account = asset.original_move_line_ids.account_id
+                initial_amount = asset.original_value
+                initial_account = asset.original_move_line_ids.account_id if len(asset.original_move_line_ids.account_id) == 1 else asset.account_asset_id
                 depreciated_amount = copysign(sum(asset.depreciation_move_ids.filtered(lambda r: r.state == 'posted').mapped('amount_total')), -initial_amount)
                 depreciation_account = asset.account_depreciation_id
                 invoice_amount = copysign(invoice_line_id.price_subtotal, -initial_amount)
@@ -593,6 +593,8 @@ class AccountAsset(models.Model):
         self.write({'state': 'draft'})
 
     def set_to_running(self):
+        if self.depreciation_move_ids and not max(self.depreciation_move_ids, key=lambda m: m.date).asset_remaining_value == 0:
+            self.env['asset.modify'].create({'asset_id': self.id, 'name': _('Reset to running')}).modify()
         self.write({'state': 'open', 'disposal_date': False})
 
     def resume_after_pause(self):

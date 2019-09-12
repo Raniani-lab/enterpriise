@@ -101,7 +101,7 @@ class AccountMove(models.Model):
     def _depreciate(self):
         for move in self.filtered(lambda m: m.asset_id):
             asset = move.asset_id
-            asset.value_residual -= move.amount_total
+            asset.value_residual -= abs(sum(move.line_ids.filtered(lambda l: l.account_id == asset.account_depreciation_id).mapped('balance')))
 
     def _auto_create_asset(self):
         create_list = []

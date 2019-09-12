@@ -29,7 +29,7 @@ class AssetModify(models.TransientModel):
         if 'asset_id' in vals:
             asset = self.env['account.asset'].browse(vals['asset_id'])
             if 'method_number' not in vals:
-                vals.update({'method_number': len(asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted'))})
+                vals.update({'method_number': len(asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')) or 1})
             if 'method_period' not in vals:
                 vals.update({'method_period': asset.method_period})
             if 'salvage_value' not in vals:

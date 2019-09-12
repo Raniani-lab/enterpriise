@@ -53,6 +53,7 @@ class IotDevice(models.Model):
         ('display', 'Display'),
         ], readonly=True, default='device', string='Type',
         help="Type of device.")
+    manufacturer = fields.Char(string='Manufacturer', readonly=True)
     connection = fields.Selection([
         ('network', 'Network'),
         ('direct', 'USB'),

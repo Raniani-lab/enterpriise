@@ -108,7 +108,7 @@ var GanttView = AbstractView.extend({
         }
 
         var scale = arch.attrs.default_scale || 'month';
-        var initialDate = moment(params.initialDate || new Date());
+        var initialDate = moment(params.initialDate || params.context.initialDate || new Date());
         var offset = arch.attrs.offset;
         if (offset && scale) {
             initialDate.add(offset, scale);

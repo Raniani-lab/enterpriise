@@ -296,6 +296,9 @@ class Planning(models.Model):
             'name': _('Shifts in conflict'),
             'view_mode': 'gantt,list,form',
             'domain': domain_map[self.id],
+            'context': {
+                'initialDate': min([slot.start_datetime for slot in self.search(domain_map[self.id])])
+            }
         }
 
     def action_self_assign(self):

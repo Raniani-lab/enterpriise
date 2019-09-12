@@ -78,7 +78,7 @@ class EasypostRequest():
         if order:
             if not order.order_line:
                 raise UserError(_("Please provide at least one item to ship."))
-            for line in order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital']):
+            for line in order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital'] and not line.display_type):
                 raise UserError(_('The estimated price cannot be computed because the weight of your product is missing.'))
 
         # check required value for picking
@@ -128,7 +128,7 @@ class EasypostRequest():
         # Max weight for carrier default package
         max_weight = carrier._easypost_convert_weight(carrier.easypost_default_packaging_id.max_weight)
         # Order weight
-        total_weight = carrier._easypost_convert_weight(sum([(line.product_id.weight * line.product_uom_qty) for line in order.order_line]))
+        total_weight = carrier._easypost_convert_weight(sum([(line.product_id.weight * line.product_uom_qty) for line in order.order_line if not line.display_type]))
 
         # Create shipments
         shipments = {}

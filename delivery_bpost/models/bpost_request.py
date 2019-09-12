@@ -69,7 +69,7 @@ class BpostRequest():
                 return _("The estimated shipping price cannot be computed because all your products are service/digital.")
             if not order.order_line:
                 return _("Please provide at least one item to ship.")
-            if order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital']):
+            if order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital'] and not line.display_type):
                 return _('The estimated shipping cannot be computed because the weight of your product is missing.')
         return False
 
@@ -87,7 +87,7 @@ class BpostRequest():
         return (street, street_number)
 
     def rate(self, order, carrier):
-        weight = sum([(line.product_id.weight * line.product_qty) for line in order.order_line]) or 0.0
+        weight = sum([(line.product_id.weight * line.product_qty) for line in order.order_line if not line.display_type]) or 0.0
         weight_in_kg = carrier._bpost_convert_weight(weight)
         return self._get_rate(carrier, weight_in_kg, order.partner_shipping_id.country_id)
 

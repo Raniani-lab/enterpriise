@@ -73,7 +73,7 @@ class ProviderUPS(models.Model):
         packages = []
         total_qty = 0
         total_weight = 0
-        for line in order.order_line.filtered(lambda line: not line.is_delivery):
+        for line in order.order_line.filtered(lambda line: not line.is_delivery and not line.display_type):
             total_qty += line.product_uom_qty
             total_weight += line.product_id.weight * line.product_qty
 

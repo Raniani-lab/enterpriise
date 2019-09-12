@@ -120,7 +120,7 @@ class ProviderFedex(models.Model):
         is_india = order.partner_shipping_id.country_id.code == 'IN' and order.company_id.partner_id.country_id.code == 'IN'
 
         # Estimate weight of the sales order; will be definitely recomputed on the picking field "weight"
-        est_weight_value = sum([(line.product_id.weight * line.product_uom_qty) for line in order.order_line]) or 0.0
+        est_weight_value = sum([(line.product_id.weight * line.product_uom_qty) for line in order.order_line if not line.display_type]) or 0.0
         weight_value = self._fedex_convert_weight(est_weight_value, self.fedex_weight_unit)
 
         # Some users may want to ship very lightweight items; in order to give them a rating, we round the
@@ -194,7 +194,7 @@ class ProviderFedex(models.Model):
             total_commodities_amount = 0.0
             commodity_country_of_manufacture = order.warehouse_id.partner_id.country_id.code
 
-            for line in order.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu']):
+            for line in order.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu'] and not l.display_type):
                 commodity_amount = line.price_reduce_taxinc
                 total_commodities_amount += (commodity_amount * line.product_uom_qty)
                 commodity_description = line.product_id.name

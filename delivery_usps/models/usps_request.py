@@ -62,9 +62,9 @@ class USPSRequest():
         if order:
             if not order.order_line:
                 return _("Please provide at least one item to ship.")
-            for line in order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital']):
+            for line in order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital'] and not line.display_type):
                 return _('The estimated price cannot be computed because the weight of your product is missing.')
-            tot_weight = sum([(line.product_id.weight * line.product_qty) for line in order.order_line]) or 0
+            tot_weight = sum([(line.product_id.weight * line.product_qty) for line in order.order_line if not line.display_type]) or 0
             weight_uom_id = order.env['product.template']._get_weight_uom_id_from_ir_config_parameter()
             weight_in_pounds = weight_uom_id._compute_quantity(tot_weight, order.env.ref('uom.product_uom_lb'))
             if weight_in_pounds > 4 and order.carrier_id.usps_service == 'First Class':     # max weight of FirstClass Service
@@ -77,9 +77,9 @@ class USPSRequest():
 
     def _usps_request_data(self, carrier, order):
         currency = carrier.env['res.currency'].search([('name', '=', 'USD')], limit=1)  # USPS Works in USDollars
-        tot_weight = sum([(line.product_id.weight * line.product_qty) for line in order.order_line]) or 0.0
+        tot_weight = sum([(line.product_id.weight * line.product_qty) for line in order.order_line if not line.display_type]) or 0.0
         total_weight = carrier._usps_convert_weight(tot_weight)
-        total_value = sum([(line.price_unit * line.product_uom_qty) for line in order.order_line.filtered(lambda line: not line.is_delivery)]) or 0.0
+        total_value = sum([(line.price_unit * line.product_uom_qty) for line in order.order_line.filtered(lambda line: not line.is_delivery and not line.display_type)]) or 0.0
 
         if order.currency_id.name == currency.name:
             price = total_value

@@ -664,6 +664,7 @@ class IngenicoDriver(Driver):
         self._device_type = 'payment'
         self._device_connection = 'network'
         self._device_name = 'Ingenico payment terminal'
+        self._device_manufacturer = 'Ingenico'
         self.cid = None
 
     @classmethod

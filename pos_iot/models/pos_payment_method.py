@@ -5,7 +5,8 @@ from odoo import api, fields, models
 class PoSPaymentMethod(models.Model):
     _inherit = 'pos.payment.method'
 
-    iot_device_id = fields.Many2one('iot.device', string='Payment Terminal Device', domain=[('type', '=', 'payment')])
+    payment_terminal_ids = fields.Many2many('iot.device', compute="_compute_payment_terminal_ids")
+    iot_device_id = fields.Many2one('iot.device', string='Payment Terminal Device')
 
     def _get_payment_terminal_selection(self):
         selection_list = super(PoSPaymentMethod, self)._get_payment_terminal_selection()
@@ -18,5 +19,14 @@ class PoSPaymentMethod(models.Model):
     @api.onchange('use_payment_terminal')
     def _onchange_use_payment_terminal(self):
         super(PoSPaymentMethod, self)._onchange_use_payment_terminal()
-        if not self.use_payment_terminal in {'six', 'ingenico'}:
-            self.iot_device_id = False
+        self.iot_device_id = False
+
+    @api.depends('use_payment_terminal')
+    def _compute_payment_terminal_ids(self):
+        for payment_method in self:
+            domain = [('type', '=', 'payment')]
+            if payment_method.use_payment_terminal == 'six':
+                domain.append(('manufacturer', '=', 'Six'))
+            elif payment_method.use_payment_terminal == 'ingenico':
+                domain.append(('manufacturer', '=', 'Ingenico'))
+            payment_method.payment_terminal_ids = self.env['iot.device'].search(domain)

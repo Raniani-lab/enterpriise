@@ -14,7 +14,7 @@
                 <field name="allow_timesheets" invisible="1"/>
                 <field name="allow_billable" invisible="1"/>
                 <field name="allow_quotations" invisible="1"/>
-                <field name="fsm_state" invisible="1"/>
+                <field name="fsm_done" invisible="1"/>
                 <field name="fsm_to_invoice" invisible="1"/>
                 <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
                     attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
@@ -25,7 +25,7 @@
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                     attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                 <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                    attrs="{'invisible': ['|', '|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_done', '=', False), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
             </xpath>
             <xpath expr="//button[@name='action_timer_resume']" position='after'>
                 <button class="btn-secondary" name="action_fsm_create_quotation" type="object" string="New Quotation" attrs="{'invisible': [('allow_quotations', '=', False)]}" groups="sales_team.group_sale_salesman"/>
@@ -268,7 +268,7 @@
                     <field name="display_timesheet_timer" invisible="1"/>
                     <field name="is_fsm" invisible="1"/>
                     <field name="allow_timesheets" invisible="1"/>
-                    <field name="fsm_state" invisible="1"/>
+                    <field name="fsm_done" invisible="1"/>
                     <field name="timesheet_timer_pause" invisible="1"/>
                     <field name="allow_material" invisible="1"/>
                     <field name="company_id" invisible="1"/>
@@ -281,7 +281,7 @@
                     <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                     <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('fsm_state', '=', 'draft'), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                        attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('fsm_done', '=', False), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
 
                     <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
                         attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"/>
@@ -439,8 +439,8 @@
                         ('planned_date_begin', '=', False),
                         ('planned_date_end', '=', False)
                 ]" groups="industry_fsm.group_fsm_manager"/>
-                <filter string="To Do" name="todo" domain="[('fsm_state', '=', 'draft'), ('user_id', '!=', False), ('planned_date_begin', '!=', False), ('planned_date_end', '!=', False)]"/>
-                <filter string="To Invoice" name="to_invoice" domain="[('fsm_to_invoice', '=', True), ('fsm_state', 'in', ['validated', 'sold']), ('is_fsm', '=', True )]" groups="sales_team.group_sale_salesman" />
+                <filter string="To Do" name="todo" domain="[('fsm_done', '=', False), ('user_id', '!=', False), ('planned_date_begin', '!=', False), ('planned_date_end', '!=', False)]"/>
+                <filter string="To Invoice" name="to_invoice" domain="[('fsm_to_invoice', '=', True), ('fsm_done', '=', True), ('is_fsm', '=', True )]" groups="sales_team.group_sale_salesman" />
                 <separator />
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <filter name="planned_today" string="Planned for Today" domain="[
@@ -496,7 +496,7 @@
             <xpath expr="//kanban" position="inside">
                 <field name="planned_date_begin" />
                 <field name="is_fsm" />
-                <field name="fsm_state" />
+                <field name="fsm_done" />
             </xpath>
             <xpath expr="//templates/descendant::field[@name='partner_id']" position="after">
                 <t t-if="record.is_fsm.raw_value and record.partner_city.value"> • <field name="partner_city" /></t>
@@ -505,8 +505,8 @@
                 <!-- color of the span -->
                 <t t-if="record.is_fsm.raw_value" t-set="date" t-value="" />
                 <t t-if="record.is_fsm.raw_value" t-set="deadline_class" t-value="" />
-                <t t-if="record.is_fsm.raw_value and record.fsm_state.raw_value == 'draft' and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().startOf('day')" t-set="deadline_class">oe_kanban_text_red</t>
-                <t t-elif="record.is_fsm.raw_value and record.fsm_state.raw_value == 'draft' and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().endOf('day')" t-set="deadline_class">text-warning font-weight-bold</t>
+                <t t-if="record.is_fsm.raw_value and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().startOf('day')" t-set="deadline_class">oe_kanban_text_red</t>
+                <t t-elif="record.is_fsm.raw_value and !record.fsm_done.raw_value and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()).startOf('day') lt moment().endOf('day')" t-set="deadline_class">text-warning font-weight-bold</t>
                 <!-- field -->
                 <t t-if="record.is_fsm.raw_value and record.planned_date_begin.raw_value" t-set="date" t-value="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)" />
             </xpath>
@@ -551,7 +551,7 @@
                 <!-- in fsm, use only red color when displaying date as hours -->
                 <!-- also take into account the time instead of the day if we display hours -->
                 <t t-if="!context.fsm_task_kanban_whole_date" t-set="deadline_class"></t>
-                <t t-if="!context.fsm_task_kanban_whole_date and moment(record.planned_date_begin.raw_value.toISOString()) lt moment()" t-set="deadline_class">oe_kanban_text_red</t>
+                <t t-if="!context.fsm_task_kanban_whole_date and record.planned_date_begin.raw_value and moment(record.planned_date_begin.raw_value.toISOString()) lt moment()" t-set="deadline_class">oe_kanban_text_red</t>
             </xpath>
             <xpath expr="//t[@t-set='date_format']" position="after">
                 <!-- force date formatting to hours in fsm, wether we show deadline or planned_date_begin -->

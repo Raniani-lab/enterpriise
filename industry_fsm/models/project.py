@@ -91,7 +91,7 @@ class Task(models.Model):
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-    fsm_state = fields.Selection([('draft', 'New'), ('validated', 'Validated'), ('sold', 'Sold')], default='draft', string='Status', readonly=True, copy=False)
+    fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True)
     user_id = fields.Many2one(group_expand='_read_group_user_ids')
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
     fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice')
@@ -179,6 +179,12 @@ class Task(models.Model):
             material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: if_fsm_material_line(sol, task))
             task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
             task.material_line_product_count = sum(material_sale_lines.mapped('product_uom_qty'))
+
+    def _compute_fsm_done(self):
+        for task in self:
+            closed_stage = task.project_id.type_ids.filtered('is_closed')
+            if closed_stage:
+                task.fsm_done = task.stage_id in closed_stage
 
     @api.depends('sale_order_id.invoice_status', 'sale_order_id.order_line')
     def _compute_fsm_to_invoice(self):
@@ -329,7 +335,7 @@ class Task(models.Model):
             if not closed_stage and len(task.project_id.type_ids) > 1:  # project without stage (or with only one)
                 closed_stage = task.project_id.type_ids[-1]
 
-            values = {'fsm_state': 'validated'}
+            values = {'fsm_done': True}
             if closed_stage:
                 values['stage_id'] = closed_stage.id
 
@@ -349,8 +355,6 @@ class Task(models.Model):
             if task.sale_order_id.state in ['draft', 'sent']:
                 task.sale_order_id.action_confirm()
 
-            # as before, mark the task as 'sold' on SO confirmation
-            task.write({'fsm_state': 'sold'})
         # redirect create invoice wizard (of the Sales Order)
         action = self.env.ref('sale.action_view_sale_advance_payment_inv').read()[0]
         context = literal_eval(action.get('context', "{}"))

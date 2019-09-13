@@ -21,7 +21,7 @@ class SaleOrder(models.Model):
         try:
             if not so:
                 so = self._process_order_new(order)
-            so._process_order_update(order)
+                so._process_order_update(order)
         except Exception as e:
             message = _("Ebay could not synchronize order:\n%s") % str(e)
             path = str(order)

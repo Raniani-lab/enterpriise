@@ -3,9 +3,11 @@ from odoo import models, fields, api, exceptions
 
 
 class SignRequest(models.Model):
-    _inherit = ['sign.request']
+    _name = 'sign.request'
+    _inherit = ['sign.request', 'documents.mixin']
 
-    folder_id = fields.Many2one('documents.folder', 'Document Workspace', related='template_id.folder_id', readonly=False)
-    documents_tag_ids = fields.Many2many('documents.tag', string="Document Tags",
-                                         related='template_id.documents_tag_ids', readonly=False)
+    def _get_document_tags(self):
+        return self.template_id.documents_tag_ids
 
+    def _get_document_folder(self):
+        return self.template_id.folder_id

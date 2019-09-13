@@ -1,19 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mass_mailing_themes
+# 	* mass_mailing_themes
 # 
 # Translators:
-# Zoriana Zaiats, 2018
-# Bohdan Lisnenko, 2018
 # Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -122,12 +120,12 @@ msgstr "<strong>Анна Сміт</strong>"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<strong>Clark Hans</strong>"
-msgstr "<strong>Clark Hans</strong>"
+msgstr "<strong>Кларк Ханс</strong>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<strong>John Doe</strong>"
-msgstr "<strong>John Doe</strong>"
+msgstr "<strong>Джон Дое</strong>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
@@ -375,7 +373,7 @@ msgstr "Точність проектування"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Premium Pass"
-msgstr "Преміум-пас"
+msgstr "Преміум-квиток"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -472,8 +470,8 @@ msgid ""
 "To stir up your curiosity, have a look at all the great talks scheduled and "
 "highlighted in our agenda!"
 msgstr ""
-"Щоб підбурити свою зацікавленість, подивіться на всі великі переговори, "
-"заплановані та виділені в нашому порядку денному!"
+"Щоби підбурити свою зацікавленість, подивіться на всі великі виступи, "
+"заплановані в нашому порядку денному!"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -497,7 +495,7 @@ msgstr "Телефонна камера з двома об'єктивами"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "Use This Promo Code BEFORE 1st of August"
-msgstr "Використовуйте цей Промокод ДО 1 серпня"
+msgstr "Використайте цей Промокод ДО 1 серпня"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -518,11 +516,11 @@ msgid ""
 "the button."
 msgstr ""
 "Ми продовжуємо рости і хочемо, щоб ви були частиною цього! Ми збільшили час "
-"магазину та отримали багато нових брендів.<br/>Щоб привітати вас із "
+"магазину та отримали багато нових брендів.<br/>Щоби привітати вас із "
 "поверненням, будь ласка, прийміть цю знижку на 20% на наступну покупку, "
 "натиснувши кнопку."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "and save $20 on your next order!"
-msgstr "і заощадьте 20 доларів на своєму наступному замовленні!"
+msgstr "і заощаджуйте 20 доларів на своєму наступному замовленні!"

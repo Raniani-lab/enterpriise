@@ -241,3 +241,71 @@ for record in records:
             set(self.TestModel.browse(campaign.participant_ids.mapped('res_id')).mapped(name_field.name)),
             set((first_recordset | self.test_rec_new).mapped(name_field.name))
         )
+
+
+    @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
+    def test_campaign_duplicate(self):
+        """
+        The copy/duplicate of a campaign :
+            - COPY activities, new activities related to the new campaign
+            - DO NOT COPY the recipients AND the trace_ids AND the state (draft by default)
+            - Normal Copy of other fields
+        """
+        Campaign = self.env['marketing.campaign'].with_user(self.user_market)
+        Activity = self.env['marketing.activity'].with_user(self.user_market)
+        MassMail = self.env['mailing.mailing'].with_user(self.user_market)
+
+        # Create campaign
+        campaign = Campaign.create({
+            'name': 'COPY CAMPAIGN',
+            'model_id': self.test_model.id,
+            'domain': '%s' % ([('name', '!=', 'Invalid')]),
+        })
+
+        # Create first activity flow
+        mass_mailing = MassMail.create({
+            'name': 'Hello',
+            'subject': 'Hello',
+            'body_html': '<div>My Email Body</div>',
+            'mailing_model_id': self.test_model.id,
+            'use_in_marketing_automation': True,
+        })
+        name_activity = "Name of the activity (2 after the duplicate with the same name)"
+        act_0 = Activity.create({
+            'name': name_activity,
+            'campaign_id': campaign.id,
+            'activity_type': 'email',
+            'mass_mailing_id': mass_mailing.id,
+            'trigger_type': 'begin',
+            'interval_number': '0',
+        })
+
+        self.assertEqual(int(Activity.search_count([('name', '=', name_activity)])), 1)
+
+        # User starts and syncs its campaign
+        campaign.action_start_campaign()
+        self.assertEqual(campaign.state, 'running')
+        campaign.sync_participants()
+
+        # Begin activity should contain a trace for each participant (4)
+        self.assertEqual(
+            act_0.trace_ids.mapped('participant_id'),
+            campaign.participant_ids,
+        )
+
+        campaign2 = campaign.copy()
+
+        # Check if campaign activities is unchanged
+        self.assertEqual(len(campaign.marketing_activity_ids), 1)
+
+        # Two activities with the same name but not related to the same campaign
+        self.assertEqual(int(Activity.search_count([('name', '=', name_activity)])), 2)
+        self.assertEqual(len(campaign2.marketing_activity_ids), 1)
+
+        # State = draft
+        self.assertEqual(campaign2.state, 'draft')
+
+        act_0_copy = campaign2.marketing_activity_ids[0]
+        # No participant and no trace (in the activity) is copied
+        self.assertEqual(len(campaign2.participant_ids), 0)
+        self.assertEqual(len(act_0_copy.trace_ids), 0)

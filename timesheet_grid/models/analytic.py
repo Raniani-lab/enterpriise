@@ -28,7 +28,6 @@ class AnalyticLine(models.Model):
         string="Timesheet Line", compute_sudo=True,
         compute='_compute_is_timesheet', search='_search_is_timesheet',
         help="Set if this analytic line represents a line of timesheet.")
-    task_id = fields.Many2one(group_expand='_read_group_task_ids')
 
     @api.depends('date', 'employee_id.timesheet_validated')
     def _compute_timesheet_validated(self):
@@ -49,25 +48,6 @@ class AnalyticLine(models.Model):
         if (operator, value) in [('=', True), ('!=', False)]:
             return [('project_id', '!=', False)]
         return [('project_id', '=', False)]
-
-    @api.model
-    def _read_group_task_ids(self, tasks, domain, order):
-        """ Display tasks with timesheet for the last grid period (defined from context) """
-        if self.env.context.get('grid_anchor'):
-            anchor = fields.Date.from_string(self.env.context['grid_anchor'])
-        else:
-            anchor = date.today() + relativedelta(weeks=-1, days=1, weekday=0)
-        span = self.env.context.get('grid_range', 'week')
-        date_ago = fields.Date.to_string(anchor - STEP_BY[span] + START_OF[span])
-
-        domain = [
-            ('user_id', '=', self.env.user.id),
-            ('date', '>=', date_ago)
-        ]
-        if 'default_project_id' in self.env.context:
-            domain += [('project_id', '=', self.env.context['default_project_id'])]
-        tasks |= self.env['account.analytic.line'].search(domain).mapped('task_id')
-        return tasks
 
     def action_validate_timesheet(self):
         if self.env.context.get('grid_anchor'):

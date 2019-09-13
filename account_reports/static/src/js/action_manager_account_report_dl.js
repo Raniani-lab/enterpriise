@@ -24,14 +24,15 @@ ActionManager.include({
      *   rejected if an error occurred during the report generation
      */
     _executeAccountReportDownloadAction: function (action) {
+        var self = this;
         framework.blockUI();
         return new Promise(function (resolve, reject) {
             session.get_file({
                 url: '/account_reports',
                 data: action.data,
                 success: resolve,
-                error: () => {
-                    this.call('crash_manager', 'rpc_error', ...arguments);
+                error: (error) => {
+                    self.call('crash_manager', 'rpc_error', error);
                     reject();
                 },
                 complete: framework.unblockUI,

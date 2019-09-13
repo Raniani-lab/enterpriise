@@ -56,7 +56,6 @@ class Job(models.Model):
             query_list = [{'id': j['id'], 'utm_campaign_id': self.env['utm.campaign'].create({'name': j['name']}).id} for j in job_ids]
             query = 'UPDATE ' + self._table + ' SET utm_campaign_id = %(utm_campaign_id)s WHERE id = %(id)s;'
             self.env.cr._obj.executemany(query, query_list)
-            self.env.cr.commit()
         else:
             super()._init_column(column_name)
 
@@ -67,7 +66,7 @@ class Job(models.Model):
         return super().create(vals)
 
     def set_recruit(self):
-        self.job_open_date.write({'job_open_date': fields.Date.today()})
+        self.write({'job_open_date': fields.Date.today()})
         return super(Job, self).set_recruit()
 
     def action_share_external(self):

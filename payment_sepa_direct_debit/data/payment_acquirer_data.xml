@@ -8,7 +8,6 @@
             <field name="company_id" ref="base.main_company"/>
             <field name="registration_view_template_id" ref="sepa_direct_debit_form"/>
             <field name="sepa_direct_debit_sms_enabled" eval="False"/>
-            <field name="state">test</field>
             <field name="payment_flow">s2s</field>
             <field name="pending_msg" type="xml">
                 <p>Your payment request has been received. Waiting for bank approval.</p>

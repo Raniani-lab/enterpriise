@@ -695,7 +695,7 @@ odoo.define('sign.template', function(require) {
                     self.do_action('sign.action_sign_send_request', {
                         additional_context: {
                             'active_id': self.templateID,
-                            'sign_directly_without_mail': false,
+                            'sign_directly_without_mail': true,
                         },
                     });
                 });

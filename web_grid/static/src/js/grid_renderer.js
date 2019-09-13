@@ -305,6 +305,20 @@ return AbstractRenderer.extend({
                ]);
     },
     /**
+     * Return a node for the column total if needed
+     * If the range is day this column is not rendered
+     * @private
+     * @param {String} node node cell
+     * @param {String} value the value to put in the cell
+     * @return {snabbdom[]}
+     */
+    _renderGridColumnTotalCell: function (node, value) {
+        if (this.state.range === 'day') {
+            return [];
+        }
+        return [h(node, value)];
+    },
+    /**
      * Renders the nocontent helper.
      *
      * This method is a helper for renderers that want to display a help
@@ -351,7 +365,7 @@ return AbstractRenderer.extend({
                 ])
             ].concat(_.map(row, function (cell, cell_index) {
                 return self._renderCell(cell, path.concat([rowIndex, cell_index]).join('.'));
-            }), [h('td.o_grid_total', self._format(totals[rowIndex]))]));
+            }), self._renderGridColumnTotalCell('td.o_grid_total', self._format(totals[rowIndex]))));
         });
     },
     /**
@@ -388,9 +402,7 @@ return AbstractRenderer.extend({
                                 o_grid_current: column.is_current,
                             }}, self._format(totals.columns[column_index]));
                         }),
-                        [h('td.o_grid_total', [
-                            self._format(totals.super)
-                        ])]
+                        self._renderGridColumnTotalCell('td.o_grid_total', self._format(totals.super))
                     ))
                 ].concat(rows)
             ));
@@ -431,7 +443,7 @@ return AbstractRenderer.extend({
                                 column.values[col_field][1]
                             );
                         }),
-                        [h('th.o_grid_total', total_label)]
+                        self._renderGridColumnTotalCell('th.o_grid_total', total_label)
                     ))
                 ]),
                 h('tfoot', [
@@ -445,7 +457,7 @@ return AbstractRenderer.extend({
                                 o_grid_current: column.is_current,
                             }}, cell_content);
                         }),
-                        [h('td', !super_total ? [] : self._format(super_total))]
+                        self._renderGridColumnTotalCell('td', !super_total ? [] : self._format(super_total))
                     ))
                 ]),
             ])
@@ -456,6 +468,7 @@ return AbstractRenderer.extend({
      * @returns {snabbdom}
      */
     _renderUngroupedGrid: function () {
+        var self = this;
         var vnode;
         var columns = this.state.cols;
         var rows = this.state.rows;
@@ -478,7 +491,7 @@ return AbstractRenderer.extend({
                         _.map(columns, function (column) {
                             return h('td', {class: {o_grid_current: column.is_current}}, []);
                         }),
-                        [h('td.o_grid_total', [])]
+                        self._renderGridColumnTotalCell('td.o_grid_total', [])
                     ));
                 }))
             )

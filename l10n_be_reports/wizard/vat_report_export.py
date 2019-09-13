@@ -12,7 +12,7 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
     ask_restitution = fields.Boolean()
     ask_payment = fields.Boolean()
     client_nihil = fields.Boolean()
-    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id, required=True)
+    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id, required=True)
     grid91 = fields.Monetary(string='Grid 91', currency_field='currency_id',
         help='La grille 91 ne concerne que les assujettis tenus au dépôt de déclarations mensuelles. Cette grille ne peut être complétée que pour la déclaration relative aux opérations du mois de décembre.')
     calling_export_wizard_id = fields.Many2one(string="Calling Export Wizard", comodel_name="account_reports.export.wizard", help="Optional field containing the report export wizard calling this wizard, if there is one.")

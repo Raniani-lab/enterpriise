@@ -95,10 +95,26 @@ class IrAttachment(models.Model):
         :param vals: the create/write dictionary of ir attachment
         :return True if new documents are created
         """
+        # Special case for documents
         if vals.get('res_model') == 'documents.document' and vals.get('res_id'):
             document = self.env['documents.document'].browse(vals['res_id'])
             if document.exists() and not document.attachment_id:
                 document.attachment_id = self[0].id
+            return False
+
+        # Generic case for all other models
+        res_model = vals.get('res_model')
+        res_id = vals.get('res_id')
+        model = self.env.get(res_model)
+        if model is not None and res_id and issubclass(type(model), self.pool['documents.mixin']):
+            vals_list = [
+                model.browse(res_id)._get_document_vals(attachment)
+                for attachment in self
+                if not attachment.res_field
+            ]
+            vals_list = [vals for vals in vals_list if vals]  # Remove empty values
+            self.env['documents.document'].create(vals_list)
+            return True
         return False
 
     @api.model
@@ -106,13 +122,13 @@ class IrAttachment(models.Model):
         attachment = super(IrAttachment, self).create(vals)
         # the context can indicate that this new attachment is created from documents, and therefore
         # doesn't need a new document to contain it.
-        if not self._context.get('no_document'):
+        if not self._context.get('no_document') and not attachment.res_field:
             attachment._create_document(dict(vals, res_model=attachment.res_model, res_id=attachment.res_id))
         return attachment
 
     def write(self, vals):
         if not self._context.get('no_document'):
-            self._create_document(vals)
+            self.filtered(lambda a: not (vals.get('res_field') or a.res_field))._create_document(vals)
         return super(IrAttachment, self).write(vals)
 
 

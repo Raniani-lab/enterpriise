@@ -82,29 +82,29 @@ class TestForecastAccessRights(TestCommonForecast):
             'employee_id': cls.employee_joseph.id,
             'start_datetime': datetime(2019, 6, 5, 8),
             'end_datetime': datetime(2019, 6, 5, 17),
-            'resource_hours': 8,
+            'allocated_hours': 8,
         }
 
-        cls.project_tinyhouse_forecast = cls.env['project.forecast'].create({'project_id': cls.project_tinyhouse.id, **forecast_values})
-        cls.project_opera_forecast = cls.env['project.forecast'].create({'project_id': cls.project_opera.id, **forecast_values})
-        cls.project_horizon_forecast = cls.env['project.forecast'].create({'project_id': cls.project_horizon.id, **forecast_values})
+        cls.project_tinyhouse_forecast = cls.env['planning.slot'].create({'project_id': cls.project_tinyhouse.id, **forecast_values})
+        cls.project_opera_forecast = cls.env['planning.slot'].create({'project_id': cls.project_opera.id, **forecast_values})
+        cls.project_horizon_forecast = cls.env['planning.slot'].create({'project_id': cls.project_horizon.id, **forecast_values})
 
     def test_public_user_access_rights(self):
         # create
         with self.assertRaises(AccessError):
-            self.env['project.forecast'].with_user(self.user_public.id).create({
+            self.env['planning.slot'].with_user(self.user_public.id).create({
                 'employee_id': self.employee_bert.id,
                 'start_datetime': datetime(2019, 6, 5, 8),
                 'end_datetime': datetime(2019, 6, 5, 17),
                 'project_id': self.project_horizon.id,
-                'resource_hours': 8,
+                'allocated_hours': 8,
             })
         # read
         with self.assertRaises(AccessError):
             self.project_opera_forecast.with_user(self.user_public.id).read()
         # update
         with self.assertRaises(AccessError):
-            self.project_opera_forecast.with_user(self.user_public.id).write({'resource_hours': 6})
+            self.project_opera_forecast.with_user(self.user_public.id).write({'allocated_hours': 6})
         # delete
         with self.assertRaises(AccessError):
             self.project_opera_forecast.with_user(self.user_public.id).unlink()
@@ -112,19 +112,19 @@ class TestForecastAccessRights(TestCommonForecast):
     def test_portal_user_access_right(self):
         # create
         with self.assertRaises(AccessError):
-            self.env['project.forecast'].with_user(self.user_portal.id).create({
+            self.env['planning.slot'].with_user(self.user_portal.id).create({
                 'employee_id': self.employee_bert.id,
                 'start_datetime': datetime(2019, 6, 5, 8),
                 'end_datetime': datetime(2019, 6, 5, 17),
                 'project_id': self.project_horizon.id,
-                'resource_hours': 8,
+                'allocated_hours': 8,
             })
         # read
         with self.assertRaises(AccessError):
             self.project_opera_forecast.with_user(self.user_portal.id).read()
         # update
         with self.assertRaises(AccessError):
-            self.project_opera_forecast.with_user(self.user_portal.id).write({'resource_hours': 6})
+            self.project_opera_forecast.with_user(self.user_portal.id).write({'allocated_hours': 6})
         # delete
         with self.assertRaises(AccessError):
             self.project_opera_forecast.with_user(self.user_portal.id).unlink()
@@ -132,15 +132,15 @@ class TestForecastAccessRights(TestCommonForecast):
     def test_regular_user_access_rights(self):
         # create
         with self.assertRaises(AccessError):
-            self.env['project.forecast'].with_user(self.employee_joseph.user_id.id).create({
+            self.env['planning.slot'].with_user(self.employee_joseph.user_id.id).create({
                 'employee_id': self.employee_bert.id,
                 'start_datetime': datetime(2019, 6, 5, 8),
                 'end_datetime': datetime(2019, 6, 5, 17),
-                'resource_hours': 8,
+                'allocated_hours': 8,
             })
         # update
         with self.assertRaises(AccessError):
-            self.project_opera_forecast.with_user(self.employee_joseph.user_id.id).write({'resource_hours': 6})
+            self.project_opera_forecast.with_user(self.employee_joseph.user_id.id).write({'allocated_hours': 6})
         # delete
         with self.assertRaises(AccessError):
             self.project_opera_forecast.with_user(self.employee_joseph.user_id.id).unlink()
@@ -153,14 +153,14 @@ class TestForecastAccessRights(TestCommonForecast):
         # read
         self.project_tinyhouse_forecast.with_user(self.employee_bert.user_id.id).read()
         # create
-        self.env['project.forecast'].with_user(self.employee_bert.user_id.id).create({
+        self.env['planning.slot'].with_user(self.employee_bert.user_id.id).create({
             'employee_id': self.employee_bert.id,
             'start_datetime': datetime(2019, 6, 5, 8),
             'project_id': self.project_horizon.id,
             'end_datetime': datetime(2019, 6, 5, 17),
-            'resource_hours': 8,
+            'allocated_hours': 8,
         })
         # update
-        self.project_opera_forecast.with_user(self.employee_bert.user_id.id).write({'resource_hours': 6})
+        self.project_opera_forecast.with_user(self.employee_bert.user_id.id).write({'allocated_hours': 6})
         # delete
         self.project_opera_forecast.with_user(self.employee_bert.user_id.id).unlink()

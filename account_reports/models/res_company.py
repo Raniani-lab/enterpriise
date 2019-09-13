@@ -7,16 +7,11 @@ from odoo import api, fields, models, _
 class ResCompany(models.Model):
     _inherit = "res.company"
 
-    overdue_sms_msg = fields.Text(string='Overdue Payments SMS Message', translate=True,
-        default=lambda s: _("""Our records indicate that some payments on your account are still due.
-If you have any queries regarding your account, Please contact us. Best Regards,"""))
-
     @api.model
     def _get_default_misc_journal(self):
         user_company_id = self.env.company.id
         return self.env['account.journal'].search([('type', '=', 'general'), ('show_on_dashboard', '=', True), ('company_id', '=', self.id or user_company_id)], limit=1)
 
-    days_between_two_followups = fields.Integer(string='Number of days between two follow-ups', default=14)
     totals_below_sections = fields.Boolean(
         string='Add totals below sections',
         help='When ticked, totals and subtotals appear below the sections of the report.')

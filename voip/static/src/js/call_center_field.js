@@ -9,10 +9,9 @@ const _t = core._t;
 
 const CallCenterField = AbstractField.extend({
     template: 'voip.CallCenterField',
-    events: {
-        ...AbstractField.prototype.events,
+    events: Object.assign({}, AbstractField.prototype.events, {
         'click': '_onClick',
-    },
+    }),
 
     /**
      * @override

@@ -9,8 +9,8 @@ class MarketingCampaign(models.Model):
 
     mailing_sms_count = fields.Integer('# SMS Mailings', compute='_compute_mailing_sms_count')
 
-    @api.depends('marketing_activity_ids.mass_mailing_id')
-    def _compute_mass_mailing_count(self):
+    @api.depends('marketing_activity_ids.mass_mailing_id.mailing_type')
+    def _compute_mailing_sms_count(self):
         # TDE NOTE: this could be optimized but is currently displayed only in a form view, no need to optimize now
         for campaign in self:
-            campaign.mailing_sms_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id'))
+            campaign.mailing_sms_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id').filtered(lambda mailing: mailing.mailing_type == 'sms'))

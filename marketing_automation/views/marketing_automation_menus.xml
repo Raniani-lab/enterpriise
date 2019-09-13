@@ -7,9 +7,4 @@
         parent="marketing_automation_menu"
         sequence="2"
         groups="marketing_automation.group_marketing_automation_user"/>
-
-    <menuitem id="marketing_automation_configuration_menu" name="Configuration"
-        parent="marketing_automation_menu"
-        sequence="3"
-        groups="base.group_no_one"/>
 </odoo>

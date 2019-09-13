@@ -4,21 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:30+0000\n"
-"PO-Revision-Date: 2019-08-12 11:30+0000\n"
+"POT-Creation-Date: 2019-09-09 11:59+0000\n"
+"PO-Revision-Date: 2019-09-09 11:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
-msgid "# Page Views"
-msgstr ""
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
@@ -34,19 +29,19 @@ msgid "Action Needed"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__running
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__active
 msgid "Active"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_ir_ui_view__track
-#: model:ir.model.fields,help:website_crm_score.field_website_page__track
-msgid "Allow to specify for one page of the website to be trackable or not"
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__active
+msgid "Archive"
 msgstr ""
 
 #. module: website_crm_score
-#: selection:website.crm.score,rule_type:0
-msgid "Archive"
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_search
+msgid "Archived"
 msgstr ""
 
 #. module: website_crm_score
@@ -98,14 +93,12 @@ msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_uid
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_date
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_date
 msgid "Created on"
 msgstr ""
@@ -146,13 +139,12 @@ msgid "Define a new sales team"
 msgstr ""
 
 #. module: website_crm_score
-#: selection:website.crm.score,rule_type:0
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__unlink
 msgid "Delete"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__display_name
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__display_name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__display_name
 msgid "Display Name"
 msgstr ""
@@ -193,32 +185,24 @@ msgid "Group By"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_http
-msgid "HTTP Routing"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__id
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__id
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__id
 msgid "ID"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread
-#: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread
-msgid "If checked new messages require your attention."
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction
+#: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_needaction
+#: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread
 msgid "If checked, new messages require your attention."
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error
+#: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_sms_error
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_error
+#: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -229,33 +213,19 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: website_crm_score
-#: model:crm.lead.scoring.frequency.field,name:website_crm_score.frequency_field_lang_id
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
-msgid "Language"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_crm_lead__lang_id
-msgid "Language from the website when lead has been created"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user____last_update
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview____last_update
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_uid
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_date
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_date
 msgid "Last Updated on"
 msgstr ""
@@ -266,23 +236,13 @@ msgid "Last run"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__lead_id
-msgid "Lead"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
-#: model:ir.ui.menu,name:website_crm_score.pageview_menu
-msgid "Lead Page Views"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_crm_lead
 msgid "Lead/Opportunity"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_leads
+#: model:ir.ui.menu,name:website_crm_score.menu_crm_leads
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Leads"
 msgstr ""
@@ -308,18 +268,6 @@ msgstr ""
 msgid ""
 "Link users to salesteam, set a per 30 days lead capacity for each of them "
 "and set filters to auto assign your leads."
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_crm_lead__score_pageview_ids
-msgid "List of (tracked) pages seen by the owner of this lead"
-msgstr ""
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:9
-#, python-format
-msgid "Log visits on leads"
 msgstr ""
 
 #. module: website_crm_score
@@ -372,7 +320,7 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr ""
 
 #. module: website_crm_score
@@ -394,33 +342,8 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_table
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-msgid "Opportunities"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
-msgid "Page Views"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
-msgid "Page views"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__percentage_leads
 msgid "Percentage leads"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__phone
-msgid "Phone"
 msgstr ""
 
 #. module: website_crm_score
@@ -434,8 +357,14 @@ msgid "Rule Type"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__running
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__active
 msgid "Running"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_sms_error
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_sms_error
+msgid "SMS Delivery error"
 msgstr ""
 
 #. module: website_crm_score
@@ -503,9 +432,8 @@ msgid "Scores"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
-#: model_terms:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
-#: selection:website.crm.score,rule_type:0
 msgid "Scoring"
 msgstr ""
 
@@ -526,25 +454,14 @@ msgid ""
 msgstr ""
 
 #. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
-msgid "Search PageViews"
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_search
+msgid "Search CRM Score"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
 msgid "Teams Assignation"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_ir_ui_view__track
-#: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
-msgid "Track"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph
-msgid "Unassigned leads"
 msgstr ""
 
 #. module: website_crm_score
@@ -560,20 +477,10 @@ msgid "Unread Messages Counter"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__url
-msgid "Url"
-msgstr ""
-
-#. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
 "Use sales teams to organize your sales departments.\n"
 "                    Each team will work with a separate pipeline."
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
-msgid "User"
 msgstr ""
 
 #. module: website_crm_score
@@ -592,21 +499,6 @@ msgid "Value"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_ui_view
-msgid "View"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__view_date
-msgid "Viewing Date"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_pageview
-msgid "Website CRM Page View"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_website_crm_score
 msgid "Website CRM Score"
 msgstr ""
@@ -615,11 +507,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__website_message_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__website_message_ids
 msgid "Website Messages"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot
-msgid "Website Pages"
 msgstr ""
 
 #. module: website_crm_score

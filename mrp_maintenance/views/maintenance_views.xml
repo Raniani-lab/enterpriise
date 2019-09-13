@@ -11,7 +11,7 @@
                 </button>
             </xpath>
             <xpath expr="//field[@name='location']" position="after">
-                <field name="workcenter_id" groups="mrp.group_mrp_routings"/>
+                <field name="workcenter_id" context="{'default_company_id':company_id}" groups="mrp.group_mrp_routings"/>
             </xpath>
             <xpath expr="//group[@name='maintenance']" position="after">
                 <group name="statistics">

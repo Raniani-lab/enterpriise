@@ -35,7 +35,7 @@
         </record>
 
         <menuitem
-            id="cfd_22_metodos_pago" name="Payment Way Codes (MX)" parent='payment.root_payment_menu' sequence="50"
+            id="cfd_22_metodos_pago" name="Payment Way Codes (MX)" parent='account.root_payment_menu' sequence="50"
             action='action_l10n_mx_payment_method'
         />
     </data>

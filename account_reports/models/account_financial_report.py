@@ -1073,7 +1073,7 @@ class IrModuleModule(models.Model):
         # generated missing action translations for translated reports
         self.env.cr.execute("""
            INSERT INTO ir_translation (lang, type, name, res_id, src, value, module, state)
-           SELECT l.code, 'model', 'ir.actions.client,name', a.id, t.src, t.value, t.module, t.state
+           SELECT DISTINCT ON (l.code, a.id) l.code, 'model', 'ir.actions.client,name', a.id, t.src, t.value, t.module, t.state
              FROM account_financial_html_report r
              JOIN ir_act_client a ON (r.name = a.name)
              JOIN ir_translation t ON (t.res_id = r.id AND t.name = 'account.financial.html.report,name')
@@ -1090,7 +1090,7 @@ class IrModuleModule(models.Model):
         # generated missing menu translations for translated reports
         self.env.cr.execute("""
            INSERT INTO ir_translation (lang, type, name, res_id, src, value, module, state)
-           SELECT l.code, 'model', 'ir.ui.menu,name', m.id, t.src, t.value, t.module, t.state
+           SELECT DISTINCT ON (l.code, m.id) l.code, 'model', 'ir.ui.menu,name', m.id, t.src, t.value, t.module, t.state
              FROM account_financial_html_report r
              JOIN ir_ui_menu m ON (r.name = m.name)
              JOIN ir_translation t ON (t.res_id = r.id AND t.name = 'account.financial.html.report,name')

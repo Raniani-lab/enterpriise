@@ -60,9 +60,9 @@ class EasypostRequest():
         return True or an error if a value is missing.
         """
         # check carrier credentials
-        if carrier.prod_environment and not carrier.easypost_production_api_key:
+        if carrier.prod_environment and not carrier.sudo().easypost_production_api_key:
             raise UserError(_("The %s carrier is missing (Missing field(s) :\n Production API Key)") % carrier.name)
-        elif not carrier.easypost_test_api_key:
+        elif not carrier.sudo().easypost_test_api_key:
             raise UserError(_("The %s carrier is missing (Missing field(s) :\n Test API Key)") % carrier.name)
 
         if not carrier.easypost_delivery_type:
@@ -102,12 +102,13 @@ class EasypostRequest():
         or shipment request.
         """
         addr_fields = {
-            'name': 'name', 'street1': 'street', 'street2': 'street2',
+            'street1': 'street', 'street2': 'street2',
             'city': 'city', 'zip': 'zip', 'phone': 'phone',
             'email': 'email'}
         address = {'order[%s][%s]' % (addr_type, field_name): addr_obj[addr_obj_field]
                    for field_name, addr_obj_field in addr_fields.items()
                    if addr_obj[addr_obj_field]}
+        address['order[%s][name]' % addr_type] = addr_obj.name or addr_obj.display_name
         if addr_obj.state_id:
             address['order[%s][state]' % addr_type] = addr_obj.state_id.name
         address['order[%s][country]' % addr_type] = addr_obj.country_id.code

@@ -28,7 +28,7 @@ class SepaDirectDebitCommon(PaymentAcquirerCommon):
             'name': 'Bank SEPA',
             'type': 'bank',
             'code': 'BNKSEPA',
-            'post_at_bank_rec': True,
+            'post_at': 'bank_rec',
             'update_posted': True,
             'inbound_payment_method_ids': [(4, self.env.ref('account_sepa_direct_debit.payment_method_sdd').id)],
             'bank_account_id': self.sepa_bank_account.id,

@@ -80,7 +80,7 @@
                         <label class="oe_edit_only" for="name" string="Rule Name"/>
                         <h1><field name="name"/></h1>
                     </div>
-                    <group col="4">
+                    <group col="2">
                         <group col='2'>
                             <field name="rule_type" />
                         </group>

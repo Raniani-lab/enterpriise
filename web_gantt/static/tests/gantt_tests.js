@@ -140,11 +140,11 @@ QUnit.module('Views', {
         var task2 = this.data.tasks.records[1];
         var startDateUTCString = task2.start;
         var startDateUTC = moment.utc(startDateUTCString);
-        var startDateLocalString = startDateUTC.local().format('YYYY-MM-DD hh:mm:ss A');
+        var startDateLocalString = startDateUTC.local().format('DD MMM, hh:mm A');
 
         var stopDateUTCString = task2.stop;
         var stopDateUTC = moment.utc(stopDateUTCString);
-        var stopDateLocalString = stopDateUTC.local().format('YYYY-MM-DD hh:mm:ss A');
+        var stopDateLocalString = stopDateUTC.local().format('DD MMM, hh:mm A');
 
         var POPOVER_DELAY = GanttRow.prototype.POPOVER_DELAY;
         GanttRow.prototype.POPOVER_DELAY = 0;
@@ -180,7 +180,7 @@ QUnit.module('Views', {
             'month view should be activated by default');
         assert.notOk(gantt.$buttons.find('.o_gantt_button_expand_rows').is(':visible'),
             "the expand button should be invisible (only displayed if useful)");
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             'should contain "December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 31,
             'should have a 31 slots for month view');
@@ -191,18 +191,18 @@ QUnit.module('Views', {
         assert.containsN(gantt, '.o_gantt_pill_wrapper', 6,
             'should have a 6 pills');
 
-        // verify that the level offset is correctly applied
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-01 00:00:00"] .o_gantt_pill_wrapper:contains(Task 1)').css('padding-top'), '0px',
+        // verify that the level offset is correctly applied (add 1px gap border compensation for each level)
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-01 00:00:00"] .o_gantt_pill_wrapper:contains(Task 1)').css('margin-top'), '0px',
             'task 1 should be in first level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-01 00:00:00"] .o_gantt_pill_wrapper:contains(Task 5)').css('padding-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-01 00:00:00"] .o_gantt_pill_wrapper:contains(Task 5)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 1 +'px',
             'task 5 should be in second level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-17 00:00:00"] .o_gantt_pill_wrapper:contains(Task 2)').css('padding-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-17 00:00:00"] .o_gantt_pill_wrapper:contains(Task 2)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 1 +'px',
             'task 2 should be in second level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-20 00:00:00"] .o_gantt_pill_wrapper:contains(Task 4)').css('padding-top'), 2 * GanttRow.prototype.LEVEL_TOP_OFFSET + 'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-20 00:00:00"] .o_gantt_pill_wrapper:contains(Task 4)').css('margin-top'), 2 * GanttRow.prototype.LEVEL_TOP_OFFSET + 2 +'px',
             'task 4 should be in third level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-20 00:00:00"] .o_gantt_pill_wrapper:contains(Task 7)').css('padding-top'), 2 * GanttRow.prototype.LEVEL_TOP_OFFSET + 'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-20 00:00:00"] .o_gantt_pill_wrapper:contains(Task 7)').css('margin-top'), 2 * GanttRow.prototype.LEVEL_TOP_OFFSET + 2 +'px',
             'task 7 should be in third level');
-        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-27 00:00:00"] .o_gantt_pill_wrapper:contains(Task 3)').css('padding-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 'px',
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_cell[data-date="2018-12-27 00:00:00"] .o_gantt_pill_wrapper:contains(Task 3)').css('margin-top'), GanttRow.prototype.LEVEL_TOP_OFFSET + 1 +'px',
             'task 3 should be in second level');
 
         // test popover and local timezone
@@ -211,9 +211,9 @@ QUnit.module('Views', {
         await testUtils.nextTick();
         assert.containsOnce($, 'div.popover', 'should have a popover');
 
-        assert.strictEqual($('div.popover li:contains(Start Date)').text(), 'Start Date: ' + startDateLocalString,
+        assert.strictEqual($('div.popover .flex-column span:nth-child(2)').text(), startDateLocalString,
             'popover should display start date of task 2 in local time');
-        assert.strictEqual($('div.popover li:contains(Stop Date)').text(), 'Stop Date: ' + stopDateLocalString,
+        assert.strictEqual($('div.popover .flex-column span:nth-child(3)').text(), stopDateLocalString,
             'popover should display start date of task 2 in local time');
 
         gantt.destroy();
@@ -268,7 +268,7 @@ QUnit.module('Views', {
             "the expand button should be invisible (only displayed if useful)");
         assert.strictEqual(gantt.$('.o_gantt_header_container > .o_gantt_row_sidebar').text().trim(), 'Tasks',
             'should contain "Tasks" in header sidebar');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             'should contain "December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 31,
             'should have a 31 slots for month view');
@@ -322,7 +322,7 @@ QUnit.module('Views', {
             "the expand button should be invisible (only displayed if useful)");
         assert.strictEqual(gantt.$('.o_gantt_header_container > .o_gantt_row_sidebar').text().trim(), 'Tasks',
             'should contain "Tasks" in header sidebar');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             'should contain "December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 31,
             'should have a 31 slots for month view');
@@ -364,7 +364,7 @@ QUnit.module('Views', {
             "there should be an expand button");
         assert.strictEqual(gantt.$('.o_gantt_header_container > .o_gantt_row_sidebar').text().trim(), 'Tasks',
             'should contain "Tasks" in header sidebar');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             'should contain "December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 31,
             'should have a 31 slots for month view');
@@ -409,32 +409,54 @@ QUnit.module('Views', {
             '11th row title should be "Project 2"');
 
         // group row count and greyscale
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill').text().replace(/\s+/g, ''), "2121",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_consolidated_pill_title').text().replace(/\s+/g, ''), "2121",
             "the count should be correctly computed");
 
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgba(158, 158, 158, 0.6)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 157)",
             "the 1st group pill should have the correct grey scale)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgba(215, 215, 215, 0.6)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(0, 160, 157)",
             "the 2nd group pill should have the correct grey scale)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgba(158, 158, 158, 0.6)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 157)",
             "the 3rd group pill should have the correct grey scale");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(3)').css('background-color'), "rgba(215, 215, 215, 0.6)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(3)').css('background-color'), "rgb(0, 160, 157)",
             "the 4th group pill should have the correct grey scale");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "300%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
             "the 1st group pill should have the correct width (1 to 3 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "1600%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px)",
             "the 2nd group pill should have the correct width (4 to 19 dec)");
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "50%",
             "the 3rd group pill should have the correct width (20 morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "1150%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px)",
             "the 4th group pill should have the correct width (20 afternoon to 31 dec");
 
         gantt.destroy();
     });
 
+    QUnit.test('full precision gantt rendering', async function(assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" default_scale="week" date_stop="stop" '
+                    + 'precision="{\'day\': \'hour:full\', \'week\':'
+                    + ' \'day:full\', \'month\': \'day:full\'}" />',
+            viewOptions: {
+                initialDate: new Date(2018, 10, 15, 8, 0, 0),
+            },
+            groupBy: ['user_id', 'project_id']
+        });
+
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(700% + 6px)",
+            "the group pill should have the correct width (7 days)");
+
+        gantt.destroy();
+    });
+
     QUnit.test('gantt rendering, thumbnails', async function (assert) {
-        assert.expect(3);
+        assert.expect(2);
 
         var gantt = await createView({
             View: GanttView,
@@ -493,7 +515,6 @@ QUnit.module('Views', {
 
 
         assert.containsN(gantt, '.o_gantt_row_thumbnail', 1, 'There should be a thumbnail per row where user_id is defined');
-        assert.containsN(gantt, '.o_gantt_row_thumbnail_wrapper', 2, 'There should be a on each row, for spacing');
 
         assert.ok(gantt.$('.o_gantt_row_thumbnail:nth(0)')[0].dataset.src.endsWith('web/image?model=users&id=1&field=image'));
 
@@ -521,7 +542,7 @@ QUnit.module('Views', {
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'), 'active',
             'day view should be activated');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '20 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '20 December 2018',
             'should contain "20 December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 24,
             'should have a 24 slots for day view');
@@ -532,7 +553,7 @@ QUnit.module('Views', {
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'), 'active',
             'week view should be activated');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '16 December 2018 - 22 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '16 December 2018 - 22 December 2018',
             'should contain "16 December 2018 - 22 December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 7,
             'should have a 7 slots for week view');
@@ -543,7 +564,7 @@ QUnit.module('Views', {
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'), 'active',
             'month view should be activated');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             'should contain "December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 31,
             'should have a 31 slots for month view');
@@ -554,7 +575,7 @@ QUnit.module('Views', {
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'), 'active',
             'year view should be activated');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '2018',
             'should contain "2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 12,
             'should have a 12 slots for year view');
@@ -612,12 +633,12 @@ QUnit.module('Views', {
 
         // month navigation
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'November 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'November 2018',
             'should contain "November 2018" in header');
         assert.verifySteps(["start,<=,2018-11-30 22:59:59,stop,>=,2018-10-31 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             'should contain "December 2018" in header');
         assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00"]);
 
@@ -626,12 +647,12 @@ QUnit.module('Views', {
         assert.verifySteps(["start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '19 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '19 December 2018',
             'should contain "19 December 2018" in header');
         assert.verifySteps(["start,<=,2018-12-19 22:59:59,stop,>=,2018-12-18 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '20 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '20 December 2018',
             'should contain "20 December 2018" in header');
         assert.verifySteps(["start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00"]);
 
@@ -640,12 +661,12 @@ QUnit.module('Views', {
         assert.verifySteps(["start,<=,2018-12-22 22:59:59,stop,>=,2018-12-15 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '09 December 2018 - 15 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '09 December 2018 - 15 December 2018',
             'should contain "09 December 2018 - 15 December 2018" in header');
         assert.verifySteps(["start,<=,2018-12-15 22:59:59,stop,>=,2018-12-08 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '16 December 2018 - 22 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '16 December 2018 - 22 December 2018',
             'should contain "16 December 2018 - 22 December 2018" in header');
         assert.verifySteps(["start,<=,2018-12-22 22:59:59,stop,>=,2018-12-15 23:00:00"]);
 
@@ -654,12 +675,12 @@ QUnit.module('Views', {
         assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2017-12-31 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '2017',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '2017',
             'should contain "2017" in header');
         assert.verifySteps(["start,<=,2017-12-31 22:59:59,stop,>=,2016-12-31 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '2018',
             'should contain "2018" in header');
         assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2017-12-31 23:00:00"]);
 
@@ -1602,7 +1623,7 @@ QUnit.module('Views', {
             "the pill should be draggable after mouse enter");
 
         // move a pill in the next cell (+1 day)
-        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
             gantt.$('.o_gantt_pill'),
@@ -1643,7 +1664,7 @@ QUnit.module('Views', {
         });
 
         // move a pill in the next cell (+1 day)
-        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
             gantt.$('.o_gantt_pill'),
@@ -1686,7 +1707,7 @@ QUnit.module('Views', {
             "there should be two rows (project 1 and project 2");
 
         // move a pill (task 7) in the other row and in the the next cell (+1 day)
-        var cellWidth = gantt.$('.o_gantt_cell:first').width();
+        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
         var cellHeight = gantt.$('.o_gantt_cell:first').height();
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill[data-id=7]'),
@@ -1731,11 +1752,13 @@ QUnit.module('Views', {
             "there should be only one draggable pill (Task 7)");
 
         // move a pill (task 7) in the top-level group (User 2)
-        var cellHeight = gantt.$('.o_gantt_cell:first').height();
+        var $pill = gantt.$('.o_gantt_pill.ui-draggable');
+        var groupHeaderHeight = gantt.$('.o_gantt_cell:first').height();
+        var cellHeight = $pill.closest('.o_gantt_cell').height();
         await testUtils.dom.dragAndDrop(
-            gantt.$('.o_gantt_pill.ui-draggable'),
-            gantt.$('.o_gantt_pill.ui-draggable'),
-            { position: { left: 0, top: -4 * cellHeight } },
+            $pill,
+            $pill,
+            { position: { left: 0, top: -3 * groupHeaderHeight - cellHeight } },
         );
 
         gantt.destroy();
@@ -1997,7 +2020,7 @@ QUnit.module('Views', {
             'total container should not have a sidebar');
         assert.containsN(gantt, '.o_gantt_row_total .o_gantt_pill ', 7,
             'should have a 7 pills in the total row');
-        assert.strictEqual(gantt.$('.o_gantt_row_total .o_gantt_pill').text().replace(/\s+/g, ''), "2123212",
+        assert.strictEqual(gantt.$('.o_gantt_row_total .o_gantt_consolidated_pill_title').text().replace(/\s+/g, ''), "2123212",
             "the total row should be correctly computed");
 
         gantt.destroy();
@@ -2018,7 +2041,7 @@ QUnit.module('Views', {
 
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'), 'active',
             'day view should be activated');
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '20 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '20 December 2018',
             'should contain "20 December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 24,
             'should have a 24 slots for day view');
@@ -2245,7 +2268,7 @@ QUnit.module('Views', {
 
         // Consolidation
         // 0 over the size of Task 5 (Task 5 is 100 but is excluded !) then 0 over the rest of Task 1, cut by Task 4 which has progress 0
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill').text().replace(/\s+/g, ''), "0000",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_consolidated_pill_title ').text().replace(/\s+/g, ''), "0000",
             "the consolidation should be correctly computed");
 
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 74)",
@@ -2255,17 +2278,17 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 74)",
             "the 3rd group pill should have the correct color");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "300%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
             "the 1st group pill should have the correct width (1 to 3 dec)");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "1600%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "calc(1600% + 15px)",
             "the 2nd group pill should have the correct width (4 to 19 dec)");
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "50%",
             "the 3rd group pill should have the correct width (20 morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "1150%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "calc(1150% + 10px)",
             "the 4th group pill should have the correct width (20 afternoon to 31 dec");
 
         // 30 over Task 2 until Task 7 then 110 (Task 2 (30) + Task 7 (80)) then 30 again until end of task 2 then 60 over Task 3
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill').text().replace(/\s+/g, ''), "301103060",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_consolidated_pill_title').text().replace(/\s+/g, ''), "301103060",
             "the consolidation should be correctly computed");
 
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 74)",
@@ -2277,13 +2300,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(3)').css('background-color'), "rgb(0, 160, 74)",
             "the 4th group pill should have the correct color");
 
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "300%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
             "the 1st group pill should have the correct width (17 afternoon to 20 dec morning)");
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(1)')), "50%",
             "the 2nd group pill should have the correct width (20 dec afternoon)");
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(2)')), "150%",
             "the 3rd group pill should have the correct width (21 to 22 dec morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "450%",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "calc(450% + 3px)",
             "the 4th group pill should have the correct width (27 afternoon to 31 dec");
 
         gantt.destroy();
@@ -2433,7 +2456,7 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '16 December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '16 December 2018',
             'gantt view should be set to 4 days before initial date');
 
         gantt.destroy();
@@ -2546,7 +2569,7 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(gantt.$('.o_gantt_header_cell:first').text().trim(), 'December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             "should be in 'month' scale");
         assert.strictEqual(gantt.model.get().records.length, 6,
             "should have 6 records in the state");
@@ -2556,7 +2579,7 @@ QUnit.module('Views', {
         reloadProm = firstReloadProm;
         await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=week]'));
 
-        assert.strictEqual(gantt.$('.o_gantt_header_cell:first').text().trim(), 'December 2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             "should still be in 'month' scale");
         assert.strictEqual(gantt.model.get().records.length, 6,
             "should still have 6 records in the state");
@@ -2565,14 +2588,14 @@ QUnit.module('Views', {
         reloadProm = null;
         await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=year]'));
 
-        assert.strictEqual(gantt.$('.o_gantt_header_cell:first').text().trim(), '2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '2018',
             "should be in 'year' scale");
         assert.strictEqual(gantt.model.get().records.length, 7,
             "should have 7 records in the state");
 
         firstReloadProm.resolve();
 
-        assert.strictEqual(gantt.$('.o_gantt_header_cell:first').text().trim(), '2018',
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '2018',
             "should still be in 'year' scale");
         assert.strictEqual(gantt.model.get().records.length, 7,
             "should still have 7 records in the state");

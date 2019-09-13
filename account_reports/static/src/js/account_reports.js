@@ -43,9 +43,10 @@ var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
      */
     start: function () {
         var self = this;
+        var $content = $(QWeb.render("m2mWidgetTable", {fields: this.fields}));
+        self.$el.append($content);
         _.each(this.fields, function (field, fieldName) {
-            self.$el.append($('<p/>', {style: 'font-weight:bold;'}).text(field.label));
-            self.widgets[fieldName].appendTo(self.$el);
+            self.widgets[fieldName].appendTo($content.find('#'+fieldName+'_field'));
         });
         return this._super.apply(this, arguments);
     },
@@ -125,6 +126,7 @@ var accountReportsWidget = AbstractAction.extend({
         'click [action]': 'trigger_action',
         'click .o_account_reports_load_more span': 'load_more',
         'click .o_account_reports_table thead th': 'selected_column',
+        'click .o_change_expected_date': '_onChangeExpectedDate',
     },
 
     custom_events: {
@@ -244,9 +246,22 @@ var accountReportsWidget = AbstractAction.extend({
         this._add_line_classes();
     },
     _add_line_classes: function() {
-        this.$('.o_account_report_line').filter(function () {
-            return $(this).data('unfolded') === 'True';
-        }).parent().addClass('o_js_account_report_parent_row_unfolded');
+        /* Pure JS to improve performance in very cornered case (~200k lines)
+         * Jquery code:
+         *  this.$('.o_account_report_line').filter(function () {
+         *      return $(this).data('unfolded') === 'True';
+         *  }).parent().addClass('o_js_account_report_parent_row_unfolded');
+         */
+        var el = this.$el[0];
+        var report_lines = el.getElementsByClassName('o_account_report_line');
+        for (var l=0; l < report_lines.length; l++) {
+            var line = report_lines[l];
+            var unfolded = line.dataset.unfolded;
+            if (unfolded === 'True') {
+                line.parentNode.classList.add('o_js_account_report_parent_row_unfolded');
+            }
+        }
+        // This selector is not adaptable in pure JS
         this.$('tr[data-parent-id]').addClass('o_js_account_report_inner_row');
      },
     filter_accounts: function(e) {
@@ -294,6 +309,41 @@ var accountReportsWidget = AbstractAction.extend({
             }
             self.reload()
         }
+    },
+    _onChangeExpectedDate: function (event) {
+        var self = this;
+        var targetID = parseInt($(event.target).attr('data-id'));
+        var parentID = parseInt($(event.target).attr('parent-id').split("_")[1]);
+        var $content = $(QWeb.render("paymentDateForm", {target_id: targetID}));
+        var paymentDatePicker = new datepicker.DateWidget(this);
+        paymentDatePicker.appendTo($content.find('div.o_account_reports_payment_date_picker'));
+        var save = function () {
+            return this._rpc({
+                model: 'res.partner',
+                method: 'change_expected_date',
+                args: [[parentID], {
+                    move_line_id: parseInt($content.find("#target_id").val()),
+                    expected_pay_date: paymentDatePicker.getValue(),
+                }],
+            }).then(function() {
+                self.reload();
+            });
+        };
+        new Dialog(this, {
+            title: 'Odoo',
+            size: 'medium',
+            $content: $content,
+            buttons: [{
+                text: _t('Save'),
+                classes: 'btn-primary',
+                close: true,
+                click: save
+            },
+            {
+                text: _t('Cancel'),
+                close: true
+            }]
+        }).open();
     },
     render_searchview_buttons: function() {
         var self = this;

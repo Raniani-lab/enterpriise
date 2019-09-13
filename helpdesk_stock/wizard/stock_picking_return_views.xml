@@ -15,9 +15,6 @@
                             attrs="{'required': [('ticket_id', '!=', False)]}"/>
                     </group>
                 </group>
-                <field name="to_refund" position="attributes">
-                    <attribute name="invisible">context.get('default_ticket_id') != False</attribute>
-                </field>
             </field>
         </record>
     </data>

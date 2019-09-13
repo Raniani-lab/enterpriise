@@ -5,7 +5,7 @@
         <!-- Folders -->
 
         <record id="documents_hr_folder" model="documents.folder" forcecreate="0">
-            <field name="name">Payroll</field>
+            <field name="name">HR</field>
             <field name="group_ids" eval="[(4, ref('hr.group_hr_user'))]"/>
             <field name="read_group_ids" eval="[(4, ref('base.group_user'))]"/>
             <field name="user_specific">True</field>
@@ -28,22 +28,10 @@
             <field name="sequence">10</field>
         </record>
 
-        <record id="documents_hr_documents_contracts" model="documents.tag" forcecreate="0">
-            <field name="name">Contracts</field>
-            <field name="facet_id" ref="documents_hr_documents"/>
-            <field name="sequence">11</field>
-        </record>
-
         <record id="documents_hr_documents_employees" model="documents.tag" forcecreate="0">
             <field name="name">Employees Documents</field>
             <field name="facet_id" ref="documents_hr_documents"/>
             <field name="sequence">12</field>
-        </record>
-
-        <record id="documents_hr_documents_Payslips" model="documents.tag" forcecreate="0">
-            <field name="name">Payslips</field>
-            <field name="facet_id" ref="documents_hr_documents"/>
-            <field name="sequence">13</field>
         </record>
 
         <record id="documents_hr_documents_Cerification" model="documents.tag" forcecreate="0">
@@ -56,8 +44,6 @@
 
         <record id="base.main_company" model="res.company">
             <field name="documents_hr_folder" ref="documents_hr_folder"/>
-            <field name="documents_hr_contracts_tags" eval="[(6,0,[ref('documents_hr_documents_contracts')])]"/>
-            <field name="documents_hr_payslips_tags" eval="[(6,0,[ref('documents_hr_documents_Payslips')])]"/>
         </record>
 
     </data>

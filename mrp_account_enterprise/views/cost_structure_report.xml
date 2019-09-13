@@ -2,9 +2,13 @@
 <odoo>
     <template id="mrp_cost_structure">
         <t t-call="web.basic_layout">
-            <div class="page">
+            <t t-call-assets="mrp_account_enterprise.assets_mrp_cost_structure_report" t-js="False"/>
+            <div class="page o_mrp_report_page">
                 <t t-if="not lines">
-                    <span class="text-center"><h1>Some of the Manufacturing Order(s) selected are not done yet</h1></span>
+                    <span class="text-center o_mrp_report_info"><h1>Some of the Manufacturing Order(s) selected are not done yet</h1></span>
+                </t>
+                <t t-else="">
+                    <span class="text-left"><h1 class="o_mrp_header o_mrp_header1">Cost Analysis</h1></span>
                 </t>
                 <t t-foreach="lines" t-as="line">
                     <t t-set="currency" t-value="line['currency']"/>
@@ -12,10 +16,11 @@
                     <t t-set="tot_scrap_cost" t-value="0.0"/>
 
                     <!-- Title -->
-                    <h2 t-esc="line['product'].name"/>
-                    <strong><t t-esc="line['mo_qty']"/> <t t-esc="line['mo_uom'].name"/>, from <t t-esc="line['mocount']"/> manufacturing order(s).</strong>
+                    <strong class="o_mrp_report_info">
+                        <strong t-esc="line['product'].name"/>, <t t-esc="line['mo_qty']"/> <t t-esc="line['mo_uom'].name"/>, from <t t-esc="line['mocount']"/> manufacturing order(s).
+                    </strong>
                     <t t-if="line['byproduct_moves']">
-                        <h3>By product(s)</h3>
+                        <h3 class="o_mrp_header">By product(s)</h3>
                     </t>
                     <div t-foreach="line['byproduct_moves']" t-as="sub">
                         <t t-esc="sub.product_id.name"/>
@@ -23,24 +28,24 @@
                     </div>
 
                     <!-- Cost Structure table -->
-                    <h3>Cost Structure</h3>
-                    <table class="table table-sm">
+                    <h3 class="o_mrp_header o_mrp_table_header">Cost Structure</h3>
+                    <table class="table table-sm o_mrp_report_table">
                         <thead>
-                            <tr>
-                                <th><span>Code</span></th>
-                                <th><span>Components</span></th>
-                                <th class="text-right"><span>Quantity</span></th>
-                                <th class="text-right"><span>Unit Cost</span></th>
-                                <th class="text-right"><span>Total Cost</span></th>
+                            <tr class="o_mrp_report_header">
+                                <th class="o_mrp_report_line_header"><span>Code</span></th>
+                                <th class="o_mrp_report_line_header"><span>Components</span></th>
+                                <th class="text-right o_mrp_report_line_header"><span>Quantity</span></th>
+                                <th class="text-right o_mrp_report_line_header"><span>Unit Cost</span></th>
+                                <th class="text-right o_mrp_report_line_header"><span>Total Cost</span></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="line['raw_material_moves']" t-as="m">
+                            <tr t-foreach="line['raw_material_moves']" t-as="m" class="o_mrp_data">
                                 <td>
                                     <span t-esc="m['product_id'].default_code or ''"/>
                                 </td>
                                 <td>
-                                    <span t-att-res-id="m['bom_line_id']" res-model="mrp.bom.line" view-type="form" t-esc="m['product_id'].display_name"/>
+                                    <span class="o_mrp_reports_web_action" t-att-res-id="m['bom_line_id']" res-model="mrp.bom.line" view-type="form" t-esc="m['product_id'].display_name"/>
                                 </td>
                                 <td class="text-right">
                                     <span t-esc="m['qty']" t-esc-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/> <span t-esc="m['product_id'].uom_id.name"/>
@@ -65,24 +70,24 @@
 
                     <!-- Cost of Operations table -->
                     <t t-if="line['operations']">
-                        <h3>Cost of Operations</h3>
-                        <table class="table table-sm">
+                        <h3 class="o_mrp_header o_mrp_table_header">Cost of Operations</h3>
+                        <table class="table table-sm o_mrp_report_table">
                             <thead>
-                                <tr>
-                                    <th><span>Operator</span></th>
-                                    <th><span>Operation</span></th>
-                                    <th class="text-right"><span>Working Time</span></th>
-                                    <th class="text-right"><span>Cost/hour</span></th>
-                                    <th class="text-right"><span>Total Cost</span></th>
+                                <tr class="o_mrp_report_header">
+                                    <th class="o_mrp_report_line_header"><span>Operator</span></th>
+                                    <th class="o_mrp_report_line_header"><span>Operation</span></th>
+                                    <th class="text-right o_mrp_report_line_header"><span>Working Time</span></th>
+                                    <th class="text-right o_mrp_report_line_header"><span>Cost/hour</span></th>
+                                    <th class="text-right o_mrp_report_line_header"><span>Total Cost</span></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr t-foreach="line['operations']" t-as="row">
+                                <tr t-foreach="line['operations']" t-as="row" class="o_mrp_data">
                                     <td>
                                         <span t-esc="row[0]"/>
                                     </td>
                                     <td>
-                                        <span t-att-res-id="row[1]" res-model="mrp.routing.workcenter" view-type="form" t-esc="row[2]"/>
+                                        <span class="o_mrp_reports_web_action" t-att-res-id="row[1]" res-model="mrp.routing.workcenter" view-type="form" t-esc="row[2]"/>
                                     </td>
                                     <td class="text-right">
                                         <span> <t t-esc="row[3]" t-options='{"widget": "float", "precision": 4}'/> hours</span>
@@ -110,32 +115,33 @@
 
                     <!-- Cost of Scraps table -->
                     <t t-if="line['scraps']">
-                        <h3>Cost of Scraps</h3>
-                        <table class="table table-sm">
+                        <h3 class="o_mrp_header o_mrp_table_header">Cost of Scraps</h3>
+                        <table class="table table-sm o_mrp_report_table">
                             <thead>
-                                <tr>
-                                    <th><span>Scraps</span></th>
-                                    <th class="text-right"><span>Quantity</span></th>
-                                    <th class="text-right"><span>Unit Cost</span></th>
-                                    <th class="text-right"><span>Total Cost</span></th>
+                                <tr class="o_mrp_report_header">
+                                    <th class="o_mrp_report_line_header"><span>Scraps</span></th>
+                                    <th class="text-right o_mrp_report_line_header"><span>Quantity</span></th>
+                                    <th class="text-right o_mrp_report_line_header"><span>Unit Cost</span></th>
+                                    <th class="text-right o_mrp_report_line_header"><span>Total Cost</span></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr t-foreach="line['scraps']" t-as="scrap">
+                                <tr t-foreach="line['scraps']" t-as="scrap"
+                                class="o_mrp_data">
                                     <td>
-                                        <span t-att-res-id="scrap.id" res-model="stock.move" view-type="form" t-esc="scrap.product_id.display_name"/>
+                                        <span class="o_mrp_reports_web_action" t-att-res-id="scrap.id" res-model="stock.move" view-type="form" t-esc="scrap.product_id.display_name"/>
                                     </td>
                                     <td class="text-right">
                                         <span><t t-esc="scrap.product_uom_qty"/> <t t-esc="scrap.product_uom.name"/></span>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="scrap.price_unit" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="scrap.stock_valuation_layer_ids.unit_cost" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                     <td class="text-right">
                                         <span t-esc="scrap.product_uom_qty * scrap.price_unit" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
 
-                                    <t t-set="tot_scrap_cost" t-value="tot_scrap_cost + (scrap.product_uom_qty * scrap.price_unit)"/>
+                                    <t t-set="tot_scrap_cost" t-value="tot_scrap_cost + (scrap.product_uom_qty * scrap.stock_valuation_layer_ids.unit_cost)"/>
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="text-right">
@@ -152,7 +158,7 @@
                     <!-- Cost table -->
                     <div class="row">
                         <div class="col-6 offset-6">
-                            <table class="table table-sm">
+                            <table class="table table-sm o_mrp_report_table">
                                 <tr t-if="line['mo_qty'] &gt; 1">
                                     <td class="text-right">
                                         <strong>Cost for <t t-esc="line['mo_qty']"/> <t t-esc="line['mo_uom'].name"/></strong>

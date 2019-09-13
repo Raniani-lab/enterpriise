@@ -930,24 +930,33 @@ odoo.define('sign.document_signing', function (require) {
 
         events: {
             'click button.o_sign_resend_sms': function(e) {
+                var $btn = self.$('.o_sign_resend_sms');
+                $btn.attr('disabled', true)
                 var route = '/sign/send-sms/' + this.requestID + '/' + this.requestToken + '/' + this.$('#o_sign_phone_number_input').val();
                 session.rpc(route, {}).then(function(success) {
                     if (!success) {
                         Dialog.alert(self, _t("Unable to send the SMS, please contact the sender of the document."), {
                             title: _t("Error"),
-                            confirm_callback: function() {
-                                window.location.reload();
-                            },
                         });
                     }
                     else {
-                        self.$('.o_sign_resend_sms').html('Send Again');
+                        $btn.html("<span><i class='fa fa-check'/> "+_t("SMS Sent")+"</span>");
+                        setTimeout(function() {
+                            $btn.removeAttr('disabled');
+                            $btn.text(_t('Re-send SMS'));
+                        }, 15000);
                     }
-                });
+                }).guardedCatch(function (error) {
+                    $btn.removeAttr('disabled');
+                    Dialog.alert(self, _t("Unable to send the SMS, please contact the sender of the document."), {
+                        title: _t("Error"),
+                    });
+                });;
             }
         },
 
         _onValidateSMS: function () {
+            var $btn = this.$('.o_sign_validate_sms');
             var input = this.$('#o_sign_public_signer_sms_input')
             if(!input.val()) {
                 input.closest('.form-group').toggleClass('o_has_error').find('.form-control, .custom-select').toggleClass('is-invalid');
@@ -958,14 +967,16 @@ odoo.define('sign.document_signing', function (require) {
                 signature: this.signature
             };
             var self = this;
+            $btn.attr('disabled', true);
             session.rpc(route, params).then(function(response) {
                 if (!response) {
-                    Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
+                    Dialog.alert(self, _t("Your signature was not submitted. Ensure that all required field of the documents are completed and that the SMS validation code is correct."), {
                         title: _t("Error"),
                     });
+                    $btn.removeAttr('disabled');
                 }
                 if (response === true) {
-                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, this.RedirectURLText, self.requestID)).open();
+                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText, self.requestID)).open();
                     self.do_hide();
                 }
                 if (typeof response === 'object') {
@@ -1369,6 +1380,10 @@ odoo.define('sign.document_signing', function (require) {
         },
 
         signItemDocument: function(e) {
+            var $btn = this.$('.o_sign_validate_banner button');
+            var init_btn_text = $btn.text();
+            $btn.prepend('<i class="fa fa-spin fa-spinner" />');
+            $btn.attr('disabled', true);
             var mail = "";
             this.iframeWidget.$('.o_sign_sign_item').each(function(i, el) {
                 var value = $(el).val();
@@ -1423,6 +1438,7 @@ odoo.define('sign.document_signing', function (require) {
                 };
                 var self = this;
                 session.rpc(route, params).then(function(response) {
+                    $btn.text(init_btn_text);
                     if (!response) {
                         Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
                             title: _t("Error"),
@@ -1432,6 +1448,7 @@ odoo.define('sign.document_signing', function (require) {
                         });
                     }
                     if (response === true) {
+                        $btn.removeAttr('disabled', true);
                         self.iframeWidget.disableItems();
                         if (self.name_list && self.name_list.length > 0) {
                             (new (self.get_nextdirectsigndialog_class())(self, self.RedirectURL, self.requestID)).open();
@@ -1441,6 +1458,7 @@ odoo.define('sign.document_signing', function (require) {
                         }
                     }
                     if (typeof response === 'object') {
+                        $btn.removeAttr('disabled', true);
                         if (response.sms) {
                             (new SMSSignerDialog(self, self.requestID, self.accessToken, signatureValues, self.signerPhone, self.RedirectURL))
                                 .open();

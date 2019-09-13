@@ -1,19 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mail_github
+# 	* mail_github
 # 
 # Translators:
-# Yaroslav Molochko <onorua@gmail.com>, 2018
-# Bohdan Lisnenko, 2018
-# ТАрас <tratatuta@i.ua>, 2018
+# Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2017-02-15 11:45+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -61,14 +59,14 @@ msgid ""
 "<i>Push</i> events are supported."
 msgstr ""
 "Після цього ви можете вибрати події, які потрібно відслідковувати за "
-"каналами. Будьте обережні, тільки <i>Комментуйте коментар, Проблеми, "
-"Коментар про помилку, Голлум, Потягніть запит, Перегляньте запит, Зніміть "
-"запит на перевірку огляду</i> та <i>Перетягнути</i> події підтримуються."
+"каналами. Будьте обережні, тільки <i>Commit comment, Issues, Issue comment, "
+"Gollum, Pull request, Pull request review, Pull request review comment</i> "
+"та <i>Перетягнути</i> підтримуються події."
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_attachment_count
 msgid "Attachment Count"
-msgstr "Підрахунок прикріплення"
+msgstr "Підрахунок прикріплень"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__channel_ids
@@ -99,11 +97,11 @@ msgstr "Створив"
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__create_date
 msgid "Created on"
-msgstr "Створено"
+msgstr "Створено на"
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel
-msgid "Discussion channel"
+msgid "Discussion Channel"
 msgstr "Канал обговорення"
 
 #. module: mail_github
@@ -160,7 +158,7 @@ msgstr "ID"
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Якщо позначено, то повідомленя потребує вашої уваги"
+msgstr "Якщо позначено, то повідомленя потребує вашої уваги."
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction
@@ -185,7 +183,7 @@ msgstr "Проблема"
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github____last_update
 msgid "Last Modified on"
-msgstr "Остання модифікація"
+msgstr "Останні зміни на"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__write_uid
@@ -230,7 +228,7 @@ msgstr "Кількість повідомлень, які потебують д�
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Кількість повідомлень з помилковою дставкою"
+msgstr "Кількість повідомлень з помилковою доставкою"
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread_counter
@@ -244,8 +242,7 @@ msgid ""
 "'Payload URL' and 'Secret' in Github interface."
 msgstr ""
 "Коли репозиторій буде створено в Odoo, створіть його на Github. Потім "
-"скопіюйте \"URL-адресу корисного навантаження\" та \"Секрет\" в інтерфейсі "
-"Github."
+"скопіюйте \"Payload URL\" та \"Secret\" в інтерфейсі Github."
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
@@ -345,6 +342,7 @@ msgstr "створив новий"
 
 #. module: mail_github
 #: code:addons/mail_github/controllers/main.py:197
+#: code:addons/mail_github/controllers/main.py:205
 #, python-format
 msgid "issue"
 msgstr "проблема"
@@ -365,11 +363,11 @@ msgid "on repository"
 msgstr "в сховищі"
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:211
-#: code:addons/mail_github/controllers/main.py:218
+#: code:addons/mail_github/controllers/main.py:212
+#: code:addons/mail_github/controllers/main.py:219
 #, python-format
 msgid "pull request"
-msgstr "тягнути запит"
+msgstr "pull request"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification

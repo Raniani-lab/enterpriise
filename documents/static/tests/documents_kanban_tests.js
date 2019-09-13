@@ -1,6 +1,7 @@
 odoo.define('documents.documents_kanban_tests', function (require) {
 "use strict";
 
+var DocumentsKanbanController = require('documents.DocumentsKanbanController');
 var DocumentsKanbanView = require('documents.DocumentsKanbanView');
 
 var mailTestUtils = require('mail.testUtils');
@@ -27,29 +28,31 @@ function searchValue(el, value) {
     matches.val(value).trigger('keydown');
 }
 
-function mockXHR(uploadXHR, customSend) {
-    // the original window.XMLHttpRequest must be saved and restored after it the mock version has been used.
-    window.XMLHttpRequest = class {
-        constructor () {
-            uploadXHR.push(this);
-            this.upload = new window.EventTarget();
-        }
-        open() {}
-        send(data) {customSend && customSend(data);}
-    };
-}
 
 QUnit.module('Views');
 
 QUnit.module('DocumentsKanbanView', {
     beforeEach: function () {
+        const self = this;
+        this.ORIGINAL_CREATE_XHR = DocumentsKanbanController.prototype._createXHR;
+        this.patchDocumentXHR = (mockedXHRs, customSend) => {
+            DocumentsKanbanController.prototype._createXHR = () => {
+                const xhr = {
+                    upload: new window.EventTarget(),
+                    open() {},
+                    send(data) { customSend && customSend(data); },
+                };
+                mockedXHRs.push(xhr);
+                return xhr;
+            }
+        }
         this.data = {
             'documents.document': {
                 fields: {
                     active: {string: "Active", type: 'boolean', default: true},
                     available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
                     file_size: {string: "Size", type: 'integer'},
-                    folder_id: {string: "Folders", type: 'many2one', relation: 'documents.folder'},
+                    folder_id: {string: "Workspaces", type: 'many2one', relation: 'documents.folder'},
                     lock_uid: {string: "Locked by", type: "many2one", relation: 'user'},
                     message_follower_ids: {string: "Followers", type: 'one2many', relation: 'mail.followers'},
                     message_ids: {string: "Messages", type: 'one2many', relation: 'mail.message'},
@@ -125,13 +128,13 @@ QUnit.module('DocumentsKanbanView', {
             'documents.folder': {
                 fields: {
                     name: {string: 'Name', type: 'char'},
-                    parent_folder_id: {string: 'Parent Folder', type: 'many2one', relation: 'documents.folder'},
+                    parent_folder_id: {string: 'Parent Workspace', type: 'many2one', relation: 'documents.folder'},
                     description: {string: 'Description', type:'text'},
                 },
                 records: [
-                        {id: 1, name: 'Folder1', description: '_F1-test-description_', parent_folder_id: false},
-                        {id: 2, name: 'Folder2', parent_folder_id: false},
-                        {id: 3, name: 'Folder3', parent_folder_id: 1},
+                        {id: 1, name: 'Workspace1', description: '_F1-test-description_', parent_folder_id: false},
+                        {id: 2, name: 'Workspace2', parent_folder_id: false},
+                        {id: 3, name: 'Workspace3', parent_folder_id: 1},
                 ],
             },
             'documents.tag': {
@@ -235,6 +238,9 @@ QUnit.module('DocumentsKanbanView', {
             },
         };
     },
+    afterEach() {
+        DocumentsKanbanController.prototype._createXHR = this.ORIGINAL_CREATE_XHR;
+    },
 }, function () {
     QUnit.test('basic rendering', async function (assert) {
         assert.expect(20);
@@ -251,8 +257,8 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('header.active > label > span').text().trim(), 'Folder1',
-            "the first selected record should be the first folder")
+        assert.strictEqual(kanban.$('header.active > label > span').text().trim(), 'Workspace1',
+            "the first selected record should be the first folder");
         assert.containsOnce(kanban, '.o_search_panel_category_value:contains(All) header',
             "Should only have a single all selector");
 
@@ -270,7 +276,7 @@ QUnit.module('DocumentsKanbanView', {
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6,
             "should have 6 records in the renderer");
         assert.containsNone(kanban, '.o_documents_selector_tags',
-            "should not display the tag navigation because no folder is selected by default");
+            "should not display the tag navigation because no workspace is selected by default");
 
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
 
@@ -703,7 +709,7 @@ QUnit.module('DocumentsKanbanView', {
         });
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
-            '_F1-test-description_', "should display the current folder description");
+            '_F1-test-description_', "should display the current workspace description");
         assert.strictEqual(kanban.$('.o_documents_inspector_info .o_inspector_value:first').text().trim(),
             '5', "should display the correct number of documents");
         assert.strictEqual(kanban.$('.o_documents_inspector_info .o_inspector_value:nth(1)').text().trim(),
@@ -2278,7 +2284,7 @@ QUnit.module('DocumentsKanbanView', {
             "three of them should be visible");
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value:eq(1) header'));
         assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
-            '_F1-test-description_', "should display the first folder");
+            '_F1-test-description_', "should display the first workspace");
 
         assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_section .o_search_panel_section_header').eq(1).text().trim(),
             'Tags', "should have a 'tags' section");
@@ -2510,7 +2516,7 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.test('document selector: selected tags are reset when switching between folders', async function (assert) {
+    QUnit.test('document selector: selected tags are reset when switching between workspaces', async function (assert) {
         assert.expect(6);
 
         var kanban = await createDocumentsKanbanView({
@@ -2536,8 +2542,8 @@ QUnit.module('DocumentsKanbanView', {
         assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
             "tag selector should be checked");
 
-        // switch to Folder2
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value:contains(Folder2) header'));
+        // switch to Workspace2
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value:contains(Workspace2) header'));
 
         assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
             "tag selector should not be checked anymore");
@@ -2687,13 +2693,9 @@ QUnit.module('DocumentsKanbanView', {
             content: 'hello, world',
             contentType: 'text/plain',
         });
-        const originalXMLHttpRequest = window.XMLHttpRequest;
 
-        const send = data => {
-            assert.step('xhrSend');
-        };
         const mockedXHRs = [];
-        mockXHR(mockedXHRs, send);
+        this.patchDocumentXHR(mockedXHRs, data => assert.step('xhrSend'));
 
         const kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -2728,7 +2730,6 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual(kanban.$('.o_documents_progress_text_right').text(), "(350/500Mb)",
             "the current upload progress should be at (350/500Mb)")
 
-        window.XMLHttpRequest = originalXMLHttpRequest;
         kanban.destroy();
     });
 
@@ -2750,13 +2751,9 @@ QUnit.module('DocumentsKanbanView', {
             content: 'hello, world',
             contentType: 'text/plain',
         });
-        const originalXMLHttpRequest = window.XMLHttpRequest;
 
-        const send = data => {
-            assert.step('xhrSend');
-        };
         const mockedXHRs = [];
-        mockXHR(mockedXHRs, send);
+        this.patchDocumentXHR(mockedXHRs, data => assert.step('xhrSend'));
 
         const kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -2801,7 +2798,6 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.containsOnce(kanban, '.o_documents_progress_border', "There should only be one card left");
 
-        window.XMLHttpRequest = originalXMLHttpRequest;
         kanban.destroy();
     });
 
@@ -2813,10 +2809,9 @@ QUnit.module('DocumentsKanbanView', {
             content: 'hello, world',
             contentType: 'text/plain',
         });
-        const originalXMLHttpRequest = window.XMLHttpRequest;
-        let mockedXHRs = [];
 
-        mockXHR(mockedXHRs);
+        const mockedXHRs = [];
+        this.patchDocumentXHR(mockedXHRs);
 
         const kanban = await createDocumentsKanbanView({
             View: DocumentsKanbanView,
@@ -2849,7 +2844,6 @@ QUnit.module('DocumentsKanbanView', {
         assert.containsOnce($, '.o_notification', "should display a notification on upload error");
         assert.strictEqual($('.o_notification_content').text(), "One or more file(s) failed to upload",
            "the notification message should be the response error message");
-        window.XMLHttpRequest = originalXMLHttpRequest;
         kanban.destroy();
     });
 

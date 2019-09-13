@@ -56,7 +56,9 @@ WebClient.include({
         return this._super.apply(this, arguments).then(function() {
             if (self.studioMode === 'main') {
                 var action = self.action_manager.getCurrentStudioAction();
-                return self.menu.renderStudioMenu(action);
+                if (action) {
+                    return self.menu.renderStudioMenu(action);
+                }
             }
         });
     },

@@ -38,7 +38,7 @@ var TerminalProxy = DeviceProxy.extend({
                 this.transaction = false;
                 setTimeout(function () {
                     self.listener({
-                        Stage: "Finished",
+                        Error: 'Canceled',
                         cid: self.cid,
                     });
                 });
@@ -86,7 +86,11 @@ tour.register('payment_terminals_tour', {
         trigger: 'body:has(.loader:hidden)',
         run: function () {
             //Overrides the methods inside DeviceProxy to mock the IoT Box
-            posmodel.iot_device_proxies.payment = new TerminalProxy({iot_ip: posmodel.iot_device_proxies.payment._iot_ip, identifier: posmodel.iot_device_proxies.payment._identifier});
+            posmodel.payment_methods.forEach(function(payment_method) {
+                if (payment_method.terminal_proxy) {
+                    payment_method.terminal_proxy = new TerminalProxy({iot_ip: payment_method.terminal_proxy._iot_ip, identifier: payment_method.terminal_proxy._identifier});
+                }
+            });
         },
     }, { // Leave category displayed by default
         content: "Click category switch",
@@ -125,7 +129,7 @@ tour.register('payment_terminals_tour', {
         run: function () {}, // it's a check
     }, {
         content: "Reverse payment",
-        trigger: '.button.send_payment_reverse',
+        trigger: '.button.send_payment_reversal',
     }, {
         content: "Check that the payment is reversed",
         trigger: '.button.next:not(.highlight)',

@@ -651,7 +651,7 @@ class website_hr_contract_salary(http.Controller):
                     ('sign_request_id', '=', res['id']),
                     ('role_id', '=', item.responsible_id.id)
                 ])
-                request.env['sign.item.value'].sudo().create({
+                request.env['sign.request.item.value'].sudo().create({
                     'sign_item_id': item.id,
                     'sign_request_id': res['id'],
                     'value': new_value,

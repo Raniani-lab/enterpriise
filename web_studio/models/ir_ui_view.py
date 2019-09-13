@@ -148,12 +148,10 @@ class View(models.Model):
         if self.browse(inherit_id)._is_studio_view():
             return self._apply_studio_specs(source, specs_tree, inherit_id)
         else:
-            return super(View, self).apply_inheritance_specs(source, specs_tree, inherit_id)
-
-    def locate_node(self, arch, spec):
-        # Remove branding added by '_groups_branding'
-        spec.attrib.pop("studio-view-group-ids", None)
-        return super(View, self).locate_node(arch, spec)
+            # Remove branding added by '_groups_branding' before locating a node
+            pre_locate = lambda arch: arch.attrib.pop("studio-view-group-ids", None)
+            return super(View, self).apply_inheritance_specs(source, specs_tree, inherit_id,
+                                                                pre_locate=pre_locate)
 
     def normalize(self):
         """

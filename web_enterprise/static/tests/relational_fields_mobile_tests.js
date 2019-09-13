@@ -16,6 +16,7 @@ QUnit.module('relational_fields', {
                     display_name: { string: "Displayed name", type: "char" },
                     trululu: {string: "Trululu", type: "many2one", relation: 'partner'},
                     sibling_ids: {string: "Sibling", type: "many2many", relation: 'partner'},
+                    p: { string: "one2many field", type: "one2many", relation: 'partner', relation_field: 'trululu' },
                 },
                 records: [{
                     id: 1,
@@ -300,6 +301,62 @@ QUnit.module('relational_fields', {
         form.destroy();
     });
 
+    QUnit.test("many2one dialog on mobile: clear button header", async function (assert) {
+        assert.expect(7);
+
+        const form = await createView({
+            View: FormView,
+            arch: `
+                <form>
+                    <sheet>
+                        <field name="trululu"/>
+                    </sheet>
+                </form>
+            `,
+            archs: {
+                'partner,false,kanban': `
+                    <kanban>
+                        <templates><t t-name="kanban-box">
+                            <div class="oe_kanban_global_click"><field name="display_name"/></div>
+                        </t></templates>
+                    </kanban>
+                `,
+                'partner,false,search': '<search></search>',
+            },
+            data: this.data,
+            model: 'partner',
+            res_id: 2,
+            viewOptions: {mode: 'edit'},
+        });
+
+        let $input = form.$('.o_field_many2one input');
+
+        assert.doesNotHaveClass($input, 'ui-autocomplete-input',
+            "autocomplete should not be visible in a mobile environment");
+
+        await testUtils.dom.click($input);
+        assert.containsOnce($('body'), '.modal.o_modal_full',
+            "there should be a modal opened in full screen");
+        assert.containsN($('.modal'), '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3,
+            "popup should load 3 records in kanban");
+
+        await testUtils.dom.click($('.modal').find('.o_kanban_view .o_kanban_record:first'));
+        assert.strictEqual($input.val(), 'first record',
+            'clicking kanban card should select record for many2one field');
+
+        await testUtils.dom.click($input);
+        // clear button.
+        assert.containsOnce($('.modal').find('.modal-header'), '.o_clear_button',
+            "there should be a Clear button in the modal header");
+
+        await testUtils.dom.click($('.modal').find('.modal-header .o_clear_button'));
+        assert.containsNone($('body'), '.modal', "there should be no more modal");
+
+        $input = form.$('.o_field_many2one input');
+        assert.strictEqual($input.val(), "", "many2one should be cleared");
+        form.destroy();
+    });
+
     QUnit.module('FieldMany2Many');
 
     QUnit.test("many2many_tags in a mobile environment", async function (assert) {
@@ -363,6 +420,76 @@ QUnit.module('relational_fields', {
         assert.strictEqual(rpcReadCount, 2, "there should be a read for current form record and selected sibling");
         assert.strictEqual(form.$(".o_field_widget.o_input .badge").length, 1,
             "many2many_tags should have partner coucou3");
+
+        form.destroy();
+    });
+
+    QUnit.module('FieldOne2Many');
+
+    QUnit.test('one2many on mobile: remove header button', async function (assert) {
+        assert.expect(9);
+        this.data.partner.records[0].p = [1, 2, 4];
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form string="Partners">
+                    <field name="p"/>
+                </form>
+            `,
+            archs: {
+                'partner,false,form': `
+                    <form string="Partner">
+                        <field name="display_name"/>
+                    </form>
+                `,
+                'partner,false,kanban': `
+                    <kanban>
+                        <templates><t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <field name="display_name"/>
+                            </div>
+                        </t></templates>
+                    </kanban>
+                `,
+            },
+            res_id: 1,
+            mockRPC(route, args) {
+                if (route === '/web/dataset/call_kw/partner/write') {
+                    const commands = args.args[1].p;
+                    assert.strictEqual(commands.length, 3,
+                        'should have generated three commands');
+                    assert.ok(commands[0][0] === 4 && commands[0][1] === 2,
+                        'should have generated the command 4 (LINK_TO) with id 2');
+                    assert.ok(commands[1][0] === 4 && commands[1][1] === 4,
+                        'should have generated the command 2 (LINK_TO) with id 1');
+                    assert.ok(commands[2][0] === 2 && commands[2][1] === 1,
+                        'should have generated the command 2 (DELETE) with id 2');
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        await testUtils.form.clickEdit(form);
+        assert.containsN(form, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3,
+            "should have 3 records in kanban");
+
+        await testUtils.dom.click(form.$('.o_kanban_view .o_kanban_record:first'));
+        assert.containsOnce($('body'), '.modal.o_modal_full',
+            "there should be a modal opened in full screen");
+
+        // remove button.
+        assert.containsOnce($('.modal').find('.modal-header'), '.o_btn_remove',
+            "there should be a 'Remove' button in the modal header");
+
+        await testUtils.dom.click($('.modal').find('.modal-header .o_btn_remove'));
+        assert.containsNone($('body'), '.modal', "there should be no more modal");
+        assert.containsN(form, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2,
+            "should have 2 records in kanban");
+
+        // save and check that the correct command has been generated
+        await testUtils.form.clickSave(form);
 
         form.destroy();
     });

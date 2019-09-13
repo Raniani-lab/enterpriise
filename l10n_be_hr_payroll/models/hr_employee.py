@@ -68,7 +68,7 @@ class HrEmployee(models.Model):
         ('french', 'French'),
         ('german', 'German'),
         ], default='french', string='Language', groups="hr.group_hr_user")
-    nif_country_code = fields.Integer(string="NIF Country Code", default=0, groups="hr.group_hr_user")
+    nif_country_code = fields.Integer(string="NIF Country Code", default=0, groups="hr.group_hr_user", help="Fiscal Identification Number")
     has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr.group_hr_user",
         help="Use a bicycle as a transport mode to go to work")
 

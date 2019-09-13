@@ -104,6 +104,7 @@ class HrWorkEntry(models.Model):
             FROM hr_work_entry b
             INNER JOIN hr_leave l ON b.employee_id = l.employee_id
             WHERE
+                b.active = TRUE AND
                 b.id IN %s AND
                 l.date_from < b.date_stop AND
                 l.date_to > b.date_start AND
@@ -118,15 +119,23 @@ class HrWorkEntry(models.Model):
             })
         return bool(conflicts)
 
-    def open_leave(self):
-        leave = self.leave_id
-        return {
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_id': leave.id,
-            'res_model': 'hr.leave',
-            'views': [[False, 'form']],
-        }
+    def action_approve_leave(self):
+        self.ensure_one()
+        if self.leave_id:
+            # Already confirmed once
+            if self.leave_id.state == 'validate1':
+                self.leave_id.action_validate()
+            # Still in confirmed state
+            else:
+                self.leave_id.action_approve()
+                # If double validation, still have to validate it again
+                if self.leave_id.validation_type == 'both':
+                    self.leave_id.action_validate()
+
+    def action_refuse_leave(self):
+        self.ensure_one()
+        if self.leave_id:
+            self.leave_id.action_refuse()
 
     def _to_intervals(self):
         return WorkIntervals((w.date_start.replace(tzinfo=pytz.utc), w.date_stop.replace(tzinfo=pytz.utc), w) for w in self)

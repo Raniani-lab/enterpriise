@@ -1,35 +1,25 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * approvals
+# 	* approvals
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Marius Stedjan <marius@stedjan.com>, 2019
 # Jorunn D. Newth, 2019
+# Marius Stedjan <marius@stedjan.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-03-20 14:35+0000\n"
-"Last-Translator: Jorunn D. Newth, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Marius Stedjan <marius@stedjan.com>, 2019\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
-msgid "<span class=\"text-muted\">Category</span>"
-msgstr ""
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
-msgid "<span class=\"text-muted\">Request Status</span>"
-msgstr ""
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -57,6 +47,11 @@ msgid "Activity"
 msgstr "Aktivitet"
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_state
 msgid "Activity State"
 msgstr "Aktivitetsstatus"
@@ -69,11 +64,12 @@ msgstr ""
 
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
-msgid "Admin"
+msgid "Administrator"
 msgstr ""
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_all
+#: model:ir.ui.menu,name:approvals.approvals_approval_menu_all
 msgid "All Approvals"
 msgstr ""
 
@@ -110,26 +106,41 @@ msgid "Approval Subject"
 msgstr ""
 
 #. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_approval_menu_all
 #: model:ir.ui.menu,name:approvals.approvals_menu_root
 msgid "Approvals"
 msgstr "Godkjenninger"
 
 #. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
+msgid "Approvals Type Name"
+msgstr ""
+
+#. module: approvals
+#: model:ir.actions.act_window,name:approvals.approval_category_action
+#: model:ir.ui.menu,name:approvals.approvals_category_menu_config
+msgid "Approvals Types"
+msgstr ""
+
+#. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
+msgid "Approvals Types Image"
+msgstr ""
+
+#. module: approvals
+#: model:ir.actions.act_window,name:approvals.approval_request_action_to_review
 #: model:ir.ui.menu,name:approvals.approvals_approval_menu_to_review
 msgid "Approvals to Review"
 msgstr ""
 
 #. module: approvals
-#: model:ir.actions.act_window,name:approvals.approval_request_action_to_review
 #: model:ir.actions.act_window,name:approvals.approval_request_action_to_review_category
 msgid "Approvals to review"
 msgstr ""
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:10
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:27
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 #, python-format
@@ -137,9 +148,9 @@ msgid "Approve"
 msgstr "Godkjenn"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__approved
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__approved
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__approved
 msgid "Approved"
 msgstr "Godkjent"
 
@@ -194,9 +205,9 @@ msgid "Business Trip"
 msgstr ""
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__cancel
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__cancel
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__cancel
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Cancel"
 msgstr "Avbryt"
@@ -207,40 +218,14 @@ msgid "Car Rental Application"
 msgstr ""
 
 #. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_category_menu_config
-msgid "Categories"
-msgstr "Kategorier"
-
-#. module: approvals
-#: model:ir.actions.act_window,name:approvals.approval_category_action
 #: model:ir.model.fields,field_description:approvals.field_approval_request__category_id
 msgid "Category"
 msgstr "Kategori"
 
 #. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
-msgid "Category Image"
-msgstr ""
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
-msgid "Category Name"
-msgstr "Kategorinavn"
-
-#. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_config
 msgid "Configuration"
 msgstr "Konfigurasjon"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
-msgid "Confirm"
-msgstr "Bekreft"
-
-#. module: approvals
-#: selection:approval.request,request_status:0
-msgid "Confirmed"
-msgstr "Bekreftet"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__partner_id
@@ -296,7 +281,7 @@ msgstr ""
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:14
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
 msgid "Deadline"
 msgstr "Frist"
@@ -309,6 +294,7 @@ msgstr "Slett"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__description
 #: model:ir.model.fields,field_description:approvals.field_approval_request__reason
+#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Description"
 msgstr "Beskrivelse"
 
@@ -351,6 +337,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_request__is_manager_approver
 msgid "Employee's Manager"
 msgstr ""
+
+#. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
+msgid "Fields"
+msgstr "Felter"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_follower_ids
@@ -439,6 +430,16 @@ msgid "ID"
 msgstr "ID"
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__activity_exception_icon
+msgid "Icon"
+msgstr "Ikon"
+
+#. module: approvals
+#: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_unread
 msgid "If checked new messages require your attention."
 msgstr "Hvis det er merket nye meldinger så krever dette din oppmerksomhet."
@@ -450,6 +451,7 @@ msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error
+#: model:ir.model.fields,help:approvals.field_approval_request__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -467,7 +469,7 @@ msgstr "Er følger"
 #: model:ir.model.fields,field_description:approvals.field_approval_request__items
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Items"
-msgstr ""
+msgstr "Elementer"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_job_referral_award
@@ -503,7 +505,7 @@ msgstr "Lokasjon"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:10
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
 msgid "Log"
 msgstr "Logg"
@@ -551,13 +553,9 @@ msgstr ""
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action
+#: model:ir.ui.menu,name:approvals.approvals_request_menu_my
 msgid "My Requests"
 msgstr "Forespørslene mine"
-
-#. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_request_menu_my
-msgid "My request"
-msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__name
@@ -565,21 +563,16 @@ msgid "Name"
 msgstr "Navn"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__new
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__new
 msgid "New"
 msgstr "Ny"
 
 #. module: approvals
+#: model:ir.ui.menu,name:approvals.approvals_category_menu_new
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
 msgid "New Request"
 msgstr "Ny forespørsel"
-
-#. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_category_menu_new
-msgid "New request"
-msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_date_deadline
@@ -597,17 +590,22 @@ msgid "Next Activity Type"
 msgstr "Neste aktivitetstype"
 
 #. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
-msgid "No"
-msgstr "Nei"
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action_to_review
+msgid "No new approvals to review"
+msgstr ""
+
+#. module: approvals
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__no
+msgid "None"
+msgstr "Ingen"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_needaction_counter
@@ -645,20 +643,16 @@ msgid "Number of unread messages"
 msgstr "Antall uleste meldinger"
 
 #. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
-msgid "Option Settings"
-msgstr ""
-
-#. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__requirer_document__optional
 msgid "Optional"
 msgstr ""
 
@@ -666,11 +660,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Options"
 msgstr "Valg"
-
-#. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Overdue"
-msgstr "Forfalt"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -687,11 +676,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Period"
 msgstr "Periode"
-
-#. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Planned"
-msgstr "Planlagt"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_procurement
@@ -712,8 +696,8 @@ msgstr "Referanse"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:13
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:30
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 #, python-format
@@ -721,9 +705,9 @@ msgid "Refuse"
 msgstr "Avvis"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__refused
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__refused
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__refused
 msgid "Refused"
 msgstr "Avvist"
 
@@ -744,15 +728,16 @@ msgid "Request Status"
 msgstr ""
 
 #. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__requirer_document__required
 msgid "Required"
 msgstr "Påkrevd"
 
@@ -762,12 +747,17 @@ msgid "Responsible User"
 msgstr "Ansvarlig bruker"
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence
 msgid "Sequence"
 msgstr "Sekvens"
 
 #. module: approvals
-#: code:addons/approvals/models/approval_request.py:180
+#: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "State change."
 msgstr ""
@@ -791,6 +781,16 @@ msgstr ""
 "Planlagt: Fremtidige aktiviteter."
 
 #. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
+msgid "Submit"
+msgstr "Send inn"
+
+#. module: approvals
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__pending
+msgid "Submitted"
+msgstr "Sendt inn"
+
+#. module: approvals
 #: model:res.groups,comment:approvals.group_approval_user
 msgid "The user will be able to see approvals created by himself."
 msgstr ""
@@ -802,10 +802,10 @@ msgstr ""
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:19
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:35
-#: selection:approval.approver,status:0
-#: selection:approval.request,user_status:0
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__pending
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__pending
 #, python-format
 msgid "To Approve"
 msgstr "Til godkjenning"
@@ -816,9 +816,14 @@ msgid "To Review:"
 msgstr ""
 
 #. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Today"
-msgstr "I dag"
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__new
+msgid "To Submit"
+msgstr "Til innsending"
+
+#. module: approvals
+#: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_unread
@@ -832,7 +837,7 @@ msgstr "Teller for uleste meldinger"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:18
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__user_id
 #, python-format
 msgid "User"
@@ -846,15 +851,27 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__website_message_ids
 msgid "Website Messages"
-msgstr "Nettstedmeldinger"
+msgstr "Meldinger fra nettsted"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__website_message_ids
 msgid "Website communication history"
-msgstr "Kommunikasjonshistorikk for nettsted"
+msgstr "Historikk for kommunikasjon på nettsted"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Withdraw"
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid "You have to add at least %s approvers to confirm your request."
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid "You have to attach at lease one document."
 msgstr ""

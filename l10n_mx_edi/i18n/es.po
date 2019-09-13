@@ -1061,8 +1061,6 @@ msgid "Cc"
 msgstr ""
 
 #. module: l10n_mx_edi
-#: model:ir.model.fields,field_description:l10n_mx_edi.field_account_invoice__l10n_mx_edi_cfdi_certificate_id
-#: model:ir.model.fields,field_description:l10n_mx_edi.field_account_payment__l10n_mx_edi_cfdi_certificate_id
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_l10n_mx_edi_certificate__content
 msgid "Certificate"
 msgstr "Certificado"
@@ -5949,12 +5947,6 @@ msgstr "El certificado ha expirado desde %s"
 #, python-format
 msgid "The certificate key and/or password is/are invalid."
 msgstr "La clave del certificado y/o la contraseña es/son inválidos."
-
-#. module: l10n_mx_edi
-#: model:ir.model.fields,help:l10n_mx_edi.field_account_invoice__l10n_mx_edi_cfdi_certificate_id
-#: model:ir.model.fields,help:l10n_mx_edi.field_account_payment__l10n_mx_edi_cfdi_certificate_id
-msgid "The certificate used during the generation of the cfdi."
-msgstr "El certificado utilizado durante la generación del cfdi."
 
 #. module: l10n_mx_edi
 #: code:addons/l10n_mx_edi/models/account_invoice.py:890

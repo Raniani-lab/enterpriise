@@ -73,7 +73,7 @@ const PhoneCallRecentTab = PhoneCallTab.extend({
             const phoneCallData = await this._rpc({
                 model: 'voip.phonecall',
                 method: 'create_from_recent',
-                args: [this._currentPhonecallId],
+                args: [this._currentPhoneCallId],
             });
             const phoneCallId = await this._displayInQueue(phoneCallData);
             this._currentPhoneCallId = phoneCallId;

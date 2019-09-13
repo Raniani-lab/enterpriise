@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * project_enterprise
+# 	* project_enterprise
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -8,10 +8,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-03-20 14:43+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -21,20 +21,34 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_view_kanban_inherit
-msgid "<span class=\"o_label\">Planning</span>"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Customer: </strong>"
+msgstr "<strong>客戶: </strong>"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Start Date: </strong>"
 msgstr ""
 
 #. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_project__allow_planning
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task__allow_planning
-msgid "Allow Planning"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Stop Date: </strong>"
 msgstr ""
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "Assigned To"
-msgstr "分派給"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
+msgid "Address"
+msgstr "地址"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
+msgid "Customer"
+msgstr "客戶"
+
+#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_email
+msgid "Customer Email"
+msgstr "客戶信件"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_end
@@ -42,27 +56,29 @@ msgid "End date"
 msgstr "結束日期"
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "Group By"
-msgstr "分組按"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
+msgid "Gantt"
+msgstr "甘特圖"
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "My Project"
-msgstr "我的專案"
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task_type__is_closed
+msgid "Is a close stage"
+msgstr ""
 
 #. module: project_enterprise
-#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning
-#: model:ir.actions.act_window,name:project_enterprise.project_task_action_planning_by_project
-#: model:ir.ui.menu,name:project_enterprise.project_task_menu_planning
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_mobile
+msgid "Mobile"
+msgstr "移動"
+
+#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_phone
+msgid "Phone"
+msgstr "電話"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "Planning"
 msgstr "規劃"
-
-#. module: project_enterprise
-#: model:ir.model,name:project_enterprise.model_project_project
-#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_search_planning
-msgid "Project"
-msgstr "專案"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_begin
@@ -70,16 +86,54 @@ msgid "Start date"
 msgstr "開始日期"
 
 #. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_street
+msgid "Street"
+msgstr "街道"
+
+#. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 msgid "Task"
 msgstr "任務"
 
 #. module: project_enterprise
-#: model:ir.ui.menu,name:project_enterprise.project_task_menu
-msgid "Tasks"
-msgstr "任務"
+#: model:ir.model,name:project_enterprise.model_project_task_type
+msgid "Task Stage"
+msgstr "任務階段"
+
+#. module: project_enterprise
+#: model:ir.model.fields,help:project_enterprise.field_project_task_type__is_closed
+msgid "Tasks in this stage are considered as closed."
+msgstr ""
+
+#. module: project_enterprise
+#: model:ir.model.constraint,message:project_enterprise.constraint_project_task_planned_dates_check
+msgid "The planned start date must be prior to the planned end date."
+msgstr ""
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form
 msgid "Timesheets"
 msgstr "工時表"
+
+#. module: project_enterprise
+#. openerp-web
+#: code:addons/project_enterprise/static/src/js/task_gantt_model.js:0
+#, python-format
+msgid "Unassigned tasks"
+msgstr ""
+
+#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_zip
+msgid "Zip"
+msgstr "郵政編碼"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_kanban
+msgid "oe_kanban_text_red"
+msgstr "oe_kanban_text_red"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_kanban
+msgid "text-warning font-weight-bold"
+msgstr ""

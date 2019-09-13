@@ -1,6 +1,5 @@
 .o_reconciliation .o_reconciliation_line .batch_payments_selector {
     display: inline-block;
-    margin-left: 5px;
     white-space: nowrap;
 }
 /* Override bootstrap styling */

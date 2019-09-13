@@ -222,8 +222,10 @@ var ClientAction = AbstractAction.extend({
 
     /**
      * Return an unique location, even if the model have a x2m field.
+     * Could also return undefined if it's from an inventory adjustment with no
+     * locations.
      *
-     * @returns {Object}
+     * @returns {Object|undefined}
      */
     _getLocationId: function () {
         return this.currentState.location_id || this.currentState.location_ids[0];
@@ -802,7 +804,8 @@ var ClientAction = AbstractAction.extend({
         */
         var sourceLocation = this.locationsByBarcode[barcode];
         if (sourceLocation  && ! (this.mode === 'receipt' || this.mode === 'no_multi_locations')) {
-            if (! isChildOf(this._getLocationId(), sourceLocation)) {
+            const locationId = this._getLocationId();
+            if (locationId && !isChildOf(locationId, sourceLocation)) {
                 errorMessage = _t('This location is not a child of the main location.');
                 return Promise.reject(errorMessage);
             } else {
@@ -1168,6 +1171,7 @@ var ClientAction = AbstractAction.extend({
                 args: [{
                     'name': barcode,
                     'product_id': product.id,
+                    'company_id': self.currentState.company_id[0],
                 }],
             });
         };
@@ -1425,6 +1429,7 @@ var ClientAction = AbstractAction.extend({
             var currentPage = self.pages[self.currentPageIndex];
             var default_location_id = currentPage.location_id;
             var default_location_dest_id = currentPage.location_dest_id;
+            var default_company_id = self.currentState.company_id[0];
             return self._save().then(function () {
                 if (self.actionParams.model === 'stock.picking') {
                     self.ViewsWidget = new ViewsWidget(
@@ -1433,6 +1438,7 @@ var ClientAction = AbstractAction.extend({
                         'stock_barcode.stock_move_line_product_selector',
                         {
                             'default_picking_id': self.currentState.id,
+                            'default_company_id': default_company_id,
                             'default_location_id': default_location_id,
                             'default_location_dest_id': default_location_dest_id,
                             'default_qty_done': 1,
@@ -1445,7 +1451,7 @@ var ClientAction = AbstractAction.extend({
                         'stock.inventory.line',
                         'stock_barcode.stock_inventory_line_barcode',
                         {
-                            'default_company_id': self.currentState.company_id[0],
+                            'default_company_id': default_company_id,
                             'default_inventory_id': self.currentState.id,
                             'default_location_id': default_location_id,
                             'default_product_qty': 1,

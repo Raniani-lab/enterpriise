@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_ups
+# 	* delivery_ups
 # 
 # Translators:
-# Thermo Dynamic <emirhanayar2004@gmail.com>, 2017
-# Alexander B. <road2monstercat@gmail.com>, 2017
-# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
-# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2018
+# Ediz Duman <neps1192@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2019
+# Thermo Dynamic <emirhanayar2004@gmail.com>, 2019
+# Alexander B. <road2monstercat@gmail.com>, 2019
 # Umur Akın <umura@projetgrup.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -24,11 +24,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-msgid "Based on Rules"
-msgstr "Bu kurallara göre"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -50,68 +45,40 @@ msgstr "Nakliyeci"
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_carrier_account
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_carrier_account
 msgid "Carrier Account"
-msgstr "Kariyer Hesabı"
+msgstr "Nakliyeci Hesabı"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_cod_funds_code:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_cod_funds_code__8
 msgid "Cashier's Check or MoneyOrder"
 msgstr ""
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_dimension_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__cm
 msgid "Centimeters"
 msgstr "Santimetre"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_cod_funds_code:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_cod_funds_code__0
 msgid "Check, Cashier's Check or MoneyOrder"
 msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_cod
 msgid "Collect on Delivery"
-msgstr "Teslimatı Toparla"
+msgstr "Teslimde Topla"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
-msgid "DHL"
-msgstr "DHL"
-
-#. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Teslimat Yöntemleri"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_label_file_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__epl
 msgid "EPL"
 msgstr "EPL"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
-msgid "Easypost"
-msgstr ""
-
-#. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:113
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid ""
 "Error:\n"
 "%s"
 msgstr ""
-
-#. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
-msgid "FedEx"
-msgstr "FedEx"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-msgid "Fixed Price"
-msgstr "Sabit Fiyat"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -124,35 +91,36 @@ msgstr ""
 "teslimat ücretleri bunun üzerinden ücretlendirilir."
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_dimension_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__in
 msgid "Inches"
 msgstr "İnç"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_weight_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__kgs
 msgid "Kilograms"
 msgstr "Kilogram"
 
 #. module: delivery_ups
-#: selection:product.packaging,package_carrier_type:0
-msgid "No carrier integration"
-msgstr "Taşıyıcı entegrasyonu yok"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_label_file_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__gif
 msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:209
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "Packages %s do not have a positive shipping weight."
+msgstr ""
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "En az bir adet kargolanacak ürün sağlayın."
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_weight_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__lbs
 msgid "Pounds"
-msgstr "Sterlin"
+msgstr "Pound"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_product_packaging
@@ -165,7 +133,20 @@ msgid "Provider"
 msgstr "Sağlayıcı"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_label_file_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_duty_payment__recipient
+msgid "Recipient"
+msgstr "Alıcı"
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/delivery_ups.py:0
+#, python-format
+msgid ""
+"Return label generated<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> "
+"%s"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__spl
 msgid "SPL"
 msgstr "SPL"
 
@@ -180,13 +161,18 @@ msgid "Saturday Delivery"
 msgstr "Cumartesi Teslimatı"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:231
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_duty_payment__sender
+msgid "Sender"
+msgstr "Gönderen"
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Sevkiyat N° %s iptal edildi"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:202
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid ""
 "Shipment created into UPS<br/><b>Tracking Numbers:</b> "
@@ -194,7 +180,12 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:187
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The address of your company is missing or wrong.\n"
@@ -204,7 +195,7 @@ msgstr ""
 "(Missing field(s) : %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:197
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The address of your warehouse is missing or wrong.\n"
@@ -214,14 +205,14 @@ msgstr ""
 "(Missing field(s) : %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:215
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The delivery cannot be done because the weight of your product is missing."
 msgstr "Ürününüzün ağırlığı eksik olduğu için teslimat gerçekleştirilemez."
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:211
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -229,7 +220,7 @@ msgid ""
 msgstr "Ürününüzün ağırlığı olmadığı için tahmini fiyat hesaplanamadı."
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:219
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The recipient address is missing or wrong.\n"
@@ -260,8 +251,8 @@ msgid "Transfer"
 msgstr "Transfer"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__product_packaging__package_carrier_type__ups
 msgid "UPS"
 msgstr "UPS"
 
@@ -286,12 +277,6 @@ msgstr "UPS Yapılandırma"
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_packaging_id
 msgid "UPS Default Packaging Type"
 msgstr "UPS Varsayılan Paketleme Türü"
-
-#. module: delivery_ups
-#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
-msgid "UPS Delivery Methods"
-msgstr "UPS Teslimat Yöntemleri"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_file_type
@@ -321,6 +306,12 @@ msgid "UPS Shipper Number"
 msgstr "UPS Taşımacı Numarası"
 
 #. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+msgid "UPS Shipping Methods"
+msgstr ""
+
+#. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us
 #: model:product.product,name:delivery_ups.product_product_delivery_ups_us
 #: model:product.template,name:delivery_ups.product_product_delivery_ups_us_product_template
@@ -333,22 +324,22 @@ msgid "UPS Username"
 msgstr "UPS Kullanıcı Adı"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-msgid "USPS"
-msgstr "USPS"
-
-#. module: delivery_ups
 #: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_be
 #: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_us
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_us_product_template
-msgid "Unit(s)"
-msgstr "Adet"
+msgid "Units"
+msgstr "Birim"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
 msgid "Units for UPS Package Size"
 msgstr "UPS Paket Boyutunun ölçüleri"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
+msgid "Ups Duty Payment"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit
@@ -361,12 +352,6 @@ msgid "Value Added Services"
 msgstr "Değer Eklenen Hizmetler"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_label_file_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__zpl
 msgid "ZPL"
 msgstr "ZPL"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
-msgid "bpost"
-msgstr "bpost"

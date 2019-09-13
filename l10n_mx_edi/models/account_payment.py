@@ -73,10 +73,6 @@ class AccountPayment(models.Model):
     l10n_mx_edi_cfdi_uuid = fields.Char(string='Fiscal Folio', copy=False, readonly=True,
         help='Folio in electronic invoice, is returned by SAT when send to stamp.',
         compute='_compute_cfdi_values')
-    l10n_mx_edi_cfdi_certificate_id = fields.Many2one('l10n_mx_edi.certificate',
-        string='Certificate', copy=False, readonly=True,
-        help='The certificate used during the generation of the cfdi.',
-        compute='_compute_cfdi_values')
     l10n_mx_edi_cfdi_supplier_rfc = fields.Char('Supplier RFC', copy=False, readonly=True,
         help='The supplier tax identification number.',
         compute='_compute_cfdi_values')
@@ -300,7 +296,6 @@ class AccountPayment(models.Model):
                 rec.l10n_mx_edi_cfdi = None
                 rec.l10n_mx_edi_cfdi_supplier_rfc = None
                 rec.l10n_mx_edi_cfdi_customer_rfc = None
-                rec.l10n_mx_edi_cfdi_certificate_id = None
                 continue
             attachment_id = attachment_id[0]
             # At this moment, the attachment contains the file size in its 'datas' field because
@@ -317,8 +312,6 @@ class AccountPayment(models.Model):
             rec.l10n_mx_edi_cfdi_customer_rfc = tree.Receptor.get(
                 'Rfc', tree.Receptor.get('rfc'))
             certificate = tree.get('noCertificado', tree.get('NoCertificado'))
-            rec.l10n_mx_edi_cfdi_certificate_id = self.env['l10n_mx_edi.certificate'].sudo().search(
-                [('serial_number', '=', certificate)], limit=1)
 
     def _l10n_mx_edi_retry(self):
         rep_is_required = self.filtered(lambda r: r.l10n_mx_edi_is_required())
@@ -464,7 +457,7 @@ class AccountPayment(models.Model):
             datetime.strptime('12:00:00', '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
         total_paid = total_curr = 0
         for invoice in self.invoice_ids:
-            amount = [p for p in invoice._get_payments_vals() if (
+            amount = [p for p in invoice._get_reconciled_info_JSON_values() if (
                 p.get('account_payment_id', False) == self.id or not p.get(
                     'account_payment_id') and (not p.get('invoice_id') or p.get(
                         'invoice_id') == invoice.id))]
@@ -664,7 +657,8 @@ class AccountPayment(models.Model):
         password = pac_info['password']
         for rec in self:
             uuids = [rec.l10n_mx_edi_cfdi_uuid]
-            certificate_id = rec.l10n_mx_edi_cfdi_certificate_id.sudo()
+            certificate_ids = rec.company_id.l10n_mx_edi_certificate_ids
+            certificate_id = certificate_ids.sudo().get_valid_certificate()
             cer_pem = certificate_id.get_pem_cer(certificate_id.content)
             key_pem = certificate_id.get_pem_key(
                 certificate_id.key, certificate_id.password)
@@ -716,7 +710,8 @@ class AccountPayment(models.Model):
         password = pac_info['password']
         for inv in self:
             uuid = inv.l10n_mx_edi_cfdi_uuid
-            certificate_id = inv.l10n_mx_edi_cfdi_certificate_id.sudo()
+            certificate_ids = inv.company_id.l10n_mx_edi_certificate_ids
+            certificate_id = certificate_ids.sudo().get_valid_certificate()
             company_id = self.company_id
             cer_pem = certificate_id.get_pem_cer(certificate_id.content)
             key_pem = certificate_id.get_pem_key(
@@ -828,6 +823,23 @@ class AccountPayment(models.Model):
         '''
         self.with_context(force_ref=True)._l10n_mx_edi_retry()
 
+    def _l10n_mx_edi_sat_synchronously(self, batch_size=10):
+        """Update the SAT status synchronously
+
+        This method Calls :meth:`~.l10n_mx_edi_update_sat_status` by batches,
+        ensuring changes are committed after processing each batch. This is
+        intended to be able to process a lot of records on a safely manner,
+        avoiding a possible sistematic failure withoud any payment updated.
+
+        This is especially useful when running crons.
+
+        :param batch_size: the number of payments to process by batch
+        :type batch_size: int
+        """
+        for idx in range(0, len(self), batch_size):
+            with self.env.cr.savepoint():
+                self[idx:idx+batch_size].l10n_mx_edi_update_sat_status()
+
     def _set_cfdi_origin(self, uuid):
         """Try to write the origin in of the CFDI, it is important in order
         to have a centralized way to manage this elements due to the fact
@@ -870,6 +882,16 @@ class AccountPayment(models.Model):
 
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
+
+    l10n_mx_edi_payment_method_id = fields.Many2one(
+        'l10n_mx_edi.payment.method',
+        string='Payment Way',
+        help='Indicates the way the payment was/will be received, where the '
+        'options could be: Cash, Nominal Check, Credit Card, etc.')
+    l10n_mx_edi_partner_bank_id = fields.Many2one(
+        'res.partner.bank', 'Partner Bank', help='If the payment was made '
+        'with a financial institution define the bank account used in this '
+        'payment.')
 
     def _prepare_payment_vals(self, invoice):
         res = super(AccountPaymentRegister, self)._prepare_payment_vals(invoice)

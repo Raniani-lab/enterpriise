@@ -29,6 +29,8 @@ var Model = {
     init: function () {
         this._super.apply(this, arguments);
         this.batchPayments = [];
+        this.modes  = [...this.modes, 'batch'];
+        this.filter_batch = "";
     },
 
     //--------------------------------------------------------------------------
@@ -171,6 +173,23 @@ var Model = {
                 self.batchPayments = data;
             });
     },
+    changeFilter: function (handle, filter) {
+        var line = this.getLine(handle);
+        if (line.mode == 'batch') {
+            this.filter_batch = filter;
+            return Promise.resolve();
+        } else {
+            return this._super.apply(this, arguments);
+        }
+    },
+    _getAvailableModes: function(handle) {
+        var line = this.getLine(handle);
+        var modes = this._super(handle);
+        if (line.batchPayments && line.batchPayments.length) {
+            modes.push('batch')
+        }
+        return modes;
+    },
 };
 
 ReconciliationModel.StatementModel.include(Model);
@@ -194,12 +213,15 @@ var Renderer = {
      */
     update: function (state) {
         this._super(state);
-        this.$(".match_controls .batch_payments_selector").remove();
+        this.$(".o_notebook .tab-content .batch_payments_selector").html("");
         if (state.relevant_payments.length) {
-            this.$(".match_controls .filter").after(QWeb.render("batch_payments_selector", {
-                batchPayments: state.relevant_payments,
+            this.$(".o_notebook .tab-content .batch_payments_selector").append(QWeb.render("batch.payment.tab", {
+                payments: state.relevant_payments.filter(pay => pay.name.toUpperCase().includes(this.model.filter_batch.toUpperCase())
+                                                             || pay.date.toUpperCase().includes(this.model.filter_batch.toUpperCase())),
+                filter: this.model.filter_batch,
             }));
         }
+        this.$(".o_notebook .batch_payments_selector").toggleClass('d-none', state.relevant_payments.length == 0);
     },
 
     //--------------------------------------------------------------------------

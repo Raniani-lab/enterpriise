@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
+from email.utils import formataddr
 from datetime import time
 from dateutil import relativedelta
 
@@ -135,9 +136,9 @@ class HelpdeskSLAStatus(models.Model):
                     end_dt = status.reached_datetime
                     factor = 1
                 duration_data = status.ticket_id.team_id.resource_calendar_id.get_work_duration_data(start_dt, end_dt, compute_leaves=True)
-                status.days_to_reach = duration_data['days'] * factor
+                status.exceeded_days = duration_data['days'] * factor
             else:
-                status.days_to_reach = False
+                status.exceeded_days = False
 
 
 class HelpdeskTicket(models.Model):
@@ -259,15 +260,15 @@ class HelpdeskTicket(models.Model):
     @api.depends('sla_status_ids.deadline', 'sla_status_ids.reached_datetime')
     def _compute_sla_reached_late(self):
         """ Required to do it in SQL since we need to compare 2 columns value """
-        self.env.cr.execute("""
-            SELECT ticket_id, COUNT(id) AS reached_late_count
-            FROM helpdesk_sla_status
-            WHERE
-                ticket_id IN %s AND deadline < reached_datetime
-            GROUP BY ticket_id
-        """, (tuple(self.ids),))
-        data = self.env.cr.dictfetchall()
-        mapping = {item['ticket_id']: item['reached_late_count'] for item in data}
+        mapping = {}
+        if self.ids:
+            self.env.cr.execute("""
+                SELECT ticket_id, COUNT(id) AS reached_late_count
+                FROM helpdesk_sla_status
+                WHERE ticket_id IN %s AND deadline < reached_datetime
+                GROUP BY ticket_id
+            """, (tuple(self.ids),))
+            mapping = dict(self.env.cr.fetchall())
 
         for ticket in self:
             ticket.sla_reached_late = mapping.get(ticket.id, 0) > 0
@@ -396,6 +397,14 @@ class HelpdeskTicket(models.Model):
                 'stage_id': team._determine_stage()[team.id].id,
                 'user_id': team._determine_user_to_assign()[team.id].id
             }
+
+        # Manually create a partner now since 'generate_recipients' doesn't keep the name. This is
+        # to avoid intrusive changes in the 'mail' module
+        for vals in list_value:
+            if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
+                vals['partner_id'] = self.env['res.partner'].find_or_create(
+                    formataddr((vals['partner_name'], vals['partner_email']))
+                )
 
         # determine partner email for ticket with partner but no email given
         partners = self.env['res.partner'].browse([vals['partner_id'] for vals in list_value if 'partner_id' in vals and vals.get('partner_id') and 'partner_email' not in vals])

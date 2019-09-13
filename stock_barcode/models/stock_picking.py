@@ -98,6 +98,7 @@ class StockPicking(models.Model):
             'name',
             'state',
             'picking_type_code',
+            'company_id',
         ]
 
     def get_po_to_split_from_barcode(self, barcode):

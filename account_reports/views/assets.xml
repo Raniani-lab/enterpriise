@@ -6,18 +6,8 @@
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/account_reports/static/src/js/mail_activity.js"></script>
                 <script type="text/javascript" src="/account_reports/static/src/js/account_reports.js"></script>
-                <script type="text/javascript" src="/account_reports/static/src/js/followup_form/followup_form_view.js"></script>
-                <script type="text/javascript" src="/account_reports/static/src/js/followup_form/followup_form_model.js"></script>
-                <script type="text/javascript" src="/account_reports/static/src/js/followup_form/followup_form_renderer.js"></script>
-                <script type="text/javascript" src="/account_reports/static/src/js/followup_form/followup_form_controller.js"></script>
                 <script type="text/javascript" src="/account_reports/static/src/js/action_manager_account_report_dl.js"></script>
                 <link rel="stylesheet" type="text/scss" href="/account_reports/static/src/scss/account_financial_report.scss"/>
-            </xpath>
-        </template>
-
-        <template id="assets_tests" name="Account Reports Assets Tests" inherit_id="web.assets_tests">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/account_reports/static/tests/tours/account_reports.js"></script>
             </xpath>
         </template>
 
@@ -26,5 +16,6 @@
                 <script type="text/javascript" src="/account_reports/static/tests/action_manager_account_report_dl_tests.js"></script>
             </xpath>
         </template>
+
     </data>
 </odoo>

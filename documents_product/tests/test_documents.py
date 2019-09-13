@@ -22,10 +22,7 @@ class TestCaseDocumentsBridgeProduct(TransactionCase):
             'name': 'template_test',
             'company_id': self.company_test.id
         })
-        self.product_test = self.env['product.product'].create({
-            'name': 'product_test',
-            'product_tmpl_id': self.template_test.id
-        })
+        self.product_test = self.template_test.product_variant_id
         self.attachment_txt_two = self.env['ir.attachment'].create({
             'datas': TEXT,
             'name': 'fileTextTwo.txt',

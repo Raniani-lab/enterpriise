@@ -8,18 +8,22 @@
 
     .o_group_name_custom {
         font-weight: normal;
-        white-space: pre-wrap !important;
+        white-space: pre !important;
     }
 
-    .o_group_header.o_group_open .o_group_buttons {
-        visibility: hidden;
-        button {
-            margin-left: 10px;
+    .o_group_header.o_group_open {
+        .o_group_buttons {
+            visibility: hidden;
+            button {
+                margin-left: 10px;
+            }
+        }
+        &:hover .o_group_buttons {
+            visibility: visible;
         }
     }
-
-    .o_group_header.o_group_open:hover .o_group_buttons {
-        visibility: visible;
+    .o_group_header * {
+        color: initial;
     }
 
     > .o_move_line_list_view_wrapper {
@@ -29,6 +33,7 @@
     }
     .o_attachment_preview {
         height: 100%;
+        width: 30%;
 
         .o_move_line_empty, .o_move_line_without_attachment {
             text-align: center;
@@ -76,4 +81,5 @@
             content: '<<';
         }
     }
+
 }

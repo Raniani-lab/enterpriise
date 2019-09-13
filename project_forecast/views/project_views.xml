@@ -12,11 +12,12 @@
             <xpath expr="//div[hasclass('o_project_kanban_boxes')]" position="inside">
                 <a t-if="record.allow_forecast.raw_value" class="o_project_kanban_box" name="%(project_forecast_action_from_project)d" type="action">
                     <div>
-                        <span class="o_label">Forecast</span>
+                        <span class="o_label">Planning</span>
                     </div>
                 </a>
             </xpath>
         </field>
+        <field name="groups_id" eval="[(4, ref('planning.group_planning_user'))]"/>
     </record>
 
     <record id="project_project_view_form_simplified_inherit_forecast" model="ir.ui.view">
@@ -29,6 +30,7 @@
                 <field name="allow_forecast"/>
             </field>
         </field>
+        <field name="groups_id" eval="[(4, ref('planning.group_planning_user'))]"/>
     </record>
 
     <record id="project_view_form_inherit_project_forecast" model="ir.ui.view">
@@ -43,10 +45,11 @@
             <div name="button_box" position="inside">
                 <button class="oe_stat_button" type="action" attrs="{'invisible':[('allow_forecast', '=', False)]}"
                     name="%(project_forecast_action_from_project)d" icon="fa-tasks">
-                    <span>Forecast</span>
+                    <span>Planning</span>
                 </button>
             </div>
         </field>
+        <field name="groups_id" eval="[(4, ref('planning.group_planning_user'))]"/>
     </record>
 
 </odoo>

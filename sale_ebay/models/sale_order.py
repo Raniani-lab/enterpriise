@@ -227,14 +227,7 @@ class SaleOrder(models.Model):
                 if not isinstance(name_value_list, list):
                     name_value_list = [name_value_list]
                 # get only the item specific in the value list
-                attrs = []
-                # get the attribute.value ids in order to get the variant listed on ebay
-                for spec in (n for n in name_value_list if n['Source'] == 'ItemSpecific'):
-                    attr = product.env['product.attribute.value'].search(
-                        [('name', '=', spec['Value'])])
-                    attrs.append(('attribute_value_ids', '=', attr.id))
-                domain = expression.AND(attrs, [('product_tmpl_id', '=', product.id)])
-                variant = product.env['product.product'].search(domain)
+                variant = product._get_variant_from_ebay_specs([n for n in name_value_list if n['Source'] == 'ItemSpecific'])
         else:
             variant = product.product_variant_ids[0]
         variant.ebay_quantity_sold = variant.ebay_quantity_sold + int(transaction['QuantityPurchased'])

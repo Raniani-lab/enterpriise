@@ -42,7 +42,7 @@ class QualityPoint(models.Model):
             mean = 0.0
             s = 0.0
             n = 0
-            for check in point.check_ids:
+            for check in point.check_ids.filtered(lambda x: x.quality_state != 'none'):
                 n += 1
                 delta = check.measure - mean
                 mean += delta / n
@@ -95,7 +95,10 @@ class QualityPoint(models.Model):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_check_action_main').read()[0]
         action['domain'] = [('point_id', '=', self.id)]
-        action['context'] = {'default_point_id': self.id}
+        action['context'] = {
+            'default_company_id': self.company_id.id,
+            'default_point_id': self.id
+        }
         return action
 
     def action_see_spc_control(self):
@@ -333,7 +336,11 @@ class ProductTemplate(models.Model):
     def action_see_quality_control_points(self):
         self.ensure_one()
         action = self.env.ref('quality_control.quality_point_action').read()[0]
-        action['context'] = dict(self.env.context, default_product_tmpl_id=self.id)
+        action['context'] = dict(self.env.context)
+        action['context'].update({
+            'search_default_product_tmpl_id': self.id,
+            'default_product_tmpl_id': self.id,
+        })
         return action
 
     def action_see_quality_checks(self):
@@ -371,8 +378,7 @@ class ProductProduct(models.Model):
 
     def action_see_quality_control_points(self):
         self.ensure_one()
-        action = self.env.ref('quality_control.quality_point_action').read()[0]
-        action['context'] = dict(self.env.context, default_product_tmpl_id=self.product_tmpl_id.id)
+        action = self.product_tmpl_id.action_see_quality_control_points()
         return action
 
     def action_see_quality_checks(self):

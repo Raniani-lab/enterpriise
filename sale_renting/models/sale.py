@@ -84,7 +84,7 @@ class RentalOrder(models.Model):
             'default_order_id': self.id,
         }
         return {
-            'name': _('Validate a deliver') if status == 'pickup' else _('Validate a return'),
+            'name': _('Validate a delivery') if status == 'pickup' else _('Validate a return'),
             'view_mode': 'form',
             'res_model': 'rental.order.wizard',
             'type': 'ir.actions.act_window',

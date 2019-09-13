@@ -3,6 +3,7 @@
 
 import io
 import logging
+import math
 import re
 from functools import partial
 
@@ -539,7 +540,7 @@ def _set_amount_currency_and_currency_id(node, path, entry_vals, currency, curr_
     instruc_curr = node.xpath('%s/@Ccy' % path, namespaces=namespaces)
     if (has_multi_currency and instruc_amount and instruc_curr and
             instruc_curr[0] != currency and currency in curr_cache):
-        entry_vals['amount_currency'] = abs(sum(map(float, instruc_amount)))
+        entry_vals['amount_currency'] = math.copysign(abs(sum(map(float, instruc_amount))), entry_vals['amount'])
         entry_vals['currency_id'] = curr_cache[instruc_curr[0]]
 
 def _get_transaction_name(node, namespaces):

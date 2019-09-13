@@ -24,7 +24,7 @@ class MrpRouting(models.Model):
         self.ensure_one()
         picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id
         action = self.env.ref('mrp_workorder.action_mrp_workorder_show_steps').read()[0]
-        ctx = dict(self._context, default_picking_type_id=picking_type_id)
+        ctx = dict(self._context, default_picking_type_id=picking_type_id, default_company_id=self.company_id.id)
         action.update({'context': ctx})
         return action
 
@@ -32,9 +32,12 @@ class QualityPoint(models.Model):
     _inherit = "quality.point"
 
     code = fields.Selection(related='picking_type_id.code', readonly=False)  # TDE FIXME: necessary ?
-    operation_id = fields.Many2one('mrp.routing.workcenter', 'Step')
+    operation_id = fields.Many2one(
+        'mrp.routing.workcenter', 'Step', check_company=True)
     routing_id = fields.Many2one(related='operation_id.routing_id', readonly=False)
-    test_type_id = fields.Many2one(domain="[('allow_registration', '=', operation_id and code == 'mrp_operation')]")
+    test_type_id = fields.Many2one(
+        'quality.point.test_type',
+        domain="[('allow_registration', '=', operation_id and code == 'mrp_operation')]")
     test_report_type = fields.Selection([('pdf', 'PDF'), ('zpl', 'ZPL')], string="Report Type", default="pdf", required=True)
     worksheet = fields.Selection([
         ('noupdate', 'Do not update page'),
@@ -42,7 +45,7 @@ class QualityPoint(models.Model):
         default="noupdate")
     worksheet_page = fields.Integer('Worksheet Page')
     # Used with type register_consumed_materials the product raw to encode.
-    component_id = fields.Many2one('product.product', 'Product To Register')
+    component_id = fields.Many2one('product.product', 'Product To Register', check_company=True)
 
     @api.onchange('product_id', 'product_tmpl_id', 'picking_type_id', 'test_type_id')
     def _onchange_product(self):
@@ -59,10 +62,10 @@ class QualityPoint(models.Model):
         if self.picking_type_id.code == 'mrp_operation':
             return {
                 'domain': {
-                    'operation_id': [('routing_id', 'in', routing_ids)],
-                    'component_id': [('id', 'in', list(component_ids))],
-                    'product_tmpl_id': [('bom_ids', '!=', False), ('bom_ids.routing_id', '!=', False)],
-                    'product_id': [('variant_bom_ids', '!=', False), ('variant_bom_ids.routing_id', '!=', False)],
+                    'operation_id': [('routing_id', 'in', routing_ids), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
+                    'component_id': [('id', 'in', list(component_ids)), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
+                    'product_tmpl_id': [('bom_ids', '!=', False), ('bom_ids.routing_id', '!=', False), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
+                    'product_id': [('variant_bom_ids', '!=', False), ('variant_bom_ids.routing_id', '!=', False), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)],
                 }
             }
 
@@ -70,24 +73,31 @@ class QualityPoint(models.Model):
 class QualityAlert(models.Model):
     _inherit = "quality.alert"
 
-    workorder_id = fields.Many2one('mrp.workorder', 'Operation')
-    workcenter_id = fields.Many2one('mrp.workcenter', 'Work Center')
-    production_id = fields.Many2one('mrp.production', "Production Order")
+    workorder_id = fields.Many2one('mrp.workorder', 'Operation', check_company=True)
+    workcenter_id = fields.Many2one('mrp.workcenter', 'Work Center', check_company=True)
+    production_id = fields.Many2one('mrp.production', "Production Order", check_company=True)
 
 class QualityCheck(models.Model):
     _inherit = "quality.check"
 
-    workorder_id = fields.Many2one('mrp.workorder', 'Operation')
+    workorder_id = fields.Many2one(
+        'mrp.workorder', 'Operation', check_company=True)
     workcenter_id = fields.Many2one('mrp.workcenter', related='workorder_id.workcenter_id', store=True, readonly=True)  # TDE: necessary ?
-    production_id = fields.Many2one('mrp.production', 'Production Order')
+    production_id = fields.Many2one(
+        'mrp.production', 'Production Order', check_company=True)
 
     # For components registration
-    parent_id = fields.Many2one('quality.check', 'Parent Quality Check')
-    component_id = fields.Many2one('product.product', 'Component')
+    parent_id = fields.Many2one(
+        'quality.check', 'Parent Quality Check', check_company=True)
+    component_id = fields.Many2one(
+        'product.product', 'Component', check_company=True)
     component_uom_id = fields.Many2one(related='workorder_line_id.product_uom_id', readonly=True)
-    workorder_line_id = fields.Many2one('mrp.workorder.line', 'Workorder Line')
+    workorder_line_id = fields.Many2one(
+        'mrp.workorder.line', 'Workorder Line', check_company=True)
     qty_done = fields.Float('Done', default=1.0, digits='Product Unit of Measure')
-    finished_lot_id = fields.Many2one('stock.production.lot', 'Finished Product Lot')
+    finished_lot_id = fields.Many2one(
+        'stock.production.lot', 'Finished Product Lot',
+        domain="[('product_id', '=', product_id), ('company_id', '=', company_id)]")
 
     # Computed fields
     title = fields.Char('Title', compute='_compute_title')

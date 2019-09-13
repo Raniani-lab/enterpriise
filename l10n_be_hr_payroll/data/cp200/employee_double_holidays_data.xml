@@ -8,7 +8,7 @@
             <field name="country_id" ref="base.be"/>
             <field name="report_id" ref="l10n_be_hr_payroll.action_report_double_holiday_13th_month"/>
             <field name="payslip_name">Double Holidays Slip</field>
-            <field name="use_worked_day_lines">False</field>
+            <field name="use_worked_day_lines" eval="False"/>
             <field name="type_id" ref="l10n_be_hr_payroll.structure_type_employee_cp200"/>
         </record>
 

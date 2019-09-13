@@ -35,8 +35,8 @@ class DeliverCarrier(models.Model):
         """ Return the list of carriers configured by the customer
         on its easypost account.
         """
-        if self.delivery_type == 'easypost' and self.easypost_production_api_key:
-            ep = EasypostRequest(self.easypost_production_api_key, self.log_xml)
+        if self.delivery_type == 'easypost' and self.sudo().easypost_production_api_key:
+            ep = EasypostRequest(self.sudo().easypost_production_api_key, self.log_xml)
             carriers = ep.fetch_easypost_carrier()
             if carriers:
                 action = self.env.ref('delivery_easypost.act_delivery_easypost_carrier_type').read()[0]
@@ -50,7 +50,7 @@ class DeliverCarrier(models.Model):
 
     def easypost_rate_shipment(self, order):
         """ Return the rates for a quotation/SO."""
-        ep = EasypostRequest(self.easypost_production_api_key if self.prod_environment else self.easypost_test_api_key, self.log_xml)
+        ep = EasypostRequest(self.sudo().easypost_production_api_key if self.prod_environment else self.sudo().easypost_test_api_key, self.log_xml)
         response = ep.rate_request(self, order.partner_shipping_id, order.warehouse_id.partner_id, order)
         # Return error message
         if response.get('error_message'):
@@ -85,7 +85,7 @@ class DeliverCarrier(models.Model):
         links and the shipping labels.
         """
         res = []
-        ep = EasypostRequest(self.easypost_production_api_key if self.prod_environment else self.easypost_test_api_key, self.log_xml)
+        ep = EasypostRequest(self.sudo().easypost_production_api_key if self.prod_environment else self.sudo().easypost_test_api_key, self.log_xml)
         for picking in pickings:
             result = ep.send_shipping(self, picking.partner_id, picking.picking_type_id.warehouse_id.partner_id, picking=picking)
             if result.get('error_message'):
@@ -153,7 +153,7 @@ class DeliverCarrier(models.Model):
         tracking link by package. It specific to easypost since other delivery
         carrier use a single link for all packages.
         """
-        ep = EasypostRequest(self.easypost_production_api_key if self.prod_environment else self.easypost_test_api_key, self.log_xml)
+        ep = EasypostRequest(self.sudo().easypost_production_api_key if self.prod_environment else self.sudo().easypost_test_api_key, self.log_xml)
         tracking_urls = ep.get_tracking_link(picking.ep_order_ref)
         return len(tracking_urls) == 1 and tracking_urls[0][1] or json.dumps(tracking_urls)
 
@@ -179,6 +179,7 @@ class DeliverCarrier(models.Model):
     @api.onchange('delivery_type')
     def _onchange_delivery_type(self):
         if self.delivery_type == 'easypost':
+            self = self.sudo()
             if not self.easypost_test_api_key or not self.easypost_production_api_key:
                 carrier = self.env['delivery.carrier'].search([('delivery_type', '=', 'easypost'), ('company_id', '=', self.env.company.id)], limit=1)
                 if carrier.easypost_test_api_key and not self.easypost_test_api_key:

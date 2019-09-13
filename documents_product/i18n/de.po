@@ -1,19 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_product
+# 	* documents_product
 # 
 # Translators:
+# Martin Trigaux, 2019
 # Jan Meyer, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
-# Martin Trigaux, 2019
+# Leon Grill <leg@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,6 +38,11 @@ msgid "Attachment"
 msgstr "Dateianhang"
 
 #. module: documents_product
+#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
+msgid "Centralize files attached to products"
+msgstr ""
+
+#. module: documents_product
 #: model:ir.model,name:documents_product.model_res_company
 msgid "Companies"
 msgstr "Unternehmen"
@@ -43,7 +50,7 @@ msgstr "Unternehmen"
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_res_config_settings
 msgid "Config Settings"
-msgstr "Konfiguration "
+msgstr "Konfigurationseinstellungen"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_documents_workflow_rule__create_model
@@ -51,13 +58,13 @@ msgid "Create"
 msgstr "Anlegen"
 
 #. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr "Gutschrift"
-
-#. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_sheet_tag
 msgid "DataSheets"
+msgstr "Datenblatt"
+
+#. module: documents_product
+#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
+msgid "Default Tags"
 msgstr ""
 
 #. module: documents_product
@@ -73,7 +80,7 @@ msgstr "Hat Geschäftsoptionen"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_msds_tag
 msgid "MSDS"
-msgstr ""
+msgstr "Sicherheitsdatenblatt"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_new_tag
@@ -83,7 +90,12 @@ msgstr "Neu"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_plans_tag
 msgid "Plans"
-msgstr ""
+msgstr "Pläne"
+
+#. module: documents_product
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
+msgid "Product"
+msgstr "Produkt"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
@@ -93,12 +105,11 @@ msgstr "Stichwörter Produkte"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product Workspace"
 msgstr ""
 
 #. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_product.selection__documents_workflow_rule__create_model__product_template
 msgid "Product template"
 msgstr "Produkt Vorlage"
 
@@ -108,43 +119,14 @@ msgid "Products"
 msgstr "Produkte"
 
 #. module: documents_product
-#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid "Select the tags to be applied to product's new documents"
-msgstr ""
-"Wählen Sie die Stichwörter, die auf den neuen Dokumenten des Produkts "
-"ausgewählt werden sollen."
-
-#. module: documents_product
-#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid ""
-"Select the workspace to be used for product's documents for the products of\n"
-"                                    your company."
-msgstr ""
-
-#. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr "Vorlage für Signaturanfrage"
-
-#. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_specs_tag
 msgid "Specs"
-msgstr ""
+msgstr "Technische Daten"
 
 #. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Task"
-msgstr "Aufgabe"
-
-#. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor Credit Note"
-msgstr "Lieferanten-Gutschrift"
-
-#. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor bill"
-msgstr "Lieferantenrechnung"
+#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
+msgid "Workspace"
+msgstr "Arbeitsbereich"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder

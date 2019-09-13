@@ -169,7 +169,7 @@ class MrpEco(models.Model):
         return types
 
     name = fields.Char('Reference', copy=False, required=True)
-    user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user, tracking=True)
+    user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user, tracking=True, check_company=True)
     type_id = fields.Many2one('mrp.eco.type', 'Type', required=True)
     stage_id = fields.Many2one(
         'mrp.eco.stage', 'Stage', ondelete='restrict', copy=False, domain="[('type_id', '=', type_id)]",
@@ -213,20 +213,20 @@ class MrpEco(models.Model):
     allow_apply_change = fields.Boolean(
         'Show Apply Change', compute='_compute_allow_apply_change')
 
-    product_tmpl_id = fields.Many2one('product.template', "Product")
+    product_tmpl_id = fields.Many2one('product.template', "Product", check_company=True)
     type = fields.Selection(selection=_get_type_selection, string='Apply on',
         default='product', required=True)
     bom_id = fields.Many2one(
         'mrp.bom', "Bill of Materials",
-        domain="[('product_tmpl_id', '=', product_tmpl_id)]")  # Should at least have bom or routing on which it is applied?
+        domain="[('product_tmpl_id', '=', product_tmpl_id)]", check_company=True)  # Should at least have bom or routing on which it is applied?
     new_bom_id = fields.Many2one(
         'mrp.bom', 'New Bill of Materials',
         copy=False)
     new_bom_revision = fields.Integer('BoM Revision', related='new_bom_id.version', store=True, readonly=False)
-    routing_id = fields.Many2one('mrp.routing', "Routing")
+    routing_id = fields.Many2one('mrp.routing', "Routing", check_company=True)
     new_routing_id = fields.Many2one(
         'mrp.routing', 'New Routing',
-        copy=False)
+        copy=False, check_company=True)
     new_routing_revision = fields.Integer('Routing Revision', related='new_routing_id.version', store=True, readonly=False)
     bom_change_ids = fields.One2many(
         'mrp.eco.bom.change', 'eco_id', string="ECO BoM Changes",
@@ -275,10 +275,10 @@ class MrpEco(models.Model):
     def _get_difference_bom_lines(self, old_bom, new_bom):
         # Return difference lines from two bill of material.
         new_bom_commands = []
-        old_bom_lines = dict(((line.product_id,tuple(line.attribute_value_ids.ids)), line) for line in old_bom.bom_line_ids)
+        old_bom_lines = dict(((line.product_id, tuple(line.bom_product_template_attribute_value_ids.ids)), line) for line in old_bom.bom_line_ids)
         if self.new_bom_id:
             for line in new_bom.bom_line_ids:
-                old_line = old_bom_lines.pop((line.product_id,tuple(line.attribute_value_ids.ids)), None)
+                old_line = old_bom_lines.pop((line.product_id, tuple(line.bom_product_template_attribute_value_ids.ids)), None)
                 if old_line and (line.product_uom_id, line.product_qty, line.operation_id) != (old_line.product_uom_id, old_line.product_qty, old_line.operation_id):
                     new_bom_commands += [(0, 0, {
                         'change_type': 'update',
@@ -599,6 +599,7 @@ class MrpEco(models.Model):
 
     def action_apply(self):
         self.ensure_one()
+        self._check_company()
         self.mapped('new_bom_id').apply_new_version()
         self.mapped('new_routing_id').apply_new_version()
         if self.type in ('bom', 'both', 'product'):
@@ -638,7 +639,7 @@ class MrpEco(models.Model):
                         Use this feature to store any files, like drawings or specifications.
                     </p>'''),
             'limit': 80,
-            'context': "{'default_res_model': '%s','default_res_id': %d}" % (self._name, self.id)
+            'context': "{'default_res_model': '%s','default_res_id': %d, 'default_company_id': %s}" % (self._name, self.id, self.company_id.id)
         }
 
     def open_new_bom(self):
@@ -688,6 +689,7 @@ class MrpEcoBomChange(models.Model):
         for rec in self:
             rec.upd_product_qty = rec.new_product_qty - rec.old_product_qty
             rec.operation_change = rec.new_operation_id.name if rec.change_type == 'add' else rec.old_operation_id.name
+            rec.uom_change = False
             if (rec.old_uom_id and rec.new_uom_id) and rec.old_uom_id != rec.new_uom_id:
                 rec.uom_change = rec.old_uom_id.name + ' -> ' + rec.new_uom_id.name
             if (rec.old_operation_id != rec.new_operation_id) and rec.change_type == 'update':

@@ -127,3 +127,12 @@ class TestPayrollLeave(TestPayslipBase):
         self.assertFalse(leave_work_entry.filtered('leave_id').active)
         self.assertEqual(len(work_entries), 2, "Attendance work entries should have been re-created (morning and afternoon)")
         self.assertTrue(all(work_entries.mapped(lambda w: w.state != 'conflict')), "Attendance work entries should not conflict")
+
+    def test_archived_work_entry_conflict(self):
+        self.create_leave(datetime(2019, 10, 10, 9, 0), datetime(2019, 10, 10, 18, 0))
+        work_entry = self.create_work_entry(datetime(2019, 10, 10, 9, 0), datetime(2019, 10, 10, 18, 0))
+        self.assertTrue(work_entry.active)
+        self.assertEqual(work_entry.state, 'conflict', "Attendance work entries should conflict with the leave")
+        work_entry.toggle_active()
+        self.assertEqual(work_entry.state, 'cancelled', "Attendance work entries should be cancelled and not conflict")
+        self.assertFalse(work_entry.active)

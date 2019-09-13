@@ -10,7 +10,7 @@
                 <templates>
                     <div t-name="kanban-box" class="oe_kanban_global_click">
                         <div class="o_kanban_title clearfix">
-                            <span><field name="attachment_id"/><field name="extension"/></span>
+                            <span><field name="attachment_id"/></span>
                         </div>
                         <div class="oe_kanban_content">
                             <em><field name="create_date"/></em>

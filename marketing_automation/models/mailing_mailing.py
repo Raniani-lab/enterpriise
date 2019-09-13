@@ -10,6 +10,7 @@ class MassMailing(models.Model):
     use_in_marketing_automation = fields.Boolean(
         string='Specific mailing used in marketing campaign', default=False,
         help='Marketing campaigns use mass mailings with some specific behavior; this field is used to indicate its statistics may be suspicious.')
+    marketing_activity_ids = fields.One2many('marketing.activity', 'mass_mailing_id', string='Marketing Activities', copy=False)
 
     # TODO: remove in master
     def convert_links(self):

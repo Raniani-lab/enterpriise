@@ -4,6 +4,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
@@ -35,12 +36,17 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     fictitious_remuneration_n = fields.Monetary('Remuneration fictitious current year', compute='_compute_fictitious_remuneration_n')
     fictitious_remuneration_n1 = fields.Monetary('Remuneration fictitious previous year', compute='_compute_fictitious_remuneration_n1')
 
+    def _check_notice_period(self):
+        self.ensure_one()
+        if not self.employee_id.start_notice_period or not self.employee_id.end_notice_period:
+            raise UserError(_("Notice period not set for %s. Please, set the departure notice period first.") % self.employee_id.name)
 
     @api.depends('employee_id')
     def _compute_payslip_ids(self):
         """ get all payslip """
 
         for attest in self:
+            attest._check_notice_period()
             current_year = attest.employee_id.end_notice_period.replace(month=1, day=1)
             previous_year = current_year + relativedelta(years=-1)
 
@@ -58,6 +64,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         """ get all Time Off """
 
         for attest in self:
+            attest._check_notice_period()
             current_year = attest.employee_id.end_notice_period.replace(month=1, day=1)
             next_year = current_year + relativedelta(years=+1)
 

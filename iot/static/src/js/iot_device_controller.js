@@ -15,16 +15,21 @@ var IotDeviceFormController = FormController.extend({
         var self = this;
         var _super = this._super.bind(this);
         if (['keyboard', 'scanner'].indexOf(this.renderer.state.data.type) >= 0) {
-            return this._updateKeyboardLayout()
-                .then(function (data) {
-                    if (data.result === true) {
-                        _super.apply(arguments);
-                    } else {
-                        self.do_warn(_t('Connection to Device failed'), _t('Please check if the device is still connected.'));
-                    }
-                });
+            return this._updateKeyboardLayout().then(self._processResult.bind(self, _super));
+        } else if (this.renderer.state.data.type === 'display') {
+            return this._updateScreenUrl().then(() => _super());
         } else {
             return this._super.apply(this, arguments);
+        }
+    },
+    /**
+     *
+     */
+    _processResult: function (saveRecord, data) {
+        if (data.result === true) {
+            saveRecord();
+        } else {
+            this.do_warn(_t('Connection to Device failed'), _t('Please check if the device is still connected.'));
         }
     },
     /**
@@ -44,6 +49,14 @@ var IotDeviceFormController = FormController.extend({
         } else {
             return iot_device.action({'action': 'update_layout'});
         }
+    },
+    /**
+     * Send an action to the device to update the screen url
+     */
+    _updateScreenUrl: function () {
+        var screen_url = this.renderer.state.data.screen_url;
+        var iot_device = new DeviceProxy({ iot_ip: this.renderer.state.data.iot_ip, identifier: this.renderer.state.data.identifier });
+        return iot_device.action({'action': 'update_url', 'url': screen_url});
     },
 });
 

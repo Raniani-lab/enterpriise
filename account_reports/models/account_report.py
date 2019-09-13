@@ -111,12 +111,12 @@ class AccountReport(models.AbstractModel):
 
     @api.model
     def _get_filter_journal_groups(self):
-        journals = self._get_filter_journals().ids
+        journals = self._get_filter_journals()
         groups = self.env['account.journal.group'].search([], order='sequence')
         ret = self.env['account.journal.group']
         for journal_group in groups:
-            # Only display the group if all journals are visible
-            if set(journal_group.account_journal_ids.ids).issubset(journals):
+            # Only display the group if it doesn't exclude every journal
+            if journals - journal_group.excluded_journal_ids:
                 ret += journal_group
         return ret
 
@@ -135,7 +135,7 @@ class AccountReport(models.AbstractModel):
         group_header_displayed = False
         default_group_ids = []
         for group in self._get_filter_journal_groups():
-            journal_ids = [journal.id for journal in group.account_journal_ids]
+            journal_ids = (self._get_filter_journals() - group.excluded_journal_ids).ids
             if len(journal_ids):
                 if not group_header_displayed:
                     group_header_displayed = True
@@ -594,7 +594,7 @@ class AccountReport(models.AbstractModel):
             if not depth:
                 depth = line.get('level', 1)
             level_dict.setdefault('depth', depth)
-            level_dict.setdefault('parent_id', 'hierarchy_' + codes[0][1])
+            level_dict.setdefault('parent_id', 'hierarchy_' + codes[0][1] if codes[0][0] != 'root' else codes[0][1])
             level_dict.setdefault('children', {})
             code = codes[1]
             codes = codes[1:]
@@ -668,11 +668,11 @@ class AccountReport(models.AbstractModel):
                 # No group code found in any lines, compute it automatically.
                 no_group_hierarchy = {}
                 for no_group_line in no_group_lines:
-                    codes = [(self.LEAST_SORT_PRIO, _('(No Group)'))]
+                    codes = [('root', str(line.get('parent_id')) or 'root'), (self.LEAST_SORT_PRIO, _('(No Group)'))]
                     if not accounts_hierarchy:
                         account = get_account(no_group_line.get('account_id', no_group_line.get('id')))
-                        codes = [(0, 'root')] + self.get_account_codes(account)
-                    add_line_to_hierarchy(no_group_line, codes, no_group_hierarchy)
+                        codes = [('root', str(line.get('parent_id')) or 'root')] + self.get_account_codes(account)
+                    add_line_to_hierarchy(no_group_line, codes, no_group_hierarchy, line.get('level', 0) + 1)
                 no_group_lines = []
 
                 deep_merge_dict(no_group_hierarchy, accounts_hierarchy)
@@ -692,8 +692,8 @@ class AccountReport(models.AbstractModel):
                 no_group_lines.append(line)
                 continue
 
-            codes = [(0, 'root')] + self.get_account_codes(account)
-            add_line_to_hierarchy(line, codes, accounts_hierarchy)
+            codes = [('root', str(line.get('parent_id')) or 'root')] + self.get_account_codes(account)
+            add_line_to_hierarchy(line, codes, accounts_hierarchy, line.get('level', 0) + 1)
 
         return new_lines
 
@@ -1036,7 +1036,7 @@ class AccountReport(models.AbstractModel):
     def action_partner_reconcile(self, options, params):
         form = self.env.ref('account.action_manual_reconciliation', False)
         ctx = self.env.context.copy()
-        ctx['partner_ids'] = [params.get('partner_id')]
+        ctx['partner_ids'] = ctx['active_id'] = [params.get('partner_id')]
         return {
             'type': 'ir.actions.client',
             'view_id': form.id,
@@ -1146,7 +1146,7 @@ class AccountReport(models.AbstractModel):
         if options.get('journals'):
             journals_selected = set(journal['id'] for journal in options['journals'] if journal.get('selected'))
             for journal_group in self.env['account.journal.group'].search([('company_id', '=', self.env.company.id)]):
-                if journals_selected == set(journal_group.account_journal_ids.ids):
+                if journals_selected and journals_selected == set(self._get_filter_journals().ids) - set(journal_group.excluded_journal_ids.ids):
                     options['name_journal_group'] = journal_group.name
                     break
 

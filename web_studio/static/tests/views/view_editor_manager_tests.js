@@ -917,7 +917,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('many2one field edition', async function (assert) {
-        assert.expect(3);
+        assert.expect(4);
 
         this.data.product.records = [{
             id: 42,
@@ -954,6 +954,8 @@ QUnit.module('ViewEditorManager', {
 
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
+        assert.containsNone(vem, '.o_web_studio_sidebar select[name="widget"] option[value="selection"]',
+            "the widget in selection should not be supported in m2o");
         assert.hasClass(vem.$('.o_web_studio_form_view_editor [data-node-id]'),'o_web_studio_clicked',
             "the column should have the clicked style");
         vem.destroy();

@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * approvals
+# 	* approvals
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -8,10 +8,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-03-20 14:35+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -19,16 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
-msgid "<span class=\"text-muted\">Category</span>"
-msgstr "<span class=\"text-muted\">Категорія</span>"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
-msgid "<span class=\"text-muted\">Request Status</span>"
-msgstr "<span class=\"text-muted\">Статус запиту</span>"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -56,6 +46,11 @@ msgid "Activity"
 msgstr "Дія"
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Оформлення виключення дії"
+
+#. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_state
 msgid "Activity State"
 msgstr "Стан дії"
@@ -68,11 +63,12 @@ msgstr "Додаткові елементи, які необхідно вказ�
 
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
-msgid "Admin"
+msgid "Administrator"
 msgstr "Адміністратор"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_all
+#: model:ir.ui.menu,name:approvals.approvals_approval_menu_all
 msgid "All Approvals"
 msgstr "Усі схвалення"
 
@@ -109,26 +105,41 @@ msgid "Approval Subject"
 msgstr "Тема схвалення"
 
 #. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_approval_menu_all
 #: model:ir.ui.menu,name:approvals.approvals_menu_root
 msgid "Approvals"
 msgstr "Затвердження"
 
 #. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
+msgid "Approvals Type Name"
+msgstr "Назва типу затвердження"
+
+#. module: approvals
+#: model:ir.actions.act_window,name:approvals.approval_category_action
+#: model:ir.ui.menu,name:approvals.approvals_category_menu_config
+msgid "Approvals Types"
+msgstr "Типи затвердження"
+
+#. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
+msgid "Approvals Types Image"
+msgstr "Зображення типів затвердження "
+
+#. module: approvals
+#: model:ir.actions.act_window,name:approvals.approval_request_action_to_review
 #: model:ir.ui.menu,name:approvals.approvals_approval_menu_to_review
 msgid "Approvals to Review"
 msgstr "Схвалення для перегляду"
 
 #. module: approvals
-#: model:ir.actions.act_window,name:approvals.approval_request_action_to_review
 #: model:ir.actions.act_window,name:approvals.approval_request_action_to_review_category
 msgid "Approvals to review"
 msgstr "Схвалення для перегляду"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:10
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:27
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 #, python-format
@@ -136,9 +147,9 @@ msgid "Approve"
 msgstr "Затвердити"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__approved
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__approved
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__approved
 msgid "Approved"
 msgstr "Затверджено"
 
@@ -169,7 +180,7 @@ msgstr "Прикріпити документ"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_attachment_count
 msgid "Attachment Count"
-msgstr "Підрахунок прикріплення"
+msgstr "Підрахунок прикріплень"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_category__is_manager_approver
@@ -193,9 +204,9 @@ msgid "Business Trip"
 msgstr "Бізнес-подорож"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__cancel
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__cancel
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__cancel
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Cancel"
 msgstr "Скасувати"
@@ -206,40 +217,14 @@ msgid "Car Rental Application"
 msgstr "Додаток прокату автомобілів"
 
 #. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_category_menu_config
-msgid "Categories"
-msgstr "Категорії"
-
-#. module: approvals
-#: model:ir.actions.act_window,name:approvals.approval_category_action
 #: model:ir.model.fields,field_description:approvals.field_approval_request__category_id
 msgid "Category"
 msgstr "Категорія"
 
 #. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
-msgid "Category Image"
-msgstr "Зображення категорії"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
-msgid "Category Name"
-msgstr "Назва категорії"
-
-#. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_config
 msgid "Configuration"
 msgstr "Налаштування"
-
-#. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
-msgid "Confirm"
-msgstr "Підтвердити"
-
-#. module: approvals
-#: selection:approval.request,request_status:0
-msgid "Confirmed"
-msgstr "Підтверджено"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__partner_id
@@ -257,14 +242,14 @@ msgstr "Затвердження контракту"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__create_uid
 #: model:ir.model.fields,field_description:approvals.field_approval_request__create_uid
 msgid "Created by"
-msgstr "Створено"
+msgstr "Створив"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__create_date
 #: model:ir.model.fields,field_description:approvals.field_approval_category__create_date
 #: model:ir.model.fields,field_description:approvals.field_approval_request__create_date
 msgid "Created on"
-msgstr "Створено"
+msgstr "Створено на"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_category_action_new_request
@@ -295,7 +280,7 @@ msgstr "Початкова дата"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:14
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
 msgid "Deadline"
 msgstr "Кінцевий термін"
@@ -308,6 +293,7 @@ msgstr "Видалити"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__description
 #: model:ir.model.fields,field_description:approvals.field_approval_request__reason
+#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Description"
 msgstr "Опис"
 
@@ -350,6 +336,11 @@ msgstr "Редагувати запит"
 #: model:ir.model.fields,field_description:approvals.field_approval_request__is_manager_approver
 msgid "Employee's Manager"
 msgstr "Менеджер співробітників"
+
+#. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
+msgid "Fields"
+msgstr "Поля"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_follower_ids
@@ -438,9 +429,19 @@ msgid "ID"
 msgstr "ID"
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__activity_exception_icon
+msgid "Icon"
+msgstr "Значок"
+
+#. module: approvals
+#: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Іконка для визначення виключення дії."
+
+#. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Якщо позначено, то повідомлення потребує вашої уваги."
+msgstr "Якщо позначено, то повідомленя потребує вашої уваги."
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction
@@ -449,6 +450,7 @@ msgstr "Якщо позначено, то нові повідомлення бу
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error
+#: model:ir.model.fields,help:approvals.field_approval_request__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Якщо позначено, деякі повідомлення мають помилку доставки."
 
@@ -502,7 +504,7 @@ msgstr "Місцезнаходження"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:10
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
 msgid "Log"
 msgstr "Примітка"
@@ -550,34 +552,25 @@ msgstr "Мій запит"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action
+#: model:ir.ui.menu,name:approvals.approvals_request_menu_my
 msgid "My Requests"
 msgstr "Мої запити"
 
 #. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_request_menu_my
-msgid "My request"
-msgstr "Мій запит"
-
-#. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__name
 msgid "Name"
-msgstr "Назва"
+msgstr "Ім'я"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__new
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__new
 msgid "New"
 msgstr "Новий"
 
 #. module: approvals
+#: model:ir.ui.menu,name:approvals.approvals_category_menu_new
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
 msgid "New Request"
-msgstr "Новий запит"
-
-#. module: approvals
-#: model:ir.ui.menu,name:approvals.approvals_category_menu_new
-msgid "New request"
 msgstr "Новий запит"
 
 #. module: approvals
@@ -596,17 +589,22 @@ msgid "Next Activity Type"
 msgstr "Тип наступної дії"
 
 #. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
-msgid "No"
-msgstr "Ні"
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action_to_review
+msgid "No new approvals to review"
+msgstr "Немає нових затверджень до перегляду"
+
+#. module: approvals
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__no
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__no
+msgid "None"
+msgstr "Немає"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_needaction_counter
@@ -616,7 +614,7 @@ msgstr "Кількість дій"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__attachment_number
 msgid "Number of Attachments"
-msgstr "Кількість долучень"
+msgstr "Кількість прикріплень"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_error_counter
@@ -644,20 +642,16 @@ msgid "Number of unread messages"
 msgstr "Кількість непрочитаних повідомлень"
 
 #. module: approvals
-#: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
-msgid "Option Settings"
-msgstr "Параметри функцій"
-
-#. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__optional
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__requirer_document__optional
 msgid "Optional"
 msgstr "Необов'язково"
 
@@ -665,11 +659,6 @@ msgstr "Необов'язково"
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Options"
 msgstr "Опції"
-
-#. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Overdue"
-msgstr "Протерміновано"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -686,11 +675,6 @@ msgstr "Додаток платежу"
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Period"
 msgstr "Період"
-
-#. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Planned"
-msgstr "Заплановано"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_procurement
@@ -711,8 +695,8 @@ msgstr "Посилання"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:13
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:30
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 #, python-format
@@ -720,9 +704,9 @@ msgid "Refuse"
 msgstr "Відхилити"
 
 #. module: approvals
-#: selection:approval.approver,status:0
-#: selection:approval.request,request_status:0
-#: selection:approval.request,user_status:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__refused
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__refused
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__refused
 msgid "Refused"
 msgstr "Відхилено"
 
@@ -743,15 +727,16 @@ msgid "Request Status"
 msgstr "Статус запиту"
 
 #. module: approvals
-#: selection:approval.category,has_amount:0
-#: selection:approval.category,has_date:0
-#: selection:approval.category,has_item:0
-#: selection:approval.category,has_location:0
-#: selection:approval.category,has_partner:0
-#: selection:approval.category,has_payment_method:0
-#: selection:approval.category,has_period:0
-#: selection:approval.category,has_quantity:0
-#: selection:approval.category,has_reference:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_date__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_item__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_location__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_partner__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_payment_method__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_period__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_quantity__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__required
+#: model:ir.model.fields.selection,name:approvals.selection__approval_category__requirer_document__required
 msgid "Required"
 msgstr "Обов'язково"
 
@@ -761,12 +746,17 @@ msgid "Responsible User"
 msgstr "Відповідальний користувач"
 
 #. module: approvals
+#: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Помилка доставки SMS"
+
+#. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence
 msgid "Sequence"
 msgstr "Послідовність"
 
 #. module: approvals
-#: code:addons/approvals/models/approval_request.py:180
+#: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "State change."
 msgstr "Зміна стану."
@@ -790,6 +780,16 @@ msgstr ""
 "Заплановано: майбутні дії."
 
 #. module: approvals
+#: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
+msgid "Submit"
+msgstr "Розглянути"
+
+#. module: approvals
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__pending
+msgid "Submitted"
+msgstr "Відправлено"
+
+#. module: approvals
 #: model:res.groups,comment:approvals.group_approval_user
 msgid "The user will be able to see approvals created by himself."
 msgstr "Користувач зможе бачити затвердження, створені ним самостійно."
@@ -801,10 +801,10 @@ msgstr "Користувач матиме доступ до налаштуван
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/activity.xml:19
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:35
-#: selection:approval.approver,status:0
-#: selection:approval.request,user_status:0
+#: code:addons/approvals/static/src/xml/activity.xml:0
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
+#: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__pending
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__pending
 #, python-format
 msgid "To Approve"
 msgstr "Необхідно затвердити"
@@ -815,9 +815,14 @@ msgid "To Review:"
 msgstr "Переглянути:"
 
 #. module: approvals
-#: selection:approval.request,activity_state:0
-msgid "Today"
-msgstr "Сьогодні"
+#: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__new
+msgid "To Submit"
+msgstr "До розгляду"
+
+#. module: approvals
+#: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Тип виключення дії на записі."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_unread
@@ -831,7 +836,7 @@ msgstr "Кількість непрочитаних повідомлень"
 
 #. module: approvals
 #. openerp-web
-#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:18
+#: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__user_id
 #, python-format
 msgid "User"
@@ -857,3 +862,17 @@ msgstr "Історія бесіди на сайті"
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Withdraw"
 msgstr "Зняти"
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid "You have to add at least %s approvers to confirm your request."
+msgstr ""
+"Вам необхідно додати принаймні %s затверджувачів для підтвердження вашого "
+"запиту."
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid "You have to attach at lease one document."
+msgstr "Вам необхідно прикріпити принаймні один документ."

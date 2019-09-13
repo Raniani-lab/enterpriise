@@ -16,4 +16,4 @@ class IotDevice(models.Model):
 class QualityPoint(models.Model):
     _inherit = "quality.point"
 
-    device_id = fields.Many2one('iot.device', ondelete='restrict')
+    device_id = fields.Many2one('iot.device', ondelete='restrict', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")

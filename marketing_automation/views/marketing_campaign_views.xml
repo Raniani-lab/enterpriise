@@ -5,23 +5,16 @@
         <field name="name">marketing.campaign.view.kanban</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" draggable="0">
+            <kanban default_group_by="state" quick_create="false">
                 <field name="name"/>
-                <field name="state"/>
+                <field name="state" readonly="1"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click o_marketing_automation_campaign_kanban">
                             <div class="row no-gutters o_ma_campaign_header">
-                                <div class="col-9">
-                                    <span t-att-title="record.name.raw_value" class="text-primary">
-                                        <t t-esc="record.name.raw_value"/>
-                                    </span>
-                                </div>
-                                <div class="col-3">
-                                    <span t-attf-class="badge-pill badge-secondary float-right o_badge_brand" t-att-title="record.state.value">
-                                        <t t-esc="record.state.value"/>
-                                    </span>
-                                </div>
+                                <span t-att-title="record.name.raw_value" class="text-primary">
+                                    <t t-esc="record.name.raw_value"/>
+                                </span>
                             </div>
                             <div class="row text-uppercase text-center mt8">
                                 <div class="col-4 text-muted o_ma_campaign_item">
@@ -48,17 +41,17 @@
         <field name="name">marketing.campaign.view.form</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <form string="Campaign" duplicate="false"> <!-- Duplication is disabled until it is fixed -->
+            <form string="Campaign">
                 <header>
                     <button name="action_start_campaign" type="object" states="draft,stopped" class="btn-primary" string="Start" />
-                    <button name="%(marketing_campaign_test_action)d" type="action" attrs="{'invisible': ['|', ('marketing_activity_ids', '=', []), ('state', '=', 'stopped') ]}" class="btn-secondary" string="Launch a Test" />
                     <button name="action_stop_campaign" type="object" states="running" class="btn-primary" string="Stop" />
-                    <button name="sync_participants" type="object" states="running" class="btn-danger" string="Generate Participants" groups="base.group_no_one"/>
-                    <button name="execute_activities" type="object" states="running" class="btn-danger" string="Execute Activities" groups="base.group_no_one"/>
+                    <button name="%(marketing_campaign_test_action)d" type="action" attrs="{'invisible': ['|', ('marketing_activity_ids', '=', []), ('state', '=', 'stopped') ]}" class="btn-secondary" string="Launch a Test" />
+                    <button name="sync_participants" type="object" states="running" class="btn-secondary" string="Generate participants" groups="base.group_no_one" confirm="Are you sur you want to proceed ?"/>
+                    <button name="execute_activities" type="object" states="running" class="btn-secondary" string="Execute activities" groups="base.group_no_one" confirm="Are you sur you want to proceed ?"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,running,stopped" />
                 </header>
                 <field name="require_sync" invisible="1"/>
-                <div class="text-center" attrs="{'invisible': [('require_sync', '=', False)]}">
+                <div class="text-center alert alert-primary" role="alert" attrs="{'invisible': [('require_sync', '=', False)]}">
                     <div class="h4 mt8"><strong>The workflow has been modified!</strong></div>
                     <p>Some participants are already running on this campaign. Click on 'Update' to apply the modifications you've just made.</p>
                     <p>Be aware that participants that had no more activities could be reintroduced into the campaign and new traces could be created for them.</p>
@@ -70,7 +63,7 @@
                 <sheet>
                     <div name="button_box" class="oe_button_box">
                         <button name="action_view_mailings" type="object" icon="fa-envelope-open-o" class="oe_stat_button">
-                            <field name="mass_mailing_count" widget="statinfo" string="Mailings"/>
+                            <field name="mass_mailing_count" widget="statinfo" string="Templates"/>
                         </button>
                         <button name="action_view_tracker_statistics" type="object" icon="fa-link" class="oe_stat_button">
                             <field name="link_tracker_click_count" widget="statinfo" string="Clicks"/>
@@ -94,11 +87,11 @@
                             string="Target"
                             class="oe_inline"
                             attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            options="{'no_create_edit': True, 'no_open': True}"
+                            options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"
                             context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
                         <field name="active" invisible="1"/>
                         <field name="model_name" invisible="1"/>
-                        <field name="unique_field_id" options="{'no_create_edit': True, 'no_open': True}" groups="base.group_no_one" class="oe_inline"/>
+                        <field name="unique_field_id" string="Unicity based on " options="{'no_create_edit': True, 'no_open': True}" groups="base.group_no_one" class="oe_inline"/>
                         <field name="domain" widget="domain" options="{'model': 'model_name'}"/>
                         <field name="utm_campaign_id" required="0" invisible="1"/>
                     </group>
@@ -157,11 +150,10 @@
                                                 </div>
                                                 <div class="o_pane o_pane_graph">
                                                     <div class="row mt16">
-                                                        <div t-attf-class="col-lg-9 col-9 o_ma_graph #{record.activity_type.raw_value == 'email' and 'mb16' or None}">
+                                                        <div class="col-lg-9 col-9 o_ma_graph mb16">
                                                             <t t-if="record.statistics_graph_data.value">
                                                                 <field name="statistics_graph_data" widget="marketing_activity_graph" />
                                                             </t>
-                                                            <div class="o_ma_chart_time">Last 15 Days</div>
                                                         </div>
                                                         <div class="col-lg-3 col-3 text-center">
                                                             <div class="o_ma_text_processed mb16">
@@ -295,7 +287,10 @@
         <field name="arch" type="xml">
             <tree string="Campaign">
                 <field name="name" />
+                <field name="model_id" string="Target" />
                 <field name="state" />
+                <field name="mass_mailing_count" />
+                <field name="link_tracker_click_count" />
                 <field name="total_participant_count" />
             </tree>
         </field>
@@ -326,9 +321,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new campaign
-            </p><p>
-                Or <a href="/web#action=marketing_automation.marketing_campaign_action_archived">load our campaign templates</a> to get some ideas.
+                Create a campaign
             </p>
         </field>
     </record>
@@ -340,7 +333,7 @@
         <field name="context" eval="{'search_default_archive': 1}"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new campaign
+                Create a campaign
             </p>
         </field>
     </record>

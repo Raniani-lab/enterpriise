@@ -311,7 +311,7 @@ class HelpdeskTeam(models.Model):
             dt = fields.Date.today()
             tickets = self.env['helpdesk.ticket'].search(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)])
             activity = tickets.rating_get_grades()
-            total_rating = self.compute_activity_avg(activity)
+            total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
             team_satisfaction = round((total_rating / total_activity_values if total_activity_values else 0), 2) *10
             if team_satisfaction:
@@ -321,7 +321,7 @@ class HelpdeskTeam(models.Model):
             dt = fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6)))
             tickets = self.env['helpdesk.ticket'].search(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)])
             activity = tickets.rating_get_grades()
-            total_rating = self.compute_activity_avg(activity)
+            total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
             team_satisfaction_7days = round((total_rating / total_activity_values if total_activity_values else 0), 2) * 10
             if team_satisfaction_7days:

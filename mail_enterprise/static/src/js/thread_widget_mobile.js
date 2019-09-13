@@ -11,12 +11,8 @@ const SnackBar = require('web_enterprise.SnackBar');
 
 const _t = core._t;
 
-ThreadWidget.include({
-    ...SwipeItemMixin,
-    events: {
-        ...SwipeItemMixin.events,
-        ...ThreadWidget.prototype.events,
-    },
+ThreadWidget.include(Object.assign({}, SwipeItemMixin, {
+    events: Object.assign({}, SwipeItemMixin.events, ThreadWidget.prototype.events),
     init() {
         SwipeItemMixin.init.call(this, {
             allowSwipe: (ev, action) => {
@@ -51,10 +47,9 @@ ThreadWidget.include({
         return this._super(...arguments);
     },
     render(thread, options) {
-        options = {
-            ...options,
+        options = Object.assign({}, options, {
             displayMarkAsRead: false,
-        };
+        });
         let renderResult = this._super(thread, options);
         SwipeItemMixin.addClassesToTarget.call(this);
         return renderResult;
@@ -73,6 +68,6 @@ ThreadWidget.include({
             .toggleClass('fa-star-o')
             .toggleClass('fa-star');
     },
-});
+}));
 
 });

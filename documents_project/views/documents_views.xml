@@ -25,11 +25,11 @@
                             </div>
                             <div class="content-group" attrs="{'invisible' : [('documents_project_settings', '=', False)]}">
                                 <div class="row mt16">
-                                    <label class="o_form_label col-lg-3" for="product_folder" string="Workspace"/>
+                                    <label class="o_form_label col-lg-3" for="project_folder" string="Workspace"/>
                                    <field name="project_folder" attrs="{'required' : [('documents_project_settings', '=', True)]}"/>
                                 </div>
                                 <div class="row">
-                                    <label class="o_form_label col-lg-3" for="product_tags" string="Default Tags"/>
+                                    <label class="o_form_label col-lg-3" for="project_tags" string="Default Tags"/>
                                    <field name="project_tags" widget="many2many_tags" domain="[('folder_id','=', project_folder)]"/>
                                 </div>
                             </div>

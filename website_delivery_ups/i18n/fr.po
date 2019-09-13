@@ -1,23 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_delivery_ups
+# 	* website_delivery_ups
 # 
 # Translators:
-# Xavier Belmere <Info@cartmeleon.com>, 2017
-# Eloïse Stilmant <est@odoo.com>, 2017
-# Laura Piraux <lap@odoo.com>, 2017
-# fr trans <e2ftrans1@yahoo.com>, 2017
-# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
-# f5f0a0dac17dde787a1d812a6989680e, 2017
-# e2f <projects@e2f.com>, 2018
+# Cécile Collart <cco@odoo.com>, 2019
 # Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2017-12-13 15:27+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -35,6 +29,8 @@ msgstr "(Facturer mon compte)"
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/>"
 msgstr ""
+"<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Supprimer\" "
+"title=\"Supprimer\"/>"
 
 #. module: website_delivery_ups
 #: model_terms:payment.acquirer,pending_msg:website_delivery_ups.payment_acquirer_ups_cod
@@ -44,40 +40,9 @@ msgid ""
 msgstr "<i/>"
 
 #. module: website_delivery_ups
-#: model_terms:payment.acquirer,cancel_msg:website_delivery_ups.payment_acquirer_ups_cod
-msgid "<span><i>Cancel,</i> Your payment has been cancelled.</span>"
-msgstr "<span><i>Annuler,</i> votre paiement a été annulé.</span>"
-
-#. module: website_delivery_ups
-#: model_terms:payment.acquirer,done_msg:website_delivery_ups.payment_acquirer_ups_cod
-msgid ""
-"<span><i>Done,</i> Your online payment has been successfully processed. "
-"Thank you for your order.</span>"
-msgstr ""
-"<span><i>Terminé,</i> votre paiement en ligne a été enregistré. Merci de "
-"votre commande.</span>"
-
-#. module: website_delivery_ups
-#: model_terms:payment.acquirer,error_msg:website_delivery_ups.payment_acquirer_ups_cod
-msgid ""
-"<span><i>Error,</i> Please be aware that an error occurred during the "
-"transaction. The order has been confirmed but will not be paid. Do not "
-"hesitate to contact us if you have any questions on the status of your "
-"order.</span>"
-msgstr ""
-"<span><i>Erreur,</i> une erreur est survenue lors de la transaction. La "
-"commande a été confirmée mais ne sera pas réglée. N'hésitez pas à nous "
-"contacter pour toute question sur le statut de la commande.</span>"
-
-#. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Apply"
 msgstr "Appliquer"
-
-#. module: website_delivery_ups
-#: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
-msgid "Bank Account"
-msgstr "Compte bancaire"
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,name:website_delivery_ups.payment_acquirer_ups_cod
@@ -95,24 +60,9 @@ msgid "Close"
 msgstr "Fermer"
 
 #. module: website_delivery_ups
-#: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
-msgid "Communication"
-msgstr "Communication"
-
-#. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Enter your Carrier Account #"
 msgstr "Saisissez le numéro de compte de votre transporteur"
-
-#. module: website_delivery_ups
-#: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
-msgid "Please use the following transfer details"
-msgstr "Utilisez les informations suivantes pour le transfert bancaire."
-
-#. module: website_delivery_ups
-#: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
-msgid "Please use the order name as communication reference."
-msgstr "Indiquez le numéro de commande dans le champ libellé."
 
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_sale_order
@@ -131,10 +81,25 @@ msgstr "UPS Facturer mon compte"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.res_config_settings_view_form_inherit_website_delivery_ups
-msgid "UPS Delivery Methods"
-msgstr "Méthodes de livraison UPS"
+msgid "UPS Shipping Methods"
+msgstr "Méthodes d'expédition UPS"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "Using Account"
 msgstr "En utilisant mon compte"
+
+#. module: website_delivery_ups
+#: model_terms:payment.acquirer,auth_msg:website_delivery_ups.payment_acquirer_ups_cod
+msgid "Your payment has been authorized."
+msgstr "Votre paiement a été autorisé."
+
+#. module: website_delivery_ups
+#: model_terms:payment.acquirer,cancel_msg:website_delivery_ups.payment_acquirer_ups_cod
+msgid "Your payment has been cancelled."
+msgstr "Votre paiement a été annulé."
+
+#. module: website_delivery_ups
+#: model_terms:payment.acquirer,done_msg:website_delivery_ups.payment_acquirer_ups_cod
+msgid "Your payment has been successfully processed. Thank you!"
+msgstr "Votre paiement a été traité avec succès. Merci!"

@@ -4,6 +4,7 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/pos_iot/static/src/js/barcode_reader.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/chrome.js"></script>
+            <script type="text/javascript" src="/pos_iot/static/src/js/customer_display.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/devices.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/gui.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/iot.js"></script>
@@ -36,12 +37,6 @@
             <xpath expr="//field[@name='iotbox_id']/../.." position="after">
                 <div attrs="{'invisible' : [('is_posbox', '=', False)]}">
                     <button name="%(iot.iot_box_action)d" icon="fa-arrow-right" type="action" string="IoT Boxes" class="btn-link mt8"/>
-                </div>
-            </xpath>
-            <xpath expr="//field[@name='iface_scan_via_proxy']/.." position="before">
-                <div class="row" attrs="{'invisible' : [('is_posbox', '=', False)]}">
-                    <label string="Payment terminal" for="iface_payment_terminal" class="col-lg-3 o_light_label"/>
-                    <field name="iface_payment_terminal"/>
                 </div>
             </xpath>
         </field>

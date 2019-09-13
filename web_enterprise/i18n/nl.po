@@ -1,19 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * web_enterprise
+# 	* web_enterprise
 # 
 # Translators:
-# Volluta <volluta@tutanota.com>, 2016
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -24,74 +23,89 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:220
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "(Enterprise Edition)"
 msgstr "(Enterprise Editie)"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:67
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "1 month"
 msgstr "1 maand"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:8
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Action"
 msgstr "Actie"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:236
-#: code:addons/web_enterprise/static/src/xml/base.xml:239
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Alt"
 msgstr "Alt"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:130
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Applications"
 msgstr "Applicaties"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:39
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "COMPANIES"
 msgstr "BEDRIJVEN"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:34
+#: code:addons/web_enterprise/static/src/js/views/view_dialogs.js:0
+#, python-format
+msgid "Clear"
+msgstr "Zichtbaar"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Close menu"
 msgstr "Menu sluiten"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:42
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Company menu"
 msgstr "Bedrijfsmenu"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:239
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Control"
 msgstr "Controle"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:226
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Database expiration:"
 msgstr "Vervaldatum database:"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
+#, python-format
+msgid "Filters..."
+msgstr "Filters..."
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
@@ -100,99 +114,113 @@ msgstr "HTTP routing"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:98
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Log in as an administrator to correct the issue."
 msgstr "Log in als administrator om het probleem te corrigeren."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:51
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Logo"
 msgstr "Logo"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:31
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Menu"
 msgstr "Menu"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:48
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "No result"
 msgstr "Geen resultaat"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:219
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Odoo"
 msgstr "Odoo"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:111
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Odoo Help"
 msgstr "Odoo Help"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:119
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Paste code here"
 msgstr "Plak de code hier"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:90
-#: code:addons/web_enterprise/static/src/xml/base.xml:95
+#: code:addons/web_enterprise/static/src/js/views/relational_fields.js:0
+#, python-format
+msgid "Quick search: %s"
+msgstr "Snelzoeken: %s"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Refresh subscription status"
 msgstr "Vernieuw abonnement status"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:121
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Register"
 msgstr "Registreer"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:86
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Register your subscription"
 msgstr "Registreer uw inschrijving"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:89
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Renew your subscription"
-msgstr "Hernieuw uw inschrijving"
+msgstr "Vernieuw uw inschrijving"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:6
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Search"
 msgstr "Zoek"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:7
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Search..."
-msgstr "Zoeken..."
+msgstr "Zoek..."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:110
+#: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
+#, python-format
+msgid "See result"
+msgstr "Bekijk resultaat"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid ""
 "Something went wrong while registering your database. You can try again or "
@@ -203,110 +231,113 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:116
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Subscription Code:"
-msgstr "Abonnement code:"
+msgstr "Abonnementscode:"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:104
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid ""
 "Thank you, your registration was successful! Your database is valid until"
-msgstr "Danku, uw registratie was succesvol! Uw database is geldig tot"
+msgstr "Dank u, uw registratie was succesvol! Uw database is geldig tot"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:80
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "This database has expired."
 msgstr "De database is vervallen."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:76
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "This database will expire in"
 msgstr "Deze database vervalt in"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:73
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "This demo database will expire in"
 msgstr "Deze demo database vervalt in"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:234
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Toggle home menu"
 msgstr "Wissel home menu"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:131
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Toggle menu"
 msgstr "Wissel menu"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:94
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Upgrade your subscription"
 msgstr "Upgrade uw abonnement"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:92
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
-msgid "You have more users than your subscription allows."
-msgstr "U heeft meer gebruikers dan uw abonnement toestaat."
+msgid ""
+"You have more users or more apps installed than your subscription allows."
+msgstr ""
+"U heeft meer gebruikers of meer applicaties geïnstalleerd dan uw abonnement "
+"toestaat."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:62
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid ""
 "You will be able to register your database once you have installed your "
 "first app."
 msgstr ""
-"U kan uw database registreren vanaf dat u uw eerste module heeft "
+"U kunt uw database registreren vanaf dat u uw eerste module heeft "
 "geïnstalleerd."
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:119
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Your subscription code"
 msgstr "Uw abonnementscode"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:107
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Your subscription was updated and is valid until"
 msgstr "Uw abonnement is geüpdatet en is geldig tot"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:86
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "buy a subscription"
 msgstr "koop een abonnement"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:70
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "days"
 msgstr "dagen"
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/xml/base.xml:86
+#: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "or"
 msgstr "of"

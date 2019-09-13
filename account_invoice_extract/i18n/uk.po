@@ -1,17 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_invoice_extract
+# 	* account_invoice_extract
 # 
 # Translators:
 # Martin Trigaux, 2019
+# Zoriana Zaiats, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:36+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +28,7 @@ msgid ""
 "'ocr selected with user selection (user may have selected the same box)"
 msgstr ""
 "0 для \"не вибрано\", 1 для \"ocr вибрано без вибору користувача\" і 2 для "
-"\"ocr вибрано з вибором користувача (користувач може вибрати той самий блок)"
+"\"ocr вибрано з вибором користувача (користувач може вибрати той самий box)"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
@@ -39,28 +40,24 @@ msgstr ""
 "specific.\"/>"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
-msgid "An error occured"
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__error_status
+#, python-format
+msgid "An error occurred"
 msgstr "Виникла помилка"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
-msgid "An error occured during digitalization. Try resending the bill."
-msgstr ""
-"Під час оцифрування сталася помилка. Спробуйте повторно надіслати рахунок."
-
-#. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Buy credits"
-msgstr "Отримати кредит"
+msgstr "Отримати кредити"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_can_show_resend_button
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_can_show_resend_button
 msgid "Can show the ocr resend button"
 msgstr "Може показати переслану кнопку ocr"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_can_show_send_button
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_can_show_send_button
 msgid "Can show the ocr send button"
 msgstr "Може показувати надіслану кнопку ocr "
 
@@ -70,7 +67,7 @@ msgid "Companies"
 msgstr "Компанії"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__done
 msgid "Completed flow"
 msgstr "Завершений процес"
 
@@ -87,7 +84,7 @@ msgstr "Створив"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__create_date
 msgid "Created on"
-msgstr "Створено"
+msgstr "Створено на"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__display_name
@@ -95,17 +92,27 @@ msgid "Display Name"
 msgstr "Назва для відображення"
 
 #. module: account_invoice_extract
-#: selection:res.company,extract_show_ocr_option_selection:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__no_send
 msgid "Do not process bills"
-msgstr "Не обробляйте рахунки"
+msgstr "Не обробляти рахунки"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_word_ids
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
+msgid "Enable to get only one invoice line per tax"
+msgstr "Може отримати лише один рядок рахунку на податок"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_error_message
+msgid "Error message"
+msgstr "Повідомлення про помилку"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_word_ids
 msgid "Extract Word"
-msgstr "Вилучіть слово"
+msgstr "Вилучити Word"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_state
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_state
 msgid "Extract state"
 msgstr "Стан вилучення"
 
@@ -113,6 +120,11 @@ msgstr "Стан вилучення"
 #: model:ir.model,name:account_invoice_extract.model_account_invoice_extract_words
 msgid "Extracted words from invoice scan"
 msgstr "Вилучені слова зі скану рахунка"
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
+msgid "Extraction Information"
+msgstr "Інформація про вилучення"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__field
@@ -125,18 +137,24 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_remoteid
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_remote_id
 msgid "Id of the request to IAP-OCR"
 msgstr "Id запиту до IAP-OCR"
 
 #. module: account_invoice_extract
-#: model:ir.model,name:account_invoice_extract.model_account_invoice
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice"
 msgstr "Рахунок"
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,help:account_invoice_extract.field_account_invoice__extract_remoteid
+#: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
+#: model:ir.cron,cron_name:account_invoice_extract.ir_cron_update_ocr_status
+#: model:ir.cron,name:account_invoice_extract.ir_cron_update_ocr_status
+msgid "Invoice OCR: Update All Status"
+msgstr "Рахунок OCR: оновити усі статуси"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,help:account_invoice_extract.field_account_move__extract_remote_id
 msgid "Invoice extract id"
 msgstr "Id виписки рахунка-фактури"
 
@@ -149,6 +167,11 @@ msgstr "Рахунок вилучає вибраний статус."
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice id"
 msgstr "Іd рахунка-фактури"
+
+#. module: account_invoice_extract
+#: model:ir.model,name:account_invoice_extract.model_account_move
+msgid "Journal Entries"
+msgstr "Записи в журналі"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words____last_update
@@ -166,22 +189,34 @@ msgid "Last Updated on"
 msgstr "Останнє оновлення"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "No document name provided"
+msgstr "Не вказано назву документа"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__no_extract_requested
 msgid "No extract requested"
 msgstr "Немає запиту на вилучення"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__not_enough_credit
 msgid "Not enough credit"
 msgstr "Недостатньо кредитів"
 
 #. module: account_invoice_extract
-#: selection:res.company,extract_show_ocr_option_selection:0
+#: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
+#: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
+msgid "OCR Single Invoice Line Per Tax"
+msgstr "Рядок одного рахунку-фактури на податок OCR"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__auto_send
 msgid "Process all bills automatically"
 msgstr "Обробляйте всі рахунки автоматично"
 
 #. module: account_invoice_extract
-#: selection:res.company,extract_show_ocr_option_selection:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__manual_send
 msgid "Process bills on demand only"
 msgstr "Обробляйте рахунки тільки за запитом"
 
@@ -191,12 +226,12 @@ msgid "Processing Option"
 msgstr "Варіант обробки"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Resend For Digitalization"
 msgstr "Повторно надіслати для цифрового перегляду"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Send For Digitalization"
 msgstr "Надіслати для цифрового перегляду"
 
@@ -206,7 +241,24 @@ msgid "Send mode on invoices attachments"
 msgstr "Режим надсилання на прикріпленнях рахунків-фактур"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "Server is currently under maintenance. Please retry later"
+msgstr "Сервер на обслуговуванні. Спробуйте пізніше "
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "Server not available. Please retry later"
+msgstr "Сервер не доступний. Спробуйте пізніше"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_status_code
+msgid "Status code"
+msgstr "Код статусу"
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 60 seconds."
@@ -215,7 +267,13 @@ msgstr ""
 "секунд."
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "The document could not be found"
+msgstr "Не можливо знайти документ"
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 60 seconds."
@@ -223,7 +281,13 @@ msgstr ""
 "Файл надіслано та обробляється. Зазвичай це займає від 5 до 60 секунд."
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "Unsupported image format"
+msgstr "Непідтримуваний формат зображення"
+
+#. module: account_invoice_extract
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Update status"
 msgstr "Оновити статус"
 
@@ -233,12 +297,12 @@ msgid "User Selected"
 msgstr "Вибрано користувача"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_extraction
 msgid "Waiting extraction"
 msgstr "Очікування вилучення"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_validation
 msgid "Waiting validation"
 msgstr "Очікування підтвердження"
 
@@ -278,7 +342,7 @@ msgid "Word Text"
 msgstr "Word Text"
 
 #. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
+#: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "You don't have enough credit to extract datas from your invoice. You can buy"
 " new credits here:"
@@ -287,6 +351,12 @@ msgstr ""
 "Ви можете придбати нові кредити тут:"
 
 #. module: account_invoice_extract
-#: selection:account.invoice,extract_state:0
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "You must send the same quantity of documents and file names"
+msgstr "Ви повинні надіслати ту ж кількість документів та назви файлів"
+
+#. module: account_invoice_extract
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__extract_not_ready
 msgid "waiting extraction, but it is not ready"
 msgstr "очікування вилучення, але воно ще не готове"

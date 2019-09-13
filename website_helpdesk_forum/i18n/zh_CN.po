@@ -1,20 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_forum
+# 	* website_helpdesk_forum
 # 
 # Translators:
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# Martin Trigaux, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
+# 湘子 南 <1360857908@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:12+0000\n"
-"PO-Revision-Date: 2017-02-15 11:47+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,17 +33,8 @@ msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid ""
-"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
-"label=\"Redirect to external link\"/>"
-msgstr ""
-"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
-"label=\"Redirect to external link\"/>"
-
-#. module: website_helpdesk_forum
-#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<span>By </span>"
-msgstr "<span>由 </span>"
+msgstr "<span>作者 </span>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -75,12 +66,12 @@ msgstr "帮助中心论坛URL"
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:84
 #, python-format
 msgid "Help Center not active for this team."
-msgstr "此团队未激活帮助中心。"
+msgstr "这个团队的帮助中心不活跃。"
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "服务台团队"
+msgstr "帮助中心团队"
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_ticket
@@ -91,7 +82,7 @@ msgstr "帮助中心工单"
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:86
 #, python-format
 msgid "No post associated to this ticket."
-msgstr "没有与此服务单相关的帖子。"
+msgstr "没有与这张票相关的帖子。"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
@@ -110,13 +101,13 @@ msgstr "流行问题"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Question has accepted answer"
-msgstr "问题已接受回复"
+msgid "Question"
+msgstr "疑问"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Redirect to external link"
-msgstr "重指向外部链接"
+msgid "Question has accepted answer"
+msgstr "问题已接受回复"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
@@ -126,13 +117,13 @@ msgstr "在论坛分享"
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum
 msgid "The related forum is:<br/>"
-msgstr "<br/>"
+msgstr "相关论坛为:<br/>"
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:77
 #, python-format
 msgid "Ticket has been shared on the %s forum."
-msgstr "服务单已在 %s 论坛上分享。"
+msgstr "工单已在 %s 论坛上分享。"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -142,4 +133,4 @@ msgstr "视图"
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum
 msgid "View the Help Center:<br/>"
-msgstr "<br/>"
+msgstr "查看帮助中心:<br/>"

@@ -7,8 +7,8 @@
         <field name="country_id" ref="base.be"/>
         <field name="report_id" ref="l10n_be_hr_payroll.action_report_termination_fees"/>
         <field name="payslip_name">Termination Fees</field>
-        <field name="rule_ids" eval="False"/>
-        <field name="use_worked_day_lines">False</field>
+        <field name="rule_ids" eval="[]"/>
+        <field name="use_worked_day_lines" eval="False"/>
     </record>
 
     <!-- Salary Other Input -->

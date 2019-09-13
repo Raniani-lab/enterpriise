@@ -98,7 +98,7 @@ class ProviderUSPS(models.Model):
     def usps_rate_shipment(self, order):
         srm = USPSRequest(self.prod_environment, self.log_xml)
 
-        check_result = srm.check_required_value(order.partner_shipping_id, order.carrier_id.usps_delivery_nature, order.warehouse_id.partner_id, order=order)
+        check_result = srm.check_required_value(order.partner_shipping_id, self.usps_delivery_nature, order.warehouse_id.partner_id, order=order)
         if check_result:
             return {'success': False,
                     'price': 0.0,
@@ -203,4 +203,7 @@ class ProviderUSPS(models.Model):
         weight_in_pounds = weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_lb'))
         pounds = int(math.floor(weight_in_pounds))
         ounces = round((weight_in_pounds - pounds) * 16, 3)
+        # ounces should be at least 1 for the api request not to fail.
+        if pounds == 0 and int(ounces) == 0:
+            ounces = 1
         return {'pound': pounds, 'ounce': ounces}

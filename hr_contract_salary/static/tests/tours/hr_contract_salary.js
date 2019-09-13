@@ -394,7 +394,12 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Type Date",
             trigger: 'iframe input.ui-selected',
-            run: 'text 17/09/2018',
+            run: function (actions) {
+                var self = this;
+                setTimeout(function () {
+                    actions.text("17/09/2018", self.$anchor);
+                }, 10)
+            },
         },
         {
             content: "Validate and Sign",

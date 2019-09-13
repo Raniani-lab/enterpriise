@@ -39,7 +39,6 @@
                 <field name="type"/>
                 <group expand="0" string="Group By">
                     <filter name="owner" string="Owner" domain="[]" context="{'group_by':'create_uid'}"/>
-                    <filter name="type" string="Type" domain="[]" context="{'group_by':'type'}" groups="base.group_no_one"/>
                     <filter name="by_model" string="Model" domain="[]" context="{'group_by': 'res_model'}"/>
                     <filter name="company" string="Company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
                     <filter name="creation_month" string="Creation Date" domain="[]" context="{'group_by':'create_date'}"/>
@@ -706,6 +705,7 @@
                                 <tree editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="name"/>
+                                    <field name="display_name" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -833,6 +833,7 @@
       <field name="name">Documents</field>
       <field name="res_model">documents.document</field>
       <field name="view_mode">kanban,tree,form</field>
+      <field name="domain">[]</field>
       <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'kanban', 'view_id': ref('documents.document_view_kanban')}),
         (0, 0, {'view_mode': 'tree', 'view_id': False}),

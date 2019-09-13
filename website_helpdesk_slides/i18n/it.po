@@ -1,25 +1,25 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_slides
+# 	* website_helpdesk_slides
 # 
 # Translators:
-# Sergio Zanchetta <primes2h@gmail.com>, 2018
-# Francesco Garganese <francesco.garganese@aeromnia.aero>, 2018
-# Martin Trigaux, 2018
-# Giovanni Perteghella <giovanni@perteghella.org>, 2018
-# Luigi Di Naro <gigidn@gmail.com>, 2018
-# Simone Bernini <simone@aperturelabs.it>, 2018
-# Paolo Valier, 2018
-# David Minneci <david@numeko.it>, 2018
-# Léonie Bouchat <lbo@odoo.com>, 2018
+# Francesco Garganese <francesco.garganese@aeromnia.aero>, 2019
+# Martin Trigaux, 2019
+# Giovanni Perteghella <giovanni@perteghella.org>, 2019
+# Luigi Di Naro <gigidn@gmail.com>, 2019
+# Paolo Valier, 2019
+# David Minneci <david@numeko.it>, 2019
+# Léonie Bouchat <lbo@odoo.com>, 2019
+# mymage <stefano.consolaro@mymage.it>, 2019
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +31,7 @@ msgstr ""
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:72
 #, python-format
 msgid "Already exists in %s : <a href=\"%s\">click here to view it.</a>"
-msgstr "Esiste già in %s : <a href=\"%s\">clicca qui per visualizzarlo</a>"
+msgstr "Esiste già in %s : <a href=\"%s\">cliccare qui per visualizzarlo</a>"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
@@ -101,7 +101,7 @@ msgstr "Documento"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__document_id
 msgid "Document ID"
-msgstr "ID Documento"
+msgstr "ID documento"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__url
@@ -139,23 +139,23 @@ msgstr "Tipo di file non valido. Seleziona un PDF o una immagine"
 #, python-format
 msgid "Invalid slide type. Please select document or presentation type."
 msgstr ""
-"Tipo di diapositiva non valido. Seleziona un tipo di documento o di "
+"Tipo di diapositiva non valido. Selezionare un tipo di documento o di "
 "presentazione. "
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard____last_update
 msgid "Last Modified on"
-msgstr "Data di ultima modifica"
+msgstr "Ultima modifica il"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Ultima modifica di"
+msgstr "Ultimo aggiornamento di"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_date
 msgid "Last Updated on"
-msgstr "Ultima modifica il"
+msgstr "Ultimo aggiornamento il"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__mime_type
@@ -201,7 +201,7 @@ msgstr "Salva"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Slide"
-msgstr "Slide"
+msgstr "Scorrimento"
 
 #. module: website_helpdesk_slides
 #: model:ir.actions.act_window,name:website_helpdesk_slides.slide_upload_action
@@ -211,22 +211,22 @@ msgstr "Invio di diapositive"
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_slide_upload_wizard
 msgid "Slide Upload Wizard"
-msgstr "Wizard di invio di diapositive"
+msgstr "Procedura guidata di invio di diapositive"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Slide image"
-msgstr "Immagine della diapositiva"
+msgstr "Immagine diapositiva"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__tag_ids
 msgid "Tags"
-msgstr "Tags"
+msgstr "Etichette"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Tags..."
-msgstr "tags..."
+msgstr "etichette..."
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__slide_type
@@ -234,14 +234,14 @@ msgid ""
 "The document type will be set automatically based on the document URL and "
 "properties (e.g. height and width for presentation and document)."
 msgstr ""
-"Il tipo di documento sarà definito automaticamente in base al suo URL e alle"
-" sue proprietà (es: altezza e larghezza per una presentazione o un "
+"Il tipo di documento verrà definito automaticamente in base al suo URL e "
+"alle sue proprietà (es: altezza e larghezza per una presentazione o un "
 "documento)."
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_helpdesk_team__elearning_url
 msgid "The full URL to access the document through the website."
-msgstr "URL per accedere al documento attraverso il Sito Web "
+msgstr "URL completo per accedere al documento dal sito web."
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
@@ -256,13 +256,15 @@ msgstr "Titolo"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__slide_type
 msgid "Type"
-msgstr "Tipo"
+msgstr "Tipologia"
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:87
 #, python-format
 msgid "Uploded new slide : <a href=\"%s\">click here to view it.</a>"
-msgstr "Nuova slide caricata: <a href=\"%s\">clicca qui per visualizzarla.</a>"
+msgstr ""
+"Nuova diapositiva caricata: <a href=\"%s\">cliccare qui per "
+"visualizzarla.</a>"
 
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
@@ -272,7 +274,7 @@ msgstr "Video"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "View the presentations:<br/>"
-msgstr "Visualizza le presentazioni"
+msgstr "Visualizzare le presentazioni:<br/>"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page

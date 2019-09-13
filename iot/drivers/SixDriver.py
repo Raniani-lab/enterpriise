@@ -28,7 +28,7 @@ class SixDriver(Driver):
         self._device_connection = 'network'
         self._device_name = "Six Payment Terminal %s" % self.device_identifier
         self.actions = Queue()
-        self.last_transaction = None
+        self.last_transaction = {}
         self.cid = None
         self.processing = False
 
@@ -92,6 +92,7 @@ class SixDriver(Driver):
         activation_state = ctypes.c_long()
         self.call_eftapi('EFT_GetActivationState', ctypes.byref(activation_state))
         if activation_state.value == 1:
+            self.last_transaction = {}
             self.call_eftapi('EFT_Close')
 
     def balance(self):
@@ -113,8 +114,8 @@ class SixDriver(Driver):
         self.call_eftapi('EFT_GetDeviceEventCode', ctypes.byref(reader_status))
         if reader_status.value != 0:
             self.send_status(error=_("A card is still inserted in the Payment Terminal, please remove it then try again."), cid=id)
-        elif self.last_transaction['owner'] != self.data['owner'] or self.last_transaction['id'] != id:
-            self.send_status(error=_("Another payment was processed after the one you're trying to reverse, you cannot reverse it anymore."), cid=id)
+        elif self.last_transaction.get('owner') != self.data['owner'] or self.last_transaction.get('id') != id:
+            self.send_status(error=_("You cannot reverse this payment anymore."), cid=id)
         else:
             return True
         return False

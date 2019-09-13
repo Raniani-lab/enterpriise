@@ -55,14 +55,15 @@ class HrAppraisal(models.Model):
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         self = self.sudo()  # fields are not on the employee public
-        self.company_id = self.employee_id.company_id
-        self.manager_appraisal = self.employee_id.appraisal_by_manager
-        self.manager_ids = self.employee_id.appraisal_manager_ids
-        self.colleagues_appraisal = self.employee_id.appraisal_by_colleagues
-        self.colleagues_ids = self.employee_id.appraisal_colleagues_ids
-        self.employee_appraisal = self.employee_id.appraisal_self
-        self.collaborators_appraisal = self.employee_id.appraisal_by_collaborators
-        self.collaborators_ids = self.employee_id.appraisal_collaborators_ids
+        if self.employee_id:
+            self.company_id = self.employee_id.company_id
+            self.manager_appraisal = self.employee_id.appraisal_by_manager
+            self.manager_ids = self.employee_id.appraisal_manager_ids
+            self.colleagues_appraisal = self.employee_id.appraisal_by_colleagues
+            self.colleagues_ids = self.employee_id.appraisal_colleagues_ids
+            self.employee_appraisal = self.employee_id.appraisal_self
+            self.collaborators_appraisal = self.employee_id.appraisal_by_collaborators
+            self.collaborators_ids = self.employee_id.appraisal_collaborators_ids
 
     @api.onchange('company_id')
     def _onchange_company_id(self):
@@ -246,7 +247,7 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
 
         result = super(HrAppraisal, self).create(vals)
         if vals.get('state') and vals['state'] == 'pending':
-                self.send_appraisal()
+            self.send_appraisal()
 
         result.employee_id.sudo().appraisal_date = result.date_close
         result.subscribe_employees()

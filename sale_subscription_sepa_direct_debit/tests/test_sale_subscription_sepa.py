@@ -20,7 +20,7 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
             'name': 'Bank SEPA',
             'type': 'bank',
             'code': 'BNKSEPA',
-            'post_at_bank_rec': True,
+            'post_at': 'bank_rec',
             'update_posted': True,
             'inbound_payment_method_ids': [(4, self.env.ref('account_sepa_direct_debit.payment_method_sdd').id)],
             'bank_account_id': bank_account.id,
@@ -57,6 +57,7 @@ class TestSubscriptionSEPA(TestSubscriptionCommon):
         self.account_type_receivable = self.env['account.account.type'].create({
             'name': 'receivable',
             'type': 'receivable',
+            'internal_group': 'asset',
         })
         self.account_receivable = self.env['account.account'].create({
             'name': 'Ian Anderson',

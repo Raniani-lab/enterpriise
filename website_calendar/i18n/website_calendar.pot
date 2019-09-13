@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 12:56+0000\n"
-"PO-Revision-Date: 2019-08-12 12:56+0000\n"
+"POT-Creation-Date: 2019-09-09 11:59+0000\n"
+"PO-Revision-Date: 2019-09-09 11:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:66
+#: code:addons/website_calendar/models/calendar_appointment.py:0
 #, python-format
 msgid " (copy)"
 msgstr ""
@@ -32,7 +32,7 @@ msgid "#{day['today_cls'] and 'Today' or ''}"
 msgstr ""
 
 #. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:142
+#: code:addons/website_calendar/controllers/main.py:0
 #, python-format
 msgid "%s with %s"
 msgstr ""
@@ -48,7 +48,7 @@ msgid "+1 (650) 691-3277"
 msgstr ""
 
 #. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:186
+#: code:addons/website_calendar/controllers/main.py:0
 #, python-format
 msgid ", All Day"
 msgstr ""
@@ -63,6 +63,11 @@ msgstr ""
 msgid ""
 "<br/>\n"
 "                            It's too late to cancel online, please contact the attendees another way if you really can't make it."
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 msgstr ""
 
 #. module: website_calendar
@@ -273,8 +278,13 @@ msgid "Calendar"
 msgstr ""
 
 #. module: website_calendar
+#: model:ir.model,name:website_calendar.model_calendar_event
+msgid "Calendar Event"
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__can_publish
-msgid "Can publish"
+msgid "Can Publish"
 msgstr ""
 
 #. module: website_calendar
@@ -283,12 +293,12 @@ msgid "Cancel Before (hours)"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__checkbox
 msgid "Checkboxes (multiple answers)"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.type,assignation_method:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assignation_method__chosen
 msgid "Chosen by the Customer"
 msgstr ""
 
@@ -326,7 +336,7 @@ msgstr ""
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/appointment_employee_url.js:67
+#: code:addons/website_calendar/static/src/js/appointment_employee_url.js:0
 #, python-format
 msgid "Copied !"
 msgstr ""
@@ -371,7 +381,7 @@ msgid "Display Name"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__select
 msgid "Dropdown (one answer)"
 msgstr ""
 
@@ -381,14 +391,14 @@ msgid "Duration:"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
-#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
-msgid "Employees"
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "Edit"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model,name:website_calendar.model_calendar_event
-msgid "Event"
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
+msgid "Employees"
 msgstr ""
 
 #. module: website_calendar
@@ -412,7 +422,7 @@ msgid "Fri"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__5
 msgid "Friday"
 msgstr ""
 
@@ -431,17 +441,14 @@ msgid "ID"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread
-msgid "If checked new messages require your attention."
-msgstr ""
-
-#. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread
 msgid "If checked, new messages require your attention."
 msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -470,7 +477,7 @@ msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
-msgid "Is published"
+msgid "Is Published"
 msgstr ""
 
 #. module: website_calendar
@@ -541,25 +548,25 @@ msgid "Mon"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__1
 msgid "Monday"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__text
 msgid "Multi-line text"
 msgstr ""
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:30
+#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:0
 #, python-format
 msgid "Name"
 msgstr ""
 
 #. module: website_calendar
 #. openerp-web
-#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:29
+#: code:addons/website_calendar/static/src/js/website_calendar.editor.js:0
 #, python-format
 msgid "New Appointment Type"
 msgstr ""
@@ -582,7 +589,7 @@ msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr ""
 
 #. module: website_calendar
@@ -642,7 +649,7 @@ msgid "Placeholder"
 msgstr ""
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:302
+#: code:addons/website_calendar/models/calendar_appointment.py:0
 #, python-format
 msgid "Please enter a valid hour between 0:00 to 24:00 for your slots."
 msgstr ""
@@ -670,12 +677,12 @@ msgid "Questions"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__radio
 msgid "Radio (one answer)"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.type,assignation_method:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assignation_method__random
 msgid "Random"
 msgstr ""
 
@@ -700,13 +707,23 @@ msgid "Restrict Countries"
 msgstr ""
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "SCHEDULED"
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_seo_optimized
 msgid "SEO optimized"
 msgstr ""
 
 #. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: website_calendar
 #: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
-msgid "SMS Text Message - 1 Hour(s)"
+msgid "SMS Text Message - 1 Hours"
 msgstr ""
 
 #. module: website_calendar
@@ -715,7 +732,7 @@ msgid "Sat"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__6
 msgid "Saturday"
 msgstr ""
 
@@ -751,7 +768,7 @@ msgid "Sequence"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.question,question_type:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__char
 msgid "Single line text"
 msgstr ""
 
@@ -776,7 +793,7 @@ msgid "Sun"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__7
 msgid "Sunday"
 msgstr ""
 
@@ -791,7 +808,7 @@ msgid "Thu"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__4
 msgid "Thursday"
 msgstr ""
 
@@ -832,7 +849,7 @@ msgid "Tue"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__2
 msgid "Tuesday"
 msgstr ""
 
@@ -897,7 +914,7 @@ msgid "Wed"
 msgstr ""
 
 #. module: website_calendar
-#: selection:calendar.appointment.slot,weekday:0
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__3
 msgid "Wednesday"
 msgstr ""
 

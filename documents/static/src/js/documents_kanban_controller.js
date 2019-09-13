@@ -149,6 +149,15 @@ var DocumentsKanbanController = KanbanController.extend({
         }
     },
     /**
+     * used to use a mocked version of XHR in the tests.
+     *
+     * @private
+     * @returns {XMLHttpRequest}
+     */
+    _createXHR() {
+        return new window.XMLHttpRequest();
+    },
+    /**
      * Creates a progress bar and a progress card and add them to the uploads.
      *
      * @private
@@ -269,7 +278,7 @@ var DocumentsKanbanController = KanbanController.extend({
             type = files[0].type;
         }
         const prom = new Promise(resolve => {
-            const xhr = new window.XMLHttpRequest();
+            const xhr = this._createXHR();
             xhr.open('POST', '/documents/upload_attachment');
             if (documentID) {
                 this._makeReplaceProgress(uploadID, documentID, xhr);

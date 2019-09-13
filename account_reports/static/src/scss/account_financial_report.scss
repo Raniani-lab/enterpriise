@@ -38,6 +38,9 @@
     .o_account_reports_table {
         white-space: nowrap;
         margin-bottom: 128px;
+        display: block;
+        overflow-x: auto;
+        padding-bottom: 8px;
         th.o_account_report_column_header {
             &.sortable::before {
                 content: '\f07d';
@@ -54,7 +57,7 @@
             }
         }
     }
-    &.o_account_reports_followup {
+    &.o_account_followup {
         padding-top: 0px;
     }
 
@@ -395,19 +398,19 @@
             }
         }
     }
-    .o_account_reports_followup_not_clicked {
-        .o_account_reports_followup_skip {
+    .o_account_followup_not_clicked {
+        .o_account_followup_skip {
             display: inline-block;
         }
-        .o_account_reports_followup_done {
+        .o_account_followup_done {
             display: none;
         }
     }
-    .o_account_reports_followup_clicked {
-        .o_account_reports_followup_skip {
+    .o_account_followup_clicked {
+        .o_account_followup_skip {
             display: none;
         }
-        .o_account_reports_followup_done {
+        .o_account_followup_done {
             display: inline-block;
         }
     }
@@ -473,7 +476,7 @@
 
 // Summary to be edited
 // -----------------------------------------
-.o_account_reports_summary {
+.o_account_reports_body .o_account_reports_summary {
     display: inline-block;
     position: relative;
 

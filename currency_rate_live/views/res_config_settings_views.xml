@@ -24,10 +24,6 @@
                         </button>
                     </div>
                 </div>
-                <div class="row">
-                    <label string="Last Sync Date" for="last_currency_sync_date" class="col-lg-3 o_light_label" attrs="{'invisible': [('last_currency_sync_date','=',False)]}"/>
-                    <field name="last_currency_sync_date"/>
-                </div>
             </xpath>
         </field>
     </record>

@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_batch_payment
+# 	* account_batch_payment
 # 
 # Translators:
 # Martin Trigaux, 2019
@@ -12,10 +12,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:32+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: dpms <pieter.van.de.wygaert@telenet.be>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -35,16 +35,16 @@ msgid "Account Reconciliation widget"
 msgstr "Boekhoudkundige verwerkingswidget"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:75
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "All payments in the batch must belong to the same company."
 msgstr "Alle betalingen in de batch moeten tot hetzelfde bedrijf behoren."
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:84
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr "Alle betalingen in de batch moeten dezelfde betaalmethode delen."
+msgstr "Alle betalingen in de batch moeten dezelfde betalingsmethodedelen."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount
@@ -130,7 +130,7 @@ msgstr "Klik hier om het gegenereerde bestand te downloaden:"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Close"
-msgstr "Afsluiten"
+msgstr "Sluiten"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_code
@@ -138,8 +138,7 @@ msgid "Code"
 msgstr "Code"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:61
-#: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
+#: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Create Batch Payment"
 msgstr "Maak batchbetaling aan"
@@ -153,6 +152,11 @@ msgstr "Maak een nieuwe klant batchbetaling"
 #: model_terms:ir.actions.act_window,help:account_batch_payment.action_batch_payment_out
 msgid "Create a new vendor batch payment"
 msgstr "Maak een nieuwe leverancierbatchbetaling"
+
+#. module: account_batch_payment
+#: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
+msgid "Create batch payment"
+msgstr ""
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_uid
@@ -192,7 +196,7 @@ msgstr "Datum"
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__display_name
 #: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment__display_name
 msgid "Display Name"
-msgstr "Weergave naam"
+msgstr "Schermnaam"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
@@ -253,19 +257,19 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_batch_payment
-#: selection:account.batch.payment,batch_type:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__batch_type__inbound
 msgid "Inbound"
 msgstr "Inkomend"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:37
+#: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Inbound Batch Payments Sequence"
 msgstr "Inkomende batchbetalingsvolgorde"
 
 #. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:135
+#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:0
 #, python-format
 msgid "Incorrect Operation"
 msgstr "Onjuiste handeling"
@@ -310,17 +314,17 @@ msgid "Name of the generated XML file"
 msgstr "Naam van het gegenereerd XML bestand"
 
 #. module: account_batch_payment
-#: selection:account.batch.payment,state:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__state__draft
 msgid "New"
 msgstr "Nieuw"
 
 #. module: account_batch_payment
-#: selection:account.batch.payment,batch_type:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__batch_type__outbound
 msgid "Outbound"
 msgstr "Uitgaand"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_journal.py:20
+#: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Outbound Batch Payments Sequence"
 msgstr "Uitgaande batchbetaling volgorde"
@@ -328,7 +332,7 @@ msgstr "Uitgaande batchbetaling volgorde"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_id
 msgid "Payment Method"
-msgstr "Betaalmethode"
+msgstr "Betalingsmethode"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_payment
@@ -348,12 +352,7 @@ msgid "Print Batch Payment"
 msgstr "Afdrukken batchbetaling"
 
 #. module: account_batch_payment
-#: model:ir.actions.server,name:account_batch_payment.action_account_print_batch_payment
-msgid "Print Batch Payments"
-msgstr "Afdrukken batchbetalingen"
-
-#. module: account_batch_payment
-#: selection:account.batch.payment,state:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__state__reconciled
 msgid "Reconciled"
 msgstr "Afgeletterd"
 
@@ -369,19 +368,19 @@ msgstr "Betaling registreren"
 
 #. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:8
+#: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Select a Batch Payment"
 msgstr "Selecteer een verzamelbetaling"
 
 #. module: account_batch_payment
-#: selection:account.batch.payment,state:0
+#: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__state__sent
 msgid "Sent"
 msgstr "Verzonden"
 
 #. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:133
+#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:0
 #, python-format
 msgid ""
 "Some journal items from the selected batch payment are already selected in "
@@ -397,22 +396,23 @@ msgid "State"
 msgstr "Provincie / Staat"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:86
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid ""
 "The batch must have the same payment method as the payments it contains."
 msgstr ""
-"De batch moet dezelfde betaalmethode hebben als de betalingen die het bevat."
+"De batch moet dezelfde betalingsmethodehebben als de betalingen die het "
+"bevat."
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:81
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "The batch must have the same type as the payments it contains."
 msgstr ""
 "De batch moet van hetzelfde type zijn als de betalingen die het bevat."
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:78
+#: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid ""
 "The journal of the batch payment and of the payments it contains must be the"
@@ -424,7 +424,8 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__payment_method_id
 msgid "The payment method used by the payments in this batch."
-msgstr "De betaalmethode die wordt gebruikt door de betalingen in deze batch."
+msgstr ""
+"De betalingsmethodedie wordt gebruikt door de betalingen in deze batch."
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -463,12 +464,14 @@ msgstr ""
 "van 'Afdrukken' in de formulierweergave."
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_payment.py:38
+#: code:addons/account_batch_payment/models/account_payment.py:0
 #, python-format
 msgid ""
 "You cannot make a batch payment with internal transfers. Internal transfers "
 "ids: %s"
 msgstr ""
+"U kunt geen batchbetaling uitvoeren met interne overdrachten. Interne "
+"overdrachten ids: %s"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form

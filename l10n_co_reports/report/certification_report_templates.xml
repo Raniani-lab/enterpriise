@@ -40,7 +40,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     Durante el año gravable de <t t-esc="current_year"/>, practicó en la ciudad de
-                                    <t t-esc="env.user.company_id.city"/> retención en la fuente a
+                                    <t t-esc="env.company.city"/> retención en la fuente a
                                     <t t-esc="partner['partner_id'].display_name"/> con NIT:
                                     <t t-esc="partner['partner_id'].vat"/>-<t t-esc="partner['partner_id'].l10n_co_verification_code"/>.
                                 </div>
@@ -129,7 +129,7 @@
                                 </div>
                                 <div class="col-12">
                                     Dicha Retención fue consignada oportunamente a nombre de la Dirección de Impuestos y Aduanas Nacionales en la Ciudad de
-                                    <t t-esc="env.user.company_id.city"/>
+                                    <t t-esc="env.company.city"/>
                                 </div>
                                 <div class="col-12">
                                     NO REQUIRE FIRMA AUTOGRAFA. <t t-esc="options['article']"/>

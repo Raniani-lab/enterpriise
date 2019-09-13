@@ -36,7 +36,6 @@ class ResCompany(models.Model):
         ('boc', 'Bank Of Canada'),
         ('xe_com', 'xe.com'),
     ], default='ecb', string='Service Provider')
-    last_currency_sync_date = fields.Date(string="Last Sync Date", readonly=True)
 
     @api.model
     def create(self, vals):
@@ -98,7 +97,6 @@ class ResCompany(models.Model):
                 rslt = False
             else:
                 companies._generate_currency_rates(parse_results)
-                companies.write({'last_currency_sync_date': fields.Date.today()})
 
         return rslt
 
@@ -355,7 +353,6 @@ class ResConfigSettings(models.TransientModel):
     currency_interval_unit = fields.Selection(related="company_id.currency_interval_unit", readonly=False)
     currency_provider = fields.Selection(related="company_id.currency_provider", readonly=False)
     currency_next_execution_date = fields.Date(related="company_id.currency_next_execution_date", readonly=False)
-    last_currency_sync_date = fields.Date(related="company_id.last_currency_sync_date", readonly=False)
 
     @api.onchange('currency_interval_unit')
     def onchange_currency_interval_unit(self):

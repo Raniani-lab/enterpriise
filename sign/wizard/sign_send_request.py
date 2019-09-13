@@ -30,7 +30,6 @@ class SignSendRequest(models.TransientModel):
     signer_id = fields.Many2one('res.partner', string="Send To")
     signers_count = fields.Integer()
     follower_ids = fields.Many2many('res.partner', string="Copy to")
-    extension = fields.Char(related="template_id.extension", readonly=True)
     is_user_signer = fields.Boolean(compute='_compute_is_user_signer')
 
     subject = fields.Char(string="Subject", required=True)

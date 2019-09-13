@@ -1,17 +1,16 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_sign
+# 	* documents_sign
 # 
 # Translators:
-# Jorunn D. Newth, 2019
 # Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:38+0000\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -38,9 +37,15 @@ msgid "Create"
 msgstr "Opprett"
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr "Kreditnota"
+#: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_new
+msgid "Create signature request"
+msgstr ""
+
+#. module: documents_sign
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
+msgid "Create signature template(s)"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_request__documents_tag_ids
@@ -58,15 +63,20 @@ msgid "Has Business Option"
 msgstr ""
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product template"
+#: code:addons/documents_sign/models/workflow.py:0
+#, python-format
+msgid "New templates"
 msgstr ""
 
 #. module: documents_sign
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
-msgid "Request a Signature"
-msgstr "Be om en signatur"
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
+msgid "Request a signature and sign directly"
+msgstr ""
+
+#. module: documents_sign
+#: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_direct
+msgid "Sign directly"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -79,11 +89,6 @@ msgid "Signature Template"
 msgstr ""
 
 #. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr ""
-
-#. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Signed Document Tags"
 msgstr ""
@@ -91,19 +96,4 @@ msgstr ""
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Signed Document Workspace"
-msgstr ""
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Task"
-msgstr "Oppgave"
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor Credit Note"
-msgstr "Leverandørkreditnota"
-
-#. module: documents_sign
-#: selection:documents.workflow.rule,create_model:0
-msgid "Vendor bill"
 msgstr ""

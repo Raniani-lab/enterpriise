@@ -16,7 +16,7 @@
     'category': 'Sales',
     'version': '1.0',
 
-    'depends': ['sale_renting', 'stock'],
+    'depends': ['sale_renting', 'sale_stock'],
 
     'data': [
         'data/rental_stock_data.xml',

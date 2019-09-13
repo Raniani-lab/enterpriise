@@ -2,6 +2,7 @@ odoo.define('web_grid.GridView', function (require) {
 "use strict";
 
 var AbstractView = require('web.AbstractView');
+var config = require('web.config');
 var core = require('web.core');
 var GridModel = require('web_grid.GridModel');
 var GridController = require('web_grid.GridController');
@@ -9,10 +10,12 @@ var GridRenderer = require('web_grid.GridRenderer');
 var viewRegistry = require('web.view_registry');
 var pyUtils = require('web.py_utils');
 
+var _t = core._t;
 var _lt = core._lt;
 
 var GridView = AbstractView.extend({
     display_name: _lt('Grid'),
+    mobile_friendly: true,
     icon: 'fa-th',
     config: _.extend({}, AbstractView.prototype.config, {
         Model: GridModel,
@@ -111,6 +114,14 @@ var GridView = AbstractView.extend({
      */
      _extract_ranges: function(col_node, context) {
         var ranges = [];
+        if (config.device.isMobile) {
+            ranges.push({
+                name: 'day',
+                string: _t('Day'),
+                span: 'day',
+                step: 'day',
+            });
+        }
         var pyevalContext = py.dict.fromJSON(context || {});
         _.each(_.pluck(col_node.children, 'attrs'), function(range) {
             if (range.invisible && pyUtils.py_eval(range.invisible, {'context': pyevalContext})) {

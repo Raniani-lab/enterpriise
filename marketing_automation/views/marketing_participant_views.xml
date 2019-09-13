@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Participant -->
+    <!-- default participant form/tree/search -->
     <record id="marketing_participant_view_form" model="ir.ui.view">
         <field name="name">marketing.participant.view.form</field>
         <field name="model">marketing.participant</field>
         <field name="arch" type="xml">
-            <form string="Participant">
+            <form string="Participant" create="false">
                 <header>
-                    <button name="action_set_completed" type="object" states="running" class="btn-secondary" string="Mark as completed"
-                        attrs="{'invisible': [('is_test', '=', True)]}"/>
-                    <button name="action_set_completed" type="object" states="running" class="btn-secondary" string="Stop"
-                        attrs="{'invisible': [('is_test', '=', False)]}"/>
+                    <button name="action_set_completed" type="object" states="running" class="btn-secondary" string="Stop"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -155,7 +152,8 @@
         <field name="name">marketing.participant.view.search</field>
         <field name="model">marketing.participant</field>
         <field name="arch" type="xml">
-            <search string="Search Participants">
+            <search string="Search Participant">
+                <field name="resource_ref" string="Resource Name" widget="char"/>
                 <field name="campaign_id" />
                 <filter string="Running" name="running" domain="[('state', '=', 'running')]" />
                 <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]" />
@@ -164,17 +162,50 @@
                 <group>
                     <filter string="Campaign" name="group_by_campaign" context="{'group_by': 'campaign_id'}" />
                     <filter string="State" name="group_by_state" context="{'group_by': 'state'}" />
+                    <filter string="Model" name="group_by_model" context="{'group_by': 'model_id'}" />
                 </group>
             </search>
         </field>
     </record>
 
-    <record id="marketing_participants_action" model="ir.actions.act_window">
+    <!-- Participant reporting -->
+    <record id="marketing_participant_view_graph" model="ir.ui.view">
+        <field name="name">marketing.participant.view.graph</field>
+        <field name="model">marketing.participant</field>
+        <field name="arch" type="xml">
+            <graph string="Participant summary" type="pie">
+                <field name="model_id"/>
+                <field name="state"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="marketing_participant_view_pivot" model="ir.ui.view">
+        <field name="name">marketing.participant.view.pivot</field>
+        <field name="model">marketing.participant</field>
+        <field name="arch" type="xml">
+            <pivot string="Participant summary">
+                <field name="campaign_id" type="col"/>
+                <field name="state" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Participant reporting action -->
+    <record id="marketing_participants_action_reporting" model="ir.actions.act_window">
+        <field name="name">Participants</field>
+        <field name="res_model">marketing.participant</field>
+        <field name="view_mode">graph,pivot,tree,form</field>
+    </record>
+
+    <!-- Participant for mail buttons (sent, ...) action -->
+    <record id="marketing_participants_action_mail" model="ir.actions.act_window">
         <field name="name">Participants</field>
         <field name="res_model">marketing.participant</field>
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- Participant from a campaign action -->
     <record id="marketing_participant_action_campaign" model="ir.actions.act_window">
         <field name="name">Participants</field>
         <field name="res_model">marketing.participant</field>
@@ -186,6 +217,7 @@
         <field name="domain">[('is_test', '=', False)]</field>
     </record>
 
+    <!-- Test participant from a campaign action -->
     <record id="marketing_participant_action_campaign_test" model="ir.actions.act_window">
         <field name="name">Participants</field>
         <field name="res_model">marketing.participant</field>
@@ -199,9 +231,10 @@
         <field name="domain">[('is_test', '=', True)]</field>
     </record>
 
+    <!-- Reporting menu -->
     <menuitem id="marketing_participants_menu"
-        parent="marketing_automation_configuration_menu"
-        action="marketing_participants_action"
-        sequence="1"/>
-
+        parent="marketing_automation_reporting_menu"
+        action="marketing_participants_action_reporting"
+        groups="marketing_automation.group_marketing_automation_user"
+        sequence="32"/>
 </odoo>

@@ -90,9 +90,11 @@ class TestSubscription(TestSubscriptionCommon):
 
         self.company = self.env.company
 
-        self.account_type_receivable = self.env['account.account.type'].create(
-            {'name': 'receivable',
-             'type': 'receivable'})
+        self.account_type_receivable = self.env['account.account.type'].create({
+            'name': 'receivable',
+            'type': 'receivable',
+            'internal_group': 'asset',
+        })
 
         self.account_receivable = self.env['account.account'].create(
             {'name': 'Ian Anderson',
@@ -104,6 +106,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.account_type_sale = self.env['account.account.type'].create({
             'name': 'income',
             'type': 'other',
+            'internal_group': 'income',
         })
         self.account_sale = self.env['account.account'].create(
             {'name': 'Product Sales ',

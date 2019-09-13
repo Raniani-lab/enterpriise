@@ -1,6 +1,5 @@
 $o-dms-inspector-width: 320px;
 $o-dms-chatter-width: 450px;
-$o-dms-search-panel-category-padding: 4px;
 
 $o-dms-p: $o-horizontal-padding;
 $o-dms-p-small: $o-horizontal-padding*0.5;
@@ -53,24 +52,12 @@ $o-dms-progress-bar-height: 15px;
 
     .o_search_panel > .o_search_panel_section {
         .o_drag_over_selector {
-
             &.o_search_panel_filter_value, > header {
-                background-color: #e9ecef;
+                background-color: $o-searchpanel-active-bg;
                 font-weight: bold;
-                padding-left: 10%;
+                padding-left: 20px;
             }
 
-        }
-
-        .o_search_panel_category_value > header {
-            padding-top: $o-dms-search-panel-category-padding;
-            padding-bottom: $o-dms-search-panel-category-padding;
-            margin-top: -$o-dms-search-panel-category-padding + 1;
-            margin-bottom: -$o-dms-search-panel-category-padding + 1;
-
-            .o_toggle_fold {
-                padding-left: 4%;
-            }
         }
 
         .o_search_panel_spinner {
@@ -553,6 +540,7 @@ $o-dms-progress-bar-height: 15px;
             box-shadow:none;
             border-radius: 0 0 10px 10px;
             line-height: 1.2;
+            z-index: 1;
         }
 
         .o_chatter_topbar {

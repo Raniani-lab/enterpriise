@@ -405,7 +405,7 @@
             <field name="domain" eval="['|', ('account_id.code', '=like', '7%'), ('account_id.code', '=like', '6%')]" />
             <field name="formulas">balance = -sum.balance; debit = sum.debit; credit = sum.credit</field>
             <field name="sequence" eval="6"/>
-            <field name="special_date_changer">normal</field>
+            <field name="special_date_changer">from_beginning</field>
             <field name="show_domain">never</field>
             <field name="parent_id" ref='account_financial_report_be_capitaux_propres0'/>
             <field name="level" eval="2" />

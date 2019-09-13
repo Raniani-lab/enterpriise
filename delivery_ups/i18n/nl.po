@@ -1,32 +1,26 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_ups
+# 	* delivery_ups
 # 
 # Translators:
-# Cas Vissers <casvissers@brahoo.nl>, 2017
-# Eric Geens <ericgeens@yahoo.com>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-msgid "Based on Rules"
-msgstr "Gebaseerd op regels"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -51,17 +45,17 @@ msgid "Carrier Account"
 msgstr "Vervoerder account"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_cod_funds_code:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_cod_funds_code__8
 msgid "Cashier's Check or MoneyOrder"
 msgstr "Kassier cheque of MoneyOrder"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_dimension_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__cm
 msgid "Centimeters"
 msgstr "Centimeters"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_cod_funds_code:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_cod_funds_code__0
 msgid "Check, Cashier's Check or MoneyOrder"
 msgstr "Cheque, Cashier's Check of MoneyOrder"
 
@@ -71,29 +65,12 @@ msgid "Collect on Delivery"
 msgstr "Rembours"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
-msgid "DHL"
-msgstr "DHL"
-
-#. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Verzendwijzes"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_label_file_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__epl
 msgid "EPL"
 msgstr "EPL"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
-msgid "Easypost"
-msgstr "Easypost"
-
-#. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:113
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid ""
 "Error:\n"
@@ -101,17 +78,6 @@ msgid ""
 msgstr ""
 "Fout:\n"
 "%s"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
-msgid "FedEx"
-msgstr "FedEx"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-msgid "Fixed Price"
-msgstr "Vaste prijs"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -124,33 +90,34 @@ msgstr ""
 "van waaruit de leverkosten worden berekend."
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_dimension_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__in
 msgid "Inches"
 msgstr "Inch"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_weight_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__kgs
 msgid "Kilograms"
 msgstr "Kilogram"
 
 #. module: delivery_ups
-#: selection:product.packaging,package_carrier_type:0
-msgid "No carrier integration"
-msgstr "Geen vervoerder informatie"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,ups_label_file_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__gif
 msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:209
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "Packages %s do not have a positive shipping weight."
+msgstr ""
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Voorzie minimaal één item om te verzend aub."
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_package_weight_unit:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__lbs
 msgid "Pounds"
 msgstr "Ponden"
 
@@ -165,7 +132,22 @@ msgid "Provider"
 msgstr "Provider"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_label_file_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_duty_payment__recipient
+msgid "Recipient"
+msgstr "Ontvanger"
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/delivery_ups.py:0
+#, python-format
+msgid ""
+"Return label generated<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> "
+"%s"
+msgstr ""
+"Retour label aangemaakt<br/><b>Traceernummers:</b> "
+"%s<br/><b>Verpakkingen:</b> %s"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__spl
 msgid "SPL"
 msgstr "SPL"
 
@@ -180,13 +162,18 @@ msgid "Saturday Delivery"
 msgstr "Levering op zaterdag"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:231
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_duty_payment__sender
+msgid "Sender"
+msgstr "Afzender"
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "Levering N° %s werd geannuleerd"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:202
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid ""
 "Shipment created into UPS<br/><b>Tracking Numbers:</b> "
@@ -196,7 +183,12 @@ msgstr ""
 "</b>%s<br/><b>Verpakkingen:</b>%s"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:187
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Verzendmethodes"
+
+#. module: delivery_ups
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The address of your company is missing or wrong.\n"
@@ -206,7 +198,7 @@ msgstr ""
 "(Mist veld(en): %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:197
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The address of your warehouse is missing or wrong.\n"
@@ -216,7 +208,7 @@ msgstr ""
 "(Mist veld(en): %s)"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:215
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The delivery cannot be done because the weight of your product is missing."
@@ -225,7 +217,7 @@ msgstr ""
 "ontbreekt."
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:211
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -235,7 +227,7 @@ msgstr ""
 "ontbreekt."
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:219
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid ""
 "The recipient address is missing or wrong.\n"
@@ -264,11 +256,11 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_picking
 msgid "Transfer"
-msgstr "Overplaatsing"
+msgstr "Verplaatsing"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__product_packaging__package_carrier_type__ups
 msgid "UPS"
 msgstr "UPS"
 
@@ -293,12 +285,6 @@ msgstr "UPS configuratie"
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_packaging_id
 msgid "UPS Default Packaging Type"
 msgstr "UPS standaard verpakkingstype"
-
-#. module: delivery_ups
-#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
-msgid "UPS Delivery Methods"
-msgstr "UPS leveringsmethodes"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_file_type
@@ -328,6 +314,12 @@ msgid "UPS Shipper Number"
 msgstr "UPS verzender nummer"
 
 #. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+msgid "UPS Shipping Methods"
+msgstr "UPS verzendmethodes"
+
+#. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us
 #: model:product.product,name:delivery_ups.product_product_delivery_ups_us
 #: model:product.template,name:delivery_ups.product_product_delivery_ups_us_product_template
@@ -340,22 +332,22 @@ msgid "UPS Username"
 msgstr "UPS gebruikersnaam"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-msgid "USPS"
-msgstr "USPS"
-
-#. module: delivery_ups
 #: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_be
 #: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_us
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_us_product_template
-msgid "Unit(s)"
-msgstr "Stuk(s)"
+msgid "Units"
+msgstr "Eenheden"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
 msgid "Units for UPS Package Size"
 msgstr "Eenheden voor UPS verpakkingsgrootte"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
+msgid "Ups Duty Payment"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit
@@ -368,12 +360,6 @@ msgid "Value Added Services"
 msgstr "Waarde toegevoegde diensten"
 
 #. module: delivery_ups
-#: selection:delivery.carrier,ups_label_file_type:0
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__zpl
 msgid "ZPL"
 msgstr "ZPL"
-
-#. module: delivery_ups
-#: selection:delivery.carrier,delivery_type:0
-#: selection:product.packaging,package_carrier_type:0
-msgid "bpost"
-msgstr "bpost"

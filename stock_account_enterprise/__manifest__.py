@@ -9,7 +9,7 @@
     'description': """
 Contains the enterprise views for Stock account
     """,
-    'depends': ['stock_account', 'web_dashboard'],
+    'depends': ['stock_account', 'stock_enterprise', 'web_dashboard'],
     'data': [
         'report/stock_report_views.xml',
     ],

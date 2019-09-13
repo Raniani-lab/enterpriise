@@ -127,7 +127,7 @@
 
 <header t-name="Menu">
     <nav class="o_main_navbar">
-        <a href="#" class="fa fa-th o_menu_toggle" title="Applications" aria-label="Applications"/>
+        <a href="#" class="fa fa-th o_menu_toggle" title="Applications" aria-label="Applications" accesskey="h"/>
         <button type="button" class="fa fa-bars float-right d-block d-md-none o_mobile_menu_toggle" title="Toggle menu" aria-label="Toggle menu"/>
 
         <a href="#" class="o_menu_brand" role="button" />
@@ -214,14 +214,14 @@
     </t>
 </t>
 
-<t t-extend="DashboardShare">
+<t t-extend="res_config_edition">
     <t t-jquery=".user-heading h3" t-operation="replace">
         <h3>
-            Odoo <t t-esc="server_version"/> (Enterprise Edition)
+            Odoo <t t-esc="widget.server_version"/> (Enterprise Edition)
         </h3>
     </t>
     <t t-jquery=".user-heading h3" t-operation="after">
-        <t t-set="expiration_date" t-value="widget.data.expiration_date ? new moment(widget.data.expiration_date).format('LL') : null"/>
+        <t t-set="expiration_date" t-value="widget.expiration_date ? moment(widget.expiration_date).format('LL') : null"/>
         <t t-if="expiration_date">
             <h5>Database expiration: <t t-esc="expiration_date"/></h5>
         </t>

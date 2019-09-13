@@ -1,23 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * currency_rate_live
+# 	* currency_rate_live
 # 
 # Translators:
-# Ralf Hilgenstock <rh@dialoge.info>, 2017
-# Martin Trigaux, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Wolfgang Taferner, 2017
-# AppleMentalist <felix.schnatbaum@gmail.com>, 2017
-# Rudolf Schnapka <rs@techno-flex.de>, 2018
+# Leon Grill <leg@odoo.com>, 2019
+# Martin Trigaux, 2019
 # Johannes Croe <jcr@odoo.com>, 2019
+# Chris Egal <sodaswed@web.de>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,9 +28,11 @@ msgid ""
 "<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa "
 "fa-fw fa-refresh\"/>"
 msgstr ""
+"<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa "
+"fa-fw fa-refresh\"/>"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__boc
 msgid "Bank Of Canada"
 msgstr "Bank Of Canada"
 
@@ -45,7 +44,7 @@ msgstr "Unternehmen"
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_config_settings
 msgid "Config Settings"
-msgstr "Konfiguration "
+msgstr "Konfigurationseinstellungen"
 
 #. module: currency_rate_live
 #: model:ir.actions.server,name:currency_rate_live.ir_cron_currency_update_ir_actions_server
@@ -55,17 +54,17 @@ msgid "Currency: rate update"
 msgstr "Währung:  Kurs update "
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__daily
 msgid "Daily"
 msgstr "Täglich"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__ecb
 msgid "European Central Bank"
 msgstr "Europäische Zentralbank"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__fta
 msgid "Federal Tax Administration (Switzerland)"
 msgstr "Eidgenössische Steuerverwaltung (Schweiz)"
 
@@ -88,17 +87,17 @@ msgid "Last Sync Date"
 msgstr "Datum der letzten Synchronisation"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__manually
 msgid "Manually"
 msgstr "Manuell"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__banxico
 msgid "Mexican Bank"
 msgstr "Mexikanische Bank"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__monthly
 msgid "Monthly"
 msgstr "Monatlich"
 
@@ -125,25 +124,17 @@ msgid "Service Provider"
 msgstr "Service Provider"
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:387
-#, python-format
-msgid ""
-"The Yahoo currency rate web service has been discontinued. Please select "
-"another currency rate provider."
-msgstr ""
-"Der Yahoo-Wechselkurs-Webservice wurde eingestellt. Wählen Sie bitte einen "
-"anderen Dienstleister."
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:103
+#: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
 msgid ""
 "Unable to connect to the online exchange rate platform %s. The web service "
 "may be temporary down."
 msgstr ""
+"Verbindung zur Online-Wechselkursplattform nicht möglich %s. Der Webdienst "
+"ist möglicherweise vorübergehend nicht verfügbar."
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:390
+#: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
 msgid ""
 "Unable to connect to the online exchange rate platform. The web service may "
@@ -154,24 +145,21 @@ msgstr ""
 "nochmal."
 
 #. module: currency_rate_live
-#: selection:res.company,currency_interval_unit:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__weekly
 msgid "Weekly"
 msgstr "Wöchentlich"
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
-msgid "Yahoo (DISCONTINUED)"
-msgstr "Yahoo (EINGESTELLT)"
-
-#. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:143
+#: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
 msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "
 "Please choose another one."
 msgstr ""
+"Ihre Hauptwährung (%s) wird von diesem Wechselkursanbieter nicht "
+"unterstützt. Bitte wählen Sie einen anderen."
 
 #. module: currency_rate_live
-#: selection:res.company,currency_provider:0
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__xe_com
 msgid "xe.com"
-msgstr ""
+msgstr "xe.com"

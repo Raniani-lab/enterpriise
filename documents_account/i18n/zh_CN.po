@@ -1,23 +1,26 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * documents_account
+# 	* documents_account
 # 
 # Translators:
+# Jeanphy <hzh0292@qq.com>, 2019
+# Martin Trigaux, 2019
+# Jeffery CHEN <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
+# v2exerer <9010446@qq.com>, 2019
+# guohuadeng <guohuadeng@hotmail.com>, 2019
 # ChinaMaker <liuct@chinamaker.net>, 2019
 # xu xiaohu <xu.xiaohu@gmail.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
-# Martin Trigaux, 2019
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
-# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2019
+# 张宏奎 <zhanghongkui@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:35+0000\n"
+"Last-Translator: 张宏奎 <zhanghongkui@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,19 +36,22 @@ msgid ""
 msgstr "一组适用于符合所有条件附件的状态动作集合"
 
 #. module: documents_account
+#: model:ir.model.constraint,message:documents_account.constraint_documents_account_folder_setting_journal_unique
+msgid "A setting already exists for this journal"
+msgstr ""
+
+#. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
 msgstr "会计核销挂账"
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags
-#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_tags
-msgid "Account Tags"
-msgstr "财务标签"
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
+msgid "Accounting "
+msgstr ""
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
-#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Accounting Workspace"
 msgstr ""
 
@@ -55,13 +61,18 @@ msgid "Activity type"
 msgstr "活动类型"
 
 #. module: documents_account
-#: model:ir.model,name:documents_account.model_ir_attachment
-msgid "Attachment"
-msgstr "附件"
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Centralize accounting files and documents"
+msgstr ""
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
 msgid "Companies"
+msgstr "公司"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__company_id
+msgid "Company"
 msgstr "公司"
 
 #. module: documents_account
@@ -75,19 +86,44 @@ msgid "Create"
 msgstr "创建"
 
 #. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.credit_note_rule
+msgid "Create Credit Note"
+msgstr ""
+
+#. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
+msgid "Create Customer Invoice"
+msgstr "创建客户发票"
+
+#. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule
 msgid "Create Vendor Bill"
 msgstr ""
 
 #. module: documents_account
-#: model:documents.workflow.rule,name:documents_account.credit_note_rule
-msgid "Create Vendor Refund"
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_uid
+msgid "Created by"
+msgstr "创建者"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_date
+msgid "Created on"
+msgstr "创建时间"
+
+#. module: documents_account
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_refund
+msgid "Credit note"
+msgstr "信用证"
+
+#. module: documents_account
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
+msgid "Customer invoice"
 msgstr ""
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr "信用证"
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__display_name
+msgid "Display Name"
+msgstr "显示名称"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
@@ -106,6 +142,7 @@ msgstr "财务报告"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__folder_id
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
 msgid "Folder"
 msgstr "文件夹"
 
@@ -115,7 +152,7 @@ msgid "Folder where to save the generated file"
 msgstr ""
 
 #. module: documents_account
-#: code:addons/documents_account/wizard/report_export_wizard.py:31
+#: code:addons/documents_account/wizard/report_export_wizard.py:0
 #, python-format
 msgid "Generated Documents"
 msgstr ""
@@ -126,9 +163,14 @@ msgid "Has Business Option"
 msgstr "商业选项"
 
 #. module: documents_account
-#: model:ir.model,name:documents_account.model_account_invoice
-msgid "Invoice"
-msgstr "发票"
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__id
+msgid "ID"
+msgstr "ID"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__journal_id
+msgid "Journal"
+msgstr "日记账"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_move
@@ -138,7 +180,37 @@ msgstr "日记账分录"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_move_line
 msgid "Journal Item"
-msgstr "日记账项目"
+msgstr "日记账项"
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_documents_account_folder_setting
+msgid "Journal and Folder settings"
+msgstr ""
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Journals"
+msgstr "凭证类型"
+
+#. module: documents_account
+#: model:ir.actions.act_window,name:documents_account.action_folder_settings_installer
+msgid "Journals to synchronize"
+msgstr ""
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting____last_update
+msgid "Last Modified on"
+msgstr "最后更改日"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__write_uid
+msgid "Last Updated by"
+msgstr "最后更新者"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__write_date
+msgid "Last Updated on"
+msgstr "更新时间"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reconcile_model
@@ -147,51 +219,20 @@ msgid ""
 msgstr "请在发票和付款匹配期间创建日记账分录"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product template"
-msgstr "产品模板"
-
-#. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_move_line__reconciliation_invoice_id
 msgid "Reconciliation Invoice"
 msgstr ""
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_account_invoice__reconciliation_move_line_id
+#: model:ir.model.fields,field_description:documents_account.field_account_move__document_request_line_id
 msgid "Reconciliation Journal Entry Line"
 msgstr ""
 
 #. module: documents_account
-#: model:mail.activity.type,name:documents_account.mail_documents_activity_data_md
-msgid "Reconciliation request"
-msgstr ""
-
-#. module: documents_account
-#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid "Select the tags to be applied to the accounting's new documents"
-msgstr "选择财务文档标签"
-
-#. module: documents_account
-#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid ""
-"Select the workspace to be used for accounting's documents for the invoices\n"
-"                                    of your company."
-msgstr ""
-
-#. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Signature template"
-msgstr "签名模板"
-
-#. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
+#: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__tag_ids
 msgid "Tags"
 msgstr "标签"
-
-#. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Task"
-msgstr "任务"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
@@ -199,14 +240,19 @@ msgid "Tax Statement"
 msgstr "税务报表"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
 msgid "Vendor Credit Note"
-msgstr "供应商红字发票"
+msgstr "供应商信用票"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice
 msgid "Vendor bill"
 msgstr "供应商发票"
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Workspace"
+msgstr ""
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder

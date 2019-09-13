@@ -1,20 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_helpdesk_forum
+# 	* website_helpdesk_forum
 # 
 # Translators:
-# Giovanni Perteghella <giovanni@perteghella.org>, 2018
-# Paolo Valier, 2018
-# Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>, 2018
-# Léonie Bouchat <lbo@odoo.com>, 2018
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Giovanni Perteghella <giovanni@perteghella.org>, 2019
+# SebastianoPistore <SebastianoPistore.info@protonmail.ch>, 2019
+# Paolo Valier, 2019
+# Léonie Bouchat <lbo@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,8 +26,17 @@ msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
+"label=\"Question has accepted answer\"/>"
+msgstr ""
+"<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
+"label=\"Question has accepted answer\"/>"
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<span>By </span>"
-msgstr "<span>Da </span>"
+msgstr "<span>Di </span>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -35,7 +46,7 @@ msgstr "Clicca qui per vedere più risultati..."
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_id
 msgid "Forum Post"
-msgstr "Messaggio del Forum"
+msgstr "Messaggio del forum"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
@@ -50,7 +61,7 @@ msgstr "Forum centro assistenza"
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__forum_url
 msgid "Help Center Forum URL"
-msgstr "URL del forum del centro assistenza"
+msgstr "URL del forum centro assistenza"
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:63
@@ -73,7 +84,7 @@ msgstr "Ticket helpdesk"
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:86
 #, python-format
 msgid "No post associated to this ticket."
-msgstr "Nessun post collegato a questo biglietto"
+msgstr "Nessun post collegato a questo ticket."
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
@@ -92,18 +103,18 @@ msgstr "Domande frequenti"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Question has accepted answer"
-msgstr "La domanda ha una risposta accettata"
+msgid "Question"
+msgstr "Domanda"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
-msgid "Redirect to external link"
-msgstr "Reindirizza a link esterno"
+msgid "Question has accepted answer"
+msgstr "Domanda con risposta accettata"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
 msgid "Share on the Forum"
-msgstr "Condividi sul forum"
+msgstr "Condividere sul forum"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum
@@ -114,14 +125,14 @@ msgstr "Il forum relativo è:<br/>"
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:77
 #, python-format
 msgid "Ticket has been shared on the %s forum."
-msgstr "Il biglietto è stato condiviso sul forum %s."
+msgstr "Il ticket è stato condiviso sul forum %s."
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "View"
-msgstr "Vista"
+msgstr "Visualizza"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum
 msgid "View the Help Center:<br/>"
-msgstr "Vedi il centro assistenza: <br/>"
+msgstr "Vedere il centro assistenza: <br/>"

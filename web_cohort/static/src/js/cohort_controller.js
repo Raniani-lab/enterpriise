@@ -104,7 +104,7 @@ var CohortController = AbstractController.extend({
             url: '/web/cohort/export',
             data: {data: JSON.stringify(data)},
             complete: framework.unblockUI,
-            error: () => this.call('crash_manager', 'rpc_error', ...arguments),
+            error: (error) => this.call('crash_manager', 'rpc_error', error),
         });
     },
     /**

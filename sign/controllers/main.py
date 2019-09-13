@@ -6,8 +6,9 @@ import io
 import logging
 import mimetypes
 import re
+import werkzeug
 
-from PyPDF2 import  PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfFileReader
 
 from odoo import http, _
 from odoo.http import request
@@ -61,16 +62,14 @@ class Sign(http.Controller):
                     'longitude': request.session['geoip'].get('longitude') if 'geoip' in request.session else 0,
                 })
 
-        sr_values = http.request.env['sign.item.value'].sudo().search([('sign_request_id', '=', sign_request.id)])
+        sr_values = http.request.env['sign.request.item.value'].sudo().search([('sign_request_id', '=', sign_request.id)])
         item_values = {}
         for value in sr_values:
             item_values[value.sign_item_id.id] = value.value
 
         Log = request.env['sign.log'].sudo()
         vals = Log._prepare_vals_from_item(current_request_item) if current_request_item else Log._prepare_vals_from_request(sign_request)
-        vals.update({
-            'action': 'open',
-        })
+        vals['action'] = 'open'
         vals = Log._update_vals_with_http_request(vals)
         Log.create(vals)
 
@@ -97,6 +96,15 @@ class Sign(http.Controller):
     def sign_document_user(self, id, **post):
         return self.sign_document_public(id, None)
 
+    @http.route(["/sign/document/mail/<int:id>/<token>"], type='http', auth='public')
+    def sign_document_from_mail(self, id, token):
+        sign_request = request.env['sign.request'].sudo().browse(id)
+        if not sign_request:
+            return http.request.render('sign.deleted_sign_request')
+        current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
+        current_request_item.access_via_link = True
+        return werkzeug.redirect('/sign/document/%s/%s' % (id, token))
+
     @http.route(["/sign/document/<int:id>/<token>"], type='http', auth='public')
     def sign_document_public(self, id, token, **post):
         document_context = self.get_document_qweb_context(id, token)
@@ -113,22 +121,14 @@ class Sign(http.Controller):
 
         document = None
         if download_type == "log":
-            pdf_writer = PdfFileWriter()
             report_action = http.request.env.ref('sign.action_sign_request_print_logs').sudo()
             pdf_content, __ = report_action.render_qweb_pdf(sign_request.id)
-            reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
-            for page in range(reader.getNumPages()):
-                pdf_writer.addPage(reader.getPage(page))
-            _buffer = io.BytesIO()
-            pdf_writer.write(_buffer)
-            merged_pdf = _buffer.getvalue()
-            _buffer.close()
             pdfhttpheaders = [
                 ('Content-Type', 'application/pdf'),
-                ('Content-Length', len(merged_pdf)),
+                ('Content-Length', len(pdf_content)),
                 ('Content-Disposition', 'attachment; filename=' + "Activity Logs.pdf;")
             ]
-            return request.make_response(merged_pdf, headers=pdfhttpheaders)
+            return request.make_response(pdf_content, headers=pdfhttpheaders)
         elif download_type == "origin":
             document = sign_request.template_id.attachment_id.datas
         elif download_type == "completed":
@@ -140,10 +140,10 @@ class Sign(http.Controller):
             # Shouldn't it fall back on 'origin' download type?
             return http.redirect_with_hash("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})
 
-        extension = "".join(['.', sign_request.template_id.extension])
         # Avoid to have file named "test file.pdf (V2)" impossible to open on Windows.
         # This line produce: test file (V2).pdf
-        filename = "".join([sign_request.reference.replace(extension, ''), extension])
+        extension = '.' + sign_request.template_id.attachment_id.mimetype.replace('application/', '').replace(';base64', '')
+        filename = sign_request.reference.replace(extension, '') + extension
 
         return http.request.make_response(
             base64.b64decode(document),
@@ -247,8 +247,7 @@ class Sign(http.Controller):
         if not request_item:
             return False
         if request_item.role_id and request_item.role_id.sms_authentification:
-            if request_item.partner_id.mobile != phone_number:
-                request_item.partner_id.mobile = phone_number
+            request_item.sms_number = phone_number
             try:
                 request_item._send_sms()
             except InsufficientCreditError:
@@ -292,11 +291,9 @@ class Sign(http.Controller):
 
         Log = request.env['sign.log'].sudo()
         vals = Log._prepare_vals_from_item(request_item)
-        vals.update({
-            'action': 'sign',
-        })
-        vals = Log._update_vals_with_http_request(vals)
+        vals['action'] = 'sign'
         vals['token'] = token
+        vals = Log._update_vals_with_http_request(vals)
         Log.create(vals)
         request_item.action_completed()
         return True

@@ -1,19 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * mass_mailing_themes
+# 	* mass_mailing_themes
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
 # Ediz Duman <neps1192@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Levent Karakaş <levent@mektup.at>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2019
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"POT-Creation-Date: 2019-08-12 11:30+0000\n"
+"PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -187,8 +189,8 @@ msgid ""
 "Cyber-threats continue to increase.<br/>\n"
 "                                    The discussion will examine how to develop new norms and integrate them into EU"
 msgstr ""
-"Siber tehditler artmaya devam ediyor. <br/> \\ n Tartışmada yeni normların "
-"nasıl geliştirileceği ve AB'ye entegre edileceği incelenecek"
+"Siber tehditler artmaya devam ediyor. <br/>\n"
+"Tartışmada yeni normların nasıl geliştirileceği ve AB'ye entegre edileceği incelenecek"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
@@ -293,9 +295,10 @@ msgid ""
 "                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut\n"
 "                                aliquip ex ea commodo consequat."
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipisising elit, sed do eiusmod yok"
-" \\ n zamanla incididunt ut labore et dolore magna aliqua. \\ N En basit "
-"reklam, envanterli alıştırma, el emek commisyonu eski."
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod no\n"
+"                                tempor incididunt ut labore et dolore magna aliqua.\n"
+"                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut\n"
+"                                aliquip ex ea commodo consequat."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -345,7 +348,7 @@ msgstr "Odoo Experience, uzmanlığınızı sergilemek için yer."
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Order"
-msgstr "Sıra"
+msgstr "Sipariş"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -355,7 +358,7 @@ msgstr "Sıra"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Photo"
-msgstr "Fotograf "
+msgstr "Fotoğraf "
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -402,7 +405,7 @@ msgstr "Hemen üye olun"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Registration"
-msgstr "Üye Ol"
+msgstr "Kayıt Ol"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -439,9 +442,8 @@ msgid ""
 "The next edition of Odoo Experience looks very promising. More than 150 talks are scheduled during those 3 days!\n"
 "                                    Find below some stand-out talks for the Business tracks."
 msgstr ""
-"Odoo Experience'ın bir sonraki baskısı çok umutlu görünüyor. Bu 3 gün "
-"boyunca 150'den fazla görüşme planlandı! \\ N İşletme izleri için öne çıkan "
-"bazı görüşmeler aşağıda bulabilirsiniz."
+"Odoo Experience'ın bir sonraki baskısı çok umutlu görünüyor. Bu 3 gün boyunca 150'den fazla görüşme planlandı!\n"
+" İşletme izleri için öne çıkan bazı görüşmeler aşağıda bulabilirsiniz."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
@@ -509,12 +511,12 @@ msgid ""
 " you back please accept this 20% discount on you next purchase by clicking "
 "the button."
 msgstr ""
-"Büyümeye devam ediyoruz ve sizi bir parçası olduğunuzu görmeyi özlüyoruz! "
-"Mağaza saatlerinizi arttırdık ve çok sayıda yeni marka sunabildik. <br/> "
-"Sizi tekrar ağırlamaktan lütfen, düğmeyi tıklatarak bir sonraki "
-"alışverişinizde% 20 indirim kazanın."
+"Büyümeye devam ediyoruz ve sizin bunun bir parçası olduğunuzu görmeyi "
+"özlüyoruz! Mağaza saatlerinizi arttırdık ve çok sayıda yeni marka "
+"sunabildik. <br/> Sizi tekrar ağırlamaktan mutluluk duyarız. Lütfen düğmeyi "
+"tıklatarak bir sonraki alışverişinizde % 20 indirim kazanın."
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "and save $20 on your next order!"
-msgstr "Ve bir sonraki siparişinizde20 TL tasarruf edin!"
+msgstr "Ve bir sonraki siparişinizde 20 TL tasarruf edin!"

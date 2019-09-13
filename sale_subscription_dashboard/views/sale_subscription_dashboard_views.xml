@@ -21,9 +21,9 @@
                 <field name="subscription_end_date" filter_domain="[('subscription_end_date','&gt;=', self)]"/>
                 <group expand="0" string="Group By">
                     <separator/>
-                    <filter string="OUT invoices" name="OUT" domain="[('invoice_id.type', 'in', ('out_invoice', 'out_refund'))]"/>
+                    <filter string="OUT invoices" name="OUT" domain="[('move_id.type', 'in', ('out_invoice', 'out_refund'))]"/>
                     <separator/>
-                    <filter string="Active invoices" name="ACTIVE" domain="[('invoice_id.state', 'not in', ('draft', 'cancel'))]"/>
+                    <filter string="Active invoices" name="ACTIVE" domain="[('move_id.state', 'not in', ('draft', 'cancel'))]"/>
                 </group>
             </search>
         </field>

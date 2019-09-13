@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 from odoo.fields import Datetime
+from odoo.osv.expression import NEGATIVE_TERM_OPERATORS
 
 
 class MarketingParticipant(models.Model):
@@ -19,7 +20,7 @@ class MarketingParticipant(models.Model):
             model_name = defaults.get('model_name')
             if not model_name and defaults.get('campaign_id'):
                 model_name = self.env['marketing.campaign'].browse(defaults['campaign_id']).model_name
-            if model_name:
+            if model_name and model_name in self.env:
                 resource = self.env[model_name].search([], limit=1)
                 defaults['res_id'] = resource.id
         return defaults
@@ -28,6 +29,15 @@ class MarketingParticipant(models.Model):
     def _selection_target_model(self):
         models = self.env['ir.model'].search([('is_mail_thread', '=', True)])
         return [(model.model, model.name) for model in models]
+
+    def _search_resource_ref(self, operator, value):
+        ir_models = set([model['model_name'] for model in self.env['marketing.campaign'].search([]).read(['model_name'])])
+        ir_model_ids = []
+        for model in ir_models:
+            if model in self.env:
+                ir_model_ids += self.env['marketing.participant'].search(['&', ('model_name', '=', model), ('res_id', 'in', [name[0] for name in self.env[model].name_search(name=value)])]).ids
+        operator = 'not in' if operator in NEGATIVE_TERM_OPERATORS else 'in'
+        return [('id', operator, ir_model_ids)]
 
     campaign_id = fields.Many2one(
         'marketing.campaign', string='Campaign',
@@ -41,7 +51,7 @@ class MarketingParticipant(models.Model):
     res_id = fields.Integer(string='Record ID', index=True)
     resource_ref = fields.Reference(
         string='Record', selection='_selection_target_model',
-        compute='_compute_resource_ref', inverse='_set_resource_ref')
+        compute='_compute_resource_ref', inverse='_set_resource_ref', search='_search_resource_ref')
     trace_ids = fields.One2many('marketing.trace', 'participant_id', string='Actions')
     state = fields.Selection([
         ('running', 'Running'),
@@ -54,7 +64,7 @@ class MarketingParticipant(models.Model):
     @api.depends('model_name', 'res_id')
     def _compute_resource_ref(self):
         for participant in self:
-            if participant.model_name:
+            if participant.model_name and participant.model_name in self.env:
                 participant.resource_ref = '%s,%s' % (participant.model_name, participant.res_id or 0)
 
     def _set_resource_ref(self):

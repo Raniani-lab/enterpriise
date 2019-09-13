@@ -1,40 +1,35 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_crm_score
+# 	* website_crm_score
 # 
 # Translators:
-# Fırat Kaya <firat.kaya@mechsoft.com.tr>, 2017
-# gezgin biri <gezginbiri@hotmail.com>, 2017
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
-# Umur Akın <umura@projetgrup.com>, 2018
-# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
-# Martin Trigaux, 2018
-# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2018
-# Mehmet Demirel <mdemirell@gmail.com>, 2018
-# Ramiz Deniz Öner <deniz@denizoner.com>, 2018
-# Levent Karakaş <levent@mektup.at>, 2019
-# Buket Şeker <buket_skr@hotmail.com>, 2019
 # Ediz Duman <neps1192@gmail.com>, 2019
+# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2019
+# Martin Trigaux, 2019
+# Levent Karakaş <levent@mektup.at>, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
+# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2019
+# Mehmet Demirel <mdemirell@gmail.com>, 2019
+# Ramiz Deniz Öner <deniz@denizoner.com>, 2019
+# Abdullah Onur Uğur <aonurugur@outlook.com>, 2019
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
+# Fırat Kaya <firat.kaya@mechsoft.com.tr>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
+# Buket Şeker <buket_skr@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
-msgid "# Page Views"
-msgstr "# Sayfa Görünümleri"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
@@ -50,22 +45,20 @@ msgid "Action Needed"
 msgstr "Eylem Gerekiyor"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__running
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__active
 msgid "Active"
 msgstr "Etkin"
 
 #. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_ir_ui_view__track
-#: model:ir.model.fields,help:website_crm_score.field_website_page__track
-msgid "Allow to specify for one page of the website to be trackable or not"
-msgstr ""
-"Web sitesinin bir sayfasının izlenebilir olup olmayacağını belirtmeye izin "
-"verin"
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__active
+msgid "Archive"
+msgstr "Arşivle"
 
 #. module: website_crm_score
-#: selection:website.crm.score,rule_type:0
-msgid "Archive"
-msgstr "Arşiv"
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_search
+msgid "Archived"
+msgstr "Arşivlendi"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
@@ -116,14 +109,12 @@ msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_uid
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_uid
 msgid "Created by"
 msgstr "Oluşturan"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_date
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_date
 msgid "Created on"
 msgstr "Oluşturulma"
@@ -138,7 +129,7 @@ msgstr "Crm skoru: İşaretli skorları ugula"
 #: model:ir.cron,cron_name:website_crm_score.ir_cron_lead_assign
 #: model:ir.cron,name:website_crm_score.ir_cron_lead_assign
 msgid "Crm Score: lead assignation"
-msgstr "Crm skoru: Atama adayı"
+msgstr "Crm skoru: Müşteri adayı ataması"
 
 #. module: website_crm_score
 #: model:ir.actions.server,name:website_crm_score.ir_cron_lead_scoring_ir_actions_server
@@ -160,17 +151,16 @@ msgstr "Otomatik tahsis mekanizması vasıtasıyla aday atandığında tarihi"
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
-msgid "Define a new sales channel"
+msgid "Define a new sales team"
 msgstr ""
 
 #. module: website_crm_score
-#: selection:website.crm.score,rule_type:0
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__unlink
 msgid "Delete"
 msgstr "Sil"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__display_name
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__display_name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__display_name
 msgid "Display Name"
 msgstr "Görünüm Adı"
@@ -211,13 +201,7 @@ msgid "Group By"
 msgstr "Grupla"
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_http
-msgid "HTTP Routing"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__id
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__id
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__id
 msgid "ID"
 msgstr "ID"
@@ -236,9 +220,11 @@ msgstr "İşaretliyse, yeni mesajlar dikkatinize sunulacak."
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error
+#: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_sms_error
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_error
+#: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "İşaretliyse,bazı mesajlar gönderi hatası içermektedir."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_is_follower
@@ -247,32 +233,19 @@ msgid "Is Follower"
 msgstr "Takipçi mi"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
-msgid "Language"
-msgstr "Dil"
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_crm_lead__lang_id
-msgid "Language from the website when lead has been created"
-msgstr "Aday oluşturulduğunda web sitesindeki dil"
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user____last_update
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview____last_update
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score____last_update
 msgid "Last Modified on"
 msgstr "Son Güncelleme"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_uid
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_uid
 msgid "Last Updated by"
 msgstr "Son Güncelleyen"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_date
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_date
 msgid "Last Updated on"
 msgstr "Son Güncelleme"
@@ -283,23 +256,13 @@ msgid "Last run"
 msgstr "Son çalıştırma"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__lead_id
-msgid "Lead"
-msgstr "Talep"
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
-#: model:ir.ui.menu,name:website_crm_score.pageview_menu
-msgid "Lead Page Views"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_crm_lead
 msgid "Lead/Opportunity"
 msgstr "Aday/Fırsat"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_leads
+#: model:ir.ui.menu,name:website_crm_score.menu_crm_leads
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Leads"
 msgstr "Adaylar"
@@ -331,18 +294,6 @@ msgstr ""
 "için filtreler ayarlayın."
 
 #. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_crm_lead__score_pageview_ids
-msgid "List of (tracked) pages seen by the owner of this lead"
-msgstr "Bu aday sahibinin gördüğü (izlenen) sayfaların listesi"
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:9
-#, python-format
-msgid "Log visits on leads"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_main_attachment_id
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_main_attachment_id
 msgid "Main Attachment"
@@ -358,7 +309,7 @@ msgstr "Maksimum Adaty Sayısı / 30 gün"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error
 msgid "Message Delivery error"
-msgstr "Mesaj İletilme Hatası"
+msgstr "Mesaj Teslim hatası"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_ids
@@ -414,34 +365,9 @@ msgid "Number of unread messages"
 msgstr "Okunmamış mesaj sayısı"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_table
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-msgid "Opportunities"
-msgstr "Fırsatlar"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
-msgid "Page Views"
-msgstr "Sayfa Görünümleri"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
-msgid "Page views"
-msgstr "Sayfa görünümleri"
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__percentage_leads
 msgid "Percentage leads"
 msgstr "Aday yüzdesi"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__phone
-msgid "Phone"
-msgstr "Telefon"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__ratio
@@ -454,20 +380,20 @@ msgid "Rule Type"
 msgstr "Kural Türü"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__running
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__active
 msgid "Running"
-msgstr "Aktif"
+msgstr "Devam Eden"
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_sms_error
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__user_id
 msgid "Saleman"
 msgstr "Satış Personeli"
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_action
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channels"
-msgstr "Satış Ekipleri"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
@@ -486,6 +412,7 @@ msgid "Sales Records"
 msgstr "Satış Kayıtları"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_view_search
 msgid "Sales Team"
@@ -528,9 +455,8 @@ msgid "Scores"
 msgstr "Skorlar"
 
 #. module: website_crm_score
+#: model:ir.model.fields.selection,name:website_crm_score.selection__website_crm_score__rule_type__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
-#: model_terms:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
-#: selection:website.crm.score,rule_type:0
 msgid "Scoring"
 msgstr "Puanlama"
 
@@ -557,25 +483,15 @@ msgstr ""
 "Eylemler sql'de yapılır ve erişim haklarını ve orm mekanizmasını atlar (create `score`, write `active`, unlink `crm_lead`)"
 
 #. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
-msgid "Search PageViews"
-msgstr "Arama Sayfa Görünümü"
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_search
+msgid "Search CRM Score"
+msgstr ""
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.ui.menu,name:website_crm_score.team
 msgid "Teams Assignation"
 msgstr "Takımlar Atama"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_ir_ui_view__track
-#: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
-msgid "Track"
-msgstr "Parça"
-
-#. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph
-msgid "Unassigned leads"
-msgstr "Atanmamış Adaylar"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_unread
@@ -590,53 +506,26 @@ msgid "Unread Messages Counter"
 msgstr "Okunmamış Mesaj Sayacı"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__url
-msgid "Url"
-msgstr "Url"
-
-#. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
-"Use sales channels to organize your sales departments.\n"
-"                    Each channel will work with a separate pipeline."
+"Use sales teams to organize your sales departments.\n"
+"                    Each team will work with a separate pipeline."
 msgstr ""
-"Satış departmanınızı organize etmek için satış kanallarını kullanın.\n"
-"Her kanal ayrı bir kanalla çalışacak."
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
-msgid "User"
-msgstr "Kullanıcı"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
-msgid "User Sales Channel"
+msgid "User Sales Team"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_res_users
 msgid "Users"
-msgstr "Kullanicilar"
+msgstr "Kullanıcılar"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__value
 msgid "Value"
 msgstr "Değer"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_ui_view
-msgid "View"
-msgstr "Görüntüle"
-
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__view_date
-msgid "Viewing Date"
-msgstr "Görüntüleme Tarihi"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_pageview
-msgid "Website CRM Page View"
-msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_website_crm_score
@@ -648,11 +537,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__website_message_ids
 msgid "Website Messages"
 msgstr "Websitesi Mesajları"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot
-msgid "Website Pages"
-msgstr "Website Sayfaları"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__website_message_ids

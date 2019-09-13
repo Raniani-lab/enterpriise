@@ -1,17 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_bank_statement_import_camt
+# 	* account_bank_statement_import_camt
 # 
 # Translators:
-# Bohdan Lisnenko, 2018
+# Bohdan Lisnenko, 2019
+# Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -21,9 +22,1047 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Concentration"
+msgstr "Концентрація ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Corporate Trade"
+msgstr "Корпоративна торгівля ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Credit"
+msgstr "Кредит ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Debit"
+msgstr "Дебет ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Pre-Authorised"
+msgstr "Попередньо авторизований ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Return"
+msgstr "Повернено ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Reversal"
+msgstr "Повернення ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Settlement"
+msgstr "Поселення ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ACH Transaction"
+msgstr "Транзакція ACH"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "ARP Debit"
+msgstr "Дебет ARP"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Account Balancing"
+msgstr "Сальдо рахунків"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Account Closing"
+msgstr "Закриття рахунку"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Account Management"
+msgstr "Управління рахунком"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Account Opening"
+msgstr "Відкриття рахунку"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Account Transfer"
+msgstr "Переміщення рахунку"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Additional Miscellaneous Credit Operations"
+msgstr "Додаткові різні кредитні операції"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Additional Miscellaneous Debit Operations"
+msgstr "Додаткові різні дебетові операції"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Address:\n"
+msgstr "Адреса:\n"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Adjustments"
+msgstr "Коригування"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Automatic Transfer"
+msgstr "Автоматичне переміщення"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Back Value"
+msgstr "Зворотне значення"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Bank Cheque"
+msgstr "Банківський чек"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Bank Fees"
+msgstr "Банківська комісія"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Blocked Transactions"
+msgstr "Заблоковані транзакції"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Bonus Issue/Capitalisation Issue"
+msgstr "Проблема з бонусом/Проблема з капіталізацією"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Borrowing fee"
+msgstr "Комісія за позику"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Branch Account Transfer"
+msgstr "Переміщення рахунку філії"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Branch Deposit"
+msgstr "Депозит філії"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Branch Withdrawal"
+msgstr "Вилучення філії"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Brokerage fee"
+msgstr "Комісія за посередництво"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Buy Sell Back"
+msgstr "Купити Продати назад"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "CSD Blocked Transactions"
+msgstr "Заблоковані транзакції CSD"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Call on intermediate securities"
+msgstr "Виклик проміжних цінних паперів"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Capital Gains Distribution"
+msgstr "Розподіл капітальних прибутків"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cash Deposit"
+msgstr "Грошовий депозит"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cash Dividend"
+msgstr "Грошовий дивіденд"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cash Letter"
+msgstr "Готівковий лист"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cash Letter Adjustment"
+msgstr "Коригування грошових листів"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cash Management"
+msgstr "Управління готівкою"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cash Pooling"
+msgstr "Грошове об'єднання"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cash Withdrawal"
+msgstr "Зняти готівку"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cash in lieu"
+msgstr "Грошові кошти"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Certified Customer Cheque"
+msgstr "Сертифікований чек клієнта"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Charge/fees"
+msgstr "Сплата/комісії"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Charges"
+msgstr "Сплати"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cheque"
+msgstr "Чек"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cheque Deposit"
+msgstr "Депозит чеку"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cheque Reversal"
+msgstr "Перевірте сторнування"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cheque Under Reserve"
+msgstr "Чек під резервом"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Circular Cheque"
+msgstr "Круговий чек"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Clean Collection"
+msgstr "Чиста колекція"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Client Owned Collateral"
+msgstr "Застава, що належить клієнту"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Collateral Management"
+msgstr "Управління заставою"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Commission"
+msgstr "Комісія"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Commission excluding taxes"
+msgstr "Комісія без податків"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Commission including taxes"
+msgstr "Комісія з податками"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Commodities"
+msgstr "Товари"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Compensation/Claims"
+msgstr "Компенсація/претензії"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Consumer Loans"
+msgstr "Споживчі кредити"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Controlled Disbursement"
+msgstr "Контрольована виплата"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Conversion"
+msgstr "Зміна"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Corporate Action"
+msgstr "Корпоративна дія"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Corporate Own Account Transfer"
+msgstr "Корпоративний переказ власних рахунків"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Corporate Rebate"
+msgstr "Корпоративна знижка"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Corporate mark broker owned"
+msgstr "Корпоративна позначка власника брокера"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Corporate mark client owned"
+msgstr "Корпоративна позначка власника клієнта"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Counter Party: "
+msgstr "Протилежна сторона: "
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Counter Transactions"
+msgstr "Протилежні транзакції"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Credit Adjustment"
+msgstr "Коригування кредиту"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Credit Adjustments"
+msgstr "Коригування кредиту"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Credit Card Payment"
+msgstr "Оплата кредитною карткою"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Credit Transfer with agreed Commercial Information"
+msgstr "Кредитний переказ із узгодженою комерційною інформацією"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross Trade"
+msgstr "Перехресна торгівля"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross-Border"
+msgstr "Транскордонний"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross-Border Cash Withdrawal"
+msgstr "Зняття транскордонної готівки"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross-Border Credit Card Payment"
+msgstr "Оплата транскордонною кредитною карткою"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross-Border Credit Transfer"
+msgstr "Транскордонний переказ кредиту"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross-Border Direct Debit"
+msgstr "Прямий транскордонний дебет"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross-Border Intra Company Transfer"
+msgstr "Транскордонний переказ внутрішньої компанії"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross-Border Payroll/Salary Payment"
+msgstr "Транскордонна оплата праці"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Cross-Border Standing Order"
+msgstr "Постійне транскордонне замовлення"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Crossed Cheque"
+msgstr "Перекреслений чек"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Custody"
+msgstr "Опіка"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Custody Collection"
+msgstr "Колекція опіки"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Customer Card Transactions"
+msgstr "Транзакції картки клієнта"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Debit"
+msgstr "Дебет"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Debit Adjustments"
+msgstr "Коригування дебету"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Decrease in Value"
+msgstr "Зниження вартості"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Delivery"
+msgstr "Доставка"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Deposit"
+msgstr "Попередня оплата"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Deposit/Contribution"
+msgstr "Депозит/Накопичення"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Depositary Receipt Issue"
+msgstr "Проблема депозитної квитанції"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Derivatives"
+msgstr "Похідні"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Direct Debit"
+msgstr "Прямий дебет"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Direct Debit Payment"
+msgstr "Платіж прямого дебету"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Direct Debit under reserve"
+msgstr "Прямий дебет під резервом"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Discounted Draft"
+msgstr "Чернетка зі знижкою"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Dishonoured/Unpaid Draft"
+msgstr "Пропущена/Неоплачена чернетка"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Dividend Option"
+msgstr "Функція дивіденду"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Dividend Reinvestment"
+msgstr "Реінвестування дивідендів"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Documentary Collection"
+msgstr "Документальна колекція"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Documentary Credit"
+msgstr "Документальний кредит"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Domestic Credit Transfer"
+msgstr "Внутрішній кредитний переказм"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Draft Maturity Change"
+msgstr "Розвинута зміна чернетки"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Drafts/BillOfOrders"
+msgstr "Чернетки/Рахунок замовлень"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Drawdown"
+msgstr "Зниження"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Drawing"
+msgstr "Підтягування"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Dutch Auction"
+msgstr "Голландський аукціон"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Equity Premium Reserve"
+msgstr "Резерв власного капіталу"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Equity mark broker owned"
+msgstr "Капітальна позначка власника брокера"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Equity mark client owned"
+msgstr "Капітальна позначка власника клієнта"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Exchange"
+msgstr "Обмін"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Exchange Rate Adjustment"
+msgstr "Коригування курсу валют"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Exchange Traded"
+msgstr "Обмін валют"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Exchange Traded CCP"
+msgstr "Продаж валюти CCP"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Exchange Traded Non-CCP"
+msgstr "Продаж валюти Non-CCP"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Extended Domain"
+msgstr "Розширений домен"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "External Account Transfer"
+msgstr "Зовнішній переказ рахунків"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Factor Update"
+msgstr "Оновлення факторів"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Fees"
+msgstr "Комісія"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Final Maturity"
+msgstr "Підсумкова зрілість"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Final Payment"
+msgstr "Остаточний платіж"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Financial Institution Credit Transfer"
+msgstr "Кредитний переказ фінансової установи"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Financial Institution Direct Debit Payment"
+msgstr "Оплата прямого дебету фінансової установи"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Financial Institution Own Account Transfer"
+msgstr "Переказ власного рахунку фінансової установи"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Fixed Deposit Interest Amount"
+msgstr "Сума відсотків за фіксованим депозитом"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Fixed Term Deposits"
+msgstr "Фіксовані строкові депозити"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Fixed Term Loans"
+msgstr "Фіксовані строкові позики"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Float adjustment"
+msgstr "Плаваюче коригування"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Foreign Cheque"
+msgstr "Іноземний чек"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Foreign Cheque Under Reserve"
+msgstr "Іноземний чек під резервом"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Foreign Currency Deposit"
+msgstr "Депозит в іноземній валюті"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Foreign Currency Withdrawal"
+msgstr "Зняття іноземної валюти"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Foreign Exchange"
+msgstr "Іноземна валюта"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Forwards"
+msgstr "Переміщення"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Forwards broker owned collateral"
+msgstr "Застава, що належить брокеру"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Forwards client owned collateral"
+msgstr "Застава, що належить клієнту"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Freeze of funds"
+msgstr "Заморожування коштів"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Full Call / Early Redemption"
+msgstr "Повний виклик / достроковий викуп"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Future Variation Margin"
+msgstr "Майбутня маржа варіації"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Futures"
+msgstr "Термінові контракти"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Futures Commission"
+msgstr "Комісія термінових контрактів"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Futures Residual Amount"
+msgstr "Залишкова сума термінових контрактів"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Guarantees"
+msgstr "Гарантії"
+
+#. module: account_bank_statement_import_camt
 #: model:ir.model,name:account_bank_statement_import_camt.model_account_bank_statement_import
 msgid "Import Bank Statement"
 msgstr "Імпортувати банківську виписку"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Inspeci/Share Exchange"
+msgstr "Інспекти/Обмін валютою"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Interest"
+msgstr "Інтерес"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Interest Payment"
+msgstr "Оплата інтересу"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Interest Payment with Principle"
+msgstr "Виплата інтересу з положенням"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Internal Account Transfer"
+msgstr "Внутрішній переказ рахунку"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Internal Book Transfer"
+msgstr "Внутрішній переказ книги"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Intra Company Transfer"
+msgstr "Внутрішній переказ компанії"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Invoice Accepted with Differed Due Date"
+msgstr "Рахунок прийнято з дати відстрочки"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Issued Cash Concentration Transactions"
+msgstr "Випущені операції з концентрацією готівки"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Issued Cheques"
+msgstr "Випущені чеки"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Issued Credit Transfers"
+msgstr "Випущені кредитні перекази"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Issued Direct Debits"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Issued Real Time Credit Transfer"
+msgstr ""
 
 #. module: account_bank_statement_import_camt
 #: model:ir.model,name:account_bank_statement_import_camt.model_account_journal
@@ -31,6 +1070,961 @@ msgid "Journal"
 msgstr "Журнал"
 
 #. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Lack"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Lending Broker Owned Cash Collateral"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Lending Client Owned Cash Collateral"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Lending income"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Liquidation Dividend / Liquidation Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Listed Derivatives – Futures"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Listed Derivatives – Options"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Loans, Deposits & Syndications"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Lockbox Transactions"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Management Fees"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Margin Payments"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Margin client owned cash collateral"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Merchant Card Transactions"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Merger"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Miscellaneous Credit Operations"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Miscellaneous Debit Operations"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Miscellaneous Deposit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Miscellaneous Securities Operations"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Mixed Deposit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Mortgage Loans"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Netting"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Non Deliverable"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Non Settled"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Non Syndicated"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Non Taxable commissions"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Non-Presented Circular Cheque"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Not available"
+msgstr "Недоступний"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Notice Deposits"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Notice Loans"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC CCP"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC Derivatives – Bonds"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC Derivatives – Credit Derivatives"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC Derivatives – Equity"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC Derivatives – Interest Rates"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC Derivatives – Structured Exotic Derivatives"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC Derivatives – Swaps"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "OTC Non-CCP"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Odd Lot Sale/Purchase"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "One-Off Direct Debit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Open Cheque"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Opening & Closing"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Option broker owned collateral"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Option client owned collateral"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Options"
+msgstr "Опції"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Order Cheque"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Other"
+msgstr "Інше"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Overdraft"
+msgstr "Кредитний ліміт на ланч"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Overdraft Charge"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Pair-Off"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Partial Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Partial Redemption Without Reduction of Nominal Value"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Partial Redemption with reduction of nominal value"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Payments"
+msgstr "Платежі"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Payroll/Salary Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Placement"
+msgstr "Розташування"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid ""
+"Please set the IBAN account on your bank journal.\n"
+"\n"
+"This CAMT file is targeting several IBAN accounts but none match the current journal."
+msgstr ""
+"Встановіть рахунок  IBAN у вашому банківському журналі.\n"
+"\n"
+"Цей файл CAMTнацілений на кілька рахунків IBAN, але жодний не відповідає поточному журналу."
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Point-of-Sale (POS) Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Point-of-Sale (POS) Payment - Debit Card"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Portfolio Move"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Posting Error"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Pre-Authorised Direct Debit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Precious Metal"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Principal Pay-down/pay-up"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Principal Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Priority Credit Transfer"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Priority Issue"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Put Redemption"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Received Cash Concentration Transactions"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Received Cheques"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Received Credit Transfers"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Received Direct Debits"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Received Real Time Credit Transfer"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Redemption"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Redemption Asset Allocation"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Redemption Withdrawing Plan"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Reimbursements"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Renewal"
+msgstr "Оновлення"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Repayment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Repo"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Repurchase offer/Issuer Bid/Reverse Rights."
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Reset Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Reversal due to Payment Cancellation Request"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Reversal due to Payment Return/reimbursement of a Credit Transfer"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Reversal due to Payment Reversal"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Reversal due to Return/Unpaid Direct Debit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Reversal due to a Payment Cancellation Request"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Reverse Repo"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Rights Issue/Subscription Rights/Rights Offer"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "SEPA B2B Direct Debit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "SEPA Core Direct Debit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "SEPA Credit Transfer"
+msgstr "Кредитні перекази SEPA"
+
+#. module: account_bank_statement_import_camt
 #: model_terms:ir.ui.view,arch_db:account_bank_statement_import_camt.account_bank_statement_import_camt
-msgid "SEPA recommanded Cash Management format (CAMT.053)"
-msgstr "SEPA рекомендував формат Управління готівкою (CAMT.053)"
+msgid ""
+"SEPA recommanded Cash Management format (CAMT.053) <i class=\"fa fa-info-"
+"circle\" aria-label=\"In case there are statements targeting multiple "
+"accounts, only those targeting the current account will be imported.\" "
+"title=\"In case there are statements targeting multiple accounts, only those"
+" targeting the current account will be imported.\"/>"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Same Day Value Credit Transfer"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Securities"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Securities Borrowing"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Securities Lending"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Sell Buy Back"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Settlement"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Settlement after collection"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Settlement against bank guarantee"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Settlement at Maturity"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Settlement of Sight Export document"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Settlement of Sight Import document"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Settlement under reserve"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Smart-Card Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Spots"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Stamp duty"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Stand-By Letter Of Credit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Standing Order"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Subscription"
+msgstr "Підписка"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Subscription Asset Allocation"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Subscription Savings Plan"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Swap Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Swap broker owned collateral"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Swaps"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Sweep"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Sweeping"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Switch"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Syndicated"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Syndications"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "TBA closing"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Tax Reclaim"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Taxes"
+msgstr "Податки"
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Tender"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Topping"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Trade"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Trade Services"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Trade, Clearing and Settlement"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Transaction Fees"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Transfer In"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Transfer Out"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Travellers Cheques Deposit"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Travellers Cheques Withdrawal"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Treasury Tax And Loan Service"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Triparty Repo"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Triparty Reverse Repo"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Turnaround"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Underwriting Commission"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Unpaid Card Transaction"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Unpaid Cheque"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Unpaid Foreign Cheque"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Upfront Payment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Value Date"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Warrant Exercise/Warrant Conversion"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Withdrawal/distribution"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Withholding Tax"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "YTD Adjustment"
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/wizard/account_bank_statement_import_camt.py:0
+#, python-format
+msgid "Zero Balancing"
+msgstr ""

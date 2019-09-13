@@ -1,35 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * timesheet_grid
+# 	* timesheet_grid
 # 
 # Translators:
-# Xavier Belmere <Info@cartmeleon.com>, 2016
-# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2016
-# Nancy Bolognesi <nb@microcom.ca>, 2016
-# Olivier Lenoir <olivier.lenoir@free.fr>, 2016
-# Christophe Dubuit <cdubuit@yahoo.com>, 2016
-# Jérémy Donas <LeDistordu@users.noreply.github.com>, 2016
-# f5f0a0dac17dde787a1d812a6989680e, 2017
-# fr trans <e2ffr05@hotmail.com>, 2017
-# Bertrand LATOUR <divoir@gmail.com>, 2017
-# Melanie Bernard <mbe@odoo.com>, 2017
-# Frédéric LIETART <stuff@tifred.fr>, 2017
-# bb76cd9ac0cb7e20167a14728edb858b, 2017
-# 6534c450c77b2549e41c52e2051f5839, 2017
-# 71728729ee5e25c3ecd8d7420ddb9ca7, 2017
-# e2f <projects@e2f.com>, 2018
+# Martin Trigaux, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Nathan Grognet <ngr@odoo.com>, 2019
-# Marie Willemyns <mwi@odoo.com>, 2019
-# Martin Trigaux, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
-"PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -391,10 +376,21 @@ msgid "Add a Task"
 msgstr "Ajouter une tâche"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:81
+#: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "All selected timesheets are already validated"
 msgstr "Toutes les feuilles de temps sélectionnées sont déjà validées"
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid ""
+"All selected timesheets are already validated. You are not indicated as "
+"responsible for your timesheet so you can't validate your own timesheet."
+msgstr ""
+"Toutes les feuilles de temps sélectionnées sont déjà validées. Vous n'êtes "
+"pas indiqué comme responsable de votre feuille de temps, vous ne pouvez donc"
+" pas valider cette dernière."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -413,7 +409,7 @@ msgstr "Annuler"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:21
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Choose a <b>project name</b>. (e.g. name of a customer, or product)"
 msgstr ""
@@ -461,10 +457,11 @@ msgstr "Jours pour rappeler à l'utilisateur"
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__display_name
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__display_name
 msgid "Display Name"
-msgstr "Nom affiché"
+msgstr "Afficher Nom"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
+#: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__employee_id
 msgid "Employee"
 msgstr "Employé"
@@ -483,7 +480,7 @@ msgstr "Rappel pour l’employé"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_delay
 msgid "Employee Reminder Days"
-msgstr "Jours de rappel des employés"
+msgstr "Jours de rappel aux employés"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -523,7 +520,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation____last_update
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line____last_update
 msgid "Last Modified on"
-msgstr "Dernière Modification le"
+msgstr "Dernière modification le"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_month
@@ -556,13 +553,13 @@ msgstr "Rappel pour les responsables"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_delay
 msgid "Manager Reminder Days"
-msgstr "Jours de rappel du gestionnaire"
+msgstr "Jours de rappel aux gestionnaires"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_interval
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_interval
 msgid "Manager Reminder Frequency"
-msgstr "Fréquence de rappel du gestionnaire"
+msgstr "Fréquence de rappel aux gestionnaires"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
@@ -579,7 +576,7 @@ msgstr "Mon équipe"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_nextdate
 msgid "Next scheduled date for employee reminder"
-msgstr "Prochaine date prévue pour le rappel des employés"
+msgstr "Prochaine date prévue pour le rappel aux employés"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_nextdate
@@ -592,25 +589,36 @@ msgid "Non Validated"
 msgstr "Non Validé"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:106
+#: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"Only a Timesheets Manager is allowed to create an entry older than the "
-"validation limit."
-msgstr ""
-"Seul un gestionnaire de feuilles de temps est autorisé à créer une entrée "
-"plus ancienne que la limite de validation."
-
-#. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:121
-#, python-format
-msgid "Only a Timesheets Manager is allowed to delete a validated entry."
+"Only a Timesheets Approver or Manager is allowed to create an entry older "
+"than the validation limit."
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:115
+#: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "Only a Timesheets Manager is allowed to modify a validated entry."
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to delete a validated "
+"entry."
+msgstr ""
+"Seul un approbateur ou un gestionnaire de feuilles de temps est autorisé à "
+"supprimer une entrée validée."
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to modify a validated "
+"entry."
+msgstr ""
+"Seul un approbateur ou un gestionnaire de feuilles de temps est autorisé à "
+"modifier une entrée déjà validée."
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_hr_employee_public
+msgid "Public Employee"
 msgstr ""
 
 #. module: timesheet_grid
@@ -632,7 +640,7 @@ msgstr ""
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:35
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid ""
 "Set the number of hours done on this task, for every day of the week. (e.g. "
@@ -647,7 +655,7 @@ msgid "Task"
 msgstr "Tâche"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:76
+#: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "There aren't any timesheet to validate"
 msgstr "Il n'y a pas de feuilles de temps à valider"
@@ -658,8 +666,15 @@ msgid "Time Spent"
 msgstr "Temps passé"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:157
-#: code:addons/timesheet_grid/models/analytic.py:167
+#: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee_public__timesheet_manager_id
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_users__timesheet_manager_id
+msgid "Timesheet"
+msgstr "Feuille de présence"
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "Timesheet Adjustment"
 msgstr "Ajustement de feuilles de temps"
@@ -673,12 +688,6 @@ msgstr "Contrôle de la feuille de temps"
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__is_timesheet
 msgid "Timesheet Line"
 msgstr "Ligne de feuille de temps"
-
-#. module: timesheet_grid
-#: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
-#: model:ir.model.fields,field_description:timesheet_grid.field_res_users__timesheet_manager_id
-msgid "Timesheet Responsible"
-msgstr "Responsable de la feuille de temps"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_validation
@@ -718,7 +727,7 @@ msgstr "Date de validation des feuilles de temps"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:17
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Timesheets are done on tasks, click here to create your first one."
 msgstr ""
@@ -732,14 +741,14 @@ msgstr "A Valider"
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:13
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Track the time spent on your projects. <i>It starts here.</i>"
 msgstr "Suivez le temps passé sur vos projets. <i>Ça commence ici."
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/tour.js:28
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid ""
 "Use tasks to track the different type of activities. (e.g. Graphic Design, "
@@ -755,6 +764,7 @@ msgstr "Fréquence de rappel utilisateur"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_manager_id
+#: model:ir.model.fields,help:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 #: model:ir.model.fields,help:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
 msgstr ""
@@ -777,6 +787,12 @@ msgstr "Valider"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Validate Timesheets"
 msgstr "Valider les Feuilles de Temps"
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid "Validate the timesheets"
+msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
@@ -827,16 +843,16 @@ msgid "Week"
 msgstr "Semaine"
 
 #. module: timesheet_grid
-#: selection:res.company,timesheet_mail_employee_interval:0
-#: selection:res.company,timesheet_mail_manager_interval:0
-msgid "after end of month"
-msgstr "après la fin du mois"
+#: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months
+#: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_manager_interval__months
+msgid "after the end of the month"
+msgstr "à la fin du mois "
 
 #. module: timesheet_grid
-#: selection:res.company,timesheet_mail_employee_interval:0
-#: selection:res.company,timesheet_mail_manager_interval:0
-msgid "after end of week"
-msgstr "après la fin de la semaine"
+#: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__weeks
+#: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_manager_interval__weeks
+msgid "after the end of the week"
+msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form

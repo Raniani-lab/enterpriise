@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:29+0000\n"
-"PO-Revision-Date: 2019-08-12 11:29+0000\n"
+"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"PO-Revision-Date: 2019-08-26 08:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,19 +16,19 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_ponto
-#: code:addons/account_ponto/models/ponto.py:99
+#: code:addons/account_ponto/models/ponto.py:0
 #, python-format
 msgid "Account"
 msgstr ""
 
 #. module: account_ponto
-#: code:addons/account_ponto/models/ponto.py:78
+#: code:addons/account_ponto/models/ponto.py:0
 #, python-format
 msgid "An error occurred during online synchronization"
 msgstr ""
 
 #. module: account_ponto
-#: code:addons/account_ponto/models/ponto.py:196
+#: code:addons/account_ponto/models/ponto.py:0
 #, python-format
 msgid "Fetching transactions took too much time."
 msgstr ""
@@ -39,25 +39,20 @@ msgid "Interface for Online Account Journal"
 msgstr ""
 
 #. module: account_ponto
-#: code:addons/account_ponto/models/ponto.py:47
+#: code:addons/account_ponto/models/ponto.py:0
 #, python-format
 msgid "Invalid access token"
 msgstr ""
 
 #. module: account_ponto
-#: code:addons/account_ponto/models/ponto.py:67
+#: code:addons/account_ponto/models/ponto.py:0
 #, python-format
 msgid "Link your Ponto account"
 msgstr ""
 
 #. module: account_ponto
-#: selection:account.online.provider,provider_type:0
-msgid "Plaid"
-msgstr ""
-
-#. module: account_ponto
-#: selection:account.online.provider,provider_type:0
-#: code:addons/account_ponto/models/ponto.py:118
+#: code:addons/account_ponto/models/ponto.py:0
+#: model:ir.model.fields.selection,name:account_ponto.selection__account_online_provider__provider_type__ponto
 #, python-format
 msgid "Ponto"
 msgstr ""
@@ -83,7 +78,7 @@ msgid "Provider for online account synchronization"
 msgstr ""
 
 #. module: account_ponto
-#: code:addons/account_ponto/models/ponto.py:55
+#: code:addons/account_ponto/models/ponto.py:0
 #, python-format
 msgid "Server not reachable, please try again later"
 msgstr ""
@@ -94,13 +89,13 @@ msgid "Technical field that contains the ponto token"
 msgstr ""
 
 #. module: account_ponto
-#: code:addons/account_ponto/models/ponto.py:79
+#: code:addons/account_ponto/models/ponto.py:0
 #, python-format
 msgid "The following error happened during the synchronization: %s"
 msgstr ""
 
 #. module: account_ponto
-#: code:addons/account_ponto/models/ponto.py:52
+#: code:addons/account_ponto/models/ponto.py:0
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
 msgstr ""
@@ -108,11 +103,6 @@ msgstr ""
 #. module: account_ponto
 #: model_terms:ir.ui.view,arch_db:account_ponto.ponto_online_provider_account_form_view
 msgid "Update Accounts"
-msgstr ""
-
-#. module: account_ponto
-#: selection:account.online.provider,provider_type:0
-msgid "Yodlee"
 msgstr ""
 
 #. module: account_ponto

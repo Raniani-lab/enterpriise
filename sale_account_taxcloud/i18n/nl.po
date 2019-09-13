@@ -1,19 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * sale_account_taxcloud
+# 	* sale_account_taxcloud
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2017-04-28 13:57+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +21,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_account_taxcloud
-#: model:ir.model,name:sale_account_taxcloud.model_account_invoice
-msgid "Invoice"
-msgstr "Factuur"
+#: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
+msgid "Go to Settings."
+msgstr ""
+
+#. module: sale_account_taxcloud
+#: model:ir.model.fields,field_description:sale_account_taxcloud.field_sale_order__is_taxcloud_configured
+msgid "Is Taxcloud Configured"
+msgstr ""
+
+#. module: sale_account_taxcloud
+#: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
+msgid ""
+"Please enter your Taxcloud credentials to compute tax rates automatically."
+msgstr ""
 
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order
@@ -32,20 +42,28 @@ msgid "Sales Order"
 msgstr "Verkooporder"
 
 #. module: sale_account_taxcloud
-#: code:addons/sale_account_taxcloud/models/sale_order.py:34
-#, python-format
-msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
-msgstr ""
-"De configuratie van TaxCloud bevind zich onder de Boekhouding app, onder het"
-" instellingen menu."
+#: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
+msgid "Tax"
+msgstr "BTW"
 
 #. module: sale_account_taxcloud
-#: code:addons/sale_account_taxcloud/models/sale_order.py:34
+#: model:ir.model.fields,help:sale_account_taxcloud.field_sale_order__is_taxcloud
+msgid "Technical field to determine whether to hide taxes in views or not."
+msgstr ""
+
+#. module: sale_account_taxcloud
+#: code:addons/sale_account_taxcloud/models/sale_order.py:0
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
 msgstr "Onmogelijk om BTW op te halen vanuit TaxCloud:"
 
 #. module: sale_account_taxcloud
-#: model:ir.actions.server,name:sale_account_taxcloud.action_sale_order_update_taxes
-msgid "Update taxes with Taxcloud"
-msgstr "Update belastingen met Taxcloud"
+#: model:ir.model.fields,field_description:sale_account_taxcloud.field_sale_order__is_taxcloud
+msgid "Use TaxCloud API"
+msgstr "Gebruik TaxCloud API"
+
+#. module: sale_account_taxcloud
+#: model:ir.model.fields,help:sale_account_taxcloud.field_sale_order__is_taxcloud_configured
+msgid ""
+"Used to determine whether or not to warn the user to configure TaxCloud."
+msgstr ""

@@ -69,6 +69,10 @@ class USPSRequest():
             weight_in_pounds = weight_uom_id._compute_quantity(tot_weight, order.env.ref('uom.product_uom_lb'))
             if weight_in_pounds > 4 and order.carrier_id.usps_service == 'First Class':     # max weight of FirstClass Service
                 return _("Please choose another service (maximum weight of this service is 4 pounds)")
+        if picking and picking.move_lines:
+            # https://www.usps.com/business/web-tools-apis/evs-international-label-api.htm
+            if max(picking.move_lines.mapped('product_uom_qty')) > 999:
+                return _("Quantity for each move line should be less than 1000.")
         return False
 
     def _usps_request_data(self, carrier, order):
@@ -161,7 +165,7 @@ class USPSRequest():
     def _item_data(self, line, weight, price):
         return {
             'Description': line.name,
-            'Quantity': int(line.product_uom_qty),  # the USPS API does not accept 1.0 but 1
+            'Quantity': max(int(line.product_uom_qty), 1),  # the USPS API does not accept 1.0 but 1
             'Value': price,
             'NetPounds': weight['pound'],
             'NetOunces': round(weight['ounce'], 0),
@@ -180,7 +184,7 @@ class USPSRequest():
             company = order.company_id or picking.company_id or self.env.company
             shipper_currency = picking.sale_id.currency_id or picking.company_id.currency_id
             if shipper_currency.name == USD.name:
-                price = line.product_id.lst_price * int(line.product_uom_qty)
+                price = line.product_id.lst_price * line.product_uom_qty
             else:
                 quote_currency = picking.env['res.currency'].search([('name', '=', shipper_currency.name)], limit=1)
                 amount = line.product_id.lst_price * line.product_uom_qty

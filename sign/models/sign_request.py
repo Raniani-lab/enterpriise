@@ -66,8 +66,8 @@ class SignRequest(models.Model):
     nb_closed = fields.Integer(string="Completed Signatures", compute="_compute_count", store=True)
     nb_total = fields.Integer(string="Requested Signatures", compute="_compute_count", store=True)
     progress = fields.Char(string="Progress", compute="_compute_count")
-    start_sign = fields.Boolean(string="", help="At least one signer has signed the document.", compute="_compute_count")
-    integrity = fields.Boolean(string="Integrity of the Sign request", compute='compute_hashes')
+    start_sign = fields.Boolean(string="Signature Started", help="At least one signer has signed the document.", compute="_compute_count")
+    integrity = fields.Boolean(string="Integrity of the Sign request", compute='_compute_hashes')
 
     active = fields.Boolean(default=True, string="Active")
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
@@ -75,9 +75,9 @@ class SignRequest(models.Model):
     color = fields.Integer()
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
+    completion_date = fields.Date(string="Completion Date", compute="_compute_count")
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
-
 
     @api.depends('request_item_ids.state')
     def _compute_count(self):
@@ -92,7 +92,14 @@ class SignRequest(models.Model):
             rec.nb_closed = closed
             rec.nb_total = wait + closed
             rec.start_sign = bool(closed)
-            rec.progress = "{} / {}".format(wait, wait + closed)
+            rec.progress = "{} / {}".format(closed, wait + closed)
+            if closed:
+                rec.start_sign = True
+            if wait == 0 and closed:
+                last_completed_request = rec.request_item_ids.sorted(key=lambda i: i.signing_date, reverse=True)[0]
+                rec.completion_date = last_completed_request.signing_date
+            else:
+                rec.completion_date = None
 
     @api.depends('request_item_ids.state', 'request_item_ids.partner_id.name')
     def _compute_request_item_infos(self):
@@ -109,6 +116,12 @@ class SignRequest(models.Model):
         for rec in self:
             if rec.state == 'sent' and rec.nb_closed == len(rec.request_item_ids) and len(rec.request_item_ids) > 0: # All signed
                 rec.action_signed()
+
+    def _get_final_recipients(self):
+        self.ensure_one()
+        all_recipients = set(self.request_item_ids.mapped('signer_email'))
+        all_recipients |= set(self.mapped('message_follower_ids.partner_id.email'))
+        return all_recipients
 
     def button_send(self):
         self.action_sent()
@@ -160,7 +173,7 @@ class SignRequest(models.Model):
         }
 
     @api.onchange("progress", "start_sign")
-    def compute_hashes(self):
+    def _compute_hashes(self):
         for document in self:
             try:
                 document.integrity = self.sign_log_ids._check_document_integrity()
@@ -186,9 +199,7 @@ class SignRequest(models.Model):
                 sign_request_item.write({'state':'sent'})
                 Log = http.request.env['sign.log'].sudo()
                 vals = Log._prepare_vals_from_request(sign_request)
-                vals.update({
-                    'action': 'create',
-                })
+                vals['action'] = 'create'
                 vals = Log._update_vals_with_http_request(vals)
                 Log.create(vals)
 
@@ -205,9 +216,7 @@ class SignRequest(models.Model):
             if sign_request.send_signature_accesses(subject, message, ignored_partners=ignored_partners):
                 Log = http.request.env['sign.log'].sudo()
                 vals = Log._prepare_vals_from_request(sign_request)
-                vals.update({
-                    'action': 'create',
-                })
+                vals['action'] = 'create'
                 vals = Log._update_vals_with_http_request(vals)
                 Log.create(vals)
                 followers = sign_request.message_follower_ids.mapped('partner_id')
@@ -302,8 +311,24 @@ class SignRequest(models.Model):
             self.generate_completed_document()
 
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        attachment = self.env['ir.attachment'].create({
+            'name': "%s.pdf" % self.reference,
+            'datas': self.completed_document,
+            'type': 'binary',
+            'res_model': self._name,
+            'res_id': self.id,
+        })
+        report_action = self.env.ref('sign.action_sign_request_print_logs')
+        pdf_content, __ = report_action.render_qweb_pdf(self.id)
+        attachment_log = self.env['ir.attachment'].create({
+            'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
+            'datas': base64.b64encode(pdf_content),
+            'type': 'binary',
+            'res_model': self._name,
+            'res_id': self.id,
+        })
         for signer in self.request_item_ids:
-            if not signer.partner_id or not signer.partner_id.email:
+            if not signer.signer_email:
                 continue
 
             tpl = self.env.ref('sign.sign_template_mail_completed')
@@ -314,38 +339,13 @@ class SignRequest(models.Model):
                 'body': False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
-            attachment = self.env['ir.attachment'].create({
-                'name': "%s.pdf" % self.reference,
-                'datas': self.completed_document,
-                'type': 'binary',
-                'res_model': self._name,
-                'res_id': self.id,
-            })
-            
-            pdf_writer = PdfFileWriter()
-            report_action = self.env.ref('sign.action_sign_request_print_logs')
-            pdf_content, __ = report_action.render_qweb_pdf(self.id)
-            reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
-            for page in range(reader.getNumPages()):
-                pdf_writer.addPage(reader.getPage(page))
-            _buffer = io.BytesIO()
-            pdf_writer.write(_buffer)
-            merged_pdf = _buffer.getvalue()
-            _buffer.close()
-            attachment_log = self.env['ir.attachment'].create({
-                'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
-                'datas': base64.b64encode(merged_pdf),
-                'type': 'binary',
-                'res_model': self._name,
-                'res_id': self.id,
-            })
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': self.reference},
                 {'model_description': 'signature', 'company': self.create_uid.company_id},
                 {'email_from': formataddr((self.create_uid.name, self.create_uid.email)),
                  'author_id': self.create_uid.partner_id.id,
-                 'email_to': formataddr((signer.partner_id.name, signer.partner_id.email)),
+                 'email_to': formataddr((signer.partner_id.name, signer.signer_email)),
                  'subject': _('%s has been signed') % self.reference,
                  'attachment_ids': [(4, attachment.id), (4, attachment_log.id)]},
                 force_send=True
@@ -399,7 +399,7 @@ class SignRequest(models.Model):
         packet = io.BytesIO()
         can = canvas.Canvas(packet)
         itemsByPage = self.template_id.sign_item_ids.getByPage()
-        SignItemValue = self.env['sign.item.value']
+        SignItemValue = self.env['sign.request.item.value']
         for p in range(0, old_pdf.getNumPages()):
             page = old_pdf.getPage(p)
             width = float(page.mediaBox.getUpperRight_x())
@@ -548,11 +548,12 @@ class SignRequestItem(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Contact", ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
-    sign_item_value_ids = fields.One2many('sign.item.value', 'sign_request_item_id', string="Value")
+    sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
+    access_via_link = fields.Boolean('Accessed Through Token')
     role_id = fields.Many2one('sign.item.role', string="Role")
-    sms_number = fields.Char(related='partner_id.mobile', readonly=False)
+    sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True)
     sms_token = fields.Char('SMS Token', readonly=True)
 
     signature = fields.Binary(attachment=True)
@@ -563,7 +564,7 @@ class SignRequestItem(models.Model):
         ("completed", "Completed")
     ], readonly=True, default="draft")
 
-    signer_email = fields.Char(related='partner_id.email', readonly=False)
+    signer_email = fields.Char(related='partner_id.email', readonly=False, depends=(['partner_id']), store=True)
 
     latitude = fields.Float(digits=(10, 7))
     longitude = fields.Float(digits=(10, 7))
@@ -577,7 +578,7 @@ class SignRequestItem(models.Model):
         })
         for request_item in self:
             itemsToClean = request_item.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id == request_item.role_id or not r.responsible_id)
-            self.env['sign.item.value'].search([('sign_item_id', 'in', itemsToClean.mapped('id')), ('sign_request_id', '=', request_item.sign_request_id.id)]).unlink()
+            self.env['sign.request.item.value'].search([('sign_item_id', 'in', itemsToClean.mapped('id')), ('sign_request_id', '=', request_item.sign_request_id.id)]).unlink()
         self.mapped('sign_request_id')._check_after_compute()
 
     def action_sent(self):
@@ -599,7 +600,7 @@ class SignRequestItem(models.Model):
             tpl = self.env.ref('sign.sign_template_mail_request')
             body = tpl.render({
                 'record': signer,
-                'link': url_join(base_url, "sign/document/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
+                'link': url_join(base_url, "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
                 'subject': subject,
                 'body': message if message != '<p><br></p>' else False,
             }, engine='ir.qweb', minimal_qcontext=True)
@@ -620,7 +621,7 @@ class SignRequestItem(models.Model):
         if not isinstance(signature, dict):
             self.signature = signature
         else:
-            SignItemValue = self.env['sign.item.value']
+            SignItemValue = self.env['sign.request.item.value']
             request = self.sign_request_id
 
             signerItems = request.template_id.sign_item_ids.filtered(lambda r: not r.responsible_id or r.responsible_id.id == self.role_id.id)
@@ -660,3 +661,16 @@ class SignRequestItem(models.Model):
         for rec in self:
             rec._reset_sms_token()
             self.env['sms.api']._send_sms([rec.sms_number], _('Your confirmation code is %s') % rec.sms_token)
+
+
+class SignRequestItemValue(models.Model):
+    _name = "sign.request.item.value"
+    _description = "Signature Item Value"
+    _rec_name = 'sign_request_id'
+
+    sign_request_item_id = fields.Many2one('sign.request.item', string="Signature Request item", required=True,
+                                           ondelete='cascade')
+    sign_item_id = fields.Many2one('sign.item', string="Signature Item", required=True, ondelete='cascade')
+    sign_request_id = fields.Many2one(string="Signature Request", required=True, ondelete='cascade', related='sign_request_item_id.sign_request_id')
+
+    value = fields.Text()

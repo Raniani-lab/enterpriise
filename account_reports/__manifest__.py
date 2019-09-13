@@ -8,18 +8,15 @@
 Accounting Reports
 ==================
     """,
-    'depends': ['account_accountant', 'sms'],
+    'depends': ['account_accountant'],
     'data': [
         'security/ir.model.access.csv',
         'data/account_financial_report_data.xml',
         'views/assets.xml',
         'views/account_report_view.xml',
-        'views/company_view.xml',
         'views/report_financial.xml',
         'views/search_template_view.xml',
-        'views/report_followup.xml',
         'views/partner_view.xml',
-        'views/followup_view.xml',
         'views/account_journal_dashboard_view.xml',
         'views/res_config_settings_views.xml',
         'wizard/report_export_wizard.xml',

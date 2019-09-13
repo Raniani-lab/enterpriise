@@ -5,13 +5,12 @@ import json
 from werkzeug import url_encode
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 from odoo.osv import expression
 
 
 class Applicant(models.Model):
     _inherit = ["hr.applicant"]
-    _friends_count = 5
-    _max_referral_level = 5
 
     ref_employee_id = fields.Many2one('hr.employee', string='Referred By Employee', tracking=True,
         compute='_compute_ref_employee_id', inverse='_inverse_ref_employee_id', store=True)
@@ -153,7 +152,7 @@ class Applicant(models.Model):
         if not self.env.user.employee_id:
             return
         if self_sudo.ref_employee_id == self.env.user.employee_id and not self_sudo.friend_id:
-            # Use sudo, employee has normaly not the right to write on referral
+            # Use sudo, employee has normaly not the right to write on applicant
             self_sudo.write({'friend_id': friend_id})
 
     def _get_onboarding_steps(self):
@@ -183,7 +182,7 @@ class Applicant(models.Model):
     def retrieve_referral_welcome_screen(self):
         result = {}
         if not self.env.user.employee_id:
-            return result
+            raise UserError(_("You don't have access to this application as your user is not linked to an employee."))
         employee_id = self.env.user.employee_id
 
         result['id'] = employee_id.id
@@ -269,6 +268,7 @@ class Applicant(models.Model):
         ], order='points asc', limit=1)
         if next_referral_level:
             self.env.user.employee_id.write({'hr_referral_level_id': next_referral_level.id})
+
 
 class RecruitmentStage(models.Model):
     _inherit = "hr.recruitment.stage"

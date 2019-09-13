@@ -1,53 +1,32 @@
-odoo.define('account_asset.widget', function(require) {
+odoo.define('account_asset.AssetFormView', function(require) {
 "use strict";
 
-/**
- * The purpose of this widget is to shows a toggle button on depreciation and
- * installment lines for posted/unposted line. When clicked, it calls the method
- * create_move on the object account.asset.depreciation.line.
- * Note that this widget can only work on the account.asset.depreciation.line
- * model as some of its fields are harcoded.
- */
-
-var AbstractField = require('web.AbstractField');
+var FormRenderer = require('web.FormRenderer');
+var FormView = require('web.FormView');
 var core = require('web.core');
-var registry = require('web.field_registry');
+var viewRegistry = require('web.view_registry');
 
 var _t = core._t;
 
-var AccountAssetReversedWidget = AbstractField.extend({
-    noLabel: true,
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-
-    /**
-     * @override
+var AccountAssetFormRenderer = FormRenderer.extend({
+    events: _.extend({}, FormRenderer.prototype.events, {
+        'click .add_original_move_line': '_onAddOriginalMoveLine',
+    }),
+    /*
+     * Open the m2o item selection from another button
      */
-    isSet: function () {
-        return true; // it should always be displayed, whatever its value
+    _onAddOriginalMoveLine: function(ev) {
+        _.find(this.allFieldWidgets[this.state.id], x => x['name'] == 'original_move_line_ids').onAddRecordOpenDialog();
     },
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
-    /**
-     * @override
-     * @private
-     */
-    _render: function () {
-        if (this.recordData.reversed_entry_id != false) {
-            var $icon = $('<i/>', {
-                title: _t('This move has been reversed')
-            }).addClass('fa fa-exclamation-circle')
-            this.$el.html($icon);
-        }
-    },
-
 });
 
-registry.add("deprec_lines_reversed", AccountAssetReversedWidget);
+var AssetFormView = FormView.extend({
+    config: _.extend({}, FormView.prototype.config, {
+        Renderer: AccountAssetFormRenderer,
+    }),
+});
+
+viewRegistry.add("asset_form", AssetFormView);
+return AssetFormView;
 
 });

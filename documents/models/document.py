@@ -218,6 +218,12 @@ class Document(models.Model):
 
         return super(Document, self).message_new(msg_dict, defaults)
 
+    @api.returns('mail.message', lambda value: value.id)
+    def message_post(self, message_type='notification', *args, **kwargs):
+        if message_type == 'email' and self.create_share_id:
+            self = self.with_context(no_document=True)
+        return super(Document, self).message_post(message_type=message_type, *args, **kwargs)
+
     @api.model
     def _message_post_after_hook(self, message, msg_vals):
         """
@@ -374,7 +380,7 @@ class Document(models.Model):
             if vals.get('datas') and not vals.get('attachment_id') and not record.attachment_id:
                 res_model = vals.get('res_model', record.res_model or 'documents.document')
                 res_id = vals.get('res_id') if vals.get('res_model') else record.res_id if record.res_model else record.id
-                attachment = self.env['ir.attachment'].create({
+                attachment = self.env['ir.attachment'].with_context(no_document=True).create({
                     'name': vals.get('name', record.name),
                     'res_model': res_model,
                     'res_id': res_id

@@ -100,23 +100,24 @@ class HrPayslip(models.Model):
         self.compute_sheet()
         self.write({'state' : 'done'})
         self.mapped('payslip_run_id').action_close()
-        for payslip in self:
-            if not payslip.struct_id or not payslip.struct_id.report_id:
-                report = self.env.ref('hr_payroll.action_report_payslip', False)
-            else:
-                report = payslip.struct_id.report_id
-            pdf_content, content_type = report.render_qweb_pdf(payslip.id)
-            if payslip.struct_id.report_id.print_report_name:
-                pdf_name = safe_eval(payslip.struct_id.report_id.print_report_name, {'object': payslip})
-            else:
-                pdf_name = _("Payslip")
-            self.env['ir.attachment'].create({
-                'name': pdf_name,
-                'type': 'binary',
-                'datas': base64.encodestring(pdf_content),
-                'res_model': payslip._name,
-                'res_id': payslip.id
-            })
+        if self.env.context.get('payslip_generate_pdf'):
+            for payslip in self:
+                if not payslip.struct_id or not payslip.struct_id.report_id:
+                    report = self.env.ref('hr_payroll.action_report_payslip', False)
+                else:
+                    report = payslip.struct_id.report_id
+                pdf_content, content_type = report.render_qweb_pdf(payslip.id)
+                if payslip.struct_id.report_id.print_report_name:
+                    pdf_name = safe_eval(payslip.struct_id.report_id.print_report_name, {'object': payslip})
+                else:
+                    pdf_name = _("Payslip")
+                self.env['ir.attachment'].create({
+                    'name': pdf_name,
+                    'type': 'binary',
+                    'datas': base64.encodestring(pdf_content),
+                    'res_model': payslip._name,
+                    'res_id': payslip.id
+                })
 
 
     def action_payslip_cancel(self):
@@ -283,11 +284,12 @@ class HrPayslip(models.Model):
         date_to = self.date_to
 
         self.company_id = employee.company_id
-
-        if not self.contract_id: # Add a default contract if not already defined
+        if not self.contract_id or self.employee_id != self.contract_id.employee_id: # Add a default contract if not already defined
             contracts = employee._get_contracts(date_from, date_to)
 
             if not contracts or not contracts[0].structure_type_id.default_struct_id:
+                self.contract_id = False
+                self.struct_id = False
                 return
             self.contract_id = contracts[0]
             self.struct_id = contracts[0].structure_type_id.default_struct_id

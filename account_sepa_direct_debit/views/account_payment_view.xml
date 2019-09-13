@@ -39,7 +39,7 @@
                 </xpath>
                 <xpath expr="//filter[@name='company']" position="after">
                     <separator/>
-                    <filter name="revoked_mandate" string="Revoked SDD mandate" domain="[('sdd_mandate_id.state', '=', 'revoked')]"/>
+                    <filter name="revoked_mandate" string="Revoked SDD Mandate" domain="[('sdd_mandate_id.state', '=', 'revoked')]"/>
                     <separator/>
                 </xpath>
             </field>

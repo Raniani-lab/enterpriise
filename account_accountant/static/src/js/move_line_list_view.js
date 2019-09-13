@@ -48,7 +48,8 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             this._super.apply(this, arguments);
 
             this.currentAttachments = [];
-            this.hide_attachment = false;
+            this.hide_attachment = !!this.initialState.context.hide_attachment;
+            this.last_selected = false;
 
         },
 
@@ -67,10 +68,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             return this._super.apply(this, arguments).then(function () {
                 self.$('.o_content').addClass('o_move_line_list_view');
                 self.currentAttachments = [];
-                if (self.$attachmentPreview) {
-                    self.$attachmentPreview.remove();
-                }
-                if (config.device.size_class >= config.device.SIZES.XXL) {
+                if (!self.$attachmentPreview && config.device.size_class >= config.device.SIZES.XXL) {
                     self.$attachmentPreview = $('<div>', {
                         class: 'o_attachment_preview',
                     }).append($('<p>', {
@@ -82,7 +80,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                     self.$attachmentPreview.appendTo(self.$('.o_content'));
                     self.$attachmentPreview.toggleClass('hidden', self.hide_attachment);
                 }
-            });
+            }).then(self._renderAttachmentPreview());
         },
         /**
          * Renders a preview of a record attachments.
@@ -92,7 +90,13 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
          */
         _renderAttachmentPreview: function (recordId) {
             var self = this;
-            var record = this.model.get(recordId);
+            if (_.filter(this.model.localData, function(value, key, object) {return value.groupData == self.last_selected}).length) {
+                recordId = _.filter(this.model.localData, function(value, key, object) {return value.groupData == self.last_selected})[0].data[0]
+            }
+            if (!recordId) {
+                return Promise.resolve()
+            }
+            var record = this.model.get(recordId || this.last_selected);
             var types = ['pdf', 'image'];
             var attachments = record.data.move_attachment_ids.data.map(function (attachment) {
                 return {
@@ -151,7 +155,10 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
          */
         _onRowSelected: function (ev) {
             if (config.device.size_class >= config.device.SIZES.XXL) {
-                this._renderAttachmentPreview(ev.data.recordId);
+                this.last_selected = ev.data.recordId;
+                if (this.last_selected.includes('line')) { // if it comes from _onToggleGroup, this._update is triggered but not if it comes from _selectRow
+                    this._renderAttachmentPreview(ev.data.recordId);
+                }
             }
         },
     });
@@ -180,6 +187,16 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             });
         },
 
+        _onRowClicked: function(ev) {
+            ev.stopPropagation();
+            var id = $(ev.currentTarget).data('id');
+            if (id) {
+                this.trigger_up('row_selected', {
+                    recordId: id,
+                });
+            }
+        },
+
         _renderGroupRow: function(group, groupLevel) {
             var ret = this._super.apply(this, arguments);
             // Handle the markup of the name_get on account.move if name_groupby is in the context
@@ -191,7 +208,17 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                 $(text_node).replaceWith($('<span>' + text_node.nodeValue + '</span>')); // we need to create a new node (span) to replace, just inserting with the new html would mean that we replace by multiple nodes, which is impossible
             }
             return ret;
-        }
+        },
+
+        _onToggleGroup: function(ev) {
+            var group = $(ev.currentTarget).closest('tr').data('group');
+            if (group.model === 'account.move.line' && group.groupData && group.groupData.model === 'account.move') {
+                this.trigger_up('row_selected', {
+                    recordId: group.groupData.id,
+                });
+            }
+            this._super.apply(this, arguments);
+        },
     });
 
     var AccountMoveListView = ListView.extend({

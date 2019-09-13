@@ -23,6 +23,7 @@ class ApprovalCategory(models.Model):
         return base64.b64encode(open(default_image_path, 'rb').read())
 
     name = fields.Char(string="Name", translate=True, required=True)
+    active = fields.Boolean(default=True)
     sequence = fields.Integer(string="Sequence")
     description = fields.Char(string="Description", translate=True)
     image = fields.Binary(string='Image', default=_get_default_image)

@@ -98,7 +98,7 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
         });
 
         QUnit.test('Fetch and preview of attachments on big devices', async function (assert) {
-            assert.expect(18);
+            assert.expect(16);
 
             this.data['account.move.line'].records[2].move_attachment_ids = [1];
             this.data['account.move.line'].records[3].move_attachment_ids = [2];
@@ -156,12 +156,7 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
 
             await testUtils.dom.click(list.$('.o_group_header:eq(1)'));
             assert.verifySteps(['/web/dataset/search_read/account.move.line', 'read/ir.attachment']);
-            assert.containsOnce(list, '.o_attachment_preview .o_move_line_empty',
-                "the attachment preview should be empty");
-
             await testUtils.dom.click(list.$('.o_data_row:eq(2) .o_data_cell:eq(1)'));
-            assert.containsNone(list, '.o_attachment_preview .o_move_line_without_attachment',
-                "the empty message should disappear");
             assert.hasAttrValue(list.$('.o_attachment_preview iframe'), 'data-src',
                 '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/1',
                 "the src attribute should be correctly set on the iframe");

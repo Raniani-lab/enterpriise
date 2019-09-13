@@ -13,7 +13,7 @@ class AssetSell(models.TransientModel):
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
 
     action = fields.Selection([('sell', 'Sell'), ('dispose', 'Dispose')], required=True, default='sell')
-    invoice_id = fields.Many2one('account.move', string="Disposal Invoice", help="The disposal invoice is needed in order to generate the closing journal entry.", domain="[('type', '=', 'out_invoice'), ('state', '=', 'posted')]")
+    invoice_id = fields.Many2one('account.move', string="Customer Invoice", help="The disposal invoice is needed in order to generate the closing journal entry.", domain="[('type', '=', 'out_invoice'), ('state', '=', 'posted')]")
     invoice_line_id = fields.Many2one('account.move.line', help="There are multiple lines that could be the related to this asset", domain="[('move_id', '=', invoice_id), ('exclude_from_invoice_tab', '=', False)]")
     select_invoice_line_id = fields.Boolean(compute="_compute_select_invoice_line_id")
     gain_account_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", related='company_id.gain_account_id', help="Account used to write the journal item in case of gain", readonly=False)

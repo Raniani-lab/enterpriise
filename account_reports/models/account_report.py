@@ -1037,6 +1037,7 @@ class AccountReport(models.AbstractModel):
         form = self.env.ref('account.action_manual_reconciliation', False)
         ctx = self.env.context.copy()
         ctx['partner_ids'] = ctx['active_id'] = [params.get('partner_id')]
+        ctx['all_entries'] = True
         return {
             'type': 'ir.actions.client',
             'view_id': form.id,

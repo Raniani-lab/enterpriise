@@ -293,6 +293,7 @@ var FollowupFormController = FormController.extend({
         var context = {
             'mode': 'customers',
             'partner_ids': [this._getPartner()],
+            'all_entries': true,
         }
         this.do_action({
             type: 'ir.actions.client',

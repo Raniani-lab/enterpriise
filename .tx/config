@@ -47,9 +47,9 @@ file_filter = account_budget/i18n/<lang>.po
 source_file = account_budget/i18n/account_budget.pot
 source_lang = en
 
-[odoo-13.account_deferred_revenue]
-file_filter = account_deferred_revenue/i18n/<lang>.po
-source_file = account_deferred_revenue/i18n/account_deferred_revenue.pot
+[odoo-13.account_followup]
+file_filter = account_followup/i18n/<lang>.po
+source_file = account_followup/i18n/account_followup.pot
 source_lang = en
 
 [odoo-13.account_intrastat]
@@ -85,11 +85,6 @@ source_lang = en
 [odoo-13.account_reports]
 file_filter = account_reports/i18n/<lang>.po
 source_file = account_reports/i18n/account_reports.pot
-source_lang = en
-
-[odoo-13.account_reports_followup]
-file_filter = account_reports_followup/i18n/<lang>.po
-source_file = account_reports_followup/i18n/account_reports_followup.pot
 source_lang = en
 
 [odoo-13.account_sepa]
@@ -582,9 +577,9 @@ file_filter = sign/i18n/<lang>.po
 source_file = sign/i18n/sign.pot
 source_lang = en
 
-[odoo-13.snailmail_account_reports_followup]
-file_filter = snailmail_account_reports_followup/i18n/<lang>.po
-source_file = snailmail_account_reports_followup/i18n/snailmail_account_reports_followup.pot
+[odoo-13.snailmail_account_followup]
+file_filter = snailmail_account_followup/i18n/<lang>.po
+source_file = snailmail_account_followup/i18n/snailmail_account_followup.pot
 source_lang = en
 
 [odoo-13.stock_account_enterprise]

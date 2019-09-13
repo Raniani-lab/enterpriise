@@ -41,6 +41,7 @@ class SignContract(Sign):
             contract.access_token_consumed = True
             if contract.applicant_id:
                 contract.applicant_id.access_token = False
+                contract.applicant_id.emp_id = contract.employee_id
         # Both applicant/employee and HR responsible have signed
         if request_item.sign_request_id.nb_closed == 2:
             if contract.employee_id:

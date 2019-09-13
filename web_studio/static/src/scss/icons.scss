@@ -96,23 +96,23 @@
     @include o-studio-sprite-icon(0, -320px);
 }
 
-.o_web_studio_filter_separator:after {
-    @include o-studio-sprite-icon(0, -360px);
-}
-
 .o_web_studio_field_text:after {
     @include o-studio-sprite-icon(0, -340px);
 }
 
-.o_web_studio_filter:after {
-    @include o-studio-sprite-icon(0, -380px);
+.o_web_studio_filter_separator:after {
+    @include o-studio-sprite-icon(0, -360px);
 }
 
 .o_web_studio_field_priority:after {
-    @include o-studio-sprite-icon(0, -400px);
+    @include o-studio-sprite-icon(0, -380px);
 }
 
 .o_web_studio_field_related:after {
+    @include o-studio-sprite-icon(0, -400px);
+}
+
+.o_web_studio_filter:after {
     @include o-studio-sprite-icon(0, -420px);
 }
 

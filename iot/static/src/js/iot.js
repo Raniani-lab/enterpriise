@@ -107,6 +107,7 @@ var IotScanProgress = Widget.extend({
     className: 'scan_progress',
     events: {
         'click .add_scan_range': '_onClickAddScanRange',
+        'click .add_scan_range_ip': '_onClickAddScanRangeIp',
     },
 
     /**
@@ -335,6 +336,12 @@ var IotScanProgress = Widget.extend({
         } else {
             this.$addRangeInput.addClass('is-invalid');
         }
+    },
+
+    /**
+    */
+    _onClickAddScanRangeIp: function () {
+        this.$addRangeInput.removeClass('is-invalid').val().trim();
     },
 });
 

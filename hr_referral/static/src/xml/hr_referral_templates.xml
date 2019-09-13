@@ -60,7 +60,6 @@
                             <div class="rounded-circle">
                                 <img class="img-fluid" t-attf-src="data:image/png;base64,{{friend.image}}"/>
                             </div>
-                            <p><t t-esc="friend.name"/></p>
                             <p><t t-esc="friend.friend"/></p>
                         </div>
                     </t>

@@ -1,7 +1,7 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class HrEmployee(models.Model):
@@ -64,7 +64,7 @@ class HrEmployee(models.Model):
         # Update personal info on the employee
         vals = self.get_employee_values(personal_info)
 
-        existing_bank_account = self.env['res.partner.bank'].search([('acc_number', '=', personal_info['bank_account'])])
+        existing_bank_account = self.env['res.partner.bank'].search([('acc_number', '=', personal_info['bank_account'])], limit=1)
         if existing_bank_account:
             bank_account = existing_bank_account
         else:

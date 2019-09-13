@@ -14,7 +14,7 @@ class PlanningSend(models.TransientModel):
     end_datetime = fields.Datetime("Stop Date", required=True)
     include_unassigned = fields.Boolean("Includes Open shifts", default=True)
     note = fields.Text("Extra Message", help="Addionnal message displayed in the email sent to employees")
-    company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.user.company_id)
+    company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_start_date_lower_stop_date', 'CHECK(end_datetime > start_datetime)', 'Planning end date should be greater than its start date'),

@@ -6,6 +6,7 @@ from datetime import datetime, date
 from .common import TestCommonPlanning
 
 import unittest
+from odoo.exceptions import UserError
 
 
 class TestRecurrencySlotGeneration(TestCommonPlanning):
@@ -310,7 +311,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 0, 'calling remove after on any slot from the recurrency remove all slots linked to the recurrency')
 
     # ---------------------------------------------------------
-    # Reccuring Slot Misc
+    # Recurring Slot Misc
     # ---------------------------------------------------------
 
     def test_recurring_slot_company(self):
@@ -319,6 +320,21 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             initial_company.write({
                 'planning_generation_interval': 2,
             })
+
+            with self.assertRaises(UserError, msg="The employee should be in the same company as the shift"), self.cr.savepoint():
+                slot1 = self.env['planning.slot'].create({
+                    'start_datetime': datetime(2019, 6, 1, 8, 0, 0),
+                    'end_datetime': datetime(2019, 6, 1, 17, 0, 0),
+                    'employee_id': self.employee_bert.id,
+                    'repeat': True,
+                    'repeat_type': 'forever',
+                    'repeat_interval': 1,
+                    'company_id': initial_company.id,
+                })
+
+            # put the employee in the second company
+            self.employee_bert.write({'company_id': initial_company.id})
+
             slot1 = self.env['planning.slot'].create({
                 'start_datetime': datetime(2019, 6, 1, 8, 0, 0),
                 'end_datetime': datetime(2019, 6, 1, 17, 0, 0),
@@ -333,6 +349,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             other_company.write({
                 'planning_generation_interval': 1,
             })
+            self.employee_joseph.write({'company_id': other_company.id})
             slot2 = self.env['planning.slot'].create({
                 'start_datetime': datetime(2019, 6, 1, 8, 0, 0),
                 'end_datetime': datetime(2019, 6, 1, 17, 0, 0),

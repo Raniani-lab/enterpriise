@@ -33,6 +33,7 @@ class Planning(models.Model):
     _description = 'Planning Shift'
     _order = 'start_datetime,id desc'
     _rec_name = 'name'
+    _check_company_auto = True
 
     def _default_employee_id(self):
         return self.env.user.employee_id
@@ -44,7 +45,7 @@ class Planning(models.Model):
         return fields.Datetime.to_string(datetime.combine(fields.Datetime.now(), datetime.max.time()))
 
     name = fields.Text('Note')
-    employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id')
+    employee_id = fields.Many2one('hr.employee', "Employee", default=_default_employee_id, group_expand='_read_group_employee_id', check_company=True)
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
     company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
     role_id = fields.Many2one('planning.role', string="Role")
@@ -210,6 +211,11 @@ class Planning(models.Model):
             # Set default role if the role field is empty
             if not self.role_id and self.employee_id.planning_role_id:
                 self.role_id = self.employee_id.planning_role_id
+
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
+        if self.company_id:
+            self.employee_id = False
 
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):
@@ -577,7 +583,7 @@ class PlanningPlanning(models.Model):
     access_token = fields.Char("Security Token", default=_default_access_token, required=True, copy=False, readonly=True)
     last_sent_date = fields.Datetime("Last sent date")
     slot_ids = fields.Many2many('planning.slot', "Shifts", compute='_compute_slot_ids')
-    company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.user.company_id)
+    company_id = fields.Many2one('res.company', "Company", required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_start_date_lower_stop_date', 'CHECK(end_datetime > start_datetime)', 'Planning end date should be greater than its start date'),

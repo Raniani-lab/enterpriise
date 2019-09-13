@@ -15,12 +15,19 @@ _logger = logging.getLogger(__name__)
 class PlanningShift(models.Model):
     _inherit = 'planning.slot'
 
-    project_id = fields.Many2one('project.project', string="Project", domain=[('allow_forecast', '=', True)], group_expand='_read_group_project_id')
-    task_id = fields.Many2one('project.task', string="Task", domain="[('project_id', '=', project_id)]")
+    project_id = fields.Many2one('project.project', string="Project", domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]", check_company=True)
+    task_id = fields.Many2one('project.task', string="Task", domain="[('company_id', '=', company_id), ('project_id', '=', project_id)]", check_company=True)
 
     _sql_constraints = [
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
     ]
+
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
+        super(PlanningShift, self)._onchange_company_id()
+        if self.company_id:
+            self.project_id = False
+            self.task_id = False
 
     @api.onchange('task_id')
     def _onchange_task_id(self):

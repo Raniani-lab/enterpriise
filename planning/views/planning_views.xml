@@ -12,6 +12,7 @@
                 <field name="end_datetime"/>
                 <field name="allocated_hours" widget="float_time"/>
                 <field name="allocated_percentage" groups="planning.group_planning_show_percentage"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
             </tree>
         </field>
     </record>
@@ -44,6 +45,7 @@
                         <group>
                             <field name="employee_id"/>
                             <field name="role_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
                             <field name="start_datetime" string="Start date"/>
@@ -102,6 +104,7 @@
                     <group>
                         <field name="employee_id"/>
                         <field name="role_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
                         <field name="name"/>
                     </group>
                 </sheet>

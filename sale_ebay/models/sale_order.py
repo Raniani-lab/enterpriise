@@ -115,7 +115,8 @@ class SaleOrder(models.Model):
            price_unit is given per product, whereas the tax amount is computed over the sum of all products.
         """
         tax_commands = []
-        for tax in tax_dict.get('TaxDetails', []):
+        tax_list_or_dict = tax_dict.get('TaxDetails', [])  # returns a list if it contains more than one tax, directly returns the tax dict
+        for tax in [tax_list_or_dict] if isinstance(tax_list_or_dict, dict) else tax_list_or_dict:
             tax_amount = float(tax['TaxAmount']['value'])
             tax_rate = 100 * tax_amount / (price_unit - tax_amount) if price_unit > tax_amount > 0 else 0
             tax_description = tax.get('TaxDescription', '')

@@ -26,6 +26,8 @@ var ClientAction = AbstractAction.extend({
         'click .o_mrp_mps_procurement': '_onClickReplenish',
         'click .o_mrp_mps_record_url': '_onClickRecordLink',
         'click .o_mrp_mps_unlink': '_onClickUnlink',
+        'focus .o_mrp_mps_input_forcast_qty': '_onFocusForecast',
+        'focus .o_mrp_mps_input_replenish_qty': '_onFocusToReplenish',
         'mouseover .o_mrp_mps_procurement': '_onMouseOverReplenish',
         'mouseout .o_mrp_mps_procurement': '_onMouseOutReplenish',
     },
@@ -640,6 +642,16 @@ var ClientAction = AbstractAction.extend({
         ev.preventDefault();
         var productionScheduleId = $(ev.target).closest('.table-responsive').data('id');
         this._unlinkProduct(productionScheduleId);
+    },
+
+    _onFocusForecast: function (ev) {
+        ev.preventDefault();
+        $(ev.target).select();
+    },
+
+    _onFocusToReplenish: function (ev) {
+        ev.preventDefault();
+        $(ev.target).select();
     },
 
     _onMouseOverReplenish: function (ev) {

@@ -705,6 +705,7 @@
                                 <tree editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="name"/>
+                                    <field name="display_name" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -832,6 +833,7 @@
       <field name="name">Documents</field>
       <field name="res_model">documents.document</field>
       <field name="view_mode">kanban,tree,form</field>
+      <field name="domain">[]</field>
       <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'kanban', 'view_id': ref('documents.document_view_kanban')}),
         (0, 0, {'view_mode': 'tree', 'view_id': False}),

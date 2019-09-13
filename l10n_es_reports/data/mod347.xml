@@ -81,7 +81,7 @@
         <!-- TODO: rename in master -->
         <record id="mod_347_operations_regular_sold" model="account.financial.html.report.line">
             <field name="name">A - Adquisiciones de bienes y servicios superiores a 3.005,06 €</field>
-            <field name="code">mod_347_temp</field>
+            <field name="code">_mod_347_temp</field>
             <field name="parent_id" ref="mod_347_operations_regular_title"/>
             <field name="domain" eval="[('move_id.l10n_es_reports_mod347_invoice_type','=','regular'), ('move_id.type','in',['in_invoice','in_refund'])]"/>
             <field name="show_domain">always</field>

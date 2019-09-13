@@ -64,8 +64,15 @@ class StockReport(models.Model):
             res = [{}]
 
         if stock_value:
-            products = self.env['product.product'].search([('product_tmpl_id.type', '=', 'product')])
-            value = sum(product.value_svl for product in products)
+            products = self.env['product.product']
+            # Split the recordset for faster computing.
+            value = sum(
+                product.value_svl
+                for products_split in self.env.cr.split_for_in_conditions(
+                    products.search([("product_tmpl_id.type", "=", "product")]).ids
+                )
+                for product in products.browse(products_split)
+            )
 
             res[0].update({
                 '__count': 1,

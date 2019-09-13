@@ -457,7 +457,7 @@ class AccountPayment(models.Model):
             datetime.strptime('12:00:00', '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
         total_paid = total_curr = 0
         for invoice in self.invoice_ids:
-            amount = [p for p in invoice._get_payments_vals() if (
+            amount = [p for p in invoice._get_reconciled_info_JSON_values() if (
                 p.get('account_payment_id', False) == self.id or not p.get(
                     'account_payment_id') and (not p.get('invoice_id') or p.get(
                         'invoice_id') == invoice.id))]

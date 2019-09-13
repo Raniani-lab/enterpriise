@@ -433,6 +433,28 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('full precision gantt rendering', async function(assert) {
+        assert.expect(1);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" default_scale="week" date_stop="stop" '
+                    + 'precision="{\'day\': \'hour:full\', \'week\':'
+                    + ' \'day:full\', \'month\': \'day:full\'}" />',
+            viewOptions: {
+                initialDate: new Date(2018, 10, 15, 8, 0, 0),
+            },
+            groupBy: ['user_id', 'project_id']
+        });
+
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(700% + 6px)",
+            "the group pill should have the correct width (7 days)");
+
+        gantt.destroy();
+    });
+
     QUnit.test('gantt rendering, thumbnails', async function (assert) {
         assert.expect(2);
 

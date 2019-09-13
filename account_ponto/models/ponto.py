@@ -165,9 +165,9 @@ class OnlineAccount(models.Model):
         # however if we try to refresh both one after another or at the same time, an error is received
         # An error is also received if we call their synchronization route too quickly. Therefore we
         # only call this route if it has not been called in the last 5 minutes.
-        last_sync_date = fields.Datetime.now() - self.account_online_provider_id.last_refresh
+        last_sync_age = fields.Datetime.now() - self.account_online_provider_id.last_refresh
         # We can refresh if last refresh was greater than 5min in the past
-        if last_sync_date.days == 0 and (last_sync_date.seconds // 60) % 60 <= 5:
+        if last_sync_age <= datetime.timedelta(minutes=5):
             _logger.info('Skip refresh of ponto transaction as last refresh was less than 5min ago')
             return
         data = {
@@ -224,21 +224,31 @@ class OnlineAccount(models.Model):
         # Transactions are paginated so we need to loop to ensure we have every transactions, we keep
         # in memory the id of the last transaction fetched in order to start over from there.
         url = url + '/transactions'
-        last_sync = self.last_sync or fields.Datetime.now() - datetime.timedelta(days=15)
-        first_transaction = False
-        while True:
+        paging_forward = True
+        if self.ponto_last_synchronization_identifier:
+            paging_forward = False
+            url = url + '?before=' + self.ponto_last_synchronization_identifier
+        last_sync = fields.Date.to_date((self.last_sync or fields.Datetime.now() - datetime.timedelta(days=15)))
+        latest_transaction_identifier = False
+        while url:
             resp_json = self.account_online_provider_id._ponto_fetch('GET', url, {}, {})
-            # 'next' point to transactions that are in the past compared to current transactions
-            url = resp_json.get('links', {}).get('next', False)
-            for transaction in resp_json.get('data', []):
+            # 'prev' page contains newer transactions, 'next' page contains older ones.
+            # we read from last known transaction to newer ones when we know such a transaction
+            # else we read from the newest transaction back to our date limit
+            url = resp_json.get('links', {}).get('next' if paging_forward else 'prev', False)
+            data_lines = resp_json.get('data', [])
+            if data_lines:
+                # latest transaction will be in the last page in backward direction, or in the first one in forward direction
+                if ((not paging_forward and not url) or (paging_forward and not latest_transaction_identifier)):
+                    # a chunk sent by Ponto always has its most recent transaction first
+                    latest_transaction_identifier = data_lines[0].get('id')
+            for transaction in data_lines:
                 tr_date = fields.Date.from_string(transaction.get('attributes', {}).get('valueDate'))
-                if transaction.get('id') == self.ponto_last_synchronization_identifier or tr_date < last_sync:
-                    # Stop fetching transactions as we have reached last sync point or
-                    # stop because transactions are older than specified last_sync date.
+                if paging_forward and tr_date < last_sync:
+                    # Stop fetching transactions because we are paging forward
+                    # and the following transactions are older than specified last_sync date.
                     url = False
                     break
-                if not first_transaction:
-                    first_transaction = transaction.get('id')
                 trans = {
                     'online_identifier': transaction.get('id'),
                     'date': fields.Date.from_string(transaction.get('attributes', {}).get('valueDate')),
@@ -251,10 +261,7 @@ class OnlineAccount(models.Model):
                     trans['online_partner_vendor_name'] = transaction['attributes']['counterpartName']
                     trans['partner_id'] = self._find_partner([('online_partner_vendor_name', '=', transaction['attributes']['counterpartName'])])
                 transactions.append(trans)
-            if not url or not transaction:
-                if first_transaction:
-                    self.ponto_last_synchronization_identifier = first_transaction
-                # Exit loop
-                break
+        if latest_transaction_identifier:
+            self.ponto_last_synchronization_identifier = latest_transaction_identifier
         # Create the bank statement with the transactions
         return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids[0])

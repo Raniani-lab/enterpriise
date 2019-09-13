@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
+from email.utils import formataddr
 from datetime import time
 from dateutil import relativedelta
 
@@ -396,6 +397,14 @@ class HelpdeskTicket(models.Model):
                 'stage_id': team._determine_stage()[team.id].id,
                 'user_id': team._determine_user_to_assign()[team.id].id
             }
+
+        # Manually create a partner now since 'generate_recipients' doesn't keep the name. This is
+        # to avoid intrusive changes in the 'mail' module
+        for vals in list_value:
+            if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
+                vals['partner_id'] = self.env['res.partner'].find_or_create(
+                    formataddr((vals['partner_name'], vals['partner_email']))
+                )
 
         # determine partner email for ticket with partner but no email given
         partners = self.env['res.partner'].browse([vals['partner_id'] for vals in list_value if 'partner_id' in vals and vals.get('partner_id') and 'partner_email' not in vals])

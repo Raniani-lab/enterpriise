@@ -548,7 +548,7 @@
         <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_related_putaway_rules']" position="after">
-                <button name="action_see_quality_control_points" type="object" icon="fa-list" class="oe_stat_button" groups="quality.group_quality_user">
+                <button name="action_see_quality_control_points" type="object" icon="fa-list" class="oe_stat_button" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}" groups="quality.group_quality_user">
                     <field string="Quality Points" name="quality_control_point_qty" widget="statinfo"/>
                 </button>
                 <button name="action_see_quality_checks" type="object" class="oe_stat_button" icon="fa-check" groups="quality.group_quality_user" attrs="{'invisible':[ ('quality_pass_qty', '=', 0),('quality_fail_qty', '=', 0)]}" >

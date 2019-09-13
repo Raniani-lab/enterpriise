@@ -256,6 +256,7 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
                         }
                         new_attrs.string = new_attrs.label;
                         new_attrs.context = "{'group_by': '" + new_attrs.name + "'}";
+                        new_attrs.name = 'studio_group_by_' + utils.randomString(5);
                     }
                     var values = {
                         type: 'add',

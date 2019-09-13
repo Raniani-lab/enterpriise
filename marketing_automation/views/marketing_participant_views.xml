@@ -153,6 +153,7 @@
         <field name="model">marketing.participant</field>
         <field name="arch" type="xml">
             <search string="Search Participant">
+                <field name="resource_ref" string="Resource Name" widget="char"/>
                 <field name="campaign_id" />
                 <filter string="Running" name="running" domain="[('state', '=', 'running')]" />
                 <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]" />

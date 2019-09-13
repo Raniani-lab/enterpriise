@@ -113,7 +113,8 @@ class AccountPartialReconcile(models.Model):
         aml_ids = (self.debit_move_id | self.credit_move_id).ids
         # Use the payment date to compute currency conversion. When reconciling
         # an invoice and a credit note - we will use the greatest date of them.
-        domain = [('id', 'in', aml_ids), ('invoice_id', '=', False)]
+        inv_types = self.env['account.move'].get_invoice_types()
+        domain = [('id', 'in', aml_ids), ('move_id.type', 'not in', inv_types)]
         move_date = aml_obj.search(domain, limit=1, order="date desc").date
         if not move_date:
             domain.pop()

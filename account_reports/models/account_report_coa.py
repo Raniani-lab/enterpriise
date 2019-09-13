@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from copy import deepcopy
 
 from odoo import models, api, _, fields
 
@@ -65,13 +66,10 @@ class AccountChartOfAccountReport(models.AbstractModel):
         accounts_results, taxes_results = self.env['account.general.ledger']._do_query(options_list, fetch_lines=False)
 
         lines = []
-        totals = None
+        totals = [0.0] * (2 * (len(options_list) + 2))
 
         # Add lines, one per account.account record.
         for account, periods_results in accounts_results:
-            if not totals:
-                totals = [0.0] * (2 * (len(periods_results) + 2))
-
             sums = []
             account_balance = 0.0
             for i, period_values in enumerate(reversed(periods_results)):
@@ -108,7 +106,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
                 totals[i] += value
 
                 # Create columns.
-                columns.append({'name': self.format_value(value, blank_if_zero=True), 'class': 'number'})
+                columns.append({'name': self.format_value(value, blank_if_zero=True), 'class': 'number', 'no_format_name': value})
 
             name = account.name_get()[0][1]
             if len(name) > 40 and not self._context.get('print_mode'):
@@ -131,9 +129,6 @@ class AccountChartOfAccountReport(models.AbstractModel):
              'columns': [{'name': self.format_value(total), 'class': 'number'} for total in totals],
              'level': 1,
         })
-
-        if options.get('hierarchy'):
-            lines = self._create_hierarchy(lines, options)
 
         return lines
 

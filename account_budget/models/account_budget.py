@@ -108,10 +108,23 @@ class CrossoveredBudgetLines(models.Model):
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
         # overrides the default read_group in order to compute the computed fields manually for the group
 
-        result = super(CrossoveredBudgetLines, self).read_group(domain, fields, groupby, offset=offset, limit=limit,
-                                                                orderby=orderby, lazy=lazy)
-        fields_list = ['practical_amount', 'theoritical_amount', 'percentage']
-        if any(x in fields for x in fields_list):
+        fields_list = {'practical_amount', 'theoritical_amount', 'percentage'}
+
+        # Not any of the fields_list support aggregate function like :sum
+        def truncate_aggr(field):
+            field_no_aggr = field.split(':', 1)[0]
+            if field_no_aggr in fields_list:
+                return field_no_aggr
+            return field
+        fields = {truncate_aggr(field) for field in fields}
+
+        # Read non fields_list fields
+        result = super(CrossoveredBudgetLines, self).read_group(
+            domain, list(fields - fields_list), groupby, offset=offset,
+            limit=limit, orderby=orderby, lazy=lazy)
+
+        # Populate result with fields_list values
+        if fields & fields_list:
             for group_line in result:
 
                 # initialise fields to compute to 0 if they are requested
@@ -184,7 +197,8 @@ class CrossoveredBudgetLines(models.Model):
                 domain = [('account_id', 'in',
                            line.general_budget_id.account_ids.ids),
                           ('date', '>=', date_from),
-                          ('date', '<=', date_to)
+                          ('date', '<=', date_to),
+                          ('move_id.state', '=', 'posted')
                           ]
                 where_query = aml_obj._where_calc(domain)
                 aml_obj._apply_ir_rules(where_query, 'read')

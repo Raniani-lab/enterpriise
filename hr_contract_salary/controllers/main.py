@@ -314,6 +314,7 @@ class website_hr_contract_salary(http.Controller):
             employee = request.env['hr.employee'].sudo().create({
                 'name': 'Simulation Employee',
                 'active': False,
+                'company_id': contract.company_id.id,
             })
         if personal_info:
             employee.with_context(lang=None).update_personal_info(personal_info, no_name_write=bool(kw.get('employee')))

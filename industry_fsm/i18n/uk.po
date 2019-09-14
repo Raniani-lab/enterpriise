@@ -34,7 +34,7 @@ msgstr "К-сть робочих днів до призначення"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_days_close
 msgid "# Working Days to Close"
-msgstr "# Робочих днів до закриття"
+msgstr "К-сть робочих днів до закриття"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__nbr
@@ -581,8 +581,8 @@ msgstr "Початкова дата"
 #, python-format
 msgid "Start to manage your Onsite Intervention with the Field Service app."
 msgstr ""
-"Почніть керувати своїми втручаннями на місці за допомогою програми Field "
-"Service."
+"Почніть керувати своїми втручаннями на місці за допомогою програми Сфери "
+"послуг."
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_state
@@ -635,7 +635,7 @@ msgstr "Аналіз завдань"
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
 msgid "The FSM task must have a customer set to be sold."
-msgstr "Завдання FSM повинен мати клієнта, встановленого для продажу."
+msgstr "Завдання FSM повинно мати клієнта, встановленого для продажу."
 
 #. module: industry_fsm
 #: model:ir.model.constraint,message:industry_fsm.constraint_project_project_material_imply_billable

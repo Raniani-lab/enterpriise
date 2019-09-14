@@ -4,21 +4,21 @@
 # 
 # Translators:
 # Cas Vissers <casvissers@brahoo.nl>, 2019
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
-# Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Thijs van Oers <thijsvanoers@yahoo.com>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Maxim Vandenbroucke <mxv@odoo.com>, 2019
 # Charles Vervaecke <cvk@odoo.com>, 2019
+# Martin Trigaux, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Charles Vervaecke <cvk@odoo.com>, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,30 +36,30 @@ msgstr "${(object.name or '').replace('/','_')}"
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:0
 #, python-format
 msgid "${(object.name)} appraisal reminder"
-msgstr ""
+msgstr "${(object.name)} beoordelingsherinnering"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:0
 #, python-format
 msgid "${(object.name)}'s appraisal reminder"
-msgstr ""
+msgstr "${(object.name)}'s beoordelingsherinnering"
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request_from_employee
 msgid "${object.name} requests an Appraisal"
-msgstr ""
+msgstr "${object.name} Vraag beoordeling"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "%s appraisal"
-msgstr ""
+msgstr "%s beoordeling"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:0
 #, python-format
 msgid "%s: %s months %s"
-msgstr ""
+msgstr "%s: %s maanden %s"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
@@ -91,6 +91,22 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Beste ${ctx['partner_to_name']},\n"
+"                        <br/><br/>\n"
+"                        Ik wens een beoordeling aan te vragen.<br/>\n"
+"                        Hier is de link van mijn beoordeling:\n"
+"                        <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a href=\"${ctx['url']}\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
+"                               Beoordeling bekijken\n"
+"                            </a>\n"
+"                        </p>\n"
+"                        <br/><br/>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.employee_id.user_id.signature or '')| safe}</td></tr>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: hr_appraisal
 #: model:mail.template,body_html:hr_appraisal.mail_template_appraisal_request
@@ -111,6 +127,21 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Beste ${ctx['partner_to_name']},\n"
+"                        <br/><br/>\n"
+"                        Ik wil graag een beoordeling voor u starten.\n"
+"                        <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a href=\"${ctx['url']}\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
+"                                Beoordeling bekijken\n"
+"                            </a>\n"
+"                        </p>\n"
+"                        <br/><br/>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">${(object.signature or '')| safe}</td></tr>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -172,6 +203,8 @@ msgid ""
 "<span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '=', False)]}\">1 Meeting</span>\n"
 "                            <span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '!=', False)]}\">No Meeting</span>"
 msgstr ""
+"<span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '=', False)]}\">1 Meeting</span>\n"
+"                            <span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '!=', False)]}\">Geen meeting</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
@@ -232,7 +265,7 @@ msgstr "Beheerder"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__event
 msgid "After event"
-msgstr ""
+msgstr "Na evenement"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -269,12 +302,12 @@ msgstr "Beoordeling door medewerkers"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_colleagues
 msgid "Appraisal By Colleagues"
-msgstr ""
+msgstr "Beoordeling door collega's"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_by_manager
 msgid "Appraisal By Manager"
-msgstr ""
+msgstr "Beoordeling door manager"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_ids
@@ -291,7 +324,7 @@ msgstr "Beoordeling collega's"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_date
 msgid "Appraisal Date"
-msgstr ""
+msgstr "Beoordelingsdatum"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_close
@@ -301,7 +334,7 @@ msgstr "Beoordelingsdeadline"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__employee_id
 msgid "Appraisal Employee"
-msgstr ""
+msgstr "Beoordeling Medewerker"
 
 #. module: hr_appraisal
 #: model:mail.activity.type,name:hr_appraisal.mail_act_appraisal_form
@@ -325,7 +358,7 @@ msgstr "Beoordeling afspraak voor %s"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_tree
 msgid "Appraisal Reminder"
-msgstr ""
+msgstr "Beoordelingsherinnering"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.appraisal_reminderlist_action
@@ -338,12 +371,12 @@ msgstr ""
 #: code:addons/hr_appraisal/wizard/request_appraisal.py:0
 #, python-format
 msgid "Appraisal Request"
-msgstr ""
+msgstr "Beoordelingsaanvraag"
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request
 msgid "Appraisal Requested"
-msgstr ""
+msgstr "Beoordeling gevraagd"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
@@ -390,7 +423,7 @@ msgstr "Beoordeling(en)"
 #: model:ir.cron,cron_name:hr_appraisal.ir_cron_scheduler_appraisal
 #: model:ir.cron,name:hr_appraisal.ir_cron_scheduler_appraisal
 msgid "Appraisal: Run employee appraisal"
-msgstr ""
+msgstr "Beoordeling: voer medewerker beoordeling uit"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_count
@@ -446,7 +479,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__is_autorized_to_send
 msgid "Autorized Employee to Start Appraisal"
-msgstr ""
+msgstr "Geautoriseerde medewerker om beoordeling te starten"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__body_html
@@ -475,18 +508,18 @@ msgstr "Geannuleerd"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_appraisal
 msgid "Collaborator Appraisal"
-msgstr ""
+msgstr "Beoordeling medewerker"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_collaborators_body_html
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_collaborators_body_html
 msgid "Collaborator Mail Content"
-msgstr ""
+msgstr "Medewerker Mail Inhoud"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_body_html
 msgid "Collaborator's Appraisal Invite Body Email"
-msgstr ""
+msgstr "Medewerker Beoordeling Uitnodiging Body E-mail"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_ids
@@ -500,12 +533,12 @@ msgstr "Medewerkers"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_colleagues_body_html
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_colleagues_body_html
 msgid "Colleague Mail Content"
-msgstr ""
+msgstr "Collega Mail Inhoud"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_body_html
 msgid "Colleague's Appraisal Invite Body Email"
-msgstr ""
+msgstr "Collega's Beoordeling Uitnodiging Body E-mail"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_ids
@@ -661,6 +694,7 @@ msgstr "Dropdown menu"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__last_duration_reminder_send
 msgid "Duration after last appraisal when we send last reminder mail"
 msgstr ""
+"Duur na laatste beoordeling sinds de laatste herinneringsmail is verzonden"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -670,7 +704,7 @@ msgstr "Wijzig"
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__email_from
 msgid "Email address of the sender"
-msgstr ""
+msgstr "E-mailadres van de verzender"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_employee
@@ -693,33 +727,33 @@ msgstr "Werknemerbeoordeling"
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal_reminder
 msgid "Employee Appraisal Reminder Setting"
-msgstr ""
+msgstr "Werknemer beoordeling herhaling instelling"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__appraisal_self
 msgid "Employee Himself"
-msgstr ""
+msgstr "Werknemer Zichzelf"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_employee_body_html
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_employee_body_html
 msgid "Employee Mail Content"
-msgstr ""
+msgstr "Medewerker Mail Inhoud"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
 msgid "Employee name:"
-msgstr ""
+msgstr "Naam werknemer:"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
 msgid "Employee profile creation:"
-msgstr ""
+msgstr "Werknemersprofiel aanmaken:"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_body_html
 msgid "Employee's Appraisal Invite Body Email"
-msgstr ""
+msgstr "Werknemer Beoordeling Uitnodiging Body E-mail"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -741,6 +775,8 @@ msgstr "Uitgebreide filters..."
 #, python-format
 msgid "Fill appraisal for <a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s</a>"
 msgstr ""
+"Begin Beoordeling voor <a href=\"#\" data-oe-model=\"%s\" data-oe-"
+"id=\"%s\">%s</a>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -821,12 +857,8 @@ msgid "Icon to indicate an exception activity."
 msgstr "Icoon om uitzondering op activiteit aan te geven."
 
 #. module: hr_appraisal
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Indien aangevinkt vragen nieuwe berichten uw aandacht."
-
-#. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction
+#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Indien aangevinkt vragen nieuwe berichten uw aandacht."
 
@@ -871,6 +903,9 @@ msgid ""
 "It has been a while since the last appraisal of one of your employee, go to "
 "his employee profile to request an appraisal."
 msgstr ""
+"Het is alweer een tijdje geleden sinds de laatste beoordeling van een van uw"
+" werknemers, ga naar zijn werknemersprofiel om een beoordeling aan te "
+"vragen."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:0
@@ -879,6 +914,8 @@ msgid ""
 "It has been a while since your last appraisal, go to your employee profile "
 "to request an appraisal to your manager."
 msgstr ""
+"Het is alweer een tijdje geleden sinds uw laatste beoordeling, ga naar uw "
+"werknemersprofiel en vraag uw manager om een beoordeling."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal____last_update
@@ -905,17 +942,17 @@ msgstr "Laatst bijgewerkt op"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.mail_template_appraisal_reminder
 msgid "Last appraisal:"
-msgstr ""
+msgstr "Laatste Beoordeling"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+msgid "Late"
+msgstr "Te laat"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Late Activities"
 msgstr "Te late activiteiten"
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
-msgid "Late Appraisals"
-msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -940,7 +977,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mail To Send"
-msgstr ""
+msgstr "Te verzenden mail"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -962,12 +999,12 @@ msgstr "Manager"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_by_manager_body_html
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_by_manager_body_html
 msgid "Manager Mail Content"
-msgstr ""
+msgstr "Manager Mail Inhoud"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_body_html
 msgid "Manager's Appraisal Invite Body Email"
-msgstr ""
+msgstr "Manager's Beoordeling Uitnodiging Body E-mail"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_manager
@@ -1001,15 +1038,10 @@ msgid "Minimum Time between Appraisals"
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
-msgid "My Activities"
-msgstr "Mijn activiteiten"
-
-#. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_my
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "My Appraisals"
-msgstr ""
+msgstr "Mijn beoordelingen"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_employee
@@ -1040,7 +1072,7 @@ msgstr "Volgende beoordelingsdatum"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__notify
 msgid "Notify"
-msgstr ""
+msgstr "Waarschuw"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction_counter
@@ -1049,8 +1081,8 @@ msgstr "Aantal acties"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error_counter
-msgid "Number of error"
-msgstr "Aantal foutmeldingen"
+msgid "Number of errors"
+msgstr "Aantal fouten"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction_counter
@@ -1102,7 +1134,7 @@ msgstr "Vraag beoordeling"
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_request_appraisal
 msgid "Request an Appraisal"
-msgstr ""
+msgstr "Vraag een Beoordeling"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
@@ -1138,12 +1170,12 @@ msgstr "Verstuur beoordelingsformulier naar"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_send_reminder
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_send_reminder
 msgid "Send Automatic Appraisals Reminder"
-msgstr ""
+msgstr "Verzend een automatische Beoordelingsherinnering"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__appraisal_reminder
 msgid "Send Reminder (in months)"
-msgstr ""
+msgstr "Verzend Herinnering (in maanden)"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
@@ -1215,7 +1247,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.constraint,message:hr_appraisal.constraint_hr_appraisal_reminder_positif_number_months
 msgid "The reminder time must be bigger or equal to 1 month."
-msgstr ""
+msgstr "De herinneringstijd moet groter zijn dan of gelijk zijn aan 1 maand."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__color
@@ -1319,12 +1351,14 @@ msgstr "Wanneer"
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
 msgstr ""
+"U kunt een beoordeling enkel verwijderen indien in fase concept of "
+"geannuleerd"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "You must configure your mail address."
-msgstr ""
+msgstr "U moet een e-mailadres configureren."
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
@@ -1345,6 +1379,9 @@ msgid ""
 "appraisal on %s %s. If you think it's too late, feel free to have a chat "
 "with your manager."
 msgstr ""
+"Uw laatste beoordeling was op %s %s. U kunt een nieuwe beoordeling aanvragen"
+" op %s %s. Contacteer uw manager indien u graag een tussentijdse beoordeling"
+" wenst."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__parent_user_id
@@ -1354,26 +1391,26 @@ msgstr "Zboub"
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_reminder__event__arrival
 msgid "after the arrival date"
-msgstr ""
+msgstr "na de aankomstdatum"
 
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_reminder__event__last_appraisal
 msgid "after the last appraisal"
-msgstr ""
+msgstr "na de laatste beoordeling"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:0
 #, python-format
 msgid "appraisal"
-msgstr ""
+msgstr "beoordeling"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: code:addons/hr_appraisal/models/hr_appraisal_reminder.py:0
 #, python-format
 msgid "appraisal about %s"
-msgstr ""
+msgstr "beoordeling van %s"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
@@ -1403,4 +1440,4 @@ msgstr "oe_kanban_text_red"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
 msgid "text-danger"
-msgstr ""
+msgstr "text-danger"

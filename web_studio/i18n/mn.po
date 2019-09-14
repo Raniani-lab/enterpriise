@@ -169,7 +169,7 @@ msgstr "Чатын виджет нэмэх"
 #, python-format
 msgid ""
 "Add a <b>chatter widget</b> to allow discussions on your document: by email "
-"or inline."
+"or online."
 msgstr ""
 
 #. module: web_studio
@@ -2016,7 +2016,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Өмнөх"
 
 #. module: web_studio
 #. openerp-web

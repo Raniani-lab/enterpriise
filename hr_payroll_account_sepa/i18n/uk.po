@@ -43,7 +43,7 @@ msgstr ""
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0
 #, python-format
 msgid "An employee has not a bank account."
-msgstr ""
+msgstr "У співробітника немає банківського рахунку."
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__journal_id
@@ -90,7 +90,7 @@ msgstr "Назва для відображення"
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_export
 msgid "Export file related to this payslip"
-msgstr ""
+msgstr "Експортований файл належить до цього розрахункового листа"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_view_form
@@ -100,12 +100,12 @@ msgstr "Експортований файл"
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip_run__sepa_export
 msgid "Exported SEPA .xml file"
-msgstr ""
+msgstr "Експортований файл SEPA .xml"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip_run__sepa_export_filename
 msgid "Exported SEPA .xml file name"
-msgstr ""
+msgstr "Назва експортованого файлу SEPA .xml"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__sepa_export_filename
@@ -123,12 +123,12 @@ msgstr "Дата створення"
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip_run_sepa_wizard
 msgid "HR Payslip Run SEPA Wizard"
-msgstr ""
+msgstr "Помічник запуску SEPA розрахункового листа відділу кадрів"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip_sepa_wizard
 msgid "HR Payslip SEPA Wizard"
-msgstr ""
+msgstr "Помічник SEPA розрахункового листа відділу кадрів"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__id
@@ -163,7 +163,7 @@ msgstr "Зробити платіж"
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_export_filename
 msgid "Name of the export file generated for this payslip"
-msgstr ""
+msgstr "Назва експортованого файлу, створеного для цього розрахункового листа"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields.selection,name:hr_payroll_account_sepa.selection__hr_payslip__state__paid
@@ -185,13 +185,13 @@ msgstr "Групові розрахунки"
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__sepa_export
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run__sepa_export
 msgid "SEPA File"
-msgstr ""
+msgstr "Файл SEPA"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_sepa_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_sepa_view_form
 msgid "Select a bank journal."
-msgstr ""
+msgstr "Виберіть банківський журнал."
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__state

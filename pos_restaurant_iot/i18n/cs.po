@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* pos_restaurant_iot
 # 
+# Translators:
+# Ladislav Tomm <tomm@helemik.cz>, 2019
+# trendspotter <j.podhorecky@volny.cz>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:04+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
+"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,22 +23,22 @@ msgstr ""
 #. module: pos_restaurant_iot
 #: model:ir.model.fields,field_description:pos_restaurant_iot.field_restaurant_printer__proxy_ip
 msgid "IP Address"
-msgstr ""
+msgstr "IP adresa"
 
 #. module: pos_restaurant_iot
 #: model:ir.model.fields,field_description:pos_restaurant_iot.field_restaurant_printer__device_identifier
 msgid "Identifier"
-msgstr ""
+msgstr "Identifikátor"
 
 #. module: pos_restaurant_iot
 #: model:ir.model.fields,field_description:pos_restaurant_iot.field_restaurant_printer__device_id
 msgid "IoT Device"
-msgstr ""
+msgstr "IoT zařízení"
 
 #. module: pos_restaurant_iot
 #: model:ir.model,name:pos_restaurant_iot.model_restaurant_printer
 msgid "Restaurant Printer"
-msgstr ""
+msgstr "Tiskárna restaurace"
 
 #. module: pos_restaurant_iot
 #: model:ir.model.fields,help:pos_restaurant_iot.field_restaurant_printer__proxy_ip

@@ -24,14 +24,15 @@
 # 张宏奎 <zhanghongkui@inspur.com>, 2019
 # John An <johnxan@163.com>, 2019
 # Jeanphy <hzh0292@qq.com>, 2019
+# ChinaMaker <liuct@chinamaker.net>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Jeanphy <hzh0292@qq.com>, 2019\n"
+"Last-Translator: ChinaMaker <liuct@chinamaker.net>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -363,11 +364,6 @@ msgid "A workspace will inherit the tags of its parent workspace"
 msgstr ""
 
 #. module: documents
-#: model:documents.tag,name:documents.documents_hr_documents_absences
-msgid "Absences"
-msgstr "离开"
-
-#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "Access"
 msgstr "访问"
@@ -538,11 +534,6 @@ msgid "Allows you to manage your documents."
 msgstr "允许您管理文档"
 
 #. module: documents
-#: model:documents.tag,name:documents.documents_hr_documents_appraisal
-msgid "Appraisal"
-msgstr "评价"
-
-#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -711,7 +702,6 @@ msgstr "包含"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_Contracts
-#: model:documents.tag,name:documents.documents_hr_documents_contracts
 #: model:documents.tag,name:documents.documents_internal_template_contracts
 msgid "Contracts"
 msgstr "合同"
@@ -816,6 +806,7 @@ msgstr "说明"
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_mixin__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_share__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__display_name
@@ -903,6 +894,11 @@ msgstr "‎文档共享‎"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_mixin
+msgid "Documents creation mixin"
 msgstr ""
 
 #. module: documents
@@ -1138,7 +1134,6 @@ msgid "Groups able to see the workspace and read/create/edit its documents."
 msgstr ""
 
 #. module: documents
-#: model:documents.folder,name:documents.documents_hr_folder
 #: model:documents.tag,name:documents.documents_internal_knowledge_hr
 msgid "HR"
 msgstr "HR"
@@ -1152,6 +1147,7 @@ msgstr "商业选项"
 #: model:ir.model.fields,field_description:documents.field_documents_document__id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__id
+#: model:ir.model.fields,field_description:documents.field_documents_mixin__id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_share__id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__id
@@ -1178,14 +1174,10 @@ msgid "Icon to indicate an exception activity."
 msgstr "表示一个例外活动的图标。"
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__message_unread
-#: model:ir.model.fields,help:documents.field_documents_share__message_unread
-msgid "If checked new messages require your attention."
-msgstr "查看是否有需要留意的新消息。"
-
-#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction
+#: model:ir.model.fields,help:documents.field_documents_document__message_unread
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
+#: model:ir.model.fields,help:documents.field_documents_share__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "确认后, 出现提示消息."
 
@@ -1238,6 +1230,7 @@ msgstr "‎它将被发送到本文档的追随者‎"
 #: model:ir.model.fields,field_description:documents.field_documents_document____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_folder____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_mixin____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_share____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_tag____last_update
@@ -1481,8 +1474,8 @@ msgstr "操作次数"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
-msgid "Number of error"
-msgstr "错误个数"
+msgid "Number of errors"
+msgstr "错误数"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
@@ -2085,7 +2078,6 @@ msgstr "‎试着‎ <b> ‎张贴‎‎邮件‎ </b>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Type"
 msgstr "类型"
 

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: rogeriojlle <rogerio.s.machado@gmail.com>, 2019\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
@@ -88,13 +88,23 @@ msgid "Created on"
 msgstr "Criado em"
 
 #. module: account_invoice_extract
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__auto_send
+msgid "Digitalize all bills automatically"
+msgstr ""
+
+#. module: account_invoice_extract
+#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__manual_send
+msgid "Digitalize bills on demand only"
+msgstr ""
+
+#. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__display_name
 msgid "Display Name"
 msgstr "Nome exibido"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__no_send
-msgid "Do not process bills"
+msgid "Do not digitalize bills"
 msgstr ""
 
 #. module: account_invoice_extract
@@ -209,16 +219,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
 msgid "OCR Single Invoice Line Per Tax"
-msgstr ""
-
-#. module: account_invoice_extract
-#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__auto_send
-msgid "Process all bills automatically"
-msgstr ""
-
-#. module: account_invoice_extract
-#: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_show_ocr_option_selection__manual_send
-msgid "Process bills on demand only"
 msgstr ""
 
 #. module: account_invoice_extract

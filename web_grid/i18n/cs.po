@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* web_grid
 # 
+# Translators:
+# Martin Trigaux, 2019
+# trendspotter <j.podhorecky@volny.cz>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:59+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
+"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +23,7 @@ msgstr ""
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_actions_act_window_view
 msgid "Action Window View"
-msgstr ""
+msgstr "Zobrazení okna akcí"
 
 #. module: web_grid
 #. openerp-web
@@ -26,19 +31,26 @@ msgstr ""
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Add a Line"
-msgstr ""
+msgstr "Přidat řádek"
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_base
 msgid "Base"
-msgstr ""
+msgstr "Základní část"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:0
 #: code:addons/web_grid/models/models.py:0
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
-msgstr ""
+msgstr "Nelze použít pole typu %s jako sloupce mřížky"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/js/grid_view.js:0
+#, python-format
+msgid "Day"
+msgstr "Den"
 
 #. module: web_grid
 #. openerp-web
@@ -47,28 +59,28 @@ msgstr ""
 #: model:ir.model.fields.selection,name:web_grid.selection__ir_ui_view__type__grid
 #, python-format
 msgid "Grid"
-msgstr ""
+msgstr "Mřížka"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Další"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Předchozí"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:0
 #, python-format
 msgid "See all the records aggregated in this cell"
-msgstr ""
+msgstr "Zobrazit všechny záznamy agregované v této buňce"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:0
@@ -82,35 +94,35 @@ msgstr ""
 #, python-format
 msgid ""
 "The sectioned grid view can't handle groups with different columns sets"
-msgstr ""
+msgstr "Pohled mřížky nemůže použít skupiny s různými sadami sloupců"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Dnes"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Celkem"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:0
 #, python-format
 msgid "Total (%s)"
-msgstr ""
+msgstr "Součet (%s)"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_controller.js:0
 #, python-format
 msgid "Undefined"
-msgstr ""
+msgstr "Nedefinováno"
 
 #. module: web_grid
 #. openerp-web
@@ -119,18 +131,18 @@ msgstr ""
 #: code:addons/web_grid/static/src/js/grid_renderer.js:0
 #, python-format
 msgid "Unknown"
-msgstr ""
+msgstr "Neznámý"
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "Pohled"
 
 #. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_grid.field_ir_ui_view__type
 msgid "View Type"
-msgstr ""
+msgstr "Typ zobrazení"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:0
@@ -139,3 +151,5 @@ msgid ""
 "Week %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
 msgstr ""
+"Týden %(weeknumber)s\n"
+"%(week_start)s - %(week_end)s"

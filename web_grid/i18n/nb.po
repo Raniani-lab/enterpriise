@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:59+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
@@ -43,6 +43,13 @@ msgstr "Base"
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
 msgstr "Kan ikke bruke felter av typen %s som kolonner i rutenett"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/js/grid_view.js:0
+#, python-format
+msgid "Day"
+msgstr "Dag"
 
 #. module: web_grid
 #. openerp-web

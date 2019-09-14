@@ -3,19 +3,19 @@
 # 	* web_grid
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Bole <bole@dajmi5.com>, 2019
 # Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2019
 # Karolina Tonković <karolina.tonkovic@storm.hr>, 2019
 # Tina Milas, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:59+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Tina Milas, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,6 +47,13 @@ msgstr "Osnovica"
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
 msgstr "Nije moguće koristiti polja tipa %s kao kolone tablice"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/js/grid_view.js:0
+#, python-format
+msgid "Day"
+msgstr "Dan"
 
 #. module: web_grid
 #. openerp-web

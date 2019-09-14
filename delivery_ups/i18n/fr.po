@@ -108,7 +108,7 @@ msgstr "PDF"
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Packages %s do not have a positive shipping weight."
-msgstr ""
+msgstr "Les colis %s n'ont pas un poids d'expédition positif."
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -143,6 +143,8 @@ msgid ""
 "Return label generated<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> "
 "%s"
 msgstr ""
+"Étiquette de retour générée <br/><b> Numéros de suivi: </b>%s<br/><b> "
+"Colis:</b>%s"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__spl
@@ -182,7 +184,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Méthodes d'expédition"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -345,7 +347,7 @@ msgstr "Unités pour les tailles de paquets UPS"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
 msgid "Ups Duty Payment"
-msgstr ""
+msgstr "Paiement des droits UPS"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit

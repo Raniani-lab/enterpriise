@@ -186,10 +186,8 @@ msgstr "Chat widget toevoegen"
 #, python-format
 msgid ""
 "Add a <b>chatter widget</b> to allow discussions on your document: by email "
-"or inline."
+"or online."
 msgstr ""
-"Voeg een <b>chatter widget</b>toe om discussies toe te staan op uw document:"
-" via e-mail of inline."
 
 #. module: web_studio
 #. openerp-web
@@ -994,7 +992,7 @@ msgstr "Domein"
 msgid ""
 "Drag & drop <b>another field</b>. Let’s try with a <i>selection field</i>."
 msgstr ""
-"Drag & drop <b>nog een veld</b>. Laten we het proberen met <i>selectie "
+"Drag & drop <b>nog een veld</b>. Laten we het proberen met een <i>selectie "
 "veld</i>."
 
 #. module: web_studio
@@ -1506,8 +1504,8 @@ msgstr "HTML"
 msgid ""
 "I bet you can <b>build an app</b> in 5 minutes. Ready for the challenge?"
 msgstr ""
-"Ik durf te wedden dat u <b>app kan bouwen</b> in 5 minuten. Klaar voor de "
-"uitdaging?"
+"Ik durf te wedden dat u een <b>app kan bouwen</b> in 5 minuten. Klaar voor "
+"de uitdaging?"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin__id
@@ -2713,7 +2711,7 @@ msgstr "Derde status"
 #: code:addons/web_studio/static/src/js/web_client.js:0
 #, python-format
 msgid "This action is not editable by Studio"
-msgstr "Deze actie is niet wijzigbaar met de Studio"
+msgstr "Deze actie is niet wijzigbaar met Studio"
 
 #. module: web_studio
 #. openerp-web
@@ -2812,7 +2810,7 @@ msgstr "Twee kolommen"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Underline"
-msgstr "Onderlij"
+msgstr "Onderlijnen"
 
 #. module: web_studio
 #. openerp-web

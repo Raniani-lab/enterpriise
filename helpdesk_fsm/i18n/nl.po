@@ -32,7 +32,7 @@ msgstr ""
 #: code:addons/helpdesk_fsm/models/helpdesk.py:0
 #, python-format
 msgid "Create task"
-msgstr ""
+msgstr "Maak taak"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid
@@ -67,12 +67,12 @@ msgstr "Buitendienst"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__fsm_task_count
 msgid "Fsm Task Count"
-msgstr ""
+msgstr "Fsm aantal taken"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
 msgid "Generate Task"
-msgstr ""
+msgstr "Genereer taak"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
@@ -113,7 +113,7 @@ msgstr "Laatst bijgewerkt op"
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__use_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 msgid "Onsite Interventions"
-msgstr ""
+msgstr "Onsite interventies"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
@@ -123,12 +123,12 @@ msgstr "Project"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
 msgid "Project in which to create the task"
-msgstr ""
+msgstr "Project waarin de taak aangemaakt moet worden"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__helpdesk_ticket_id
 msgid "Related ticket"
-msgstr ""
+msgstr "Gerelateerd ticket"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
@@ -151,12 +151,12 @@ msgstr "Taken"
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Tasks from Tickets"
-msgstr ""
+msgstr "Taken vanuit tickets"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__fsm_task_ids
 msgid "Tasks generated from this ticket"
-msgstr ""
+msgstr "Taken gegenereerd vanuit dit ticket"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
@@ -166,7 +166,7 @@ msgstr "Ticket"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_project_task__helpdesk_ticket_id
 msgid "Ticket this task was generated from"
-msgstr ""
+msgstr "Ticket van waaruit deze taak is gegenereer"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__partner_id

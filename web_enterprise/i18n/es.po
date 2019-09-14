@@ -3,17 +3,18 @@
 # 	* web_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Rick Hunter <rick.hunter.ec@gmail.com>, 2019
 # Efrem Jimenez <efj@odoo.com>, 2019
+# Martin Trigaux, 2019
+# Jon Perez <jop@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:59+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Efrem Jimenez <efj@odoo.com>, 2019\n"
+"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -105,7 +106,7 @@ msgstr "Expiración de la base de datos:"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "Filters..."
-msgstr ""
+msgstr "Filtros..."
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
@@ -166,7 +167,7 @@ msgstr "Pega el código aquí"
 #: code:addons/web_enterprise/static/src/js/views/relational_fields.js:0
 #, python-format
 msgid "Quick search: %s"
-msgstr ""
+msgstr "Búsqueda rápida: %s"
 
 #. module: web_enterprise
 #. openerp-web
@@ -189,6 +190,13 @@ msgstr "Registro"
 #, python-format
 msgid "Register your subscription"
 msgstr "Registrar su subscripción"
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/js/views/view_dialogs.js:0
+#, python-format
+msgid "Remove"
+msgstr "Eliminar"
 
 #. module: web_enterprise
 #. openerp-web
@@ -216,7 +224,7 @@ msgstr "Buscar…"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:0
 #, python-format
 msgid "See result"
-msgstr ""
+msgstr "Ver resultado"
 
 #. module: web_enterprise
 #. openerp-web
@@ -278,14 +286,14 @@ msgstr "Mostrar menú de inicio"
 #: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Toggle menu"
-msgstr ""
+msgstr "Mostrar menú "
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:0
 #, python-format
 msgid "Upgrade your subscription"
-msgstr "Renova su suscripción"
+msgstr "Renove su suscripción"
 
 #. module: web_enterprise
 #. openerp-web
@@ -294,6 +302,8 @@ msgstr "Renova su suscripción"
 msgid ""
 "You have more users or more apps installed than your subscription allows."
 msgstr ""
+"Tiene más usuarios o más aplicaciones instaladas de lo que permite su "
+"suscripción."
 
 #. module: web_enterprise
 #. openerp-web

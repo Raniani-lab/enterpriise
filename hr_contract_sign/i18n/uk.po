@@ -28,6 +28,7 @@ msgid ""
 "%s requested a new signature on document: %s.<br/>%s and %s are the "
 "signatories."
 msgstr ""
+"%s запитано новий підпис на документі: %s.<br/>%s та %s є підписниками."
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_sign_view_form
@@ -74,17 +75,17 @@ msgstr "Назва для відображення"
 #. module: hr_contract_sign
 #: model:ir.actions.act_window,name:hr_contract_sign.sign_contract_wizard_action
 msgid "Document Signature"
-msgstr ""
+msgstr "Підпис документу"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,help:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_id
 msgid "Document that the employee will have to sign."
-msgstr ""
+msgstr "Документ, який необхідно підписати співробітнику"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_id
 msgid "Document to Sign"
-msgstr ""
+msgstr "Документ на підпис"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_employee
@@ -101,13 +102,13 @@ msgstr "Трудовий контракт"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
 msgid "Employee Role"
-msgstr ""
+msgstr "Роль співробітника"
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "Employee must be linked to a user and a partner."
-msgstr ""
+msgstr "Співробітник повинен бути прив'язаним до користувача та партнера."
 
 #. module: hr_contract_sign
 #: model:sign.item.role,name:hr_contract_sign.sign_item_role_job_responsible
@@ -169,7 +170,7 @@ msgstr "Підрахунок запитів на підпис"
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_contract_sign_document_wizard
 msgid "Sign document in contract"
-msgstr ""
+msgstr "Підписати документ у контрактах"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_sign_view_form

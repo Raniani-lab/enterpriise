@@ -50,7 +50,7 @@ msgstr "Аналітичний рахунок"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
 msgid "Create Draft Entry"
-msgstr ""
+msgstr "Створити чорновий запис"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_credit
@@ -80,19 +80,20 @@ msgstr "Залиште пустим для використання дати р�
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
 msgid "Not computed in net accountably"
-msgstr ""
+msgstr "Не обчислюється в чистій підзвітності"
 
 #. module: hr_payroll_account
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "One of the contract for these payslips has no structure type."
 msgstr ""
+"Один із контрактів для цих розрахункових листів не має типу структури."
 
 #. module: hr_payroll_account
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "One of the payroll structures has no account journal defined on it."
-msgstr ""
+msgstr "Одна зі структур оплати праці не має визначеного журналу рахунку."
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip
@@ -140,3 +141,7 @@ msgid ""
 "in the accounting. For example, if you want to display the value of your "
 "representation fees, you can check this field."
 msgstr ""
+"Це поле дозволяє видалити значення цього правила з правила «Чиста заробітна "
+"плата» на рівні бухгалтерського обліку, щоб явно відобразити значення цього "
+"правила в бухгалтерському обліку. Наприклад, якщо ви хочете відобразити "
+"вартість вашої плати за представництво, ви можете перевірити це поле."

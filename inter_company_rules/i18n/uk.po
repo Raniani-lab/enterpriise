@@ -46,12 +46,12 @@ msgstr "Автоматично згенерований документ"
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order__auto_generated
 msgid "Auto Generated Purchase Order"
-msgstr "Автогенероване замовлення на купівлю"
+msgstr "Автоматично згенероване замовлення на купівлю"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_sale_order__auto_generated
 msgid "Auto Generated Sales Order"
-msgstr "Автогенероване замовлення на продаж"
+msgstr "Автоматично згенероване замовлення на продаж"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__auto_validation

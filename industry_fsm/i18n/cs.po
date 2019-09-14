@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # 	* industry_fsm
 # 
+# Translators:
+# Martin Trigaux, 2019
+# Chris <krystof.reklamy13@gmail.com>, 2019
+# Jan Horzinka <jan.horzinka@centrum.cz>, 2019
+# Michal Veselý <michal@veselyberanek.net>, 2019
+# trendspotter <j.podhorecky@volny.cz>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
+"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,22 +26,22 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__delay_endings_days
 msgid "# Days to Deadline"
-msgstr ""
+msgstr "Počet dní do konečného termínu"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_days_open
 msgid "# Working Days to Assign"
-msgstr ""
+msgstr "Počet pracovních dní k přiřazení"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_days_close
 msgid "# Working Days to Close"
-msgstr ""
+msgstr "Počet pracovních dní k uzavření"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__nbr
 msgid "# of Tasks"
-msgstr ""
+msgstr "Počet úkolů"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0
@@ -75,7 +83,7 @@ msgstr ""
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_root
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_todo
 msgid "All Tasks"
-msgstr ""
+msgstr "Všechny úkoly"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
@@ -95,17 +103,17 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_assign
 msgid "Assignation Date"
-msgstr ""
+msgstr "Datum přidělení"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__user_id
 msgid "Assigned To"
-msgstr ""
+msgstr "Přiřazeno k"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__user_id
 msgid "Assigned to"
-msgstr ""
+msgstr "Přiřazeno k"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.project_task_menu_planning_by_project_fsm
@@ -115,34 +123,34 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.project_task_menu_planning_by_user_fsm
 msgid "By User"
-msgstr ""
+msgstr "Podle Uživatele"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__company_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Company"
-msgstr ""
+msgstr "Firma"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Nastavení konfigurace"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_settings
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurace"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Create Invoice"
-msgstr ""
+msgstr "Vytvořit fakturu"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_all_fsm
 msgid "Create a new task"
-msgstr ""
+msgstr "Vytvořit nový úkol"
 
 #. module: industry_fsm
 #. openerp-web
@@ -165,27 +173,27 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Měna"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__partner_id
 msgid "Customer"
-msgstr ""
+msgstr "Zákazník"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_deadline
 msgid "Deadline"
-msgstr ""
+msgstr "Uzávěrka"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Zobrazované jméno"
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_project_project__is_fsm
@@ -198,22 +206,22 @@ msgstr ""
 #. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
 msgid "Done"
-msgstr ""
+msgstr "Hotovo"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__hours_effective
 msgid "Effective Hours"
-msgstr ""
+msgstr "Efektivních hodin"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__planned_date_end
 msgid "End date"
-msgstr ""
+msgstr "Konečné datum"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_end
 msgid "Ending Date"
-msgstr ""
+msgstr "Datum ukončení"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_quotations
@@ -232,29 +240,29 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Future"
-msgstr ""
+msgstr "Budoucnost"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Group By"
-msgstr ""
+msgstr "Seskupit podle"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: industry_fsm
 #: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_0
 #: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_1
 msgid "In Progress"
-msgstr ""
+msgstr "Probíhá"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
 msgid "Invoice"
-msgstr ""
+msgstr "Faktura"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0
@@ -262,22 +270,22 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #, python-format
 msgid "Invoices"
-msgstr ""
+msgstr "Faktury"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__state
 msgid "Kanban State"
-msgstr ""
+msgstr "Stav kanban"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Naposled změněno"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_last_stage_update
 msgid "Last Stage Update"
-msgstr ""
+msgstr "Poslední změna fáze"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
@@ -295,7 +303,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Mark as done"
-msgstr ""
+msgstr "označit jako hotové"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__material_line_product_count
@@ -317,19 +325,19 @@ msgstr ""
 #: model:ir.ui.menu,name:industry_fsm.fsm_tasks_menu
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "My Tasks"
-msgstr ""
+msgstr "Moje úkoly"
 
 #. module: industry_fsm
 #: model:ir.model.fields.selection,name:industry_fsm.selection__project_task__fsm_state__draft
 #: model:project.task.type,name:industry_fsm.planning_project_stage_0
 msgid "New"
-msgstr ""
+msgstr "Nové"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm_quotation
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_quotation
 msgid "New Quotation"
-msgstr ""
+msgstr "Nová nabídka"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm
@@ -350,17 +358,17 @@ msgstr ""
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_0
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_1
 msgid "Not validated"
-msgstr ""
+msgstr "Neověřeno"
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_days_open
 msgid "Number of Working Days to Open the task"
-msgstr ""
+msgstr "Počet pracovních dnů pro otevření úkolu"
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_days_close
 msgid "Number of Working Days to close the task"
-msgstr ""
+msgstr "Počet pracovních dnů pro ukončení úkolu"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__invoice_count
@@ -376,12 +384,12 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 msgid "Pause"
-msgstr ""
+msgstr "Pozastavit"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__hours_planned
 msgid "Planned Hours"
-msgstr ""
+msgstr "Plánované hodiny"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -391,7 +399,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_planning
 msgid "Planning"
-msgstr ""
+msgstr "Plánování"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__planning_overlap
@@ -411,18 +419,18 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_product_product_kanban_material
 msgid "Price:"
-msgstr ""
+msgstr "Cena:"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__priority
 msgid "Priority"
-msgstr ""
+msgstr "Přednost"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_product_product
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_product_product_kanban_material
 msgid "Product"
-msgstr ""
+msgstr "Produkt"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0
@@ -432,7 +440,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #, python-format
 msgid "Products"
-msgstr ""
+msgstr "Produkty"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_material
@@ -443,20 +451,20 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__progress
 msgid "Progress"
-msgstr ""
+msgstr "Průběh"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_project
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__project_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Project"
-msgstr ""
+msgstr "Projekt"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_project_action_only_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_settings_project
 msgid "Projects"
-msgstr ""
+msgstr "Projekty"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
@@ -466,12 +474,12 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm_quotation
 msgid "Quotation"
-msgstr ""
+msgstr "Nabídka"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__quotation_count
 msgid "Quotation Count"
-msgstr ""
+msgstr "Počet nabídek"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_quotation
@@ -481,38 +489,38 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__group_industry_fsm_quotations
 msgid "Quotations"
-msgstr ""
+msgstr "Nabídky"
 
 #. module: industry_fsm
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_0
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_1
 msgid "Ready for Next Stage"
-msgstr ""
+msgstr "Připraveno pro další fázi"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__remaining_hours
 msgid "Remaining Hours"
-msgstr ""
+msgstr "Zbývající hodiny"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_reporting
 msgid "Reporting"
-msgstr ""
+msgstr "Sestavy"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Responsible"
-msgstr ""
+msgstr "Odpovědný"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 msgid "Resume"
-msgstr ""
+msgstr "Shrnutí"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Prodejní objednávka"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -536,29 +544,29 @@ msgstr ""
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_settings_res_config
 msgid "Settings"
-msgstr ""
+msgstr "Nastavení"
 
 #. module: industry_fsm
 #: model:ir.model.fields.selection,name:industry_fsm.selection__project_task__fsm_state__sold
 msgid "Sold"
-msgstr ""
+msgstr "Prodáno"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__stage_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Stage"
-msgstr ""
+msgstr "Fáze"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Start"
-msgstr ""
+msgstr "Počáteční bod"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Start Date"
-msgstr ""
+msgstr "Počáteční datum"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__planned_date_begin
@@ -575,18 +583,18 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_state
 msgid "Status"
-msgstr ""
+msgstr "Stav"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 msgid "Stop"
-msgstr ""
+msgstr "Zastavit"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task
 #: model:ir.model.fields,field_description:industry_fsm.field_sale_order__task_id
 msgid "Task"
-msgstr ""
+msgstr "Úloha"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__name
@@ -609,7 +617,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_list_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Tasks"
-msgstr ""
+msgstr "Úkoly"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_user_action_report_fsm
@@ -617,7 +625,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_graph
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_pivot
 msgid "Tasks Analysis"
-msgstr ""
+msgstr "Analýza úkolů"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0
@@ -655,6 +663,9 @@ msgid ""
 "users. You can analyse the quantities of tasks, the hours spent compared to "
 "the planned hours, the average number of days to open or close a task, etc."
 msgstr ""
+"Tento přehled umožňuje analyzovat výkon vašich projektů a uživatelů. Můžete "
+"analyzovat množství úkolů, počet hodin strávených ve srovnání s plánovaným "
+"počtem hodin, průměrný počet dnů pro otevření nebo ukončení úkolu atd."
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0
@@ -662,12 +673,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #, python-format
 msgid "Time"
-msgstr ""
+msgstr "Čas"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.timesheet_view_form
 msgid "Time Spent"
-msgstr ""
+msgstr "Strávený čas"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
@@ -678,7 +689,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.timesheet_view_form
 msgid "Timesheet"
-msgstr ""
+msgstr "Výkaz"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__timesheet_product_id
@@ -689,14 +700,14 @@ msgstr ""
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_all_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "To Do"
-msgstr ""
+msgstr "K udělání"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_to_invoice_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_invoice
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "To Invoice"
-msgstr ""
+msgstr "K fakturaci"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_to_schedule_fsm
@@ -707,7 +718,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_to_invoice
 msgid "To invoice"
-msgstr ""
+msgstr "Fakturovat"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -718,17 +729,17 @@ msgstr ""
 #: model:product.product,uom_name:industry_fsm.fsm_time_product
 #: model:product.template,uom_name:industry_fsm.fsm_time_product_product_template
 msgid "Units"
-msgstr ""
+msgstr "Jednotky"
 
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_user
 msgid "User"
-msgstr ""
+msgstr "Uživatel"
 
 #. module: industry_fsm
 #: model:ir.model.fields.selection,name:industry_fsm.selection__project_task__fsm_state__validated
 msgid "Validated"
-msgstr ""
+msgstr "Ověřeno"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_report
@@ -749,4 +760,4 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "tasks"
-msgstr ""
+msgstr "úkoly"

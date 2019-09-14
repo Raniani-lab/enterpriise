@@ -4,16 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
-# Andy Cheng <andy.cheng@richsoda.com>, 2019
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,133 +20,18 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: project_forecast
-#: code:addons/project_forecast/wizard/create_forecast.py:0
-#, python-format
-msgid "%s's schedules timezone differs from yours"
-msgstr ""
-
-#. module: project_forecast
-#: model:mail.template,body_html:project_forecast.email_template_forecast_single
-msgid ""
-"<div>\n"
-"                    <p>Dear ${object.employee_id.name or ''},</p><br/>\n"
-"                    <p>You have been assigned the following forecast.</p><br/>\n"
-"                    <table style=\"table-layout: fixed;\">\n"
-"                        <tr>\n"
-"                            <th style=\"padding: 5px;text-align: left;\">From</th>\n"
-"                            <td style=\"padding: 5px;\">${format_datetime(object.start_datetime, tz=object.employee_id.tz)}</td>\n"
-"                        </tr>\n"
-"                        <tr>\n"
-"                            <th style=\"padding: 5px;text-align: left;\">To</th>\n"
-"                            <td style=\"padding: 5px;\">${format_datetime(object.end_datetime, tz=object.employee_id.tz)}</td>\n"
-"                        </tr>\n"
-"                        <tr>\n"
-"                            <th style=\"padding: 5px;text-align: left;\">Project</th>\n"
-"                            <td style=\"padding: 5px;\">${object.project_id.name}</td>\n"
-"                        </tr>\n"
-"                        % if object.task_id\n"
-"                            <tr>\n"
-"                                <th style=\"padding: 5px;text-align: left;\">Task</th>\n"
-"                                <td style=\"padding: 5px;\">${object.task_id.name or ''}</td>\n"
-"                            </tr>\n"
-"                        % endif\n"
-"                        <tr>\n"
-"                            <th style=\"padding: 5px;text-align: left;\">Planned Hours</th>\n"
-"                            <td style=\"padding: 5px;\">${format_duration(object.resource_hours)}</td>\n"
-"                        </tr>\n"
-"\n"
-"                    </table>\n"
-"                    % if group_project_user_id in object.employee_id.user_id.groups_id.ids\n"
-"                        <div style=\"margin: 15px; text-align: center\">\n"
-"                            <a href=\"/web?#action=${ctx.get('action_id')}&amp;model=project.forecast&amp;view_type=gantt&amp;menu_id=${ctx.get('menu_id')}&amp;db=${'dbname' in ctx and ctx['dbname'] or '' }\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">View Forecast</a>\n"
-"                        </div>\n"
-"                    % endif\n"
-"                </div>\n"
-"            "
-msgstr ""
-
-#. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
-msgid "<span class=\"o_label\">Forecast</span>"
+msgid "<span class=\"o_label\">Planning</span>"
 msgstr ""
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
-msgid "<span>Forecast</span>"
+msgid "<span>Planning</span>"
 msgstr ""
 
 #. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
-msgid ""
-"<strong class=\"text-danger\">There are more hours planned than "
-"available</strong>"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
-msgid "<strong class=\"text-warning\">There are non published changes</strong>"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
-msgid "<strong>Allocated Time: </strong>"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
-msgid "<strong>Planned Hours: </strong>"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
-msgid "<strong>Start Date: </strong>"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_gantt
-msgid "<strong>Stop Date: </strong>"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__active
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__active
-msgid "Active"
-msgstr "啟用"
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Add"
-msgstr "增加"
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Add record"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__resource_time
-msgid "Allocated Time (%)"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "Archived"
-msgstr "封存"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
-msgid "Assign To"
-msgstr "指派給"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__autocomplete_forecast_ids
-msgid "Autocomplete Forecast"
+#: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
+msgid "Allow Planning"
 msgstr ""
 
 #. module: project_forecast
@@ -162,616 +45,59 @@ msgid "By Project"
 msgstr "按專案"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:0
-#, python-format
-msgid "Cannot remove more hours than there actually is"
-msgstr ""
-
-#. module: project_forecast
-#: code:addons/project_forecast/wizard/repeat.py:0
-#, python-format
-msgid "Cannot repeat an already repeating forecast"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Collapse rows"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__color
-msgid "Color"
-msgstr "顏色"
-
-#. module: project_forecast
-#: model:ir.model,name:project_forecast.model_res_company
-msgid "Companies"
-msgstr "公司"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__company_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__company_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__company_id
-msgid "Company"
-msgstr "公司"
-
-#. module: project_forecast
-#: model:ir.model,name:project_forecast.model_res_config_settings
-msgid "Config Settings"
-msgstr "配置設定"
-
-#. module: project_forecast
-#: model:ir.actions.act_window,name:project_forecast.project_forecast_create_wizard_action
-msgid "Create forecasts"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__create_uid
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__create_uid
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__create_uid
-msgid "Created by"
-msgstr "創立者"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_date
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__create_date
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__create_date
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__create_date
-msgid "Created on"
-msgstr "建立於"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
-msgid "Day"
-msgstr "日"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_default_view
-msgid "Default view"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_generation_span_interval
-#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_generation_span_interval
-msgid "Delay for the rate at which recurring forecasts should be generated"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid "Delete"
-msgstr "刪除"
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid "Delete all"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid "Delete future"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
-#, python-format
-msgid "Discard"
-msgstr "取消"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__display_name
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__display_name
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__display_name
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__display_name
-msgid "Display Name"
-msgstr "顯示名稱"
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Duplicate"
-msgstr "複製"
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Duplicate period"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__employee_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_id
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "Employee"
-msgstr "員工"
-
-#. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
-msgid "Enable forecasting on the project."
+msgid "Enable planning tasks on the project."
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_datetime
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__end_datetime
-msgid "End Datetime"
-msgstr "結束時間"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
-msgid "End date"
-msgstr "結束日期"
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast_recurrency.py:0
-#, python-format
-msgid "Every %s %s until %s"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Expand rows"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast__resource_time
-#: model:ir.model.fields,help:project_forecast.field_project_forecast_create__resource_time
-msgid "Expressed in the Unit of Measure of the project company"
+#: model:ir.model.constraint,message:project_forecast.constraint_planning_slot_project_required_if_task
+msgid "If the planning is linked to a task, the project must be set too."
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_menu
-msgid "Forecast"
-msgstr "預測"
+msgid "Planning"
+msgstr "規劃"
 
 #. module: project_forecast
-#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_report_activities
+#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_analysis
 #: model:ir.ui.menu,name:project_forecast.project_forecast_report_activities
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_graph
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_pivot
-msgid "Forecast Analysis"
+msgid "Planning Analysis"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_default_view
-msgid "Forecast Default View"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
-msgid "Forecast Form"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_generation_span_uom
-#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_generation_span_uom
-msgid "Forecast Generation Span Uom"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
-msgid "Forecast List"
+#: model:ir.model,name:project_forecast.model_planning_slot
+msgid "Planning Shift"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_user
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
-msgid "Forecast by employee"
+msgid "Planning by Employee"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_project
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-msgid "Forecast by project"
+msgid "Planning by project"
 msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
-msgid "Forecast by task"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_check_start_date_lower_end_date
-#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_create_check_start_date_lower_end_date
-msgid "Forecast end date should be greater than its start date"
-msgstr ""
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/res_config_settings.py:0
-#, python-format
-msgid "Forecast generation span should be between 1 and 24 weeks"
-msgstr ""
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/res_config_settings.py:0
-#, python-format
-msgid "Forecast generation span should be between 1 and 6 months"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_create_check_end_date_lower_repeat_until
-msgid "Forecast should end before the repeat ends"
-msgstr ""
-
-#. module: project_forecast
-#: model:mail.template,subject:project_forecast.email_template_forecast_single
-msgid "Forecast: new schedule"
-msgstr ""
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:0
-#, python-format
-msgid "Forecasted time must be positive"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast_recurrency__forecast_ids
-msgid "Forecasts that were created using this recurrency"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.actions.server,name:project_forecast.ir_cron_forecast_schedule_ir_actions_server
-#: model:ir.cron,cron_name:project_forecast.ir_cron_forecast_schedule
-#: model:ir.cron,name:project_forecast.ir_cron_forecast_schedule
-msgid "Forecasts: generate next forecasts"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "Future"
-msgstr "未來"
-
-#. module: project_forecast
-#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_default_view__gantt
-msgid "Gantt"
-msgstr "甘特圖"
-
-#. module: project_forecast
-#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_default_view__grid
-msgid "Grid"
-msgstr "網格"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "Group By"
-msgstr "分組按"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__id
-msgid "ID"
-msgstr "ID"
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast_create__repeat_until
-msgid ""
-"If set, the recurrence stop at that date. Otherwise, the recurrence is "
-"applied indefinitely."
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__last_generated_end_datetime
-msgid "Last Generated End Date"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create____last_update
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency____last_update
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat____last_update
-msgid "Last Modified on"
-msgstr "最後修改於"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_uid
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__write_uid
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__write_uid
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__write_uid
-msgid "Last Updated by"
-msgstr "最後更新者"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_date
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__write_date
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__write_date
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__write_date
-msgid "Last Updated on"
-msgstr "最後更新於"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
-msgid "Month"
-msgstr "月"
-
-#. module: project_forecast
-#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_create__repeat_unit__month
-#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_recurrency__repeat_unit__month
-#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_repeat__repeat_unit__month
-#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_generation_span_uom__month
-msgid "Months"
-msgstr "月"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "My Activities"
-msgstr "我的活動"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "My Projects"
-msgstr "我的專案"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__name
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__name
-msgid "Name"
-msgstr "名称"
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Next"
-msgstr "下一個"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
-msgid "OK"
-msgstr "OK"
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid "Open"
-msgstr "打開"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "Past"
-msgstr "過去"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_hours
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__resource_hours
-msgid "Planned hours"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Previous"
-msgstr "前一個"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_project
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__project_id
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model:ir.model.fields,field_description:project_forecast.field_planning_slot__project_id
+#: model_terms:ir.ui.view,arch_db:project_forecast.planning_slot_view_search
 msgid "Project"
 msgstr "專案"
 
 #. module: project_forecast
-#: model:ir.model,name:project_forecast.model_project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
-msgid "Project Forecast"
-msgstr "專案預測"
-
-#. module: project_forecast
-#: model:ir.model,name:project_forecast.model_project_forecast_create
-msgid "Project Forecast creation wizard"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__published
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__published
-msgid "Published"
-msgstr "已公開"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_generation_span_interval
-#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_generation_span_interval
-#: model_terms:ir.ui.view,arch_db:project_forecast.res_config_settings_view_form
-msgid "Rate of forecast generation"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__previous_forecast_id
-msgid "Recent Forecasts"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model,name:project_forecast.model_project_forecast_recurrency
-msgid "Recurent forecasts definition"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__recurrency_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__recurrency_id
-msgid "Recurrency"
-msgstr "定期"
-
-#. module: project_forecast
-#: model:ir.model.constraint,message:project_forecast.constraint_project_forecast_recurrency_check_repeat_interval_positive
-msgid "Recurrency repeat interval should be at least 1"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__related_forecast_id
-msgid "Related Forecast"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__forecast_ids
-msgid "Related forecasts"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast__user_id
-#: model:ir.model.fields,help:project_forecast.field_project_forecast_create__user_id
-msgid "Related user name for the resource to manage its access."
-msgstr "用於管理資源訪問權限的使用者名"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat
-msgid "Repeat"
-msgstr "重複"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat_unit
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_unit
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_unit
-msgid "Repeat Unit"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat_until
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_until
-msgid "Repeat Until"
-msgstr "重複直到"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__repeat_interval
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_interval
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_repeat__repeat_interval
-msgid "Repeat every"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.actions.act_window,name:project_forecast.project_forecast_repeat_forecast_wizard
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
-msgid "Repeat forecast"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_recurrency__repeat_until
-msgid "Repeat until"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_create_wizard_view_form
-#, python-format
-msgid "Save"
-msgstr "儲存"
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid "Save & send"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid "Send"
-msgstr "發送"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_datetime
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__start_datetime
-msgid "Start Datetime"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
-msgid "Start date"
-msgstr "開始日期"
-
-#. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_task
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__task_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__task_id
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model:ir.model.fields,field_description:project_forecast.field_planning_slot__task_id
+#: model_terms:ir.ui.view,arch_db:project_forecast.planning_slot_view_search
 msgid "Task"
 msgstr "任務"
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__stage_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__stage_id
-msgid "Task stage"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__tag_ids
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__tag_ids
-msgid "Task tags"
-msgstr ""
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:0
-#: code:addons/project_forecast/models/project_forecast.py:0
-#: code:addons/project_forecast/models/project_forecast.py:0
-#, python-format
-msgid ""
-"This action will remove the current forecast from the recurrency. Are you "
-"sure you want to continue?"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid ""
-"This will duplicate all forecasts from this period to the next. Are you sure"
-" you want to continue?"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid ""
-"This will remove this forecast and all related ones. Are you sure you want "
-"to continue?"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid ""
-"This will remove this forecast and all subsequent ones. Are you sure you "
-"want to continue?"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/js/forecast_gantt_controller.js:0
-#, python-format
-msgid "This will remove this forecast. Are you sure you want to continue?"
-msgstr ""
 
 #. module: project_forecast
 #: model:ir.filters,name:project_forecast.ir_filter_forecast_time_by_month
@@ -779,96 +105,10 @@ msgid "Time by month"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__employee_tz_warning
-msgid "Timezone Warning"
-msgstr ""
-
-#. module: project_forecast
-#. openerp-web
-#: code:addons/project_forecast/static/src/xml/project_forecast_template.xml:0
-#, python-format
-msgid "Today"
-msgstr "今天"
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_generation_span_uom
-#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_generation_span_uom
-msgid "Unit for the rate at which recurring forecasts should be generated"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
-msgid "Until"
-msgstr "直到"
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast_recurrency__repeat_until
-msgid "Up to which date should the forecasts be repeated"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__user_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create__user_id
-msgid "User"
-msgstr "使用者"
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:0
-#: code:addons/project_forecast/models/project_forecast.py:0
-#: code:addons/project_forecast/models/project_forecast.py:0
-#, python-format
-msgid "Warning"
-msgstr "警告"
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:0
-#, python-format
-msgid "Warning!"
-msgstr "警告！"
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
-msgid "Week"
-msgstr "周"
-
-#. module: project_forecast
-#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_create__repeat_unit__week
-#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_recurrency__repeat_unit__week
-#: model:ir.model.fields.selection,name:project_forecast.selection__project_forecast_repeat__repeat_unit__week
-#: model:ir.model.fields.selection,name:project_forecast.selection__res_company__forecast_generation_span_uom__week
-msgid "Weeks"
-msgstr "周"
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_default_view
-#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_default_view
-msgid "Which view should be seen by default for forecasts"
-msgstr ""
-
-#. module: project_forecast
-#: model:ir.model,name:project_forecast.model_project_forecast_repeat
-msgid "Wizard to repeat an existing forecast"
-msgstr ""
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:0
-#, python-format
-msgid "You are allocating more hours than available for this employee"
-msgstr ""
-
-#. module: project_forecast
-#: code:addons/project_forecast/wizard/repeat.py:0
-#, python-format
-msgid "You can only apply this action from a forecast."
-msgstr ""
-
-#. module: project_forecast
 #: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid ""
-"You cannot delete a project containing forecasts. You can either delete all "
+"You cannot delete a project containing plannings. You can either delete all "
 "the project's forecasts and then delete the project or simply deactivate the"
 " project."
 msgstr ""
@@ -877,30 +117,12 @@ msgstr ""
 #: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid ""
-"You cannot delete a task containing forecasts. You can either delete all the"
-" task's forecasts and then delete the task or simply deactivate the task."
+"You cannot delete a task containing plannings. You can either delete all the"
+" task's plannings and then delete the task or simply deactivate the task."
 msgstr ""
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Your task is not in the selected project."
-msgstr ""
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:0
-#, python-format
-msgid ""
-"can only edit forecasts resource hours if grouped by at least employee and "
-"project"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_repeat_view_form
-msgid "discard"
-msgstr ""
-
-#. module: project_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
-msgid "repeat"
 msgstr ""

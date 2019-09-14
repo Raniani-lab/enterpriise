@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* inter_company_rules
 # 
+# Translators:
+# Martin Trigaux, 2019
+# trendspotter <j.podhorecky@volny.cz>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
+"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +30,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__applicable_on
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__applicable_on
 msgid "Apply on"
-msgstr ""
+msgstr "Použít na"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__intercompany_user_id
@@ -57,12 +62,12 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Společnosti"
 
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Nastavení konfigurace"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:0
@@ -131,12 +136,12 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_account_move
 msgid "Journal Entries"
-msgstr ""
+msgstr "Položky deníku"
 
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Položka deníku"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:0
@@ -166,7 +171,7 @@ msgstr ""
 #: model:ir.model,name:inter_company_rules.model_purchase_order
 #: model:ir.model.fields.selection,name:inter_company_rules.selection__res_company__applicable_on__purchase
 msgid "Purchase Order"
-msgstr ""
+msgstr "Objednávka"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,help:inter_company_rules.field_res_company__intercompany_user_id
@@ -174,12 +179,13 @@ msgstr ""
 msgid ""
 "Responsible user for creation of documents triggered by intercompany rules."
 msgstr ""
+"Odpovědný uživatel pro vytváření dokumentů spouštěných interními předpisy."
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__rule_type
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rule_type
 msgid "Rule"
-msgstr ""
+msgstr "Pravidlo"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:0
@@ -191,7 +197,7 @@ msgstr ""
 #: model:ir.model,name:inter_company_rules.model_sale_order
 #: model:ir.model.fields.selection,name:inter_company_rules.selection__res_company__applicable_on__sale
 msgid "Sales Order"
-msgstr ""
+msgstr "Prodejní objednávka"
 
 #. module: inter_company_rules
 #: model:ir.model.fields.selection,name:inter_company_rules.selection__res_company__applicable_on__sale_purchase
@@ -250,7 +256,7 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__warehouse_id
 msgid "Warehouse"
-msgstr ""
+msgstr "Sklad"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__warehouse_id
@@ -264,6 +270,8 @@ msgid ""
 "You cannot create SO from PO because sale price list currency is different "
 "than purchase price list currency."
 msgstr ""
+"prodejní objednávku nemůžete vytvořit z nákupní objednávky, protože měna "
+"prodejního ceníku se liší od měny nákupního ceníku."
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/res_company.py:0
@@ -278,7 +286,7 @@ msgstr ""
 #: code:addons/inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "draft"
-msgstr ""
+msgstr "návrh"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/res_company.py:0
@@ -310,4 +318,4 @@ msgstr ""
 #: code:addons/inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "validated"
-msgstr ""
+msgstr "ověřeno"

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Linas Versada <linaskrisiukenas@gmail.com>, 2019\n"
 "Language-Team: Lithuanian (https://www.transifex.com/odoo/teams/41243/lt/)\n"
@@ -62,7 +62,7 @@ msgstr ""
 #. module: marketing_automation_sms
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
-msgid "Exception in mass SMS: %s"
+msgid "Exception in SMS Marketing: %s"
 msgstr ""
 
 #. module: marketing_automation_sms

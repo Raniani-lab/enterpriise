@@ -3,21 +3,22 @@
 # 	* account_batch_payment
 # 
 # Translators:
-# Cécile Collart <cco@odoo.com>, 2019
-# Martin Trigaux, 2019
 # 71728729ee5e25c3ecd8d7420ddb9ca7, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Alain van de Werve <avw@openerp.com>, 2019
 # Nathan Grognet <ngr@odoo.com>, 2019
 # Olivier ANDRE <frsw194@gmail.com>, 2019
+# thomas quertinmont <tqu@odoo.com>, 2019
+# Martin Trigaux, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Olivier ANDRE <frsw194@gmail.com>, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +34,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
-msgstr ""
+msgstr "outil de réconciliation de compte"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
@@ -96,10 +97,13 @@ msgid "Batch Payment"
 msgstr "Paiement en groupe"
 
 #. module: account_batch_payment
+#. openerp-web
+#: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:0
 #: model:ir.actions.act_window,name:account_batch_payment.action_batch_payment_in
 #: model:ir.actions.act_window,name:account_batch_payment.action_batch_payment_out
 #: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_purchases
 #: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_sales
+#, python-format
 msgid "Batch Payments"
 msgstr "Paiements en Groupe"
 
@@ -121,6 +125,9 @@ msgid ""
 "                    reconciliation. They are also useful when depositing checks\n"
 "                    to the bank."
 msgstr ""
+"Les paiements par lots vous permettent de regrouper différents paiements pour vous faciliter la \n"
+" réconciliation. Ils sont également utiles lors du dépôt de chèques\n"
+"  à la Banque."
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
@@ -156,7 +163,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
 msgid "Create batch payment"
-msgstr ""
+msgstr "Créer un Paiement en Groupe"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_uid
@@ -235,6 +242,13 @@ msgid "File name"
 msgstr "Nom du fichier"
 
 #. module: account_batch_payment
+#. openerp-web
+#: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:0
+#, python-format
+msgid "Filter..."
+msgstr "Filtrer..."
+
+#. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__export_file
 msgid "Generated XML file"
 msgstr "Fichier XML généré"
@@ -306,7 +320,7 @@ msgstr "Mémo"
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_filename
 msgid "Name of the export file generated for this batch"
-msgstr ""
+msgstr "Nom du fichier d'exportation généré pour ce lot"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__export_filename
@@ -367,13 +381,6 @@ msgid "Register Payment"
 msgstr "Enregistrer un paiement"
 
 #. module: account_batch_payment
-#. openerp-web
-#: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:0
-#, python-format
-msgid "Select a Batch Payment"
-msgstr ""
-
-#. module: account_batch_payment
 #: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__state__sent
 msgid "Sent"
 msgstr "Envoyé"
@@ -386,6 +393,8 @@ msgid ""
 "Some journal items from the selected batch payment are already selected in "
 "another reconciliation : "
 msgstr ""
+"Certains éléments du journal du dépôt de lots sélectionné sont déjà choisi "
+"dans un autre lettrage :"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__state
@@ -464,6 +473,8 @@ msgid ""
 "You cannot make a batch payment with internal transfers. Internal transfers "
 "ids: %s"
 msgstr ""
+"Vous ne pouvez pas effectuer de paiement par lot avec des virements "
+"internes. Identifiants de transferts internes: %s"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -473,4 +484,4 @@ msgstr "auto..."
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "re-Generate Export File"
-msgstr ""
+msgstr "re-générer le fichier d'exportation"

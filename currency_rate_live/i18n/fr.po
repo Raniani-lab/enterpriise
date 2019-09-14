@@ -129,6 +129,8 @@ msgid ""
 "Unable to connect to the online exchange rate platform %s. The web service "
 "may be temporary down."
 msgstr ""
+"Impossible de se connecter à la plate-forme de taux de change en ligne %s. "
+"Le service web est peut être temporairement hors service. "
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:0
@@ -153,6 +155,8 @@ msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "
 "Please choose another one."
 msgstr ""
+"Votre devise principale (%s) n'est pas prise en charge par ce fournisseur de"
+" taux de change. Veuillez en choisir un autre."
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__xe_com

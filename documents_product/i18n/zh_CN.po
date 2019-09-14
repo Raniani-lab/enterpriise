@@ -3,18 +3,19 @@
 # 	* documents_product
 # 
 # Translators:
-# Martin Trigaux, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # xu xiaohu <xu.xiaohu@gmail.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# 黎伟杰 <674416404@qq.com>, 2019
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,16 +24,22 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: documents_product
+#: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" aria-label=\"Values set here are company-specific.\" "
+"groups=\"base.group_multi_company\" role=\"img\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" aria-label=\"Values set here are company-specific.\" "
+"groups=\"base.group_multi_company\" role=\"img\"/>"
+
+#. module: documents_product
 #: model:ir.model,name:documents_product.model_documents_workflow_rule
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr "一组适用于符合所有条件附件的状态动作集合"
-
-#. module: documents_product
-#: model:ir.model,name:documents_product.model_ir_attachment
-msgid "Attachment"
-msgstr "附件"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
@@ -90,6 +97,7 @@ msgid "Plans"
 msgstr "计划"
 
 #. module: documents_product
+#: model:ir.model,name:documents_product.model_product_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product"
 msgstr "产品"
@@ -99,6 +107,11 @@ msgstr "产品"
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
 msgstr "产品标签"
+
+#. module: documents_product
+#: model:ir.model,name:documents_product.model_product_template
+msgid "Product Template"
+msgstr "产品模板"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder

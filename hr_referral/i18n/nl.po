@@ -8,17 +8,17 @@
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Thijs van Oers <thijsvanoers@yahoo.com>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Maxim Vandenbroucke <mxv@odoo.com>, 2019
 # Charles Vervaecke <cvk@odoo.com>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Charles Vervaecke <cvk@odoo.com>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -328,12 +328,8 @@ msgstr "Datum tot"
 msgid ""
 "Define the position of the friend. If it's a small friend like a dog, you "
 "must select Front, it will be placed in the front of the dashboard, above "
-"superhero. This hero will have half of the normal size."
+"superhero."
 msgstr ""
-"Definieer de positie van de vriend. Indien het een kleine vriend is zoals "
-"een hond, selecteer dan Voorkant, het zal dan aan de voorkant van het "
-"dashboard worden geplaatst, boven superheld. Deze held zal de helft van de "
-"normale grootte hebben."
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__department_id
@@ -558,20 +554,16 @@ msgstr "HR Referral Alarm Zoeken"
 #, python-format
 msgid ""
 "Hello,<br><br>There are some amazing job offers in my company! Have a look, "
-"they  can be interesting for you<br>%s"
+"they  can be interesting for you<br><a href=\"%s\">See Job Offers</a>"
 msgstr ""
-"Hallo,<br><br>Er zijn enkele geweldige jobaanbiedingen in mijn bedrijf! Neem"
-" een kijkje, ze kunnen interessant zijn voor u<br>%s"
 
 #. module: hr_referral
 #: code:addons/hr_referral/wizard/hr_referral_send_mail.py:0
 #, python-format
 msgid ""
 "Hello,<br><br>There is an amazing job offer for %s in my company! It will be"
-" a fit for you<br>%s"
+" a fit for you<br><a href=\"%s\">See Job Offer</a>"
 msgstr ""
-"Hallo,<br><br>Er is een geweldige jobaanbieding voor %s in mijn bedrijf! Het"
-" zal geschikt zijn voor u<br>%s"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_applicant__referral_state__hired
@@ -619,12 +611,8 @@ msgid "Icon to indicate an exception activity."
 msgstr "Icoon om uitzondering op activiteit aan te geven."
 
 #. module: hr_referral
-#: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Indien aangevinkt vragen nieuwe berichten uw aandacht."
-
-#. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction
+#: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Indien aangevinkt vragen nieuwe berichten uw aandacht."
 
@@ -863,8 +851,8 @@ msgstr "Aantal acties"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error_counter
-msgid "Number of error"
-msgstr "Aantal foutmeldingen"
+msgid "Number of errors"
+msgstr "Aantal fouten"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction_counter
@@ -1338,6 +1326,14 @@ msgid "You do not have enough points to buy this product."
 msgstr "U heeft niet voldoende punten om dit product te kopen."
 
 #. module: hr_referral
+#: code:addons/hr_referral/models/hr_applicant.py:0
+#, python-format
+msgid ""
+"You don't have access to this application as your user is not linked to an "
+"employee."
+msgstr ""
+
+#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "You earned"
 msgstr "U verdiende"
@@ -1367,8 +1363,8 @@ msgstr "Uw referentie is aangenomen!"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
-msgid "clicks"
-msgstr "klikken"
+msgid "click(s)"
+msgstr ""
 
 #. module: hr_referral
 #. openerp-web

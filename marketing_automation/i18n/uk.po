@@ -606,7 +606,7 @@ msgstr "Створити учасників"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__clicks_ratio
 msgid "Global Clicks Ratio for the campaign"
-msgstr ""
+msgstr "Глобальне співвідношення кліків для кампанії"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__hours
@@ -970,12 +970,12 @@ msgstr "Кількість кліків"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__items_total
 msgid "Number of items that are part of the campaign"
-msgstr ""
+msgstr "Кількість елементів, які є частиною кампанії"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__clicked_total
 msgid "Number of items that are part of the campaign who generated a click"
-msgstr ""
+msgstr "Кількість елементів, які є частиною кампанії, що генерують кліки"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__model_id

@@ -195,10 +195,8 @@ msgstr "إضافة أداة محادثات"
 #, python-format
 msgid ""
 "Add a <b>chatter widget</b> to allow discussions on your document: by email "
-"or inline."
+"or online."
 msgstr ""
-"أضف <b>أداة محادثات</b> للسماح بالمناقشات في مستندك: عبر البريد الإلكتروني "
-"أو كأداة مضمنة بالمستند."
 
 #. module: web_studio
 #. openerp-web

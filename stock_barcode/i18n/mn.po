@@ -381,7 +381,7 @@ msgstr "Бэлтгэх Төрөл"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Өмнөх"
 
 #. module: stock_barcode
 #. openerp-web
@@ -462,7 +462,7 @@ msgstr "Тоо хэмжээ"
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 msgid "Quantity Done"
-msgstr ""
+msgstr "Боловсруулсан тоо"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_reserved

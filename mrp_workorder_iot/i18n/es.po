@@ -3,19 +3,19 @@
 # 	* mrp_workorder_iot
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Pedro M. Baeza <pedro.baeza@gmail.com>, 2019
 # Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019
 # Rick Hunter <rick_hunter_ec@yahoo.com>, 2019
 # Luis M. Ontalba <luis.martinez@tecnativa.com>, 2019
 # Miquel Torner <miq@odoo.com>, 2019
+# Martin Trigaux, 2019
 # Vivian Montana <vmo@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Vivian Montana <vmo@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -91,6 +91,11 @@ msgid "ID"
 msgstr "ID"
 
 #. module: mrp_workorder_iot
+#: model:ir.model,name:mrp_workorder_iot.model_iot_device
+msgid "IOT Device"
+msgstr "Dispositivo IOT"
+
+#. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_iot_trigger
 msgid "IOT Trigger"
 msgstr "Desencadenar IOT"
@@ -101,6 +106,7 @@ msgid "Identifier"
 msgstr "Identificador"
 
 #. module: mrp_workorder_iot
+#: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.iot_device_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.mrp_workcenter_view_form_iot
 msgid "IoT Triggers"
 msgstr "Disparadores de IoT"
@@ -184,6 +190,11 @@ msgstr "Saltar"
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__picture
 msgid "Take Picture"
 msgstr ""
+
+#. module: mrp_workorder_iot
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_device__trigger_ids
+msgid "Trigger"
+msgstr "Activador"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workcenter__trigger_ids

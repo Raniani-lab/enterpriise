@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -59,9 +59,9 @@ msgid ""
 "<i>Push</i> events are supported."
 msgstr ""
 "Після цього ви можете вибрати події, які потрібно відслідковувати за "
-"каналами. Будьте обережні, тільки <i>Commit comment, Issues, Issue comment, "
-"Gollum, Pull request, Pull request review, Pull request review comment</i> "
-"та <i>Перетягнути</i> підтримуються події."
+"каналами. Будьте обережні, підтримуються тільки <i>Commit comment, Issues, "
+"Issue comment, Gollum, Pull request, Pull request review, Pull request "
+"review comment</i> та <i>Push</i>."
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_attachment_count
@@ -156,12 +156,8 @@ msgid "ID"
 msgstr "ID"
 
 #. module: mail_github
-#: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Якщо позначено, то повідомленя потребує вашої уваги."
-
-#. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction
+#: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Якщо позначено, то нові повідомлення будуть потребувати вашої уваги."
 
@@ -217,7 +213,7 @@ msgstr "Кількість дій"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr "Кількість помилок"
 
 #. module: mail_github
@@ -295,14 +291,14 @@ msgid ""
 "The webhook 'Content Type' should be set to <b>application/x-www-form-"
 "urlencoded</b>."
 msgstr ""
-"Веб-хок \"Тип вмісту\" має бути встановлений на <b>application/x-www-form-"
+"Webhook \"Тип вмісту\" має бути встановлений на <b>application/x-www-form-"
 "urlencoded</b>."
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__url_token
 msgid "URL to put as the payload target when configuring GitHub webhook"
 msgstr ""
-"URL-адреса, що ставить цільову нагрузку при налаштуванні веб-камери GitHub"
+"URL-адреса, що ставить цільову нагрузку при налаштуванні GitHub webhook"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_unread
@@ -325,7 +321,7 @@ msgid "commented"
 msgstr "коментований"
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:174
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "commit"
 msgstr "фіксувати"
@@ -341,8 +337,8 @@ msgid "created a new"
 msgstr "створив новий"
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:197
-#: code:addons/mail_github/controllers/main.py:205
+#: code:addons/mail_github/controllers/main.py:0
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "issue"
 msgstr "проблема"
@@ -363,8 +359,8 @@ msgid "on repository"
 msgstr "в сховищі"
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:212
-#: code:addons/mail_github/controllers/main.py:219
+#: code:addons/mail_github/controllers/main.py:0
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "pull request"
 msgstr "pull request"

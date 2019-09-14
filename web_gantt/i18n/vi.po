@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:30+0000\n"
+"POT-Creation-Date: 2019-09-13 11:39+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
 "Last-Translator: Duy BQ <duybq86@gmail.com>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
@@ -25,21 +25,21 @@ msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:6
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Add"
 msgstr "Thêm"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:6
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Add record"
 msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_controller.js:150
+#: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Are you sure to delete this record?"
 msgstr ""
@@ -51,140 +51,140 @@ msgstr "Cơ bản"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:27
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Collapse rows"
 msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_controller.js:125
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:76
+#: code:addons/web_gantt/static/src/js/gantt_controller.js:0
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Create"
 msgstr "Tạo"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_view.js:32
+#: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Day"
 msgstr "Ngày"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:24
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Expand rows"
 msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_view.js:16
+#: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Gantt"
 msgstr "Gantt"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_view.js:148
+#: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Gantt View"
 msgstr "Biểu đồ Gantt"
 
 #. module: web_gantt
-#: code:addons/web_gantt/models/models.py:34
+#: code:addons/web_gantt/models/models.py:0
 #, python-format
 msgid "Insufficient fields for Gantt View!"
 msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_view.js:34
+#: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Month"
 msgstr "Tháng"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:119
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Name:"
 msgstr "Tên:"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:16
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Next"
 msgstr "Kế tiếp"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_controller.js:125
+#: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Open"
 msgstr "Mở"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_controller.js:185
+#: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Plan"
 msgstr "Lập kế hoạch"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:77
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Plan existing"
 msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:10
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Previous"
 msgstr "Trước đó"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:120
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
-msgid "Start Date:"
+msgid "Start:"
 msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:121
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
-msgid "Stop Date:"
+msgid "Stop:"
 msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:13
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Today"
 msgstr "Hôm nay"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_model.js:482
+#: code:addons/web_gantt/static/src/js/gantt_model.js:0
 #, python-format
 msgid "Undefined %s"
 msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_view.js:33
+#: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Week"
 msgstr "Tuần"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_view.js:35
+#: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Year"
 msgstr "Năm"

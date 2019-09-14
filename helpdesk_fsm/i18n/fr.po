@@ -32,7 +32,7 @@ msgstr ""
 #: code:addons/helpdesk_fsm/models/helpdesk.py:0
 #, python-format
 msgid "Create task"
-msgstr ""
+msgstr "Créer une tâche"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid
@@ -72,12 +72,12 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
 msgid "Generate Task"
-msgstr ""
+msgstr "Générer une tâche"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
 msgid "Generate an fsm task from a ticket"
-msgstr ""
+msgstr "Générer une tâche fsm à partir d'un ticket"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_team
@@ -113,7 +113,7 @@ msgstr "Dernière mise à jour le"
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__use_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 msgid "Onsite Interventions"
-msgstr ""
+msgstr "Interventions sur site"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
@@ -128,7 +128,7 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__helpdesk_ticket_id
 msgid "Related ticket"
-msgstr ""
+msgstr "Ticket associé"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
@@ -156,7 +156,7 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__fsm_task_ids
 msgid "Tasks generated from this ticket"
-msgstr ""
+msgstr "Tâches générées à partir de ce ticket"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id

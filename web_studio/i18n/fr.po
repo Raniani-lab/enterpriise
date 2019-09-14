@@ -12,7 +12,6 @@
 # Lucas Deliege <lud@odoo.com>, 2019
 # Xavier Belmere <Info@cartmeleon.com>, 2019
 # William Olhasque <william.olhasque@scopea.fr>, 2019
-# Alain van de Werve <avw@openerp.com>, 2019
 # Olivier ANDRE <frsw194@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
@@ -196,10 +195,8 @@ msgstr "Ajouter un widget Chatter"
 #, python-format
 msgid ""
 "Add a <b>chatter widget</b> to allow discussions on your document: by email "
-"or inline."
+"or online."
 msgstr ""
-"Ajoutez un <b>widget de discussion</b> pour permettre des discussions sur "
-"votre document : par e-mail ou en ligne."
 
 #. module: web_studio
 #. openerp-web
@@ -1557,7 +1554,7 @@ msgstr "Image"
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Import"
-msgstr "Confirmer"
+msgstr "Importer"
 
 #. module: web_studio
 #. openerp-web

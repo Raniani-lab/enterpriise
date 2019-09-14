@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # 	* website_helpdesk_form
 # 
+# Translators:
+# Martin Trigaux, 2019
+# Jaroslav Helemik Nemec <nemec@helemik.cz>, 2019
+# trendspotter <j.podhorecky@volny.cz>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,12 +39,12 @@ msgstr ""
 #: code:addons/website_helpdesk_form/static/src/xml/website_helpdesk_form.xml:39
 #, python-format
 msgid "Attachment"
-msgstr ""
+msgstr "Příloha"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Attachment(s)"
-msgstr ""
+msgstr "Příloha(y)"
 
 #. module: website_helpdesk_form
 #. openerp-web
@@ -46,7 +52,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 #, python-format
 msgid "Description"
-msgstr ""
+msgstr "Popis"
 
 #. module: website_helpdesk_form
 #. openerp-web
@@ -54,12 +60,12 @@ msgstr ""
 #: model:ir.model,name:website_helpdesk_form.model_helpdesk_team
 #, python-format
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Tým Helpdesku"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Send"
-msgstr ""
+msgstr "Odeslat"
 
 #. module: website_helpdesk_form
 #. openerp-web
@@ -67,7 +73,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 #, python-format
 msgid "Subject"
-msgstr ""
+msgstr "Předmět"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
@@ -77,23 +83,23 @@ msgstr ""
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Team"
-msgstr ""
+msgstr "Tým"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
 #: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
-msgstr ""
+msgstr "Děkujeme za zaslání vašeho problému, náš tým se na to rovnou podívá!"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Ticket"
-msgstr ""
+msgstr "Tiket"
 
 #. module: website_helpdesk_form
 #: model:ir.model.fields,field_description:website_helpdesk_form.field_helpdesk_team__feature_form_url
 msgid "URL to Submit Issue"
-msgstr ""
+msgstr "URL pro odeslání případu"
 
 #. module: website_helpdesk_form
 #. openerp-web
@@ -101,7 +107,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 #, python-format
 msgid "Your Email"
-msgstr ""
+msgstr "Váš e-mail"
 
 #. module: website_helpdesk_form
 #. openerp-web
@@ -109,7 +115,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 #, python-format
 msgid "Your Name"
-msgstr ""
+msgstr "Vaše jméno"
 
 #. module: website_helpdesk_form
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view

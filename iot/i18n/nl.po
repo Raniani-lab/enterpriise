@@ -3,17 +3,17 @@
 # 	* iot
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # Cas Vissers <casvissers@brahoo.nl>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Martin Trigaux, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -86,14 +86,16 @@ msgstr "Voeg IoT box toe wizard"
 #: code:addons/iot/static/src/js/tours/iot.js:0
 #, python-format
 msgid "Add range to scan."
+msgstr "Voeg reeks toe om te scannen."
+
+#. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_box__drivers_auto_update
+msgid "Automatic drivers update"
 msgstr ""
 
 #. module: iot
-#: code:addons/iot/drivers/SixDriver.py:0
-#, python-format
-msgid ""
-"Another payment was processed after the one you're trying to reverse, you "
-"cannot reverse it anymore."
+#: model:ir.model.fields,help:iot.field_iot_box__drivers_auto_update
+msgid "Automatically update drivers when the IoT Box boots"
 msgstr ""
 
 #. module: iot
@@ -163,6 +165,12 @@ msgid "Close this window and try again"
 msgstr "Sluit dit venster en probeer het opnieuw"
 
 #. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_box__company_id
+#: model:ir.model.fields,field_description:iot.field_iot_device__company_id
+msgid "Company"
+msgstr "Bedrijf"
+
+#. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Connect an IoT Box"
@@ -170,6 +178,7 @@ msgstr "Verbind een IoT box"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
+#: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Connection"
 msgstr "Connectie"
 
@@ -185,7 +194,7 @@ msgstr "Verbinding mislukt"
 #: code:addons/iot/static/src/js/iot_device_controller.js:0
 #, python-format
 msgid "Connection to Device failed"
-msgstr ""
+msgstr "Verbinding met apparaat mislukt"
 
 #. module: iot
 #. openerp-web
@@ -242,17 +251,29 @@ msgid "Device"
 msgstr "Apparaat"
 
 #. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_box__device_count
+#: model_terms:ir.ui.view,arch_db:iot.iot_box_view_kanban
+msgid "Device Count"
+msgstr ""
+
+#. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Device type"
 msgstr "Apparaat type"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_device_action
+#: model:ir.actions.act_window,name:iot.iot_device_action_search_iot_box
 #: model:ir.model.fields,field_description:iot.field_iot_box__device_ids
 #: model:ir.ui.menu,name:iot.iot_device_menu_action
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_form
 msgid "Devices"
 msgstr "Apparaten"
+
+#. module: iot
+#: model:ir.model.fields.selection,name:iot.selection__iot_device__type__display
+msgid "Display"
+msgstr "Tonen"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__display_name
@@ -295,6 +316,11 @@ msgid "Group By"
 msgstr "Groepeer op"
 
 #. module: iot
+#: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi
+msgid "Hdmi"
+msgstr ""
+
+#. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
 #: model:ir.model.fields,field_description:iot.field_iot_box__id
 #: model:ir.model.fields,field_description:iot.field_iot_device__id
@@ -320,7 +346,7 @@ msgstr "Identificator (Mac adres)"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connected
 msgid "If device is connected to the IoT Box"
-msgstr ""
+msgstr "Indien apparaat verbonden is met de IoT box"
 
 #. module: iot
 #. openerp-web
@@ -331,6 +357,11 @@ msgid ""
 msgstr ""
 "Indien u zich op een beveiligde server bevind (HTTPS) controleert u of u het"
 " certificaat geaccepteerd heeft:"
+
+#. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_box__version
+msgid "Image Version"
+msgstr ""
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -360,11 +391,6 @@ msgstr "IoT boxen"
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
 msgstr "IoT Apparaat"
-
-#. module: iot
-#: model:ir.model.fields,field_description:iot.field_iot_box__version
-msgid "IoT Version"
-msgstr "IoT versie"
 
 #. module: iot
 #. openerp-web
@@ -519,7 +545,7 @@ msgstr "Uitgever garantie contract voor IoT box"
 #: code:addons/iot/static/src/xml/iot_scan_progress_template.xml:0
 #, python-format
 msgid "Range(s) to scan"
-msgstr ""
+msgstr "Reeks(en) om te scannen"
 
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report
@@ -565,6 +591,7 @@ msgstr "Netwerk scannen"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
+#: model:ir.model.fields,field_description:iot.field_iot_device__screen_url
 msgid "Screen URL"
 msgstr "Scherm URL"
 
@@ -590,6 +617,11 @@ msgstr "Succesvol verzonden aan printer!"
 #: code:addons/iot/static/src/js/tours/iot.js:0
 #, python-format
 msgid "The range can not be empty."
+msgstr "Deze reeks kan niet leeg zijn."
+
+#. module: iot
+#: model_terms:ir.actions.act_window,help:iot.iot_device_action_search_iot_box
+msgid "There is no device connected to this IoT Box"
 msgstr ""
 
 #. module: iot
@@ -625,6 +657,13 @@ msgid "Type of device."
 msgstr "Type apparaat."
 
 #. module: iot
+#: model:ir.model.fields,help:iot.field_iot_device__screen_url
+msgid ""
+"URL of the page that will be displayed by the device, leave empty to use the"
+" customer facing display of the POS."
+msgstr ""
+
+#. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__direct
 msgid "USB"
 msgstr "USB"
@@ -648,6 +687,12 @@ msgid ""
 msgstr ""
 "Wanneer u hier een apparaat instelt, zal het rapport worden geprint met dit "
 "apparaat op de IoT box."
+
+#. module: iot
+#: code:addons/iot/drivers/SixDriver.py:0
+#, python-format
+msgid "You cannot reverse this payment anymore."
+msgstr ""
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action

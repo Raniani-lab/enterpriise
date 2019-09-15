@@ -11,6 +11,7 @@
 # Martin Trigaux, 2019
 # Cécile Collart <cco@odoo.com>, 2019
 # Nils Goossens Bara <ngb@odoo.com>, 2019
+# thomas quertinmont <tqu@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-01-16 08:39+0000\n"
-"Last-Translator: Nils Goossens Bara <ngb@odoo.com>, 2019\n"
+"Last-Translator: thomas quertinmont <tqu@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -79,6 +80,8 @@ msgid ""
 "Click on Proceed to .../Add Exception/Visit this website/Go on to the "
 "webpage"
 msgstr ""
+"Clicker sur procédé à .../ajouter Exception/ visiter ce site web/ continuer "
+"sur le page web"
 
 #. module: iot
 #. openerp-web
@@ -105,7 +108,7 @@ msgstr "Fermer"
 #: code:addons/iot/static/src/js/iot.js:539
 #, python-format
 msgid "Close this window and try again"
-msgstr ""
+msgstr "Fermez cette fenêtre et réessayez"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
@@ -130,7 +133,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:542
 #, python-format
 msgid "Connection to IoT Box failed"
-msgstr ""
+msgstr "Echec de la connexion à l'IoT Box"
 
 #. module: iot
 #. openerp-web
@@ -202,7 +205,7 @@ msgstr "Nom affiché"
 #: code:addons/iot/static/src/js/iot.js:538
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr ""
+msgstr "Firefox uniquement : Cliquez sur Confirmer l'exception de sécurité"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -249,6 +252,8 @@ msgstr ""
 msgid ""
 "If you are on a secure server (HTTPS) check if you accepted the certificate:"
 msgstr ""
+"Si vous êtes sur un serveur sécurisé (HTTPS), vérifiez si vous avez accepté "
+"le certificat :"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -271,7 +276,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:iot.iot_box_action
 #: model:ir.ui.menu,name:iot.iot_box_menu_action
 msgid "IoT Boxes"
-msgstr ""
+msgstr "Boîtes IoT"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_ir_actions_report__device_id
@@ -361,7 +366,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:532
 #, python-format
 msgid "Please check if the IoT Box is still connected."
-msgstr ""
+msgstr "Veuillez vérifier si le boîtier IdOT est toujours connecté."
 
 #. module: iot
 #. openerp-web

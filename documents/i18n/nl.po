@@ -6,10 +6,10 @@
 # Eric Geens <ericgeens@yahoo.com>, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # Martin Trigaux, 2019
 # Cas Vissers <casvissers@brahoo.nl>, 2019
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 12:55+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -305,7 +305,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
 msgid "A workspace will inherit the tags of its parent workspace"
-msgstr ""
+msgstr "Een map neemt de tags van de bovenliggende map over"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_absences
@@ -808,7 +808,7 @@ msgstr "Aanvraag document"
 #. module: documents
 #: model:mail.template,subject:documents.mail_template_document_request
 msgid "Document Request ${object.name != False and ': '+ object.name or ''}"
-msgstr ""
+msgstr "Document Aanvraag ${object.name != False and ': '+ object.name or ''}"
 
 #. module: documents
 #: code:addons/documents/models/document.py:332
@@ -1282,7 +1282,7 @@ msgstr "Hoofd bijlage"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.facet_action
 msgid "Manage Tags by Category"
-msgstr ""
+msgstr "Beheer Label categorieën"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.tag_action
@@ -1298,7 +1298,7 @@ msgstr "Markeer als concept"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
 msgid "Mark all as Done"
-msgstr ""
+msgstr "Markeer alle als gereed"
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_marketing_folder
@@ -1893,7 +1893,7 @@ msgstr "Label bestaat al voor dit facet"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Tag categories defined for this workspace"
-msgstr ""
+msgstr "Label categorieën gedefinieerd voor deze map"
 
 #. module: documents
 #. openerp-web
@@ -1923,6 +1923,8 @@ msgstr "Tekst"
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
 msgid "Text shown when hovering on this tag category or its tags"
 msgstr ""
+"Tekst die wordt weergegeven bij het zweven over deze tag categorie of de "
+"tags"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -2003,12 +2005,13 @@ msgstr "Deze link is vervallen"
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This workspace will only be available to the selected company"
-msgstr ""
+msgstr "Deze map is alleen beschikbaar voor het geselecteerde bedrijf"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "This workspace will only be available to the selected user groups"
 msgstr ""
+"Deze map is alleen beschikbaar voor de geselecteerde gebruikersgroepen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail

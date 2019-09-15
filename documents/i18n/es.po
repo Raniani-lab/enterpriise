@@ -18,6 +18,7 @@
 # Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019
 # Martin Trigaux, 2019
 # RGB Consulting <odoo@rgbconsulting.com>, 2019
+# Jesse Garza <jga@odoo.com>, 2019
 # Jon Perez <jop@odoo.com>, 2019
 # 
 msgid ""
@@ -472,7 +473,7 @@ msgstr "Le permite gestionar sus documentos. "
 #: code:addons/documents/static/src/js/documents_kanban_controller.js:189
 #, python-format
 msgid "An error occurred during the upload"
-msgstr ""
+msgstr "Se produjo un error durante la carga."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_hr_documents_appraisal
@@ -727,7 +728,7 @@ msgstr "Días"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__default_user_id
 msgid "Default User"
-msgstr ""
+msgstr "Usuario predeterminado"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
@@ -921,7 +922,7 @@ msgstr "Fecha de vencimiento en"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range_type
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range_type
 msgid "Due type"
-msgstr ""
+msgstr "Tipo de vencimiento"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -1222,7 +1223,7 @@ msgstr "Actividades tardías"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Listado de cc en emails entrantes."
 
 #. module: documents
 #: selection:documents.share,state:0

@@ -99,7 +99,7 @@ msgstr "Critère de relance"
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_account_followup_report
 msgid "Follow-up Report"
-msgstr ""
+msgstr "Rapport de suivi"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_followup_send

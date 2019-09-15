@@ -28,6 +28,7 @@
 # Johannes Croe <jcr@odoo.com>, 2019
 # Albert Hild <mail@albert-hild.de>, 2019
 # Chris Egal <sodaswed@web.de>, 2019
+# Leon Grill <leg@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -35,7 +36,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
+"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -102,7 +103,7 @@ msgstr "Onlinekontoanbieter"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__account_online_wizard_id
 msgid "Account Online Wizard"
-msgstr ""
+msgstr "Konto Online-Assistent"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__name
@@ -269,7 +270,7 @@ msgstr "Anzeigename"
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Do not link"
-msgstr ""
+msgstr "Nicht verlinken"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -304,7 +305,7 @@ msgstr "Abonnenten (Partner)"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__hide_table
 msgid "Hide Table"
-msgstr ""
+msgstr "Tabelle ausblenden"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__id
@@ -377,7 +378,7 @@ msgstr "Journalbezeichnung"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__journal_statements_creation
 msgid "Journal Statements Creation"
-msgstr ""
+msgstr "Erstellung von Journalauszügen"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal____last_update
@@ -416,12 +417,12 @@ msgstr "Letzte Synchronisation"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_link_wizard
 msgid "Link synchronized account to a journal"
-msgstr ""
+msgstr "Verlinken Sie ein synchronisiertes Konto mit einem Journal"
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Link to existing journal"
-msgstr ""
+msgstr "Link zu vorhandener Zeitschrift"
 
 #. module: account_online_sync
 #: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
@@ -477,12 +478,14 @@ msgid ""
 "No bank journal could be found! Please install a chart of accounts first, in"
 " order to create one."
 msgstr ""
+"Es konnte kein Bankjournal gefunden werden! Bitte installieren Sie zuerst "
+"einen Kontenplan, um einen zu erstellen."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:109
 #, python-format
 msgid "No new transactions have been loaded in the system."
-msgstr ""
+msgstr "Es wurden keine neuen Transaktionen in das System geladen."
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__number_added
@@ -529,21 +532,21 @@ msgstr "Online Identifier"
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_online_provider_account
 msgid "Online Institution Accounts"
-msgstr ""
+msgstr "Online-Institutskonten"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_bank_account
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_bank_account
 msgid "Online Partner Bank Account"
-msgstr ""
+msgstr "Online-Partner-Bankkonto"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_vendor_name
 msgid "Online Partner Vendor Name"
-msgstr ""
+msgstr "Online Partner Lieferanten Name"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:382
@@ -579,6 +582,8 @@ msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
 "to do"
 msgstr ""
+"Bitte verknüpfen Sie Ihre Konten mit einem Journal oder wählen Sie \"nicht "
+"verlinken\" als Aktion."
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
@@ -668,7 +673,7 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_wizard__hide_table
 msgid "Technical field to hide table in view"
-msgstr ""
+msgstr "Technisches Feld zum Ausblenden der Tabelle in der Ansicht"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
@@ -677,6 +682,8 @@ msgstr ""
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 msgstr ""
+"Technisches Feld, das verwendet wird, um Informationen von Plaid/Yodlee zum "
+"passenden Partner zu speichern."
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
@@ -686,6 +693,9 @@ msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 " (used when a purchase is made)"
 msgstr ""
+"Technisches Feld, das verwendet wird, um Informationen von Plaid/Yodlee zum "
+"passenden Partner zu speichern (wird verwendet, wenn ein Kauf getätigt "
+"wird)."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -773,7 +783,7 @@ msgstr "Website-Kommunikationshistorie"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_wizard
 msgid "Wizard to link synchronized accounts to journal"
-msgstr ""
+msgstr "Assistent zur Verknüpfung von synchronisierten Konten mit dem Journal"
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
@@ -786,6 +796,8 @@ msgid ""
 "You can associate those bank accounts to a journal in order to automatically"
 " retrieve the latest statements from your bank."
 msgstr ""
+"Sie können diese Bankkonten einem Journal zuordnen, um automatisch die "
+"neuesten Auszüge von Ihrer Bank abzurufen."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:294
@@ -853,3 +865,6 @@ msgid ""
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"
 "                    or in the online synchronization menu."
 msgstr ""
+"Ihr Konto war nicht\n"
+"                    gründlich ausgefüllt. Sie können versuchen, Ihr Konto manuell zu aktualisieren, indem Sie auf die Schaltfläche Aktualisieren im Dashboard\n"
+"                    oder im Online-Synchronisationsmenü klicken."

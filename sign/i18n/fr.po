@@ -14,6 +14,7 @@
 # Richard Mathot <rim@odoo.com>, 2019
 # Rim BEN DHAOU <bendhaou.rim@gmail.com>, 2019
 # Martin Trigaux, 2019
+# gdp Odoo <gdp@odoo.com>, 2019
 # Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
@@ -209,7 +210,7 @@ msgstr "Adopter et signer"
 #. module: sign
 #: selection:sign.template,privacy:0
 msgid "All Users"
-msgstr ""
+msgstr "Tous les utilisateurs"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -612,7 +613,7 @@ msgstr "Types de champ"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item
 msgid "Fields to be sign on Document"
-msgstr ""
+msgstr "Champs à signer sur le document"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__datas
@@ -668,7 +669,7 @@ msgstr "Activités futures"
 #: code:addons/sign/static/src/js/sign_common.js:1018
 #, python-format
 msgid "Generate PDF"
-msgstr ""
+msgstr "Générer un PDF"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -742,7 +743,7 @@ msgstr "Initiales"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__favorited_ids
 msgid "Invited Users"
-msgstr ""
+msgstr "Utilisateurs invités"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_is_follower
@@ -980,14 +981,14 @@ msgstr "Type d'Activités à Venir"
 #: code:addons/sign/static/src/js/sign_common.js:1103
 #, python-format
 msgid "Next signatory (%s)"
-msgstr ""
+msgstr "Prochain signataire (%s)"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:1100
 #, python-format
 msgid "Next signatory is %s"
-msgstr ""
+msgstr "Le prochain signataire est %s"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
@@ -1123,7 +1124,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:1002
 #, python-format
 msgid "Password is incorrect."
-msgstr ""
+msgstr "Mot de passe incorrecte."
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_phone
@@ -1323,7 +1324,7 @@ msgstr "Jeton de sécurité"
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_selection
 msgid "Select an option"
-msgstr ""
+msgstr "Sélectionnez une option"
 
 #. module: sign
 #. openerp-web
@@ -1500,7 +1501,7 @@ msgstr "Signer le document maintenant"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr ""
+msgstr "Signez envoyer demande"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_send_copy
@@ -1966,7 +1967,7 @@ msgstr "Ecrire un email ou chercher un contact..."
 #: code:addons/sign/controllers/main.py:151
 #, python-format
 msgid "Wrong password"
-msgstr ""
+msgstr "Mauvais mot de passe"
 
 #. module: sign
 #. openerp-web
@@ -2033,6 +2034,8 @@ msgid ""
 "Your file is encrypted, PDF's password is required to generate final "
 "document. The final document will be encrypted with the same password."
 msgstr ""
+"Votre fichier est crypté, le mot de passe du PDF est requis pour générer le "
+"document final. Le document final sera crypté avec le même mot de passe."
 
 #. module: sign
 #. openerp-web

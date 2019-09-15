@@ -257,7 +257,7 @@ msgstr "Niveaux de relances"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_report
 msgid "Follow-up Report"
-msgstr ""
+msgstr "Rapport de suivi"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
@@ -335,7 +335,7 @@ msgstr "Action manuelle"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_type_id
 msgid "Manual Action Type"
-msgstr ""
+msgstr "Type d'action manuelle"
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup_report.py:88
@@ -517,7 +517,7 @@ msgstr ""
 #: code:addons/account_reports_followup/models/account_followup.py:161
 #, python-format
 msgid "You have to define at least one line in the followup levels of %s"
-msgstr ""
+msgstr "Vous devez définir au moins une ligne dans les niveaux de suivi de %s"
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup.py:57

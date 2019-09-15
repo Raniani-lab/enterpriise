@@ -473,7 +473,7 @@ msgstr "Recepcions"
 #: code:addons/mrp_mps/static/src/xml/qweb_templates.xml:211
 #, python-format
 msgid "Replenish"
-msgstr ""
+msgstr "Reposar"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__replenish_qty_updated

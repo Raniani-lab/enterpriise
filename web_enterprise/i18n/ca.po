@@ -29,14 +29,14 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:220
 #, python-format
 msgid "(Enterprise Edition)"
-msgstr ""
+msgstr "(Edició d'Empresa)"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:67
 #, python-format
 msgid "1 month"
-msgstr ""
+msgstr "1 mes"
 
 #. module: web_enterprise
 #. openerp-web
@@ -58,28 +58,28 @@ msgstr "Alt"
 #: code:addons/web_enterprise/static/src/xml/base.xml:130
 #, python-format
 msgid "Applications"
-msgstr ""
+msgstr "Aplicacions"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:39
 #, python-format
 msgid "COMPANIES"
-msgstr ""
+msgstr "Companyies"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:34
 #, python-format
 msgid "Close menu"
-msgstr ""
+msgstr "Tancar menú"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:42
 #, python-format
 msgid "Company menu"
-msgstr ""
+msgstr "Menú de companyia"
 
 #. module: web_enterprise
 #. openerp-web
@@ -113,7 +113,7 @@ msgstr "Enrutament HTTP"
 #: code:addons/web_enterprise/static/src/xml/base.xml:98
 #, python-format
 msgid "Log in as an administrator to correct the issue."
-msgstr ""
+msgstr "Inicia sessió com un administrador per corregir el problema."
 
 #. module: web_enterprise
 #. openerp-web
@@ -134,7 +134,7 @@ msgstr "Menú"
 #: code:addons/web_enterprise/static/src/xml/base.xml:48
 #, python-format
 msgid "No result"
-msgstr ""
+msgstr "Sense resultats"
 
 #. module: web_enterprise
 #. openerp-web
@@ -148,14 +148,14 @@ msgstr "Odoo"
 #: code:addons/web_enterprise/static/src/xml/base.xml:111
 #, python-format
 msgid "Odoo Help"
-msgstr ""
+msgstr "Ajuda d'Odoo"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:119
 #, python-format
 msgid "Paste code here"
-msgstr ""
+msgstr "Enganxa el codi aquí"
 
 #. module: web_enterprise
 #. openerp-web
@@ -163,7 +163,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:95
 #, python-format
 msgid "Refresh subscription status"
-msgstr ""
+msgstr "Actualitza estat de la subscripció "
 
 #. module: web_enterprise
 #. openerp-web
@@ -177,14 +177,14 @@ msgstr "Registre"
 #: code:addons/web_enterprise/static/src/xml/base.xml:86
 #, python-format
 msgid "Register your subscription"
-msgstr ""
+msgstr "Registra la teva subscripció"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:89
 #, python-format
 msgid "Renew your subscription"
-msgstr ""
+msgstr "Renova la teva subscripció"
 
 #. module: web_enterprise
 #. openerp-web
@@ -215,6 +215,8 @@ msgid ""
 "Something went wrong while registering your database. You can try again or "
 "contact"
 msgstr ""
+"Alguna cosa ha anat malament mentre et registraves a la base de dades. Pot "
+"intentar-ho de nou o contactar. "
 
 #. module: web_enterprise
 #. openerp-web

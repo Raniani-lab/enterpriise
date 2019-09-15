@@ -1,13 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * delivery_usps
+# 	* delivery_usps
 # 
 # Translators:
 # Loic <loic.richard2@gmail.com>, 2016
 # Lucas Deliege <lud@odoo.com>, 2016
 # Frédéric LIETART <stuff@tifred.fr>, 2016
 # Richard Mathot <rim@odoo.com>, 2017
-# Laura Piraux <lap@odoo.com>, 2017
 # Miguel Vidali <mvidali129@gmail.com>, 2017
 # Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
 # e2f <projects@e2f.com>, 2018
@@ -16,14 +15,15 @@
 # Tony Galmiche <tony.galmiche@infosaone.com>, 2018
 # Eloïse Stilmant <est@odoo.com>, 2018
 # Martin Trigaux, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.2+e\n"
+"Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,11 +68,6 @@ msgstr "Type de contenu"
 #: selection:delivery.carrier,delivery_type:0
 msgid "DHL"
 msgstr "DHL"
-
-#. module: delivery_usps
-#: model:ir.model,name:delivery_usps.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Méthodes de livraison"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_delivery_nature
@@ -315,7 +310,7 @@ msgid "Provider"
 msgstr "Fournisseur"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:332
+#: code:addons/delivery_usps/models/usps_request.py:348
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
 msgstr ""
@@ -358,16 +353,22 @@ msgid "Sample"
 msgstr "Échantillon"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/delivery_usps.py:169
+#: code:addons/delivery_usps/models/delivery_usps.py:188
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr "La livraison n° %s a été annulée"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:149
+#: code:addons/delivery_usps/models/delivery_usps.py:172
 #, python-format
 msgid "Shipment created into USPS <br/> <b>Tracking Number : </b>%s"
 msgstr "Envoi créé dans USPS  <br/> <b>Numéro de suivi : </b>%s"
+
+#. module: delivery_usps
+#: model:ir.model,name:delivery_usps.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Méthodes d'expédition"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
@@ -453,12 +454,6 @@ msgid "USPS Configuration"
 msgstr "Configuration USPS"
 
 #. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
-#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
-msgid "USPS Delivery Methods"
-msgstr "Méthodes de livraison USPS"
-
-#. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_domestic
 #: model:product.product,name:delivery_usps.product_product_delivery_usps_domestic
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_domestic_product_template
@@ -513,6 +508,12 @@ msgid "USPS Service"
 msgstr "Service USPS"
 
 #. module: delivery_usps
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
+msgid "USPS Shipping Methods"
+msgstr "Méthodes de livraison USPS"
+
+#. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_username
 msgid "USPS User ID"
 msgstr "Identifiant de l'utilisateur USPS"
@@ -531,7 +532,7 @@ msgid "Usps Size Container"
 msgstr "Dimension du conteneur USPS"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:334
+#: code:addons/delivery_usps/models/usps_request.py:350
 #, python-format
 msgid "Your company or recipient ZIP code is incorrect."
 msgstr "Le code postal de votre société ou du destinataire est incorrect."

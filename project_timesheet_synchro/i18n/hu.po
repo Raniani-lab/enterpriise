@@ -220,7 +220,7 @@ msgstr "Utolsó szinkron:"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:136
 #, python-format
 msgid "Locked"
-msgstr ""
+msgstr "Zárolt"
 
 #. module: project_timesheet_synchro
 #. openerp-web

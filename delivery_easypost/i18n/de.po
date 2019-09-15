@@ -208,7 +208,7 @@ msgstr "Easypost Service"
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_stock
 msgid "Easypost Shipping Methods"
-msgstr ""
+msgstr "Easypost Versandmethoden "
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -373,12 +373,12 @@ msgstr "Service Level Name"
 #: code:addons/delivery_easypost/models/delivery_carrier.py:106
 #, python-format
 msgid "Shipment created into Easypost<br/><b>Tracking Numbers:</b> %s<br/>"
-msgstr ""
+msgstr "Versand in Easypost erstellt<br/><b>Tracking-Nummern:</b> %s<br/>"
 
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Versandmethoden"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost

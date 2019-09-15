@@ -136,14 +136,14 @@ msgstr ""
 #: code:addons/voip/models/voip_phonecall.py:196
 #, python-format
 msgid "Call from "
-msgstr ""
+msgstr "Дуудлага ирүүлсэн"
 
 #. module: voip
 #: code:addons/voip/models/voip_phonecall.py:186
 #: code:addons/voip/models/voip_phonecall.py:231
 #, python-format
 msgid "Call to "
-msgstr ""
+msgstr "Дуудлага хүлээн авсан"
 
 #. module: voip
 #. openerp-web
@@ -155,7 +155,7 @@ msgstr "Залгаж байна"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Calls Date"
-msgstr ""
+msgstr "Дуудлагын огноо"
 
 #. module: voip
 #. openerp-web
@@ -170,7 +170,7 @@ msgstr "Цуцлах"
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:43
 #, python-format
 msgid "Cancel the activity"
-msgstr ""
+msgstr "Ажилбарыг цуцлах"
 
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
@@ -299,7 +299,7 @@ msgstr "Үргэлжлэх хугацаа"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__duration
 msgid "Duration in minutes."
-msgstr ""
+msgstr "Үргэлжлэх хугацаа минутаар."
 
 #. module: voip
 #. openerp-web
@@ -371,6 +371,8 @@ msgid ""
 "In order to follow up on the call, you can trigger a request for\n"
 "        another call, a meeting."
 msgstr ""
+"Уг дуудлагын дараа дахин үргэлжлүүлэх шаардлагатай бол шинэ дуудлага, "
+"уулзалт төлөвлөх хэрэгтэй."
 
 #. module: voip
 #: selection:voip.phonecall,phonecall_type:0
@@ -396,7 +398,7 @@ msgstr "Дуудлага хүлээлгэнд байна"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:67
 #, python-format
 msgid "Keypad"
-msgstr ""
+msgstr "Товчлуур"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator____last_update
@@ -428,17 +430,17 @@ msgstr "Сүүлийн засвар хийсэн огноо"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__activity_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__activity_id
 msgid "Linked Activity"
-msgstr ""
+msgstr "Холбоотой ажилбар"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__mail_message_id
 msgid "Linked Chatter Message"
-msgstr ""
+msgstr "Холбоотой ЧАТ-ын зурвасууд"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__voip_phonecall_id
 msgid "Linked Voip Phonecall"
-msgstr ""
+msgstr "Холбоотой Voip дуудлагууд"
 
 #. module: voip
 #. openerp-web
@@ -450,19 +452,19 @@ msgstr "Лог"
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid "Log the summary of a phonecall"
-msgstr ""
+msgstr "Дуудлагын хураангуй агуулгыг тэмдэглэх"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__phonecall_id
 msgid "Logged Phonecall"
-msgstr ""
+msgstr "Лог хөтөлж буй дуудлага"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:148
 #, python-format
 msgid "Mark as done"
-msgstr ""
+msgstr "Дууссанд тооцох"
 
 #. module: voip
 #: selection:mail.activity.type,category:0
@@ -479,14 +481,14 @@ msgstr "Гар утас"
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users__sanitized_mobile
 msgid "Mobile number sanitized"
-msgstr ""
+msgstr "Гар утасны дугаар (улсын кодтой)"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:168
 #, python-format
 msgid "Mute"
-msgstr ""
+msgstr "Дуу хаах"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -498,7 +500,7 @@ msgstr "Миний товлогдсон дуудлагууд"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:32
 #, python-format
 msgid "NEXT ACTIVITIES"
-msgstr ""
+msgstr "ДАРААГИЙН АЖИЛБАР"
 
 #. module: voip
 #: selection:mail.activity.type,category:0
@@ -523,6 +525,9 @@ msgid ""
 "        history of the communication with a customer or to inform another\n"
 "        team member."
 msgstr ""
+"Odoo систем танд үйлчлүүлэгчтэй хийсэн харилцаа холбооны түүх хөтлөх, багийн"
+" өөр гишүүдэд мэдээллэх зорилгоор ирж буй дуудлагын лог үүсгэх боломжыг "
+"олгоно."
 
 #. module: voip
 #. openerp-web
@@ -571,19 +576,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
 #: model:ir.model.fields,field_description:voip.field_res_users__sanitized_phone
 msgid "Phone number sanitized"
-msgstr ""
+msgstr "Утасны дугаар (улсын кодтой)"
 
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Phonecall"
-msgstr ""
+msgstr "Утасны дуудлага"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:66
 #, python-format
 msgid "Phonecall details"
-msgstr ""
+msgstr "Дуудлагын дэлгэрэнгүй"
 
 #. module: voip
 #: model:ir.actions.act_window,name:voip.voip_phonecall_view
@@ -617,7 +622,7 @@ msgstr "Үйлдвэрлэл"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:29
 #, python-format
 msgid "RECENT"
-msgstr ""
+msgstr "ХАМГИЙН СҮҮЛИЙН"
 
 #. module: voip
 #. openerp-web
@@ -629,7 +634,7 @@ msgstr "Самбарыг дахин шинэчлэх"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_ignore_incoming
 msgid "Reject All Incoming Calls"
-msgstr ""
+msgstr "Ирж буй дуудлагаас татгалзах"
 
 #. module: voip
 #. openerp-web
@@ -665,12 +670,12 @@ msgstr "SIP нууц үг"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
 msgid "Schedule &amp; make calls from CRM app"
-msgstr ""
+msgstr "CRM app-с дуудлага товлох &amp; дуудлага хийх"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_option
 msgid "Schedule A New Activity"
-msgstr ""
+msgstr "Шинэ ажилбар товлох"
 
 #. module: voip
 #. openerp-web
@@ -763,6 +768,9 @@ msgid ""
 "connection cannot be made. Please check your configuration.</br> (Reason "
 "received: %s)"
 msgstr ""
+"Дугаар буруу байна. Хэрэглэгчийн Voip нэвтрэх эрх буруу эсвэл Voip холболт "
+"амжилтгүй хийгдлээ. Тохиргоогоо шалгана уу.</br> (Ирсэн алдааны мэдэгдэл: "
+"%s)"
 
 #. module: voip
 #. openerp-web
@@ -786,13 +794,16 @@ msgid ""
 "When the call is over, the status is set to Held.\n"
 "If the call is not applicable anymore, the status can be set to Cancelled."
 msgstr ""
+"Утасны дуудлага шинээр үүсгэхэд Товлогдсон төлөвтэй болно.\n"
+"Дуудлага хийж дуусахад төлөв нь Ярьсан болно.\n"
+"Хэрэв дуудлага нь холбогдох боломжгүй байвал Цуцлагдсан төлөвтэй болно."
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:314
 #, python-format
 msgid "The websocket uri could be wrong."
-msgstr ""
+msgstr "Websocket URI буруу байна."
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -815,7 +826,7 @@ msgstr "Шилжүүлэх"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__transfer_choice
 msgid "Transfer Choice"
-msgstr ""
+msgstr "Шилжүүлгэ сонгох"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phonecall_type
@@ -859,32 +870,32 @@ msgstr "VOIP Тохиргоо"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_configurator
 msgid "VOIP Configurator"
-msgstr ""
+msgstr "VOIP тохиргоо"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall
 msgid "VOIP Phonecall"
-msgstr ""
+msgstr "VOIP дуудлага"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_log_wizard
 msgid "VOIP Phonecall log Wizard"
-msgstr ""
+msgstr "VOIP дуудлагын лог хөтлөх цонх"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_report
 msgid "VOIP Phonecalls by user report"
-msgstr ""
+msgstr "VOIP дуудлагын тайлан хэрэглэгчээр"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
 msgid "VOIP Transfer Wizard of Phonecalls"
-msgstr ""
+msgstr "VOIP дуудлага шилжүүлэх цонх"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
 msgid "VoIP Environment"
-msgstr ""
+msgstr "VoIP орчин"
 
 #. module: voip
 #: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
@@ -913,7 +924,7 @@ msgstr ""
 #: code:addons/voip/static/src/js/dialing_panel.js:305
 #, python-format
 msgid "You are already in a call"
-msgstr ""
+msgstr "Та аль хэдийнээ дуудлага хийж байна"
 
 #. module: voip
 #. openerp-web
@@ -938,7 +949,7 @@ msgstr "мин"
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:94
 #, python-format
 msgid "sec"
-msgstr ""
+msgstr "сек"
 
 #. module: voip
 #. openerp-web

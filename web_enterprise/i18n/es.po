@@ -9,9 +9,10 @@
 # Gelo Joga Landoo <gj@landoo.es>, 2017
 # David Arnold <blaggacao@users.noreply.github.com>, 2017
 # e2f <projects@e2f.com>, 2018
-# Martin Trigaux, 2019
 # Rick Hunter <rick.hunter.ec@gmail.com>, 2019
 # Efrem Jimenez <efj@odoo.com>, 2019
+# Martin Trigaux, 2019
+# Jon Perez <jop@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 13:13+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Efrem Jimenez <efj@odoo.com>, 2019\n"
+"Last-Translator: Jon Perez <jop@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -104,7 +105,7 @@ msgstr "Expiración de la base de datos:"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:90
 #, python-format
 msgid "Filters..."
-msgstr ""
+msgstr "Filtros..."
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
@@ -208,7 +209,7 @@ msgstr "Buscar…"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:108
 #, python-format
 msgid "See result"
-msgstr ""
+msgstr "Ver resultado"
 
 #. module: web_enterprise
 #. openerp-web
@@ -270,14 +271,14 @@ msgstr "Mostrar menú de inicio"
 #: code:addons/web_enterprise/static/src/xml/base.xml:131
 #, python-format
 msgid "Toggle menu"
-msgstr ""
+msgstr "Mostrar menú "
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:94
 #, python-format
 msgid "Upgrade your subscription"
-msgstr "Renova su suscripción"
+msgstr "Renove su suscripción"
 
 #. module: web_enterprise
 #. openerp-web
@@ -286,6 +287,8 @@ msgstr "Renova su suscripción"
 msgid ""
 "You have more users or more apps installed than your subscription allows."
 msgstr ""
+"Tiene más usuarios o más aplicaciones instaladas de lo que permite su "
+"suscripción."
 
 #. module: web_enterprise
 #. openerp-web

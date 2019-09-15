@@ -282,7 +282,7 @@ msgstr "Gepland"
 #: code:addons/mrp_mps/static/src/xml/qweb_templates.xml:261
 #, python-format
 msgid "Forecasted Stock"
-msgstr ""
+msgstr "Voorspelde Voorraad"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__forecast_ids
@@ -358,12 +358,12 @@ msgstr "Master Productie Schema"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__max_to_replenish_qty
 msgid "Maximum to Replenish"
-msgstr ""
+msgstr "Maximum om aan te vullen"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__min_to_replenish_qty
 msgid "Minimum to Replenish"
-msgstr ""
+msgstr "Minimum om aan te vullen"
 
 #. module: mrp_mps
 #: selection:res.company,manufacturing_period:0
@@ -378,12 +378,12 @@ msgstr "Mutatie"
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
 msgid "Number of Columns"
-msgstr ""
+msgstr "Aantal kolommen"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_config_settings__manufacturing_period_to_display
 msgid "Number of Manufacturing Period Columns"
-msgstr ""
+msgstr "Aantal Productieperiode Kolommen"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__manufacturing_period_to_display
@@ -395,7 +395,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__procurement_launched
 msgid "Procurement has been run for this forecast"
-msgstr ""
+msgstr "Aankoop heeft plaatsgevonden voor deze voorspelling"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_id
@@ -420,12 +420,12 @@ msgstr "Product maateenheid"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__production_schedule_id
 msgid "Production Schedule"
-msgstr ""
+msgstr "Productie Schema"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__warehouse_id
 msgid "Production Warehouse"
-msgstr ""
+msgstr "Productie Magazijn"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__purchase_order_line_ids
@@ -440,17 +440,17 @@ msgstr "Hoeveelheid"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__moves_qty
 msgid "Quantity from Incoming Moves"
-msgstr ""
+msgstr "Hoeveelheid van inkomende bewegingen"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__manufacture_qty
 msgid "Quantity from Manufacturing Order"
-msgstr ""
+msgstr "Hoeveelheid van Productieorder"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__rfq_qty
 msgid "Quantity from RFQ"
-msgstr ""
+msgstr "Hoeveelheid van RFQ"
 
 #. module: mrp_mps
 #. openerp-web
@@ -482,7 +482,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Requests for quotation"
-msgstr ""
+msgstr "Offerteaanvraag"
 
 #. module: mrp_mps
 #. openerp-web
@@ -494,7 +494,7 @@ msgstr "Rijen"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__forecast_target_qty
 msgid "Safety Stock Target"
-msgstr ""
+msgstr "Veiligheidsvoorraad doel"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_production_schedule_form_view
@@ -504,7 +504,7 @@ msgstr "Opslaan"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_production_schedule
 msgid "Schedule the production of Product in a warehouse"
-msgstr ""
+msgstr "Plan de productie van Product in een magazijn"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__sequence
@@ -527,7 +527,7 @@ msgstr "Voorraadregel"
 #. module: mrp_mps
 #: sql_constraint:mrp.production.schedule:0
 msgid "The combination of warehouse and product must be unique !"
-msgstr ""
+msgstr "De combinatie van magazijn en product moet uniek zijn!"
 
 #. module: mrp_mps
 #. openerp-web
@@ -595,7 +595,7 @@ msgstr "Tijdbereik"
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__replenish_qty
 #, python-format
 msgid "To Replenish"
-msgstr ""
+msgstr "Aan te vullen"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_stock_move_tree_view

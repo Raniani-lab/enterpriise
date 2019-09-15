@@ -34,6 +34,9 @@ msgid ""
 "                    Some products don't have the requested qty available for pickup\n"
 "                  </span>"
 msgstr ""
+"<span>\n"
+"                 Voor sommige producten is het aangevraagde aantal niet beschikbaar\n"
+"                  </span>"
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard_line__qty_available
@@ -67,7 +70,7 @@ msgstr ""
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard__has_lines_missing_stock
 msgid "Has lines whose products have unsufficient stock"
-msgstr ""
+msgstr "Heeft lijnen waarvan de producten onvoldoende voorraad hebben"
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard__has_tracked_lines
@@ -83,7 +86,7 @@ msgstr "In verhuur"
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard_line__is_product_storable
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_wizard__is_product_storable
 msgid "Is Product Storable"
-msgstr ""
+msgstr "Is Voorraadproduct"
 
 #. module: sale_stock_rental
 #: model:ir.model,name:sale_stock_rental.model_stock_production_lot
@@ -100,6 +103,7 @@ msgstr "Naam"
 #, python-format
 msgid "No valid quant has been found in location %s for serial number %s !"
 msgstr ""
+"Er is geen geldige kwantiteit gevonden op locatie %s voor serienummer %s !"
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,help:sale_stock_rental.field_rental_wizard__lot_ids
@@ -114,25 +118,29 @@ msgstr "Producten ophalen/retourneren"
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard_line__pickeable_lot_ids
 msgid "Pickeable Lot"
-msgstr ""
+msgstr "Afhaalbaar Lot"
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard_line__pickedup_lot_ids
 #: model:ir.model.fields,field_description:sale_stock_rental.field_sale_order_line__pickedup_lot_ids
 msgid "Pickedup Lot"
-msgstr ""
+msgstr "Opgehaald Lot"
 
 #. module: sale_stock_rental
 #: code:addons/sale_stock_rental/wizard/rental_processing.py:144
 #, python-format
 msgid "Please specify the serial numbers picked up for the tracked products."
 msgstr ""
+"Gelieve de serienummers te vermelden die zijn opgehaald voor de gevolgde "
+"producten."
 
 #. module: sale_stock_rental
 #: code:addons/sale_stock_rental/wizard/rental_processing.py:151
 #, python-format
 msgid "Please specify the serial numbers returned for the tracked products."
 msgstr ""
+"Gelieve de serienummers te vermelden die zijn teruggebracht voor de gevolgde"
+" producten."
 
 #. module: sale_stock_rental
 #: model:ir.model,name:sale_stock_rental.model_product_product
@@ -148,11 +156,12 @@ msgstr "Productsjabloon"
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_wizard__qty_available_during_period
 msgid "Quantity available for given period (Stock - In Rent)"
 msgstr ""
+"Beschikbare hoeveelheid voor een bepaalde periode  (voorraad - in huur)"
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_wizard__rentable_qty
 msgid "Quantity available in stock for given period"
-msgstr ""
+msgstr "Beschikbare hoeveelheid voor een bepaalde periode"
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_wizard__rented_qty_during_period
@@ -163,6 +172,8 @@ msgstr "Hoeveelheid gereserveerd"
 #: model:ir.model.fields,help:sale_stock_rental.field_rental_wizard__rented_qty_during_period
 msgid "Quantity reserved by other Rental lines during the given period"
 msgstr ""
+"Hoeveelheid gereserveerd door andere huurlijnen gedurende de opgegeven "
+"periode"
 
 #. module: sale_stock_rental
 #: model:ir.model,name:sale_stock_rental.model_sale_rental_schedule
@@ -251,6 +262,9 @@ msgid ""
 " location is internal because products in rentalare still considered as "
 "company assets."
 msgstr ""
+"Deze technische locatie dient als voorraad voor producten die momenteel in "
+"verhuur zijn. Deze locatie is intern omdat producten in verhuur nog steeds "
+"als bedrijfsmiddelen worden beschouwd."
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard_line__tracking
@@ -279,4 +293,4 @@ msgstr "Magazijn"
 #: code:addons/sale_stock_rental/wizard/rental_configurator.py:151
 #, python-format
 msgid "You cannot change the product of a picked-up line."
-msgstr ""
+msgstr "U kunt het product van een ophaling niet wijzigen."

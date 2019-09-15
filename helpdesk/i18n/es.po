@@ -48,6 +48,7 @@
 # Jon Perez <jop@odoo.com>, 2019
 # Alejandro Mayer <amy@odoo.com>, 2019
 # Mariana Santos Romo <msn@odoo.com>, 2019
+# Jesse Garza <jga@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -55,7 +56,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2017-02-15 11:45+0000\n"
-"Last-Translator: Mariana Santos Romo <msn@odoo.com>, 2019\n"
+"Last-Translator: Jesse Garza <jga@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -225,6 +226,17 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<div>\n"
+"    Estimado/a ${object.sudo().partner_id.name or 'Sr/Sra'},<br/><br/>\n"
+"    Este mensaje automático es para avisarle que hemos cerrado su ticket (reference ${object.id}).\n"
+"    Esperamos que el servicio proporcionado cumpla sus expectativas.\n"
+"    Si tiene preguntas o comentarios, no dude en responder a este mensaje para re-abrir su ticket.<br/><br/>\n"
+"    Gracias por su cooperación.<br/>\n"
+"    Saludos cordiales,<br/><br/>\n"
+"    El equipo ${object.team_id.name or 'Helpdesk'}.\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.new_ticket_request_email_template
@@ -1338,7 +1350,7 @@ msgstr "Mantanga vacío para que todos puedan ver este equipo"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed_value
 msgid "Kpi Helpdesk Tickets Closed Value"
-msgstr ""
+msgstr "Valor del KPI Tickets de la Mesa de servicio cerrados"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data
@@ -1405,7 +1417,7 @@ msgstr "Vamos a crear tu primer ticket."
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Listado de cc en emails entrantes."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat

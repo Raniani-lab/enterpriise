@@ -150,7 +150,7 @@ msgstr "PDF"
 #: code:addons/delivery_ups/models/ups_request.py:208
 #, python-format
 msgid "Packages %s do not have a positive shipping weight."
-msgstr ""
+msgstr "Les colis %s n'ont pas un poids d'expédition positif."
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:200
@@ -180,6 +180,8 @@ msgid ""
 "Return label generated<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> "
 "%s"
 msgstr ""
+"Étiquette de retour générée <br/><b> Numéros de suivi: </b>%s<br/><b> "
+"Colis:</b>%s"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -214,7 +216,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Méthodes d'expédition"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:174

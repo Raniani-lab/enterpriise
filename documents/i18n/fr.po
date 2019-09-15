@@ -17,11 +17,12 @@
 # Sébastien BÜHL <buhlsebastien@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Nicolas JEUDY <njeudy@panda-chi.io>, 2019
-# Cécile Collart <cco@odoo.com>, 2019
 # gdp Odoo <gdp@odoo.com>, 2019
 # Inès Gérardy <ige@odoo.com>, 2019
 # Gilles Dupont <gid@odoo.com>, 2019
 # Adrien Heyse <ahe@odoo.com>, 2019
+# thomas quertinmont <tqu@odoo.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -29,7 +30,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 12:55+0000\n"
 "PO-Revision-Date: 2019-01-16 08:38+0000\n"
-"Last-Translator: Adrien Heyse <ahe@odoo.com>, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,6 +69,10 @@ msgid ""
 "task or vendor bill,</br> create activities for users, etc.</br> Actions can"
 " be customized through the Configuration menu."
 msgstr ""
+"<b>Les actions</b> vous permettent d'attribuer des étiquettes, d'automatiser"
+" des actions telles que la création d'une tâche ou d'une facture "
+"fournisseur,</br> de créer des activités pour les utilisateurs, etc.</br> "
+"Les actions peuvent être personnalisées via le menu Configuration."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -79,7 +84,7 @@ msgstr "<b>Bytes</b>"
 #: code:addons/documents/static/src/js/tours/documents.js:26
 #, python-format
 msgid "<b>Close the preview</b> to go back to your selection of documents"
-msgstr ""
+msgstr "<b>Fermez l'aperçu</b> pour revenir à votre sélection de documents"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -104,6 +109,8 @@ msgid ""
 "<b>Use tags</b> to easily filter documents. Tags are defined according to "
 "the folder."
 msgstr ""
+"<b>Utilisez des étiquettes</b> pour filtrer facilement les documents. Les "
+"étiquettes sont définies en fonction du dossier."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -141,12 +148,12 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-link\"/> Go to URL"
-msgstr ""
+msgstr "<i class=\"fa fa-link\"/>Aller à l'URL"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-upload\"/>  Upload"
-msgstr ""
+msgstr "<i class=\"fa fa-upload\"/>  Télécharger"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -162,22 +169,22 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
-msgstr ""
+msgstr "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<span title=\"Requested Document\">Requested Document</span>"
-msgstr ""
+msgstr "<span title=\"Document demandé\">Document demandé</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b> Request</b></span>"
-msgstr ""
+msgstr "<span><b> Demande</b></span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b>Requested Document</b></span>"
-msgstr ""
+msgstr "<span><b>Document demandé</b></span>"
 
 #. module: documents
 #: model:mail.template,body_html:documents.mail_template_document_request
@@ -708,7 +715,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:17
 #, python-format
 msgid "Click on a card to <b>view the document</b>."
-msgstr ""
+msgstr "Cliquez sur une carte <b>pour voir le document.</b>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__company_id
@@ -923,7 +930,7 @@ msgstr ""
 #: code:addons/documents/models/mail_activity.py:25
 #, python-format
 msgid "Document Request: %s Uploaded by: %s"
-msgstr ""
+msgstr "Demande de document: %s Envoyé par: %s"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
@@ -1186,6 +1193,8 @@ msgid ""
 "Go to the <b>images, videos & PDF viewer</b> by clicking on the preview "
 "area."
 msgstr ""
+"Accédez à la <b>visionneuse d'images, de vidéos et de PDF</b> en cliquant "
+"sur la zone d'aperçu."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1201,7 +1210,7 @@ msgstr "RH"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
-msgstr ""
+msgstr "A l'Option Business"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__id
@@ -1446,7 +1455,7 @@ msgstr "Déplacer vers la boîte de réception"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Workspace"
-msgstr ""
+msgstr "Déplacer vers un espace de travail"
 
 #. module: documents
 #. openerp-web
@@ -1615,7 +1624,7 @@ msgstr "Propriétaire"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{document.create_uid.name}"
-msgstr ""
+msgstr "Propriétaire: #{document.create_uid.name}"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1741,7 +1750,7 @@ msgstr "Demander un fichier"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "Requested"
-msgstr ""
+msgstr "Demandé"
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
@@ -1870,7 +1879,7 @@ msgstr "Partager les liens"
 #: code:addons/documents/models/share.py:140
 #, python-format
 msgid "Share selected records"
-msgstr ""
+msgstr "Partager les enregistrements sélectionnés"
 
 #. module: documents
 #. openerp-web
@@ -2091,6 +2100,8 @@ msgid ""
 "This document has been requested.\n"
 "                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
 msgstr ""
+"Ce document a été demandé.\n"
+"<b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Envoyez-le</b>."
 
 #. module: documents
 #. openerp-web
@@ -2137,6 +2148,9 @@ msgid ""
 "To delete files, archive them first. </br>Archived documents can still be "
 "accessed using the Archive option in the Filters top menu."
 msgstr ""
+"Pour supprimer des fichiers, archivez-les d'abord. </br>Les documents "
+"archivés sont toujours accessibles à l’aide de l’option Archiver du menu "
+"principal Filtres."
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
@@ -2165,7 +2179,7 @@ msgstr "Info-bulle"
 #: code:addons/documents/static/src/js/tours/documents.js:35
 #, python-format
 msgid "Try to <b>post a message</b>"
-msgstr ""
+msgstr "Essayez de <b>publier un message</b>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
@@ -2216,6 +2230,8 @@ msgid ""
 "Upload <span class=\"font-weight-normal\">a file or</span> drag <span class"
 "=\"font-weight-normal\">it here.</span>"
 msgstr ""
+"Envoyez <span class=\"font-weight-normal\">un fichier</span> ou <span class"
+"=\"font-weight-normal\">glissez-le ici.</span>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
@@ -2235,6 +2251,8 @@ msgid ""
 "Use <b>folders</b> to organize documents by departments, or group of "
 "interests"
 msgstr ""
+"Utiliser <b>des dossiers</b> pour organiser les documents par départements "
+"ou groupes d'intérêts"
 
 #. module: documents
 #: model:res.groups,name:documents.group_documents_user
@@ -2289,6 +2307,8 @@ msgstr "Vidéos"
 #, python-format
 msgid "Want to become a <b>paperless company</b>? Let's discover Odoo DMS."
 msgstr ""
+"Vous voulez devenir une entreprise sans papier? Découvrez dès à présent Odoo"
+" DMS."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
@@ -2317,6 +2337,8 @@ msgid ""
 "When you <b>upload documents</b>, they appear in the selected folder and "
 "tags."
 msgstr ""
+"Lorsque vous <b>envoyez des documents</b>, ils apparaissent dans le dossier "
+"et les étiquettes sélectionnés."
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2340,13 +2362,13 @@ msgstr "Règle du Workflow"
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_tree
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspace"
-msgstr ""
+msgstr "Espace de travail "
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action
 #: model:ir.ui.menu,name:documents.folder_menu
 msgid "Workspaces"
-msgstr ""
+msgstr "Espaces de travail "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view

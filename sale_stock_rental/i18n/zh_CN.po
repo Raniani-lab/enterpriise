@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# ChinaMaker <liuct@chinamaker.net>, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 12:56+0000\n"
 "PO-Revision-Date: 2019-08-12 13:22+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
+"Last-Translator: ChinaMaker <liuct@chinamaker.net>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,7 +111,7 @@ msgstr ""
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard_line__pickeable_lot_ids
 msgid "Pickeable Lot"
-msgstr ""
+msgstr "可用批次"
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_order_wizard_line__pickedup_lot_ids
@@ -153,7 +154,7 @@ msgstr ""
 #. module: sale_stock_rental
 #: model:ir.model.fields,field_description:sale_stock_rental.field_rental_wizard__rented_qty_during_period
 msgid "Quantity reserved"
-msgstr ""
+msgstr "预留数量"
 
 #. module: sale_stock_rental
 #: model:ir.model.fields,help:sale_stock_rental.field_rental_wizard__rented_qty_during_period

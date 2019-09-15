@@ -44,6 +44,8 @@ msgid ""
 "\"End Date\" of the budget line should be included in the Period of the "
 "budget"
 msgstr ""
+"La \"date de fin\" de la ligne budgétaire doit être incluse dans la période "
+"du budget"
 
 #. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:273
@@ -52,6 +54,8 @@ msgid ""
 "\"Start Date\" of the budget line should be included in the Period of the "
 "budget"
 msgstr ""
+"La \"date de début\" de la ligne budgétaire doit être incluse dans la "
+"période du budget"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_kanban
@@ -100,6 +104,8 @@ msgid ""
 "Amount you plan to earn/spend. Record a positive amount if it is a revenue "
 "and a negative amount if it is a cost."
 msgstr ""
+"Montant que vous prévoyez gagner / dépenser. Enregistrez un montant positif "
+"s'il s'agit d'un revenu et un montant négatif s'il s'agit d'un coût."
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_analytic_account
@@ -611,3 +617,5 @@ msgid ""
 "You have to enter at least a budgetary position or analytic account on a "
 "budget line."
 msgstr ""
+"Vous devez saisir au moins une position budgétaire ou un compte analytique "
+"sur une ligne budgétaire."

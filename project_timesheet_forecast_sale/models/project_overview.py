@@ -13,7 +13,7 @@ DEFAULT_MONTH_RANGE = 3
 
 
 class ProjectOverview(models.Model):
-    _inherit = 'planning.slot'
+    _inherit = 'project.project'
 
     def _plan_prepare_values(self):
         values = super()._plan_prepare_values()
@@ -80,8 +80,8 @@ class ProjectOverview(models.Model):
                     F.order_line_id AS sale_line_id,
                     SUM(F.allocated_hours) / SUM(F.working_days_count) * count(*) AS number_hours
                 FROM generate_series(
-                    (SELECT min(start_datetime) FROM planning_slot WHERE active=true)::date,
-                    (SELECT max(end_datetime) FROM planning_slot WHERE active=true)::date,
+                    (SELECT min(start_datetime) FROM planning_slot)::date,
+                    (SELECT max(end_datetime) FROM planning_slot)::date,
                     '1 day'::interval
                 ) date
                     LEFT JOIN planning_slot F ON date >= F.start_datetime AND date <= end_datetime
@@ -92,7 +92,6 @@ class ProjectOverview(models.Model):
                     EXTRACT(ISODOW FROM date) IN (
                         SELECT A.dayofweek::integer+1 FROM resource_calendar_attendance A WHERE A.calendar_id = R.calendar_id
                     )
-                    AND F.active=true
                     AND F.project_id IN %s
                     AND date_trunc('month', date)::date >= %s
                     AND F.allocated_hours > 0
@@ -165,7 +164,7 @@ class ProjectOverview(models.Model):
         if not any(self.mapped('allow_forecast')):
             return stat_buttons
 
-        action = clean_action(self.env.ref('planning_slot.planning_slot_action_by_project').read()[0])
+        action = clean_action(self.env.ref('project_forecast.project_forecast_action_by_project').read()[0])
         context = literal_eval(action['context'])
 
         if len(self) == 1:

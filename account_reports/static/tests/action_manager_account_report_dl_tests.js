@@ -127,16 +127,16 @@ QUnit.module('Account Reports', {
 
         // search on partners m2m
         await testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
-        await testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_ids"] input'));
-        await testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Genda Swami)'));
+        await testUtils.fields.many2one.clickOpenDropdown('partner_ids');
+        await testUtils.fields.many2one.clickItem('partner_ids', 'Genda Swami');
 
         assert.containsOnce(actionManager, '.o_control_panel .o_field_many2manytags[name="partner_categories"]',
             "partner_categories m2m field added to filter");
 
         // search on partner categories m2m
         await testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
-        await testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_categories"] input'));
-        await testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Brigadier suryadev singh)'));
+        await testUtils.fields.many2one.clickOpenDropdown('partner_categories');
+        await testUtils.fields.many2one.clickItem('partner_categories', 'Brigadier suryadev singh');
 
         actionManager.destroy();
     });

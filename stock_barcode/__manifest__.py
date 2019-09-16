@@ -4,7 +4,7 @@
     'name': "Barcode",
     'summary': "Use barcode scanners to process logistics operations",
     'description': """
-        This module adds support for barcodes scanning to the warehouse management system.
+This module enables the barcode scanning feature for the warehouse management system.
     """,
     'category': 'Warehouse',
     'version': '1.0',

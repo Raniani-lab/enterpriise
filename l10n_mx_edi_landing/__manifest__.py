@@ -4,7 +4,7 @@
 {
     'name': 'Odoo Mexico Localization for Stock/Landing',
     'summary': '''
-        Generate Electronic Invoice with Customs Number
+Generate Electronic Invoice with custom numbers
     ''',
     'version': '11.0.1.0.0',
     'category': 'Hidden',

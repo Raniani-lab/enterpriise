@@ -11,7 +11,7 @@
     'description': """
 
 This module allows you to define a loyalty program in
-the point of sale, where the customers earn loyalty points
+the point of sale, where customer earn loyalty points
 and get rewards.
 
 """,

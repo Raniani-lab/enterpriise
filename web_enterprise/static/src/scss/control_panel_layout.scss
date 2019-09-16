@@ -50,7 +50,27 @@
 
         .o_cp_searchview {
             flex: 1 1 auto;
+            min-height: 35px;
             text-align: right;
+
+            &.o_searchview_quick {
+                display: flex;
+                align-items: flex-start;
+
+                > .o_searchview {
+                    display: flex;
+                    flex: 1 1 auto;
+                    align-items: center;
+                    border-bottom: 1px solid $o-brand-secondary;
+
+                    > .o_searchview_input_container {
+                        flex: 1 1 auto;
+                    }
+                    > .o_enable_searchview {
+                        margin: 0;
+                    }
+                }
+            }
         }
 
         .o_cp_left, .o_cp_right {

@@ -23,10 +23,9 @@ class TestOfxFile(TransactionCase):
         # Use an import wizard to process the file
         import_wizard = self.env['account.bank.statement.import'].with_context(journal_id=bank_journal.id).create({
             'attachment_ids': [(0, 0, {
-                'name': 'test file',
+                'name': 'test_ofx.ofx',
                 'datas': ofx_file,
             })],
-            'filename': 'test_ofx.ofx',
         })
         import_wizard.import_file()
 

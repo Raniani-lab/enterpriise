@@ -14,13 +14,14 @@ class AccountBankStatementImport(models.TransientModel):
         return filename and filename.lower().strip().endswith('.csv')
 
     def import_file(self):
-        if not self._check_csv(self.filename):
+        self.attachment_ids.ensure_one()
+        if not self._check_csv(self.attachment_ids.name):
             return super(AccountBankStatementImport, self).import_file()
         ctx = dict(self.env.context)
         import_wizard = self.env['base_import.import'].create({
             'res_model': 'account.bank.statement.line',
-            'file': base64.b64decode(self.data_file),
-            'file_name': self.filename,
+            'file': base64.b64decode(self.attachment_ids.datas),
+            'file_name': self.attachment_ids.name,
             'file_type': 'text/csv'
         })
         ctx['wizard_id'] = import_wizard.id
@@ -30,7 +31,7 @@ class AccountBankStatementImport(models.TransientModel):
             'params': {
                 'model': 'account.bank.statement.line',
                 'context': ctx,
-                'filename': self.filename,
+                'filename': self.attachment_ids.name,
             }
         }
 

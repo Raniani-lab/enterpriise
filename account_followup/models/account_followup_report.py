@@ -288,6 +288,13 @@ class AccountFollowupReport(models.AbstractModel):
             },
         }
 
+    def _replace_class(self):
+        # OVERRIDE: When added to the chatter by mail, don't loose the table-responsive set on the followup report table.
+        res = super()._replace_class()
+        if self._context.get('mail'):
+            res.pop(b'table-responsive', None)
+        return res
+
     @api.model
     def send_email(self, options):
         """

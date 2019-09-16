@@ -3,7 +3,8 @@
         border-bottom: 1px solid $o-brand-secondary;
     }
     @include media-breakpoint-down(sm) {
-        padding: 0px 4px 0px 0px;
+        margin-right: 5px; // o_switch_view_button_icon alignment
+        padding-right: 0;
     }
 
     .o_searchview_facet {

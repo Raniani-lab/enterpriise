@@ -5,14 +5,6 @@ var config = require('web.config');
 var ControlPanelRenderer = require('web.ControlPanelRenderer');
 
 ControlPanelRenderer.include({
-    /**
-     * @override
-     */
-    start: function () {
-        this.$el.toggleClass('o_breadcrumb_full', config.device.isMobile);
-        return this._super.apply(this, arguments);
-    },
-
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------

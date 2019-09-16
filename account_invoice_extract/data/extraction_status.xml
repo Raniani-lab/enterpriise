@@ -42,6 +42,7 @@
                     The file has been sent and is being processed. It usually takes between 5 and 60 seconds.
                     <div class="clearfix"/>
                 </div>
+                <field name="extract_status_code" invisible="1"/>
                 <div role="status" class="alert alert-info mb8"
                      attrs="{'invisible':['|', '|',
                             ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')),
@@ -52,10 +53,22 @@
                     <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-danger mb8"
-                     attrs="{'invisible':['|', '|',
+                     attrs="{'invisible':['|', '|', '|',
                             ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
-                            ('extract_state', 'not in', ['error_status'])]}">
+                            ('extract_state', 'not in', ['error_status']),
+                            '&amp;',
+                            ('extract_status_code', '&gt;', 99),
+                            ('extract_status_code', '&lt;', 200)]}">
+                    <field name="extract_error_message"/>
+                </div>
+                <div role="status" class="alert alert-warning mb8"
+                     attrs="{'invisible':['|', '|', '|', '|',
+                            ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')),
+                            ('state', 'not in', ['draft']),
+                            ('extract_state', 'not in', ['error_status']),
+                            ('extract_status_code', '&lt;', 100),
+                            ('extract_status_code', '&gt;', 199)]}">
                     <field name="extract_error_message"/>
                 </div>
             </xpath>

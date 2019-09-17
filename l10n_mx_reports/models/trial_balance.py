@@ -317,7 +317,7 @@ class MxReportAccountTrial(models.AbstractModel):
 
     def get_report_filename(self, options):
         return super(MxReportAccountTrial, self.with_context(
-            self._set_context(options))).get_report_filename(options)
+            self._set_context(options))).get_report_filename(options).upper()
 
     def _get_report_name(self):
         """The structure to name the Trial Balance reports is:

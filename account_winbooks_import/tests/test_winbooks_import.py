@@ -25,9 +25,9 @@ class TestWinbooksImport(common.TransactionCase):
             'name': 'My Winbooks Company',
         })
         attachment = self.env['ir.attachment'].search([('name', '=', 'PARFILUX_2013.04.08.zip')])
-        wizard = self.env['account.winbooks.import.wizard'].with_context(allowed_company_ids=[test_company.id]).create({
+        wizard = self.env['account.winbooks.import.wizard'].with_company(test_company).create({
             'zip_file': attachment.datas,
         })
-        wizard.with_context(allowed_company_ids=[test_company.id]).import_winbooks_file()
+        wizard.with_company(test_company).import_winbooks_file()
 
         self.assertTrue(self.env['account.move'].search([('company_id', '=', test_company.id)], limit=1))

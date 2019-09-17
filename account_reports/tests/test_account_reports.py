@@ -1577,7 +1577,7 @@ class TestAccountReports(TestAccountReportsCommon):
         ]
 
         # Init report / options.
-        report = self.env['account.cash.flow.report'].with_context(allowed_company_ids=self.company_parent.ids)
+        report = self.env['account.cash.flow.report'].with_company(self.company_parent)
         options = self._init_options(report, *date_utils.get_month(fields.Date.from_string('2015-01-01')))
 
         # ===================================================================================================

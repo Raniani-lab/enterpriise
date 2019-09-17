@@ -128,7 +128,7 @@ class TestAccountReportsCommon(SavepointCase):
             {'name': 'partner_d', 'company_id': False, 'category_id': [(6, 0, [cls.partner_category_a.id, cls.partner_category_b.id])]})
 
         # Init data for company_parent.
-        chart_template.with_context(allowed_company_ids=cls.company_parent.ids).try_loading()
+        chart_template.with_company(cls.company_parent).try_loading()
 
         cls.dec_year_minus_2 = datetime.datetime.strptime('2016-12-01', DEFAULT_SERVER_DATE_FORMAT).date()
         cls.jan_year_minus_1 = datetime.datetime.strptime('2017-01-01', DEFAULT_SERVER_DATE_FORMAT).date()
@@ -177,7 +177,7 @@ class TestAccountReportsCommon(SavepointCase):
         # However, due to the foreign currency (2 EUR = 1 USD), the amounts are divided by two during the foreign
         # currency conversion.
         user.company_id = cls.company_child_eur
-        chart_template.with_context(allowed_company_ids=cls.company_child_eur.ids).try_loading()
+        chart_template.with_company(cls.company_child_eur).try_loading()
 
         # Currency has been reset to USD during the installation of the chart template.
         cls.company_child_eur.currency_id = cls.env.ref('base.EUR')

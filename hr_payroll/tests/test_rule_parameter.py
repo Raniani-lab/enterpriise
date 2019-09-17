@@ -68,13 +68,13 @@ class TestRuleParameter(TransactionCase):
 
         with self.assertRaises(UserError):
             # Read a BE parameter from FR company
-            self.env['hr.rule.parameter'].with_user(user).with_context(allowed_company_ids=company_2.ids)._get_parameter_from_code('test_parameter')
+            self.env['hr.rule.parameter'].with_user(user).with_company(company_2)._get_parameter_from_code('test_parameter')
 
         # Read a BE parameter from BE company, value is set in cache
-        be_value = self.env['hr.rule.parameter'].with_user(user).with_context(allowed_company_ids=company_1.ids)._get_parameter_from_code('test_parameter')
+        be_value = self.env['hr.rule.parameter'].with_user(user).with_company(company_1)._get_parameter_from_code('test_parameter')
         self.assertEqual(be_value, 100)
 
         with self.assertRaises(UserError):
             # Read a BE parameter from FR company
             # Value should not come from cache, access rights should be checked
-            self.env['hr.rule.parameter'].with_user(user).with_context(allowed_company_ids=company_2.ids)._get_parameter_from_code('test_parameter')
+            self.env['hr.rule.parameter'].with_user(user).with_company(company_2)._get_parameter_from_code('test_parameter')

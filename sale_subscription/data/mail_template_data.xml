@@ -400,7 +400,7 @@
                 <table style="width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;">
                     <tbody>
                         <tr><td style="padding:15px 20px 10px 20px;">
-                            <p>Dear %{object.partner_id.name}.</p>
+                            <p>Dear ${object.partner_id.name},</p>
                             <p>Your subscription <strong>${object.name}</strong> needs your attention.</p>
                             <p>If you have some concerns about it, please contact your contact person ${object.user_id.name} or reply to this email.</p>
                             <p>Kind regards.</p>

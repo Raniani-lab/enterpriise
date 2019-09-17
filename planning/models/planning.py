@@ -248,6 +248,17 @@ class Planning(models.Model):
     # ORM overrides
     # ----------------------------------------------------
 
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        result = super(Planning, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        if 'employee_id' in groupby:
+            # Always prepend 'Undefined Employees' (will be printed 'Open Shifts' when called by the frontend)
+            d = {}
+            for field in fields:
+                d.update({field: False})
+            result.insert(0, d)
+        return result
+
     def name_get(self):
         group_by = self.env.context.get('group_by', [])
         field_list = [fname for fname in self._name_get_fields() if fname not in group_by][:2]  # limit to 2 labels

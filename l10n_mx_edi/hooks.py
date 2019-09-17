@@ -80,6 +80,9 @@ def _load_xsd_files(cr, registry, url):
     except etree.XMLSyntaxError:
         logging.getLogger(__name__).info('XSD file downloaded is not valid')
         return ''
+    if not xsd_string:
+        logging.getLogger(__name__).info('XSD file downloaded is empty')
+        return ''
     env = api.Environment(cr, SUPERUSER_ID, {})
     xsd_fname = 'xsd_cached_%s' % fname.replace('.', '_')
     attachment = env.ref('l10n_mx_edi.%s' % xsd_fname, False)

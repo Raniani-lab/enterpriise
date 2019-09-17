@@ -17,12 +17,8 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
         options.quick_create = false;
         options.can_create = false;
 
-        var selection = options.attrs.selection;
-        if (typeof selection[0] === 'string') {
-            selection = _.map(selection, function (s) { return [s, s];});
-        }
-        this.selection = _.map(selection, function (s) {
-            return {id: s[0], res_id: s[0], data: {id: s[0], display_name: s[1]}};
+        this.selection = _.map(options.attrs.selection, function (s) {
+            return {id: s.field_name, res_id: s.field_name, data: {id: s.field_name, display_name: s.label}};
         });
     },
     //--------------------------------------------------------------------------

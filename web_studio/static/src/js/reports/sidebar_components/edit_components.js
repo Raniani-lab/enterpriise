@@ -1306,6 +1306,16 @@ var TOptions = AbstractEditComponent.extend( {
                             params.value = JSON.stringify(params.value);
                         }
                         break;
+                    case 'selection':
+                        if (option.params && option.params.type === 'selection' && option.params.selection) {
+                            params.type = option.params.type;
+                            params.value = params.value ? params.value : option.default_value || false;
+                            params.placeholder = option.params.placeholder || '';
+                            params.selection = option.params.selection || [];
+                        } else {
+                            params.type = 'char';
+                        }
+                        break;
                     default:
                         params.type = 'char';
                 }
@@ -1317,7 +1327,7 @@ var TOptions = AbstractEditComponent.extend( {
             options.sort(function (a, b) {
                 return (a.type === 'boolean' && b.type === 'boolean' ?
                         a.string.localeCompare(b.string) :
-                        a.type === 'boolean' ? -1 : 1);
+                        a.type === 'boolean' && a.key !== 'no_marker' ? -1 : 1);
             });
 
             return {

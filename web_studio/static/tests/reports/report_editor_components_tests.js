@@ -89,10 +89,21 @@ QUnit.module('ReportComponents', {
             float_time: {},
             contact: {
                 separator: {
-                    type: "string",
+                    type: "selection",
+                    params : {
+                        type: "selection",
+                        selection: [
+                            [" ", "Space"],
+                            [",", "Comma"],
+                            ["-", "Dash"],
+                            ["|", "Vertical bar"],
+                            ["/", "Slash"]
+                        ],
+                        placeholder: 'Linebreak',
+                    },
                     string: "Address separator",
                     description: "Separator use to split the addresse from the display_name.",
-                    default_value: "\\n"
+                    default_value: false,
                 },
                 no_marker: {
                     type: "boolean",
@@ -118,16 +129,12 @@ QUnit.module('ReportComponents', {
                     params: {
                         type: "selection",
                         params: [
-                            "name",
-                            "address",
-                            "city",
-                            "country_id",
-                            "phone",
-                            "mobile",
-                            "email",
-                            "fax",
-                            "karma",
-                            "website"
+                            {'field_name': 'name', 'label': 'Name'},
+                            {'field_name': 'address', 'label': 'Address'},
+                            {'field_name': 'phone', 'label': 'Phone'},
+                            {'field_name': 'mobile', 'label': 'Mobile'},
+                            {'field_name': 'email', 'label': 'Email'},
+                            {'field_name': 'vat', 'label': 'VAT'},
                         ]
                     }
                 },
@@ -598,30 +605,73 @@ QUnit.module('ReportComponents', {
         await tOptions.appendTo(parent.$el);
         assert.containsN(tOptions, '.o_web_studio_toption_option', 3,
             "there should be 3 available options for the contact widget (they are filtered)");
-        assert.strictEqual(tOptions.$('.o_badge_text').text(), 'nameaddressphonemobileemail', 'Should display default value');
+        assert.strictEqual(tOptions.$('.o_badge_text').text(), 'NameAddressPhoneMobileEmail', 'Should display default value');
         await testUtils.dom.click(tOptions.$('.o_input_dropdown input'));
-        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 5, 'Should not display the unselected items');
+        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 1, 'Should not display the unselected items');
         assert.strictEqual($('ul.ui-autocomplete .o_m2o_dropdown_option').length, 0, 'Should not display create button');
 
-        optionsFields = ["name", "address", "phone", "mobile", "email", "city"];
-        await testUtils.dom.click($('ul.ui-autocomplete .ui-menu-item:contains(city)'));
+        optionsFields = ["name", "address", "phone", "mobile", "email", "vat"];
+        await testUtils.dom.click($('ul.ui-autocomplete .ui-menu-item:contains(VAT)'));
         tOptions.destroy();
 
         tOptions = new (editComponentsRegistry.get('tOptions'))(parent, params);
         await tOptions.appendTo(parent.$el);
-        assert.strictEqual(tOptions.$('.o_badge_text').text(), 'nameaddresscityphonemobileemail', 'Should display the new value');
+        assert.strictEqual(tOptions.$('.o_badge_text').text(), 'NameAddressPhoneMobileEmailVAT', 'Should display the new value');
         await testUtils.dom.click(tOptions.$('.o_input_dropdown input'));
-        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 4, 'Should not display the unselected items');
+        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 0, 'Should not display the unselected items');
         await testUtils.dom.click(tOptions.$('.o_input_dropdown input'));
 
-        optionsFields = ["address", "phone", "mobile", "email", "city"];
+        optionsFields = ["address", "phone", "mobile", "email", "vat"];
         await testUtils.dom.click(tOptions.$('.o_field_many2manytags .o_delete:first'));
-        assert.strictEqual(tOptions.$('.o_badge_text').text(), 'addresscityphonemobileemail', 'Should display the new value without "name"');
+        assert.strictEqual(tOptions.$('.o_badge_text').text(), 'AddressPhoneMobileEmailVAT', 'Should display the new value without "name"');
 
-        optionsFields = ["phone", "mobile", "email", "city"];
+        optionsFields = ["phone", "mobile", "email", "vat"];
         await testUtils.dom.click(tOptions.$('.o_field_many2manytags .o_delete:first'));
-        assert.strictEqual(tOptions.$('.o_badge_text').text(), 'cityphonemobileemail', 'Should display the new value without "name"');
+        assert.strictEqual(tOptions.$('.o_badge_text').text(), 'PhoneMobileEmailVAT', 'Should display the new value without "address"');
 
+        parent.destroy();
+    });
+
+    QUnit.test('contact: address separator', async function (assert) {
+        assert.expect(3);
+        var parent = new Widget();
+
+        var addressSeparator;
+        testUtils.mock.addMockEnvironment(parent, {
+            intercepts: {
+                view_change: function (ev) {
+                    assert.strictEqual(ev.data.operation.new_attrs['t-options-separator'], addressSeparator,
+                        'Should save the selected address separator');
+                },
+            },
+        });
+        await parent.appendTo($('#qunit-fixture'));
+
+        var params = {
+            widgetsOptions: this.widgetsOptions,
+            node: {
+                attrs: {
+                    't-options': '{"widget": "contact"}',
+                    't-options-no_marker': 'True',
+                    'data-oe-id': 99,
+                    'data-oe-xpath': '/my/node/path/',
+                },
+            },
+            context: {},
+            state: null,
+            models: null,
+        };
+
+        var tOptions = new (editComponentsRegistry.get('tOptions'))(parent, params);
+        await tOptions.appendTo(parent.$el);
+        var separators = _.map(tOptions.$('.o_web_studio_toption_option_contact_separator .o_field_widget option'), function (option) {
+            return JSON.parse($(option).val());
+        });
+        assert.deepEqual(separators, [false, " ", ",", "-", "|", "/"], 'There should be a selection field with proper values');
+        assert.strictEqual(tOptions.$('.o_web_studio_toption_option_contact_separator .o_field_widget option:selected').text(), 'Linebreak',
+            'Default value should be "LineBrak"');
+        addressSeparator = '","';
+        await testUtils.fields.editSelect(tOptions.$('.o_web_studio_toption_option_contact_separator .o_field_widget'), addressSeparator);
         parent.destroy();
     });
 
@@ -654,7 +704,7 @@ QUnit.module('ReportComponents', {
 
         assert.strictEqual(tOptions.$('.o_badge_text').text(), '', 'Should display default value');
         await testUtils.dom.click(tOptions.$('.o_input_dropdown input'));
-        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 10, 'Should not display the unselected items');
+        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 6 , 'Should not display the unselected items');
         assert.strictEqual($('ul.ui-autocomplete .o_m2o_dropdown_option').length, 0, 'Should not display create button nor the search more');
 
         parent.destroy();

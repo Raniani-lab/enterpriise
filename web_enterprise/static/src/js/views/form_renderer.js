@@ -1,6 +1,12 @@
 odoo.define('web_enterprise.MobileFormRenderer', function (require) {
 "use strict";
 
+var config = require('web.config');
+
+if (!config.device.isMobile) {
+    return;
+}
+
 /**
  * This file defines the MobileFormRenderer, an extension of the FormRenderer
  * implementing some tweaks to improve the UX in mobile.
@@ -12,7 +18,7 @@ var FormRenderer = require('web.FormRenderer');
 
 var qweb = core.qweb;
 
-var MobileFormRenderer = FormRenderer.extend({
+FormRenderer.include({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -47,7 +53,5 @@ var MobileFormRenderer = FormRenderer.extend({
         return $headerButtons;
     },
 });
-
-return MobileFormRenderer;
 
 });

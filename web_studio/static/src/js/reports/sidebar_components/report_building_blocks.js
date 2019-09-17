@@ -532,7 +532,6 @@ var InlineField = AbstractFieldBlock.extend({
             });
         } else {
             return this._createContent({
-                contentInStructure: '<span><strong>' + values.string + ':</strong><br/></span>' + fieldHTML,
                 content: fieldHTML,
             });
         }

@@ -1109,7 +1109,7 @@ QUnit.module('ReportEditorManager', {
                 position: 'bottom',
                 nearestHookNumber: 1,
                 inheritance: [{
-                    content: '<span><strong>Name:</strong><br/></span><span t-field="o.child.name"></span>',
+                    content: '<span t-field="o.child.name"></span>',
                     position: 'inside',
                     view_id: 55,
                     xpath: '/t/div/div[1]',

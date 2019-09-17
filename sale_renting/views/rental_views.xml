@@ -314,7 +314,7 @@
     <menuitem id="rental_order_menu" name="Orders" parent="rental_menu_root" sequence="2"/>
     <menuitem id="rental_orders_all" name="Orders" parent="rental_order_menu" sequence="1" action="rental_order_action"/>
     <menuitem id="menu_orders_customers" name="Customers"
-        action="base.action_partner_customer_form"
+        action="account.res_partner_action_customer"
         parent="rental_order_menu" sequence="2"/>
     <menuitem id="rental_orders_today" name="To Do Today" parent="rental_order_menu" sequence="3"/>
     <menuitem id="rental_orders_pickup" name="Pickup" parent="rental_orders_today" action="rental_order_today_pickup_action" sequence="1"/>

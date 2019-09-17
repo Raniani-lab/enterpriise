@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 
 class FollowupSend(models.TransientModel):
     _name = 'followup.send'
-    _description = 'Followup Send'
+    _description = 'Send Follow-ups'
 
     snailmail_cost = fields.Float(string='Stamp(s)', compute='_compute_snailmail_cost', readonly=True)
     letters_qty = fields.Integer(compute='_compute_letters_qty', string='Number of letters')

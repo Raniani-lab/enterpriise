@@ -69,6 +69,11 @@ msgid "Generate a Coupon"
 msgstr ""
 
 #. module: helpdesk_sale_coupon
+#: model:ir.model,name:helpdesk_sale_coupon.model_helpdesk_sale_coupon_generate
+msgid "Generate Sales Coupon from Helpdesk"
+msgstr ""
+
+#. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_ticket__coupon_ids
 msgid "Generated Coupons"
 msgstr ""
@@ -96,11 +101,6 @@ msgstr ""
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_sale_coupon_generate__write_date
 msgid "Last Updated on"
-msgstr ""
-
-#. module: helpdesk_sale_coupon
-#: model:ir.model,name:helpdesk_sale_coupon.model_helpdesk_sale_coupon_generate
-msgid "Sales Coupon Generate from Helpdesk"
 msgstr ""
 
 #. module: helpdesk_sale_coupon

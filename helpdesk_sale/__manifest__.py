@@ -8,7 +8,7 @@
     'depends': ['helpdesk', 'sale_management'],
     'auto_install': True,
     'description': """
-        Manage the after sale of the products from Helpdesk's tickets.
+Manage the after sale of the products from helpdesk tickets.
     """,
     'data': [
         'views/helpdesk_views.xml',

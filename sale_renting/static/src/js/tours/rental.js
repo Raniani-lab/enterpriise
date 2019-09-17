@@ -85,7 +85,7 @@ tour.register('rental_tour', {
 }, {
     trigger: 'button[name=open_pickup]',
     extra_trigger: '.o_sale_order',
-    content: _t("Click here to register the delivery."),
+    content: _t("Click here to register the pickup."),
     position: 'bottom',
 }, {
     trigger: "button[name='apply']",

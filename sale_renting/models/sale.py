@@ -14,10 +14,11 @@ class RentalOrder(models.Model):
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
         ('pickup', 'Reserved'),
-        ('return', 'Delivered'),
+        ('return', 'Pickedup'),
         ('returned', 'Returned'),
         ('cancel', 'Cancelled'),
     ], string="Rental Status", compute='_compute_rental_status', store=True)
+    # rental_status = next action to do basically, but shown string is action done.
 
     has_pickable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
     has_returnable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
@@ -84,7 +85,7 @@ class RentalOrder(models.Model):
             'default_order_id': self.id,
         }
         return {
-            'name': _('Validate a delivery') if status == 'pickup' else _('Validate a return'),
+            'name': _('Validate a pickup') if status == 'pickup' else _('Validate a return'),
             'view_mode': 'form',
             'res_model': 'rental.order.wizard',
             'type': 'ir.actions.act_window',
@@ -108,7 +109,7 @@ class RentalOrderLine(models.Model):
     qty_returned = fields.Float("Returned", default=0.0, copy=False)
     # returned_quantity = qty_delivered
 
-    pickup_date = fields.Datetime(string="Delivery")
+    pickup_date = fields.Datetime(string="Pickup")
     return_date = fields.Datetime(string="Return")
     reservation_begin = fields.Datetime("Pickup date - padding time", compute='_compute_reservation_begin', store=True)
 

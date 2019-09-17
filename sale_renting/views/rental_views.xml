@@ -172,7 +172,7 @@
             <filter string="Late" name="rental_late_orders"
               domain="[('rental_status', 'in', ['pickup', 'return']), ('next_action_date', '&lt;', (datetime.datetime.now() + relativedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
           <separator/>
-            <filter string="Deliver Date" name="filter_pickup" date="next_action_date" domain="[('rental_status', '=', 'pickup')]"/>
+            <filter string="Pickup Date" name="filter_pickup" date="next_action_date" domain="[('rental_status', '=', 'pickup')]"/>
             <filter string="Return Date" name="filter_return" date="next_action_date" domain="[('rental_status', '=', 'return')]"/>
           <separator/>
           <group expand="0" string="Group By">
@@ -197,7 +197,7 @@
       <field name="arch" type="xml">
         <xpath expr="//filter[@name='rental_late_orders']" position="after">
             <separator/>
-            <filter string="To Deliver" name="filter_to_pickup" domain="[('rental_status', '=', 'pickup')]"/>
+            <filter string="To Pickup" name="filter_to_pickup" domain="[('rental_status', '=', 'pickup')]"/>
             <filter string="To Return" name="filter_to_return" domain="[('rental_status', '=', 'return')]"/>
         </xpath>
       </field>
@@ -247,7 +247,7 @@
         <field name="domain">[('is_rental_order', '=', True)]</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-              There isn't any scheduled delivery or return.
+              There isn't any scheduled pickup or return.
           </p><p>
               You can search on a larger period using the filters here above
               <br/>
@@ -284,7 +284,7 @@
         <field name="domain">[('is_rental_order', '=', True)]</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-              There isn't any scheduled delivery or return.
+              There isn't any scheduled pickup or return.
           </p><p>
               You can search on a larger period using the filters here above
               <br/>
@@ -317,7 +317,7 @@
         action="base.action_partner_customer_form"
         parent="rental_order_menu" sequence="2"/>
     <menuitem id="rental_orders_today" name="To Do Today" parent="rental_order_menu" sequence="3"/>
-    <menuitem id="rental_orders_pickup" name="Deliver" parent="rental_orders_today" action="rental_order_today_pickup_action" sequence="1"/>
+    <menuitem id="rental_orders_pickup" name="Pickup" parent="rental_orders_today" action="rental_order_today_pickup_action" sequence="1"/>
     <menuitem id="rental_orders_return" name="Return" parent="rental_orders_today" action="rental_order_today_return_action" sequence="2"/>
 
 </odoo>

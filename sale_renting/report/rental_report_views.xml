@@ -58,7 +58,7 @@
                       <filter string="Company" name="company" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
                       <separator/>
                       <filter string="Order Date" name="date" context="{'group_by':'order_date'}"/>
-                      <filter string="Deliver Date" name="pickup_date" context="{'group_by':'pickup_date'}"/>
+                      <filter string="Pickup Date" name="pickup_date" context="{'group_by':'pickup_date'}"/>
                       <filter string="Return Date" name="return_date" context="{'group_by':'return_date'}"/>
                   </group>
               </search>
@@ -77,7 +77,7 @@
 
       <report
             id="action_report_rental_saleorder"
-            string="Delivery and Return Receipt"
+            string="Pickup and Return Receipt"
             model="sale.order"
             report_type="qweb-pdf"
             file="sale_renting.report_rental_order"

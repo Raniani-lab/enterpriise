@@ -23,7 +23,7 @@ class RentalWizard(models.TransientModel):
     uom_id = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True, default=_default_uom_id)
 
     pickup_date = fields.Datetime(
-        string="Deliver", required=True, help="Date of Deliver",
+        string="Pickup", required=True, help="Date of Pickup",
         default=lambda s: fields.Datetime.now() + relativedelta(minute=0, second=0, hours=1))
     return_date = fields.Datetime(
         string="Return", required=True, help="Date of Return",

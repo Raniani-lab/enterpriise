@@ -265,6 +265,46 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('visible studio hooks in listview', async function (assert) {
+        assert.expect(2);
+
+        let fieldsView;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: '<tree><field name="display_name"/></tree>',
+            async mockRPC(route) {
+                if (route === '/web_studio/edit_view') {
+                    fieldsView.arch = `
+                        <tree editable='bottom'>
+                            <field name='display_name'/>
+                        </tree>`;
+                    return {
+                        fields_views: {
+                            list: fieldsView,
+                        },
+                        fields: fieldsView.fields,
+                    };
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        fieldsView = JSON.parse(JSON.stringify(vem.fields_view));
+        assert.ok(
+            vem.$('th.o_web_studio_hook')[0].offsetWidth,
+            "studio hooks should be visible in non-editable listview");
+
+        // check the same with editable list 'bottom'
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_view'));
+        await testUtils.dom.triggerEvent(vem.$('option[value="bottom"]'), 'change');
+        assert.ok(
+            vem.$('th.o_web_studio_hook')[0].offsetWidth,
+            "studio hooks should be visible in editable 'bottom' listview");
+
+        vem.destroy();
+    });
+
     QUnit.test('widget dropdown in list editor sidebar', async function (assert) {
         assert.expect(7);
 

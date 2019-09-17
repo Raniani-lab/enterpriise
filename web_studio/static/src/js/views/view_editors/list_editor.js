@@ -174,6 +174,19 @@ return ListRenderer.extend(EditorMixin, {
             .children(':nth-child(' + ($target.index() + 1) + ')');
     },
     /**
+     * Add totalWidth of columns + hook cells going to add
+     *
+     * @override
+     * @private
+     * @param {jQuery} $thead
+     * @return {integer}
+     */
+    _getColumnsTotalWidth($thead) {
+        let totalWidth = this._super(...arguments);
+        totalWidth += $thead.find('th').length + 1;
+        return totalWidth;
+    },
+    /**
      * @override
      * @private
      */

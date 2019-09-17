@@ -78,7 +78,7 @@ var FollowupFormRenderer = FormRenderer.extend({
      * Render an alert to indicate that an email has been sent.
      */
     renderMailAlert: function () {
-        this.$('div.o_account_reports_page').prepend(QWeb.render("CustomerStatements.send_mail"));
+        this.$('.o_form_sheet').find('div.o_account_reports_page').prepend(QWeb.render("CustomerStatements.send_mail"));
     },
     /**
      * Render the next reminder section, in manual mode, and render the

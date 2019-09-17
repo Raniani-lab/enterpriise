@@ -17,7 +17,8 @@ class ResPartner(models.Model):
     unreconciled_aml_ids = fields.One2many('account.move.line', 'partner_id',
                                            domain=[('reconciled', '=', False),
                                                    ('account_id.deprecated', '=', False),
-                                                   ('account_id.internal_type', '=', 'receivable')])
+                                                   ('account_id.internal_type', '=', 'receivable'),
+                                                   ('move_id.state', '=', 'posted')])
     partner_ledger_label = fields.Char(compute='_compute_partner_ledger_label')
     total_due = fields.Monetary(compute='_compute_for_followup', store=False, readonly=True)
     total_overdue = fields.Monetary(compute='_compute_for_followup', store=False, readonly=True)

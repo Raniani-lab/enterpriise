@@ -2,8 +2,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
+import pytz
+import ipaddress
 import json
 import requests
+import socket
+import hmac
+from hashlib import sha256
 from werkzeug import urls
 
 from odoo import api, models, _
@@ -84,6 +89,55 @@ class HmrcService(models.AbstractModel):
                 'target': 'self',
             }
         return False
+
+    @api.model
+    def _get_fraud_prevention_info(self):
+        """
+        https://developer.service.hmrc.gov.uk/api-documentation/docs/fraud-prevention
+        """
+        gov_dict = {}
+        try:
+            environ = request.httprequest.environ
+            headers = request.httprequest.headers
+            remote_address = request.httprequest.remote_addr
+            remote_needed = not ipaddress.ip_address(remote_address).is_private
+            hostname = request.httprequest.host.split(":")[0]
+            server_public_ip = socket.gethostbyname(hostname)
+            public_ip_needed = not ipaddress.ip_address(server_public_ip).is_private
+            tz = self.env.context.get('tz')
+            if tz:
+                tz_hour = datetime.now(pytz.timezone(tz)).strftime('%z')
+                utc_offset = 'UTC' + tz_hour[:3] + ':' + tz_hour[-2:]
+            else:
+                utc_offset = 'UTC+00:00'
+
+            ICP = self.env['ir.config_parameter'].sudo()
+            enterprise_code = ICP.get_param('database.enterprise_code')
+            db_secret = ICP.get_param('database.secret')
+            if enterprise_code:
+                hashed_license = hmac.new(enterprise_code.encode(),
+                                          db_secret.encode(),
+                                          sha256).hexdigest()
+            else:
+                hashed_license = ''
+            gov_vendor_version = self.sudo().env.ref('base.module_base').latest_version
+
+            gov_dict['Gov-Client-Connection-Method'] = 'WEB_APP_VIA_SERVER'
+            if remote_needed: #no need when on a private network
+                gov_dict['Gov-Client-Public-IP'] = urls.url_quote(remote_address)
+                gov_dict['Gov-Client-Public-Port'] = urls.url_quote(str(environ.get('REMOTE_PORT')))
+            gov_dict['Gov-Client-Timezone'] = utc_offset
+            gov_dict['Gov-Client-Browser-JS-User-Agent'] = urls.url_quote(environ.get('HTTP_USER_AGENT'))
+            gov_dict['Gov-Vendor-Version'] = "Odoo=" + urls.url_quote(gov_vendor_version)
+            gov_dict['Gov-Client-User-IDs'] = "os=" + urls.url_quote(self.env.user.name)
+            gov_dict['Gov-Client-Browser-Do-Not-Track'] = 'true' if headers.get('DNT') == '1' else 'false'
+            if public_ip_needed: # No need when on a private network
+                gov_dict['Gov-Vendor-Public-IP'] = server_public_ip
+            if hashed_license:
+                gov_dict['Gov-Vendor-License-IDs'] = "Odoo=" + hashed_license
+        except Exception:
+            _logger.warning(_("Could not construct fraud prevention headers"), exc_info=True)
+        return gov_dict
 
     @api.model
     def _write_tokens(self, tokens):

@@ -101,7 +101,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 lines = wo._workorder_line_ids().filtered(lambda l: l.move_id == move)
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else lines
                 wo.component_remaining_qty = self._prepare_component_quantity(move, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
-                wo.component_uom_id = lines[0].product_uom_id
+                wo.component_uom_id = lines[:1].product_uom_id
 
     def action_back(self):
         self.ensure_one()

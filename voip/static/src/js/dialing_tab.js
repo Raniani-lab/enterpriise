@@ -342,7 +342,7 @@ var ActivitiesTab = PhonecallTab.extend({
             method: 'get_from_activity_id',
             args: [params.activityId]
         }).then(function (phonecall) {
-            self._displayInQueue(phonecall).then(function (phonecallWidget) {
+            return self._displayInQueue(phonecall).then(function (phonecallWidget) {
                 self.currentPhonecall = phonecallWidget;
                 return self._selectCall(self.currentPhonecall);
             });

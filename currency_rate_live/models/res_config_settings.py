@@ -256,7 +256,7 @@ class ResCompany(models.Model):
         Source: http://www.banxico.org.mx/portal-mercado-cambiario/
         """
         try:
-            client = zeep.Client('http://www.banxico.org.mx/DgieWSWeb/DgieWS?WSDL')
+            client = zeep.Client('https://www.banxico.org.mx/DgieWSWeb/DgieWS?WSDL')
             xml_str = client.service.tiposDeCambioBanxico().encode('utf-8')
         except:
             return False

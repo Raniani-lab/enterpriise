@@ -44,6 +44,7 @@ class HmrcVatObligation(models.Model):
         headers.update({
             'Authorization': 'Bearer %s' % bearer ,
         })
+        headers.update(self.env['hmrc.service']._get_fraud_prevention_info())
         return headers
 
     @api.model

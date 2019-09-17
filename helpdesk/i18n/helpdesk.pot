@@ -1779,6 +1779,12 @@ msgid "Search <span class=\"nolabel\"> (in Content)</span>"
 msgstr ""
 
 #. module: helpdesk
+#: code:addons/helpdesk/controllers/portal.py:36
+#, python-format
+msgid "Search ID"
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_search
 msgid "Search SLA Policies"
 msgstr ""

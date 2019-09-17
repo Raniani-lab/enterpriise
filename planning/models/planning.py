@@ -303,6 +303,10 @@ class Planning(models.Model):
     # Actions
     # ----------------------------------------------------
 
+    def action_unlink(self):
+        self.unlink()
+        return {'type': 'ir.actions.act_window_close'}
+
     def action_see_overlaping_slots(self):
         domain_map = self._get_overlap_domain()
         return {

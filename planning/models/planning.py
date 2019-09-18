@@ -207,7 +207,7 @@ class Planning(models.Model):
 
     @api.onchange('start_datetime', 'end_datetime', 'employee_id')
     def _onchange_dates(self):
-        if self.employee_id:
+        if self.employee_id and self.is_published:
             self.publication_warning = True
 
     @api.onchange('template_creation')
@@ -414,6 +414,7 @@ class Planning(models.Model):
                     values['start_datetime'] += relativedelta(days=7)
                 if values.get('end_datetime'):
                     values['end_datetime'] += relativedelta(days=7)
+                values['is_published'] = False
                 new_slot_values.append(values)
         slots_to_copy.write({'was_copied': True})
         return self.create(new_slot_values)
@@ -429,7 +430,7 @@ class Planning(models.Model):
         view_context = dict(self._context)
         view_context.update({
             'menu_id': str(self.env.ref('planning.planning_menu_root').id),
-            'action_id': str(self.env.ref('planning.planning_action_my').id),
+            'action_id': str(self.env.ref('planning.planning_action_my_gantt').id),
             'dbname': self.env.cr.dbname,
             'render_link': self.employee_id.user_id and self.employee_id.user_id in group_planning_user.users,
             'unavailable_path': '/planning/myshifts/',
@@ -452,6 +453,13 @@ class Planning(models.Model):
         })
         return mails_to_send
 
+    def action_publish(self):
+        self.write({
+            'is_published': True,
+            'publication_warning': False,
+        })
+        return True
+
     # ----------------------------------------------------
     # Business Methods
     # ----------------------------------------------------
@@ -464,7 +472,8 @@ class Planning(models.Model):
         return [
             'employee_id',
             'start_datetime',
-            'end_datetime'
+            'end_datetime',
+            'role_id',
         ]
 
     def _get_fields_breaking_recurrency(self):

@@ -81,8 +81,8 @@
                 <footer>
                     <field name="publication_warning" invisible="1"/>
                     <button string="Save" special="save" class="btn btn-primary" close="1"/>
-                    <button string="Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': ['|', ('publication_warning', '=', False), ('employee_id', '=', False)]}" groups="planning.group_planning_manager"/>
-                    <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1" attrs="{'invisible': ['|', ('publication_warning', '=', True), ('employee_id', '=', False)]}" groups="planning.group_planning_manager"/>
+                    <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1" attrs="{'invisible': [('employee_id', '=', False)]}" groups="planning.group_planning_manager"/>
+                    <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1" groups="planning.group_planning_manager"/>
                     <button name="unlink" string="Delete" type="object" class="btn-secondary" close="1" attrs="{'invisible': [('id', '=', False)]}" confirm="Are you sure you want to do delete this shift?"/>
                     <button string="Discard" special="cancel" class="btn-secondary" close="1" fullscreen="True"/>
 
@@ -258,10 +258,17 @@
     <!--
         Actions
     -->
-    <record id="planning_action_my" model="ir.actions.act_window">
+    <record id="planning_action_my_calendar" model="ir.actions.act_window">
         <field name="name">My Planning</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">calendar,gantt,tree,form</field>
+        <field name="context">{'search_default_my_shifts': 1}</field>
+    </record>
+
+    <record id="planning_action_my_gantt" model="ir.actions.act_window">
+        <field name="name">My Planning</field>
+        <field name="res_model">planning.slot</field>
+        <field name="view_mode">gantt,calendar,tree,form</field>
         <field name="context">{'search_default_my_shifts': 1}</field>
     </record>
 
@@ -347,7 +354,7 @@
             name="Calendar"
             sequence="10"
             parent="planning_menu_my_planning"
-            action="planning_action_my"/>
+            action="planning_action_my_calendar"/>
 
     <menuitem
         id="planning_menu_schedule"

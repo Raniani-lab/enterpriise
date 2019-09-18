@@ -21,7 +21,8 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button name="action_send" type="object" string="Send" class='btn-primary'/>
+                    <button name="action_send" type="object" string="Publish &amp; Send" class='btn-primary'/>
+                    <button name="action_publish" type="object" string="Publish" class='btn-primary'/>
                     <button name="discard" string="Discard" class='btn-secondary' special="cancel"/>
                 </footer>
             </form>

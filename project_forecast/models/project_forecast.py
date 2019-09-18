@@ -49,3 +49,9 @@ class PlanningShift(models.Model):
         if self._context.get('planning_expand_project'):
             return self.env['planning.slot'].search([('create_date', '>', datetime.now() - timedelta(days=30))]).mapped('project_id')
         return projects
+
+    def _get_fields_breaking_publication(self):
+        """ Fields list triggering the `publication_warning` to True when updating shifts """
+        result = super(PlanningShift, self)._get_fields_breaking_publication()
+        result.extend(['project_id', 'task_id'])
+        return result

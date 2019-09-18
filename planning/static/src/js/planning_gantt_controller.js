@@ -113,8 +113,11 @@ var PlanningGanttController = GanttController.extend({
            'active_domain': this.model.domain,
            'active_ids': this.model.get().records
         });
-        return this.do_action('planning.planning_send_action', {additional_context: additional_context}).then(function(){
-            self.reload();
+        return this.do_action('planning.planning_send_action', {
+            additional_context: additional_context,
+            on_close: function () {
+                self.reload();
+            }
         });
     },
     /**

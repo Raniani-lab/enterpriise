@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime
 from odoo import models, fields
+from odoo.osv import expression
 
 
 class PlanningSend(models.TransientModel):
@@ -27,3 +29,19 @@ class PlanningSend(models.TransientModel):
             'company_id': self.company_id.id,
         })
         return planning.send_planning(message=self.note)
+
+    def action_publish(self):
+        # get user tz here to accord start and end datetime ?
+        domain = [
+            ('start_datetime', '>=', datetime.combine(fields.Date.from_string(self.start_datetime), datetime.min.time())),
+            ('end_datetime', '<=', datetime.combine(fields.Date.from_string(self.end_datetime), datetime.max.time())),
+            ('company_id', '=', self.company_id.id),
+        ]
+        if not self.include_unassigned:
+            domain = expression.AND([domain, [('employee_id', '!=', False)]])
+        to_publish = self.env['planning.slot'].sudo().search(domain)
+        to_publish.write({
+            'is_published': True,
+            'publication_warning': False
+        })
+        return True

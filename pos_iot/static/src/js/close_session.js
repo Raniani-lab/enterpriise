@@ -103,8 +103,10 @@ var CloseSession = AbstractAction.extend({
             if (self.terminals) {
                 self.terminals.forEach(function (terminal) {
                     terminal.add_listener(self._onValueChange.bind(self, terminal));
-                    balance_promises.push(terminal.action({ messageType: 'Balance' }))
-                        .then(self._onTerminalActionResult.bind(self, terminal));
+                    balance_promises.push(
+                        terminal.action({ messageType: 'Balance' })
+                            .then(self._onTerminalActionResult.bind(self, terminal))
+                    );
                 });
                 Promise.all(balance_promises).then(self._performAction.bind(self));
             } else {
@@ -135,8 +137,6 @@ var CloseSession = AbstractAction.extend({
      * @param {String} data.TicketMerchant
      */
     _onValueChange: function (terminal, data) {
-        var self = this;
-
         if (data.Error) {
             this.do_warn(_t('Error performing balance'), data.Error);
             return;

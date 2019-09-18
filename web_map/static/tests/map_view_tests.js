@@ -433,7 +433,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          */
 
         QUnit.test('Create View with one record linked to a partner with no coordinates and right address OSM', async function (assert) {
-            assert.expect(11);
+            assert.expect(7);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -473,7 +473,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          */
 
         QUnit.test('Create View with one record linked to a partner with no coordinates and right address MB', async function (assert) {
-            assert.expect(11);
+            assert.expect(7);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',
@@ -696,7 +696,7 @@ odoo.define('web_map.view_view_tests', function (require) {
          */
 
         QUnit.test('Create a a view with two located records different partner', async function (assert) {
-            assert.expect(6);
+            assert.expect(5);
             var map = await createView({
                 View: MapView,
                 model: 'project.task',

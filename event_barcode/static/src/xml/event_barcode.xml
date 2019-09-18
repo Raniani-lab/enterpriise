@@ -4,7 +4,7 @@
 
     <t t-name="event_barcode_template">
         <div class="o_event_barcode_bg o_home_menu_background">
-            <div class="o_event_barcode_main mt16 mb16">
+            <div class="o_event_barcode_main">
                 <div class="text-center">
                     <h1 t-esc="widget.data.name"/>
                     <p>

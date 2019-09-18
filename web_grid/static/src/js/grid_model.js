@@ -120,7 +120,7 @@ return AbstractModel.extend({
      */
     reload: function (handle, params) {
         if (params === 'special') {
-            return $.when();
+            return Promise.resolve();
         }
         params = params || {};
         if ('context' in params) {

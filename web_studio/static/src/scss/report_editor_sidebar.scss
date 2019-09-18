@@ -171,10 +171,9 @@
                             margin-left: 3px;
                         }
                     }
-                    .o_web_studio_groups {
-                        .o_field_many2manytags {
-                            width: 100%;
-                        }
+                    .o_field_many2manytags {
+                        width: 100%;
+                        background-color: $o-web-studio-bg-dark;
                     }
                     .o_web_studio_colors {
                         position: relative;
@@ -227,8 +226,13 @@
                             }
                         }
                     }
-                    .o_web_studio_toption_options:first-child() {
-                        margin-top: 12px;
+                    .o_web_studio_toption_options {
+                        &:first-child() {
+                            margin-top: 12px;
+                        }
+                        .o_field_boolean > label {
+                            margin: 0;
+                        }
                     }
                     .o_web_studio_text .btn-sm {
                         padding: 3px 8px;

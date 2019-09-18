@@ -10,6 +10,8 @@ class ProjectTaskCreateTimesheet(models.TransientModel):
     _name = 'project.task.create.timesheet'
     _description = "Create Timesheet from task"
 
+    _sql_constraints = [('time_positive', 'CHECK(time_spent > 0)', 'The timesheet\'s time must be positive' )]
+
     @api.model
     def default_get(self, fields):
         result = super(ProjectTaskCreateTimesheet, self).default_get(fields)

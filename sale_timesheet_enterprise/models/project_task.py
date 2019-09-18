@@ -74,8 +74,6 @@ class ProjectTask(models.Model):
             pause_time = self.timesheet_timer_pause
             if pause_time:
                 start_time = start_time + (fields.Datetime.now() - pause_time)
-            else:
-                self.action_timer_pause()
             minutes_spent = (fields.Datetime.now() - start_time).total_seconds() / 60
             minutes_spent = self._timer_rounding(minutes_spent)
             return self._action_create_timesheet(minutes_spent * 60 / 3600)

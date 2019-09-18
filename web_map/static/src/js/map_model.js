@@ -16,9 +16,6 @@ odoo.define('web_map.MapModel', function (require) {
         },
 
         get: function () {
-            if (this.partnerToCache.length) {
-                this._writeCoordinatesUsers(this.partnerToCache);
-            }
             return this.data;
         },
 
@@ -105,13 +102,17 @@ odoo.define('web_map.MapModel', function (require) {
             this.data.partners = partnerIds.length ? await this._fetchRecordsPartner(partnerIds) : [];
             if (this.data.mapBoxToken) {
                 return this._maxBoxAPI()
-                    .catch((err) => {
+                    .then(() => {
+                        this._writeCoordinatesUsers();
+                    }).catch((err) => {
                         this._mapBoxErrorHandling(err);
                         this.data.mapBoxToken = '';
                         return this._openStreetMapAPI();
                     });
             } else {
-                return this._openStreetMapAPI();
+                return this._openStreetMapAPI().then(() => {
+                    this._writeCoordinatesUsers();
+                });
             }
         },
 
@@ -309,16 +310,18 @@ odoo.define('web_map.MapModel', function (require) {
 
         /**
          * writes partner_longitude and partner_latitude of the res.partner model
-         * @param {Object} users user to cache
          * @return {Promise}
          */
-        _writeCoordinatesUsers: function (users) {
-            return this._rpc({
-                model: 'res.partner',
-                method: 'update_latitude_longitude',
-                context: self.context,
-                args: [users]
-            });
+        _writeCoordinatesUsers: function () {
+            if (this.partnerToCache.length) {
+                this._rpc({
+                    model: 'res.partner',
+                    method: 'update_latitude_longitude',
+                    context: self.context,
+                    args: [this.partnerToCache]
+                });
+                this.partnerToCache = [];
+            }
         },
 
         /**

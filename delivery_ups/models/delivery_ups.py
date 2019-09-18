@@ -321,7 +321,7 @@ class ProviderUPS(models.Model):
 
 
     def ups_get_tracking_link(self, picking):
-        return 'http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=%s' % picking.carrier_tracking_ref.replace('+', '%0A')
+        return 'http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=%s' % picking.carrier_tracking_ref.replace('+', '%0D%0A')
 
     def ups_cancel_shipment(self, picking):
         tracking_ref = picking.carrier_tracking_ref

@@ -370,7 +370,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             self.assertEqual(slot2.company_id, slot2.recurrency_id.company_id, "Recurrence and slots (2) must have the same company")
             self.assertEqual(slot2.recurrency_id.company_id, slot2.recurrency_id.slot_ids.mapped('company_id'), "All slots in the same recurrence (1) must have the same company")
 
-    def kkktest_slot_detach_if_some_fields_change(self):
+    def test_slot_detach_if_some_fields_change(self):
         with self._patch_now('2019-06-27 08:00:00'):
             self.configure_recurrency_span(1)
 
@@ -382,41 +382,17 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
                 'employee_id': self.employee_joseph.id,
                 'repeat': True,
                 'repeat_type': 'until',
+                'repeat_until': datetime(2019, 9, 27, 17, 0, 0),  # 3 months
                 'repeat_interval': 1,
             })
+            recurrence = slot.recurrency_id
 
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 5)
-            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), len(slot.recurrency_id.slot_ids), 'the recurrency has generated 5 slots')
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), len(recurrence.slot_ids), 'the recurrency has generated 5 slots')
 
             self.get_by_employee(self.employee_joseph)[0].write({'employee_id': self.employee_bert.id})
-            self.assertEqual(len(slot.recurrency_id.slot_ids), 4, 'writing on the slot detach it from the recurrency')
 
-    def kkktest_we_can_attach_an_existing_slot_to_an_existing_recurrency(self):
-        with self._patch_now('2019-06-27 08:00:00'):
-            self.configure_recurrency_span(1)
-            initial_start_dt = datetime(2019, 6, 27, 8, 0, 0)
-            initial_end_dt = datetime(2019, 6, 27, 17, 0, 0)
-            slot_values = {
-                'employee_id': self.employee_joseph.id,
-            }
-
-            recurrency = self.env['planning.recurrency'].create({
-                'repeat_interval': 1,
-            })
-            self.assertFalse(self.get_by_employee(self.employee_joseph))
-
-            recurrency.create_slot(initial_start_dt, initial_end_dt, slot_values)
-            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 5)
-
-            attached_slot = self.env['planning.slot'].create({
-                'employee_id': self.employee_joseph.id,
-                'start_datetime': datetime(2019, 6, 28, 8, 0),
-                'end_datetime': datetime(2019, 6, 28, 17, 0),
-                'recurrency_id': recurrency.id,
-            })
-
-            self.assertEqual(len(recurrency.slot_ids), 6, 'there is one more slot in the recurrency')
-            self.assertIn(attached_slot, recurrency.slot_ids, 'the attached slot is in the recurrency')
+            self.assertEqual(len(recurrence.slot_ids), 4, 'writing on the slot detach it from the recurrency')
 
     def test_empty_recurrency(self):
         """ Check empty recurrency is removed by cron """

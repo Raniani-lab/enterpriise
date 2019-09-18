@@ -97,7 +97,6 @@ class HrPayslip(models.Model):
     def action_payslip_done(self):
         if any(slip.state == 'cancel' for slip in self):
             raise ValidationError(_("You can't validate a cancelled payslip."))
-        self.compute_sheet()
         self.write({'state' : 'done'})
         self.mapped('payslip_run_id').action_close()
         if self.env.context.get('payslip_generate_pdf'):

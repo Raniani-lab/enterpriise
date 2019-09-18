@@ -105,6 +105,7 @@ class TestPayrollSEPACreditTransfer(common.TransactionCase):
             'journal_id': self.account_journal.id,
             'name': 'Test Payslip John',
         })
+        self.hr_payslip_john.compute_sheet()
 
         self.payslip_run = self.env['hr.payslip.run'].create({
             'date_end': '2011-09-30',

@@ -11,6 +11,10 @@
         'l10n_generic_coa',
         'l10n_be',
         'account_accountant',
+        'hr_payroll_account_sepa',
+        'documents_hr_payroll',
+        'documents_hr_recruitment',
+        'documents_hr_contract',
     ],
     'description': """
     """,
@@ -18,4 +22,5 @@
     'qweb': [],
     'demo': ['data/test_l10n_be_hr_payroll_account_demo.xml'],
     'auto_install': True,
+    'post_init_hook': '_generate_payslips',
 }

@@ -43,7 +43,7 @@ class MarketingCampaign(models.Model):
                 want to process records which have the same email address""")
     domain = fields.Char(string='Filter', default='[]')
     # activities
-    marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=True)
+    marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=False)
     mass_mailing_count = fields.Integer('# Mailings', compute='_compute_mass_mailing_count')
     link_tracker_click_count = fields.Integer('# Clicks', compute='_compute_link_tracker_click_count')
     last_sync_date = fields.Datetime(string='Last activities synchronization')
@@ -103,6 +103,25 @@ class MarketingCampaign(models.Model):
 
     def _group_expand_states(self, states, domain, order):
         return [key for key, val in type(self).state.selection]
+
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        """ Copy the activities of the campaign, each parent_id of each child
+        activities should be set to the new copied parent activity. """
+        new_compaign = super(MarketingCampaign, self).copy(dict(default or {}))
+
+        old_to_new = {}
+
+        for marketing_activity_id in self.marketing_activity_ids:
+            new_marketing_activity_id = marketing_activity_id.copy()
+            old_to_new[marketing_activity_id] = new_marketing_activity_id
+            new_marketing_activity_id.campaign_id = new_compaign
+
+        for marketing_activity_id in new_compaign.marketing_activity_ids:
+            marketing_activity_id.parent_id = old_to_new.get(
+                marketing_activity_id.parent_id)
+
+        return new_compaign
 
     def action_set_synchronized(self):
         self.write({'last_sync_date': Datetime.now()})
@@ -288,7 +307,7 @@ class MarketingActivity(models.Model):
         default='hours', required=True)
     interval_standardized = fields.Integer('Send after (in hours)', compute='_compute_interval_standardized', store=True, readonly=True)
 
-    validity_duration = fields.Boolean('Validity Duration', 
+    validity_duration = fields.Boolean('Validity Duration',
         help='Check this to make sure your actions are not executed after a specific amount of time after the scheduled date. (e.g. : Time-limited offer, Upcoming event, …)')
     validity_duration_number = fields.Integer(string='Valid during', default=0)
     validity_duration_type = fields.Selection([
@@ -347,8 +366,8 @@ class MarketingActivity(models.Model):
 
     @api.onchange('activity_type')
     def _onchange_activity_type(self):
+        self.mass_mailing_id = False
         if self.activity_type == 'action':
-            self.mass_mailing_id = False
             self.mass_mailing_id_mailing_type = False
         elif self.activity_type == 'email':
             self.mass_mailing_id_mailing_type = 'mail'
@@ -697,7 +716,7 @@ class MarketingActivity(models.Model):
         action = self.env.ref('marketing_automation.marketing_participants_action_mail').read()[0]
         participant_ids = self.trace_ids.filtered(lambda stat: stat[view_filter]).mapped("participant_id").ids
         action.update({
-            'display_name': "Rarticipants of %s (%s)" % (self.name, view_filter),
+            'display_name': _('Participants of %s (%s)') % (self.name, view_filter),
             'domain': [('id', 'in', participant_ids)],
             'context': dict(self._context, create=False)
         })

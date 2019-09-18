@@ -23,6 +23,8 @@ class HrContractEmployeeReport(models.Model):
     wage = fields.Float('Wage', group_operator="avg", readonly=True)
 
     date = fields.Date('Date', readonly=True)
+    start_date_months = fields.Integer("Months of first date of this month since 01/01/1970", readonly=True)
+    end_date_months = fields.Integer("Months of last date of this month since 01/01/1970", readonly=True)
     date_end_contract = fields.Date('Date Last Contract Ended', group_operator="max", readonly=True)
 
     departure_reason = fields.Selection([
@@ -30,7 +32,6 @@ class HrContractEmployeeReport(models.Model):
         ('resigned', 'Resigned'),
         ('retired', 'Retired')
     ], string="Departure Reason", readonly=True)
-
 
     def _query(self, fields='', from_clause='', outer=''):
         select_ = '''
@@ -54,7 +55,15 @@ class HrContractEmployeeReport(models.Model):
                 WHEN date_part('month', date_end) = date_part('month', serie) AND date_part('year', date_end) = date_part('year', serie)
                     THEN (LEAST(date_part('day', date_end), 30) / 30)
                 ELSE 1 END as age_sum,
-            serie::DATE as date
+            serie::DATE as date,
+            EXTRACT(EPOCH FROM serie)/2628028.8 AS start_date_months, -- 2628028.8 = 3600 * 24 * 30.417 (30.417 is the mean number of days in a month)
+            CASE
+                WHEN date_end IS NOT NULL AND date_part('month', date_end) = date_part('month', serie) AND date_part('year', date_end) = date_part('year', serie) THEN
+                    EXTRACT(EPOCH FROM (date_end))/2628028.8
+                ELSE
+                    EXTRACT(EPOCH FROM (date_trunc('month', serie) + interval '1 month' - interval '1 day'))/2628028.8
+                END AS end_date_months
+
             %s
         ''' % fields
 

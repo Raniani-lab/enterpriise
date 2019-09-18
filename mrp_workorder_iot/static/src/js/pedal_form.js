@@ -3,11 +3,13 @@ odoo.define('mrp_workorder_iot.pedal_form', function(require) {
 
 var FormView = require('web.FormView');
 var FormController = require('web.FormController');
-var FormRenderer = require('web.FormRenderer');
+var PDFViewerNoReload = require('mrp.PDFViewerNoReload');
 var view_registry = require('web.view_registry');
 
-var PedalRenderer = FormRenderer.extend({
-    events: _.extend({}, FormRenderer.prototype.events, {
+var PDFViewerNoReloadRenderer = PDFViewerNoReload.PDFViewerNoReloadRenderer;
+
+var PedalRenderer = PDFViewerNoReloadRenderer.extend({
+    events: _.extend({}, PDFViewerNoReloadRenderer.prototype.events, {
         'click .o_pedal_status_button': '_onPedalStatusButtonClicked',
     }),
 

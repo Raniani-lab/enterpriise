@@ -45,5 +45,7 @@ var TabletPDFViewer = FormView.extend({
 });
 
 viewRegistry.add('tablet_pdf_viewer', TabletPDFViewer);
-
+return {
+    PDFViewerNoReloadRenderer: PDFViewerNoReloadRenderer,
+};
 });

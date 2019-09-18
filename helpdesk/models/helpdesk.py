@@ -154,65 +154,44 @@ class HelpdeskTeam(models.Model):
                     self.env.ref('helpdesk.group_use_sla').write({'users': [(5, 0, 0)]})
 
     def _check_modules_to_install(self):
-        module_installed = False
+        # mapping of field names to module names
+        FIELD_MODULE = {
+            'use_website_helpdesk_form': 'website_helpdesk_form',
+            'use_website_helpdesk_livechat': 'website_helpdesk_livechat',
+            'use_website_helpdesk_forum': 'website_helpdesk_forum',
+            'use_website_helpdesk_slides': 'website_helpdesk_slides',
+            'use_helpdesk_timesheet': 'helpdesk_timesheet',
+            'use_helpdesk_sale_timesheet': 'helpdesk_sale_timesheet',
+            'use_credit_notes': 'helpdesk_account',
+            'use_product_returns': 'helpdesk_stock',
+            'use_product_repairs': 'helpdesk_repair',
+            'use_coupons': 'helpdesk_sale_coupon',
+        }
+
+        # determine the modules to be installed
+        expected = [
+            mname
+            for fname, mname in FIELD_MODULE.items()
+            if any(team[fname] for team in self)
+        ]
+        modules = self.env['ir.module.module']
+        if expected:
+            STATES = ('installed', 'to install', 'to upgrade')
+            modules = modules.search([('name', 'in', expected)])
+            modules = modules.filtered(lambda module: module.state not in STATES)
+
+        # other stuff
         for team in self:
-            form_module = self.env['ir.module.module'].search([('name', '=', 'website_helpdesk_form')])
-            if team.use_website_helpdesk_form and form_module.state not in ('installed', 'to install', 'to upgrade'):
-                form_module.button_immediate_install()
-                module_installed = True
-
-            livechat_module = self.env['ir.module.module'].search([('name', '=', 'website_helpdesk_livechat')])
-            if team.use_website_helpdesk_livechat and livechat_module.state not in ('installed', 'to install', 'to upgrade'):
-                livechat_module.button_immediate_install()
-                module_installed = True
-
-            forum_module = self.env['ir.module.module'].search([('name', '=', 'website_helpdesk_forum')])
-            if team.use_website_helpdesk_forum and forum_module.state not in ('installed', 'to install', 'to upgrade'):
-                forum_module.button_immediate_install()
-                module_installed = True
-
-            slides_module = self.env['ir.module.module'].search([('name', '=', 'website_helpdesk_slides')])
-            if team.use_website_helpdesk_slides and slides_module.state not in ('installed', 'to install', 'to upgrade'):
-                slides_module.button_immediate_install()
-                module_installed = True
-
-            helpdesk_timesheet_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_timesheet')])
-            if team.use_helpdesk_timesheet and helpdesk_timesheet_module.state not in ('installed', 'to install', 'to upgrade'):
-                helpdesk_timesheet_module.button_immediate_install()
-                module_installed = True
-
-            helpdesk_sale_timesheet_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_sale_timesheet')])
-            if team.use_helpdesk_sale_timesheet and helpdesk_sale_timesheet_module.state not in ('installed', 'to install', 'to upgrade'):
-                helpdesk_sale_timesheet_module.button_immediate_install()
-                module_installed = True
-
-            account_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_account')])
-            if team.use_credit_notes and account_module.state not in ('installed', 'to install', 'to upgrade'):
-                account_module.button_immediate_install()
-                module_installed = True
-
-            stock_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_stock')])
-            if team.use_product_returns and stock_module.state not in ('installed', 'to install', 'to upgrade'):
-                stock_module.button_immediate_install()
-                module_installed = True
-
-            repair_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_repair')])
-            if team.use_product_repairs and repair_module.state not in ('installed', 'to install', 'to upgrade'):
-                repair_module.button_immediate_install()
-                module_installed = True
-
-            sale_coupon_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_sale_coupon')])
-            if team.use_coupons and sale_coupon_module.state not in ('installed', 'to install', 'to upgrade'):
-                sale_coupon_module.button_immediate_install()
-                module_installed = True
-
             if team.use_rating:
                 for stage in self.stage_ids:
-                    if stage.is_close and  not stage.fold:
+                    if stage.is_close and not stage.fold:
                         stage.template_id = self.env.ref('helpdesk.rating_ticket_request_email_template', raise_if_not_found= False)
 
+        if modules:
+            modules.button_immediate_install()
+
         # just in case we want to do something if we install a module. (like a refresh ...)
-        return module_installed
+        return bool(modules)
 
     # ------------------------------------------------------------
     # Mail Alias Mixin

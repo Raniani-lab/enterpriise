@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools import image_process
 from ast import literal_eval
@@ -106,7 +107,7 @@ class Document(models.Model):
         for record in self:
             try:
                 record.thumbnail = image_process(record.datas, size=(80, 80), crop='center')
-            except Exception:
+            except UserError:
                 record.thumbnail = False
 
     @api.depends('attachment_type', 'url')

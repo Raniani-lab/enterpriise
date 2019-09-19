@@ -137,19 +137,6 @@
       </field>
     </record>
 
-    <record id="rental_order_view_kanban_with_searchpanel" model="ir.ui.view">
-      <field name="name">rental.order.kanban.bis</field>
-      <field name="model">sale.order</field>
-      <field name="inherit_id" ref="rental_order_view_kanban"/>
-      <field name="mode">primary</field>
-      <field name="priority">110</field>
-      <field name="arch" type="xml">
-        <xpath expr="//kanban" position="attributes">
-          <attribute name="quick_create">false</attribute>
-        </xpath>
-      </field>
-    </record>
-
     <record id="rental_order_view_search" model="ir.ui.view">
       <field name="name">rental.order.search</field>
       <field name="model">sale.order</field>
@@ -221,7 +208,7 @@
     <record id="rental_order_kanban" model="ir.actions.act_window.view">
       <field name="sequence" eval="1"/>
       <field name="view_mode">kanban</field>
-      <field name="view_id" ref="rental_order_view_kanban_with_searchpanel"/>
+      <field name="view_id" ref="rental_order_view_kanban"/>
       <field name="act_window_id" ref="rental_order_action"/>
     </record>
     <record id="rental_order_tree" model="ir.actions.act_window.view">

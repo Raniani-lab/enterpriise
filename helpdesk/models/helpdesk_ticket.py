@@ -260,9 +260,13 @@ class HelpdeskTicket(models.Model):
     def create(self, vals):
         if vals.get('team_id'):
             vals.update(item for item in self._onchange_team_get_values(self.env['helpdesk.team'].browse(vals['team_id'])).items() if item[0] not in vals)
-        if 'partner_id' in vals and 'partner_email' not in vals:
-            partner_email = self.env['res.partner'].browse(vals['partner_id']).email
-            vals.update(partner_email=partner_email)
+        # Fill in missing partner information in case of a programmatic creation
+        if 'partner_id' in vals:
+            partner = self.env['res.partner'].browse(vals['partner_id'])
+            if 'partner_name' not in vals:
+                vals['partner_name'] = partner.name
+            if 'partner_email' not in vals:
+                vals['partner_email'] = partner.email
         # Manually create a partner now since 'generate_recipients' doesn't keep the name. This is
         # to avoid intrusive changes in the 'mail' module
         if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
@@ -274,7 +278,6 @@ class HelpdeskTicket(models.Model):
         ticket = super(HelpdeskTicket, self).create(vals)
         if ticket.partner_id:
             ticket.message_subscribe(partner_ids=ticket.partner_id.ids)
-            ticket._onchange_partner_id()
         if ticket.user_id:
             ticket.assign_date = ticket.create_date
             ticket.assign_hours = 0

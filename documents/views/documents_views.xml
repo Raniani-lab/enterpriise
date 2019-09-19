@@ -77,7 +77,9 @@
                 <templates>
                     <t t-name="kanban-box">
                         <t t-set="fileRequest" t-value="record.type.raw_value === 'empty'"/>
-                        <div draggable="true" t-attf-class="oe_kanban_global_area o_kanban_attachment #{fileRequest ? 'oe_file_request' : ''}" t-att-data-id="record.id.raw_value">
+                        <div draggable="true"
+                             t-attf-class="oe_kanban_global_area o_document_draggable o_kanban_attachment o_documents_attachment {{fileRequest ? 'oe_file_request' : ''}}"
+                             t-att-data-id="record.id.raw_value">
                             <i class="far fa-circle o_record_selector" title="Select document"/>
                             <div t-attf-class="o_kanban_image #{fileRequest ? 'o_request_image' : ''}">
                                 <t t-set="webimage"
@@ -120,7 +122,7 @@
                                             <span><b>Requested Document</b></span>
                                         </t>
                                         <samp t-else="" class="text-muted"> </samp>
-                                        <field name="tag_ids" widget="documents_kanban_color_tags"/>
+                                        <field name="tag_ids" widget="documents_many2many_tags"/>
                                     </div>
                                     <div class="o_kanban_record_bottom">
                                         <time class="oe_kanban_bottom_left">
@@ -236,14 +238,16 @@
         <field name="name">documents list</field>
         <field name="model">documents.document</field>
         <field name="arch" type="xml">
-            <tree class="o_documents_list_view"
+            <tree js_class="documents_list"
                   create="false" edit="false"
                   decoration-info="type == 'empty'">
                 <field name="type" invisible="1"/>
                 <field name="name" string="Document" required="True"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="url" optional="hide"/>
+                <field name="tag_ids" widget="documents_many2many_tags"/>
                 <field name="partner_id"/>
                 <field name="owner_id"/>
+                <field name="lock_uid" optional="hide"/>
                 <field name="type"/>
                 <field name="create_date" widget="date"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
@@ -828,12 +832,11 @@
     <record id="document_action" model="ir.actions.act_window">
       <field name="name">Documents</field>
       <field name="res_model">documents.document</field>
-      <field name="view_mode">kanban,tree,form</field>
+      <field name="view_mode">kanban,tree</field>
       <field name="domain">[]</field>
       <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'kanban', 'view_id': ref('documents.document_view_kanban')}),
-        (0, 0, {'view_mode': 'tree', 'view_id': False}),
-        (0, 0, {'view_mode': 'form', 'view_id': ref('documents.document_view_form')})]"/>
+        (0, 0, {'view_mode': 'tree', 'view_id': False})]"/>
       <field name="help" type="html">
         <p class="o_view_nocontent_smiling_face">Upload <span class="font-weight-normal">a file or</span> drag <span class="font-weight-normal">it here.</span></p>
       </field>

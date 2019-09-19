@@ -2,8 +2,9 @@ odoo.define('documents.mobile_tests', function (require) {
 "use strict";
 
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
-const {createDocumentsKanbanView} = require('documents.test_utils');
-const {dom} = require('web.test_utils');
+const { createDocumentsView } = require('documents.test_utils');
+
+const { dom } = require('web.test_utils');
 
 QUnit.module('Views');
 
@@ -39,7 +40,7 @@ QUnit.module('DocumentsKanbanViewMobile', {
     QUnit.test('basic rendering on mobile', async function (assert) {
         assert.expect(4);
 
-        const kanban = await createDocumentsKanbanView({
+        const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
@@ -75,7 +76,7 @@ QUnit.module('DocumentsKanbanViewMobile', {
     QUnit.test('toggle inspector based on selection', async function (assert) {
         assert.expect(13);
 
-        const kanban = await createDocumentsKanbanView({
+        const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,

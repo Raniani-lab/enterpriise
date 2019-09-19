@@ -1,29 +1,27 @@
 odoo.define('documents.DocumentsInspector', function (require) {
-"use strict";
+'use strict';
 
 /**
  * This file defines the DocumentsInspector Widget, which is displayed next to
  * the KanbanRenderer in the DocumentsKanbanView.
  */
 
-var core = require('web.core');
-var fieldRegistry = require('web.field_registry');
-var session = require('web.session');
-var dialogs = require('web.view_dialogs');
-var Widget = require('web.Widget');
+const { _t, qweb } = require('web.core');
+const fieldRegistry = require('web.field_registry');
+const session = require('web.session');
+const dialogs = require('web.view_dialogs');
+const Widget = require('web.Widget');
 
-var _t = core._t;
-var qweb = core.qweb;
+const TAGS_SEARCH_LIMIT = 8;
 
-var TAGS_SEARCH_LIMIT = 8;
-
-var DocumentsInspector = Widget.extend({
+const DocumentsInspector = Widget.extend({
     template: 'documents.DocumentsInspector',
     custom_events: {
         field_changed: '_onFieldChanged',
     },
     events: {
         'click .o_inspector_archive': '_onArchive',
+        'click .o_inspector_request_icon': '_onClickRequestIcon',
         'click .o_inspector_delete': '_onDelete',
         'click .o_inspector_download': '_onDownload',
         'click .o_inspector_replace': '_onReplace',
@@ -43,13 +41,13 @@ var DocumentsInspector = Widget.extend({
     /**
      * @override
      * @param {Object} params
-     * @param {Array} params.recordIDs list of document's resIDs
+     * @param {Array} params.recordIds list of document's resIds
      * @param {Object} params.state
      */
     init: function (parent, params) {
-        var self = this;
-        this._super.apply(this, arguments);
+        this._super(...arguments);
 
+        this._viewType = params.viewType;
         this.nbDocuments = params.state.count;
         this.size = params.state.size;
         this.focusTagInput = params.focusTagInput;
@@ -57,8 +55,8 @@ var DocumentsInspector = Widget.extend({
         this.recordsData = {};
 
         this.records = [];
-        for (const resID of params.recordIDs) {
-            var record = _.findWhere(params.state.data, {res_id: resID});
+        for (const resId of params.recordIds) {
+            const record = params.state.data.find(record => record.res_id === resId);
             if (record) {
                 let youtubeToken;
                 let youtubeUrlMatch;
@@ -83,20 +81,13 @@ var DocumentsInspector = Widget.extend({
             }
         }
         this.tags = params.tags;
-        var tagIDsByRecord = _.map(this.records, function (record) {
-            return record.data.tag_ids.res_ids;
-        });
-        this.commonTagIDs = _.intersection.apply(_, tagIDsByRecord);
-
-        var ruleIDsByRecord = _.map(this.records, function (record) {
-            return record.data.available_rule_ids.res_ids;
-        });
-        var commonRuleIDs = _.intersection.apply(_, ruleIDsByRecord);
-        var record = this.records[0];
-        this.rules = _.map(commonRuleIDs, function (ruleID) {
-            var rule = _.findWhere(record.data.available_rule_ids.data, {
-                res_id: ruleID,
-            });
+        const tagIdsByRecord = this.records.map(record => record.data.tag_ids.res_ids);
+        this.commonTagIds = _.intersection(...tagIdsByRecord);
+        const ruleIdsByRecord = this.records.map(record => record.data.available_rule_ids.res_ids);
+        const commonRuleIds = _.intersection.apply(_, ruleIdsByRecord);
+        const record = this.records[0];
+        this._rules = commonRuleIds.map(ruleId => {
+            const rule = record.data.available_rule_ids.data.find(record => record.res_id === ruleId);
             return rule.data;
         });
 
@@ -118,7 +109,7 @@ var DocumentsInspector = Widget.extend({
         this._updateButtons();
         await Promise.all([
             this._renderFields(),
-            this._super.apply(this, arguments)
+            this._super(...arguments)
         ]);
         this.$('.o_inspector_table .o_input').prop('disabled', this._isLocked);
     },
@@ -161,11 +152,11 @@ var DocumentsInspector = Widget.extend({
      * @param {string} fieldName a many2one field
      */
     _generateCommonRecord: function (fieldName) {
-        var record = _.extend({}, this.records[0], {
+        const record = Object.assign({}, this.records[0], {
             id: null,
             res_id: null,
         });
-        record.data = _.extend({}, record.data);
+        record.data = Object.assign({}, record.data);
         record.data[fieldName] = {
             data: {
                 display_name: _t('Multiple values'),
@@ -189,20 +180,20 @@ var DocumentsInspector = Widget.extend({
         options = options || {};
 
         // generate the record to pass to the FieldWidget
-        var values = _.uniq(_.map(this.records, function (record) {
+        const values = _.uniq(this.records.map(record => {
             return record.data[fieldName] && record.data[fieldName].res_id;
         }));
-        var record;
+        let record;
         if (values.length > 1) {
             record = this._generateCommonRecord(fieldName);
         } else {
             record = this.records[0];
         }
 
-        var $row = $(qweb.render('documents.DocumentsInspector.infoRow'));
+        const $row = $(qweb.render('documents.DocumentsInspector.infoRow'));
 
         // render the label
-        var $label = $(qweb.render('documents.DocumentsInspector.fieldLabel', {
+        const $label = $(qweb.render('documents.DocumentsInspector.fieldLabel', {
             icon: options.icon,
             label: options.label || record.fields[fieldName].string,
             name: fieldName,
@@ -210,13 +201,13 @@ var DocumentsInspector = Widget.extend({
         $label.appendTo($row.find('.o_inspector_label'));
 
         // render and append field
-        var type = record.fields[fieldName].type;
-        var FieldWidget = fieldRegistry.get(type);
-        options = _.extend({}, options, {
+        const type = record.fields[fieldName].type;
+        const FieldWidget = fieldRegistry.get(type);
+        options = Object.assign({}, options, {
             noOpen: true, // option for many2one fields
-            viewType: 'kanban',
+            viewType: this._viewType,
         });
-        var fieldWidget = new FieldWidget(this, fieldName, record, options);
+        const fieldWidget = new FieldWidget(this, fieldName, record, options);
         const prom = fieldWidget.appendTo($row.find('.o_inspector_value')).then(function() {
             fieldWidget.getFocusableElement().attr('id', fieldName);
             if (type === 'many2one' && values.length > 1) {
@@ -231,8 +222,8 @@ var DocumentsInspector = Widget.extend({
      * @return {Promise}
      */
     _renderFields: function () {
-        var options = {mode: 'edit'};
-        var proms = [];
+        const options = {mode: 'edit'};
+        const proms = [];
         if (this.records.length === 1) {
             proms.push(this._renderField('name', options));
             if (this.records[0].data.type === 'url') {
@@ -256,13 +247,13 @@ var DocumentsInspector = Widget.extend({
         if (this.records.length !== 1) {
            return;
         }
-        var resModelName = this.records[0].data.res_model_name;
+        const resModelName = this.records[0].data.res_model_name;
         if (!resModelName || this.records[0].data.res_model === 'documents.document') {
             return;
         }
 
-        var $modelContainer = this.$('.o_model_container');
-        var options = {
+        const $modelContainer = this.$('.o_model_container');
+        const options = {
             res_model: resModelName,
             res_name: this.records[0].data.res_name,
         };
@@ -275,34 +266,33 @@ var DocumentsInspector = Widget.extend({
         if (!this.currentFolder || this._isLocked) {
            return;
         }
-        var self = this;
-        _.each(this.rules, function (rule) {
-            if (self.records.length === 1 || !rule.limited_to_single_record) {
-                var $rule = $(qweb.render('documents.DocumentsInspector.rule', rule));
-                $rule.appendTo(self.$('.o_inspector_rules'));
+        for (const rule of this._rules) {
+            if (this.records.length === 1 || !rule.limited_to_single_record) {
+                const $rule = $(qweb.render('documents.DocumentsInspector.rule', rule));
+                $rule.appendTo(this.$('.o_inspector_rules'));
             }
-        });
+        }
     },
     /**
      * @private
      */
     _renderTags: function () {
-        var $tags = this.$('.o_inspector_tags');
+        const $tags = this.$('.o_inspector_tags');
 
         // render common tags
-        const commonTags = this.tags.filter(tag => this.commonTagIDs.includes(tag.id));
+        const commonTags = this.tags.filter(tag => this.commonTagIds.includes(tag.id));
         for (const tag of commonTags) {
             if (tag) {
                 // hide unknown tags (this may happen if a document with tags
                 // is moved to another folder, but we keep those tags in case
                 // the document is moved back to its original folder)
-                var $tag = $(qweb.render('documents.DocumentsInspector.tag', tag));
+                const $tag = $(qweb.render('documents.DocumentsInspector.tag', tag));
                 $tag.appendTo(this.$('.o_inspector_tags'));
             }
         };
 
         // render autocomplete input (if there are still tags to add)
-        if (this.tags.length > this.commonTagIDs.length) {
+        if (this.tags.length > this.commonTagIds.length) {
             this.$tagInput = $('<input>', {
                 class: 'o_input o_inspector_tag_add',
                 type: 'text',
@@ -323,7 +313,7 @@ var DocumentsInspector = Widget.extend({
                         this._saveMulti({
                             tag_ids: {
                                 operation: 'ADD_M2M',
-                                resIDs: [currentId],
+                                resIds: [currentId],
                             },
                         });
                     }
@@ -334,7 +324,7 @@ var DocumentsInspector = Widget.extend({
                 },
             });
 
-            var disabled = this._isLocked || (this.records.length === 1 && !this.records[0].data.active);
+            const disabled = this._isLocked || (this.records.length === 1 && !this.records[0].data.active);
             $tags.closest('.o_inspector_custom_field').toggleClass('o_disabled', disabled);
 
             this.$tagInput.appendTo($tags);
@@ -350,13 +340,12 @@ var DocumentsInspector = Widget.extend({
      * @param {Object} changes
      */
     _saveMulti: function (changes) {
-        var self = this;
         this.pendingSavingRequests++;
         this.trigger_up('save_multi', {
             changes: changes,
-            dataPointIDs: _.pluck(this.records, 'id'),
-            callback: function () {
-                self.pendingSavingRequests--;
+            dataPointIds: _.pluck(this.records, 'id'),
+            callback: () => {
+                this.pendingSavingRequests--;
             },
         });
     },
@@ -369,17 +358,16 @@ var DocumentsInspector = Widget.extend({
      * @returns {Object[]}
      */
     _search: function (value) {
-        var self = this;
-        var tags = [];
-        _.each(this.tags, function (tag) {
+        const tags = [];
+        for (const tag of this.tags) {
             // don't search amongst already linked tags
-            if (!_.contains(self.commonTagIDs, tag.id)) {
+            if (!_.contains(this.commonTagIds, tag.id)) {
                 tags.push({
                     id: tag.id,
                     label: tag.group_name + ' > ' + tag.name,
                 });
             }
-        });
+        }
         const lowerValue = value.toLowerCase();
         const allSearchResults = tags.filter(tag => tag.label.toLowerCase().includes(lowerValue));
         const searchResults = allSearchResults.slice(0, TAGS_SEARCH_LIMIT);
@@ -407,7 +395,7 @@ var DocumentsInspector = Widget.extend({
             on_selected: records => this._saveMulti({
                 tag_ids: {
                    operation: 'ADD_M2M',
-                   resIDs: records.map(record => record.id),
+                   resIds: records.map(record => record.id),
                 },
             }),
             res_model: 'documents.tag',
@@ -428,7 +416,7 @@ var DocumentsInspector = Widget.extend({
                 method: 'search_read',
                 fields: ['id'],
                 domain: ['&', '&',
-                            ['id', 'not in', this.commonTagIDs],
+                            ['id', 'not in', this.commonTagIds],
                             ['folder_id', '=', this.currentFolder.id],
                             '|',
                                 ['facet_id.name', 'ilike', value],
@@ -453,9 +441,7 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _updateButtons: function () {
-        var binary = _.some(this.records, function (record) {
-            return record.data.type === 'binary';
-        });
+        const binary = this.records.some(record => record.data.type === 'binary');
         if (this._isLocked) {
             this.$('.o_inspector_replace').prop('disabled', true);
             this.$('.o_inspector_delete').prop('disabled', true);
@@ -482,6 +468,15 @@ var DocumentsInspector = Widget.extend({
     /**
      * @private
      */
+    _onClickRequestIcon(ev) {
+        const documentId = $(ev.currentTarget).data('id');
+        this.trigger_up('set_file', {
+            id: documentId,
+        });
+    },
+    /**
+     * @private
+     */
     _onDelete: function () {
         this.trigger_up('delete_records', {
             records: this.records,
@@ -494,7 +489,7 @@ var DocumentsInspector = Widget.extend({
      */
     _onDownload: function () {
         this.trigger_up('download', {
-            resIDs: _.pluck(this.records, 'res_id'),
+            resIds: this.records.map(record => record.res_id),
         });
     },
     /**
@@ -518,7 +513,7 @@ var DocumentsInspector = Widget.extend({
      */
     _onLock: function () {
         this.trigger_up('lock_attachment', {
-            resID: this.records[0].res_id,
+            resId: this.records[0].res_id,
         });
     },
     /**
@@ -543,9 +538,7 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _onOpenChatter: function () {
-        this.trigger_up('open_chatter', {
-            id: this.records[0].id,
-        });
+        this.trigger_up('open_chatter');
     },
     /**
      * Open the document previewer, a fullscreen preview of the image with
@@ -559,11 +552,11 @@ var DocumentsInspector = Widget.extend({
         ev.stopPropagation();
         if (this.pendingSavingRequests > 0)
             return;
-        var activeID = $(ev.currentTarget).data('id');
-        if (activeID) {
-            var records = _.pluck(this.records, 'data');
+        const activeId = $(ev.currentTarget).data('id');
+        if (activeId) {
+            const records = this.records.map(record => record.data);
             this.trigger_up('kanban_image_clicked', {
-                recordID: activeID,
+                recordId: activeId,
                 recordList: records
             });
         }
@@ -574,9 +567,9 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _onOpenResource: function () {
-        var record = this.records[0];
+        const record = this.records[0];
         this.trigger_up('open_record', {
-            resID: record.data.res_id,
+            resId: record.data.res_id,
             resModel: record.data.res_model,
         });
     },
@@ -588,22 +581,21 @@ var DocumentsInspector = Widget.extend({
      */
     _onRemoveTag: function (ev) {
         ev.stopPropagation();
-        var tagID = $(ev.currentTarget).closest('.o_inspector_tag').data('id');
-        var changes = {
+        const tagId = $(ev.currentTarget).closest('.o_inspector_tag').data('id');
+        const changes = {
             tag_ids: {
                 operation: 'FORGET',
-                resIDs: [tagID],
+                resIds: [tagId],
             },
         };
         this._saveMulti(changes);
     },
     /**
-     * TODO tests
      *
      * @private
      */
     _onReplace: function () {
-        this.trigger_up('replace_file', {
+        this.trigger_up('set_file', {
             id: this.records[0].data.id,
         });
     },
@@ -613,8 +605,8 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _onShare: function () {
-        this.trigger_up('share', {
-            resIDs: _.pluck(this.records, 'res_id'),
+        this.trigger_up('share_ids', {
+            resIds: this.records.map(record => record.res_id),
         });
     },
     /**
@@ -637,12 +629,12 @@ var DocumentsInspector = Widget.extend({
      * @param {MouseEvent} ev
      */
     _onTriggerRule: function (ev) {
-        var $btn = $(ev.currentTarget);
-        var ruleID = $btn.closest('.o_inspector_rule').data('id');
+        const $btn = $(ev.currentTarget);
+        const ruleId = $btn.closest('.o_inspector_rule').data('id');
         $btn.prop('disabled', true);
         this.trigger_up('trigger_rule', {
             records: this.records,
-            ruleID: ruleID
+            ruleId: ruleId
         });
     },
 });

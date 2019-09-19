@@ -25,7 +25,7 @@ const DocumentsSearchPanel = SearchPanel.extend({
      */
     init: function () {
         this._super.apply(this, arguments);
-        this.uploadingFolderIDs = [];
+        this._uploadingFolderIds = [];
     },
 
     //--------------------------------------------------------------------------
@@ -81,10 +81,10 @@ const DocumentsSearchPanel = SearchPanel.extend({
     /**
      * set the list of currently uploading folders.
      *
-     * @param {Array<integer>} uploadingFolderIDs the list of folders in which uploads are currently happening.
+     * @param {Array<integer>} uploadingFolderIds the list of folders in which uploads are currently happening.
      */
-    setUploadingFolderIDs: function (uploadingFolderIDs) {
-        this.uploadingFolderIDs = uploadingFolderIDs;
+    setUploadingFolderIds(uploadingFolderIds) {
+        this._uploadingFolderIds = uploadingFolderIds;
         this._render();
     },
 
@@ -101,7 +101,7 @@ const DocumentsSearchPanel = SearchPanel.extend({
         const $folderSection = this.$('[data-field-name="folder_id"]');
         $folderSection.find('.o_search_panel_spinner').remove();
         $folderSection.find('.o_search_panel_category_value').each((i, el) => {
-            if (this.uploadingFolderIDs.includes(+el.getAttribute("data-id"))) {
+            if (this._uploadingFolderIds.includes(+el.getAttribute("data-id"))) {
                 const $spinner = $('<span>', {
                     class: 'fa fa-spinner fa-spin o_search_panel_spinner',
                 });
@@ -127,8 +127,8 @@ const DocumentsSearchPanel = SearchPanel.extend({
     _isValidDropZone($target) {
         const fieldName = $target.closest('.o_search_panel_field').data('field-name');
         const hasRightFieldName = ['folder_id', 'tag_ids'].includes(fieldName);
-        const hasID = $target.data('id') || $target.data('value-id');
-        return hasRightFieldName && hasID;
+        const hasId = $target.data('id') || $target.data('value-id');
+        return hasRightFieldName && hasId;
     },
     /**
      * @private
@@ -209,11 +209,11 @@ const DocumentsSearchPanel = SearchPanel.extend({
         var $item = $(ev.currentTarget);
         $item.removeClass('o_drag_over_selector');
         const fieldName = $item.closest('.o_search_panel_field').data('field-name');
-        const panelRecordID = $item.data('id') || $item.data('value-id');
+        const panelRecordId = $item.data('id') || $item.data('value-id');
         const dataTransfer = ev.originalEvent.dataTransfer;
         if (
             !this._isValidDropZone($item) ||
-            !panelRecordID ||
+            !panelRecordId ||
             !dataTransfer ||
             !dataTransfer.types.includes('o_documents_data') ||
             $item.find('> .active').length // prevents dropping in the current folder
@@ -229,12 +229,12 @@ const DocumentsSearchPanel = SearchPanel.extend({
             );
         }
 
-        const vals = fieldName === 'tag_ids' ? { tag_ids: [[4, panelRecordID]] } : { folder_id: panelRecordID };
+        const vals = fieldName === 'tag_ids' ? { tag_ids: [[4, panelRecordId]] } : { folder_id: panelRecordId };
 
         this._rpc({
             model: 'documents.document',
             method: 'write',
-            args: [data.recordIDs, vals],
+            args: [data.recordIds, vals],
         }).then(() => this._notifyDomainUpdated());
     },
 });

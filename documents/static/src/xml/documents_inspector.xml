@@ -28,6 +28,7 @@
     <t t-foreach="widget.records.slice(0, 4)" t-as="record">
         <t t-set="recordData" t-value="widget.recordsData[record.id]"/>
         <div t-attf-class="o_document_preview
+            {{ record.data.type === 'empty' ? 'o_document_request_preview' : '' }}
             {{ nbPreviews === 1 ? 'o_documents_single_preview' : '' }}
             {{ ((recordData.isImage or recordData.isYouTubeVideo) and 'o_documents_preview_image') or 'o_documents_preview_mimetype' }}
             {{ (recordData.isYouTubeVideo or recordData.isGif) and 'o_non_image_preview' or '' }}">
@@ -50,6 +51,10 @@
                  t-attf-data-mimetype="{{mimetype}}"
                  t-att-title="record.data.name"
                  t-att-data-id="record.res_id"/>
+            <div t-elif="record.data.type === 'empty'"
+                 class="o_inspector_request_icon fa fa-upload fa-5x"
+                 t-att-title="record.data.name"
+                 t-att-data-id="record.res_id"/>
             <div t-else=""
                  t-attf-class="o_image o_mimetype_icon {{
                     (mimetype and (mimetype.indexOf('pdf') !== -1 or
@@ -58,6 +63,9 @@
                  t-att-data-mimetype="mimetype"
                  t-att-data-id="record.res_id"
                  t-att-title="record.data.name"/>
+            <span t-if="record.data.type === 'empty'">
+                Upload Document
+            </span>
         </div>
         <i t-if="nbPreviews === 1" class="o_inspector_open_chatter rounded-circle text-center fas fa-comments" title="Open chatter"/>
         <div t-if="record_index == 1 and record_size == 4" class="w-100"/>

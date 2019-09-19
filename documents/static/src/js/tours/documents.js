@@ -40,7 +40,7 @@ tour.register('documents_tour', {
     content: _t("It will be sent to the followers of this document"),
     position: 'bottom',
 }, {
-    trigger: '.o_document_close_chatter',
+    trigger: '.o_documents_close_chatter',
     extra_trigger: '.o_documents_kanban',
     content: _t("Click here to <b>close the discussion board</b>"),
     position: 'bottom',

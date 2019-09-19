@@ -5,7 +5,7 @@ const AbstractStorageService = require('web.AbstractStorageService');
 const RamStorage = require('web.RamStorage');
 const {createView} = require('web.test_utils');
 
-async function createDocumentsKanbanView(params) {
+async function createDocumentsView(params) {
     params.archs = params.archs || {};
     var searchArch = params.archs[`${params.model},false,search`] || '<search></search>';
     var searchPanelArch = `
@@ -30,7 +30,7 @@ async function createDocumentsKanbanView(params) {
 }
 
 return {
-    createDocumentsKanbanView,
+    createDocumentsView,
 };
 
 });

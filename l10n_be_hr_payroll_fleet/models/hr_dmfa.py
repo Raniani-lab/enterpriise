@@ -26,8 +26,9 @@ class HrDMFAReport(models.Model):
     def _compute_vehicle_ids(self):
         for dmfa in self:
             vehicles = self.env['fleet.vehicle'].search([
-                ('first_contract_date', '<=', self.quarter_end),
+                ('first_contract_date', '<=', dmfa.quarter_end),
                 ('driver_id', '!=', False),  # contribution for unused cars?
+                ('company_id', '=', dmfa.company_id.id),
             ])
             dmfa.vehicle_ids = [(6, False, vehicles.ids)]
 
@@ -40,6 +41,7 @@ class HrDMFAReport(models.Model):
 
     def _get_vehicles_contribution(self):
         amount = 0
+        self = self.sudo()
         for vehicle in self.vehicle_ids:
             n_months = min(relativedelta(self.quarter_end, self.quarter_start).months, relativedelta(self.quarter_end, vehicle.first_contract_date).months)
             amount += vehicle.co2_fee * n_months

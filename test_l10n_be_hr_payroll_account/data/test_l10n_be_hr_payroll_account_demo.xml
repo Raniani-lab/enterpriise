@@ -1068,7 +1068,7 @@
     </record>
 
     <record id="employee_qdp" model="hr.employee">
-        <field name="name">Gilles Gravie</field>
+        <field name="name">Marc Demo</field>
         <field name="user_id" ref="base.user_demo"/>
         <field name="department_id" ref="hr_department_2"/>
         <field name="parent_id" ref="employee_admin"/>
@@ -1564,7 +1564,7 @@
     </record>
 
     <record id="hr_contract_qdp" model="hr.contract">
-        <field name="name">Gilles Gravie Contract</field>
+        <field name="name">Marc Demo Contract</field>
         <field name="date_start" eval="time.strftime('%Y')+'-3-1'"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_qdp"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1870,7 +1870,7 @@
     </record>
 
     <record id="hr_holidays_allocation_cl_qdp" model="hr.leave.allocation">
-        <field name="name">Paid Time Off for Gilles Gravie</field>
+        <field name="name">Paid Time Off for Marc Demo</field>
         <field name="holiday_status_id" ref="holiday_status_cl"/>
         <field name="number_of_days">20</field>
         <field name="employee_id" ref="employee_qdp"/>

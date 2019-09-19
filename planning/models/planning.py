@@ -81,7 +81,7 @@ class Planning(models.Model):
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
     repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat')
     repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat', inverse='_inverse_repeat')
-    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever')
+    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever', compute='_compute_repeat', inverse='_inverse_repeat')
     repeat_until = fields.Date("Repeat Until", compute='_compute_repeat', inverse='_inverse_repeat', help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
 
     _sql_constraints = [
@@ -173,7 +173,13 @@ class Planning(models.Model):
                 recurrence = self.env['planning.recurrency'].create(recurrency_values)
                 slot.recurrency_id = recurrence
                 slot.recurrency_id._repeat_slot()
-            elif not slot.repeat and slot.recurrency_id:
+            # user wants to delete the recurrence
+            # here we also check that we don't delete by mistake a slot of which the repeat parameters have been changed
+            elif not slot.repeat and slot.recurrency_id.id and (
+                slot.repeat_type == slot.recurrency_id.repeat_type and
+                slot.repeat_until == slot.recurrency_id.repeat_until and
+                slot.repeat_interval == slot.recurrency_id.repeat_interval
+            ):
                 slot.recurrency_id._delete_slot(slot.end_datetime)
                 slot.recurrency_id.unlink()  # will set recurrency_id to NULL
 
@@ -297,6 +303,26 @@ class Planning(models.Model):
         if 'publication_warning' not in values and (set(values.keys()) & set(self._get_fields_breaking_publication())):
             values['publication_warning'] = True
         result = super(Planning, self).write(values)
+        # recurrence
+        if any(key in ('repeat', 'repeat_type', 'repeat_until', 'repeat_interval') for key in values):
+            # User is trying to change this record's recurrence so we delete future slots belonging to recurrence A
+            # and we create recurrence B from now on w/ the new parameters
+            for slot in self:
+                if slot.recurrency_id and values.get('repeat') is None:
+                    recurrency_values = {
+                        'repeat_interval': values.get('repeat_interval') or slot.recurrency_id.repeat_interval,
+                        'repeat_until': values.get('repeat_until') if values.get('repeat_type') == 'until' else False,
+                        'repeat_type': values.get('repeat_type'),
+                        'company_id': slot.company_id.id,
+                    }
+                    # Kill recurrence A
+                    slot.recurrency_id.repeat_type = 'until'
+                    slot.recurrency_id.repeat_until = slot.start_datetime
+                    slot.recurrency_id._delete_slot(slot.end_datetime)
+                    # Create recurrence B
+                    recurrence = slot.env['planning.recurrency'].create(recurrency_values)
+                    slot.recurrency_id = recurrence
+                    slot.recurrency_id._repeat_slot()
         return result
 
     # ----------------------------------------------------

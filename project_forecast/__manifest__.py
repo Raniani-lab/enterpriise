@@ -18,6 +18,6 @@
     'demo': [
         'data/project_forecast_demo.xml',
     ],
-    'application': True,
+    'application': False,
     'license': 'OEEL-1',
 }

@@ -365,6 +365,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <tree string="Tickets">
+                <field name="team_id" invisible="1"/>
                 <field name="display_name" string="Ticket Name"/>
                 <field name="partner_id" optional="show"/>
                 <field name="user_id" optional="show"/>

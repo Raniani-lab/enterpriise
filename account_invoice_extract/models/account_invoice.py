@@ -455,7 +455,7 @@ class AccountMove(models.Model):
                 for tax in taxes_ids:
                     taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
                 if len(taxes_by_document) != 0:
-                    taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[1]
+                    taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[0]
                 else:
                     taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')])
                     if taxes_records:

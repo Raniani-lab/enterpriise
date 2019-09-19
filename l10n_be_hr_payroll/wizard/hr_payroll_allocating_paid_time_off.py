@@ -11,6 +11,12 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
     _name = 'hr.payroll.alloc.paid.leave'
     _description = 'Manage the Allocation of Paid Time Off'
 
+    @api.model
+    def default_get(self, field_list=None):
+        if self.env.company.country_id != self.env.ref('base.be'):
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        return super().default_get(field_list)
+
     date_start = fields.Date('Start Period', required=True, default=lambda self: fields.Date.today().replace(month=1, day=1),
         help="Start date of the period to consider.")
     date_end = fields.Date('End Period', required=True, default=lambda self: fields.Date.today().replace(month=12, day=31),

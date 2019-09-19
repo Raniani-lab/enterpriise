@@ -7,11 +7,18 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class HrPayslipEmployeeDepartureNotice(models.TransientModel):
     _name = 'hr.payslip.employee.depature.notice'
     _description = 'Manage the Employee Departure - Notice Duration'
+
+    @api.model
+    def default_get(self, field_list=None):
+        if self.env.company.country_id != self.env.ref('base.be'):
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        return super().default_get(field_list)
 
     employee_id = fields.Many2one('hr.employee', string='Employee', default=lambda self: self.env.context.get('active_id'))
     leaving_type = fields.Selection([
@@ -147,7 +154,7 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
         })
         termination_payslip._onchange_employee()
         termination_payslip.struct_id = struct_id.id
-        termination_payslip.worked_days_line_ids = ''
+        termination_payslip.worked_days_line_ids = [(5, 0, 0)]
 
         contract_id = termination_payslip.contract_id.id
         payslip_id = termination_payslip.id

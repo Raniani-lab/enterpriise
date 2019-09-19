@@ -3,12 +3,19 @@
 
 import datetime
 
-from odoo import fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class L10nBeIndividualAccountWizard(models.TransientModel):
     _name = 'l10n_be.individual.account.wizard'
     _description = 'HR Individual Account Report By Employee'
+
+    @api.model
+    def default_get(self, field_list=None):
+        if self.env.company.country_id != self.env.ref('base.be'):
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        return super().default_get(field_list)
 
     def _get_selection(self):
         current_year = datetime.datetime.now().year

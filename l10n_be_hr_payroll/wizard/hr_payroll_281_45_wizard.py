@@ -12,6 +12,12 @@ class HrPayroll28145Wizard(models.TransientModel):
     _name = 'hr.payroll.281.45.wizard'
     _description = 'HR Payroll 281.45 Wizard'
 
+    @api.model
+    def default_get(self, field_list=None):
+        if self.env.company.country_id != self.env.ref('base.be'):
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        return super().default_get(field_list)
+
     year = fields.Integer(default=lambda self: date.today().year)
 
     def action_generate_file_281_45(self):
@@ -40,7 +46,7 @@ class HrPayroll28145Wizard(models.TransientModel):
         for employee in employees:
             filename = '281.45-%s.pdf' % employee.name
             data = dict(employees_data[employee], employee=employee)
-            pdf, ext = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45').render_qweb_pdf(employee.ids, data)
+            pdf, _ = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45').render_qweb_pdf(employee.ids, data)
             employee.message_post(body=_("The 281.45 sheet has been generated"), attachments=[(filename, pdf)])
 
     @api.model

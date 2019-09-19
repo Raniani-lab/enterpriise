@@ -51,7 +51,7 @@ QUnit.module('DialingPanel', {
                 note: false,
                 partner_email: `partner ${100+id} @example.com`,
                 partner_id: 100+id,
-                partner_image_64: '',
+                partner_image_128: '',
                 partner_name: `Partner ${100+id}`,
                 phone: "(215)-379-4865",
                 state: 'open',

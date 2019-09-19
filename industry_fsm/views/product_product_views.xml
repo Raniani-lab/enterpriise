@@ -14,7 +14,7 @@
                 <t t-name="kanban-box">
                     <div class="o_kanban_record" style="min-height: 100px;">
                         <div class="o_kanban_image">
-                            <img t-att-src="kanban_image('product.product', 'image_64', record.id.raw_value)" alt="Product"/>
+                            <img t-att-src="kanban_image('product.product', 'image_128', record.id.raw_value)" alt="Product" class="o_image_64_contain"/>
                         </div>
                         <div class="oe_kanban_details">
                             <div class="o_kanban_record_top">

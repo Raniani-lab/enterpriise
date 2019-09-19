@@ -54,7 +54,7 @@
                                 <button name="%(sign.action_sign_template_share)d" type="action" class="btn btn-sm mt8" attrs="{'invisible': [('responsible_count', '&gt;', 1)]}">Share</button>
                             </div>
                             <div class="oe_kanban_bottom_right">
-                                <img t-att-src="kanban_image('res.users', 'image_64', record.create_uid.raw_value)" t-att-title="record.create_uid.value" t-att-alt="record.create_uid.value" width="24" height="24" class="oe_kanban_avatar float-right"/>
+                                <img t-att-src="kanban_image('res.users', 'image_128', record.create_uid.raw_value)" t-att-title="record.create_uid.value" t-att-alt="record.create_uid.value" class="oe_kanban_avatar float-right"/>
                             </div>
                         </div>
                     </div>

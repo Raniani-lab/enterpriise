@@ -164,7 +164,7 @@
                 decoration-warning="publication_warning"
                 decoration-danger="overlap_slot_count > 0"
                 display_unavailability="1"
-                thumbnails="{'employee_id': 'image_64'}">
+                thumbnails="{'employee_id': 'image_128'}">
 
                 <field name="allocated_hours"/>
                 <field name="recurrency_id" />

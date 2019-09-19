@@ -11,8 +11,7 @@ from odoo import http
 from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
 from odoo.tools.translate import _
-from odoo.tools import consteq, image_process
-from odoo.tools.translate import _
+from odoo.tools import image_process
 
 logger = logging.getLogger(__name__)
 
@@ -211,7 +210,7 @@ class ShareRoute(http.Controller):
             env = request.env
             share = env['documents.share'].sudo().browse(share_id)
             if share._get_documents_and_check_access(access_token, document_ids=[], operation='read') is not False:
-                return base64.b64decode(env['res.users'].sudo().browse(share.create_uid.id).image_64)
+                return base64.b64decode(env['res.users'].sudo().browse(share.create_uid.id).image_128)
             else:
                 return request.not_found()
         except Exception:

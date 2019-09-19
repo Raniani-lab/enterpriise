@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class SignSendRequest(models.TransientModel):
@@ -111,3 +112,15 @@ class SignSendRequestSigner(models.TransientModel):
     role_id = fields.Many2one('sign.item.role', readonly=True, required=True)
     partner_id = fields.Many2one('res.partner', required=True, string="Contact")
     sign_send_request_id = fields.Many2one('sign.send.request')
+
+    def create(self, vals_list):
+        missing_roles = []
+        for vals in vals_list:
+            if not vals.get('partner_id'):
+                role_id = vals.get('role_id')
+                role = self.env['sign.item.role'].browse(role_id)
+                missing_roles.append(role.name)
+        if missing_roles:
+            missing_roles_str = ', '.join(missing_roles)
+            raise UserError(_('The following roles must be set to create the signature request: ') + missing_roles_str)
+        return super().create(vals_list)

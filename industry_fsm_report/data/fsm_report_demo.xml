@@ -79,7 +79,7 @@
                                 <field name="x_task_id" domain="[('is_fsm', '=', True)]"/>
                             </group>
                         </group>
-                        <group>
+                        <group class="o_fsm_worksheet_form">
                             <group>
                                 <field name="x_name"/>
                                 <field name="x_manufacturer" options="{'no_create':true,'no_open':true}"/>

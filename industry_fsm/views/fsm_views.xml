@@ -8,7 +8,7 @@
         <field name="name">project.task.form.fsm</field>
         <field name="model">project.task</field>
         <field name="arch" type="xml">
-            <form>
+            <form class="o_fsm_task_form">
                 <header attrs="{'invisible': [('id', '=', False)]}">
                     <field name="display_timesheet_timer" invisible="1"/>
                     <field name="is_fsm" invisible="1"/>
@@ -84,8 +84,8 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="partner_id" required="1"
+                            <field name="name" class="o_fsm_task_name"/>
+                            <field name="partner_id" required="1" class="o_fsm_task_customer_field"
                                 context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
                                 options='{"always_reload": True}'
                                 widget="res_partner_many2one"/>

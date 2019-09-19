@@ -6,7 +6,7 @@
     <field name="model">product.product</field>
     <field name="priority">999</field>
     <field name="arch" type="xml">
-        <kanban edit="0" class="o_kanban_mobile">
+        <kanban edit="0" class="o_kanban_mobile o_fsm_material_kanban">
             <field name="id"/>
             <field name="name"/>
             <field name="product_template_attribute_value_ids"/>

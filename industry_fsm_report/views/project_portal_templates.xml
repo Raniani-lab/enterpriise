@@ -3,6 +3,10 @@
 
     <template id="portal_my_worksheet" name="My Worksheets" inherit_id="portal.portal_sidebar" primary="True">
 
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="attributes">
+            <attribute name="id">o_fsm_worksheet_portal</attribute>
+        </xpath>
+
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
             <t t-set="o_portal_fullwidth_alert" groups="project.group_project_user">
                 <t t-call="portal.portal_back_in_edit_mode">

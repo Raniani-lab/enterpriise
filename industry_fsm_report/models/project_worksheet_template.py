@@ -117,7 +117,7 @@ class ProjectWorksheetTemplate(models.Model):
                     <h1 invisible="context.get('studio') or context.get('default_x_task_id')">
                             <field name="x_task_id" domain="[('is_fsm', '=', True)]"/>
                     </h1>
-                    <group>
+                    <group class="o_fsm_worksheet_form">
                         <group>
                             <field name="x_comments"/>
                         </group>

@@ -40,13 +40,6 @@
     }
     .modal-content {
 
-        .o_data_cell.o_required_modifier:not(.o_readonly_modifier){
-            // setting this to any value works. :-/
-            border-top:99px;
-            border-bottom:99px;
-        }
-
-
         .o_field_one2many.o_sign_flat_o2m {
             // Ajust this value to match the standard components below
             padding-right: 42px;

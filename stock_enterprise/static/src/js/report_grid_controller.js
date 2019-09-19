@@ -26,7 +26,7 @@ var ReportGridController = GridController.extend({
             method: 'action_open_moves',
             args: [
                 row.values.product_id[0],
-                row.values.state_tech_name,
+                row.values.state,
                 col.values.date[0].split('/')[0],
             ]
         }).then(function (action) {

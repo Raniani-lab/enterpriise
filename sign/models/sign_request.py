@@ -122,7 +122,7 @@ class SignRequest(models.Model):
         all_recipients = set(self.request_item_ids.mapped('signer_email'))
         all_recipients |= set(self.mapped('message_follower_ids.partner_id.email'))
         # Remove False from all_recipients to avoid crashing later
-        all_recipients.remove(False)
+        all_recipients.discard(False)
         return all_recipients
 
     def button_send(self):

@@ -10,7 +10,7 @@
 Employee contracts files will be automatically integrated to the Document app.
 """,
     'website': ' ',
-    'depends': ['documents', 'hr_contract'],
+    'depends': ['documents_hr', 'hr_contract'],
     'data': ['data/data.xml', 'views/documents_views.xml'],
     'installable': True,
     'auto_install': True,

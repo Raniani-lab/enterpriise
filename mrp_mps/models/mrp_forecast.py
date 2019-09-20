@@ -33,7 +33,9 @@ class SaleForecast(models.Model):
     def generate_procurement(self, product_id=False, limit=False):
         """ Create procurements related to """
         product = self.env['product.product'].browse(product_id)
-        mps_report = self.env['mrp.mps.report'].search([])[0]
+        mps_report = self.env['mrp.mps.report'].search([], limit=1)
+        if not mps_report:
+            return True
         if not limit:
             result = [x for x in mps_report.get_data(product) if x['procurement_enable']]
             for data in result:

@@ -7,7 +7,7 @@
     <record id="hr_referral_points_emp_rule" model="ir.rule">
         <field name="name">Employee Referral Points</field>
         <field name="model_id" ref="model_hr_referral_points"/>
-        <field name="domain_force">[('ref_employee_id.user_id', '=', user.id)]</field>
+        <field name="domain_force">[('ref_user_id', '=', user.id)]</field>
         <field name="groups" eval="[(4, ref('base.group_user'))]"/>
     </record>
 

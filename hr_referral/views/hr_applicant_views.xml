@@ -9,7 +9,7 @@
         <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='source_id']" position="after">
-                <field name="ref_employee_id"/>
+                <field name="ref_user_id"/>
             </xpath>
             <field name="source_id" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -23,10 +23,10 @@
         <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_search_bis"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='email_from']" position="after">
-                <field name="ref_employee_id" string="Referred By"/>
+                <field name="ref_user_id" string="Referred By"/>
             </xpath>
             <xpath expr="//filter[@name='last_stage_update']" position="after">
-                <filter string="Referred By" name="ref_by_employee_id" context="{'group_by':'ref_employee_id'}"/>
+                <filter string="Referred By" name="ref_by_user_id" context="{'group_by':'ref_user_id'}"/>
             </xpath>
         </field>
     </record>
@@ -140,7 +140,7 @@
         <field name="view_mode">kanban,form</field>
         <field name="view_id" ref="hr_referral.view_hr_applicant_employee_referral_kanban"/>
         <field name="search_view_id" ref="view_hr_referral_filter"/>
-        <field name="domain">[('ref_employee_id.user_id','=',uid)]</field>
+        <field name="domain">[('ref_user_id','=',uid)]</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
               Ready to receive points?

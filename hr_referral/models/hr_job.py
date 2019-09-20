@@ -3,8 +3,6 @@
 
 import logging
 
-from datetime import timedelta
-
 from odoo import api, fields, models, _
 
 _logger = logging.getLogger(__name__)
@@ -25,7 +23,7 @@ class Job(models.Model):
 
     def _compute_clicks(self):
         grouped_data = self.env['link.tracker'].read_group([
-            ('source_id', '=', self.env.user.employee_id.utm_source_id.id),
+            ('source_id', 'in', self.env.user.employee_ids.mapped('utm_source_id.id')),
             ('campaign_id', 'in', self.mapped('utm_campaign_id').ids)
             ], ['count', 'campaign_id', 'medium_id'], ['campaign_id', 'medium_id'], lazy=False)
         medium_direct = self.env.ref('utm.utm_medium_direct')

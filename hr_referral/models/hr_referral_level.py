@@ -12,4 +12,3 @@ class HrReferralLevel(models.Model):
     name = fields.Char(required=True, string='Level Name')
     points = fields.Integer(required=True)
     image = fields.Binary(required=True)
-    company_id = fields.Many2one('res.company', 'Company')

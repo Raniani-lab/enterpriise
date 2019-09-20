@@ -7,11 +7,11 @@
         <field name="model">hr.referral.points</field>
         <field name="arch" type="xml">
             <search string="Search Points / Gifts">
-                <field name="ref_employee_id"/>
+                <field name="ref_user_id"/>
                 <filter domain="[('hr_referral_reward_id', '!=', False)]" string="Gifts" name="filter_gifts"/>
                 <filter domain="[('hr_referral_reward_id', '=', False)]" string="Points" name="filter_points"/>
                 <group expand="1" string="Group By">
-                    <filter string="Employee" name="group_by_employee_id" context="{'group_by':'ref_employee_id'}"/>
+                    <filter string="Employee" name="group_by_employee_id" context="{'group_by':'ref_user_id'}"/>
                     <filter string="Referral" name="group_by_applicant_id" context="{'group_by':'applicant_id'}"/>
                 </group>
             </search>
@@ -23,11 +23,12 @@
         <field name="model">hr.referral.points</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="ref_employee_id"/>
+                <field name="ref_user_id"/>
                 <field name="points"/>
                 <field name="stage_id"/>
                 <field name="applicant_id"/>
                 <field name="hr_referral_reward_id"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>
@@ -37,9 +38,10 @@
         <field name="model">hr.referral.points</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="ref_employee_id"/>
+                <field name="ref_user_id"/>
                 <field name="points"/>
                 <field name="hr_referral_reward_id"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>
@@ -52,8 +54,9 @@
                 <sheet>
                     <group>
                         <group name="main_details">
-                            <field name="ref_employee_id"/>
+                            <field name="ref_user_id"/>
                             <field name="points"/>
+                            <field name="company_id"/>
                         </group>
                         <group name="configuration_details">
                             <field name="hr_referral_reward_id" attrs="{'invisible': [('hr_referral_reward_id', '=', False)]}"/>

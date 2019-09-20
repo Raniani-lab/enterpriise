@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class HrReferralLinkToShare(models.TransientModel):
@@ -26,10 +27,12 @@ class HrReferralLinkToShare(models.TransientModel):
     @api.depends('channel')
     def _compute_url(self):
         self.ensure_one()
+        if not self.env.user.employee_ids:
+            raise UserError(_("You don't have access to this application as your user is not linked to an employee."))
         link_tracker = self.env['link.tracker'].sudo().create({
             'url': self.job_id.website_url or '/jobs',
             'campaign_id': self.job_id.utm_campaign_id.id,
-            'source_id': self.env.user.employee_id.utm_source_id.id,
+            'source_id': self.env.user.employee_ids[0].utm_source_id.id,
             'medium_id': self.env.ref('utm.utm_medium_%s' % self.channel).id
         })
         if self.channel == 'direct':

@@ -16,17 +16,17 @@
         </record>
 
         <record id="hr_recruitment.hr_case_financejob1" model="hr.applicant">
-            <field name="ref_employee_id" ref="hr.employee_admin"/>
+            <field name="ref_user_id" ref="base.user_admin"/>
             <field name="medium_id" ref="utm.utm_medium_direct"/>
         </record>
 
         <record id="hr_recruitment.hr_case_marketingjob0" model="hr.applicant">
-            <field name="ref_employee_id" ref="hr.employee_admin"/>
+            <field name="ref_user_id" ref="base.user_admin"/>
             <field name="medium_id" ref="utm.utm_medium_facebook"/>
         </record>
 
         <record id="hr_recruitment.hr_case_salesman0" model="hr.applicant">
-            <field name="ref_employee_id" ref="hr.employee_admin"/>
+            <field name="ref_user_id" ref="base.user_admin"/>
             <field name="medium_id" ref="utm.utm_medium_linkedin"/>
         </record>
 

@@ -39,6 +39,7 @@
                 <field name="description"/>
                 <field name="image"/>
                 <field name="points_missing"/>
+                <field name="company_id"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card">
@@ -64,6 +65,10 @@
                                 <div>
                                     <p><field name="description"/></p>
                                 </div>
+                                <div groups="base.group_multi_company">
+                                    <i><field name="company_id"/></i>
+                                </div>
+
                                 <div>
                                     <t t-if="record.points_missing.raw_value &lt; 1">
                                         <button name="buy" type="object" class="btn btn-primary w-100 " confirm="Do you want to confirm this purchase? After comfirmation, a HR will contact you.">
@@ -140,6 +145,7 @@
                 <field name="name"/>
                 <field name="cost"/>
                 <field name="awarded_employees"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

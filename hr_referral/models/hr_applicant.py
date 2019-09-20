@@ -12,9 +12,9 @@ from odoo.osv import expression
 class Applicant(models.Model):
     _inherit = ["hr.applicant"]
 
-    ref_employee_id = fields.Many2one('hr.employee', string='Referred By Employee', tracking=True,
-        compute='_compute_ref_employee_id', inverse='_inverse_ref_employee_id', store=True)
-    referral_points_ids = fields.One2many('hr.referral.points', 'applicant_id')
+    ref_user_id = fields.Many2one('res.users', string='Referred By User', tracking=True,
+        compute='_compute_ref_user_id', inverse='_inverse_ref_user_id', store=True, copy=False)
+    referral_points_ids = fields.One2many('hr.referral.points', 'applicant_id', copy=False)
     earned_points = fields.Integer(compute='_compute_earned_points')
     referral_state = fields.Selection([
         ('progress', 'In Progress'),
@@ -22,17 +22,17 @@ class Applicant(models.Model):
         ('closed', 'Not Hired')], required=True, default='progress')
     shared_item_infos = fields.Text(compute="_compute_shared_item_infos")
     max_points = fields.Integer(related="job_id.max_points")
-    friend_id = fields.Many2one('hr.referral.friend')
+    friend_id = fields.Many2one('hr.referral.friend', copy=False)
     friend_image = fields.Binary('medium-sized image for head', related='friend_id.image_head')
 
     @api.depends('source_id')
-    def _compute_ref_employee_id(self):
+    def _compute_ref_user_id(self):
         for applicant in self:
-            applicant.ref_employee_id = self.env['hr.employee'].search([('utm_source_id', '=', applicant.source_id.id)], limit=1)
+            applicant.ref_user_id = self.env['hr.employee'].search([('utm_source_id', '=', applicant.source_id.id)], limit=1).user_id
 
-    def _inverse_ref_employee_id(self):
+    def _inverse_ref_user_id(self):
         for applicant in self:
-            applicant.source_id = applicant.ref_employee_id.utm_source_id
+            applicant.source_id = applicant.ref_user_id.employee_ids[0].utm_source_id if applicant.ref_user_id.employee_ids else False
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
@@ -40,8 +40,8 @@ class Applicant(models.Model):
             referral_fields = {
                 'name', 'partner_name', 'job_id', 'referral_points_ids', 'earned_points', 'max_points',
                 'shared_item_infos', 'referral_state', 'user_id', 'friend_id', 'friend_image', '__last_update'}
-            if not set(fields or []) - referral_fields and self.env.user.employee_id:
-                domain = expression.AND([domain, [('ref_employee_id', '=', self.env.user.employee_id.id)]])
+            if not set(fields or []) - referral_fields and self.env.user:
+                domain = expression.AND([domain, [('ref_user_id', '=', self.env.user.id)]])
                 return super(Applicant, self.sudo()).search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
         return super().search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
 
@@ -63,9 +63,9 @@ class Applicant(models.Model):
 
     def write(self, vals):
         res = super(Applicant, self).write(vals)
-        if 'ref_employee_id' in vals or 'stage_id' in vals:
-            for applicant in self.filtered(lambda a: a.ref_employee_id):
-                if 'ref_employee_id' in vals:
+        if 'ref_user_id' in vals or 'stage_id' in vals:
+            for applicant in self.filtered(lambda a: a.ref_user_id):
+                if 'ref_user_id' in vals:
                     applicant.referral_points_ids.unlink()
                 applicant._update_points(applicant.stage_id.id, vals.get('last_stage_id', False))
         return res
@@ -73,7 +73,7 @@ class Applicant(models.Model):
     @api.model
     def create(self, vals):
         res = super(Applicant, self).create(vals)
-        if res.ref_employee_id and res.stage_id:
+        if res.ref_user_id and res.stage_id:
             res._update_points(res.stage_id.id, False)
         return res
 
@@ -94,11 +94,15 @@ class Applicant(models.Model):
             subject=subject,
             body=body,
             author_id=odoobot.id,
-            partner_ids=[self.ref_employee_id.user_id.partner_id.id],
+            partner_ids=[self.ref_user_id.partner_id.id],
             email_layout_xmlid='mail.mail_notification_light',
         )
 
     def _update_points(self, new_state_id, old_state_id):
+        if not self.ref_user_id.employee_ids:
+            return
+        if not self.company_id:
+            raise UserError(_("Applicant must have a company."))
         new_state = self.env['hr.recruitment.stage'].browse(new_state_id)
         if old_state_id:
             old_state_sequence = self.env['hr.recruitment.stage'].browse(old_state_id).sequence
@@ -119,7 +123,8 @@ class Applicant(models.Model):
                     'applicant_id': self.id,
                     'stage_id': stage['stage_id'][0],
                     'points': - stage['points'],
-                    'ref_employee_id': self.ref_employee_id.id
+                    'ref_user_id': self.ref_user_id.id,
+                    'company_id': self.company_id.id
                 })
 
         # Increase stage sequence
@@ -133,7 +138,8 @@ class Applicant(models.Model):
                     'stage_id': stage.id,
                     'points': stage.points,
                     'sequence_stage': stage.sequence,
-                    'ref_employee_id': self.ref_employee_id.id
+                    'ref_user_id': self.ref_user_id.id,
+                    'company_id': self.company_id.id
                 })
             future_stage = self.env['hr.recruitment.stage'].search_count([
                 ('sequence', '>', new_state.sequence),
@@ -149,9 +155,9 @@ class Applicant(models.Model):
     def choose_a_friend(self, friend_id):
         self.ensure_one()
         self_sudo = self.sudo()
-        if not self.env.user.employee_id:
+        if not self.env.user:
             return
-        if self_sudo.ref_employee_id == self.env.user.employee_id and not self_sudo.friend_id:
+        if self_sudo.ref_user_id == self.env.user and not self_sudo.friend_id:
             # Use sudo, employee has normaly not the right to write on applicant
             self_sudo.write({'friend_id': friend_id})
 
@@ -181,17 +187,17 @@ class Applicant(models.Model):
     @api.model
     def retrieve_referral_welcome_screen(self):
         result = {}
-        if not self.env.user.employee_id:
+        if not self.env.user.employee_ids:
             raise UserError(_("You don't have access to this application as your user is not linked to an employee."))
-        employee_id = self.env.user.employee_id
+        user_id = self.env.user
 
-        result['id'] = employee_id.id
-        if not employee_id.hr_referral_onboarding_page:
+        result['id'] = user_id.id
+        if not user_id.hr_referral_onboarding_page:
             result['onboarding_screen'] = True
             result['onboarding'] = self._get_onboarding_steps()
             return result
 
-        applicant = self.sudo().search([('ref_employee_id', '=', employee_id.id)])
+        applicant = self.sudo().search([('ref_user_id', '=', user_id.id)])
         applicants_hired = applicant.filtered(lambda r: r.referral_state == 'hired')
         applicant_name = {applicant_hired.friend_id.id: applicant_hired.partner_name or applicant_hired.name for applicant_hired in applicants_hired}
         applicant_without_friend = applicants_hired.filtered(lambda r: not r.friend_id)
@@ -209,14 +215,14 @@ class Applicant(models.Model):
         result['friends'] = self._get_friends(applicant_name)
 
         result['point_received'] = sum(self.env['hr.referral.points'].search([
-            ('ref_employee_id', '=', employee_id.id),
+            ('ref_user_id', '=', user_id.id),
             ('hr_referral_reward_id', '=', False)]).mapped('points'))
 
         # Employee comes for the first time on this app
-        if not employee_id.hr_referral_level_id:
-            employee_id.hr_referral_level_id = self.env['hr.referral.level'].search([], order='points asc', limit=1).id
+        if not user_id.hr_referral_level_id:
+            user_id.hr_referral_level_id = self.env['hr.referral.level'].search([], order='points asc', limit=1).id
 
-        current_level = self.env.user.employee_id.hr_referral_level_id
+        current_level = user_id.hr_referral_level_id
         next_level = self.env['hr.referral.level'].search([('points', '>', current_level.points)], order='points asc', limit=1)
 
         result['level'] = {
@@ -256,18 +262,18 @@ class Applicant(models.Model):
 
     @api.model
     def upgrade_level(self):
-        if not self.env.user.employee_id:
+        if not self.env.user:
             return
-        employee_id = self.env.user.employee_id
+        user_id = self.env.user
         user_points = sum(self.env['hr.referral.points'].search([
-            ('ref_employee_id', '=', employee_id.id),
+            ('ref_user_id', '=', user_id.id),
             ('hr_referral_reward_id', '=', False)]).mapped('points'))
         next_referral_level = self.env['hr.referral.level'].search([
-            ('points', '>', employee_id.hr_referral_level_id.points),
+            ('points', '>', user_id.hr_referral_level_id.points),
             ('points', '<=', user_points)
         ], order='points asc', limit=1)
         if next_referral_level:
-            self.env.user.employee_id.write({'hr_referral_level_id': next_referral_level.id})
+            user_id.write({'hr_referral_level_id': next_referral_level.id})
 
 
 class RecruitmentStage(models.Model):

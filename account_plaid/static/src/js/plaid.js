@@ -12,10 +12,13 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
         }
     },
     init: function(parent, context) {
+        var self = this;
         this._super(parent, context);
         this.context = context.context;
         this.exit = false;
-        this.loaded = $.Deferred();
+        this.loaded = new Promise(function (resolve) {
+            self._loadedResolver = resolve;
+        });
         this.institution_id = context.institution_id;
         this.plaid_link = context.open_link;
         this.account_online_provider_id = context.account_online_provider_id;
@@ -42,7 +45,7 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
                             }
                             else {
                                 self.exit = true;
-                                self.loaded.resolve();
+                                self._loadedResolver();
                             }
                         },
                         onExit: function(err, metadata) {
@@ -51,7 +54,7 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
                                 console.log(metadata);
                             }
                             self.exit = true;
-                            self.loaded.resolve();
+                            self._loadedResolver();
                         },
                     }
                     if (self.public_token !== undefined) {
@@ -71,7 +74,7 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
         }
         else {
             // Just show how many transactions have been fetched
-            this.loaded.resolve();
+            this._loadedResolver();
         }
         return this.loaded;
     },

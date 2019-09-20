@@ -40,6 +40,7 @@ class CustomerPortal(CustomerPortal):
             'content': {'input': 'content', 'label': _('Search <span class="nolabel"> (in Content)</span>')},
             'message': {'input': 'message', 'label': _('Search in Messages')},
             'customer': {'input': 'customer', 'label': _('Search in Customer')},
+            'id': {'input': 'id', 'label': _('Search ID')},
             'all': {'input': 'all', 'label': _('Search in All')},
         }
 
@@ -56,6 +57,8 @@ class CustomerPortal(CustomerPortal):
         # search
         if search and search_in:
             search_domain = []
+            if search_in in ('id', 'all'):
+                search_domain = OR([search_domain, [('id', '=', search)]])
             if search_in in ('content', 'all'):
                 search_domain = OR([search_domain, ['|', ('name', 'ilike', search), ('description', 'ilike', search)]])
             if search_in in ('customer', 'all'):

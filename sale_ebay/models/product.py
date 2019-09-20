@@ -519,7 +519,10 @@ class ProductTemplate(models.Model):
             if product:
                 product._sync_transaction(item, auto_commit=auto_commit)
         if page_number < int(response.dict()['PaginationResult']['TotalNumberOfPages']):
-            self._sync_product_status_ranged(page_number + 1)
+            self._sync_product_status_ranged(page_number + 1,
+                sync_big_stocks=sync_big_stocks,
+                auto_commit=auto_commit,
+                delta_days=delta_days)
 
     @api.model
     def _sync_old_product_status(self, sync_big_stocks=False, auto_commit=False):

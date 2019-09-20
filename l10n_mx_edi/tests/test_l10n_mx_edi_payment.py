@@ -115,6 +115,6 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
                 'move_line': line,
             })
         bank_statement.line_ids.process_reconciliation(values)
-        self.assertEquals(
+        self.assertEqual(
             invoices.mapped('payment_ids').l10n_mx_edi_pac_status, 'signed',
             'The payment was not signed')

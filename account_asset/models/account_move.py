@@ -113,6 +113,8 @@ class AccountMove(models.Model):
 
             for move_line in move.line_ids:
                 if move_line.account_id and (move_line.account_id.can_create_asset) and move_line.account_id.create_asset != 'no' and not move.reversed_entry_id:
+                    if not move_line.name:
+                        raise UserError(_('Journal Items of {account} should have a label in order to generate an asset').format(account=move_line.account_id.display_name))
                     vals = {
                         'name': move_line.name,
                         'company_id': move_line.company_id.id,
@@ -280,8 +282,9 @@ class AccountMoveLine(models.Model):
     def turn_as_asset(self):
         return self._turn_as_asset('purchase', _("Turn as an asset"), self.env.ref("account_asset.view_account_asset_form"))
 
-    def turn_as_deferred_revenue(self):
-        return self._turn_as_asset('sale', _("Turn as a deferred revenue"), self.env.ref('account_asset.view_account_asset_revenue_form'))
-
-    def turn_as_deferred_expense(self):
-        return self._turn_as_asset('expense', _("Turn as a deferred expense"), self.env.ref('account_asset.view_account_asset_expense_form'))
+    def turn_as_deferred(self):
+        balance = sum(aml.debit - aml.credit for aml in self)
+        if balance > 0:
+            return self._turn_as_asset('expense', _("Turn as a deferred expense"), self.env.ref('account_asset.view_account_asset_expense_form'))
+        else:
+            return self._turn_as_asset('sale', _("Turn as a deferred revenue"), self.env.ref('account_asset.view_account_asset_revenue_form'))

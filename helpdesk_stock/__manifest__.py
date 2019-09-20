@@ -8,7 +8,7 @@
     'depends': ['helpdesk_sale', 'stock'],
     'auto_install': False,
     'description': """
-        Manage Product returns from Helpdesk's tickets
+Manage Product returns from helpdesk tickets
     """,
     'data': [
         'wizard/stock_picking_return_views.xml',

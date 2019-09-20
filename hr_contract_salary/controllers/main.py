@@ -41,6 +41,7 @@ class SignContract(Sign):
             contract.access_token_consumed = True
             if contract.applicant_id:
                 contract.applicant_id.access_token = False
+                contract.applicant_id.emp_id = contract.employee_id
         # Both applicant/employee and HR responsible have signed
         if request_item.sign_request_id.nb_closed == 2:
             if contract.employee_id:
@@ -313,6 +314,7 @@ class website_hr_contract_salary(http.Controller):
             employee = request.env['hr.employee'].sudo().create({
                 'name': 'Simulation Employee',
                 'active': False,
+                'company_id': contract.company_id.id,
             })
         if personal_info:
             employee.with_context(lang=None).update_personal_info(personal_info, no_name_write=bool(kw.get('employee')))

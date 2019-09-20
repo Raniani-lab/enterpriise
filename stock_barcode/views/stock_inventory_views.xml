@@ -58,7 +58,7 @@
                         attrs="{'readonly': [('state', '=', 'done')]}"
                         domain="[('type', 'in', ['product'])]"
                         required="1"/>
-                    <field name="prod_lot_id" attrs="{'invisible': ['|',('product_tracking', '=','none'), ('product_id','=', False)], 'required': [('product_tracking', '!=', 'none')]}" context="{'default_product_id': product_id}"/>
+                    <field name="prod_lot_id" attrs="{'invisible': ['|',('product_tracking', '=','none'), ('product_id','=', False)], 'required': [('product_tracking', '!=', 'none')]}" context="{'default_company_id': company_id, 'default_product_id': product_id}"/>
                     <field name="theoretical_qty" readonly="1"/>
                     <field name="product_qty" string="Real Quantity" />
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>

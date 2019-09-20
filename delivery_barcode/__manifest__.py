@@ -4,7 +4,7 @@
     'name': "Delivery Barcode Scanning",
     'summary': "Add barcode scanning facilities to Delivery.",
     'description': """
-        This module adds support for barcodes scanning to the delivery packages.
+This module enables the management of deliveries through the use of barcode scanning.
     """,
     'version': '1.0',
     'depends': ['stock_barcode', 'delivery'],

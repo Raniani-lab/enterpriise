@@ -8,25 +8,26 @@
 # Mariusz, 2019
 # Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
-# Paweł Wodyński <pw@myodoo.pl>, 2019
-# Martin Trigaux, 2019
-# Dariusz Żbikowski <darek@krokus.com.pl>, 2019
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
 # Jakobus Buntownikus <buntownix@gmail.com>, 2019
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
-# Paweł Michoń <michon.pawel@wp.pl>, 2019
 # Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
 # Natalia Gros <nag@odoo.com>, 2019
+# Martin Trigaux, 2019
+# Dariusz Żbikowski <darek@krokus.com.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Paweł Michoń <michon.pawel@wp.pl>, 2019
+# Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-13 11:37+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Natalia Gros <nag@odoo.com>, 2019\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,6 +44,11 @@ msgstr " (kopia)"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciation_entries_count
 msgid "# Depreciation Entries"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_count
+msgid "# Gross Increases"
 msgstr ""
 
 #. module: account_asset
@@ -75,6 +81,18 @@ msgid "A deferred revenue has been created for this move:"
 msgstr ""
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "A document linked to %s has been deleted: "
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "A gross increase has been created"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Accelerated"
@@ -91,8 +109,23 @@ msgid "Account"
 msgstr "Konto"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_counterpart_id
+msgid "Account Asset Counterpart"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_assets_report
 msgid "Account Assets Report"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_depreciation_id
+msgid "Account Depreciation"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_depreciation_expense_id
+msgid "Account Depreciation Expense"
 msgstr ""
 
 #. module: account_asset
@@ -121,6 +154,22 @@ msgstr ""
 "Konto stosowane w zapisach tworzonych okresowo, do księgowania amortyzacji."
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Account used to recognize the expense"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Account used to recognize the revenue"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Account used to record the deferred income"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_asset_id
 msgid ""
 "Account used to record the purchase of the asset at its original price."
@@ -129,13 +178,43 @@ msgstr ""
 "jego zakupu."
 
 #. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_sell__gain_account_id
+msgid "Account used to write the journal item in case of gain"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_res_company__gain_account_id
+msgid ""
+"Account used to write the journal item in case of gain while selling an "
+"asset"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_sell__loss_account_id
+msgid "Account used to write the journal item in case of loss"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_res_company__loss_account_id
+msgid ""
+"Account used to write the journal item in case of loss while selling an "
+"asset"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Accounting"
+msgstr "Księgowość"
+
+#. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__acquisition_date
 #, python-format
 msgid "Acquisition Date"
 msgstr "Data przejęcia"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__action
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__action
 msgid "Action"
 msgstr "Akcja"
 
@@ -179,6 +258,11 @@ msgid "All the lines should be posted"
 msgstr ""
 
 #. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset__parent_id
+msgid "An asset has a parent when it is the result of gaining value"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "An asset has been created for this move:"
@@ -202,13 +286,14 @@ msgstr "Archiwalne"
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
 #: code:addons/account_asset/models/account_move.py:0
+#: code:addons/account_asset/models/account_move.py:0
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__asset_id
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__asset_id
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__asset_id
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__purchase
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 #, python-format
 msgid "Asset"
 msgstr "Srodek"
@@ -219,9 +304,14 @@ msgid "Asset Account"
 msgstr "Konto środków trwałych"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
-msgid "Asset Durations to Modify"
-msgstr "Czas życia środka do modyfikacji"
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_id
+msgid "Asset Gross Increase Account"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_id_display_name
+msgid "Asset Id Display Name"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_ids_display_name
@@ -243,7 +333,9 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Asset Model"
 msgstr ""
 
@@ -270,6 +362,11 @@ msgstr "Nazwa środka"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_asset_type
 msgid "Asset Type"
 msgstr "Typ elementu"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_value_change
+msgid "Asset Value Change"
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -351,6 +448,28 @@ msgid "Attachment Count"
 msgstr "Ilość Załączników"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
+msgid "Automate Asset"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
+msgid "Automate Deferred Expense"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
+msgid "Automate Deferred Revenue"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/report/account_assets_report.py:0
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__book_value
+#, python-format
+msgid "Book Value"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__can_create_asset
 msgid "Can Create Asset"
 msgstr ""
@@ -358,6 +477,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_pause_form
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_sell_form
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -371,6 +491,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Category of asset"
 msgstr "Kategoria środka"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__children_ids
+msgid "Children"
+msgstr "Podrzędne"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method
@@ -388,14 +513,20 @@ msgid "Closed"
 msgstr "Zamknięte"
 
 #. module: account_asset
+#: model:ir.model,name:account_asset.model_res_company
+msgid "Companies"
+msgstr "Firmy"
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__company_id
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__company_id
 msgid "Company"
 msgstr "Firma"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__method
-msgid "Computation Method"
-msgstr "Metoda obliczania"
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Compute Deferal"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -403,24 +534,28 @@ msgid "Compute Depreciation"
 msgstr "Przelicz Amortyzację"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Compute Revenue"
+msgstr "Przelicz przychód"
+
+#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_modal
 msgid "Confirm"
 msgstr "Potwierdź"
 
 #. module: account_asset
+#: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__create_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Create Asset"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
+#: model:ir.actions.server,name:account_asset.action_account_aml_to_deferred_expense
 msgid "Create Deferred Expense"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
+#: model:ir.actions.server,name:account_asset.action_account_aml_to_deferred_revenue
 msgid "Create Deferred Revenue"
 msgstr ""
 
@@ -437,6 +572,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__create_uid
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__create_uid
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__create_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__create_uid
 msgid "Created by"
 msgstr "Utworzona przez"
@@ -444,6 +580,7 @@ msgstr "Utworzona przez"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__create_date
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__create_date
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__create_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__create_date
 msgid "Created on"
 msgstr "Data utworzenia"
@@ -452,6 +589,16 @@ msgstr "Data utworzenia"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_depreciated_value
 msgid "Cumulative Depreciation"
 msgstr "Łączna amortyzacja"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Cumulative Expense"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Cumulative Revenue"
+msgstr "Przychody łącznie"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__currency_id
@@ -465,19 +612,60 @@ msgid "Current"
 msgstr "Bieżące"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Current Values"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__invoice_id
+msgid "Customer Invoice"
+msgstr "Faktura sprzedaży"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__date
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Date"
 msgstr "Data"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_move.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
+#, python-format
 msgid "Deferred Expense"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
+msgid "Deferred Expense Account"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Deferred Expense Amount"
 msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Expense Model"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Deferred Expense Model name"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.actions.act_window,name:account_asset.action_account_expense_model_form
+#: model:ir.ui.menu,name:account_asset.menu_action_account_expense_model_recognition
+msgid "Deferred Expense Models"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Deferred Expense name"
 msgstr ""
 
 #. module: account_asset
@@ -488,20 +676,57 @@ msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
+#: model:ir.actions.act_window,name:account_asset.action_account_expense_form
+#: model:ir.ui.menu,name:account_asset.menu_action_account_expense_recognition
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
 #, python-format
 msgid "Deferred Expenses"
 msgstr ""
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
+msgid "Deferred Expenses Models"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_move.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__sale
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+#, python-format
 msgid "Deferred Revenue"
 msgstr "Odroczone przychody"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
+msgid "Deferred Revenue Account"
+msgstr "Konto odroczonych przychodów"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Deferred Revenue Amount"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Revenue Model"
 msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Deferred Revenue Model name"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.actions.act_window,name:account_asset.action_account_revenue_model_form
+#: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_model_recognition
+msgid "Deferred Revenue Models"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Deferred Revenue name"
+msgstr "Nazwa odroczonego przychodu"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -511,9 +736,17 @@ msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
+#: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
+#: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_recognition
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
 #, python-format
 msgid "Deferred Revenues"
 msgstr "Odroczone przychody"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
+msgid "Deferred Revenues Models"
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -552,6 +785,17 @@ msgid "Degressive Factor"
 msgstr "Współczynnik amortyzacji"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__value_residual
+msgid "Depreciable Amount"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__value_residual
+#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_remaining_value
+msgid "Depreciable Value"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #, python-format
@@ -581,6 +825,11 @@ msgid "Depreciation Lines"
 msgstr "Pozycje amortyzacji"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Depreciation Method"
+msgstr "Metoda amortyzacji"
+
+#. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Depreciation Table Report"
@@ -599,9 +848,10 @@ msgid "Depreciation entry %s posted (%s)"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_modal
-msgid "Discard"
-msgstr "Odrzuć"
+#: code:addons/account_asset/models/account_move.py:0
+#, python-format
+msgid "Depreciation entry %s reversed (%s)"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_account_asset_id
@@ -616,6 +866,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_name
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__display_name
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__display_name
 #: model:ir.model.fields,field_description:account_asset.field_account_assets_report__display_name
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__display_name
 msgid "Display Name"
@@ -645,8 +896,9 @@ msgid "Disposal Moves"
 msgstr "Zapisy likwidacji"
 
 #. module: account_asset
-#: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__no
-msgid "Do not create"
+#: model:ir.model.fields.selection,name:account_asset.selection__account_asset_sell__action__dispose
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_sell_form
+msgid "Dispose"
 msgstr ""
 
 #. module: account_asset
@@ -660,19 +912,71 @@ msgid "Draft Asset"
 msgstr ""
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Duration"
+msgstr "Czas trwania"
+
+#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Exception Activities"
 msgstr ""
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_move.py:0
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
+#, python-format
+msgid "Expense"
+msgstr "Wydatek"
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_expense_id
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 msgid "Expense Account"
 msgstr "Konto wydatków"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Expense Board"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Expense Date"
+msgstr "Data Wydatku"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Expense Lines"
+msgstr "Pozycja wydatków"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
+msgid "Expense Name"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Expense Recognition"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/report/account_assets_report.py:0
+#, python-format
+msgid "First Depreciation"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__first_depreciation_date
 msgid "First Depreciation Date"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "First Recognition Date"
 msgstr ""
 
 #. module: account_asset
@@ -707,24 +1011,50 @@ msgid "Future Activities"
 msgstr "Przyszłe czynności"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__value
-msgid "Gross Value"
-msgstr "Wartość całkowita"
+#: model:ir.model.fields.selection,name:account_asset.selection__account_asset_sell__gain_or_loss__gain
+msgid "Gain"
+msgstr ""
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__gain_account_id
+#: model:ir.model.fields,field_description:account_asset.field_res_company__gain_account_id
+msgid "Gain Account"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__gain_or_loss
+msgid "Gain Or Loss"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__gain_value
+msgid "Gain Value"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Gross value of asset"
-msgstr "Wartość brutto środków"
+#, python-format
+msgid "Gross Increase"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_value
+msgid "Gross Increase Value"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Group By..."
 msgstr "Grupuj wg..."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__id
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__id
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__id
 #: model:ir.model.fields,field_description:account_asset.field_account_assets_report__id
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__id
 msgid "ID"
@@ -741,12 +1071,8 @@ msgid "Icon to indicate an exception activity."
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_asset__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Jeśli zaznaczone, to wiadomość wymaga twojej uwagi"
-
-#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction
+#: model:ir.model.fields,help:account_asset.field_account_asset__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Jeśli zaznaczone, to nowa wiadomość wymaga twojej uwagi."
 
@@ -774,12 +1100,22 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+msgid "Increase Accounts"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__prorata
 msgid ""
 "Indicates that the first depreciation entry for this asset have to be done "
 "from the asset date (purchase date) instead of the first January / Start "
 "date of fiscal year"
 msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__invoice_line_id
+msgid "Invoice Line"
+msgstr "Pozycja faktury"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_is_follower
@@ -794,6 +1130,8 @@ msgstr "To jest wartość, którą planujesz zostawić i nie chcesz amortyzować
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__journal_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Journal"
 msgstr "Dziennik"
 
@@ -824,6 +1162,7 @@ msgstr "Pozycje zapisów"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset____last_update
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause____last_update
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell____last_update
 #: model:ir.model.fields,field_description:account_asset.field_account_assets_report____last_update
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify____last_update
 msgid "Last Modified on"
@@ -832,6 +1171,7 @@ msgstr "Data ostatniej modyfikacji"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_uid
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__write_uid
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__write_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_uid
 msgid "Last Updated by"
 msgstr "Ostatnio aktualizowane przez"
@@ -839,6 +1179,7 @@ msgstr "Ostatnio aktualizowane przez"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_date
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_pause__write_date
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__write_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_date
 msgid "Last Updated on"
 msgstr "Data ostatniej aktualizacji"
@@ -854,6 +1195,17 @@ msgstr "Spóźnione czynności"
 #, python-format
 msgid "Linear"
 msgstr "Liniowo"
+
+#. module: account_asset
+#: model:ir.model.fields.selection,name:account_asset.selection__account_asset_sell__gain_or_loss__loss
+msgid "Loss"
+msgstr "Strata"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__loss_account_id
+#: model:ir.model.fields,field_description:account_asset.field_res_company__loss_account_id
+msgid "Loss Account"
+msgstr "Konto strat"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_main_attachment_id
@@ -872,6 +1224,7 @@ msgstr "Wiadomości"
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__method
 #, python-format
 msgid "Method"
 msgstr "Metoda"
@@ -881,6 +1234,11 @@ msgstr "Metoda"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__model
 msgid "Model"
 msgstr "Model"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+msgid "Modification"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -894,7 +1252,6 @@ msgstr "Modyfikuj"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
-#: model:ir.model,name:account_asset.model_account_asset_pause
 #: model:ir.model,name:account_asset.model_asset_modify
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
@@ -907,6 +1264,16 @@ msgid "Modify Depreciation"
 msgstr "Modyfikuj amortyzację"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Modify Expense"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Modify Revenue"
+msgstr "Edytuj przychód"
+
+#. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__1
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__method_period__1
 msgid "Months"
@@ -915,6 +1282,11 @@ msgstr "Miesiące"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__need_date
 msgid "Need Date"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+msgid "New Values"
 msgstr ""
 
 #. module: account_asset
@@ -941,6 +1313,38 @@ msgstr "Następne podsumowanie aktywności"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_id
 msgid "Next Activity Type"
 msgstr "Typ następnej czynności"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Next Period Expense"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Next Period Revenue"
+msgstr "Dochody w następnym okresie"
+
+#. module: account_asset
+#: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__no
+#: model:ir.model.fields.selection,name:account_asset.selection__account_asset_sell__gain_or_loss__no
+msgid "No"
+msgstr "Nie"
+
+#. module: account_asset
+#: code:addons/account_asset/report/account_assets_report.py:0
+#, python-format
+msgid "No asset account"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__salvage_value
+msgid "Not Depreciable Amount"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__salvage_value
+msgid "Not Depreciable Value"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__first_depreciation_date
@@ -974,9 +1378,26 @@ msgid "Number of Months in a Period"
 msgstr "Liczba miesięcy w okresie"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Number of Recognitions"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset__gross_increase_count
+msgid "Number of assets made to increase the value of the asset"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset__total_depreciation_entries_count
+msgid "Number of depreciation entries (posted or not)"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error_counter
-msgid "Number of error"
-msgstr "Numer błędu"
+msgid "Number of errors"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
@@ -1011,22 +1432,31 @@ msgid "Open Asset"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields.selection,name:account_asset.selection__account_asset_pause__action__pause
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__original_value
+msgid "Original Value"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Original Values"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__parent_id
+msgid "Parent"
+msgstr "Nadrzędny"
+
+#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_pause_form
 msgid "Pause"
 msgstr "Wstrzymaj"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
-#: code:addons/account_asset/models/account_asset.py:0
+#: model:ir.model,name:account_asset.model_account_asset_pause
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_pause_form
 #, python-format
 msgid "Pause Asset"
-msgstr ""
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.asset_pause_form
-msgid "Pause Date"
 msgstr ""
 
 #. module: account_asset
@@ -1040,7 +1470,9 @@ msgid "Pause date"
 msgstr ""
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 msgid "Period length"
 msgstr ""
 
@@ -1076,31 +1508,30 @@ msgid "Reason"
 msgstr "Przyczyna"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "Related Expenses"
+msgstr ""
+
+#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Related Purchase"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_remaining_value
-msgid "Remaining Value"
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Related Sales"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Residual"
-msgstr "Pozostało"
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_asset_modify__value_residual
-msgid "Residual Amount"
-msgstr "Kwota pozostała"
-
-#. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__value_residual
+#: code:addons/account_asset/models/account_move.py:0
 #, python-format
-msgid "Residual Value"
-msgstr "Wartość pozostała"
+msgid "Report of reversal for {name}"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Residual Amount to Recognize"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_user_id
@@ -1108,13 +1539,53 @@ msgid "Responsible User"
 msgstr "Użytkownik odpowiedzialny"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_asset_modify__resume_date
-msgid "Resume Date"
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Resume Depreciation"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Resume Depreciation"
+#: code:addons/account_asset/models/account_move.py:0
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+#, python-format
+msgid "Revenue"
+msgstr "Przychód"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
+msgid "Revenue Account"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Revenue Board"
+msgstr "Tablica przychodu"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Revenue Date"
+msgstr "Data przychodu"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Revenue Lines"
+msgstr "Linie dochodu"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
+msgid "Revenue Name"
+msgstr "Nazwa przychodu"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Revenue Recognition"
+msgstr "Uznanie przychodu"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_move__reversal_move_id
+msgid "Reversal Move"
 msgstr ""
 
 #. module: account_asset
@@ -1133,16 +1604,6 @@ msgid "Sale: Revenue Recognition"
 msgstr "Sprzedaż: Rozpoznanie przychodu"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_asset_modify__salvage_value
-msgid "Salvage Amount"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__salvage_value
-msgid "Salvage Value"
-msgstr "Wartość końcowa"
-
-#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Save Model"
 msgstr ""
@@ -1154,25 +1615,43 @@ msgid "Save model"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.asset_pause_form
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_sell__select_invoice_line_id
+msgid "Select Invoice Line"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields.selection,name:account_asset.selection__account_asset_sell__action__sell
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_sell_form
 msgid "Sell"
 msgstr "Sprzedawaj"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.asset_pause_form
-msgid "Sell Date"
+#: code:addons/account_asset/models/account_asset.py:0
+#: model:ir.model,name:account_asset.model_account_asset_sell
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_sell_form
+#, python-format
+msgid "Sell Asset"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields.selection,name:account_asset.selection__account_asset_pause__action__sell
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Sell or Dispose"
 msgstr "Sprzedaż lub likwidacja"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Set manually the original values or"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Set to Draft"
 msgstr "Ustaw jako projekt"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Set to Running"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -1210,6 +1689,13 @@ msgstr ""
 "Zaplanowane: Przyszłe aktywności."
 
 #. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset__book_value
+msgid ""
+"Sum of the depreciable value, the salvage value and the book value of all "
+"value increase items"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_account__can_create_asset
 msgid ""
 "Technical field specifying if the account can generate asset depending on "
@@ -1217,9 +1703,17 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "The account \"%s\" does not allow to create asset"
+#: model:ir.model.fields,help:account_asset.field_asset_modify__gain_value
+msgid ""
+"Technical field to know if we should display the fields for the creation of "
+"gross increase asset"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_sell__gain_or_loss
+msgid ""
+"Technical field to know is there was a gain or a loss in the selling of the "
+"asset"
 msgstr ""
 
 #. module: account_asset
@@ -1234,6 +1728,18 @@ msgid "The asset to be modified by this wizard"
 msgstr ""
 
 #. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset__children_ids
+msgid "The children are the gains in value of this asset"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_sell__invoice_id
+msgid ""
+"The disposal invoice is needed in order to generate the closing journal "
+"entry."
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method_number
 msgid "The number of depreciations needed to depreciate your asset"
 msgstr "Liczba amortyzacji potrzebna do amortyzacji twojego środka"
@@ -1242,6 +1748,18 @@ msgstr "Liczba amortyzacji potrzebna do amortyzacji twojego środka"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "The remaining value on the last depreciation line must be 0"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_sell__invoice_line_id
+msgid "There are multiple lines that could be the related to this asset"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_move__asset_value_change
+msgid ""
+"This is a technical field set to true when this move is the result of the "
+"changing of value of an asset"
 msgstr ""
 
 #. module: account_asset
@@ -1254,7 +1772,7 @@ msgstr ""
 
 #. module: account_asset
 #. openerp-web
-#: code:addons/account_asset/static/src/js/account_asset.js:0
+#: code:addons/account_asset/static/src/js/account_asset_reversed_widget.js:0
 #, python-format
 msgid "This move has been reversed"
 msgstr ""
@@ -1278,7 +1796,18 @@ msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
-#: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
+#, python-format
+msgid "Turn as a deferred expense"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_move.py:0
+#, python-format
+msgid "Turn as a deferred revenue"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Turn as an asset"
 msgstr ""
@@ -1302,6 +1831,19 @@ msgstr "Nieprzeczytane wiadomości"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_unread_counter
 msgid "Unread Messages Counter"
 msgstr "Licznik nieprzeczytanych wiadomości"
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "Value decrease for: "
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "Value increase for: "
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__website_message_ids
@@ -1350,6 +1892,27 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "e.g. Annual Subscription"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+msgid "e.g. Annually Paid Insurance"
+msgstr ""
+
+#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "e.g. Laptop iBook"
 msgstr "np. Laptop iBook"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "selected related purchases"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "this move"
+msgstr ""

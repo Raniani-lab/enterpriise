@@ -208,7 +208,9 @@ body.o_docs_share_page {
                 margin-left: $o-docs-gap;
 
                 img {
+                    width: 21px;
                     height: 21px;
+                    object-fit: cover;
                     vertical-align: bottom;
                 }
             }

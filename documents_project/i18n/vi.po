@@ -6,20 +6,32 @@
 # fanha99 <fanha99@hotmail.com>, 2019
 # Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
 # Dao Nguyen <trucdao.uel@gmail.com>, 2019
+# Nguyen Quang Toan <nqtoan@dqn.vn>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Dao Nguyen <trucdao.uel@gmail.com>, 2019\n"
+"Last-Translator: Nguyen Quang Toan <nqtoan@dqn.vn>, 2019\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: documents_project
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" aria-label=\"Values set here are company-specific.\" "
+"groups=\"base.group_multi_company\" role=\"img\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" aria-label=\"Values set here are company-specific.\" "
+"groups=\"base.group_multi_company\" role=\"img\"/>"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_workflow_rule
@@ -29,11 +41,6 @@ msgid ""
 msgstr ""
 "Loạt các điều kiện và hành động có sẵn cho tất cả các tệp đính kèm phù hợp "
 "với các điều kiện"
-
-#. module: documents_project
-#: model:ir.model,name:documents_project.model_ir_attachment
-msgid "Attachment"
-msgstr "Đính kèm"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
@@ -76,6 +83,7 @@ msgid "Has Business Option"
 msgstr "Có lựa chọn kinh doanh"
 
 #. module: documents_project
+#: model:ir.model,name:documents_project.model_project_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__documents_project_settings
 msgid "Project"
 msgstr "Dự án"
@@ -92,6 +100,7 @@ msgid "Project Workspace"
 msgstr ""
 
 #. module: documents_project
+#: model:ir.model,name:documents_project.model_project_task
 #: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
 msgid "Task"
 msgstr "Công việc"

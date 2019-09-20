@@ -13,10 +13,10 @@ var GanttRow = Widget.extend({
         'mouseleave': '_onMouseLeave',
         'mousemove .o_gantt_cell': '_onMouseMove',
         'mouseenter .o_gantt_pill': '_onPillEntered',
-        'mouseup .o_gantt_pill': '_onPillClicked', // jQuery UI uses mouseup
+        'click .o_gantt_pill': '_onPillClicked',
         'click': '_onRowSidebarClicked',
-        'mouseup .o_gantt_cell_buttons .o_gantt_cell_add': '_onButtonAddClicked', // jQuery UI uses mouseup
-        'mouseup .o_gantt_cell_buttons .o_gantt_cell_plan': '_onButtonPlanClicked', // jQuery UI uses mouseup
+        'click .o_gantt_cell_buttons > div > .o_gantt_cell_add': '_onButtonAddClicked',
+        'click .o_gantt_cell_buttons > div > .o_gantt_cell_plan': '_onButtonPlanClicked',
     },
     NB_GANTT_RECORD_COLORS: 12,
     LEVEL_LEFT_OFFSET: 16, // 16 px per level

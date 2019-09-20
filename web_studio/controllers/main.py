@@ -1075,9 +1075,9 @@ class WebStudioController(http.Controller):
             etree.fromstring("""
                 <div class="oe_kanban_bottom_right">
                     <img
-                        t-att-src="kanban_image('%(model)s', 'image_64', record.%(field)s.raw_value)"
+                        t-att-src="kanban_image('%(model)s', 'image_128', record.%(field)s.raw_value)"
                         t-att-title="record.%(field)s.value"
-                        width="24" height="24" class="oe_kanban_avatar float-right"
+                        class="oe_kanban_avatar o_image_24_cover float-right"
                     />
                 </div>
             """ % {'model': field_id.relation, 'field': field_id.name})

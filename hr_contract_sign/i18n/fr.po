@@ -3,11 +3,11 @@
 # 	* hr_contract_sign
 # 
 # Translators:
-# Cécile Collart <cco@odoo.com>, 2019
 # Martin Trigaux, 2019
 # Fabien Bourgeois <fabien@yaltik.com>, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Elise Carton <eca@odoo.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-26 08:05+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Elise Carton <eca@odoo.com>, 2019\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,6 +30,8 @@ msgid ""
 "%s requested a new signature on document: %s.<br/>%s and %s are the "
 "signatories."
 msgstr ""
+"%s a demandé une nouvelle signature sur le document: %s.<br/>%s et %s sont "
+"les signataires."
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_sign_view_form
@@ -81,12 +83,12 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,help:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_id
 msgid "Document that the employee will have to sign."
-msgstr ""
+msgstr "Document que l'employé devra signer."
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_id
 msgid "Document to Sign"
-msgstr ""
+msgstr "Document à signer"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_employee
@@ -103,13 +105,13 @@ msgstr "Contrat de l'employé"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
 msgid "Employee Role"
-msgstr ""
+msgstr "Rôle de l'employé"
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "Employee must be linked to a user and a partner."
-msgstr ""
+msgstr "L'employé doit être lié à un utilisateur et à un partenaire."
 
 #. module: hr_contract_sign
 #: model:sign.item.role,name:hr_contract_sign.sign_item_role_job_responsible
@@ -171,7 +173,7 @@ msgstr "Décompte du Nombre de Requêtes Signées"
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_contract_sign_document_wizard
 msgid "Sign document in contract"
-msgstr ""
+msgstr "Signer le document dans le contrat"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_sign_view_form

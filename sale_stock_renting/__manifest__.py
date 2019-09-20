@@ -3,7 +3,7 @@
     'name': "Rental Stock Management",
 
     'summary': """
-        Allow use of stock application to manage rentals inventory
+Allows use of stock application to manage rentals inventory
         """,
 
     'description': """

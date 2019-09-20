@@ -25,19 +25,28 @@ class ProductProduct(models.Model):
         if task_id:
             task = self.env['project.task'].browse(task_id)
 
+            # project user with no sale rights should be able to add materials
             SaleOrderLine = self.env['sale.order.line']
-            if self.user_has_groups('industry_fsm.group_fsm_user'):
+            if self.user_has_groups('project.group_project_user'):
                 task = task.sudo()
                 SaleOrderLine = SaleOrderLine.sudo()
 
             sale_line = SaleOrderLine.search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id)], limit=1)
 
-            if not sale_line:  # create the sale line with qty = 1
+            if sale_line:  # existing line: increment ordered qty (and delivered, if delivered method)
+                vals = {
+                    'product_uom_qty': sale_line.product_uom_qty + 1
+                }
+                if sale_line.qty_delivered_method == 'manual':
+                    vals['qty_delivered'] = sale_line.qty_delivered + 1
+                sale_line.write(vals)
+            else:  # create new SOL
                 vals = {
                     'order_id': task.sale_order_id.id,
                     'product_id': self.id,
                     'product_uom_qty': 1,
                     'product_uom': self.uom_id.id,
+                    'qty_delivered_manual': 1  # HACK
                 }
 
                 # Note: force to False to avoid changing planned hours when modifying product_uom_qty on SOL
@@ -47,16 +56,8 @@ class ProductProduct(models.Model):
                 else:
                     vals['task_id'] = False
 
-                if self.invoice_policy == 'delivery' and self.service_type == 'manual':
-                    vals['qty_delivered'] = 1
                 sale_line = SaleOrderLine.create(vals)
-            else:   # increment sale line quantities
-                vals = {
-                    'product_uom_qty': sale_line.product_uom_qty + 1
-                }
-                if self.invoice_policy == 'delivery' and self.service_type == 'manual':
-                    vals['qty_delivered'] = sale_line.qty_delivered + 1
-                sale_line.write(vals)
+
         return True
 
     def fsm_remove_quantity(self):
@@ -64,8 +65,9 @@ class ProductProduct(models.Model):
         if task_id:
             task = self.env['project.task'].browse(task_id)
 
+            # project user with no sale rights should be able to remove materials
             SaleOrderLine = self.env['sale.order.line']
-            if self.user_has_groups('industry_fsm.group_fsm_user'):
+            if self.user_has_groups('project.group_project_user'):
                 task = task.sudo()
                 SaleOrderLine = SaleOrderLine.sudo()
 
@@ -74,9 +76,12 @@ class ProductProduct(models.Model):
                 vals = {
                     'product_uom_qty': sale_line.product_uom_qty - 1
                 }
-                if self.invoice_policy == 'delivery' and self.service_type == 'manual':
+                if sale_line.qty_delivered_method == 'manual':
                     vals['qty_delivered'] = sale_line.qty_delivered - 1
 
-                sale_line.write(vals)
+                if vals['product_uom_qty'] <= 0 and task.sale_order_id.state != 'sale':
+                    sale_line.unlink()
+                else:
+                    sale_line.write(vals)
 
         return True

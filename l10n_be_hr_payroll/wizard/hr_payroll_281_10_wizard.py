@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class HrPayroll28110Wizard(models.TransientModel):
     _name = 'hr.payroll.281.10.wizard'
     _description = 'HR Payroll 281.10 Wizard'
+
+    @api.model
+    def default_get(self, field_list=None):
+        if self.env.company.country_id != self.env.ref('base.be'):
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        return super().default_get(field_list)
 
     def _get_years(self):
         return [(str(i), i) for i in range(fields.Date.today().year - 1, 2009, -1)]

@@ -135,7 +135,7 @@
                                                 <div class="o_ma_title_bar">
                                                     <div class="o_ma_icon">
                                                         <span t-attf-class="fa fa-envelope" t-if="record.activity_type.raw_value == 'email'" title="Email" role="img" aria-label="Email"/>
-                                                        <span t-attf-class="fa fa-cogs" t-if="record.activity_type.raw_value != 'email'" title="Non email activity" role="img" aria-label="Non email activity"/>
+                                                        <span t-attf-class="fa fa-cogs" t-else="" title="Other activity" role="img" aria-label="Other activity"/>
                                                     </div>
                                                     <div class="o_ma_title">
                                                         <h3 class="mb0 mt0"><a type="edit" t-attf-class="oe_kanban_action oe_kanban_action_a #{read_only_mode and 'o_ma_full' or None}" t-att-title="record.name.raw_value"><field name="name" /></a></h3>

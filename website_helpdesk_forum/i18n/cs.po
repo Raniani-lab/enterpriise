@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* website_helpdesk_forum
 # 
+# Translators:
+# Martin Trigaux, 2019
+# trendspotter <j.podhorecky@volny.cz>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.4+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-12 11:29+0000\n"
 "PO-Revision-Date: 2019-08-26 09:39+0000\n"
+"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,22 +30,22 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<span>By </span>"
-msgstr ""
+msgstr "<span>Od</span>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Click here to view more result..."
-msgstr ""
+msgstr "Klikněte zde pro zobrazení dalšího výsledku ..."
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_id
 msgid "Forum Post"
-msgstr ""
+msgstr "Příspěvek fóra"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
 msgid "Help Center Active"
-msgstr ""
+msgstr "Centrum nápovědy je aktivní"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__forum_id
@@ -57,17 +62,17 @@ msgstr ""
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:84
 #, python-format
 msgid "Help Center not active for this team."
-msgstr ""
+msgstr "Centrum nápovědy pro tento tým není aktivní."
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Tým Helpdesku"
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr ""
+msgstr "Helpdesk Tiket"
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:86
@@ -78,27 +83,27 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
 msgid "No question yet."
-msgstr ""
+msgstr "Žádné dotazy"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
 msgid "Open Post"
-msgstr ""
+msgstr "Otevřít příspěvek"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
 msgid "Popular Questions"
-msgstr ""
+msgstr "Oblíbené dotazy"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Question"
-msgstr ""
+msgstr "Otázka"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Question has accepted answer"
-msgstr ""
+msgstr "Otázka přijala odpověď"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
@@ -119,7 +124,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "View"
-msgstr ""
+msgstr "Pohled"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum

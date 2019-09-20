@@ -2,8 +2,6 @@
 <templates>
     <t t-name="HrReferralWelcome">
         <div class="o_hr_referral_wrapper">
-            <div class="hr_referral_bg_city"/>
-            <div class="hr_referral_bg_grass"/>
             <t t-if="widget.dashboardData.onboarding_screen">
                 <div id="carouselOnboarding" class="carousel slide o_hr_referral_intro_carousel" data-interval="false">
                     <div class="carousel-header text-center">
@@ -49,18 +47,18 @@
                 </div>
             </t>
             <t t-elif="widget.dashboardData.choose_new_friend">
-                <div class="o_hr_referral o_choose_friend_wrapper container">
-                    <div class="o_hr_referral_title">
+                <div class="o_hr_referral o_choose_friend_wrapper container d-flex flex-column">
+                    <div class="o_hr_referral_title mt-3 mt-sm-auto">
                         <h1><t t-esc="widget.dashboardData.new_friend_name"/> has been hired!</h1>
                         <p>Choose an avatar for your new friend!</p>
                     </div>
-                    <div class="friends_avatars mt-5">
+                    <div class="friends_avatars my-auto">
                     <t t-foreach="widget.dashboardData.friends" t-as="friend">
                         <div t-attf-class="o_choose_friend #{friend.friend and 'o_choose_friend_not_available' or 'o_choose_friend_available'}" t-att-name="friend.id">
                             <div class="rounded-circle">
+                                <div t-if="friend.friend" class="rounded-circle o_choose_friend_not_available"/>
                                 <img class="img-fluid" t-attf-src="data:image/png;base64,{{friend.image}}"/>
                             </div>
-                            <p><t t-esc="friend.name"/></p>
                             <p><t t-esc="friend.friend"/></p>
                         </div>
                     </t>
@@ -68,7 +66,8 @@
                 </div>
             </t>
             <t t-else="">
-                <div class="o_hr_referral container">
+                <div class="o_hr_referral container d-flex flex-column">
+                    <div class="space_restart" t-if="widget.debug and widget.dashboardData.message.length"/>
                     <t t-foreach="widget.dashboardData.message" t-as="message">
                         <a t-if="message.url" style="display:block" t-att-href="message.url" target="_blank">
                             <div class="message" t-att-title="message.url">
@@ -81,31 +80,10 @@
                             <span><t t-esc="message.text"/></span>
                         </div>
                     </t>
-                    <div class="superheroes">
-                            <t t-foreach="widget.dashboardData.friends" t-as="friend">
-                                <div t-attf-class="super friend-{{friend_index + 1}} {{position}}">
-                                    <img class="img" t-attf-src="data:image/png;base64,{{friend.image}}"/>
-                                </div>
-                            </t>
-                            <div class="super super_user">
-                                <img class="img" t-if="widget.dashboardData.level" t-attf-src="data:image/png;base64,{{widget.dashboardData.level.image}}" alt="Level"/>
-                            </div>
-                    </div>
-                    <div class="superheroes superheroes_hoverer">
-                        <t t-foreach="widget.dashboardData.friends" t-as="friend">
-                            <div t-attf-class="friend-hoverer friend-{{friend_index + 1}}">
-                                <span class="friend-name"><t t-esc="friend.name"/></span>
-                            </div>
-                        </t>
-                        <div class="friend-hoverer super_user">
-                            <span class="friend-name"><t t-esc="'You'"/></span>
-                        </div>
-                    </div>
-                    <div class="user">
-                        <div class="user_image rounded-circle">
-                            <button class="o_level_up btn" t-if="widget.dashboardData.reach_new_level" >
+                    <div t-att-class="widget.dashboardData.reach_new_level and 'user_wrapper mt-4' or 'user_wrapper my-4'">
+                        <div t-att-class="widget.dashboardData.reach_new_level and 'user_image rounded-circle o_hr_referral_level_up' or 'user_image rounded-circle'">
+                            <button class="o_level_up btn o_hr_referral_level_up" t-if="widget.dashboardData.reach_new_level" >
                                 <img class="img-fluid" src="/hr_referral/static/src/img/levelup.png" />
-                                <p>Click to level up!</p>
                             </button>
                             <div id="progress_referral" class="progress progress_hr_referral_onboarding" t-att-data-percentage="widget.dashboardData.level_percentage">
                                 <span class="progress-left">
@@ -126,8 +104,35 @@
                             </p>
                         </div>
                     </div>
-                    <div class="activity_wrapper">
-                        <div class="activity d-flex justify-content-around pb-md-5">
+                    <div t-if="widget.dashboardData.reach_new_level" style="position: relative;">
+                        <button class="o_level_up_txt btn o_hr_referral_level_up">
+                            <p>Click to level up!</p>
+                        </button>
+                    </div>
+                    <div class="my-auto superheroes_box">
+                        <div class="superheroes superheroes_hoverer">
+                            <t t-foreach="widget.dashboardData.friends" t-as="friend">
+                                <div t-attf-class="friend-hoverer friend-{{friend_index + 1}}">
+                                    <span class="friend-name"><t t-esc="friend.name"/></span>
+                                </div>
+                            </t>
+                            <div class="friend-hoverer super_user">
+                                <span class="friend-name"><t t-esc="'You'"/></span>
+                            </div>
+                        </div>
+                        <div class="superheroes">
+                            <t t-foreach="widget.dashboardData.friends" t-as="friend">
+                                <div t-attf-class="super friend-{{friend_index + 1}} {{position}}">
+                                    <img class="img" t-attf-src="data:image/png;base64,{{friend.image}}"/>
+                                </div>
+                            </t>
+                            <div class="super super_user">
+                                <img class="img" t-if="widget.dashboardData.level" t-attf-src="data:image/png;base64,{{widget.dashboardData.level.image}}" alt="Level"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="activity_wrapper mt-auto">
+                        <div class="activity d-flex justify-content-around pb-lg-5">
 
                             <a href="#" role="button" class="activity_stat btn col mx-3 o_referral_action" name="hr_referral.action_hr_applicant_employee_referral">
                                 <p class="activity_number">
@@ -148,16 +153,19 @@
                                 <span class="activity_text">Successful</span>
                             </a>
                         </div>
-                        <div class="pt-3 mb-5 d-flex justify-content-center">
-                            <button type="button" class="o_hr_referral_btn btn btn-lg btn-primary mr-2 o_referral_action" name="hr_referral.action_hr_job_employee_referral">View Jobs</button>
-                            <button type="button" class="o_hr_referral_btn btn btn-lg btn-primary ml-2 mr-2 o_referral_action" name="hr_referral.hr_referral_send_mail_action" aria-label="share" title="Share">Email a friend</button>
-                            <button type="button" class="o_hr_referral_btn btn btn-lg side-btn ml-2 o_referral_action" name="hr_referral.action_hr_referral_reward" aria-label="reward" title="Reward">Rewards</button>
+                        <div class="pt-3 px-2 mb-3 mb-lg-5 d-flex justify-content-center">
+                            <button type="button" class="o_hr_referral_btn btn btn-lg btn-primary mx-2 o_referral_action" name="hr_referral.action_hr_job_employee_referral">View Jobs</button>
+                            <button type="button" class="o_hr_referral_btn btn btn-lg btn-primary mx-2 o_referral_action" name="hr_referral.hr_referral_send_mail_action" aria-label="share" title="Share">Email a friend</button>
+                            <button type="button" class="o_hr_referral_btn btn btn-lg side-btn mx-2 o_referral_action" name="hr_referral.action_hr_referral_reward" aria-label="reward" title="Reward">Rewards</button>
                         </div>
                     </div>
                 </div>
-                <div class="fa fa-refresh o_restart o_hr_referral_start" completed="false" aria-label="Restart Onboarding" t-if="widget.debug">
-                </div>
+                <div class="fa fa-refresh o_hr_referral_restart o_hr_referral_start" completed="false" aria-label="Restart Onboarding" t-if="widget.debug"/>
             </t>
+        </div>
+        <div class="o_hr_referral_background">
+            <div class="hr_referral_bg_city"/>
+            <div class="hr_referral_bg_grass"/>
         </div>
     </t>
 </templates>

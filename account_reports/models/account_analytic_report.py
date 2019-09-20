@@ -182,3 +182,8 @@ class analytic_report(models.AbstractModel):
                 lines.append(self._generate_analytic_group_line(AccountAnalyticGroup, analytic_entries_domain))
 
         return lines
+
+    @api.model
+    def _create_hierarchy(self, lines, options):
+        # OVERRIDE because the hierarchy is managed in _get_lines.
+        return lines

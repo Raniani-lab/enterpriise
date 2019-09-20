@@ -110,7 +110,7 @@ class VoipPhonecall(models.Model):
                     'activity_res_model': 'res.partner',
                     'activity_model_name': ir_model.display_name,
                     'partner_name': record.partner_id.name,
-                    'partner_image_64': record.partner_id.image_64,
+                    'partner_image_128': record.partner_id.image_128,
                     'partner_email': record.partner_id.email
                 })
             if record.activity_id:

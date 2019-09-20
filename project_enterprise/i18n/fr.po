@@ -35,7 +35,7 @@ msgstr "<strong>Date de début:</strong>"
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<strong>Stop Date: </strong>"
-msgstr ""
+msgstr "<strong>Date de fin: </strong>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view

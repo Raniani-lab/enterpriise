@@ -3,25 +3,25 @@
 # 	* account_accountant
 # 
 # Translators:
-# Martin Trigaux, 2019
 # Jeffery CHEN <jeffery9@gmail.com>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # guohuadeng <guohuadeng@hotmail.com>, 2019
 # 演奏王 <wangwhai@qq.com>, 2019
 # keecome <7017511@qq.com>, 2019
-# ChinaMaker <liuct@chinamaker.net>, 2019
 # neter ji <jifuyi@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 黎伟杰 <674416404@qq.com>, 2019
 # Jeanphy <hzh0292@qq.com>, 2019
+# Martin Trigaux, 2019
+# ChinaMaker <liuct@chinamaker.net>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:28+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Jeanphy <hzh0292@qq.com>, 2019\n"
+"Last-Translator: ChinaMaker <liuct@chinamaker.net>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,7 +89,7 @@ msgstr "盎格鲁-撒克逊会计"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_move__attachment_ids
-#: model:ir.model.fields,field_description:account_accountant.field_account_move_line__move_attachment_ids
+#: model:ir.model.fields,field_description:account_accountant.field_account_payment__attachment_ids
 msgid "Attachments"
 msgstr "附件"
 
@@ -110,7 +110,7 @@ msgstr "修改锁定日期"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/move_line_list_view.js:78
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:0
 #, python-format
 msgid "Choose a line to preview its attachments."
 msgstr "选择一行以预览其附件。"
@@ -132,7 +132,7 @@ msgstr "创建时间"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
-msgid "Define fiscal years of more or less than a year"
+msgid "Define fiscal years of more or less than one year"
 msgstr "定义超过或者少于一年的会计年度"
 
 #. module: account_accountant
@@ -146,7 +146,7 @@ msgid "Display Name"
 msgstr "显示名称"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/digest.py:16
+#: code:addons/account_accountant/models/digest.py:0
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr "没有权限，用户EMail中忽略此数据"
@@ -173,7 +173,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/res_config_settings.py:37
+#: code:addons/account_accountant/models/res_config_settings.py:0
 #, python-format
 msgid ""
 "Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
@@ -225,13 +225,8 @@ msgid "Last Updated on"
 msgstr "更新时间"
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
-msgid "Last day of your fiscal year"
-msgstr "您会计年度的最后一天"
-
-#. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:18
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let's start with a new customer invoice."
 msgstr "从新建客户发票开始."
@@ -257,6 +252,11 @@ msgstr "锁定日期"
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
 msgstr "锁定会计期间"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_move_line__move_attachment_ids
+msgid "Move Attachment"
+msgstr "分录附件"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
@@ -291,6 +291,11 @@ msgid ""
 msgstr "只有具有顾问角色的用户可以在包括该日期之前编辑账户。例如，在开放的财年内使用它用于期间锁定。"
 
 #. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_payment
+msgid "Payments"
+msgstr "付款"
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
 msgstr "预测供应商账单"
@@ -302,7 +307,7 @@ msgstr "产品类别"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:13
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
@@ -328,13 +333,13 @@ msgstr "税收锁定日期"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
-"The system will try to predict vendor bill accounts based on history of "
-"previous bills."
-msgstr "依据以前账单的历史记录系统将尝试对供应商账单进行预付"
+"The system will try to predict the accounts on vendor bill lines based on "
+"history of previous bills"
+msgstr ""
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/move_line_list_view.js:130
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:0
 #, python-format
 msgid "There is no attachment linked to this move."
 msgstr "当前凭证无附件关联。"
@@ -346,7 +351,7 @@ msgstr "转账科目"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:23
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
 "Use the path to quickly click back to <b>previous screens</b>, without "
@@ -355,7 +360,7 @@ msgstr "使用路径快速回到<b>前一窗口</b>, 不需要重新加载页面
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:27
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
 "Your reports are available in real time. <i>No need to close a fiscal year "

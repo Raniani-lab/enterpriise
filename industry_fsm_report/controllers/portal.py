@@ -11,8 +11,10 @@ import binascii
 
 
 class CustomerPortal(CustomerPortal):
-    @http.route(['/my/task/<int:task_id>/worksheet'], type='http', auth="public", website=True)
-    def portal_my_worksheet(self, task_id, access_token=None, report_type=None, download=False, message=False, **kw):
+    @http.route(['/my/task/<int:task_id>/worksheet/',
+                 '/my/task/<int:task_id>/worksheet/<string:source>'], type='http', auth="public", website=True)
+    def portal_my_worksheet(self, task_id, access_token=None, source=False, report_type=None, download=False, message=False, **kw):
+
         try:
             task_sudo = self._document_check_access('project.task', task_id, access_token)
         except (AccessError, MissingError):
@@ -27,11 +29,11 @@ class CustomerPortal(CustomerPortal):
             worksheet = request.env[x_model].sudo().search([('x_task_id', '=', task_sudo.id)], limit=1, order="create_date DESC")  # take the last one
             worksheet_map[task_sudo.id] = worksheet
 
-        return request.render("industry_fsm_report.portal_my_worksheet", {'worksheet_map': worksheet_map, 'task': task_sudo, 'message': message})
+        return request.render("industry_fsm_report.portal_my_worksheet", {'worksheet_map': worksheet_map, 'task': task_sudo, 'message': message, 'source': source})
 
 
-    @http.route(['/my/task/<int:task_id>/worksheet/sign'], type='json', auth="public", website=True)
-    def portal_worksheet_sign(self, task_id, access_token=None, name=None, signature=None):
+    @http.route(['/my/task/<int:task_id>/worksheet/sign/<string:source>'], type='json', auth="public", website=True)
+    def portal_worksheet_sign(self, task_id, access_token=None, source=False, name=None, signature=None):
         # get from query string if not on json param
         access_token = access_token or request.httprequest.args.get('access_token')
         try:
@@ -60,5 +62,5 @@ class CustomerPortal(CustomerPortal):
         query_string = '&message=sign_ok'
         return {
             'force_refresh': True,
-            'redirect_url': task_sudo.get_portal_url(suffix='/worksheet', query_string=query_string),
+            'redirect_url': task_sudo.get_portal_url(suffix='/worksheet/%s' % source, query_string=query_string),
         }

@@ -84,11 +84,6 @@ msgid "Follow-up Report"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
-#: model:ir.model,name:snailmail_account_reports_followup.model_followup_send
-msgid "Followup Send"
-msgstr ""
-
-#. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__id
 msgid "ID"
 msgstr ""
@@ -133,6 +128,7 @@ msgstr ""
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model:ir.model,name:snailmail_account_reports_followup.model_followup_send
 msgid "Send Follow-Ups"
 msgstr ""
 

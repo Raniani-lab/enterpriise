@@ -181,4 +181,8 @@
             @include o-list-view-full-width-padding($base: $table-cell-padding-sm, $ratio: 2.5);
         }
     }
+
+    .o_optional_columns_dropdown_toggle {
+        padding: 8px 10px;
+    }
 }

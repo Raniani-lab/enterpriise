@@ -7,15 +7,14 @@
 # Martin Trigaux, 2019
 # Fred Gilson <fgi@odoo.com>, 2019
 # Eloïse Stilmant <est@odoo.com>, 2019
-# Laura Piraux <lap@odoo.com>, 2019
 # Rémi CAZENAVE <remi@le-filament.com>, 2019
 # Cécile Collart <cco@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:28+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -86,7 +85,7 @@ msgstr "Comptabilité anglo-saxone"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_move__attachment_ids
-#: model:ir.model.fields,field_description:account_accountant.field_account_move_line__move_attachment_ids
+#: model:ir.model.fields,field_description:account_accountant.field_account_payment__attachment_ids
 msgid "Attachments"
 msgstr "Pièces jointes"
 
@@ -107,7 +106,7 @@ msgstr ""
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/move_line_list_view.js:78
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:0
 #, python-format
 msgid "Choose a line to preview its attachments."
 msgstr ""
@@ -129,8 +128,8 @@ msgstr "Créé le"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
-msgid "Define fiscal years of more or less than a year"
-msgstr "Définissez des années fiscales de plus au moins un an"
+msgid "Define fiscal years of more or less than one year"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
@@ -143,7 +142,7 @@ msgid "Display Name"
 msgstr "Afficher Nom"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/digest.py:16
+#: code:addons/account_accountant/models/digest.py:0
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
@@ -172,7 +171,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/res_config_settings.py:37
+#: code:addons/account_accountant/models/res_config_settings.py:0
 #, python-format
 msgid ""
 "Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
@@ -224,13 +223,8 @@ msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
-msgid "Last day of your fiscal year"
-msgstr "Dernier jour de votre année fiscale"
-
-#. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:18
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let's start with a new customer invoice."
 msgstr "Commencons avec une nouvelle facture client."
@@ -256,6 +250,11 @@ msgstr "Date de cloture"
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
 msgstr "Clôturer la période fiscale"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_move_line__move_attachment_ids
+msgid "Move Attachment"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
@@ -299,6 +298,11 @@ msgstr ""
 "des périodes pendant l'exercice fiscal par exemple."
 
 #. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_payment
+msgid "Payments"
+msgstr "Paiements"
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
 msgstr "Prédire les comptes fournisseurs"
@@ -310,7 +314,7 @@ msgstr "Catégories d'articles"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:13
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
@@ -339,15 +343,13 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
-"The system will try to predict vendor bill accounts based on history of "
-"previous bills."
+"The system will try to predict the accounts on vendor bill lines based on "
+"history of previous bills"
 msgstr ""
-"Le système essaiera de prédire les montants de factures fournisseurs en "
-"fonction de l'historique des factures précédentes."
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/move_line_list_view.js:130
+#: code:addons/account_accountant/static/src/js/move_line_list_view.js:0
 #, python-format
 msgid "There is no attachment linked to this move."
 msgstr ""
@@ -359,7 +361,7 @@ msgstr "Compte de transfert"
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:23
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
 "Use the path to quickly click back to <b>previous screens</b>, without "
@@ -370,7 +372,7 @@ msgstr ""
 
 #. module: account_accountant
 #. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:27
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
 "Your reports are available in real time. <i>No need to close a fiscal year "

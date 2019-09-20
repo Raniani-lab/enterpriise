@@ -255,6 +255,7 @@ textarea.o_sign_sign_item {
     color: black;
     cursor: auto;
     white-space: pre;
+    text-align: left;
 }
 
 .o_sign_sign_item .o_sign_helper {
@@ -328,6 +329,9 @@ textarea.o_sign_sign_item {
 
 .ui-selected, .ui-selecting { /* jQuery UI */
     box-shadow: 0px 0px 5px 1px orange;
+}
+.ui-resizable {
+    text-align: center;
 }
 
 .ui-draggable .ui-draggable-handle, .o_sign_field_type_button.ui-draggable { /* jQuery UI */

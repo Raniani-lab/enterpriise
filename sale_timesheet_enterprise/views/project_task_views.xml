@@ -6,9 +6,33 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="hr_timesheet.project_invoice_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='allow_timesheets']" position="after">
-                <field name="allow_timesheet_timer" attrs="{'invisible': [('allow_timesheets', '=', False)]}" />
-                <field name="allow_billable" attrs="{'invisible': [('billable_type', '=', 'employee_rate')]}"/>
+            <xpath expr="//div[@id='timesheet_settings']" position="after">
+                    <div class="col-lg-6 o_setting_box"  attrs="{'invisible': [('allow_timesheets', '=', False)]}">
+                        <div class="o_setting_left_pane">
+                            <field name="allow_timesheet_timer"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="allow_timesheet_timer"/>
+                            <div class="text-muted">
+                                Track your time using a timer
+                            </div>
+                        </div>
+                    </div>
+            </xpath>
+            <xpath expr="//div[@id='timesheet_settings']/.." position="after">
+                <div class="row mt16 o_settings_container">
+                    <div class="col-lg-6 o_setting_box" id="allow_billable_container" attrs="{'invisible': [('billable_type', '=', 'employee_rate')]}">
+                        <div class="o_setting_left_pane">
+                            <field name="allow_billable"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="allow_billable"/>
+                            <div class="text-muted" id="allow_billable_setting">
+                                Invoice your time and material from tasks
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>
@@ -21,7 +45,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='allow_timesheets']" position="after">
                 <field name="billable_type" invisible="1"/>
-                <field name="allow_timesheet_timer" attrs="{'invisible': [('allow_timesheets', '=', False)]}" />
+                <field name="allow_timesheet_timer" invisible="1"/>
                 <field name="allow_billable" attrs="{'invisible': [('billable_type', '=', 'employee_rate')]}"/>
             </xpath>
         </field>
@@ -30,24 +54,30 @@
     <record id="project_task_view_form" model="ir.ui.view">
         <field name="name">project.task.view.form.inherit.sale.timesheet.enterprise</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="sale_timesheet.project_task_view_form_inherit_sale_timesheet"/>
+        <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position='inside'>
                 <field name="company_id" invisible="1"/>
                 <field name="display_timesheet_timer" invisible="1"/>
                 <field name="timesheet_timer_pause" invisible="1" />
-                <button name="action_make_billable" string="Create Sales Order" type="object" attrs="{'invisible': ['|', '|', ('billable_type', '!=', 'no'), ('partner_id', '=', False), ('sale_order_id', '!=', False)]}"/>
+                <field name="allow_billable" invisible="1"/>
+                <button name="action_make_billable" string="Create Sales Order" type="object" attrs="{'invisible': ['|', '|', '|', '|', ('allow_billable', '=', False), ('timesheet_timer_start', '!=', False), ('billable_type', '!=', 'no'), ('partner_id', '=', False), ('sale_order_id', '!=', False)]}" groups="sales_team.group_sale_salesman" />
                 <button class="btn-primary" name="action_timer_start" type="object" string="Start"
-                    attrs="{'invisible': ['|', ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"/>
+                    attrs="{'invisible': ['|', '|', ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
+                    attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                <button class="btn-primary btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
+                    attrs="{'invisible': ['|', ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <button class="btn-primary" name="action_timer_pause" type="object" string="Pause"
-                    attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '!=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
-                <button class="btn-warning" name="action_timer_resume" type="object" string="Resume"
-                    attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
-                <button class="btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
-                    attrs="{'invisible': ['|', ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"/>
+                    attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '!=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume"
+                    attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="attributes">
+                <attribute name="class">ml-2</attribute>
             </xpath>
             <xpath expr="//field[@name='stage_id']" position="before">
-                <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 ml-4 mt-2 font-weight-bold"/>
+                <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger ml-auto h2 ml-4 font-weight-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
             </xpath>
         </field>
     </record>
@@ -63,10 +93,10 @@
                 <field name="timesheet_timer_start" invisible="1"/>
                 <field name="timesheet_timer_pause" invisible="1"/>
                 <t t-if="record.display_timesheet_timer &amp;&amp; record.timesheet_timer_pause.raw_value">
-                    <i class="fa fa-pause text-warning"></i>
+                    <i class="fa fa-pause text-warning" title="Timer is Paused"></i>
                 </t>
                 <t t-elif="record.display_timesheet_timer &amp;&amp; record.timesheet_timer_start.raw_value">
-                    <i class="fa fa-play text-success"></i>
+                    <i class="fa fa-play text-success" title="Timer is Running"></i>
                 </t>
             </xpath>
         </field>

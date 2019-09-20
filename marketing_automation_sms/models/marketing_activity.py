@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import fields, models, _
+from odoo import api, fields, models, _
 from odoo.fields import Datetime
 from odoo.exceptions import AccessError
 
@@ -14,9 +14,13 @@ class MarketingActivity(models.Model):
     _inherit = ['marketing.activity']
 
     activity_type = fields.Selection(selection_add=[('sms', 'SMS')])
-    sms_mailing_id = fields.Many2one(
-        'mailing.mailing', string='SMS Mailing', related='mass_mailing_id',
-        help='UX Field to choose an SMS mailing. Separate field to ease options / default / domain propagation.')
+    mass_mailing_id_mailing_type = fields.Selection(selection_add=[('sms', 'SMS')])
+
+    @api.onchange('activity_type')
+    def _onchange_activity_type(self):
+        if self.activity_type == 'sms':
+            self.mass_mailing_id_mailing_type = 'mail'
+        super(MarketingActivity, self)._onchange_activity_type()
 
     def _execute_sms(self, traces):
         res_ids = [r for r in set(traces.mapped('res_id'))]
@@ -41,8 +45,8 @@ class MarketingActivity(models.Model):
             failed_stats = self.env['mailing.trace'].sudo().search([
                 ('marketing_trace_id', 'in', traces.ids),
                 '|', ('exception', '!=', False), ('ignored', '!=', False)])
-            ignored_doc_ids = [stat.res_id for stat in failed_stats if stat.exception]
-            error_doc_ids = [stat.res_id for stat in failed_stats if stat.ignored]
+            ignored_doc_ids = [stat.res_id for stat in failed_stats if stat.ignored]
+            error_doc_ids = [stat.res_id for stat in failed_stats if stat.exception]
 
             processed_traces = traces
             ignored_traces = traces.filtered(lambda trace: trace.res_id in ignored_doc_ids)
@@ -52,14 +56,14 @@ class MarketingActivity(models.Model):
                 ignored_traces.write({
                     'state': 'canceled',
                     'schedule_date': Datetime.now(),
-                    'state_msg': _('Email ignored')
+                    'state_msg': _('SMS ignored')
                 })
                 processed_traces = processed_traces - ignored_traces
             if error_traces:
                 error_traces.write({
                     'state': 'error',
                     'schedule_date': Datetime.now(),
-                    'state_msg': _('Email failed')
+                    'state_msg': _('SMS failed')
                 })
                 processed_traces = processed_traces - error_traces
             if processed_traces:

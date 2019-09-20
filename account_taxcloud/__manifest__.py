@@ -3,7 +3,7 @@
     'name': "Account TaxCloud",
     'summary': """TaxCloud make it easy for business to comply with sales tax law""",
     'description': """
-        Compute sales tax automatically using TaxCloud based on customer address in United States.
+Computes the sales tax automatically using TaxCloud and the customer's address in United States.
     """,
     'category': 'Accounting',
     'version': '1.0',

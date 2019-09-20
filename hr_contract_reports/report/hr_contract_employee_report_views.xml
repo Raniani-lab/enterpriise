@@ -15,9 +15,10 @@
                             <aggregate name="date_end_contract" string="Last Contract Ended" field="date_end_contract" clickable="False"/>
                             <aggregate name="count_new_employee" string="New Employees" field="count_new_employee"/>
                             <aggregate name="count_employee_exit" string="Departure Employees" field="count_employee_exit"/>
-                            <aggregate name="avg_employee_id" string="Avg Employee" group_operator="avg" field="employee_id" invisible="1"/>
-                            <formula name="rate_turnover" string="Turnover Rate" value="100 * record.count_employee_exit / record.avg_employee_id" value_label="%"/>
+                            <aggregate name="min_date" string="Min Date in Months" group_operator="min" field="start_date_months" invisible="1"/>
+                            <aggregate name="max_date" string="Max Date in Months" group_operator="max" field="end_date_months" invisible="1"/>
                             <aggregate name="age_sum" string="Total Contract Length" field="age_sum" invisible="1"/>
+                            <formula name="rate_turnover" string="Turnover Rate" value="100 * record.count_employee_exit / (record.age_sum / (record.max_date - record.min_date))" value_label="%"/>
                             <formula name="Mean age" string="Mean Contract Duration" value="record.age_sum / record.employee_id" value_label="months"/>
                         </group>
 

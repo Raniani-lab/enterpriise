@@ -5,8 +5,9 @@ odoo.define('web_map.MapView', function (require) {
     var MapController = require('web_map.MapController');
     var MapRenderer = require('web_map.MapRenderer');
     var AbstractView = require('web.AbstractView');
-
     var viewRegistry = require('web.view_registry');
+    var _t = require('web.core')._t;
+
     var MapView = AbstractView.extend({
         jsLibs: [
             '/web_map/static/lib/leaflet/leaflet.js',
@@ -19,6 +20,7 @@ odoo.define('web_map.MapView', function (require) {
         icon: 'fa-map-marker',
         display_name: 'Map',
         viewType: 'map',
+        mobile_friendly: true,
         searchMenuTypes: ['filter', 'favorite'],
 
         init: function (viewInfo, params) {
@@ -29,14 +31,16 @@ odoo.define('web_map.MapView', function (require) {
 
             this.loadParams.resPartnerField = this.arch.attrs.res_partner;
             fieldNames.push(this.arch.attrs.res_partner);
+            fieldNames.push('display_name');
 
             if (this.arch.attrs.default_order) {
-                this.loadParams.orderBy = [{ name: this.arch.attrs.default_order, asc: true }];
+                this.loadParams.orderBy = [{ name: this.arch.attrs.default_order || 'display_name', asc: true }];
             }
 
             this.loadParams.routing = this.arch.attrs.routing ? true : false;
-
-            this.rendererParams.numbering = this.arch.attrs.routing || this.arch.attrs.default_order ? true : false;
+            this.rendererParams.numbering = this.arch.attrs.routing ? true: false;
+            this.rendererParams.defaultOrder = this.arch.attrs.default_order;
+            this.rendererParams.panelTitle = this.arch.attrs.panel_title || params.displayName || _t('Items');
 
             this.arch.children.forEach(function (node) {
                 if (node.tag === 'marker-popup') {

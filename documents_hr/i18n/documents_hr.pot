@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:58+0000\n"
-"PO-Revision-Date: 2019-09-09 11:58+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
+"PO-Revision-Date: 2019-09-13 11:38+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr ""
 #. module: documents_hr
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_config_settings_view_form
 msgid ""
-"<span class=\"o_form_label\" attrs=\"{'invisible' : [('documents_hr_settings', '=', False)]}\">\n"
+"<span name=\"documents_hr_tags\" class=\"o_form_label\" invisible=\"1\" attrs=\"{'invisible' : [('documents_hr_settings', '=', False)]}\">\n"
 "                                Default tags\n"
 "                            </span>"
 msgstr ""
@@ -34,11 +34,6 @@ msgstr ""
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_absences
 msgid "Absences"
-msgstr ""
-
-#. module: documents_hr
-#: model:ir.model,name:documents_hr.model_ir_attachment
-msgid "Attachment"
 msgstr ""
 
 #. module: documents_hr
@@ -62,24 +57,13 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: documents_hr
-#: model:documents.tag,name:documents_hr.documents_hr_documents_contracts
-#: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_contracts_tags
-msgid "Contracts"
-msgstr ""
-
-#. module: documents_hr
-#: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_contracts_tags
-msgid "Documents Hr Contracts Tags"
-msgstr ""
-
-#. module: documents_hr
-#: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_payslips_tags
-msgid "Documents Hr Payslips Tags"
-msgstr ""
-
-#. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_settings
 msgid "Documents Hr Settings"
+msgstr ""
+
+#. module: documents_hr
+#: model:ir.model,name:documents_hr.model_hr_employee
+msgid "Employee"
 msgstr ""
 
 #. module: documents_hr
@@ -89,14 +73,12 @@ msgstr ""
 
 #. module: documents_hr
 #: model:documents.folder,name:documents_hr.documents_hr_folder
-#: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings
-msgid "Payroll"
+msgid "HR"
 msgstr ""
 
 #. module: documents_hr
-#: model:documents.tag,name:documents_hr.documents_hr_documents_Payslips
-#: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_payslips_tags
-msgid "Payslips"
+#: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings
+msgid "Human Resources"
 msgstr ""
 
 #. module: documents_hr

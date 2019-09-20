@@ -58,7 +58,7 @@ msgstr "Genereer automatisch verkooporder"
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__auto_validation
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__auto_validation
 msgid "Automatic Validation"
-msgstr ""
+msgstr "Automatische validatie"
 
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_res_company
@@ -317,7 +317,7 @@ msgstr "inkoop/verkooporder"
 #: code:addons/inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "sales order"
-msgstr ""
+msgstr "verkooporder"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/res_company.py:0

@@ -7,10 +7,13 @@ from odoo import models
 class Task(models.Model):
     _inherit = "project.task"
 
-    def _fsm_create_sale_order(self):
-        sale_order = super(Task, self)._fsm_create_sale_order()
-        self._validate_stock()
-        return sale_order
+    def action_fsm_validate(self):
+        result = super(Task, self).action_fsm_validate()
+
+        for task in self:
+            if task.allow_billable and task.sale_order_id:
+                task.sudo()._validate_stock()
+        return result
 
     def _validate_stock(self):
         for picking in self.sale_order_id.picking_ids:

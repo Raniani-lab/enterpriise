@@ -21,7 +21,7 @@ class ProductTicCategory(models.Model):
         else:
             domain = ['|', ('description', operator, name), ('code', operator, name)]
         tic_category_ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return self.browse(tic_category_ids).name_get()
+        return models.lazy_name_get(self.browse(tic_category_ids).with_user(name_get_uid))
 
     def name_get(self):
         res = []

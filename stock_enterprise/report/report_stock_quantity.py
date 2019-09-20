@@ -18,13 +18,6 @@ class ReportStockQuantity(models.Model):
         read_grid = super(ReportStockQuantity, self).read_grid(row_fields,
             col_field, cell_field, domain=domain, range=range,
             readonly_field=readonly_field, orderby=orderby)
-        # TODO: remove me once selection fields are properly displayed in the grid view ?
-        if 'state' in row_fields:
-            selection = self._fields['state']._description_selection(self.env)
-            selection = {tech_name: name for tech_name, name in selection}
-            for row in read_grid['rows']:
-                row['values']['state_tech_name'] = row['values']['state']
-                row['values']['state'] = selection[row['values']['state']]
         return read_grid
 
     @api.model

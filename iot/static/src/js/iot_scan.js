@@ -136,7 +136,9 @@ return {
             if (ip.length < 16){
                 this.localIPs[ip] = true;
                 var range = ip.substring(0, ip.lastIndexOf('.') + 1);
-                this._addIPRange(range);
+                if (!_.keys(this.ranges).includes(range)) {
+                    this._addIPRange(range);
+                }
             }
         }
     },

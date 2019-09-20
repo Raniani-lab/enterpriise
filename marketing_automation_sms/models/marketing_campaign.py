@@ -14,3 +14,13 @@ class MarketingCampaign(models.Model):
         # TDE NOTE: this could be optimized but is currently displayed only in a form view, no need to optimize now
         for campaign in self:
             campaign.mailing_sms_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id').filtered(lambda mailing: mailing.mailing_type == 'sms'))
+
+    def action_view_sms(self):
+        action = self.env.ref('marketing_automation.mail_mass_mailing_action_marketing_automation').read()[0]
+        action['domain'] = [
+            '&',
+            ('use_in_marketing_automation', '=', True),
+            ('id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids),
+            ('mailing_type', '=', 'sms')
+        ]
+        return action

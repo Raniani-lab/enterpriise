@@ -8,8 +8,6 @@
 # 老窦 北京 <2662059195@qq.com>, 2019
 # Summer Xia <sxi@odoo.com>, 2019
 # John An <johnxan@163.com>, 2019
-# Martin Trigaux, 2019
-# Jeffery CHEN <jeffery9@gmail.com>, 2019
 # niulin lnc. <admin@niulin.net>, 2019
 # liAnGjiA <liangjia@qq.com>, 2019
 # 苏州远鼎 <tiexinliu@126.com>, 2019
@@ -22,14 +20,18 @@
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 张宏奎 <zhanghongkui@inspur.com>, 2019
 # Jeanphy <hzh0292@qq.com>, 2019
+# Martin Trigaux, 2019
+# Jeffery CHEN <jeffery9@gmail.com>, 2019
+# Wei "oldrev" Li <liwei@sandwych.com>, 2019
+# ChinaMaker <liuct@chinamaker.net>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:59+0000\n"
 "PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Jeanphy <hzh0292@qq.com>, 2019\n"
+"Last-Translator: ChinaMaker <liuct@chinamaker.net>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -112,7 +114,7 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
-msgid "<b>Document signature:</b>"
+msgid "<b>Signature:</b>"
 msgstr ""
 
 #. module: sign
@@ -135,6 +137,11 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-exclamation-circle\"/> The document's integrity could not "
 "be verified."
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "<i class=\"fa fa-globe\"/> View"
 msgstr ""
 
 #. module: sign
@@ -176,6 +183,23 @@ msgstr ""
 "False)]}\">分享此链接，Odoo将为每个点击该链接的人创建一个新文档。 该链接是私有的，只有那些收到链接的人才能签名。</span>"
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "<span class=\"text-muted\"><i class=\"fa fa-times\"/> No SMS Validation</span>"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid ""
+"<span class=\"text-muted\"><i class=\"fa fa-times\"/> No email "
+"Validation</span>"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "<span class=\"text-muted\">Not available</span>"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_type_view_form
 msgid "<span>(1.0 = full page size)</span>"
 msgstr "<span>(1.0 = full page size)</span>"
@@ -199,11 +223,6 @@ msgid ""
 msgstr "短信将发送到以下电话号码。如果有误，请更新。"
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
-msgid "Access Date (UTC)"
-msgstr ""
-
-#. module: sign
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Access History"
@@ -215,8 +234,8 @@ msgid "Access Logs"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
-msgid "Access history of"
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__access_via_link
+msgid "Accessed Through Token"
 msgstr ""
 
 #. module: sign
@@ -315,30 +334,6 @@ msgid "All Users"
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_log.py:0
-#, python-format
-msgid ""
-"An error occurred when computing the hash %s. Something went wrong.\n"
-"INVALID HASH: {%s}"
-msgstr ""
-
-#. module: sign
-#: code:addons/sign/models/sign_log.py:0
-#, python-format
-msgid ""
-"An error occurred when computing the hash. Impossible to get the unique "
-"previous activity."
-msgstr ""
-
-#. module: sign
-#: code:addons/sign/models/sign_log.py:0
-#, python-format
-msgid ""
-"An error occurred when computing the hashes. Something went wrong.\n"
-" Hash logs: %s"
-msgstr ""
-
-#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Archive"
@@ -414,16 +409,6 @@ msgid "Canceled"
 msgstr "已取消"
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
-msgid "Change Logs"
-msgstr ""
-
-#. module: sign
-#: model:ir.model.fields.selection,name:sign.selection__sign_log__action__check
-msgid "Check"
-msgstr "检查"
-
-#. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__checkbox
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 msgid "Checkbox"
@@ -484,6 +469,16 @@ msgid "Completed Signatures"
 msgstr "完成的签名"
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request__completion_date
+msgid "Completion Date"
+msgstr "完成日期"
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "Completion History<br/>"
+msgstr ""
+
+#. module: sign
 #: model:ir.ui.menu,name:sign.menu_sign_configuration
 msgid "Configuration"
 msgstr "基础配置"
@@ -513,10 +508,10 @@ msgstr "创建: \""
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__create_uid
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_log__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_request__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__create_uid
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__create_uid
@@ -531,10 +526,10 @@ msgstr "创建者"
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__create_date
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_log__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_request__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__create_date
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__create_date
@@ -559,6 +554,11 @@ msgstr "客户"
 #: model:sign.item.type,placeholder:sign.sign_item_type_date
 msgid "Date"
 msgstr "日期"
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "Date (UTC)"
+msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_height
@@ -611,10 +611,10 @@ msgstr "显示"
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__display_name
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_log__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_request__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__display_name
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__display_name
@@ -649,11 +649,6 @@ msgstr "文档页面"
 #: model:ir.model.fields,field_description:sign.field_sign_item__template_id
 msgid "Document Template"
 msgstr "文档模板"
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
-msgid "Document state"
-msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -733,12 +728,25 @@ msgid "Email"
 msgstr "EMail"
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "Email Validation"
+msgstr ""
+
+#. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_employee
 msgid "Employee"
 msgstr "员工"
 
 #. module: sign
 #. openerp-web
+#: code:addons/sign/static/src/xml/sign_common.xml:0
+#, python-format
+msgid "Enter the code received through SMS to complete your signature"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
@@ -753,12 +761,6 @@ msgstr "错误"
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Exception Activities"
 msgstr "例外活动"
-
-#. module: sign
-#: model:ir.model.fields,field_description:sign.field_sign_send_request__extension
-#: model:ir.model.fields,field_description:sign.field_sign_template__extension
-msgid "Extension"
-msgstr "延期"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__favorited_ids
@@ -845,6 +847,11 @@ msgid "Generate PDF"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "Geolocation"
+msgstr "地理位置"
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
 msgstr "分组"
@@ -859,10 +866,10 @@ msgstr "高度"
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__id
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__id
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__id
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__id
 #: model:ir.model.fields,field_description:sign.field_sign_log__id
 #: model:ir.model.fields,field_description:sign.field_sign_request__id
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__id
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__id
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__id
@@ -878,7 +885,7 @@ msgid "IP"
 msgstr ""
 
 #. module: sign
-#: model:ir.model.fields,field_description:sign.field_sign_log__IP
+#: model:ir.model.fields,field_description:sign.field_sign_log__ip
 msgid "IP address of the visitor"
 msgstr ""
 
@@ -893,12 +900,8 @@ msgid "Icon to indicate an exception activity."
 msgstr "表示一个例外活动的图标。"
 
 #. module: sign
-#: model:ir.model.fields,help:sign.field_sign_request__message_unread
-msgid "If checked new messages require your attention."
-msgstr "查看是否有需要留意的新消息。"
-
-#. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
+#: model:ir.model.fields,help:sign.field_sign_request__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "确认后, 出现提示消息."
 
@@ -970,10 +973,10 @@ msgstr "最后操作日期"
 #: model:ir.model.fields,field_description:sign.field_sign_item_option____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_item_role____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_item_type____last_update
-#: model:ir.model.fields,field_description:sign.field_sign_item_value____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_log____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_request____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_request_item____last_update
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_send_request____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer____last_update
@@ -988,10 +991,10 @@ msgstr "最后更改日"
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__write_uid
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_log__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_request__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__write_uid
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__write_uid
@@ -1006,10 +1009,10 @@ msgstr "最后更新者"
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__write_date
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_log__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_request__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__write_date
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__write_date
@@ -1027,7 +1030,6 @@ msgstr "最近的活动"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__latitude
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__latitude
-#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Latitude"
 msgstr "纬度"
 
@@ -1072,7 +1074,6 @@ msgstr "日志"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__longitude
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__longitude
-#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Longitude"
 msgstr "经度"
 
@@ -1238,8 +1239,8 @@ msgstr "操作次数"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error_counter
-msgid "Number of error"
-msgstr "错误个数"
+msgid "Number of errors"
+msgstr "错误数"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
@@ -1340,8 +1341,8 @@ msgstr "电话"
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
-msgid "Phone number..."
-msgstr "电话号码..."
+msgid "Phone Number"
+msgstr "电话号码"
 
 #. module: sign
 #. openerp-web
@@ -1355,13 +1356,6 @@ msgstr "占位符"
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Please Review And Act On This Document"
 msgstr "请检视并且这个文档上做出相关动作"
-
-#. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:0
-#, python-format
-msgid "Please enter the code received through SMS to complete your signature"
-msgstr "请输入通过短信接收的代码以完成您的签名"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__posX
@@ -1404,6 +1398,13 @@ msgstr "进度"
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Properties"
 msgstr "属性"
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
+msgid "Re-send SMS"
+msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
@@ -1512,21 +1513,26 @@ msgid "SMS Authentication"
 msgstr ""
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:0
-#, python-format
-msgid "SMS Code"
-msgstr "SMS代码"
-
-#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_sms_error
 msgid "SMS Delivery error"
 msgstr "短信发送错误"
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
+msgid "SMS Sent"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sms_token
 msgid "SMS Token"
 msgstr "SMS 令牌"
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "SMS Validation"
+msgstr ""
 
 #. module: sign
 #. openerp-web
@@ -1540,11 +1546,6 @@ msgstr "已保存"
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_token
 msgid "Security Token"
 msgstr "安全令牌"
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
-msgid "Security hash:"
-msgstr ""
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_selection
@@ -1767,7 +1768,7 @@ msgid "Signature"
 msgstr "签名"
 
 #. module: sign
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__sign_item_id
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__sign_item_id
 msgid "Signature Item"
 msgstr "签字条款"
 
@@ -1788,7 +1789,7 @@ msgid "Signature Item Type"
 msgstr "签名项类型"
 
 #. module: sign
-#: model:ir.model,name:sign.model_sign_item_value
+#: model:ir.model,name:sign.model_sign_request_item_value
 msgid "Signature Item Value"
 msgstr "签字项值"
 
@@ -1800,8 +1801,8 @@ msgstr "签字项"
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_send_request
 #: model:ir.model,name:sign.model_sign_request
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__sign_request_id
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_request_id
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__sign_request_id
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Signature Request"
 msgstr "签字需求"
@@ -1825,7 +1826,7 @@ msgid "Signature Request Items"
 msgstr "签名请求项"
 
 #. module: sign
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__sign_request_item_id
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__sign_request_item_id
 msgid "Signature Request item"
 msgstr ""
 
@@ -1840,6 +1841,11 @@ msgid "Signature Requests Items"
 msgstr "签名请求项"
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request__start_sign
+msgid "Signature Started"
+msgstr ""
+
+#. module: sign
 #: model:ir.model,name:sign.model_sign_template
 msgid "Signature Template"
 msgstr "签名模板"
@@ -1850,6 +1856,11 @@ msgstr "签名模板"
 #, python-format
 msgid "Signature configuration"
 msgstr "签名配置"
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "Signature:"
+msgstr ""
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_action
@@ -1887,6 +1898,11 @@ msgid "Signers Count"
 msgstr "签署人计数"
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "Signing Events"
+msgstr ""
+
+#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
@@ -1904,19 +1920,14 @@ msgstr "该模板已被应用"
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
 msgid "Sorry, an error occured, please try to fill the document again."
 msgstr "抱歉，发生错误，请再次填写该文档"
 
 #. module: sign
-#: model:ir.model.fields,field_description:sign.field_sign_request__start_sign
-msgid "Start Sign"
-msgstr ""
-
-#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__state
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__state
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "State"
 msgstr "状态"
 
@@ -1937,11 +1948,6 @@ msgstr ""
 " 逾期：已经超过截止日期 \n"
 " 现今：活动日期是当天 \n"
 " 计划：未来活动。"
-
-#. module: sign
-#: model:ir.model.fields,field_description:sign.field_sign_log__string_to_hash
-msgid "String To Hash"
-msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
@@ -2006,6 +2012,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "The document"
 msgstr "文档"
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid ""
+"The final document and this completion history have been sent by email on"
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -2084,6 +2096,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
 msgstr "无法发送短信，请联系发件人的文档。"
@@ -2115,6 +2128,11 @@ msgstr "用于签名申请"
 #: model:ir.model.fields,field_description:sign.field_sign_log__user_id
 msgid "User"
 msgstr "用户"
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_log__token
+msgid "User token"
+msgstr "用户教程"
 
 #. module: sign
 #: model:res.groups,name:sign.group_sign_user
@@ -2153,8 +2171,15 @@ msgid "Validate &amp; Send Completed Document"
 msgstr "确认&amp;发送完成的文档"
 
 #. module: sign
-#: model:ir.model.fields,field_description:sign.field_sign_item_value__value
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_common.xml:0
+#, python-format
+msgid "Validation Code"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_item_value_ids
+#: model:ir.model.fields,field_description:sign.field_sign_request_item_value__value
 msgid "Value"
 msgstr "值"
 
@@ -2296,6 +2321,29 @@ msgid "Your signature has been saved."
 msgstr "你的签名已经保存"
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
+msgid ""
+"Your signature was not submitted. Ensure that all required field of the "
+"documents are completed and that the SMS validation code is correct."
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_common.xml:0
+#, python-format
+msgid "e.g. +1 415 555 0100"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_common.xml:0
+#, python-format
+msgid "e.g. 314159"
+msgstr ""
+
+#. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_checkbox
 #: model:sign.item.type,tip:sign.sign_item_type_company
 #: model:sign.item.type,tip:sign.sign_item_type_date
@@ -2311,6 +2359,11 @@ msgstr "填写"
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "has been completed and signed by everyone."
 msgstr "已经完成并签署了所有人。"
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "ip"
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
@@ -2341,3 +2394,8 @@ msgstr "登陆"
 #, python-format
 msgid "to modify it."
 msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
+msgid "to:"
+msgstr "to:"

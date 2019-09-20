@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
 "Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2019\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
@@ -364,11 +364,6 @@ msgid "A workspace will inherit the tags of its parent workspace"
 msgstr ""
 
 #. module: documents
-#: model:documents.tag,name:documents.documents_hr_documents_absences
-msgid "Absences"
-msgstr ""
-
-#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "Access"
 msgstr "Acesso"
@@ -539,11 +534,6 @@ msgid "Allows you to manage your documents."
 msgstr "Permite a você gerenciar seus documentos."
 
 #. module: documents
-#: model:documents.tag,name:documents.documents_hr_documents_appraisal
-msgid "Appraisal"
-msgstr "Avaliar"
-
-#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -712,7 +702,6 @@ msgstr "Contém"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_Contracts
-#: model:documents.tag,name:documents.documents_hr_documents_contracts
 #: model:documents.tag,name:documents.documents_internal_template_contracts
 msgid "Contracts"
 msgstr "Contratos"
@@ -817,6 +806,7 @@ msgstr "Descrição"
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_mixin__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_share__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__display_name
@@ -904,6 +894,11 @@ msgstr "Compartilhar Documentos"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_mixin
+msgid "Documents creation mixin"
 msgstr ""
 
 #. module: documents
@@ -1141,7 +1136,6 @@ msgid "Groups able to see the workspace and read/create/edit its documents."
 msgstr ""
 
 #. module: documents
-#: model:documents.folder,name:documents.documents_hr_folder
 #: model:documents.tag,name:documents.documents_internal_knowledge_hr
 msgid "HR"
 msgstr ""
@@ -1155,6 +1149,7 @@ msgstr "Tem Opção de Negócio"
 #: model:ir.model.fields,field_description:documents.field_documents_document__id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__id
+#: model:ir.model.fields,field_description:documents.field_documents_mixin__id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_share__id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__id
@@ -1183,14 +1178,10 @@ msgid "Icon to indicate an exception activity."
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__message_unread
-#: model:ir.model.fields,help:documents.field_documents_share__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Se marcado, novas mensagens solicitarão sua atenção."
-
-#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction
+#: model:ir.model.fields,help:documents.field_documents_document__message_unread
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
+#: model:ir.model.fields,help:documents.field_documents_share__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Se marcado novas mensagens solicitarão sua atenção."
 
@@ -1243,6 +1234,7 @@ msgstr "Será entregue aos seguidores desse documento"
 #: model:ir.model.fields,field_description:documents.field_documents_document____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_folder____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_mixin____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_share____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_tag____last_update
@@ -1486,8 +1478,8 @@ msgstr "Número de ações"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
-msgid "Number of error"
-msgstr "Número do erro"
+msgid "Number of errors"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
@@ -2104,7 +2096,6 @@ msgstr "Tente <b>postar uma mensagem</b>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Type"
 msgstr "Tipo"
 

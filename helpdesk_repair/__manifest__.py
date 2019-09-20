@@ -8,7 +8,7 @@
     'depends': ['helpdesk_stock', 'repair'],
     'auto_install': False,
     'description': """
-        Repair Products from Helpdesk's tickets
+Repair Products from helpdesk tickets
     """,
     'data': [
         'views/helpdesk_views.xml',

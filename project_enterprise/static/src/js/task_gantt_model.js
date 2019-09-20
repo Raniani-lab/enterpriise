@@ -34,7 +34,7 @@ var TaskGanttModel = GanttModel.extend({
         // rename undefined asigned to
         _.each(rows, function(row){
             if(row.groupedByField === 'user_id' && !row.resId){
-                row.name = _t('Unassigned tasks');
+                row.name = _t('Unassigned Tasks');
             }
         });
 

@@ -562,7 +562,7 @@ class AccountAsset(models.Model):
                 vals = {
                     'amount_total': current_currency._convert(asset.value_residual, company_currency, asset.company_id, disposal_date),
                     'asset_id': asset.id,
-                    'ref': asset.name + ': ' + _('Disposal'),
+                    'ref': asset.name + ': ' + (_('Disposal') if not invoice_line_id else _('Sale')),
                     'asset_remaining_value': 0,
                     'asset_depreciated_value': max(asset.depreciation_move_ids.filtered(lambda x: x.state == 'posted'), key=lambda x: x.date, default=self.env['account.move']).asset_depreciated_value,
                     'date': disposal_date,

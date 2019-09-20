@@ -16,23 +16,20 @@ odoo.define('web_map.MapController', function (require) {
         //Public
         //-----------------------------------------------------------------------------
 
-        init: function () {
-            this._super.apply(this, arguments);
-            this.pagers = [];
-        },
-
         /**
          * @override
-         * @param {JqueryElement} $node 
+         * @param {JqueryElement} $node
          */
 
         renderButtons: function ($node) {
             var url = 'https://www.google.com/maps/dir/?api=1';
             if (this.model.data.records.length) {
                 url += '&waypoints=';
-                this.model.data.records.forEach(function (record) {
-                    url += record.partner.partner_latitude + ',' + record.partner.partner_longitude + '|';
-                });
+                this.model.data.records
+                    .filter((record) => record.partner && record.partner.partner_latitude && record.partner.partner_longitude)
+                    .forEach((record) => {
+                        url += record.partner.partner_latitude + ',' + record.partner.partner_longitude + '|';
+                    });
                 url = url.slice(0, -1);
             }
             var $buttons = $(qweb.render("MapView.buttons"), { widget: this });
@@ -45,20 +42,52 @@ odoo.define('web_map.MapController', function (require) {
          * @param {JqueryElement} $node
          */
         renderPager: function ($node) {
-            var self = this;
-            var data = this.model.get();
-            var options = {};
-            options.single_page_hidden = true;
-            this.pager = new Pager(this, data.count, data.offset + 1, data.limit, options);
-            this.pager.on('pager_changed', this, function (newState) {
+            const params = this._getPagerParams();
+            this.pager = new Pager(this, params.size, params.current_min, params.limit);
+            this.pager.on('pager_changed', this, newState => {
                 this.pager.disable();
-                data = this.model.get();
                 this.reload({ limit: newState.limit, offset: newState.current_min - 1 })
                     .then(this.pager.enable.bind(this.pager));
             });
-            return this.pager.appendTo($node).then(function () {
-                self.pager.do_toggle(true);
+            return this.pager.appendTo($node);
+        },
+        /**
+         * @override
+         */
+        update: function () {
+            return this._super.apply(this, arguments).then(() => {
+                this._updatePager();
             });
+        },
+
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
+
+        /**
+         * Return the params (current_min, limit and size) to pass to the pager,
+         * according to the current state.
+         *
+         * @private
+         * @returns {Object}
+         */
+        _getPagerParams: function () {
+            const state = this.model.get();
+            return {
+                current_min: state.offset + 1,
+                limit: state.limit,
+                size: state.count,
+            };
+        },
+        /**
+         * Update the pager with the current state.
+         *
+         * @private
+         */
+        _updatePager: function () {
+            if (this.pager) {
+                this.pager.updateState(this._getPagerParams());
+            }
         },
 
         //-------------------------------------------------------------------------------------
@@ -66,23 +95,22 @@ odoo.define('web_map.MapController', function (require) {
         //------------------------------------------------------------------------------------
 
         /**
-         * 
+         *
          * @param {MouseEvent} ev
          * @private
-         * redirects to google maps with all the records' coordinates 
+         * redirects to google maps with all the records' coordinates
          */
         _onGetItineraryClicked: function (ev) {
             window.open('https://www.google.com/maps/dir/?api=1&destination=' + ev.data.lat + ',' + ev.data.lon);
         },
 
         /**
-         * 
-         * @param {MouseEvent} ev 
+         *
+         * @param {MouseEvent} ev
          * @private
          * Redirects to a form view in edit mode
          */
         _onOpenClicked: function (ev) {
-
             this.trigger_up('switch_view', {
                 view_type: 'form',
                 res_id: ev.data.id,

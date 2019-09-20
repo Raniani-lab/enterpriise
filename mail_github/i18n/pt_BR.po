@@ -17,9 +17,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:29+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: Lauro de Lima <lauro@ciclix.com>, 2019\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
@@ -161,12 +161,8 @@ msgid "ID"
 msgstr "ID"
 
 #. module: mail_github
-#: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Se marcado, novas mensagens solicitarão sua atenção."
-
-#. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction
+#: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Se marcado novas mensagens solicitarão sua atenção."
 
@@ -222,8 +218,8 @@ msgstr "Número de ações"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_has_error_counter
-msgid "Number of error"
-msgstr "Número do erro"
+msgid "Number of errors"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction_counter
@@ -325,7 +321,7 @@ msgid "commented"
 msgstr ""
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:174
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "commit"
 msgstr ""
@@ -341,8 +337,8 @@ msgid "created a new"
 msgstr ""
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:197
-#: code:addons/mail_github/controllers/main.py:205
+#: code:addons/mail_github/controllers/main.py:0
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "issue"
 msgstr ""
@@ -363,8 +359,8 @@ msgid "on repository"
 msgstr ""
 
 #. module: mail_github
-#: code:addons/mail_github/controllers/main.py:212
-#: code:addons/mail_github/controllers/main.py:219
+#: code:addons/mail_github/controllers/main.py:0
+#: code:addons/mail_github/controllers/main.py:0
 #, python-format
 msgid "pull request"
 msgstr ""

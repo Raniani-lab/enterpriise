@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: project_timesheet_forecast
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__date
+#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__entry_date
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Date"
 msgstr "Datum"
@@ -33,8 +33,7 @@ msgid "Display Name"
 msgstr "Anzeigename"
 
 #. module: project_timesheet_forecast
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast__effective_hours
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast_create__effective_hours
+#: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__effective_hours
 msgid "Effective hours"
 msgstr "Effektive Stunden"
 
@@ -70,14 +69,12 @@ msgid "Number of hours"
 msgstr "Anzahl der Stunden"
 
 #. module: project_timesheet_forecast
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast__working_days_count
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast_create__working_days_count
-msgid "Number of working days"
-msgstr "Anzahl der Arbeitstage"
+#: model:ir.model,name:project_timesheet_forecast.model_planning_slot
+msgid "Planning Shift"
+msgstr ""
 
 #. module: project_timesheet_forecast
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast__percentage_hours
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast_create__percentage_hours
+#: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__percentage_hours
 msgid "Progress"
 msgstr "Fortschritt"
 
@@ -88,11 +85,6 @@ msgid "Project"
 msgstr "Projekt"
 
 #. module: project_timesheet_forecast
-#: model:ir.model,name:project_timesheet_forecast.model_project_forecast
-msgid "Project Forecast"
-msgstr "Projektprognosen"
-
-#. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__task_id
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Task"
@@ -101,16 +93,11 @@ msgstr "Aufgabe"
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
 msgid ""
-"This report performs analysis on your timesheet and forecast. This allow to "
+"This report performs analysis on your timesheet and planning. This allow to "
 "have a global view of past forecast and what was really done. Comparing old "
 "estimation and effective work amount will help you to better plan your futur"
 " project."
 msgstr ""
-"Dieser Bericht führt eine Analyse Ihrer Arbeitszeittabelle und Prognose "
-"durch. Auf diese Weise erhalten Sie einen Überblick über vergangene "
-"Prognosen und die tatsächlichen Aktivitäten. Durch den Vergleich der alten "
-"Schätzung und der effektiven Arbeitsmenge können Sie Ihr zukünftiges Projekt"
-" besser planen."
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields.selection,name:project_timesheet_forecast.selection__project_timesheet_forecast_report_analysis__line_type__timesheet
@@ -119,26 +106,26 @@ msgstr "Zeiterfassung"
 
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
-msgid "Timesheet & Forecast Statistics"
-msgstr "Arbeitszeittabelle & Prognosestatistik"
+msgid "Timesheet & Planning Statistics"
+msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.actions.act_window,name:project_timesheet_forecast.project_timesheet_forecast_report_action
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "Timesheet Forecast Analysis"
-msgstr "Arbeitszeittabellen-Prognoseanalyse"
+msgid "Timesheet Planning Analysis"
+msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.ui.menu,name:project_timesheet_forecast.menu_project_timesheet_forecast_report_analysis
-msgid "Timesheet and Forecast Analysis"
-msgstr "Arbeitszeittabelle und Prognoseanalyse"
+msgid "Timesheet and Planning Analysis"
+msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.filters,name:project_timesheet_forecast.ir_filter_project_timesheet_forecast
-msgid "Timesheet vs Forecast"
-msgstr "Arbeitszeittabelle gegen Prognosen"
+msgid "Timesheet vs Planning"
+msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__line_type

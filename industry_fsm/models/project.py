@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from ast import literal_eval
 from datetime import timedelta, datetime
+import pytz
 
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, AccessError
@@ -15,7 +16,7 @@ class Project(models.Model):
     def default_get(self, fields):
         """ Pre-fill timesheet product as "Time" data product when creating new project allowing billable tasks by default. """
         result = super(Project, self).default_get(fields)
-        if 'timesheet_product_id' in fields and result.get('is_fsm') and not result.get('timesheet_product_id'):
+        if 'timesheet_product_id' in fields and result.get('allow_billable') and result.get('allow_timesheets') and not result.get('timesheet_product_id'):
             default_product = self.env.ref('industry_fsm.fsm_time_product', False)
             if default_product:
                 result['timesheet_product_id'] = default_product.id
@@ -23,7 +24,7 @@ class Project(models.Model):
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
     allow_material = fields.Boolean("Products on Tasks")
-    allow_quotations = fields.Boolean("Extra quotation")
+    allow_quotations = fields.Boolean("Extra Quotations")
     timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain="[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", help='Select a Service product with which you would like to bill your time spent on tasks.')
 
     _sql_constraints = [
@@ -32,10 +33,29 @@ class Project(models.Model):
         ('fsm_imply_task_rate', "CHECK((is_fsm = 't' AND sale_line_id IS NULL) OR (is_fsm = 'f'))", 'An FSM project must be billed at task rate.'),
     ]
 
+
+    @api.onchange('allow_timesheets', 'allow_billable')
+    def _onchange_allow_timesheets_and_billable(self):
+        if self.allow_timesheets and self.allow_billable and not self.timesheet_product_id:
+            default_product = self.env.ref('industry_fsm.fsm_time_product', False)
+            if default_product:
+                self.timesheet_product_id = default_product
+        else:
+            self.timesheet_product_id = False
+
+    @api.onchange('allow_timesheets')
+    def _onchange_allow_timesheets(self):
+        if self.allow_timesheets:
+            self.allow_timesheet_timer = True
+        else:
+            self.allow_timesheet_timer = False
+
     @api.onchange('allow_billable')
     def _onchange_allow_billable(self):
         super(Project, self)._onchange_allow_billable()
-        if not self.allow_billable:
+        if self.allow_billable:
+            self.allow_material = True
+        else:
             self.allow_material = False
 
 
@@ -45,35 +65,33 @@ class Task(models.Model):
     @api.model
     def default_get(self, fields_list):
         result = super(Task, self).default_get(fields_list)
+        user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
+        date_begin = result.get('planned_date_begin')
+        if date_begin:
+            date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
+            date_begin = date_begin.replace(hour=9, minute=0, second=0)
+            date_begin = date_begin.astimezone(pytz.utc).replace(tzinfo=None)
+            result['planned_date_begin'] = date_begin
+        date_end = result.get('planned_date_end')
+        if date_end:
+            date_end = pytz.utc.localize(date_end).astimezone(user_tz)
+            date_end = date_end.replace(hour=17, minute=0, second=0)
+            date_end = date_end.astimezone(pytz.utc).replace(tzinfo=None)
+            result['planned_date_end'] = date_end
         if 'project_id' in fields_list and not result.get('project_id') and self._context.get('fsm_mode'):
-            fsm_project = self.env.ref('industry_fsm.fsm_project', raise_if_not_found=False)
-            if not fsm_project:
-                fsm_project = self.env['project.project'].search([('is_fsm', '=', True)], limit=1)
+            fsm_project = self.env['project.project'].search([('is_fsm', '=', True)], order='sequence', limit=1)
             result['project_id'] = fsm_project.id
         return result
-
-    def _default_planned_date_begin(self):
-        if self.env.context.get('fsm_mode'):
-            now = datetime.now()
-            return now + timedelta(minutes=15 - now.minute % 15, seconds=-now.second)
-
-    def _default_planned_date_end(self):
-        if self.env.context.get('fsm_mode'):
-            now = datetime.now()
-            return now + timedelta(minutes=15 - now.minute % 15, seconds=-now.second) + timedelta(hours=1)
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     allow_material = fields.Boolean(related='project_id.allow_material')
     allow_quotations = fields.Boolean(related='project_id.allow_quotations')
-    allow_billable = fields.Boolean(related="project_id.allow_billable")
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     quotation_count = fields.Integer(compute='_compute_quotation_count')
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-    fsm_state = fields.Selection([('draft', 'New'), ('validated', 'Validated'), ('sold', 'Sold')], default='draft', string='Status', readonly=True, copy=False)
-    planned_date_begin = fields.Datetime(default=_default_planned_date_begin)
-    planned_date_end = fields.Datetime(default=_default_planned_date_end)
+    fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True)
     user_id = fields.Many2one(group_expand='_read_group_user_ids')
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
     fsm_to_invoice = fields.Boolean("To invoice", compute='_compute_fsm_to_invoice', search='_search_fsm_to_invoice')
@@ -113,11 +131,12 @@ class Task(models.Model):
                             T.user_id as user_id,
                             T.project_id,
                             T.planned_date_begin as planned_date_begin,
-                            T.planned_date_end as planned_date_end
-
+                            T.planned_date_end as planned_date_end,
+                            T.active as active
                         FROM project_task T
                         LEFT OUTER JOIN project_project P ON P.id = T.project_id
                         WHERE T.id IN %s
+                            AND T.active = 't'
                             AND P.is_fsm = 't'
                             AND T.planned_date_begin IS NOT NULL
                             AND T.planned_date_end IS NOT NULL
@@ -125,6 +144,7 @@ class Task(models.Model):
                     ) T1
                 INNER JOIN project_task T2
                     ON T1.id != T2.id
+                        AND T2.active = 't'
                         AND T1.user_id = T2.user_id
                         AND T2.planned_date_begin IS NOT NULL
                         AND T2.planned_date_end IS NOT NULL
@@ -148,25 +168,40 @@ class Task(models.Model):
             task.quotation_count = mapped_data.get(task.id, 0)
 
     def _compute_material_line_totals(self):
-        for task in self:
-            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: sol.product_id != task.project_id.timesheet_product_id)
-            task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
-            task.material_line_product_count = len(material_sale_lines.mapped('product_id'))
 
+        def if_fsm_material_line(sale_line_id, task):
+            is_not_timesheet_line = sale_line_id.product_id != task.project_id.timesheet_product_id
+            is_not_empty = sale_line_id.product_uom_qty != 0
+            is_not_service_from_so = sale_line_id != task.sale_line_id
+            return all([is_not_timesheet_line, is_not_empty, is_not_service_from_so])
+
+        for task in self:
+            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: if_fsm_material_line(sol, task))
+            task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
+            task.material_line_product_count = sum(material_sale_lines.mapped('product_uom_qty'))
+
+    def _compute_fsm_done(self):
+        for task in self:
+            closed_stage = task.project_id.type_ids.filtered('is_closed')
+            if closed_stage:
+                task.fsm_done = task.stage_id in closed_stage
+
+    @api.depends('sale_order_id.invoice_status', 'sale_order_id.order_line')
     def _compute_fsm_to_invoice(self):
         for task in self:
-            task.fsm_to_invoice = bool(task.sale_order_id.invoice_status == 'to invoice')
+            task.fsm_to_invoice = bool(task.sale_order_id.invoice_status not in ('no', 'invoiced'))
 
     @api.model
     def _search_fsm_to_invoice(self, operator, value):
         query = """
             SELECT so.id
             FROM sale_order so
-            WHERE so.invoice_status = 'to invoice'
+            WHERE so.invoice_status != 'invoiced'
+                AND so.invoice_status != 'no'
         """
-        operator_new = 'not inselect'
+        operator_new = 'inselect'
         if(bool(operator == '=') ^ bool(value)):
-            operator_new = 'inselect'
+            operator_new = 'not inselect'
         return [('sale_order_id', operator_new, (query, ()))]
 
     # ---------------------------------------------------------
@@ -259,7 +294,7 @@ class Task(models.Model):
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Products'),
+            'name': _('Choose Products'),
             'res_model': 'product.product',
             'views': [(kanban_view.id, 'kanban'), (False, 'form')],
             'domain': domain,
@@ -269,6 +304,7 @@ class Task(models.Model):
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
                 'partner': self.partner_id.id if self.partner_id else False,
+                'search_default_consumable': 1,
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">
                             Create a new product
@@ -299,23 +335,26 @@ class Task(models.Model):
             if not closed_stage and len(task.project_id.type_ids) > 1:  # project without stage (or with only one)
                 closed_stage = task.project_id.type_ids[-1]
 
-            values = {'fsm_state': 'validated'}
+            values = {'fsm_done': True}
             if closed_stage:
                 values['stage_id'] = closed_stage.id
+
+            if task.allow_billable:
+                task._fsm_ensure_sale_order()
+                if task.sudo().sale_order_id.state in ['draft', 'sent']:
+                    task.sudo().sale_order_id.action_confirm()
 
             task.write(values)
 
     def action_fsm_create_invoice(self):
-        if not self.is_fsm:
+        if not all(self.mapped('is_fsm')):
             raise UserError(_('This action is only allowed on FSM project.'))
+        for task in self:
+            # ensure the SO exists before invoicing, then confirm it
+            task._fsm_ensure_sale_order()
+            if task.sale_order_id.state in ['draft', 'sent']:
+                task.sale_order_id.action_confirm()
 
-        # ensure the SO exists before invoicing, then confirm it
-        self._fsm_ensure_sale_order()
-        if self.sale_order_id.state in ['draft', 'sent']:
-            self.sale_order_id.action_confirm()
-
-        # as before, mark the task as 'sold' on SO confirmation
-        self.write({'fsm_state': 'sold'})
         # redirect create invoice wizard (of the Sales Order)
         action = self.env.ref('sale.action_view_sale_advance_payment_inv').read()[0]
         context = literal_eval(action.get('context', "{}"))
@@ -328,13 +367,14 @@ class Task(models.Model):
     def action_fsm_view_overlapping_tasks(self):
         fsm_task_form_view = self.env.ref('industry_fsm.project_task_view_form')
         fsm_task_list_view = self.env.ref('industry_fsm.project_task_view_list_fsm')
+        fsm_task_kanban_view = self.env.ref('industry_fsm.project_task_view_kanban_fsm')
         domain = self._get_fsm_overlap_domain()[self.id]
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Overlapping tasks'),
+            'name': _('Overlapping Tasks'),
             'res_model': 'project.task',
             'domain': domain,
-            'views': [(fsm_task_list_view.id, 'tree'), (fsm_task_form_view.id, 'form')],
+            'views': [(fsm_task_list_view.id, 'tree'), (fsm_task_kanban_view.id, 'kanban'), (fsm_task_form_view.id, 'form')],
             'context': {
                 'fsm_mode': True,
                 'task_nameget_with_hours': False,
@@ -347,9 +387,12 @@ class Task(models.Model):
 
     def _fsm_ensure_sale_order(self):
         """ get the SO of the task. If no one, create it and return it """
-        if self.sale_order_id:
-            return self.sale_order_id
-        return self._fsm_create_sale_order()
+        sale_order = self.sale_order_id
+        if not sale_order:
+            sale_order = self._fsm_create_sale_order()
+        if self.project_id.allow_timesheets and not self.sale_line_id:
+            self._fsm_create_sale_order_line()
+        return sale_order
 
     def _fsm_create_sale_order(self):
         """ Create the SO from the task, with the 'service product' sales line and link all timesheet to that line it """
@@ -357,7 +400,7 @@ class Task(models.Model):
             raise UserError(_('The FSM task must have a customer set to be sold.'))
 
         SaleOrder = self.env['sale.order']
-        if self.user_has_groups('industry_fsm.group_fsm_user'):
+        if self.user_has_groups('project.group_project_user'):
             SaleOrder = SaleOrder.sudo()
 
         sale_order = SaleOrder.create({
@@ -366,13 +409,14 @@ class Task(models.Model):
         })
         sale_order.onchange_partner_id()
 
-        assign_current_user = self.env['sale.order'].check_access_rights('create', raise_exception=False)
-        if(not assign_current_user):
-            # write after creation since onchange_partner_id sets the current user
-            sale_order.write({'user_id': False})
+        # write after creation since onchange_partner_id sets the current user
+        sale_order.write({'user_id': self.user_id.id})
 
+        self.sale_order_id = sale_order
+
+    def _fsm_create_sale_order_line(self):
         sale_order_line = self.env['sale.order.line'].sudo().create({
-            'order_id': sale_order.id,
+            'order_id': self.sale_order_id.id,
             'product_id': self.project_id.timesheet_product_id.id,
             'project_id': self.project_id.id,
             'task_id': self.id,
@@ -384,14 +428,13 @@ class Task(models.Model):
         })
 
         # assign SOL to timesheets
-        self.env['account.analytic.line'].search([
+        self.env['account.analytic.line'].sudo().search([
             ('task_id', '=', self.id),
             ('so_line', '=', False),
             ('project_id', '!=', False)
         ]).write({
             'so_line': sale_order_line.id
         })
-        return sale_order
 
     def _get_fsm_overlap_domain(self):
         domain_mapping = {}

@@ -6,7 +6,7 @@ from odoo import models, fields, api
 
 class HelpdeskSaleCouponGenerate(models.TransientModel):
     _name = "helpdesk.sale.coupon.generate"
-    _description = 'Sales Coupon Generate from Helpdesk'
+    _description = 'Generate Sales Coupon from Helpdesk'
 
     program = fields.Many2one('sale.coupon.program', string="Coupon Program", domain=[('program_type', '=', 'coupon_program')])
     ticket_id = fields.Many2one('helpdesk.ticket')

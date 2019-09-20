@@ -25,6 +25,17 @@
         </field>
     </record>
 
+    <record model="ir.actions.server" id="action_account_aml_to_deferred">
+        <field name="name">Create Deferred Entry</field>
+        <field name="model_id" ref="account.model_account_move_line"/>
+        <field name="binding_model_id" ref="account.model_account_move_line" />
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.turn_as_deferred()
+        </field>
+    </record>
+
     <record model="ir.actions.server" id="action_account_aml_to_asset">
         <field name="name">Create Asset</field>
         <field name="model_id" ref="account.model_account_move_line"/>
@@ -33,28 +44,6 @@
         <field name="code">
 if records:
     action = records.turn_as_asset()
-        </field>
-    </record>
-
-    <record model="ir.actions.server" id="action_account_aml_to_deferred_revenue">
-        <field name="name">Create Deferred Revenue</field>
-        <field name="model_id" ref="account.model_account_move_line"/>
-        <field name="binding_model_id" ref="account.model_account_move_line" />
-        <field name="state">code</field>
-        <field name="code">
-if records:
-    action = records.turn_as_deferred_revenue()
-        </field>
-    </record>
-
-    <record model="ir.actions.server" id="action_account_aml_to_deferred_expense">
-        <field name="name">Create Deferred Expense</field>
-        <field name="model_id" ref="account.model_account_move_line"/>
-        <field name="binding_model_id" ref="account.model_account_move_line" />
-        <field name="state">code</field>
-        <field name="code">
-if records:
-    action = records.turn_as_deferred_expense()
         </field>
     </record>
 </odoo>

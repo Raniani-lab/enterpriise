@@ -183,10 +183,8 @@ msgstr "Dodaj widżet czatowania"
 #, python-format
 msgid ""
 "Add a <b>chatter widget</b> to allow discussions on your document: by email "
-"or inline."
+"or online."
 msgstr ""
-"Dodaj <b>widżet czatowania</b>, aby umożliwić dyskusje na temat twojego "
-"dokumentu: przez e-mail lub inline."
 
 #. module: web_studio
 #. openerp-web

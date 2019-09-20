@@ -106,7 +106,7 @@
                         <p><i class="fa fa-exclamation-circle"/> The document's integrity could not be verified.</p>
                     </div>
                     <div class="small">
-                        <p>The final document and this completion history have been sent by email on <span t-field="o.completion_date"/> to: <t t-esc="', '.join(o._get_final_recipients())"/>.</p>
+                        <p>The final document and this completion history have been sent by email on&amp;nbsp; <span t-field="o.completion_date"/> to: <t t-esc="', '.join(o._get_final_recipients())"/>.</p>
                     </div>
                     <h5>Access Logs</h5>
                     <table class="table table-sm o_main_table small">

@@ -11,6 +11,12 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     _name = 'hr.payslip.employee.depature.holiday.attests'
     _description = 'Manage the Employee Departure Holiday Attests'
 
+    @api.model
+    def default_get(self, field_list=None):
+        if self.env.company.country_id != self.env.ref('base.be'):
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        return super().default_get(field_list)
+
     employee_id = fields.Many2one('hr.employee', string='Employee', default=lambda self: self.env.context.get('active_id'))
 
     payslip_n_ids = fields.Many2many('hr.payslip', string='Payslips N', compute='_compute_payslip_ids')
@@ -51,7 +57,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             previous_year = current_year + relativedelta(years=-1)
 
             attest.payslip_n_ids = self.env['hr.payslip'].search(
-                [('employee_id', '=', attest.employee_id.id),('date_to', '>=', current_year)])
+                [('employee_id', '=', attest.employee_id.id), ('date_to', '>=', current_year)])
             attest.payslip_n1_ids = self.env['hr.payslip'].search(
                 [('employee_id', '=', attest.employee_id.id), ('date_to', '>=', previous_year),
                 ('date_from', '<', current_year)])

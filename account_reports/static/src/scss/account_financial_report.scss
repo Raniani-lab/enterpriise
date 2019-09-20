@@ -38,9 +38,6 @@
     .o_account_reports_table {
         white-space: nowrap;
         margin-bottom: 128px;
-        display: block;
-        overflow-x: auto;
-        padding-bottom: 8px;
         th.o_account_report_column_header {
             &.sortable::before {
                 content: '\f07d';
@@ -56,13 +53,6 @@
                 color: black;
             }
         }
-    }
-    &.o_account_followup {
-        padding-top: 0px;
-    }
-
-    .o_account_followup_blocked {
-        background-color: LightGray;
     }
     a {
         cursor: pointer;

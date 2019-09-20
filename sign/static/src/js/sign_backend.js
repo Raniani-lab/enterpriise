@@ -37,7 +37,7 @@ odoo.define('sign.views_custo', function(require) {
          */
         _openRecord: function () {
             var self = this;
-            if (this.modelName === 'sign.template' && this.$el.parents('.o_sign_template_kanban').length) {
+            if (this.modelName === 'sign.template' && this.$el.parents('.o_kanban_dashboard').length) {
                 self._rpc({
                     model: 'sign.template',
                     method: 'go_to_custom_template',
@@ -85,7 +85,7 @@ odoo.define('sign.views_custo', function(require) {
                     _sign_upload_file.call(self, true, false, 'sign_send_request');
                 });
                 this.$buttons.find(selector_button).after(
-                    $('<button class="btn btn-primary o-kanban-button-new o-direct ml8" type="button">Sign Now</button>')
+                    $('<button class="btn btn-primary o-kanban-button-new o-direct ml8" type="button">'+ _t('Sign Now') + '</button>')
                     .off('click')
                     .on('click', function (e) {
                         e.preventDefault();
@@ -241,7 +241,10 @@ odoo.define('sign.template', function(require) {
                     });
                 });
                 self.$currentTarget.popover("toggle");
-
+                //  Don't display placeholders of checkboxes: empty element
+                if (self.$currentTarget.prop('field-type') === 'checkbox') {
+                    $('.o_popover_placeholder').text('');
+                }
             });
         },
         hide: function() {
@@ -254,17 +257,10 @@ odoo.define('sign.template', function(require) {
             if (! name) {
                 name = self.$currentTarget.prop('field-name');
             }
-            var inputDict = {responsible: resp, required: required, option_ids: selected_options, name: name};
-            var outputDict = {};
-            for (var key in inputDict) {
-                if (inputDict[key]) {           
-                    outputDict[key] = inputDict[key];
-                }
-            }
-            if (self.$currentTarget.prop('field-type') !== "checkbox") {
+            if (self.$currentTarget.prop('field-type') != "checkbox") {
                 this.$currentTarget.find(".o_placeholder").text(name);
             }
-            this.$currentTarget.data(outputDict).trigger('itemChange');
+            this.$currentTarget.data({responsible: resp, required: required, name: name, option_ids: selected_options}).trigger('itemChange');
             this.$currentTarget.popover("hide");
         }
     });

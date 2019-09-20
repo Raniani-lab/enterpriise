@@ -5,13 +5,19 @@ from datetime import timedelta
 
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 WORK_RATE = [('0.5', '1/2'), ('0.8', '4/5'), ('0.9', '9/10')]
 
 class L10nBeHrPayrollCreditTime(models.TransientModel):
     _name = 'l10n_be.hr.payroll.credit.time.wizard'
     _description = 'Manage Belgian Credit Time'
+
+    @api.model
+    def default_get(self, field_list):
+        if self.env.company.country_id != self.env.ref('base.be'):
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        return super().default_get(field_list)
 
     contract_id = fields.Many2one('hr.contract', string='Contract', default=lambda self: self.env.context.get('active_id'))
     date_start = fields.Date('Start Date Credit Time', help="Start date of the credit time contract.", required=True)
@@ -66,8 +72,10 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
     _description = 'Manage Belgian Exit Credit Time'
 
     @api.model
-    def default_get(self, fields):
-        res = super(L10nBeHrPayrollExitCreditTime, self).default_get(fields)
+    def default_get(self, field_list):
+        if self.env.company.country_id != self.env.ref('base.be'):
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        res = super(L10nBeHrPayrollExitCreditTime, self).default_get(field_list)
         current_credit_time = self.env['hr.contract'].browse(self.env.context.get('active_id'))
         last_full_time = self.env['hr.contract'].search([('employee_id', '=', current_credit_time.employee_id.id),
             ('time_credit', '=', False), ('date_end', '!=', False), ('state', '!=', 'cancel')],

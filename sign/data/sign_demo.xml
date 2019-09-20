@@ -14,7 +14,6 @@
 
     <record id="template_sign_2" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_2"/>
-        <field name="active">False</field>
         <field name="share_link">demo-template-2</field>
     </record>
 
@@ -26,7 +25,6 @@
 
     <record id="template_sign_4" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_4"/>
-        <field name="active">False</field>
         <field name="share_link">demo-template-4</field>
     </record>
 
@@ -38,7 +36,6 @@
 
     <record id="template_sign_5" model="sign.template">
         <field name="attachment_id" ref="attachment_sign_5"/>
-        <field name="active">False</field>
         <field name="share_link">demo-template-5</field>
     </record>
 

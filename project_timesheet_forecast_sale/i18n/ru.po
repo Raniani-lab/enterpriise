@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:37+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
@@ -32,21 +32,20 @@ msgid "After"
 msgstr "После"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:0
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan_inherit
-#, python-format
 msgid "Forecasts"
 msgstr "Прогнозы"
 
 #. module: project_timesheet_forecast_sale
-#: model:ir.model,name:project_timesheet_forecast_sale.model_project_project
-msgid "Project"
-msgstr "Проект"
+#: code:addons/project_timesheet_forecast_sale/models/project_overview.py:0
+#, python-format
+msgid "Planning"
+msgstr "Планирование"
 
 #. module: project_timesheet_forecast_sale
-#: model:ir.model,name:project_timesheet_forecast_sale.model_project_forecast
-msgid "Project Forecast"
-msgstr "Прогноз проекта"
+#: model:ir.model,name:project_timesheet_forecast_sale.model_planning_slot
+msgid "Planning Shift"
+msgstr ""
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/models/project_overview.py:0
@@ -58,14 +57,12 @@ msgstr ""
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line
-#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast__order_line_id
-#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast_create__order_line_id
+#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_planning_slot__order_line_id
 msgid "Sales Order Line"
 msgstr "Строка заказа на продажу"
 
 #. module: project_timesheet_forecast_sale
-#: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_forecast__order_line_id
-#: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_forecast_create__order_line_id
+#: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_slot__order_line_id
 msgid ""
 "Sales order item to which the task is linked. If an employee timesheets on a"
 " this task, and if this employee is not in the 'Employee/Sales Order Item "

@@ -8,7 +8,7 @@
     'depends': ['helpdesk_sale', 'account'],
     'auto_install': False,
     'description': """
-        Create Credit Notes from Helpdesk's tickets
+Create Credit Notes from Helpdesk tickets
     """,
     'data': [
         'wizard/account_move_reversal_views.xml',

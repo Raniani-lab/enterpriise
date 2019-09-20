@@ -8,7 +8,7 @@
     'depends': ['helpdesk_sale', 'sale_coupon'],
     'auto_install': False,
     'description': """
-        Generate Coupons from Helpdesk's tickets
+Generate Coupons from Helpdesks tickets
     """,
     'data': [
         'wizard/helpdesk_sale_coupon_generate_views.xml',

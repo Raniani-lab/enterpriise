@@ -43,7 +43,7 @@
     }
     &.o_kanban_ungrouped.o_kanban_referral_job {
         .o_kanban_record {
-            width: 450px;
+            max-width: 450px;
             padding: 1.5rem 1.5rem 1rem;
         }
     }
@@ -56,7 +56,6 @@
     }
 
     .o_head_friend {
-        // @include o-position-absolute($top: 0, $right: 0);
         flex-direction: column;
             .img {
                 max-height: 60px;
@@ -85,6 +84,7 @@
             }
         }
         .btn .fa{
+            font-size: 3rem;
             @include media-breakpoint-up(sm) {
                 font-size: 2rem
             }

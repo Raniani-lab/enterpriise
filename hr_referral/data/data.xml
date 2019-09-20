@@ -71,28 +71,28 @@ Help us recruit a team of superheroes to save the day!</field>
 
         <!-- Referral Friends -->
         <record model="hr.referral.friend" id="employee_referral_friend_1">
-            <field name="name">Mystic</field>
+            <field name="name">Hero 1</field>
             <field name="image" type="base64" file="hr_referral/static/src/img/mystic.png"/>
             <field name="image_head" type="base64" file="hr_referral/static/src/img/mystic-head.png"/>
         </record>
         <record model="hr.referral.friend" id="employee_referral_friend_2">
-            <field name="name">Aborigen</field>
+            <field name="name">Hero 2</field>
             <field name="image" type="base64" file="hr_referral/static/src/img/aborigen.png"/>
             <field name="image_head" type="base64" file="hr_referral/static/src/img/aborigen-head.png"/>
         </record>
         <record model="hr.referral.friend" id="employee_referral_friend_3">
-            <field name="name">Cyborg</field>
+            <field name="name">Hero 3</field>
             <field name="image" type="base64" file="hr_referral/static/src/img/cyborg.png"/>
             <field name="image_head" type="base64" file="hr_referral/static/src/img/cyborg-head.png"/>
         </record>
         <record model="hr.referral.friend" id="employee_referral_friend_4">
-            <field name="name">Dog</field>
+            <field name="name">Hero 4</field>
             <field name="position">front</field>
             <field name="image" type="base64" file="hr_referral/static/src/img/dog.png"/>
             <field name="image_head" type="base64" file="hr_referral/static/src/img/dog-head.png"/>
         </record>
         <record model="hr.referral.friend" id="employee_referral_friend_5">
-            <field name="name">Girl</field>
+            <field name="name">Hero 5</field>
             <field name="image" type="base64" file="hr_referral/static/src/img/girl.png"/>
             <field name="image_head" type="base64" file="hr_referral/static/src/img/girl-head.png"/>
         </record>

@@ -19,6 +19,7 @@ class ProjectWorksheetTemplate(models.Model):
     model_id = fields.Many2one('ir.model', ondelete='cascade', readonly=True, domain=[('state', '=', 'manual')])
     action_id = fields.Many2one('ir.actions.act_window', readonly=True)
     report_view_id = fields.Many2one('ir.ui.view', domain=[('type', '=', 'qweb')], readonly=True)
+    color = fields.Integer('Color', default=0)
     active = fields.Boolean(default=True)
 
     def _compute_worksheet_count(self):
@@ -36,6 +37,9 @@ class ProjectWorksheetTemplate(models.Model):
     def create(self, vals):
         template = super(ProjectWorksheetTemplate, self).create(vals)
         name = 'x_project_worksheet_template_' + str(template.id)
+        # while creating model it will initialize the init_models method from create of ir.model
+        # and there is related field of model_id in mail template so it's going to recusrive loop while recompute so used flush
+        self.flush()
         model = self.env['ir.model'].sudo().create({
             'name': vals['name'],
             'model': name,
@@ -52,12 +56,6 @@ class ProjectWorksheetTemplate(models.Model):
                     'relation': 'project.task',
                     'required': True,
                     'on_delete': 'cascade',
-                }),
-                (0, 0, {
-                    'name': 'x_operation_type',
-                    'ttype': 'selection',
-                    'field_description': 'Operation Type',
-                    'selection': "[('functional','Functional'),('technical','Technical')]"
                 }),
                 (0, 0, {
                     'name': 'x_comments',
@@ -104,14 +102,11 @@ class ProjectWorksheetTemplate(models.Model):
             'arch': """
             <form>
                 <sheet>
-                    <group invisible="context.get('studio') or context.get('default_x_task_id')">
-                        <group>
+                    <h1 invisible="context.get('studio') or context.get('default_x_task_id')">
                             <field name="x_task_id" domain="[('is_fsm', '=', True)]"/>
-                        </group>
-                    </group>
+                    </h1>
                     <group>
                         <group>
-                            <field name="x_operation_type" widget="radio" options="{'horizontal': true}"/>
                             <field name="x_comments"/>
                         </group>
                         <group>
@@ -130,6 +125,7 @@ class ProjectWorksheetTemplate(models.Model):
                 'edit': False,
                 'create': False,
                 'delete': False,
+                'duplicate': False,
             }
         })
         # generate an xmlid for the action, studio requires it to activate the studio
@@ -204,7 +200,6 @@ class ProjectWorksheetTemplate(models.Model):
     def _get_qweb_arch_omitted_fields(self):
         return [
             'x_task_id', 'x_name',  # redundants
-            'x_customer_signature', 'x_worker_signature'  # treated separately by the template
         ]
 
     @api.model
@@ -225,20 +220,28 @@ class ProjectWorksheetTemplate(models.Model):
                 field_info = form_view_fields[field_name]
 
                 widget = field_node.attrib.get('widget', False)
-                # no signature widget in qweb
-                if widget == 'signature':
-                    widget = 'image'
+                is_signature = False
                 # adapt the widget syntax
                 if widget:
-                    field_node.attrib['t-options'] = "{'widget': '%s'}" % widget
+                    if widget == 'signature':
+                        is_signature = True
+                    # no signature widget in qweb
+                    field_node.attrib['t-options'] = "{'widget': '%s'}" % (widget if not is_signature else 'image')
                     field_node.attrib.pop('widget')
                 # basic form view -> qweb node transformation
-                if field_info['type'] != 'binary' or widget in ['image']:
+                if field_info['type'] != 'binary' or widget in ['image', 'signature']:
                     # adapt the field node itself
-                    field_node.tag = 'div'
-                    field_node.attrib['t-field'] = 'worksheet.' + field_node.attrib['name']
-                    field_node.attrib['class'] = 'text-wrap col-9'
+                    field_name = 'worksheet.' + field_node.attrib['name']
                     field_node.attrib.pop('name')
+                    if is_signature:
+                        field_node.tag = 'img'
+                        field_node.attrib['style'] = 'width: 250px;'
+                        field_node.attrib['t-att-src'] = 'image_data_uri(%s)' % field_name
+                        field_node.attrib['t-if'] = field_name
+                    else:
+                        field_node.tag = 'div'
+                        field_node.attrib['class'] = 'text-wrap col-9'
+                        field_node.attrib['t-field'] =  field_name
                     # generate a description
                     description = etree.Element('div', {'class': 'col-3 font-weight-bold'})
                     description.text = field_info['string']

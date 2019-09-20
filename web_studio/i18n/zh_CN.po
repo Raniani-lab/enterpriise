@@ -200,8 +200,8 @@ msgstr "添加Chatter挂件"
 #, python-format
 msgid ""
 "Add a <b>chatter widget</b> to allow discussions on your document: by email "
-"or inline."
-msgstr "添加 <b>chatter widget</b> 聊天挂件通过EMail或内置聊天工具方便在线沟通。"
+"or online."
+msgstr ""
 
 #. module: web_studio
 #. openerp-web

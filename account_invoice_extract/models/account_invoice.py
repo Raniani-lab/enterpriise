@@ -2,7 +2,7 @@
 
 from odoo.addons.iap import jsonrpc
 from odoo import api, exceptions, fields, models, _
-from odoo.exceptions import AccessError
+from odoo.exceptions import AccessError, ValidationError
 from odoo.tests.common import Form
 from odoo.tools.misc import clean_context
 import logging
@@ -24,6 +24,11 @@ ERROR_UNSUPPORTED_IMAGE_FORMAT = 6
 ERROR_FILE_NAMES_NOT_MATCHING = 7
 ERROR_NO_CONNECTION = 8
 ERROR_SERVER_IN_MAINTENANCE = 9
+ERROR_PASSWORD_PROTECTED = 10
+ERROR_TOO_MANY_PAGES = 11
+
+# codes 100-199 are reserved for warnings
+WARNING_DUPLICATE_VENDOR_REFERENCE = 100
 
 ERROR_MESSAGES = {
     ERROR_INTERNAL: _("An error occurred"),
@@ -33,6 +38,9 @@ ERROR_MESSAGES = {
     ERROR_FILE_NAMES_NOT_MATCHING: _("You must send the same quantity of documents and file names"),
     ERROR_NO_CONNECTION: _("Server not available. Please retry later"),
     ERROR_SERVER_IN_MAINTENANCE: _("Server is currently under maintenance. Please retry later"),
+    ERROR_PASSWORD_PROTECTED: _("Your PDF file is protected by a password. The OCR can't extract data from it"),
+    ERROR_TOO_MANY_PAGES: _("Your invoice is too heavy to be processed by the OCR. Try to reduce the number of pages and avoid pages with too many text"),
+    WARNING_DUPLICATE_VENDOR_REFERENCE: _("Warning: there is already a vendor bill with this reference (%s)")
 }
 
 
@@ -56,12 +64,15 @@ class AccountInvoiceExtractionWords(models.Model):
 
 class AccountMove(models.Model):
     _inherit = ['account.move']
+    duplicated_vendor_ref = fields.Char(string='Duplicated vendor reference')
 
     @api.depends('extract_status_code')
     def _compute_error_message(self):
         for record in self:
-            if record.extract_status_code != SUCCESS and record.extract_status_code != NOT_READY:
+            if record.extract_status_code not in (SUCCESS, NOT_READY):
                 record.extract_error_message = ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL])
+                if record.extract_status_code == WARNING_DUPLICATE_VENDOR_REFERENCE:
+                    record.extract_error_message = record.extract_error_message % record.duplicated_vendor_ref
             else:
                 record.extract_error_message = ''
 
@@ -413,14 +424,6 @@ class AccountMove(models.Model):
             return new_partner
         return False
 
-    def _set_vat(self, text):
-        partner_vat = self.env["res.partner"].search([("vat", "=", text)], limit=1)
-        if partner_vat.exists():
-            self.partner_id = partner_vat
-            self._onchange_partner_id()
-            return True
-        return False
-
     def find_partner_id_with_name(self, partner_name):
         partner_names = self.env["res.partner"].search([("name", "ilike", partner_name)])
         if partner_names.exists():
@@ -444,15 +447,25 @@ class AccountMove(models.Model):
         taxes_found = self.env['account.tax']
         for (taxes, taxes_type) in zip(taxes_ocr, taxes_type_ocr):
             if taxes != 0.0:
-                taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')])
-                if taxes_records:
-                    # prioritize taxes that are not included in the price
-                    taxes_records_not_included = taxes_records.filtered(lambda r: not r.price_include)
-                    if taxes_records_not_included:
-                        taxes_record = taxes_records_not_included[0]
-                    else:
-                        taxes_record = taxes_records[0]
-                    taxes_found |= taxes_record
+                related_documents = self.env['account.move'].search([('state', '!=', 'draft'), ('type', '=', self.type), ('partner_id', '=', self.partner_id.id)])
+                lines = related_documents.invoice_line_ids
+                taxes_ids = related_documents.invoice_line_ids.tax_ids
+                taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == 'purchase')
+                taxes_by_document = []
+                for tax in taxes_ids:
+                    taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))
+                if len(taxes_by_document) != 0:
+                    taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[1]
+                else:
+                    taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase')])
+                    if taxes_records:
+                        # prioritize taxes that are not included in the price
+                        taxes_records_not_included = taxes_records.filtered(lambda r: not r.price_include)
+                        if taxes_records_not_included:
+                            taxes_record = taxes_records_not_included[0]
+                        else:
+                            taxes_record = taxes_records[0]
+                        taxes_found |= taxes_record
         return taxes_found
 
     def _get_invoice_lines(self, invoice_lines, subtotal_ocr):
@@ -469,7 +482,6 @@ class AccountMove(models.Model):
                 subtotal = il['subtotal']['selected_value']['content'] if 'subtotal' in il else total
                 taxes_ocr = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
                 taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in il['taxes']['selected_values']] if 'taxes' in il else []
-
                 taxes_records = self._get_taxes_record(taxes_ocr, taxes_type_ocr)
 
                 taxes_ids = tuple(sorted(taxes_records.ids))
@@ -515,18 +527,11 @@ class AccountMove(models.Model):
 
         return invoice_lines_to_create
 
-    def _set_currency(self, currency_ocr):
-        self.ensure_one()
-        currency = self.env["res.currency"].search(['|', '|', ('currency_unit_label', 'ilike', currency_ocr),
-                                                    ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
-        if currency:
-            self.currency_id = currency
-
     @api.model
     def check_all_status(self):
         for record in self.search([('state', '=', 'draft'), ('extract_state', 'in', ['waiting_extraction', 'extract_not_ready'])]):
             try:
-                self._check_status(record)
+                record._check_status()
             except:
                 pass
 
@@ -535,87 +540,44 @@ class AccountMove(models.Model):
         records_to_update = self.filtered(lambda inv: inv.extract_state in ['waiting_extraction', 'extract_not_ready'] and inv.state == 'draft')
 
         for record in records_to_update:
-            self._check_status(record)
+            record._check_status()
 
         limit = max(0, 20 - len(records_to_update))
         if limit > 0:
             records_to_preupdate = self.search([('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']), ('id', 'not in', records_to_update.ids), ('state', '=', 'draft')], limit=limit)
             for record in records_to_preupdate:
                 try:
-                    self._check_status(record)
+                    record._check_status()
                 except:
                     pass
 
-    def _check_status(self, record):
+    def _check_status(self):
+        self.ensure_one()
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
             'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/get_result'
 
         params = {
             'version': CLIENT_OCR_VERSION,
-            'document_id': record.extract_remote_id
+            'document_id': self.extract_remote_id
         }
         result = jsonrpc(endpoint, params=params)
-        record.extract_status_code = result['status_code']
+        self.extract_status_code = result['status_code']
         if result['status_code'] == SUCCESS:
-            record.extract_state = "waiting_validation"
+            self.extract_state = "waiting_validation"
             ocr_results = result['results'][0]
-            record.extract_word_ids.unlink()
+            self.extract_word_ids.unlink()
 
-            supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
-            date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
-            due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
-            total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
-            subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
-            invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
-            currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
-            vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
-            invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
-
-            vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
-
-            with Form(record) as move_form:
-                if not move_form.partner_id:
-                    partner_id = self.find_partner_id_with_name(supplier_ocr)
-                    if partner_id != 0:
-                        move_form.partner_id = self.env["res.partner"].browse(partner_id)
-                    else:
-                        partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)
-                        if partner_vat.exists():
-                            move_form.partner_id = partner_vat
-                        elif vat_number_ocr:
-                            move_form.partner_id = self._create_supplier_from_vat(vat_number_ocr)
-
-                if date_ocr:
-                    move_form.invoice_date = date_ocr
-                if due_date_ocr:
-                    move_form.invoice_date_due = due_date_ocr
-                move_form.ref = invoice_id_ocr
-
-                if self.user_has_groups('base.group_multi_currency'):
-                    move_form.currency_id = self.env["res.currency"].search([
-                            '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
-                            ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
-
-                for line_val in vals_invoice_lines:
-                    with move_form.invoice_line_ids.new() as line:
-                        line.name = line_val['name']
-                        line.price_unit = line_val['price_unit']
-                        line.quantity = line_val['quantity']
-                        line.tax_ids.clear()
-                        for taxes_record in line_val['tax_ids']:
-                            line.tax_ids.add(taxes_record)
-                        if not line.account_id:
-                            line.account_id = move_form.journal_id.default_debit_account_id
-
-                # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
-                for i in range(len(move_form.line_ids)):
-                    with move_form.line_ids.edit(i) as line:
-                        if line.tax_repartition_line_id and total_ocr:
-                            rounding_error = move_form.amount_total - total_ocr
-                            threshold = len(vals_invoice_lines) * 0.01
-                            if rounding_error != 0.0 and abs(rounding_error) < threshold:
-                                line.debit -= rounding_error
-                            break
+            # We still want to save all other fields when there is a duplicate vendor reference
+            try:
+                # Savepoint so the transactions don't go through if the save raises an exception
+                with self.env.cr.savepoint():
+                    self._save_form(ocr_results)
+            # Retry saving without the ref, then set the error status to show the user a warning
+            except ValidationError as e:
+                self._save_form(ocr_results, no_ref=True)
+                self.extract_state = 'error_status'
+                self.extract_status_code = WARNING_DUPLICATE_VENDOR_REFERENCE
+                self.duplicated_vendor_ref = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
 
             fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
             for field in fields_with_boxes:
@@ -634,11 +596,68 @@ class AccountMove(models.Model):
                             "word_box_height": word['coords'][3],
                             "word_box_angle": word['coords'][4],
                         }))
-                    record.write({'extract_word_ids': data})
+                    self.write({'extract_word_ids': data})
         elif result['status_code'] == NOT_READY:
-            record.extract_state = 'extract_not_ready'
+            self.extract_state = 'extract_not_ready'
         else:
-            record.extract_state = 'error_status'
+            self.extract_state = 'error_status'
+
+    def _save_form(self, ocr_results, no_ref=False):
+        supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
+        date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
+        due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
+        total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
+        subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
+        invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
+        currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
+        vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
+        invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
+
+        vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
+
+        with Form(self) as move_form:
+            if not move_form.partner_id:
+                partner_id = self.find_partner_id_with_name(supplier_ocr)
+                if partner_id != 0:
+                    move_form.partner_id = self.env["res.partner"].browse(partner_id)
+                else:
+                    partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)
+                    if partner_vat.exists():
+                        move_form.partner_id = partner_vat
+                    elif vat_number_ocr:
+                        move_form.partner_id = self._create_supplier_from_vat(vat_number_ocr)
+
+            if date_ocr:
+                move_form.invoice_date = date_ocr
+            if due_date_ocr:
+                move_form.invoice_date_due = due_date_ocr
+            move_form.ref = '' if no_ref else invoice_id_ocr
+
+            if self.user_has_groups('base.group_multi_currency'):
+                move_form.currency_id = self.env["res.currency"].search([
+                        '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
+                        ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+
+            for line_val in vals_invoice_lines:
+                with move_form.invoice_line_ids.new() as line:
+                    line.name = line_val['name']
+                    line.price_unit = line_val['price_unit']
+                    line.quantity = line_val['quantity']
+                    line.tax_ids.clear()
+                    for taxes_record in line_val['tax_ids']:
+                        line.tax_ids.add(taxes_record)
+                    if not line.account_id:
+                        line.account_id = move_form.journal_id.default_debit_account_id
+
+            # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
+            for i in range(len(move_form.line_ids)):
+                with move_form.line_ids.edit(i) as line:
+                    if line.tax_repartition_line_id and total_ocr:
+                        rounding_error = move_form.amount_total - total_ocr
+                        threshold = len(vals_invoice_lines) * 0.01
+                        if rounding_error != 0.0 and abs(rounding_error) < threshold:
+                            line.debit -= rounding_error
+                        break
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')

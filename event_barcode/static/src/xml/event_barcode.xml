@@ -39,8 +39,8 @@
         <div class="row">
           <div class="col-lg-8 offset-lg-2">
             <div class="text-center" style="margin-bottom: 18px;">
-                <img t-if="registration.partner_id" t-attf-src="/web/image/res.partner/{{registration.partner_id}}/image_64" alt="Registration"/>
-                <img t-else="" src="/web/static/src/img/placeholder.png" alt="Registration" style="max-width: 64px;"/>
+                <img t-if="registration.partner_id" t-attf-src="/web/image/res.partner/{{registration.partner_id}}/image_128" alt="Registration" class="o_image_64_cover"/>
+                <img t-else="" src="/web/static/src/img/placeholder.png" alt="Registration" class="o_image_64_cover"/>
             </div>
             <div t-if="success" class="alert alert-success text-center" role="status"><t t-esc="success"/></div>
             <div t-if="warning" class="alert alert-warning text-center" role="alert"><t t-esc="warning"/></div>

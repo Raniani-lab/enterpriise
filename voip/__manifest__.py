@@ -8,7 +8,7 @@
         Make calls using a VOIP system""",
 
     'description': """
-        Allow to make call from next activities or with click-to-dial.
+Allows to make call from next activities or with click-to-dial.
     """,
 
     'category': 'Sales',

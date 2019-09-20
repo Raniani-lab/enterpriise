@@ -167,7 +167,7 @@ return AbstractRenderer.extend({
         if (!value_to_display){
             return _t('Unknown');
         }
-        if (["many2one", "many2many", "one2many"].indexOf(field_type) > -1) {
+        if (["many2one", "many2many", "one2many", "selection"].indexOf(field_type) > -1) {
             return value_to_display[1];
         }
         else {
@@ -351,6 +351,11 @@ return AbstractRenderer.extend({
                 var value = rows[rowIndex].values[row_field];
                 var fieldName = row_field.split(':')[0]; // remove groupby function (:day, :month...)
                 var field_type = self.fields[fieldName].type;
+                if (field_type === 'selection') {
+                    value = self.fields[fieldName].selection.find(function (choice) {
+                        return choice[0] === value;
+                    });
+                }
                 rowKeys.push(value[0]);
                 rowValues.push(self._field2label(value, field_type));
             }

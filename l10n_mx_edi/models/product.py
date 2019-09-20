@@ -82,7 +82,7 @@ class ProductSatCode(models.Model):
         else:
             domain = ['|', ('name', 'ilike', name), ('code', 'ilike', name)]
         sat_code_ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return self.browse(sat_code_ids).name_get()
+        return models.lazy_name_get(self.browse(sat_code_ids).with_user(name_get_uid))
 
 
 class L10nMXEdiTariffFraction(models.Model):

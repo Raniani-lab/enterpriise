@@ -89,18 +89,18 @@ msgstr "MapBox servers niet bereikbaar"
 #. module: web_map
 #: model:ir.model.fields,help:web_map.field_res_config_settings__map_box_token
 msgid "Necessary for some functionalities in the map view"
-msgstr ""
+msgstr "Nodig voor sommige functionaliteiten in de map weergave"
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "Set a MapBox account to activate routes and style."
-msgstr ""
+msgstr "Stel een MapBox account in om routes en stijlen te activeren."
 
 #. module: web_map
 #: code:addons/web_map/models/res_config_settings.py:0
 #, python-format
 msgid "The MapBox server is unreachable"
-msgstr ""
+msgstr "De MapBox server is niet bereikbaar"
 
 #. module: web_map
 #: code:addons/web_map/models/res_config_settings.py:0
@@ -125,7 +125,7 @@ msgstr ""
 #: code:addons/web_map/models/res_config_settings.py:0
 #, python-format
 msgid "This referer is not authorized"
-msgstr ""
+msgstr "Deze referrer is niet geauthoriseerd"
 
 #. module: web_map
 #: model:ir.model.fields,field_description:web_map.field_res_config_settings__map_box_token

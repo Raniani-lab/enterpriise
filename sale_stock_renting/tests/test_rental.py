@@ -191,6 +191,7 @@ class TestRentalCommon(common.SingleTransactionCase):
             1
         )
 
+        self.product_id.invalidate_cache()
         """ In company internal rental location (in stock valuation but not in available qty) """
         self.assertEqual(
             self.product_id.with_context(

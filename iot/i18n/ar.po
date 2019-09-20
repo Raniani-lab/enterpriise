@@ -3,7 +3,6 @@
 # 	* iot
 # 
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2019
 # amrnegm <amrnegm.01@gmail.com>, 2019
 # Osoul <baruni@osoul.ly>, 2019
 # Mohammed Ibrahim <m.ibrahim@mussder.com>, 2019
@@ -11,14 +10,15 @@
 # Osama Ahmaro <osamaahmaro@gmail.com>, 2019
 # Zuhair Hammadi <zuhair12@gmail.com>, 2019
 # Shaima Safar <shaima.safar@open-inside.com>, 2019
+# Mustafa Rawi <mustafa@cubexco.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2019\n"
+"Last-Translator: Mustafa Rawi <mustafa@cubexco.com>, 2019\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,11 +92,13 @@ msgid "Add range to scan."
 msgstr ""
 
 #. module: iot
-#: code:addons/iot/drivers/SixDriver.py:0
-#, python-format
-msgid ""
-"Another payment was processed after the one you're trying to reverse, you "
-"cannot reverse it anymore."
+#: model:ir.model.fields,field_description:iot.field_iot_box__drivers_auto_update
+msgid "Automatic drivers update"
+msgstr ""
+
+#. module: iot
+#: model:ir.model.fields,help:iot.field_iot_box__drivers_auto_update
+msgid "Automatically update drivers when the IoT Box boots"
 msgstr ""
 
 #. module: iot
@@ -164,6 +166,12 @@ msgid "Close this window and try again"
 msgstr ""
 
 #. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_box__company_id
+#: model:ir.model.fields,field_description:iot.field_iot_device__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Connect an IoT Box"
@@ -171,6 +179,7 @@ msgstr "توصيل صندوق إنترنت الأشياء"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
+#: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Connection"
 msgstr "الاتصال"
 
@@ -243,17 +252,29 @@ msgid "Device"
 msgstr "الجهاز"
 
 #. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_box__device_count
+#: model_terms:ir.ui.view,arch_db:iot.iot_box_view_kanban
+msgid "Device Count"
+msgstr ""
+
+#. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Device type"
 msgstr "نوع الجهاز"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_device_action
+#: model:ir.actions.act_window,name:iot.iot_device_action_search_iot_box
 #: model:ir.model.fields,field_description:iot.field_iot_box__device_ids
 #: model:ir.ui.menu,name:iot.iot_device_menu_action
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_form
 msgid "Devices"
 msgstr "الأجهزة"
+
+#. module: iot
+#: model:ir.model.fields.selection,name:iot.selection__iot_device__type__display
+msgid "Display"
+msgstr "عرض"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__display_name
@@ -296,6 +317,11 @@ msgid "Group By"
 msgstr "تجميع حسب"
 
 #. module: iot
+#: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi
+msgid "Hdmi"
+msgstr ""
+
+#. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
 #: model:ir.model.fields,field_description:iot.field_iot_box__id
 #: model:ir.model.fields,field_description:iot.field_iot_device__id
@@ -332,6 +358,11 @@ msgid ""
 msgstr ""
 
 #. module: iot
+#: model:ir.model.fields,field_description:iot.field_iot_box__version
+msgid "Image Version"
+msgstr ""
+
+#. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
 msgid "IoT"
 msgstr "إنترنت الأشياء"
@@ -359,11 +390,6 @@ msgstr "صناديق إنترنت الأشياء"
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
 msgstr "جهاز إنترنت الأشياء"
-
-#. module: iot
-#: model:ir.model.fields,field_description:iot.field_iot_box__version
-msgid "IoT Version"
-msgstr ""
 
 #. module: iot
 #. openerp-web
@@ -562,6 +588,7 @@ msgstr ""
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
+#: model:ir.model.fields,field_description:iot.field_iot_device__screen_url
 msgid "Screen URL"
 msgstr "رابط الشاشة"
 
@@ -587,6 +614,11 @@ msgstr "تم إرسالها بنجاح إلى الطابعة!"
 #: code:addons/iot/static/src/js/tours/iot.js:0
 #, python-format
 msgid "The range can not be empty."
+msgstr ""
+
+#. module: iot
+#: model_terms:ir.actions.act_window,help:iot.iot_device_action_search_iot_box
+msgid "There is no device connected to this IoT Box"
 msgstr ""
 
 #. module: iot
@@ -622,6 +654,13 @@ msgid "Type of device."
 msgstr "نوع الجهاز."
 
 #. module: iot
+#: model:ir.model.fields,help:iot.field_iot_device__screen_url
+msgid ""
+"URL of the page that will be displayed by the device, leave empty to use the"
+" customer facing display of the POS."
+msgstr ""
+
+#. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__direct
 msgid "USB"
 msgstr "USB"
@@ -644,6 +683,12 @@ msgid ""
 msgstr ""
 "عند إعداد جهاز هنا، سيتم طباعة التقرير من خلال هذا الجهاز علي صندوق إنترنت "
 "الأشياء"
+
+#. module: iot
+#: code:addons/iot/drivers/SixDriver.py:0
+#, python-format
+msgid "You cannot reverse this payment anymore."
+msgstr ""
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action

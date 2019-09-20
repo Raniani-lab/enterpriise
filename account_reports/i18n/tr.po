@@ -3,23 +3,22 @@
 # 	* account_reports
 # 
 # Translators:
+# Buket Şeker <buket_skr@hotmail.com>, 2019
 # Levent Karakaş <levent@mektup.at>, 2019
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2019
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2019
-# Fırat Kaya <firat.kaya@mechsoft.com.tr>, 2019
 # Ediz Duman <neps1192@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Murat Kaplan <muratk@projetgrup.com>, 2019
 # Umur Akın <umura@projetgrup.com>, 2019
-# Buket Şeker <buket_skr@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,31 +27,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid "%s Payment Reminder"
-msgstr "%s Ödeme Hatırlatıcısı"
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_payable_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_receivable_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 msgid "&amp;nbsp;"
 msgstr "&amp;nbsp;"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "&times;"
-msgstr "&times;"
-
-#. module: account_reports
-#: model:ir.actions.report,print_report_name:account_reports.action_report_followup
-msgid "'Followups'"
-msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -97,11 +77,6 @@ msgid "91 - 120"
 msgstr "91 - 120"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "<b>Next Reminder Date:</b>"
-msgstr "<b>Sonraki Hatırlatma Tarihi:</b>"
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid ""
 "<br/>\n"
@@ -116,43 +91,11 @@ msgid "<br/>Companies:"
 msgstr "<br/>Şirketler:"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "<i class=\"fa fa-circle\" style=\"color: green;\"/> Good Debtor"
-msgstr "<i class=\"fa fa-circle\" style=\"color: green;\"/> İyi Borçlu"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "<i class=\"fa fa-circle\" style=\"color: grey;\"/> Normal Debtor"
-msgstr "<i class=\"fa fa-circle\" style=\"color: grey;\"/> Normal Borçlu"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "<i class=\"fa fa-circle\" style=\"color: red;\"/> Bad Debtor"
-msgstr "<i class=\"fa fa-circle\" style=\"color: red;\"/> Kötü Borçlu"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "<i class=\"fa fa-envelope\" role=\"img\" aria-label=\"Email\"/>"
-msgstr "<i class=\"fa fa-envelope\" role=\"img\" aria-label=\"Email\"/>"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template
 msgid ""
-"<i class=\"fa fa-fw fa-pencil o_account_reports_edit_summary_pencil\" "
-"role=\"img\" aria-label=\"Edit Summary\" title=\"Edit Summary\"/>"
+"<i class=\"fa fa-caret-right invisible\" role=\"img\" aria-"
+"label=\"Unfolded\" title=\"Unfolded\"/>"
 msgstr ""
-"<i class=\"fa fa-fw fa-pencil o_account_reports_edit_summary_pencil\" "
-"role=\"img\" aria-label=\"Edit Summary\" title=\"Edit Summary\"/>"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "<i class=\"fa fa-mobile fa-fw\" role=\"img\" aria-label=\"Mobile\" title=\"Mobile\"/>"
-msgstr "<i class=\"fa fa-mobile fa-fw\" role=\"img\" aria-label=\"Mobile\" title=\"Mobile\"/>"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "<i class=\"fa fa-phone fa-fw\" role=\"img\" aria-label=\"Phone\" title=\"Phone\"/>"
-msgstr "<i class=\"fa fa-phone fa-fw\" role=\"img\" aria-label=\"Phone\" title=\"Phone\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -242,11 +185,6 @@ msgid "<span class=\"fa fa-filter\"/> Options:"
 msgstr "<span class=\"fa fa-filter\"/> Seçenekler:"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.followup_search_template
-msgid "<span class=\"fa fa-filter\"/> Partners:"
-msgstr "<span class=\"fa fa-filter\"/> İş Ortakları:"
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic"
 msgstr "<span class=\"fa fa-folder-open\"/> Analitik"
@@ -286,23 +224,9 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid ""
-"<span class=\"o_form_label\">Payment Follow-up</span>\n"
-"                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
-msgstr ""
-"<span class=\"o_form_label\">Ödeme Takibi</span>\n"
-"                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid ""
 "<span class=\"o_form_label\">Tax Return Periodicity</span>\n"
 "                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_partner_view_form
-msgid "<span class=\"o_stat_text\">Due</span>"
-msgstr "<span class=\"o_stat_text\">Vade</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -317,14 +241,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view_account_manager
 msgid "<span title=\"Latest Statement\">Latest Statement</span>"
 msgstr "<span title=\"Latest Statement\">Son Ekstre</span>"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid ""
-"<strong>Warning!</strong> No action needs to be taken for this partner."
-msgstr ""
-"<Strong> Uyarı! </ Strong> Bu iş ortağı için herhangi bir işlem yapılması "
-"gerekmez."
 
 #. module: account_reports
 #: model:ir.model.constraint,message:account_reports.constraint_account_financial_html_report_line_code_uniq
@@ -423,7 +339,6 @@ msgstr "Aktivite Türü"
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/js/account_reports.js:0
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 #, python-format
 msgid "Add a note"
 msgstr "Bir Not Ekle"
@@ -583,11 +498,6 @@ msgid "Audit Reports"
 msgstr "Denetim Raporları"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "Auto"
-msgstr "Otomatik"
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
 msgid "Available Filters & Options"
 msgstr "Mevcut Filtreler ve Seçenekler"
@@ -601,11 +511,6 @@ msgstr "Ortalama Alacak Vadesi (Gün)"
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_avdebt0
 msgid "Average debtors days"
 msgstr "Ortalama Borç Vadesi (Gün)"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "Bad debtor"
-msgstr "Kötü Borçlu"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:0
@@ -677,13 +582,6 @@ msgid "Based on date ranges"
 msgstr "Tarih aralıklarına dayalı"
 
 #. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/js/followup_form/followup_form_renderer.js:0
-#, python-format
-msgid "Calling"
-msgstr ""
-
-#. module: account_reports
 #: code:addons/account_reports/models/account_activity.py:0
 #, python-format
 msgid ""
@@ -692,7 +590,10 @@ msgid ""
 msgstr ""
 
 #. module: account_reports
+#. openerp-web
+#: code:addons/account_reports/static/src/js/account_reports.js:0
 #: model_terms:ir.ui.view,arch_db:account_reports.view_report_export_wizard
+#, python-format
 msgid "Cancel"
 msgstr "İptal"
 
@@ -794,7 +695,7 @@ msgid "Cash surplus"
 msgstr "Nakit İşlem Farkı"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.line_template_followup_report
+#: model_terms:ir.ui.view,arch_db:account_reports.template_aged_partner_balance_line_report
 msgid "Change expected payment date"
 msgstr "Beklenen ödeme tarihini değiştir."
 
@@ -830,7 +731,6 @@ msgid "Code"
 msgstr "Kod"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "Communication"
@@ -908,14 +808,6 @@ msgstr "Kozmetik"
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_direct_costs0
 msgid "Cost of Revenue"
 msgstr "Gelir Maliyeti"
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid ""
-"Could not send mail to partner %s because it does not have any email address"
-" defined"
-msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__create_uid
@@ -1013,18 +905,7 @@ msgid "Custom"
 msgstr "Özel"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.followup_filter_info_template
-msgid "Customer ref:"
-msgstr "Müşteri ref:"
-
-#. module: account_reports
-#: model:ir.actions.client,name:account_reports.action_account_followup
-msgid "Customers Statement"
-msgstr "Müşteri Hesap Özetleri"
-
-#. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
-#: code:addons/account_reports/models/account_followup_report.py:0
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "Date"
@@ -1035,15 +916,6 @@ msgstr "Mail"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Date :"
 msgstr "Tarih :"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid ""
-"Date at which Odoo will remind you to take care of that follow-up if you "
-"choose \"remind me later\" button."
-msgstr ""
-"Eğer 'daha sonra hatırlat' butonunu seçerseniz, Odoo'nun, takip etmeniz için"
-" size hatırlatacağı tarih."
 
 #. module: account_reports
 #. openerp-web
@@ -1063,16 +935,10 @@ msgstr ""
 "Özeti üzerinden hatırlatma gönderildiğinde otomatik olarak ayarlanır."
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.followup_filter_info_template
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Date:"
 msgstr "Tarih:"
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_res_config_settings__days_between_two_followups
-msgid "Days between two follow-ups"
-msgstr "İki takip arasındaki günler"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:0
@@ -1125,7 +991,6 @@ msgstr "Fark"
 #: model:ir.model.fields,field_description:account_reports.field_account_consolidated_journal__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__display_name
-#: model:ir.model.fields,field_description:account_reports.field_account_followup_report__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_general_ledger__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_generic_tax_report__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_partner_ledger__display_name
@@ -1153,23 +1018,11 @@ msgid "Domain"
 msgstr "Domain"
 
 #. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "Done"
-msgstr "Biten"
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
+#: code:addons/account_reports/models/account_aged_partner_balance.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #, python-format
 msgid "Due Date"
 msgstr "Bitiş Tarihi"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid "Duration between two reminders"
-msgstr "İki hatırlatıcı arasındaki süre."
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_equity0
@@ -1203,12 +1056,6 @@ msgid "End of Last Quarter"
 msgstr "Geçen Çeyrek Sonu"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid "Excluded"
-msgstr "Hariç"
-
-#. module: account_reports
 #: model:account.financial.html.report,name:account_reports.account_financial_report_executivesummary0
 #: model:ir.actions.client,name:account_reports.account_financial_html_report_action_3
 #: model:ir.ui.menu,name:account_reports.account_financial_html_report_menu_3
@@ -1222,18 +1069,18 @@ msgid "Exp. Date"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid "Expected Date"
-msgstr "Beklenen Tarih"
-
-#. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #: model:ir.model.fields,field_description:account_reports.field_account_move_line__expected_pay_date
 #, python-format
 msgid "Expected Payment Date"
 msgstr "Beklenen Ödeme Tarihi"
+
+#. module: account_reports
+#: code:addons/account_reports/models/res_partner.py:0
+#, python-format
+msgid "Expected pay date has been changed from %s to %s"
+msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_partner.py:0
@@ -1327,52 +1174,6 @@ msgid "Folded"
 msgstr "Katlanmış"
 
 #. module: account_reports
-#: model:ir.model,name:account_reports.model_account_followup_report
-msgid "Follow-up Report"
-msgstr "Takip Raporu"
-
-#. module: account_reports
-#: model:ir.actions.act_window,name:account_reports.action_view_list_customer_statements
-#: model:ir.ui.menu,name:account_reports.customer_statements_menu
-msgid "Follow-up Reports"
-msgstr "Takip Raporları"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_tree_view
-msgid "Follow-up Reports Tree View"
-msgstr "Takip Raporları Ağaç Görünümü"
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid "Follow-up letter printed"
-msgstr "Takip mektubu yazdırıldı"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
-msgid "Follow-up reports"
-msgstr "Takip raporları"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "Follow-ups Done / Total Follow-ups"
-msgstr "Yapılan Takipler / Toplam Takip Sayısı"
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid "Followup Report"
-msgstr "Takip Raporu"
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_res_partner__followup_status
-#: model:ir.model.fields,field_description:account_reports.field_res_users__followup_status
-msgid "Followup status"
-msgstr "Takip durumu"
-
-#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__footnotes_ids
 msgid "Footnotes"
 msgstr "Dipnotlar"
@@ -1447,11 +1248,6 @@ msgid "Generic Tax Report"
 msgstr "Genel Vergi Raporu"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "Good debtor"
-msgstr "İyi borçlu"
-
-#. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_gross_profit0
 msgid "Gross Profit"
 msgstr "Brüt Kar"
@@ -1512,7 +1308,7 @@ msgstr "Hiyerarşi ve Ara Toplamları"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid "How often do Tax returns have to be made?"
+msgid "How often tax returns have to be made"
 msgstr ""
 
 #. module: account_reports
@@ -1526,7 +1322,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_consolidated_journal__id
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__id
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__id
-#: model:ir.model.fields,field_description:account_reports.field_account_followup_report__id
 #: model:ir.model.fields,field_description:account_reports.field_account_general_ledger__id
 #: model:ir.model.fields,field_description:account_reports.field_account_generic_tax_report__id
 #: model:ir.model.fields,field_description:account_reports.field_account_partner_ledger__id
@@ -1537,17 +1332,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__id
 msgid "ID"
 msgstr "ID"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_search_view
-#: model_terms:ir.ui.view,arch_db:account_reports.followup_search_template
-msgid "In Need of Action"
-msgstr "Aksiyon Bekleyenler"
-
-#. module: account_reports
-#: model:ir.model.fields.selection,name:account_reports.selection__res_partner__followup_status__in_need_of_action
-msgid "In need of action"
-msgstr "Eylem gerektiriyor"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1605,18 +1389,19 @@ msgid ""
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_aged_partner_balance.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #, python-format
 msgid "JRNL"
 msgstr "JRNL"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_aged_partner_balance.py:0
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_year_op__account_tax_periodicity_journal_id
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_periodicity_journal_id
 #: model:ir.model.fields,field_description:account_reports.field_res_config_settings__account_tax_periodicity_journal_id
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
+#, python-format
 msgid "Journal"
 msgstr "Yevmiye"
 
@@ -1701,7 +1486,6 @@ msgstr "Geçen Mali Yıl"
 #: model:ir.model.fields,field_description:account_reports.field_account_consolidated_journal____last_update
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report____last_update
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line____last_update
-#: model:ir.model.fields,field_description:account_reports.field_account_followup_report____last_update
 #: model:ir.model.fields,field_description:account_reports.field_account_general_ledger____last_update
 #: model:ir.model.fields,field_description:account_reports.field_account_generic_tax_report____last_update
 #: model:ir.model.fields,field_description:account_reports.field_account_partner_ledger____last_update
@@ -1781,11 +1565,6 @@ msgid "Manager"
 msgstr "Yönetici"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "Manual"
-msgstr "Manuel"
-
-#. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #, python-format
 msgid "Matching Number"
@@ -1795,11 +1574,6 @@ msgstr "Uzlaştırma"
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__generated_menu_id
 msgid "Menu Item"
 msgstr "Menü Öğeleri"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid "Minimum"
-msgstr "En az"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_ir_module_module
@@ -1860,16 +1634,8 @@ msgstr "Asla"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_move_line__next_action_date
-#: model:ir.model.fields,field_description:account_reports.field_res_partner__payment_next_action_date
-#: model:ir.model.fields,field_description:account_reports.field_res_users__payment_next_action_date
 msgid "Next Action Date"
 msgstr "Sonraki İşlem Tarihi"
-
-#. module: account_reports
-#: code:addons/account_reports/models/res_partner.py:0
-#, python-format
-msgid "Next action date: "
-msgstr "Sonraki Aksiyon Tarihi:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1880,28 +1646,6 @@ msgstr "Karşılaştırma Yok"
 #: model:ir.model.fields.selection,name:account_reports.selection__account_financial_html_report_line__figure_type__no_unit
 msgid "No Unit"
 msgstr "Birim Yok"
-
-#. module: account_reports
-#: model:ir.model.fields.selection,name:account_reports.selection__res_partner__followup_status__no_action_needed
-msgid "No action needed"
-msgstr "Eylem gerekmiyor"
-
-#. module: account_reports
-#: model_terms:ir.actions.act_window,help:account_reports.action_view_list_customer_statements
-msgid "No follow-up to send!"
-msgstr "Gönderilecek tahsilat takibi yok!"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "No followup to send!"
-msgstr "Gönderilecek tahsilat takibi yok!"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "Normal debtor"
-msgstr "Normal borçlu"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_move_line__internal_note
@@ -1917,11 +1661,6 @@ msgstr ""
 #, python-format
 msgid "Nothing to process"
 msgstr ""
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_res_company__days_between_two_followups
-msgid "Number of days between two follow-ups"
-msgstr "İki takip arasındaki gün sayısı"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1940,17 +1679,6 @@ msgstr ""
 #, python-format
 msgid "Odoo Warning"
 msgstr "Odoo Uyarısı"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid ""
-"Odoo will remind you to take care of this follow-up on the next reminder "
-"date."
-msgstr ""
-"Odoo, bir sonraki hatırlatma tarihinde bu takibe dikkat etmenizi "
-"hatırlatacaktır."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:0
@@ -1983,25 +1711,6 @@ msgstr ""
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_other_income0
 msgid "Other Income"
 msgstr "Diğer Gelirler"
-
-#. module: account_reports
-#: code:addons/account_reports/models/res_company.py:0
-#, python-format
-msgid ""
-"Our records indicate that some payments on your account are still due.\n"
-"If you have any queries regarding your account, Please contact us. Best Regards,"
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_res_company__overdue_sms_msg
-msgid "Overdue Payments SMS Message"
-msgstr ""
-
-#. module: account_reports
-#: code:addons/account_reports/models/res_partner.py:0
-#, python-format
-msgid "Overdue Payments for %s"
-msgstr "%s için Vadesi Geçen Ödemeler"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -2037,7 +1746,6 @@ msgstr ""
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:0
 #: code:addons/account_reports/models/account_general_ledger.py:0
-#: model:ir.model.fields,field_description:account_reports.field_account_report_manager__partner_id
 #, python-format
 msgid "Partner"
 msgstr "İş Ortağı"
@@ -2049,7 +1757,6 @@ msgstr "İş Ortağı Kategorileri:"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:0
-#: code:addons/account_reports/models/res_partner.py:0
 #: model:ir.actions.client,name:account_reports.action_account_report_partner_ledger
 #: model:ir.model,name:account_reports.model_account_partner_ledger
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_partner_ledger
@@ -2161,11 +1868,6 @@ msgid "Previous Years Unallocated Earnings"
 msgstr "Geçmiş Yıllar Ayrılmamış Kazançları"
 
 #. module: account_reports
-#: model:ir.actions.report,name:account_reports.action_report_followup
-msgid "Print Follow-up Letter"
-msgstr ""
-
-#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__print_on_new_page
 msgid "Print On New Page"
 msgstr ""
@@ -2175,18 +1877,6 @@ msgstr ""
 #, python-format
 msgid "Print Preview"
 msgstr "Çıktı Önizleme"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "Print letter"
-msgstr "Mektubu yazdır"
-
-#. module: account_reports
-#: model:ir.actions.server,name:account_reports.action_account_reports_customer_statements_do_followup
-msgid "Process follow-ups"
-msgstr ""
 
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_pnl
@@ -2229,12 +1919,9 @@ msgid "Receivables"
 msgstr "Alacaklar"
 
 #. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_payable_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_receivable_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
-#, python-format
 msgid "Reconcile"
 msgstr "Uzlaştır"
 
@@ -2255,13 +1942,6 @@ msgstr "Ref"
 #, python-format
 msgid "Reference"
 msgstr "Referans"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "Remind me later"
-msgstr "Daha sonra hatırlat"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_year_op__account_tax_periodicity_reminder_day
@@ -2318,8 +1998,9 @@ msgid "Same Period Last Year"
 msgstr "Geçen Yıl Aynı Dönem"
 
 #. module: account_reports
+#. openerp-web
 #: code:addons/account_reports/models/account_report.py:0
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
+#: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Save"
 msgstr "Kaydet"
@@ -2333,37 +2014,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__name
 msgid "Section Name"
 msgstr "Bölüm Adı"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid ""
-"Select this option if you want to manually define the next reminder date."
-msgstr ""
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid "Send SMS Text Message"
-msgstr ""
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid "Send an email"
-msgstr "E-mail Gönder"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "Send by email"
-msgstr "Eposta ile Gönder"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "Send by sms"
-msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__sequence
@@ -2405,22 +2055,9 @@ msgid "Some controls failed"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid "Source Document"
-msgstr "Kaynak Belge"
-
-#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__special_date_changer
 msgid "Special Date Changer"
 msgstr "Özel Tarih Değiştirici"
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/js/followup_form/followup_form_renderer.js:0
-#, python-format
-msgid "Start Calling"
-msgstr "Aramaya Başla"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -2520,36 +2157,9 @@ msgid "Text"
 msgstr "Metin"
 
 #. module: account_reports
-#: model:ir.model.fields,help:account_reports.field_res_partner__payment_next_action_date
-#: model:ir.model.fields,help:account_reports.field_res_users__payment_next_action_date
-msgid "The date before which no action should be taken."
-msgstr "Daha öncesinde herhangi bir aksiyon alınmayacak tarih."
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "The follow-up report was successfully emailed!"
-msgstr ""
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/xml/account_report_template.xml:0
-#, python-format
-msgid "The follow-up was successfully sent!"
-msgstr ""
-
-#. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__generated_menu_id
 msgid "The menu item generated for this report, or None if there isn't any."
 msgstr "Bu rapor için oluşturulan menü öğesi yada eğer yoksa yoktur."
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
-msgid ""
-"The next reminder date is computed based on what you have defined in the "
-"accounting settings."
-msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -2600,28 +2210,10 @@ msgstr "Bugün"
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report_coa.py:0
 #: code:addons/account_reports/models/account_report_coa.py:0
-#: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_tree_view
 #: model_terms:ir.ui.view,arch_db:account_reports.template_coa_table_header
 #, python-format
 msgid "Total"
 msgstr "Toplam"
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#: code:addons/account_reports/models/account_followup_report.py:0
-#: model:ir.model.fields,field_description:account_reports.field_res_partner__total_due
-#: model:ir.model.fields,field_description:account_reports.field_res_users__total_due
-#, python-format
-msgid "Total Due"
-msgstr "Toplam Vade"
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#: model:ir.model.fields,field_description:account_reports.field_res_partner__total_overdue
-#: model:ir.model.fields,field_description:account_reports.field_res_users__total_overdue
-#, python-format
-msgid "Total Overdue"
-msgstr "Toplam Geciken"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -2695,12 +2287,6 @@ msgid "Unreconciled"
 msgstr "Uzlaştırılmamış"
 
 #. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_res_partner__unreconciled_aml_ids
-#: model:ir.model.fields,field_description:account_reports.field_res_users__unreconciled_aml_ids
-msgid "Unreconciled Aml"
-msgstr "Uzlaştırılmamış Aml"
-
-#. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "Unreconciled Bank Statement Lines"
@@ -2744,7 +2330,6 @@ msgid "View Invoice"
 msgstr "Fatura Göster"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.line_template_followup_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
 msgid "View Journal Entry"
 msgstr "Yevmiye Kaydını Görüntüle"
@@ -2782,9 +2367,14 @@ msgid ""
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
+msgid ""
+"When ticked, totals and subtotals appear below the sections of the report"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__totals_below_sections
 #: model:ir.model.fields,help:account_reports.field_res_config_settings__totals_below_sections
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid ""
 "When ticked, totals and subtotals appear below the sections of the report."
 msgstr ""
@@ -2795,26 +2385,9 @@ msgid "With Draft Entries"
 msgstr "Taslak Kayıtlarla"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.followup_search_template
-msgid "With Overdue Invoices"
-msgstr "Gecikmiş Faturası Olanlar"
-
-#. module: account_reports
-#: model:ir.model.fields.selection,name:account_reports.selection__res_partner__followup_status__with_overdue_invoices
-msgid "With overdue invoices"
-msgstr ""
-
-#. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "XLSX"
-msgstr ""
-
-#. module: account_reports
-#. openerp-web
-#: code:addons/account_reports/static/src/js/followup_form/followup_form_controller.js:0
-#, python-format
-msgid "You are done with the follow-ups!<br/>You have skipped %s partner(s)."
 msgstr ""
 
 #. module: account_reports
@@ -2825,6 +2398,7 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_partner.py:0
+#: code:addons/account_reports/models/res_partner.py:0
 #, python-format
 msgid "any"
 msgstr ""
@@ -2834,11 +2408,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "days after period"
 msgstr ""
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid "days between each reminder"
-msgstr "hatırlatıcılar arasındaki günler"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__analytic
@@ -2875,12 +2444,6 @@ msgstr "yok"
 #: model:ir.model.fields,help:account_reports.field_account_report_manager__report_name
 msgid "name of the model of the report"
 msgstr "Rapor modelinin adı"
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:0
-#, python-format
-msgid "payment reminder"
-msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

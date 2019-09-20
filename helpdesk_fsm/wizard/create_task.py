@@ -6,7 +6,7 @@ from odoo import models, fields, _
 
 class CreateTask(models.TransientModel):
     _name = 'helpdesk.create.fsm.task'
-    _description = 'Generate an fsm task from a ticket'
+    _description = 'Create a Field Service task'
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', string='Related ticket', required=True)
     name = fields.Char('Title', required=True)
@@ -17,6 +17,11 @@ class CreateTask(models.TransientModel):
         self.ensure_one()
         values = self._prepare_values()
         new_task = self.env['project.task'].create(self._convert_to_write(values))
+        return new_task
+
+    def action_generate_and_view_task(self):
+        self.ensure_one()
+        new_task = self.action_generate_task()
         return {
             'type': 'ir.actions.act_window',
             'name': _('Tasks from Tickets'),

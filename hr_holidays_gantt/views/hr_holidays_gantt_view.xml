@@ -17,7 +17,7 @@
                        precision="{'week': 'day:full', 'month': 'day:full'}"
                        plan="0"
                        total_row="True"
-                       thumbnails="{'employee_id': 'image_64'}"
+                       thumbnails="{'employee_id': 'image_128'}"
                        display_unavailability="1"
                 >
                     <field name="state" invisible="1"/>

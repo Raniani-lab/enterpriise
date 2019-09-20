@@ -10,7 +10,7 @@ class ResPartner(models.Model):
     _name = 'res.partner'
     _inherit = 'res.partner'
 
-    contact_address_complete = fields.Char(compute='_compute_complete_address')
+    contact_address_complete = fields.Char(compute='_compute_complete_address', store=True)
 
     @api.model
     def update_latitude_longitude(self, partners):

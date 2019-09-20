@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_payslip_done']" position="replace">
-                    <button string="Create Draft Entry" name="action_payslip_done" type="object" attrs="{'invisible': ['|',('payslip_run_id', '!=', False),('state', 'not in', 'verify')]}" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
+                    <button string="Create Draft Entry" name="action_payslip_done" type="object" attrs="{'invisible': [('state', 'not in', 'verify')]}" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
                 </xpath>
                 <field name="paid" position="after">
                     <field name="date"/>
@@ -17,7 +17,7 @@
                 </field>
             </field>
         </record>
-        
+
     <!-- Modify Payslip Run Form -->
 
         <record id="hr_payslip_run_view_form" model="ir.ui.view">

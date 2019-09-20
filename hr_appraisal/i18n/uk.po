@@ -4,7 +4,7 @@
 # 
 # Translators:
 # ТАрас <tratatuta@i.ua>, 2019
-# Olga Lugova <trolka.olug@gmail.com>, 2019
+# trolka <trolka.olug@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
+"POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -91,7 +91,7 @@ msgstr ""
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                        Шановний(а) ${ctx['partner_to_name']},\n"
 "                        <br/><br/>\n"
-"                        Я би хотів зробити запит на оцінвання.<br/>\n"
+"                        Я би хотів зробити запит на оцінювання.<br/>\n"
 "                       Це посилання на моє оцінювання:\n"
 "                        <p style=\"margin: 16px 0px 16px 0px;\">\n"
 "                            <a href=\"${ctx['url']}\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
@@ -153,7 +153,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "<span class=\"fa fa-lg\" title=\"Values set here are company-specific.\"/>"
-msgstr ""
+msgstr "<span class=\"fa fa-lg\" title=\"Values set here are company-specific.\"/>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -161,6 +161,8 @@ msgid ""
 "<span class=\"o_form_label\">Default Appraisal Invitations </span>\n"
 "                                    <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">Запрошення оцінювання за замовчуванням </span>\n"
+"                                    <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -168,6 +170,8 @@ msgid ""
 "<span class=\"o_form_label\">Default Appraisal Participants </span>\n"
 "                                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">Учасники оцінювання за замовчуванням </span>\n"
+"                                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -175,6 +179,8 @@ msgid ""
 "<span class=\"o_form_label\">Reminders</span>\n"
 "                                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">Нагадування</span>\n"
+"                                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
@@ -183,6 +189,9 @@ msgid ""
 "                        <span attrs=\"{'invisible': [('appraisal_date', '=', False)]}\">Next</span> Appraisal\n"
 "                    </span>"
 msgstr ""
+"<span class=\"o_stat_text\">\n"
+"                        <span attrs=\"{'invisible': [('appraisal_date', '=', False)]}\">Наступне</span> Опитування\n"
+"                    </span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
@@ -191,6 +200,9 @@ msgid ""
 "                        Next Appraisal\n"
 "                    </span>"
 msgstr ""
+"<span class=\"o_stat_text\">\n"
+"                        Наступне опитування\n"
+"                    </span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -198,11 +210,13 @@ msgid ""
 "<span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '=', False)]}\">1 Meeting</span>\n"
 "                            <span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '!=', False)]}\">No Meeting</span>"
 msgstr ""
+"<span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '=', False)]}\">1 зустріч</span>\n"
+"                            <span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '!=', False)]}\">Немає зустрічі</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
 msgid "<span> months</span>"
-msgstr ""
+msgstr "<span> місяці </span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -263,7 +277,7 @@ msgstr "Після події"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "An appraisal can be requested by the employee or manager"
-msgstr ""
+msgstr "Оцінку може вимагати працівник або керівник"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action
@@ -358,7 +372,7 @@ msgstr "Нагадування про оцінювання"
 #: model:ir.ui.menu,name:hr_appraisal.menu_appraisal_reminder
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Appraisal Reminders"
-msgstr ""
+msgstr "Нагадування про оцінку"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/wizard/request_appraisal.py:0
@@ -399,7 +413,7 @@ msgstr "Форма(-и) оцінки були відправлені"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Appraisal plan for new employees"
-msgstr ""
+msgstr "План оцінювання для нових співробітників"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_from_department
@@ -427,7 +441,7 @@ msgstr "Оцінки"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 msgid "Appraisals Set Up"
-msgstr ""
+msgstr "Налаштування оцінювання"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_department__appraisals_to_process_count
@@ -462,12 +476,12 @@ msgstr "Автор повідомлення."
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Automatic appraisal after the maximum number of months"
-msgstr ""
+msgstr "Автоматична оцінка через максимальну кількість місяців"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Automatically send appraisal reminders by email"
-msgstr ""
+msgstr "Автоматично надсилайте нагадування про оцінку електронною поштою"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__is_autorized_to_send
@@ -585,7 +599,7 @@ msgstr "Налаштування"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Confirm Appraisal and Send Forms"
-msgstr ""
+msgstr "Підтвердити оцінювання та надіслати форми"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__body
@@ -641,7 +655,7 @@ msgstr "Термін дії:"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Default messages for appraisal invitation"
-msgstr ""
+msgstr "Повідомлення за замовчуванням для запрошення на оцінювання"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -851,12 +865,8 @@ msgid "Icon to indicate an exception activity."
 msgstr "Іконка для визначення виключення дії."
 
 #. module: hr_appraisal
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Якщо позначено, то повідомленя потребує вашої уваги."
-
-#. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction
+#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Якщо позначено, то нові повідомлення будуть потребувати вашої уваги."
 
@@ -943,33 +953,33 @@ msgstr "Останнє оцінювання:"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+msgid "Late"
+msgstr "Пізно"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Late Activities"
 msgstr "Останні дії"
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
-msgid "Late Appraisals"
-msgstr ""
-
-#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mail To Collaborators"
-msgstr ""
+msgstr "Надіслати співавторам"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mail To Colleagues"
-msgstr ""
+msgstr "Надіслати колегам"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mail To Employee"
-msgstr ""
+msgstr "Надіслати співробітнику"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mail To Manager"
-msgstr ""
+msgstr "Надіслати менеджеру"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -979,7 +989,7 @@ msgstr "Лист на відправлення"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mail To Subordinates"
-msgstr ""
+msgstr "Надіслати підлеглим"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_main_attachment_id
@@ -1012,7 +1022,7 @@ msgstr "Керівники"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_max_period
 msgid "Maximum Time between Appraisals"
-msgstr ""
+msgstr "Максимальний час між оцінюваннями"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__meeting_id
@@ -1032,12 +1042,7 @@ msgstr "Повідомлення"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_min_period
 msgid "Minimum Time between Appraisals"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
-msgid "My Activities"
-msgstr "Мої дії"
+msgstr "Мінімальний час між оцінюваннями"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_my
@@ -1069,7 +1074,7 @@ msgstr "Тип наступної дії"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_date
 msgid "Next Appraisal Date"
-msgstr "Дата наступної оцінки"
+msgstr "Дата наступного оцінювання"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_reminder__notify
@@ -1083,7 +1088,7 @@ msgstr "Кількість дій"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr "Кількість помилок"
 
 #. module: hr_appraisal
@@ -1415,6 +1420,7 @@ msgstr "оцінка %s"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_reminder_form
 msgid "e.g. Need an appraisal with your manager? You can schedule it."
 msgstr ""
+"напр. Необхідне оцінювання з вашим менеджером? Можете запланувати його."
 
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_reminder__notify__employee

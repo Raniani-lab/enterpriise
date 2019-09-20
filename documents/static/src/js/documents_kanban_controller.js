@@ -250,13 +250,13 @@ var DocumentsKanbanController = KanbanController.extend({
      * @param {Object[]} files
      * @returns {Promise}
      */
-    _processFiles: function (files, documentID) {
+    async _processFiles(files, documentID) {
         const uploadID = _.uniqueId('uploadID');
         const folderID = this._searchPanel.getSelectedFolderId();
 
-        if (!folderID || !files.length) {
-            return Promise.resolve();
-        }
+        if (!folderID && !documentID) { return; }
+        if (!files.length) { return; }
+
         const data = new FormData();
 
         data.append('csrf_token', core.csrf_token);
@@ -264,7 +264,7 @@ var DocumentsKanbanController = KanbanController.extend({
         if (documentID) {
             if (files.length > 1) {
                 // preemptive return as it doesn't make sense to upload multiple files inside one document.
-                return Promise.resolve();
+                return;
             }
             data.append('document_id', documentID);
         }

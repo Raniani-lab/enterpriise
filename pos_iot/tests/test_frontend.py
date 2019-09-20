@@ -31,7 +31,6 @@ class TestUi(odoo.tests.HttpCase):
         # Select IoT Box, tick Payment terminal and set payment method in pos config
         main_pos_config = env.ref('point_of_sale.pos_config_main')
         main_pos_config.write({
-            'iotbox_id': iotbox_id.id,
             'payment_method_ids': [(0, 0, {
                 'name': 'Terminal',
                 'is_cash_count': False,
@@ -57,7 +56,7 @@ class TestUi(odoo.tests.HttpCase):
         })
 
         # Create IoT device
-        env['iot.device'].sudo().create({
+        iot_device_id = env['iot.device'].sudo().create({
             'iot_id': iotbox_id.id,
             'name': 'Scale',
             'identifier': 'test_scale',
@@ -68,8 +67,7 @@ class TestUi(odoo.tests.HttpCase):
         # Select IoT Box, tick electronic scale
         main_pos_config = env.ref('point_of_sale.pos_config_main')
         main_pos_config.write({
-            'iotbox_id': iotbox_id.id,
-            'iface_electronic_scale': True,
+            'iface_scale_id': iot_device_id.id,
         })
 
         self.start_tour("/web", 'pos_iot_scale_tour', login="admin")

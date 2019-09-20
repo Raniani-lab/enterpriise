@@ -85,7 +85,6 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/core/dialog.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/calendar/calendar_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_renderer.js"></script>
-            <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_view.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/relational_fields.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/upgrade_fields.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/view_dialogs.js"></script>

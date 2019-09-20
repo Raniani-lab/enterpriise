@@ -16,6 +16,12 @@ class AccountPayment(models.Model):
     attachment_ids = fields.One2many('ir.attachment', 'res_id', domain=[('res_model', '=', 'account.payment')], string='Attachments')
 
 
+class AccountBankStatement(models.Model):
+    _inherit = "account.bank.statement"
+
+    attachment_ids = fields.One2many('ir.attachment', 'res_id', domain=[('res_model', '=', 'account.bank.statement')], string='Attachments')
+
+
 class AccountMoveLine(models.Model):
     _name = "account.move.line"
     _inherit = "account.move.line"
@@ -25,4 +31,4 @@ class AccountMoveLine(models.Model):
     @api.depends('move_id', 'payment_id')
     def _compute_attachment(self):
         for record in self:
-            record.move_attachment_ids = record.move_id.attachment_ids + record.payment_id.attachment_ids
+            record.move_attachment_ids = record.move_id.attachment_ids + record.statement_id.attachment_ids + record.payment_id.attachment_ids

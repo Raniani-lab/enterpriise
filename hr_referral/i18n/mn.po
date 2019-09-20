@@ -3,7 +3,6 @@
 # 	* hr_referral
 # 
 # Translators:
-# Otgonbayar.A <gobi.mn@gmail.com>, 2019
 # Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2019
 # nurbakhit nurka <nurbakhit@bumanit.mn>, 2019
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
@@ -13,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
 "Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
@@ -300,7 +299,7 @@ msgstr "Дуусах өдөр"
 msgid ""
 "Define the position of the friend. If it's a small friend like a dog, you "
 "must select Front, it will be placed in the front of the dashboard, above "
-"superhero. This hero will have half of the normal size."
+"superhero."
 msgstr ""
 
 #. module: hr_referral
@@ -523,7 +522,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Hello,<br><br>There are some amazing job offers in my company! Have a look, "
-"they  can be interesting for you<br>%s"
+"they  can be interesting for you<br><a href=\"%s\">See Job Offers</a>"
 msgstr ""
 
 #. module: hr_referral
@@ -531,7 +530,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Hello,<br><br>There is an amazing job offer for %s in my company! It will be"
-" a fit for you<br>%s"
+" a fit for you<br><a href=\"%s\">See Job Offer</a>"
 msgstr ""
 
 #. module: hr_referral
@@ -580,12 +579,8 @@ msgid "Icon to indicate an exception activity."
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Хэрэв сонгогдсон тохиолдолд шинэ зурвасууд таны анхаарлыг шаардана."
-
-#. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction
+#: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Хэрэв сонгогдсон бол, шинэ зурвасууд таны анхаарлыг шаардана."
 
@@ -824,8 +819,8 @@ msgstr "Үйлдлийн тоо"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error_counter
-msgid "Number of error"
-msgstr "Алдааны тоо"
+msgid "Number of errors"
+msgstr ""
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction_counter
@@ -1290,6 +1285,14 @@ msgid "You do not have enough points to buy this product."
 msgstr ""
 
 #. module: hr_referral
+#: code:addons/hr_referral/models/hr_applicant.py:0
+#, python-format
+msgid ""
+"You don't have access to this application as your user is not linked to an "
+"employee."
+msgstr ""
+
+#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "You earned"
 msgstr ""
@@ -1319,8 +1322,8 @@ msgstr ""
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
-msgid "clicks"
-msgstr "даралтууд"
+msgid "click(s)"
+msgstr ""
 
 #. module: hr_referral
 #. openerp-web

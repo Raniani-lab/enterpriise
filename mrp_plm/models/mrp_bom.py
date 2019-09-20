@@ -10,7 +10,7 @@ class MrpBom(models.Model):
     version = fields.Integer('Version', default=1)
     previous_bom_id = fields.Many2one('mrp.bom', 'Previous BoM')
     active = fields.Boolean('Production Ready')
-    image_64 = fields.Image(related='product_tmpl_id.image_64', readonly=False)
+    image_128 = fields.Image(related='product_tmpl_id.image_128', readonly=False)
     eco_ids = fields.One2many(
         'mrp.eco', 'new_bom_id', 'ECO to be applied')
     eco_count = fields.Integer('# ECOs', compute='_compute_eco_data')

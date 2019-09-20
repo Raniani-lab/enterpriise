@@ -10,6 +10,8 @@ class ProjectTaskCreateTimesheet(models.TransientModel):
     _name = 'project.task.create.timesheet'
     _description = "Create Timesheet from task"
 
+    _sql_constraints = [('time_positive', 'CHECK(time_spent > 0)', 'The timesheet\'s time must be positive' )]
+
     @api.model
     def default_get(self, fields):
         result = super(ProjectTaskCreateTimesheet, self).default_get(fields)
@@ -37,5 +39,9 @@ class ProjectTaskCreateTimesheet(models.TransientModel):
             'user_id': self.env.uid,
             'unit_amount': self.time_spent,
         }
-        self.task_id.write({'timesheet_timer_start': False, 'timesheet_timer_pause': False})
+        self.task_id.write({
+            'timesheet_timer_start': False,
+            'timesheet_timer_pause': False,
+            'timesheet_timer_last_stop': fields.datetime.now(),
+        })
         return self.env['account.analytic.line'].create(values)

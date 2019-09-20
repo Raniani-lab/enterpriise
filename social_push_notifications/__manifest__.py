@@ -14,7 +14,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/assets.xml',
-        'views/social_views.xml',
+        'views/social_post_views.xml',
         'views/res_config_settings_views.xml',
         'views/social_push_notifications_templates.xml',
         'views/website_visitor_views.xml',

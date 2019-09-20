@@ -12,7 +12,8 @@
         'data/social_media_data.xml',
         'views/assets.xml',
         'views/social_facebook_templates.xml',
-        'views/social_views.xml',
+        'views/social_post_views.xml',
+        'views/social_stream_post_views.xml',
         'views/res_config_settings_views.xml',
     ],
     'qweb': [

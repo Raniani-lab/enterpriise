@@ -32,7 +32,7 @@ class UtmCampaign(models.Model):
             campaign.social_push_notifications_count = mapped_data.get(campaign.id, 0)
 
     def action_redirect_to_push_notifications(self):
-            action = self.env.ref('social.action_social_media_post').read()[0]
+            action = self.env.ref('social.action_social_post').read()[0]
             action['domain'] = [('utm_campaign_id', '=', self.id), ('media_ids.media_type', '=', 'push_notifications')]
             action['context'] = {
                 "with_searchpanel": True,
@@ -43,7 +43,7 @@ class UtmCampaign(models.Model):
 
     def action_send_push_notification(self):
         push_media = self.env['social.media'].search([('media_type', '=', 'push_notifications')])
-        action = self.env.ref('social.action_social_media_post').read()[0]
+        action = self.env.ref('social.action_social_post').read()[0]
         action['views'] = [[False, 'form']]
         action['context'] = {
             'default_account_ids': push_media.account_ids.ids,

@@ -176,7 +176,7 @@ class SocialPost(models.Model):
         return super(SocialPost, self).write(vals)
 
     def social_stream_post_action_my(self):
-        action = self.env.ref('social.action_social_account_feed').read()[0]
+        action = self.env.ref('social.action_social_stream_post').read()[0]
         action['name'] = _('Feed Posts')
         action['domain'] = self._get_stream_post_domain()
         action['context'] = {

@@ -32,7 +32,7 @@ class SocialTwitterController(http.Controller):
         self._create_twitter_accounts(oauth_token, oauth_verifier, media)
 
         url_params = {
-            'action': request.env.ref('social.action_social_account_feed').id,
+            'action': request.env.ref('social.action_social_stream_post').id,
             'view_type': 'kanban',
             'model': 'social.stream.post',
         }

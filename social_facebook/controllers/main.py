@@ -31,7 +31,7 @@ class SocialFacebookController(http.Controller):
         self._create_facebook_accounts(access_token, media, is_extended_token)
 
         url_params = {
-            'action': request.env.ref('social.action_social_account_feed').id,
+            'action': request.env.ref('social.action_social_stream_post').id,
             'view_type': 'kanban',
             'model': 'social.stream.post',
         }

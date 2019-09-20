@@ -11,7 +11,7 @@
                 <field name="display_model_choice" invisible="1"/>
                 <field name="state" invisible="1"/>
                 <field name="total_depreciation_entries_count" invisible="1"/>
-                <header invisible="context.get('active_model')=='account.move.line'">
+                <header>
                     <button name="validate" states="draft" string="Confirm" type="object" class="oe_highlight"/>
                     <button type="object" name="compute_depreciation_board" string="Compute Depreciation" states="draft"/>
                     <button name="action_set_to_close" string="Sell or Dispose" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', '!=', 'open'), ('asset_type', '!=', 'purchase')]}"/>

@@ -22,9 +22,9 @@
                     <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
                         attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                     <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
-                        attrs="{'invisible': ['|', '|', '|', '|',  '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), ('allow_billable', '=', False), ('fsm_done', '=', False), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
+                        attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), '&amp;', ('display_timesheet_timer', '=', True), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
                     <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
-                        attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
+                        attrs="{'invisible': ['|', '|', '|','|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', False), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', False), ('material_line_product_count', '=', 0), '&amp;', ('total_hours_spent', '!=', 0), ('material_line_product_count', '!=', 0), '&amp;', ('total_hours_spent', '=', 0), ('material_line_product_count', '=', 0)]}"/>
                     <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
                         attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), ('allow_billable', '=', False), ('fsm_done', '=', False), ('timesheet_timer_start', '!=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('material_line_product_count', '=', 0), ('total_hours_spent', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
 
@@ -68,7 +68,7 @@
                             </div>
                         </button>
                         <button class="oe_stat_button" name="action_fsm_view_material"
-                            type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': [('allow_material', '=', False)]}">
+                            type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
                             <div class="o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>

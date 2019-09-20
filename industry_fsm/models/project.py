@@ -189,7 +189,10 @@ class Task(models.Model):
     @api.depends('sale_order_id.invoice_status', 'sale_order_id.order_line')
     def _compute_fsm_to_invoice(self):
         for task in self:
-            task.fsm_to_invoice = bool(task.sale_order_id.invoice_status not in ('no', 'invoiced'))
+            if task.sale_order_id:
+                task.fsm_to_invoice = bool(task.sale_order_id.invoice_status not in ('no', 'invoiced'))
+            else:
+                task.fsm_to_invoice = False
 
     @api.model
     def _search_fsm_to_invoice(self, operator, value):

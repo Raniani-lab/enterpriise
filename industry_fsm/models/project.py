@@ -33,7 +33,6 @@ class Project(models.Model):
         ('fsm_imply_task_rate', "CHECK((is_fsm = 't' AND sale_line_id IS NULL) OR (is_fsm = 'f'))", 'An FSM project must be billed at task rate.'),
     ]
 
-
     @api.onchange('allow_timesheets', 'allow_billable')
     def _onchange_allow_timesheets_and_billable(self):
         if self.allow_timesheets and self.allow_billable and not self.timesheet_product_id:
@@ -343,9 +342,10 @@ class Task(models.Model):
                 values['stage_id'] = closed_stage.id
 
             if task.allow_billable:
-                task._fsm_ensure_sale_order()
-                if task.sudo().sale_order_id.state in ['draft', 'sent']:
-                    task.sudo().sale_order_id.action_confirm()
+                if task.allow_timesheets or task.allow_material:
+                    task._fsm_ensure_sale_order()
+                    if task.sudo().sale_order_id.state in ['draft', 'sent']:
+                        task.sudo().sale_order_id.action_confirm()
 
             task.write(values)
 

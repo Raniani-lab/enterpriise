@@ -467,6 +467,13 @@ msgid "Next Activity Type"
 msgstr ""
 
 #. module: quality
+#: code:addons/quality/models/quality.py:119
+#, python-format
+msgid "No quality team found for this company.\n"
+"Please go to configuration and create one first."
+msgstr ""
+
+#. module: quality
 #: selection:quality.alert,priority:0
 msgid "Normal"
 msgstr ""

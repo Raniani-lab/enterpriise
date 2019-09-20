@@ -8,7 +8,7 @@
         <field name="mode">primary</field>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
+            <xpath expr="//field[@name='subject']" position="after">
                 <field name="marketing_activity_ids" string="Activities" widget="many2many_tags"/>
             </xpath>
         </field>

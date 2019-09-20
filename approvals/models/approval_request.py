@@ -222,4 +222,4 @@ class ApprovalApprover(models.Model):
 
     @api.onchange('user_id')
     def _onchange_approver_ids(self):
-        return {'domain': {'user_id': [('id', 'not in', self.request_id.approver_ids.mapped('user_id').ids)]}}
+        return {'domain': {'user_id': [('id', 'not in', self.request_id.approver_ids.mapped('user_id').ids + self.request_id.request_owner_id.ids)]}}

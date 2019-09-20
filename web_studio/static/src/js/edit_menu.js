@@ -222,9 +222,17 @@ var EditMenuDialog = Dialog.extend({
      */
     _onSave: function () {
         var self = this;
-        this._saveChanges().then(function () {
-            self._reloadMenuData();
-        });
+        if (
+            !_.isEmpty(this.to_move) ||
+            !_.isEmpty(this.to_delete)
+        ) {
+            // do not make an rpc (and then reload menu) if there is nothing to save
+            this._saveChanges().then(function () {
+                self._reloadMenuData();
+            });
+        } else {
+            this.close();
+        }
     },
     /**
      * Save the current changes (in `to_move` and `to_delete`).

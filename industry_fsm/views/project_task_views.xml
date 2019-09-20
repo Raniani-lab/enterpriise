@@ -18,14 +18,10 @@
                 <field name="allow_quotations" invisible="1"/>
                 <field name="fsm_done" invisible="1"/>
                 <field name="fsm_to_invoice" invisible="1"/>
-                <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
-                    attrs="{'invisible': ['|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                 <button class="btn-primary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
                     attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_to_invoice', '=', False), ('invoice_count', '!=', 0), '&amp;', ('display_timesheet_timer', '=', True), ('timesheet_timer_start', '=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
             </xpath>
             <xpath expr="//button[@name='action_timer_start'][hasclass('btn-secondary')]" position='before'>
-                <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
-                    attrs="{'invisible': ['|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True),  '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), ('allow_material', '=', False), ('material_line_product_count', '!=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}"/>
                 <button class="btn-secondary" name="action_fsm_create_invoice" type="object" string="Create Invoice"
                     attrs="{'invisible': ['|', '|', '|', '|', '|', '|', ('allow_billable', '=', False), ('is_fsm', '=', False), ('fsm_to_invoice', '=', False), ('invoice_count', '=', 0), '&amp;', ('display_timesheet_timer', '=', True), ('timesheet_timer_start', '=', False), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager"/>
 

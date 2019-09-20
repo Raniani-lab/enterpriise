@@ -44,8 +44,8 @@
         <form string="Mail Template">
             <sheet>
                 <group>
-                    <field name="name" string="Mailing Name"/>
                     <field name="subject"/>
+                    <field name="name" required="False" invisible="1"/>
                     <field name="email_from"/>
                     <field name="mailing_type" invisible="1"/>
                     <label for="mailing_model_id" string="Participants" invisible="1"/>

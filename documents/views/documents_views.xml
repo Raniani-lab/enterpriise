@@ -40,9 +40,7 @@
                 <group expand="0" string="Group By">
                     <filter name="owner" string="Owner" domain="[]" context="{'group_by':'create_uid'}"/>
                     <filter name="by_model" string="Model" domain="[]" context="{'group_by': 'res_model'}"/>
-                    <filter name="company" string="Company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
                     <filter name="creation_month" string="Creation Date" domain="[]" context="{'group_by':'create_date'}"/>
-                    <filter name="attached_document_name" string="Attached Document Name" domain="[]" context="{'group_by': 'res_name'}"/>
                 </group>
                 <searchpanel>
                     <field name="folder_id"/>

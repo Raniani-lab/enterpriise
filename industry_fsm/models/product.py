@@ -46,8 +46,9 @@ class ProductProduct(models.Model):
                     'product_id': self.id,
                     'product_uom_qty': 1,
                     'product_uom': self.uom_id.id,
-                    'qty_delivered_manual': 1  # HACK
                 }
+                if self.service_type == 'manual':
+                    vals['qty_delivered'] = 1
 
                 # Note: force to False to avoid changing planned hours when modifying product_uom_qty on SOL
                 # for materials. Set the current task for service to avoid re-creating a task on SO cnofirmation.

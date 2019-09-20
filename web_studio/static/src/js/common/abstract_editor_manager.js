@@ -119,7 +119,7 @@ var AbstractEditorManager = Widget.extend({
         var lastOp = this.operations.slice(-1)[0];
         var lastOpID = lastOp && lastOp.id;
 
-        bus.trigger('toggle_snack_bar', _t('Saving...'));
+        bus.trigger('toggle_snack_bar', 'saving');
 
         var def;
         if (from_xml) {
@@ -166,7 +166,7 @@ var AbstractEditorManager = Widget.extend({
                     // TODO: the sidebar will be updated by clicking on the node
                     self._updateSidebar(self.sidebar.state.mode);
                 }
-                bus.trigger('toggle_snack_bar', _t('Saved'), true);
+                bus.trigger('toggle_snack_bar', 'saved');
             });
     },
     /**

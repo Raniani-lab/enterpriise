@@ -182,7 +182,7 @@ tour.register('web_studio_tests_tour', {
     // verify Chatter can be added after changing view to form
     extra_trigger: '.o_web_studio_add_chatter',
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     // edit form view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type[data-type="form"] .o_web_studio_thumbnail',
@@ -207,7 +207,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_navbar_item',
 }, {
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     // add a kanban
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="kanban"] .o_web_studio_thumbnail',
@@ -226,7 +226,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.modal-footer .btn.btn-primary',
 }, {
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     // check that the kanban view is now active
     extra_trigger: '.o_web_studio_view_category .o_web_studio_view_type:not(.o_web_studio_inactive)[data-type="kanban"]',
@@ -235,13 +235,13 @@ tour.register('web_studio_tests_tour', {
 }, {
     extra_trigger: '.o_activity_view',
     // edit action
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     // add a graph view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="graph"] .o_web_studio_thumbnail',
 }, {
     extra_trigger: '.o_graph_renderer',
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
 }, {
     extra_trigger: '.o_web_studio_views',
     // edit the search view
@@ -362,7 +362,7 @@ tour.register('web_studio_new_report_tour', {
     extra_trigger: 'body.o_in_studio',
 }, {
     // edit reports
-    trigger: '.o_web_studio_menu a[data-name="reports"]',
+    trigger: '.o_web_studio_menu li[data-name="reports"]',
 }, {
     // create a new report
     trigger: '.o_control_panel .o-kanban-button-new',
@@ -510,7 +510,7 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     extra_trigger: 'body.o_in_studio',
 }, {
     // edit reports
-    trigger: '.o_web_studio_menu a[data-name="reports"]',
+    trigger: '.o_web_studio_menu li[data-name="reports"]',
 }, {
     // create a new report
     trigger: '.o_control_panel .o-kanban-button-new',

@@ -123,7 +123,7 @@ tour.register('web_studio_new_app_tour', {
     content: _t("Wow, nice! And I’m sure you can make it even better! Use this icon to open <b>Odoo Studio</b> and customize any screen."),
     position: 'bottom',
 }, {
-    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+    trigger: '.o_web_studio_menu .o_menu_sections li[data-name="views"]',
     content: _t("Want more fun? Let’s create more <b>views</b>."),
     position: 'bottom',
 }, {

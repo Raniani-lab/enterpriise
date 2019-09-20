@@ -1154,7 +1154,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         this.studio_view_arch = "";
         this._updateButtons();
         await this._updateSidebar(this.sidebar.state.mode);
-        bus.trigger('toggle_snack_bar', _t("Saved"), true);
+        bus.trigger('toggle_snack_bar', 'saved');
     },
     /**
      * @private

@@ -36,12 +36,17 @@ class ProjectWorksheetTemplate(models.Model):
     @api.model
     def create(self, vals):
         template = super(ProjectWorksheetTemplate, self).create(vals)
+        if not self.env.context.get('fsm_worksheet_no_generation'):
+            self._generate_worksheet_model(template)
+        return template
+
+    def _generate_worksheet_model(self, template):
         name = 'x_project_worksheet_template_' + str(template.id)
         # while creating model it will initialize the init_models method from create of ir.model
         # and there is related field of model_id in mail template so it's going to recusrive loop while recompute so used flush
         self.flush()
         model = self.env['ir.model'].sudo().create({
-            'name': vals['name'],
+            'name': template.name,
             'model': name,
             'field_id': [
                 (0, 0, {  # needed for proper model creation from demo data
@@ -143,7 +148,6 @@ class ProjectWorksheetTemplate(models.Model):
         })
         # this must be done after form view creation and filling the 'model_id' field
         template.sudo()._generate_qweb_report_template()
-
         return template
 
     def unlink(self):
@@ -159,6 +163,20 @@ class ProjectWorksheetTemplate(models.Model):
         self.mapped('model_id').with_context(**{MODULE_UNINSTALL_FLAG: True}).unlink()
 
         return super(ProjectWorksheetTemplate, self).unlink()
+
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        if default is None:
+            default = {}
+        if not default.get('name'):
+            default['name'] = _("%s (copy)") % (self.name)
+
+        # force no model
+        default['model_id'] = False
+
+        template = super(ProjectWorksheetTemplate, self.with_context(fsm_worksheet_no_generation=True)).copy(default)
+        self._generate_worksheet_model(template)
+        return template
 
     def action_view_worksheets(self):
         action = self.action_id.read()[0]

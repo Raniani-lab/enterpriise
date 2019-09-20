@@ -59,24 +59,13 @@ QUnit.module('DialingPanel', {
         });
         testUtils.mock.patch(UserAgent, {
             /**
-             * Override to catch the "NotAllowedError" that may be triggered if
-             * no DOM manipulation is detected before playing the media (chrome
-             * policy to prevent from autoplaying)
+             * Do not play() on media, to prevent "NotAllowedError". This may
+             * be triggered if no DOM manipulation is detected before playing
+             * the media (chrome policy to prevent from autoplaying)
              *
              * @override
              */
-            makeCall() {
-                this._super(...arguments);
-                this._audioRingbackToneProm = this._audioRingbackToneProm.catch(e => {
-                    if (
-                        e instanceof window.DOMException &&
-                        e.name === 'NotAllowedError'
-                    ) {
-                        return;
-                    }
-                    throw e;
-                });
-            },
+            PLAY_MEDIA: false,
             /**
              * Register callback to avoid the timeout that will accept the call
              * after 3 seconds in demo mode

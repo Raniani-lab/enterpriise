@@ -27,6 +27,13 @@ const CALL_STATE = {
 
 const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     /**
+     * Determine whether audio media can be played or not. This is useful in
+     * test, to prevent "NotAllowedError". This may be triggered if no DOM
+     * manipulation is detected before playing the media (chrome policy to
+     * prevent from autoplaying)
+     */
+    PLAY_MEDIA: true,
+    /**
      * @constructor
      */
     init(parent) {
@@ -109,7 +116,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     makeCall(number) {
         this._progressCount = 0;
         if (this._mode === 'demo') {
-            this._audioRingbackToneProm = this._audioRingbackTone.play();
+            this._audioRingbackToneProm = this.PLAY_MEDIA
+                ? this._audioRingbackTone.play()
+                : Promise.resolve();
             this._timerAcceptedTimeout = this._demoTimeout(() =>
                 this._onAccepted());
             this._isOutgoing = true;
@@ -285,7 +294,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             remoteStream = peerConnection.getRemoteStream()[0];
         }
         this.$remoteAudio.srcObject = remoteStream;
-        this.$remoteAudio.play().catch(() => {});
+        if (this.PLAY_MEDIA) {
+            this.$remoteAudio.play().catch(() => {});
+        }
     },
     /**
      * Returns the ua after initialising it.
@@ -659,7 +670,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._isOutgoing = false;
         this._callState = CALL_STATE.RINGING_CALL;
         this._audioIncomingRingtone.currentTime = 0;
-        this._audioIncomingRingtone.play().catch(() => {});
+        if (this.PLAY_MEDIA) {
+            this._audioIncomingRingtone.play().catch(() => {});
+        }
         this._notification = this._sendNotification('Odoo', content);
         this._currentCallParams = incomingCallParams;
         this.trigger_up('incomingCall', incomingCallParams);
@@ -680,7 +693,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onInviteSent() {
         this.trigger_up('sip_error_resolved');
-        this._audioDialRingtone.play();
+        if (this.PLAY_MEDIA) {
+            this._audioDialRingtone.play();
+        }
     },
     /**
      * This function is needed to ensure that the sessionDescriptionHandler exists
@@ -778,7 +793,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         if (this._progressCount === 2) {
             this._progressCount = 0;
             this._audioDialRingtone.pause();
-            this._audioRingbackToneProm = this._audioRingbackTone.play();
+            this._audioRingbackToneProm = this.PLAY_MEDIA
+                ? this._audioRingbackTone.play()
+                : Promise.resolve();
             this.trigger_up('changeStatus');
         } else {
             this._progressCount++;

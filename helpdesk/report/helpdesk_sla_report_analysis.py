@@ -19,7 +19,7 @@ class HelpdeskSLAReport(models.Model):
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Ticket Type", readonly=True)
     ticket_stage_id = fields.Many2one('helpdesk.stage', string="Ticket Stage", readonly=True)
     ticket_deadline = fields.Datetime("Ticket Deadline", readonly=True)
-    ticket_failed = fields.Boolean("Ticket Failed", group_operator="bool_and", readonly=True)
+    ticket_failed = fields.Boolean("Ticket Failed", group_operator="bool_or", readonly=True)
     ticket_closed = fields.Boolean("Ticket Closed", readonly=True)
     ticket_close_hours = fields.Integer("Time to close (hours)", group_operator="avg", readonly=True)
     ticket_open_hours = fields.Integer("Open Time (hours)", group_operator="avg", readonly=True)
@@ -30,7 +30,7 @@ class HelpdeskSLAReport(models.Model):
     sla_deadline = fields.Datetime("SLA Deadline", group_operator='min', readonly=True)
     sla_reached_datetime = fields.Datetime("SLA Reached Date", group_operator='min', readonly=True)
     sla_status = fields.Selection([('failed', 'Failed'), ('reached', 'Reached'), ('ongoing', 'Ongoing')], string="Status", readonly=True)
-    sla_status_failed = fields.Boolean("SLA Status Failed", group_operator='bool_and', readonly=True)
+    sla_status_failed = fields.Boolean("SLA Status Failed", group_operator='bool_or', readonly=True)
     sla_exceeded_days = fields.Integer("Day to reach SLA", group_operator='avg', readonly=True, help="Day to reach the stage of the SLA, without taking the working calendar into account")
 
     team_id = fields.Many2one('helpdesk.team', string='Team', readonly=True)
@@ -51,7 +51,7 @@ class HelpdeskSLAReport(models.Model):
                     T.partner_id,
                     T.company_id,
                     T.priority AS priority,
-                    T.sla_reached_late OR T.sla_deadline > NOW() AS ticket_failed,
+                    T.sla_reached_late OR T.sla_deadline < NOW() AT TIME ZONE 'UTC' AS ticket_failed,
                     T.sla_deadline AS ticket_deadline,
                     T.close_hours AS ticket_close_hours,
                     EXTRACT(HOUR FROM (COALESCE(T.assign_date, NOW()) - T.create_date)) AS ticket_open_hours,
@@ -68,7 +68,7 @@ class HelpdeskSLAReport(models.Model):
                         WHEN ST.reached_datetime IS NULL AND ST.deadline > NOW() THEN 'ongoing'
                         ELSE 'failed'
                     END AS sla_status,
-                    ST.reached_datetime >= ST.deadline OR (ST.reached_datetime IS NULL AND ST.deadline > NOW()) AS sla_status_failed
+                    ST.reached_datetime >= ST.deadline OR (ST.reached_datetime IS NULL AND ST.deadline < NOW() AT TIME ZONE 'UTC') AS sla_status_failed
                 FROM helpdesk_ticket T
                     LEFT JOIN helpdesk_stage STA ON (T.stage_id = STA.id)
                     LEFT JOIN helpdesk_sla_status ST ON (T.id = ST.ticket_id)

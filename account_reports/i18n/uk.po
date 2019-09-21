@@ -91,6 +91,8 @@ msgid ""
 "<i class=\"fa fa-caret-right invisible\" role=\"img\" aria-"
 "label=\"Unfolded\" title=\"Unfolded\"/>"
 msgstr ""
+"<i class=\"fa fa-caret-right invisible\" role=\"img\" aria-"
+"label=\"Unfolded\" title=\"Unfolded\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1081,7 +1083,7 @@ msgstr "Очікувана дата оплати"
 #: code:addons/account_reports/models/res_partner.py:0
 #, python-format
 msgid "Expected pay date has been changed from %s to %s"
-msgstr ""
+msgstr "Очікувана дата оплати була змінена з %s на %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_partner.py:0

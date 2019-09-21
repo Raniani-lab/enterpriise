@@ -52,6 +52,12 @@ msgid ""
 "                            whether it's a storable product, a consumable or a service.\n"
 "                        </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                            Створіть новий товар\n"
+"                        </p><p>\n"
+"                            Вам необхідно визначити товар для кожного, кому ви продаєте, чи у кого купуєте,\n"
+"                            не залежно від того, чи це товар, що зберігається, витратний товар чи послуга.\n"
+"                        </p>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
@@ -66,7 +72,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "<span class=\"align-middle\">for this employee at the same time.</span>"
-msgstr ""
+msgstr "<span class=\"align-middle\">для цього співробітника у той же час.</span>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
@@ -88,17 +94,17 @@ msgstr "Усі завдання"
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
 msgid "All tasks are scheduled"
-msgstr ""
+msgstr "Усі завдання заплановані"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_invoice_fsm
 msgid "All tasks were invoiced"
-msgstr ""
+msgstr "Усі завдання виставлені у рахунках"
 
 #. module: industry_fsm
 #: model:ir.model.constraint,message:industry_fsm.constraint_project_project_fsm_imply_task_rate
 msgid "An FSM project must be billed at task rate."
-msgstr ""
+msgstr "Проект FSM повинен виставлятися в рахунках за ставкою завдань."
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_assign
@@ -168,7 +174,7 @@ msgstr "Виписати інвойс"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
 #: model:res.groups,name:industry_fsm.group_fsm_quotation_from_task
 msgid "Create new quotations directly from the tasks"
-msgstr ""
+msgstr "Створюйте нові комерційні пропозиції прямо із завдань"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__currency_id
@@ -202,6 +208,8 @@ msgid ""
 "Display tasks in the Field Service module and allow planning with start/end "
 "dates."
 msgstr ""
+"Відображайте завдання у модулі Сфери послуг та дозвольте планування з датами"
+" початку та кінця."
 
 #. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
@@ -227,7 +235,7 @@ msgstr "Кінцева дата"
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_quotations
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__allow_quotations
 msgid "Extra quotation"
-msgstr ""
+msgstr "Додаткова пропозиція"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__is_fsm
@@ -291,7 +299,7 @@ msgstr "Остання зміна етапу"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Launch the Timer"
-msgstr ""
+msgstr "Запустити таймер"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_fsm_map
@@ -342,17 +350,17 @@ msgstr "Нова комерційна пропозиція"
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm
 msgid "No future Tasks planned"
-msgstr ""
+msgstr "Не заплановано майбутніх завдань"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_invoice_fsm
 msgid "No task to Invoice"
-msgstr ""
+msgstr "Немає завдань до включення у рахунок"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
 msgid "No task to schedule"
-msgstr ""
+msgstr "Немає завдань, щоб запланувати"
 
 #. module: industry_fsm
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_0
@@ -379,7 +387,7 @@ msgstr "Кількість рахунків"
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
 msgid "Overlapping tasks"
-msgstr ""
+msgstr "Завдання, що перекриваються"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form
@@ -414,7 +422,7 @@ msgstr "Планування за проектом"
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_fsm_planning_groupby_user
 msgid "Planning by User"
-msgstr ""
+msgstr "Планування користувачем"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_product_product_kanban_material
@@ -446,7 +454,7 @@ msgstr "Товари"
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_material
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__allow_material
 msgid "Products on Tasks"
-msgstr ""
+msgstr "Товари на завданнях"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__progress
@@ -469,7 +477,7 @@ msgstr "Проекти"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
 msgid "Provide worksheet reports to be signed off by customers"
-msgstr ""
+msgstr "Надайте звіти про робочі аркуші, які підписуються клієнтами"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form_fsm_quotation
@@ -540,7 +548,7 @@ msgstr ""
 #: model:product.product,name:industry_fsm.fsm_time_product
 #: model:product.template,name:industry_fsm.fsm_time_product_product_template
 msgid "Service on Timesheet"
-msgstr ""
+msgstr "Послуга в табелі"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -608,7 +616,7 @@ msgstr "Назва завдання"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__allow_billable
 msgid "Task billing"
-msgstr ""
+msgstr "Завдання, що виставляється у рахунку"
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_sale_order__task_id
@@ -641,6 +649,8 @@ msgstr "Завдання FSM повинно мати клієнта, встан�
 #: model:ir.model.constraint,message:industry_fsm.constraint_project_project_material_imply_billable
 msgid "The material can be allowed only when the task can be billed."
 msgstr ""
+"Матеріал можна дозволити лише після того, як завдання можна буде додати у "
+"рахунок."
 
 #. module: industry_fsm
 #: model:ir.model.constraint,message:industry_fsm.constraint_project_project_timesheet_product_required_if_billable_and_timesheets
@@ -648,17 +658,19 @@ msgid ""
 "The timesheet product is required when the task can be billed and timesheets"
 " are allowed."
 msgstr ""
+"Товар табелю потрібен, коли завдання можна виставити у рахунку та дозволити "
+"використання табелів."
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_all_fsm
 msgid "There are currently no tasks, click on create to create one"
-msgstr ""
+msgstr "Наразі завдань немає, натисніть кнопку створити, щоб створити його"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project.py:0
 #, python-format
 msgid "This action is only allowed on FSM project."
-msgstr ""
+msgstr "Ця дія дозволена лише в проекті FSM."
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
@@ -718,7 +730,7 @@ msgstr "До включення у рахунок"
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_to_schedule_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_schedule
 msgid "To Schedule"
-msgstr ""
+msgstr "Запланувати"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_to_invoice
@@ -728,7 +740,7 @@ msgstr "До включення у рахунок"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "To schedule"
-msgstr ""
+msgstr "Запланувати"
 
 #. module: industry_fsm
 #: model:product.product,uom_name:industry_fsm.fsm_time_product
@@ -754,12 +766,12 @@ msgstr "Шаблони робочого аркуша"
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm
 msgid "You can create one for yourself by clicking on Create."
-msgstr ""
+msgstr "Ви можете створити самостійно, натиснувши на кнопку Створити."
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_report_project_task_user_fsm
 msgid "report.project.task.user.fsm"
-msgstr ""
+msgstr "report.project.task.user.fsm"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_form

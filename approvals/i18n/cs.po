@@ -74,7 +74,7 @@ msgstr ""
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Administrátor"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_all
@@ -446,7 +446,7 @@ msgstr "Ikona"
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Ikona označuje vyjímečnou aktivitu."
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction

@@ -82,7 +82,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-envelope-open-o\"/> Not opened within"
-msgstr "<i class=\"fa fa-envelope-open-o\"/> Не відкрито в межах"
+msgstr "<i class=\"fa fa-envelope-open-o\"/> Не відкрито протягом"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -253,7 +253,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__is_website
 msgid "Allows us to filter relevant Campaign"
-msgstr ""
+msgstr "Дозволяє нам фільтрувати відповідну кампанію"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
@@ -631,7 +631,7 @@ msgstr "Проігноровано"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_website
 msgid "Is Website"
-msgstr ""
+msgstr "Веб-сайт"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -756,7 +756,7 @@ msgstr "Розсилка"
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mailing_trace
 msgid "Mailing Statistics"
-msgstr ""
+msgstr "Статистика розсилки"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_items
@@ -767,7 +767,7 @@ msgstr "Розсилки"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_clicked
 msgid "Mailings Clicked"
-msgstr ""
+msgstr "Переглянуті розсилки"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -783,13 +783,13 @@ msgstr "Вручну"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Mark as completed"
-msgstr "Помічено як завершено"
+msgstr "Позначено як завершено"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Marked as completed"
-msgstr "Помічено як завершено"
+msgstr "Позначено як завершено"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_activity
@@ -935,17 +935,17 @@ msgstr "Відсутня діяльність електронної пошти"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Not Clicked"
-msgstr ""
+msgstr "Не переглянуто"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Not Opened"
-msgstr ""
+msgstr "Не відкрито"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Not Replied"
-msgstr ""
+msgstr "Не відповів"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form

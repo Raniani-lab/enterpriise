@@ -198,7 +198,7 @@ msgstr "Ok"
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__payment_terminal_device_ids
 #: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__iot_device_id
 msgid "Payment Terminal Device"
-msgstr ""
+msgstr "Terminal de paiement"
 
 #. module: pos_iot
 #. openerp-web

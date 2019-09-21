@@ -30,6 +30,8 @@ msgid ""
 "%s of the selected partner(s) had an invalid address. The corresponding "
 "followups were not sent"
 msgstr ""
+"%s des partenaires sélectionnés avaient une adresse invalide. Les suivis "
+"correspondants n'ont pas été envoyés"
 
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.followup_send_wizard_form
@@ -175,7 +177,7 @@ msgstr "Envoyer par la poste"
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.followup_send_wizard_form
 msgid "Sending these"
-msgstr ""
+msgstr "Envoyer ces "
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_followup_send__snailmail_cost
@@ -195,4 +197,4 @@ msgstr "clients"
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.followup_send_wizard_form
 msgid "documents will cost"
-msgstr ""
+msgstr "les documents coûteront "

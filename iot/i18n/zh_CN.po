@@ -14,6 +14,7 @@
 # John An <johnxan@163.com>, 2019
 # Jeanphy <hzh0292@qq.com>, 2019
 # Martin Trigaux, 2019
+# Felix Yuen <fyu@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -21,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Felix Yuen <fyu@odoo.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -72,7 +73,7 @@ msgstr "<span class=\"badge badge-success\">已连接</span>"
 msgid ""
 "A card is still inserted in the Payment Terminal, please remove it then try "
 "again."
-msgstr ""
+msgstr "卡仍然插入付款终端，请将其删除，然后重试。"
 
 #. module: iot
 #. openerp-web
@@ -97,12 +98,12 @@ msgstr "增加扫描范围。"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__drivers_auto_update
 msgid "Automatic drivers update"
-msgstr ""
+msgstr "自动驱动更新"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_box__drivers_auto_update
 msgid "Automatically update drivers when the IoT Box boots"
-msgstr ""
+msgstr "物联网盒子启动时自动更新驱动程序"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scanner
@@ -131,7 +132,7 @@ msgstr "单击此处打开您的IoT主页"
 #: code:addons/iot/static/src/js/iot.js:0
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
-msgstr ""
+msgstr "点击高级／显示详细资料／细节／更多信息"
 
 #. module: iot
 #. openerp-web
@@ -140,7 +141,7 @@ msgstr ""
 msgid ""
 "Click on Proceed to .../Add Exception/Visit this website/Go on to the "
 "webpage"
-msgstr ""
+msgstr "单击继续 ...／添加异常／访问此网站／转到网页"
 
 #. module: iot
 #. openerp-web
@@ -258,7 +259,7 @@ msgstr "设备"
 #: model:ir.model.fields,field_description:iot.field_iot_box__device_count
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_kanban
 msgid "Device Count"
-msgstr ""
+msgstr "设备数量"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
@@ -322,7 +323,7 @@ msgstr "分组"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi
 msgid "Hdmi"
-msgstr ""
+msgstr "Hdmi"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
@@ -363,7 +364,7 @@ msgstr "如果您是通过安全服务器（HTTPS），检查是否接受了证�
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__version
 msgid "Image Version"
-msgstr ""
+msgstr "图像版本"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -622,7 +623,7 @@ msgstr "范围不能为空。"
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action_search_iot_box
 msgid "There is no device connected to this IoT Box"
-msgstr ""
+msgstr "此物联网盒子没有连接任何设备"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
@@ -661,7 +662,7 @@ msgstr "设备类型."
 msgid ""
 "URL of the page that will be displayed by the device, leave empty to use the"
 " customer facing display of the POS."
-msgstr ""
+msgstr "设备将显示的页面的URL，留空以使用面向客户的POS显示。"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__direct
@@ -689,7 +690,7 @@ msgstr "在此处设置设备时，将通过此设备在物联网盒子上打印
 #: code:addons/iot/drivers/SixDriver.py:0
 #, python-format
 msgid "You cannot reverse this payment anymore."
-msgstr ""
+msgstr "你无法再撤消此付款。"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action

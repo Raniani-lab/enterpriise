@@ -41,7 +41,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_coupon.helpdesk_ticket_view_form_inherit_helpdesk_sale_coupon
 #, python-format
 msgid "Coupons"
-msgstr ""
+msgstr "Kupony"
 
 #. module: helpdesk_sale_coupon
 #: model:ir.model.fields,field_description:helpdesk_sale_coupon.field_helpdesk_ticket__coupons_count

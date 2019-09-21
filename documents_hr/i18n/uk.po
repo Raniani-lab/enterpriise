@@ -38,6 +38,9 @@ msgid ""
 "                                Default tags\n"
 "                            </span>"
 msgstr ""
+"<span name=\"documents_hr_tags\" class=\"o_form_label\" invisible=\"1\" attrs=\"{'invisible' : [('documents_hr_settings', '=', False)]}\">\n"
+"                                Мітки за замовчуванням\n"
+"                            </span>"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_absences

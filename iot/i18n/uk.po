@@ -4,8 +4,8 @@
 # 
 # Translators:
 # ТАрас <tratatuta@i.ua>, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-13 11:38+0000\n"
 "PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,12 +51,12 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge badge-secondary\">Disconnected</span>"
-msgstr ""
+msgstr "<span class=\"badge badge-secondary\">Відключено</span>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge badge-success\">Connected</span>"
-msgstr ""
+msgstr "<span class=\"badge badge-success\">Підключено</span>"
 
 #. module: iot
 #: code:addons/iot/drivers/SixDriver.py:0
@@ -65,6 +65,8 @@ msgid ""
 "A card is still inserted in the Payment Terminal, please remove it then try "
 "again."
 msgstr ""
+"Картка все ще вставлена у платіжний термінал, заберіть її та спробуйте ще "
+"раз."
 
 #. module: iot
 #. openerp-web
@@ -84,17 +86,17 @@ msgstr "Додати помічника IoT Box"
 #: code:addons/iot/static/src/js/tours/iot.js:0
 #, python-format
 msgid "Add range to scan."
-msgstr ""
+msgstr "Додайте діапазон для сканування."
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__drivers_auto_update
 msgid "Automatic drivers update"
-msgstr ""
+msgstr "Автоматичне оновлення драйверів"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_box__drivers_auto_update
 msgid "Automatically update drivers when the IoT Box boots"
-msgstr ""
+msgstr "Автоматично оновлювати драйвери, коли завантажується IoT Box"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scanner
@@ -192,7 +194,7 @@ msgstr "Підключення не вдалося"
 #: code:addons/iot/static/src/js/iot_device_controller.js:0
 #, python-format
 msgid "Connection to Device failed"
-msgstr ""
+msgstr "З'єднання з пристроєм не вдалося"
 
 #. module: iot
 #. openerp-web
@@ -252,7 +254,7 @@ msgstr "Пристрій"
 #: model:ir.model.fields,field_description:iot.field_iot_box__device_count
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_kanban
 msgid "Device Count"
-msgstr ""
+msgstr "Підрахунок пристроїв"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
@@ -285,7 +287,7 @@ msgstr "Назва для відображення"
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
 #: model:ir.model.fields,field_description:iot.field_iot_device__iot_ip
 msgid "Domain Address"
-msgstr ""
+msgstr "Адреса домену"
 
 #. module: iot
 #. openerp-web
@@ -316,7 +318,7 @@ msgstr "Групувати за"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi
 msgid "Hdmi"
-msgstr ""
+msgstr "Hdmi"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
@@ -344,7 +346,7 @@ msgstr "Ідентифікатор (Mac адреса)"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connected
 msgid "If device is connected to the IoT Box"
-msgstr ""
+msgstr "Якщо пристрій з'єднано з IoT Box"
 
 #. module: iot
 #. openerp-web
@@ -359,7 +361,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__version
 msgid "Image Version"
-msgstr ""
+msgstr "Версія зображення"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -400,13 +402,13 @@ msgstr "IoTBox підключено"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__keyboard
 msgid "Keyboard"
-msgstr ""
+msgstr "Клавіатура"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_keyboard_layout
 #: model:ir.model.fields,field_description:iot.field_iot_device__keyboard_layout
 msgid "Keyboard Layout"
-msgstr ""
+msgstr "Макет клавіатури"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
@@ -419,7 +421,7 @@ msgstr "Останні зміни на"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
 msgid "Last Sent Value"
-msgstr ""
+msgstr "Останнє надіслане значення"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_uid
@@ -464,7 +466,7 @@ msgstr "Не знайдено IoT Box!"
 #: code:addons/iot/static/src/js/iot.js:0
 #, python-format
 msgid "No IoT Box(s) found"
-msgstr ""
+msgstr "Не знайдено жодного IoT Box"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -543,7 +545,7 @@ msgstr "Контракт на гарантію видавця для IoT Box"
 #: code:addons/iot/static/src/xml/iot_scan_progress_template.xml:0
 #, python-format
 msgid "Range(s) to scan"
-msgstr ""
+msgstr "Діапазон сканування"
 
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report
@@ -577,7 +579,7 @@ msgstr "Шкала"
 #: code:addons/iot/static/src/xml/iot_scan_progress_template.xml:0
 #, python-format
 msgid "Scan another range, e.g.: 10.1.1.*"
-msgstr ""
+msgstr "Сканувати інший діапазон, напр.: 10.1.1.*"
 
 #. module: iot
 #. openerp-web
@@ -585,7 +587,7 @@ msgstr ""
 #: code:addons/iot/static/src/js/iot.js:0
 #, python-format
 msgid "Scanning Network"
-msgstr ""
+msgstr "Мережа сканування"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
@@ -596,7 +598,7 @@ msgstr "URL екрану"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__serial
 msgid "Serial"
-msgstr ""
+msgstr "Серійний"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connected
@@ -615,12 +617,12 @@ msgstr "Успішно надіслано принтеру!"
 #: code:addons/iot/static/src/js/tours/iot.js:0
 #, python-format
 msgid "The range can not be empty."
-msgstr ""
+msgstr "Діапазон не може бути пустим."
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action_search_iot_box
 msgid "There is no device connected to this IoT Box"
-msgstr ""
+msgstr "Немає під'єднаного пристрою до цього IoT Box"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
@@ -632,7 +634,7 @@ msgstr "Не підключено жодних пристроїв до ваши�
 #: code:addons/iot/static/src/js/iot_scan.js:0
 #, python-format
 msgid "This IoTBox is already connected"
-msgstr ""
+msgstr "Цей IoTBox вже з'єднаний"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token
@@ -660,6 +662,8 @@ msgid ""
 "URL of the page that will be displayed by the device, leave empty to use the"
 " customer facing display of the POS."
 msgstr ""
+"URL сторінки, яка буде відображатися на цьому пристрої, залиште порожнім, "
+"щоб використовувати клієнтський дисплей точки продажу."
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__direct
@@ -689,7 +693,7 @@ msgstr ""
 #: code:addons/iot/drivers/SixDriver.py:0
 #, python-format
 msgid "You cannot reverse this payment anymore."
-msgstr ""
+msgstr "Ви більше не можете повернути цей платіж."
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action

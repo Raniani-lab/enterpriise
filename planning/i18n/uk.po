@@ -133,7 +133,7 @@ msgstr "<span aria-label=\"Close\">&amp;times;</span>"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 msgid "<span class=\"align-middle\">for this employee at the same time.</span>"
-msgstr ""
+msgstr "<span class=\"align-middle\">для цього співробітника у той же час.</span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form

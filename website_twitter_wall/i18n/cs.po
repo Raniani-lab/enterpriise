@@ -136,7 +136,7 @@ msgstr "Je aktuálně připojen"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_published
 msgid "Is Published"
-msgstr ""
+msgstr "Je publikováno"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__is_live

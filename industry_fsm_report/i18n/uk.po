@@ -40,7 +40,7 @@ msgstr "'Робочий аркуш %s - %s' % (object.name, object.partner_id.na
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
 msgid "<i class=\"fa fa-check\"/>Sign"
-msgstr ""
+msgstr "<i class=\"fa fa-check\"/>Підписати"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
@@ -63,11 +63,18 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"<p>\n"
+"                    Шановний(а) ${object.partner_id.name},<br/><br/>\n"
+"                    У прикріпленнях знайдіть робочий аркуш операції на місці. <br/><br/>\n"
+"                    Зв'яжіться з нами, якщо у вас виникли запитання.<br/><br/>\n"
+"                    З найкращими побажаннями,<br/><br/>\n"
+"                </p>\n"
+"            "
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_worksheet_template_view_form
 msgid "<span class=\"o_stat_text\"> Worksheets</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\"> Робочі аркуші</span>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
@@ -76,6 +83,9 @@ msgid ""
 "                                Signed\n"
 "                            </span>"
 msgstr ""
+"<span style=\"                                 font-size: 10px;                                 color: #fff;                                 text-transform: uppercase;                                 text-align: center;                                 font-weight: bold; line-height: 20px;                                 transform: rotate(45deg);                                 width: 100px; display: block;                                 background: green;                                 position: absolute;                                 top: 19px; right: -21px;\">\n"
+"                                Підписано\n"
+"                            </span>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
@@ -102,7 +112,7 @@ msgstr "<strong class=\"mr16\">Підсумок</strong>"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
 msgid "<strong class=\"text-muted\">Contact person</strong>"
-msgstr ""
+msgstr "<strong class=\"text-muted\">Контактна особа</strong>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
@@ -117,7 +127,7 @@ msgstr "<strong>Підсумок</strong>"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
 msgid "<strong>Thank You!</strong>"
-msgstr ""
+msgstr "<strong>Дякуємо!</strong>"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__action_id
@@ -232,7 +242,7 @@ msgstr "ID"
 #: code:addons/industry_fsm_report/controllers/portal.py:0
 #, python-format
 msgid "Invalid Task."
-msgstr ""
+msgstr "Недійсне завдання."
 
 #. module: industry_fsm_report
 #: code:addons/industry_fsm_report/controllers/portal.py:0
@@ -274,7 +284,7 @@ msgstr "Ім'я"
 #. module: industry_fsm_report
 #: model:ir.model.fields,help:industry_fsm_report.field_project_task__worksheet_signed_by
 msgid "Name of the person that signed the task."
-msgstr ""
+msgstr "Ім'я особи, яка підписала завдання."
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.industry_fsm_report._custom_x_project_worksheet_template_1_1568374639.3686554
@@ -291,7 +301,7 @@ msgstr "Запустіть таймер перед записом робочог
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_view_form_inherit
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_task_form2_inherit
 msgid "Preview Report"
-msgstr ""
+msgstr "Попередній перегляд звіту"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
@@ -316,7 +326,7 @@ msgstr "Шаблон робочого аркушу проекту"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_worksheet_template_view_search
 msgid "Project Worksheet Template Search"
-msgstr ""
+msgstr "Пошук шаблону робочого аркушу проекту"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
@@ -347,7 +357,7 @@ msgstr "Послідовність"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
 msgid "Sign Task"
-msgstr ""
+msgstr "Підписати завдання"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_signature
@@ -390,7 +400,7 @@ msgstr "Налаштовуваний звіт завдання робочого 
 #: code:addons/industry_fsm_report/controllers/portal.py:0
 #, python-format
 msgid "Task signed by %s"
-msgstr ""
+msgstr "Завдання підписане %s"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
@@ -414,7 +424,7 @@ msgstr ""
 #: code:addons/industry_fsm_report/controllers/portal.py:0
 #, python-format
 msgid "The worksheet is not in a state requiring customer signature."
-msgstr ""
+msgstr "Робочий аркуш не знаходиться в стані, що вимагає підпису клієнта."
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
@@ -454,7 +464,7 @@ msgstr "Ціна одиниці"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_task
 msgid "View Worksheet"
-msgstr ""
+msgstr "Переглянути робочий аркуш"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_view_form_inherit
@@ -480,7 +490,7 @@ msgstr "Підрахунок робочих аркушів"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
 msgid "Worksheet Report"
-msgstr ""
+msgstr "Звіт робочого аркушу"
 
 #. module: industry_fsm_report
 #: model:ir.actions.report,name:industry_fsm_report.task_custom_report
@@ -522,17 +532,17 @@ msgstr "Робочі аркуші"
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.fsm_worksheets_action_settings
 msgid "Worksheets Templates"
-msgstr ""
+msgstr "Шаблони робочих аркушів"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
 msgid "Your task has been signed."
-msgstr ""
+msgstr "Ваше завдання було підписано."
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
 msgid "contact avatar"
-msgstr ""
+msgstr "аватар контакту"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page

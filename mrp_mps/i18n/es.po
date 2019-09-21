@@ -28,7 +28,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "(Actual Demand)"
-msgstr ""
+msgstr "(Demanda real)"
 
 #. module: mrp_mps
 #. openerp-web
@@ -92,13 +92,13 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "Actual Demand"
-msgstr ""
+msgstr "Demanda real"
 
 #. module: mrp_mps
 #: code:addons/mrp_mps/models/mrp_mps.py:0
 #, python-format
 msgid "Actual Demand %s %s (%s - %s)"
-msgstr ""
+msgstr "Demanda real %s %s (%s - %s)"
 
 #. module: mrp_mps
 #. openerp-web

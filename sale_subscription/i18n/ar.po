@@ -2633,7 +2633,7 @@ msgstr "الاشتراكات الجارية"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_sms_error
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "خطأ في تسليم الرسائل القصيرة"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__sms_template_id

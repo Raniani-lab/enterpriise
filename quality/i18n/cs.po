@@ -80,7 +80,7 @@ msgstr "Stav aktivity"
 #. module: quality
 #: model:res.groups,name:quality.group_quality_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Administrátor"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -277,7 +277,7 @@ msgstr "Hotovo"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "Kopie e-mailu"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__fail
@@ -362,7 +362,7 @@ msgstr "Ikona"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Ikona označuje vyjímečnou aktivitu."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_needaction

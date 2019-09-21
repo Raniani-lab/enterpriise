@@ -24,17 +24,17 @@ msgstr ""
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_employee_exit
 msgid "# Departure Employee"
-msgstr ""
+msgstr "# Empleado de salida"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_new_employee
 msgid "# New Employees"
-msgstr ""
+msgstr "# Nuevos empleados"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Avg Employee"
-msgstr ""
+msgstr "Empleado promedio"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__company_id
@@ -50,7 +50,7 @@ msgstr "Contrato"
 #. module: hr_contract_reports
 #: model:ir.model,name:hr_contract_reports.model_hr_contract_employee_report
 msgid "Contract and Employee Analysis Report"
-msgstr ""
+msgstr "Informe de análisis de contratos y empleados"
 
 #. module: hr_contract_reports
 #: model:ir.ui.menu,name:hr_contract_reports.menu_report_contract_employee_all
@@ -65,7 +65,7 @@ msgstr "Fecha"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__date_end_contract
 msgid "Date Last Contract Ended"
-msgstr ""
+msgstr "Fecha del último contrato finalizado"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__department_id
@@ -76,7 +76,7 @@ msgstr "Departamento"
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Departure Employees"
-msgstr ""
+msgstr "Empleados de salida"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__departure_reason
@@ -92,7 +92,7 @@ msgstr "Nombre mostrado"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__age_sum
 msgid "Duration Contract"
-msgstr ""
+msgstr "Duración del contrato"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__employee_id
@@ -106,7 +106,7 @@ msgstr "Empleado"
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 msgid "Employees Analysis"
-msgstr ""
+msgstr "Análisis de empleados"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields.selection,name:hr_contract_reports.selection__hr_contract_employee_report__departure_reason__fired
@@ -131,7 +131,7 @@ msgstr "Últimos 365 días"
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Last Contract Ended"
-msgstr ""
+msgstr "Último contrato terminado"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report____last_update
@@ -141,12 +141,12 @@ msgstr "Última modificación en"
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Mean Contract Duration"
-msgstr ""
+msgstr "Duración media del contrato"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "New Employees"
-msgstr ""
+msgstr "Nuevos empleados"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields.selection,name:hr_contract_reports.selection__hr_contract_employee_report__departure_reason__resigned
@@ -161,27 +161,27 @@ msgstr "Retirado"
 #. module: hr_contract_reports
 #: model_terms:ir.actions.act_window,help:hr_contract_reports.contract_employee_report_action
 msgid "This report performs analysis on your contracts."
-msgstr ""
+msgstr "Este informe realiza un análisis de sus contratos."
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Total Contract Length"
-msgstr ""
+msgstr "Duración total del contrato"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Total Contracts"
-msgstr ""
+msgstr "Contratos totales"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Total Employees"
-msgstr ""
+msgstr "Empleados Totales"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Turnover Rate"
-msgstr ""
+msgstr "Tasa de rotación"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__wage

@@ -23,7 +23,7 @@ msgstr ""
 #. module: marketing_automation_sms
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_campaign__mailing_sms_count
 msgid "# SMS Mailings"
-msgstr ""
+msgstr "К-сть SMS-розсилок"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
@@ -61,7 +61,7 @@ msgstr "Електронний лист ігнорується"
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in SMS Marketing: %s"
-msgstr ""
+msgstr "Виняток в SMS-маркетингу: %s"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_marketing_activity
@@ -99,27 +99,27 @@ msgstr "SMS"
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
 msgid "SMS Content"
-msgstr ""
+msgstr "Зміст SMS"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__sms_mailing_id
 msgid "SMS Mailing"
-msgstr ""
+msgstr "SMS-розсилка"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
 msgid "SMS Options"
-msgstr ""
+msgstr "Функції SMS"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
 msgid "SMS Sent"
-msgstr ""
+msgstr "Надіслані SMS"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_sms_composer
 msgid "Send SMS Wizard"
-msgstr ""
+msgstr "Помічник надсилання SMS"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
@@ -142,3 +142,5 @@ msgid ""
 "UX Field to choose an SMS mailing. Separate field to ease options / default "
 "/ domain propagation."
 msgstr ""
+"Поле UX для вибору розсилки SMS. Окреме поле для полегшення параметрів / за "
+"замовчуванням / поширення домену."

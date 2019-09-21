@@ -763,7 +763,7 @@ msgstr "المستخدم المسؤول"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "خطأ في تسليم الرسائل القصيرة"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence

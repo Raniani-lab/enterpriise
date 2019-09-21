@@ -216,7 +216,7 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Způsoby přepravy"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:0

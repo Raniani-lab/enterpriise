@@ -681,7 +681,7 @@ msgstr "Bargeldüberschuss"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_aged_partner_balance_line_report
 msgid "Change expected payment date"
-msgstr ""
+msgstr "Erwartetes Zahlungsdatum ändern"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_coa_report
@@ -1542,7 +1542,7 @@ msgstr "Hauptinfo"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_manager
 msgid "Manage Summary and Footnotes of Reports"
-msgstr ""
+msgstr "Verwalten von Zusammenfassungen und Fußnoten von Berichten"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__manager_id

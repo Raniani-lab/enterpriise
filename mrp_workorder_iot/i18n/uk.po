@@ -74,7 +74,7 @@ msgstr "Назва для відображення"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__ip
 msgid "Domain Address"
-msgstr ""
+msgstr "Адреса домену"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__finish

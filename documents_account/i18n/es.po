@@ -11,6 +11,8 @@
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # Mariana Santos Romo <msn@odoo.com>, 2019
+# Jon Perez <jop@odoo.com>, 2019
+# Juan Pablo Mora <jpm@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -18,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-09 11:58+0000\n"
 "PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Mariana Santos Romo <msn@odoo.com>, 2019\n"
+"Last-Translator: Juan Pablo Mora <jpm@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,7 +52,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.constraint,message:documents_account.constraint_documents_account_folder_setting_journal_unique
 msgid "A setting already exists for this journal"
-msgstr ""
+msgstr "El Ajuste ya existe para este diario"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reconciliation_widget
@@ -60,12 +62,12 @@ msgstr "Widget de reconciliación de cuenta"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Accounting "
-msgstr ""
+msgstr "Contabilidad"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
 msgid "Accounting Workspace"
-msgstr ""
+msgstr "Espacio de trabajo de Contabilidad"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reconcile_model__activity_type_id
@@ -75,7 +77,7 @@ msgstr "Tipo de actividad"
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Centralize accounting files and documents"
-msgstr ""
+msgstr "Centraliza documentos y archivos de contabilidad"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -100,7 +102,7 @@ msgstr "Crear"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Credit Note"
-msgstr ""
+msgstr "Crea una factura rectificativa"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
@@ -110,7 +112,7 @@ msgstr "Crear factura de cliente"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule
 msgid "Create Vendor Bill"
-msgstr ""
+msgstr "Crea una Factura de Proveedor"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_uid
@@ -130,7 +132,7 @@ msgstr "Nota de crédito"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
 msgid "Customer invoice"
-msgstr ""
+msgstr "Factura de cliente"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__display_name
@@ -140,17 +142,17 @@ msgstr "Nombre mostrado"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
 msgid "Documents Account Settings"
-msgstr ""
+msgstr "Ajustes de documentos de cuenta"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr ""
+msgstr "Asistente de exportación para informes contables"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
 msgid "Financial Statement"
-msgstr ""
+msgstr "Extracto financiero"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__folder_id
@@ -161,7 +163,7 @@ msgstr "Carpeta"
 #. module: documents_account
 #: model:ir.model.fields,help:documents_account.field_account_reports_export_wizard__folder_id
 msgid "Folder where to save the generated file"
-msgstr ""
+msgstr "Carpeta donde guardar el archivo generado"
 
 #. module: documents_account
 #: code:addons/documents_account/wizard/report_export_wizard.py:0
@@ -197,7 +199,7 @@ msgstr "Apunte contable"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_documents_account_folder_setting
 msgid "Journal and Folder settings"
-msgstr ""
+msgstr "Ajustes de Diario y Carpeta"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
@@ -207,7 +209,7 @@ msgstr "Diarios"
 #. module: documents_account
 #: model:ir.actions.act_window,name:documents_account.action_folder_settings_installer
 msgid "Journals to synchronize"
-msgstr ""
+msgstr "Diarios a sincronizar"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting____last_update
@@ -234,12 +236,12 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_move_line__reconciliation_invoice_id
 msgid "Reconciliation Invoice"
-msgstr ""
+msgstr "Factura de conciliación"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_move__document_request_line_id
 msgid "Reconciliation Journal Entry Line"
-msgstr ""
+msgstr "Conciliación de apuntes contables"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
@@ -250,7 +252,7 @@ msgstr "Categorías"
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
 msgid "Tax Statement"
-msgstr ""
+msgstr "Extracto de Impuesto"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
@@ -265,9 +267,9 @@ msgstr "Factura de proveedor"
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Workspace"
-msgstr ""
+msgstr "Espacio de trabajo"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder
 msgid "account default folder"
-msgstr ""
+msgstr "Carpeta de cuenta predeterminada"

@@ -12,6 +12,7 @@
 # Cristopher Cravioto <ccr@odoo.com>, 2019
 # Martin Trigaux, 2019
 # Mariana Santos Romo <msn@odoo.com>, 2019
+# Jesse Garza <jga@odoo.com>, 2019
 # John Guardado <jgu@odoo.com>, 2019
 # 
 msgid ""
@@ -41,37 +42,39 @@ msgid ""
 "(object.rental_status not in ('draft', 'sent') and 'Delivery or Return "
 "Receipt - %s' %(object.name)) or 'Order - %s' % (object.name)"
 msgstr ""
+"(object.rental_status not in ('draft', 'sent') and 'Delivery or Return "
+"Receipt - %s' %(object.name)) or 'Order - %s' % (object.name)"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Default Delay Costs</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Costos de Demora Predeterminado</span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_product_form_view_rental_gantt
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental_gantt
 msgid "<span class=\"o_stat_text\">in Rental</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">en Alquiler</span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 msgid "<span> to </span>"
-msgstr ""
+msgstr "<span> para </span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Order #: </strong>"
-msgstr ""
+msgstr "<strong>Orden #: </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Pickup : </strong>"
-msgstr ""
+msgstr "<strong>Recogida : </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Return : </strong>"
-msgstr ""
+msgstr "<strong>Regresar : </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
@@ -91,19 +94,19 @@ msgstr "Añadir"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Add a pricing"
-msgstr ""
+msgstr "Añadir un precio"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Additional costs for late returns"
-msgstr ""
+msgstr "Costos adicionales por devoluciones tardías"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_product_product__rent_ok
 #: model:ir.model.fields,help:sale_renting.field_product_template__rent_ok
 #: model:ir.model.fields,help:sale_renting.field_sale_order_line__is_product_rentable
 msgid "Allow renting of this product."
-msgstr ""
+msgstr "Permitir el alquiler de este producto."
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__analytic_account_id
@@ -115,24 +118,25 @@ msgstr "Cuenta analítica"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Apply after"
-msgstr ""
+msgstr "Aplicar después"
 
 #. module: sale_renting
 #. openerp-web
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "At first, let's create some products to rent."
-msgstr ""
+msgstr "Al principio, vamos a crear algunos productos para alquilar."
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pricing_id
 msgid "Best Pricing Rule based on duration"
-msgstr ""
+msgstr "La Mejor Regla de Precios basada en la duración"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__unit_price
 msgid "Best unit price for specified duration (less expensive)."
 msgstr ""
+"El mejor precio unitario para la duración especificada (menos costoso)."
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__rent_ok
@@ -140,7 +144,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__is_product_rentable
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_product_template_search_view
 msgid "Can be Rented"
-msgstr ""
+msgstr "Se puede Alquilar"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
@@ -164,28 +168,28 @@ msgstr "Cancelado"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to create a new quotation."
-msgstr ""
+msgstr "Haga clic aquí para crear una nueva presupuesto"
 
 #. module: sale_renting
 #. openerp-web
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to register the delivery."
-msgstr ""
+msgstr "Haga clic aquí para registrar la entrega."
 
 #. module: sale_renting
 #. openerp-web
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to set up your first rental product."
-msgstr ""
+msgstr "Haga clic aquí para configurar su primer producto de alquiler."
 
 #. module: sale_renting
 #. openerp-web
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to start filling the quotation."
-msgstr ""
+msgstr "Haga clic aquí para comenzar a llenar el presupuesto."
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_res_company
@@ -222,13 +226,14 @@ msgstr "Configurar el alquiler de un producto"
 #, python-format
 msgid "Confirm the order when the customer agrees with the terms."
 msgstr ""
+"Confirmar el orden cuando el cliente está de acuerdo con los términos."
 
 #. module: sale_renting
 #. openerp-web
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Confirm the returned quantities and hit Validate."
-msgstr ""
+msgstr "Confirme las cantidades devueltas y pulse Validar."
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
@@ -240,29 +245,29 @@ msgstr "Pedidos confirmados"
 #: code:addons/sale_renting/models/rental_pricing.py:0
 #, python-format
 msgid "Conversion between Months and another duration unit are not supported!"
-msgstr ""
+msgstr "¡No se admite la conversión entre meses y otra unidad de duración!"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_action
 msgid "Create a new quotation, the first step of a new rental!"
-msgstr ""
+msgstr "Crear un nuevo presupuesto, el primer paso de un nuevo alquiler!"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_product_template_action
 msgid "Create a new rental product!"
-msgstr ""
+msgstr "Cree un nuevo producto de alquiler!"
 
 #. module: sale_renting
 #. openerp-web
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Create or select a customer here."
-msgstr ""
+msgstr "Cree o seleccione un cliente aquí."
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__is_rental_order
 msgid "Created In App Rental"
-msgstr ""
+msgstr "Creado en la App Rental"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__create_uid
@@ -328,7 +333,7 @@ msgstr "Clientes"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "DELIVER"
-msgstr ""
+msgstr "ENTREGA"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
@@ -340,12 +345,12 @@ msgstr "Fecha"
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pickup_date
 msgid "Date of Deliver"
-msgstr ""
+msgstr "Fecha de Entrega"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__return_date
 msgid "Date of Return"
-msgstr ""
+msgstr "Fecha de Regreso"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_pricing__unit__day
@@ -356,25 +361,25 @@ msgstr "Días"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Delay Costs"
-msgstr ""
+msgstr "Costos de Retraso"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__extra_product
 msgid "Delay Product"
-msgstr ""
+msgstr "Retrasar el Producto"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pickup_date
 #: model:ir.ui.menu,name:sale_renting.rental_orders_pickup
 msgid "Deliver"
-msgstr ""
+msgstr "Entregar"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.view_rental_order_product_search
 msgid "Deliver Date"
-msgstr ""
+msgstr "Fecha de Entrega"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__qty_delivered
@@ -398,12 +403,12 @@ msgstr "Fecha de entrega"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Delivery Receipt #"
-msgstr ""
+msgstr "Número de Recibo de Entrega #"
 
 #. module: sale_renting
 #: model:ir.actions.report,name:sale_renting.action_report_rental_saleorder
 msgid "Delivery and Return Receipt"
-msgstr ""
+msgstr "Entrega y Retorno Recibo "
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__description
@@ -416,7 +421,7 @@ msgstr "Descripción"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__module_sale_renting_sign
 msgid "Digital Documents"
-msgstr ""
+msgstr "Documentos Digitales"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__display_name
@@ -445,7 +450,7 @@ msgstr "Duración"
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__duration
 msgid "Duration of the rental (in unit of the pricing)"
-msgstr ""
+msgstr "Duración del alquiler (en unidad del precio)"
 
 #. module: sale_renting
 #. openerp-web
@@ -963,7 +968,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Rental"
-msgstr ""
+msgstr "Alquiler"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.action_rental_report
